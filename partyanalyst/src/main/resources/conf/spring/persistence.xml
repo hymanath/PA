@@ -745,6 +745,10 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityTabUser</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTabUserLocation</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTabUserAnswer</value>
+				 
+				  <value>com.itgrids.partyanalyst.model.IvrSurveyRoundQuestion</value>
+				 <value>com.itgrids.partyanalyst.model.IvrRespondentType</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyRoundQuestionOption</value>
 			     </list>
 			
 		</property>

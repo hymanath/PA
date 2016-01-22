@@ -2483,5 +2483,15 @@
 	 <bean id="activityTabUserAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserAnswerDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	  <bean id="ivrSurveyRoundQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyRoundQuestionDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="ivrRespondentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentTypeDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="ivrSurveyRoundQuestionOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyRoundQuestionOptionDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	<!--  end -->
 </beans>		
