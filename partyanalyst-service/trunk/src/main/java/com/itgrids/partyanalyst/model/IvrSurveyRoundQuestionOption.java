@@ -1,10 +1,14 @@
 package com.itgrids.partyanalyst.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -19,6 +23,7 @@ public class IvrSurveyRoundQuestionOption {
 	private Long ivrSurveyRoundQuestionId;
 	private Long activityOptionId;
 	private String isDeleted;
+	private IvrSurveyRoundQuestion ivrSurveyRoundQuestion;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ivr_survey_round_question_option_id", unique=true, nullable=false)
@@ -49,6 +54,15 @@ public class IvrSurveyRoundQuestionOption {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "ivr_survey_round_question_id",insertable=false,updatable=false)
+	public IvrSurveyRoundQuestion getIvrSurveyRoundQuestion() {
+		return ivrSurveyRoundQuestion;
+	}
+	public void setIvrSurveyRoundQuestion(
+			IvrSurveyRoundQuestion ivrSurveyRoundQuestion) {
+		this.ivrSurveyRoundQuestion = ivrSurveyRoundQuestion;
 	}
 	
 	
