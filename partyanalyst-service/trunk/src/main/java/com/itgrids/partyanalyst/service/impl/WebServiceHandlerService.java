@@ -3260,10 +3260,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   Vo.setUname(user.getUserName());
 			   Vo.setPwd(user.getPassword());
 			   returnList.add(Vo);
+			   MobileAppUser mobileAppUser = mobileAppUserDAO.get(user.getMobileAppUserId());
+			   mobileAppUser.setLastLoginTime(date.getCurrentDateAndTime());
+			   mobileAppUserDAO.save(mobileAppUser);
 		   }
-		   MobileAppUser mobileAppUser = new MobileAppUser();
-		   mobileAppUser.setLastLoginTime(date.getCurrentDateAndTime());
-		   mobileAppUserDAO.save(mobileAppUser);
+		  
 		   }
 		   catch (Exception e) {
 				Log.error("exception riased at checkMobileAppUser", e);
