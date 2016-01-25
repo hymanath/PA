@@ -2110,7 +2110,7 @@ function addToPolitician(voterId,name)
 		var str='';
 		
 		//str+='<div id="cnstHeading" class="thumbnail" style="background:#f0f0f0;border-radius:0px;text-align:left;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency <a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Hide<i class="icon-chevron-up"></i></a></div>';
-		str+='<div id="cnstHeading" class="" style="background:#f0f0f0;border-radius:0px;text-align:left;"><span style="font-size:16.5px;text-transform:uppercase;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency </span><a id="ShowConstMenu" class="btn pull-right" style="margin-top:0px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a></div>';
+		str+='<div id="cnstHeading" class="" style="pading:8px;line-height:9px;background:#f0f0f0;border-radius:0px;text-align:left;"><span style="font-size:16.5px;text-transform:uppercase;">Previous Election Results of '+cnstncy+' '+results[0].electionType+' Constituency </span><a id="ShowConstMenu" class="btn pull-right" style="line-height:0px;margin-top:0px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a></div>';
 		str+='<div id="constituencyResultsInner" style="padding-bottom:25px;display:none;">';
 		str+='<table class="table table-bordered table-hover"><thead><tr class="" style="background:#E6E6E6;"><th>Election Year</th><th>Won Candidate</th><th>Majority</th><th>Lost Candidate</th></tr></thead>';
         for(var i in results){
