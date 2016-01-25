@@ -750,6 +750,8 @@
 				 <value>com.itgrids.partyanalyst.model.IvrRespondentType</value>
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyRoundQuestionOption</value>
 				 <value>com.itgrids.partyanalyst.model.MobileAppUserSmsDetails</value>
+				 <value>com.itgrids.partyanalyst.model.MobileAppUserVoter</value>
+				 <value>com.itgrids.partyanalyst.model.MobileAppUserSmsStatus</value>
 				 
 			     </list>
 			

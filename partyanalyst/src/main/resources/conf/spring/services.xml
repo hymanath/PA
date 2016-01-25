@@ -2148,8 +2148,9 @@
 	  <property name="attendanceService" ref="attendanceService"/>  
 	  <property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO"/>  
 	  <property name="mobileAppUserSmsDetailsDAO" ref="mobileAppUserSmsDetailsDAO"/>  
-	   
- </bean>
+	  <property name="mobileAppUserSmsStatusDAO" ref="mobileAppUserSmsStatusDAO"/> 
+	  <property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO"/> 
+	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
  	<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />

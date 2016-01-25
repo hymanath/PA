@@ -39,7 +39,9 @@ import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -1762,4 +1764,28 @@ public class WebServiceHandler {
 		 return null;
 	 }
 	 
+	 @POST
+	 @Path("/saveMobileAppUserVoterData")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public ResultStatus saveMobileAppUserVoterInfo(MobileAppUserVoterVO inputVo){
+		 try {
+			 return webServiceHandlerService.saveMobileAppUserVoterData(inputVo);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in saveMobileAppUserVoterInfo() Method, Exception is ",e);
+		 }
+		 return null;
+	 }
+	 @POST
+	 @Path("/saveMobileAppUserSmsStatus")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public ResultStatus saveMobileAppUserSmsStatusInfo(MobileAppUserSmsStatusVO inputVo){
+		 try {
+			 return webServiceHandlerService.saveMobileAppUserSmsStatusData(inputVo);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in saveMobileAppUserSmsStatus() Method, Exception is ",e);
+		 }
+		 return null;
+	 }
 }
