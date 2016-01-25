@@ -17,7 +17,9 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -138,4 +140,6 @@ public interface IWebServiceHandlerService {
 	public ResultStatus saveActivityQuestionAnswer(AttendanceQuestionnariWSVO aqWSVO);
 	public List<MobileAppUserVO> checkMobileAppUser(MobileAppUserVO inputVO);
 	public List<MobileAppUserVO> getMobileAppUserSmsDetails(MobileAppUserVO inputVO);
+	public ResultStatus saveMobileAppUserVoterData(MobileAppUserVoterVO inputVo);
+	public ResultStatus saveMobileAppUserSmsStatusData(MobileAppUserSmsStatusVO inputVo);
 }

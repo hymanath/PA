@@ -31,6 +31,8 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserSmsDetailsDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserSmsStatusDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -63,7 +65,9 @@ import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -93,6 +97,8 @@ import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.model.MobileAppUserSmsDetails;
+import com.itgrids.partyanalyst.model.MobileAppUserSmsStatus;
+import com.itgrids.partyanalyst.model.MobileAppUserVoter;
 import com.itgrids.partyanalyst.model.SurveyUserAuth;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -187,9 +193,31 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IAttendanceService attendanceService;
     private IActivityTabRequestBackupDAO activityTabRequestBackupDAO;
     private IMobileAppUserSmsDetailsDAO mobileAppUserSmsDetailsDAO;
+    private IMobileAppUserVoterDAO mobileAppUserVoterDAO;
+    
+    private IMobileAppUserSmsStatusDAO mobileAppUserSmsStatusDAO;
     
     
     
+    
+	public IMobileAppUserSmsStatusDAO getMobileAppUserSmsStatusDAO() {
+		return mobileAppUserSmsStatusDAO;
+	}
+
+	public void setMobileAppUserSmsStatusDAO(
+			IMobileAppUserSmsStatusDAO mobileAppUserSmsStatusDAO) {
+		this.mobileAppUserSmsStatusDAO = mobileAppUserSmsStatusDAO;
+	}
+
+	public IMobileAppUserVoterDAO getMobileAppUserVoterDAO() {
+		return mobileAppUserVoterDAO;
+	}
+
+	public void setMobileAppUserVoterDAO(
+			IMobileAppUserVoterDAO mobileAppUserVoterDAO) {
+		this.mobileAppUserVoterDAO = mobileAppUserVoterDAO;
+	}
+
 	public IMobileAppUserSmsDetailsDAO getMobileAppUserSmsDetailsDAO() {
 		return mobileAppUserSmsDetailsDAO;
 	}
@@ -3300,5 +3328,64 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 		   return returnList;
 	   }
+	   
+	   
+	   public ResultStatus saveMobileAppUserVoterData(MobileAppUserVoterVO inputVo)
+	   {
+		   DateUtilService date = new DateUtilService();
+		   ResultStatus rs = new ResultStatus();
+		   try {
+			   Log.info("Entered into saveMobileAppUserVoterData ");
+			   SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		   MobileAppUserVoter mobileAppUserVoter = new MobileAppUserVoter();
+		   mobileAppUserVoter.setBoothId(inputVo.getBoothId());
+		   mobileAppUserVoter.setLatitude(inputVo.getLatitude());
+		   mobileAppUserVoter.setLongitude(inputVo.getLongitude());
+		   mobileAppUserVoter.setMobileAppUserId(inputVo.getMobileAppUserId());
+		   mobileAppUserVoter.setMobileNo(inputVo.getMobileNum());
+		   mobileAppUserVoter.setRating(inputVo.getRating());
+		   mobileAppUserVoter.setUniqueKey(inputVo.getUniqueKey());
+		   mobileAppUserVoter.setWardId(inputVo.getWardId());
+		   mobileAppUserVoter.setVoterId(inputVo.getVoterId());
+		   mobileAppUserVoter.setInsertedTime(date.getCurrentDateAndTime());
+		   if(inputVo.getSurveyTime() != null && !inputVo.getSurveyTime().isEmpty())
+		   mobileAppUserVoter.setSurveyTime(format.parse(inputVo.getSurveyTime()));
+		   mobileAppUserVoterDAO.save(mobileAppUserVoter);
+		   rs.setMessage("success");
+		   }
+		   catch (Exception e) {
+				Log.error("exception riased at saveMobileAppUserVoterData", e);
+				rs.setMessage("fail");
+			}
+		   return rs;
+		   
+	   }
+	   
+	   public ResultStatus saveMobileAppUserSmsStatusData(MobileAppUserSmsStatusVO inputVo)
+	   {
+		   ResultStatus rs = new ResultStatus();
+		   DateUtilService date = new DateUtilService();
+		   try {
+			   Log.info("Entered into saveMobileAppUserVoterData ");
+		   MobileAppUserSmsStatus mobileAppUserSmsStatus = new MobileAppUserSmsStatus();
+		   mobileAppUserSmsStatus.setMobileAppUserId(inputVo.getMobileAppUserId());
+		   mobileAppUserSmsStatus.setOnlineSent(inputVo.getOnlineSent());
+		   mobileAppUserSmsStatus.setPendingSms(inputVo.getPendingSms());
+		   mobileAppUserSmsStatus.setSentSms(inputVo.getSentSms());
+		   mobileAppUserSmsStatus.setSimCardSent(inputVo.getSimCardSent());
+		   mobileAppUserSmsStatus.setTotalSms(inputVo.getTotalSms());
+		   mobileAppUserSmsStatus.setStatusDate(date.getCurrentDateAndTime());
+		   mobileAppUserSmsStatus.setInsertedTime(date.getCurrentDateAndTime());
+		   mobileAppUserSmsStatusDAO.save(mobileAppUserSmsStatus);
+		   rs.setMessage("success");
+		   }
+		   catch (Exception e) {
+				Log.error("exception riased at saveMobileAppUserSmsStatusData", e);
+				rs.setMessage("fail");
+			}
+		   return rs;
+	   }
+	   
+	   
 }
 
