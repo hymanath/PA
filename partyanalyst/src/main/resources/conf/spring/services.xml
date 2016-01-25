@@ -2146,7 +2146,9 @@
 	  <property name="eventDAO" ref="eventDAO"/>
 	  <property name="activityService" ref="activityService"/>
 	  <property name="attendanceService" ref="attendanceService"/>  
-	   <property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO"/>  
+	  <property name="activityTabRequestBackupDAO" ref="activityTabRequestBackupDAO"/>  
+	  <property name="mobileAppUserSmsDetailsDAO" ref="mobileAppUserSmsDetailsDAO"/>  
+	   
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >

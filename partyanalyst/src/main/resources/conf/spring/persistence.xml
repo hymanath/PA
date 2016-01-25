@@ -749,6 +749,8 @@
 				  <value>com.itgrids.partyanalyst.model.IvrSurveyRoundQuestion</value>
 				 <value>com.itgrids.partyanalyst.model.IvrRespondentType</value>
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyRoundQuestionOption</value>
+				 <value>com.itgrids.partyanalyst.model.MobileAppUserSmsDetails</value>
+				 
 			     </list>
 			
 		</property>
