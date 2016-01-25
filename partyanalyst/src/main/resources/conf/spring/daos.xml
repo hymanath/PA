@@ -2497,6 +2497,12 @@
 	 <bean id="mobileAppUserSmsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserSmsDetailsDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="mobileAppUserVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserVoterDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="mobileAppUserSmsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserSmsStatusDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 
 	<!--  end -->
 </beans>		
