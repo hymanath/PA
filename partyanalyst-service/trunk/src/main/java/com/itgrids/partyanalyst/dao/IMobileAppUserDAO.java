@@ -17,4 +17,5 @@ public interface IMobileAppUserDAO extends GenericDao<MobileAppUser, Long>{
 	public List<Object[]> getSuperAdminList();
 	
 	public List<Object> getMobileAppUserId(String uniqueCode);
+	public List<MobileAppUser> checkMobileAppUser(String uname,String pwd);
 }

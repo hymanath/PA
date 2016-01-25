@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserSmsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -62,6 +63,7 @@ import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.MessagePropertyVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -90,6 +92,7 @@ import com.itgrids.partyanalyst.model.MessagingPropsDetails;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
+import com.itgrids.partyanalyst.model.MobileAppUserSmsDetails;
 import com.itgrids.partyanalyst.model.SurveyUserAuth;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -183,8 +186,19 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IActivityService							activityService;
     private IAttendanceService attendanceService;
     private IActivityTabRequestBackupDAO activityTabRequestBackupDAO;
+    private IMobileAppUserSmsDetailsDAO mobileAppUserSmsDetailsDAO;
     
     
+    
+	public IMobileAppUserSmsDetailsDAO getMobileAppUserSmsDetailsDAO() {
+		return mobileAppUserSmsDetailsDAO;
+	}
+
+	public void setMobileAppUserSmsDetailsDAO(
+			IMobileAppUserSmsDetailsDAO mobileAppUserSmsDetailsDAO) {
+		this.mobileAppUserSmsDetailsDAO = mobileAppUserSmsDetailsDAO;
+	}
+
 	public IActivityTabRequestBackupDAO getActivityTabRequestBackupDAO() {
 		return activityTabRequestBackupDAO;
 	}
@@ -3219,6 +3233,71 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				Log.error("exception riased at saveActivityQuestionAnswer", e);
 			}
 		   return rs;
+	   }
+	   
+	   public  List<MobileAppUserVO> checkMobileAppUser(MobileAppUserVO inputVO)
+	   {
+		   List<MobileAppUserVO> returnList = new ArrayList<MobileAppUserVO>();
+		   try {
+		   Log.info("Entered into checkMobileAppUser ");
+		   DateUtilService date = new DateUtilService();
+		  
+		   List<MobileAppUser> list =  mobileAppUserDAO.checkMobileAppUser(inputVO.getUname(),inputVO.getPwd());
+		   if(list == null || list.size() == 0)
+		   {
+			   MobileAppUserVO returnVO = new MobileAppUserVO();
+			   returnVO.setMessage("Invalid");
+			   returnList.add(returnVO);
+			   return returnList;
+		   }
+		  
+		   for(MobileAppUser user : list)
+		   {
+			   MobileAppUserVO Vo = new MobileAppUserVO();
+			   Vo.setUniqueCode(user.getUniqueCode());
+			   Vo.setMobileAppUserId(user.getMobileAppUserId());
+			   Vo.setMobileNum(user.getMobileNo());
+			   Vo.setUname(user.getUserName());
+			   Vo.setPwd(user.getPassword());
+			   returnList.add(Vo);
+		   }
+		   MobileAppUser mobileAppUser = new MobileAppUser();
+		   mobileAppUser.setLastLoginTime(date.getCurrentDateAndTime());
+		   mobileAppUserDAO.save(mobileAppUser);
+		   }
+		   catch (Exception e) {
+				Log.error("exception riased at checkMobileAppUser", e);
+				 
+			}
+		   return returnList;
+	   }
+	   
+	   public List<MobileAppUserVO> getMobileAppUserSmsDetails(MobileAppUserVO inputVO)
+	   {
+		   List<MobileAppUserVO> returnList = new ArrayList<MobileAppUserVO>();
+		   try {
+		   Log.info("Entered into getMobileAppUserSmsDetails ");
+		   DateUtilService date = new DateUtilService();
+		  
+		   List<MobileAppUserSmsDetails> list =  mobileAppUserSmsDetailsDAO.getMobileAppUserSmsDetails(inputVO.getMobileAppUserId());
+		   if(list != null && list.size() > 0)
+		   for(MobileAppUserSmsDetails user : list)
+		   {
+			   MobileAppUserVO Vo = new MobileAppUserVO();
+			   Vo.setMobileAppUserId(user.getMobileAppUserId());
+			   Vo.setUname(user.getMobileAppUser().getUserName());
+			   Vo.setPwd(user.getMobileAppUser().getPassword());
+			   Vo.setAdvMessage(user.getAdvMessage());
+			   Vo.setDr(user.getDr());
+			   Vo.setmType(user.getMtype());
+			   returnList.add(Vo);
+		   }
+		 
+		   }
+		   catch (Exception e) {
+				Log.error("exception riased at getMobileAppUserSmsDetails", e);
+			}
+		   return returnList;
 	   }
 }
 

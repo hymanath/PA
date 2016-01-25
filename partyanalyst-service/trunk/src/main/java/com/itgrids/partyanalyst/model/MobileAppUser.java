@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +40,9 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	
 	private MobileAppUser mobileAppUser;
 	private String type;
+	private String isDeleted;
+	private String isEnabled;
+	private Date lastLoginTime;
 	
 	private Set<MobileAppUserProfile> mobileAppUserProfile = new HashSet<MobileAppUserProfile>(0);
 	private Set<MobileAppUserAccess> mobileAppUserAccess = new HashSet<MobileAppUserAccess>(0);
@@ -163,6 +167,27 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	
 	public void setType(String type) {
 		this.type = type;
+	}
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	@Column(name = "is_enabled")
+	public String getIsEnabled() {
+		return isEnabled;
+	}
+	public void setIsEnabled(String isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+	@Column(name = "last_login_time")
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 
 	
