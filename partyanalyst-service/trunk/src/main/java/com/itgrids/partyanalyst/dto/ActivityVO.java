@@ -78,9 +78,15 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String ivrStatus;
 	private String isLocation;
 	private String isAttended;
+	private String attendendLocation;
 	
 	
-	
+	public String getAttendendLocation() {
+		return attendendLocation;
+	}
+	public void setAttendendLocation(String attendendLocation) {
+		this.attendendLocation = attendendLocation;
+	}
 	public String getIsLocation() {
 		return isLocation;
 	}
