@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -1734,4 +1735,31 @@ public class WebServiceHandler {
 		 }
 		 return null;
 	 }
+	 
+	 @POST
+	 @Path("/loginMobileAppUser")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public List<MobileAppUserVO> checkMobileAppUser(MobileAppUserVO inputVO){
+		 try {
+			 return webServiceHandlerService.checkMobileAppUser(inputVO);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in checkMobileAppUser() Method, Exception is ",e);
+		 }
+		 return null;
+	 }
+	 
+	 @POST
+	 @Path("/getMobileAppUserSmsDetails")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public List<MobileAppUserVO> getMobileAppUserSmsDetails(MobileAppUserVO inputVO){
+		 try {
+			 return webServiceHandlerService.getMobileAppUserSmsDetails(inputVO);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in getMobileAppUserSmsDetails() Method, Exception is ",e);
+		 }
+		 return null;
+	 }
+	 
 }
