@@ -2503,6 +2503,9 @@
 	  <bean id="mobileAppUserSmsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserSmsStatusDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="mobileAppUserAccessLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessLocationDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 
 	<!--  end -->
 </beans>		

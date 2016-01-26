@@ -2150,6 +2150,8 @@
 	  <property name="mobileAppUserSmsDetailsDAO" ref="mobileAppUserSmsDetailsDAO"/>  
 	  <property name="mobileAppUserSmsStatusDAO" ref="mobileAppUserSmsStatusDAO"/> 
 	  <property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO"/> 
+	  <property name="mobileAppUserAccessLocationDAO" ref="mobileAppUserAccessLocationDAO"/> 
+	  
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
