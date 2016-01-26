@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class MobileAppUserVO {
 	private String uname;
 	private String pwd;
@@ -11,7 +13,15 @@ public class MobileAppUserVO {
 	private String advMessage;
 	private String message;
 	private String lastLogintime;
+	private List<AccessLocationVO> accessLocations;
 	
+	
+	public List<AccessLocationVO> getAccessLocations() {
+		return accessLocations;
+	}
+	public void setAccessLocations(List<AccessLocationVO> accessLocations) {
+		this.accessLocations = accessLocations;
+	}
 	public String getMessage() {
 		return message;
 	}
