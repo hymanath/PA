@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IEventUserDAO;
 import com.itgrids.partyanalyst.dao.IMessagingPropsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserAccessLocationDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserSmsDetailsDAO;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dto.AccessLocationVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -96,6 +98,7 @@ import com.itgrids.partyanalyst.model.MessagingPropsDetails;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
+import com.itgrids.partyanalyst.model.MobileAppUserAccessLocation;
 import com.itgrids.partyanalyst.model.MobileAppUserSmsDetails;
 import com.itgrids.partyanalyst.model.MobileAppUserSmsStatus;
 import com.itgrids.partyanalyst.model.MobileAppUserVoter;
@@ -197,9 +200,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     
     private IMobileAppUserSmsStatusDAO mobileAppUserSmsStatusDAO;
     
+    private IMobileAppUserAccessLocationDAO mobileAppUserAccessLocationDAO;
     
     
-    
+	public IMobileAppUserAccessLocationDAO getMobileAppUserAccessLocationDAO() {
+		return mobileAppUserAccessLocationDAO;
+	}
+
+	public void setMobileAppUserAccessLocationDAO(
+			IMobileAppUserAccessLocationDAO mobileAppUserAccessLocationDAO) {
+		this.mobileAppUserAccessLocationDAO = mobileAppUserAccessLocationDAO;
+	}
+
 	public IMobileAppUserSmsStatusDAO getMobileAppUserSmsStatusDAO() {
 		return mobileAppUserSmsStatusDAO;
 	}
@@ -3321,6 +3333,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   Vo.setmType(user.getMtype());
 			   returnList.add(Vo);
 		   }
+		   List<MobileAppUserAccessLocation> list1 = mobileAppUserAccessLocationDAO.getMobileAppUserAccessLocations(inputVO.getMobileAppUserId());
+		   if(list1 != null && list1.size() > 0)
+		   {
+			   for(MobileAppUserAccessLocation location  : list1)
+			   {
+				   MobileAppUserVO vo = getMatchedAppUser(returnList,location.getMobileAppUserId());
+				   if(vo!= null)
+				   {
+					   AccessLocationVO subVo = new AccessLocationVO();
+					   subVo.setLevelId(location.getLocationLevelId());
+					   subVo.setLevelValue(location.getLocationValue());
+					   if(vo.getAccessLocations() == null)
+					   {
+						   vo.setAccessLocations(new ArrayList<AccessLocationVO>());
+					   }
+					   vo.getAccessLocations().add(subVo);
+				   }
+						   
+			   }
+		   }
 		 
 		   }
 		   catch (Exception e) {
@@ -3328,7 +3360,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 		   return returnList;
 	   }
-	   
+	   public MobileAppUserVO getMatchedAppUser(List<MobileAppUserVO> returnList,Long mobileAppUserId)
+	   {
+		 if(returnList == null || returnList.size() == 0)
+			 return null;
+		 for(MobileAppUserVO vo : returnList)
+			 if(vo.getMobileAppUserId().longValue() == mobileAppUserId.longValue())
+				 return vo;
+		return null;
+	   }
 	   
 	   public ResultStatus saveMobileAppUserVoterData(MobileAppUserVoterVO inputVo)
 	   {
