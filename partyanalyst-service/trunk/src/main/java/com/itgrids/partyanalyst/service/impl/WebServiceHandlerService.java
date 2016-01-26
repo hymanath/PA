@@ -3336,7 +3336,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   ResultStatus rs = new ResultStatus();
 		   try {
 			   Log.info("Entered into saveMobileAppUserVoterData ");
-			   SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			   SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 		   MobileAppUserVoter mobileAppUserVoter = new MobileAppUserVoter();
 		   mobileAppUserVoter.setBoothId(inputVo.getBoothId());
 		   mobileAppUserVoter.setLatitude(inputVo.getLatitude());
