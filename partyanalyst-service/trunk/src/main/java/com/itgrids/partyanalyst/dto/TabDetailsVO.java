@@ -6,7 +6,9 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Sravanth
@@ -32,6 +34,12 @@ public class TabDetailsVO implements java.io.Serializable{
 	private String 			syncSource;
 	private Long 			insertedBy;
 	private Long 			tabPrimaryKey;
+	private List<String> 	availableDates=new ArrayList<String>(0);
+	private String 			surveyDate;
+	private Long 			noofSmsSent;
+	private String 			mobileNo;
+	private Long 			mobileNosCount;
+	
 	
 	
 	public Long getId() {
@@ -118,4 +126,37 @@ public class TabDetailsVO implements java.io.Serializable{
 	public void setTabPrimaryKey(Long tabPrimaryKey) {
 		this.tabPrimaryKey = tabPrimaryKey;
 	}
+	public List<String> getAvailableDates() {
+		return availableDates;
+	}
+	public void setAvailableDates(List<String> availableDates) {
+		this.availableDates = availableDates;
+	}
+	public String getSurveyDate() {
+		return surveyDate;
+	}
+	public void setSurveyDate(String surveyDate) {
+		this.surveyDate = surveyDate;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public Long getNoofSmsSent() {
+		return noofSmsSent;
+	}
+	public void setNoofSmsSent(Long noofSmsSent) {
+		this.noofSmsSent = noofSmsSent;
+	}
+	public Long getMobileNosCount() {
+		return mobileNosCount;
+	}
+	public void setMobileNosCount(Long mobileNosCount) {
+		this.mobileNosCount = mobileNosCount;
+	}
+	
+	
+	
 }
