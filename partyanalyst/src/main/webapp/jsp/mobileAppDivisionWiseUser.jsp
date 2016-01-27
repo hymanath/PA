@@ -12,11 +12,6 @@
 <link href="dist/mobileApp/Daterange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 
-	
-<style type="text/css">
-
-</style>
-
 <body>
 <div class="container">
 	<div class="row">
@@ -29,19 +24,19 @@
 					<table class="table table-bordered tableVM bg_ff">
 						<tr>
 							<td rowspan="3">
-								<h3>150</h3>
+								<h3 id="ttlUsrs">150</h3>
 								<h5>TOTAL USERS</h5>
 							</td>
 							<td rowspan="3">
-								<h3>800</h3>
+								<h3 id="ttlVtrs">800</h3>
 								<h5>TOTAL VOTERS</h5>
 							</td>
 							<td rowspan="3">
-								<h3>100000</h3>
+								<h3 id="ttlVtrsCaptrd">100000</h3>
 								<h5>TOTAL VOTER ID CAPTURED</h5>
 							</td>
 							<td rowspan="3">
-								<h3>100000</h3>
+								<h3 id="ttlMblCaptrd">100000</h3>
 								<h5>TOTAL MOBILE NUMBERS COLLECTED</h5>
 							</td>
 							<td colspan="10">
@@ -61,76 +56,15 @@
 							</td>
 						</tr>
 						<tr>
+							<td>None</td>
 							<td>01</td>
 							<td>02</td>
 							<td>03</td>
 							<td>04</td>
 							<td>05</td>
-							<td>06</td>
-							<td>07</td>
-							<td>08</td>
-							<td>09</td>
-							<td>10</td>
 						</tr>
-						<tr>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-							<td>5000</td>
-						</tr>
-						<tr class="bg_FFF">
-							<td colspan="2"><input type="checkbox">&nbsp;USER_1</td>
-							<td>4000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-						</tr>
-						<tr class="bg_FFF">
-							<td colspan="2"><input type="checkbox">&nbsp;USER_2</td>
-							<td>4000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-						</tr>
-						<tr class="bg_FFF">
-							<td colspan="2"><input type="checkbox">&nbsp;USER_3</td>
-							<td>4000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-							<td>1000</td>
-						</tr>
+						<tr id="mainRtng"></tr>
 					</table>
-					<button class="btn btn-success m_top10">VIEW USER</button>
 				</div>
 			</div>	
 		</div>
@@ -143,6 +77,55 @@
 <script src="dist/mobileApp/Daterange/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
 $("#Date").daterangepicker({opens:"left"});
+getUsersSummary();
+function getUsersSummary(){
+	var locationId = 31917;
+	var locationType = "ward";
+	var startDate = "01/26/2016";
+	var endDate = "01/27/2016";
+	var jsObj = {
+		locationId : locationId,
+		locationType:locationType,
+		startDate:startDate,
+		endDate:endDate
+	};
+	$.ajax({
+		type : "GET",
+		url : "getUserWiseDivisionSummaryAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		buildSummary(result);
+	});
+	
+	function buildSummary(result){
+		$("#ttlUsrs").html(result.usersCount);
+		$("#ttlVtrs").html(result.voterIdsCollected);
+		$("#ttlVtrsCaptrd").html(result.voterIdsCollected);
+		$("#ttlMblCaptrd").html(result.noOfMobiles);
+		
+		var str = "";
+		for(var i in result.ratings){
+			str+="<td>"+result.ratings[i].ratingCount+"</td>";
+		}
+		$("#mainRtng").html(str);
+		
+		
+		var str1 = "";
+		for(var i in result.userRslt){
+			str1+="<tr class='bg_FFF'>";
+			str1+="<td>"+result.userRslt[i].date+"</td>";
+			str1+="<td>"+result.userRslt[i].name+"</td>";
+			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";
+			str1+="<td>"+result.userRslt[i].noOfMobiles+"</td>";
+			for(var j in result.userRslt[i].ratings){
+				str1+="<td>"+result.userRslt[i].ratings[j].ratingCount+"</td>";
+			}
+			str1+="</tr>";
+		}
+		$(str1).insertAfter("#mainRtng");
+	}
+}
 </script>
 </body>
 </html>
