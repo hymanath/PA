@@ -59,8 +59,36 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private String divisonId;
 	private String userId;
 	
+	private String				fromDate;
+	private String				toDate;
+	private String				division;
 	
 	
+	
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
+	public String getDivision() {
+		return division;
+	}
+
+	public void setDivision(String division) {
+		this.division = division;
+	}
+
 	public String getSurveyDate() {
 		return surveyDate;
 	}
