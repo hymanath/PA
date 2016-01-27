@@ -236,7 +236,8 @@ public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
 	}
 	
 	public List<Object[]> getLatiLongi(Long userId,Long divisonId,List<Date> datesList){
-		Query query = getSession().createQuery(" select model.latitude,model.longitude,model.surveyTime,const.name,gmw.divisionName " +
+		Query query = getSession().createQuery(" select model.latitude,model.longitude,model.surveyTime,const.name,gmw.divisionName," +
+				" model.voter.name,model.voter.relativeName,model.voter.voterIDCardNo,model.voter.mobileNo,model.rating,model.booth.partNo " +
 				" from MobileAppUserVoter model,Constituency const,GreaterMuncipalWard gmw " +
 				" where model.mobileAppUserId=:userId and " +
 				" model.wardId=:divisonId and " +
