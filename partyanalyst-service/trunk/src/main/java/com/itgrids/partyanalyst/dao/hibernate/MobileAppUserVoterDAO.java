@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
@@ -15,7 +14,6 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 	public MobileAppUserVoterDAO() {
 		super(MobileAppUserVoter.class);
 	}
-	
 	
 	public List<Object[]> getUserStartEndTime(Long locationId, String locationType, Date fromDate, Date toDate){
 		StringBuilder sb = new StringBuilder();
@@ -234,5 +232,46 @@ public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
 		if(voterIds != null && voterIds.size() > 0)
 		query.setParameterList("voterIds", voterIds);
 		return query.list();
+	}
+	
+	public List<Object[]> getLatiLongi(Long userId,Long divisonId,List<Date> datesList){
+		Query query = getSession().createQuery(" select model.latitude,model.longitude,model.surveyTime,const.name,gmw.divisionName " +
+				" from MobileAppUserVoter model,Constituency const,GreaterMuncipalWard gmw " +
+				" where model.mobileAppUserId=:userId and " +
+				" model.wardId=:divisonId and " +
+				" date(model.surveyTime) in (:datesList) " +
+				" and model.wardId=const.constituencyId " +
+				" and model.wardId=gmw.wardId ");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("divisonId", divisonId);
+		query.setParameterList("datesList", datesList);
+	
+		return query.list();
+	}
+	
+	public List<Object> getAllAvailableForUser(Long userId,Long divisonId){
+		Query query = getSession().createQuery(" select distinct date(model.surveyTime) " +
+				" from MobileAppUserVoter model " +
+				" where model.mobileAppUserId=:userId and " +
+				" model.wardId=:divisonId ");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("divisonId", divisonId);
+		
+		return query.list();
+	}
+	
+	public Long getNumberOfNumsCollected(Long userId,Long divisonId,List<Date> datesList){
+		Query query = getSession().createQuery("select count(distinct model.mobileNo) " +
+				" from MobileAppUserVoter model " +
+				" where model.mobileAppUserId=:userId and " +
+				" model.wardId=:divisonId and " +
+				" date(model.surveyTime) in (:datesList) ");
+		query.setParameter("userId", userId);
+		query.setParameter("divisonId", divisonId);
+		query.setParameterList("datesList", datesList);
+		return (Long)query.uniqueResult();
+		
 	}
 }
