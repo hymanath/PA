@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.message;
 
 import org.apache.log4j.Logger;
+
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.task.TaskExecutor;
 

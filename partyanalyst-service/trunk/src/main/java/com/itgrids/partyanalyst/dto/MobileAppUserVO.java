@@ -14,8 +14,23 @@ public class MobileAppUserVO {
 	private String message;
 	private String lastLogintime;
 	private List<AccessLocationVO> accessLocations;
+	private Integer startIndex;
+	private Integer maxIndex;
 	
 	
+	
+	public Integer getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(Integer startIndex) {
+		this.startIndex = startIndex;
+	}
+	public Integer getMaxIndex() {
+		return maxIndex;
+	}
+	public void setMaxIndex(Integer maxIndex) {
+		this.maxIndex = maxIndex;
+	}
 	public List<AccessLocationVO> getAccessLocations() {
 		return accessLocations;
 	}

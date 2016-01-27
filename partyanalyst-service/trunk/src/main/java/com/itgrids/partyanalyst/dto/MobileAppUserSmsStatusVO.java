@@ -7,6 +7,7 @@ public class MobileAppUserSmsStatusVO {
 	private Long pendingSms;
 	private Long onlineSent;
 	private Long simCardSent;
+
 	public Long getMobileAppUserId() {
 		return mobileAppUserId;
 	}

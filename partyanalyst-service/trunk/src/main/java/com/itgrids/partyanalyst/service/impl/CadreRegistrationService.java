@@ -3727,7 +3727,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
  		
  		return returnList;
  	}
-	private String sendSMS(String mobileNo,String message){
+	public String sendSMS(String mobileNo,String message){
 
 		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
 		client.getHttpConnectionManager().getParams().setConnectionTimeout(

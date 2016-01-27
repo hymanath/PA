@@ -717,5 +717,6 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Booth> getOtherStateVoterAddressDetails(Long voterId);
 	  public Object getBoothPartNumberByVoterId(String voterId);
+	  public List<Object[]> getCadreVoterInfo();
 	  
 }

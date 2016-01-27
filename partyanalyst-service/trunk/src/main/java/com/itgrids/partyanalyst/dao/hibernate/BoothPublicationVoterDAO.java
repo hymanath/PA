@@ -7984,5 +7984,19 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return  query.uniqueResult();
 		
 	}
+	
+	
+	public List<Object[]> getCadreVoterInfo()
+	{
+		Query query = getSession().createQuery(" select model.booth.partNo,model.serialNo," +
+				" model.booth.villagesCovered,model.voter.name,model.voter.relativeName,model.voter.voterIDCardNo," +
+				" model.booth.localBodyWard.name,model1.mobileNo,model.voter.relationshipType,model.voter.gender from BoothPublicationVoter model,TdpCadre model1" +
+				" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId=17" +
+				" and model1.mobileNo is not null " +
+				" group by model1.tdpCadreId order by model1.tdpCadreId ");
+		query.setMaxResults(2);
+		return query.list();
+	
+	}
 
 }
