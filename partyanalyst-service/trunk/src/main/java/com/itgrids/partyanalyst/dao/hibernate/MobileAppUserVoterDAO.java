@@ -170,7 +170,8 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		}
 		return query.list();
 	}
-	public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
+	
+public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
 		
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select count(distinct uv.wardId), count(distinct uv.mobileAppUserId),count(distinct uv.voterId),count(distinct uv.mobileNo) " +
@@ -222,5 +223,16 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 	}
 	
 	
-	
+	public List<MobileAppUserVoter> getVoterDataForBooth(List<Long> voterIds,Long boothId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model from MobileAppUserVoter model where model.boothId = :boothId ");
+		if(voterIds != null && voterIds.size() > 0)
+		str.append(" and model.voterId not in(:voterIds)");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("boothId", boothId);
+		if(voterIds != null && voterIds.size() > 0)
+		query.setParameterList("voterIds", voterIds);
+		return query.list();
+	}
 }

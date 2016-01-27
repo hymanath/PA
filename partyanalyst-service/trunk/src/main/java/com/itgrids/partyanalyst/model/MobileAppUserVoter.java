@@ -41,6 +41,8 @@ public class MobileAppUserVoter {
 	private Date votedTime;
 	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
+	private String isVoted;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "mobile_app_user_voter_id", unique = true, nullable = false)
@@ -157,7 +159,13 @@ public class MobileAppUserVoter {
 	public void setVotedTime(Date votedTime) {
 		this.votedTime = votedTime;
 	}
-
+	@Column(name="is_voted")
+	public String getIsVoted() {
+		return isVoted;
+	}
+	public void setIsVoted(String isVoted) {
+		this.isVoted = isVoted;
+	}
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "tdp_cadre_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -175,6 +183,7 @@ public class MobileAppUserVoter {
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
 	}
+	
 
 	
 	

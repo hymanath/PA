@@ -15,4 +15,5 @@ public interface IMobileAppUserVoterDAO extends GenericDao<MobileAppUserVoter, L
 	public List<Object[]> voterRatings(Date startDate,Date endDate,List<Long> locationIds);
 	public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate);
 	public List<Object[]> overallVoterRatings(Date startDate,Date endDate);
+	public List<MobileAppUserVoter> getVoterDataForBooth(List<Long> voterIds,Long boothId);
 }
