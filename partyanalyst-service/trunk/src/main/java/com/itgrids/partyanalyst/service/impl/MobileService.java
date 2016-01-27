@@ -5153,6 +5153,8 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					finalVO.setUserRslt(fnlLst);
 					
 					List<Long> divisionIds = new ArrayList<Long>();
+					divisionIds.add(locationId);
+					
 					List<Object[]> vtrsLst = greaterMuncipalWardDAO.getDivisionWiseVoters(divisionIds);
 					
 					if(vtrsLst!=null && !vtrsLst.isEmpty()){
