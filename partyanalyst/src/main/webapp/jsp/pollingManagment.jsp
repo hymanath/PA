@@ -17,6 +17,9 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 
+<style>  
+.marginClass{margin-top: 8px; margin-bottom: 9px;}
+</style>
 </head>
 
 <body>
@@ -112,7 +115,8 @@ var toDateStr=dateArray[1].trim();
 var jsObj={
 		fromDate:fromDateStr,
 		toDate:toDateStr,
-		locationIds:locationIds, //[31917,31926]
+		//locationIds:[31917,31926], 
+		locationIds:locationIds,
 		locationType:"ward"
 	}
 	$.ajax({
@@ -186,11 +190,14 @@ var jsObj={
 			str+='</table>';
 			
 			$("#dataLoadingsImgForDivisionWiseReport").hide();
+			$( "#divisionWiseReportDivId" ).removeClass( "marginClass" );
 			$("#divisionWiseReportDivId").html(str);	
 		}
 		else{
 			$("#dataLoadingsImgForDivisionWiseReport").hide();
-			$("#divisionWiseReportDivId").html("NO DATA AVAILABLE...");
+			$( "#divisionWiseReportDivId" ).addClass( "marginClass" );
+			$("#divisionWiseReportDivId").html('<span  style="margin-left: 375px;font-weight:bold;">NO DATA AVAILABLE...</span>');
+			
 		}
 	});
 }
