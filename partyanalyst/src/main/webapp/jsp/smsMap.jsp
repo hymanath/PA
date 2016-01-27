@@ -94,7 +94,7 @@ var locations = [];
 				locations = [];
 				for(var i in result){
 					var temp=[];
-					var data="voter Name : "+result[i].votername+"<br/>Voter Card No : "+result[i].votercardnum+"<br/>Mobile No : "+result[i].voterMobileNo+"<br/>Ward No : "+result[i].syncSource+"<br/>Booth No:"+result[i].boothpartno+"<br/>Rating : "+result[i].rating;
+					var data="<b>voter Name : "+result[i].votername+"<br/>Voter Card No : "+result[i].votercardnum+"<br/>Mobile No : "+result[i].voterMobileNo+"<br/>Ward No : "+result[i].syncSource+"<br/>Booth No:"+result[i].boothpartno+"<br/>Rating : "+result[i].rating+"<br/>DATE : "+result[i].surveyDate+"</b>";
 					temp.push(data);
 					temp.push(result[i].latitude);
 					temp.push(result[i].longitude);
