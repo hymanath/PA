@@ -1610,6 +1610,7 @@
 		<property name="attendanceService" ref="attendanceService" />
 		<property name="activityAttendanceService" ref="activityAttendanceService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="mobileService" ref="mobileService" />
 	</bean>
 	
 </beans>	
