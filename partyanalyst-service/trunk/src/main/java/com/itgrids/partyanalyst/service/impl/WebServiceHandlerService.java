@@ -120,6 +120,7 @@ import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
+import com.itgrids.partyanalyst.service.ISmsGatewayService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
@@ -202,8 +203,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IMobileAppUserSmsStatusDAO mobileAppUserSmsStatusDAO;
     
     private IMobileAppUserAccessLocationDAO mobileAppUserAccessLocationDAO;
+    private ISmsGatewayService smsGatewayService;
     
-    
+	public ISmsGatewayService getSmsGatewayService() {
+		return smsGatewayService;
+	}
+
+	public void setSmsGatewayService(ISmsGatewayService smsGatewayService) {
+		this.smsGatewayService = smsGatewayService;
+	}
+
 	public IMobileAppUserAccessLocationDAO getMobileAppUserAccessLocationDAO() {
 		return mobileAppUserAccessLocationDAO;
 	}
@@ -3401,6 +3410,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   mobileAppUserVoter.setTdpCadreId(inputVo.getTdpCadreId());
 		   mobileAppUserVoterDAO.save(mobileAppUserVoter);
 		   rs.setMessage("success");
+		   
+		   String mobileNo = inputVo.getMobileNum();
+		   if(mobileNo != null && mobileNo.length() == 10)
+			   sendSmsForGHMCVoter(mobileNo,inputVo.getVoterId(),inputVo.getBoothId());
 		   }
 		   catch (Exception e) {
 				Log.error("exception riased at saveMobileAppUserVoterData", e);
@@ -3408,6 +3421,74 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 		   return rs;
 		   
+	   }
+	   
+	   public ResultStatus sendSmsForGHMCVoter(String mobileNo,Long voterId,Long boothId)
+	   {
+		   ResultStatus resultStatus = new ResultStatus();
+		   try{
+			   List<Object[]> list = boothPublicationVoterDAO.getBoothVoterDetails(boothId,voterId);
+			   
+			   if(list != null && list.size() > 0)
+			   {
+				   Object[] params = list.get(0);
+				   StringBuilder sb = new StringBuilder();
+				   
+				   String voterName = params[1] != null ? params[1].toString() : "";
+				   String voterIdCardNo = params[2] != null ? params[2].toString() : null;
+				   String relativeName = params[4] != null ? params[4].toString() : null;
+				   String relation = params[5] != null ? params[5].toString() : "";
+				   String gender = params[3].toString();
+				   String serialNo = params[0] != null ? params[0].toString() : null;
+				   String latitude = params[8] != null ? params[8].toString() : null;
+				   String longitude = params[9] != null ? params[9].toString() : null;
+				   String location = params[7] != null ? params[7].toString() : null;
+				   String relationStr = "C/O";
+						   
+				   sb.append("Name : "+voterName+"\n");
+				   
+				   if(relation.equalsIgnoreCase("Father") || relation.equalsIgnoreCase("Mother"))
+				   {
+					   if(gender.equalsIgnoreCase("M"))
+						   relationStr = "S/O";
+					   else
+						   relationStr = "D/O";
+				   }
+				   else if(relation.equalsIgnoreCase("Husband") && gender.equalsIgnoreCase("F"))
+					   relationStr = "H/O";
+				   
+				   if(relativeName != null)
+					   sb.append(relationStr+" : "+relativeName+"\n");
+				   
+				   if(voterIdCardNo != null)
+					   sb.append("EPIC ID : "+voterIdCardNo+"\n");
+				   
+				   if(serialNo != null)
+					   sb.append("Serial No : "+serialNo+"\n");
+				   
+				   sb.append("Booth No : "+params[6].toString()+"\n");
+				   
+				   if(location != null)
+				   sb.append("Location : "+location+"\n");
+				   sb.append("Vote on 02-FEB-2016 07:00 AM - 05:00 PM.\n");
+				   
+				   if(latitude != null && longitude != null)
+				   {
+					   String url = "http://maps.google.com/maps?saddr=Current+Location&daddr="+latitude+","+longitude;
+					   sb.append("Route to Polling Station\n");
+					   sb.append(url);
+				   }
+				   smsGatewayService.sendSMS(mobileNo,sb.toString(),IConstants.ITGRIDS_USERNAME_FOR_SMS,IConstants.ITGRIDS_PASSWORD_FOR_SMS);		 
+			   }
+			      
+			   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		   }catch(Exception e)
+		   {
+			   Log.error("Exception Occured in sendSmsForGHMCVoter Method - ",e);
+			   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			   resultStatus.setExceptionEncountered(e);
+		   }
+		   return resultStatus;
 	   }
 	   
 	   public ResultStatus saveMobileAppUserSmsStatusData(MobileAppUserSmsStatusVO inputVo)
