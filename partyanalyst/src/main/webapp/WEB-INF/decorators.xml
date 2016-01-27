@@ -164,6 +164,7 @@
 		<pattern>/updateLeaderShipAction*</pattern>
 		<pattern>/trainingCampFeedback*</pattern>
 		<pattern>/feedbackOverViewDetailsAction*</pattern>
+		<pattern>/showGoogleMapDetails*</pattern>
 		</excludes>  
 	
 	<decorator name="main" page="main.jsp">
