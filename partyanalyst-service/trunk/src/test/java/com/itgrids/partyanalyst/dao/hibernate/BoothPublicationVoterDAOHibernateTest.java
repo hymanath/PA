@@ -478,7 +478,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 			System.out.println(voterId);
 	}*/
 	
-	public void testGetFamilyWiseVotersInABooth()
+	/*public void testGetFamilyWiseVotersInABooth()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getFamilyWiseVotersInABooth(291l,12l,"9");
 		System.out.println(list.size());
@@ -486,6 +486,17 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		for(Object[] params : list)
 		{
 			System.out.println(params[0].toString()+"\t"+params[1].toString());
+		}
+	}*/
+	
+	public void testGetBoothVoterDetails()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getBoothVoterDetails(863757l, 7473570l);
+		System.out.println(list.size());
+		
+		for(Object obj : list.get(0))
+		{
+			System.out.println(obj.toString());
 		}
 	}
 	
