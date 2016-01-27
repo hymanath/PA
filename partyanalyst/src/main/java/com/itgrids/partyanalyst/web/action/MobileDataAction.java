@@ -25,7 +25,6 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.message.EventMessagesConsumer;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -52,7 +51,20 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private Long populateID;
 	private MobileVO mobileVo;
 	private EntitlementsHelper entitlementsHelper;
+	private MobileAppUserDetailsVO					mobileAppUserDetailsVO;
 	
+	
+	
+
+	public MobileAppUserDetailsVO getMobileAppUserDetailsVO() {
+		return mobileAppUserDetailsVO;
+	}
+
+	public void setMobileAppUserDetailsVO(
+			MobileAppUserDetailsVO mobileAppUserDetailsVO) {
+		this.mobileAppUserDetailsVO = mobileAppUserDetailsVO;
+	}
+
 	public List<SelectOptionVO> getMandals() {
 		return mandals;
 	}
@@ -534,6 +546,39 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUserWiseDivisionSummary(){
+		try{
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user==null){
+				mobileAppUserDetailsVO = new MobileAppUserDetailsVO();
+				mobileAppUserDetailsVO.setErrorCode(1l);
+				mobileAppUserDetailsVO.setStatusMsg("Session Expired, Please Check");
+				return Action.ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			mobileAppUserDetailsVO = mobileService.getUserWiseDivisionSummary(jObj.getLong("locationId"), jObj.getString("locationType"), jObj.getString("startDate"), jObj.getString("endDate"));
+			mobileAppUserDetailsVO.setErrorCode(0l);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getmobileAppDivisionWiseUsers(){
+		try {
+			// LOGIN 
+			/*RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user==null){
+				return Action.ERROR;
+			}*/
+		} catch (Exception e) {
+			LOG.error("Exception raised at getmobileAppDivisionWiseUsers()", e);
 		}
 		return Action.SUCCESS;
 	}
