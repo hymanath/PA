@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -61,6 +62,7 @@ public interface IMobileService {
 	public ResultStatus createCadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 	public ResultStatus sendSmsToUserForUpdations(String message,String mobileNo);
 	public ResultStatus createSurveySqliteFileForAParliamnetConstituency(RegistrationVO reVo);
-	
+	public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType);
+	public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString);
 	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
 }
