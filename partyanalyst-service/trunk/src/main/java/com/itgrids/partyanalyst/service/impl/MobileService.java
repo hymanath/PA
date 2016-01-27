@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -94,7 +95,7 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dao.hibernate.MobileAppUserSmsStatusDAO;
+import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -125,6 +126,7 @@ import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccess;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.model.MobileAppUserProfile;
+import com.itgrids.partyanalyst.model.MobileAppUserSmsStatus;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
@@ -220,10 +222,20 @@ public class MobileService implements IMobileService{
  private ITdMemberDAO tdMemberDAO;
  
  private IMobileAppUserVoterDAO  mobileAppUserVoterDAO;
- @Autowired
- private MobileAppUserSmsStatusDAO mobileAppUserSmsStatusDAO;
+ private IMobileAppUserSmsStatusDAO		mobileAppUserSmsStatusDAO;
  
  
+ 
+ 
+public IMobileAppUserSmsStatusDAO getMobileAppUserSmsStatusDAO() {
+	return mobileAppUserSmsStatusDAO;
+}
+
+public void setMobileAppUserSmsStatusDAO(
+		IMobileAppUserSmsStatusDAO mobileAppUserSmsStatusDAO) {
+	this.mobileAppUserSmsStatusDAO = mobileAppUserSmsStatusDAO;
+}
+
 public ITdMemberDAO getTdMemberDAO() {
 	return tdMemberDAO;
 }
@@ -5007,6 +5019,186 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				}
 				return ratingsList;
 			}
+			
+			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDate, String endDate){
+				MobileAppUserDetailsVO finalVO = new MobileAppUserDetailsVO();
+				try {
+					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+					Date fromDate = sdf.parse(startDate);
+					Date toDate = sdf.parse(endDate);
+					
+					finalVO.setRatings(getBasicRatings());
+					
+					List<MobileAppUserDetailsVO> fnlLst  = new ArrayList<MobileAppUserDetailsVO>(); 
+					List<Object[]> list = mobileAppUserVoterDAO.getUserStartEndTime(locationId, locationType, fromDate, toDate);
+					List<Object[]> list1 = mobileAppUserVoterDAO.getUserCollectedDetails(locationId, locationType, fromDate, toDate);
+					List<Long> usrIds = new ArrayList<Long>();
+					if(list!=null && !list.isEmpty()){
+						for(Object[] obj:list){
+							MobileAppUserDetailsVO temp = new MobileAppUserDetailsVO();
+							temp.setMobileAppUserId(obj[0]!=null?Long.valueOf(obj[0].toString()):null);
+							temp.setName(obj[1]!=null?obj[1].toString():"");
+							temp.setMobileNo(obj[2]!=null?obj[2].toString():"");
+							temp.setUniqueCode(obj[4]!=null?obj[4].toString():"");
+							temp.setDate(obj[5]!=null?obj[5].toString():"");
+							temp.setRatings(getBasicRatings());
+							SimpleDateFormat innrSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+							SimpleDateFormat reqSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							String stDate = "";
+							String edDate = "";
+							
+							if(obj[6]!=null){
+								Date reqDate1 = innrSdf.parse(obj[6].toString());
+								stDate = reqSdf.format(reqDate1);
+							}
+							
+							if(obj[7]!=null){
+								Date reqDate2 = innrSdf.parse(obj[7].toString());
+								edDate = reqSdf.format(reqDate2);
+							}
+							
+							temp.setStartTime(stDate);
+							temp.setEndtime(edDate);
+							
+							if(obj[0]!=null && !usrIds.contains(Long.valueOf(obj[0].toString()))){
+								usrIds.add(Long.valueOf(obj[0].toString()));
+							}
+							
+							fnlLst.add(temp);
+						}
+					}
+					
+					finalVO.setUsersCount(usrIds.size());
+					
+					List<Object[]> list3 = mobileAppUserVoterDAO.getUserCollectedRatingDetails(locationId, locationType, fromDate, toDate);
+					if(list3!=null && !list3.isEmpty()){
+						for(Object[] obj:list3){
+							MobileAppUserDetailsVO mv = getMatchedMobileAppUserDetailsVO(fnlLst, Long.valueOf(obj[0].toString()), obj[1].toString());
+							if(mv!=null){
+								List<MobileAppUserDetailsVO> ratings = mv.getRatings();
+								if(ratings!=null && !ratings.isEmpty()){
+									int ratingId = obj[2]!=null?Integer.parseInt(obj[2].toString()):0;
+									MobileAppUserDetailsVO ratingVO = getMatchedRatingVO(ratings, ratingId);
+									if(ratingVO!=null){
+										int count = obj[3]!=null?Integer.parseInt(obj[3].toString()):0;
+										ratingVO.setRatingCount(count);
+										MobileAppUserDetailsVO mainRtngVO = getMatchedRatingVO(finalVO.getRatings(), ratingId);
+										if(mainRtngVO==null){
+											mainRtngVO.setRatingCount(count);
+										}else{
+											mainRtngVO.setRatingCount(mainRtngVO.getRatingCount()+count);
+										}
+									}
+									
+								}
+							}
+						}
+					}
+					
+					int ttlMbls = 0;
+					int ttlVtrs = 0;
+					int ttlUnqeVtrs = 0;
+					
+					if(list1!=null && !list1.isEmpty()){
+						for(Object[] obj:list1){
+							MobileAppUserDetailsVO mv = getMatchedMobileAppUserDetailsVO(fnlLst, Long.valueOf(obj[0].toString()), obj[1].toString());
+							if(mv!=null){
+								int mbls = obj[2]!=null?Integer.parseInt(obj[2].toString()):0;
+								int vtrs = obj[3]!=null?Integer.parseInt(obj[3].toString()):0;
+								int unqVtrs = obj[4]!=null?Integer.parseInt(obj[4].toString()):0;
+								
+								mv.setNoOfMobiles(mbls);
+								mv.setVoterIdsCollected(vtrs);
+								mv.setUniqueVoters(unqVtrs);
+								
+								ttlMbls += mbls;
+								ttlVtrs += vtrs;
+								ttlUnqeVtrs += unqVtrs;
+							}
+						}
+					}
+					
+					finalVO.setNoOfMobiles(ttlMbls);
+					finalVO.setVoterIdsCollected(ttlVtrs);
+					finalVO.setUniqueVoters(ttlUnqeVtrs);
+					
+					List<MobileAppUserSmsStatus> list2 = mobileAppUserSmsStatusDAO.getUsersLatestData(usrIds, fromDate, toDate);
+					if(list2!=null && !list2.isEmpty()){
+						List<Long> updtdUsrs = new ArrayList<Long>();
+						for(MobileAppUserSmsStatus obj:list2){
+							SimpleDateFormat innrSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+							SimpleDateFormat reqSdf = new SimpleDateFormat("yyyy-MM-dd");
+							
+							Long userId = Long.valueOf(obj.getMobileAppUserId().toString());
+							Date reqDate = innrSdf.parse(obj.getStatusDate().toString());
+							String date = reqSdf.format(reqDate);
+							MobileAppUserDetailsVO mv = getMatchedMobileAppUserDetailsVO(fnlLst, userId, date);
+							if(mv!=null && !updtdUsrs.contains(userId)){
+								mv.setNoOfSmsSent(Integer.parseInt(obj.getSentSms().toString()));
+								updtdUsrs.add(userId);
+							}
+						}
+					}
+					
+					finalVO.setUserRslt(fnlLst);
+				} catch (Exception e) {
+					LOG.error("Exception Raised in getUserWiseDivisionSummary",e);
+				}
+			
+				return finalVO;
+			}
+			
+			public List<MobileAppUserDetailsVO> getBasicRatings(){
+				List<MobileAppUserDetailsVO> ratings = new ArrayList<MobileAppUserDetailsVO>();
+				for(int i=0;i<=5;i++){
+					MobileAppUserDetailsVO mv = new MobileAppUserDetailsVO();
+					mv.setRating(i);
+					mv.setRatingCount(0);
+					ratings.add(mv);
+				}
+				return ratings;
+			}
+			
+			public MobileAppUserDetailsVO getMatchedMobileAppUserDetailsVO(List<MobileAppUserDetailsVO> list, Long id, String date){
+				if(id!=null && !list.isEmpty()){
+					if(date.length()<=0){
+						for(MobileAppUserDetailsVO mv:list){
+							if(mv.getMobileAppUserId().equals(id)){
+								return mv;
+							}
+						}
+					}else{
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+							Date inputDate = sdf.parse(date);
+							
+							for(MobileAppUserDetailsVO mv:list){
+								if(mv.getDate().length()>0){
+									Date mvDate = sdf.parse(mv.getDate());
+									if(mv.getMobileAppUserId().equals(id) && mvDate.equals(inputDate)){
+										return mv;
+									}
+								}
+							}
+						} catch (Exception e) {
+							LOG.error("Exception Raised in getMatchedMobileAppUserDetailsVO",e);
+						}
+					}
+				}
+				return null;
+			}
+			
+			public MobileAppUserDetailsVO getMatchedRatingVO(List<MobileAppUserDetailsVO> list, int ratingId){
+				if(!list.isEmpty()){
+					for(MobileAppUserDetailsVO mv:list){
+						if(mv.getRating()==ratingId){
+							return mv;
+						}
+					}
+				}
+				return null;
+			}
+			
 			public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString){
 		    	
 		    	SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
@@ -5117,5 +5309,5 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		}
 		
 		return tabDetailsVoList;
-	}		
+	}	  
 }
