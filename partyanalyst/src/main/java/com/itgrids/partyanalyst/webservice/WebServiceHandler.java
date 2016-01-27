@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 @Component
 @Path("/")
 public class WebServiceHandler {
@@ -1824,4 +1825,21 @@ public class WebServiceHandler {
 		 }
 		 return null;
 	 }
+	 
+
+		@POST
+		@Path("/saveUserLocationData")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String saveUserLocationData(UserLocationTrackingVo inputVO)
+		{
+			try
+			{
+	           return  webServiceHandlerService.saveUserLocationData(inputVO);
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in  survey response data from app:"+e.getMessage());
+			}
+			return null;
+		}
 }
