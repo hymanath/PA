@@ -6,13 +6,19 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <html>
 <head>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> DIVISION WISE USERS </title>
 <link href="dist/mobileApp/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/mobileApp/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/mobileApp/Daterange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
+</head>
 <body>
+<style>
+	.table th{text-align:center !important;cursor:pointer;}
+</style>
 <div class="container">
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
@@ -66,6 +72,28 @@
 						<tr id="mainRtng"></tr>
 					</table>
 				</div>
+				<div class="panel-body bg_EF">
+					<table class="table table-bordered tableVM bg_ff" id="usrSmmryTbl">
+						<thead>
+							<tr>
+								<th rowspan=2>NAME</th>
+								<th rowspan=2>DATE</th>
+								<th rowspan=2>VOTER ID'S CAPTURED</th>
+								<th rowspan=2>MOBILE NO'S CAPTURED</th>
+								<th colspan=6>RATINGS</th>
+							</tr>
+							<tr>
+								<th>NONE</th>
+								<th>1</th>
+								<th>2</th>
+								<th>3</th>
+								<th>4</th>
+								<th>5</th>
+							</tr>
+						</thead>
+						<tbody id="usrRtng"></tbody>
+					</table>
+				</div>
 			</div>	
 		</div>
 	</div>
@@ -75,9 +103,17 @@
 <script src="dist/mobileApp/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/mobileApp/Daterange/moment.js" type="text/javascript"></script>
 <script src="dist/mobileApp/Daterange/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+
 <script type="text/javascript">
 $("#Date").daterangepicker({opens:"left"});
 getUsersSummary();
+
+/* var locationId = "${divisionId}";
+var location = "${division}";
+var fromDate = "${fromDate}";
+var toDate = "${toDate}"; */
+
 function getUsersSummary(){
 	var locationId = 31917;
 	var locationType = "ward";
@@ -114,8 +150,8 @@ function getUsersSummary(){
 		var str1 = "";
 		for(var i in result.userRslt){
 			str1+="<tr class='bg_FFF'>";
-			str1+="<td>"+result.userRslt[i].date+"</td>";
 			str1+="<td>"+result.userRslt[i].name+"</td>";
+			str1+="<td>"+result.userRslt[i].date+"</td>";
 			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";
 			str1+="<td>"+result.userRslt[i].noOfMobiles+"</td>";
 			for(var j in result.userRslt[i].ratings){
@@ -123,7 +159,13 @@ function getUsersSummary(){
 			}
 			str1+="</tr>";
 		}
-		$(str1).insertAfter("#mainRtng");
+		
+		$("#usrRtng").html(str1);
+		$("#usrSmmryTbl").dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
+		$("#usrSmmryTbl").removeClass("dataTable");
 	}
 }
 </script>
