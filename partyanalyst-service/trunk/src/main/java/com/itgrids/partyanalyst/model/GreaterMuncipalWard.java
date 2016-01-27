@@ -27,6 +27,7 @@ public class GreaterMuncipalWard extends BaseModel implements java.io.Serializab
 	private Long wardId;
 	private Long localElectionBodyId;
 	private String reservation;
+	private String totalVoters;
 	
 	private Constituency ward;
 	private LocalElectionBody localElectionBody;
@@ -101,5 +102,13 @@ public class GreaterMuncipalWard extends BaseModel implements java.io.Serializab
 	}
 	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
 		this.localElectionBody = localElectionBody;
+	}
+	
+	@Column(name = "total_voters")
+	public String getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(String totalVoters) {
+		this.totalVoters = totalVoters;
 	}
 }
