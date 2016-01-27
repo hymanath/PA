@@ -2053,6 +2053,7 @@
       <property name="tdMemberDAO" ref="tdMemberDAO" />
       <property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO" />
       <property name="mobileAppUserSmsStatusDAO" ref="mobileAppUserSmsStatusDAO" />
+	  <property name="greaterMuncipalWardDAO" ref="greaterMuncipalWardDAO" />
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
