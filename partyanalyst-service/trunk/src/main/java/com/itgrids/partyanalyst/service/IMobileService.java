@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 
 public interface IMobileService {
@@ -60,4 +61,6 @@ public interface IMobileService {
 	public ResultStatus createCadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 	public ResultStatus sendSmsToUserForUpdations(String message,String mobileNo);
 	public ResultStatus createSurveySqliteFileForAParliamnetConstituency(RegistrationVO reVo);
+	
+	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
 }
