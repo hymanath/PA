@@ -63,6 +63,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
@@ -167,8 +168,16 @@ public class ActivityService implements IActivityService{
 	private IActivityAttendanceService activityAttendanceService;
 	private IActivityLocationAttendanceDAO activityLocationAttendanceDAO;
 	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	
 	
+	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+		return userConstituencyAccessInfoDAO;
+	}
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
 	public IUserAccessLevelValueDAO getUserAccessLevelValueDAO() {
 		return userAccessLevelValueDAO;
 	}
@@ -4325,19 +4334,47 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	public List<IdNameVO> getAccessValuesOfUserId(Long userId)
 	{
 		List<IdNameVO> idNameVoList = null;
-		try {
-			List<Object[]> list = userAccessLevelValueDAO.getAccessValuesOfUserId(userId);
-			if(list != null && list.size()>0)
+		try {  
+			List<Object[]> list = null;
+			List<Object[]> accessConstituencyList = userConstituencyAccessInfoDAO.findByElectionScopeUser(1L,userId);
+			if(accessConstituencyList != null && accessConstituencyList.size()>0)
 			{
-				idNameVoList = new ArrayList<IdNameVO>();
-				for (Object[] obj : list) {
-					IdNameVO vo = new IdNameVO();
-					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setDistrictid(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
-					vo.setName(obj[2] != null ? obj[2].toString():"");
-					idNameVoList.add(vo);
+				List<Long> accessConstiIdsList = new ArrayList<Long>();
+				for (Object[] consttuency : accessConstituencyList) {
+					accessConstiIdsList.add(consttuency[0] != null ? Long.valueOf(consttuency[0].toString().trim()):0L);
 				}
-				
+				if(accessConstiIdsList != null && accessConstiIdsList.size()>0)
+				{
+					List<Object[]> values =boothDAO.getWardsByConstituencies(accessConstiIdsList,IConstants.LATEST_PUBLICATION_DATE_ID);
+					if(values != null && values.size() > 0)
+					{
+						idNameVoList = new ArrayList<IdNameVO>();
+						for (Object[] obj : values) {
+							Long wardId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+							String wardName = commonMethodsUtilService.getStringValueForObject(obj[1]);
+							//String constiTuencyName = commonMethodsUtilService.getStringValueForObject(obj[3]);
+							
+							IdNameVO vo = new IdNameVO();
+							vo.setId(wardId);
+							vo.setName(wardName);
+							idNameVoList.add(vo);
+						}
+					}
+				}
+			}else
+			{
+				list = userAccessLevelValueDAO.getAccessValuesOfUserId(userId);
+				if(list != null && list.size()>0)
+				{
+					idNameVoList = new ArrayList<IdNameVO>();
+					for (Object[] obj : list) {
+						IdNameVO vo = new IdNameVO();
+						vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo.setDistrictid(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+						vo.setName(obj[2] != null ? obj[2].toString():"");
+						idNameVoList.add(vo);
+					}
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getActivityTypeList() method, Exception - ",e);
