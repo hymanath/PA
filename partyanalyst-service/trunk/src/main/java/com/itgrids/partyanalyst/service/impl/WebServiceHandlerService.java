@@ -3390,6 +3390,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   mobileAppUserVoter.setInsertedTime(date.getCurrentDateAndTime());
 		   if(inputVo.getSurveyTime() != null && !inputVo.getSurveyTime().isEmpty())
 		   mobileAppUserVoter.setSurveyTime(format.parse(inputVo.getSurveyTime()));
+		   if(inputVo.getImeiNo() != null && !inputVo.getImeiNo().isEmpty())
+		   mobileAppUserVoter.setImeiNo(inputVo.getImeiNo());
+		   if(inputVo.getVersionNo() != null && !inputVo.getVersionNo().isEmpty())
+			   mobileAppUserVoter.setVersionNo(inputVo.getVersionNo());
+		   if(inputVo.getVotedTime() != null && !inputVo.getVotedTime().isEmpty())
+			   mobileAppUserVoter.setVotedTime(format.parse(inputVo.getVotedTime()));
+		   if(inputVo.getTdpCadreId() != null && inputVo.getTdpCadreId() > 0)
+			   mobileAppUserVoter.setTdpCadreId(inputVo.getTdpCadreId());
 		   mobileAppUserVoterDAO.save(mobileAppUserVoter);
 		   rs.setMessage("success");
 		   }
@@ -3426,6 +3434,19 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   return rs;
 	   }
 	   
-	   
+	   public List<MobileAppUserVoterVO> updateBoothVoter(MobileAppUserVoterVO inputVO)
+	   {
+		   try {
+			   Log.info("Entered into updateBoothVoter ");
+		   List<MobileAppUserVoterVO> returnList = new ArrayList<MobileAppUserVoterVO>();
+		   
+		   }
+		   catch (Exception e) {
+				Log.error("exception riased at updateBoothVoter", e);
+				
+			}
+		return null;
+		   
+	   }
 }
 
