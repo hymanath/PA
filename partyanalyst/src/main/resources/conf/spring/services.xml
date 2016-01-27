@@ -2051,7 +2051,7 @@
       <property name="ivrMobileDAO" ref="ivrMobileDAO"></property>
       <property name="mobileNumbersDAO" ref="mobileNumbersDAO"></property>
       <property name="tdMemberDAO" ref="tdMemberDAO" />
-      
+      <property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO" />
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
