@@ -28,7 +28,9 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -77,6 +79,7 @@ import com.itgrids.partyanalyst.dao.ITdMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserLocationTrackingDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
@@ -133,6 +136,7 @@ import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PublicationDate;
+import com.itgrids.partyanalyst.model.UserLocationTracking;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -152,6 +156,7 @@ import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 
 public class MobileService implements IMobileService{
 	
@@ -224,10 +229,20 @@ public class MobileService implements IMobileService{
  
  private IMobileAppUserVoterDAO  mobileAppUserVoterDAO;
  private IMobileAppUserSmsStatusDAO		mobileAppUserSmsStatusDAO;
+ private IUserLocationTrackingDAO userLocationTrackingDAO;
  private IGreaterMuncipalWardDAO		greaterMuncipalWardDAO;
  
  
  
+public IUserLocationTrackingDAO getUserLocationTrackingDAO() {
+	return userLocationTrackingDAO;
+}
+
+public void setUserLocationTrackingDAO(
+		IUserLocationTrackingDAO userLocationTrackingDAO) {
+	this.userLocationTrackingDAO = userLocationTrackingDAO;
+}
+
 public IGreaterMuncipalWardDAO getGreaterMuncipalWardDAO() {
 	return greaterMuncipalWardDAO;
 }
@@ -5151,16 +5166,6 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					}
 					
 					finalVO.setUserRslt(fnlLst);
-					
-					List<Long> divisionIds = new ArrayList<Long>();
-					divisionIds.add(locationId);
-					
-					List<Object[]> vtrsLst = greaterMuncipalWardDAO.getDivisionWiseVoters(divisionIds);
-					
-					if(vtrsLst!=null && !vtrsLst.isEmpty()){
-						int totalVtrs = Integer.parseInt(vtrsLst.get(0)[1].toString());
-						finalVO.setDivisionVoters(totalVtrs);
-					}
 				} catch (Exception e) {
 					LOG.error("Exception Raised in getUserWiseDivisionSummary",e);
 				}
@@ -5335,5 +5340,102 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		}
 		
 		return tabDetailsVoList;
-	}	  
+	}
+	
+	 public String saveUserLocationData(List<UserLocationTrackingVo> userLocationDetails)
+	   {
+		   try
+		   {
+			   for(UserLocationTrackingVo locationDetails:userLocationDetails)
+			   {
+				   List<UserLocationTracking>  userLocationDtls = null;	
+							try
+							{
+							 boolean jdbcExceptionOccured = false;
+							 
+								for(int count = 0 ; count<10 ; count++){
+									jdbcExceptionOccured = false;
+									
+									try
+									{
+										  userLocationDtls = userLocationTrackingDAO.getUserLocationByUserIdAndUniqueId(locationDetails.getUserId(),
+										  locationDetails.getUniqueId());									 
+									}catch(DataAccessResourceFailureException jdbcExe){
+										 jdbcExceptionOccured = true;
+										 LOG.error("DataAccessResourceFailureException occured while saving  surveyAnswerInfo details for "+count+" time : ", jdbcExe);
+										 Thread.sleep(1000);
+									 }
+									 catch(JDBCConnectionException jdbcExe){
+										 jdbcExceptionOccured = true;
+										 LOG.error("JDBCConnectionException occured while saving  surveyAnswerInfo details "+count+" time : ", jdbcExe);
+										 Thread.sleep(1000);
+									 }catch(Exception e){
+										 LOG.error("Exception occured while saving  surveyAnswerInfo details : ", e);
+										 throw new Exception();
+									 }
+									 if(!jdbcExceptionOccured){
+										 break;
+									 }
+								}
+							}catch(Exception e)
+							{
+								e.printStackTrace();						
+							}
+						     
+					if(userLocationDtls == null || userLocationDtls.size()  == 0)
+					{
+						UserLocationTracking locationDtls = new UserLocationTracking();
+						
+						locationDtls.setUserId(locationDetails.getUserId());
+						locationDtls.setLongitude(locationDetails.getLongitude());
+						locationDtls.setLatitude(locationDetails.getLatitude());
+						locationDtls.setUniqueId(locationDetails.getUniqueId());
+						
+					     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");							
+					     locationDtls.setSurveyTime(format.parse(locationDetails.getDateTime()));
+					     locationDtls.setGpsTime(format.parse(locationDetails.getGpsTIME()));
+					    locationDtls.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					    try
+						{
+						 boolean jdbcExceptionOccured = false;
+						 
+							for(int count = 0 ; count<10 ; count++){
+								jdbcExceptionOccured = false;
+								try
+								{
+									userLocationTrackingDAO.save(locationDtls);
+									 
+								}catch(DataAccessResourceFailureException jdbcExe){
+									 jdbcExceptionOccured = true;
+									 LOG.error("DataAccessResourceFailureException occured while saving  surveyAnswerInfo details "+count+" time : ", jdbcExe);
+									 Thread.sleep(1000);
+								 }
+								 catch(JDBCConnectionException jdbcExe){
+									 jdbcExceptionOccured = true;
+									 LOG.error("JDBCConnectionException occured while saving  surveyAnswerInfo details "+count+" time : ", jdbcExe);
+									 Thread.sleep(1000);
+								 }catch(Exception e){
+									 LOG.error("Exception occured while saving  surveyAnswerInfo details : ", e);
+									 throw new Exception();
+								 }
+								 if(!jdbcExceptionOccured){
+									 break;
+								 }
+							}
+						}catch(Exception e)
+						{
+							e.printStackTrace();						
+						}
+					}
+			   }
+		   }
+		   catch(Exception e)
+		   {
+			  e.printStackTrace();
+			  return "error";
+			   
+		   }
+		   return "success";
+		   
+	   }
 }

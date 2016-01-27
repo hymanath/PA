@@ -130,6 +130,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.Util;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -3472,5 +3473,72 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return returnList;
 		   
 	   }
+	   
+	   public Long returnNullForZero(Long value)
+		{
+		   Log.debug("Entered into returnNullForZero service method");
+			try
+			{
+				if(value == 0)
+					return null;
+				return value;
+				
+			}catch(Exception e)
+			{
+				Log.error("Exception raised in  returnNullForZero service method");
+				e.printStackTrace();
+				return null;
+			}
+		}
+	   
+	   public String saveUserLocationData(UserLocationTrackingVo inputVO)
+		{
+			try
+			{/*
+				net.sf.json.JSONObject mainObj = (net.sf.json.JSONObject) net.sf.json.JSONObject
+						.fromObject(userLocationDetails);
+
+				net.sf.json.JSONArray userLctnDetails = (net.sf.json.JSONArray)mainObj.get("locations");
+				for(int i=0;i<userLctnDetails.size();i++)
+				{
+	                   net.sf.json.JSONObject userLctn = (net.sf.json.JSONObject) userLctnDetails.get(i);
+	                   UserLocationTrackingVO mainVO = new UserLocationTrackingVO();
+					if(userLctn.has("userId"))
+						mainVO.setUserId(returnNullForZero(Long.parseLong(userLctn.getString("userId"))));
+					
+					if(userLctn.has("latitude"))
+						mainVO.setLatitude(userLctn.getString("latitude"));
+					
+					if(userLctn.has("longitude"))
+						mainVO.setLongitude(userLctn.getString("longitude"));
+					
+					if(userLctn.has("uniqueId"))
+						mainVO.setUniqueId(userLctn.getString("uniqueId"));
+					
+					if(userLctn.has("dateTime"))
+					{
+						mainVO.setDate(userLctn.getString("dateTime"));
+						mainVO.setDate(mainVO.getDate().replaceAll(Pattern.quote("+"), " "));
+					}
+					userLocations.add(mainVO);
+				}
+				*/
+				if(inputVO != null)
+				{
+					List<UserLocationTrackingVo> userLocations = new ArrayList<UserLocationTrackingVo>(0);
+					userLocations.add(inputVO);
+					mobileService.saveUserLocationData(userLocations);
+				}
+				
+				
+				
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				return "error";
+			}
+			return "success";
+			
+		}
 }
 
