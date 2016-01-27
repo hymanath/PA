@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 
 public interface IWebServiceHandlerService {
 	
@@ -143,4 +144,5 @@ public interface IWebServiceHandlerService {
 	public ResultStatus saveMobileAppUserVoterData(MobileAppUserVoterVO inputVo);
 	public ResultStatus saveMobileAppUserSmsStatusData(MobileAppUserSmsStatusVO inputVo);
     public List<MobileAppUserVoterVO> updateBoothVoter(MobileAppUserVoterVO inputVO);
+    public String saveUserLocationData(UserLocationTrackingVo inputVO);
 }

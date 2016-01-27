@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 
 public interface IMobileService {
 	
@@ -68,4 +69,5 @@ public interface IMobileService {
 	public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType);
 	public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString);
 	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
+	public String saveUserLocationData(List<UserLocationTrackingVo> userLocationDetails);
 }
