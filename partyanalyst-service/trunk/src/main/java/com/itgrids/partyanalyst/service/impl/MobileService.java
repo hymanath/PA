@@ -4922,6 +4922,8 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 									dateVO.setUsersCount(obj[4]!=null?(Long)obj[4]:0l);
 									dateVO.setVoterscount(obj[5]!=null?(Long)obj[5]:0l);
 									dateVO.setMobilescount(obj[6]!=null?(Long)obj[6]:0l);
+									dateVO.setTdpCadreCount(obj[7]!=null?(Long)obj[7]:0l);
+									dateVO.setPublicCount(dateVO.getVoterscount() - dateVO.getTdpCadreCount());
 									if(!isDateExist){
 										divisionVO.getDateList().add(dateVO);
 									}
@@ -4948,7 +4950,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 											Long ratingId=data[2]!=null?(Long)data[2]:null;
 											if(ratingId!=null){
 												MobileUserVO ratingVO=getMatchingVO(dateVO.getRatingList(),ratingId,"","rating");
-												ratingVO.setRatingCount(data[3]!=null?(Long)data[3]:0l);
+												if(ratingVO!=null){
+													ratingVO.setRatingCount(data[3]!=null?(Long)data[3]:0l);
+												}
 											}
 											
 										}
