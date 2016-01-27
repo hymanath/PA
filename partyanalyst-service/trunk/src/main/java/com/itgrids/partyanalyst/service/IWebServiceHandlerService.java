@@ -142,4 +142,5 @@ public interface IWebServiceHandlerService {
 	public List<MobileAppUserVO> getMobileAppUserSmsDetails(MobileAppUserVO inputVO);
 	public ResultStatus saveMobileAppUserVoterData(MobileAppUserVoterVO inputVo);
 	public ResultStatus saveMobileAppUserSmsStatusData(MobileAppUserSmsStatusVO inputVo);
+    public List<MobileAppUserVoterVO> updateBoothVoter(MobileAppUserVoterVO inputVO);
 }

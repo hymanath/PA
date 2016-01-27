@@ -3436,16 +3436,40 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	   
 	   public List<MobileAppUserVoterVO> updateBoothVoter(MobileAppUserVoterVO inputVO)
 	   {
+		   List<MobileAppUserVoterVO> returnList = new ArrayList<MobileAppUserVoterVO>();
 		   try {
 			   Log.info("Entered into updateBoothVoter ");
-		   List<MobileAppUserVoterVO> returnList = new ArrayList<MobileAppUserVoterVO>();
-		   
+		  
+		    List<MobileAppUserVoter> list = mobileAppUserVoterDAO.getVoterDataForBooth(inputVO.getVoterIds(),inputVO.getBoothId());
+		    if(list != null && list.size() > 0)
+		    {
+		    	for(MobileAppUserVoter voter : list)
+		    	{
+		    		MobileAppUserVoterVO vo = new MobileAppUserVoterVO();
+		    		vo.setMobileAppUserId(voter.getMobileAppUserId());
+		    		vo.setWardId(voter.getVoterId());
+		    		vo.setBoothId(voter.getBoothId());
+		    		vo.setVoterId(voter.getVoterId());
+		    		vo.setMobileNum(voter.getMobileNo());
+		    		vo.setRating(voter.getRating());
+		    		vo.setUniqueKey(voter.getUniqueKey());
+		    		vo.setLatitude(voter.getLatitude());
+		    		vo.setLongitude(voter.getLongitude());
+		    		vo.setSurveyTime(voter.getSurveyTime()!= null ? voter.getSurveyTime().toString() : "");
+		    		vo.setImeiNo(voter.getImeiNo() != null ? voter.getImeiNo().toString():"");
+		    		vo.setVersionNo(voter.getVersionNo() != null ? voter.getVersionNo() : "");
+		    		vo.setIsVoted(voter.getIsVoted() != null ? voter.getIsVoted().toString() : "");
+		    		vo.setVotedTime(voter.getVotedTime() != null ? voter.getVotedTime().toString() : "");
+		    		vo.setTdpCadreId(voter.getTdpCadreId()!= null ? voter.getTdpCadreId() : 0l);
+		    		returnList.add(vo);
+		    	}
+		    }
 		   }
 		   catch (Exception e) {
 				Log.error("exception riased at updateBoothVoter", e);
 				
 			}
-		return null;
+		return returnList;
 		   
 	   }
 }
