@@ -39,6 +39,12 @@ public class TabDetailsVO implements java.io.Serializable{
 	private Long 			noofSmsSent;
 	private String 			mobileNo;
 	private Long 			mobileNosCount;
+	private String 			votername;
+	private String			relativename;
+	private String 			votercardnum;
+	private String 			voterMobileNo;
+	private String			rating;
+	private String			boothpartno;
 	
 	
 	
@@ -155,6 +161,42 @@ public class TabDetailsVO implements java.io.Serializable{
 	}
 	public void setMobileNosCount(Long mobileNosCount) {
 		this.mobileNosCount = mobileNosCount;
+	}
+	public String getVotername() {
+		return votername;
+	}
+	public void setVotername(String votername) {
+		this.votername = votername;
+	}
+	public String getRelativename() {
+		return relativename;
+	}
+	public void setRelativename(String relativename) {
+		this.relativename = relativename;
+	}
+	public String getVotercardnum() {
+		return votercardnum;
+	}
+	public void setVotercardnum(String votercardnum) {
+		this.votercardnum = votercardnum;
+	}
+	public String getRating() {
+		return rating;
+	}
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+	public String getBoothpartno() {
+		return boothpartno;
+	}
+	public void setBoothpartno(String boothpartno) {
+		this.boothpartno = boothpartno;
+	}
+	public String getVoterMobileNo() {
+		return voterMobileNo;
+	}
+	public void setVoterMobileNo(String voterMobileNo) {
+		this.voterMobileNo = voterMobileNo;
 	}
 	
 	
