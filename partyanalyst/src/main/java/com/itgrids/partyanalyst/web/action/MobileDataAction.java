@@ -59,12 +59,21 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private String divisonId;
 	private String userId;
 	
+	private Long				divisionId;
 	private String				fromDate;
 	private String				toDate;
 	private String				division;
 	
 	
 	
+	public Long getDivisionId() {
+		return divisionId;
+	}
+
+	public void setDivisionId(Long divisionId) {
+		this.divisionId = divisionId;
+	}
+
 	public String getFromDate() {
 		return fromDate;
 	}
