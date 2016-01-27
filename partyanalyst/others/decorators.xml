@@ -105,6 +105,7 @@
 		<pattern>/attributeWiseVoterDeatils.action*</pattern>		
 		<pattern>/createNewQuestionAction*</pattern>
 		<pattern>/surveyDetailsAction.action*</pattern>
+		<pattern>/showGoogleMapDetails.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
