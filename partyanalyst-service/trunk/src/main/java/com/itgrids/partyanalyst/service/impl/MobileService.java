@@ -5280,7 +5280,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				}
 			}
 			
-			//0-latitude,1-longitude,2-date,3-costNameid,4-constname
+			//0-latitude,1-longitude,2-date,3-costNameid,4-constname,5-votername,6-relativename,7-votercardnum,8-mobileno,9-ration,10-boothpartno
 			List<Object[]> latiLongiObjList = mobileAppUserVoterDAO.getLatiLongi(userId,divisonId,datesList);
 			
 			if(latiLongiObjList != null && latiLongiObjList.size()>0){
@@ -5291,6 +5291,12 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					vo.setSurveyDate(objects[2]!=null?objects[2].toString():"");
 					vo.setSyncSource(objects[3]!=null?objects[3].toString():"");//constnameid
 					vo.setUniqueKey(objects[4]!=null?objects[4].toString():"");//constname
+					vo.setVotername(objects[5]!=null?objects[5].toString():"");
+					vo.setRelativename(objects[6]!=null?objects[6].toString():"");
+					vo.setVotercardnum(objects[7]!=null?objects[7].toString():"");
+					vo.setVoterMobileNo(objects[8]!=null?objects[8].toString():"");
+					vo.setRating(objects[9]!=null?objects[9].toString():"");
+					vo.setBoothpartno(objects[10]!=null?objects[10].toString():"");
 					tabDetailsVoList.add(vo);
 				}
 			}
