@@ -11273,14 +11273,27 @@
 			<param name="root">activityVO</param>
 		</result>
 	</action>
-	 <action name="mobileAppDivisionWiseUsersAction" class="mobileDataAction" method="getmobileAppDivisionWiseUsers">
+	
+	<action name="mobileAppDivisionWiseUsersAction" class="mobileDataAction" method="getmobileAppDivisionWiseUsers">
 		    <result name="success">/jsp/mobileAppDivisionWiseUser.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 	</action>
+	
 	<action name="getUserWiseDivisionSummaryAction" class="mobileDataAction" method="getUserWiseDivisionSummary">
 		<result type="json" name="success">
 			<param name="root">mobileAppUserDetailsVO</param>
 		</result>
 	</action>
+	
+	<action name="showGoogleMapDetails" class="mobileDataAction" method="showGoogleMapDetails">
+ 			 <result name="success">jsp/smsMap.jsp</result>
+ 	</action>
+ 	
+	<action name="showMapForMobileAppUserVoterAction" class="mobileDataAction" method="showMapForMobileAppUserVoter">
+		<result type="json" name="success">
+			<param name="root">tabDetailsVOList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
