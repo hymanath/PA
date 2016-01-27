@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dao.IUserActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -165,9 +166,16 @@ public class ActivityService implements IActivityService{
 	private ITdpCadreDAO tdpCadreDAO;
 	private IActivityAttendanceService activityAttendanceService;
 	private IActivityLocationAttendanceDAO activityLocationAttendanceDAO;
+	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
 	
 	
-	
+	public IUserAccessLevelValueDAO getUserAccessLevelValueDAO() {
+		return userAccessLevelValueDAO;
+	}
+	public void setUserAccessLevelValueDAO(
+			IUserAccessLevelValueDAO userAccessLevelValueDAO) {
+		this.userAccessLevelValueDAO = userAccessLevelValueDAO;
+	}
 	public IActivityLocationAttendanceDAO getActivityLocationAttendanceDAO() {
 		return activityLocationAttendanceDAO;
 	}
@@ -4312,5 +4320,28 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			LOG.error("Exception Occured in getActivityDetailsByActivityLevelIdAndCadreId method in ActivityService ",e);
 		}
 		return activityvo;
+	}
+	
+	public List<IdNameVO> getAccessValuesOfUserId(Long userId)
+	{
+		List<IdNameVO> idNameVoList = null;
+		try {
+			List<Object[]> list = userAccessLevelValueDAO.getAccessValuesOfUserId(userId);
+			if(list != null && list.size()>0)
+			{
+				idNameVoList = new ArrayList<IdNameVO>();
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setDistrictid(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+					vo.setName(obj[2] != null ? obj[2].toString():"");
+					idNameVoList.add(vo);
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityTypeList() method, Exception - ",e);
+		}
+		return idNameVoList;
 	}
 }
