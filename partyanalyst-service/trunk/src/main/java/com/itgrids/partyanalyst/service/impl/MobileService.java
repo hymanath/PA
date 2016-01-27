@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedWriter;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,11 +26,8 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.print.DocFlavor.STRING;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.sanselan.icc.IccConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -66,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -97,7 +94,7 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dao.hibernate.IvrMobileDAO;
+import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -131,7 +128,6 @@ import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PublicationDate;
-import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -142,7 +138,6 @@ import com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterFamilyRange;
 import com.itgrids.partyanalyst.model.VoterInfo;
-import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
@@ -150,7 +145,6 @@ import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
-
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -223,6 +217,7 @@ public class MobileService implements IMobileService{
  private ITdpCadreDAO tdpCadreDAO;
  private ITdMemberDAO tdMemberDAO;
  
+ private IMobileAppUserVoterDAO  mobileAppUserVoterDAO;
  
 public ITdMemberDAO getTdMemberDAO() {
 	return tdMemberDAO;
@@ -732,6 +727,12 @@ public IBloodGroupDAO getBloodGroupDAO() {
 
 	public void setWardBoothDAO(IWardBoothDAO wardBoothDAO) {
 		this.wardBoothDAO = wardBoothDAO;
+	}
+    
+	
+public void setMobileAppUserVoterDAO(
+			IMobileAppUserVoterDAO mobileAppUserVoterDAO) {
+		this.mobileAppUserVoterDAO = mobileAppUserVoterDAO;
 	}
 
 public List<SelectOptionVO> getConstituencyList()
@@ -4860,4 +4861,141 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		  		}
 				return resultStatus;
 		  	}
+			
+			/////////////////////////////////////
+			public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType){
+		    	
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+				List<MobileUserVO> finalList=null;
+				try{
+					
+					Date startDate=null;
+					Date endDate=null;
+					if(startDateString!=null && startDateString.trim().length()>0){
+						startDate=sdf.parse(startDateString);
+					}
+					if(endDateString!=null && endDateString.trim().length()>0){
+						endDate=sdf.parse(endDateString);
+					}
+					
+					List<Object[]> list=mobileAppUserVoterDAO.locationWiseOverView(startDate,endDate,locationIds,locationType);
+					
+					if(list!=null && list.size()>0){
+						finalList=new ArrayList<MobileUserVO>();
+						
+						for(Object[]  obj:list){
+							 
+							Long wardId = obj[0]!=null?(Long)obj[0]:null;
+							if(wardId!=null){
+								boolean isDivisionExist=true;
+								MobileUserVO divisionVO=getMatchingVO(finalList,wardId,"","division");
+								
+								if(divisionVO==null){
+									isDivisionExist=false;
+									divisionVO=new MobileUserVO();
+									divisionVO.setWardId(wardId);
+									divisionVO.setDivisionNo(obj[1]!=null?(String)obj[1]:"");
+									divisionVO.setDivisionName(obj[2]!=null?(String)obj[2]:"");
+									if(divisionVO.getDateList()==null){
+										divisionVO.setDateList(new ArrayList<MobileUserVO>());
+									}
+								}
+								boolean isDateExist=true;
+								String dateString=obj[3]!=null?obj[3].toString():null;
+								
+								if(dateString!=null){
+									MobileUserVO dateVO=getMatchingVO(divisionVO.getDateList(),null,dateString,"date");
+									if(dateVO==null){
+										isDateExist=false;
+										dateVO=new MobileUserVO();
+										dateVO.setDateString(obj[3]!=null?obj[3].toString():"");
+										if(dateVO.getRatingList()==null){
+											List<MobileUserVO> ratingsList=setRatings();
+											dateVO.setRatingList(ratingsList);
+										}
+									}
+									dateVO.setUsersCount(obj[4]!=null?(Long)obj[4]:0l);
+									dateVO.setVoterscount(obj[5]!=null?(Long)obj[5]:0l);
+									dateVO.setMobilescount(obj[6]!=null?(Long)obj[6]:0l);
+									if(!isDateExist){
+										divisionVO.getDateList().add(dateVO);
+									}
+								}
+								
+								if(!isDivisionExist){
+									finalList.add(divisionVO);
+								}
+							}
+						}
+					}
+					
+					List<Object[]> ratingsList=mobileAppUserVoterDAO.voterRatings(startDate,endDate,locationIds);
+					if(ratingsList!=null && ratingsList.size()>0){
+						for(Object[] data:ratingsList){
+							Long wardId=data[0]!=null?(Long)data[0]:null;
+							if(wardId!=null){
+								MobileUserVO divisionVO=getMatchingVO(finalList,wardId,"","division");
+								if(divisionVO!=null){
+									String dateString=data[1]!=null?data[1].toString():null;
+									if(dateString!=null){
+										MobileUserVO dateVO=getMatchingVO(divisionVO.getDateList(),null,dateString,"date");	
+										if(dateVO!=null){
+											Long ratingId=data[2]!=null?(Long)data[2]:null;
+											if(ratingId!=null){
+												MobileUserVO ratingVO=getMatchingVO(dateVO.getRatingList(),ratingId,"","rating");
+												ratingVO.setRatingCount(data[3]!=null?(Long)data[3]:0l);
+											}
+											
+										}
+									}
+								}
+							}
+						}
+					}
+					
+				}catch(Exception e){
+					LOG.error("Exception Occured in locationWiseOverView Method",e);
+				}
+				return finalList;
+			}
+			
+			
+			public MobileUserVO getMatchingVO(List<MobileUserVO> resultList,Long Id,String name,String type)
+			{
+				try{
+					 if(resultList != null && resultList.size() > 0){
+						 
+						for(MobileUserVO vo : resultList)
+						{
+							if(type.equalsIgnoreCase("division")){
+								if(vo.getWardId().longValue() == Id.longValue())
+									return vo;
+							}else if(type.equalsIgnoreCase("date")){
+								if(vo.getDateString().equalsIgnoreCase(name.toString()))
+									return vo;
+							}else if(type.equalsIgnoreCase("rating")){
+								if(vo.getRatingId().longValue() == Id.longValue())
+									return vo;
+							}
+						}
+						
+					  }
+					}
+				catch (Exception e) {
+					LOG.error("Exception Occured in getMatchingVO Method",e);
+				}
+				return null;
+			
+			 }
+			
+			public List<MobileUserVO> setRatings(){
+				List<MobileUserVO> ratingsList=new ArrayList<MobileUserVO>();
+				for(Long i=1l;i<=5l;i++){
+					MobileUserVO vo=new MobileUserVO();
+					vo.setRatingId(i);
+					vo.setRatingCount(0l);
+					ratingsList.add(vo);
+				}
+				return ratingsList;
+			}
 }
