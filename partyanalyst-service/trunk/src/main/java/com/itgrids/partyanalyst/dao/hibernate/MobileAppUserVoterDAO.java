@@ -170,4 +170,57 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		}
 		return query.list();
 	}
+	public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
+		
+		StringBuilder sb=new StringBuilder();
+		sb.append(" select count(distinct uv.wardId), count(distinct uv.mobileAppUserId),count(distinct uv.voterId),count(distinct uv.mobileNo) " +
+		" from   MobileAppUserVoter uv ");
+		sb.append(" where uv.mobileAppUserVoterId is not null ");
+		if(startDate!=null){
+			sb.append(" and  date(uv.surveyTime) >=:startDate ");
+		}
+		if(endDate!=null){
+			sb.append(" and date(uv.surveyTime) <=:endDate ");
+		}
+		Query query=getSession().createQuery(sb.toString());
+		if(startDate!=null){
+			query.setParameter("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setParameter("endDate",endDate);
+		}
+		return query.list();
+	}
+    public List<Object[]> overallVoterRatings(Date startDate,Date endDate){
+    	
+    
+		StringBuilder sb=new StringBuilder();
+		sb.append(" select    inRating as outRating,count(inRating) as count from " +
+				  "          (select   distinct uv.voter_id as inVoterId,uv.rating as inRating" +
+				  "           from    mobile_app_user_voter uv where uv.mobile_app_user_voter_id is not null " );
+		
+		     if(startDate!=null){
+			   sb.append(" and date(uv.survey_time) >=:startDate ");
+		     }
+		    if(endDate!=null){
+		 	  sb.append(" and date(uv.survey_time) <=:endDate ");
+		    }
+		    sb.append(" ) AS SUBQUERY ");
+	  sb.append(" group by outRating");
+	   
+	   Query query=getSession().createSQLQuery(sb.toString())
+			   .addScalar("outRating", Hibernate.LONG)
+			   .addScalar("count", Hibernate.LONG);
+	   
+	   if(startDate!=null){
+			query.setParameter("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setParameter("endDate",endDate);
+		}
+		return query.list();
+	}
+	
+	
+	
 }

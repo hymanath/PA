@@ -9,8 +9,11 @@ public class MobileUserVO implements Serializable{
 	private String divisionNo;
 	private String divisionName;
 	private String dateString;
+	private Long   wardsCount;
 	private Long   usersCount;
 	private Long   voterscount;
+	private Long   publicCount;
+	private Long   tdpCadreCount;
 	private Long   mobilescount;
 	private Long   ratingId;
 	private Long   ratingCount;
@@ -84,6 +87,24 @@ public class MobileUserVO implements Serializable{
 	public void setRatingCount(Long ratingCount) {
 		this.ratingCount = ratingCount;
 	}
-	
+	public Long getWardsCount() {
+		return wardsCount;
+	}
+	public void setWardsCount(Long wardsCount) {
+		this.wardsCount = wardsCount;
+	}
+	public Long getPublicCount() {
+		return publicCount;
+	}
+	public void setPublicCount(Long publicCount) {
+		this.publicCount = publicCount;
+	}
+	public Long getTdpCadreCount() {
+		return tdpCadreCount;
+	}
+	public void setTdpCadreCount(Long tdpCadreCount) {
+		this.tdpCadreCount = tdpCadreCount;
+	}
+        	
 	
 }

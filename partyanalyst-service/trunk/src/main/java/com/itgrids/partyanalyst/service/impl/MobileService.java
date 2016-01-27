@@ -4998,4 +4998,51 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				}
 				return ratingsList;
 			}
+			public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString){
+		    	
+		    	SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+		    	MobileUserVO finalVO=new MobileUserVO();
+		    	try{
+		    		
+		    		Date startDate=null;
+					Date endDate=null;
+					if(startDateString!=null && startDateString.trim().length()>0){
+						startDate=sdf.parse(startDateString);
+					}
+					if(endDateString!=null && endDateString.trim().length()>0){
+						endDate=sdf.parse(endDateString);
+					}
+					if(finalVO.getRatingList()==null){
+						finalVO.setRatingList(setRatings());
+					}
+					
+					List<Object[]> list=mobileAppUserVoterDAO.overAllDivisionsSummary(startDate,endDate);
+					if(list!=null && list.size()>0){
+						Object[] obj=list.get(0);
+						if(obj!=null){
+							
+							finalVO.setWardsCount(obj[0]!=null?(Long)obj[0]:0l);
+							finalVO.setUsersCount(obj[1]!=null?(Long)obj[1]:0l);
+							finalVO.setVoterscount(obj[2]!=null?(Long)obj[2]:0l);
+							finalVO.setMobilescount(obj[3]!=null?(Long)obj[3]:0l);
+						}
+					}
+					List<Object[]> ratings=mobileAppUserVoterDAO.overallVoterRatings(startDate,endDate);
+					if(ratings!=null && ratings.size()>0){
+						for(Object[] obj:ratings){
+							Long ratingId=obj[0]!=null?(Long)obj[0]:null;
+							if(ratingId!=null){
+								MobileUserVO ratingVO=getMatchingVO(finalVO.getRatingList(),ratingId,"","rating");
+							    if(ratingVO!=null){
+							    	ratingVO.setRatingCount(obj[1]!=null?(Long)obj[1]:0l);
+							    }
+							}
+						}
+					}
+					
+				}catch(Exception e){
+					LOG.error("Exception Occured in overAllDivisionsSummary Method",e);
+				}
+		    	return finalVO;
+		    }
 }
