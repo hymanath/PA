@@ -42,6 +42,8 @@ public class MobileAppUserVoter {
 	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
 	private String isVoted;
+	private Voter voter;
+	private Booth booth;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -183,6 +185,30 @@ public class MobileAppUserVoter {
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "voter_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Voter getVoter() {
+		return voter;
+	}
+	public void setVoter(Voter voter) {
+		this.voter = voter;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "booth_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Booth getBooth() {
+		return booth;
+	}
+	public void setBooth(Booth booth) {
+		this.booth = booth;
+	}
+	
+	
 	
 
 	
