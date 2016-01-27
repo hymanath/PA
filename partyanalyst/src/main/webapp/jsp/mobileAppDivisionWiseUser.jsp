@@ -128,7 +128,7 @@ function getUsersSummary(locId,fromDate,toDate){
 	}).done(function(result){
 		buildSummary(result);
 	});
-	
+}
 	function buildSummary(result){
 		$("#ttlUsrs").html(result.usersCount);
 		$("#ttlVtrs").html(result.voterIdsCollected);
@@ -145,7 +145,7 @@ function getUsersSummary(locId,fromDate,toDate){
 		var str1 = "";
 		for(var i in result.userRslt){
 			str1+="<tr class='bg_FFF'>";
-			str1+="<td>"+result.userRslt[i].name+"</td>";
+			str1+="<td class='openTab' attr_divisonId="+'${param.divisionId}'+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" style='cursor:pointer;'>"+result.userRslt[i].name+"</td>";
 			str1+="<td>"+result.userRslt[i].date+"</td>";
 			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";
 			str1+="<td>"+result.userRslt[i].noOfMobiles+"</td>";
@@ -162,7 +162,11 @@ function getUsersSummary(locId,fromDate,toDate){
 		});
 		$("#usrSmmryTbl").removeClass("dataTable");
 	}
-}
+
+
+	$(document).on("click",".openTab",function(){
+		window.open("showGoogleMapDetails.action?userId="+$(this).attr("attr_userId")+"&divisonId="+$(this).attr("attr_divisonId")+"&surveyDate="+$(this).attr("attr_surveydate"), "new window", "height=900,width=1300");
+	});
 </script>
 </body>
 </html>
