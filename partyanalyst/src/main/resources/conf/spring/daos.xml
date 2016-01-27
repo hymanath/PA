@@ -2506,7 +2506,7 @@
 	  <bean id="mobileAppUserAccessLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessLocationDAO">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 <bean id="greaterMuncipalWardDAO" class="com.itgrids.survey.dao.impl.GreaterMuncipalWardDAO">
+	 <bean id="greaterMuncipalWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.GreaterMuncipalWardDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!--  end -->
