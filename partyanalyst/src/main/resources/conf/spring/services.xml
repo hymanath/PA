@@ -2953,5 +2953,10 @@
 		<property name="activityScopeDAO" ref="activityScopeDAO" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		</bean>
+	<bean name="smsSenderService" class="com.itgrids.partyanalyst.service.impl.SmsSenderService">
+	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+	<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+	<property name="taskExecutor" ref="taskExecutor" />	
+	</bean>
 </beans>		
 	

@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
+import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
@@ -78,9 +79,16 @@ public class WebServiceHandler {
 	private IWebServiceHandlerService1 webServiceHandlerService1;
 	private MissedCallCampaignVO MissedCallCampaignVO;
 	private List<CadreAddressVO> cadreAddressVOList;
+	@Autowired
+	private ISmsSenderService smsSenderService;
 	
 	@Autowired
 	private IAttendanceService attendanceService;
+	
+	
+	
+	
+	
 	
 	public List<CadreAddressVO> getCadreAddressVOList() {
 		return cadreAddressVOList;
@@ -1785,6 +1793,21 @@ public class WebServiceHandler {
 			 return webServiceHandlerService.saveMobileAppUserSmsStatusData(inputVo);
 		 } catch (Exception e) {
 			 LOG.error("Exception Occured in saveMobileAppUserSmsStatus() Method, Exception is ",e);
+		 }
+		 return null;
+	 }
+	 
+	 
+	 
+	 @POST
+	 @Path("/sendSmsForCadre")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public ResultStatus sendSmsForCadre(MobileAppUserVO inputVO){
+		 try {
+			 return smsSenderService.sendSmsToCadre(inputVO.getStartIndex(),inputVO.getMaxIndex());
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in sendSmsForCadre() Method, Exception is ",e);
 		 }
 		 return null;
 	 }
