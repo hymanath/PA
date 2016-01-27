@@ -31,5 +31,12 @@ public class MobileAppUserSmsStatusDAO extends GenericDaoHibernate<MobileAppUser
 		query.setDate("toDate", toDate);
 		return query.list();
 	}
-
+	
+	public List<Long> getNoOfSmsCountOfUser(Long userId,List<Date> dates){
+		Query query = getSession().createQuery(" select model.sentSms from MobileAppUserSmsStatus model " +
+				" where model.mobileAppUserId=:userId and date(model.statusDate) in (:dates) order by date(model.insertedTime) desc ");
+		query.setParameter("userId", userId);
+		query.setParameterList("dates", dates);
+		return query.list();
+	}
 }
