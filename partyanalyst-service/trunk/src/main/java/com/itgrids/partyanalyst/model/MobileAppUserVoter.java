@@ -15,6 +15,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "mobile_app_user_voter")
@@ -33,6 +36,11 @@ public class MobileAppUserVoter {
 	private String longitude;
 	private Date surveyTime;
 	private Date insertedTime;
+	private String imeiNo;
+	private String versionNo;
+	private Date votedTime;
+	private TdpCadre tdpCadre;
+	private Long tdpCadreId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "mobile_app_user_voter_id", unique = true, nullable = false)
@@ -128,7 +136,46 @@ public class MobileAppUserVoter {
 		this.insertedTime = insertedTime;
 	}
 	
-	
+	@Column(name = "imei_no")
+	public String getImeiNo() {
+		return imeiNo;
+	}
+	public void setImeiNo(String imeiNo) {
+		this.imeiNo = imeiNo;
+	}
+	@Column(name = "version_no")
+	public String getVersionNo() {
+		return versionNo;
+	}
+	public void setVersionNo(String versionNo) {
+		this.versionNo = versionNo;
+	}
+	@Column(name="voted_time")
+	public Date getVotedTime() {
+		return votedTime;
+	}
+	public void setVotedTime(Date votedTime) {
+		this.votedTime = votedTime;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_cadre_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	@Column(name="tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+
 	
 	
 	
