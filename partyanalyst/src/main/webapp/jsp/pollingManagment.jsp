@@ -112,7 +112,7 @@ var toDateStr=dateArray[1].trim();
 var jsObj={
 		fromDate:fromDateStr,
 		toDate:toDateStr,
-		locationIds:[31917,31926],   //locationIds
+		locationIds:locationIds, //[31917,31926]
 		locationType:"ward"
 	}
 	$.ajax({
