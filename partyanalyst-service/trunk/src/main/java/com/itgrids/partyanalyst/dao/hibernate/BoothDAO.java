@@ -2653,4 +2653,27 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		 
 		 return query.list();
 	}
+	 
+	 
+	 public List<Object[]> getWardsByConstituencies(List<Long> constituencyIds,Long latestPublicationId){
+			
+			/*Query query = getSession().createQuery(" select distinct model.localBodyWard.constituencyId,model.localBodyWard.name, " +
+							" concat(model.localBody.name,' ',model.localBody.electionType.electionType),model.constituency.name from Booth model " +
+							" where model.constituency.constituencyId in (:constituencyIds) " +
+							" and model.publicationDate.publicationDateId = :latestPublicationId group by model.constituency.constituencyId " +
+							" order by model.localBodyWard.constituencyId asc ");*/
+			Query query = getSession().createQuery(" select distinct model.localBodyWard.constituencyId,model.localBodyWard.name, " +
+							" concat(model.localBody.name,' ',model.localBody.electionType.electionType),model.constituency.name from Booth model " +
+							" where model.localBodyWard.constituencyId in (select distinct model2.localBodyWard.constituencyId from Booth model2 " +
+							" where model2.publicationDate.publicationDateId = :latestPublicationId and model2.constituency.constituencyId in (:constituencyIds) " +
+							" order by model2.constituency.name ) " +
+							" and model.publicationDate.publicationDateId = :latestPublicationId group by model.constituency.constituencyId,model.localBodyWard.constituencyId " +
+							" order by model.localBodyWard.constituencyId,model.constituency.name asc  ");
+			query.setParameterList("constituencyIds", constituencyIds);
+			query.setParameter("latestPublicationId", latestPublicationId);
+			
+			return query.list();
+		}
+		
+	 
 }

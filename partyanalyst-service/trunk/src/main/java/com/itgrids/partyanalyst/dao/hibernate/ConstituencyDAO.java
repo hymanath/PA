@@ -1516,5 +1516,9 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameter("wardName", wardName);
 		return (Long) query.uniqueResult();
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyDetailsByCintiId(Long constiId){	
+		return getHibernateTemplate().find("select model.constituencyId, model.name from Constituency model " +
+				"where model.constituencyId = ? ", constiId);
+	}
 }
