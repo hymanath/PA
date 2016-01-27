@@ -11273,5 +11273,9 @@
 			<param name="root">activityVO</param>
 		</result>
 	</action>
+	 <action name="mobileAppDivisionWiseUsersAction" class="activityAction" method="getmobileAppDivisionWiseUsers">
+		    <result name="success">/jsp/mobileAppDivisionWiseUser.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+	</action>
 </package>
 </struts>      
