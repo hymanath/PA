@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.EntitlementVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -587,17 +588,17 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	
 	public String getUserWiseDivisionSummary(){
 		try{
-			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			/*RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user==null){
 				mobileAppUserDetailsVO = new MobileAppUserDetailsVO();
-				mobileAppUserDetailsVO.setErrorCode(1l);
+				mobileAppUserDetailsVO.setErrorCode(1);
 				mobileAppUserDetailsVO.setStatusMsg("Session Expired, Please Check");
 				return Action.ERROR;
-			}
+			}*/
 			
 			jObj = new JSONObject(getTask());
 			mobileAppUserDetailsVO = mobileService.getUserWiseDivisionSummary(jObj.getLong("locationId"), jObj.getString("locationType"), jObj.getString("startDate"), jObj.getString("endDate"));
-			mobileAppUserDetailsVO.setErrorCode(0l);
+			mobileAppUserDetailsVO.setErrorCode(0);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
