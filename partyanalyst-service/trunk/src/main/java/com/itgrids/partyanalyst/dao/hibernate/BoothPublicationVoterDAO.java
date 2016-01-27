@@ -7994,7 +7994,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 				" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId=17" +
 				" and model1.mobileNo is not null and length(model1.mobileNo) = 10 and model1.mobileNo <> '9999999999' and model1.mobileNo !='' " +
 				" group by model1.tdpCadreId order by model1.tdpCadreId ");
-		query.setMaxResults(2);
+	
 		return query.list();
 	
 	}
