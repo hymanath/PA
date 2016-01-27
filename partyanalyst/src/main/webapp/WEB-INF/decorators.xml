@@ -639,5 +639,6 @@
 	
 	<pattern>/callCenterTrainingAgent*</pattern>
 	<pattern>/pollingManagmentAction*</pattern>
+	<pattern>/mobileAppDivisionWiseUser*</pattern>
 	 </decorator> 
 </decorators>
