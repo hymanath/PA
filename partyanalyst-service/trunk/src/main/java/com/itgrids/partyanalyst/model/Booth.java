@@ -44,6 +44,8 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private String pincode;
 	private String isCtpUsed;
 	private Date updatedTime;
+	private String latitude;
+	private String longitude;
 
 	private Constituency constituency;
 	private LocalElectionBody localBody;
@@ -379,6 +381,24 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+
+	@Column(name ="latitude")
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	@Column(name ="longitude")
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 
 }
