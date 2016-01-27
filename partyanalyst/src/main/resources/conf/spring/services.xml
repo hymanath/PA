@@ -2053,6 +2053,7 @@
       <property name="tdMemberDAO" ref="tdMemberDAO" />
       <property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO" />
       <property name="mobileAppUserSmsStatusDAO" ref="mobileAppUserSmsStatusDAO" />
+        <property name="userLocationTrackingDAO" ref="userLocationTrackingDAO" />
 	  <property name="greaterMuncipalWardDAO" ref="greaterMuncipalWardDAO" />
     </bean>
     
@@ -2949,6 +2950,7 @@
 		<property name="activityAttendanceService" ref="activityAttendanceService" />
 		<property name="activityLocationAttendanceDAO" ref="activityLocationAttendanceDAO" />
 		<property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO" />
+		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />

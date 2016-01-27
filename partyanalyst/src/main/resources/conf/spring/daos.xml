@@ -2509,5 +2509,8 @@
 	 <bean id="greaterMuncipalWardDAO" class="com.itgrids.partyanalyst.dao.hibernate.GreaterMuncipalWardDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="userLocationTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserLocationTrackingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
