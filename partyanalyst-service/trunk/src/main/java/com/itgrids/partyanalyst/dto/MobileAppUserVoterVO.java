@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class MobileAppUserVoterVO {
 	private Long mobileAppUserId;
 	private Long wardId;
@@ -11,6 +13,52 @@ public class MobileAppUserVoterVO {
 	private String latitude;
 	private String longitude;
 	private String surveyTime;
+	private String imeiNo;
+	private String versionNo;
+	private String isVoted;
+	private String votedTime;
+	private Long tdpCadreId;
+	private List<Long> voterIds;
+	
+	
+	
+	
+	public List<Long> getVoterIds() {
+		return voterIds;
+	}
+	public void setVoterIds(List<Long> voterIds) {
+		this.voterIds = voterIds;
+	}
+	public String getIsVoted() {
+		return isVoted;
+	}
+	public void setIsVoted(String isVoted) {
+		this.isVoted = isVoted;
+	}
+	public String getVotedTime() {
+		return votedTime;
+	}
+	public void setVotedTime(String votedTime) {
+		this.votedTime = votedTime;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public String getImeiNo() {
+		return imeiNo;
+	}
+	public void setImeiNo(String imeiNo) {
+		this.imeiNo = imeiNo;
+	}
+	public String getVersionNo() {
+		return versionNo;
+	}
+	public void setVersionNo(String versionNo) {
+		this.versionNo = versionNo;
+	}
 	public Long getMobileAppUserId() {
 		return mobileAppUserId;
 	}
