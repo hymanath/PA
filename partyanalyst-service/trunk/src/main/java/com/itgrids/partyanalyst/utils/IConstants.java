@@ -742,7 +742,7 @@ public interface IConstants {
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
 
-    //public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+    //public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
     public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
     //public static final String STATIC_CONTENT_FOLDER_URL = "/home/dakavara/public_html/";
     public static final String CADRE_REG_AMOUNT_FILES_FOLDER = "cadre_reg_amount_files";
@@ -956,5 +956,6 @@ public interface IConstants {
     public static final String ACTIVITY_DOCUMENT_UPLOAD = "activity_documents_upload";
     public static final Long	ACTIVITY_MAX_FILES_COUNT = 50L;
     public static final Long ACTIVITY_REQUIRED_ATTRIBUTE_IDS = 2l;
+    public static final Long LATEST_PUBLICATION_DATE_ID = 17L;//12L //10L;
     
 }
