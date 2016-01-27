@@ -24,25 +24,25 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
-					<h4 class="panel-title">CHERLAPALLI DIVISION REPORT</h4>
+					<h4 class="panel-title" id="divName"></h4>
 				</div>
 				<div class="panel-body bg_EF">
 					<table class="table table-bordered tableVM bg_ff">
 						<tr>
 							<td rowspan="3">
-								<h3 id="ttlUsrs">150</h3>
+								<h3 id="ttlUsrs">-</h3>
 								<h5>TOTAL USERS</h5>
 							</td>
 							<td rowspan="3">
-								<h3 id="ttlVtrs">800</h3>
+								<h3 id="ttlVtrs">-</h3>
 								<h5>TOTAL VOTERS</h5>
 							</td>
 							<td rowspan="3">
-								<h3 id="ttlVtrsCaptrd">100000</h3>
+								<h3 id="ttlVtrsCaptrd">-</h3>
 								<h5>TOTAL VOTER ID CAPTURED</h5>
 							</td>
 							<td rowspan="3">
-								<h3 id="ttlMblCaptrd">100000</h3>
+								<h3 id="ttlMblCaptrd">-</h3>
 								<h5>TOTAL MOBILE NUMBERS COLLECTED</h5>
 							</td>
 							<td colspan="10">
@@ -107,18 +107,20 @@
 
 <script type="text/javascript">
 $("#Date").daterangepicker({opens:"left"});
+
+var locationId = '${divisionId}';
+var fromDate = '${fromDate}';
+var toDate = '${toDate}';
+
+
+$("#divName").html('${division}' +" DIVISION REPORT");
 getUsersSummary();
 
-/* var locationId = "${divisionId}";
-var location = "${division}";
-var fromDate = "${fromDate}";
-var toDate = "${toDate}"; */
-
 function getUsersSummary(){
-	var locationId = 31917;
+	var locationId = locationId;
 	var locationType = "ward";
-	var startDate = "01/26/2016";
-	var endDate = "01/27/2016";
+	var startDate = fromDate;
+	var endDate = toDate;
 	var jsObj = {
 		locationId : locationId,
 		locationType:locationType,
