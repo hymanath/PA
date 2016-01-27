@@ -24,7 +24,7 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
-					<h4 class="panel-title" id="divName"></h4>
+					<h4 class="panel-title">${param.division} DIVISION REPORT</h4>
 				</div>
 				<div class="panel-body bg_EF">
 					<table class="table table-bordered tableVM bg_ff">
@@ -108,16 +108,9 @@
 <script type="text/javascript">
 $("#Date").daterangepicker({opens:"left"});
 
-var locationId = '${divisionId}';
-var fromDate = '${fromDate}';
-var toDate = '${toDate}';
-
-
-$("#divName").html('${division}' +" DIVISION REPORT");
-getUsersSummary();
-
-function getUsersSummary(){
-	var locationId = locationId;
+getUsersSummary('${param.divisionId}','${param.fromDate}','${param.toDate}');
+function getUsersSummary(locId,fromDate,toDate){
+	var locationId = locId;
 	var locationType = "ward";
 	var startDate = fromDate;
 	var endDate = toDate;
