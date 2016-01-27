@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IGreaterMuncipalWardDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
@@ -223,10 +224,19 @@ public class MobileService implements IMobileService{
  
  private IMobileAppUserVoterDAO  mobileAppUserVoterDAO;
  private IMobileAppUserSmsStatusDAO		mobileAppUserSmsStatusDAO;
+ private IGreaterMuncipalWardDAO		greaterMuncipalWardDAO;
  
  
  
- 
+public IGreaterMuncipalWardDAO getGreaterMuncipalWardDAO() {
+	return greaterMuncipalWardDAO;
+}
+
+public void setGreaterMuncipalWardDAO(
+		IGreaterMuncipalWardDAO greaterMuncipalWardDAO) {
+	this.greaterMuncipalWardDAO = greaterMuncipalWardDAO;
+}
+
 public IMobileAppUserSmsStatusDAO getMobileAppUserSmsStatusDAO() {
 	return mobileAppUserSmsStatusDAO;
 }
@@ -5141,6 +5151,14 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					}
 					
 					finalVO.setUserRslt(fnlLst);
+					
+					List<Long> divisionIds = new ArrayList<Long>();
+					List<Object[]> vtrsLst = greaterMuncipalWardDAO.getDivisionWiseVoters(divisionIds);
+					
+					if(vtrsLst!=null && !vtrsLst.isEmpty()){
+						int totalVtrs = Integer.parseInt(vtrsLst.get(0)[1].toString());
+						finalVO.setDivisionVoters(totalVtrs);
+					}
 				} catch (Exception e) {
 					LOG.error("Exception Raised in getUserWiseDivisionSummary",e);
 				}

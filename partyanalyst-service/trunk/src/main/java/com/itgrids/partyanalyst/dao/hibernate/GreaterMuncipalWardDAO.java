@@ -14,15 +14,22 @@ public class GreaterMuncipalWardDAO extends GenericDaoHibernate<GreaterMuncipalW
 		super(GreaterMuncipalWard.class);
 	}
 
-public List<Object[]> getWardsByWardsIdsLsit(Long publicationDateId,List<Long> getWardsByWardsIdsLsit){
-		
-		
+	public List<Object[]> getWardsByWardsIdsLsit(Long publicationDateId,List<Long> getWardsByWardsIdsLsit){
 		Query query = getSession().createQuery(" select distinct model.ward.constituencyId,model.divisionName from GreaterMuncipalWard model, Booth model2 " +
-				" where model.ward.constituencyId = model2.localBodyWard.constituencyId and model2.publicationDate.publicationDateId = :publicationDateId and " +
-				" model.ward.constituencyId in (:getWardsByWardsIdsLsit)  " +
-				" order by model.ward.constituencyId");			
-			query.setParameterList("getWardsByWardsIdsLsit", getWardsByWardsIdsLsit);
-			query.setParameter("publicationDateId", publicationDateId);			
-			return query.list();
-		}
+			" where model.ward.constituencyId = model2.localBodyWard.constituencyId and model2.publicationDate.publicationDateId = :publicationDateId and " +
+			" model.ward.constituencyId in (:getWardsByWardsIdsLsit)  " +
+			" order by model.ward.constituencyId");			
+		query.setParameterList("getWardsByWardsIdsLsit", getWardsByWardsIdsLsit);
+		query.setParameter("publicationDateId", publicationDateId);			
+		return query.list();
+	}
+	
+	public List<Object[]> getDivisionWiseVoters(List<Long> divisionIds){
+		Query query = getSession().createQuery(" select model.wardId," +
+				" model.totalVoters" +
+				" from GreaterMuncipalWard model" +
+				" where model.wardId in(:divisionIds)");
+		query.setParameterList("divisionIds", divisionIds);
+		return  query.list();
+	}
 }
