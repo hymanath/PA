@@ -736,6 +736,8 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityPerformLevel</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTabUserLocation</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.MobileAppUserVoter</value>
+				 <value>com.itgrids.partyanalyst.model.MobileAppUserSmsStatus</value>
 				 <value>com.itgrids.partyanalyst.model.GreaterMuncipalWard</value>
 			</list>
 		</property>
@@ -3270,6 +3272,12 @@
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	  <bean id="activityTabUserLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserLocationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="mobileAppUserVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserVoterDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="mobileAppUserSmsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserSmsStatusDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 <bean id="greaterMuncipalWardDAO" class="com.itgrids.survey.dao.impl.GreaterMuncipalWardDAO">
