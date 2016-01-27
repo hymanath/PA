@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
@@ -52,10 +53,45 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private MobileVO mobileVo;
 	private EntitlementsHelper entitlementsHelper;
 	private MobileAppUserDetailsVO					mobileAppUserDetailsVO;
+	private List<TabDetailsVO> tabDetailsVOList;
+	private String surveyDate;
+	private String divisonId;
+	private String userId;
 	
 	
 	
+	public String getSurveyDate() {
+		return surveyDate;
+	}
 
+	public void setSurveyDate(String surveyDate) {
+		this.surveyDate = surveyDate;
+	}
+
+	public String getDivisonId() {
+		return divisonId;
+	}
+
+	public void setDivisonId(String divisonId) {
+		this.divisonId = divisonId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public List<TabDetailsVO> getTabDetailsVOList() {
+		return tabDetailsVOList;
+	}
+
+	public void setTabDetailsVOList(List<TabDetailsVO> tabDetailsVOList) {
+		this.tabDetailsVOList = tabDetailsVOList;
+	}
+	
 	public MobileAppUserDetailsVO getMobileAppUserDetailsVO() {
 		return mobileAppUserDetailsVO;
 	}
@@ -64,7 +100,6 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			MobileAppUserDetailsVO mobileAppUserDetailsVO) {
 		this.mobileAppUserDetailsVO = mobileAppUserDetailsVO;
 	}
-
 	public List<SelectOptionVO> getMandals() {
 		return mandals;
 	}
@@ -580,6 +615,31 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		} catch (Exception e) {
 			LOG.error("Exception raised at getmobileAppDivisionWiseUsers()", e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String showMapForMobileAppUserVoter(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			List<String> datesStrList = new ArrayList<String>(0);
+			JSONArray jArray = jObj.getJSONArray("datesArr");
+			
+			for (int i = 0; i < jArray.length(); i++) 
+			{
+				datesStrList.add(jArray.getString(i));
+			}
+			
+			tabDetailsVOList = mobileService.showMapForMobileAppUserVoter(jObj.getLong("userId"),jObj.getLong("divisonId"),datesStrList);
+		} catch (Exception e) {
+			LOG.error("Exception riased at showMapForMobileAppUserVoter", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String showGoogleMapDetails()
+	{
 		return Action.SUCCESS;
 	}
 	
