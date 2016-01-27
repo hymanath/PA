@@ -108,7 +108,7 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 			
 			sb.append(" select  uv.wardId,c.name,gmc.divisionName," +
 					"           date(uv.surveyTime)," +
-					"           count(distinct uv.mobileAppUserId),count(distinct uv.voterId),count(distinct uv.mobileNo)" +
+					"           count(distinct uv.mobileAppUserId),count(distinct uv.voterId),count(distinct uv.mobileNo),count(distinct uv.tdpCadreId)" +
 					"   from    MobileAppUserVoter uv,Constituency c,GreaterMuncipalWard gmc " +
 					"   where   uv.wardId=c.constituencyId and uv.wardId=gmc.wardId " +
 					"           and uv.wardId in (:locationIds) ");	
