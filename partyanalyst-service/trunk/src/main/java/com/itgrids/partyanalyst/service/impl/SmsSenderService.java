@@ -87,9 +87,12 @@ public class SmsSenderService implements ISmsSenderService{
 							 startIndex = maxIndex;
 							 maxIndex = maxIndex + maxIndex;
 						}
+					 result.setMessage("success");
 				}
 		catch (Exception e) {
+			result.setMessage("fail");
 			LOG.error("Exception Occured in sendSmsToCadre() method"+e);
+			
 		}
 		return result;
 		
