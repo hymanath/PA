@@ -1,0 +1,63 @@
+body
+{
+	background:#FFF !important;
+	font-family: 'Roboto', sans-serif;
+	color:#666
+}
+table , h1 , h2 , h3 , h4 , h5 , h6 
+{
+	margin:0px !important;
+}
+.m_top10
+{
+	margin-top:10px;
+}
+.tableVM tr td 
+{
+	vertical-align:middle !important
+}
+.font-12
+{
+	font-size:12px;
+}
+.bg_EF
+{
+	background:#EFF3F4
+}
+.bg_cc
+{
+	background:#ccc !important
+}
+.panel , .panel-heading
+{
+	border-radius:0px;
+}
+.bg_ff
+{
+	background:#fff;
+}
+.inputGroupCustom .input-group-addon
+{
+	border-radius:0px;
+	background:#FFF
+}
+.inputGroupCustom input
+{
+	border-left:0px;
+}
+.pad_0
+{
+	padding:0px !important;
+}
+.bg_F0
+{
+	background:#F0F0F0 !important
+}
+.bg_FFF
+{
+	background:#FFFAE4
+}
+.tableDiv tr td
+{
+	padding:15px !important;
+}
