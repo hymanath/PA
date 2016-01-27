@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
@@ -16,6 +15,91 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		super(MobileAppUserVoter.class);
 	}
 	
+	
+	public List<Object[]> getUserStartEndTime(Long locationId, String locationType, Date fromDate, Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.mobileAppUser.mobileAppUserId," +
+				" model.mobileAppUser.userName," +
+				" model.mobileAppUser.mobileNo," +
+				" model.mobileAppUser.email," +
+				" model.mobileAppUser.uniqueCode," +
+				" date(model.surveyTime)," +
+				" min(model.surveyTime)," +
+				" max(model.surveyTime)" +
+				" from MobileAppUserVoter model" +
+				" where" +
+				" model.mobileAppUser.isDeleted='N'" +
+				" and model.mobileAppUser.isEnabled='Y'" +
+				" and date(model.surveyTime) between :fromDate and :toDate");
+		
+		if(locationType.equalsIgnoreCase("Ward")){
+			sb.append(" and model.wardId=:locationId");
+		}
+		
+		sb.append(" group by model.mobileAppUser.mobileAppUserId," +
+				" date(model.surveyTime)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("locationId", locationId);
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getUserCollectedDetails(Long locationId, String locationType, Date fromDate, Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.mobileAppUser.mobileAppUserId," +
+				" date(model.surveyTime)," +
+				" count(distinct model.mobileNo)," +
+				" count(model.voterId)," +
+				" count(distinct model.voterId)" +
+				" from MobileAppUserVoter model" +
+				" where" +
+				" model.mobileAppUser.isDeleted='N'" +
+				" and model.mobileAppUser.isEnabled='Y'" +
+				" and date(model.surveyTime) between :fromDate and :toDate");
+		
+		if(locationType.equalsIgnoreCase("Ward")){
+			sb.append(" and model.wardId=:locationId");
+		}
+		
+		sb.append(" group by model.mobileAppUser.mobileAppUserId," +
+				" date(model.surveyTime)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("locationId", locationId);
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return query.list();
+	}
+	
+	public List<Object[]> getUserCollectedRatingDetails(Long locationId, String locationType, Date fromDate, Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.mobileAppUser.mobileAppUserId," +
+				" date(model.surveyTime)," +
+				" model.rating," +
+				" count(model.rating)" +
+				" from MobileAppUserVoter model" +
+				" where" +
+				" model.mobileAppUser.isDeleted='N'" +
+				" and model.mobileAppUser.isEnabled='Y'" +
+				" and date(model.surveyTime) between :fromDate and :toDate");
+		
+		if(locationType.equalsIgnoreCase("Ward")){
+			sb.append(" and model.wardId=:locationId");
+		}
+		
+		sb.append(" group by model.mobileAppUser.mobileAppUserId," +
+				" date(model.surveyTime)," +
+				" model.rating");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("locationId", locationId);
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return query.list();
+	}
 	public List<Object[]> locationWiseOverView(Date StartDate,Date endDate,List<Long> locationIds,String locationType){
 	
 		
