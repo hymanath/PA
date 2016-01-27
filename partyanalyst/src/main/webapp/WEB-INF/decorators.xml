@@ -638,5 +638,6 @@
 	<pattern>/createThumbNailsAction*</pattern>
 	
 	<pattern>/callCenterTrainingAgent*</pattern>
+	<pattern>/pollingManagmentAction*</pattern>
 	 </decorator> 
 </decorators>

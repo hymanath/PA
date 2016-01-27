@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
@@ -28,12 +29,17 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IActivityAttendanceService;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
+import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Srishailam Pittala 
+ *
+ */
+/**
+ * @author Client
  *
  */
 public class ActivityAction extends ActionSupport implements ServletRequestAware{
@@ -60,9 +66,29 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private IActivityAttendanceService activityAttendanceService;
 	private ActivityAttendanceInfoVO attendanceVo;
 	private Long					 activityLocationInfoId;
-
+	private IMobileService			mobileService;
+	private List<MobileUserVO> 		mobileUserVoList;
+	private MobileUserVO 			mobileUserVO;
 	
 	
+	public MobileUserVO getMobileUserVO() {
+		return mobileUserVO;
+	}
+	public void setMobileUserVO(MobileUserVO mobileUserVO) {
+		this.mobileUserVO = mobileUserVO;
+	}
+	public IMobileService getMobileService() {
+		return mobileService;
+	}
+	public void setMobileService(IMobileService mobileService) {
+		this.mobileService = mobileService;
+	}
+	public List<MobileUserVO> getMobileUserVoList() {
+		return mobileUserVoList;
+	}
+	public void setMobileUserVoList(List<MobileUserVO> mobileUserVoList) {
+		this.mobileUserVoList = mobileUserVoList;
+	}
 	public Long getActivityLocationInfoId() {
 		return activityLocationInfoId;
 	}
@@ -642,5 +668,97 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String pollingManagment()
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		Long userId = regVO.getRegistrationID();
+		
+		idNameVOList = activityService.getAccessValuesOfUserId(userId);
+				
+		return Action.SUCCESS;
+	}
+	
+	public String getAccessValuesOfUserId(){
+		
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();
+			
+			idNameVOList = activityService.getAccessValuesOfUserId(userId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWiseDetails(){
+		
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			JSONArray locationArr = jObj.getJSONArray("locationIds");
+			String locationType = jObj.getString("locationType");
+			List<Long> locationIds = new ArrayList<Long>();
+			
+			if(locationArr != null && locationArr.length() > 0){
+				for (int i = 0; i < locationArr.length(); i++) {
+					Long locationId = (long) locationArr.getInt(i);
+					locationIds.add(locationId);
+				}
+			}
+			
+			mobileUserVoList = mobileService.locationWiseOverView(fromDateStr,toDateStr,locationIds,locationType);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
+		}
+		return Action.SUCCESS;
+	}
 
+	public String getTotalDetails(){
+		
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			
+			mobileUserVO = mobileService.overAllDivisionsSummary(fromDateStr,toDateStr);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
+		}
+		return Action.SUCCESS;
+	}
 }
