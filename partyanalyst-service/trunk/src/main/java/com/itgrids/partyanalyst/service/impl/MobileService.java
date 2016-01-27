@@ -94,12 +94,14 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dao.hibernate.MobileAppUserSmsStatusDAO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBodyWard;
@@ -218,6 +220,9 @@ public class MobileService implements IMobileService{
  private ITdMemberDAO tdMemberDAO;
  
  private IMobileAppUserVoterDAO  mobileAppUserVoterDAO;
+ @Autowired
+ private MobileAppUserSmsStatusDAO mobileAppUserSmsStatusDAO;
+ 
  
 public ITdMemberDAO getTdMemberDAO() {
 	return tdMemberDAO;
@@ -5045,4 +5050,68 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				}
 		    	return finalVO;
 		    }
+			
+	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList){
+		List<TabDetailsVO> tabDetailsVoList = new ArrayList<TabDetailsVO>(0);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			List<Date> datesList = new ArrayList<Date>(0);
+			
+			if(dateStrList != null && dateStrList.size()>0){
+				for (String string : dateStrList) {
+					datesList.add(sdf.parse(string));
+				}
+			}
+			
+			//0-latitude,1-longitude,2-date,3-costNameid,4-constname
+			List<Object[]> latiLongiObjList = mobileAppUserVoterDAO.getLatiLongi(userId,divisonId,datesList);
+			
+			if(latiLongiObjList != null && latiLongiObjList.size()>0){
+				for (Object[] objects : latiLongiObjList) {
+					TabDetailsVO vo = new TabDetailsVO();
+					vo.setLatitude(objects[0]!=null?objects[0].toString():"");
+					vo.setLongitude(objects[1]!=null?objects[1].toString():"");
+					vo.setSurveyDate(objects[2]!=null?objects[2].toString():"");
+					vo.setSyncSource(objects[3]!=null?objects[3].toString():"");//constnameid
+					vo.setUniqueKey(objects[4]!=null?objects[4].toString():"");//constname
+					tabDetailsVoList.add(vo);
+				}
+			}
+			
+			if(tabDetailsVoList!=null && tabDetailsVoList.size()>0){
+				//get all available for user and divison
+				List<Object> availDates = mobileAppUserVoterDAO.getAllAvailableForUser(userId,divisonId);
+				
+				if(availDates!=null && availDates.size()>0){
+					for (Object object : availDates) {
+						tabDetailsVoList.get(0).getAvailableDates().add(object.toString());
+					}
+				}
+				
+				//get user details(user id, name, mobile num)
+				MobileAppUser mobileAppUser = mobileAppUserDAO.get(userId);
+				if(mobileAppUser!=null){
+					tabDetailsVoList.get(0).setCurrentTabUserId(mobileAppUser.getMobileAppUserId());
+					tabDetailsVoList.get(0).setName(mobileAppUser.getUserName());
+					tabDetailsVoList.get(0).setMobileNo(mobileAppUser.getMobileNo());
+				}
+				
+				//get no of sms set
+				List<Long> noSmsList = mobileAppUserSmsStatusDAO.getNoOfSmsCountOfUser(userId,datesList);
+				if(noSmsList!=null && noSmsList.size()>0){
+					tabDetailsVoList.get(0).setNoofSmsSent(noSmsList.get(0));
+				}
+				
+				//get number of nums collected
+				Long mobNumCount = mobileAppUserVoterDAO.getNumberOfNumsCollected(userId,divisonId,datesList);
+				tabDetailsVoList.get(0).setMobileNosCount(mobNumCount);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at showMapForMobileAppUserVoter", e);
+		}
+		
+		return tabDetailsVoList;
+	}		
 }
