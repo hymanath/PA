@@ -30,8 +30,22 @@ public class MobileAppUserDetailsVO implements Serializable{
 	private List<MobileAppUserDetailsVO>	ratings;
 	private List<MobileAppUserDetailsVO>	userRslt;
 	private int				usersCount;
+	private int				errorCode;
+	private String			statusMsg;
 	
 	
+	public int getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
+	public String getStatusMsg() {
+		return statusMsg;
+	}
+	public void setStatusMsg(String statusMsg) {
+		this.statusMsg = statusMsg;
+	}
 	public int getUsersCount() {
 		return usersCount;
 	}
