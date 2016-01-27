@@ -1811,4 +1811,17 @@ public class WebServiceHandler {
 		 }
 		 return null;
 	 }
+	 
+	 @POST
+	 @Path("/updateBoothVoterData")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 public List<MobileAppUserVoterVO> updateBoothVoterData(MobileAppUserVoterVO inputVO){
+		 try {
+			 return webServiceHandlerService.updateBoothVoter(inputVO);
+		 } catch (Exception e) {
+			 LOG.error("Exception Occured in updateBoothVoterData() Method, Exception is ",e);
+		 }
+		 return null;
+	 }
 }
