@@ -691,6 +691,7 @@
 				 <value>com.itgrids.partyanalyst.model.StudentCadreRelation</value>
 				 <value>com.itgrids.partyanalyst.model.TdpCadreFamilyInfo</value>
 				 <value>com.itgrids.partyanalyst.model.CadreDeleteReason</value>
+				 <value>com.itgrids.partyanalyst.model.PartyMeetingIvrStatus</value>
 				 <value>com.itgrids.partyanalyst.model.AttendeeType</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackAnswer</value>
 				 <value>com.itgrids.partyanalyst.model.TrainingCampFeedbackCategory</value>
@@ -735,6 +736,7 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityPerformLevel</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTabUserLocation</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.GreaterMuncipalWard</value>
 			</list>
 		</property>
 	</bean>
@@ -3211,7 +3213,10 @@
 	  <bean id="studentRecomendationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentRecomendationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
-	  <bean id="studentCadreRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentCadreRelationDAO">
+	 <bean id="studentCadreRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.StudentCadreRelationDAO">
+	 	<property name="sessionFactory" ref="sessionFactory" /> 
+	 </bean>
+	  <bean id="partyMeetingIvrStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingIvrStatusDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" /> 
 	 </bean>
 	   <bean id="tdpCadreFamilyInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreFamilyInfoDAO">
@@ -3267,5 +3272,7 @@
 	  <bean id="activityTabUserLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityTabUserLocationDAO">
 	 	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 
+	 <bean id="greaterMuncipalWardDAO" class="com.itgrids.survey.dao.impl.GreaterMuncipalWardDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
