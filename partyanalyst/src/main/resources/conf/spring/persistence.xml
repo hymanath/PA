@@ -754,6 +754,7 @@
 				 <value>com.itgrids.partyanalyst.model.MobileAppUserSmsStatus</value>
 				 <value>com.itgrids.partyanalyst.model.MobileAppUserAccessLocation</value>
 				 <value>com.itgrids.partyanalyst.model.GreaterMuncipalWard</value>
+				 <value>com.itgrids.partyanalyst.model.UserLocationTracking</value>
 			     </list>
 			
 		</property>
