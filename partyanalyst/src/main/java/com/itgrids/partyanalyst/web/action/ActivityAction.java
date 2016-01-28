@@ -689,7 +689,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		Long userId = regVO.getRegistrationID();
 		
-		idNameVOList = activityService.getAccessValuesOfUserId(userId);
+		//idNameVOList = activityService.getAccessValuesOfUserId(userId,"All");
 				
 		return Action.SUCCESS;
 	}
@@ -703,7 +703,10 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			}
 			Long userId = regVO.getRegistrationID();
 			
-			idNameVOList = activityService.getAccessValuesOfUserId(userId);
+			jObj = new JSONObject(getTask());
+			String type = jObj.getString("type");
+			
+			idNameVOList = activityService.getAccessValuesOfUserId(userId,type);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
 		}
