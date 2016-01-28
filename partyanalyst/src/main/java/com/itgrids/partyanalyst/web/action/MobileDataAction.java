@@ -635,7 +635,16 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			}*/
 			
 			jObj = new JSONObject(getTask());
-			mobileAppUserDetailsVO = mobileService.getUserWiseDivisionSummary(jObj.getLong("locationId"), jObj.getString("locationType"), jObj.getString("startDate"), jObj.getString("endDate"),jObj.getString("userType"));
+			JSONArray usersArr = jObj.getJSONArray("usersArr");
+			List<String> usersList = new ArrayList<String>();
+			if(usersArr != null && usersArr.length() > 0){
+				for (int i = 0; i < usersArr.length(); i++) {
+					String userStr = usersArr.getString(i);
+					usersList.add(userStr);
+				}
+			}
+			
+			mobileAppUserDetailsVO = mobileService.getUserWiseDivisionSummary(jObj.getLong("locationId"), jObj.getString("locationType"), jObj.getString("startDate"), jObj.getString("endDate"),usersList);
 			mobileAppUserDetailsVO.setErrorCode(0);
 		}
 		catch (Exception e) {
