@@ -93,6 +93,7 @@
 						<thead>
 							<tr>
 								<th rowspan=2>NAME</th>
+								<th rowspan=2>MOBILE NO</th>
 								<th rowspan=2>DATE</th>
 								<th rowspan=2>VOTER ID'S CAPTURED</th>
 								<th rowspan=2>MOBILE NO'S CAPTURED</th>
@@ -204,6 +205,7 @@ function getUsersSummary(searchTypeId){
 		for(var i in result.userRslt){
 			str1+="<tr class='bg_FFF'>";
 			str1+="<td class='openTab' attr_divisonId="+'${param.divisionId}'+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" style='cursor:pointer;'>"+result.userRslt[i].name+"</td>";
+			str1+="<td>"+result.userRslt[i].mobileNo+"</td>";
 			str1+="<td>"+result.userRslt[i].date+"</td>";
 			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";
 			str1+="<td>"+result.userRslt[i].noOfMobiles+"</td>";
