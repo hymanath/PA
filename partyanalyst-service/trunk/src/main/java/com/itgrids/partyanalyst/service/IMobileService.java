@@ -66,8 +66,8 @@ public interface IMobileService {
 	public ResultStatus createSurveySqliteFileForAParliamnetConstituency(RegistrationVO reVo);
 	
 	public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDate, String endDate);
-	public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType);
-	public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString);
+	public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType,List<String> userTypes);
+	public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString,List<Long> locationIds,List<String> userTypes);
 	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
 	public String saveUserLocationData(List<UserLocationTrackingVo> userLocationDetails);
 	public List<TabDetailsVO> getUserTrackingDetails(Long userId);
