@@ -219,7 +219,7 @@ var jsObj={
 			
 			$("#dataLoadingsImgForDivisionWiseReport").hide();
 			$("#divisionWiseReportDivId").html(str);	
-			$("#locationTblId").dataTable();
+			$("#locationTblId").dataTable({	 "aaSorting": [] });
 			$("#locationTblId").removeClass("dataTable");
 		}
 		else{
