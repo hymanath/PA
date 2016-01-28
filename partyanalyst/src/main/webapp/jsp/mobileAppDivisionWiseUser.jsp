@@ -14,6 +14,14 @@
 <link href="dist/mobileApp/Daterange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
+
+<link href="dist/activityDashboard/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/Icomoon/style.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
+
+
 </head>
 <body>
 <style>
@@ -24,7 +32,15 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
-					<h4 class="panel-title">${param.division} DIVISION REPORT</h4>
+					<h4 class="panel-title" style="text-transform: uppercase;" >${param.division} - (${param.divisonId}) DIVISION REPORT</h4>
+						<span class="pull-right col-md-3" style="margin-top:-25px">
+							<div class="input-group inputGroupCustom">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
+									<span class="caret"></span>
+								</span>
+								<input class="form-control" id="Date" type="text" placeholder="Select Date range">
+							</div>
+						</span>
 				</div>
 				<div class="panel-body bg_EF">
 					<table class="table table-bordered tableVM bg_ff">
@@ -107,13 +123,55 @@
 
 <script type="text/javascript">
 $("#Date").daterangepicker({opens:"left"});
+jQuery( document ).ready(function( $ ) {
+	$("#Date").daterangepicker({opens:"left"});
+	$("#Date").val('');
+});
 
-getUsersSummary('${param.divisionId}','${param.fromDate}','${param.toDate}');
-function getUsersSummary(locId,fromDate,toDate){
-	var locationId = locId;
+$(document).on('click','.applyBtn',function(){
+	getUsersSummary(2);
+});
+getUsersSummary(1);
+//getUsersSummary('${param.divisionId}','${param.fromDate}','${param.toDate}');
+function getUsersSummary(searchTypeId){
+	
+	var locationId = '';
 	var locationType = "ward";
-	var startDate = fromDate;
-	var endDate = toDate;
+	var startDate = '';
+	var endDate = '';
+	$("#ttlUsrs").html("");		
+	$("#ttlVtrs").html("");
+	$("#ttlVtrsCaptrd").html("");
+	$("#ttlMblCaptrd").html("");
+	
+	$('#ttlVtrs').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#usrRtng').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#ttlVtrsCaptrd').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#ttlMblCaptrd').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#ttlUsrs').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	$('#mainRtng').html('<center><img id="dataLoadingsImgForDivisionWiseReport" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>');
+	
+	if(searchTypeId == 1){
+		locationId = '${param.divisionId}';
+		locationType = "ward";
+		startDate = '${param.fromDate}';
+		endDate = '${param.toDate}';
+		//$("#Date").attr("value",startDate+'-'+endDate);
+		//var date1 = $("#Date").val();
+		//console.log(date1);
+	}
+	else if(searchTypeId == 2){
+		locationId = '${param.divisionId}';
+		locationType = "ward";
+		
+		var dates=$('#Date').val();
+		if(dates != null && dates.length >0){
+			var dateArray=dates.split("-");
+			startDate=dateArray[0].trim();
+			endDate=dateArray[1].trim();	
+		}
+	}
+	
 	var jsObj = {
 		locationId : locationId,
 		locationType:locationType,
@@ -130,7 +188,7 @@ function getUsersSummary(locId,fromDate,toDate){
 	});
 }
 	function buildSummary(result){
-		$("#ttlUsrs").html(result.usersCount);
+		$("#ttlUsrs").html(result.usersCount);		
 		$("#ttlVtrs").html(result.voterIdsCollected);
 		$("#ttlVtrsCaptrd").html(result.voterIdsCollected);
 		$("#ttlMblCaptrd").html(result.noOfMobiles);
@@ -156,10 +214,7 @@ function getUsersSummary(locId,fromDate,toDate){
 		}
 		
 		$("#usrRtng").html(str1);
-		$("#usrSmmryTbl").dataTable({
-			"iDisplayLength": 20,
-			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-		});
+		$("#usrSmmryTbl").dataTable();
 		$("#usrSmmryTbl").removeClass("dataTable");
 	}
 
