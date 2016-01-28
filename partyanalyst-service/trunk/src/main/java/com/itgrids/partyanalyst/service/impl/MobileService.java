@@ -5438,4 +5438,26 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		   return "success";
 		   
 	   }
+	 
+	 public List<TabDetailsVO> getUserTrackingDetails(Long userId){
+		 List<TabDetailsVO> voList = new ArrayList<TabDetailsVO>(0);
+		 try {
+			 List<Object[]> trackingDetailsObjList = userLocationTrackingDAO.getUserTrackingDetails(userId);
+			 
+			 if(trackingDetailsObjList != null && trackingDetailsObjList.size() > 0){
+				 for (Object[] objects : trackingDetailsObjList) {
+					 TabDetailsVO vo = new TabDetailsVO();
+					 vo.setLatitude(objects[0]!=null?objects[0].toString():"");
+					 vo.setLongitude(objects[1]!=null?objects[1].toString():"");
+					 vo.setSurveyDate(objects[2]!=null?objects[2].toString():"");
+					 voList.add(vo);
+				}
+			 }
+				 
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserTrackingDetails", e);
+		}
+		 
+		 return voList;
+	 }
 }

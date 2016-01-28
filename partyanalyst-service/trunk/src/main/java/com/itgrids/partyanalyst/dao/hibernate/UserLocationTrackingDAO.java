@@ -53,5 +53,12 @@ public class UserLocationTrackingDAO extends GenericDaoHibernate<UserLocationTra
 		 		" model.longitude,model.latitude,max(model.surveyTime) from UserLocationTracking model where " +
 		 		" date(model.surveyTime) = ? group by model.user.userId order by model.surveyTime asc ",date);
 	 }
-		
-}
+	 
+	 public List<Object[]> getUserTrackingDetails(Long userId){
+		 Query query = getSession().createQuery(" select model.latitude,model.longitude,model.surveyTime " +
+		 		" from UserLocationTracking model " +
+		 		" where model.userId=:userId ");
+		 query.setParameter("userId", userId);
+		 return query.list();
+	 }
+}	

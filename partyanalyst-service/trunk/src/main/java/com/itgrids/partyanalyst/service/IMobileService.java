@@ -70,4 +70,5 @@ public interface IMobileService {
 	public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString);
 	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
 	public String saveUserLocationData(List<UserLocationTrackingVo> userLocationDetails);
+	public List<TabDetailsVO> getUserTrackingDetails(Long userId);
 }
