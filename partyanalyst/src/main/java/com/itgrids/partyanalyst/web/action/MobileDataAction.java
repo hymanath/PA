@@ -681,4 +681,15 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		return Action.SUCCESS;
 	}
 	
+	public String getUserTrackingDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			tabDetailsVOList = mobileService.getUserTrackingDetails(jObj.getLong("userId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUserTrackingDetails", e);
+		}
+		return Action.SUCCESS;
+	}
 }
