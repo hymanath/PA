@@ -3408,6 +3408,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   mobileAppUserVoter.setVotedTime(format.parse(inputVo.getVotedTime()));
 		   if(inputVo.getTdpCadreId() != null && inputVo.getTdpCadreId() > 0)
 			   mobileAppUserVoter.setTdpCadreId(inputVo.getTdpCadreId());
+		   else
+			   mobileAppUserVoter.setTdpCadreId(getTdpCadreIdForVoter(mobileAppUserVoter.getVoterId()));
 		   
 		   
 		   String mobileNo = inputVo.getMobileNum();
@@ -3431,6 +3433,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   
 	   }
 	   
+	   public Long getTdpCadreIdForVoter(Long voterId)
+	   {
+		   try {
+			return tdpCadreDAO.getTdpCadreIdByVoterId(voterId);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		   return null;
+	   }
 	   public String sendSmsForGHMCVoter(String mobileNo,Long voterId,Long boothId)
 	   {
 		   String result = null;
@@ -3537,6 +3548,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   mobileAppUserSmsStatus.setSentSms(inputVo.getSentSms());
 		   mobileAppUserSmsStatus.setSimCardSent(inputVo.getSimCardSent());
 		   mobileAppUserSmsStatus.setTotalSms(inputVo.getTotalSms());
+		  // mobileAppUserSmsStatus.setImeiNo(inputVo.getImeiNo());
 		   mobileAppUserSmsStatus.setStatusDate(date.getCurrentDateAndTime());
 		   mobileAppUserSmsStatus.setInsertedTime(date.getCurrentDateAndTime());
 		   mobileAppUserSmsStatusDAO.save(mobileAppUserSmsStatus);
