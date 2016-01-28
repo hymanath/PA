@@ -7,7 +7,15 @@ public class MobileAppUserSmsStatusVO {
 	private Long pendingSms;
 	private Long onlineSent;
 	private Long simCardSent;
-
+	private String imeiNo;
+	
+	
+	public String getImeiNo() {
+		return imeiNo;
+	}
+	public void setImeiNo(String imeiNo) {
+		this.imeiNo = imeiNo;
+	}
 	public Long getMobileAppUserId() {
 		return mobileAppUserId;
 	}
