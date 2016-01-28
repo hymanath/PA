@@ -29,8 +29,10 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 				" from MobileAppUserVoter model" +
 				" where" +
 				" model.mobileAppUser.isDeleted='N'" +
-				" and model.mobileAppUser.isEnabled='Y'" +
-				" and date(model.surveyTime) between :fromDate and :toDate");
+				" and model.mobileAppUser.isEnabled='Y' ");
+		if(fromDate != null && toDate != null)
+			sb.append("  and ( date(model.surveyTime) between :fromDate and :toDate ) ");
+		
 		
 		if(locationType.equalsIgnoreCase("Ward")){
 			sb.append(" and model.wardId=:locationId");
@@ -41,8 +43,10 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("locationId", locationId);
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
 		return query.list();
 		
 	}
@@ -57,8 +61,9 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 				" from MobileAppUserVoter model" +
 				" where" +
 				" model.mobileAppUser.isDeleted='N'" +
-				" and model.mobileAppUser.isEnabled='Y'" +
-				" and date(model.surveyTime) between :fromDate and :toDate");
+				" and model.mobileAppUser.isEnabled='Y'");
+		if(fromDate != null && toDate != null)
+			sb.append(" and ( date(model.surveyTime) between :fromDate and :toDate ) ");
 		
 		if(locationType.equalsIgnoreCase("Ward")){
 			sb.append(" and model.wardId=:locationId");
@@ -69,8 +74,10 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("locationId", locationId);
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
 		return query.list();
 	}
 	
@@ -83,8 +90,9 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 				" from MobileAppUserVoter model" +
 				" where" +
 				" model.mobileAppUser.isDeleted='N'" +
-				" and model.mobileAppUser.isEnabled='Y'" +
-				" and date(model.surveyTime) between :fromDate and :toDate");
+				" and model.mobileAppUser.isEnabled='Y' " );
+		if(fromDate != null && toDate != null)
+			sb.append(" and (date(model.surveyTime) between :fromDate and :toDate) ");
 		
 		if(locationType.equalsIgnoreCase("Ward")){
 			sb.append(" and model.wardId=:locationId");
@@ -96,8 +104,10 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("locationId", locationId);
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
 		return query.list();
 	}
 	public List<Object[]> locationWiseOverView(Date StartDate,Date endDate,List<Long> locationIds,String locationType){
@@ -114,10 +124,10 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 					"   where   uv.wardId=c.constituencyId and uv.wardId=gmc.wardId " +
 					"           and uv.wardId in (:locationIds) ");	
 			if(StartDate!=null){
-				sb.append(" and date(uv.surveyTime) >=:StartDate ");
+				sb.append(" and ( date(uv.surveyTime) >=:StartDate ");
 			}
 			if(endDate!=null){
-				sb.append(" and date(uv.surveyTime) <=:endDate ");
+				sb.append(" and date(uv.surveyTime) <=:endDate ) ");
 			}
 			sb.append(" group by uv.wardId,date(uv.surveyTime)");
 			sb.append(" order by c.name,date(uv.surveyTime)");

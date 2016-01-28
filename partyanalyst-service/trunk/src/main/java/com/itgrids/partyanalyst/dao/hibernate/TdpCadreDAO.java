@@ -5613,4 +5613,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
+		public Long getTdpCadreIdByVoterId(Long voterId)
+		{
+			Query query = getSession().createQuery("select distinct model.tdpCadreId  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' " +
+					" and model.enrollmentYear = :enrollMentYear ");
+			query.setParameter("voterId", voterId);
+			query.setParameter("enrollMentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+			return (Long) query.uniqueResult();
+		}
+		
 }
