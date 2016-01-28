@@ -40,13 +40,20 @@
 						</div>
 						<div class="col-md-4 col-xs-12 col-sm-4">
 						 <div id="map" style="width: 700px; height: 500px;"></div>
+						 
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-						
 							<div id="voterTableDivId"></div>
-							<div id="map1"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<div class="panel-heading bg_cc">
+							<h4 class="panel-title">USER TRACKING MAP</h4>
+							</div>
+							<div id="map1" style="width: 100%; height: 500px;"></div>
 						</div>
 					</div>
 				</div>
@@ -59,7 +66,9 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
 
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+ <!--<script src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap"></script>
 <script type="text/javascript">
 
 $("#chosenselectId").chosen();
@@ -192,7 +201,7 @@ var pathArr = [];
 		showMapForMobileAppUserVoter("multiSelect");
 	});
 	
-	//getUserTrackingDetails();
+	getUserTrackingDetails();
 	function getUserTrackingDetails(){
 		var jsObj={
 			userId:"${param.userId}"
@@ -207,7 +216,7 @@ var pathArr = [];
 			pathArr = [];
 			if(result != null && result.length > 0){
 				for(var i in result){
-					var obj={"lat":result[i].latitude, "lng":result[i].longitude};
+					var obj={lat:parseFloat(result[i].latitude), lng:parseFloat(result[i].longitude)};
 					pathArr.push(obj);
 					var temparr=[];
 					temparr.push(result[i].surveyDate);
@@ -221,15 +230,17 @@ var pathArr = [];
 	}
 	
 	function buildUserTrackingMap(markersArray,pathArray){
+		console.log(markersArray);
+		console.log(pathArray);
 		var infoWindow;
 		var map1 = new google.maps.Map(document.getElementById('map1'), {
-			zoom: 5,
+			zoom: 10,
 			center: {lat: 17.3700, lng: 78.4800},
 			mapTypeId: google.maps.MapTypeId.TERRAIN
 		});
 		
 		var flightPath = new google.maps.Polyline({
-			path: markersArray,
+			path: pathArray,
 			geodesic: true,
 			strokeColor: '#FF0000',
 			strokeOpacity: 1.0,
@@ -239,15 +250,15 @@ var pathArr = [];
 		  
 			var infowindow = new google.maps.InfoWindow();
 			var marker,i;
-			for (i = 0; i < pathArray.length; i++) {
+			for (i = 0; i < markersArray.length; i++) {
 				marker = new google.maps.Marker({
-					position: new google.maps.LatLng(pathArray[i][1], pathArray[i][2]),
+					position: new google.maps.LatLng(markersArray[i][1], markersArray[i][2]),
 					map: map1
 				});
 				  
 				google.maps.event.addListener(marker, 'click', (function(marker, i) {
 					return function() {
-						infowindow.setContent(pathArray[i][0]);
+						infowindow.setContent(markersArray[i][0]);
 						infowindow.open(map1, marker);
 					}
 				})(marker, i));
@@ -255,6 +266,49 @@ var pathArr = [];
 			
 			flightPath.setMap(map1);
 	}
+	
+	function initMap() {
+  var map1 = new google.maps.Map(document.getElementById('map1'), {
+    zoom: 10,
+    center: {lat: 17.3700, lng: 78.4800},
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  });
+
+
+	//array to build line
+  var flightPlanCoordinates = [];
+  
+  //array to build markers
+  var locations = [];
+  
+
+  var flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  
+	var infowindow = new google.maps.InfoWindow();
+	var marker,i;
+	for (i = 0; i < locations.length; i++) {
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+			map: map1
+		});
+		  
+		google.maps.event.addListener(marker, 'click', (function(marker, i) {
+			return function() {
+				infowindow.setContent(locations[i][0]);
+				infowindow.open(map1, marker);
+			}
+		})(marker, i));
+	}
+	
+	flightPath.setMap(map1);
+}
 </script>
 </body>
 </html>
