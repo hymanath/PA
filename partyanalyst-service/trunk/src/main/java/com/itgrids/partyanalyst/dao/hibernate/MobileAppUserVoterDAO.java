@@ -142,7 +142,7 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 				sb.append(" and uv.mobileAppUser.type in (:userTypes) ");
 			}
 			sb.append(" group by uv.wardId,date(uv.surveyTime)");
-			sb.append(" order by c.name,date(uv.surveyTime)");
+			sb.append(" order by gmc.divisionName,date(uv.surveyTime)");
 		}
 		
 		Query query=getSession().createQuery(sb.toString());
