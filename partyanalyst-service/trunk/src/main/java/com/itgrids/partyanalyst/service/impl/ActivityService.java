@@ -4331,7 +4331,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		return activityvo;
 	}
 	
-	public List<IdNameVO> getAccessValuesOfUserId(Long userId)
+	public List<IdNameVO> getAccessValuesOfUserId(Long userId,String type)
 	{
 		List<IdNameVO> idNameVoList = null;
 		try {  
@@ -4363,7 +4363,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 			}else
 			{
-				list = userAccessLevelValueDAO.getAccessValuesOfUserId(userId);
+				list = userAccessLevelValueDAO.getAccessValuesByUser(userId,type);
 				if(list != null && list.size()>0)
 				{
 					idNameVoList = new ArrayList<IdNameVO>();
