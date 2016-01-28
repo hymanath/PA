@@ -4904,7 +4904,6 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				return resultStatus;
 		  	}
 			
-			/////////////////////////////////////
 			public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType,List<String> userTypes){
 		    	
 				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
