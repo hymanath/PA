@@ -5046,7 +5046,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				return ratingsList;
 			}
 			
-			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDateString, String endDateString,String userType){
+			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDateString, String endDateString,List<String> userType){
 				MobileAppUserDetailsVO finalVO = new MobileAppUserDetailsVO();
 				try {
 					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");

@@ -16,7 +16,7 @@ public class MobileAppUserSmsStatusDAO extends GenericDaoHibernate<MobileAppUser
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<MobileAppUserSmsStatus> getUsersLatestData(List<Long> userIds, Date fromDate, Date toDate,String userType){
+	public List<MobileAppUserSmsStatus> getUsersLatestData(List<Long> userIds, Date fromDate, Date toDate,List<String> userType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model from" +
 				" MobileAppUserSmsStatus model " +
@@ -24,8 +24,8 @@ public class MobileAppUserSmsStatusDAO extends GenericDaoHibernate<MobileAppUser
 				" model.mobileAppUserId in(:userIds) ");
 				if(fromDate != null && toDate != null)
 					sb.append(" and ( model.statusDate between :fromDate and :toDate )");
-				if(userType!= null)
-					sb.append(" and model.mobileAppUser.type=:userType");
+				if(!(userType.contains("All")))
+					sb.append(" and model.mobileAppUser.type in (:userType) ");
 				sb.append(" order by model.insertedTime desc ");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -34,8 +34,8 @@ public class MobileAppUserSmsStatusDAO extends GenericDaoHibernate<MobileAppUser
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(userType!= null)
-			query.setParameter("userType", userType);
+		if(!(userType.contains("All")))
+			query.setParameterList("userType", userType);
 		return query.list();
 	}
 	
