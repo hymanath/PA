@@ -2,10 +2,13 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -21,6 +24,7 @@ import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.model.Entitlement;
 import com.itgrids.partyanalyst.model.GroupEntitlement;
 import com.itgrids.partyanalyst.model.GroupEntitlementRelation;
@@ -572,7 +576,8 @@ public class UserEntitlementService implements IUserEntitlementService {
 		
 		NavigationVO navigationVO= new NavigationVO();		
 		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
-		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
+		//Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
+		TreeMap<Long,EntitlementVO> allGroups = new TreeMap<Long,EntitlementVO>();	
 		ResultStatus resultStatus = new ResultStatus();
 		Long availableCount=0l;
 		try{			
@@ -614,6 +619,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 				entitlementVO.add(res.getValue());
 			}
 			navigationVO.setCount(availableCount);
+			 Collections.sort(entitlementVO,sortEntitlementGrps);
 			navigationVO.setEntitlementVO(entitlementVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			navigationVO.setResultStatus(resultStatus);
@@ -640,7 +646,8 @@ public class UserEntitlementService implements IUserEntitlementService {
 		
 		NavigationVO navigationVO= new NavigationVO();		
 		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
-		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
+	//	Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();	
+		TreeMap<Long,EntitlementVO> allGroups = new TreeMap<Long,EntitlementVO>();	
 		ResultStatus resultStatus = new ResultStatus();
 		Long availableCount=0l;
 		try{			
@@ -682,6 +689,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 				entitlementVO.add(res.getValue());
 			}
 			navigationVO.setCount(availableCount);
+			 Collections.sort(entitlementVO,sortEntitlementGrps);
 			navigationVO.setEntitlementVO(entitlementVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			navigationVO.setResultStatus(resultStatus);
@@ -694,7 +702,6 @@ public class UserEntitlementService implements IUserEntitlementService {
 		}
 		return navigationVO;
 	}
-	
 	/**
 	 * This method can be used to save the relation between the user and the user group.
 	 * 	
@@ -748,7 +755,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 		
 		NavigationVO navigationVO= new NavigationVO();		
 		List<EntitlementVO> entitlementVO = new ArrayList<EntitlementVO>();		
-		Map<Long,EntitlementVO> allGroups = new HashMap<Long,EntitlementVO>();		
+		TreeMap<Long,EntitlementVO> allGroups = new TreeMap<Long,EntitlementVO>();		
 		ResultStatus resultStatus = new ResultStatus();
 		Long availableCount=0l;
 		try{			
@@ -790,6 +797,7 @@ public class UserEntitlementService implements IUserEntitlementService {
 				entitlementVO.add(res.getValue());
 			}
 			navigationVO.setCount(availableCount);
+			 Collections.sort(entitlementVO,sortEntitlementGrps);
 			navigationVO.setEntitlementVO(entitlementVO);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			navigationVO.setResultStatus(resultStatus);
@@ -803,6 +811,14 @@ public class UserEntitlementService implements IUserEntitlementService {
 		return navigationVO;
 	}
 	
+	 public static Comparator<EntitlementVO> sortEntitlementGrps = new Comparator<EntitlementVO>()
+				{	  
+						  public int compare(EntitlementVO arg1,EntitlementVO arg2)
+							{  
+							  return arg1.getName().trim().toUpperCase().compareTo(arg2.getName().trim().toUpperCase());
+							
+							}
+				};
 	
 
 	/**
