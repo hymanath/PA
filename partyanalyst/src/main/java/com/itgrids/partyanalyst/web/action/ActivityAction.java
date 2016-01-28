@@ -724,7 +724,10 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			String toDateStr = jObj.getString("toDate");
 			JSONArray locationArr = jObj.getJSONArray("locationIds");
 			String locationType = jObj.getString("locationType");
+			JSONArray usersArr = jObj.getJSONArray("usersArr");
+			
 			List<Long> locationIds = new ArrayList<Long>();
+			List<String> usersList = new ArrayList<String>();
 			
 			if(locationArr != null && locationArr.length() > 0){
 				for (int i = 0; i < locationArr.length(); i++) {
@@ -733,7 +736,14 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 				}
 			}
 			
-			mobileUserVoList = mobileService.locationWiseOverView(fromDateStr,toDateStr,locationIds,locationType);
+			if(usersArr != null && usersArr.length() > 0){
+				for (int i = 0; i < usersArr.length(); i++) {
+					String userStr = usersArr.getString(i);
+					usersList.add(userStr);
+				}
+			}
+			
+			mobileUserVoList = mobileService.locationWiseOverView(fromDateStr,toDateStr,locationIds,locationType,usersList);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);
@@ -753,8 +763,27 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
+			JSONArray locationArr = jObj.getJSONArray("locationIds");
+			JSONArray usersArr = jObj.getJSONArray("usersArr");
 			
-			mobileUserVO = mobileService.overAllDivisionsSummary(fromDateStr,toDateStr);
+			List<Long> locationIds = new ArrayList<Long>();
+			List<String> usersList = new ArrayList<String>();
+			
+			if(locationArr != null && locationArr.length() > 0){
+				for (int i = 0; i < locationArr.length(); i++) {
+					Long locationId = (long) locationArr.getInt(i);
+					locationIds.add(locationId);
+				}
+			}
+			
+			if(usersArr != null && usersArr.length() > 0){
+				for (int i = 0; i < usersArr.length(); i++) {
+					String userStr = usersArr.getString(i);
+					usersList.add(userStr);
+				}
+			}
+			
+			mobileUserVO = mobileService.overAllDivisionsSummary(fromDateStr,toDateStr,locationIds,usersList);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getActivityLocationWiseDetailsByScopeId()", e);

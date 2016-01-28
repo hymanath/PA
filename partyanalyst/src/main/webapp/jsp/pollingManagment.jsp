@@ -34,6 +34,13 @@
 								<input class="form-control" id="Date" type="text" placeholder="Select Date range">
 							</div>
 						</span>
+						<span class="pull-right">
+							<input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
+							<input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
+							<input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
+							<input type="checkbox" id="allUsersId" checked="true" class="usersCls" value="All"> All &nbsp;&nbsp;</label>
+							<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
+						</span>
 					</h4>
 				</div>
 				<div class="panel-body bg_EF">
@@ -72,13 +79,14 @@
 jQuery( document ).ready(function( $ ) {
 	$("#Date").daterangepicker({opens:"left"});
 	getAccessValues();
-	getTotalDetails();
+	//getTotalDetails(["All"]);
 	$("#Date").val('');
 });
 
 $(document).on('click','.applyBtn',function(){
-	getAccessValues();
-	getTotalDetails();
+	//getAccessValues();
+	getTotalDetails(["All"]);
+	getLocationWiseDetails(["All"]);
 });
 
 var locationIds = [];
@@ -96,11 +104,12 @@ var jsObj={}
 				locationIds.push(locationVal);
 			}
 		}
-		getLocationWiseDetails();
+		getTotalDetails(["All"]);
+		getLocationWiseDetails(["All"]);
 	});
 }
 
-function getLocationWiseDetails(){
+function getLocationWiseDetails(usersArr){
 	
 $("#divisionWiseReportDivId").html("");
 $("#dataLoadingsImgForDivisionWiseReport").show();
@@ -120,7 +129,8 @@ var jsObj={
 		fromDate:fromDateStr,
 		toDate:toDateStr,
 		locationIds:locationIds, //[31917,31926]
-		locationType:"ward"
+		locationType:"ward",
+		usersArr:usersArr
 	}
 	$.ajax({
 	  type:'GET',
@@ -202,19 +212,26 @@ var jsObj={
 	});
 }
 
-function getTotalDetails(){
+function getTotalDetails(usersArr){
 
 	$("#overAllDetailsDivId").html("");
 	$("#dataLoadingsImgForOverAllDetails").show();
 	
+	var fromDateStr="";
+	var toDateStr="";
+	
 	var dates=$('#Date').val();
-	var dateArray=dates.split("-");
-	var fromDateStr=dateArray[0];
-	var toDateStr=dateArray[1];
-
+	if(dates != null && dates.length >0){
+		var dateArray=dates.split("-");
+		fromDateStr=dateArray[0].trim();
+		toDateStr=dateArray[1].trim();
+	}
+	
 	var jsObj={
 		fromDate:fromDateStr,
-		toDate:toDateStr
+		toDate:toDateStr,
+		locationIds:locationIds, 
+		usersArr:usersArr
 	}
 	$.ajax({
 	  type:'GET',
@@ -277,6 +294,20 @@ function getTotalDetails(){
 		}
 	});
 }
+$(document).on('click','#getDetailsId',function(){
+	
+	var userArr = [];
+	$(".usersCls").each(function(){
+		var id = $(this).attr("id");
+		var checked = document.getElementById(id).checked;
+		if(checked){
+			var value = $(this).val();
+			userArr.push(value);
+		}
+	});
+	getTotalDetails(userArr);
+	getLocationWiseDetails(userArr);
+});
 </script>
 </body>
 </html>
