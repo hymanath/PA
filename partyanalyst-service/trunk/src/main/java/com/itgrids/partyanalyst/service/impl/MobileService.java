@@ -4905,7 +4905,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		  	}
 			
 			/////////////////////////////////////
-			public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType){
+			public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType,List<String> userTypes){
 		    	
 				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
 				List<MobileUserVO> finalList=null;
@@ -4920,7 +4920,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						endDate=sdf.parse(endDateString);
 					}
 					
-					List<Object[]> list=mobileAppUserVoterDAO.locationWiseOverView(startDate,endDate,locationIds,locationType);
+					List<Object[]> list=mobileAppUserVoterDAO.locationWiseOverView(startDate,endDate,locationIds,locationType,userTypes);
 					
 					if(list!=null && list.size()>0){
 						finalList=new ArrayList<MobileUserVO>();
@@ -4973,7 +4973,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						}
 					}
 					
-					List<Object[]> ratingsList=mobileAppUserVoterDAO.voterRatings(startDate,endDate,locationIds);
+					List<Object[]> ratingsList=mobileAppUserVoterDAO.voterRatings(startDate,endDate,locationIds,userTypes);
 					if(ratingsList!=null && ratingsList.size()>0){
 						for(Object[] data:ratingsList){
 							Long wardId=data[0]!=null?(Long)data[0]:null;
@@ -5232,7 +5232,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				return null;
 			}
 			
-			public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString){
+			public MobileUserVO overAllDivisionsSummary(String startDateString,String endDateString,List<Long> locationIds,List<String> userTypes){
 		    	
 		    	SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
 		    	MobileUserVO finalVO=new MobileUserVO();
@@ -5250,7 +5250,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						finalVO.setRatingList(setRatings());
 					}
 					
-					List<Object[]> list=mobileAppUserVoterDAO.overAllDivisionsSummary(startDate,endDate);
+					List<Object[]> list=mobileAppUserVoterDAO.overAllDivisionsSummary(startDate,endDate,locationIds,userTypes);
 					if(list!=null && list.size()>0){
 						Object[] obj=list.get(0);
 						if(obj!=null){
@@ -5261,7 +5261,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							finalVO.setMobilescount(obj[3]!=null?(Long)obj[3]:0l);
 						}
 					}
-					List<Object[]> ratings=mobileAppUserVoterDAO.overallVoterRatings(startDate,endDate);
+					List<Object[]> ratings=mobileAppUserVoterDAO.overallVoterRatings(startDate,endDate,locationIds,userTypes);
 					if(ratings!=null && ratings.size()>0){
 						for(Object[] obj:ratings){
 							Long ratingId=obj[0]!=null?(Long)obj[0]:null;

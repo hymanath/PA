@@ -110,7 +110,7 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		}
 		return query.list();
 	}
-	public List<Object[]> locationWiseOverView(Date StartDate,Date endDate,List<Long> locationIds,String locationType){
+	public List<Object[]> locationWiseOverView(Date StartDate,Date endDate,List<Long> locationIds,String locationType,List<String> userTypes){
 	
 		
 		StringBuilder sb=new StringBuilder();
@@ -119,15 +119,18 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 			
 			sb.append(" select  uv.wardId,c.name,gmc.divisionName," +
 					"           date(uv.surveyTime)," +
-					"           count(distinct uv.mobileAppUserId),count(distinct uv.voterId),count(distinct uv.mobileNo),count(distinct uv.tdpCadreId)" +
+					"           count(distinct uv.mobileAppUser.mobileAppUserId),count(distinct uv.voterId),count(distinct uv.mobileNo),count(distinct uv.tdpCadreId)" +
 					"   from    MobileAppUserVoter uv,Constituency c,GreaterMuncipalWard gmc " +
 					"   where   uv.wardId=c.constituencyId and uv.wardId=gmc.wardId " +
-					"           and uv.wardId in (:locationIds) ");	
+					"           and uv.wardId in (:locationIds) and uv.mobileAppUser.type is not null ");	
 			if(StartDate!=null){
 				sb.append(" and ( date(uv.surveyTime) >=:StartDate ");
 			}
 			if(endDate!=null){
 				sb.append(" and date(uv.surveyTime) <=:endDate ) ");
+			}
+			if(!userTypes.contains("All")){
+				sb.append(" and uv.mobileAppUser.type in (:userTypes) ");
 			}
 			sb.append(" group by uv.wardId,date(uv.surveyTime)");
 			sb.append(" order by c.name,date(uv.surveyTime)");
@@ -144,23 +147,29 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		if(endDate!=null){
 			query.setParameter("endDate",endDate);
 		}
+		if(!userTypes.contains("All")){
+			query.setParameterList("userTypes",userTypes);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> voterRatings(Date startDate,Date endDate,List<Long> locationIds){
+	public List<Object[]> voterRatings(Date startDate,Date endDate,List<Long> locationIds,List<String> userTypes){
 		
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select   wardId as wardId,surveyDate as surveyDate,rating as rating ,count(rating) as count from " +
 				  "          (select   distinct uv.ward_id as wardId,date(uv.survey_time) as surveyDate,uv.voter_id as voterId,uv.rating as rating" +
-				  "           from    mobile_app_user_voter uv " +
-				  "           where   uv.ward_id in (:locationIds)  ");
-		
+				  "           from    mobile_app_user_voter uv join mobile_app_user user on uv.mobile_app_user_id=user.mobile_app_user_id " +
+				  "           where   uv.ward_id in (:locationIds)  and user.type is not null ");
+			  if(!userTypes.contains("All")){
+				sb.append(" and user.type in (:userTypes) ");
+			  }
 		     if(startDate!=null){
 			   sb.append(" and date(uv.survey_time) >=:startDate ");
 		     }
 		    if(endDate!=null){
 		 	  sb.append(" and date(uv.survey_time) <=:endDate ");
 		    }
+		    
 		    sb.append(" ) AS SUBQUERY ");
 	   sb.append(" group by wardId,surveyDate,rating");
 	   
@@ -171,6 +180,9 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 			   .addScalar("count", Hibernate.LONG);
 	   
 	   query.setParameterList("locationIds",locationIds);
+	   if(!userTypes.contains("All")){
+			query.setParameterList("userTypes",userTypes);
+		}
 	   if(startDate!=null){
 			query.setParameter("startDate",startDate);
 		}
@@ -180,19 +192,32 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		return query.list();
 	}
 	
-public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
+    public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate,List<Long> locationIds,List<String> userTypes){
 		
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select count(distinct uv.wardId), count(distinct uv.mobileAppUserId),count(distinct uv.voterId),count(distinct uv.mobileNo) " +
 		" from   MobileAppUserVoter uv ");
-		sb.append(" where uv.mobileAppUserVoterId is not null ");
+		sb.append(" where uv.mobileAppUser.type is not null  ");
+        if(locationIds!=null && locationIds.size()>0){
+        	sb.append(" and uv.wardId in (:locationIds)  ");
+		}
+        if(!userTypes.contains("All")){
+        	sb.append(" and uv.mobileAppUser.type in (:userTypes)");
+        }
 		if(startDate!=null){
 			sb.append(" and  date(uv.surveyTime) >=:startDate ");
 		}
 		if(endDate!=null){
 			sb.append(" and date(uv.surveyTime) <=:endDate ");
 		}
+		
 		Query query=getSession().createQuery(sb.toString());
+		if(locationIds!=null && locationIds.size()>0){
+			query.setParameterList("locationIds",locationIds);
+		}
+		if(!userTypes.contains("All")){
+			query.setParameterList("userTypes",userTypes);
+        }
 		if(startDate!=null){
 			query.setParameter("startDate",startDate);
 		}
@@ -201,14 +226,21 @@ public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
 		}
 		return query.list();
 	}
-    public List<Object[]> overallVoterRatings(Date startDate,Date endDate){
+
+    public List<Object[]> overallVoterRatings(Date startDate,Date endDate,List<Long> locationIds,List<String> userTypes){
     	
     
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select    inRating as outRating,count(inRating) as count from " +
 				  "          (select   distinct uv.voter_id as inVoterId,uv.rating as inRating" +
-				  "           from    mobile_app_user_voter uv where uv.mobile_app_user_voter_id is not null " );
-		
+				  "           from     mobile_app_user_voter uv join mobile_app_user user on uv.mobile_app_user_id=user.mobile_app_user_id " +
+				  "           where    user.type is not null " );
+		      if(locationIds!=null && locationIds.size()>0){
+		    	  sb.append(" and uv.ward_id in (:locationIds)");
+		      }
+		      if(!userTypes.contains("All")){
+		        	sb.append(" and user.type in (:userTypes)");
+		      }
 		     if(startDate!=null){
 			   sb.append(" and date(uv.survey_time) >=:startDate ");
 		     }
@@ -221,7 +253,12 @@ public List<Object[]> overAllDivisionsSummary(Date startDate,Date endDate){
 	   Query query=getSession().createSQLQuery(sb.toString())
 			   .addScalar("outRating", Hibernate.LONG)
 			   .addScalar("count", Hibernate.LONG);
-	   
+	     if(locationIds!=null && locationIds.size()>0){
+	    	 query.setParameterList("locationIds",locationIds);
+	     }
+	     if(!userTypes.contains("All")){
+	    	query.setParameterList("userTypes",userTypes);
+         }
 	   if(startDate!=null){
 			query.setParameter("startDate",startDate);
 		}
