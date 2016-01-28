@@ -33,7 +33,7 @@ public class UserGroupRelationDAO extends GenericDaoHibernate<UserGroupRelation,
 		
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.userGroup.userGroupId,model.user.userId from UserGroupRelation model ");
-		query.append(" where model.user.userId = ? ");
+		query.append(" where model.user.userId = ? order by model.user.userId asc");
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		queryObject.setLong(0,userId);		

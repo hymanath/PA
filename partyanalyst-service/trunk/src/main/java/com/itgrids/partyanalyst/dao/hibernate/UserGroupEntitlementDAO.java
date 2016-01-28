@@ -46,7 +46,7 @@ public class UserGroupEntitlementDAO extends GenericDaoHibernate<UserGroupEntitl
 	public List getAllEntitlementGroupsBasedOnUserGroupId(Long userGroupId) {	
 		StringBuilder query = new StringBuilder();		
 		query.append(" select model.groupEntitlement.groupEntitlementId,model.groupEntitlement.description from UserGroupEntitlement model");		
-		query.append(" where model.userGroup.userGroupId = ? ");		
+		query.append(" where model.userGroup.userGroupId = ? order by model.groupEntitlement.description asc");		
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setLong(0, userGroupId);
 		return queryObject.list();

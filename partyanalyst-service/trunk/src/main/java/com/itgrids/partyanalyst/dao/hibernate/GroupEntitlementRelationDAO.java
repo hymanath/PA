@@ -20,7 +20,7 @@ public class GroupEntitlementRelationDAO extends GenericDaoHibernate<GroupEntitl
 	public List<Entitlement> getAllEntitlementsForAGroupByGroupId(Long groupId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.entitlement.entitlementId,model.entitlement.entitlementType from GroupEntitlementRelation model");
-		sb.append(" where model.groupEntitlement.groupEntitlementId = ?");
+		sb.append(" where model.groupEntitlement.groupEntitlementId = ? order by model.entitlement.entitlementType asc");
 		
 		return getHibernateTemplate().find(sb.toString(),groupId);
 	}
