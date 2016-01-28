@@ -44,6 +44,7 @@ public class MobileAppUserVoter {
 	private String isVoted;
 	private Voter voter;
 	private Booth booth;
+	private String smsStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -208,11 +209,12 @@ public class MobileAppUserVoter {
 		this.booth = booth;
 	}
 	
-	
-	
-
-	
-	
-	
+	@Column(name="sms_status")
+	public String getSmsStatus() {
+		return smsStatus;
+	}
+	public void setSmsStatus(String smsStatus) {
+		this.smsStatus = smsStatus;
+	}
 
 }
