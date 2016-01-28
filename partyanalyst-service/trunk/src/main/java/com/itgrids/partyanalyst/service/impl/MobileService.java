@@ -4951,6 +4951,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 										isDateExist=false;
 										dateVO=new MobileUserVO();
 										dateVO.setDateString(obj[3]!=null?obj[3].toString():"");
+										dateVO.setFormatDate(obj[3]!=null?sdf.format((Date)obj[3]):"");
 										if(dateVO.getRatingList()==null){
 											List<MobileUserVO> ratingsList=setRatings();
 											dateVO.setRatingList(ratingsList);
