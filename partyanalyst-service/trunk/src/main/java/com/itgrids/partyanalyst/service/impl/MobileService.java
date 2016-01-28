@@ -5065,6 +5065,21 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					List<MobileAppUserDetailsVO> fnlLst  = new ArrayList<MobileAppUserDetailsVO>(); 
 					List<Object[]> list = mobileAppUserVoterDAO.getUserStartEndTime(locationId, locationType, fromDate, toDate,userType);
 					List<Object[]> list1 = mobileAppUserVoterDAO.getUserCollectedDetails(locationId, locationType, fromDate, toDate,userType);
+					List<Long> divisionIds = new ArrayList<Long>(0);
+					divisionIds.add(locationId);
+					
+					List<Object[]> wardwiseVoters = greaterMuncipalWardDAO.getDivisionWiseVoters(divisionIds);
+					if(wardwiseVoters != null && wardwiseVoters.size()>0)
+					{
+						Object[] wardVoters = wardwiseVoters.get(0);
+						if(wardVoters != null && wardVoters.length>0)
+						{
+							int total = wardwiseVoters.get(0)[1] != null ? Integer.valueOf(wardwiseVoters.get(0)[1].toString().trim()):0;
+							if(total > 0)
+								finalVO.setTotalVoters(total);
+						}
+					}
+					
 					List<Long> usrIds = new ArrayList<Long>();
 					if(list!=null && !list.isEmpty()){
 						for(Object[] obj:list){
