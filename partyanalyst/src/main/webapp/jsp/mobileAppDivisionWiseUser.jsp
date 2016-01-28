@@ -26,14 +26,15 @@
 <body>
 <style>
 	.table th{text-align:center !important;cursor:pointer;}
+	.font-12{font-size:12px;}
 </style>
 <div class="container">
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
-					<h4 class="panel-title" style="text-transform: uppercase;" >${param.division} - (${param.divisonId}) DIVISION REPORT</h4>
-						<span class="pull-right col-md-3" style="margin-top:-25px">
+					<h4 class="panel-title" style="text-transform: uppercase;" >${param.division} - (${param.divisonId}) DIVISION REPORT
+						<span class="pull-right col-md-3" style="margin-top:-8px">
 							<div class="input-group inputGroupCustom">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
 									<span class="caret"></span>
@@ -41,6 +42,10 @@
 								<input class="form-control" id="Date" type="text" placeholder="Select Date range">
 							</div>
 						</span>
+						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="BBB User" onclick="getUsersSummary(2)" checked>BBB User</input></label>
+						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Field User" onclick="getUsersSummary(2)" >Field User</input></label>
+						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Geo User" onclick="getUsersSummary(2)" >Geo User</input></label>
+					</h4>
 				</div>
 				<div class="panel-body bg_EF">
 					<table class="table table-bordered tableVM bg_ff">
@@ -172,12 +177,13 @@ function getUsersSummary(searchTypeId){
 			endDate=dateArray[1].trim();	
 		}
 	}
-	
+	var userType = $("input[name='userTypeRadio']:checked").val();
 	var jsObj = {
 		locationId : locationId,
 		locationType:locationType,
 		startDate:startDate,
-		endDate:endDate
+		endDate:endDate,
+		userType : userType
 	};
 	$.ajax({
 		type : "GET",

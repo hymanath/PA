@@ -624,6 +624,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	}
 	
 	public String getUserWiseDivisionSummary(){
+
 		try{
 			/*RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			if(user==null){
@@ -634,7 +635,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			}*/
 			
 			jObj = new JSONObject(getTask());
-			mobileAppUserDetailsVO = mobileService.getUserWiseDivisionSummary(jObj.getLong("locationId"), jObj.getString("locationType"), jObj.getString("startDate"), jObj.getString("endDate"));
+			mobileAppUserDetailsVO = mobileService.getUserWiseDivisionSummary(jObj.getLong("locationId"), jObj.getString("locationType"), jObj.getString("startDate"), jObj.getString("endDate"),jObj.getString("userType"));
 			mobileAppUserDetailsVO.setErrorCode(0);
 		}
 		catch (Exception e) {
