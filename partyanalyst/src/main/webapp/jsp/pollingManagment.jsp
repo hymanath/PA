@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> POLLING MANAGMENT </title>
+<title> GHMC ELECTIONS - 2015  </title>
 <!--<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Daterange/daterangepicker.css" rel="stylesheet" type="text/css">
@@ -17,9 +17,6 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 
-<style>  
-.marginClass{margin-top: 8px; margin-bottom: 9px;}
-</style>
 </head>
 
 <body>
@@ -28,7 +25,7 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
-					<h4 class="panel-title"> POLLING MANAGMENT
+					<h4 class="panel-title"> GHMC ELECTIONS - 2015 
 						<span class="pull-right col-md-3" style="margin-top:-8px">
 							<div class="input-group inputGroupCustom">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
@@ -76,6 +73,7 @@ jQuery( document ).ready(function( $ ) {
 	$("#Date").daterangepicker({opens:"left"});
 	getAccessValues();
 	getTotalDetails();
+	$("#Date").val('');
 });
 
 $(document).on('click','.applyBtn',function(){
@@ -108,15 +106,20 @@ $("#divisionWiseReportDivId").html("");
 $("#dataLoadingsImgForDivisionWiseReport").show();
 	
 var dates=$('#Date').val();
-var dateArray=dates.split("-");
-var fromDateStr=dateArray[0].trim();
-var toDateStr=dateArray[1].trim();
+
+var fromDateStr="";
+var toDateStr="";
+
+if(dates != null && dates.length >0){
+	var dateArray=dates.split("-");
+	 fromDateStr=dateArray[0].trim();
+	 toDateStr=dateArray[1].trim();	
+}
 
 var jsObj={
 		fromDate:fromDateStr,
 		toDate:toDateStr,
-		//locationIds:[31917,31926], 
-		locationIds:locationIds,
+		locationIds:locationIds, //[31917,31926]
 		locationType:"ward"
 	}
 	$.ajax({
@@ -166,7 +169,7 @@ var jsObj={
 				for(var i in result){
 					str+='<tr>';
 					   
-						str+='<td rowspan="'+result[i].dateList.length+'"> <a href="mobileAppDivisionWiseUsersAction.action?divisionId='+result[i].wardId+'&division='+result[i].divisionName+'&fromDate='+fromDateStr+'&toDate='+toDateStr+'" target="_blank"> '+result[i].divisionNo+'</a></td>';
+						str+='<td rowspan="'+result[i].dateList.length+'"> <a href="mobileAppDivisionWiseUsersAction.action?divisionId='+result[i].wardId+'&division='+result[i].divisionName+'&fromDate='+fromDateStr+'&toDate='+toDateStr+'&divisonId='+result[i].divisionNo+'" target="_blank"> '+result[i].divisionNo+'</a></td>';
 						
 						str+='<td rowspan="'+result[i].dateList.length+'">'+result[i].divisionName+'</td>';
 						if(result[i].dateList != null){
@@ -190,14 +193,11 @@ var jsObj={
 			str+='</table>';
 			
 			$("#dataLoadingsImgForDivisionWiseReport").hide();
-			$( "#divisionWiseReportDivId" ).removeClass( "marginClass" );
 			$("#divisionWiseReportDivId").html(str);	
 		}
 		else{
 			$("#dataLoadingsImgForDivisionWiseReport").hide();
-			$( "#divisionWiseReportDivId" ).addClass( "marginClass" );
-			$("#divisionWiseReportDivId").html('<span  style="margin-left: 375px;font-weight:bold;">NO DATA AVAILABLE...</span>');
-			
+			$("#divisionWiseReportDivId").html("NO DATA AVAILABLE...");
 		}
 	});
 }
