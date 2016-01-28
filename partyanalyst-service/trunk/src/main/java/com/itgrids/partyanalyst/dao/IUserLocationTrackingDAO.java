@@ -16,5 +16,5 @@ public interface IUserLocationTrackingDAO extends GenericDao<UserLocationTrackin
 	 
 	 public List<Object[]> getLatestUserTrackingDetals(Date date);
 
-
+	 public List<Object[]> getUserTrackingDetails(Long userId);
 }
