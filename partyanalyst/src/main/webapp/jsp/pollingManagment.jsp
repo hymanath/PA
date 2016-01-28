@@ -94,7 +94,9 @@ $(document).on('click','.applyBtn',function(){
 var locationIds = [];
 
 function getAccessValues(){
-var jsObj={}
+var jsObj={
+		type:"ward"
+	}
 	$.ajax({
 	  type:'GET',
 	  url: 'getAccessValuesOfUserIdAction.action',
