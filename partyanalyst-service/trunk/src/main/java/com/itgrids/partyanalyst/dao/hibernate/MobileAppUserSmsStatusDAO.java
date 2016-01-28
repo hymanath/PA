@@ -21,14 +21,18 @@ public class MobileAppUserSmsStatusDAO extends GenericDaoHibernate<MobileAppUser
 		sb.append(" select model from" +
 				" MobileAppUserSmsStatus model " +
 				" where " +
-				" model.mobileAppUserId in(:userIds)" +
-				" and model.statusDate between :fromDate and :toDate " +
-				" order by model.insertedTime desc");
+				" model.mobileAppUserId in(:userIds) ");
+				if(fromDate != null && toDate != null)
+					sb.append(" and ( model.statusDate between :fromDate and :toDate )");
+				
+				sb.append(" order by model.insertedTime desc ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("userIds", userIds);
-		query.setDate("fromDate", fromDate);
-		query.setDate("toDate", toDate);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
 		return query.list();
 	}
 	
