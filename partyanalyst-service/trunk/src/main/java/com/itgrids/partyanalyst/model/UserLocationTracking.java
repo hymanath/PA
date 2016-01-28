@@ -35,7 +35,8 @@ public class UserLocationTracking {
 	private MobileAppUser user;
 	private String uniqueId;
 	private Date gpsTime;
-
+	private String imeiNo;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="user_location_tracking_id", unique=true, nullable=false)
@@ -130,4 +131,15 @@ public class UserLocationTracking {
 	public void setGpsTime(Date gpsTime) {
 		this.gpsTime = gpsTime;
 	}
+
+	@Column(name="imei_no")
+	public String getImeiNo() {
+		return imeiNo;
+	}
+
+	public void setImeiNo(String imeiNo) {
+		this.imeiNo = imeiNo;
+	}
+	
+	
 }
