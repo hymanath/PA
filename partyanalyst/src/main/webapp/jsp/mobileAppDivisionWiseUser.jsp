@@ -196,7 +196,7 @@ function getUsersSummary(searchTypeId){
 }
 	function buildSummary(result){
 		$("#ttlUsrs").html(result.usersCount);		
-		$("#ttlVtrs").html(result.voterIdsCollected);
+		$("#ttlVtrs").html(result.totalVoters);
 		$("#ttlVtrsCaptrd").html(result.voterIdsCollected);
 		$("#ttlMblCaptrd").html(result.noOfMobiles);
 		
@@ -210,7 +210,7 @@ function getUsersSummary(searchTypeId){
 		var str1 = "";
 		for(var i in result.userRslt){
 			str1+="<tr class='bg_FFF'>";
-			str1+="<td class='openTab' attr_divisonId="+'${param.divisionId}'+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" style='cursor:pointer;'>"+result.userRslt[i].name+"</td>";
+			str1+="<td class='openTab' attr_divisonId="+'${param.divisionId}'+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" style='cursor:pointer;'><a href='javascript:{}' style='color:green;font-weight:bold;'>"+result.userRslt[i].name+"</a></td>";
 			str1+="<td>"+result.userRslt[i].mobileNo+"</td>";
 			str1+="<td>"+result.userRslt[i].date+"</td>";
 			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";
