@@ -4904,6 +4904,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				return resultStatus;
 		  	}
 			
+			/////////////////////////////////////
 			public List<MobileUserVO> locationWiseOverView(String startDateString,String endDateString,List<Long> locationIds,String locationType,List<String> userTypes){
 		    	
 				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
@@ -5044,7 +5045,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				return ratingsList;
 			}
 			
-			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDateString, String endDateString){
+			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDateString, String endDateString,String userType){
 				MobileAppUserDetailsVO finalVO = new MobileAppUserDetailsVO();
 				try {
 					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -5062,8 +5063,8 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					finalVO.setRatings(getBasicRatings());
 					
 					List<MobileAppUserDetailsVO> fnlLst  = new ArrayList<MobileAppUserDetailsVO>(); 
-					List<Object[]> list = mobileAppUserVoterDAO.getUserStartEndTime(locationId, locationType, fromDate, toDate);
-					List<Object[]> list1 = mobileAppUserVoterDAO.getUserCollectedDetails(locationId, locationType, fromDate, toDate);
+					List<Object[]> list = mobileAppUserVoterDAO.getUserStartEndTime(locationId, locationType, fromDate, toDate,userType);
+					List<Object[]> list1 = mobileAppUserVoterDAO.getUserCollectedDetails(locationId, locationType, fromDate, toDate,userType);
 					List<Long> usrIds = new ArrayList<Long>();
 					if(list!=null && !list.isEmpty()){
 						for(Object[] obj:list){
@@ -5102,7 +5103,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					
 					finalVO.setUsersCount(usrIds.size());
 					
-					List<Object[]> list3 = mobileAppUserVoterDAO.getUserCollectedRatingDetails(locationId, locationType, fromDate, toDate);
+					List<Object[]> list3 = mobileAppUserVoterDAO.getUserCollectedRatingDetails(locationId, locationType, fromDate, toDate,userType);
 					if(list3!=null && !list3.isEmpty()){
 						for(Object[] obj:list3){
 							MobileAppUserDetailsVO mv = getMatchedMobileAppUserDetailsVO(fnlLst, Long.valueOf(obj[0].toString()), obj[1].toString());
@@ -5154,7 +5155,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					finalVO.setVoterIdsCollected(ttlVtrs);
 					finalVO.setUniqueVoters(ttlUnqeVtrs);
 					
-					List<MobileAppUserSmsStatus> list2 = mobileAppUserSmsStatusDAO.getUsersLatestData(usrIds, fromDate, toDate);
+					List<MobileAppUserSmsStatus> list2 = mobileAppUserSmsStatusDAO.getUsersLatestData(usrIds, fromDate, toDate,userType);
 					if(list2!=null && !list2.isEmpty()){
 						List<Long> updtdUsrs = new ArrayList<Long>();
 						for(MobileAppUserSmsStatus obj:list2){

@@ -16,7 +16,7 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		super(MobileAppUserVoter.class);
 	}
 	
-	public List<Object[]> getUserStartEndTime(Long locationId, String locationType, Date fromDate, Date toDate){
+	public List<Object[]> getUserStartEndTime(Long locationId, String locationType, Date fromDate, Date toDate,String userType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.mobileAppUser.mobileAppUserId," +
 				" model.mobileAppUser.userName," +
@@ -37,7 +37,8 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		if(locationType.equalsIgnoreCase("Ward")){
 			sb.append(" and model.wardId=:locationId");
 		}
-		
+		if(userType!= null)
+			sb.append(" and model.mobileAppUser.type=:userType");
 		sb.append(" group by model.mobileAppUser.mobileAppUserId," +
 				" date(model.surveyTime)");
 		
@@ -47,11 +48,13 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		if(userType!= null)
+			query.setParameter("userType", userType);
 		return query.list();
 		
 	}
 	
-	public List<Object[]> getUserCollectedDetails(Long locationId, String locationType, Date fromDate, Date toDate){
+	public List<Object[]> getUserCollectedDetails(Long locationId, String locationType, Date fromDate, Date toDate,String userType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.mobileAppUser.mobileAppUserId," +
 				" date(model.surveyTime)," +
@@ -68,7 +71,8 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		if(locationType.equalsIgnoreCase("Ward")){
 			sb.append(" and model.wardId=:locationId");
 		}
-		
+		if(userType!= null)
+			sb.append(" and model.mobileAppUser.type=:userType");
 		sb.append(" group by model.mobileAppUser.mobileAppUserId," +
 				" date(model.surveyTime)");
 		
@@ -78,10 +82,12 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		if(userType!= null)
+			query.setParameter("userType", userType);
 		return query.list();
 	}
 	
-	public List<Object[]> getUserCollectedRatingDetails(Long locationId, String locationType, Date fromDate, Date toDate){
+	public List<Object[]> getUserCollectedRatingDetails(Long locationId, String locationType, Date fromDate, Date toDate,String userType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.mobileAppUser.mobileAppUserId," +
 				" date(model.surveyTime)," +
@@ -97,7 +103,8 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		if(locationType.equalsIgnoreCase("Ward")){
 			sb.append(" and model.wardId=:locationId");
 		}
-		
+		if(userType!= null)
+			sb.append(" and model.mobileAppUser.type=:userType");
 		sb.append(" group by model.mobileAppUser.mobileAppUserId," +
 				" date(model.surveyTime)," +
 				" model.rating");
@@ -108,6 +115,8 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		if(userType!= null)
+		query.setParameter("userType", userType);
 		return query.list();
 	}
 	public List<Object[]> locationWiseOverView(Date StartDate,Date endDate,List<Long> locationIds,String locationType,List<String> userTypes){
