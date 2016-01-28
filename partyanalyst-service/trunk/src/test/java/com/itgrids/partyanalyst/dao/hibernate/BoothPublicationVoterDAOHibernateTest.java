@@ -489,9 +489,20 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		}
 	}*/
 	
-	public void testGetBoothVoterDetails()
+	/*public void testGetBoothVoterDetails()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getBoothVoterDetails(863757l, 7473570l);
+		System.out.println(list.size());
+		
+		for(Object obj : list.get(0))
+		{
+			System.out.println(obj.toString());
+		}
+	}*/
+	
+	public void testGetBoothVoterDetails()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getBoothVoterDetails(7473570l);
 		System.out.println(list.size());
 		
 		for(Object obj : list.get(0))
