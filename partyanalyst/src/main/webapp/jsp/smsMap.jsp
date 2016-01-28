@@ -192,7 +192,7 @@ var pathArr = [];
 		showMapForMobileAppUserVoter("multiSelect");
 	});
 	
-	getUserTrackingDetails();
+	//getUserTrackingDetails();
 	function getUserTrackingDetails(){
 		var jsObj={
 			userId:"${param.userId}"
