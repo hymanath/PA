@@ -16,6 +16,7 @@
 <link href="dist/activityDashboard/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 
 </head>
 
@@ -74,6 +75,7 @@
 <script src="dist/activityDashboard/js/custom.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/Date/moment.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/Date/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <script type="text/javascript">
 jQuery( document ).ready(function( $ ) {
@@ -140,12 +142,16 @@ var jsObj={
 		if(result != null && result.length > 0){
 			var str='';
 		
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered" id="locationTblId">';
 				str+='<thead class="bg_F0 font-12">';
 					str+='<tr>';
 						str+='<th rowspan="2">DIVISION<br/> NO</th>';
 						str+='<th rowspan="2">DIVISION<br/> NAME</th>';
-						if(fromDateStr.trim() != toDateStr.trim()){
+						if(dates.trim().length>0){
+							if(fromDateStr.trim() != toDateStr.trim()){
+							  str+='<th rowspan="2">DATE</th>';
+						   }
+						}else{
 							str+='<th rowspan="2">DATE</th>';
 						}
 							
@@ -180,14 +186,20 @@ var jsObj={
 				for(var i in result){
 					str+='<tr>';
 					   
-						str+='<td rowspan="'+result[i].dateList.length+'"> <a href="mobileAppDivisionWiseUsersAction.action?divisionId='+result[i].wardId+'&division='+result[i].divisionName+'&fromDate='+fromDateStr+'&toDate='+toDateStr+'&divisonId='+result[i].divisionNo+'" target="_blank"> '+result[i].divisionNo+'</a></td>';
 						
-						str+='<td rowspan="'+result[i].dateList.length+'">'+result[i].divisionName+'</td>';
 						if(result[i].dateList != null){
 							for(var j in result[i].dateList){
-								if(fromDateStr.trim() != toDateStr.trim()){
+							  
+							  str+='<td> <a href="mobileAppDivisionWiseUsersAction.action?divisionId='+result[i].wardId+'&division='+result[i].divisionName+'&fromDate='+result[i].dateList[j].formatDate+'&toDate='+result[i].dateList[j].formatDate+'&divisonId='+result[i].divisionNo+'" target="_blank"> '+result[i].divisionNo+'</a></td>';
+						
+						      str+='<td>'+result[i].divisionName+'</td>';
+						      if(dates.trim().length>0){
+								 if(fromDateStr.trim() != toDateStr.trim()){
 									str+='<td>'+result[i].dateList[j].dateString+'</td>';
-								}
+								 }
+							  }else{
+								 str+='<td>'+result[i].dateList[j].dateString+'</td>'; 
+							  }
 									str+='<td>'+result[i].dateList[j].usersCount+'</td>';
 									str+='<td>'+result[i].dateList[j].voterscount+'</td>';
 									str+='<td>'+result[i].dateList[j].publicCount+'</td>';
@@ -205,6 +217,8 @@ var jsObj={
 			
 			$("#dataLoadingsImgForDivisionWiseReport").hide();
 			$("#divisionWiseReportDivId").html(str);	
+			$("#locationTblId").dataTable();
+			$("#locationTblId").removeClass("dataTable");
 		}
 		else{
 			$("#dataLoadingsImgForDivisionWiseReport").hide();
