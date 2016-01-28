@@ -19,11 +19,15 @@ public class GhmcVoterSlipSqliteGeneratorForAC {
 	static Connection conn = null;
 	static Statement stmt = null;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		
 		GhmcVoterSlipSqliteGeneratorForAC generator = new GhmcVoterSlipSqliteGeneratorForAC();
-		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31917,114);
-		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31926,123);
+		
+		File targetFile = new File("E:/KP/Sqlites/4AC.sqlite");
+		FileUtils.copyFile(new File("E:/KP/ghmcVoterMain.sqlite"), targetFile);
+		
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31910,107);
+
 	}
 	
 	public boolean genearateSqlite(String basePath,String targetFolder,int wardId,int wardNo)
@@ -95,6 +99,58 @@ public class GhmcVoterSlipSqliteGeneratorForAC {
 			connection.commit();
 			statement.close();
 			connection.close();
+			
+			connection = DriverManager.getConnection("jdbc:sqlite:"+targetFile.getAbsolutePath());
+			connection.setAutoCommit(false);
+			statement = connection.createStatement();
+			
+			statement.executeUpdate("CREATE INDEX idx_voter_voter_id ON voter(voter_id)");
+			statement.executeUpdate("CREATE INDEX idx_voter_house_no ON voter(house_no)");
+			statement.executeUpdate("CREATE INDEX idx_voter_name ON voter(name)");
+			statement.executeUpdate("CREATE INDEX idx_voter_voter_id_card_no ON voter(voter_id_card_no)");
+			statement.executeUpdate("CREATE INDEX idx_voter_age ON voter(age)");
+			statement.executeUpdate("CREATE INDEX idx_voter_gender ON voter(gender)");
+			statement.executeUpdate("CREATE INDEX idx_voter_tdp_cadre_id ON voter(tdp_cadre_id)");
+			statement.executeUpdate("CREATE INDEX idx_voter_is_sms_sent ON voter(is_sms_sent)");
+			statement.executeUpdate("CREATE INDEX idx_voter_membership_id ON voter(membership_id)");
+			statement.executeUpdate("CREATE INDEX idx_voter_is_cadre ON voter(is_cadre)");
+			
+			statement.executeUpdate("CREATE INDEX idx_booth_publication_voter_booth_id ON booth_publication_voter(booth_id)");
+			statement.executeUpdate("CREATE INDEX idx_booth_publication_voter_voter_id ON booth_publication_voter(voter_id)");
+			statement.executeUpdate("CREATE INDEX idx_booth_publication_voter_serial_no ON booth_publication_voter(serial_no)");
+			
+			statement.executeUpdate("CREATE INDEX idx_booth_booth_id ON booth(booth_id)");
+			statement.executeUpdate("CREATE INDEX idx_booth_part_no ON booth(part_no)");
+			statement.executeUpdate("CREATE INDEX idx_booth_part_name ON booth(part_name)");
+			statement.executeUpdate("CREATE INDEX idx_booth_tehsil_id ON booth(tehsil_id)");
+			statement.executeUpdate("CREATE INDEX idx_booth_year ON booth(year)");
+			statement.executeUpdate("CREATE INDEX idx_booth_constituency_id ON booth(constituency_id);");
+			statement.executeUpdate("CREATE INDEX idx_booth_local_election_body_id ON booth(local_election_body_id)");
+			statement.executeUpdate("CREATE INDEX idx_booth_publication_date_id ON booth(publication_date_id)");
+			statement.executeUpdate("CREATE INDEX idx_booth_ward_id ON booth(ward_id)");
+			
+			statement.executeUpdate("CREATE INDEX idx_user_user_id ON user(user_id)");
+			statement.executeUpdate("CREATE INDEX idx_user_username ON user(username)");
+			statement.executeUpdate("CREATE INDEX idx_user_password ON user(password)");
+			
+			statement.executeUpdate("CREATE INDEX idx_user_access_location_user_id ON user_access_location(user_id)");
+			statement.executeUpdate("CREATE INDEX idx_user_access_location_location_level_id ON user_access_location(location_level_id)");
+			statement.executeUpdate("CREATE INDEX idx_user_access_location_location_value ON user_access_location(location_value)");
+			
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_voter_id ON voter_sms_sent(voter_id)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_ward_id ON voter_sms_sent(ward_id)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_booth_id ON voter_sms_sent(booth_id)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_mobile_no ON voter_sms_sent(mobile_no)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_rating ON voter_sms_sent(rating)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_is_synched ON voter_sms_sent(is_synched)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_sent_status ON voter_sms_sent(sent_status)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_is_voted ON voter_sms_sent(is_voted)");
+			statement.executeUpdate("CREATE INDEX idx_voter_sms_sent_tdp_cadre_id ON voter_sms_sent(tdp_cadre_id)");
+			
+			connection.commit();
+			statement.close();
+			connection.close();
+			
 			Date endTime = new Date();
 			System.out.println("Time Taken - "+(endTime.getTime() - startTime.getTime())/(1000*60)+" Minutes");
 			
