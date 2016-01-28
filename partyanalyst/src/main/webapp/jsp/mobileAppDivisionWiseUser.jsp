@@ -30,6 +30,7 @@
 </style>
 <div class="container">
 	<div class="row">
+		<div class="text-danger text-center" id="errDivId"></div>
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
@@ -42,9 +43,16 @@
 								<input class="form-control" id="Date" type="text" placeholder="Select Date range">
 							</div>
 						</span>
-						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="BBB User" onclick="getUsersSummary(2)" checked>BBB User</input></label>
+						<span class="pull-right font-12">
+							<input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
+							<input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
+							<input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
+							<input type="checkbox" id="allUsersId" checked="true" class="usersCls" value="All"> All &nbsp;&nbsp;</label>
+							<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
+						</span>
+						<!--<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="BBB User" onclick="getUsersSummary(2)" checked>BBB User</input></label>
 						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Field User" onclick="getUsersSummary(2)" >Field User</input></label>
-						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Geo User" onclick="getUsersSummary(2)" >Geo User</input></label>
+						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Geo User" onclick="getUsersSummary(2)" >Geo User</input></label>-->
 					</h4>
 				</div>
 				<div class="panel-body bg_EF">
@@ -135,11 +143,11 @@ jQuery( document ).ready(function( $ ) {
 });
 
 $(document).on('click','.applyBtn',function(){
-	getUsersSummary(2);
+	getUsersSummary(2,userArr);
 });
-getUsersSummary(1);
+getUsersSummary(1,["All"]);
 //getUsersSummary('${param.divisionId}','${param.fromDate}','${param.toDate}');
-function getUsersSummary(searchTypeId){
+function getUsersSummary(searchTypeId,userArr){
 	
 	var locationId = '';
 	var locationType = "ward";
@@ -176,14 +184,18 @@ function getUsersSummary(searchTypeId){
 			startDate=dateArray[0].trim();
 			endDate=dateArray[1].trim();	
 		}
+		else{
+			startDate = '${param.fromDate}';
+			endDate = '${param.toDate}';
+		}
 	}
-	var userType = $("input[name='userTypeRadio']:checked").val();
+	//var userType = $("input[name='userTypeRadio']:checked").val();
 	var jsObj = {
 		locationId : locationId,
 		locationType:locationType,
 		startDate:startDate,
 		endDate:endDate,
-		userType : userType
+		usersArr : userArr
 	};
 	$.ajax({
 		type : "GET",
@@ -230,6 +242,29 @@ function getUsersSummary(searchTypeId){
 	$(document).on("click",".openTab",function(){
 		window.open("showGoogleMapDetails.action?userId="+$(this).attr("attr_userId")+"&divisonId="+$(this).attr("attr_divisonId")+"&surveyDate="+$(this).attr("attr_surveydate"), "new window", "scrollbars=1,height=900,width=1300");
 	});
+	
+	var userArr = [];
+$(document).on('click','#getDetailsId',function(){
+	
+	$("#errDivId").html("");
+	userArr = [];
+	var index = 0;
+	$(".usersCls").each(function(){
+		var id = $(this).attr("id");
+		var checked = document.getElementById(id).checked;
+		if(checked){
+			index = 1;
+			var value = $(this).val();
+			userArr.push(value);
+		}
+	});
+	
+	if(index == 0){
+		$("#errDivId").html("Please Select Atleast One User");
+		return;
+	}
+	getUsersSummary(2,userArr);
+});
 </script>
 </body>
 </html>

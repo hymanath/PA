@@ -23,6 +23,7 @@
 <body>
 <div class="container">
 	<div class="row">
+		<div class="text-danger text-center" id="errDivId"></div>
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
@@ -87,8 +88,8 @@ jQuery( document ).ready(function( $ ) {
 
 $(document).on('click','.applyBtn',function(){
 	//getAccessValues();
-	getTotalDetails(["All"]);
-	getLocationWiseDetails(["All"]);
+	getTotalDetails(userArr);
+	getLocationWiseDetails(userArr);
 });
 
 var locationIds = [];
@@ -312,17 +313,27 @@ function getTotalDetails(usersArr){
 		}
 	});
 }
+var userArr = [];
+
 $(document).on('click','#getDetailsId',function(){
 	
-	var userArr = [];
+	$("#errDivId").html("");
+	userArr = [];
+	var index = 0;
 	$(".usersCls").each(function(){
 		var id = $(this).attr("id");
 		var checked = document.getElementById(id).checked;
 		if(checked){
+			index = 1;
 			var value = $(this).val();
 			userArr.push(value);
 		}
 	});
+	
+	if(index == 0){
+		$("#errDivId").html("Please Select Atleast One User");
+		return;
+	}
 	getTotalDetails(userArr);
 	getLocationWiseDetails(userArr);
 });
