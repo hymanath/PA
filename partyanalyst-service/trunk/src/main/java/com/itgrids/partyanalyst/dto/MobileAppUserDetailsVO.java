@@ -33,8 +33,15 @@ public class MobileAppUserDetailsVO implements Serializable{
 	private int				errorCode;
 	private String			statusMsg;
 	private int				divisionVoters;
+	private int 			totalVoters;
 	
 	
+	public int getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(int totalVoters) {
+		this.totalVoters = totalVoters;
+	}
 	public int getDivisionVoters() {
 		return divisionVoters;
 	}
