@@ -3585,7 +3585,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		    		vo.setSurveyTime(voter.getSurveyTime()!= null ? voter.getSurveyTime().toString() : "");
 		    		vo.setImeiNo(voter.getImeiNo() != null ? voter.getImeiNo().toString():"");
 		    		vo.setVersionNo(voter.getVersionNo() != null ? voter.getVersionNo() : "");
-		    		vo.setIsVoted(voter.getIsVoted() != null ? voter.getIsVoted().toString() : "");
+		    		vo.setIsVoted(voter.getIsVoted() != null ? voter.getIsVoted().toString() : "N");
 		    		vo.setVotedTime(voter.getVotedTime() != null ? voter.getVotedTime().toString() : "");
 		    		vo.setTdpCadreId(voter.getTdpCadreId()!= null ? voter.getTdpCadreId() : 0l);
 		    		returnList.add(vo);
