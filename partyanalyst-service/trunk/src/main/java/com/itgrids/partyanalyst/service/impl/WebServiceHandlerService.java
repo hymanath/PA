@@ -3437,6 +3437,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   try{
 			   List<Object[]> list = boothPublicationVoterDAO.getBoothVoterDetails(boothId,voterId);
 			   
+			   if(list == null || list.size() == 0)
+				   list = boothPublicationVoterDAO.getBoothVoterDetails(voterId);
+			   
 			   if(list != null && list.size() > 0)
 			   {
 				   Object[] params = list.get(0);
