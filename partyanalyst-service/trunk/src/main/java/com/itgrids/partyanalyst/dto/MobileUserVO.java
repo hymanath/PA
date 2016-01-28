@@ -17,7 +17,7 @@ public class MobileUserVO implements Serializable{
 	private Long   mobilescount;
 	private Long   ratingId;
 	private Long   ratingCount;
-	
+	private String formatDate;
 	private List<MobileUserVO>  dateList;
 	private List<MobileUserVO>  ratingList;
 	
@@ -105,6 +105,12 @@ public class MobileUserVO implements Serializable{
 	public void setTdpCadreCount(Long tdpCadreCount) {
 		this.tdpCadreCount = tdpCadreCount;
 	}
-        	
+	public String getFormatDate() {
+		return formatDate;
+	}
+	public void setFormatDate(String formatDate) {
+		this.formatDate = formatDate;
+	}
+       	
 	
 }
