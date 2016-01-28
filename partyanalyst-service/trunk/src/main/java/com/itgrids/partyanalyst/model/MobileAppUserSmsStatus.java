@@ -30,6 +30,8 @@ private Long onlineSent;
 private Long simCardSent;
 private Date statusDate;
 private Date insertedTime;
+//private String imeiNo;
+
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 @Column(name = "mobile_app_user_sms_status_id", unique = true, nullable = false)
@@ -103,6 +105,14 @@ public Date getInsertedTime() {
 public void setInsertedTime(Date insertedTime) {
 	this.insertedTime = insertedTime;
 }
-
+/*
+@Column(name = "imei_no")
+public String getImeiNo() {
+	return imeiNo;
+}
+public void setImeiNo(String imeiNo) {
+	this.imeiNo = imeiNo;
+}
+*/
 
 }
