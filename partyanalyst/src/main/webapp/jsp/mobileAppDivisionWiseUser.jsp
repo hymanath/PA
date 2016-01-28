@@ -165,7 +165,7 @@ function getUsersSummary(locId,fromDate,toDate){
 
 
 	$(document).on("click",".openTab",function(){
-		window.open("showGoogleMapDetails.action?userId="+$(this).attr("attr_userId")+"&divisonId="+$(this).attr("attr_divisonId")+"&surveyDate="+$(this).attr("attr_surveydate"), "new window", "height=900,width=1300");
+		window.open("showGoogleMapDetails.action?userId="+$(this).attr("attr_userId")+"&divisonId="+$(this).attr("attr_divisonId")+"&surveyDate="+$(this).attr("attr_surveydate"), "new window", "scrollbars=1,height=900,width=1300");
 	});
 </script>
 </body>
