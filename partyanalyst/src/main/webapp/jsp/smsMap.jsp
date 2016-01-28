@@ -46,6 +46,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 						
 							<div id="voterTableDivId"></div>
+							<div id="map1"></div>
 						</div>
 					</div>
 				</div>
@@ -63,6 +64,8 @@
 
 $("#chosenselectId").chosen();
 var locations = [];
+var markersArr = [];
+var pathArr = [];
   var markers = new Array();
   var map;
 	showMapForMobileAppUserVoter("onload");
@@ -70,7 +73,7 @@ var locations = [];
 	{	
 		var datesArr=[];
 		if(fromType=="onload"){
-			datesArr.push("2016-01-27");
+			datesArr.push("${param.surveyDate}");
 		}
 		if(fromType=="multiSelect"){
 			var dates=$("#chosenselectId").val();
@@ -80,8 +83,8 @@ var locations = [];
 		}
 			
 		var jsObj={
-			userId:"168",
-			divisonId:"31917",
+			userId:"${param.userId}",
+			divisonId:"${param.divisonId}",
 			datesArr:datesArr
 		}
 						
@@ -188,6 +191,70 @@ var locations = [];
 	$("#datesMultiSelectId").click(function(){
 		showMapForMobileAppUserVoter("multiSelect");
 	});
+	
+	getUserTrackingDetails();
+	function getUserTrackingDetails(){
+		var jsObj={
+			userId:"${param.userId}"
+		}
+		
+		$.ajax({
+		 type: "POST",
+		 url: "getUserTrackingDetailsAction.action",
+		 data: {task:JSON.stringify(jsObj)},
+		}).done(function( result ) {
+			markersArr = [];
+			pathArr = [];
+			if(result != null && result.length > 0){
+				for(var i in result){
+					var obj={"lat":result[i].latitude, "lng":result[i].longitude};
+					pathArr.push(obj);
+					var temparr=[];
+					temparr.push(result[i].surveyDate);
+					temparr.push(result[i].latitude);
+					temparr.push(result[i].longitude);
+					markersArr.push(temparr);
+				}
+			}
+			buildUserTrackingMap(markersArr,pathArr);
+		});
+	}
+	
+	function buildUserTrackingMap(markersArray,pathArray){
+		var infoWindow;
+		var map1 = new google.maps.Map(document.getElementById('map1'), {
+			zoom: 5,
+			center: {lat: 17.3700, lng: 78.4800},
+			mapTypeId: google.maps.MapTypeId.TERRAIN
+		});
+		
+		var flightPath = new google.maps.Polyline({
+			path: markersArray,
+			geodesic: true,
+			strokeColor: '#FF0000',
+			strokeOpacity: 1.0,
+			strokeWeight: 2
+		});
+
+		  
+			var infowindow = new google.maps.InfoWindow();
+			var marker,i;
+			for (i = 0; i < pathArray.length; i++) {
+				marker = new google.maps.Marker({
+					position: new google.maps.LatLng(pathArray[i][1], pathArray[i][2]),
+					map: map1
+				});
+				  
+				google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					return function() {
+						infowindow.setContent(pathArray[i][0]);
+						infowindow.open(map1, marker);
+					}
+				})(marker, i));
+			}
+			
+			flightPath.setMap(map1);
+	}
 </script>
 </body>
 </html>
