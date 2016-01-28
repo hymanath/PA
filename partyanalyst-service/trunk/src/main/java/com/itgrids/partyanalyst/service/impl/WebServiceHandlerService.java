@@ -3408,12 +3408,20 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   mobileAppUserVoter.setVotedTime(format.parse(inputVo.getVotedTime()));
 		   if(inputVo.getTdpCadreId() != null && inputVo.getTdpCadreId() > 0)
 			   mobileAppUserVoter.setTdpCadreId(inputVo.getTdpCadreId());
+		   
+		   
+		   String mobileNo = inputVo.getMobileNum();
+		   String smsStatus = null;
+		   
+		   if(mobileNo != null && mobileNo.length() == 10 && checkForValidMobileNo(mobileNo))
+			   smsStatus = sendSmsForGHMCVoter(mobileNo,inputVo.getVoterId(),inputVo.getBoothId());
+		   else
+			   smsStatus = "Invalid Mobile";
+		   
+		   mobileAppUserVoter.setSmsStatus(smsStatus);
 		   mobileAppUserVoterDAO.save(mobileAppUserVoter);
 		   rs.setMessage("success");
 		   
-		   String mobileNo = inputVo.getMobileNum();
-		   if(mobileNo != null && mobileNo.length() == 10)
-			   sendSmsForGHMCVoter(mobileNo,inputVo.getVoterId(),inputVo.getBoothId());
 		   }
 		   catch (Exception e) {
 				Log.error("exception riased at saveMobileAppUserVoterData", e);
@@ -3423,9 +3431,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   
 	   }
 	   
-	   public ResultStatus sendSmsForGHMCVoter(String mobileNo,Long voterId,Long boothId)
+	   public String sendSmsForGHMCVoter(String mobileNo,Long voterId,Long boothId)
 	   {
-		   ResultStatus resultStatus = new ResultStatus();
+		   String result = null;
 		   try{
 			   List<Object[]> list = boothPublicationVoterDAO.getBoothVoterDetails(boothId,voterId);
 			   
@@ -3455,7 +3463,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						   relationStr = "D/O";
 				   }
 				   else if(relation.equalsIgnoreCase("Husband") && gender.equalsIgnoreCase("F"))
-					   relationStr = "H/O";
+					   relationStr = "W/O";
 				   
 				   if(relativeName != null)
 					   sb.append(relationStr+" : "+relativeName+"\n");
@@ -3478,19 +3486,41 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					   sb.append("Route to Polling Station\n");
 					   sb.append(url);
 				   }
-				   smsGatewayService.sendSMS(mobileNo,sb.toString(),IConstants.ITGRIDS_USERNAME_FOR_SMS,IConstants.ITGRIDS_PASSWORD_FOR_SMS);		 
+				   result = smsGatewayService.sendSMS(mobileNo,sb.toString(),IConstants.ITGRIDS_USERNAME_FOR_SMS,IConstants.ITGRIDS_PASSWORD_FOR_SMS);		 
 			   }
 			      
-			   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		   }catch(Exception e)
 		   {
 			   Log.error("Exception Occured in sendSmsForGHMCVoter Method - ",e);
-			   resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			   resultStatus.setExceptionEncountered(e);
+			   result = "Error";
 		   }
-		   return resultStatus;
+		   return result;
 	   }
 	   
+	   public boolean checkForValidMobileNo(String mobileNo)
+	   {
+		  try{
+			  List<String> list = new ArrayList<String>(0);
+			  list.add("1111111111");
+			  list.add("2222222222");
+			  list.add("3333333333");
+			  list.add("4444444444");
+			  list.add("5555555555");
+			  list.add("6666666666");
+			  list.add("7777777777");
+			  list.add("8888888888");
+			  list.add("9999999999");
+			  list.add("0000000000");
+			  
+			  if(list.contains(mobileNo))
+				  return false;
+			  
+		  }catch(Exception e)
+		  {
+			  Log.error(e);
+		  }
+		  return true;
+	   }
 	   public ResultStatus saveMobileAppUserSmsStatusData(MobileAppUserSmsStatusVO inputVo)
 	   {
 		   ResultStatus rs = new ResultStatus();
