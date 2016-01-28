@@ -5036,7 +5036,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			
 			public List<MobileUserVO> setRatings(){
 				List<MobileUserVO> ratingsList=new ArrayList<MobileUserVO>();
-				for(Long i=1l;i<=5l;i++){
+				for(Long i=0l;i<=5l;i++){
 					MobileUserVO vo=new MobileUserVO();
 					vo.setRatingId(i);
 					vo.setRatingCount(0l);
