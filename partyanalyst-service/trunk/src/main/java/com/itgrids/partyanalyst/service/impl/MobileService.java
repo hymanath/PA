@@ -5045,13 +5045,21 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				return ratingsList;
 			}
 			
-			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDate, String endDate){
+			public MobileAppUserDetailsVO getUserWiseDivisionSummary(Long locationId, String locationType, String startDateString, String endDateString){
 				MobileAppUserDetailsVO finalVO = new MobileAppUserDetailsVO();
 				try {
 					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-					Date fromDate = sdf.parse(startDate);
-					Date toDate = sdf.parse(endDate);
 					
+					Date fromDate=null;
+					Date toDate=null;
+					if(startDateString!=null && startDateString.trim().length()>0){
+						fromDate=sdf.parse(startDateString);
+					}
+					if(endDateString!=null && endDateString.trim().length()>0){
+						toDate=sdf.parse(endDateString);
+					}
+
+					  
 					finalVO.setRatings(getBasicRatings());
 					
 					List<MobileAppUserDetailsVO> fnlLst  = new ArrayList<MobileAppUserDetailsVO>(); 
@@ -5390,10 +5398,14 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						locationDtls.setLongitude(locationDetails.getLongitude());
 						locationDtls.setLatitude(locationDetails.getLatitude());
 						locationDtls.setUniqueId(locationDetails.getUniqueId());
+						locationDtls.setImeiNo(locationDetails.getImeiNo());
 						
-					     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");							
-					     locationDtls.setSurveyTime(format.parse(locationDetails.getDateTime()));
-					     locationDtls.setGpsTime(format.parse(locationDetails.getGpsTIME()));
+					     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");	
+					     if(locationDetails.getDateTime() != null && locationDetails.getDateTime().length()>0)
+					    	 locationDtls.setSurveyTime(format.parse(locationDetails.getDateTime()));
+					     if(locationDetails.getGpsTIME() != null && locationDetails.getGpsTIME().length()>0)
+					    	 locationDtls.setGpsTime(format.parse(locationDetails.getGpsTIME()));
+					     
 					    locationDtls.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 					    try
 						{
