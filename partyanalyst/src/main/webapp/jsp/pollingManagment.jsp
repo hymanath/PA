@@ -168,6 +168,7 @@ var jsObj={
 						str+='<th>TOTAL</th>';
 						str+='<th>PUBLIC</th>';
 						str+='<th>CADRE</th>';
+						str+='<th>None</th>';
 						str+='<th>01</th>';
 						str+='<th>02</th>';
 						str+='<th>03</th>';
@@ -272,6 +273,7 @@ function getTotalDetails(usersArr){
 					str+='</td>';
 				str+='</tr>';
 				str+='<tr>';
+				    str+='<th>None</th>';
 					str+='<td>01</td>';
 					str+='<td>02</td>';
 					str+='<td>03</td>';
