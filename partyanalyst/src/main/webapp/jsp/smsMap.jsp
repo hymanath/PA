@@ -9,6 +9,7 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/>
 </head>
 <style>
 .chosen-choices{
@@ -65,6 +66,7 @@
   <script src="dist/mobileApp/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
  <!--<script src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
 <script async defer
@@ -115,7 +117,13 @@ var pathArr = [];
 				
 				var str='';
 				str+='<tr><td>USER ID</td><td>'+result[0].currentTabUserId+'</td></tr>';
-				str+='<tr><td>NAME</td><td>'+result[0].name+'</td></tr>';
+				str+='<tr><td>USERNAME</td><td>'+result[0].name+'</td></tr>';
+				if(result[0].userName != null && result[0].userName.trim().length > 0){
+					str+='<tr><td>NAME</td><td>'+result[0].userName+'</td></tr>';
+				}
+				else{
+					str+='<tr><td>NAME</td><td> - </td></tr>';
+				}
 				str+='<tr><td>MOBILE NO</td><td>'+result[0].mobileNo+'</td></tr>';
 				str+='<tr><td>START TIME</td><td>'+result[0].availableDates[result[0].availableDates.length-1]+'</td></tr>';
 				str+='<tr><td>END TIME</td><td>'+result[0].availableDates[0]+'</td></tr>';
@@ -128,12 +136,13 @@ var pathArr = [];
 				$("#useDetailsTableId").html(str);
 				
 				var str1='';
-				str1+='<table class="table table-bordered bg_ff">';
+				str1+='<table class="table table-bordered bg_ff" id="votersDataTable">';
 				str1+='<thead class="bg_cc">';
 				str1+='<th>VOTER ID</th>';
 				str1+='<th>MOBILE NO</th>';
 				str1+='<th>RATING</th>';
 				str1+='<th>LATITUDE LONGITUDE</th>';
+				str1+='<th>SURVEY TIME</th>';
 				str1+='</thead>';
 				str1+='<tbody id="voterTableBodyId">';
 				for(var j in result){
@@ -143,11 +152,14 @@ var pathArr = [];
 						str1+='<td>'+result[j].voterMobileNo+'</td>';
 						str1+='<td>'+result[j].rating+'</td>';
 						str1+='<td>'+result[j].latitude+' , '+result[j].longitude+'</td>';
+						str1+='<td>'+result[j].surveyDate+'</td>';
 					str1+='</tr>';
 				}
 				str1+='</tbody>';
 				str1+='</table>';
 				$("#voterTableDivId").html(str1);
+				$("#votersDataTable").dataTable();
+				$("#votersDataTable").removeClass("dataTable");
 				
 				var str2='';
 				if(result[0].availableDates!=null && result[0].availableDates.length>0){

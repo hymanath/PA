@@ -88,6 +88,23 @@ jQuery( document ).ready(function( $ ) {
 
 $(document).on('click','.applyBtn',function(){
 	//getAccessValues();
+	$("#errDivId").html("");
+	userArr = [];
+	var index = 0;
+	$(".usersCls").each(function(){
+		var id = $(this).attr("id");
+		var checked = document.getElementById(id).checked;
+		if(checked){
+			index = 1;
+			var value = $(this).val();
+			userArr.push(value);
+		}
+	});
+	
+	if(index == 0){
+		$("#errDivId").html("Please Select Atleast One User");
+		return;
+	}
 	getTotalDetails(userArr);
 	getLocationWiseDetails(userArr);
 });
