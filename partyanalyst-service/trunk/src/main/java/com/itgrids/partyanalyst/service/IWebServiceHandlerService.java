@@ -145,4 +145,5 @@ public interface IWebServiceHandlerService {
 	public ResultStatus saveMobileAppUserSmsStatusData(MobileAppUserSmsStatusVO inputVo);
     public List<MobileAppUserVoterVO> updateBoothVoter(MobileAppUserVoterVO inputVO);
     public String saveUserLocationData(UserLocationTrackingVo inputVO);
+    public String updateVoterVotedData(MobileAppUserVoterVO inputVO);
 }

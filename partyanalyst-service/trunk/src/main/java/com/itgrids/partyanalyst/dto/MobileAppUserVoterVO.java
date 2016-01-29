@@ -19,10 +19,17 @@ public class MobileAppUserVoterVO {
 	private String votedTime;
 	private Long tdpCadreId;
 	private List<Long> voterIds;
+	private List<String> mobileNums;
 	
 	
 	
 	
+	public List<String> getMobileNums() {
+		return mobileNums;
+	}
+	public void setMobileNums(List<String> mobileNums) {
+		this.mobileNums = mobileNums;
+	}
 	public List<Long> getVoterIds() {
 		return voterIds;
 	}
