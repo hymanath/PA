@@ -45,9 +45,15 @@ public class TabDetailsVO implements java.io.Serializable{
 	private String 			voterMobileNo;
 	private String			rating;
 	private String			boothpartno;
+	private String 			userName;
 	
 	
-	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public Long getId() {
 		return id;
 	}

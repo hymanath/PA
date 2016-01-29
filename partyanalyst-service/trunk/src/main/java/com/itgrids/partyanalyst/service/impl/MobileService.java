@@ -5347,6 +5347,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					tabDetailsVoList.get(0).setCurrentTabUserId(mobileAppUser.getMobileAppUserId());
 					tabDetailsVoList.get(0).setName(mobileAppUser.getUserName());
 					tabDetailsVoList.get(0).setMobileNo(mobileAppUser.getMobileNo());
+					tabDetailsVoList.get(0).setUserName(mobileAppUser.getName());
 				}
 				
 				//get no of sms set
