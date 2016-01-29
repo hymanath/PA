@@ -641,5 +641,7 @@
 	<pattern>/callCenterTrainingAgent*</pattern>
 	<pattern>/pollingManagmentAction*</pattern>
 	<pattern>/mobileAppDivisionWiseUsersAction*</pattern>
+	<pattern>/pollManagmentDashboardAction*</pattern>
+	<pattern>/pollManagmentAreaWiseInfoAction*</pattern>
 	 </decorator> 
 </decorators>

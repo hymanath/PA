@@ -11322,6 +11322,15 @@
 			<param name="root">tabDetailsVOList</param>
 		</result>
 	</action>
-	
+	<action name="pollManagmentDashboardAction" class="activityAction" method="pollManagmentDashboard">
+	    <result name="success">/jsp/pollManagmentDashboard.jsp</result>
+		<result name="error">/jsp/loginForm.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=pollManagmentDashboard</result>
+	</action>
+	<action name="pollManagmentAreaWiseInfoAction" class="activityAction" method="pollManagmentAreaWiseInfo">
+	    <result name="success">/jsp/pollManagmentAreaWiseInfo.jsp</result>
+		<result name="error">/jsp/loginForm.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=pollManagmentAreaWiseInfo</result>
+	</action>
 </package>
 </struts>      
