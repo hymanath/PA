@@ -1842,4 +1842,39 @@ public class WebServiceHandler {
 			}
 			return null;
 		}
+		
+		
+		@POST
+		@Path("/updateVoterVotedData")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public String updateVoterVotedData(MobileAppUserVoterVO inputVO)
+		{
+			try
+			{
+	           return  webServiceHandlerService.updateVoterVotedData(inputVO);
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in  updateVoterVotedData from app:"+e.getMessage());
+			}
+			return null;
+		}
+		
+		@POST
+		@Path("/SendSmsToVoter")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public ResultStatus SendSmsToVoter(MobileAppUserVoterVO inputVO)
+		{
+			try
+			{
+	           return smsSenderService.sendSmsToVoter(inputVO);
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in  SendSmsToVoter from app:"+e.getMessage());
+			}
+			return null;
+		}
+		
+		
 }
