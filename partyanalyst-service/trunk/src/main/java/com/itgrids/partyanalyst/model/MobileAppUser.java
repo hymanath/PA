@@ -29,7 +29,7 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	
 	private Long mobileAppUserId;
 	private String userName;
-	
+	private String name;
 	private String password;
 	private String uniqueCode;
 	
@@ -188,6 +188,13 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	}
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+	@Column(name = "name")
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

@@ -5087,6 +5087,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							MobileAppUserDetailsVO temp = new MobileAppUserDetailsVO();
 							temp.setMobileAppUserId(obj[0]!=null?Long.valueOf(obj[0].toString()):null);
 							temp.setName(obj[1]!=null?obj[1].toString():"");
+							temp.setUserName(obj[8] != null ? obj[8].toString():"");
 							temp.setMobileNo(obj[2]!=null?obj[2].toString():"");
 							temp.setUniqueCode(obj[4]!=null?obj[4].toString():"");
 							temp.setDate(obj[5]!=null?obj[5].toString():"");
