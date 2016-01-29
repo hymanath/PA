@@ -224,7 +224,12 @@ function getUsersSummary(searchTypeId,userArr){
 		for(var i in result.userRslt){
 			str1+="<tr class='bg_FFF'>";
 			str1+="<td class='openTab' attr_divisonId="+'${param.divisionId}'+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" style='cursor:pointer;'><a href='javascript:{}' style='color:green;font-weight:bold;'>"+result.userRslt[i].name+"</a></td>";
-			str1+="<td>"+result.userRslt[i].userName+"</td>";
+			if(result.userRslt[i].userName.trim().length > 0){
+				str1+="<td>"+result.userRslt[i].userName+"</td>";
+			}
+			else{
+				str1+="<td class='text-center'> - </td>";
+			}
 			str1+="<td>"+result.userRslt[i].mobileNo+"</td>";
 			str1+="<td>"+result.userRslt[i].date+"</td>";
 			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";
