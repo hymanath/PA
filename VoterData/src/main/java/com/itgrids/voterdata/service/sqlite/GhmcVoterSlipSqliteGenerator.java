@@ -22,8 +22,26 @@ public class GhmcVoterSlipSqliteGenerator {
 	public static void main(String[] args) {
 		
 		GhmcVoterSlipSqliteGenerator generator = new GhmcVoterSlipSqliteGenerator();
-		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31910,107);
-
+		
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31811,8);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31825,22);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31894,91);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31828,25);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31952,149);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31948,145);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31953,150);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31866,63);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31929,126);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31919,116);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31922,119);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31808,5);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31813,10);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31815,12);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31818,15);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31821,18);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31940,137);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31943,140);
+		generator.genearateSqlite("E:/KP/ghmcVoterMain.sqlite","E:/KP/Sqlites",31944,141);
 	}
 	
 	public boolean genearateSqlite(String basePath,String targetFolder,int wardId,int wardNo)
