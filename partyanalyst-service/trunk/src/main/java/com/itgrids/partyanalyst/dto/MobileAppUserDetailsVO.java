@@ -34,8 +34,15 @@ public class MobileAppUserDetailsVO implements Serializable{
 	private String			statusMsg;
 	private int				divisionVoters;
 	private int 			totalVoters;
+	private String 			userName;
 	
 	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public int getTotalVoters() {
 		return totalVoters;
 	}
