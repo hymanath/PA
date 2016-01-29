@@ -105,7 +105,8 @@
 					<table class="table table-bordered tableVM bg_ff" id="usrSmmryTbl">
 						<thead>
 							<tr>
-								<th rowspan=2>NAME</th>
+								<th rowspan=2>USER ID</th>
+								<th rowspan=2>USERNAME</th>
 								<th rowspan=2>MOBILE NO</th>
 								<th rowspan=2>DATE</th>
 								<th rowspan=2>VOTER ID'S CAPTURED</th>
@@ -223,6 +224,7 @@ function getUsersSummary(searchTypeId,userArr){
 		for(var i in result.userRslt){
 			str1+="<tr class='bg_FFF'>";
 			str1+="<td class='openTab' attr_divisonId="+'${param.divisionId}'+" attr_surveydate="+result.userRslt[i].date+" attr_userId="+result.userRslt[i].mobileAppUserId+" style='cursor:pointer;'><a href='javascript:{}' style='color:green;font-weight:bold;'>"+result.userRslt[i].name+"</a></td>";
+			str1+="<td>"+result.userRslt[i].userName+"</td>";
 			str1+="<td>"+result.userRslt[i].mobileNo+"</td>";
 			str1+="<td>"+result.userRslt[i].date+"</td>";
 			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";

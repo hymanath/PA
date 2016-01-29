@@ -70,7 +70,6 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap"></script>
 <script type="text/javascript">
-
 $("#chosenselectId").chosen();
 var locations = [];
 var markersArr = [];
@@ -141,7 +140,7 @@ var pathArr = [];
 					str1+='<tr>';
 						str1+='<td>'+result[j].votercardnum+'</td>';
 						if(result[j].mobileNo==null)result[j].mobileNo="-";
-						str1+='<td>'+result[j].mobileNo+'</td>';
+						str1+='<td>'+result[j].voterMobileNo+'</td>';
 						str1+='<td>'+result[j].rating+'</td>';
 						str1+='<td>'+result[j].latitude+' , '+result[j].longitude+'</td>';
 					str1+='</tr>';
@@ -161,6 +160,7 @@ var pathArr = [];
 				$("#chosenselectId").chosen();
 				$("#chosenselectId").trigger("chosen:updated");
 				
+				
 			}else{
 				$("#useDetailsTableId").html("<h4>No Data Available</h4>");
 				$("#voterTableDivId").html("<h4>No Data Available</h4>");
@@ -173,7 +173,7 @@ var pathArr = [];
     function buildMap(locations){
 		var map='';
 		map = new google.maps.Map(document.getElementById('map'), {
-		  zoom: 15,
+		  zoom: 10,
 		  center: new google.maps.LatLng(17.4277287, 78.4129442),
 		  mapTypeId: google.maps.MapTypeId.ROADMAP
 		});
