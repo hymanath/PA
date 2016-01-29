@@ -3666,5 +3666,37 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			return "success";
 			
 		}
+	   
+	   public String updateVoterVotedData(MobileAppUserVoterVO inputVO)
+	   {
+		   String result ="";
+		   Log.debug("Entered into updateVoterVotedData service method");
+			try
+			{
+				 SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+				 List<Object[]> list = mobileAppUserVoterDAO.mobileAppUserVoterId(inputVO.getVoterIds());
+				 if(list != null && list.size() > 0)
+				 {
+					for(Object[] obj : list)	
+					{
+						MobileAppUserVoter mobileAppUserVoter = mobileAppUserVoterDAO.get((Long) obj[0]);
+						mobileAppUserVoter.setIsVoted(inputVO.getIsVoted());
+						  if(inputVO.getVotedTime() != null && !inputVO.getVotedTime().isEmpty())
+					    mobileAppUserVoter.setVotedTime(format.parse(inputVO.getVotedTime()));
+						mobileAppUserVoterDAO.save(mobileAppUserVoter);
+						result = "success";
+					}
+				 }
+				 
+			}catch(Exception e)
+			{
+				Log.error("Exception raised in  updateVoterVotedData service method");
+				e.printStackTrace();
+				result = "fail";
+			}
+			return result;
+	   }
+	   
+	   
 }
 

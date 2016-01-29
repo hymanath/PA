@@ -333,4 +333,13 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		return (Long)query.uniqueResult();
 		
 	}
+	
+	public List<Object[]> mobileAppUserVoterId(List<Long> voterIds)
+	{
+		Query query = getSession().createQuery(" select mobileAppUserVoterId,model.voterId " +
+				" from MobileAppUserVoter model " +
+				" where model.voterId in(:voterIds)");
+				query.setParameterList("voterIds", voterIds);
+		return query.list();
+	}
 }

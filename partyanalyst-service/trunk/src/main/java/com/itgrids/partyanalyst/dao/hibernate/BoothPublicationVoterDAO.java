@@ -7990,11 +7990,11 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	{
 		Query query = getSession().createQuery(" select model.booth.partNo,model.serialNo," +
 				" model.booth.villagesCovered,model.voter.name,model.voter.relativeName,model.voter.voterIDCardNo," +
-				" model.booth.localBodyWard.name,model1.mobileNo,model.voter.relationshipType,model.voter.gender from BoothPublicationVoter model,TdpCadre model1" +
+				" model.booth.localBodyWard.name,model1.mobileNo,model.voter.relationshipType,model.voter.gender,model.booth.latitude,model.booth.longitude from BoothPublicationVoter model,TdpCadre model1" +
 				" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId=17" +
 				" and model1.mobileNo is not null and length(model1.mobileNo) = 10 and model1.mobileNo <> '9999999999' and model1.mobileNo !='' " +
 				" group by model1.tdpCadreId order by model1.tdpCadreId ");
-	
+		
 		return query.list();
 	
 	}
@@ -8017,4 +8017,23 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
 
+	public List<Object[]> getVoterInfo(List<String> mobileNos)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.booth.partNo,model.serialNo," +
+				" model.booth.villagesCovered,model.voter.name,model.voter.relativeName,model.voter.voterIDCardNo," +
+				" model.booth.localBodyWard.name,model1.mobileNo,model.voter.relationshipType,model.voter.gender,model.booth.latitude,model.booth.longitude from BoothPublicationVoter model,TdpCadre model1" +
+				" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId=17" +
+				" and model1.mobileNo is not null and length(model1.mobileNo) = 10 and model1.mobileNo <> '9999999999' and model1.mobileNo !='' ");
+		if(mobileNos != null && mobileNos.size() > 0)
+			str.append(" and model.mobileNo in(:mobileNos)");
+			str.append(" group by model1.tdpCadreId order by model1.tdpCadreId ");
+		Query query = getSession().createQuery(str.toString());
+		if(mobileNos != null && mobileNos.size() > 0)
+			query.setParameterList("mobileNos", mobileNos);
+	
+		return query.list();
+	
+	}
+	
 }
