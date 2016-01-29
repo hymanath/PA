@@ -793,4 +793,51 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String pollManagmentDashboard()
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+				
+		return Action.SUCCESS;
+	}
+	
+	public String pollManagmentAreaWiseInfo()
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		Long userId = regVO.getRegistrationID();
+		
+		//idNameVOList = activityService.getAccessValuesOfUserId(userId,"All");
+				
+		return Action.SUCCESS;
+	}
 }

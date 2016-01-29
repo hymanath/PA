@@ -1,0 +1,174 @@
+body
+{
+	background:#FFF !important;
+	font-family: 'Roboto', sans-serif;
+	color:#666
+}
+* , select
+{
+	outline: 0 !important;
+}
+table , h1 , h2 , h3 , h4 , h5 , h6  , p
+{
+	margin:0px !important;
+}
+.m_top10
+{
+	margin-top:10px;
+}
+.tableVM tr td 
+{
+	vertical-align:middle !important
+}
+.font-12
+{
+	font-size:12px;
+}
+.bg_EF
+{
+	background:#EFF3F4
+}
+.bg_cc
+{
+	background:#ccc !important
+}
+.panel , .panel-heading
+{
+	border-radius:0px;
+	margin:0px;
+}
+.bg_ff
+{
+	background:#fff;
+}
+.inputGroupCustom .input-group-addon
+{
+	border-radius:0px;
+	background:#FFF
+}
+.inputGroupCustom input
+{
+	border-left:0px;
+}
+.pad_0
+{
+	padding:0px !important;
+}
+.bg_F0
+{
+	background:#F0F0F0 !important
+}
+.bg_FFF
+{
+	background:#FFFAE4
+}
+.tableDiv tr td
+{
+	padding:15px !important;
+}
+.panelCustom .panel-heading
+{
+	background:#fff;
+	padding:18px;
+}
+.navTabsCustom li a
+{
+	color:#666
+}
+.navTabsCustom li
+{
+	text-transform:uppercase;
+}
+.navTabsCustom li a:hover
+{
+	background:none;
+	border-radius:0px;
+	border-color:transparent;
+}
+.navTabsCustom > li.active > a, .navTabsCustom > li.active > a:hover, .navTabsCustom > li.active > a:focus
+{
+	border-width:0px 0px 4px 0px !important;
+	border-bottom-style:solid;
+	border-bottom-color:#5C2D25;
+	border-radius:0px;
+}
+.adminTabs > li.active > a, .adminTabs > li.active > a:hover, .adminTabs > li.active > a:focus
+{
+	width:100%;
+	border-width:1px 0px 1px 1px !important;
+	border-radius:0px;
+	border-color:#ddd;
+	margin-right:3px;
+}
+.adminTabs > li
+{
+	width:100.5%;
+	color:#666
+}
+.adminTabs > li a
+{
+	color:#666
+}
+.adminTabs
+{
+	border:1px solid #ddd;
+	padding:3px 0px 3px 3px;
+}
+.tableCustom tr td
+{
+	border:0px !important;
+	padding:12px !important;
+}
+.progressCustom
+{
+	margin:0px;
+	text-align:right;
+	box-shadow:none;
+	background-color:#F0F0F0;
+	color:#666;
+	font-weight:500
+}
+.progressGreen
+{
+	background-color:#0BC78C
+}
+.progressYellow
+{
+	background-color:#FED501
+}
+.progressBringal
+{
+	background-color:#82758F
+}
+.font-10
+{
+	font-size:10px !important; 
+}
+.pad_right0
+{
+	padding-right:0px;
+}
+.pad_left0
+{
+	padding-left:0px;
+}
+.modalCustom
+{
+	background:#ccc;
+	border-radius:0px;
+}
+.modalCustom .modal-header , .modalCustom .modal-footer
+{
+	border:0px;
+	text-align:left
+}
+.btnCustom , .btnCustom:hover , .btnCustom:focus , .btnCustom:active
+{
+	background-color:#00B17D !important;
+	border:1px solid #00B17D !important;
+	border-radius:0px;
+}
+.btn
+{
+	border-radius:0px;
+}
