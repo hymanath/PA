@@ -46,6 +46,8 @@ public class MobileAppUserVoter {
 	private Booth booth;
 	private String smsStatus;
 	private String isCalled;
+	private String isTracked;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "mobile_app_user_voter_id", unique = true, nullable = false)
@@ -223,8 +225,11 @@ public class MobileAppUserVoter {
 	public void setIsCalled(String isCalled) {
 		this.isCalled = isCalled;
 	}
-	
-	
-	
-
+	@Column(name="is_tracked")
+	public String getIsTracked() {
+		return isTracked;
+	}
+	public void setIsTracked(String isTracked) {
+		this.isTracked = isTracked;
+	}
 }
