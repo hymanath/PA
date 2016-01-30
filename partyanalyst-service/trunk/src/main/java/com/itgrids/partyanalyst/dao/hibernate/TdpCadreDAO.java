@@ -5630,4 +5630,14 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("enrollMentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 			return (Long) query.uniqueResult();
 		}
+		public List<Object[]> getDivisionWiseCadresCount(List<Long> divisionIds){
+			
+			Query query = getSession().createQuery("select tc.userAddress.ward.constituencyId,count(tc.tdpCadreId) as totalCadres" +
+					"  from TdpCadre tc  where tc.userAddress.ward.constituencyId in (:divisionIds) and tc.isDeleted = 'N' " +
+					" and tc.enrollmentYear = :enrollMentYear " +
+					" group by tc.userAddress.ward.constituencyId ");
+			query.setParameterList("divisionIds",divisionIds);
+			query.setParameter("enrollMentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+			return query.list();
+		}
 }
