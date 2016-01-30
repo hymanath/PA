@@ -108,7 +108,8 @@
 								<th rowspan=2>USER ID</th>
 								<th rowspan=2>USERNAME</th>
 								<th rowspan=2>MOBILE NO</th>
-								<th rowspan=2>DATE</th>
+								<th rowspan=2>START TIME</th>
+								<th rowspan=2>END TIME</th>
 								<th rowspan=2>VOTER ID'S CAPTURED</th>
 								<th rowspan=2>MOBILE NO'S CAPTURED</th>
 								<th colspan=6>RATINGS</th>
@@ -231,7 +232,8 @@ function getUsersSummary(searchTypeId,userArr){
 				str1+="<td class='text-center'> - </td>";
 			}
 			str1+="<td>"+result.userRslt[i].mobileNo+"</td>";
-			str1+="<td>"+result.userRslt[i].date+"</td>";
+			str1+="<td>"+result.userRslt[i].startTime+"</td>";
+			str1+="<td>"+result.userRslt[i].endtime+"</td>";
 			str1+="<td>"+result.userRslt[i].voterIdsCollected+"</td>";
 			str1+="<td>"+result.userRslt[i].noOfMobiles+"</td>";
 			for(var j in result.userRslt[i].ratings){
