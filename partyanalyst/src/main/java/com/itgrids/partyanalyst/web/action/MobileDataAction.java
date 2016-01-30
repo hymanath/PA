@@ -808,4 +808,19 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		return Action.SUCCESS;
 	}
+	public String divisionWiseVotingActivity(){
+		try {
+			jObj = new JSONObject(getTask());
+			JSONArray arr = jObj.getJSONArray("locationIds");
+			List<Long> locationIds = new ArrayList<Long>();
+			for(int i=0;i<arr.length();i++){
+				locationIds.add(new Long(arr.get(i).toString()));
+			}
+			
+			pollManagementSummaryVOList= mobileService.divisionWiseVotingActivity(locationIds);
+		} catch (Exception e) {
+			LOG.error("Exception raised at divisionWiseVotingActivity", e);
+		}
+		return Action.SUCCESS;
+	}
 }
