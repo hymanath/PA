@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
+import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -63,9 +64,18 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private String				fromDate;
 	private String				toDate;
 	private String				division;
+	private PollManagementVO	pollManagementVO;
 	
 	
 	
+	public PollManagementVO getPollManagementVO() {
+		return pollManagementVO;
+	}
+
+	public void setPollManagementVO(PollManagementVO pollManagementVO) {
+		this.pollManagementVO = pollManagementVO;
+	}
+
 	public Long getDivisionId() {
 		return divisionId;
 	}
@@ -699,6 +709,32 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getUserTrackingDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String overAllPollManagementSummary(){
+		try {
+			jObj = new JSONObject(getTask());
+			JSONArray arr = jObj.getJSONArray("locationIds");
+			List<Long> locationIds = new ArrayList<Long>();
+			for(int i=0;i<arr.length();i++){
+				locationIds.add(new Long(arr.get(i).toString()));
+			}
+			
+			pollManagementVO = mobileService.overAllPollManagementSummary(locationIds);
+		} catch (Exception e) {
+			LOG.error("Exception raised at overAllPollManagementSummary", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String overAllPollManagementSummaryByDivisionOrWard(){
+		try {
+			jObj = new JSONObject(getTask());
+			pollManagementVO = mobileService.overAllPollManagementSummaryByDivisionOrWard(jObj.getLong("divisonId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at overAllPollManagementSummaryByDivisionOrWard", e);
 		}
 		return Action.SUCCESS;
 	}
