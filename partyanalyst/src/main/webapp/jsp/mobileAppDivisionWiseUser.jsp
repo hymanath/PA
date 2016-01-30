@@ -61,9 +61,9 @@ var locatinId = '${divisionId}';
 							</div>
 							<div class="col-md-5" style="margin-top:5px">
 								<label class="font-12"><input type="checkbox" id="allUsersId" checked="true" class="usersClsAll" value="All"> All &nbsp;&nbsp;</label>
-								<label class="font-12"><input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
-								<label class="font-12"><input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
-								<label class="font-12"><input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
+								<label class="font-12"><input type="checkbox" id="bbbUserId" checked="true" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
+								<label class="font-12"><input type="checkbox" id="fieldUserId" checked="true" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
+								<label class="font-12"><input type="checkbox" id="geoUserId" checked="true" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
 								<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
 							</div>
 							<div class="col-md-3">
