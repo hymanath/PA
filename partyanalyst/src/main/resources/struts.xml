@@ -11345,5 +11345,17 @@
 		</result>
 	</action>
 	
+	<action name="getNotYetPolledMembersAction" class="mobileDataAction" method="getNotYetPolledMembers">
+		<result type="json" name="success">
+	    	<param name="root">pollManagementVOList</param>
+	    </result>
+	</action>
+	  
+	<action name="getAllDivisonsAction" class="mobileDataAction" method="getAllDivisons">
+		<result type="json" name="success">
+	    	<param name="root">idNamevoList</param>
+	    </result>
+	</action>  
+	
 </package>
 </struts>      
