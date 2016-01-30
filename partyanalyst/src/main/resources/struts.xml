@@ -11357,5 +11357,10 @@
 	    </result>
 	</action>  
 	
+	<action name="divisonVotingAcitivtyAction" class="mobileDataAction" method="divisonVotingAcitivty">
+		<result type="json" name="success">
+	    	<param name="root">pollManagementSummaryVOList</param>
+	    </result>
+	</action>
 </package>
 </struts>      
