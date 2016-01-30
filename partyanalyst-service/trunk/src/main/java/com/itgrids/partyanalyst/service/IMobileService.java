@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
@@ -72,6 +73,7 @@ public interface IMobileService {
 	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
 	public String saveUserLocationData(List<UserLocationTrackingVo> userLocationDetails);
 	public List<TabDetailsVO> getUserTrackingDetails(Long userId);
+	 public List<IdNameVO> getAssignedWardsByUser(Long userId);
 	public PollManagementVO overAllPollManagementSummary( List<Long> locationIds);
 	public PollManagementVO overAllPollManagementSummaryByDivisionOrWard(Long wardId);
 	public List<PollManagementVO> getNotYetPolledMembers(String resultType,Long locationId);

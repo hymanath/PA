@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.UserAccessLevelValue;
 public interface IUserAccessLevelValueDAO extends GenericDao<UserAccessLevelValue,Long>{
 	public List<Object[]> getAccessValuesOfUserId(Long userId);
 	public List<Object[]> getAccessValuesByUser(Long userId,String type);
+	public List<Object[]> getAssignedWardsByUser(Long userId);
 }
