@@ -125,8 +125,9 @@ var pathArr = [];
 					str+='<tr><td>NAME</td><td> - </td></tr>';
 				}
 				str+='<tr><td>MOBILE NO</td><td>'+result[0].mobileNo+'</td></tr>';
-				str+='<tr><td>START TIME</td><td>'+result[0].availableDates[result[0].availableDates.length-1]+'</td></tr>';
-				str+='<tr><td>END TIME</td><td>'+result[0].availableDates[0]+'</td></tr>';
+				str+='<tr><td>START TIME</td><td>'+result[0].availableDates[0]+'</td></tr>';
+				str+='<tr><td>END TIME</td><td>'+result[0].availableDates[result[0].availableDates.length-1]+'</td></tr>';
+				//str+='<tr><td>END TIME</td><td>'+result[0].availableDates[0]+'</td></tr>';
 				if(result[0].noofSmsSent==null)result[0].noofSmsSent=0;
 				str+='<tr><td>NO OF SMS SENT</td><td>'+result[0].noofSmsSent+'</td></tr>';
 				if(result[0].mobileNosCount==null)result[0].mobileNosCount=0;
