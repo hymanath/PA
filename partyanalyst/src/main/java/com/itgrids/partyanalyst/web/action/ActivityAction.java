@@ -69,8 +69,15 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private IMobileService			mobileService;
 	private List<MobileUserVO> 		mobileUserVoList;
 	private MobileUserVO 			mobileUserVO;
+	private Long divisonId;
 	
 	
+	public Long getDivisonId() {
+		return divisonId;
+	}
+	public void setDivisonId(Long divisonId) {
+		this.divisonId = divisonId;
+	}
 	public MobileUserVO getMobileUserVO() {
 		return mobileUserVO;
 	}
