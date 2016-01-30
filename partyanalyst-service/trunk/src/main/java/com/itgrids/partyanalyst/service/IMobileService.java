@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
+import com.itgrids.partyanalyst.dto.PollManagementSummaryVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -77,4 +78,5 @@ public interface IMobileService {
 	public PollManagementVO overAllPollManagementSummary( List<Long> locationIds);
 	public PollManagementVO overAllPollManagementSummaryByDivisionOrWard(Long wardId);
 	public List<PollManagementVO> getNotYetPolledMembers(String resultType,Long locationId);
+	public List<PollManagementSummaryVO> divisionWiseVotingActivity(List<Long> locationIds);
 }
