@@ -5598,4 +5598,34 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			}
 			return finalVO;
 	 }
+	 public List<PollManagementVO> getNotYetPolledMembers(String resultType,Long locationId){
+		 
+		 List<PollManagementVO> fnlList = new ArrayList<PollManagementVO>();
+		 
+		 try{
+			 
+			 List<Object[]> notYetPolledMembers = mobileAppUserVoterDAO.getNotYetPolledMembers(resultType, locationId);			 
+			 if(notYetPolledMembers !=null && notYetPolledMembers.size()>0){
+				 for (Object[] members : notYetPolledMembers) {
+					
+					 PollManagementVO mainvo = new PollManagementVO();
+					 
+					 mainvo.setId(members[0] !=null ? (Long)members[0]:0l);
+					 
+					 mainvo.setVoterCardNo(members[1] !=null ? members[1].toString():"");
+					 mainvo.setName(members[2] !=null ? members[2].toString():"");
+					 mainvo.setMobileNo(members[3] !=null ? members[3].toString():"");
+					 mainvo.setSmsStatus(members[4] !=null ? members[4].toString():"");
+					 mainvo.setCalledStatus(members[5] !=null ? members[5].toString():"");
+					 
+					 fnlList.add(mainvo);
+				}
+			 }
+			 
+			 
+		 }catch (Exception e) {
+			 LOG.error("Exception raised at getNotYetPolledMembers", e);
+		}
+		 return fnlList;
+	 }
 }

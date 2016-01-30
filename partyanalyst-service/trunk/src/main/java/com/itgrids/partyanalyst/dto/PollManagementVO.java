@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public class PollManagementVO implements Serializable{
     
+	private Long id;
+	private String name;
+	
 	private Long divisions;
 	private Long booths;
 	private Long capturedVoters;
@@ -16,7 +19,49 @@ public class PollManagementVO implements Serializable{
 	private Long otherPartyVoters=0l;
 	private Long nonOptedVoters=0l;
 	
+	private String voterCardNo;
+	private String mobileNo;
+	private String smsStatus;
+	private String calledStatus;
 	
+	
+	
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getSmsStatus() {
+		return smsStatus;
+	}
+	public void setSmsStatus(String smsStatus) {
+		this.smsStatus = smsStatus;
+	}
+	public String getCalledStatus() {
+		return calledStatus;
+	}
+	public void setCalledStatus(String calledStatus) {
+		this.calledStatus = calledStatus;
+	}
 	public Long getCapturedVoters() {
 		return capturedVoters;
 	}

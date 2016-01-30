@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
 import com.itgrids.partyanalyst.model.MobileAppUserVoter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVoter, Long> implements IMobileAppUserVoterDAO{
 
@@ -369,4 +370,53 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 				query.setParameterList("voterIds", voterIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getNotYetPolledMembers(String resultType,Long locationId){//BoothId
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select distinct model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.mobileNo," +
+				" model.smsStatus,model.isCalled " +
+				" from MobileAppUserVoter model" +
+				" where model.isVoted is null or model.isVoted ='N'" +
+				" and model.boothId =:locationId  ");
+		if(resultType !=null && resultType.equalsIgnoreCase("totalVoters"))
+		{	
+			
+		}else if(resultType !=null && resultType.equalsIgnoreCase("totalCadres")){
+			str.append(" and model.tdpCadreId is not null ");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("totalCapturedCadres")){
+			str.append(" and model.tdpCadreId is not null and model.isTracked = 'Y' ");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("inclinedVoters")){
+			str.append(" and model.rating in (:inclinedVoters)");
+			
+		}else if(resultType !=null && resultType.equalsIgnoreCase("undecidedVoters")){
+			str.append(" and model.rating in (:undecidedVoters)");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("otherPartyVoters")){
+			str.append(" and model.rating in (:otherPartyVoters)");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("nonOptedVoters")){
+			str.append(" and model.rating in (:nonOptedVoters)");
+		}
+		
+		Query  query = getSession().createQuery(str.toString());
+		
+		query.setParameter("locationId", locationId);
+		
+		if(resultType !=null && resultType.equalsIgnoreCase("inclinedVoters")){
+			query.setParameterList("inclinedVoters", IConstants.GHMC_INCLINED_VOTERS);
+		}
+		if(resultType !=null && resultType.equalsIgnoreCase("undecidedVoters")){
+			query.setParameterList("undecidedVoters", IConstants.GHMC_UNDECIDED_VOTERS);
+		}
+		if(resultType !=null && resultType.equalsIgnoreCase("otherPartyVoters")){
+			query.setParameterList("otherPartyVoters", IConstants.GHMC_OTHER_VOTERS);
+		}
+		if(resultType !=null && resultType.equalsIgnoreCase("nonOptedVoters")){
+			query.setParameterList("nonOptedVoters", IConstants.GHMC_NONOPTED_VOTERS);
+		}
+		
+		
+		return query.list();
+	}
+	
 }

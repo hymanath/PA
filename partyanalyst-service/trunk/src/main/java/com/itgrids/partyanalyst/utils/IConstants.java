@@ -960,4 +960,9 @@ public interface IConstants {
     public static final String ITGRIDS_USERNAME_FOR_SMS = "ITGridsapi";
     public static final String ITGRIDS_PASSWORD_FOR_SMS = "03274254";
     
+    public static final Long[] GHMC_UNDECIDED_VOTERS = {3L};
+    public static final Long[] GHMC_INCLINED_VOTERS ={4L,5L};
+    public static final Long[] GHMC_OTHER_VOTERS ={1L,2L};
+    public static final Long[] GHMC_NONOPTED_VOTERS ={0L};
+    
 }
