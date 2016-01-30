@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IMobileAppUserSmsStatusDAO;
 import com.itgrids.partyanalyst.model.MobileAppUserSmsStatus;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MobileAppUserSmsStatusDAO extends GenericDaoHibernate<MobileAppUserSmsStatus, Long> implements IMobileAppUserSmsStatusDAO{
 
@@ -40,10 +41,16 @@ public class MobileAppUserSmsStatusDAO extends GenericDaoHibernate<MobileAppUser
 	}
 	
 	public List<Long> getNoOfSmsCountOfUser(Long userId,List<Date> dates){
-		Query query = getSession().createQuery(" select model.sentSms from MobileAppUserSmsStatus model " +
+		/*Query query = getSession().createQuery(" select model.sentSms from MobileAppUserSmsStatus model " +
 				" where model.mobileAppUserId=:userId and date(model.statusDate) in (:dates) order by date(model.insertedTime) desc ");
 		query.setParameter("userId", userId);
+		query.setParameterList("dates", dates);*/
+		
+		Query query = getSession().createQuery(" select count(model.mobileAppUserVoterId) from MobileAppUserVoter model " +
+				" where model.mobileAppUserId=:userId and date(model.surveyTime) in (:dates) and model.smsStatus like '%"+IConstants.SUCCESS+"%' order by date(model.insertedTime) desc ");
+		query.setParameter("userId", userId);
 		query.setParameterList("dates", dates);
+		
 		return query.list();
 	}
 }
