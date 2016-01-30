@@ -21,14 +21,53 @@
                     	<div class="col-md-4 col-md-offset-8">
                         	
                                 <label>Select Division</label>
-                                <select>
-                                    <option>Cherlapalli</option>
-                                </select>	
+                                <select id="divisonSelectId"></select>	
                         </div>
                     </div>
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-                        	<table class="table table-bordered bg_ff" id="summaryTableId"></table>
+                        	<table class="table table-bordered bg_ff" id="summaryTableId">
+								<tr>
+								<td rowspan="4" style="vertical-align: middle;">
+								<h3 id="totalBoothsId">0</h3>
+								<p>TOTAL BOOTHS</p>
+								</td>
+								<td rowspan="4" style="vertical-align: middle;">
+								<h3 id="totalVotersId">0</h3>
+								<p>TOTAL VOTERS</p>
+								</td>
+								<td rowspan="4" style="vertical-align: middle;">
+								<h3 id="totalCapturedVotersId">0</h3>
+								<p>TOTAL CAPTURED VOTERS</p>
+								</td>
+								<td>
+								<p><span id="inclinedVotersId">0</span> - INCLINED VOTERS</p>
+								</td>
+								<td rowspan="4" style="vertical-align: middle;">
+								<h3 id="totalCadreId">0</h3>
+								<p>TOTAL CADRE</p>
+								</td>
+								<td rowspan="4" style="vertical-align: middle;">
+								<h3 id="totalCapturedCadreId">0</h3>
+								<p>TOTAL CAPTURED CADRE</p>
+								</td>
+								</tr>
+								<tr>
+								<td style="vertical-align: middle;">
+								<p><span id="undecidedVotersId">0</span> - UNDECIDED VOTERS</p>
+								</td>
+								</tr>
+								<tr>
+								<td style="vertical-align: middle;">
+								<p><span id="otherPartyId">0</span> - OTHER PARTY</p>
+								</td>
+								</tr>
+								<tr>
+								<td style="vertical-align: middle;">
+								<p><span id="nonOptedId">0</span> - NON OPTED</p>
+								</td>
+								</tr>
+							</table>
                         </div>
                     </div>
                     <div class="row">
@@ -413,10 +452,45 @@
 
 var divisonIdGlob = "${param.divisonId}";
 
-overAllPollManagementSummaryByDivisionOrWard();
+var EqualHeight = $("#Getheight").height();
+$("#PutHeight").css("height",EqualHeight);
+
+
+	getAllDivisons();
+	function getAllDivisons(){
+		var jsObj={}
+		
+		$.ajax({
+			type:"POST",
+			url:"getAllDivisonsAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Divison</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					if(result[i].id == divisonIdGlob){
+						str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>';
+					}else{
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
+					}
+					  
+				}
+			}
+			$("#divisonSelectId").html(str);
+			$("#divisonSelectId").dropkick();
+			overAllPollManagementSummaryByDivisionOrWard();
+			  
+		});
+	}
+	
+$("#divisonSelectId").change(function(){
+	overAllPollManagementSummaryByDivisionOrWard();
+});
+
 function overAllPollManagementSummaryByDivisionOrWard(){
 	var jsObj={
-		divisonId:"${param.divisonId}"
+		divisonId:$("#divisonSelectId").val()
 	}
 	
 	$.ajax({
@@ -426,96 +500,86 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 		}).done(function(result){
 			var str='';
 			if(result != null){
-				str+='<tr>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>'+result.booths+'</h3>';
-				str+='<p>TOTAL BOOTHS</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>'+result.totalVoters+'</h3>';
-				str+='<p>TOTAL VOTERS</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>'+result.capturedVoters+'</h3>';
-				str+='<p>TOTAL CAPTURED VOTERS</p>';
-				str+='</td>';
-				str+='<td>';
-				str+='<p>'+result.inclinedVoters+' - INCLINED VOTERS</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>'+result.totalCadre+'</h3>';
-				str+='<p>TOTAL CADRE</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>'+result.capturedCadre+'</h3>';
-				str+='<p>TOTAL CAPTURED CADRE</p>';
-				str+='</td>';
-				str+='</tr>';
-				str+='<tr>';
-				str+='<td style="vertical-align: middle;">';
-				str+='<p>'+result.unDecidedVoters+' - UNDECIDED VOTERS</p>';
-				str+='</td>';
-				str+='</tr>';
-				str+='<tr>';
-				str+='<td style="vertical-align: middle;">';
-				str+='<p>'+result.otherPartyVoters+' - OTHER PARTY</p>';
-				str+='</td>';
-				str+='</tr>';
-				str+='<tr>';
-				str+='<td style="vertical-align: middle;">';
-				str+='<p>'+result.nonOptedVoters+' - NON OPTED</p>';
-				str+='</td>';
-				str+='</tr>';
-			}else{
-				str+='<tr>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>0</h3>';
-				str+='<p>TOTAL BOOTHS</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>0</h3>';
-				str+='<p>TOTAL VOTERS</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>0</h3>';
-				str+='<p>TOTAL CAPTURED VOTERS</p>';
-				str+='</td>';
-				str+='<td>';
-				str+='<p>'+result.inclinedVoters+' - INCLINED VOTERS</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>0</h3>';
-				str+='<p>TOTAL CADRE</p>';
-				str+='</td>';
-				str+='<td rowspan="4" style="vertical-align: middle;">';
-				str+='<h3>0</h3>';
-				str+='<p>TOTAL CAPTURED CADRE</p>';
-				str+='</td>';
-				str+='</tr>';
-				str+='<tr>';
-				str+='<td style="vertical-align: middle;">';
-				str+='<p>0 - UNDECIDED VOTERS</p>';
-				str+='</td>';
-				str+='</tr>';
-				str+='<tr>';
-				str+='<td style="vertical-align: middle;">';
-				str+='<p>0 - OTHER PARTY</p>';
-				str+='</td>';
-				str+='</tr>';
-				str+='<tr>';
-				str+='<td style="vertical-align: middle;">';
-				str+='<p>0 - NON OPTED</p>';
-				str+='</td>';
-				str+='</tr>';
+				if(result.booths==null)result.booths=0;
+				if(result.totalVoters==null)result.totalVoters=0;
+				if(result.capturedVoters==null)result.capturedVoters=0;
+				if(result.inclinedVoters==null)result.inclinedVoters=0;
+				if(result.totalCadre==null)result.totalCadre=0;
+				if(result.capturedCadre==null)result.capturedCadre=0;
+				if(result.unDecidedVoters==null)result.unDecidedVoters=0;
+				if(result.otherPartyVoters==null)result.otherPartyVoters=0;
+				if(result.nonOptedVoters==null)result.nonOptedVoters=0;
+				
+				$("#totalBoothsId").html(result.booths);
+				$("#totalVotersId").html(result.totalVoters);
+				$("#totalCapturedVotersId").html(result.capturedVoters);
+				$("#inclinedVotersId").html(result.inclinedVoters);
+				$("#totalCadreId").html(result.totalCadre);
+				$("#totalCapturedCadreId").html(result.capturedCadre);
+				$("#undecidedVotersId").html(result.unDecidedVoters);
+				$("#otherPartyId").html(result.otherPartyVoters);
+				$("#nonOptedId").html(result.nonOptedVoters);
 			}
-			$("#summaryTableId").html(str);
 		});
 }
+	
+	
+
+	$(document).on("click",".notPolledVoters",function(){
+	  
+	  var boothId = $(this).attr("attr_boothId");
+	  var searchType = $(this).attr("attr_searchType");
+	  
+	  getNotYetPolledMembers(boothId,searchType);
+	  
+	  
+	});
+
+	function getNotYetPolledMembers(boothId,searchType){
+	  
+	  var jsObj={
+	    searchType:searchType,
+	    boothId   :boothId
+	  }
+	  $.ajax({
+	    type:"POST",
+	    url:"getNotYetPolledMembersAction.action",
+	    data : {task:JSON.stringify(jsObj)} ,
+	  }).done(function(result){
+	    var str="";    
+	    if(result !=null && result.length>0){
+	      for(var i in result){
+	        str+='<tr>';
+	            str+='<td><input type="checkbox"></td>';
+	            str+='<td>'+result[i].voterCardNo+'</td>';
+	            str+='<td>'+result[i].name+'</td>';
+	            str+='<td>'+result[i].mobileNo+'</td>';
+	            if(result[i].smsStatus !=null && result[i].smsStatus=="success"){
+	              str+='<td>YES</td>';
+	            }else{
+	              str+='<td>NO</td>';
+	            }
+	            
+	            if(result[i].calledStatus !=null && result[i].calledStatus=="Y"){
+	              str+='<td><button class="btn btn-sm btn-success btnCustom">Dialed</button></td>';
+	            }else{
+	              str+='<td><button class="btn btn-sm btn-danger">Not Dialed</button></td>';
+	            }
+	            
+	        str+='</tr>';
+	      }
+	      
+	    }else{
+	      str+='<tr><td>No Data Available.</td></tr>';
+	    }
+	    
+	    $("#notPolledMembersbodyId").html(str);
+	    
+	  });
+	  
+	}
 
 
-
-var EqualHeight = $("#Getheight").height();
-$("#PutHeight").css("height",EqualHeight)
 </script>
 </body>
 </html>
