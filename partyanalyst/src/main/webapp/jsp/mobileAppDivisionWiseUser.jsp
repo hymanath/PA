@@ -44,10 +44,11 @@
 							</div>
 						</span>
 						<span class="pull-right font-12">
+						    <input type="checkbox" id="allUsersId"  class="usersClsAll" value="All"> All &nbsp;&nbsp;</label>
 							<input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
 							<input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
 							<input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
-							<input type="checkbox" id="allUsersId" checked="true" class="usersCls" value="All"> All &nbsp;&nbsp;</label>
+							
 							<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
 						</span>
 						<!--<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="BBB User" onclick="getUsersSummary(2)" checked>BBB User</input></label>
@@ -273,6 +274,26 @@ $(document).on('click','#getDetailsId',function(){
 		return;
 	}
 	getUsersSummary(2,userArr);
+});
+
+$("#allUsersId").change(function () {
+    $("input:checkbox").prop('checked', $(this).prop("checked"));
+	//alert($(this).prop("checked"));
+});
+
+$(".usersCls").change(function () {   
+	var isAllChecked=true;
+	   $(".usersCls").each(function(){
+		   //console.log($(this).is(":checked"));	 
+		   var isChecked = $(this).is(":checked");
+			if(!isChecked){
+				isAllChecked=false;
+				$('#allUsersId').prop('checked',false);
+			}
+		
+	   });
+	if(isAllChecked)
+		 $("input:checkbox").prop('checked', $(this).prop("checked"));
 });
 </script>
 </body>
