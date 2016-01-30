@@ -82,105 +82,8 @@
 											<p>P<br/>O<br/>L<br/>L<br/>E<br/>D<br/><br/> V<br/>O<br/>T<br/>E<br/>S</p>
 										</div>
 										<div class="col-md-11 col-xs-12 col-sm-11" style="border-left:1px solid #ddd;">
-											<table class="table tableCustom">
-												<tr>
-													<td style="width:20%"></td>
-													<td style="width:5%">TOTAL</td>
-													<td style="width:40%"></td>
-													<td style="width:2%"></td>
-													<td style="width:10%">POLLED</td>
-													<td style="width:13%">YET TO POLL</td>
-												</tr>
-												<tr>
-													<td>TOTAL VOTERS</td>
-													<td>50000</td>
-													<td>
-														<div class="progress progressCustom">
-														  <div class="progress-bar progressGreen" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-															
-														  </div>
-														  60%
-														</div>
-													</td>
-													<td><i class="glyphicon glyphicon-arrow-up text-success"></i></td>
-													<td>50000</td>
-													<td>50000</td>
-												</tr>
-												<tr>
-													<td>CADRES</td>
-													<td>50000</td>
-													<td>
-														<div class="progress progressCustom">
-														  <div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-															
-														  </div>
-														  60%
-														</div>
-													</td>
-													<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>
-													<td>50000</td>
-													<td>50000</td>
-												</tr>
-												<tr>
-													<td>INCLINED VOTERS</td>
-													<td>50000</td>
-													<td>
-														<div class="progress progressCustom">
-														  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-															
-														  </div>
-														  60%
-														</div>
-													</td>
-													<td><i class="glyphicon glyphicon-arrow-up text-success"></i></td>
-													<td>50000</td>
-													<td>50000</td>
-												</tr>
-												<tr>
-													<td>UNDECIDED VOTERS</td>
-													<td>50000</td>
-													<td>
-														<div class="progress progressCustom">
-														  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-															
-														  </div>
-														  60%
-														</div>
-													</td>
-													<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>
-													<td>50000</td>
-													<td>50000</td>
-												</tr>
-												<tr>
-													<td>OTHER PARTY</td>
-													<td>50000</td>
-													<td>
-														<div class="progress progressCustom">
-														  <div class="progress-bar progressBringal" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-															
-														  </div>
-														  60%
-														</div>
-													</td>
-													<td><i class="glyphicon glyphicon-arrow-up text-success"></i></td>
-													<td>50000</td>
-													<td>50000</td>
-												</tr>
-												<tr>
-													<td>NOT CAPTURED VOTERS</td>
-													<td>50000</td>
-													<td>
-														<div class="progress progressCustom">
-														  <div class="progress-bar progressBringal" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-															
-														  </div>
-														  60%
-														</div>
-													</td>
-													<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>
-													<td>50000</td>
-													<td>50000</td>
-												</tr>
+											<table class="table tableCustom" id="votingActivityTableID">
+												
 											</table>
 										</div>
 									</div>
@@ -480,12 +383,14 @@ $("#PutHeight").css("height",EqualHeight);
 			$("#divisonSelectId").html(str);
 			$("#divisonSelectId").dropkick();
 			overAllPollManagementSummaryByDivisionOrWard();
+			divisonVotingAcitivty();
 			  
 		});
 	}
 	
 $("#divisonSelectId").change(function(){
 	overAllPollManagementSummaryByDivisionOrWard();
+	divisonVotingAcitivty();
 });
 
 function overAllPollManagementSummaryByDivisionOrWard(){
@@ -578,7 +483,95 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 	  });
 	  
 	}
-
+	
+	function divisonVotingAcitivty(){
+		var jsObj={
+			divisonId:$("#divisonSelectId").val()
+		}
+		
+		$.ajax({
+			type:"POST",
+			url:"divisonVotingAcitivtyAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			var str='';
+			if(result != null && result.length > 0){
+				str+='<tr>';
+				str+='<td style="width:20%"></td>';
+				str+='<td style="width:5%">TOTAL</td>';
+				str+='<td style="width:40%"></td>';
+				//str+='<td style="width:2%"></td>';
+				str+='<td style="width:10%">POLLED</td>';
+				str+='<td style="width:13%">YET TO POLL</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td>TOTAL VOTERS</td>';
+				str+='<td>'+result[0].totalVoters+'</td>';
+				str+='<td>';
+				str+='<div class="progress progressCustom">';
+				if(result[0].pollPercent==null)result[0].pollPercent=0;
+				str+='<div class="progress-bar progressGreen" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].pollPercent+'%;">';
+				str+='</div>'+result[0].pollPercent+' %</div>';
+				str+='</td>';
+				//str+='<td><i class="glyphicon glyphicon-arrow-up text-success"></i></td>';
+				str+='<td>'+result[0].totalVotersPolled+'</td>';
+				str+='<td>'+result[0].totalVotersYetToBePolled+'</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td>CADRES</td>';
+				str+='<td>'+result[0].cadreCount+'</td>';
+				str+='<td>';
+				str+='<div class="progress progressCustom">';
+				str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].cadrepollPercent+'%;"></div>'+result[0].cadrepollPercent+' %</div>';
+				str+='</td>';
+				//str+='<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>';
+				str+='<td>'+result[0].cadreCountPolled+'</td>';
+				str+='<td>'+result[0].cadreCountYetToBePolled+'</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td>TOTAL CAPTIRED CADRES</td>';
+				str+='<td>'+result[0].capCadreCount+'</td>';
+				str+='<td>';
+				str+='<div class="progress progressCustom">';
+				str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].capCadrePollPercent+'%;"></div>'+result[0].capCadrePollPercent+' %</div>';
+				str+='</td>';
+				//str+='<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>';
+				str+='<td>'+result[0].capCadreCountPolled+'</td>';
+				str+='<td>'+result[0].capCadreCountYetToBePolled+'</td>';
+				str+='</tr>';
+				
+				if(result[0].subList != null && result[0].subList.length > 0){
+					for(var i in result[0].subList){
+						str+='<tr>';
+						str+='<td>'+result[0].subList[i].name+'</td>';
+						str+='<td>'+result[0].subList[i].totalVoters+'</td>';
+						str+='<td>';
+						str+='<div class="progress progressCustom">';
+						if(result[0].subList[i].pollPercent==null)result[0].subList[i].pollPercent=0;
+						if(i==0)
+						str+='<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].subList[i].pollPercent+'%;">';
+						if(i==1)
+						str+='<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].subList[i].pollPercent+'%;">';	
+						if(i==2)
+						str+='<div class="progress-bar progressBringal" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].subList[i].pollPercent+'%;">';	
+						if(i==3)
+						str+='<div class="progress-bar progressBringal" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].subList[i].pollPercent+'%;">';	
+						str+='</div>'+result[0].subList[i].pollPercent+' %</div>';
+						str+='</td>';
+						//str+='<td><i class="glyphicon glyphicon-arrow-up text-success"></i></td>';
+						str+='<td>'+result[0].subList[i].totalVotersPolled+'</td>';
+						str+='<td>'+result[0].subList[i].totalVotersYetToBePolled+'</td>';
+						str+='</tr>';
+					}
+				}
+				
+												
+			}else{
+				str+='<h4>No Data Available.</h4>';
+			}
+			$("#votingActivityTableID").html(str);
+		});
+	}
 
 </script>
 </body>
