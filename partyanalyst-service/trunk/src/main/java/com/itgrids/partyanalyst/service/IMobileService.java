@@ -74,4 +74,5 @@ public interface IMobileService {
 	public List<TabDetailsVO> getUserTrackingDetails(Long userId);
 	public PollManagementVO overAllPollManagementSummary( List<Long> locationIds);
 	public PollManagementVO overAllPollManagementSummaryByDivisionOrWard(Long wardId);
+	public List<PollManagementVO> getNotYetPolledMembers(String resultType,Long locationId);
 }
