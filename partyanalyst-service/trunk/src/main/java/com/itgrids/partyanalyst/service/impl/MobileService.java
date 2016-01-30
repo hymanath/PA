@@ -78,6 +78,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserLocationTrackingDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -99,6 +100,7 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
@@ -232,9 +234,18 @@ public class MobileService implements IMobileService{
  private IMobileAppUserSmsStatusDAO		mobileAppUserSmsStatusDAO;
  private IUserLocationTrackingDAO userLocationTrackingDAO;
  private IGreaterMuncipalWardDAO		greaterMuncipalWardDAO;
+ private IUserAccessLevelValueDAO		userAccessLevelValueDAO;
  
  
- 
+public IUserAccessLevelValueDAO getUserAccessLevelValueDAO() {
+	return userAccessLevelValueDAO;
+}
+
+public void setUserAccessLevelValueDAO(
+		IUserAccessLevelValueDAO userAccessLevelValueDAO) {
+	this.userAccessLevelValueDAO = userAccessLevelValueDAO;
+}
+
 public IUserLocationTrackingDAO getUserLocationTrackingDAO() {
 	return userLocationTrackingDAO;
 }
@@ -5490,6 +5501,29 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		}
 		 
 		 return voList;
+	 }
+	 
+	 public List<IdNameVO> getAssignedWardsByUser(Long userId){
+		 List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		 try {
+			
+			 List<Object[]> list = userAccessLevelValueDAO.getAssignedWardsByUser(userId);
+			 if(list != null && list.size() > 0){
+				 for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId((Long) (obj[0] != null ? obj[0]:0l));
+					String wardName = obj[1] != null ? obj[1].toString():"";
+					String divisionName = obj[2] != null ? obj[2].toString():"";
+					vo.setName(divisionName+" - ("+wardName+") ");
+					
+					finalList.add(vo);
+				}
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAssignedWardsByUser", e);
+		}
+		return finalList;
 	 }
 	 
 	 public PollManagementVO overAllPollManagementSummary( List<Long> locationIds){

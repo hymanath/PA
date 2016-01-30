@@ -39,4 +39,17 @@ public class UserAccessLevelValueDAO extends GenericDaoHibernate<UserAccessLevel
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	public List<Object[]> getAssignedWardsByUser(Long userId){
+		
+		Query query = getSession().createQuery(" select C.constituencyId," +
+							" C.name, " +
+							" GMW.divisionName " +
+							" from UserAccessLevelValue UALV,Constituency C,GreaterMuncipalWard GMW " +
+							" where UALV.accessLevelValue = C.constituencyId " +
+							" and C.constituencyId = GMW.wardId and UALV.accessLevelId = 8 " +
+							" and UALV.userId = :userId order by C.name ");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
