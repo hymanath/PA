@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VoterSlip Generation</title>
+<title>VOTER SLIP GENERATION - 2016 </title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/mobileApp/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -25,7 +25,7 @@
 					<h4 class="panel-title">
 						<span id="userHeadingId"></span>
 						<div class="pull-right" style="margin-top:-8px">
-						<button type="button" class="btn btn-info" id="datesMultiSelectId">OK</button>
+						<button type="button" class="btn btn-info" id="datesMultiSelectId">GO</button>
 						</div>
 						<div class="pull-right col-md-3" style="margin-top:-6px">
 							<select  class="form-control " multiple id="chosenselectId"></select>
@@ -140,6 +140,7 @@ var pathArr = [];
 				str1+='<table class="table table-bordered bg_ff" id="votersDataTable">';
 				str1+='<thead class="bg_cc">';
 				str1+='<th>VOTER ID</th>';
+				str1+='<th>VOTER NAME</th>';
 				str1+='<th>MOBILE NO</th>';
 				str1+='<th>RATING</th>';
 				str1+='<th>LATITUDE LONGITUDE</th>';
@@ -149,6 +150,7 @@ var pathArr = [];
 				for(var j in result){
 					str1+='<tr>';
 						str1+='<td>'+result[j].votercardnum+'</td>';
+						str1+='<td>'+result[j].votername+'</td>';
 						if(result[j].mobileNo==null)result[j].mobileNo="-";
 						str1+='<td>'+result[j].voterMobileNo+'</td>';
 						str1+='<td>'+result[j].rating+'</td>';
@@ -243,8 +245,8 @@ var pathArr = [];
 	}
 	
 	function buildUserTrackingMap(markersArray,pathArray){
-		console.log(markersArray);
-		console.log(pathArray);
+		//console.log(markersArray);
+		//console.log(pathArray);
 		var infoWindow;
 		var map1 = new google.maps.Map(document.getElementById('map1'), {
 			zoom: 10,

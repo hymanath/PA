@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> GHMC ELECTIONS - 2015  </title>
+<title> GHMC ELECTIONS - 2016  </title>
 <!--<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Daterange/daterangepicker.css" rel="stylesheet" type="text/css">
@@ -27,7 +27,7 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
-					<h4 class="panel-title"> GHMC ELECTIONS - 2015 
+					<h4 class="panel-title"> GHMC ELECTIONS - 2016 
 						<span class="pull-right col-md-3" style="margin-top:-8px">
 							<div class="input-group inputGroupCustom">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
@@ -37,10 +37,10 @@
 							</div>
 						</span>
 						<span class="pull-right">
-						    <input type="checkbox" name="checkBoxName" id="allUsersId" class="usersClsAll" value="All"> All &nbsp;&nbsp;</label>
-							<input type="checkbox" name="checkBoxName" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
-							<input type="checkbox" name="checkBoxName" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
-							<input type="checkbox" name="checkBoxName" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
+						    <input type="checkbox" name="checkBoxName" id="allUsersId" class="usersClsAll" value="All"> ALL &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="bbbUserId" class="usersCls" value="BBB User"> BBB USER &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="fieldUserId" class="usersCls" value="Field User"> FIELD USER &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="geoUserId" class="usersCls" value="Geo User"> GEO USER &nbsp;&nbsp;</label>
 							<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
 						</span>
 					</h4>

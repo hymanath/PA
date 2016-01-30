@@ -44,10 +44,10 @@
 							</div>
 						</span>
 						<span class="pull-right font-12">
-						    <input type="checkbox" id="allUsersId"  class="usersClsAll" value="All"> All &nbsp;&nbsp;</label>
-							<input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
-							<input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
-							<input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
+						    <input type="checkbox" id="allUsersId"  class="usersClsAll" value="All"> ALL  &nbsp;&nbsp;</label>
+							<input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB USER &nbsp;&nbsp;</label>
+							<input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> FIELD USER &nbsp;&nbsp;</label>
+							<input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> GEO USER &nbsp;&nbsp;</label>
 							
 							<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
 						</span>
