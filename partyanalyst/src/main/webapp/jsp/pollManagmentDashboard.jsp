@@ -24,40 +24,49 @@
                 <div class="panel-body bg_EF">
 					<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
-                        	<table class="table table-bordered bg_ff">
+                        	<table class="table table-bordered bg_ff"  id="summaryTableId">
                             	<tr>
-                                	<td rowspan="3" class="text-left">
-                                    	<h3>150</h3>
-                                        <p>TOTAL DIVISIONS</p>
+                                	<td rowspan="4" class="text-left" style="vertical-align: middle;">
+                                    	<h3 id="startedDivisondId"></h3>
+                                        <p>STARTED DIVISIONS</p>
                                     </td>
-                                    <td rowspan="3">
-                                    	<h3>500000</h3>
+                                    <td rowspan="4" style="vertical-align: middle;">
+                                    	<h3 id="totalBoothsId"></h3>
                                         <p>TOTAL BOOTHS</p>
                                     </td>
-									<td rowspan="3">
-                                    	<h3>1500</h3>
+									<td rowspan="4" style="vertical-align: middle;">
+                                    	<h3 id="totalVotersId"></h3>
                                         <p>TOTAL VOTERS</p>
                                     </td>
-                                    <td rowspan="3">
-                                    	<h3>1500</h3>
-                                        <p>TOTAL COLLECTED VOTERS</p>
+                                    <td rowspan="4" style="vertical-align: middle;">
+                                    	<h3 id="totalCapturedVotersId"></h3>
+                                        <p>TOTAL CAPTURED VOTERS</p>
                                     </td>
-                                    <td>
-                                    	<p>10000 - INCLINED VOTERS</p>
+                                    <td style="vertical-align: middle;">
+                                    	<p><span id="inclinedVotersId"></span> - INCLINED VOTERS</p>
                                     </td>
-                                    <td rowspan="3">
-                                    	<h3>1500</h3>
+                                    <td rowspan="4" style="vertical-align: middle;">
+                                    	<h3 id="totalCadreId"></h3>
                                         <p>TOTAL CADRE</p>
                                     </td>
-                                </tr>
-                                <tr>
-                                	<td>
-                                    	<p>10000 - UNDECIDED VOTERS</p>
+									<td rowspan="4" style="vertical-align: middle;">
+                                    	<h3 id="totalCapturedCadreId"></h3>
+                                        <p>TOTAL CAPTURED CADRE</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                	<td>
-                                    	<p>10000 - OTHER PARTY</p>
+                                	<td style="vertical-align: middle;">
+                                    	<p><span id="undecidedVotersId"></span> - UNDECIDED VOTERS</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td style="vertical-align: middle;">
+                                    	<p><span id="otherPartyId"></span> - OTHER PARTY</p>
+                                    </td>
+                                </tr>
+								<tr>
+                                	<td style="vertical-align: middle;">
+                                    	<p><span id="nonOptedId"></span> - NON OPTED</p>
                                     </td>
                                 </tr>
                             </table>
@@ -368,6 +377,45 @@ function getAccessValues(){
 					var locationVal = result[i].districtid;
 					locationIds.push(locationVal);
 				}
+			}
+			overAllPollManagementSummary();
+		});
+	}
+	
+	function overAllPollManagementSummary(){
+		
+		var jsObj={
+			locationIds:locationIds
+		}
+		
+		$.ajax({
+		  type:'GET',
+		  url: 'overAllPollManagementSummaryAction.action',
+		  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				if(result.divisions==null)result.divisions=0;
+				if(result.booths==null)result.booths=0;
+				if(result.totalVoters==null)result.totalVoters=0;
+				if(result.capturedVoters==null)result.capturedVoters=0;
+				if(result.inclinedVoters==null)result.inclinedVoters=0;
+				if(result.totalCadre==null)result.totalCadre=0;
+				if(result.capturedCadre==null)result.capturedCadre=0;
+				if(result.unDecidedVoters==null)result.unDecidedVoters=0;
+				if(result.otherPartyVoters==null)result.otherPartyVoters=0;
+				if(result.nonOptedVoters==null)result.nonOptedVoters=0;
+				
+					$("#startedDivisondId").html(result.divisions);
+					$("#totalBoothsId").html(result.booths);
+					$("#totalVotersId").html(result.totalVoters);
+					$("#totalCapturedVotersId").html(result.capturedVoters);
+					$("#inclinedVotersId").html(result.inclinedVoters);
+					$("#totalCadreId").html(result.totalCadre);
+					$("#totalCapturedCadreId").html(result.capturedCadre);
+					$("#undecidedVotersId").html(result.unDecidedVoters);
+					$("#otherPartyId").html(result.otherPartyVoters);
+					$("#nonOptedId").html(result.nonOptedVoters);
+				
 			}
 		});
 	}
