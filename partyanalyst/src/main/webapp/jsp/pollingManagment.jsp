@@ -37,10 +37,10 @@
 							</div>
 						</span>
 						<span class="pull-right">
-						    <input type="checkbox" name="checkBoxName" id="allUsersId" class="usersClsAll" value="All"> ALL &nbsp;&nbsp;</label>
-							<input type="checkbox" name="checkBoxName" id="bbbUserId" class="usersCls" value="BBB User"> BBB USER &nbsp;&nbsp;</label>
-							<input type="checkbox" name="checkBoxName" id="fieldUserId" class="usersCls" value="Field User"> FIELD USER &nbsp;&nbsp;</label>
-							<input type="checkbox" name="checkBoxName" id="geoUserId" class="usersCls" value="Geo User"> GEO USER &nbsp;&nbsp;</label>
+						    <input type="checkbox" name="checkBoxName" id="allUsersId" checked="true" class="usersClsAll" value="All"> ALL &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="bbbUserId" checked="true" class="usersCls" value="BBB User"> BBB USER &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="fieldUserId" checked="true" class="usersCls" value="Field User"> FIELD USER &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="geoUserId" checked="true" class="usersCls" value="Geo User"> GEO USER &nbsp;&nbsp;</label>
 							<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
 						</span>
 					</h4>
