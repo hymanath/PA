@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.EntitlementVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
@@ -64,10 +65,18 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private String				fromDate;
 	private String				toDate;
 	private String				division;
+	private List<IdNameVO>		idNamevoList;
 	private PollManagementVO	pollManagementVO;
 	
 	
-	
+	public List<IdNameVO> getIdNamevoList() {
+		return idNamevoList;
+	}
+
+	public void setIdNamevoList(List<IdNameVO> idNamevoList) {
+		this.idNamevoList = idNamevoList;
+	}
+
 	public PollManagementVO getPollManagementVO() {
 		return pollManagementVO;
 	}
@@ -666,10 +675,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	public String getmobileAppDivisionWiseUsers(){
 		try {
 			// LOGIN 
-			/*RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(user==null){
 				return Action.ERROR;
-			}*/
+			}
+			Long userId = user.getRegistrationID();
+			
+			idNamevoList = mobileService.getAssignedWardsByUser(userId);
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getmobileAppDivisionWiseUsers()", e);
 		}
