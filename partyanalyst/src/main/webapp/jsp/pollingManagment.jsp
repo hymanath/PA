@@ -37,10 +37,10 @@
 							</div>
 						</span>
 						<span class="pull-right">
-							<input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
-							<input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
-							<input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
-							<input type="checkbox" id="allUsersId" checked="true" class="usersCls" value="All"> All &nbsp;&nbsp;</label>
+						    <input type="checkbox" name="checkBoxName" id="allUsersId" class="usersClsAll" value="All"> All &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
+							<input type="checkbox" name="checkBoxName" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
 							<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
 						</span>
 					</h4>
@@ -354,6 +354,29 @@ $(document).on('click','#getDetailsId',function(){
 	getTotalDetails(userArr);
 	getLocationWiseDetails(userArr);
 });
+
+
+ $("#allUsersId").change(function () {
+    $("input:checkbox").prop('checked', $(this).prop("checked"));
+	//alert($(this).prop("checked"));
+});
+
+$(".usersCls").change(function () {   
+	var isAllChecked=true;
+	   $(".usersCls").each(function(){
+		   //console.log($(this).is(":checked"));	 
+		   var isChecked = $(this).is(":checked");
+			if(!isChecked){
+				isAllChecked=false;
+				$('#allUsersId').prop('checked',false);
+			}
+		
+	   });
+	if(isAllChecked)
+		 $("input:checkbox").prop('checked', $(this).prop("checked"));
+});
+
+
 </script>
 </body>
 </html>
