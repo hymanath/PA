@@ -11332,5 +11332,18 @@
 		<result name="error">/jsp/loginForm.jsp</result>
 		<result name="input">/jsp/loginForm.jsp?src=pollManagmentAreaWiseInfo</result>
 	</action>
+	
+	<action name="overAllPollManagementSummaryAction" class="mobileDataAction" method="overAllPollManagementSummary">
+		<result type="json" name="success">
+			<param name="root">pollManagementVO</param>
+		</result>
+	</action>
+	
+	<action name="overAllPollManagementSummaryByDivisionOrWardAction" class="mobileDataAction" method="overAllPollManagementSummaryByDivisionOrWard">
+		<result type="json" name="success">
+			<param name="root">pollManagementVO</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
