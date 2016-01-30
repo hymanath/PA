@@ -73,4 +73,5 @@ public interface IMobileService {
 	public String saveUserLocationData(List<UserLocationTrackingVo> userLocationDetails);
 	public List<TabDetailsVO> getUserTrackingDetails(Long userId);
 	public PollManagementVO overAllPollManagementSummary( List<Long> locationIds);
+	public PollManagementVO overAllPollManagementSummaryByDivisionOrWard(Long wardId);
 }

@@ -5541,4 +5541,61 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			}
 	    	return finalVO;
 	    }
+	 
+	 public PollManagementVO overAllPollManagementSummaryByDivisionOrWard(Long wardId)
+	 {
+		 PollManagementVO  finalVO=new PollManagementVO();
+			try{
+				
+				List<Long> wardIds = new ArrayList<Long>();
+				
+				wardIds.add(wardId);
+				
+				Long boothsCount =	boothDAO.getBoothsCountByDivisionIds(wardIds,17l);
+				
+				finalVO.setBooths(boothsCount);
+				
+				Object totalVotersCount = greaterMuncipalWardDAO.getTotalVotersByDivisionIds(wardIds);
+				
+				if(totalVotersCount !=null){
+					finalVO.setTotalVoters(Long.parseLong(totalVotersCount.toString()));
+				}
+				
+				finalVO.setTotalCadre(tdpCadreDAO.getTdpCadreCountsForDivisions(wardIds));
+				
+				Object[] capturedVotersAndCadre = mobileAppUserVoterDAO.getTrackingDivisionSummaryCounts(wardIds);
+				
+				if(capturedVotersAndCadre!=null && capturedVotersAndCadre.length>0){
+					   finalVO.setCapturedVoters(capturedVotersAndCadre[0]!=null?(Long)capturedVotersAndCadre[0]:0l);
+					   finalVO.setCapturedCadre(capturedVotersAndCadre[1]!=null?(Long)capturedVotersAndCadre[1]:0l);
+				}
+				
+				List<Object[]> capturedVoterRatings = mobileAppUserVoterDAO.getCapturedVoterRatings(wardIds);
+				
+				if(capturedVoterRatings!=null && capturedVoterRatings.size()>0){
+					   for(Object[] obj:capturedVoterRatings){
+						   Long rating=obj[0]!=null?(Long)obj[0]:null;
+						   Long ratingsCount=obj[1]!=null?(Long)obj[1]:null;
+						   if(rating!=null){
+							    if(rating>3l){
+							    	finalVO.setInclinedVoters(finalVO.getInclinedVoters()+ratingsCount);
+							    }else if(rating<3){
+							    	if(rating==0l){
+							    		finalVO.setNonOptedVoters(ratingsCount);
+							    	}else{
+							    		finalVO.setOtherPartyVoters(finalVO.getOtherPartyVoters()+ratingsCount);
+							    	}
+							    }else{
+							    	finalVO.setUnDecidedVoters(ratingsCount);
+							    }
+						   }
+					   }
+				   }
+				
+			   
+			}catch (Exception e) {
+				LOG.error("Exception raised at overAllPollManagementSummaryByDivisionOrWard", e);
+			}
+			return finalVO;
+	 }
 }
