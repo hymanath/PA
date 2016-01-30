@@ -9,25 +9,25 @@ public class PollManagementSummaryVO implements Serializable{
 	private String name;
 	
 	private Long   totalVoters;
-	private Long   totalVotersPolled;
+	private Long   totalVotersPolled=0l;
 	private Long   totalVotersYetToBePolled; 
 	private String pollPercent;
 	private String yetToPollPercent;
 	
 	private Long   cadreCount;
-	private Long   cadreCountPolled;
+	private Long   cadreCountPolled=0l;
 	private Long   cadreCountYetToBePolled;
 	private String cadrepollPercent;
 	private String cadreYetToPollPercent;
 	
 	private Long   capCadreCount;
-	private Long   capCadreCountPolled;
+	private Long   capCadreCountPolled=0l;
 	private Long   capCadreCountYetToBePolled;
 	private String capCadrePollPercent;
 	private String capCadreYetTopollPercent;
 	
 	private Long   nonCapVoters;
-	private Long   nonCapVotersPolled;
+	private Long   nonCapVotersPolled=0l;
 	private Long   nonCapVotersYetToBePolled;
 	private String nonCapVotersPollPercent;
 	private String nonCapVotersYetToPollPercent;

@@ -101,6 +101,7 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
@@ -5625,16 +5626,35 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 	    		    gettingMatchedWardVO(ratingVotersTracked,finalList,"ratingVoters");
 	    		    gettingMatchedWardVO(ratingVotersPolled,finalList,"ratingVotersPolled");
 	    		    
+	    		    //calc percantages.
 	    		    if(finalList!=null && finalList.size()>0){
-	    		    	for(PollManagementSummaryVO ward:finalList){
-	    		    		for(PollManagementSummaryVO ratingVO: ward.getSubList()){
-	    		    			ratingVO.setTotalVotersYetToBePolled(ratingVO.getTotalVoters()-ratingVO.getTotalVotersPolled());
+	    		    	for(PollManagementSummaryVO wardVO:finalList){
+	    		    		
+	    		    		//total voters.
+	    		    		wardVO.setTotalVotersYetToBePolled(wardVO.getTotalVoters()-wardVO.getTotalVotersPolled());
+	    		    		wardVO.setPollPercent(calcPercantage(wardVO.getTotalVoters(),wardVO.getTotalVotersPolled()));
+	    		    		wardVO.setYetToPollPercent(calcPercantage(wardVO.getTotalVoters(),wardVO.getTotalVotersYetToBePolled()));
+	    		    		//for total cadre.
+	    		    		wardVO.setCadreCountYetToBePolled(wardVO.getCadreCount()-wardVO.getCadreCountPolled());
+		    				wardVO.setCadrepollPercent(calcPercantage(wardVO.getCadreCount(),wardVO.getCadreCountPolled()));
+		    				wardVO.setCadreYetToPollPercent( calcPercantage(wardVO.getCadreCount(),wardVO.getCadreCountYetToBePolled()));
+	    		    		//captured cadre
+		    				 wardVO.setCapCadreCountYetToBePolled(wardVO.getCapCadreCount()-wardVO.getCapCadreCountPolled());
+	    		    		 wardVO.setCapCadrePollPercent((calcPercantage(wardVO.getCapCadreCount(),wardVO.getCapCadreCountPolled())));
+	    		    		 wardVO.setCapCadreYetTopollPercent((calcPercantage(wardVO.getCapCadreCount(),wardVO.getCapCadreCountYetToBePolled())) );
+	    		    		//nonCapVoterspolled
+	    		    		 wardVO.setNonCapVotersYetToBePolled(wardVO.getNonCapVoters()-wardVO.getNonCapVotersPolled());
+	    		    		 wardVO.setNonCapVotersPollPercent((calcPercantage(wardVO.getNonCapVoters(),wardVO.getNonCapVotersPolled())));
+	    		    		 wardVO.setNonCapVotersYetToPollPercent((calcPercantage(wardVO.getNonCapVoters(),wardVO.getNonCapVotersYetToBePolled())) );
+	    		    		 
+	    		    		//rating voters
+	    		    		for(PollManagementSummaryVO ratingVO: wardVO.getSubList()){
+	    		    			 ratingVO.setTotalVotersYetToBePolled(ratingVO.getTotalVoters()-ratingVO.getTotalVotersPolled());
 	    		    			 ratingVO.setPollPercent(calcPercantage(ratingVO.getTotalVoters(),ratingVO.getTotalVotersPolled()));
-			    				 if(ratingVO.getPollPercent()!=null){
-			    					 Double yetToPollPercent=100.00-Double.parseDouble(ratingVO.getPollPercent());
-			    					 ratingVO.setYetToPollPercent(yetToPollPercent.toString() );
-			    				 }
+	    		    			 ratingVO.setYetToPollPercent(calcPercantage(ratingVO.getTotalVoters(),ratingVO.getTotalVotersYetToBePolled()));
 	    		    		}
+	    		    		
+	    		    		
 	    		    	}
 	    		    }
 	    		    
@@ -5659,39 +5679,15 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 									  wardVO.setCadreCount(obj[1]!=null?(Long)obj[1]:0l);
 								  }
 								  else if(type.equalsIgnoreCase("totalPolledVotersAndCadres")){
-								     
-								     wardVO.setTotalVotersPolled(obj[1]!=null?(Long)obj[1]:0l);
-								     wardVO.setTotalVotersYetToBePolled(wardVO.getTotalVoters()-wardVO.getTotalVotersPolled());
-	    		    				 wardVO.setPollPercent(calcPercantage(wardVO.getTotalVoters(),wardVO.getTotalVotersPolled()));
-	    		    				 if(wardVO.getPollPercent()!=null){
-	    		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getPollPercent());
-	    		    					 wardVO.setYetToPollPercent(yetToPollPercent.toString() );
-	    		    				 }
-	    		    				
-	    		    				 wardVO.setCadreCountPolled(obj[2]!=null?(Long)obj[2]:0l);
-	    		    				 wardVO.setCadreCountYetToBePolled(wardVO.getCadreCount()-wardVO.getCadreCountPolled());
-	    		    				 wardVO.setCadrepollPercent(calcPercantage(wardVO.getCadreCount(),wardVO.getCadreCountPolled()));
-	    		    				 if(wardVO.getCadrepollPercent()!=null){
-	    		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getCadrepollPercent());
-	    		    					 wardVO.setCadreYetToPollPercent( (yetToPollPercent.toString() ));
-	    		    				 }
+								     wardVO.setTotalVotersPolled(obj[1]!=null?(Long)obj[1]:0l); 
+	    		    				 wardVO.setCadreCountPolled(obj[2]!=null?(Long)obj[2]:0l); 
 								  }
 								  else if(type.equalsIgnoreCase("capturedCadrepolled")){
 									  wardVO.setCapCadreCountPolled(obj[1]!=null?(Long)obj[1]:0l);
-									  wardVO.setCapCadreCountYetToBePolled(wardVO.getCapCadreCount()-wardVO.getCapCadreCountPolled());
-	 		    		    		  wardVO.setCapCadrePollPercent((calcPercantage(wardVO.getCapCadreCount(),wardVO.getCapCadreCountPolled())));
-	     		    				  if(wardVO.getCapCadrePollPercent()!=null){
-	     		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getCapCadrePollPercent());
-	     		    					 wardVO.setCapCadreYetTopollPercent((yetToPollPercent.toString()) );
-	     		    				 }
+	     		    				
 								  }else if(type.equalsIgnoreCase("nonCapVoterspolled")){
-									 
-									  wardVO.setNonCapVotersYetToBePolled(wardVO.getNonCapVoters()-wardVO.getNonCapVotersPolled());
-	 		    		    		  wardVO.setNonCapVotersPollPercent((calcPercantage(wardVO.getNonCapVoters(),wardVO.getNonCapVotersPolled())));
-	     		    				  if(wardVO.getNonCapVotersPollPercent()!=null){
-	     		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getNonCapVotersPollPercent());
-	     		    					 wardVO.setNonCapVotersYetToPollPercent((yetToPollPercent.toString()) );
-	     		    				 }
+									  wardVO.setNonCapVotersPolled(obj[1]!=null?(Long)obj[1]:0l);
+	     		    				
 								  }else if(type.equalsIgnoreCase("ratingVoters") || type.equalsIgnoreCase("ratingVotersPolled")){
 									  
 									   Long rating=obj[1]!=null?(Long)obj[1]:null;
