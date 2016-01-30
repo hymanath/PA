@@ -24,5 +24,12 @@ public interface IMobileAppUserVoterDAO extends GenericDao<MobileAppUserVoter, L
 	public Object[] getTrackingDivisionSummaryCounts(List<Long> locationIds);
 	public List<Object[]> getCapturedVoterRatings(List<Long> locationIds);
 	public List<Object[]> mobileAppUserVoterId(List<Long> voterIds);
+	
+	
+	public List<Object[]> divisionWiseTotalVotersAndCapturedCadre(List<Long> locationIds);
+	public List<Object[]> getPolledVotersAndPolledCadre(List<Long> divisionIds);
+	public List<Object[]> getCapturedCadrePolled(List<Long> divisionIds);
+	public List<Object[]> getNonCapturedVotersPolled(List<Long> divisionIds);
+	public List<Object[]> gettrackedAndPolledratingVoters(List<Long> divisionIds,String type);
 	public List<Object[]> getNotYetPolledMembers(String resultType,Long locationId);
 }	

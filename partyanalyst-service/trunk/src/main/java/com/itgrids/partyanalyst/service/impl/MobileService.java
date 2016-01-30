@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -100,10 +101,10 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
+import com.itgrids.partyanalyst.dto.PollManagementSummaryVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -234,9 +235,11 @@ public class MobileService implements IMobileService{
  private IMobileAppUserSmsStatusDAO		mobileAppUserSmsStatusDAO;
  private IUserLocationTrackingDAO userLocationTrackingDAO;
  private IGreaterMuncipalWardDAO		greaterMuncipalWardDAO;
+ DecimalFormat decimalFormat = new DecimalFormat("#.##");
  private IUserAccessLevelValueDAO		userAccessLevelValueDAO;
  
  
+
 public IUserAccessLevelValueDAO getUserAccessLevelValueDAO() {
 	return userAccessLevelValueDAO;
 }
@@ -5575,6 +5578,208 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			}
 	    	return finalVO;
 	    }
+	 
+	   public List<PollManagementSummaryVO> divisionWiseVotingActivity(List<Long> locationIds){
+			List<PollManagementSummaryVO> finalList=null;
+	    	try{
+	    		
+	    		
+	    		List<Object[]> divisionDetails=mobileAppUserVoterDAO.divisionWiseTotalVotersAndCapturedCadre(locationIds);
+	    		
+	    		List<Long> divisionIds=null;
+	    		if(divisionDetails!=null && divisionDetails.size()>0){
+	    			finalList=new ArrayList<PollManagementSummaryVO>();
+	    			divisionIds=new ArrayList<Long>();
+	    			
+	    		    for(Object[] obj :divisionDetails){
+	    		    	
+	    		    	Long divisionId=obj[0]!=null?(Long)obj[0]:0l;
+	    		    	PollManagementSummaryVO wardVO=new PollManagementSummaryVO();
+	    		    	wardVO.setId(divisionId);
+	    		    	wardVO.setName(obj[1]!=null?obj[1].toString():"");
+	    		    	wardVO.setTotalVoters(obj[2]!=null?Long.valueOf(obj[2].toString()):0l);
+	    		    	Long capturedVotersCount=obj[3]!=null?(Long)obj[3]:0l;
+	    		    	wardVO.setNonCapVoters(wardVO.getTotalVoters()-capturedVotersCount);
+	    		    	wardVO.setCapCadreCount(obj[4]!=null?(Long)obj[4]:0l);
+	    		    	wardVO.setSubList(getVoterRatingTypes());
+	    		    	finalList.add(wardVO);
+	    		    	
+	    		    	//add divisions.
+	    		    	divisionIds.add(divisionId);
+	    		    }
+	    		    
+	    		    List<Object[]> totalCadreCounts=tdpCadreDAO.getDivisionWiseCadresCount(divisionIds);
+	    		    gettingMatchedWardVO(totalCadreCounts,finalList,"totalCadreCounts");
+	    		    
+	    		    List<Object[]> totalPolledVotersAndCadres=mobileAppUserVoterDAO.getPolledVotersAndPolledCadre(divisionIds);
+	    		    gettingMatchedWardVO(totalPolledVotersAndCadres,finalList,"totalPolledVotersAndCadres");
+	    		     
+	    		    List<Object[]> capturedCadrepolled=mobileAppUserVoterDAO.getCapturedCadrePolled(divisionIds);
+	    		    gettingMatchedWardVO(capturedCadrepolled,finalList,"capturedCadrepolled");
+	    		     
+	    		    List<Object[]> nonCapVoterspolled=mobileAppUserVoterDAO.getNonCapturedVotersPolled(divisionIds);
+	    		    gettingMatchedWardVO(nonCapVoterspolled,finalList,"nonCapVoterspolled");
+	    		    
+	    		    List<Object[]> ratingVotersTracked=mobileAppUserVoterDAO.gettrackedAndPolledratingVoters(divisionIds,"tracked");
+	    		    List<Object[]> ratingVotersPolled=mobileAppUserVoterDAO.gettrackedAndPolledratingVoters(divisionIds,"polled");
+	    		    gettingMatchedWardVO(ratingVotersTracked,finalList,"ratingVoters");
+	    		    gettingMatchedWardVO(ratingVotersPolled,finalList,"ratingVotersPolled");
+	    		    
+	    		    if(finalList!=null && finalList.size()>0){
+	    		    	for(PollManagementSummaryVO ward:finalList){
+	    		    		for(PollManagementSummaryVO ratingVO: ward.getSubList()){
+	    		    			ratingVO.setTotalVotersYetToBePolled(ratingVO.getTotalVoters()-ratingVO.getTotalVotersPolled());
+	    		    			 ratingVO.setPollPercent(calcPercantage(ratingVO.getTotalVoters(),ratingVO.getTotalVotersPolled()));
+			    				 if(ratingVO.getPollPercent()!=null){
+			    					 Double yetToPollPercent=100.00-Double.parseDouble(ratingVO.getPollPercent());
+			    					 ratingVO.setYetToPollPercent(yetToPollPercent.toString() );
+			    				 }
+	    		    		}
+	    		    	}
+	    		    }
+	    		    
+	    		}
+	    		
+	    		
+			}catch(Exception e){
+				LOG.error("Exception raised at divisionWiseVotingActivity", e);
+			}
+	    	return finalList;
+	    }
+	    public void gettingMatchedWardVO(List<Object[]> list,List<PollManagementSummaryVO> finalList,String type){
+	    	
+	    	try{
+				  if(list!=null && list.size()>0){
+					  for(Object[] obj:list){
+						  if(obj[0]!=null){
+							  PollManagementSummaryVO wardVO=getMatchingward(finalList,(Long)obj[0],"division","");
+							  if(wardVO!=null){
+								  
+								  if(type.equalsIgnoreCase("totalCadreCounts")){
+									  wardVO.setCadreCount(obj[1]!=null?(Long)obj[1]:0l);
+								  }
+								  else if(type.equalsIgnoreCase("totalPolledVotersAndCadres")){
+								     
+								     wardVO.setTotalVotersPolled(obj[1]!=null?(Long)obj[1]:0l);
+								     wardVO.setTotalVotersYetToBePolled(wardVO.getTotalVoters()-wardVO.getTotalVotersPolled());
+	    		    				 wardVO.setPollPercent(calcPercantage(wardVO.getTotalVoters(),wardVO.getTotalVotersPolled()));
+	    		    				 if(wardVO.getPollPercent()!=null){
+	    		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getPollPercent());
+	    		    					 wardVO.setYetToPollPercent(yetToPollPercent.toString() );
+	    		    				 }
+	    		    				
+	    		    				 wardVO.setCadreCountPolled(obj[2]!=null?(Long)obj[2]:0l);
+	    		    				 wardVO.setCadreCountYetToBePolled(wardVO.getCadreCount()-wardVO.getCadreCountPolled());
+	    		    				 wardVO.setCadrepollPercent(calcPercantage(wardVO.getCadreCount(),wardVO.getCadreCountPolled()));
+	    		    				 if(wardVO.getCadrepollPercent()!=null){
+	    		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getCadrepollPercent());
+	    		    					 wardVO.setCadreYetToPollPercent( (yetToPollPercent.toString() ));
+	    		    				 }
+								  }
+								  else if(type.equalsIgnoreCase("capturedCadrepolled")){
+									  wardVO.setCapCadreCountPolled(obj[1]!=null?(Long)obj[1]:0l);
+									  wardVO.setCapCadreCountYetToBePolled(wardVO.getCapCadreCount()-wardVO.getCapCadreCountPolled());
+	 		    		    		  wardVO.setCapCadrePollPercent((calcPercantage(wardVO.getCapCadreCount(),wardVO.getCapCadreCountPolled())));
+	     		    				  if(wardVO.getCapCadrePollPercent()!=null){
+	     		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getCapCadrePollPercent());
+	     		    					 wardVO.setCapCadreYetTopollPercent((yetToPollPercent.toString()) );
+	     		    				 }
+								  }else if(type.equalsIgnoreCase("nonCapVoterspolled")){
+									 
+									  wardVO.setNonCapVotersYetToBePolled(wardVO.getNonCapVoters()-wardVO.getNonCapVotersPolled());
+	 		    		    		  wardVO.setNonCapVotersPollPercent((calcPercantage(wardVO.getNonCapVoters(),wardVO.getNonCapVotersPolled())));
+	     		    				  if(wardVO.getNonCapVotersPollPercent()!=null){
+	     		    					 Double yetToPollPercent=100.00-Double.parseDouble(wardVO.getNonCapVotersPollPercent());
+	     		    					 wardVO.setNonCapVotersYetToPollPercent((yetToPollPercent.toString()) );
+	     		    				 }
+								  }else if(type.equalsIgnoreCase("ratingVoters") || type.equalsIgnoreCase("ratingVotersPolled")){
+									  
+									   Long rating=obj[1]!=null?(Long)obj[1]:null;
+			    					   Long ratingsCount=obj[2]!=null?(Long)obj[2]:null;
+			    					   PollManagementSummaryVO ratingVO=null;
+			    					   if(rating!=null){
+			    						    if(rating>3l){
+			    						    	  ratingVO=getMatchingward(wardVO.getSubList(),null,"rating","INCLINED VOTERS");
+			    						    }else if(rating<3){
+			    						    	if(rating==0l){
+			    						    		ratingVO=getMatchingward(wardVO.getSubList(),null,"rating","NON OPTED VOTERS");
+			    						    	}else{
+			    						    		ratingVO=getMatchingward(wardVO.getSubList(),null,"rating","OTHER PARTY VOTERS");
+			    						    	}
+			    						    }else{
+			    						    	    ratingVO=getMatchingward(wardVO.getSubList(),null,"rating","UNDECIDED VOTERS");
+			    						    }
+			    						    if(type.equalsIgnoreCase("ratingVoters")){
+			    						    	ratingVO.setTotalVoters(ratingVO.getTotalVoters()+ratingsCount);
+			    						    }else{
+			    						    	ratingVO.setTotalVotersPolled(ratingVO.getTotalVotersPolled()+ratingsCount);
+			    						    }
+			    						    
+			    					   }
+								  }
+								  
+							  }
+						  }
+					  }
+				  }
+			}catch(Exception e) {
+				LOG.error("Exception raised at gettingMatchedWardVO", e);
+			}
+	    	
+	    }
+		
+		public PollManagementSummaryVO getMatchingward(List<PollManagementSummaryVO> resultList,Long Id,String type,String name)
+		{
+			try{
+				 if(resultList != null && resultList.size() > 0){
+					 
+					for(PollManagementSummaryVO vo : resultList)
+					{
+						if(type.equalsIgnoreCase("division")){
+							if(vo.getId().longValue() == Id.longValue())
+								return vo;
+						}else if(type.equalsIgnoreCase("rating")){
+							if(vo.getName().equalsIgnoreCase(name)){
+								return vo;
+							}
+						}
+					}
+					
+				  }
+				}
+			catch (Exception e) {
+				LOG.error("Exception raised at getMatchingward", e);
+			}
+			return null;
+		
+		 }
+	    public String calcPercantage(Long totalValue,Long subValue){
+			
+			String percentage=null;
+			if( (totalValue!=null && totalValue>0l) && (subValue!=null && subValue>0l)){
+				
+					Double percent=(Double)(subValue*100.00)/totalValue;
+					percentage=decimalFormat .format(percent);
+			}
+			return percentage;
+		}
+	    
+		public List<PollManagementSummaryVO> getVoterRatingTypes(){
+			List<PollManagementSummaryVO> ratingVotersList=new ArrayList<PollManagementSummaryVO>();
+			String ratingsArray[] = {"INCLINED VOTERS","UNDECIDED VOTERS","OTHER PARTY VOTERS","NON OPTED VOTERS"};
+			for(String rating:ratingsArray){
+				PollManagementSummaryVO vo=new PollManagementSummaryVO();
+				
+				vo.setName(rating);
+				vo.setTotalVoters(0l);
+				vo.setTotalVotersPolled(0l);
+				ratingVotersList.add(vo);
+			}	
+			return ratingVotersList;
+		}
+	 
+	 
+	 
 	 
 	 public PollManagementVO overAllPollManagementSummaryByDivisionOrWard(Long wardId)
 	 {

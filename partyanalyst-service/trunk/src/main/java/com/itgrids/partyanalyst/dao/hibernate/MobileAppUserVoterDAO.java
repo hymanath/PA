@@ -371,6 +371,64 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		return query.list();
 	}
 	
+	
+	public List<Object[]> divisionWiseTotalVotersAndCapturedCadre(List<Long> locationIds){
+		
+	   Query query=getSession().createQuery(" " + 
+	    " select   uv.wardId,gmw.divisionName,gmw.totalVoters as totalVoters,count(distinct uv.voterId) as capturedvoters,count(distinct uv.tdpCadreId) as capturedCadre" +
+	    " from     MobileAppUserVoter uv,GreaterMuncipalWard gmw " +
+	    " where    uv.wardId=gmw.wardId and uv.wardId in (:locationIds) and uv.isTracked='Y' " +
+	    " group by uv.wardId " +
+	    " order by gmw.divisionName");
+	   query.setParameterList("locationIds",locationIds);
+	   return query.list();
+	}
+	public List<Object[]> getPolledVotersAndPolledCadre(List<Long> divisionIds){
+	
+		 Query query=getSession().createQuery(" " + 
+		    " select   uv.wardId,count(distinct uv.voterId) as polledvoters,count(distinct uv.tdpCadreId) as polledCadre" +
+		    " from     MobileAppUserVoter uv " +
+		    " where    uv.wardId in (:divisionIds) and uv.isVoted='Y' " +
+		    " group by uv.wardId " );
+		   query.setParameterList("divisionIds",divisionIds);
+		   return query.list();
+	}
+	public List<Object[]> getCapturedCadrePolled(List<Long> divisionIds){
+		
+	    Query query=getSession().createQuery(" " + 
+	    " select   uv.wardId,count(distinct uv.tdpCadreId) as capturedCadrePolled" +
+	    " from     MobileAppUserVoter uv " +
+	    " where    uv.wardId in (:divisionIds) and uv.isVoted='Y' and uv.isTracked='Y' " +
+	    " group by uv.wardId " );
+	   query.setParameterList("divisionIds",divisionIds);
+	   return query.list();
+		
+	}
+	public List<Object[]> getNonCapturedVotersPolled(List<Long> divisionIds){
+		
+	    Query query=getSession().createQuery(" " + 
+	    " select   uv.wardId,count(distinct uv.voterId) as nonCapturedVoterpolled " +
+	    " from     MobileAppUserVoter uv " +
+	    " where    uv.wardId in (:divisionIds) and uv.isVoted='Y' and uv.isTracked='N' " +
+	    " group by uv.wardId " );
+	   query.setParameterList("divisionIds",divisionIds);
+	   return query.list();
+		
+	}
+	public List<Object[]> gettrackedAndPolledratingVoters(List<Long> divisionIds,String type){
+		
+		StringBuilder sb=new StringBuilder();
+		sb.append(" select  uv.wardId,uv.rating,count(uv.rating) from MobileAppUserVoter uv where uv.wardId in (:divisionIds) and uv.isTracked='Y'");
+		if(type.equalsIgnoreCase("polled")){
+			sb.append(" and uv.isVoted='Y' ");
+		}
+		sb.append(" group by uv.wardId,uv.rating");
+		Query query=getSession().createQuery(sb.toString());
+	    query.setParameterList("divisionIds",divisionIds);
+		return query.list();
+	}
+	
+	
 	public List<Object[]> getNotYetPolledMembers(String resultType,Long locationId){//BoothId
 		
 		StringBuilder str = new StringBuilder();
