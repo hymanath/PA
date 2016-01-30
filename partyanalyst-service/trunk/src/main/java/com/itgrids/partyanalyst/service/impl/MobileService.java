@@ -102,6 +102,7 @@ import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
+import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -5490,4 +5491,54 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		 
 		 return voList;
 	 }
+	 
+	 public PollManagementVO overAllPollManagementSummary( List<Long> locationIds){
+	    	
+	    	PollManagementVO  finalVO=new PollManagementVO();
+	    	try{
+				   List<Long> divisionIds = mobileAppUserVoterDAO.getTrackingDivisionIds(locationIds);
+	    		   if(divisionIds!=null && divisionIds.size()>0){
+	    			   
+	    			   finalVO.setDivisions((long) divisionIds.size());
+	    			   finalVO.setBooths(boothDAO.getBoothsCountByDivisionIds(divisionIds,17l));
+	    			   finalVO.setTotalCadre(tdpCadreDAO.getTdpCadreCountsForDivisions(divisionIds));
+	    			   
+	    			   Object totalVotersObj=greaterMuncipalWardDAO.getTotalVotersByDivisionIds(divisionIds);
+	    			   if(totalVotersObj!=null){
+	    				   finalVO.setTotalVoters(Long.parseLong((String)totalVotersObj)); 
+	    			   }
+	    			   
+	    			   Object[] capturedVoters=mobileAppUserVoterDAO.getTrackingDivisionSummaryCounts(divisionIds);
+	    			   if(capturedVoters!=null && capturedVoters.length>0){
+	    				   finalVO.setCapturedVoters(capturedVoters[0]!=null?(Long)capturedVoters[0]:0l);
+	    				   finalVO.setCapturedCadre(capturedVoters[1]!=null?(Long)capturedVoters[1]:0l);
+	    			   }
+	    			   
+	    			   List<Object[]> capturedVoterRatings=mobileAppUserVoterDAO.getCapturedVoterRatings(divisionIds);  
+	    			   if(capturedVoterRatings!=null && capturedVoterRatings.size()>0){
+	    				   for(Object[] obj:capturedVoterRatings){
+	    					   Long rating=obj[0]!=null?(Long)obj[0]:null;
+	    					   Long ratingsCount=obj[1]!=null?(Long)obj[1]:null;
+	    					   if(rating!=null){
+	    						    if(rating>3l){
+	    						    	finalVO.setInclinedVoters(finalVO.getInclinedVoters()+ratingsCount);
+	    						    }else if(rating<3){
+	    						    	if(rating==0l){
+	    						    		finalVO.setNonOptedVoters(ratingsCount);
+	    						    	}else{
+	    						    		finalVO.setOtherPartyVoters(finalVO.getOtherPartyVoters()+ratingsCount);
+	    						    	}
+	    						    }else{
+	    						    	finalVO.setUnDecidedVoters(ratingsCount);
+	    						    }
+	    					   }
+	    				   }
+	    			   }
+	    			    
+	    		   }
+			}catch(Exception e){
+				LOG.error("Exception raised at overAllPollManagementSummary", e);
+			}
+	    	return finalVO;
+	    }
 }

@@ -32,4 +32,10 @@ public class GreaterMuncipalWardDAO extends GenericDaoHibernate<GreaterMuncipalW
 		query.setParameterList("divisionIds", divisionIds);
 		return  query.list();
 	}
+	
+	public Object getTotalVotersByDivisionIds(List<Long> divisionIds){
+		Query query = getSession().createQuery(" select sum(gmw.totalVoters) from GreaterMuncipalWard gmw where gmw.wardId in(:divisionIds)" ) ;
+		query.setParameterList("divisionIds", divisionIds);
+		return  query.uniqueResult();
+	}
 }
