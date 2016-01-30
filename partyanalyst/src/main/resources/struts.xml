@@ -11339,9 +11339,9 @@
 		</result>
 	</action>
 	
-	<action name="overAllPollManagementSummaryByDivisionOrWardAction" class="mobileDataAction" method="overAllPollManagementSummaryByDivisionOrWard">
+	<action name="divisionWiseVotingActivityAction" class="mobileDataAction" method="divisionWiseVotingActivity">
 		<result type="json" name="success">
-			<param name="root">pollManagementVO</param>
+			<param name="root">pollManagementSummaryVOList</param>
 		</result>
 	</action>
 	
