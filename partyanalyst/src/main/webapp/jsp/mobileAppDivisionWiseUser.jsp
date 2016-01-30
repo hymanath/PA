@@ -15,6 +15,7 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 
+
 <link href="dist/activityDashboard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Icomoon/style.css" rel="stylesheet" type="text/css">
@@ -24,26 +25,63 @@
 
 </head>
 <body>
-<style>
+<style type="text/css">
 	.table th{text-align:center !important;cursor:pointer;}
 	.font-12{font-size:12px;}
+	#dk0-combobox{border-bottom:1px solid rgba(0,0,0,0.5);background-color:transparent}
+	.dk-select-open-up .dk-selected::before, .dk-select-open-down .dk-selected::before,.dk-selected:hover::before, .dk-selected:focus::before,.dk-selected::before{border-color:#333 transparent transparent}
+	.dk-select-open-up .dk-selected::before, .dk-select-open-down .dk-selected::before{border-bottom-color:#333 !important}
+	
 </style>
+<script>
+var locationArr = [];
+var locatinId = '${divisionId}';
+
+    <c:forEach items="${idNamevoList}" var="current">
+		var obj ={
+			id:'${current.id}',
+			name: '${current.name}'
+		}
+		locationArr.push(obj);
+    </c:forEach>
+	
+</script>
 <div class="container">
 	<div class="row">
 		<div class="text-danger text-center" id="errDivId"></div>
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
-				<div class="panel-heading bg_cc">
-					<h4 class="panel-title" style="text-transform: uppercase;" >${param.division} - (${param.divisonId}) DIVISION REPORT
-						<span class="pull-right col-md-3" style="margin-top:-8px">
-							<div class="input-group inputGroupCustom">
-								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
-									<span class="caret"></span>
-								</span>
-								<input class="form-control" id="Date" type="text" placeholder="Select Date range">
+				<div class="panel-heading bg_cc" style="padding:5px 15px;">
+					<div class="panel-title">
+						<div class="row">
+							<div class="col-md-4">
+								<!--<s:select theme="simple" cssClass="" id="divisionList" list="idNamevoList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Division "/>-->
+								<select name='role' id="divisionList" onchange="getDetails();">									
+								</select>
 							</div>
+							<div class="col-md-5" style="margin-top:5px">
+								<label class="font-12"><input type="checkbox" id="allUsersId" checked="true" class="usersClsAll" value="All"> All &nbsp;&nbsp;</label>
+								<label class="font-12"><input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB User &nbsp;&nbsp;</label>
+								<label class="font-12"><input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> Field User &nbsp;&nbsp;</label>
+								<label class="font-12"><input type="checkbox" id="geoUserId" class="usersCls" value="Geo User"> Geo User &nbsp;&nbsp;</label>
+								<button class="btn btn-success btn-xs" id="getDetailsId">Get Details</button>
+							</div>
+							<div class="col-md-3">
+								<div class="input-group inputGroupCustom">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>
+										<span class="caret"></span>
+									</span>
+									<input class="form-control" id="Date" type="text" placeholder="Select Date range">
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<h4 class="panel-title" style="text-transform: uppercase;" >${param.division} - (${param.divisonId}) DIVISION REPORT
+						<span class="pull-right col-md-3" style="margin-top:-8px">
+							
 						</span>
 						<span class="pull-right font-12">
+							
 						    <input type="checkbox" id="allUsersId"  class="usersClsAll" value="All"> ALL  &nbsp;&nbsp;</label>
 							<input type="checkbox" id="bbbUserId" class="usersCls" value="BBB User"> BBB USER &nbsp;&nbsp;</label>
 							<input type="checkbox" id="fieldUserId" class="usersCls" value="Field User"> FIELD USER &nbsp;&nbsp;</label>
@@ -53,8 +91,8 @@
 						</span>
 						<!--<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="BBB User" onclick="getUsersSummary(2)" checked>BBB User</input></label>
 						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Field User" onclick="getUsersSummary(2)" >Field User</input></label>
-						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Geo User" onclick="getUsersSummary(2)" >Geo User</input></label>-->
-					</h4>
+						<label class="pull-right font-12"><input type="radio" name="userTypeRadio" value="Geo User" onclick="getUsersSummary(2)" >Geo User</input></label>
+					</h4>-->
 				</div>
 				<div class="panel-body bg_EF">
 					<table class="table table-bordered tableVM bg_ff">
@@ -136,6 +174,7 @@
 <script src="dist/mobileApp/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/mobileApp/Daterange/moment.js" type="text/javascript"></script>
 <script src="dist/mobileApp/Daterange/daterangepicker.js" type="text/javascript"></script>
+
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <script type="text/javascript">
@@ -143,6 +182,8 @@ $("#Date").daterangepicker({opens:"left"});
 jQuery( document ).ready(function( $ ) {
 	$("#Date").daterangepicker({opens:"left"});
 	$("#Date").val('');
+	buildAccessValues();
+	//$("#divisionList").val(${param.divisionId});
 });
 
 $(document).on('click','.applyBtn',function(){
@@ -150,6 +191,21 @@ $(document).on('click','.applyBtn',function(){
 });
 getUsersSummary(1,["All"]);
 //getUsersSummary('${param.divisionId}','${param.fromDate}','${param.toDate}');
+
+function buildAccessValues(){
+	if(locationArr != null && locationArr.length>0)
+	{
+		for(var i in locationArr)
+		{
+			if(locationArr[i].id == locatinId)
+				$('#divisionList').append('<option value="'+locationArr[i].id+'" selected="selected">'+locationArr[i].name+' DIVISION REPORT </option>');
+			else
+				$('#divisionList').append('<option value="'+locationArr[i].id+'">'+locationArr[i].name+' DIVISION REPORT</option>');
+		}
+	}
+	$("#divisionList").dropkick();
+}
+
 function getUsersSummary(searchTypeId,userArr){
 	
 	var locationId = '';
@@ -178,7 +234,8 @@ function getUsersSummary(searchTypeId,userArr){
 		//console.log(date1);
 	}
 	else if(searchTypeId == 2){
-		locationId = '${param.divisionId}';
+		//locationId = '${param.divisionId}';
+		locationId = $("#divisionList").val();
 		locationType = "ward";
 		
 		var dates=$('#Date').val();
@@ -275,6 +332,28 @@ $(document).on('click','#getDetailsId',function(){
 	}
 	getUsersSummary(2,userArr);
 });
+
+function getDetails(){
+	$("#errDivId").html("");
+	userArr = [];
+	var index = 0;
+	$(".usersCls").each(function(){
+		var id = $(this).attr("id");
+		var checked = document.getElementById(id).checked;
+		if(checked){
+			index = 1;
+			var value = $(this).val();
+			userArr.push(value);
+		}
+	});
+	
+	if(index == 0){ 
+		$("#errDivId").html("Please Select Atleast One User");
+		return;
+	}
+	getUsersSummary(2,userArr);
+}
+
 
 $("#allUsersId").change(function () {
     $("input:checkbox").prop('checked', $(this).prop("checked"));

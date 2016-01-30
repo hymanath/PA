@@ -2055,6 +2055,7 @@
       <property name="mobileAppUserSmsStatusDAO" ref="mobileAppUserSmsStatusDAO" />
         <property name="userLocationTrackingDAO" ref="userLocationTrackingDAO" />
 	  <property name="greaterMuncipalWardDAO" ref="greaterMuncipalWardDAO" />
+	  <property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO" />
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
