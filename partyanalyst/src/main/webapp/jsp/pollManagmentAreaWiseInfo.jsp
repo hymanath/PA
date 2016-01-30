@@ -28,39 +28,7 @@
                     </div>
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-                        	<table class="table table-bordered bg_ff">
-                            	<tr>
-                                    <td rowspan="3">
-                                    	<h3>500000</h3>
-                                        <p>TOTAL BOOTHS</p>
-                                    </td>
-									<td rowspan="3">
-                                    	<h3>1500</h3>
-                                        <p>TOTAL VOTERS</p>
-                                    </td>
-                                    <td rowspan="3">
-                                    	<h3>1500</h3>
-                                        <p>TOTAL COLLECTED VOTERS</p>
-                                    </td>
-                                    <td>
-                                    	<p>10000 - INCLINED VOTERS</p>
-                                    </td>
-                                    <td rowspan="3">
-                                    	<h3>1500</h3>
-                                        <p>TOTAL CADRE</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                	<td>
-                                    	<p>10000 - UNDECIDED VOTERS</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                	<td>
-                                    	<p>10000 - OTHER PARTY</p>
-                                    </td>
-                                </tr>
-                            </table>
+                        	<table class="table table-bordered bg_ff" id="summaryTableId"></table>
                         </div>
                     </div>
                     <div class="row">
@@ -442,6 +410,110 @@
 <script src="dist/pollManagment/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/pollManagment/js/custom.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+var divisonIdGlob = "${param.divisonId}";
+
+overAllPollManagementSummaryByDivisionOrWard();
+function overAllPollManagementSummaryByDivisionOrWard(){
+	var jsObj={
+		divisonId:"${param.divisonId}"
+	}
+	
+	$.ajax({
+		  type:'GET',
+		  url: 'overAllPollManagementSummaryByDivisionOrWardAction.action',
+		  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			var str='';
+			if(result != null){
+				str+='<tr>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>'+result.booths+'</h3>';
+				str+='<p>TOTAL BOOTHS</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>'+result.totalVoters+'</h3>';
+				str+='<p>TOTAL VOTERS</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>'+result.capturedVoters+'</h3>';
+				str+='<p>TOTAL CAPTURED VOTERS</p>';
+				str+='</td>';
+				str+='<td>';
+				str+='<p>'+result.inclinedVoters+' - INCLINED VOTERS</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>'+result.totalCadre+'</h3>';
+				str+='<p>TOTAL CADRE</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>'+result.capturedCadre+'</h3>';
+				str+='<p>TOTAL CAPTURED CADRE</p>';
+				str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td style="vertical-align: middle;">';
+				str+='<p>'+result.unDecidedVoters+' - UNDECIDED VOTERS</p>';
+				str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td style="vertical-align: middle;">';
+				str+='<p>'+result.otherPartyVoters+' - OTHER PARTY</p>';
+				str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td style="vertical-align: middle;">';
+				str+='<p>'+result.nonOptedVoters+' - NON OPTED</p>';
+				str+='</td>';
+				str+='</tr>';
+			}else{
+				str+='<tr>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>0</h3>';
+				str+='<p>TOTAL BOOTHS</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>0</h3>';
+				str+='<p>TOTAL VOTERS</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>0</h3>';
+				str+='<p>TOTAL CAPTURED VOTERS</p>';
+				str+='</td>';
+				str+='<td>';
+				str+='<p>'+result.inclinedVoters+' - INCLINED VOTERS</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>0</h3>';
+				str+='<p>TOTAL CADRE</p>';
+				str+='</td>';
+				str+='<td rowspan="4" style="vertical-align: middle;">';
+				str+='<h3>0</h3>';
+				str+='<p>TOTAL CAPTURED CADRE</p>';
+				str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td style="vertical-align: middle;">';
+				str+='<p>0 - UNDECIDED VOTERS</p>';
+				str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td style="vertical-align: middle;">';
+				str+='<p>0 - OTHER PARTY</p>';
+				str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td style="vertical-align: middle;">';
+				str+='<p>0 - NON OPTED</p>';
+				str+='</td>';
+				str+='</tr>';
+			}
+			$("#summaryTableId").html(str);
+		});
+}
+
+
+
 var EqualHeight = $("#Getheight").height();
 $("#PutHeight").css("height",EqualHeight)
 </script>
