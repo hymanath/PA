@@ -5622,4 +5622,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long) query.uniqueResult();
 		}
 		
+		
+		public Long getTdpCadreCountsForDivisions(List<Long> divisionIds){
+			Query query = getSession().createQuery("select count(tc.tdpCadreId)  from TdpCadre tc  where tc.userAddress.ward.constituencyId in (:divisionIds) and tc.isDeleted = 'N' " +
+					" and tc.enrollmentYear = :enrollMentYear ");
+			query.setParameterList("divisionIds",divisionIds);
+			query.setParameter("enrollMentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+			return (Long) query.uniqueResult();
+		}
 }

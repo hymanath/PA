@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
+import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -71,4 +72,5 @@ public interface IMobileService {
 	public List<TabDetailsVO> showMapForMobileAppUserVoter(Long userId,Long divisonId,List<String> dateStrList);
 	public String saveUserLocationData(List<UserLocationTrackingVo> userLocationDetails);
 	public List<TabDetailsVO> getUserTrackingDetails(Long userId);
+	public PollManagementVO overAllPollManagementSummary( List<Long> locationIds);
 }

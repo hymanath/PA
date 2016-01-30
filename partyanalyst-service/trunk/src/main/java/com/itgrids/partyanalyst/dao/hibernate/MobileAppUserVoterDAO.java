@@ -334,6 +334,33 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		
 	}
 	
+	public List<Long> getTrackingDivisionIds(List<Long> locationIds){
+		
+		Query query=getSession().createQuery(" " +
+		" select distinct uv.wardId" +
+		" from MobileAppUserVoter uv where uv.wardId in (:locationIds) and uv.isTracked='Y' ");
+		query.setParameterList("locationIds",locationIds);
+		
+		return query.list();
+	}
+	
+	public Object[] getTrackingDivisionSummaryCounts(List<Long> locationIds){
+		Query query=getSession().createQuery(" " +
+		" select count(distinct uv.voterId),count(distinct uv.tdpCadreId) " +
+		" from MobileAppUserVoter uv where uv.wardId in (:locationIds) and uv.isTracked='Y' ");
+		query.setParameterList("locationIds",locationIds);
+		return (Object[])query.uniqueResult();
+	}
+
+	public List<Object[]> getCapturedVoterRatings(List<Long> locationIds){
+		Query query=getSession().createQuery(" " +
+		" select uv.rating,count(uv.rating) " +
+		" from MobileAppUserVoter uv where uv.wardId in (:locationIds) and uv.isTracked='Y' " +
+		" group by uv.rating");
+		query.setParameterList("locationIds",locationIds);
+		return query.list();
+	}
+	
 	public List<Object[]> mobileAppUserVoterId(List<Long> voterIds)
 	{
 		Query query = getSession().createQuery(" select mobileAppUserVoterId,model.voterId " +
