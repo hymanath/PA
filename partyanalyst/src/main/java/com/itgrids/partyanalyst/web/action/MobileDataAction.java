@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
+import com.itgrids.partyanalyst.dto.PollManagementSummaryVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -68,6 +69,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private List<IdNameVO>		idNamevoList;
 	private PollManagementVO	pollManagementVO;
 	private List<PollManagementVO> pollManagementVOList;
+	private List<PollManagementSummaryVO> pollManagementSummaryVOList;
 	
 	
 	public List<IdNameVO> getIdNamevoList() {
@@ -314,7 +316,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
 		this.constituencyList = constituencyList;
 	}
-	
+	public List<PollManagementSummaryVO> getPollManagementSummaryVOList() {
+		return pollManagementSummaryVOList;
+	}
+
+	public void setPollManagementSummaryVOList(
+			List<PollManagementSummaryVO> pollManagementSummaryVOList) {
+		this.pollManagementSummaryVOList = pollManagementSummaryVOList;
+	}
 
 	public String execute()
 	{
@@ -784,6 +793,18 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			idNamevoList = mobileService.getAssignedWardsByUser(userId);	
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAllDivisons", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String divisonVotingAcitivty(){
+		try {
+			jObj = new JSONObject(getTask());
+			List<Long> list = new ArrayList<Long>(0);
+			list.add(jObj.getLong("divisonId"));
+			pollManagementSummaryVOList = mobileService.divisionWiseVotingActivity(list);
+		} catch (Exception e) {
+			LOG.error("Exception raised at divisonVotingAcitivty", e);
 		}
 		return Action.SUCCESS;
 	}
