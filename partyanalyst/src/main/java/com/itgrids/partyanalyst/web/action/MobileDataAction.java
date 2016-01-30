@@ -67,6 +67,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private String				division;
 	private List<IdNameVO>		idNamevoList;
 	private PollManagementVO	pollManagementVO;
+	private List<PollManagementVO> pollManagementVOList;
 	
 	
 	public List<IdNameVO> getIdNamevoList() {
@@ -75,6 +76,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 
 	public void setIdNamevoList(List<IdNameVO> idNamevoList) {
 		this.idNamevoList = idNamevoList;
+	}
+
+	public List<PollManagementVO> getPollManagementVOList() {
+		return pollManagementVOList;
+	}
+
+	public void setPollManagementVOList(List<PollManagementVO> pollManagementVOList) {
+		this.pollManagementVOList = pollManagementVOList;
 	}
 
 	public PollManagementVO getPollManagementVO() {
@@ -748,6 +757,33 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			pollManagementVO = mobileService.overAllPollManagementSummaryByDivisionOrWard(jObj.getLong("divisonId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at overAllPollManagementSummaryByDivisionOrWard", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getNotYetPolledMembers(){
+	    try{
+	      jObj = new JSONObject(getTask());
+	      
+	      pollManagementVOList = mobileService.getNotYetPolledMembers(jObj.getString("searchType"),jObj.getLong("boothId") );
+	    
+	    }catch (Exception e) {
+	      LOG.error("Exception raised at getNotYetPolledMembers", e);
+	    }
+	    return Action.SUCCESS;
+	  }
+	
+	public String getAllDivisons(){
+		try {
+			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(user==null){
+				return Action.ERROR;
+			}
+			Long userId = user.getRegistrationID();
+			
+			idNamevoList = mobileService.getAssignedWardsByUser(userId);	
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllDivisons", e);
 		}
 		return Action.SUCCESS;
 	}
