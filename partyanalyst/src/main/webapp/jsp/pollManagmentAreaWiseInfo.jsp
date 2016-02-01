@@ -520,7 +520,7 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 					
 					str+='<td>'+result[i].totalVoters+'</td>';
 					if(result[i].pollPercent != null && result[i].pollPercent.length > 0)
-						str+='<td>'+result[i].pollPercent+'</td>';
+						str+='<td>'+result[i].pollPercent+'%</td>';
 					else
 						str+='<td> - </td>';
 					if(result[i].yetToPollPercent != null && result[i].yetToPollPercent.length > 0)
