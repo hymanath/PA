@@ -11338,6 +11338,11 @@
 			<param name="root">pollManagementVO</param>
 		</result>
 	</action>
+	<action name="overAllPollManagementSummaryByDivisionOrWardAction" class="mobileDataAction" method="overAllPollManagementSummaryByDivisionOrWard">
+		<result type="json" name="success">
+			<param name="root">pollManagementVO</param>
+		</result>
+	</action>
 	
 	<action name="divisionWiseVotingActivityAction" class="mobileDataAction" method="divisionWiseVotingActivity">
 		<result type="json" name="success">
@@ -11358,6 +11363,11 @@
 	</action>  
 	
 	<action name="divisonVotingAcitivtyAction" class="mobileDataAction" method="divisonVotingAcitivty">
+		<result type="json" name="success">
+	    	<param name="root">pollManagementSummaryVOList</param>
+	    </result>
+	</action>
+	<action name="boothWiseVotingActivityAction" class="mobileDataAction" method="boothWiseVotingActivity">
 		<result type="json" name="success">
 	    	<param name="root">pollManagementSummaryVOList</param>
 	    </result>
