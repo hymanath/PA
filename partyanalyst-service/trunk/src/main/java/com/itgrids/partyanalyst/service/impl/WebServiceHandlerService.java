@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
+import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -73,6 +74,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -3696,7 +3698,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 			return result;
 	   }
-	   
-	   
+	 public PollManagementVO getDivisonWiseOverview(MobileAppUserVoterVO inputVO)
+	 {
+		 return mobileService.getDivisonOverView(inputVO);
+		 
+	 }
+	 public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO)
+	 {
+		 return mobileService.getVoterInfoForBooth(inputVO); 
+	 }
 }
 

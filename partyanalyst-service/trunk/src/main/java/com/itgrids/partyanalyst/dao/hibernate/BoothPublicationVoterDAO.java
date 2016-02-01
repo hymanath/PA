@@ -8035,4 +8035,5 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	
 	}
+
 }

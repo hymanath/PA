@@ -5640,4 +5640,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("enrollMentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 			return query.list();
 		}
+		public List<Object[]> getTdpCadreBoothsForDivision(Long wardId)
+		{
+			Query query = getSession().createQuery("select distinct bpv.booth.boothId,bpv.booth.partNo  from TdpCadre tc,BoothPublicationVoter bpv  where tc.userAddress.ward.constituencyId =:wardId and tc.isDeleted = 'N' " +
+					" and tc.enrollmentYear = :enrollMentYear and tc.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = 17");
+			query.setParameter("wardId",wardId);
+			query.setParameter("enrollMentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+			return query.list();
+		}
 }

@@ -7,10 +7,12 @@ import org.apache.log4j.Logger;
 import org.springframework.core.task.TaskExecutor;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.MobileAppUserVoter;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ISmsGatewayService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
@@ -25,10 +27,20 @@ public class SmsSenderService implements ISmsSenderService{
 	private ICadreRegistrationService cadreRegistrationService;
 	private ISmsGatewayService smsGatewayService;
 	
+	private IMobileAppUserVoterDAO mobileAppUserVoterDAO;
 	
 	
 	
 	
+
+	public IMobileAppUserVoterDAO getMobileAppUserVoterDAO() {
+		return mobileAppUserVoterDAO;
+	}
+
+	public void setMobileAppUserVoterDAO(
+			IMobileAppUserVoterDAO mobileAppUserVoterDAO) {
+		this.mobileAppUserVoterDAO = mobileAppUserVoterDAO;
+	}
 
 	public ISmsGatewayService getSmsGatewayService() {
 		return smsGatewayService;
@@ -121,6 +133,23 @@ public class SmsSenderService implements ISmsSenderService{
 			Integer startIndex =0;
 			Integer maxIndex = 5000;
 				List<CadreVoterVO> resultList = new ArrayList<CadreVoterVO>();
+				if(inputVO.getReqType().equalsIgnoreCase("call"))
+				{
+					List<Long> mobileAppUserVoterIds = mobileAppUserVoterDAO.mobileAppUserVoterIds(inputVO.getMobileNums());
+					if(mobileAppUserVoterIds != null && mobileAppUserVoterIds.size() > 0)
+					{
+						for(Long id : mobileAppUserVoterIds)
+						{
+							MobileAppUserVoter voter = mobileAppUserVoterDAO.get(id);
+							voter.setIsCalled("Y");
+							mobileAppUserVoterDAO.save(voter);
+						}
+					}
+					result.setMessage("success");
+					return result;
+				}
+				else
+				{
 				List<Object[]> list = boothPublicationVoterDAO.getVoterInfo(inputVO.getMobileNums());
 					 if(list != null && list.size() > 0)
 					 {
@@ -152,6 +181,7 @@ public class SmsSenderService implements ISmsSenderService{
 						}
 					 result.setMessage("success");
 				}
+		}
 		catch (Exception e) {
 			result.setMessage("fail");
 			LOG.error("Exception Occured in sendSmsToCadre() method"+e);

@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserDetailsVO;
+import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
 import com.itgrids.partyanalyst.dto.MobileVO;
 import com.itgrids.partyanalyst.dto.PollManagementSummaryVO;
@@ -80,4 +82,7 @@ public interface IMobileService {
 	public List<PollManagementVO> getNotYetPolledMembers(String resultType,Long locationId);
 	public List<PollManagementSummaryVO> divisionWiseVotingActivity(List<Long> locationIds);
 	public List<PollManagementSummaryVO> boothWiseVotingActivity(Long wardId);
+	public PollManagementVO getDivisonOverView(MobileAppUserVoterVO inputVO);
+	public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO);
+	;
 }

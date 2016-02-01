@@ -385,4 +385,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getTdpCadreIdByVoterId(Long voterId);
 	  public Long getTdpCadreCountsForDivisions(List<Long> divisionIds);
 	  public List<Object[]> getDivisionWiseCadresCount(List<Long> divisionIds);
+	  public List<Object[]> getTdpCadreBoothsForDivision(Long wardId);
+	  ;
 }
