@@ -62,12 +62,12 @@
                                 </tr>
                                 <tr>
                                 	<td style="vertical-align: middle;">
-                                    	<p><span id="otherPartyId"></span> - OTHER PARTY</p>
+                                    	<p><span id="otherPartyId"></span> - OTHER PARTY VOTERS</p>
                                     </td>
                                 </tr>
 								<tr>
                                 	<td style="vertical-align: middle;">
-                                    	<p><span id="nonOptedId"></span> - NON OPTED</p>
+                                    	<p><span id="nonOptedId"></span> - NON OPTED VOTERS</p>
                                     </td>
                                 </tr>
                             </table>
@@ -163,7 +163,7 @@ function divisionWiseVotingActivity(){
 		
 	$("#dataLoadingsImgForVotingDetails").show();
 	var jsObj={
-		locationIds:locationIds
+		 locationIds:locationIds
 	}
 	
 	$.ajax({
@@ -242,7 +242,7 @@ function buildDivisionWiseVotingSummary(result){
 					
 					str+='<td>'+result[i].totalVoters+'</td>';
 					if(result[i].pollPercent != null && result[i].pollPercent.length > 0)
-						str+='<td>'+result[i].pollPercent+'</td>';
+						str+='<td>'+result[i].pollPercent+'%</td>';
 					else
 						str+='<td> - </td>';
 					if(result[i].yetToPollPercent != null && result[i].yetToPollPercent.length > 0)
