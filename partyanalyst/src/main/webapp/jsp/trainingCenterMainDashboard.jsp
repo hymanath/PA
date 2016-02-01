@@ -1630,7 +1630,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='<li>MemberShip No: <a href="cadreDetailsAction.action?cadreId='+result[i].id+'" target="_blank" >'+result[i].membershipNo+'</a></li>';
 				str+='</ul>';
 				str+='</div>';
-			str+='</div>';
+			str+='</div>';         
 		}
 		$("#popupForCadreDetailsId").html(str);
 		 $('.table-scroll-1').scrollator({

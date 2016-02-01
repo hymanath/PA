@@ -823,4 +823,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		return Action.SUCCESS;
 	}
+	public String boothWiseVotingActivity(){
+		try {
+			jObj = new JSONObject(getTask());
+			pollManagementSummaryVOList= mobileService.boothWiseVotingActivity(jObj.getLong("wardId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at divisionWiseVotingActivity", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
