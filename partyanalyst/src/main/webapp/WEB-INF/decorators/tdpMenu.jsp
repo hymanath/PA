@@ -412,7 +412,7 @@ footer
 									</c:if>
 									</ul>
 							</li></c:if>
-						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREIVRDASHBOARD' ) || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT_ADMIN') }">">
+						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREIVRDASHBOARD' ) || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT_ADMIN') }">
 						 <li>
 							<a href="pollingManagmentAction.action"><i class="fa fa-group ico-white"></i><span>&nbsp;&nbsp; GHMC Elections -  2016 </span></a>
 						</li>
