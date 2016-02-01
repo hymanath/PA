@@ -36,4 +36,9 @@ public interface IMobileAppUserVoterDAO extends GenericDao<MobileAppUserVoter, L
 	public List<Object[]> getCapturedCadrePolledForBooth(List<Long> boothIds,String type);
 	public List<Object[]> getCapturedVotersForBooth(List<Long> boothIds,String type);
 	public List<Object[]> getTrackedAndPolledratingVotersForBooth(List<Long> boothIds,String type);
+	public List<Object[]> getBoothWisePolledVoters(List<Long> boothIds);
+	public List<Object[]> getBoothsBasedOnRating(List<Long> rating);
+	public List<Object[]> getVotersInfo(Long boothId,Long wardId,String isVoted,String resultType);
+	public List<Long> mobileAppUserVoterIds(List<String> mobileNos);
+	
 }	

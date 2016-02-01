@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
+import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
@@ -146,4 +148,6 @@ public interface IWebServiceHandlerService {
     public List<MobileAppUserVoterVO> updateBoothVoter(MobileAppUserVoterVO inputVO);
     public String saveUserLocationData(UserLocationTrackingVo inputVO);
     public String updateVoterVotedData(MobileAppUserVoterVO inputVO);
+    public PollManagementVO getDivisonWiseOverview(MobileAppUserVoterVO inputVO);
+    public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO);
 }

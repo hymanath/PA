@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PollManagementVO implements Serializable{
     
@@ -18,14 +20,30 @@ public class PollManagementVO implements Serializable{
 	private Long unDecidedVoters=0l;
 	private Long otherPartyVoters=0l;
 	private Long nonOptedVoters=0l;
-	
+	private String partNo;
+	private Long boothId;
+	private List<PollManagementVO> cadreBoothsList = new ArrayList<PollManagementVO>();
+	private List<PollManagementVO> inclinedBoothsList = new ArrayList<PollManagementVO>();
+	private List<PollManagementVO> unDecidedBoothsList = new ArrayList<PollManagementVO>();
+	private List<PollManagementVO> oherPartyBoothsList = new ArrayList<PollManagementVO>();
+	private List<PollManagementVO> notCapturedBoothsList = new ArrayList<PollManagementVO>();
 	private String voterCardNo;
 	private String mobileNo;
 	private String smsStatus;
 	private String calledStatus;
 	
+	private Long polledVotes =0l;
+	private Long yetToPollVotes=0l;
+	private List<PollManagementSummaryVO> pollManagementSummaryVOList = new ArrayList<PollManagementSummaryVO>();
 	
-	
+
+	public List<PollManagementSummaryVO> getPollManagementSummaryVOList() {
+		return pollManagementSummaryVOList;
+	}
+	public void setPollManagementSummaryVOList(
+			List<PollManagementSummaryVO> pollManagementSummaryVOList) {
+		this.pollManagementSummaryVOList = pollManagementSummaryVOList;
+	}
 	public String getVoterCardNo() {
 		return voterCardNo;
 	}
@@ -61,6 +79,25 @@ public class PollManagementVO implements Serializable{
 	}
 	public void setCalledStatus(String calledStatus) {
 		this.calledStatus = calledStatus;
+	}
+	
+	public Long getPolledVotes() {
+		return polledVotes;
+	}
+	public void setPolledVotes(Long polledVotes) {
+		this.polledVotes = polledVotes;
+	}
+	public Long getYetToPollVotes() {
+		return yetToPollVotes;
+	}
+	public void setYetToPollVotes(Long yetToPollVotes) {
+		this.yetToPollVotes = yetToPollVotes;
+	}
+	public Long getBoothId() {
+		return boothId;
+	}
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
 	}
 	public Long getCapturedVoters() {
 		return capturedVoters;
@@ -127,6 +164,43 @@ public class PollManagementVO implements Serializable{
 	}
 	public void setBooths(Long booths) {
 		this.booths = booths;
+	}
+	public String getPartNo() {
+		return partNo;
+	}
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
+	public List<PollManagementVO> getCadreBoothsList() {
+		return cadreBoothsList;
+	}
+	public void setCadreBoothsList(List<PollManagementVO> cadreBoothsList) {
+		this.cadreBoothsList = cadreBoothsList;
+	}
+	public List<PollManagementVO> getInclinedBoothsList() {
+		return inclinedBoothsList;
+	}
+	public void setInclinedBoothsList(List<PollManagementVO> inclinedBoothsList) {
+		this.inclinedBoothsList = inclinedBoothsList;
+	}
+	public List<PollManagementVO> getUnDecidedBoothsList() {
+		return unDecidedBoothsList;
+	}
+	public void setUnDecidedBoothsList(List<PollManagementVO> unDecidedBoothsList) {
+		this.unDecidedBoothsList = unDecidedBoothsList;
+	}
+	public List<PollManagementVO> getOherPartyBoothsList() {
+		return oherPartyBoothsList;
+	}
+	public void setOherPartyBoothsList(List<PollManagementVO> oherPartyBoothsList) {
+		this.oherPartyBoothsList = oherPartyBoothsList;
+	}
+	public List<PollManagementVO> getNotCapturedBoothsList() {
+		return notCapturedBoothsList;
+	}
+	public void setNotCapturedBoothsList(
+			List<PollManagementVO> notCapturedBoothsList) {
+		this.notCapturedBoothsList = notCapturedBoothsList;
 	}
 	
 	

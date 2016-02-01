@@ -20,10 +20,25 @@ public class MobileAppUserVoterVO {
 	private Long tdpCadreId;
 	private List<Long> voterIds;
 	private List<String> mobileNums;
+	private Long divisonId;
+	private String reqType;
 	
 	
 	
 	
+	
+	public String getReqType() {
+		return reqType;
+	}
+	public void setReqType(String reqType) {
+		this.reqType = reqType;
+	}
+	public Long getDivisonId() {
+		return divisonId;
+	}
+	public void setDivisonId(Long divisonId) {
+		this.divisonId = divisonId;
+	}
 	public List<String> getMobileNums() {
 		return mobileNums;
 	}

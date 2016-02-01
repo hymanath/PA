@@ -370,7 +370,7 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 				query.setParameterList("voterIds", voterIds);
 		return query.list();
 	}
-	
+
 	
 	public List<Object[]> divisionWiseTotalVotersAndCapturedCadre(List<Long> locationIds){
 		
@@ -540,4 +540,78 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		return query.list();
 	}
 	
+	public List<Object[]> getBoothWisePolledVoters(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery(" select model.boothId,count(model.voterId),model.isVoted" +
+				" from MobileAppUserVoter model " +
+				" where model.boothId in(:boothIds) group by model.boothId,model.isVoted");
+				query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getBoothsBasedOnRating(List<Long> rating)
+	{
+		Query query = getSession().createQuery(" select model.boothId,model.booth.partNo" +
+				" from MobileAppUserVoter model " +
+				" where model.rating in(:rating)");
+				query.setParameterList("rating", rating);
+		return query.list();
+	}
+	
+	public List<Object[]> getVotersInfo(Long boothId,Long wardId,String isVoted,String resultType)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.booth.partNo,model1.serialNo," +
+			" model.voter.name,model.voter.voterIDCardNo," +
+			" model.mobileNo,model.booth.boothId from MobileAppUserVoter model,BoothPublicationVoter model1" +
+			" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId=17" +
+			" and model.mobileNo is not null and length(model.mobileNo) = 10 and model.mobileNo <> '9999999999' and model.mobileNo !='' " +
+			" and model.booth.boothId = :boothId and model.wardId = :wardId");
+		if(isVoted.equalsIgnoreCase("Y"))
+		{
+			str.append(" and (model.isVoted = 'Y' or model.isVoted = 'y') ");
+		}
+		if(isVoted.equalsIgnoreCase("N"))
+		{
+			str.append(" and (model.isVoted = 'N' or model.isVoted is null) ");
+		}
+		
+		if(resultType !=null && resultType.equalsIgnoreCase("totalCadres")){
+			str.append(" and model.tdpCadreId is not null ");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("totalCapturedCadres")){
+			str.append(" and model.tdpCadreId is not null and model.isTracked = 'Y' ");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("inclinedVoters")){
+			str.append(" and model.rating in (:inclinedVoters)");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("undecidedVoters")){
+			str.append(" and model.rating in (:undecidedVoters)");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("otherPartyVoters")){
+			str.append(" and model.rating in (:otherPartyVoters)");
+		}else if(resultType !=null && resultType.equalsIgnoreCase("nonOptedVoters")){
+			str.append(" and model.rating in (:nonOptedVoters)");
+		}
+		Query query = getSession().createQuery(str.toString());
+		if(resultType !=null && resultType.equalsIgnoreCase("inclinedVoters")){
+			query.setParameterList("inclinedVoters", IConstants.GHMC_INCLINED_VOTERS);
+		}
+		if(resultType !=null && resultType.equalsIgnoreCase("undecidedVoters")){
+			query.setParameterList("undecidedVoters", IConstants.GHMC_UNDECIDED_VOTERS);
+		}
+		if(resultType !=null && resultType.equalsIgnoreCase("otherPartyVoters")){
+			query.setParameterList("otherPartyVoters", IConstants.GHMC_OTHER_VOTERS);
+		}
+		if(resultType !=null && resultType.equalsIgnoreCase("nonOptedVoters")){
+			query.setParameterList("nonOptedVoters", IConstants.GHMC_NONOPTED_VOTERS);
+		}
+		query.setParameter("wardId", wardId);
+		query.setParameter("boothId", boothId);
+		return query.list();
+	}
+	
+	public List<Long> mobileAppUserVoterIds(List<String> mobileNos)
+	{
+		Query query =getSession().createQuery("select distinct model.mobileAppUserVoterId from MobileAppUserVoter model " +
+				" where model.mobileNo in(:mobileNos)");
+		query.setParameterList("mobileNos", mobileNos);
+		return query.list();
+	}
 }
