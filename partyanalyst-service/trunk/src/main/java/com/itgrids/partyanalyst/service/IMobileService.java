@@ -79,4 +79,5 @@ public interface IMobileService {
 	public PollManagementVO overAllPollManagementSummaryByDivisionOrWard(Long wardId);
 	public List<PollManagementVO> getNotYetPolledMembers(String resultType,Long locationId);
 	public List<PollManagementSummaryVO> divisionWiseVotingActivity(List<Long> locationIds);
+	public List<PollManagementSummaryVO> boothWiseVotingActivity(Long wardId);
 }

@@ -5863,4 +5863,199 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		}
 		 return fnlList;
 	 }
+	 
+	 public List<PollManagementSummaryVO> boothWiseVotingActivity(Long wardId){
+		 List<PollManagementSummaryVO> finalList = new ArrayList<PollManagementSummaryVO>();
+		 
+		 try{
+			 
+			 List<Long> wardIds = new ArrayList<Long>();
+			 
+			 wardIds.add(wardId);
+			 
+			 
+			 List<Long> totalBooths = boothDAO.getAllBoothIdsByWard(wardId, 17l);
+			 
+			 List<Object[]> totalVotersList = boothDAO.getBoothWiseTotalVoters(totalBooths,wardId);
+			 
+			 List<Long> boothIds=null;
+			 if(totalVotersList!=null && totalVotersList.size()>0){					 
+				 finalList=new ArrayList<PollManagementSummaryVO>();
+				 boothIds=new ArrayList<Long>();
+				 
+				 for (Object[] obj : totalVotersList) {
+					
+					 Long boothId=obj[0]!=null?(Long)obj[0]:0l;
+					 
+					 PollManagementSummaryVO boothVo=new PollManagementSummaryVO();
+					 boothVo.setId(boothId);
+					 boothVo.setName(obj[1]!=null?"Booth - "+Long.valueOf(obj[1].toString()):"Booth - "+0l);
+					 
+					 boothVo.setTotalVoters(obj[2]!=null?Long.valueOf(obj[2].toString()):0l);//total Voters
+					 boothVo.setCadreCount(obj[3] !=null ? Long.valueOf(obj[3].toString()):0l);//total cadre Count
+					 
+					 boothVo.setSubList(getVoterRatingTypes());
+					 
+					 finalList.add(boothVo);
+					 
+					 boothIds.add(boothId);
+				}					 
+			 }
+			 
+			 List<Object[]>  capturedVoters = mobileAppUserVoterDAO.getCapturedVotersForBooth(boothIds,"capturedVoters");				 
+			 gettingMatchedBoothVO(capturedVoters,finalList,"capturedVoter");
+			 
+			 List<Object[]> capturedCadre = mobileAppUserVoterDAO.getCapturedCadrePolledForBooth(boothIds,"total");				 
+			 gettingMatchedBoothVO(capturedCadre,finalList,"capturedCadre");
+			 
+			 List<Object[]> totalPolledVotersAndCadres=mobileAppUserVoterDAO.getPolledVotersAndPolledCadreForBooth(boothIds);				 
+			 gettingMatchedBoothVO(totalPolledVotersAndCadres,finalList,"totalPolledVotersAndCadres");
+    		    
+    		    
+		    List<Object[]> capturedCadrepolled=mobileAppUserVoterDAO.getCapturedCadrePolledForBooth(boothIds,"polled");
+		    gettingMatchedBoothVO(capturedCadrepolled,finalList,"capturedCadrepolled");
+		    
+		    
+		    List<Object[]> nonCapVoterspolled=mobileAppUserVoterDAO.getCapturedVotersForBooth(boothIds,"nonCapturedVotersPolled");
+		    gettingMatchedBoothVO(nonCapVoterspolled,finalList,"nonCapVoterspolled");
+		    
+		    List<Object[]> ratingVotersTracked=mobileAppUserVoterDAO.getTrackedAndPolledratingVotersForBooth(boothIds,"tracked");
+		    List<Object[]> ratingVotersPolled=mobileAppUserVoterDAO.gettrackedAndPolledratingVoters(boothIds,"polled");
+		    
+		    gettingMatchedBoothVO(ratingVotersTracked,finalList,"ratingVoters");
+		    gettingMatchedBoothVO(ratingVotersPolled,finalList,"ratingVotersPolled");
+		    
+		    
+		  //calc percantages.
+		    if(finalList!=null && finalList.size()>0){
+		    	for(PollManagementSummaryVO boothVO:finalList){
+		    		
+		    		//total voters.
+		    		boothVO.setTotalVotersYetToBePolled(boothVO.getTotalVoters()-boothVO.getTotalVotersPolled());
+		    		boothVO.setPollPercent(calcPercantage(boothVO.getTotalVoters(),boothVO.getTotalVotersPolled()));
+		    		boothVO.setYetToPollPercent(calcPercantage(boothVO.getTotalVoters(),boothVO.getTotalVotersYetToBePolled()));
+		    		//for total cadre.
+		    		boothVO.setCadreCountYetToBePolled(boothVO.getCadreCount()-boothVO.getCadreCountPolled());
+		    		boothVO.setCadrepollPercent(calcPercantage(boothVO.getCadreCount(),boothVO.getCadreCountPolled()));
+		    		boothVO.setCadreYetToPollPercent( calcPercantage(boothVO.getCadreCount(),boothVO.getCadreCountYetToBePolled()));
+		    		//captured cadre
+		    		boothVO.setCapCadreCountYetToBePolled(boothVO.getCapCadreCount()-boothVO.getCapCadreCountPolled());
+		    		boothVO.setCapCadrePollPercent((calcPercantage(boothVO.getCapCadreCount(),boothVO.getCapCadreCountPolled())));
+		    		boothVO.setCapCadreYetTopollPercent((calcPercantage(boothVO.getCapCadreCount(),boothVO.getCapCadreCountYetToBePolled())) );
+		    		//nonCapVoterspolled
+		    		boothVO.setNonCapVotersYetToBePolled(boothVO.getNonCapVoters()-boothVO.getNonCapVotersPolled());
+		    		boothVO.setNonCapVotersPollPercent((calcPercantage(boothVO.getNonCapVoters(),boothVO.getNonCapVotersPolled())));
+		    		boothVO.setNonCapVotersYetToPollPercent((calcPercantage(boothVO.getNonCapVoters(),boothVO.getNonCapVotersYetToBePolled())) );
+		    		 
+		    		//rating voters
+		    		for(PollManagementSummaryVO ratingVO: boothVO.getSubList()){
+		    			 ratingVO.setTotalVotersYetToBePolled(ratingVO.getTotalVoters()-ratingVO.getTotalVotersPolled());
+		    			 ratingVO.setPollPercent(calcPercantage(ratingVO.getTotalVoters(),ratingVO.getTotalVotersPolled()));
+		    			 ratingVO.setYetToPollPercent(calcPercantage(ratingVO.getTotalVoters(),ratingVO.getTotalVotersYetToBePolled()));
+		    		}
+		    		
+		    		
+		    	}
+		    }
+		    
+		 }catch (Exception e) {
+			e.printStackTrace();
+		}
+		 return finalList;
+	 }
+	 public void gettingMatchedBoothVO(List<Object[]> list,List<PollManagementSummaryVO> finalList,String type){
+		 try{
+			 
+			 if(list!=null && list.size()>0){
+				  for(Object[] obj:list){
+					  if(obj[0]!=null){		
+						  PollManagementSummaryVO boothVo=getMatchingward1(finalList,(Long)obj[0],"booth","");						  
+						  if(type !=null && type.equalsIgnoreCase("totalPolledVotersAndCadres")){
+							  
+							  //total Voters Block
+							  boothVo.setTotalVotersPolled(obj[1]!=null?(Long)obj[1]:0l);
+							  
+							  
+							  //Cadre Details Block
+							  boothVo.setCadreCountPolled(obj[2]!=null?(Long)obj[2]:0l);							  
+							 						  
+						  }
+						  //total captured cadre
+						  else if(type.equalsIgnoreCase("capturedCadre")){							  
+							  boothVo.setCapCadreCount(obj[1]!=null?(Long)obj[1]:0l);							  
+						  }						
+						  //cap cadre details block
+						  else if(type.equalsIgnoreCase("capturedCadrepolled")){
+							  
+							  boothVo.setCapCadreCountPolled(obj[1]!=null?(Long)obj[1]:0l);
+							 
+							 
+						  }//setting non captured voters
+						  else if(type.equalsIgnoreCase("capturedVoter")){							  
+							  boothVo.setNonCapVoters(boothVo.getTotalVoters() - (obj[1]!=null?(Long)obj[1]:0l));
+						  }else if(type.equalsIgnoreCase("nonCapVoterspolled")){	
+							  
+							  boothVo.setNonCapVotersPolled(obj[1]!=null?(Long)obj[1]:0l);
+							 
+							  
+						  }else if(type.equalsIgnoreCase("ratingVoters") || type.equalsIgnoreCase("ratingVotersPolled")){
+							  
+							   Long rating=obj[1]!=null?(Long)obj[1]:null;
+	    					   Long ratingsCount=obj[2]!=null?(Long)obj[2]:null;
+	    					   PollManagementSummaryVO ratingVO=null;
+	    					   if(rating!=null){
+	    						    if(rating>3l){
+	    						    	  ratingVO=getMatchingward1(boothVo.getSubList(),null,"rating","INCLINED VOTERS");
+	    						    }else if(rating<3){
+	    						    	if(rating==0l){
+	    						    		ratingVO=getMatchingward1(boothVo.getSubList(),null,"rating","NON OPTED VOTERS");
+	    						    	}else{
+	    						    		ratingVO=getMatchingward1(boothVo.getSubList(),null,"rating","OTHER PARTY VOTERS");
+	    						    	}
+	    						    }else{
+	    						    	    ratingVO=getMatchingward1(boothVo.getSubList(),null,"rating","UNDECIDED VOTERS");
+	    						    }
+	    						    if(type.equalsIgnoreCase("ratingVoters")){
+	    						    	ratingVO.setTotalVoters(ratingVO.getTotalVoters()+ratingsCount);
+	    						    }else{
+	    						    	ratingVO.setTotalVotersPolled(ratingVO.getTotalVotersPolled()+ratingsCount);
+	    						    }
+	    						    
+	    					   }
+						  }
+						  
+					  }
+					 }
+				  }
+			 
+			 
+		 }catch (Exception e) {
+			e.printStackTrace();
+		}
+	 }
+	 public PollManagementSummaryVO getMatchingward1(List<PollManagementSummaryVO> resultList,Long Id,String type,String name)
+		{
+			try{
+				 if(resultList != null && resultList.size() > 0){
+					 
+					for(PollManagementSummaryVO vo : resultList)
+					{
+						if(type.equalsIgnoreCase("booth")){
+							if(vo.getId().longValue() == Id.longValue())
+								return vo;
+						}else if(type.equalsIgnoreCase("rating")){
+							if(vo.getName().equalsIgnoreCase(name)){
+								return vo;
+							}
+						}
+					}
+					
+				  }
+				}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		
+		 }
 }

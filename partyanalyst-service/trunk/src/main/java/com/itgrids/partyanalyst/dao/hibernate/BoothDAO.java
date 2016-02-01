@@ -2684,6 +2684,30 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		
 		return (Long)query.uniqueResult();
 	}
+	 
+	 public List<Object[]>  getBoothWiseTotalVoters(List<Long> totalBooths,Long wardId){
+		 
+		 Query query = getSession().createQuery("select model.boothId,model.partNo,model.location,model.totalVoters ,count(distinct tc.tdpCadreId) " +
+					" from  Booth model,TdpCadre tc " +
+					" where model.boothId  in (:totalBooths)" +
+					" and tc.userAddress.ward.constituencyId = :wardId  " +
+					" group by model.boothId ");
+			
+			query.setParameterList("totalBooths", totalBooths);
+			query.setParameter("wardId", wardId);
+			
+			return  query.list();
+	 }
+	 
+	 public List<Long> getAllBoothIdsByWard(Long wardId,Long publicationId)
+	{
+			Query query = getSession().createQuery("select model.boothId from Booth model " +
+					" where model.localBodyWard.constituencyId= :wardId and " +
+					"  model.publicationDate.publicationDateId = :publicationId");
+			query.setParameter("wardId", wardId);
+			query.setParameter("publicationId", publicationId);
+			return query.list();
+	}
 		 
 	 
 	 

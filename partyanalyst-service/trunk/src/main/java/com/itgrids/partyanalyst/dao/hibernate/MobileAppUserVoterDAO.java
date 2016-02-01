@@ -436,7 +436,7 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		str.append("select distinct model.voter.voterId,model.voter.voterIDCardNo,model.voter.name,model.mobileNo," +
 				" model.smsStatus,model.isCalled " +
 				" from MobileAppUserVoter model" +
-				" where model.isVoted is null or model.isVoted ='N'" +
+				" where where model.isVoted is null or model.isVoted ='N'" +
 				" and model.boothId =:locationId  ");
 		if(resultType !=null && resultType.equalsIgnoreCase("totalVoters"))
 		{	
@@ -474,6 +474,69 @@ public class MobileAppUserVoterDAO extends GenericDaoHibernate<MobileAppUserVote
 		}
 		
 		
+		return query.list();
+	}
+	public List<Object[]> getPolledVotersAndPolledCadreForBooth(List<Long> boothIds){
+		
+		 Query query=getSession().createQuery(" " + 
+		    " select   uv.boothId,count(distinct uv.voterId) as polledvoters,count(distinct uv.tdpCadreId) as polledCadre" +
+		    " from     MobileAppUserVoter uv " +
+		    " where    uv.boothId in (:boothIds) and uv.isVoted='Y' " +
+		    " group by uv.boothId " );
+		   query.setParameterList("boothIds",boothIds);
+		   return query.list();
+	}
+	public List<Object[]> getCapturedCadrePolledForBooth(List<Long> boothIds,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select   uv.boothId,count(distinct uv.tdpCadreId) as capturedCadrePolled" +
+	    " from     MobileAppUserVoter uv " +
+	    " where    uv.boothId in (:boothIds) and uv.isTracked='Y' " );
+		
+		if(type !=null && type.equalsIgnoreCase("polled")){
+			str.append(" and uv.isVoted='Y' ");
+		}
+		
+		str.append(" group by uv.boothId ");
+		
+		Query query=getSession().createQuery(str.toString());
+		
+	   query.setParameterList("boothIds",boothIds);
+	   
+	   return query.list();		
+	}
+	
+	public List<Object[]> getCapturedVotersForBooth(List<Long> boothIds,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select   uv.boothId,count(distinct uv.voterId) as capturedVoter" +
+				    " from     MobileAppUserVoter uv " +
+				    " where    uv.boothId in (:boothIds) "); 
+		
+		if(type !=null && type.equalsIgnoreCase("capturedVoters")){
+			str.append(" and uv.isTracked='Y' ");
+		}else if(type !=null && type.equalsIgnoreCase("nonCapturedVotersPolled")){
+			str.append(" and uv.isTracked='N' and  uv.isVoted='Y' ");
+		}		
+		str.append(" group by uv.boothId ");		
+		Query query=getSession().createQuery(str.toString());		
+		
+		query.setParameterList("boothIds",boothIds);		
+		return query.list();
+	}
+	
+	public List<Object[]> getTrackedAndPolledratingVotersForBooth(List<Long> boothIds,String type){
+		
+		StringBuilder sb=new StringBuilder();
+		sb.append(" select  uv.boothId,uv.rating,count(uv.rating) from MobileAppUserVoter uv where uv.boothId in (:boothIds) and uv.isTracked='Y'");
+		if(type.equalsIgnoreCase("polled")){
+			sb.append(" and uv.isVoted='Y' ");
+		}
+		sb.append(" group by uv.boothId,uv.rating");
+		Query query=getSession().createQuery(sb.toString());
+	    query.setParameterList("boothIds",boothIds);
 		return query.list();
 	}
 	
