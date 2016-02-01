@@ -2687,7 +2687,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	 
 	 public List<Object[]>  getBoothWiseTotalVoters(List<Long> totalBooths,Long wardId){
 		 
-		 Query query = getSession().createQuery("select model.boothId,model.partNo,model.location,model.totalVoters ,count(distinct tc.tdpCadreId) " +
+		 Query query = getSession().createQuery("select model.boothId,model.partNo,model.totalVoters ,count(distinct tc.tdpCadreId) " +
 					" from  Booth model,TdpCadre tc " +
 					" where model.boothId  in (:totalBooths)" +
 					" and tc.userAddress.ward.constituencyId = :wardId  " +
