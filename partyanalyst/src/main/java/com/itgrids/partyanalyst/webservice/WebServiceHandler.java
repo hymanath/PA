@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
+import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -45,6 +46,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
@@ -1875,6 +1877,39 @@ public class WebServiceHandler {
 			}
 			return null;
 		}
+		@POST
+		@Path("/getDivisonWiseOverview")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public PollManagementVO getDivisonWiseOverview(MobileAppUserVoterVO inputVO)
+		{
+			try
+			{
+	           return webServiceHandlerService.getDivisonWiseOverview(inputVO);
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in getDivisonWiseOverview from app:"+e.getMessage());
+			}
+			return null;
+		}
+		
+		@POST
+		@Path("/getVoterInfoForBooth")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO)
+		{
+			try
+			{
+	           return webServiceHandlerService.getVoterInfoForBooth(inputVO);
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in getVoterInfoForBooth from app:"+e.getMessage());
+			}
+			return null;
+		}
+		
+		
 		
 		
 }
