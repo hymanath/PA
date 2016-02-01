@@ -7,6 +7,7 @@
 <link href="dist/pollManagment/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/pollManagment/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/>
 </head>
 <body>
 <div class="container">
@@ -74,7 +75,7 @@
                     	<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
                         	<div class="panel panel-default">
                             	<div class="panel-heading">
-                                	<h4 class="panel-title">DEVISION VOTING ACTIVITY</h4>
+                                	<h4 class="panel-title">DIVISION VOTING ACTIVITY</h4>
                                 </div>
                                 <div class="panel-body m_top10 pad_0">
 									<div class="row">
@@ -83,8 +84,8 @@
 										</div>
 										<div class="col-md-11 col-xs-12 col-sm-11" style="border-left:1px solid #ddd;">
 											<table class="table tableCustom" id="votingActivityTableID">
-												
 											</table>
+											<center><img id="dataLoadingsImgForVotingDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 										</div>
 									</div>
 								</div>
@@ -97,170 +98,8 @@
 										</div>
 										<div class="panel-body pad_0">
 										
-										<div id="boothWiseVotingDetailsDivId"></div>
-										
-											<!--<table class="table table-bordered table-condensed">
-												<thead>
-													<tr class="font-12">
-														<th rowspan="2">BOOTH NO</th>
-														<th colspan="3">TOTAL VOTERS</th>
-														<th colspan="3">CADRES</th>
-														<th colspan="3">INCLINED VOTERS</th>
-														<th colspan="3">UNDECIDED VOTERS</th>
-														<th colspan="3">OTHER PARTY VOTERS</th>
-														<th colspan="3">NOT CAPTURED VOTERS</th>
-													</tr>
-													<tr class="font-10">
-														<th>TOTAL</th>
-														<th>POLLED</th>
-														<th>YET TO POLL</th>
-														<th>TOTAL</th>
-														<th>POLLED</th>
-														<th>YET TO POLL</th>
-														<th>TOTAL</th>
-														<th>POLLED</th>
-														<th>YET TO POLL</th>
-														<th>TOTAL</th>
-														<th>POLLED</th>
-														<th>YET TO POLL</th>
-														<th>TOTAL</th>
-														<th>POLLED</th>
-														<th>YET TO POLL</th>
-														<th>TOTAL</th>
-														<th>POLLED</th>
-														<th>YET TO POLL</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>BOOTH - 1</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td><span data-toggle="modal" data-target="#myModal">80%</span></td>
-													</tr>
-													<tr>
-														<td>BOOTH - 2</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td><span data-toggle="modal" data-target="#myModal">80%</span></td>
-													</tr>
-													<tr>
-														<td>BOOTH - 3</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td><span data-toggle="modal" data-target="#myModal">80%</span></td>
-													</tr>
-													<tr>
-														<td>BOOTH - 4</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td><span data-toggle="modal" data-target="#myModal">80%</span></td>
-													</tr>
-													<tr>
-														<td>BOOTH - 5</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td><span data-toggle="modal" data-target="#myModal">80%</span></td>
-													</tr>
-													<tr>
-														<td>BOOTH - 6</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td>80%</td>
-														<td>10000</td>
-														<td>20%</td>
-														<td><span data-toggle="modal" data-target="#myModal">80%</span></td>
-													</tr>
-												</tbody>
-											</table> -->
-
+										<div id="boothWiseVotingDetailsDivId" style="overflow:auto"></div>
+										<center><img id="dataLoadingsImgForBoothWiseVotingDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 										</div>
 									</div>
 								</div>
@@ -354,6 +193,7 @@
 <script src="dist/pollManagment/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/pollManagment/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/pollManagment/js/custom.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 
 var divisonIdGlob = "${param.divisonId}";
@@ -490,6 +330,7 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 	}
 	
 	function divisonVotingAcitivty(){
+		$("#dataLoadingsImgForVotingDetails").show();
 		var jsObj={
 			divisonId:$("#divisonSelectId").val()
 		}
@@ -527,18 +368,24 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 				str+='<td>'+result[0].cadreCount+'</td>';
 				str+='<td>';
 				str+='<div class="progress progressCustom">';
-				str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].cadrepollPercent+'%;"></div>'+result[0].cadrepollPercent+' %</div>';
+				if(result[0].cadrepollPercent != null)
+					str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].cadrepollPercent+'%;"></div>'+result[0].cadrepollPercent+' %</div>';
+				else
+					str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].cadrepollPercent+'%;"></div>0 %</div>';
 				str+='</td>';
 				//str+='<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>';
 				str+='<td>'+result[0].cadreCountPolled+'</td>';
 				str+='<td>'+result[0].cadreCountYetToBePolled+'</td>';
 				str+='</tr>';
 				str+='<tr>';
-				str+='<td>TOTAL CAPTIRED CADRES</td>';
+				str+='<td>TOTAL CAPTURED CADRES</td>';
 				str+='<td>'+result[0].capCadreCount+'</td>';
 				str+='<td>';
 				str+='<div class="progress progressCustom">';
-				str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].capCadrePollPercent+'%;"></div>'+result[0].capCadrePollPercent+' %</div>';
+				if(result[0].capCadrePollPercent != null)
+					str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].capCadrePollPercent+'%;"></div>'+result[0].capCadrePollPercent+' %</div>';
+				else
+					str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].capCadrePollPercent+'%;"></div>0 %</div>';
 				str+='</td>';
 				//str+='<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>';
 				str+='<td>'+result[0].capCadreCountPolled+'</td>';
@@ -569,17 +416,31 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 						str+='</tr>';
 					}
 				}
-				
+				str+='<tr>';
+				str+='<td>NOT CAPTURED VOTERS</td>';
+				str+='<td>'+result[0].nonCapVoters+'</td>';
+				str+='<td>';
+				str+='<div class="progress progressCustom">';
+				if(result[0].nonCapVotersPollPercent != null)
+					str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].nonCapVotersPollPercent+'%;"></div>'+result[0].nonCapVotersPollPercent+' %</div>';
+				else
+					str+='<div class="progress-bar progressYellow" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+result[0].nonCapVotersPollPercent+'%;"></div>0 %</div>';
+				str+='</td>';
+				//str+='<td><i class="glyphicon glyphicon-arrow-down text-danger"></i></td>';
+				str+='<td>'+result[0].nonCapVotersPolled+'</td>';
+				str+='<td>'+result[0].nonCapVotersYetToBePolled+'</td>';
+				str+='</tr>';
 												
 			}else{
 				str+='<h4>No Data Available.</h4>';
 			}
+			$("#dataLoadingsImgForVotingDetails").hide();
 			$("#votingActivityTableID").html(str);
 		});
 	}
 	
 	function boothWiseVotingActivity(){
-		
+		$("#dataLoadingsImgForBoothWiseVotingDetails").show();
 	 var jsObj={
 			wardId:$("#divisonSelectId").val()
 		}
@@ -592,12 +453,16 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 			if(result != null && result.length > 0){
 				buildBoothWiseVotingSummary(result);
 			}
+			else{
+				$("#dataLoadingsImgForBoothWiseVotingDetails").hide();
+				$("#boothWiseVotingDetailsDivId").html("NO DATA AVAILABLE...");
+			}
 		});
 	}
 	function buildBoothWiseVotingSummary(result){
 	var str='';
 	
-	str+='<table class="table table-bordered table-condensed">';
+	str+='<table class="table table-bordered table-condensed" id="boothWiseVotingTable">';
 		str+='<thead>';
 			str+='<tr class="font-12">';
 			
@@ -722,8 +587,10 @@ function overAllPollManagementSummaryByDivisionOrWard(){
 			}
 		str+='</tbody>';
 	str+='</table>';
-	
+	$("#dataLoadingsImgForBoothWiseVotingDetails").hide();
 	$("#boothWiseVotingDetailsDivId").html(str);
+	$("#boothWiseVotingTable").dataTable();
+	$("#boothWiseVotingTable").removeClass("dataTable");
 }
 
 </script>
