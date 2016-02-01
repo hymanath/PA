@@ -10,6 +10,7 @@
 <link href="dist/pollManagment/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/pollManagment/css/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/>
 
 </head>
 
@@ -79,7 +80,8 @@
 									<h4 class="panel-title">DIVISION WISE VOTING ACTIVITY</h4>
 								</div>
 								<div class="panel-body pad_0">
-									<div id="divisionWiseVotingDetailsDivId"></div>
+									<div id="divisionWiseVotingDetailsDivId" style="overflow:auto;"></div>
+									<center><img id="dataLoadingsImgForVotingDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 								</div>
 							</div>
 						</div>
@@ -93,6 +95,7 @@
 <script src="dist/pollManagment/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/pollManagment/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/pollManagment/js/custom.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <script type="text/javascript">
 var locationIds = [];
@@ -158,6 +161,7 @@ function getAccessValues(){
 
 function divisionWiseVotingActivity(){
 		
+	$("#dataLoadingsImgForVotingDetails").show();
 	var jsObj={
 		locationIds:locationIds
 	}
@@ -170,13 +174,17 @@ function divisionWiseVotingActivity(){
 		if(result != null && result.length > 0){
 			buildDivisionWiseVotingSummary(result);
 		}
+		else{
+			$("#dataLoadingsImgForVotingDetails").hide();
+			$("#divisionWiseVotingDetailsDivId").html("NO DATA AVAILABLE...");
+		}
 	});
 }
 
 function buildDivisionWiseVotingSummary(result){
 	var str='';
 	
-	str+='<table class="table table-bordered table-condensed">';
+	str+='<table class="table table-bordered table-condensed" id="divisionWiseVotingTable" style="overflow:scroll">';
 		str+='<thead>';
 			str+='<tr class="font-12">';
 			
@@ -302,7 +310,10 @@ function buildDivisionWiseVotingSummary(result){
 		str+='</tbody>';
 	str+='</table>';
 	
+	$("#dataLoadingsImgForVotingDetails").hide();
 	$("#divisionWiseVotingDetailsDivId").html(str);
+	$("#divisionWiseVotingTable").dataTable();
+	$("#divisionWiseVotingTable").removeClass("dataTable");
 }
 </script>
 </body>
