@@ -1485,8 +1485,8 @@
 								<h5 class="text-align1">Aadhar Card No .</h5>
 								<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
 							-->
-								<div class="" >
-									<h5 class="text-align1">AADHAR CARD NO .</h5>
+								<div class=" m_top20" >
+									<h5 class="text-align1">Aadhar Card No .</h5>
 									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
 								    <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
 								</div>
@@ -1495,7 +1495,59 @@
 								<div class=" " >
 										<h5 class="text-align1">ADDRESS/STREET/HAMLET/PINCODE</h5>
 										<textarea  class="form-control border-radius-0  input-block-level" placeholder="ADDRESS/STREET/HAMLET/PINCODE" name="cadreRegistrationVO.street"  style="width:260px;">${voterInfoVOList[0].location}</textarea>
-								</div>	
+								</div>
+								
+								<!-- ADDRESS DETAILS -->
+								<div>
+										<div class="span12">
+											<div class="span6">
+											 <div class=" m_top20" >
+											   <h5 class="text-align1">Select State <span class="mandatory">*</span><span id="stateIdErr" style="color:red;font-size:12px;"></span>  </h5>
+											   <select id="stateId"> 
+												 <option value="0">Select State</option>								   
+												  <option value="1">Andhra Pradesh</option>
+												 <option value="36">Telangana</option>
+											   </select>
+										   </div>
+											</div>
+											<div class="span6">
+											  <div class=" m_top20" >
+												   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;"></span>  </h5>
+												   <select id="districtId"> 
+													 <option value="0">Select District</option>
+												   </select>
+											   </div>
+											</div>
+										</div>
+									</div>
+									<div class="span12">
+											<div class="span6">
+												 <div class=" m_top20" >
+													   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
+													   <select id="constituencyId"> 
+														 <option value="0">Select Constituency</option>
+													   </select>
+												</div>
+											</div>
+											<div class="span6">
+												<div class="m_top20">
+												   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
+													  <select id="manTowDivId"> 
+														  <option value="0">Select Mandal/Town/Division</option>
+													   </select>
+												</div>
+											</div>
+									</div>
+                             
+							  
+							   <div class="m_top20">
+							       <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;"></span>  </h5>
+								      <select id="villWardId"> 
+                                          <option value="0">Select Village/Ward</option>
+								       </select>
+                               </div>
+							   
+								
 							<div class=" " >
 										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
@@ -3177,6 +3229,119 @@ $(document).ready(function(){
 			$("#emailErr").html('Invalid Email Id.');
 		}
 	}
+	
+	$("#stateId").change(function() {
+		
+		$("#districtId  option").remove();
+		$("#districtId").append('<option value="0">Select District</option>');
+		$("#constituencyId  option").remove();
+		$("#constituencyId").append('<option value="0">Select Constituency</option>');
+		$("#manTowDivId  option").remove();
+		$("#manTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="0">Select Village/Ward</option>');
+		
+		if(this.value!=0){
+			getDistrictsForState(this.value);
+		}
+	});
+	$("#districtId").change(function() {
+		
+		$("#constituencyId  option").remove();
+		$("#constituencyId").append('<option value="0">Select Constituency</option>');
+		$("#manTowDivId  option").remove();
+		$("#manTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="0">Select Village/Ward</option>');
+		
+		if(this.value!=0){
+			getConstituenciesForDistrict(this.value);
+		}
+	});
+	$("#constituencyId").change(function(){
+		$("#manTowDivId  option").remove();
+		$("#manTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="0">Select Village/Ward</option>');
+		if(this.value!=0){
+	      getMandalVillageDetails(4,this.value);
+		}
+	});
+	$("#manTowDivId").change(function(){
+		$("#villWardId  option").remove();
+		$("#villWardId").append('<option value="0">Select Village/Ward</option>');
+		if(this.value!=0){
+		   getMandalVillageDetails(5,this.value);
+		}
+	});
+	
+	function getDistrictsForState(stateId){
+		 var jsObj={ stateId:stateId }
+		          
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsForStateAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			   for(var i in result){
+				   $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+		   }
+	   });
+	}
+	
+	function getConstituenciesForDistrict(districtId){
+		 var jsObj={ districtId:districtId }
+		          
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesForDistrictAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			   for(var i in result){
+				   $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+		   }
+	   });
+	}
+	function getMandalVillageDetails(locationLevel,locationId){
+		
+		var mandalId = "0";
+		var constituencyId="0";
+		var divId = "";
+		if(locationLevel==4){
+			divId = "#manTowDivId";
+			constituencyId=locationId;
+		}
+		if(locationLevel==5){
+			divId = "#villWardId";
+			mandalId = locationId;
+		}
+		
+	   var jsObj={
+			constituencyId : constituencyId,
+			mandalId : mandalId,
+			locationLevel : locationLevel
+		}
+		
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubLevelLctnsForConstituencyAndMandal.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			 for(var i in result){
+				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}  
+		   }
+		});
+	}
+	
 	
 	getAllRTCZones();
 	function getAllRTCZones(){
