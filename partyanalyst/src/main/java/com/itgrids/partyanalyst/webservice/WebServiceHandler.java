@@ -1468,7 +1468,23 @@ public class WebServiceHandler {
 		}
 		return returnVO;
 	}
-	
+	@POST
+	@Path("/getVoterDetailsByVoterIdCardNum")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CadreOverviewVO getVoterDetailsByVoterIdCardNum(CadreOverviewVO inputVo){
+		CadreOverviewVO returnVO = new CadreOverviewVO();
+		try{
+			
+			returnVO = webServiceHandlerService.getVoterDetailsByVoterIdCardNum(inputVo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getVoterDetailsByVoterIdCardNum() Method, Exception is ",e);
+			returnVO = null;
+		}
+		return returnVO;
+	}
 	
 	@GET
 	@Path("/getPartyMeetingsForCadrePeople/{tdpCadreId}")
