@@ -28,8 +28,8 @@ public class UnionTabUser implements Serializable {
 	private String isEnabled;
 	private String mobileNo;
 	private String name;
-	private String password;
-	private String username;
+	private String passWord;
+	private String userName;
 
     public UnionTabUser() {
     }
@@ -89,22 +89,22 @@ public class UnionTabUser implements Serializable {
 
 
 	@Column(name="password")
-	public String getPassword() {
-		return this.password;
+	public String getPassWord() {
+		return passWord;
 	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
-
-
 	@Column(name="username")
-	public String getUsername() {
-		return this.username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
+
+
 
 }

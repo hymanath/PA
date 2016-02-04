@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
+import com.itgrids.partyanalyst.dto.UnionTabUserVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -151,4 +152,5 @@ public interface IWebServiceHandlerService {
     public PollManagementVO getDivisonWiseOverview(MobileAppUserVoterVO inputVO);
     public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO);
     public CadreOverviewVO getVoterDetailsByVoterIdCardNum(CadreOverviewVO inputVO);
+    public UnionTabUserVO checkLoginUnionTabUser(UnionTabUserVO inputVo);
 }
