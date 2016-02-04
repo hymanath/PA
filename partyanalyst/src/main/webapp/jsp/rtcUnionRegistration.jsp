@@ -119,8 +119,12 @@
 		
 	<script>
 	var remainingTime = '${countDownTime}';
-
+	
+   
+	
 	$(document).ready(function(){
+		 
+	
 			$("#toggleButtonId").click(function(){
 				$(".fadeInUpClass").toggle();
 			});
@@ -203,7 +207,18 @@
 			<c:forEach var="role" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
 				isRolesCount = isRolesCount+1;
 			</c:forEach>
-		</s:if>	
+		</s:if>
+		
+		var districtsArray = new Array();
+		<c:forEach var="district" items="${idNameVOList}">
+			var districts ={
+			id:"${district.id}",
+			name:"${district.name}"
+			}
+			districtsArray.push(districts);
+		</c:forEach>
+		
+		
 	</script>
 	
    	<script>
@@ -1261,7 +1276,7 @@
 		
 			<div class="span12" >
 				<div class="row-fluid">
-					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 830px;">
+					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 779px;">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${constiteucnyId}" name="cadreRegistrationVO.constituencyId"> 
@@ -1294,7 +1309,7 @@
 											</s:else>
 											<input type="text" class="form-control border-radius-0" placeholder="Voter Telugu Name" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
 										</div>	
-										<div class="span6">	
+										<!--<div class="span6">	
 											<h5 class="text-align1"> Cadre Telugu Name  </h5>
 										<s:if test="voterInfoVOList[0].nameType != null && (voterInfoVOList[0].nameType == 'CADRE' || voterInfoVOList[0].nameType == 'cadre')">												
 											<input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType"  checked="true" value="Cadre"  onClick="updateNameSelection('voterTNameId');"/>
@@ -1304,7 +1319,7 @@
                                         </s:else>										
 											<input type="text" class="form-control border-radius-0" placeholder="Cadre Telugu Name" style="width:170px;" value="${voterInfoVOList[0].teluguRelativeName}" ></input>
 											
-										</div>
+										</div>-->
 										</div>
 										<div class="span12"> 
 											  <ul class="unstyled inline text-center">
@@ -1412,22 +1427,12 @@
 											<div style="width: 120px; float: left; margin-top: 20px;">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableLookupName();}" style="margin-top: 20px; width: 120px; margin-left: 16px;">LookUp</a>
 											</div>
-											
-											<div style="width: 120px; float: left; margin-left: 49px;">
-											<h5 class="text-align1">H NO</h5>
-												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
-											</div>
 										    </s:if>
 										  <s:else>
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly ></input>
 												 <div id="cardErr" style="color:red;font-size:12px;"></div>
-											</div>
-											
-											<div class="span6">
-											<h5 class="text-align1">H NO</h5>
-												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
 										  </s:else>
 												<c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
@@ -1490,17 +1495,33 @@
 									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
 								    <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
 								</div>
-							
-							
-								<div class=" " >
-										<h5 class="text-align1">ADDRESS/STREET/HAMLET/PINCODE</h5>
-										<textarea  class="form-control border-radius-0  input-block-level" placeholder="ADDRESS/STREET/HAMLET/PINCODE" name="cadreRegistrationVO.street"  style="width:260px;">${voterInfoVOList[0].location}</textarea>
-								</div>
 								
-								<!-- ADDRESS DETAILS -->
-								<div>
+							  <!-- ADDRESS DETAILS START-->
+							    <h5 class="text-align1" style="text-decoration: underline; font-size: 17px;">ADDRESS</h5>
+								  <div>
+									   <div class="span12">
+									   
+											<div class="span6 "><h5 class="text-align1">H:NO/FLAT:NO</h5>
+											   <input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].houseNo}"></input>
+											</div>
+											
+											<div class="span6" >
+											   <h5 class="text-align1">ROAD/STREET</h5>
+											   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" name=""   value=""></input>
+											</div>
+											
+										</div>
+								 </div>
+									<div class="span12" >
+										<h5 class="text-align1">LANDMARK</h5>
+											<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" name=""   value=""></input>
+									</div>
+								
+								
+								
+                              <div>
 										<div class="span12">
-											<div class="span6">
+											<!--<div class="span6">
 											 <div class=" m_top20" >
 											   <h5 class="text-align1">Select State <span class="mandatory">*</span><span id="stateIdErr" style="color:red;font-size:12px;"></span>  </h5>
 											   <select id="stateId"> 
@@ -1508,19 +1529,17 @@
 												  <option value="1">Andhra Pradesh</option>
 												 <option value="36">Telangana</option>
 											   </select>
-										   </div>
-											</div>
+										   </div>-->
+											
 											<div class="span6">
 											  <div class=" m_top20" >
 												   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;"></span>  </h5>
+												   <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District "  />	
 												   <select id="districtId"> 
 													 <option value="0">Select District</option>
 												   </select>
 											   </div>
 											</div>
-										</div>
-									</div>
-									<div class="span12">
 											<div class="span6">
 												 <div class=" m_top20" >
 													   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
@@ -1529,6 +1548,11 @@
 													   </select>
 												</div>
 											</div>
+										</div>
+									</div>
+									<div>
+									<div class="span12">
+											
 											<div class="span6">
 												<div class="m_top20">
 												   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
@@ -1537,18 +1561,20 @@
 													   </select>
 												</div>
 											</div>
+											<div class="span6">
+												   <div class="m_top20">
+													   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;"></span>  </h5>
+														  <select id="villWardId"> 
+															  <option value="0">Select Village/Ward</option>
+														   </select>
+												   </div>
+											 </div>
 									</div>
                              
-							  
-							   <div class="m_top20">
-							       <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;"></span>  </h5>
-								      <select id="villWardId"> 
-                                          <option value="0">Select Village/Ward</option>
-								       </select>
-                               </div>
+							  	</div>
 							   
 								
-							<div class=" " >
+							<div class=" m_top20" >
 										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
 								
@@ -1558,54 +1584,24 @@
 										<input type="hidden" class="form-control border-radius-0  input-block-level" id="casteId" placeholder="Enter Caste" name="cadreRegistrationVO.casteId"  value="${voterInfoVOList[0].casteId}" style="width:260px;"></input>
 										-->
 							</div>
-							<div class=" " >
-										<h5 class="text-align1"> EMAIL ID : <span id="emailErr" style="color:red;font-size:12px;"></span> </h5>
+							<div class=" m_top20" >
+										<h5 class="text-align1"> Email Id : <span id="emailErr" style="color:red;font-size:12px;"></span> </h5>
 										<input type="text" id="emailId" class="form-control border-radius-0 input-block-level" placeholder=" Enter Email Id "  name="cadreRegistrationVO.emailId"  value="${voterInfoVOList[0].emailId}" style="width:260px;"  onKeyup="isValidMailId()"></input>
 							</div>
 							
-							<div class=" " >
+							<div class=" m_top20" >
 										<h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span> <span id="mobileErr" style="color:red;font-size:12px;"></span> </h5>
 										<input type="text" id="mobileNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" style="width:260px;" maxlength="10" onKeyup="isNumber()"></input>
 							</div>
-							<div class=" " >
+							<div class=" m_top20" >
 								<h5 class="text-align1">EDUCATION</h5>
 								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:260px;" name="cadreRegistrationVO.educationId" value="%{voterInfoVOList[0].education}"/>
 							</div>
-							<div class=" " >
+							<!--<div class=" m_top20" >
 								<h5 class="text-align1">OCCUPATION</h5>											
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:260px;" name="cadreRegistrationVO.occupationId"   value="%{voterInfoVOList[0].occupationId}"/>	
-											
-							<!--
-							<input type="hidden" class="form-control border-radius-0 input-block-level"  id="occupationId" placeholder="Occupation" name="cadreRegistrationVO.occupationId" value="${voterInfoVOList[0].occupationId}" style="width:260px;"></input>
-							
-							<input type="text" class="form-control border-radius-0 input-block-level"  id="occupationValue"  placeholder=" Enter Occupation "  value="${voterInfoVOList[0].occupation}" style="width:260px;"></input>
-							-->
-							</div>
-							
-							<div class="span7" >
-								<h5 class="text-align1">DESIGNATION</h5>
-								<select id="designationSelectId" style="width:100%">
-									<option value="0">Select Designation</option>
-								</select>
-							</div>
-							<div class="span6" style="margin-left:0px;" >
-								<h5 class="text-align1">ZONE</h5>
-								<select id="zoneSelectId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Zone</option>
-								</select>
-							</div>
-							<div class="span6" style="margin-left:0px;" >
-								<h5 class="text-align1">REGION</h5>
-								<select id="regionSelectId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Region</option>
-								</select>
-							</div>
-							<div class="span6" style="margin-left:0px;" >
-								<h5 class="text-align1">DEPOT</h5>
-								<select id="depotSelectId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Depot</option>
-								</select>
-							</div>
+								
+							</div>-->
 							<!--<div class=" m_top20" > 
 									<h5 class="text-align1"> PREVIOUSLY ENROLLED  ? </h5>
 									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>&nbsp;<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="icon-remove"></span>
@@ -3275,7 +3271,10 @@ $(document).ready(function(){
 		}
 	});
 	
-	function getDistrictsForState(stateId){
+	
+	
+	
+	/* function getDistrictsForState(stateId){
 		 var jsObj={ stateId:stateId }
 		          
 		$.ajax({
@@ -3290,7 +3289,7 @@ $(document).ready(function(){
 			   }
 		   }
 	   });
-	}
+	} */
 	
 	function getConstituenciesForDistrict(districtId){
 		 var jsObj={ districtId:districtId }
@@ -3342,104 +3341,5 @@ $(document).ready(function(){
 		});
 	}
 	
-	
-	getAllRTCZones();
-	function getAllRTCZones(){
-		var jsObj={};
-		
-		$.ajax({
-			type:"POST",
-			url:"getAllRTCZonesAction.action",
-			dataType: 'json',
-			data:{task:JSON.stringify(jsObj)}	
-		}).done(function(result) {
-			var str='';
-			str+='<option value="0">Select Zone</option>';
-			if(result != null && result.length > 0){
-				for(var i in result){
-					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-				}
-			}
-			$("#zoneSelectId").html(str);
-		});
-	}
-
-	$(document).on("change","#zoneSelectId",function(){
-		var jsObj={
-			zoneId : $("#zoneSelectId").val()
-		};
-		
-		if($("#zoneSelectId").val()==0){
-			$("#regionSelectId").html("<option value='0'>Select Region</option>");
-			$("#depotSelectId").html("<option value='0'>Select Depot</option>");
-		}
-		else if($("#zoneSelectId").val()>0){
-			$.ajax({
-				type:"POST",
-				url:"getRegionsOfZoneAction.action",
-				dataType: 'json',
-				data:{task:JSON.stringify(jsObj)}	
-			}).done(function(result){
-				var str='';
-				str+='<option value="0">Select Region</option>';
-				if(result != null && result.length > 0){
-					for(var i in result){
-						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-					}
-				}
-				$("#regionSelectId").html(str);
-			});
-		}
-		
-		
-	});
-
-	$(document).on("change","#regionSelectId",function(){
-		var jsObj={
-			regionId : $("#regionSelectId").val()
-		};
-		
-		if($("#regionSelectId").val()==0){
-			$("#depotSelectId").html("<option value='0'>Select Depot</option>");
-		}else if($("#regionSelectId").val()>0){
-			$.ajax({
-				type:"POST",
-				url:"getDepotsOfRegionAction.action",
-				dataType: 'json',
-				data:{task:JSON.stringify(jsObj)}	
-			}).done(function(result) {
-				var str='';
-				str+='<option value="0">Select Depot</option>';
-				if(result != null && result.length > 0){
-					for(var i in result){
-						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-					}
-				}
-				$("#depotSelectId").html(str);
-			});
-		}
-	});
-	getDesignationsOfUnionType();
-	function getDesignationsOfUnionType(){
-		var jObj={
-			unionTypeId : 1
-		};
-		
-		$.ajax({
-			type:"POST",
-			url:"getDesignationsOfUnionTypeAction.action",
-			dataType: 'json',
-			data:{task:JSON.stringify(jObj)}	
-		}).done(function(result){
-			var str='';
-			str+='<option value="0">Select Designation</option>';
-			if(result != null && result.length > 0){
-				for(var i in result){
-					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-				}
-			}
-			$("#designationSelectId").html(str);
-		});
-	}
 </script>
 </html>
