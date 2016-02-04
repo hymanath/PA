@@ -1539,19 +1539,19 @@
 							<div class="span6" style="margin-left:0px;" >
 								<h5 class="text-align1">ZONE</h5>
 								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Designation</option>
+									<option value="0">Select Zone</option>
 								</select>
 							</div>
 							<div class="span6" style="margin-left:0px;" >
 								<h5 class="text-align1">REGION</h5>
 								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Designation</option>
+									<option value="0">Select Region</option>
 								</select>
 							</div>
 							<div class="span6" style="margin-left:0px;" >
 								<h5 class="text-align1">DEPOT</h5>
 								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Designation</option>
+									<option value="0">Select Depot</option>
 								</select>
 							</div>
 							<!--<div class=" m_top20" > 
