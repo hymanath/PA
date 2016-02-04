@@ -3707,5 +3707,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 {
 		 return mobileService.getVoterInfoForBooth(inputVO); 
 	 }
+	 
+	  public CadreOverviewVO getVoterDetailsByVoterIdCardNum(CadreOverviewVO inputVO)
+	  {
+		  CadreOverviewVO returnVO = null;
+		  try {
+			  returnVO = cadreDetailsService.getVoterDetailsByVoterIdCardNum(inputVO.getVoterCardNo());
+		} catch (Exception e) {
+			 log.debug("Entered into the getVoterDetailsByVoterIdCardNum  method in WebServiceHandlerService");
+		}
+		  return returnVO;
+	  }
 }
 

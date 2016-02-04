@@ -150,4 +150,5 @@ public interface IWebServiceHandlerService {
     public String updateVoterVotedData(MobileAppUserVoterVO inputVO);
     public PollManagementVO getDivisonWiseOverview(MobileAppUserVoterVO inputVO);
     public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO);
+    public CadreOverviewVO getVoterDetailsByVoterIdCardNum(CadreOverviewVO inputVO);
 }
