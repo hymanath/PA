@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.RtcDepot;
 
 public interface IRtcDepotDAO extends GenericDao<RtcDepot, Long>{
-
+	public List<Object[]> getDepotsOfRegion(Long regionId);
 }

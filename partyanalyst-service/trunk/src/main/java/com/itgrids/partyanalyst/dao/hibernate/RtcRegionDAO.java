@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IRtcRegionDAO;
 import com.itgrids.partyanalyst.model.RtcRegion;
@@ -11,5 +14,12 @@ public class RtcRegionDAO extends GenericDaoHibernate<RtcRegion, Long> implement
 		super(RtcRegion.class);
 		
 	}
-
+	
+	public List<Object[]> getRegionsOfZone(Long zoneId){
+		Query query = getSession().createQuery(" select model.rtcRegionId,model.regionName " +
+				" from RtcRegion model " +
+				" where model.rtcZoneId=:zoneId ");
+		query.setParameter("zoneId", zoneId);
+		return query.list(); 
+	}
 }
