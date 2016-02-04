@@ -11372,5 +11372,17 @@
 	    	<param name="root">pollManagementSummaryVOList</param>
 	    </result>
 	</action>
+	
+	<action name="rtcUnionSearchAction" class="rtcUnionAction" method="rtcUnionSearch">
+			<result name="success">/jsp/rtcUnionSearch.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=rtcUnionSearchAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
+	<action name="rtcUnionRegistrationAction" class="rtcUnionAction" method="rtcUnionRegistrationPage">
+			<result name="success">/jsp/rtcUnionRegistration.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=rtcUnionSearchAction</result>
+	</action>
+	
 </package>
 </struts>      
