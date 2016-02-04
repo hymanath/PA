@@ -12,20 +12,17 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
-import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IRtcUnionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
-import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -60,6 +57,8 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private InputStream 						inputStream;
 	
 	private List<VoterInfoVO> 					voterInfoVOList;
+	
+	private List<IdNameVO> idNameVoList;
 	
 	
 	
@@ -202,6 +201,12 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		this.request = request;	
 	}
 	
+	public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	}
+	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+		this.idNameVoList = idNameVoList;
+	}
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -345,4 +350,44 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		return Action.ERROR;
 	} 
 	
+	public String getAllRTCZones(){
+		try {
+			idNameVoList = rtcUnionService.getAllRTCZones();
+		} catch (Exception e) {
+			LOG.error("Exception raiserd at getAllRTCZones",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRegionsOfZone(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			idNameVoList = rtcUnionService.getRegionsOfZone(jObj.getLong("zoneId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getRegionsOfZone",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDepotsOfRegion(){
+		try {
+			jObj = new JSONObject(getTask());
+			idNameVoList = rtcUnionService.getDepotsOfRegion(jObj.getLong("regionId"));
+		} catch (Exception e) {
+			LOG.error("Exception riased at getDepotsOfRegion",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDesignationsOfUnionType(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			idNameVoList = rtcUnionService.getDesignationsOfUnionType(jObj.getLong("unionTypeId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDesignationsOfUnionType",e);
+		}
+		return Action.SUCCESS;
+	}
 }
