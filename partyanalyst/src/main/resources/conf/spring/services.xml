@@ -2969,7 +2969,14 @@
 	
 	<bean name="smsGatewayService" class="com.itgrids.partyanalyst.service.impl.SmsGatewayService">
 	</bean>
+	
 	<bean name="rtcUnionService" class="com.itgrids.partyanalyst.service.impl.RtcUnionService">
+	    <property name="districtDAO" ref="districtDAO" />
+	    <property name="constituencyDAO" ref="constituencyDAO" />
+	    <property name="panchayatDAO" ref="panchayatDAO" />
+	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+	    <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
+	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="rtcZoneDAO" ref="rtcZoneDAO" />
 		<property name="rtcRegionDAO" ref="rtcRegionDAO" />
 		<property name="rtcDepotDAO" ref="rtcDepotDAO" />

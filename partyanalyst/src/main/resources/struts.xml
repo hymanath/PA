@@ -11390,6 +11390,22 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
+	<action name="getDistrictsForStateAction" class="rtcUnionAction" method="getDistrictsForState">
+		<result type="json" name="success">
+    	    <param name="root">idNameVOList</param>
+         </result>
+	</action>
+	<action name="getConstituenciesForDistrictAction" class="rtcUnionAction" method="getConstituenciesForDistrict">
+		<result type="json" name="success">
+    	    <param name="root">idNameVOList</param>
+         </result>
+	</action>
+	<action name="getSubLevelLctnsForConstituencyAndMandal" class="rtcUnionAction" method="getSubLevelLctnsForConstituencyAndMandal">
+		<result type="json" name="success">
+    	    <param name="root">locations</param>
+         </result>
+	</action>
+	
 	<action name="getAllRTCZonesAction" class="rtcUnionAction" method="getAllRTCZones">
 		<result type="json" name="success">
 	    	<param name="root">idNameVoList</param>
