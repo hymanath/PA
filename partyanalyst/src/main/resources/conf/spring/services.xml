@@ -2970,6 +2970,10 @@
 	<bean name="smsGatewayService" class="com.itgrids.partyanalyst.service.impl.SmsGatewayService">
 	</bean>
 	<bean name="rtcUnionService" class="com.itgrids.partyanalyst.service.impl.RtcUnionService">
+		<property name="rtcZoneDAO" ref="rtcZoneDAO" />
+		<property name="rtcRegionDAO" ref="rtcRegionDAO" />
+		<property name="rtcDepotDAO" ref="rtcDepotDAO" />
+		<property name="unionTypeDesignationDAO" ref="unionTypeDesignationDAO" />
 	</bean>
 </beans>		
 	
