@@ -2969,5 +2969,7 @@
 	
 	<bean name="smsGatewayService" class="com.itgrids.partyanalyst.service.impl.SmsGatewayService">
 	</bean>
+	<bean name="rtcUnionService" class="com.itgrids.partyanalyst.service.impl.RtcUnionService">
+	</bean>
 </beans>		
 	

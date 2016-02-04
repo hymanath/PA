@@ -165,6 +165,8 @@
 		<pattern>/trainingCampFeedback*</pattern>
 		<pattern>/feedbackOverViewDetailsAction*</pattern>
 		<pattern>/showGoogleMapDetails*</pattern>
+		<pattern>/rtcUnionSearchAction*</pattern>
+		<pattern>/rtcUnionRegistrationAction*</pattern>
 		</excludes>  
 	
 	<decorator name="main" page="main.jsp">

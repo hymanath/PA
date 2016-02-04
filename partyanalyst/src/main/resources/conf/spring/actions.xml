@@ -1612,6 +1612,14 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		<property name="mobileService" ref="mobileService" />
 	</bean>
+	<bean id="rtcUnionAction" class="com.itgrids.partyanalyst.web.action.RtcUnionAction" singleton="false"> 
+		<property name="rtcUnionService" ref="rtcUnionService" />
+		<property name="surveyDataDetailsService" ref="surveyDataDetailsService" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+	</bean>
 	
 </beans>	
 	
