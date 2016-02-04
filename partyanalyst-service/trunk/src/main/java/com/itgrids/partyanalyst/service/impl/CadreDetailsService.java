@@ -1137,6 +1137,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							cadreDetailsVO.setDeletedreason("");
 						}
 					}
+					cadreDetailsVO.setGender(cadreFormalDetails[41] != null ? cadreFormalDetails[41].toString() : "");
 					
 				}
 				
@@ -4971,6 +4972,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				if(cadreVO != null )
 				{
 					returnVO.setAge(cadreVO.getAge());
+					returnVO.setGender(cadreVO.getGender());
 					returnVO.setAreaType(cadreVO.getAreaType());
 					returnVO.setBoothId(cadreVO.getBoothId());
 					returnVO.setCadreId(cadreVO.getCadreId());

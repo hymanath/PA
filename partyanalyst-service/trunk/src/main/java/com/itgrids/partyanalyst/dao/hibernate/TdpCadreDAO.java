@@ -5280,7 +5280,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" ,district.districtName,state.stateName,caste.casteName,model.insertedWebUserId,date(model.insertedTime),model.emailId,model.dataSourceType" +
 					",panchayat.panchayatId,tehsil.tehsilId,district.districtId,state.stateId,parliamentConstituency.constituencyId,parliamentConstituency.name , " +
 					" booth.boothId,booth.partNo, ward.constituencyId, ward.name,constituency.areaType , familyVoter.voterId,familyVoter.voterIDCardNo, model.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
-					" cadreDeleteReason.reason " +
+					" cadreDeleteReason.reason,voter.gender " +
 					" from TdpCadre model " );
 			queryStr.append(" left join model.educationalQualifications eduQualification ");
 			queryStr.append(" left join model.occupation occupation ");

@@ -1,5 +1,6 @@
 /* 
  * Copyright (c) 2009 IT Grids.
+
  * All Rights Reserved.
  *
  * IT Grids Confidential Information.
@@ -7,6 +8,7 @@
  */
 
 package com.itgrids.partyanalyst.model;
+
 
 import java.util.HashSet;
 import java.util.Set;
