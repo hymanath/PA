@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
+import com.itgrids.partyanalyst.dto.UnionTabUserVO;
 import com.itgrids.partyanalyst.dto.UserAttendanceDetailsVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
@@ -1925,6 +1926,21 @@ public class WebServiceHandler {
 			return null;
 		}
 		
+		@POST
+		@Path("/loginUnionTabUser")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public UnionTabUserVO checkLoginUnionTabUser(UnionTabUserVO inputVO)
+		{
+			try
+			{
+	           return webServiceHandlerService.checkLoginUnionTabUser(inputVO);
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in checkLoginUnionTabUser from app:"+e.getMessage());
+			}
+			return null;
+		}
 		
 		
 		

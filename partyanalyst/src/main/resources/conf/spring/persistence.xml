@@ -764,6 +764,7 @@
 				 <value>com.itgrids.partyanalyst.model.UnionTypeDesignation</value>
 				 <value>com.itgrids.partyanalyst.model.TdpCadreLocation</value>
 				 <value>com.itgrids.partyanalyst.model.TdpMemberType</value>
+				 <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
 				 
 			     </list>
 			
