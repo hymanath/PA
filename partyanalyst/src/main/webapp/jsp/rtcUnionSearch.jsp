@@ -248,7 +248,7 @@
 		<!-- Footer Row -->
 		<div class="row-fluid">
 			<div class="span12 text-center m_top5 color-white">
-					Cadre Registration Drive
+					Union Registration Drive
 				<p>Copyright &copy; 2014,  All Rights Reserved</p>
 			</div>
 		</div>
