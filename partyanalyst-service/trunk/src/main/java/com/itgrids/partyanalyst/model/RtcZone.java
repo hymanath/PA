@@ -18,7 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class RtcZone extends BaseModel implements Serializable{
 	
 	private Long rtcZoneId;
-	private String zoneame;
+	private String zoneName;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -31,10 +31,10 @@ public class RtcZone extends BaseModel implements Serializable{
 	}
 	
 	@Column(name="zone_name")
-	public String getZoneame() {
-		return zoneame;
+	public String getZoneName() {
+		return zoneName;
 	}
-	public void setZoneame(String zoneame) {
-		this.zoneame = zoneame;
+	public void setZoneName(String zoneName) {
+		this.zoneName = zoneName;
 	}
 }
