@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IUnionTypeDesignationDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.model.RtcZone;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRtcUnionService;
@@ -304,4 +305,158 @@ public class RtcUnionService implements IRtcUnionService{
 		}
 		return finalevoList;
 	}
+	
+	public RtcUnionVO getRtcUnionBasicDetails(){
+		RtcUnionVO fnlVo = new RtcUnionVO();
+		
+		try{
+			
+			fnlVo.setTotalCount(0l);
+			fnlVo.setTabCount(0l);
+			fnlVo.setWebCount(0l);
+			fnlVo.setTodayTotalcCount(0l);
+			fnlVo.setTodayTabCount(0l);
+			fnlVo.setTodayWebCount(0l);
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at getRtcUnionBasicDetails in RtcUnionService Service class", e);
+		}
+		return fnlVo;
+	}
+	
+	public RtcUnionVO getRtcUnionZoneWiseDetails(){
+		
+		RtcUnionVO fnlVo = new RtcUnionVO();
+		
+		try{
+			
+			List<Object[]> rtcZoneObjectList = rtcZoneDAO.getRtcZoneDetails();						
+			List<RtcUnionVO> rtcZoneList = new ArrayList<RtcUnionVO>(0);	
+			
+			//Default Details Assigning
+			if(rtcZoneObjectList !=null && rtcZoneObjectList.size()>0){
+				settingDefaultValuesToUnionVo(rtcZoneObjectList,rtcZoneList);
+			}
+			
+			if(rtcZoneList !=null && rtcZoneList.size()>0){
+				fnlVo.setRtcUnionVoList1(rtcZoneList);
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at getRtcUnionZoneWiseDetails in RtcUnionService Service class", e);
+		}
+		return fnlVo;
+	}
+	
+	public void settingDefaultValuesToUnionVo(List<Object[]> objectList,List<RtcUnionVO> resultList){
+		try{			
+			if(objectList != null && objectList.size() > 0){
+				 for (Object[] rtcZone : objectList) {					 
+					 RtcUnionVO vo = new RtcUnionVO();					 
+					 vo.setId(rtcZone[0] !=null ? (Long)rtcZone[0]:0l);
+					 vo.setName(rtcZone[1] !=null ? rtcZone[1].toString():"");		
+					 
+					 vo.setTotalCount(0l);
+					 vo.setTabCount(0l);
+					 vo.setWebCount(0l);
+					 
+					 vo.setTodayTotalcCount(0l);
+					 vo.setTodayTabCount(0l);
+					 vo.setTodayWebCount(0l);
+					 
+					 resultList.add(vo);
+				}
+			 }
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at settingDefaultValuesToUnionVo in RtcUnionService Service class", e);
+		}
+	}
+	
+	public RtcUnionVO getRtcUnionLocationWiseDetails(String type,Long typeId){
+		
+		RtcUnionVO fnlVo = new RtcUnionVO();
+		
+		try{						
+			List<Object[]> rtcDaoList =null;
+			List<RtcUnionVO> resultList = new ArrayList<RtcUnionVO>(0);
+			
+			if(type !=null && type.equalsIgnoreCase("region")){
+				rtcDaoList = rtcRegionDAO.getRegionsOfZone(typeId);
+			}else if(type !=null && type.equalsIgnoreCase("depot")){
+				rtcDaoList = rtcRegionDAO.getRegionsOfZone(typeId);
+			}
+			
+			//Default Details Assigning
+			if(rtcDaoList != null && rtcDaoList.size() > 0){				
+				settingDefaultValuesToUnionVo(rtcDaoList,resultList);					
+			}
+			
+			if(resultList !=null && resultList.size()>0){
+				fnlVo.setRtcUnionVoList1(resultList);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at getRtcUnionLocationWiseDetails in RtcUnionService Service class", e);
+		}
+		return fnlVo;
+	}
+	public RtcUnionVO getRtcUnionAllLocationDetails(){
+		RtcUnionVO fnlVo = new RtcUnionVO();
+		
+		try{						
+			List<RtcUnionVO> resultList = new ArrayList<RtcUnionVO>(0);
+			
+			List<Object[]> regionDaoDetails =  rtcRegionDAO.getAllRegionsWithZone();
+			
+			//Default Details Assigning
+			if(regionDaoDetails != null && regionDaoDetails.size() > 0){				
+				settingDefaultValuesToAllLocationDetails(regionDaoDetails,resultList);					
+			}
+			
+			if(resultList !=null && resultList.size()>0){
+				fnlVo.setRtcUnionVoList1(resultList);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at getRtcUnionAllLocationDetails in RtcUnionService Service class", e);
+		}
+		return fnlVo;
+	}
+	public void settingDefaultValuesToAllLocationDetails(List<Object[]> objectList,List<RtcUnionVO> resultList){
+	
+		try{
+			
+			if(objectList != null && objectList.size() > 0){
+				 for (Object[] rtcZone : objectList) {					 
+					 RtcUnionVO vo = new RtcUnionVO();
+					 
+					 vo.setId(rtcZone[0] !=null ? (Long)rtcZone[0]:0l);
+					 vo.setName(rtcZone[1] !=null ? rtcZone[0].toString():"");		
+					 
+					 vo.setZoneId(rtcZone[2] !=null ? (Long)rtcZone[2]:0l);
+					 vo.setZoneName(rtcZone[3] !=null ? rtcZone[3].toString():"");
+					 
+					 vo.setTotalCount(0l);
+					 vo.setWebCount(0l);
+					 vo.setTabCount(0l);
+					 
+					 vo.setTodayTotalcCount(0l);
+					 vo.setTodayTabCount(0l);
+					 vo.setTodayWebCount(0l);
+					 
+					 resultList.add(vo);
+				}
+			 }
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at settingDefaultValuesToRegionsList in RtcUnionService Service class", e);
+		}
+		
+	}
+	
 }
