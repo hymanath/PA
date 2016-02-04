@@ -2537,5 +2537,9 @@
 	<bean id="tdpMemberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpMemberTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="unionTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.UnionTabUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
