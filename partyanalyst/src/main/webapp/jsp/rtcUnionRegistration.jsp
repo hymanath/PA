@@ -1261,7 +1261,7 @@
 		
 			<div class="span12" >
 				<div class="row-fluid">
-					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 779px;">
+					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 830px;">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${constiteucnyId}" name="cadreRegistrationVO.constituencyId"> 
@@ -1485,18 +1485,18 @@
 								<h5 class="text-align1">Aadhar Card No .</h5>
 								<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
 							-->
-								<div class=" m_top20" >
-									<h5 class="text-align1">Aadhar Card No .</h5>
+								<div class="" >
+									<h5 class="text-align1">AADHAR CARD NO .</h5>
 									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
 								    <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
 								</div>
 							
 							
-								<div class=" m_top20" >
+								<div class=" " >
 										<h5 class="text-align1">ADDRESS/STREET/HAMLET/PINCODE</h5>
 										<textarea  class="form-control border-radius-0  input-block-level" placeholder="ADDRESS/STREET/HAMLET/PINCODE" name="cadreRegistrationVO.street"  style="width:260px;">${voterInfoVOList[0].location}</textarea>
 								</div>	
-							<div class=" m_top20" >
+							<div class=" " >
 										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
 								
@@ -1506,20 +1506,20 @@
 										<input type="hidden" class="form-control border-radius-0  input-block-level" id="casteId" placeholder="Enter Caste" name="cadreRegistrationVO.casteId"  value="${voterInfoVOList[0].casteId}" style="width:260px;"></input>
 										-->
 							</div>
-							<div class=" m_top20" >
-										<h5 class="text-align1"> Email Id : <span id="emailErr" style="color:red;font-size:12px;"></span> </h5>
+							<div class=" " >
+										<h5 class="text-align1"> EMAIL ID : <span id="emailErr" style="color:red;font-size:12px;"></span> </h5>
 										<input type="text" id="emailId" class="form-control border-radius-0 input-block-level" placeholder=" Enter Email Id "  name="cadreRegistrationVO.emailId"  value="${voterInfoVOList[0].emailId}" style="width:260px;"  onKeyup="isValidMailId()"></input>
 							</div>
 							
-							<div class=" m_top20" >
+							<div class=" " >
 										<h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span> <span id="mobileErr" style="color:red;font-size:12px;"></span> </h5>
 										<input type="text" id="mobileNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" style="width:260px;" maxlength="10" onKeyup="isNumber()"></input>
 							</div>
-							<div class=" m_top20" >
+							<div class=" " >
 								<h5 class="text-align1">EDUCATION</h5>
 								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:260px;" name="cadreRegistrationVO.educationId" value="%{voterInfoVOList[0].education}"/>
 							</div>
-							<div class=" m_top20" >
+							<div class=" " >
 								<h5 class="text-align1">OCCUPATION</h5>											
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:260px;" name="cadreRegistrationVO.occupationId"   value="%{voterInfoVOList[0].occupationId}"/>	
 											
@@ -1528,6 +1528,31 @@
 							
 							<input type="text" class="form-control border-radius-0 input-block-level"  id="occupationValue"  placeholder=" Enter Occupation "  value="${voterInfoVOList[0].occupation}" style="width:260px;"></input>
 							-->
+							</div>
+							
+							<div class="span7" >
+								<h5 class="text-align1">DESIGNATION</h5>
+								<select style="width:100%">
+									<option value="0">Select Designation</option>
+								</select>
+							</div>
+							<div class="span6" style="margin-left:0px;" >
+								<h5 class="text-align1">ZONE</h5>
+								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+									<option value="0">Select Designation</option>
+								</select>
+							</div>
+							<div class="span6" style="margin-left:0px;" >
+								<h5 class="text-align1">REGION</h5>
+								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+									<option value="0">Select Designation</option>
+								</select>
+							</div>
+							<div class="span6" style="margin-left:0px;" >
+								<h5 class="text-align1">DEPOT</h5>
+								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+									<option value="0">Select Designation</option>
+								</select>
 							</div>
 							<!--<div class=" m_top20" > 
 									<h5 class="text-align1"> PREVIOUSLY ENROLLED  ? </h5>
