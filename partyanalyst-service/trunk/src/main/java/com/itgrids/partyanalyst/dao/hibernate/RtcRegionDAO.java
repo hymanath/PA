@@ -22,4 +22,12 @@ public class RtcRegionDAO extends GenericDaoHibernate<RtcRegion, Long> implement
 		query.setParameter("zoneId", zoneId);
 		return query.list(); 
 	}
+	
+	public List<Object[]> getAllRegionsWithZone(){
+		Query query = getSession().createQuery(" select model.rtcRegionId,model.regionName,model.rtcZone.rtcZoneId,model.rtcZone.zoneName " +
+				" from RtcRegion model " +
+				" ");
+		return query.list(); 
+	}
+	
 }
