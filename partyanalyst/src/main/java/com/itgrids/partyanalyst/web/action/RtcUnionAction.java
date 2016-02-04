@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -57,10 +61,10 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private InputStream 						inputStream;
 	
 	private List<VoterInfoVO> 					voterInfoVOList;
+	private List<IdNameVO>                      idNameVOList;
+	private List<LocationWiseBoothDetailsVO>    locations;
 	
 	private List<IdNameVO> idNameVoList;
-	
-	
 	
 	public List<VoterInfoVO> getVoterInfoVOList() {
 		return voterInfoVOList;
@@ -201,6 +205,19 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		this.request = request;	
 	}
 	
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
+	}
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getLocations() {
+		return locations;
+	}
+	public void setLocations(List<LocationWiseBoothDetailsVO> locations) {
+		this.locations = locations;
+	}
 	public List<IdNameVO> getIdNameVoList() {
 		return idNameVoList;
 	}
@@ -210,7 +227,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	public String execute(){
 		return Action.SUCCESS;
 	}
-
+  
 	public String rtcUnionSearch()
 	{
 		LOG.info("Entered into rtcUnionSearch method in RtcUnionAction Action");
@@ -349,6 +366,47 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	
 		return Action.ERROR;
 	} 
+	
+	public String getDistrictsForState(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long stateId = jObj.getLong("stateId");
+			idNameVOList=rtcUnionService.getDistrictsForState(stateId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDistrictsForState() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getConstituenciesForDistrict(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long districtId = jObj.getLong("districtId");
+			idNameVOList=rtcUnionService.getConstituenciesForDistrict(districtId);
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getConstituenciesForDistrict() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getSubLevelLctnsForConstituencyAndMandal(){
+	
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			Long   locationLevel = jObj.getLong("locationLevel");
+			Long   constituencyId = jObj.getLong("constituencyId");
+			String mandalId = jObj.getString("mandalId");
+						
+			locations = rtcUnionService.getLocationsOfSublevelConstituencyMandal(constituencyId,mandalId,locationLevel);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getSubLevelLctnsForConstituencyAndMandal() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	public String getAllRTCZones(){
 		try {
