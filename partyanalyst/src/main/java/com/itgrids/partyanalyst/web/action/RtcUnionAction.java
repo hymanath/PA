@@ -213,7 +213,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 
 	public String rtcUnionSearch()
 	{
-		LOG.info("Entered into tdpCadreSearchPage method in CadreRegistrationAction Action");
+		LOG.info("Entered into rtcUnionSearch method in RtcUnionAction Action");
 		try {
 			
 			HttpSession session = request.getSession();
@@ -277,7 +277,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			//}
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised in tdpCadreSearchPage method in CadreRegistrationAction Action",e);
+			LOG.error("Exception raised in rtcUnionSearch method in RtcUnionAction Action",e);
 		}
 	
 		return Action.SUCCESS;
@@ -286,7 +286,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	public String rtcUnionRegistrationPage()
 	{
 
-		LOG.info("Entered into tdpCadreRegistrationPage method in CadreRegistrationAction Action");
+		LOG.info("Entered into rtcUnionRegistrationPage method in RtcUnionAction Action");
 		try {
 			
 			session = request.getSession();
@@ -344,7 +344,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			//}
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised in tdpCadreRegistrationPage method in RtcUnionAction  Action",e);
+			LOG.error("Exception raised in rtcUnionRegistrationPage method in RtcUnionAction  Action",e);
 		}
 	
 		return Action.ERROR;
@@ -390,4 +390,28 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String rtcUnionDashBoard(){
+		try {
+			LOG.info("Entered into rtcUnionDashBoard method in RtcUnionAction Action");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(user,""))
+			{
+				return Action.SUCCESS;
+			}*/
+			
+		
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in rtcUnionDashBoard method in RtcUnionAction Action",e);
+		}
+		//return Action.ERROR;
+		return Action.SUCCESS;
+	}
+	
 }
