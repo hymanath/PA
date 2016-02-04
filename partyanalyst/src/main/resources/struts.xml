@@ -11384,5 +11384,28 @@
 			<result name="input">/jsp/loginForm.jsp?src=rtcUnionSearchAction</result>
 	</action>
 	
+	<action name="getAllRTCZonesAction" class="rtcUnionAction" method="getAllRTCZones">
+		<result type="json" name="success">
+	    	<param name="root">idNameVoList</param>
+	    </result>
+	</action>
+	
+	<action name="getRegionsOfZoneAction" class="rtcUnionAction" method="getRegionsOfZone">
+		<result type="json" name="success">
+	    	<param name="root">idNameVoList</param>
+	    </result>
+	</action>
+	
+	<action name="getDepotsOfRegionAction" class="rtcUnionAction" method="getDepotsOfRegion">
+		<result type="json" name="success">
+	    	<param name="root">idNameVoList</param>
+	    </result>
+	</action>
+
+	<action name="getDesignationsOfUnionTypeAction" class="rtcUnionAction" method="getDesignationsOfUnionType">
+		<result type="json" name="success">
+	    	<param name="root">idNameVoList</param>
+	    </result>
+	</action>	
 </package>
 </struts>      

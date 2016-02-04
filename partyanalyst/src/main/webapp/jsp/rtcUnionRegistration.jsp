@@ -1532,25 +1532,25 @@
 							
 							<div class="span7" >
 								<h5 class="text-align1">DESIGNATION</h5>
-								<select style="width:100%">
+								<select id="designationSelectId" style="width:100%">
 									<option value="0">Select Designation</option>
 								</select>
 							</div>
 							<div class="span6" style="margin-left:0px;" >
 								<h5 class="text-align1">ZONE</h5>
-								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+								<select id="zoneSelectId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
 									<option value="0">Select Zone</option>
 								</select>
 							</div>
 							<div class="span6" style="margin-left:0px;" >
 								<h5 class="text-align1">REGION</h5>
-								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+								<select id="regionSelectId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
 									<option value="0">Select Region</option>
 								</select>
 							</div>
 							<div class="span6" style="margin-left:0px;" >
 								<h5 class="text-align1">DEPOT</h5>
-								<select class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+								<select id="depotSelectId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
 									<option value="0">Select Depot</option>
 								</select>
 							</div>
@@ -3176,6 +3176,105 @@ $(document).ready(function(){
 		{
 			$("#emailErr").html('Invalid Email Id.');
 		}
+	}
+	
+	getAllRTCZones();
+	function getAllRTCZones(){
+		var jsObj={};
+		
+		$.ajax({
+			type:"POST",
+			url:"getAllRTCZonesAction.action",
+			dataType: 'json',
+			data:{task:JSON.stringify(jsObj)}	
+		}).done(function(result) {
+			var str='';
+			str+='<option value="0">Select Zone</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+			}
+			$("#zoneSelectId").html(str);
+		});
+	}
+
+	$(document).on("change","#zoneSelectId",function(){
+		var jsObj={
+			zoneId : $("#zoneSelectId").val()
+		};
+		
+		if($("#zoneSelectId").val()==0){
+			$("#regionSelectId").html("<option value='0'>Select Region</option>");
+			$("#depotSelectId").html("<option value='0'>Select Depot</option>");
+		}
+		else if($("#zoneSelectId").val()>0){
+			$.ajax({
+				type:"POST",
+				url:"getRegionsOfZoneAction.action",
+				dataType: 'json',
+				data:{task:JSON.stringify(jsObj)}	
+			}).done(function(result){
+				var str='';
+				str+='<option value="0">Select Region</option>';
+				if(result != null && result.length > 0){
+					for(var i in result){
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					}
+				}
+				$("#regionSelectId").html(str);
+			});
+		}
+		
+		
+	});
+
+	$(document).on("change","#regionSelectId",function(){
+		var jsObj={
+			regionId : $("#regionSelectId").val()
+		};
+		
+		if($("#regionSelectId").val()==0){
+			$("#depotSelectId").html("<option value='0'>Select Depot</option>");
+		}else if($("#regionSelectId").val()>0){
+			$.ajax({
+				type:"POST",
+				url:"getDepotsOfRegionAction.action",
+				dataType: 'json',
+				data:{task:JSON.stringify(jsObj)}	
+			}).done(function(result) {
+				var str='';
+				str+='<option value="0">Select Depot</option>';
+				if(result != null && result.length > 0){
+					for(var i in result){
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					}
+				}
+				$("#depotSelectId").html(str);
+			});
+		}
+	});
+	getDesignationsOfUnionType();
+	function getDesignationsOfUnionType(){
+		var jObj={
+			unionTypeId : 1
+		};
+		
+		$.ajax({
+			type:"POST",
+			url:"getDesignationsOfUnionTypeAction.action",
+			dataType: 'json',
+			data:{task:JSON.stringify(jObj)}	
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Designation</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+			}
+			$("#designationSelectId").html(str);
+		});
 	}
 </script>
 </html>
