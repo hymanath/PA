@@ -1521,4 +1521,14 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return getHibernateTemplate().find("select model.constituencyId, model.name from Constituency model " +
 				"where model.constituencyId = ? ", constiId);
 	}
+
+	public List<Object[]> getConstituenciesByDistId(Long districtId) {
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.constituencyId,model.name" +
+				   " from Constituency model where model.district.districtId =:districtId and model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null ");
+		str.append(" order by model.name");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("districtId", districtId);
+		return query.list();	
+	}
 }
