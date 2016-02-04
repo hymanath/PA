@@ -1535,9 +1535,7 @@
 											  <div class=" m_top20" >
 												   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;"></span>  </h5>
 												   <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District "  />	
-												   <select id="districtId"> 
-													 <option value="0">Select District</option>
-												   </select>
+												  
 											   </div>
 											</div>
 											<div class="span6">
