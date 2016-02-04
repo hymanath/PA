@@ -755,6 +755,16 @@
 				 <value>com.itgrids.partyanalyst.model.MobileAppUserAccessLocation</value>
 				 <value>com.itgrids.partyanalyst.model.GreaterMuncipalWard</value>
 				 <value>com.itgrids.partyanalyst.model.UserLocationTracking</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.RtcZone</value>
+				 <value>com.itgrids.partyanalyst.model.RtcRegion</value>
+				 <value>com.itgrids.partyanalyst.model.RtcDepot</value>
+				 <value>com.itgrids.partyanalyst.model.UnionType</value>
+				 <value>com.itgrids.partyanalyst.model.Designation</value>
+				 <value>com.itgrids.partyanalyst.model.UnionTypeDesignation</value>
+				 <value>com.itgrids.partyanalyst.model.TdpCadreLocation</value>
+				 <value>com.itgrids.partyanalyst.model.TdpMemberType</value>
+				 
 			     </list>
 			
 		</property>
