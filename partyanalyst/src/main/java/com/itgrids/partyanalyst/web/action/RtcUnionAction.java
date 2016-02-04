@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,14 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -319,7 +316,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
 				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId);
-							
+				idNameVOList=rtcUnionService.getDistrictsForState(1l);			
 				if(user.getRegistrationID().longValue() != 3930L) // party office userId
 	    		{
 	    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
