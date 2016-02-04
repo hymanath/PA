@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IRtcDepotDAO;
 import com.itgrids.partyanalyst.model.RtcDepot;
@@ -11,5 +14,12 @@ public class RtcDepotDAO extends GenericDaoHibernate<RtcDepot, Long> implements 
 		super(RtcDepot.class);
 		
 	}
-
+	
+	public List<Object[]> getDepotsOfRegion(Long regionId){
+		Query query = getSession().createQuery(" select model.rtcDepotId,model.depotName " +
+				" from RtcDepot model " +
+				" where model.rtcRegionId=:regionId ");
+		query.setParameter("regionId", regionId);
+		return query.list();
+	}
 }
