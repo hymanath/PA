@@ -11429,5 +11429,24 @@
 	    	<param name="root">idNameVoList</param>
 	    </result>
 	</action>	
+	
+	<action name="getRtcUnionRegisteredBasicDetailsAction" class="rtcUnionAction" method="getRtcUnionRegisteredBasicDetails">
+		<result type="json" name="success">
+	    	<param name="root">rtcUnionVO</param>
+	    </result>
+	</action>
+	
+	<action name="getRtcUnionLocationWiseDetailsAction" class="rtcUnionAction" method="getRtcUnionLocationWiseDetails">
+		<result type="json" name="success">
+	    	<param name="root">rtcUnionVO</param>
+	    </result>
+	</action>
+	
+	<action name="getRtcUnionAllLocationDetailsAction" class="rtcUnionAction" method="getRtcUnionAllLocationDetails">
+		<result type="json" name="success">
+	    	<param name="root">rtcUnionVO</param>
+	    </result>
+	</action>
+	
 </package>
 </struts>      

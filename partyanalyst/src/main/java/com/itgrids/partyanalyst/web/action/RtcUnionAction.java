@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -61,8 +62,22 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private List<IdNameVO>                      idNameVOList;
 	private List<LocationWiseBoothDetailsVO>    locations;
 	
-	private List<IdNameVO> idNameVoList;
+	private List<IdNameVO>						idNameVoList;
+	private RtcUnionVO 							rtcUnionVO;
+	private List<RtcUnionVO> 				    rtcUnionVOList;
 	
+	public List<RtcUnionVO> getRtcUnionVOList() {
+		return rtcUnionVOList;
+	}
+	public void setRtcUnionVOList(List<RtcUnionVO> rtcUnionVOList) {
+		this.rtcUnionVOList = rtcUnionVOList;
+	}
+	public RtcUnionVO getRtcUnionVO() {
+		return rtcUnionVO;
+	}
+	public void setRtcUnionVO(RtcUnionVO rtcUnionVO) {
+		this.rtcUnionVO = rtcUnionVO;
+	}
 	public List<VoterInfoVO> getVoterInfoVOList() {
 		return voterInfoVOList;
 	}
@@ -468,5 +483,69 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		//return Action.ERROR;
 		return Action.SUCCESS;
 	}
+	public String getRtcUnionRegisteredBasicDetails(){
+		try{
+			LOG.info("Entered into getRtcUnionRegisterBasicDetails method in RtcUnionAction Action");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			jObj = new JSONObject(getTask());
+			
+			String taskType = jObj.getString("task");
+			
+			if(taskType !=null && !taskType.isEmpty() &&  taskType.equalsIgnoreCase("basicDetails")){
+				rtcUnionVO = rtcUnionService.getRtcUnionBasicDetails();
+			}else if(taskType !=null && !taskType.isEmpty() &&  taskType.equalsIgnoreCase("zoneDetails")){
+				rtcUnionVO = rtcUnionService.getRtcUnionZoneWiseDetails();
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getRtcUnionRegisterBasicDetails method in RtcUnionAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRtcUnionLocationWiseDetails(){
+		try{			
+			LOG.info("Entered into getRtcUnionZoneWiseDetails method in RtcUnionAction Action");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			jObj = new JSONObject(getTask());
+			
+			String taskType = jObj.getString("task");
+			Long locationId  =   jObj.getLong("locationId");
+			
+			rtcUnionVO = rtcUnionService.getRtcUnionLocationWiseDetails(taskType,locationId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getRtcUnionLocationWiseDetails method in RtcUnionAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRtcUnionAllLocationDetails(){
+		try{			
+			LOG.info("Entered into getRtcUnionAllLocationDetails method in RtcUnionAction Action");
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			rtcUnionVO = rtcUnionService.getRtcUnionAllLocationDetails();
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getRtcUnionAllLocationDetails method in RtcUnionAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }
