@@ -120,6 +120,19 @@ public class TdpCadre {
 	
 	private Long 						cadreDeleteReasonId;
 	
+	private Long 						tdpMemberTypeId;
+	private Long 						unionTypeId;
+	private String						idCardNo;
+	private Long						designationId;
+	private Long 						tdpCadreLocationId;
+	
+	private TdpMemberType				tdpMemberType;
+	private UnionType					unionType;
+	private Designation					designation;
+	private TdpCadreLocation			tdpCadreLocation;
+	
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -801,6 +814,91 @@ public class TdpCadre {
 	public void setCadreDeleteReasonId(Long cadreDeleteReasonId) {
 		this.cadreDeleteReasonId = cadreDeleteReasonId;
 	}
+	
+	@Column(name="tdp_member_type_id")
+	public Long getTdpMemberTypeId() {
+		return tdpMemberTypeId;
+	}
+	public void setTdpMemberTypeId(Long tdpMemberTypeId) {
+		this.tdpMemberTypeId = tdpMemberTypeId;
+	}
+	
+	@Column(name="union_type_id")
+	public Long getUnionTypeId() {
+		return unionTypeId;
+	}
+	public void setUnionTypeId(Long unionTypeId) {
+		this.unionTypeId = unionTypeId;
+	}
+	
+	@Column(name="id_card_no")
+	public String getIdCardNo() {
+		return idCardNo;
+	}
+	public void setIdCardNo(String idCardNo) {
+		this.idCardNo = idCardNo;
+	}
+	
+	@Column(name="designation_id")
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	
+	@Column(name="tdp_cadre_location_id")
+	public Long getTdpCadreLocationId() {
+		return tdpCadreLocationId;
+	}
+	public void setTdpCadreLocationId(Long tdpCadreLocationId) {
+		this.tdpCadreLocationId = tdpCadreLocationId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_member_type_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpMemberType getTdpMemberType() {
+		return tdpMemberType;
+	}
+	public void setTdpMemberType(TdpMemberType tdpMemberType) {
+		this.tdpMemberType = tdpMemberType;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "union_type_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UnionType getUnionType() {
+		return unionType;
+	}
+	public void setUnionType(UnionType unionType) {
+		this.unionType = unionType;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "designation_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Designation getDesignation() {
+		return designation;
+	}
+	public void setDesignation(Designation designation) {
+		this.designation = designation;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_cadre_location_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadreLocation getTdpCadreLocation() {
+		return tdpCadreLocation;
+	}
+	public void setTdpCadreLocation(TdpCadreLocation tdpCadreLocation) {
+		this.tdpCadreLocation = tdpCadreLocation;
+	}
+	
 	
 	
 }
