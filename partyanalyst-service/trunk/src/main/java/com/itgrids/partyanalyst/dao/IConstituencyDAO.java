@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.model.Constituency;
 
@@ -290,4 +291,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	 public Long getConstituencyIdByDistrictIdAndConstituencyName(Long districtId,String constituencyName);
 	 public Long getWardIdByTownIdAndWardName(Long localElectionBodyId,String wardName);
 	 public List<Object[]> getConstituencyDetailsByCintiId(Long constiId);
+	 public List<Object[]> getConstituenciesByDistId(Long districtId);
+			
 }
