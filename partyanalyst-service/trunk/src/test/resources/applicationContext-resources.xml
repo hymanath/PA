@@ -740,6 +740,15 @@
 				 <value>com.itgrids.partyanalyst.model.MobileAppUserSmsStatus</value>
 				 <value>com.itgrids.partyanalyst.model.GreaterMuncipalWard</value>
 				 <value>com.itgrids.partyanalyst.model.UserLocationTracking</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.RtcZone</value>
+				 <value>com.itgrids.partyanalyst.model.RtcRegion</value>
+				 <value>com.itgrids.partyanalyst.model.RtcDepot</value>
+				 <value>com.itgrids.partyanalyst.model.UnionType</value>
+				 <value>com.itgrids.partyanalyst.model.Designation</value>
+				 <value>com.itgrids.partyanalyst.model.UnionTypeDesignation</value>
+				 <value>com.itgrids.partyanalyst.model.TdpCadreLocation</value>
+				 <value>com.itgrids.partyanalyst.model.TdpMemberType</value>
 			</list>
 		</property>
 	</bean>
@@ -3285,6 +3294,31 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="userLocationTrackingDAO" class="com.itgrids.partyanalyst.dao.impl.UserLocationTrackingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="rtcZoneDAO" class="com.itgrids.partyanalyst.dao.hibernate.RtcZoneDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="rtcRegionDAO" class="com.itgrids.partyanalyst.dao.hibernate.RtcRegionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="rtcDepotDAO" class="com.itgrids.partyanalyst.dao.hibernate.RtcDepotDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="unionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.UnionTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="designationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DesignationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="unionTypeDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.UnionTypeDesignationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLocationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpMemberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpMemberTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
