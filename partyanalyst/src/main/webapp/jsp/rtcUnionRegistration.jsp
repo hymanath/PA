@@ -1459,10 +1459,10 @@
 								<div class="m_top10">
 										<div class="row-fluid">
 										
-											<div class="span6">
+											<!--<div class="span6">
 											<h5 class="text-align1">PARTY MEMBER SINCE</h5>
 												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" style="width: 186px;" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr" id="reqPartyMemberSinceStrId" value="${voterInfoVOList[0].activeDate}"  readOnly="true"></input><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Party Member Since" onclick="clearSelDiv('reqPartyMemberSinceStrId');"></span>
-											</div>
+											</div>-->
 											
 											<div class="span6">
 											<h5 class="text-align1">Blood Group</h5>
@@ -1529,13 +1529,13 @@
 							<input type="text" class="form-control border-radius-0 input-block-level"  id="occupationValue"  placeholder=" Enter Occupation "  value="${voterInfoVOList[0].occupation}" style="width:260px;"></input>
 							-->
 							</div>
-							<div class=" m_top20" > 
+							<!--<div class=" m_top20" > 
 									<h5 class="text-align1"> PREVIOUSLY ENROLLED  ? </h5>
 									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>&nbsp;<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="icon-remove"></span>
 									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
-							</div>
+							</div>-->
 						
 					</div>
 				</div>
@@ -1778,9 +1778,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="container"><div class="row"><div  id="toggleButtonDiv" class="span8 offset3">
+	<!--<div class="container"><div class="row"><div  id="toggleButtonDiv" class="span8 offset3">
 		<a class="btn btn-success  m_top10 m_bottom10 border-radius-0" id="toggleButtonId">Click To See/Hide  Previous Roles And Previously Participated In Elections</a>
-  </div></div></div>
+  </div></div></div>-->
 	<div id="fadeInUp" class="fadeInUpClass">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
