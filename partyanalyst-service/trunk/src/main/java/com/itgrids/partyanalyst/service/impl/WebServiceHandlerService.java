@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IUnionTabUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -82,6 +83,7 @@ import com.itgrids.partyanalyst.dto.SurveyTrainingsVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.TdpCadreWSVO;
+import com.itgrids.partyanalyst.dto.UnionTabUserVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -105,6 +107,7 @@ import com.itgrids.partyanalyst.model.MobileAppUserSmsDetails;
 import com.itgrids.partyanalyst.model.MobileAppUserSmsStatus;
 import com.itgrids.partyanalyst.model.MobileAppUserVoter;
 import com.itgrids.partyanalyst.model.SurveyUserAuth;
+import com.itgrids.partyanalyst.model.UnionTabUser;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
@@ -207,6 +210,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IMobileAppUserAccessLocationDAO mobileAppUserAccessLocationDAO;
     private ISmsGatewayService smsGatewayService;
     
+    private IUnionTabUserDAO unionTabUserDAO;
+    
+    
+    
+	public IUnionTabUserDAO getUnionTabUserDAO() {
+		return unionTabUserDAO;
+	}
+
+	public void setUnionTabUserDAO(IUnionTabUserDAO unionTabUserDAO) {
+		this.unionTabUserDAO = unionTabUserDAO;
+	}
+
 	public ISmsGatewayService getSmsGatewayService() {
 		return smsGatewayService;
 	}
@@ -3717,6 +3732,28 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 log.debug("Entered into the getVoterDetailsByVoterIdCardNum  method in WebServiceHandlerService");
 		}
 		  return returnVO;
+	  }
+	  
+	  public UnionTabUserVO checkLoginUnionTabUser(UnionTabUserVO inputVo)
+	  {
+		  UnionTabUserVO vo = new UnionTabUserVO();
+		   List<UnionTabUser> list = unionTabUserDAO.checkUserExists(inputVo.getUname(),inputVo.getPwd());
+		   if(list  == null || list.size() == 0)
+		   {
+			   vo.setMsg("Invalid");
+			   return vo;
+		   }
+		   vo.setMsg("valid");
+		   for(UnionTabUser params : list)
+		   {
+			   vo.setMobileNum(params.getMobileNo() != null ? params.getMobileNo() : null);
+			   vo.setUname(params.getUserName() != null ? params.getUserName() : null);
+			   vo.setPwd(params.getPassWord() != null ? params.getPassWord() : null);
+			   vo.setUnionTabUserId(params.getUnionTabUserId() != null ? params.getUnionTabUserId() : null);
+			   vo.setName(params.getName() != null ? params.getName() : null);
+			   
+		   }
+		return vo;
 	  }
 }
 
