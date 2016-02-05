@@ -5649,6 +5649,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
+		public Long getUserAddressId(Long tdpCadreId){
+			
+			Query query=getSession().createQuery(" select tc.userAddress.userAddressId from TdpCadre tc where tc.tdpCadreId=:tdpCadreId and tc.isDeleted='N' ");
+			query.setParameter("tdpCadreId",tdpCadreId);
+			return (Long)query.uniqueResult();
+		}
+		
 		public List<Object[]> getAffliatedCadreCountDetails(String type,Date date){
 			
 			StringBuilder str = new StringBuilder();			
