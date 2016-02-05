@@ -167,7 +167,7 @@
 		<pattern>/showGoogleMapDetails*</pattern>
 		<pattern>/rtcUnionSearchAction*</pattern>
 		<pattern>/rtcUnionRegistrationAction*</pattern>
-		<pattern>/rtcUnionDashBoardAction*</pattern>
+		
 		</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -646,6 +646,6 @@
 	<pattern>/mobileAppDivisionWiseUsersAction*</pattern>
 	<pattern>/pollManagmentDashboardAction*</pattern>
 	<pattern>/pollManagmentAreaWiseInfoAction*</pattern>
-	
+	<pattern>/rtcUnionDashBoardAction*</pattern>
 	 </decorator> 
 </decorators>
