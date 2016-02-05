@@ -263,13 +263,14 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			
 			//if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
 			//{
-				Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
+				Long stateTypeId = 1L; // 0 for All, 1 for AP, 2 for TG 
 				Long stateId = 1L;
 				
 				if(user.getAccessType().equalsIgnoreCase("MLA")){
 					selectOptionVOList =	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
 				}else{
 					selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
+					
 				}
 				
 			
