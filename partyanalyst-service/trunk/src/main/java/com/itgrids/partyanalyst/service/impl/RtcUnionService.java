@@ -490,14 +490,14 @@ public class RtcUnionService implements IRtcUnionService{
 				
 				for (Object[] objects : todayDetails) {	
 					
-					if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("WEB")){
-						fnlVo.setWebCount(objects[0] !=null ? (Long)objects[0]:0l);
-					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("TAB")){
-						fnlVo.setTabCount(objects[0] !=null ? (Long)objects[0]:0l);
-					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("ONLINE")){
-						fnlVo.setOnlineCount(objects[0] !=null ? (Long)objects[0]:0l);
+					if(objects[0] !=null && objects[0].toString().equalsIgnoreCase("WEB")){
+						fnlVo.setWebCount(objects[1] !=null ? (Long)objects[1]:0l);
+					}else if(objects[0] !=null && objects[0].toString().equalsIgnoreCase("TAB")){
+						fnlVo.setTabCount(objects[1] !=null ? (Long)objects[1]:0l);
+					}else if(objects[0] !=null && objects[0].toString().equalsIgnoreCase("ONLINE")){
+						fnlVo.setOnlineCount(objects[1] !=null ? (Long)objects[1]:0l);
 					}					
-					totalAffliated = totalAffliated +(objects[0] !=null ? (Long)objects[0]:0l) ;
+					totalAffliated = totalAffliated +Long.parseLong(objects[1] !=null ? objects[1].toString():"") ;
 				}
 				
 				fnlVo.setTotalCount(totalAffliated);				
@@ -508,17 +508,17 @@ public class RtcUnionService implements IRtcUnionService{
 				
 				for (Object[] objects : todayDetails) {	
 					
-					if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("WEB")){
-						fnlVo.setTodayWebCount(objects[0] !=null ? (Long)objects[0]:0l);
-					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("TAB")){
-						fnlVo.setTodayTabCount(objects[0] !=null ? (Long)objects[0]:0l);
-					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("ONLINE")){
-						fnlVo.setTodayOnlineCount(objects[0] !=null ? (Long)objects[0]:0l);
+					if(objects[0] !=null && objects[0].toString().equalsIgnoreCase("WEB")){
+						fnlVo.setTodayWebCount(objects[1] !=null ? (Long)objects[1]:0l);
+					}else if(objects[0] !=null && objects[0].toString().equalsIgnoreCase("TAB")){
+						fnlVo.setTodayTabCount(objects[1] !=null ? (Long)objects[1]:0l);
+					}else if(objects[0] !=null && objects[0].toString().equalsIgnoreCase("ONLINE")){
+						fnlVo.setTodayOnlineCount(objects[1] !=null ? (Long)objects[1]:0l);
 					}					
-					totalAffliated = totalAffliated +Long.parseLong(objects[0] !=null ? objects[0].toString():"");
+					totalAffliated = totalAffliated +Long.parseLong(objects[1] !=null ? objects[1].toString():"");
 				}
 				
-				fnlVo.setTodayTotalcCount(totalAffliated);				
+				fnlVo.setTodayTotalCount(totalAffliated);				
 			}
 			
 		}catch (Exception e) {
@@ -600,18 +600,19 @@ public class RtcUnionService implements IRtcUnionService{
 								}else{
 									rtc.setOnlineCount(objectList[3] !=null ? (Long)objectList[3]:0l);
 								}								
-							}							
-						}
-						
-						if(serachType !=null && serachType.equalsIgnoreCase("today")){					
-							toDayTotalCount = toDayTotalCount + Long.parseLong(objectList[3] !=null ? objectList[3].toString():"");						
-						}
-						else{
-							totalCount = totalCount + Long.parseLong(objectList[3] !=null ? objectList[3].toString():"");
+							}
+							
+							if(serachType !=null && serachType.equalsIgnoreCase("today")){					
+								toDayTotalCount = toDayTotalCount + Long.parseLong(objectList[3] !=null ? objectList[3].toString():"");						
+							}
+							else{
+								totalCount = totalCount + Long.parseLong(objectList[3] !=null ? objectList[3].toString():"");
+							}
+							
 						}
 						
 					}					
-					rtc.setTodayTotalcCount(toDayTotalCount);
+					rtc.setTodayTotalCount(toDayTotalCount);
 					rtc.setTotalCount(totalCount);					
 				}
 				
@@ -637,7 +638,7 @@ public class RtcUnionService implements IRtcUnionService{
 					 vo.setWebCount(0l);
 					 vo.setOnlineCount(0l);
 					 
-					 vo.setTodayTotalcCount(0l);
+					 vo.setTodayTotalCount(0l);
 					 vo.setTodayTabCount(0l);
 					 vo.setTodayWebCount(0l);
 					 vo.setTodayOnlineCount(0l);
@@ -732,7 +733,7 @@ public class RtcUnionService implements IRtcUnionService{
 					 vo.setTabCount(0l);
 					 vo.setOnlineCount(0l);
 					 
-					 vo.setTodayTotalcCount(0l);
+					 vo.setTodayTotalCount(0l);
 					 vo.setTodayTabCount(0l);
 					 vo.setTodayWebCount(0l);
 					 vo.setTodayOnlineCount(0l);

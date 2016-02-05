@@ -16,7 +16,7 @@ public class RtcUnionVO {
 	private Long webCount;
 	private Long onlineCount;
 	
-	private Long todayTotalcCount;
+	private Long todayTotalCount;
 	private Long todayTabCount;
 	private Long todayWebCount;
 	private Long todayOnlineCount;
@@ -39,11 +39,11 @@ public class RtcUnionVO {
 	public void setTodayOnlineCount(Long todayOnlineCount) {
 		this.todayOnlineCount = todayOnlineCount;
 	}
-	public Long getTodayTotalcCount() {
-		return todayTotalcCount;
+	public Long getTodayTotalCount() {
+		return todayTotalCount;
 	}
-	public void setTodayTotalcCount(Long todayTotalcCount) {
-		this.todayTotalcCount = todayTotalcCount;
+	public void setTodayTotalCount(Long todayTotalCount) {
+		this.todayTotalCount = todayTotalCount;
 	}
 	public Long getTodayTabCount() {
 		return todayTabCount;
