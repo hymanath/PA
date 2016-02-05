@@ -63,9 +63,23 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private  List<TdpCadreFamilyDetailsVO> familyMembersList = new ArrayList<TdpCadreFamilyDetailsVO>(0);
 	private List<RegisteredMembershipCountVO> electionResultsPerfList = new ArrayList<RegisteredMembershipCountVO>(0);
 	private List<RegisteredMembershipCountVO> membershipRegistrationPerfList = new ArrayList<RegisteredMembershipCountVO>(0);
-
+	private String message;
+	private String familyVoterCardNum;
+	 
 	
 	
+	public String getFamilyVoterCardNum() {
+		return familyVoterCardNum;
+	}
+	public void setFamilyVoterCardNum(String familyVoterCardNum) {
+		this.familyVoterCardNum = familyVoterCardNum;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	public String getDeletedStatus() {
 		return deletedStatus;
 	}

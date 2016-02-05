@@ -4936,15 +4936,43 @@ public class CadreDetailsService implements ICadreDetailsService{
   }
 	// changes
 	
-	public CadreOverviewVO getVoterDetailsByVoterIdCardNum(String voterCardNo)
+	public CadreOverviewVO getVoterDetailsByVoterIdCardNum(String voterCardNo,String familyVoterCardNo)
 	{
 		CadreOverviewVO returnVO = new CadreOverviewVO();
 		try {
 			List<Object[]> voterDetails = null;
 			Long tdpCadreId = 0l;
+			
+			if(voterCardNo != null && !voterCardNo.isEmpty())
+			{
 				voterDetails = boothPublicationVoterDAO.getConstyPublicationIdByVoterIdPublicationId(voterCardNo,IConstants.VOTER_PUBLICATION_ID);
+			}
+			else 
+			{
+				voterDetails = boothPublicationVoterDAO.getConstyPublicationIdByVoterIdPublicationId(familyVoterCardNo,IConstants.VOTER_PUBLICATION_ID);
+				
+				if(voterDetails == null || voterDetails.size() == 0)
+				{
+					returnVO.setMessage("fail");
+					return returnVO;
+				}
 				if(voterDetails != null && voterDetails.size()>0)
 				{
+					
+					returnVO.setMessage("success");
+				}
+				return returnVO;
+			}
+				if(voterDetails == null || voterDetails.size() == 0)
+				{
+					returnVO.setMessage("fail");
+					return returnVO;
+				}
+				if(voterDetails != null && voterDetails.size()>0)
+				{
+					
+					returnVO.setMessage("success");
+					
 					for (Object[] voter : voterDetails) {
 						Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
 						
