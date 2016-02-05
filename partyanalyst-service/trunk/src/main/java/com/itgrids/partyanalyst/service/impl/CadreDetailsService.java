@@ -4945,7 +4945,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(voterCardNo != null && !voterCardNo.isEmpty())
 			{
+				List checkVoter = tdpCadreDAO.checkUnionMemberExists(voterCardNo);
+				if(checkVoter != null && checkVoter.size() > 0)
+				{
+					returnVO.setVoterExists(true);
+					returnVO.setMessage("success");
+					return returnVO;
+				}
+				else
+				{
+				returnVO.setVoterExists(false);
 				voterDetails = boothPublicationVoterDAO.getConstyPublicationIdByVoterIdPublicationId(voterCardNo,IConstants.VOTER_PUBLICATION_ID);
+				}
 			}
 			else 
 			{

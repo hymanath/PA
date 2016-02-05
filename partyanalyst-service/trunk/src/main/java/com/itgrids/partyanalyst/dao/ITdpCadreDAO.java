@@ -390,4 +390,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getAffliatedCadreCountDetails(String type,Date today);
 	  public List<Object[]> getRtcUnionZoneWiseDetails(String searchType,Date date);
 	  public List<Object[]> getRtcUnionAllLocationDetails(String searchType,Date date);
+	  public List checkUnionMemberExists(String voterCardNo);
 }

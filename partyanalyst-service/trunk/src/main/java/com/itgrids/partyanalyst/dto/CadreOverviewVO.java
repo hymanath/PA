@@ -65,9 +65,17 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private List<RegisteredMembershipCountVO> membershipRegistrationPerfList = new ArrayList<RegisteredMembershipCountVO>(0);
 	private String message;
 	private String familyVoterCardNum;
-	 
+	private boolean voterExists;
 	
 	
+	
+	
+	public boolean isVoterExists() {
+		return voterExists;
+	}
+	public void setVoterExists(boolean voterExists) {
+		this.voterExists = voterExists;
+	}
 	public String getFamilyVoterCardNum() {
 		return familyVoterCardNum;
 	}
