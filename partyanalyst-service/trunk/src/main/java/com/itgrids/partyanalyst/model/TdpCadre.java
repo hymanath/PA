@@ -130,7 +130,7 @@ public class TdpCadre {
 	private UnionType					unionType;
 	private Designation					designation;
 	private TdpCadreLocation			tdpCadreLocation;
-	
+	private UserAddress 				permanentAddress;
 	
 	
 	@Id
@@ -899,6 +899,15 @@ public class TdpCadre {
 		this.tdpCadreLocation = tdpCadreLocation;
 	}
 	
-	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "permanent_address_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getPermanentAddress() {
+		return permanentAddress;
+	}
+	public void setPermanentAddress(UserAddress permanentAddress) {
+		this.permanentAddress = permanentAddress;
+	}
 	
 }

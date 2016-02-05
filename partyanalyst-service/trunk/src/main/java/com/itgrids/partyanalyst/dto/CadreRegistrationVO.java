@@ -127,7 +127,14 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		perAddrsVillId;
 	private Long		perAddrsWardId;
 	private String 		employeeId;
-	
+	private Long		prsntAddrsStateId;
+	private Long		prsntAddrsDistId;
+	private Long		prsntAddrsConstId;
+	private Long		prsntAddrsMandalId;
+	private Long		prsntAddrsLebId;
+	private Long		prsntAddrsDivionId;
+	private Long		prsntAddrsVillId;
+	private Long		prsntAddrsWardId;
 	
 	
 	public String getFaceboohUrl() {
@@ -737,8 +744,59 @@ public class CadreRegistrationVO implements Serializable{
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
+	public Long getPrsntAddrsStateId() {
+		return prsntAddrsStateId;
+	}
+	public void setPrsntAddrsStateId(Long prsntAddrsStateId) {
+		this.prsntAddrsStateId = prsntAddrsStateId;
+	}
+	public Long getPrsntAddrsDistId() {
+		return prsntAddrsDistId;
+	}
+	public void setPrsntAddrsDistId(Long prsntAddrsDistId) {
+		this.prsntAddrsDistId = prsntAddrsDistId;
+	}
+	public Long getPrsntAddrsConstId() {
+		return prsntAddrsConstId;
+	}
+	public void setPrsntAddrsConstId(Long prsntAddrsConstId) {
+		this.prsntAddrsConstId = prsntAddrsConstId;
+	}
+	public Long getPrsntAddrsMandalId() {
+		return prsntAddrsMandalId;
+	}
+	public void setPrsntAddrsMandalId(Long prsntAddrsMandalId) {
+		this.prsntAddrsMandalId = prsntAddrsMandalId;
+	}
+	public Long getPrsntAddrsLebId() {
+		return prsntAddrsLebId;
+	}
+	public void setPrsntAddrsLebId(Long prsntAddrsLebId) {
+		this.prsntAddrsLebId = prsntAddrsLebId;
+	}
+	public Long getPrsntAddrsDivionId() {
+		return prsntAddrsDivionId;
+	}
+	public void setPrsntAddrsDivionId(Long prsntAddrsDivionId) {
+		this.prsntAddrsDivionId = prsntAddrsDivionId;
+	}
+	public Long getPrsntAddrsVillId() {
+		return prsntAddrsVillId;
+	}
+	public void setPrsntAddrsVillId(Long prsntAddrsVillId) {
+		this.prsntAddrsVillId = prsntAddrsVillId;
+	}
+	public Long getPrsntAddrsWardId() {
+		return prsntAddrsWardId;
+	}
+	public void setPrsntAddrsWardId(Long prsntAddrsWardId) {
+		this.prsntAddrsWardId = prsntAddrsWardId;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
-	
+   	
 	
 	
 }
