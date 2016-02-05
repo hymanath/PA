@@ -62,4 +62,6 @@ public interface IWebServiceHandlerService1 {
 	 public TdpCadreVO searchTdpCadreDetailsBySVoterIdCardNo(String voterCardNo, String isFamilyVoter);
 	 public String saveStatus(CadreRegistrationVO inputs);
 	 public String saveMissedCallDetails(MissedCallCampaignVO input);
+	 
+	 public Object saveSurveyFieldUsersForAffliatedCadre(List<CadreRegistrationVO> inputResponseList);
 }

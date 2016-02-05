@@ -1321,5 +1321,38 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
    		}
    		return "success";
    	}
+    
+    public Object saveSurveyFieldUsersForAffliatedCadre(List<CadreRegistrationVO> inputResponseList){
+		SurveyCadreResponceVO  surveyCadreResponceVO = null;
+		if(inputResponseList != null && inputResponseList.size() > 0)
+		{
+			if(IConstants.ENABLE_CADRE_LOGS)
+			for (CadreRegistrationVO inputResponse : inputResponseList)
+			{
+				LOG.error(inputResponse.toString());
+				
+				LOG.error("Voter Name  " + "-" + inputResponse.getVoterName() + "-" +"Date Of Birth "+  "-" + inputResponse.getDob() +"-"+ "Gender " +inputResponse.getGender()+  "-" +"Relative Name"+ inputResponse.getRelativeName() +"-" +"VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" + "H.NO" + inputResponse.getHouseNo() + "-" +"Party Member Since" +inputResponse.getPartyMemberSince()  + "-" + "Blood Group " + inputResponse.getBloodGroupId() + "-" + "Street/hamle" +inputResponse.getStreet() +"-" +"Caste" + inputResponse.getCasteId() + "-" + "Mobile No" + inputResponse.getMobileNumber() + "-" + "Education" +inputResponse.getEducationId() + "-" + "Occupation " +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber());
+				if(inputResponse.getPreviousParicaptedElectionsList() != null && inputResponse.getPreviousParicaptedElectionsList().size() > 0)
+				{
+					for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousParicaptedElectionsList())
+					{
+						LOG.error("Designation Level" +electionVO.getDesignationLevelId() + "-" +  "Designation Level Value" + electionVO.getDesignationLevelValue() + "-" + "From Date" + electionVO.getFromDate() + "-" + "To Date" + electionVO.getToDate()  );
+					}
+				}
+				if(inputResponse.getPreviousRollesList() != null && inputResponse.getPreviousRollesList().size() > 0)
+				{
+					for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousRollesList())
+					{
+						LOG.error("Election Id" +electionVO.getElectionTypeId() + "-" +  "Constituency Id" + electionVO.getConstituencyId() );
+					}
+				}
+				
+			}
+				surveyCadreResponceVO=cadreRegistrationService.saveAfflicatedCadreRegistration(inputResponseList,"TAB");	
+		}
+		
+		return surveyCadreResponceVO;
+		
+	}
 }
 
