@@ -43,13 +43,9 @@ public class RtcUnionService implements IRtcUnionService{
 	 private IUserVoterDetailsDAO userVoterDetailsDAO;
 	 private ITdpCadreDAO tdpCadreDAO;
 	 private IUserAddressDAO userAddressDAO;
-	 private ITdpCadreDAO tdpCadreDAO;
 	 
 	 
 	 
-	 public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
-		this.tdpCadreDAO = tdpCadreDAO;
-	}
 
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
