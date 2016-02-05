@@ -340,18 +340,18 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		    		
 	    			if(user.getAccessType().trim().equalsIgnoreCase(IConstants.STATE))
 		    		{
-		    			endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+		    			endDate = format.parse(IConstants.TG_AFFLIATED_CADRE_END_DATE);
 		    		}
 		    		else if(user.getAccessType().trim().equalsIgnoreCase(IConstants.MLA))
 		    		{
 		    			Constituency constituency = constituencyDAO.get(Long.valueOf(user.getAccessValue()));
 		    			if(constituency.getDistrict().getDistrictId() < 11L)
 		    			{
-		    				endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+		    				endDate = format.parse(IConstants.TG_AFFLIATED_CADRE_END_DATE);
 		    			}
 		    			else
 		    			{
-		    				endDate = format.parse(IConstants.AP_CADRE_2014_END_DATE);
+		    				endDate = format.parse(IConstants.AP_AFFLIATED_CADRE_END_DATE);
 		    			}	
 		    			DoneTime = new SimpleDateFormat("dd-MM-yyyy").format(endDate);
 		    		}

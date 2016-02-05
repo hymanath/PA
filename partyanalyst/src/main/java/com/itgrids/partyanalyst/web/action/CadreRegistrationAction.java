@@ -2050,4 +2050,123 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		
 	}
 	
+	public String saveAffliatedCadreDetails(){
+		try {
+			LOG.info("Entered into saveAffliatedCadreDetails method in CadreRegistrationAction Action");
+			if(cadreRegistrationVO != null)
+			{
+				session = request.getSession();
+				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+				if(user == null)
+				{
+					inputStream = new StringBufferInputStream("notlogged");
+					return Action.SUCCESS;
+				}
+				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
+					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
+					  cadreRegistrationVO.setPanchayatId(cadreRegistrationVO.getPanchayatId().substring(1));
+					}else if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("2")){
+						cadreRegistrationVO.setMuncipalityId(cadreRegistrationVO.getPanchayatId().substring(1));
+						cadreRegistrationVO.setPanchayatId(null);
+					}else{
+						cadreRegistrationVO.setPanchayatId(null);
+					}
+				}
+				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0){
+					cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+				}
+				
+				//PARTY MEMBER SINCE
+				/*if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
+				cadreRegistrationVO.setPartyMemberSinceStr(cadreRegistrationVO.getPartyMemberSinceStr());*/
+				
+				if(relativeTypeChecked != null){
+					cadreRegistrationVO.setRelative(true);
+					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
+					if(relativeVoterCardNo != null && relativeVoterCardNo.trim().length() > 0){
+						cadreRegistrationVO.setRelativeVoterId(relativeVoterCardNo);
+						List<Long> ids = cadreRegistrationService.getVoterIdByVoterCard(relativeVoterCardNo.trim());
+						if(ids.size() > 0 && ids.get(0)!= null){
+							cadreRegistrationVO.setFamilyVoterId(ids.get(0));
+						}
+					}
+					
+				}
+				if(cadreUploadImgCadreType != null){
+					cadreRegistrationVO.setPhotoType("cadre");
+				}else if(cadreUploadImgVoterType != null){
+					cadreRegistrationVO.setPhotoType("voter");
+				}else{
+					cadreRegistrationVO.setPhotoType("new");
+				}
+				
+				//PREVIOUS ROLES
+				/*List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
+				if(rolesVOList != null && rolesVOList.size() > 0)
+				{
+					List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
+					for (CadrePreviousRollesVO cadrePreviousRollesVO : rolesVOList) 
+					{
+						CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
+						
+						if(cadrePreviousRollesVO!=null){
+							//if(cadrePreviousRollesVO.getFromDateStr() != null && cadrePreviousRollesVO.getFromDateStr().trim().length() > 0)
+							rolesVO.setFromDateStr(cadrePreviousRollesVO.getFromDateStr());
+							//if(cadrePreviousRollesVO.getToDateStr() != null && cadrePreviousRollesVO.getToDateStr().trim().length() > 0)
+							rolesVO.setToDateStr(cadrePreviousRollesVO.getToDateStr());
+							rolesVO.setCadreCommitteeId(cadrePreviousRollesVO.getCadreCommitteeId());
+							rolesVO.setCadreCommitteeLevelId(cadrePreviousRollesVO.getCadreCommitteeLevelId());
+							rolesVO.setCadreRoleId(cadrePreviousRollesVO.getCadreRoleId());
+							rolesList.add(rolesVO);
+							
+							cadreRegistrationVO.setPreviousRollesList(rolesList);
+						}
+					}
+					
+				}*/
+				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
+				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
+				
+				if(cadreRegistrationVO.getPerAddrsMandalId() != null && cadreRegistrationVO.getPerAddrsMandalId() > 0l){
+					if(cadreRegistrationVO.getPerAddrsMandalId().toString().substring(0,1).equalsIgnoreCase("4")){//mandal
+						cadreRegistrationVO.setPerAddrsMandalId(Long.parseLong(cadreRegistrationVO.getPerAddrsMandalId().toString().substring(1)));
+					}
+					else if(cadreRegistrationVO.getPerAddrsMandalId().toString().substring(0,1).equalsIgnoreCase("5")){//local election body
+						cadreRegistrationVO.setPerAddrsLebId(Long.parseLong(cadreRegistrationVO.getPerAddrsMandalId().toString().substring(1)));
+						cadreRegistrationVO.setPerAddrsMandalId(null);
+					}
+					else if(cadreRegistrationVO.getPerAddrsMandalId().toString().substring(0,1).equalsIgnoreCase("6")){//divison
+						cadreRegistrationVO.setPerAddrsDivionId(Long.parseLong(cadreRegistrationVO.getPerAddrsMandalId().toString().substring(1)));
+						cadreRegistrationVO.setPerAddrsMandalId(null);
+					}
+				}
+				
+				if(cadreRegistrationVO.getPerAddrsVillId() != null && cadreRegistrationVO.getPerAddrsVillId() > 0l){
+					if(cadreRegistrationVO.getPerAddrsVillId().toString().substring(0, 1).equalsIgnoreCase("7")){//village
+						cadreRegistrationVO.setPerAddrsVillId(Long.parseLong(cadreRegistrationVO.getPerAddrsVillId().toString().substring(1)));
+					}
+					else if(cadreRegistrationVO.getPerAddrsVillId().toString().substring(0, 1).equalsIgnoreCase("8")){//ward
+						cadreRegistrationVO.setPerAddrsWardId(Long.parseLong(cadreRegistrationVO.getPerAddrsVillId().toString().substring(1)));
+						cadreRegistrationVO.setPerAddrsVillId(null);
+					}
+				}
+				
+				cadreRegistrationVOList.add(cadreRegistrationVO);
+				surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"WEB");
+				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
+					LOG.debug("fileuploades is sucess Method");
+					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
+						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +"," +surveyCadreResponceVO.getMembershipNo()  +",");
+					}
+				}
+				else
+					inputStream = new StringBufferInputStream("fail");
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
