@@ -719,7 +719,7 @@ public class RtcUnionService implements IRtcUnionService{
 					 RtcUnionVO vo = new RtcUnionVO();
 					 
 					 vo.setId(rtcZone[0] !=null ? (Long)rtcZone[0]:0l);
-					 vo.setName(rtcZone[1] !=null ? rtcZone[0].toString():"");		
+					 vo.setName(rtcZone[1] !=null ? rtcZone[1].toString():"");		
 					 
 					 vo.setZoneId(rtcZone[2] !=null ? (Long)rtcZone[2]:0l);
 					 vo.setZoneName(rtcZone[3] !=null ? rtcZone[3].toString():"");
