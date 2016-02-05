@@ -3727,7 +3727,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  {
 		  CadreOverviewVO returnVO = null;
 		  try {
-			  returnVO = cadreDetailsService.getVoterDetailsByVoterIdCardNum(inputVO.getVoterCardNo());
+			  returnVO = cadreDetailsService.getVoterDetailsByVoterIdCardNum(inputVO.getVoterCardNo(),inputVO.getFamilyVoterCardNum());
 		} catch (Exception e) {
 			 log.debug("Entered into the getVoterDetailsByVoterIdCardNum  method in WebServiceHandlerService");
 		}
@@ -3748,7 +3748,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		   {
 			   vo.setMobileNum(params.getMobileNo() != null ? params.getMobileNo() : null);
 			   vo.setUname(params.getUserName() != null ? params.getUserName() : null);
-			   vo.setPwd(params.getPassWord() != null ? params.getPassWord() : null);
+			  // vo.setPwd(params.getPassWord() != null ? params.getPassWord() : null);
 			   vo.setUnionTabUserId(params.getUnionTabUserId() != null ? params.getUnionTabUserId() : null);
 			   vo.setName(params.getName() != null ? params.getName() : null);
 			   

@@ -60,5 +60,5 @@ public interface ICadreDetailsService {
 	 
 	public IVRResponseVO getIVRSummaryByTdpCadreId(Long tdpCadreId);
 	public List<IVRResponseVO> getTotalIVRDetailsByTdpCadreId(Long tdpCadreId,int startIndex,int maxIndex);
-	public CadreOverviewVO getVoterDetailsByVoterIdCardNum(String voterCardNo);
+	public CadreOverviewVO getVoterDetailsByVoterIdCardNum(String voterCardNo,String familyVoterCardNo);
 }
