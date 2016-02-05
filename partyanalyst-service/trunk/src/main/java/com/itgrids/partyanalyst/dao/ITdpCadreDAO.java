@@ -386,5 +386,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getTdpCadreCountsForDivisions(List<Long> divisionIds);
 	  public List<Object[]> getDivisionWiseCadresCount(List<Long> divisionIds);
 	  public List<Object[]> getTdpCadreBoothsForDivision(Long wardId);
-	  ;
+	  public List<Object[]> getAffliatedCadreCountDetails(String type,Date today);
+	  public List<Object[]> getRtcUnionZoneWiseDetails(String searchType,Date date);
+	  public List<Object[]> getRtcUnionAllLocationDetails(String searchType,Date date);
 }

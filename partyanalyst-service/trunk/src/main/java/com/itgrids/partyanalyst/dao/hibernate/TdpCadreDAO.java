@@ -5648,4 +5648,81 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("enrollMentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 			return query.list();
 		}
+		
+		public List<Object[]> getAffliatedCadreCountDetails(String type,Date date){
+			
+			StringBuilder str = new StringBuilder();			
+			str.append(" select model.dataSourceType,count(model.tdpCadreId) from TdpCadre model" +
+					" where model.isDeleted ='N' and model.tdpMemberTypeId = 2 ");			
+			if(type !=null && type.equalsIgnoreCase("toDay")){
+				str.append(" and date(model.updatedTime) = :date ");
+			}			
+			str.append(" group by model.dataSourceType  ");	
+			
+			Query query = getSession().createQuery(str.toString());		
+			
+			if(type !=null && type.equalsIgnoreCase("toDay")){
+				query.setParameter("date",date);
+			}
+			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getRtcUnionZoneWiseDetails(String searchType,Date date){
+			/*select tcl.rtc_zone_id,tc.data_source_type,count(tc.tdp_cadre_id) from tdp_cadre tc,tdp_cadre_location tcl
+			where tc.tdp_cadre_location_id = tcl.tdp_cadre_location_id
+			and tc.tdp_member_type_id=2
+			and tc.is_deleted='N'
+			group by tcl.rtc_zone_id,tc.data_source_type;
+			*/
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.tdpCadreLocation.rtcZone.rtcZoneId,model.tdpCadreLocation.rtcZone.zoneName," +
+					" model.dataSourceType,count(model.tdp_cadre_id) " +
+					" from TdpCadre model" +
+					" where model.tdpMemberTypeId = 2" +
+					"  and model.isDeleted ='N' ");
+			
+			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+				str.append(" and date(model.updatedTime) = :date ");
+			}	
+			
+			str.append(" group by model.tdpCadreLocation.rtcZone.rtcZoneId,model.dataSourceType " +
+					" order by model.tdpCadreLocation.rtcZone.zoneName ");
+			
+			Query query = getSession().createQuery(str.toString());	
+			
+			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+				query.setParameter("date",date);
+			}
+			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getRtcUnionAllLocationDetails(String searchType,Date date){
+			
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.tdpCadreLocation.rtcRegion.rtcRegionId,model.tdpCadreLocation.rtcRegion.regionName," +
+					" model.dataSourceType,count(model.tdp_cadre_id) " +
+					" from TdpCadre model" +
+					" where model.tdpMemberTypeId = 2" +
+					"  and model.isDeleted ='N' ");			
+			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+				str.append(" and date(model.updatedTime) = :date ");
+			}			
+			str.append(" group by model.tdpCadreLocation.rtcRegion.rtcRegionId,model.dataSourceType " +
+					" order by model.tdpCadreLocation.rtcRegion.regionName ");			
+			Query query = getSession().createQuery(str.toString());				
+			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+				query.setParameter("date",date);
+			}			
+			return query.list();
+			
+		}
+		
+		
+		
 }

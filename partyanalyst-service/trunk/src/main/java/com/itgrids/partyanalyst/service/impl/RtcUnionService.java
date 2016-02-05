@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRtcDepotDAO;
 import com.itgrids.partyanalyst.dao.IRtcRegionDAO;
 import com.itgrids.partyanalyst.dao.IRtcZoneDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IUnionTypeDesignationDAO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.model.RtcZone;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRtcUnionService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class RtcUnionService implements IRtcUnionService{
 
@@ -31,8 +33,15 @@ public class RtcUnionService implements IRtcUnionService{
 	 private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	 private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	 private IRegionServiceData regionServiceDataImp;
+	 private ITdpCadreDAO tdpCadreDAO;
 	 
-	 public void setDistrictDAO(IDistrictDAO districtDAO) {
+	 
+	 
+	 public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	 }
      
@@ -311,12 +320,47 @@ public class RtcUnionService implements IRtcUnionService{
 		
 		try{
 			
-			fnlVo.setTotalCount(0l);
-			fnlVo.setTabCount(0l);
-			fnlVo.setWebCount(0l);
-			fnlVo.setTodayTotalcCount(0l);
-			fnlVo.setTodayTabCount(0l);
-			fnlVo.setTodayWebCount(0l);
+			DateUtilService date = new DateUtilService();
+						
+			List<Object[]> overAllDetails = tdpCadreDAO.getAffliatedCadreCountDetails(null, null);
+			
+			List<Object[]> todayDetails =  tdpCadreDAO.getAffliatedCadreCountDetails("toDay", date.getCurrentDateAndTime());
+			
+			if(overAllDetails !=null && overAllDetails.size()>0){				
+				Long totalAffliated = 0l;
+				
+				for (Object[] objects : todayDetails) {	
+					
+					if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("WEB")){
+						fnlVo.setWebCount(objects[0] !=null ? (Long)objects[0]:0l);
+					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("TAB")){
+						fnlVo.setTabCount(objects[0] !=null ? (Long)objects[0]:0l);
+					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("ONLINE")){
+						fnlVo.setOnlineCount(objects[0] !=null ? (Long)objects[0]:0l);
+					}					
+					totalAffliated = totalAffliated +(objects[0] !=null ? (Long)objects[0]:0l) ;
+				}
+				
+				fnlVo.setTotalCount(totalAffliated);				
+			}
+			
+			if(todayDetails !=null && todayDetails.size()>0){				
+				Long totalAffliated = 0l;
+				
+				for (Object[] objects : todayDetails) {	
+					
+					if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("WEB")){
+						fnlVo.setTodayWebCount(objects[0] !=null ? (Long)objects[0]:0l);
+					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("TAB")){
+						fnlVo.setTodayTabCount(objects[0] !=null ? (Long)objects[0]:0l);
+					}else if(objects[1] !=null && objects[1].toString().equalsIgnoreCase("ONLINE")){
+						fnlVo.setTodayOnlineCount(objects[0] !=null ? (Long)objects[0]:0l);
+					}					
+					totalAffliated = totalAffliated +Long.parseLong(objects[0] !=null ? objects[0].toString():"");
+				}
+				
+				fnlVo.setTodayTotalcCount(totalAffliated);				
+			}
 			
 		}catch (Exception e) {
 			LOG.error("Exception riased at getRtcUnionBasicDetails in RtcUnionService Service class", e);
@@ -328,7 +372,8 @@ public class RtcUnionService implements IRtcUnionService{
 		
 		RtcUnionVO fnlVo = new RtcUnionVO();
 		
-		try{
+		try{			
+			DateUtilService date = new DateUtilService();
 			
 			List<Object[]> rtcZoneObjectList = rtcZoneDAO.getRtcZoneDetails();						
 			List<RtcUnionVO> rtcZoneList = new ArrayList<RtcUnionVO>(0);	
@@ -336,6 +381,16 @@ public class RtcUnionService implements IRtcUnionService{
 			//Default Details Assigning
 			if(rtcZoneObjectList !=null && rtcZoneObjectList.size()>0){
 				settingDefaultValuesToUnionVo(rtcZoneObjectList,rtcZoneList);
+			}
+			List<Object[]> overallList = tdpCadreDAO.getRtcUnionZoneWiseDetails(null, null);
+			
+			List<Object[]> todaylList = tdpCadreDAO.getRtcUnionZoneWiseDetails("today", date.getCurrentDateAndTime());
+			
+			if(overallList !=null && overallList.size()>0){
+				settingZoneDetailsIntoList(overallList,rtcZoneList,null);				
+			}
+			if(todaylList !=null && todaylList.size()>0){
+				settingZoneDetailsIntoList(todaylList,rtcZoneList,"today");
 			}
 			
 			if(rtcZoneList !=null && rtcZoneList.size()>0){
@@ -348,6 +403,68 @@ public class RtcUnionService implements IRtcUnionService{
 		return fnlVo;
 	}
 	
+	
+	public void settingZoneDetailsIntoList(List<Object[]> overallList,List<RtcUnionVO> rtcZoneList,String serachType){
+		try{
+			
+			if(overallList !=null){
+					
+			for(RtcUnionVO rtc : rtcZoneList){
+				
+					//zone wise total counts
+					Long totalCount=0l;
+					Long toDayTotalCount=0l;
+					
+					for(Object[] objectList : overallList){					
+						Long zoneId = objectList[0] !=null ? (Long)objectList[0]:0l;
+						
+						if(rtc.getId() == zoneId){							
+							if(objectList[2] !=null && objectList[2].toString().equalsIgnoreCase("WEB")){
+								
+								if(serachType !=null && serachType.equalsIgnoreCase("today")){
+									rtc.setTodayWebCount(objectList[3] !=null ? (Long)objectList[3]:0l);
+								}else{
+									rtc.setWebCount(objectList[3] !=null ? (Long)objectList[3]:0l);
+								}
+								
+							}else if(objectList[2] !=null && objectList[2].toString().equalsIgnoreCase("TAB")){
+								
+								if(serachType !=null && serachType.equalsIgnoreCase("today")){
+									rtc.setTodayTabCount(objectList[3] !=null ? (Long)objectList[3]:0l);
+								}else{
+									rtc.setTabCount(objectList[3] !=null ? (Long)objectList[3]:0l);
+								}
+								
+							}else if(objectList[2] !=null && objectList[2].toString().equalsIgnoreCase("ONLINE")){								
+								if(serachType !=null && serachType.equalsIgnoreCase("today")){
+									rtc.setTodayOnlineCount(objectList[3] !=null ? (Long)objectList[3]:0l);
+								}else{
+									rtc.setOnlineCount(objectList[3] !=null ? (Long)objectList[3]:0l);
+								}								
+							}							
+						}
+						
+						if(serachType !=null && serachType.equalsIgnoreCase("today")){					
+							toDayTotalCount = toDayTotalCount + Long.parseLong(objectList[3] !=null ? objectList[3].toString():"");						
+						}
+						else{
+							totalCount = totalCount + Long.parseLong(objectList[3] !=null ? objectList[3].toString():"");
+						}
+						
+					}					
+					rtc.setTodayTotalcCount(toDayTotalCount);
+					rtc.setTotalCount(totalCount);					
+				}
+				
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at settingZoneDetailsIntoList in RtcUnionService Service class", e);
+		}
+	}
+	
+	
 	public void settingDefaultValuesToUnionVo(List<Object[]> objectList,List<RtcUnionVO> resultList){
 		try{			
 			if(objectList != null && objectList.size() > 0){
@@ -359,10 +476,12 @@ public class RtcUnionService implements IRtcUnionService{
 					 vo.setTotalCount(0l);
 					 vo.setTabCount(0l);
 					 vo.setWebCount(0l);
+					 vo.setOnlineCount(0l);
 					 
 					 vo.setTodayTotalcCount(0l);
 					 vo.setTodayTabCount(0l);
 					 vo.setTodayWebCount(0l);
+					 vo.setTodayOnlineCount(0l);
 					 
 					 resultList.add(vo);
 				}
@@ -404,16 +523,25 @@ public class RtcUnionService implements IRtcUnionService{
 		return fnlVo;
 	}
 	public RtcUnionVO getRtcUnionAllLocationDetails(){
-		RtcUnionVO fnlVo = new RtcUnionVO();
-		
-		try{						
-			List<RtcUnionVO> resultList = new ArrayList<RtcUnionVO>(0);
+		RtcUnionVO fnlVo = new RtcUnionVO();		
+		try{							
+			DateUtilService dateUtil = new DateUtilService();
 			
+			List<RtcUnionVO> resultList = new ArrayList<RtcUnionVO>(0);			
 			List<Object[]> regionDaoDetails =  rtcRegionDAO.getAllRegionsWithZone();
 			
 			//Default Details Assigning
 			if(regionDaoDetails != null && regionDaoDetails.size() > 0){				
 				settingDefaultValuesToAllLocationDetails(regionDaoDetails,resultList);					
+			}					
+			List<Object[]> overAllResult = tdpCadreDAO.getRtcUnionAllLocationDetails(null,null);			
+			List<Object[]> toDayResult = tdpCadreDAO.getRtcUnionAllLocationDetails("toDay",dateUtil.getCurrentDateAndTime());
+			
+			if(overAllResult !=null && overAllResult.size()>0){
+				settingZoneDetailsIntoList(overAllResult,resultList,null);
+			}			
+			if(toDayResult !=null && toDayResult.size()>0){
+				settingZoneDetailsIntoList(toDayResult,resultList,"today");
 			}
 			
 			if(resultList !=null && resultList.size()>0){
@@ -443,16 +571,16 @@ public class RtcUnionService implements IRtcUnionService{
 					 vo.setTotalCount(0l);
 					 vo.setWebCount(0l);
 					 vo.setTabCount(0l);
+					 vo.setOnlineCount(0l);
 					 
 					 vo.setTodayTotalcCount(0l);
 					 vo.setTodayTabCount(0l);
 					 vo.setTodayWebCount(0l);
+					 vo.setTodayOnlineCount(0l);
 					 
 					 resultList.add(vo);
 				}
 			 }
-			
-			
 		}catch (Exception e) {
 			LOG.error("Exception riased at settingDefaultValuesToRegionsList in RtcUnionService Service class", e);
 		}
