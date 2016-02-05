@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IRtcUnionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -65,6 +66,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private List<IdNameVO>						idNameVoList;
 	private RtcUnionVO 							rtcUnionVO;
 	private List<RtcUnionVO> 				    rtcUnionVOList;
+	private VoterAddressVO voterAddressVO;
 	
 	public List<RtcUnionVO> getRtcUnionVOList() {
 		return rtcUnionVOList;
@@ -235,6 +237,13 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
 		this.idNameVoList = idNameVoList;
+	}
+	
+	public VoterAddressVO getVoterAddressVO() {
+		return voterAddressVO;
+	}
+	public void setVoterAddressVO(VoterAddressVO voterAddressVO) {
+		this.voterAddressVO = voterAddressVO;
 	}
 	public String execute(){
 		return Action.SUCCESS;
@@ -547,5 +556,14 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getVoterAddressDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			voterAddressVO=rtcUnionService.getVoterAddressDetails(jObj.getLong("candidateId"),jObj.getString("searchType"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVoterAddressDetails()",e);
+		}
+		return Action.SUCCESS;
+	}
 }
