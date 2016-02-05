@@ -723,4 +723,45 @@ public class WebServiceHandler2 {
 			return "{\"status\":\"Failure\"}";
 		}
 	}*/
+	
+	@POST
+	@Path("/saveFieldDataForAffliatedCadre")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object saveFieldDataForAffliatedCadre (List<CadreRegistrationVO> inputs){
+		String isCheckReq = webServiceHandlerService1.getDynamicValueOfAKey();
+		try{
+		  if(inputs != null && inputs.size() > 0){
+			if(isCheckReq != null && isCheckReq.trim().equalsIgnoreCase("ON")){
+				boolean status = webServiceHandlerService1.checkHasAccess(inputs.get(0).getCreatedUserId());
+				if(!status){
+					return "{\"status\":\"Failure\"}";
+				}
+			}
+		  }
+		}catch(Exception e){
+			LOG.error("Exception rised in tab record sync ",e);
+		}
+		LOG.error("returnd user:");
+		LOG.debug("inside save field data for cadre");
+		LOG.debug(inputs.toString());
+		SurveyCadreResponceVO out=null;
+		Map<String,String> userDetails= new HashMap<String, String>();
+		userDetails.put("","");
+		try{ 
+			out=(SurveyCadreResponceVO) webServiceHandlerService1.saveSurveyFieldUsersForAffliatedCadre(inputs);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		if(out != null && out.getStatus() != null){
+			if(!out.getStatus().equalsIgnoreCase("Success"))
+				return "{\"status\":\"Failure\"}";
+			
+			 else return "{\"status\":\"Success\"}";
+		}else{
+			return "{\"status\":\"Failure\"}";
+		}
+	}
 }
