@@ -2987,7 +2987,6 @@
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
-		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
 </beans>		
 	
