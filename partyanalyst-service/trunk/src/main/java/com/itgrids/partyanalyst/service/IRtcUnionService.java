@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 
 public interface IRtcUnionService {
