@@ -812,6 +812,10 @@
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
 	
+	<bean id="trainingCampCadreGoalDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreGoalDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="partyMeetingUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUserDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

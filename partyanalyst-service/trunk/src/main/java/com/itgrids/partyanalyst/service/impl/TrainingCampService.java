@@ -5603,7 +5603,8 @@ class TrainingCampService implements ITrainingCampService{
                     if(goalCount==0){ //save
 						
 					}else{//update=delete+save
-						trainingCampCadreGoalDAO.deleteGoalsforACadre(tdpCadreId,batchId);
+						 List<Long> ids = trainingCampCadreGoalDAO.trainingCampCadreGoalIds(tdpCadreId,batchId);
+						trainingCampCadreGoalDAO.deleteGoalsforACadre(ids);
 					}
                     if( goalsList!=null && goalsList.size()>0){
                     	cadreDetailsVO.setGoals(true);

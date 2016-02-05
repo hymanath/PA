@@ -11,4 +11,6 @@ public interface ITrainingCampCadreGoalDAO extends GenericDao<TrainingCampCadreG
 	public List<Object[]> getGoalsDetailsforCadre(Long tdpCadreId,Long batchId);
 	public Long checkGoalsForCadreBycadreAndBatch(Long tdpCadreId,Long batchId);
 	public int deleteGoalsforACadre(Long tdpCadreId,Long batchId);
+	public List<Long> trainingCampCadreGoalIds(Long tdpCadreId,Long batchId);
+	public int deleteGoalsforACadre(List<Long> ids);
 }
