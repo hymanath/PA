@@ -10528,7 +10528,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		}
 		
 		try {
-			LOG.info("Entered into saveCadreRegistration in CadreRegistrationService service");
+			LOG.info("Entered into saveAfflicatedCadreRegistration in CadreRegistrationService service");
 			
 			
 			
@@ -10718,7 +10718,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			}
 			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
 			surveyCadreResponceVO.setStatus("EXCEPTION");
-			LOG.error("Exception raised in saveCadreRegistration in CadreRegistrationService service", e);
+			LOG.error("Exception raised in saveAfflicatedCadreRegistration in CadreRegistrationService service", e);
 		}
 		
 		return surveyCadreResponceVO;
