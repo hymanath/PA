@@ -109,6 +109,26 @@ public class CadreRegistrationVO implements Serializable{
 	private String faceboohUrl;	
 	private AddressVO addressVO;
 	
+	private String		cadreRegType;
+	private Long		cadreRegTypeId;
+	private Long		designationId;
+	private Long		zoneId;
+	private Long		regionId;
+	private Long		depotId;
+	private String		idCardNo;
+	private String		streetName;
+	private String		landMark;
+	private Long		perAddrsStateId;
+	private Long		perAddrsDistId;
+	private Long		perAddrsConstId;
+	private Long		perAddrsMandalId;
+	private Long		perAddrsLebId;
+	private Long		perAddrsDivionId;
+	private Long		perAddrsVillId;
+	private Long		perAddrsWardId;
+	private String 		employeeId;
+	
+	
 	
 	public String getFaceboohUrl() {
 		return faceboohUrl;
@@ -609,5 +629,116 @@ public class CadreRegistrationVO implements Serializable{
 	public void setAddressVO(AddressVO addressVO) {
 		this.addressVO = addressVO;
 	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public Long getZoneId() {
+		return zoneId;
+	}
+	public void setZoneId(Long zoneId) {
+		this.zoneId = zoneId;
+	}
+	public Long getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
+	}
+	public Long getDepotId() {
+		return depotId;
+	}
+	public void setDepotId(Long depotId) {
+		this.depotId = depotId;
+	}
+	public String getIdCardNo() {
+		return idCardNo;
+	}
+	public void setIdCardNo(String idCardNo) {
+		this.idCardNo = idCardNo;
+	}
+	public String getStreetName() {
+		return streetName;
+	}
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+	public String getLandMark() {
+		return landMark;
+	}
+	public void setLandMark(String landMark) {
+		this.landMark = landMark;
+	}
+	public Long getPerAddrsStateId() {
+		return perAddrsStateId;
+	}
+	public void setPerAddrsStateId(Long perAddrsStateId) {
+		this.perAddrsStateId = perAddrsStateId;
+	}
+	public Long getPerAddrsDistId() {
+		return perAddrsDistId;
+	}
+	public void setPerAddrsDistId(Long perAddrsDistId) {
+		this.perAddrsDistId = perAddrsDistId;
+	}
+	public Long getPerAddrsConstId() {
+		return perAddrsConstId;
+	}
+	public void setPerAddrsConstId(Long perAddrsConstId) {
+		this.perAddrsConstId = perAddrsConstId;
+	}
+	public Long getPerAddrsMandalId() {
+		return perAddrsMandalId;
+	}
+	public void setPerAddrsMandalId(Long perAddrsMandalId) {
+		this.perAddrsMandalId = perAddrsMandalId;
+	}
+	public Long getPerAddrsLebId() {
+		return perAddrsLebId;
+	}
+	public void setPerAddrsLebId(Long perAddrsLebId) {
+		this.perAddrsLebId = perAddrsLebId;
+	}
+	public Long getPerAddrsDivionId() {
+		return perAddrsDivionId;
+	}
+	public void setPerAddrsDivionId(Long perAddrsDivionId) {
+		this.perAddrsDivionId = perAddrsDivionId;
+	}
+	public Long getPerAddrsVillId() {
+		return perAddrsVillId;
+	}
+	public void setPerAddrsVillId(Long perAddrsVillId) {
+		this.perAddrsVillId = perAddrsVillId;
+	}
+	public Long getPerAddrsWardId() {
+		return perAddrsWardId;
+	}
+	public void setPerAddrsWardId(Long perAddrsWardId) {
+		this.perAddrsWardId = perAddrsWardId;
+	}
+	public String getCadreRegType() {
+		return cadreRegType;
+	}
+	public void setCadreRegType(String cadreRegType) {
+		this.cadreRegType = cadreRegType;
+	}
+	public Long getCadreRegTypeId() {
+		return cadreRegTypeId;
+	}
+	public void setCadreRegTypeId(Long cadreRegTypeId) {
+		this.cadreRegTypeId = cadreRegTypeId;
+	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+	
+	
+	
 	
 }
