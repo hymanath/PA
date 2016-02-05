@@ -475,7 +475,7 @@
 					};
 
 				YAHOO.util.Connect.setForm('uploadCadreForm',true);
-				YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
+				YAHOO.util.Connect.asyncRequest('POST','rtcUnionRegistrationPage.action',uploadHandler);
 		}		
 	}
 	
@@ -1534,14 +1534,14 @@
 											<div class="span6">
 											  <div class=" m_top20" >
 												   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;"></span>  </h5>
-												   <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District "  />	
+												   <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.perAddrsDistId" />	
 												  
 											   </div>
 											</div>
 											<div class="span6">
 												 <div class=" m_top20" >
 													   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
-													   <select id="constituencyId"> 
+													   <select id="constituencyId" name="cadreRegistrationVO.perAddrsConstId"> 
 														 <option value="0">Select Constituency</option>
 													   </select>
 												</div>
@@ -1554,7 +1554,7 @@
 											<div class="span6">
 												<div class="m_top20">
 												   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
-													  <select id="manTowDivId"> 
+													  <select id="manTowDivId" name="cadreRegistrationVO.perAddrsMandalId"> 
 														  <option value="0">Select Mandal/Town/Division</option>
 													   </select>
 												</div>
@@ -1562,7 +1562,7 @@
 											<div class="span6">
 												   <div class="m_top20">
 													   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;"></span>  </h5>
-														  <select id="villWardId"> 
+														  <select id="villWardId" name="cadreRegistrationVO.perAddrsVillId"> 
 															  <option value="0">Select Village/Ward</option>
 														   </select>
 												   </div>
@@ -1607,6 +1607,35 @@
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
 							</div>-->
+							
+							<div class="span7" >
+								<h5 class="text-align1">Employee Id</h5>
+								<input type="text" id="emplyeeId" style="width: 138px;"placeholder="Employee Id" name="cadreRegistrationVO.employeeId"/>
+							</div>
+							<div class="span7" >
+								<h5 class="text-align1">DESIGNATION</h5>
+								<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
+									<option value="0">Select Designation</option>
+								</select>
+							</div>
+							<div class="span6" style="margin-left:0px;" >
+								<h5 class="text-align1">ZONE</h5>
+								<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+									<option value="0">Select Zone</option>
+								</select>
+							</div>
+							<div class="span6" style="margin-left:0px;" >
+								<h5 class="text-align1">REGION</h5>
+								<select id="regionSelectId" name="cadreRegistrationVO.regionId" "class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+									<option value="0">Select Region</option>
+								</select>
+							</div>
+							<div class="span6" style="margin-left:0px;" >
+								<h5 class="text-align1">DEPOT</h5>
+								<select id="depotSelectId" name="cadreRegistrationVO.depotId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+									<option value="0">Select Depot</option>
+								</select>
+							</div>
 						
 					</div>
 				</div>
@@ -3336,6 +3365,105 @@ $(document).ready(function(){
 				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 			}  
 		   }
+		});
+	}
+	
+	getAllRTCZones();
+	function getAllRTCZones(){
+		var jsObj={};
+		
+		$.ajax({
+			type:"POST",
+			url:"getAllRTCZonesAction.action",
+			dataType: 'json',
+			data:{task:JSON.stringify(jsObj)}	
+		}).done(function(result) {
+			var str='';
+			str+='<option value="0">Select Zone</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+			}
+			$("#zoneSelectId").html(str);
+		});
+	}
+
+	$(document).on("change","#zoneSelectId",function(){
+		var jsObj={
+			zoneId : $("#zoneSelectId").val()
+		};
+		
+		if($("#zoneSelectId").val()==0){
+			$("#regionSelectId").html("<option value='0'>Select Region</option>");
+			$("#depotSelectId").html("<option value='0'>Select Depot</option>");
+		}
+		else if($("#zoneSelectId").val()>0){
+			$.ajax({
+				type:"POST",
+				url:"getRegionsOfZoneAction.action",
+				dataType: 'json',
+				data:{task:JSON.stringify(jsObj)}	
+			}).done(function(result){
+				var str='';
+				str+='<option value="0">Select Region</option>';
+				if(result != null && result.length > 0){
+					for(var i in result){
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					}
+				}
+				$("#regionSelectId").html(str);
+			});
+		}
+		
+		
+	});
+
+	$(document).on("change","#regionSelectId",function(){
+		var jsObj={
+			regionId : $("#regionSelectId").val()
+		};
+		
+		if($("#regionSelectId").val()==0){
+			$("#depotSelectId").html("<option value='0'>Select Depot</option>");
+		}else if($("#regionSelectId").val()>0){
+			$.ajax({
+				type:"POST",
+				url:"getDepotsOfRegionAction.action",
+				dataType: 'json',
+				data:{task:JSON.stringify(jsObj)}	
+			}).done(function(result) {
+				var str='';
+				str+='<option value="0">Select Depot</option>';
+				if(result != null && result.length > 0){
+					for(var i in result){
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					}
+				}
+				$("#depotSelectId").html(str);
+			});
+		}
+	});
+	getDesignationsOfUnionType();
+	function getDesignationsOfUnionType(){
+		var jObj={
+			unionTypeId : 1
+		};
+		
+		$.ajax({
+			type:"POST",
+			url:"getDesignationsOfUnionTypeAction.action",
+			dataType: 'json',
+			data:{task:JSON.stringify(jObj)}	
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Designation</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+			}
+			$("#designationSelectId").html(str);
 		});
 	}
 	
