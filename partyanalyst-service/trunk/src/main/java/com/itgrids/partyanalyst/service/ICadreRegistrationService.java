@@ -177,4 +177,6 @@ public interface ICadreRegistrationService {
 	public ResultStatus updateMobileNumberForCadre(Long tdpCadreId,String mobileNo,Long userId);
 	public String sendSMS(String mobileNo,String message);
 	
+	public SurveyCadreResponceVO saveAfflicatedCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final String registrationType);
+	
 }
