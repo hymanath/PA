@@ -5686,7 +5686,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.tdpCadreLocation.rtcZone.rtcZoneId,model.tdpCadreLocation.rtcZone.zoneName," +
-					" model.dataSourceType,count(model.tdp_cadre_id) " +
+					" model.dataSourceType,count(model.tdpCadreId) " +
 					" from TdpCadre model" +
 					" where model.tdpMemberTypeId = 2" +
 					"  and model.isDeleted ='N' ");
@@ -5713,7 +5713,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.tdpCadreLocation.rtcRegion.rtcRegionId,model.tdpCadreLocation.rtcRegion.regionName," +
-					" model.dataSourceType,count(model.tdp_cadre_id) " +
+					" model.dataSourceType,count(model.tdpCadreId) " +
 					" from TdpCadre model" +
 					" where model.tdpMemberTypeId = 2" +
 					"  and model.isDeleted ='N' ");			
