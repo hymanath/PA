@@ -2983,6 +2983,7 @@
 		<property name="rtcRegionDAO" ref="rtcRegionDAO" />
 		<property name="rtcDepotDAO" ref="rtcDepotDAO" />
 		<property name="unionTypeDesignationDAO" ref="unionTypeDesignationDAO" />
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
 </beans>		
 	

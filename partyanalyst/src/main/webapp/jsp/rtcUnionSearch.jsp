@@ -115,7 +115,7 @@
 			<div class="span12 header-bg text-center">
 				<div class="row-fluid">
 				  <div class="span4 offset4 ">
-						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
+						<img src="images/cadre_images/2016-affliated-Registration-Logo.png">
 				  </div>
 				  <div class="span4">
 					<span>
@@ -159,10 +159,10 @@
 						<div class="row form-inline text-center">
 									<label class="radio"><input type="radio" value="voter"  name="searchTypeRadio" checked="true" class="icheckBtns"> VOTER</label>
 										&nbsp;&nbsp;&nbsp;&nbsp;
-									<label class="radio"><input type="radio" value="cadre"  name="searchTypeRadio"  class="icheckBtns"> CADRE</label>
+									<label class="radio"><input type="radio" value="cadre"  name="searchTypeRadio"  class="icheckBtns">AFFILIATED CADRE</label>
 								
 									&nbsp;&nbsp;&nbsp;&nbsp;
-									<label class="checkbox"><input type="checkbox" value="2014Cadre" id="isNewCadre"  name="searchTypecheckbox"  class="icheckBtns"> 2014 CADRE </label>
+									<label class="checkbox"><input type="checkbox" value="2014Cadre" id="isNewCadre"  name="searchTypecheckbox"  class="icheckBtns"> 2016 AFFILIATED </label>
 						</div>
 					</div>
 					
