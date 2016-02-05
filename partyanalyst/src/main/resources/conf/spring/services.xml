@@ -2439,7 +2439,7 @@
 		<property name="cadreCardNumberUpdationDAO" ref="cadreCardNumberUpdationDAO" />	
 		<property name="cardPrintUserDAO" ref="cardPrintUserDAO" />	
 		<property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
-		
+		<property name="tdpCadreLocationDAO" ref="tdpCadreLocationDAO" />
 	 </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
