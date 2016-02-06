@@ -37,5 +37,10 @@ public class RtcDepotDAO extends GenericDaoHibernate<RtcDepot, Long> implements 
 		return (Object[])query.uniqueResult();
 	}
 	
-	
+	public List<Object[]> getAllDepots(){
+		Query query = getSession().createQuery(" select model.rtcDepotId,model.depotName " +
+				" from RtcDepot model " );
+		
+		return query.list();
+	}
 }
