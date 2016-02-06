@@ -2441,6 +2441,7 @@
 		<property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
 		<property name="tdpCadreLocationDAO" ref="tdpCadreLocationDAO" />
 		<property name="rtcUnionService" ref="rtcUnionService" />
+		<property name="rtcDepotDAO" ref="rtcDepotDAO" />
 	 </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
