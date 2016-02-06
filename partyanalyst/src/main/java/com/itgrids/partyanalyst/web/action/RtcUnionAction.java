@@ -610,5 +610,15 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	public String getTodayTabAndWebUsersCount(){
+		try{
+			
+			rtcUnionVO = rtcUnionService.getTodayTabAndWebUsersCount();
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getTodayTabAndWebUsersCount()",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
