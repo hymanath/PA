@@ -57,6 +57,16 @@ public class VoterInfoVO implements java.io.Serializable
 	private Long count;
 	private String emailId;
 	
+	private String employeeId;
+	private Long zoneId;
+	private Long regionId;
+	private Long depotId;
+	private Long designationId; 
+	private List<IdNameVO> regionsList;
+	private List<IdNameVO> depotsList;
+	private String street;
+	private String landmark;
+	
 	
 	public String getEmailId() {
 		return emailId;
@@ -347,6 +357,60 @@ public class VoterInfoVO implements java.io.Serializable
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+	public Long getZoneId() {
+		return zoneId;
+	}
+	public void setZoneId(Long zoneId) {
+		this.zoneId = zoneId;
+	}
+	public Long getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
+	}
+	public Long getDepotId() {
+		return depotId;
+	}
+	public void setDepotId(Long depotId) {
+		this.depotId = depotId;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public List<IdNameVO> getRegionsList() {
+		return regionsList;
+	}
+	public void setRegionsList(List<IdNameVO> regionsList) {
+		this.regionsList = regionsList;
+	}
+	public List<IdNameVO> getDepotsList() {
+		return depotsList;
+	}
+	public void setDepotsList(List<IdNameVO> depotsList) {
+		this.depotsList = depotsList;
+	}
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getLandmark() {
+		return landmark;
+	}
+	public void setLandmark(String landmark) {
+		this.landmark = landmark;
 	}
 	
 	
