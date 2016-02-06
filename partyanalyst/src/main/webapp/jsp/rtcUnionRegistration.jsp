@@ -1507,14 +1507,14 @@
 											
 											<div class="span6" >
 											   <h5 class="text-align1">ROAD/STREET</h5>
-											   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" name=""   value=""></input>
+											   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" name="cadreRegistrationVO.street"   value="${voterInfoVOList[0].street}"></input>
 											</div>
 											
 										</div>
 								 </div>
 									<div class="span12" >
 										<h5 class="text-align1">LANDMARK</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" name=""   value=""></input>
+											<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" name="cadreRegistrationVO.landMark"   value="${voterInfoVOList[0].landmark}"></input>
 									</div>
 								
 								
@@ -1610,32 +1610,46 @@
 							
 							<div class="span7" >
 								<h5 class="text-align1">Employee Id</h5>
-								<input type="text" id="emplyeeId" style="width: 138px;"placeholder="Employee Id" name="cadreRegistrationVO.employeeId"/>
+								<input type="text" id="emplyeeId" style="width: 138px;"placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value="${voterInfoVOList[0].employeeId}"/>
 							</div>
 							<div class="span7" >
 								<h5 class="text-align1">DESIGNATION</h5>
-								<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
+								<!--<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
 									<option value="0">Select Designation</option>
-								</select>
+								</select>-->
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="designationSelectId" list="designationList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
 							</div>
-							<div class="span6" style="margin-left:0px;" >
-								<h5 class="text-align1">ZONE</h5>
-								<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Zone</option>
-								</select>
-							</div>
-							<div class="span6" style="margin-left:0px;" >
-								<h5 class="text-align1">REGION</h5>
-								<select id="regionSelectId" name="cadreRegistrationVO.regionId" "class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Region</option>
-								</select>
-							</div>
-							<div class="span6" style="margin-left:0px;" >
-								<h5 class="text-align1">DEPOT</h5>
-								<select id="depotSelectId" name="cadreRegistrationVO.depotId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-									<option value="0">Select Depot</option>
-								</select>
-							</div>
+							<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
+								<div class="span6" style="margin-left:0px;" >
+									<h5 class="text-align1">ZONE</h5>
+									<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+										<option value="0">Select Zone</option>
+									</select>
+								</div>
+								<div class="span6" style="margin-left:0px;" >
+									<h5 class="text-align1">REGION</h5>
+									<select id="regionSelectId" name="cadreRegistrationVO.regionId" "class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+										<option value="0">Select Region</option>
+									</select>
+								</div>
+								<div class="span6" style="margin-left:0px;" >
+									<h5 class="text-align1">DEPOT</h5>
+									<select id="depotSelectId" name="cadreRegistrationVO.depotId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+										<option value="0">Select Depot</option>
+									</select>
+								</div>
+							</s:if>
+							<s:else>
+							
+							
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " style="width:260px;" name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
+								
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="regionSelectId" list="voterInfoVOList[0].regionsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Region " style="width:260px;" name="cadreRegistrationVO.regionId" value="%{voterInfoVOList[0].regionId}"/>
+								
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="depotSelectId" list="voterInfoVOList[0].depotsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Depot " style="width:260px;" name="cadreRegistrationVO.depotId" value="%{voterInfoVOList[0].depotId}"/>
+								
+								
+							</s:else>
 						
 					</div>
 				</div>
@@ -3442,7 +3456,7 @@ $(document).ready(function(){
 		}
 		
 	}
-	getAllRTCZones();
+	//getAllRTCZones();
 	function getAllRTCZones(){
 		var jsObj={};
 		
@@ -3518,7 +3532,7 @@ $(document).ready(function(){
 			});
 		}
 	});
-	getDesignationsOfUnionType();
+	//getDesignationsOfUnionType();
 	function getDesignationsOfUnionType(){
 		var jObj={
 			unionTypeId : 1
