@@ -11474,5 +11474,11 @@
 	    </result>
 	</action>
 	
+	<action name="getTodayTabAndWebUsersCountAction" class="rtcUnionAction" method="getTodayTabAndWebUsersCount">
+		<result type="json" name="success">
+	    	<param name="root">rtcUnionVO</param>
+	    </result>
+	</action>
+	
 </package>
 </struts>      
