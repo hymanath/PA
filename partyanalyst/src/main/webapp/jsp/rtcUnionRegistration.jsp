@@ -67,7 +67,9 @@
     <script>$('#fadeInLeft').addClass('animated fadeInLeft');</script>
     <script>$('#fadeInRight').addClass('animated fadeInRight');</script>
     <script>$('#fadeInUp').addClass('animated fadeInUp');</script>
-    <script>$('#fadeInUp1').addClass('animated fadeInUp');</script>
+    <script>$('#fadeInUp1').addClass('animated fadeInUp');
+			
+	</script>
 
 
 	<style>
@@ -499,6 +501,15 @@
 		var emailId = $.trim($("#emailId").val());
 		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 		
+		var district = $('#districtId').val();
+		var constituency = $('#constituencyId').val();
+		var mandalId = $('#manTowDivId').val();
+		var villageId = $('#villWardId').val();
+		var designation = $('#designationSelectId').val();
+		var zoneSelId = $('#zoneSelectId').val();
+		var regionSelId = $('#regionSelectId').val();
+		var depotSelId = $('#depotSelectId').val();
+		
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
@@ -579,6 +590,46 @@
 			$('#nameErr').html(' Candidate Name is required.');
 		}		
 		
+		if(district == 0)
+		{
+			isErrorStr = " error";
+			$('#districtIdErr').html(' District is required.');
+		}
+		if(constituency == 0)
+		{
+			isErrorStr = " error";
+			$('#constituencyIdErr').html(' Constituency is required.');
+		}
+		if(mandalId == 0)
+		{
+			isErrorStr = " error";
+			$('#manTowDivIdErr').html(' Man/Town/Div is required.');
+		}
+		if(villageId == 0)
+		{
+			isErrorStr = " error";
+			$('#villWardIdErr').html(' Village/Ward is required.');
+		}
+		if(designation == 0)
+		{
+			isErrorStr = " error";
+			$('#designationErr').html(' Designation is required.');
+		}
+		if(zoneSelId == 0)
+		{
+			isErrorStr = " error";
+			$('#zoneErr').html(' Zone is required.');
+		}
+		if(regionSelId == 0)
+		{
+			isErrorStr = " error";
+			$('#regionErr').html(' Region is required.');
+		}
+		if(depotSelId == 0)
+		{
+			isErrorStr = " error";
+			$('#depotErr').html(' Depot is required.');
+		}
 		/*if(NAadharNo != null && NAadharNo.trim().length == 0)
 		{
 			isErrorStr = " error";
@@ -1533,7 +1584,7 @@
 											
 											<div class="span6">
 											  <div class=" m_top20" >
-												   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;"></span>  </h5>
+												   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
 												   <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.perAddrsDistId" />	
 												  
 											   </div>
@@ -1561,7 +1612,7 @@
 											</div>
 											<div class="span6">
 												   <div class="m_top20">
-													   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;"></span>  </h5>
+													   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
 														  <select id="villWardId" name="cadreRegistrationVO.perAddrsVillId"> 
 															  <option value="0">Select Village/Ward</option>
 														   </select>
@@ -1613,27 +1664,27 @@
 								<input type="text" id="emplyeeId" style="width: 138px;"placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value="${voterInfoVOList[0].employeeId}"/>
 							</div>
 							<div class="span7" >
-								<h5 class="text-align1">DESIGNATION</h5>
+								<h5 class="text-align1">DESIGNATION <span class="mandatory">*</span> <span id="designationErr" style="color:red;font-size:12px;margin-left: 100px;"></span></h5>
 								<!--<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
 									<option value="0">Select Designation</option>
 								</select>-->
 								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="designationSelectId" list="designationList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
 							</div>
 							<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
-								<div class="span6" style="margin-left:0px;" >
-									<h5 class="text-align1">ZONE</h5>
+								<div class="span7">
+									<h5 class="text-align1">ZONE <span class="mandatory">*</span> <span id="zoneErr" style="color:red;font-size:12px;"></span></h5>
 									<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
 										<option value="0">Select Zone</option>
 									</select>
 								</div>
-								<div class="span6" style="margin-left:0px;" >
-									<h5 class="text-align1">REGION</h5>
+								<div class="span7" >
+									<h5 class="text-align1">REGION <span class="mandatory">*</span> <span id="regionErr" style="color:red;font-size:12px;"></span></h5>
 									<select id="regionSelectId" name="cadreRegistrationVO.regionId" "class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
 										<option value="0">Select Region</option>
 									</select>
 								</div>
-								<div class="span6" style="margin-left:0px;" >
-									<h5 class="text-align1">DEPOT</h5>
+								<div class="span7">
+									<h5 class="text-align1">DEPOT <span class="mandatory">*</span> <span id="depotErr" style="color:red;font-size:12px;"></span></h5>
 									<select id="depotSelectId" name="cadreRegistrationVO.depotId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
 										<option value="0">Select Depot</option>
 									</select>
@@ -1641,13 +1692,18 @@
 							</s:if>
 							<s:else>
 							
-							
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " style="width:260px;" name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
-								
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="regionSelectId" list="voterInfoVOList[0].regionsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Region " style="width:260px;" name="cadreRegistrationVO.regionId" value="%{voterInfoVOList[0].regionId}"/>
-								
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="depotSelectId" list="voterInfoVOList[0].depotsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Depot " style="width:260px;" name="cadreRegistrationVO.depotId" value="%{voterInfoVOList[0].depotId}"/>
-								
+								<div class="span7" >
+									<h5 class="text-align1">ZONE <span class="mandatory">*</span> <span id="zoneErr" style="color:red;font-size:12px;"></span></h5>
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " style="width:100%;" name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
+								</div>
+								<div class="span7">
+									<h5 class="text-align1">REGION <span class="mandatory">*</span> <span id="regionErr" style="color:red;font-size:12px;"></span></h5>
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="regionSelectId" list="voterInfoVOList[0].regionsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Region " style="width:100%;" name="cadreRegistrationVO.regionId" value="%{voterInfoVOList[0].regionId}"/>
+								</div>
+								<div class="span7">
+									<h5 class="text-align1">DEPOT <span class="mandatory">*</span> <span id="depotErr" style="color:red;font-size:12px;"></span></h5>
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="depotSelectId" list="voterInfoVOList[0].depotsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Depot " style="width:100%;" name="cadreRegistrationVO.depotId" value="%{voterInfoVOList[0].depotId}"/>
+								</div>
 								
 							</s:else>
 						
@@ -3554,6 +3610,7 @@ $(document).ready(function(){
 			$("#designationSelectId").html(str);
 		});
 	}
-	
+	var getHeig = $("#fadeInRight").height()+20;
+	$('#fadeInLeft').css("height",getHeig)
 </script>
 </html>
