@@ -127,6 +127,7 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		perAddrsVillId;
 	private Long		perAddrsWardId;
 	private String 		employeeId;
+	private String		userMode;
 	private Long		prsntAddrsStateId;
 	private Long		prsntAddrsDistId;
 	private Long		prsntAddrsConstId;
@@ -137,6 +138,12 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		prsntAddrsWardId;
 	
 	
+	public String getUserMode() {
+		return userMode;
+	}
+	public void setUserMode(String userMode) {
+		this.userMode = userMode;
+	}
 	public String getFaceboohUrl() {
 		return faceboohUrl;
 	}

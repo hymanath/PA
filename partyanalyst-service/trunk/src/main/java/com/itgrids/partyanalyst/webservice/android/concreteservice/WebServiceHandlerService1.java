@@ -1331,22 +1331,26 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			{
 				LOG.error(inputResponse.toString());
 				
-				LOG.error("Voter Name  " + "-" + inputResponse.getVoterName() + "-" +"Date Of Birth "+  "-" + inputResponse.getDob() +"-"+ "Gender " +inputResponse.getGender()+  "-" +"Relative Name"+ inputResponse.getRelativeName() +"-" +"VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" + "H.NO" + inputResponse.getHouseNo() + "-" +"Party Member Since" +inputResponse.getPartyMemberSince()  + "-" + "Blood Group " + inputResponse.getBloodGroupId() + "-" + "Street/hamle" +inputResponse.getStreet() +"-" +"Caste" + inputResponse.getCasteId() + "-" + "Mobile No" + inputResponse.getMobileNumber() + "-" + "Education" +inputResponse.getEducationId() + "-" + "Occupation " +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber());
-				if(inputResponse.getPreviousParicaptedElectionsList() != null && inputResponse.getPreviousParicaptedElectionsList().size() > 0)
-				{
-					for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousParicaptedElectionsList())
-					{
-						LOG.error("Designation Level" +electionVO.getDesignationLevelId() + "-" +  "Designation Level Value" + electionVO.getDesignationLevelValue() + "-" + "From Date" + electionVO.getFromDate() + "-" + "To Date" + electionVO.getToDate()  );
-					}
-				}
-				if(inputResponse.getPreviousRollesList() != null && inputResponse.getPreviousRollesList().size() > 0)
-				{
-					for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousRollesList())
-					{
-						LOG.error("Election Id" +electionVO.getElectionTypeId() + "-" +  "Constituency Id" + electionVO.getConstituencyId() );
-					}
-				}
-				
+				LOG.error("Voter Name  " + "-" + inputResponse.getVoterName() + "-" 
+				+ "Date Of Birth "+  "-" + inputResponse.getDob() +"-"
+				+ "Gender " +inputResponse.getGender()+  "-" 
+				+ "Relative Name"+ inputResponse.getRelativeName() +"-" 
+				+ "VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" 
+				+ "H.NO" + inputResponse.getHouseNo() + "-" 
+				//+ "Party Member Since" +inputResponse.getPartyMemberSince()  + "-" 
+				+ "Blood Group " + inputResponse.getBloodGroupId() + "-" 
+				+ "Street/hamle" +inputResponse.getStreet() +"-" 
+				+ "Caste" + inputResponse.getCasteId() + "-" 
+				+ "Mobile No" + inputResponse.getMobileNumber() + "-" 
+				+ "Education" +inputResponse.getEducationId() + "-" 
+				+ "Designation" + inputResponse.getDesignationId() + "-"
+				+ "UserMode" + inputResponse.getUserMode() + "-"
+				+ "Depot Id" + inputResponse.getDepotId() + "-"
+				+ "Region Id" + inputResponse.getRegionId() + "-"
+				+ "Zone Id" + inputResponse.getZoneId() + "-"
+				//+ "Occupation " +inputResponse.getOccupationId() + "-" 
+				//+ "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber()
+				);
 			}
 				surveyCadreResponceVO=cadreRegistrationService.saveAfflicatedCadreRegistration(inputResponseList,"TAB");	
 		}
