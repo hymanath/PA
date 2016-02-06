@@ -2440,6 +2440,7 @@
 		<property name="cardPrintUserDAO" ref="cardPrintUserDAO" />	
 		<property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
 		<property name="tdpCadreLocationDAO" ref="tdpCadreLocationDAO" />
+		<property name="rtcUnionService" ref="rtcUnionService" />
 	 </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
@@ -2987,6 +2988,7 @@
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
+		
 	</bean>
 </beans>		
 	
