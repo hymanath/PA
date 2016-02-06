@@ -819,7 +819,7 @@ public interface IConstants {
     public static final Long KPM_AGE3_MAX = 120L;
     
     public static final Long CADRE_ENROLLMENT_NUMBER = 2014l;
-    public static final Long RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER = 2014l;
+    public static final Long RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER = 2016l;
     public static final Long CTP_CASTE_INSERT_TYPE = 5l;
     public static final String DATE_AND_TIME_FORMAT_24HRS = "yyyy-MM-dd HH:mm:ss";
     
