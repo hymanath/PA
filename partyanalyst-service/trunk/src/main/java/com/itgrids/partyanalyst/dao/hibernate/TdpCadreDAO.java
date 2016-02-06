@@ -5823,15 +5823,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			
-			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
-			{
-				str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, TC.houseNo, UA.userAddressId,TC.voterId,TC.relativeType ");
-			}
-			else
-			{
-				str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, UA.houseNo, UA.userAddressId,TC.voterId,TC.relativeType ");
-			}
-
+			
+			str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, TC.houseNo, UA.userAddressId,TC.voterId,TC.relativeType ");
 			str.append(" ,TC.image from TdpCadre TC, UserAddress UA where "+queryStr+" TC.userAddress.constituency.constituencyId = :constituencyId ");
 			
 			if(panchayatId.longValue() != 0L)
@@ -5848,13 +5841,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				str.append(" and TC.userAddress.booth.boothId = :boothId ");
 			}
 			
-			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))//2016
 			{
-				str.append(" and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
+				str.append(" and TC.tdpMemberTypeId=:tdpMemberTypeId and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
 			}
 			else
 			{
-				str.append(" and TC.enrollmentYear not in (:cadreEnrollmentYear)  ");
+				str.append(" and  TC.tdpMemberTypeId=:tdpMemberTypeId ");
 			}
 			
 			str.append(" and TC.userAddress.userAddressId = UA.userAddressId  and TC.isDeleted = 'N'  order by TC.houseNo ");
@@ -5862,7 +5855,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			Query query = getSession().createQuery(str.toString()); 
 			
 			query.setParameter("constituencyId", constituencyId);
-			
+			query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
 
 			if(panchayatId.longValue() != 0L)
 			{
@@ -5948,6 +5941,19 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("cadreEnrollmentYear", IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
 			
 			return (Long)query.uniqueResult();
+		}
+		
+		public List<Long> getVoterDetailsByVoterIdsAndRTCAffliatedCadre(List<Long> voterIdList)
+		{
+			Query query = getSession().createQuery("select distinct model.voterId  from TdpCadre model " +
+					" where model.voterId in (:voterIdList) and model.isDeleted = 'N' and model.tdpMemberTypeId=:tdpMemberTypeId " +
+					" and model.enrollmentYear in (:enrollmentYear)  ");
+			
+			query.setParameterList("voterIdList", voterIdList);
+			query.setParameter("enrollmentYear",  IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
+			query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
+			
+			return query.list();
 		}
 		
 		public Long getTodayTabAndWebUsersCount(String type){

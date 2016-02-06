@@ -10810,7 +10810,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				
 				if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0") && voterIds.size()>0)
 				{
-					List<Long> tdpCadreVoterIds = tdpCadreDAO.getVoterDetailsByVoterIds(voterIds);
+					List<Long> tdpCadreVoterIds = tdpCadreDAO.getVoterDetailsByVoterIdsAndRTCAffliatedCadre(voterIds);
 					
 					if(tdpCadreVoterIds != null && tdpCadreVoterIds.size()>0)
 					{
