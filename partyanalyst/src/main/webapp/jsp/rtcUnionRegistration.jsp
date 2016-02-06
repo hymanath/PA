@@ -1663,8 +1663,8 @@
 								<h5 class="text-align1">Employee Id</h5>
 								<input type="text" id="emplyeeId" style="width: 138px;"placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value="${voterInfoVOList[0].employeeId}"/>
 							</div>
-							<div class="span7" >
-								<h5 class="text-align1">DESIGNATION <span class="mandatory">*</span> <span id="designationErr" style="color:red;font-size:12px;margin-left: 100px;"></span></h5>
+							<div class="span8" >
+								<h5 class="text-align1">DESIGNATION <span class="mandatory">*</span> <span id="designationErr" style="color:red;font-size:12px;"></span></h5>
 								<!--<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
 									<option value="0">Select Designation</option>
 								</select>-->
