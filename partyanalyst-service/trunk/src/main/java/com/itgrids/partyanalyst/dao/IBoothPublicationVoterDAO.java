@@ -690,6 +690,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getBoothWiseTotalVotersByConstituencyId(Long constituencyId);
 
 	  public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
+	  public List getVotersDetailsForCadreRegistratiobByconstituencIdRTC(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
 	  
 	  public List<Object[]> getCTPVoterDetailsByBooth(Long boothId);
 	  
@@ -701,6 +702,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<String> getPartNo(Long constituencyId,Long voterId);
 	  public List<Object[]> getLocationWiseVoterAgeRangeCount(List<Long> locationIdsList,String locationType,Long publicationDateId);
 	  public Long getVotersDetailsForCadreRegistratiobByconstituencIdCount(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered);
+	  public Long getVotersDetailsForCadreRegistratiobByconstituencIdCountRTC(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered);
 	  
 	  public List<Long> getVoterIdsInABoothOfGivenHouseNos(Long constituencyId,Long publicationDateId,String partNo,List<String> houseNos);
 	  public List<Object[]> getFamilyWiseVotersInABooth(Long constituencyId,Long publicationDateId,String partNo);
