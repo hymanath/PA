@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RtcUnionVO;
@@ -21,4 +22,5 @@ public interface IRtcUnionService {
 	public RtcUnionVO getRtcUnionZoneWiseDetails();
 	public RtcUnionVO getRtcUnionLocationWiseDetails(String type,Long typeId);
 	public RtcUnionVO getRtcUnionAllLocationDetails();
+	public List<CadreVo> getAffiliatedCadreDetails(String type,String searchType,Long locationId);
 }
