@@ -67,6 +67,8 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private RtcUnionVO 							rtcUnionVO;
 	private List<RtcUnionVO> 				    rtcUnionVOList;
 	private VoterAddressVO voterAddressVO;
+	private List<IdNameVO> 						designationList;
+	private List<IdNameVO> 						zonesList;
 	
 	public List<RtcUnionVO> getRtcUnionVOList() {
 		return rtcUnionVOList;
@@ -245,6 +247,20 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	public void setVoterAddressVO(VoterAddressVO voterAddressVO) {
 		this.voterAddressVO = voterAddressVO;
 	}
+	
+	public List<IdNameVO> getDesignationList() {
+		return designationList;
+	}
+	public void setDesignationList(List<IdNameVO> designationList) {
+		this.designationList = designationList;
+	}
+	public List<IdNameVO> getZonesList() {
+		return zonesList;
+	}
+	public void setZonesList(List<IdNameVO> zonesList) {
+		this.zonesList = zonesList;
+	}
+	
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -337,6 +353,8 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			//{
 				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);  
 				genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
+				designationList = rtcUnionService.getDesignationsOfUnionType(1l);
+				zonesList = rtcUnionService.getAllRTCZones();
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
