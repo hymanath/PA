@@ -5950,4 +5950,26 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long)query.uniqueResult();
 		}
 		
+		public Long getTodayTabAndWebUsersCount(String type){
+			
+			StringBuilder str = new StringBuilder();
+			
+			if(type !=null && type.equalsIgnoreCase("TAB")){
+				str.append(" select count(distinct model.createdBy) from TdpCadre model ");
+			}
+			else if(type !=null && type.equalsIgnoreCase("WEB")){
+				str.append(" select count(distinct model.insertedWebUserId) from TdpCadre model ");
+			}			
+			str.append(" where model.isDeleted ='N'" +
+					" and model.tdpMemberTypeId = 2 ");			
+			str.append(" and date(model.updatedTime) = :date ");			
+			str.append(" and model.dataSourceType = :type ");	
+			
+			Query query = getSession().createQuery(str.toString()); 			
+			query.setParameter("date", new DateUtilService().getCurrentDateAndTime());
+			query.setParameter("type", type);
+			
+			return (Long) query.uniqueResult();
+		}
+		
 }

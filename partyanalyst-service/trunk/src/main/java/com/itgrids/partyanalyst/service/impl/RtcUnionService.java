@@ -736,7 +736,8 @@ public class RtcUnionService implements IRtcUnionService{
 			if(type !=null && type.equalsIgnoreCase("region")){
 				rtcDaoList = rtcRegionDAO.getRegionsOfZone(typeId);
 			}else if(type !=null && type.equalsIgnoreCase("depot")){
-				rtcDaoList = rtcDepotDAO.getDepotsOfAllRegions(regionsList);
+				//rtcDaoList = rtcDepotDAO.getDepotsOfAllRegions(regionsList);
+				rtcDaoList = rtcDepotDAO.getAllDepots();
 			}
 			
 			//Default Details Assigning
@@ -860,5 +861,24 @@ public class RtcUnionService implements IRtcUnionService{
 		return fnlList;
 	}
 	
+	public RtcUnionVO getTodayTabAndWebUsersCount(){
+		RtcUnionVO rtcUnionVO = new RtcUnionVO();
+		try{
+			
+			Long webCount = tdpCadreDAO.getTodayTabAndWebUsersCount("WEB");
+			Long tabCount =  tdpCadreDAO.getTodayTabAndWebUsersCount("TAB");
+			if(webCount !=null){
+				rtcUnionVO.setWebCount(webCount);
+			}
+			if(tabCount !=null){
+				rtcUnionVO.setTabCount(tabCount);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception riased at getTodayTabAndWebUsersCount in RtcUnionService Service class", e);
+		}
+		return rtcUnionVO;
+	}
 	
 }

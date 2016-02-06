@@ -23,4 +23,5 @@ public interface IRtcUnionService {
 	public RtcUnionVO getRtcUnionLocationWiseDetails(String type,Long typeId);
 	public RtcUnionVO getRtcUnionAllLocationDetails();
 	public List<CadreVo> getAffiliatedCadreDetails(String type,String searchType,Long locationId);
+	public RtcUnionVO getTodayTabAndWebUsersCount();
 }

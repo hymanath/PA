@@ -10,4 +10,5 @@ public interface IRtcDepotDAO extends GenericDao<RtcDepot, Long>{
 	public List<Object[]> getDepotsOfRegion(Long regionId);
 	public List<Object[]> getDepotsOfAllRegions(List<Long> regionIds);
 	public Object[] getRegionAndZoneByDepotId(Long depotId);
+	public List<Object[]> getAllDepots();
 }
