@@ -1673,9 +1673,10 @@
 							<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
 								<div class="span7">
 									<h5 class="text-align1">ZONE <span class="mandatory">*</span> <span id="zoneErr" style="color:red;font-size:12px;"></span></h5>
-									<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+									<!--<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
 										<option value="0">Select Zone</option>
-									</select>
+									</select>-->
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " style="width:260px;" name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
 								</div>
 								<div class="span7" >
 									<h5 class="text-align1">REGION <span class="mandatory">*</span> <span id="regionErr" style="color:red;font-size:12px;"></span></h5>
