@@ -2169,4 +2169,44 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String searchVoterAndCadreInfoBySearchCriteriaRTC()
+	{
+		LOG.info("Entered into searchVoterAndCadreInfoBySearchCriteriaRTC method in CadreRegistrationAction Action");
+	
+		try {
+			/*	
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+			{
+				voterInfoVOList = null;			
+				return ERROR;
+			}*/
+			
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			String searchType = jobj.getString("searchType");
+			String candidateName = jobj.getString("candidateName");
+			String houseNo = jobj.getString("houseNo");
+			String voterCardNo = jobj.getString("voterCardNo");
+			Long panchayatId = jobj.getLong("panchayatId");
+			Long boothId = jobj.getLong("boothId");
+			String isPresentCadre = jobj.getString("isPresentCadre");
+			Integer startIndex = null;
+			Integer maxIndex = null;
+			try{
+			 startIndex = jobj.getInt("startIndex");
+			 maxIndex = jobj.getInt("maxIndex");
+			}catch(Exception e){
+				
+			}
+			
+			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistrationRTC(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,isPresentCadre,startIndex,maxIndex);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in searchVoterAndCadreInfoBySearchCriteriaRTC method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
