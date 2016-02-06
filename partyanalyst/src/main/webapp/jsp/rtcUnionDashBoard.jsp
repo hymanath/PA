@@ -102,10 +102,10 @@
 					<div class="block">
 						<div class="pad_10">
 							<label class="radio-inline">
-								<input type="radio">All
+								<input type="radio" class="zoneClass" checked="true" name="zoneRdi" value="All">All
 							</label>
 							<label class="radio-inline">
-								<input type="radio">Today
+								<input type="radio" class="zoneClass" name="zoneRdi" value="Today">Today
 							</label>
 							<span class="pull-right">
 								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
@@ -117,14 +117,17 @@
 							<span class="themeColor font-12">Started - 02</span>
 							<span class="themeColor font-12">Not Started - 02</span>
 						</div>
-						<table class="table tableCustom">
+						<div id="zoneWiseTotalDetailsDiv" style="display:none;"></div>
+						<div id="zoneWiseTodayDetailsDiv" style="display:none;"></div>
+						<!--<table class="table tableCustom">
 							<thead class="bg_ee">
 								<th>Zone Name</th>
 								<th>Total</th>
 								<th>Web</th>
 								<th>Tab</th>
 							</thead>
-							<tr>
+							<tbody id="tableZoneWiseRegistrationZoneId"></tbody>
+							<!--<tr>
 								<td>NELLORE</td>
 								<td>100</td>
 								<td>40</td>
@@ -148,17 +151,17 @@
 								<td>40</td>
 								<td>60</td>
 							</tr>
-						</table>
+						</table>-->
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="block">
 						<div class="pad_10">
 							<label class="radio-inline">
-								<input type="radio">All
+								<input type="radio" class="regionClass" checked="true" name="regionRdi" value="All">All
 							</label>
 							<label class="radio-inline">
-								<input type="radio">Today
+								<input type="radio" class="regionClass" name="regionRdi" value="All">Today
 							</label>
 							<span class="pull-right">
 								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
@@ -170,7 +173,9 @@
 							<span class="themeColor font-12">Started - 02</span>
 							<span class="themeColor font-12">Not Started - 02</span>
 						</div>
-						<table class="table tableCustom">
+						<div id="regionWiseTotalDetailsDiv" style="display:none;"></div>
+						<div id="regionWiseTodayDetailsDiv" style="display:none;"></div>
+						<!--<table class="table tableCustom">
 							<thead class="bg_ee">
 								<th>Region Name</th>
 								<th>Total</th>
@@ -201,7 +206,7 @@
 								<td>40</td>
 								<td>60</td>
 							</tr>
-						</table>
+						</table>-->
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -481,7 +486,7 @@ $(".Dattable").dataTable({
 
 getRtcUnionRegisteredBasicDetails();
 getRtcUnionAllLocationDetails();
-getRtcUnionZoneWiseDetails();
+getRtcUnionZoneWiseTotalDetails();
 function getRtcUnionRegisteredBasicDetails(){
 	$("#dataLoadingsImgForOverAllDetails").show();
 	var jObj={
@@ -503,33 +508,149 @@ function getRtcUnionRegisteredBasicDetails(){
 		}
 	});
 }
-function getRtcUnionZoneWiseDetails(){
-	$("#dataLoadingsImgForRegionalWiseDetails").show();
-	var jObj={
-		task : "zoneDetails"
-	};
-	$.ajax({
-		type:"POST",
-		url:"getRtcUnionRegisteredBasicDetailsAction.action",
-		dataType: 'json',
-		data:{task:JSON.stringify(jObj)}	
-	}).done(function(result) {
-		
-	});
-	
+
+function getRtcUnionZoneWiseTotalDetails(){
+	$("#zoneWiseTotalDetailsDiv").html("");
+	$("#zoneWiseTotalDetailsDiv").show();
+	$("#zoneWiseTodayDetailsDiv").hide();
+  var jObj={
+    task : "zoneDetails"
+  };
+  $.ajax({
+    type:"POST",
+    url:"getRtcUnionRegisteredBasicDetailsAction.action",
+    dataType: 'json',
+    data:{task:JSON.stringify(jObj)}  
+  }).done(function(result) {
+    if(result != null){
+      var str='';
+      str+='<table class="table tableCustom">';
+        str+='<thead class="bg_ee">';
+          str+='<th>Zone Name</th>';
+          str+='<th>Total</th>';
+          str+='<th>Web</th>';
+          str+='<th>Tab</th>';
+        str+='</thead>';
+      if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
+        for(var i in result.rtcUnionVoList1){
+          str+='<tr>';
+            str+='<td>'+result.rtcUnionVoList1[i].name+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].totalCount+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].webCount+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].tabCount+'</td>';
+          str+='</tr>';
+        }
+      }
+      str+='</table>';
+      $("#zoneWiseTotalDetailsDiv").html(str);
+    }
+  });
+}
+function getRtcUnionZoneWiseTodayDetails(){
+	$("#zoneWiseTodayDetailsDiv").html("");
+	$("#zoneWiseTotalDetailsDiv").hide();
+	$("#zoneWiseTodayDetailsDiv").show();
+  var jObj={
+    task : "zoneDetails"
+  };
+  $.ajax({
+    type:"POST",
+    url:"getRtcUnionRegisteredBasicDetailsAction.action",
+    dataType: 'json',
+    data:{task:JSON.stringify(jObj)}  
+  }).done(function(result) {
+    if(result != null){
+      var str='';
+      str+='<table class="table tableCustom">';
+        str+='<thead class="bg_ee">';
+          str+='<th>Zone Name</th>';
+          str+='<th>Total</th>';
+          str+='<th>Web</th>';
+          str+='<th>Tab</th>';
+        str+='</thead>';
+      if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
+        for(var i in result.rtcUnionVoList1){
+          str+='<tr>';
+            str+='<td>'+result.rtcUnionVoList1[i].name+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].todayTotalCount+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].todayWebCount+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].todayTabCount+'</td>';
+          str+='</tr>';
+        }
+      }
+      str+='</table>';
+      $("#zoneWiseTodayDetailsDiv").html(str);
+    }
+  });
 }
 function getRtcUnionAllLocationDetails(){
-	$("#dataLoadingsImgForZoneWiseDetails").show();
-	$.ajax({
-		type:"POST",
-		url:"getRtcUnionAllLocationDetailsAction.action",
-		dataType: 'json',
-		data:{}	
-	}).done(function(result) {
-		
-	});
+	$("#regionWiseTotalDetailsDiv").html("");
+	$("#regionWiseTodayDetailsDiv").hide();
+	$("#regionWiseTotalDetailsDiv").show();
+  $.ajax({
+    type:"POST",
+    url:"getRtcUnionAllLocationDetailsAction.action",
+    dataType: 'json',
+    data:{}  
+  }).done(function(result) {
+    if(result != null){
+      var str='';
+      str+='<table class="table tableCustom">';
+        str+='<thead class="bg_ee">';
+          str+='<th>Region Name</th>';
+          str+='<th>Total</th>';
+          str+='<th>Web</th>';
+          str+='<th>Tab</th>';
+        str+='</thead>';
+      if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
+        for(var i in result.rtcUnionVoList1){
+          str+='<tr>';
+            str+='<td>'+result.rtcUnionVoList1[i].name+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].totalCount+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].webCount+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].tabCount+'</td>';
+          str+='</tr>';
+        }
+      }
+      str+='</table>';
+      $("#regionWiseTotalDetailsDiv").html(str);
+    }
+  });
 }
-
+function getRtcUnionTodayLocationDetails(){
+	$("#regionWiseTodayDetailsDiv").html("");
+	$("#regionWiseTotalDetailsDiv").hide();
+	$("#regionWiseTodayDetailsDiv").show();
+  $.ajax({
+    type:"POST",
+    url:"getRtcUnionAllLocationDetailsAction.action",
+    dataType: 'json',
+    data:{}  
+  }).done(function(result) {
+    if(result != null){
+      var str='';
+      str+='<table class="table tableCustom">';
+        str+='<thead class="bg_ee">';
+          str+='<th>Region Name</th>';
+          str+='<th>Total</th>';
+          str+='<th>Web</th>';
+          str+='<th>Tab</th>';
+        str+='</thead>';
+      if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
+        for(var i in result.rtcUnionVoList1){
+          str+='<tr>';
+            str+='<td>'+result.rtcUnionVoList1[i].name+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].todayTotalCount+'</td>';
+            str+='<td>'+result.rtcUnionVoList1[i].todayWebCount+'</td>';
+			str+='<td>'+result.rtcUnionVoList1[i].todayTabCount+'</td>';
+          str+='</tr>';
+        }
+      }
+      str+='</table>';
+      $("#regionWiseTodayDetailsDiv").html(str);
+    }
+  });
+}
 function getRtcUnionLocationWiseDetails(){
 	var jObj={
 		task:"depot",
@@ -560,8 +681,20 @@ function getAffiliatedCadreDetails(){
 		
 	});
 }
-
-
+$(document).on("click",".zoneClass",function() {
+  var value = $(this).val();
+  if(value == "All")
+    getRtcUnionZoneWiseTotalDetails();
+  else
+    getRtcUnionZoneWiseTodayDetails();
+});
+$(document).on("click",".regionClass",function() {
+  var value = $(this).val();
+  if(value == "All")
+    getRtcUnionAllLocationDetails();
+  else
+    getRtcUnionTodayLocationDetails();
+});
 </script>
 </body>
 </html>
