@@ -11468,5 +11468,11 @@
 	    </result>
 	</action>
 	
+	<action name="getAffiliatedCadreDetailsAction" class="rtcUnionAction" method="getAffiliatedCadreDetails">
+		<result type="json" name="success">
+	    	<param name="root">cadrevoList</param>
+	    </result>
+	</action>
+	
 </package>
 </struts>      

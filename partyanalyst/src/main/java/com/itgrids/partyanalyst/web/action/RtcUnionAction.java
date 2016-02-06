@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -69,7 +70,15 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private VoterAddressVO voterAddressVO;
 	private List<IdNameVO> 						designationList;
 	private List<IdNameVO> 						zonesList;
+	private List<CadreVo> cadrevoList;
 	
+	
+	public List<CadreVo> getCadrevoList() {
+		return cadrevoList;
+	}
+	public void setCadrevoList(List<CadreVo> cadrevoList) {
+		this.cadrevoList = cadrevoList;
+	}
 	public List<RtcUnionVO> getRtcUnionVOList() {
 		return rtcUnionVOList;
 	}
@@ -585,4 +594,21 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getAffiliatedCadreDetails(){
+		try{			
+			jObj = new JSONObject(getTask());
+			
+			String type = jObj.getString("type");
+			String searchType = jObj.getString("searchType");
+			Long locationId = jObj.getLong("locationId");
+			
+			cadrevoList = rtcUnionService.getAffiliatedCadreDetails(type,searchType,locationId);
+						
+		}catch (Exception e) {
+			LOG.error("Exception raised in getAffiliatedCadreDetails()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

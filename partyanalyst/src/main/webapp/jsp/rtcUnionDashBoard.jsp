@@ -266,6 +266,38 @@ function getRtcUnionAllLocationDetails(){
 	});
 }
 
+function getRtcUnionLocationWiseDetails(){
+	var jObj={
+		task:"depot",
+		locationId:0
+	};
+	$.ajax({
+		type:"POST",
+		url:"getRtcUnionLocationWiseDetailsAction.action",
+		dataType: 'json',
+		data:{task:JSON.stringify(jObj)}	
+	}).done(function(result) {
+		
+	});
+}
+
+function getAffiliatedCadreDetails(){
+	var jObj={
+		type:"depot",
+		searchType:"",
+		locationId:0
+	};
+	$.ajax({
+		type:"POST",
+		url:"getAffiliatedCadreDetailsAction.action",
+		dataType: 'json',
+		data:{task:JSON.stringify(jObj)}	
+	}).done(function(result) {
+		
+	});
+}
+
+
 </script>
 </body>
 </html>
