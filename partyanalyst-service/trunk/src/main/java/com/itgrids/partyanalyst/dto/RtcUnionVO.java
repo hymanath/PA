@@ -24,12 +24,27 @@ public class RtcUnionVO {
 	private Long startedCount=0l;
 	private Long totalDataCount=0l;
 	
+	private Long toDayStartedCount=0l;
+	private Long toDayTotalDataCount=0l;
+	
 	private List<RtcUnionVO> rtcUnionVoList1;
 	private List<RtcUnionVO> rtcUnionVoList2;
 	
 	
 	
 	
+	public Long getToDayStartedCount() {
+		return toDayStartedCount;
+	}
+	public void setToDayStartedCount(Long toDayStartedCount) {
+		this.toDayStartedCount = toDayStartedCount;
+	}
+	public Long getToDayTotalDataCount() {
+		return toDayTotalDataCount;
+	}
+	public void setToDayTotalDataCount(Long toDayTotalDataCount) {
+		this.toDayTotalDataCount = toDayTotalDataCount;
+	}
 	public Long getTotalDataCount() {
 		return totalDataCount;
 	}

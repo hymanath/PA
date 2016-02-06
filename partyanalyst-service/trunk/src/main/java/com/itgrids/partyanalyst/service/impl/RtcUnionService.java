@@ -557,10 +557,10 @@ public class RtcUnionService implements IRtcUnionService{
 			List<Object[]> todaylList = tdpCadreDAO.getRtcUnionZoneWiseDetails("today", date.getCurrentDateAndTime());
 			
 			if(overallList !=null && overallList.size()>0){
-				settingZoneDetailsIntoList(overallList,rtcZoneList,null);				
+				rtcZoneList = settingZoneDetailsIntoList(overallList,rtcZoneList,null);				
 			}
 			if(todaylList !=null && todaylList.size()>0){
-				settingZoneDetailsIntoList(todaylList,rtcZoneList,"today");
+				rtcZoneList = settingZoneDetailsIntoList(todaylList,rtcZoneList,"today");
 			}
 			
 			if(rtcZoneList !=null && rtcZoneList.size()>0){
@@ -574,25 +574,35 @@ public class RtcUnionService implements IRtcUnionService{
 	}
 	
 	
-	public void settingZoneDetailsIntoList(List<Object[]> overallList,List<RtcUnionVO> rtcZoneList,String serachType){
+	public List<RtcUnionVO> settingZoneDetailsIntoList(List<Object[]> overallList,List<RtcUnionVO> rtcZoneList,String serachType){
 		try{
 			
 			if(overallList !=null){
 					
 			Long totalDataCount=0l;
 			Long startedCount = 0l;
+			
+			Long toDayTotalDataCount=0l;
+			Long toDayStartedCount = 0l;
+			
 			for(RtcUnionVO rtc : rtcZoneList){
 				
 					//zone wise total counts
 					Long totalCount=0l;
 					Long toDayTotalCount=0l;
 					
+					if(serachType !=null && serachType.equalsIgnoreCase("today")){
+						toDayTotalDataCount = toDayTotalDataCount +1;						
+					}else{
+						totalDataCount = totalDataCount+1;
+					}
+					
+				
+					
 					for(Object[] objectList : overallList){					
 						Long zoneId = objectList[0] !=null ? (Long)objectList[0]:0l;
 						
 						if(rtc.getId() == zoneId){
-							
-							startedCount = startedCount+1;
 							
 							if(objectList[2] !=null && objectList[2].toString().equalsIgnoreCase("WEB")){ 
 								
@@ -629,12 +639,30 @@ public class RtcUnionService implements IRtcUnionService{
 						
 					}					
 					rtc.setTodayTotalCount(toDayTotalCount);
-					rtc.setTotalCount(totalCount);					
+					rtc.setTotalCount(totalCount);		
+					
+					if(serachType !=null && serachType.equalsIgnoreCase("today")){
+						if(toDayTotalCount !=null && toDayTotalCount >0){
+							toDayStartedCount = toDayStartedCount + 1;
+						}
+						
+					}else{
+						if(totalCount !=null && totalCount >0 ){
+							startedCount = startedCount+1;
+						}						
+					}
+					
 				}
 			
 				if(rtcZoneList !=null && rtcZoneList.size()>0){
-					rtcZoneList.get(0).setStartedCount(startedCount);
-					rtcZoneList.get(0).setTotalDataCount(totalDataCount);
+					if(serachType !=null && serachType.equalsIgnoreCase("toDay")){
+						rtcZoneList.get(0).setToDayStartedCount(toDayStartedCount);
+						rtcZoneList.get(0).setToDayTotalDataCount(toDayTotalDataCount);
+					}else{
+						rtcZoneList.get(0).setStartedCount(startedCount);
+						rtcZoneList.get(0).setTotalDataCount(totalDataCount);
+					}
+					
 				}
 				
 			}
@@ -643,6 +671,7 @@ public class RtcUnionService implements IRtcUnionService{
 		}catch (Exception e) {
 			LOG.error("Exception riased at settingZoneDetailsIntoList in RtcUnionService Service class", e);
 		}
+		return rtcZoneList;
 	}
 	
 	
@@ -720,13 +749,13 @@ public class RtcUnionService implements IRtcUnionService{
 			List<Object[]> overallResult = tdpCadreDAO.getRtcUnionDeptDetails(null,null);
 			
 			if(overallResult !=null && overallResult.size()>0){
-				settingZoneDetailsIntoList(overallResult,resultList,null);
+				resultList = settingZoneDetailsIntoList(overallResult,resultList,null);
 			}
 			
 			List<Object[]> toDayResult = tdpCadreDAO.getRtcUnionDeptDetails("toDay",dateUtil.getCurrentDateAndTime());
 			
 			if(toDayResult !=null && toDayResult.size()>0){
-				settingZoneDetailsIntoList(toDayResult,resultList,"toDay");
+				resultList = settingZoneDetailsIntoList(toDayResult,resultList,"toDay");
 			}
 			
 			if(resultList !=null && resultList.size()>0){
@@ -755,10 +784,10 @@ public class RtcUnionService implements IRtcUnionService{
 			List<Object[]> toDayResult = tdpCadreDAO.getRtcUnionAllLocationDetails("toDay",dateUtil.getCurrentDateAndTime());
 			
 			if(overAllResult !=null && overAllResult.size()>0){
-				settingZoneDetailsIntoList(overAllResult,resultList,null);
+				resultList = settingZoneDetailsIntoList(overAllResult,resultList,null);
 			}			
 			if(toDayResult !=null && toDayResult.size()>0){
-				settingZoneDetailsIntoList(toDayResult,resultList,"today");
+				resultList = settingZoneDetailsIntoList(toDayResult,resultList,"today");
 			}
 			
 			if(resultList !=null && resultList.size()>0){
