@@ -8072,5 +8072,108 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("publicationId", 12);
 		return query.list();
 	}
-
+	
+	public List getVotersDetailsForCadreRegistratiobByconstituencIdRTC(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered,Integer startIndex,Integer maxIndex)
+	{
+		
+		StringBuilder queryStr1 = new StringBuilder();
+		
+		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender, BPV.voter.voterIDCardNo, ");
+		queryStr1.append("   BPV.booth.partNo from BoothPublicationVoter BPV where "+queryStr+"   ");
+		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		
+		if(panchayatId.longValue() != 0L)
+		{
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				queryStr1.append(" and BPV.booth.panchayat.panchayatId = :id ");
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				queryStr1.append(" and BPV.booth.localBody.localElectionBodyId = :id ");
+			}
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			queryStr1.append(" and BPV.booth.boothId = :boothId ");
+		}
+		
+		/*if(villageCovered != null && villageCovered.trim().length()>0 && Long.valueOf(villageCovered.trim()))
+		{
+			queryStr1.append(" and BPV.booth.villagesCovered like '%"+villageCovered+"%' ");
+		}*/
+		
+		Query query = getSession().createQuery(queryStr1.toString());
+			
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDate", publicationDate);
+		
+		if(panchayatId.longValue() != 0L)
+		{
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		if(startIndex != null && maxIndex != null){
+		  query.setFirstResult(startIndex);
+		  query.setMaxResults(maxIndex);
+		}
+		return query.list();	
+		
+	}
+	
+	public Long getVotersDetailsForCadreRegistratiobByconstituencIdCountRTC(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered)
+	{
+		
+		StringBuilder queryStr1 = new StringBuilder();
+		
+		queryStr1.append(" select count(*) from BoothPublicationVoter BPV where "+queryStr+"   ");
+		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		
+		if(panchayatId.longValue() != 0L)
+		{
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				queryStr1.append(" and BPV.booth.panchayat.panchayatId = :id ");
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				queryStr1.append(" and BPV.booth.localBody.localElectionBodyId = :id ");
+			}
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			queryStr1.append(" and BPV.booth.boothId = :boothId ");
+		}
+		
+		/*if(villageCovered != null && villageCovered.trim().length()>0 && Long.valueOf(villageCovered.trim()))
+		{
+			queryStr1.append(" and BPV.booth.villagesCovered like '%"+villageCovered+"%' ");
+		}*/
+		
+		Query query = getSession().createQuery(queryStr1.toString());
+			
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDate", publicationDate);
+		
+		if(panchayatId.longValue() != 0L)
+		{
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		
+		return (Long)query.uniqueResult();	
+		
+	}
 }

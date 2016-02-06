@@ -5739,6 +5739,135 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
+		public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencIdRTC(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex)
+		{
+			StringBuilder str = new StringBuilder();
+			
+			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+			{
+				str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, TC.houseNo, UA.userAddressId,TC.voterId,TC.relativeType ");
+			}
+			else
+			{
+				str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, UA.houseNo, UA.userAddressId,TC.voterId,TC.relativeType ");
+			}
+
+			str.append(" ,TC.image from TdpCadre TC, UserAddress UA where "+queryStr+" TC.userAddress.constituency.constituencyId = :constituencyId ");
+			
+			if(panchayatId.longValue() != 0L)
+			{
+				if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+					str.append(" and TC.userAddress.panchayat.panchayatId = :id ");
+				}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+					str.append(" and TC.userAddress.localElectionBody.localElectionBodyId = :id ");
+				}
+			}
+			
+			if(boothId.longValue() != 0L)
+			{
+				str.append(" and TC.userAddress.booth.boothId = :boothId ");
+			}
+			
+			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+			{
+				str.append(" and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
+			}
+			else
+			{
+				str.append(" and TC.enrollmentYear not in (:cadreEnrollmentYear)  ");
+			}
+			
+			str.append(" and TC.userAddress.userAddressId = UA.userAddressId  and TC.isDeleted = 'N'  order by TC.houseNo ");
+			
+			Query query = getSession().createQuery(str.toString()); 
+			
+			query.setParameter("constituencyId", constituencyId);
+			
+
+			if(panchayatId.longValue() != 0L)
+			{
+				if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+					query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+				}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+					query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+				}
+			}
+			
+			if(boothId.longValue() != 0L)
+			{
+				query.setParameter("boothId", boothId);
+			}		
+			
+			query.setParameter("cadreEnrollmentYear", IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
+			if(startIndex != null && maxIndex != null){
+				  query.setFirstResult(startIndex);
+				  query.setMaxResults(maxIndex);
+				}
+			return query.list();
+		}
 		
+		public Long getCadreDetailsForCadreRegistratiobByconstituencIdCountRTC(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre)
+		{
+			StringBuilder str = new StringBuilder();
+			
+			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+			{
+				str.append(" select count(*) ");
+			}
+			else
+			{
+				str.append(" select count(*) ");
+			}
+
+			str.append("  from TdpCadre TC, UserAddress UA where "+queryStr+" TC.userAddress.constituency.constituencyId = :constituencyId ");
+			
+			if(panchayatId.longValue() != 0L)
+			{
+				if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+					str.append(" and TC.userAddress.panchayat.panchayatId = :id ");
+				}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+					str.append(" and TC.userAddress.localElectionBody.localElectionBodyId = :id ");
+				}
+			}
+			
+			if(boothId.longValue() != 0L)
+			{
+				str.append(" and TC.userAddress.booth.boothId = :boothId ");
+			}
+			
+			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+			{
+				str.append(" and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
+			}
+			else
+			{
+				str.append(" and TC.enrollmentYear not in (:cadreEnrollmentYear)  ");
+			}
+			
+			str.append(" and TC.userAddress.userAddressId = UA.userAddressId  and TC.isDeleted = 'N'  order by TC.houseNo ");
+			
+			Query query = getSession().createQuery(str.toString()); 
+			
+			query.setParameter("constituencyId", constituencyId);
+			
+
+			if(panchayatId.longValue() != 0L)
+			{
+				if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+					query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+				}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+					query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+				}
+			}
+			
+			if(boothId.longValue() != 0L)
+			{
+				query.setParameter("boothId", boothId);
+			}		
+			
+			query.setParameter("cadreEnrollmentYear", IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
+			
+			return (Long)query.uniqueResult();
+		}
 		
 }
