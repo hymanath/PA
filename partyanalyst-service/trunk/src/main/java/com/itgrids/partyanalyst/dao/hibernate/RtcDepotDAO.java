@@ -30,4 +30,12 @@ public class RtcDepotDAO extends GenericDaoHibernate<RtcDepot, Long> implements 
 		query.setParameterList("regionIds", regionIds);
 		return query.list();
 	}
+	
+	public Object[] getRegionAndZoneByDepotId(Long depotId){
+		Query query=getSession().createQuery("select  model.rtcDepotId,model.rtcRegion.rtcRegionId,model.rtcRegion.rtcZone.rtcZoneId  from RtcDepot model where model.rtcDepotId=:depotId");
+		query.setParameter("depotId", depotId);
+		return (Object[])query.uniqueResult();
+	}
+	
+	
 }

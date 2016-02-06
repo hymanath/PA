@@ -84,6 +84,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationStatusDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationStatusTempDAO;
+import com.itgrids.partyanalyst.dao.IRtcDepotDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabRecordsStatusDAO;
@@ -290,6 +291,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private List<SelectOptionVO> regionsList;
 	private TdpCadreLocationDAO tdpCadreLocationDAO;
 	private IRtcUnionService rtcUnionService;
+	private IRtcDepotDAO rtcDepotDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -746,6 +748,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
     
 	public void setRtcUnionService(IRtcUnionService rtcUnionService) {
 		this.rtcUnionService = rtcUnionService;
+	}
+    
+	public void setRtcDepotDAO(IRtcDepotDAO rtcDepotDAO) {
+		this.rtcDepotDAO = rtcDepotDAO;
 	}
 
 	public Date convertToDateFormet(String dateStr)
@@ -11132,11 +11138,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					
 					
 					
-				
-					UserAddress userAddress = new UserAddress();
-					if(cadreRegistrationVO.getCadreRegType()!=null && !cadreRegistrationVO.getCadreRegType().trim().isEmpty() && cadreRegistrationVO.getCadreRegType().equalsIgnoreCase("rtcCadre")){
-						
-						// AFFLIATED COMMITEE SPECIFIC SAVING.
+				      
+					   
 						if(cadreRegistrationVO.getEmployeeId() != null){
 							tdpCadre.setIdCardNo(cadreRegistrationVO.getEmployeeId());
 						}
@@ -11146,16 +11149,34 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						tdpCadre.setTdpMemberTypeId(2l);
 						tdpCadre.setUnionTypeId(1l);
 						
+						
+						                //ZONES SAVING.
+						//SAVING FOR TAB.
 						TdpCadreLocation tdpCadreLocation = new TdpCadreLocation();
-						if(cadreRegistrationVO.getZoneId() != null && cadreRegistrationVO.getZoneId() > 0l){
-							tdpCadreLocation.setRtcZoneId(cadreRegistrationVO.getZoneId());
-						}
-						if(cadreRegistrationVO.getRegionId() != null && cadreRegistrationVO.getRegionId() > 0l){
-							tdpCadreLocation.setRtcRegionId(cadreRegistrationVO.getRegionId());
-						}
-						if(cadreRegistrationVO.getDepotId() != null && cadreRegistrationVO.getDepotId() > 0l){
-							tdpCadreLocation.setRtcDepotId(cadreRegistrationVO.getDepotId());
-						}
+						if((cadreRegistrationVO.getZoneId() == null || cadreRegistrationVO.getZoneId() == 0l) && (cadreRegistrationVO.getRegionId() == null || cadreRegistrationVO.getRegionId() == 0l) && (cadreRegistrationVO.getDepotId() != null && cadreRegistrationVO.getDepotId() > 0l)){
+							
+							Object[] regionZoneDetails=rtcDepotDAO.getRegionAndZoneByDepotId(cadreRegistrationVO.getDepotId());
+							if(regionZoneDetails!=null && regionZoneDetails.length>0){
+								
+								tdpCadreLocation.setRtcZoneId(regionZoneDetails[2]!=null?(Long)regionZoneDetails[2]:null);
+								tdpCadreLocation.setRtcRegionId(regionZoneDetails[1]!=null?(Long)regionZoneDetails[1]:null);
+								tdpCadreLocation.setRtcDepotId(cadreRegistrationVO.getDepotId());
+							}
+							
+			            }else{//SAVING FOR WEB.
+			            	
+			            	if(cadreRegistrationVO.getZoneId() != null && cadreRegistrationVO.getZoneId() > 0l){
+								tdpCadreLocation.setRtcZoneId(cadreRegistrationVO.getZoneId());
+							}
+							if(cadreRegistrationVO.getRegionId() != null && cadreRegistrationVO.getRegionId() > 0l){
+								tdpCadreLocation.setRtcRegionId(cadreRegistrationVO.getRegionId());
+							}
+							if(cadreRegistrationVO.getDepotId() != null && cadreRegistrationVO.getDepotId() > 0l){
+								tdpCadreLocation.setRtcDepotId(cadreRegistrationVO.getDepotId());
+							}
+			            	
+			            }
+						
 						
 						tdpCadreLocation = tdpCadreLocationDAO.save(tdpCadreLocation);
 						
@@ -11166,9 +11187,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						
 						
 						//ADDRESS SAVING.
-						
-						
-						       //PRESENT ADDRESS.
+						 UserAddress userAddress = new UserAddress();
+						       
 						   if(cadreRegistrationVO.getPerAddrsDistId() != null && cadreRegistrationVO.getPerAddrsDistId() > 0l){
 							   userAddress.setDistrict(districtDAO.get(cadreRegistrationVO.getPerAddrsDistId()));
 						   }
@@ -11204,114 +11224,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						   userAddress= userAddressDAO.save(userAddress);
 						   tdpCadre.setUserAddress(userAddress);
 						   
-					}else{
-						
-						     //NORMAL CADRE ADDRESS SAVING.
-						if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
-						{
-							getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO);
-						}
-						else if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
-						{
-							getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO);
-						}
-						if(userAddress.getBooth() == null)
-						{
-							if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0 && !cadreRegistrationVO.getConstituencyId().trim().equalsIgnoreCase("null") && Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
-							{
-								//userAddress = new UserAddress();
-								if(Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
-								{
-									userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
-									userAddress.setCountry(countryDAO.get(1l));
-									userAddress.setState(stateDAO.get(1l));
-									userAddress.setDistrict(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())).getDistrict());
-									if(cadreRegistrationVO.getStreet() != null && cadreRegistrationVO.getStreet().trim().length() > 0 && !cadreRegistrationVO.getStreet().trim().equalsIgnoreCase("null"))
-									{
-										userAddress.setStreet(cadreRegistrationVO.getStreet());
-									}
-									if(cadreRegistrationVO.getPanchayatId() != null && cadreRegistrationVO.getPanchayatId().trim().length() > 0 && !cadreRegistrationVO.getPanchayatId().trim().equalsIgnoreCase("null"))
-									{
-										if(Long.valueOf(cadreRegistrationVO.getPanchayatId()) > 0)
-										{
-											userAddress.setPanchayatId(Long.valueOf(cadreRegistrationVO.getPanchayatId()));
-											userAddress.setTehsil(panchayatDAO.get(Long.valueOf(cadreRegistrationVO.getPanchayatId())).getTehsil());
-										}
-										
-									}
-									if(cadreRegistrationVO.getMandalId() != null && cadreRegistrationVO.getMandalId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getMandalId().trim()).longValue() > 0l)
-									{
-											userAddress.setTehsil(tehsilDAO.get(Long.valueOf(cadreRegistrationVO.getMandalId().trim())));
-										
-									}
-									if(cadreRegistrationVO.getWardId() != null && cadreRegistrationVO.getWardId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getWardId().trim()).longValue() > 0l)
-									{
-											userAddress.setWard(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getWardId().trim())));
-										
-									}
-									List<Booth> booths = null;
-									if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0){
-									   booths = boothPublicationVoterDAO.getVoterAddressDetails(tdpCadre.getVoterId());
-									}
-									if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().trim().length() > 0 && !cadreRegistrationVO.getBoothId().trim().equalsIgnoreCase("null"))
-									{
-										if(Long.valueOf(cadreRegistrationVO.getBoothId()) > 0)
-										{
-											userAddress.setBooth(boothDAO.get(Long.valueOf(cadreRegistrationVO.getBoothId())));
-										}
-										else
-										{
-											if(booths != null && booths.size() > 0)
-											{
-												userAddress.setBooth(booths.get(0));
-											}
-											
-										}
-									}
-									if(cadreRegistrationVO.getMuncipalityId() !=null && cadreRegistrationVO.getMuncipalityId().trim().length() > 0 && !cadreRegistrationVO.getMuncipalityId().trim().equalsIgnoreCase("null"))
-									{
-										if(Long.valueOf(cadreRegistrationVO.getMuncipalityId()) > 0)
-										{
-											userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(cadreRegistrationVO.getMuncipalityId())));
-										}
-										
-									}
-									List<Hamlet> hamletWardList = null;
-									if(tdpCadre.getVoterId() != null){
-									 hamletWardList = userVoterDetailsDAO.getHamletByVoterId(tdpCadre.getVoterId());
-									}
-									if(hamletWardList != null && hamletWardList.size() > 0)
-									{
-										userAddress.setHamlet(hamletWardList.get(0));
-									}
-									if(booths != null && booths.size() > 0)
-									{
-										if(booths.get(0).getLocalBodyWard() != null)
-										{
-											userAddress.setWard(booths.get(0).getLocalBodyWard());
-										}
-										else
-										{
-											List<Constituency> wardsList = null;
-											if(tdpCadre.getVoterId() != null){
-											 wardsList =  userVoterDetailsDAO.getWardByVoterId(tdpCadre.getVoterId());
-											}
-											if(wardsList != null && wardsList.size() > 0)
-											{
-												userAddress.setWard(wardsList.get(0));
-											}
-										}
-									}
-									
-								}
-								
-							}
-							
-						}
-							
-						userAddress = userAddressDAO.save(userAddress);
-						tdpCadre.setUserAddress(userAddress);
-					}
+					
 					
 					
 						
