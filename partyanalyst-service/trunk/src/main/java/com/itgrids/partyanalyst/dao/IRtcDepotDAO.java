@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.RtcDepot;
 
 public interface IRtcDepotDAO extends GenericDao<RtcDepot, Long>{
 	public List<Object[]> getDepotsOfRegion(Long regionId);
+	public List<Object[]> getDepotsOfAllRegions(List<Long> regionIds);
 }

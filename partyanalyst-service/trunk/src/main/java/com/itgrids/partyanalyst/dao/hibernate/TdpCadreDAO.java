@@ -14,6 +14,7 @@ import org.hibernate.Session;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements ITdpCadreDAO{
@@ -5686,7 +5687,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.tdpCadreLocation.rtcZone.rtcZoneId,model.tdpCadreLocation.rtcZone.zoneName," +
-					" model.dataSourceType,count(model.tdpCadreId) " +
+					" model.dataSourceType,count(distinct model.tdpCadreId) " +
 					" from TdpCadre model" +
 					" where model.tdpMemberTypeId = 2" +
 					"  and model.isDeleted ='N' ");
@@ -5713,7 +5714,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.tdpCadreLocation.rtcRegion.rtcRegionId,model.tdpCadreLocation.rtcRegion.regionName," +
-					" model.dataSourceType,count(model.tdpCadreId) " +
+					" model.dataSourceType,count(distinct model.tdpCadreId) " +
 					" from TdpCadre model" +
 					" where model.tdpMemberTypeId = 2" +
 					"  and model.isDeleted ='N' ");			
@@ -5726,6 +5727,85 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
 				query.setParameter("date",date);
 			}			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getRtcUnionDeptDetails(String searchType,Date date){
+			
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.tdpCadreLocation.rtcDepot.rtcDepotId,model.tdpCadreLocation.rtcDepot.depotName," +
+					" model.dataSourceType,count(distinct model.tdpCadreId) " +
+					" from TdpCadre model" +
+					" where model.tdpMemberTypeId = 2" +
+					"  and model.isDeleted ='N' ");			
+			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+				str.append(" and date(model.updatedTime) = :date ");
+			}			
+			str.append(" group by model.tdpCadreLocation.rtcDepot.rtcDepotId,model.dataSourceType " +
+					" order by model.tdpCadreLocation.rtcDepot.depotName ");			
+			Query query = getSession().createQuery(str.toString());				
+			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+				query.setParameter("date",date);
+			}			
+			return query.list();
+			
+		}
+		
+		public List<Object[]> getAffiliatedCadreDetails(String type,String searchType,Long locationId){
+		
+			StringBuilder str = new StringBuilder();
+			
+				str.append(" select model.tdpCadreId,model.firstname,model.mobileNo,voter.voterIDCardNo," +
+						" model.idCardNo, " +
+						" model.dataSourceType,model.image " +
+						" from TdpCadre model left join model.voter voter" +
+						" left join model.tdpCadreLocation tdpCadreLocation " +
+						" where model.tdpMemberTypeId = 2" +
+						"  and model.isDeleted ='N' ");			
+				
+				if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+					str.append(" and date(model.updatedTime) = :date ");
+				}
+				else if(searchType !=null && searchType.equalsIgnoreCase("web")){
+					str.append(" and model.dataSourceType = 'WEB'  ");
+				}
+				else if(searchType !=null && searchType.equalsIgnoreCase("tab")){
+					str.append(" and model.dataSourceType = 'TAB'  ");
+				}
+				
+			if(type !=null && !type.isEmpty() && type.equalsIgnoreCase("depot")){	
+				if(locationId !=null && locationId>0){
+					str.append(" and tdpCadreLocation.rtcDepotId =:locationId ");
+				}											
+			}
+			else if(type !=null && !type.isEmpty() && type.equalsIgnoreCase("region")){	
+				if(locationId !=null && locationId>0){
+					str.append(" and tdpCadreLocation.rtcRegionId =:locationId ");
+				}
+			}
+			else if(type !=null && !type.isEmpty() && type.equalsIgnoreCase("zone")){	
+				if(locationId !=null && locationId>0){
+					str.append(" and tdpCadreLocation.rtcZoneId =:locationId ");
+				}
+			}
+			str.append(" order by model.firstname ");
+			
+			//Query Execution
+			Query query = getSession().createQuery(str.toString());		
+			
+			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
+				query.setParameter("date",new DateUtilService().getCurrentDateAndTime());
+			}	
+			
+			
+			if(type !=null && !type.isEmpty()){	
+				if(locationId !=null && locationId>0){
+					query.setParameter("locationId", locationId);
+				}
+			}
+			
 			return query.list();
 			
 		}

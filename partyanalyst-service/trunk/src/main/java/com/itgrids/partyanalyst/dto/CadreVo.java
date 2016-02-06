@@ -76,10 +76,28 @@ public class CadreVo implements Serializable{
 	private String designation;
 	private String designationLocation;
 	private String isNonInvitee;
-		
+	
+	private String idCardNo;
+	private String dataSourceType;	
 	
 
 	
+	public String getDataSourceType() {
+		return dataSourceType;
+	}
+
+	public void setDataSourceType(String dataSourceType) {
+		this.dataSourceType = dataSourceType;
+	}
+
+	public String getIdCardNo() {
+		return idCardNo;
+	}
+
+	public void setIdCardNo(String idCardNo) {
+		this.idCardNo = idCardNo;
+	}
+
 	public String getIsNonInvitee() {
 		return isNonInvitee;
 	}

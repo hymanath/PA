@@ -21,12 +21,27 @@ public class RtcUnionVO {
 	private Long todayWebCount;
 	private Long todayOnlineCount;
 	
+	private Long startedCount=0l;
+	private Long totalDataCount=0l;
+	
 	private List<RtcUnionVO> rtcUnionVoList1;
 	private List<RtcUnionVO> rtcUnionVoList2;
 	
 	
 	
 	
+	public Long getTotalDataCount() {
+		return totalDataCount;
+	}
+	public void setTotalDataCount(Long totalDataCount) {
+		this.totalDataCount = totalDataCount;
+	}
+	public Long getStartedCount() {
+		return startedCount;
+	}
+	public void setStartedCount(Long startedCount) {
+		this.startedCount = startedCount;
+	}
 	public Long getOnlineCount() {
 		return onlineCount;
 	}
