@@ -459,7 +459,7 @@
 				   
 				request =   $.ajax({
 						type : "POST",
-						url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
+						url : "searchVoterAndCadreInfoBySearchCriteriaRTCAction.action",
 						data : {task:JSON.stringify(jsObj)} ,
 					}).done(function(result){
 						isSubmit = true;
