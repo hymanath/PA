@@ -10567,7 +10567,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 									if(cadreRegistrationVO.getVoterId() != null && cadreRegistrationVO.getVoterId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
 									{
 										flag = false;
-										List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
+										List<TdpCadre> voterIdsList = tdpCadreDAO.getAffliatedCadreByVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
 										if(voterIdsList.size()  == 0)
 										{
 											TdpCadre tdpCadre = new TdpCadre();
@@ -10592,14 +10592,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 													
 												}
 												if(needUpdate){
-													//cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
-													//cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
-													
 													tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
-													//tdpCadreDAO.inActiveTdpCadreByCadreIds(existingVoters);
 												}
-												//emptyTdpCadreData(voterIdsList.get(0));
-												
 												TdpCadre tdpCadre = new TdpCadre();
 												
 												if(needUpdate){
@@ -10609,24 +10603,12 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 												}else{
 													tdpAffliatedCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 												}
-												
-												/*
-												cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(voterIdsList.get(0).getTdpCadreId());
-												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(voterIdsList.get(0).getTdpCadreId());
-												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(voterIdsList.get(0).getTdpCadreId());
-												emptyTdpCadreData(voterIdsList.get(0));
-												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update",false);
-												*/
 											}
 											
 										}
 										
 									}										
-									/*else
-									{
-										TdpCadre tdpCadre = new TdpCadre();
-										tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new");
-									}*/
+									
 									if(flag)
 									{
 										if(cadreRegistrationVO.getVoterCardNumber() != null && !cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
@@ -10661,12 +10643,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 															
 														}
 														if(needUpdate){
-															//cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
-															//cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
-															
 															tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
-															//tdpCadreDAO.inActiveTdpCadreByCadreIds(existingVoters);
-															//emptyTdpCadreData(voterIdsList.get(0));
 														}
 														TdpCadre tdpCadre = new TdpCadre();
 														if(needUpdate){
@@ -10676,13 +10653,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 														}else{
 															tdpAffliatedCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 														}
-														/*
-														cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(voterIdsList.get(0).getTdpCadreId());
-														cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(voterIdsList.get(0).getTdpCadreId());
-														tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(voterIdsList.get(0).getTdpCadreId());
-														emptyTdpCadreData(voterIdsList.get(0));
-														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update",false);
-														*/
 													}
 												}
 											}else{
@@ -10700,12 +10670,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 												
 												List<Long> existingVoters = new ArrayList<Long>();
 												existingVoters.add(cadreRegistrationVO.getCadreId());
-												
-												/*
-												 * PREVIOUS ROLES AND PARTICIPATED ELECTION ARE NOT REQUIRED FOR AFFILIATED CADRE REGISTRATION
-												 */
-												//cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
-												//cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
 												
 												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
 												saveDataToHistoryTable(cadre);
@@ -10926,7 +10890,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	//SAVING AFFLICATED CADRE SAVING
 	public void tdpAffliatedCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadreNew,String insertTypeNew,final boolean statusVar)
 	{
-		/*try {	*/
+		
 		
 		if(registrationType.equalsIgnoreCase("ONLINE") && cadreRegistrationVO.getOrderId() != null && cadreRegistrationVO.getOrderId().trim().length() > 0){
 			List<TdpCadre> tdpCadres = tdpCadreDAO.checkOnlineAccountExistsOrNot(cadreRegistrationVO.getOrderId());
@@ -11004,13 +10968,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						{
 							tdpCadre.setVoterId(voterCardNumbersList.get(0));
 						}
-						/*else
-						{
-							surveyCadreResponceVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
-							surveyCadreResponceVO.setStatus("DATA NOT FOUND");
-							return;
-						}*/
-						
 					}
 					else
 					{
@@ -11099,10 +11056,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}else{
 						tdpCadre.setHouseNo(null);
 					}
-					/*if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
-					{
-						tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
-					}*/
+					
 					if(cadreRegistrationVO.getCreatedUserId() != null && cadreRegistrationVO.getCreatedUserId().longValue() > 0  )
 					{
 					  if(!insertType.equalsIgnoreCase("update")){
@@ -11127,18 +11081,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						}
 					  }
 					}
-					/*if(cadreRegistrationVO.getUpdatedUserId() != null && cadreRegistrationVO.getUpdatedUserId().longValue() > 0)
-					{
-						if(registrationType.equalsIgnoreCase("TAB")){
-						     tdpCadre.setUpdatedUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
-						}else{
-							 tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
-						}
-					}*/
-					
-					
-					
-				      
 					   
 						if(cadreRegistrationVO.getEmployeeId() != null){
 							tdpCadre.setIdCardNo(cadreRegistrationVO.getEmployeeId());
@@ -11322,19 +11264,18 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					
 					if(cadreRegistrationVO.getSurveyTimeStr() != null && cadreRegistrationVO.getSurveyTimeStr().trim().length() > 0 && !cadreRegistrationVO.getSurveyTimeStr().trim().equalsIgnoreCase("null"))
 					{
-						//tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
+						
 						try {
 							SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
-							//System.out.println(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
-							//System.out.println(1);
+							
 							if(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()).before(tdpCadre.getInsertedTime())){
-								//System.out.println(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
+								
 								if(tdpCadre.getSurveyTime() == null){
-									//System.out.println("2");
+									
 								   tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
 								}
 							}else
-							{//System.out.println("3");
+							{
 								if(tdpCadre.getSurveyTime() == null)	
 								tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 								tdpCadre.setRefSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
@@ -11365,19 +11306,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						}
 						
 					}
-					/*synchronized (surveyCadreResponceVO) {
-						String memberNumber = tdpCadreDAO.getLatestMemberNumber();
-						if(memberNumber == null)
-						{
-							tdpCadre.setMemberShipNo("10000001");
-							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
-						}
-						else
-						{
-							tdpCadre.setMemberShipNo(String.valueOf((Long.valueOf(memberNumber) + 1l)));
-							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
-						}
-					}*/
+					
 					if(cadreRegistrationVO.getUniqueKey() != null && !cadreRegistrationVO.getUniqueKey().equalsIgnoreCase("null") && cadreRegistrationVO.getUniqueKey().trim().length() > 0)
 					{
 						tdpCadre.setUniqueKey(cadreRegistrationVO.getUniqueKey());
@@ -11442,10 +11371,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						
 						tdpCadre.setIsRelative("Y");
 						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
-						/*if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
-						{
-							tdpCadre.setRelationType(voterRelationDAO.get(Long.valueOf(cadreRegistrationVO.getRelationType())));
-						}*/
 						
 					}else{
 						   tdpCadre.setIsRelative("N");
@@ -11496,27 +11421,13 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					  if(insertType.equalsIgnoreCase("new")){
 							 							 
 						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-						     /*if(registrationType.equalsIgnoreCase("TAB")){
-						    	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-						    	 try{
-						    	 Date lastDate = sdf.parse("2014-12-26");
-						    	 if(tdpCadre.getSurveyTime().compareTo(lastDate) >0){
-						    		 noSms = true;
-						    		 tdpCadre.setIsDeleted("AR");
-						    	 }
-						    	 }catch(Exception e){
-						    		LOG.error(e);
-						    	 }
-						     }*/
 						       
 								surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-								//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 								tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 								  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						  
 					  }else{
-						  //tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-						  //uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+						 
 						  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						  tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 						    tdpCadre1= tdpCadreDAO.save(tdpCadre);	
