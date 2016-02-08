@@ -666,13 +666,13 @@ function buildDepotWiseDetails2(result){
 		if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
 			for(var i in result.rtcUnionVoList1){
 				str+='<tr>';
-					str+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsId'+i+'\',\'depotTrId'+i+'\',\'All\',\'depotRadioDetailsId'+i+'\');">'+result.rtcUnionVoList1[i].name+'</td>';
+					str+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsId'+i+'\',\'depotTrId'+i+'\',\'All\',\'depotRadioDetailsId'+i+'\',\'dataLoadingsImgForCadre'+i+'\',\'dataLoadingsImgForCadreDetails'+i+'\');">'+result.rtcUnionVoList1[i].name+'</td>';
 						
 					str+='<td>'+result.rtcUnionVoList1[i].totalCount+'</td>';
 					str+='<td>'+result.rtcUnionVoList1[i].webCount+'</td>';
 					str+='<td>'+result.rtcUnionVoList1[i].tabCount+'</td>';
 				str+='</tr>';
-				str+='<tr class="depotTrCls" id="depotTrId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><div id="depotRadioDetailsId'+i+'"></div><div id="depotDetailsId'+i+'"></div></td></tr>';
+				str+='<tr class="depotTrCls" id="depotTrId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><center><img id="dataLoadingsImgForCadre'+i+'" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center><div id="depotRadioDetailsId'+i+'"></div><center><img id="dataLoadingsImgForCadreDetails'+i+'" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center><div id="depotDetailsId'+i+'"></div></td></tr>';
 			}
 		}
 		str+='</table>';
@@ -689,13 +689,13 @@ function buildDepotWiseDetails2(result){
 		if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
 			for(var i in result.rtcUnionVoList1){
 				str1+='<tr>';
-					str1+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsTdyId'+i+'\',\'depotTrTdyId'+i+'\',\'All\',\'depotRadioDetailsTdyId'+i+'\');">'+result.rtcUnionVoList1[i].name+'</td>';
+					str1+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsTdyId'+i+'\',\'depotTrTdyId'+i+'\',\'All\',\'depotRadioDetailsTdyId'+i+'\',\'dataLoadingsImgForTdyCadre'+i+'\',\'dataLoadingsImgForTdyCadreDetails'+i+'\');">'+result.rtcUnionVoList1[i].name+'</td>';
 					
 					str1+='<td>'+result.rtcUnionVoList1[i].todayTotalCount+'</td>';
 					str1+='<td>'+result.rtcUnionVoList1[i].todayWebCount+'</td>';
 					str1+='<td>'+result.rtcUnionVoList1[i].todayTabCount+'</td>';
 				str1+='</tr>';
-				str1+='<tr class="depotTrTdyCls" id="depotTrTdyId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><div id="depotRadioDetailsTdyId'+i+'"></div><div id="depotDetailsTdyId'+i+'"></div></td></tr>';
+				str1+='<tr class="depotTrTdyCls" id="depotTrTdyId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><center><img id="dataLoadingsImgForTdyCadre'+i+'" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center><div id="depotRadioDetailsTdyId'+i+'"></div><center><img id="dataLoadingsImgForTdyCadreDetails'+i+'" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center><div id="depotDetailsTdyId'+i+'"></div></td></tr>';
 			}
 		}
 		str1+='</table>';
@@ -703,12 +703,14 @@ function buildDepotWiseDetails2(result){
 	$("#dataLoadingsImgForDepot1").hide();
 }
 
-function getAffiliatedCadreDetails(id,divId,trId,type,rdDivId){
+function getAffiliatedCadreDetails(id,divId,trId,type,rdDivId,ldngImgId,loadingImg){
 $("#"+divId).html("");
 $("#"+rdDivId).html("");
 $(".depotTrCls").hide();
 $(".depotTrTdyCls").hide();
 $("#"+trId).show();
+$("#"+ldngImgId).show();
+
 var jObj={
 	type:"depot",
 	searchType:type,
@@ -720,22 +722,22 @@ $.ajax({
 	dataType: 'json',
 	data:{task:JSON.stringify(jObj)}	
 }).done(function(result) {
-	if(result != null){
+	if(result != null && result.length > 0){
 		var str='';
 		
 			str+='<div class="pad_10">';
 				str+='<label class="radio-inline">';
-					str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" checked="true" name="details" value="All">All';
+					str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" attr_ldngImg="'+loadingImg+'" checked="true" name="details" value="All">All';
 				str+='</label>';
 				str+='<label class="radio-inline">';
-					str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" name="details" value="today">Today';
+					str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" attr_ldngImg="'+loadingImg+'" name="details" value="today">Today';
 				str+='</label>';
 				str+='<span class="b_left">';
 					str+='<label class="radio-inline">';
-						str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" name="details" value="web">Web';
+						str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" attr_ldngImg="'+loadingImg+'" name="details" value="web">Web';
 					str+='</label>';
 					str+='<label class="radio-inline">';
-						str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" name="details" value="tab">Tab';
+						str+='<input type="radio" class="depoRdoCls" attr_divId="'+divId+'" attr_id="'+id+'" attr_trId="'+trId+'" attr_ldngImg="'+loadingImg+'" name="details" value="tab">Tab';
 					str+='</label>';
 				str+='</span>';
 				str+='<span class="closeIcon" attr_divId="'+trId+'">X</span>';
@@ -769,12 +771,18 @@ $.ajax({
 		
 		$("#"+divId).html(str1);
 		$(".tableBlockScroll4").mCustomScrollbar();
+		$("#"+ldngImgId).hide();
+	}
+	else{
+		$("#"+ldngImgId).hide();
+		$("#"+divId).html("NO DATA AVAILABLE...");
 	}
 });
 }
 
-function getCadreDetails(id,divId,trId,type){
+function getCadreDetails(id,divId,trId,type,ldngImg){
 	$("#"+divId).html("");
+	$("#"+ldngImg).show();
 	var jObj={
 	type:"depot",
 	searchType:type,
@@ -786,7 +794,7 @@ function getCadreDetails(id,divId,trId,type){
 		dataType: 'json',
 		data:{task:JSON.stringify(jObj)}	
 	}).done(function(result) {
-		if(result != null){
+		if(result != null && result.length > 0){
 			var str1='';
 			
 			str1+='<div  class="tableBlockScroll5 bShadow">';
@@ -816,6 +824,11 @@ function getCadreDetails(id,divId,trId,type){
 		
 		$("#"+divId).html(str1);
 		$(".tableBlockScroll5").mCustomScrollbar();
+		$("#"+ldngImg).hide();
+		}
+		else{
+			$("#"+ldngImg).hide();
+			$("#"+divId).html("NO DATA AVAILABLE...");
 		}
 	});
 }
@@ -857,7 +870,8 @@ var value = $(this).val();
 var divId = $(this).attr("attr_divId");
 var id = $(this).attr("attr_id");
 var trId = $(this).attr("attr_trId");
-getCadreDetails(id,divId,trId,value);
+var ldngImgId = $(this).attr("attr_ldngImg");
+getCadreDetails(id,divId,trId,value,ldngImgId);
 });
 
 $(document).on("click",".closeIcon",function() {
