@@ -53,8 +53,8 @@
 												<h4 class="m_bottom0 themeColor">TOTAL</h4>
 												<p class="text-italic">Registered Members</p>
 											</td></tr>
-											<tr><td class="bg_tab text-center" id="totalWebCountId"></td></tr>
-											<tr><td class="bg_tab text-center" id="totalTabCountId"></td></tr>
+											<tr><td class="bg_tab text-center" id="totalWebCountId"><center><img id="dataLoadingsImgForTotalWebCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
+											<tr><td class="bg_tab text-center" id="totalTabCountId"><center><img id="dataLoadingsImgForTotalTabCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
 										</table>
 									</div>
 								</div>
@@ -67,8 +67,8 @@
 												<h4 class="m_bottom0 themeColor">TODAY</h4>
 												<p class="text-italic">Registered Members</p>
 											</td></tr>
-											<tr><td class="bg_tab text-center" id="todayWebCountId"></td></tr>
-											<tr><td class="bg_tab text-center" id="todayTabCountId"></td></tr>
+											<tr><td class="bg_tab text-center" id="todayWebCountId"><center><img id="dataLoadingsImgForTodayWebCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
+											<tr><td class="bg_tab text-center" id="todayTabCountId"><center><img id="dataLoadingsImgForTodayTabCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
 										</table>
 									</div>
 								</div>
@@ -88,7 +88,7 @@
 								<input type="radio" class="zoneClass" name="zoneRdi" value="Today">Today
 							</label>
 							<span class="pull-right">
-								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
+								<img src="dist/2016DashBoard/img/icon.jpg" >
 							</span>
 						</div>
 						<div class="text-center pad_10">
@@ -100,6 +100,7 @@
 							<span class="themeColor font-12" id="todayZoneStartedId" style="display:none"></span>
 							<span class="themeColor font-12" id="todayZoneNotStartedId" style="display:none"></span>
 						</div>
+						<center><img id="dataLoadingsImgForZone" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 						<div id="zoneWiseTotalDetailsDiv" style="display:none;"></div>
 						<div id="zoneWiseTodayDetailsDiv" style="display:none;"></div>
 					</div>
@@ -114,7 +115,7 @@
 								<input type="radio" class="regionClass" name="regionRdi" value="Today">Today
 							</label>
 							<span class="pull-right">
-								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
+								<img src="dist/2016DashBoard/img/icon.jpg" >
 							</span>
 						</div>
 						<div class="text-center pad_10">
@@ -126,6 +127,7 @@
 							<span class="themeColor font-12" id="todayStartedRegionsId" style="display:none"></span>
 							<span class="themeColor font-12" id="todayNonStartedRegionsId" style="display:none"></span>
 						</div>
+						<center><img id="dataLoadingsImgForRegion" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 						<div id="regionWiseTotalDetailsDiv" style="display:none;"></div>
 						<div id="regionWiseTodayDetailsDiv" style="display:none;"></div>
 					</div>
@@ -140,7 +142,7 @@
 								<input type="radio" class="depotRadioCls" name="depotRadio" value="Today">Today
 							</label>
 							<span class="pull-right">
-								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
+								<img src="dist/2016DashBoard/img/icon.jpg" >
 							</span>
 						</div>
 						<div class="text-center pad_10">
@@ -152,6 +154,7 @@
 							<span class="themeColor font-12" id="todayStartedDepotId" style="display:none"></span>
 							<span class="themeColor font-12" id="todayNotStartedDepotId" style="display:none"></span>
 						</div>
+						<center><img id="dataLoadingsImgForDepot" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 						<div id="depotWiseTotalDetailsDiv" style="display:none;"></div>
 						<div id="depotWiseTodayDetailsDiv" style="display:none;"></div>
 					</div>
@@ -168,11 +171,12 @@
 								<input type="radio" class="nonOpernationalCls" name="nonOpertional" value="Today">Today
 							</label>
 							<span class="pull-right">
-								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
+								<img src="dist/2016DashBoard/img/icon.jpg" >
 							</span>
 						</div>
 						<div class="text-center pad_10">
 							<h4 class="text-capitalize m_bottom0">non operational units</h4>
+							<center><img id="dataLoadingsImgForNonOperational" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 							<span class="color66 font-12" id="nonOperationalId"></span>
 						</div>
 					</div>
@@ -187,17 +191,19 @@
 								<input type="radio" class="othersCls" name="others" value="Today">Today
 							</label>
 							<span class="pull-right">
-								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
+								<img src="dist/2016DashBoard/img/icon.jpg" >
 							</span>
 						</div>
 						<div class="text-center pad_10">
 							<h4 class="text-capitalize m_bottom0">other</h4>
+							<center><img id="dataLoadingsImgForOthers" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 							<span class="color66 font-12" id="othersId"></span>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div id="onlineAndTabUsersDiv"></div>
+					<center style="margin-top: 50px;"><img id="dataLoadingsImgForOnlineAndTab" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 				</div>
 			</div>
 			<div class="row">
@@ -211,7 +217,7 @@
 								<input type="radio" class="depotClass" name="depot" value="Today">Today
 							</label>
 							<span class="pull-right">
-								<img src="dist/2016DashBoard/img/icon.jpg" class="CursorH">
+								<img src="dist/2016DashBoard/img/icon.jpg" >
 							</span>
 						</div>
 						<div class="text-left pad_10">
@@ -223,6 +229,7 @@
 							<span class="themeColor font-12" id="todayDepotStartedId" style="display:none"></span>
 							<span class="themeColor font-12" id="todayDepotNotStartedId" style="display:none"></span>
 						</div>
+						<center><img id="dataLoadingsImgForDepot1" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 						<div id="depotWiseTotalDetailsId" style="display:none;"></div>
 						<div id="depotWiseTodayDetailsId" style="display:none;"></div>
 					</div>
@@ -238,14 +245,6 @@
 <script src="dist/2016DashBoard/Plugins/Datatable/dataTables.fixedHeader.js" type="text/javascript"></script>
 
 <script>
-$(".Dattable").dataTable({
-	"paging":   false,
-    "info":     false,
-	"searching": false,
-	//"scrollY":   "100px",
-	"sDom": '<"top"i>rt<"bottom"flp><"clear">',
-	fixedHeader: true
-})
 
 getRtcUnionRegisteredBasicDetails();
 getRtcUnionAllLocationDetails();
@@ -255,7 +254,10 @@ getRtcUnionTotalLocationWiseDetails();
 getOnlineAndTabUsersCount();
 
 function getRtcUnionRegisteredBasicDetails(){
-$("#dataLoadingsImgForOverAllDetails").show();
+$("#dataLoadingsImgForTotalWebCount").show();
+$("#dataLoadingsImgForTotalTabCount").show();
+$("#dataLoadingsImgForTodayWebCount").show();
+$("#dataLoadingsImgForTodayTabCount").show();
 var jObj={
 	task : "basicDetails"
 };
@@ -275,10 +277,15 @@ $.ajax({
 		if(result.todayTabCount == null)result.todayTabCount=0;
 		$("#todayTabCountId").html(result.todayTabCount);
 	}
+	$("#dataLoadingsImgForTotalWebCount").hide();
+	$("#dataLoadingsImgForTotalTabCount").hide();
+	$("#dataLoadingsImgForTodayWebCount").hide();
+	$("#dataLoadingsImgForTodayTabCount").hide();
 });
 }
 
 function getRtcUnionZoneWiseTotalDetails(){
+	$("#dataLoadingsImgForZone").show();
 	$("#todayZoneTotalId,#todayZoneStartedId,#todayZoneNotStartedId").hide();
 	$("#zoneTotalId,#zoneStartedId,#zoneNotStartedId").show();
 	$("#zoneWiseTotalDetailsDiv").html("");
@@ -301,7 +308,7 @@ function getRtcUnionZoneWiseTotalDetails(){
 	var todayStartedZones = 0;
 	var todayNotStartedZones = 0;
       var str='';
-      str+='<table class="table tableCustom">';
+      str+='<table class="table tableCustom Dattable5">';
         str+='<thead class="bg_ee">';
           str+='<th>Zone Name</th>';
           str+='<th>Total</th>';
@@ -331,9 +338,17 @@ function getRtcUnionZoneWiseTotalDetails(){
 	  $("#zoneNotStartedId").html("Not Started - "+notStartedZones);
 	  
       $("#zoneWiseTotalDetailsDiv").html(str);
+	  $(".Dattable5").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			//"scrollY":   "100px",
+			"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+			fixedHeader: true
+		})
 	  
 	  var str1='';
-      str1+='<table class="table tableCustom">';
+      str1+='<table class="table tableCustom Dattable4">';
         str1+='<thead class="bg_ee">';
           str1+='<th>Zone Name</th>';
           str1+='<th>Total</th>';
@@ -362,11 +377,21 @@ function getRtcUnionZoneWiseTotalDetails(){
 	  $("#todayZoneStartedId").html("Started - "+todayStartedZones);
 	  $("#todayZoneNotStartedId").html("Not Started - "+todayNotStartedZones);
       $("#zoneWiseTodayDetailsDiv").html(str1);
+	  $(".Dattable4").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			//"scrollY":   "100px",
+			"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+			fixedHeader: true
+		})
+	$("#dataLoadingsImgForZone").hide();
     }
   });
 }
 
 function getRtcUnionAllLocationDetails(){
+	$("#dataLoadingsImgForRegion").show();
 	$("#todayTotalReionsId,#todayStartedRegionsId,#todayNonStartedRegionsId").hide();
 	$("#totalReionsId,#startedRegionsId,#nonStartedRegionsId").show();
 	$("#regionWiseTotalDetailsDiv").html("");
@@ -386,7 +411,8 @@ function getRtcUnionAllLocationDetails(){
 	var todayStartedRegions = 0;
 	var todayNotStartedRegions = 0;
       var str='';
-      str+='<table class="table tableCustom">';
+	  str+='<div class="tableBlockScroll0">';
+      str+='<table class="table tableCustom Dattable3">';
         str+='<thead class="bg_ee">';
           str+='<th>Region Name</th>';
           str+='<th>Total</th>';
@@ -411,13 +437,23 @@ function getRtcUnionAllLocationDetails(){
         }
       }
       str+='</table>';
+	  str+='</div>';
 	  $("#totalReionsId").html("Total Region - "+totalRegions);
 	  $("#startedRegionsId").html("Started - "+startedRegions);
 	  $("#nonStartedRegionsId").html("Not Started - "+notStartedRegions);
       $("#regionWiseTotalDetailsDiv").html(str);
-	  
+	  $(".tableBlockScroll0").mCustomScrollbar();
+	  $(".Dattable3").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			//"scrollY":   "100px",
+			"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+			fixedHeader: true
+		})
 	  var str1='';
-      str1+='<table class="table tableCustom">';
+	  str1+='<div class="tableBlockScroll1">';
+      str1+='<table class="table tableCustom Dattable2">';
         str1+='<thead class="bg_ee">';
           str1+='<th>Region Name</th>';
           str1+='<th>Total</th>';
@@ -442,10 +478,21 @@ function getRtcUnionAllLocationDetails(){
         }
       }
       str1+='</table>';
+	  str1+='</div>';
 	  $("#todayTotalReionsId").html("Total Region - "+todayTotalRegions);
 	  $("#todayStartedRegionsId").html("Started - "+todayStartedRegions);
 	  $("#todayNonStartedRegionsId").html("Not Started - "+todayNotStartedRegions);
       $("#regionWiseTodayDetailsDiv").html(str1);
+	  $(".tableBlockScroll1").mCustomScrollbar();
+	  $(".Dattable2").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			//"scrollY":   "100px",
+			"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+			fixedHeader: true
+		})
+		$("#dataLoadingsImgForRegion").hide();
     }
   });
 }
@@ -456,6 +503,11 @@ var othersTotalCount = 0;
 var othersTodayCount = 0;
 
 function getRtcUnionTotalLocationWiseDetails(){
+$("#dataLoadingsImgForDepot").show();
+$("#dataLoadingsImgForDepot1").show();
+$("#dataLoadingsImgForNonOperational").show();
+$("#dataLoadingsImgForOthers").show();
+
 $("#todayTotlDepotId,#todayStartedDepotId,#todayNotStartedDepotId").hide();
 $("#totlDepotId,#startedDepotId,#notStartedDepotId").show();
 $("#todayDepotTotalId,#todayDepotStartedId,#todayDepotNotStartedId").hide();
@@ -495,9 +547,10 @@ function buildDepotWiseDetails1(result){
 	var todayNotStartedDepots = 0;
 	
 	var str='';
-		str+='<table class="table tableCustom">';
+		str+='<div class="tableBlockScroll2">';
+		str+='<table class="table tableCustom Dattable0">';
 			str+='<thead class="bg_ee">';
-				str+='<th>Deport Name</th>';
+				str+='<th>Depot Name</th>';
 				str+='<th>Total</th>';
 				str+='<th>Web</th>';
 				str+='<th>Tab</th>';
@@ -526,6 +579,7 @@ function buildDepotWiseDetails1(result){
 			}
 		}
 		str+='</table>';
+		str+='</div>';
 		$("#totlDepotId").html("Total Depot - "+totalDepots);
 		$("#startedDepotId").html("Started - "+startedDepots);
 		$("#notStartedDepotId").html("Not Started - "+notStartedDepots);
@@ -533,11 +587,20 @@ function buildDepotWiseDetails1(result){
 		$("#depotStartedId").html("Started - "+startedDepots);
 		$("#depotNotStartedId").html("Not Started - "+notStartedDepots);
 		$("#depotWiseTotalDetailsDiv").html(str);
-			
+		$(".tableBlockScroll2").mCustomScrollbar();
+		$(".Dattable0").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			//"scrollY":   "100px",
+			"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+			fixedHeader: true
+		})
 		var str1='';
-		str1+='<table class="table tableCustom">';
+		str1+='<div class="tableBlockScroll3">';
+		str1+='<table class="table tableCustom Dattable1">';
 			str1+='<thead class="bg_ee">';
-				str1+='<th>Deport Name</th>';
+				str1+='<th>Depot Name</th>';
 				str1+='<th>Total</th>';
 				str1+='<th>Web</th>';
 				str1+='<th>Tab</th>';
@@ -566,6 +629,7 @@ function buildDepotWiseDetails1(result){
 			}
 		}
 		str1+='</table>';
+		str1+='</div>';
 		$("#todayTotlDepotId").html("Total Depot - "+todayTotalDepots);
 	    $("#todayStartedDepotId").html("Started - "+todayStartedDepots);
 	    $("#todayNotStartedDepotId").html("Not Started - "+todayNotStartedDepots);
@@ -573,7 +637,19 @@ function buildDepotWiseDetails1(result){
 	    $("#todayDepotStartedId").html("Started - "+todayStartedDepots);
 	    $("#todayDepotNotStartedId").html("Not Started - "+todayNotStartedDepots);
 		$("#depotWiseTodayDetailsDiv").html(str1);
-			
+		$(".tableBlockScroll3").mCustomScrollbar();
+		$(".Dattable1").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			//"scrollY":   "100px",
+			"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+			fixedHeader: true
+		})
+		$("#dataLoadingsImgForDepot").hide();
+		$("#dataLoadingsImgForNonOperational").hide();
+		$("#dataLoadingsImgForOthers").hide();
+		
 		$("#nonOperationalId").html("Registered "+nonOperationalTotalCount+" Members");
 		$("#othersId").html("Registered "+othersTotalCount+" Members");
 }
@@ -582,7 +658,7 @@ function buildDepotWiseDetails2(result){
 	var str='';
 		str+='<table class="table tableCust1">';
 			str+='<thead class="bg_ee">';
-				str+='<th>Deport Name</th>';
+				str+='<th>Depot Name</th>';
 				str+='<th>Total</th>';
 				str+='<th>Web</th>';
 				str+='<th>Tab</th>';
@@ -590,22 +666,22 @@ function buildDepotWiseDetails2(result){
 		if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
 			for(var i in result.rtcUnionVoList1){
 				str+='<tr>';
-					str+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsId'+i+'\',\'depotTrId'+i+'\',\'All\');">'+result.rtcUnionVoList1[i].name+'</td>';
+					str+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsId'+i+'\',\'depotTrId'+i+'\',\'All\',\'depotRadioDetailsId'+i+'\');">'+result.rtcUnionVoList1[i].name+'</td>';
 						
 					str+='<td>'+result.rtcUnionVoList1[i].totalCount+'</td>';
 					str+='<td>'+result.rtcUnionVoList1[i].webCount+'</td>';
 					str+='<td>'+result.rtcUnionVoList1[i].tabCount+'</td>';
 				str+='</tr>';
-				str+='<tr class="depotTrCls" id="depotTrId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><div id="depotDetailsId'+i+'"></div></td></tr>';
+				str+='<tr class="depotTrCls" id="depotTrId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><div id="depotRadioDetailsId'+i+'"></div><div id="depotDetailsId'+i+'"></div></td></tr>';
 			}
 		}
 		str+='</table>';
 		$("#depotWiseTotalDetailsId").html(str);
-			
+		//$(".tableBlockScroll").mCustomScrollbar();	
 		var str1='';
 		str1+='<table class="table tableCust1">';
 			str1+='<thead class="bg_ee">';
-				str1+='<th>Deport Name</th>';
+				str1+='<th>Depot Name</th>';
 				str1+='<th>Total</th>';
 				str1+='<th>Web</th>';
 				str1+='<th>Tab</th>';
@@ -613,21 +689,23 @@ function buildDepotWiseDetails2(result){
 		if(result.rtcUnionVoList1 != null && result.rtcUnionVoList1.length > 0){
 			for(var i in result.rtcUnionVoList1){
 				str1+='<tr>';
-					str1+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsTdyId'+i+'\',\'depotTrTdyId'+i+'\',\'All\');">'+result.rtcUnionVoList1[i].name+'</td>';
+					str1+='<td onclick="getAffiliatedCadreDetails('+result.rtcUnionVoList1[i].id+',\'depotDetailsTdyId'+i+'\',\'depotTrTdyId'+i+'\',\'All\',\'depotRadioDetailsTdyId'+i+'\');">'+result.rtcUnionVoList1[i].name+'</td>';
 					
 					str1+='<td>'+result.rtcUnionVoList1[i].todayTotalCount+'</td>';
 					str1+='<td>'+result.rtcUnionVoList1[i].todayWebCount+'</td>';
 					str1+='<td>'+result.rtcUnionVoList1[i].todayTabCount+'</td>';
 				str1+='</tr>';
-				str1+='<tr class="depotTrTdyCls" id="depotTrTdyId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><div id="depotDetailsTdyId'+i+'"></div></td></tr>';
+				str1+='<tr class="depotTrTdyCls" id="depotTrTdyId'+i+'" style="display:none;"><td colspan="4" class="insideTable arrow_box"><div id="depotRadioDetailsTdyId'+i+'"></div><div id="depotDetailsTdyId'+i+'"></div></td></tr>';
 			}
 		}
 		str1+='</table>';
 	$("#depotWiseTodayDetailsId").html(str1);
+	$("#dataLoadingsImgForDepot1").hide();
 }
 
-function getAffiliatedCadreDetails(id,divId,trId,type){
+function getAffiliatedCadreDetails(id,divId,trId,type,rdDivId){
 $("#"+divId).html("");
+$("#"+rdDivId).html("");
 $(".depotTrCls").hide();
 $(".depotTrTdyCls").hide();
 $("#"+trId).show();
@@ -662,32 +740,84 @@ $.ajax({
 				str+='</span>';
 				str+='<span class="closeIcon" attr_divId="'+trId+'">X</span>';
 			str+='</div>';
-			str+='<table class="table bShadow">';
-				str+='<thead class="bg_ee">';
-					str+='<th></th>';
-					str+='<th>NAME</th>';
-					str+='<th>MOBILE NUMBER</th>';
-					str+='<th>VOTER NUMBER</th>';
-					str+='<th>EMPLOYE ID</th>';
-					str+='<th>REGISTERED THROUGH</th>';
-				str+='</thead>';
-				str+='<tbody>';
+			$("#"+rdDivId).html(str);
+			var str1='';
+			str1+='<div  class="tableBlockScroll4 bShadow">';
+			str1+='<table class="table bShadow">';
+				str1+='<thead class="bg_ee">';
+					str1+='<th></th>';
+					str1+='<th>NAME</th>';
+					str1+='<th>MOBILE NUMBER</th>';
+					str1+='<th>VOTER NUMBER</th>';
+					str1+='<th>EMPLOYE ID</th>';
+					str1+='<th>REGISTERED THROUGH</th>';
+				str1+='</thead>';
+				str1+='<tbody>';
 				for(var i in result){
-					str+='<tr>';
-						str+='<td><img src="dist/2016DashBoard/img/profileIcon.jpg" class="profileIcon"></td>';
-						str+='<td>'+result[i].firstName+'</td>';
-						str+='<td>'+result[i].mobileNo+'</td>';
-						str+='<td>'+result[i].voterCardId+'</td>';
-						str+='<td>'+result[i].idCardNo+'</td>';
-						str+='<td>'+result[i].dataSourceType+'</td>';
-					str+='</tr>';
+					str1+='<tr>';
+						str1+='<td><img src="dist/2016DashBoard/img/profileIcon.jpg" class="profileIcon"></td>';
+						str1+='<td>'+result[i].firstName+'</td>';
+						str1+='<td>'+result[i].mobileNo+'</td>';
+						str1+='<td>'+result[i].voterCardId+'</td>';
+						str1+='<td>'+result[i].idCardNo+'</td>';
+						str1+='<td>'+result[i].dataSourceType+'</td>';
+					str1+='</tr>';
 				}
-				str+='</tbody>';
-			str+='</table>';
+				str1+='</tbody>';
+			str1+='</table>';
+			str1+='</div>';
 		
-		$("#"+divId).html(str);
+		$("#"+divId).html(str1);
+		$(".tableBlockScroll4").mCustomScrollbar();
 	}
 });
+}
+
+function getCadreDetails(id,divId,trId,type){
+	$("#"+divId).html("");
+	var jObj={
+	type:"depot",
+	searchType:type,
+	locationId:id
+	};
+	$.ajax({
+		type:"POST",
+		url:"getAffiliatedCadreDetailsAction.action",
+		dataType: 'json',
+		data:{task:JSON.stringify(jObj)}	
+	}).done(function(result) {
+		if(result != null){
+			var str1='';
+			
+			str1+='<div  class="tableBlockScroll5 bShadow">';
+			str1+='<table class="table bShadow">';
+				str1+='<thead class="bg_ee">';
+					str1+='<th></th>';
+					str1+='<th>NAME</th>';
+					str1+='<th>MOBILE NUMBER</th>';
+					str1+='<th>VOTER NUMBER</th>';
+					str1+='<th>EMPLOYE ID</th>';
+					str1+='<th>REGISTERED THROUGH</th>';
+				str1+='</thead>';
+				str1+='<tbody>';
+				for(var i in result){
+					str1+='<tr>';
+						str1+='<td><img src="dist/2016DashBoard/img/profileIcon.jpg" class="profileIcon"></td>';
+						str1+='<td>'+result[i].firstName+'</td>';
+						str1+='<td>'+result[i].mobileNo+'</td>';
+						str1+='<td>'+result[i].voterCardId+'</td>';
+						str1+='<td>'+result[i].idCardNo+'</td>';
+						str1+='<td>'+result[i].dataSourceType+'</td>';
+					str1+='</tr>';
+				}
+				str1+='</tbody>';
+			str1+='</table>';
+			str1+='</div>';
+		
+		$("#"+divId).html(str1);
+		$(".tableBlockScroll5").mCustomScrollbar();
+		}
+	});
 }
 
 $(document).on("click",".depotRadioCls",function() {
@@ -695,14 +825,12 @@ var value = $(this).val();
 if(value == "All"){
 	$("#todayTotlDepotId,#todayStartedDepotId,#todayNotStartedDepotId").hide();
 	$("#totlDepotId,#startedDepotId,#notStartedDepotId").show();
-	$("#depotWiseTotalDetailsDiv").html("");
 	$("#depotWiseTodayDetailsDiv").hide();
 	$("#depotWiseTotalDetailsDiv").show();
 }
 else if(value == "Today"){
 	$("#todayTotlDepotId,#todayStartedDepotId,#todayNotStartedDepotId").show();
 	$("#totlDepotId,#startedDepotId,#notStartedDepotId").hide();
-	$("#depotWiseTodayDetailsDiv").html("");
 	$("#depotWiseTotalDetailsDiv").hide();
 	$("#depotWiseTodayDetailsDiv").show();
 }
@@ -713,14 +841,12 @@ var value = $(this).val();
 if(value == "All"){
 	$("#todayDepotTotalId,#todayDepotStartedId,#todayDepotNotStartedId").hide();
 	$("#depotTotalId,#depotStartedId,#depotNotStartedId").show();
-	$("#depotWiseTotalDetailsId").html("");
 	$("#depotWiseTodayDetailsId").hide();
 	$("#depotWiseTotalDetailsId").show();
 }
 else if(value == "Today"){
 	$("#todayDepotTotalId,#todayDepotStartedId,#todayDepotNotStartedId").show();
 	$("#depotTotalId,#depotStartedId,#depotNotStartedId").hide();
-	$("#depotWiseTodayDetailsId").html("");
 	$("#depotWiseTotalDetailsId").hide();
 	$("#depotWiseTodayDetailsId").show();
 }
@@ -731,7 +857,7 @@ var value = $(this).val();
 var divId = $(this).attr("attr_divId");
 var id = $(this).attr("attr_id");
 var trId = $(this).attr("attr_trId");
-getAffiliatedCadreDetails(id,divId,trId,value);
+getCadreDetails(id,divId,trId,value);
 });
 
 $(document).on("click",".closeIcon",function() {
@@ -744,14 +870,12 @@ $(document).on("click",".zoneClass",function() {
   if(value == "All"){
 	$("#todayZoneTotalId,#todayZoneStartedId,#todayZoneNotStartedId").hide();
 	$("#zoneTotalId,#zoneStartedId,#zoneNotStartedId").show();
-	$("#zoneWiseTotalDetailsDiv").html("");
 	$("#zoneWiseTotalDetailsDiv").show();
 	$("#zoneWiseTodayDetailsDiv").hide();
   }
   else if(value == "Today"){
 	$("#todayZoneTotalId,#todayZoneStartedId,#todayZoneNotStartedId").show();
 	$("#zoneTotalId,#zoneStartedId,#zoneNotStartedId").hide();
-	$("#zoneWiseTodayDetailsDiv").html("");
 	$("#zoneWiseTotalDetailsDiv").hide();
 	$("#zoneWiseTodayDetailsDiv").show();
   }
@@ -761,14 +885,12 @@ $(document).on("click",".regionClass",function() {
   if(value == "All"){
 	$("#todayTotalReionsId,#todayStartedRegionsId,#todayNonStartedRegionsId").hide();
 	$("#totalReionsId,#startedRegionsId,#nonStartedRegionsId").show();
-	$("#regionWiseTotalDetailsDiv").html("");
 	$("#regionWiseTodayDetailsDiv").hide();
 	$("#regionWiseTotalDetailsDiv").show();
   }
   else if(value == "Today"){
 	$("#todayTotalReionsId,#todayStartedRegionsId,#todayNonStartedRegionsId").show();
 	$("#totalReionsId,#startedRegionsId,#nonStartedRegionsId").hide();
-	$("#regionWiseTodayDetailsDiv").html("");
 	$("#regionWiseTotalDetailsDiv").hide();
 	$("#regionWiseTodayDetailsDiv").show();
   }
@@ -799,6 +921,8 @@ $(document).on("click",".othersCls",function() {
 });
 
 function getOnlineAndTabUsersCount(){
+	$("#dataLoadingsImgForOnlineAndTab").show();
+
 	var jObj={};
 	$.ajax({
 		type:"POST",
@@ -830,10 +954,12 @@ function getOnlineAndTabUsersCount(){
 				str+='</table>';
 			str+='</div>';
 			
+			$("#dataLoadingsImgForOnlineAndTab").hide();
 			$("#onlineAndTabUsersDiv").html(str);
 		}
 	});
 }
+
 </script>
 </body>
 </html>
