@@ -5961,7 +5961,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str = new StringBuilder();
 			
 			if(type !=null && type.equalsIgnoreCase("TAB")){
-				str.append(" select count(distinct model.createdBy) from TdpCadre model ");
+				str.append(" select count(distinct model.insertedUserId) from TdpCadre model ");
 			}
 			else if(type !=null && type.equalsIgnoreCase("WEB")){
 				str.append(" select count(distinct model.insertedWebUserId) from TdpCadre model ");
