@@ -399,6 +399,14 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
+	public List<TdpCadre> getAffliatedCadreByVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("select model from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' and model.tdpMemberTypeId=:tdpMemberTypeId ");
+		query.setParameter("voterId", voterId);
+		query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
+		return query.list();
+	}
+	
 	public Long checkRandomNoExistsOrNot(String dataSource,String randomNo){
         Query query = getSession().createQuery("select count(*) from TdpCadre model where  model.isDeleted = 'N' and model.dataSourceType=:dataSource and model.refNo =:randomNo ");
 		
@@ -1474,6 +1482,14 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		String resultQuery = "select model from TdpCadre model where model.tdpCadreOnline.orderId =:orderId";
 		Query query = getSession().createQuery(resultQuery);
 		query.setParameter("orderId", orderId);
+		return query.list();
+	}
+	
+	public List<TdpCadre> checkAffliatedCadreOnlineAccountExistsOrNot(String orderId){
+		String resultQuery = "select model from TdpCadre model where model.tdpCadreOnline.orderId =:orderId and model.tdpMemberTypeId = :tdpMemberTypeId ";
+		Query query = getSession().createQuery(resultQuery);
+		query.setParameter("orderId", orderId);
+		query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
 		return query.list();
 	}
 	
@@ -5870,8 +5886,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			{
 				query.setParameter("boothId", boothId);
 			}		
+			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))//2016
+			{
+				query.setParameter("cadreEnrollmentYear", IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
+			}
 			
-			query.setParameter("cadreEnrollmentYear", IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
 			if(startIndex != null && maxIndex != null){
 				  query.setFirstResult(startIndex);
 				  query.setMaxResults(maxIndex);

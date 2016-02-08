@@ -397,4 +397,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getAffiliatedCadreDetails(String type,String searchType,Long locationId);
 	  public List<Long> getVoterDetailsByVoterIdsAndRTCAffliatedCadre(List<Long> voterIdList);
 	  public Long getTodayTabAndWebUsersCount(String type);
+	  public List<TdpCadre> getAffliatedCadreByVoterId(Long voterId);
+	  public List<TdpCadre> checkAffliatedCadreOnlineAccountExistsOrNot(String orderId);
 }
