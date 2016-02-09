@@ -876,7 +876,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
-				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId);
+				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,null);
 							
 				if(user.getRegistrationID().longValue() != 3930L) // party office userId
 	    		{
