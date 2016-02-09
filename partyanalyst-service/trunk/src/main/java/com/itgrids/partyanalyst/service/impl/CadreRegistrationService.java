@@ -2337,7 +2337,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc,String constituencyId)
+	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc,String constituencyId,Long tdpMemberTypeId)
 	{
 		List<VoterInfoVO> returnList = null;
 		VoterInfoVO vo = null;
@@ -2399,7 +2399,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						voterId = voter.getVoterId();
 						houseNo = voter.getHouseNo() != null ? voter.getHouseNo().toString():"";
 						
-						List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId);
+						List<TdpCadre> tdpCadreList=null;
+						if(tdpMemberTypeId==null){
+							tdpCadreList = tdpCadreDAO.getNormalCadreDetailsByVoterId(voterId);
+						}else if(tdpMemberTypeId==2l){
+							tdpCadreList = tdpCadreDAO.getAffliatedCadreByVoterId(voterId);
+						}
 						
 						if(tdpCadreList != null && tdpCadreList.size()>0)
 						{
@@ -2535,6 +2540,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										vo.setDepotId(tdpCadre.getTdpCadreLocation().getRtcDepotId());
 									}
 								} 
+								
+								if(tdpCadre.getUserAddress().getStreet() != null && tdpCadre.getUserAddress().getStreet().trim() != ""){
+									vo.setStreet(tdpCadre.getUserAddress().getStreet());
+								}
+								
+								if(tdpCadre.getUserAddress().getAddressLane1() != null && !tdpCadre.getUserAddress().getAddressLane1().isEmpty()){
+									vo.setLandmark(tdpCadre.getUserAddress().getAddressLane1());
+								}
+								
+								
 							}
 						}
 						

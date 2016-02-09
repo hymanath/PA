@@ -360,7 +360,16 @@ public class RtcUnionService implements IRtcUnionService{
 			
 			 if(searchType.equalsIgnoreCase("voter")){
 				 
-				 addressVO=getVoterAddressDetailsByVoterId(candidateId);
+				 List<Long> tdpCadrelist=tdpCadreDAO.checkVoterAsAffliatedCadre(candidateId);
+				 Long tdpCadreId=null;
+				 if(tdpCadrelist!=null && tdpCadrelist.size()>0){
+					 tdpCadreId=tdpCadrelist.get(0);
+					 if(tdpCadreId!=null && tdpCadreId>0){
+						 addressVO=getVoterAddressDetailsByCadreId(tdpCadreId);
+					 }
+				 }else{
+					 addressVO=getVoterAddressDetailsByVoterId(candidateId);
+				 }
 				 
 			 }else  if(searchType.equalsIgnoreCase("cadre")){
 				 addressVO=getVoterAddressDetailsByCadreId(candidateId);
