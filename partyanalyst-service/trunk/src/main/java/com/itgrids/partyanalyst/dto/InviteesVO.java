@@ -20,6 +20,7 @@ public class InviteesVO implements java.io.Serializable {
 	private Long stateId;
 	private List<Long> rolesIds = new ArrayList<Long>();
 	
+	private List<InviteesVO> centralLevelVOList = new ArrayList<InviteesVO>();
 	private List<InviteesVO> stateLevelVOList = new ArrayList<InviteesVO>();
 	private List<InviteesVO> districtLevelVOList = new ArrayList<InviteesVO>();
 	private List<InviteesVO> mandalLevelVOList = new ArrayList<InviteesVO>();
@@ -200,6 +201,12 @@ public class InviteesVO implements java.io.Serializable {
 	}
 	public void setGroupVOList(List<InviteesVO> groupVOList) {
 		this.groupVOList = groupVOList;
+	}
+	public List<InviteesVO> getCentralLevelVOList() {
+		return centralLevelVOList;
+	}
+	public void setCentralLevelVOList(List<InviteesVO> centralLevelVOList) {
+		this.centralLevelVOList = centralLevelVOList;
 	}
 		
 }

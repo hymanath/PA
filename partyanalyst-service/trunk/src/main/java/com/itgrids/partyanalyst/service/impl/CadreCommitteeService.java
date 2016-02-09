@@ -12433,8 +12433,64 @@ return mandalList;
 					 List<Long> disstrictIds = new ArrayList<Long>();
 					 List<Long> locationValuesList = new ArrayList<Long>();
 					 List<Long> locationLevelIdsList = new ArrayList<Long>();
-					 //state111
-					 if(inviteeVO.getLevelStr().trim().equalsIgnoreCase("state"))
+					 if(inviteeVO.getLevelStr().trim().equalsIgnoreCase("central")){ //central
+						 List<InviteesVO> centralVOList = inviteeVO.getCentralLevelVOList();
+						 if(centralVOList != null && centralVOList.size()>0)
+						 {
+							 for (InviteesVO inviteesVO : centralVOList) {
+								 if(inviteesVO.getLevelId() != null && inviteesVO.getLevelId().longValue() == 12L)//central level
+								 {
+									 locationLevelIdsList.clear();
+									 locationLevelIdsList.add(inviteesVO.getLevelId().longValue());
+									 
+									 tdpCadresList = tdpCommitteeMemberDAO.getCommitteeMemberDetailsByPositionsForCentral(locationLevelIdsList,inviteesVO.getRolesIds());
+									 
+									 if(tdpCadresList != null && tdpCadresList.size()>0)
+									 {
+										 Long count = 0L;
+										 for (Object[] cadre : tdpCadresList) {
+											Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
+											String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
+											tdpCadreIdsList.add(cadreId);
+											
+											 if(startIndex == 0)
+												{
+													 if(compareCadreIds != null && compareCadreIds.size()>0)
+													 {
+														// for (Long candidateId : compareCadreIds) 
+														// {
+															if(!compareCadreIds.contains(cadreId))
+															{
+																if(statePositonsCountMap.get(positiion) != null)
+																{
+																	count = statePositonsCountMap.get(positiion);
+																}
+																count = count+1;
+																statePositonsCountMap.put(positiion,count);
+															}
+														// }
+													 }
+													 else
+													 {
+														 if(statePositonsCountMap.get(positiion) != null)
+															{
+																count = statePositonsCountMap.get(positiion);
+															}
+															count = count+1;
+															statePositonsCountMap.put(positiion,count);
+														
+													 }
+												}
+										 }
+										 
+										 compareCadreIds.addAll(tdpCadreIdsList);
+										 
+									 }
+								 }
+							 }
+						 }
+					 } //state111
+					 else if(inviteeVO.getLevelStr().trim().equalsIgnoreCase("state"))
 					 {
 						 List<InviteesVO> stateVOList = inviteeVO.getStateLevelVOList();
 						 if(stateVOList != null && stateVOList.size()>0)
