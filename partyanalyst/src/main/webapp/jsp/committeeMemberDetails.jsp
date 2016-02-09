@@ -324,6 +324,16 @@
 								</div>								
 							</div>
 							
+							<div class="panel panel-default" id="centralLevelCommitteId" style="display:none;">
+								<div class="panel-heading">
+									Central Level
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="CCaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>
+							
 							<div class="panel panel-default" id="stateLevelCommitteId" style="display:none;">
 								<div class="panel-heading">
 									State Level
@@ -367,6 +377,16 @@
 								<div class="panel-heading" style="background:#01B6AD;">
 									From Public Representatives
 								</div>								
+							</div>
+							
+							<div class="panel panel-default" id="centralLevelPRId" style="display:none;">
+								<div class="panel-heading">
+									Central Level 
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="PRCaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
 							</div>
 							
 							<div class="panel panel-default" id="stateLevelPRId" style="display:none;">
@@ -1144,7 +1164,35 @@
 						locationLevel = "Telangana State Level";
 					else
 					locationLevel = "State Level";
-				if(levelId == 10)
+					
+				if(levelId == 12)
+				{
+					if(memberType =='CadreMembers')
+					{
+						divId='CCaccordion';
+						$('#centralLevelCommitteId').show();
+						$('#buildSelectionBlockDiv').show();
+						$('#stateLevelId').show();
+					}
+					else if(memberType == 'publicRepresentatives')
+					{
+						divId='PRCaccordion';
+						$('#centralLevelPRId').show();
+						$('#buildSelectionPRBlockDiv').show();
+						$('#stateLevelHeadingId').show();
+					}
+					
+					levelValue = 0;
+					
+					/*if(stateId == 1)
+						locationLevel = "Andhra Pradesh State Level";
+					else if(stateId == 2)
+						locationLevel = "Telangana State Level";
+					else*/
+					locationLevel = "Central Level";
+					
+				}
+				else if(levelId == 10)
 				{
 					if(memberType =='CadreMembers')
 					{
@@ -1278,7 +1326,17 @@
 				locationLevel = locationName+" District";
 			}
 			else if(districtId == 0){
-				if(levelId == 10)
+				if(levelId == 12)
+				{
+				
+					/*if(stateId == 1)
+						locationLevel = "Andhra Pradesh State Level";
+					else if(stateId == 2)
+						locationLevel = "Telangana State Level";
+					else*/
+					locationLevel = "Central Level";
+				}
+				else if(levelId == 10)
 				{
 				
 					if(stateId == 1)
@@ -1552,6 +1610,7 @@
 		var submitArr = new Array();
 		var committeeIdsArr = new Array();
 		
+		var centralArr = new Array();
 		var stateArr = new Array();
 		var districtArr = new Array();
 		var mandalArr = new Array();
@@ -1585,7 +1644,8 @@
 				var roleId = $(this).attr('value');
 				var committeeId = $(this).attr('committeeid');
 				var isCommitteeExist = true;
-				var pushArr = stateArr;
+				//var pushArr = stateArr;
+				var pushArr = centralArr;
 				
 				var finalDistrictId = 0;
 				var finalConstiteuncyId = 0;
@@ -1631,6 +1691,10 @@
 					selectedLevel ="district";
 				}
 								
+				if(levelId == 12)
+				{
+					pushArr = centralArr;					
+				}
 				if(levelId == 10)
 				{
 					pushArr = stateArr;					
@@ -1694,6 +1758,15 @@
 			}		
 		});
 
+		if(centralArr.length>0)
+		{
+			var centralObj ={
+			levelStr:"central",
+			levelArr:centralArr
+			};
+			submitArr.push(centralObj);
+		}
+		
 		if(stateArr.length>0)
 		{
 			var stateObj ={
@@ -2188,8 +2261,15 @@
 		//COMMITTEE , PR
 		if(type.trim() == 'COMMITTEE')
 		{
-			var divLength = $('#CSaccordion').html().trim().length;
+			var divLength = $('#CCaccordion').html().trim().length;
 			var str='';
+			if(divLength == 0)
+			{
+				$('#centralLevelCommitteId').css('display','none');
+				str+='C';
+			}
+			
+			divLength = $('#CSaccordion').html().trim().length;
 			if(divLength == 0)
 			{
 				$('#stateLevelCommitteId').css('display','none');
@@ -2217,7 +2297,7 @@
 				str+='V';
 			}
 			
-			if(str.trim().length >0 && str == 'SDMV')
+			if(str.trim().length >0 && str == 'CSDMV')
 			{				
 				$('#stateLevelId').css('display','none');
 				isCMembersAvail = false;
@@ -2228,6 +2308,13 @@
 		{
 			var divLength = $('#PRSaccordion').html().trim().length;
 			var str='';
+			if(divLength == 0)
+			{
+				$('#centralLevelPRId').css('display','none');
+				str+='C';
+			}
+			
+			divLength = $('#PRSaccordion').html().trim().length;
 			if(divLength == 0)
 			{
 				$('#stateLevelPRId').css('display','none');
@@ -2255,7 +2342,7 @@
 				str+='V';
 			}
 			
-			if(str.trim().length >0 && str == 'SDMV')
+			if(str.trim().length >0 && str == 'CSDMV')
 			{				
 				$('#stateLevelHeadingId').css('display','none');
 				isPRMembersAvail = false;
@@ -2460,15 +2547,18 @@
 				  str+='<label class="select-label">Level</label>';
 				  str+=' <div class="cs-select cs-skin-slide stateSlide" tabindex="0" onclick="selectChange(\'stateSlide\')">';
 				  
-				  str+='<span class="cs-placeholder stateName" value="10">State</span>';
+				  //str+='<span class="cs-placeholder stateName" value="10">State</span>';
+				  str+='<span class="cs-placeholder stateName" value="12">Central</span>';
 				  str+='<div class="cs-options">';
 					  str+='<ul class="scrollbar stateList">';
+					   str+='<li data-value="12" data-option="" class="stateEle"><span>Central</span></li>';
 					   str+='<li data-value="10" data-option="" class="stateEle"><span>State</span></li>';
 					   str+='<li data-value="11" data-option="" class="stateEle"><span>District</span></li>';
 					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Muncipality </span></li>';
 					   str+='<li data-value="6" data-option="" class="stateEle"><span>Village/Ward</span></li>';
 					  str+='</ul>';
 				  str+='</div><select class="cs-select cs-skin-slide" id="levelId">';
+				    str+='<option value="12">Central</option>';
 					str+='<option value="10">State</option>';
 					str+='<option value="11">District</option>';
 					str+='<option value="5">Mandal/Muncipality</option>';

@@ -952,7 +952,11 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     					}
     				}
     				
-    				if(committeeLevelVO.getLevelStr().trim().equalsIgnoreCase("state"))
+    				if(committeeLevelVO.getLevelStr().trim().equalsIgnoreCase("central"))
+    				{
+    					committeeLevelVO.setCentralLevelVOList(levelWiseList);
+    				}
+    				else if(committeeLevelVO.getLevelStr().trim().equalsIgnoreCase("state"))
     				{
     					committeeLevelVO.setStateLevelVOList(levelWiseList);
     				}
