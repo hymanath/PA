@@ -57,12 +57,16 @@ public class TrainingCampCadreGoalDAO extends GenericDaoHibernate<TrainingCampCa
 		return query.list();
 	}
 	public int deleteGoalsforACadre(List<Long> ids){
-		
-		Query query=getSession().createQuery(" delete from TrainingCampCadreGoal model " +
-		" where model.trainingCampCadreGoalId in(:ids)");
-		query.setParameterList("ids",ids);
-		int count = query.executeUpdate();	
-		return count;
+		if(ids != null && ids.size()>0){
+			Query query=getSession().createQuery(" delete from TrainingCampCadreGoal model " +
+			" where model.trainingCampCadreGoalId in(:ids)");
+			query.setParameterList("ids",ids);
+			int count = query.executeUpdate();	
+			return count;
+		}
+		else
+			
+			return 0;
 	}
 	
 }
