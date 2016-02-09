@@ -394,16 +394,22 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public List<TdpCadre> getVoterByVoterId(Long voterId)
 	{
-		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N'");
+		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' ");
 		query.setParameter("voterId", voterId);
 		return query.list();
 	}
-	
+	public List<TdpCadre> getNormalCadreDetailsByVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' and model.tdpMemberTypeId is null ");
+		query.setParameter("voterId", voterId);
+		return query.list();
+	}
 	public List<TdpCadre> getAffliatedCadreByVoterId(Long voterId)
 	{
-		Query query = getSession().createQuery("select model from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' and model.tdpMemberTypeId=:tdpMemberTypeId ");
+		Query query = getSession().createQuery("select model from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' and model.tdpMemberTypeId=:tdpMemberTypeId and model.enrollmentYear = :enrollmentYear ");
 		query.setParameter("voterId", voterId);
 		query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
+		query.setParameter("enrollmentYear",  IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
 		return query.list();
 	}
 	
@@ -5996,5 +6002,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return (Long) query.uniqueResult();
 		}
-		
+		public List<Long> checkVoterAsAffliatedCadre(Long voterId){
+			
+			Query query=getSession().createQuery(" select model.tdpCadreId from  TdpCadre model where model.isDeleted='N' and model.tdpMemberTypeId=:tdpMemberTypeId and model.voterId=:voterId and model.enrollmentYear in (:enrollmentYear) ");
+			query.setParameter("voterId", voterId);
+			query.setParameter("enrollmentYear",  IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
+			query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
+			
+			return query.list();
+		}
 }

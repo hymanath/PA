@@ -37,7 +37,7 @@ public interface ICadreRegistrationService {
 	
 	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
 	
-	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc,String constiteucnyId);
+	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc,String constituencyId,Long tdpMemberTypeId);
 	
 	public List<GenericVO> getBoothCoverdVillagesDetails(List<Long> boothIds);
 	
