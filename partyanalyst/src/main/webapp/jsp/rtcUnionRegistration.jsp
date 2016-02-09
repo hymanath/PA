@@ -509,11 +509,12 @@
 		var zoneSelId = $('#zoneSelectId').val();
 		var regionSelId = $('#regionSelectId').val();
 		var depotSelId = $('#depotSelectId').val();
+		var employeeId = $('#emplyeeId').val();
 		
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
-		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr').html('');
+		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#employeeErr').html('');
 		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
 			 $('#gendReqErr').html('Please select gender');
 		 }
@@ -666,6 +667,11 @@
 		{
 			isErrorStr = " error";
 			$('#NrelationErr').html(' Nominee Relation required.');
+		}
+		if(employeeId != null && employeeId.trim().length == 0)
+		{
+			isErrorStr = " error";
+			$('#employeeErr').html(' Employee ID required.');
 		}
 		
 		$('.fromDateCls').each(function(){
@@ -1659,8 +1665,8 @@
 									
 							</div>-->
 							
-							<div class="span7" >
-								<h5 class="text-align1">Employee Id</h5>
+							<div class="span8" >
+								<h5 class="text-align1">Employee Id <span class="mandatory">*</span> <span id="employeeErr" style="color:red;font-size:12px;"></span></h5>
 								<input type="text" id="emplyeeId" style="width: 138px;"placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value="${voterInfoVOList[0].employeeId}"/>
 							</div>
 							<div class="span8" >
