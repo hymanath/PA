@@ -1516,6 +1516,19 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return query.list();
 	}
 
+	public List<Object[]> getCommitteeMemberDetailsByPositionsForCentral(List<Long> committeeLevelIds,List<Long> commiteeRoleIds){
+		Query query = getSession().createQuery(" select distinct model.tdpCadreId, " +
+								" model.tdpCommitteeRole.tdpRoles.role " +
+								" from TdpCommitteeMember model " +
+								" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) " +
+								" and model.tdpCommitteeRole.tdpRoles.tdpRolesId in (:commiteeRoleIds) " +
+								" and model.isActive ='Y' ");
+		query.setParameterList("committeeLevelIds", committeeLevelIds);
+		query.setParameterList("commiteeRoleIds", commiteeRoleIds);
+		
+		return query.list();
+	}
+
 	public List<Object[]> getCommiteeMembersDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,Integer startIndex,Integer maxIndex)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
