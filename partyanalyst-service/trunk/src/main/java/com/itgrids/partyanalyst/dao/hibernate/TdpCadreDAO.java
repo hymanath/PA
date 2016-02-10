@@ -5836,7 +5836,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		public List checkUnionMemberExists(String voterCardNo)
 		{
 			Query query = getSession().createQuery("select model.tdpCadreId,model.voter.voterIDCardNo from TdpCadre model where model.voter.voterIDCardNo = :voterCardNo" +
-					" and model.tdpMemberType.tdpMemberTypeId = 2");
+					" and model.tdpMemberType.tdpMemberTypeId = 2 " +
+					" and model.isDeleted='N'");
 			query.setParameter("voterCardNo", voterCardNo);
 			return query.list();
 		}
