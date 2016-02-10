@@ -1326,32 +1326,56 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		SurveyCadreResponceVO  surveyCadreResponceVO = null;
 		if(inputResponseList != null && inputResponseList.size() > 0)
 		{
-			if(IConstants.ENABLE_CADRE_LOGS)
-			for (CadreRegistrationVO inputResponse : inputResponseList)
-			{
-				LOG.error(inputResponse.toString());
-				
-				LOG.error("Voter Name  " + "-" + inputResponse.getVoterName() + "-" 
-				+ "Date Of Birth "+  "-" + inputResponse.getDob() +"-"
-				+ "Gender " +inputResponse.getGender()+  "-" 
-				+ "Relative Name"+ inputResponse.getRelativeName() +"-" 
-				+ "VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" 
-				+ "H.NO" + inputResponse.getHouseNo() + "-" 
-				//+ "Party Member Since" +inputResponse.getPartyMemberSince()  + "-" 
-				+ "Blood Group " + inputResponse.getBloodGroupId() + "-" 
-				+ "Street/hamle" +inputResponse.getStreet() +"-" 
-				+ "Caste" + inputResponse.getCasteId() + "-" 
-				+ "Mobile No" + inputResponse.getMobileNumber() + "-" 
-				+ "Education" +inputResponse.getEducationId() + "-" 
-				+ "Designation" + inputResponse.getDesignationId() + "-"
-				+ "UserMode" + inputResponse.getUserMode() + "-"
-				+ "Depot Id" + inputResponse.getDepotId() + "-"
-				+ "Region Id" + inputResponse.getRegionId() + "-"
-				+ "Zone Id" + inputResponse.getZoneId() + "-"
-				//+ "Occupation " +inputResponse.getOccupationId() + "-" 
-				//+ "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber()
-				);
+			for (CadreRegistrationVO inputResponse : inputResponseList){
+				//setting address to corresponding fields.
+				if(inputResponse.getDistrictId()!=null && inputResponse.getDistrictId().trim().length()>0){
+					inputResponse.setPerAddrsDistId(Long.valueOf(inputResponse.getDistrictId()));
+				}
+				if(inputResponse.getConstituencyId()!=null && inputResponse.getConstituencyId().trim().length()>0){
+					inputResponse.setPerAddrsConstId((Long.valueOf(inputResponse.getConstituencyId())));
+				}
+				if(inputResponse.getMandalId()!=null && inputResponse.getMandalId().trim().length()>0){
+					inputResponse.setPerAddrsMandalId( Long.valueOf(inputResponse.getMandalId()) );
+				}
+				if(inputResponse.getMuncipalityId()!=null && inputResponse.getMuncipalityId().trim().length()>0){
+					inputResponse.setPerAddrsLebId( Long.valueOf(inputResponse.getMuncipalityId()) );
+				}
+				if(inputResponse.getPanchayatId()!=null && inputResponse.getPanchayatId().trim().length()>0){
+					inputResponse.setPerAddrsVillId( Long.valueOf(inputResponse.getPanchayatId()) );
+				}
+				if(inputResponse.getWardId()!=null && inputResponse.getWardId().trim().length()>0){
+					inputResponse.setPerAddrsWardId( Long.valueOf(inputResponse.getWardId()) );
+				}
 			}
+			
+			if(IConstants.ENABLE_CADRE_LOGS){
+				for (CadreRegistrationVO inputResponse : inputResponseList)
+				{
+					LOG.error(inputResponse.toString());
+					
+					LOG.error("Voter Name  " + "-" + inputResponse.getVoterName() + "-" 
+					+ "Date Of Birth "+  "-" + inputResponse.getDob() +"-"
+					+ "Gender " +inputResponse.getGender()+  "-" 
+					+ "Relative Name"+ inputResponse.getRelativeName() +"-" 
+					+ "VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" 
+					+ "H.NO" + inputResponse.getHouseNo() + "-" 
+					//+ "Party Member Since" +inputResponse.getPartyMemberSince()  + "-" 
+					+ "Blood Group " + inputResponse.getBloodGroupId() + "-" 
+					+ "Street/hamle" +inputResponse.getStreet() +"-" 
+					+ "Caste" + inputResponse.getCasteId() + "-" 
+					+ "Mobile No" + inputResponse.getMobileNumber() + "-" 
+					+ "Education" +inputResponse.getEducationId() + "-" 
+					+ "Designation" + inputResponse.getDesignationId() + "-"
+					+ "UserMode" + inputResponse.getUserMode() + "-"
+					+ "Depot Id" + inputResponse.getDepotId() + "-"
+					+ "Region Id" + inputResponse.getRegionId() + "-"
+					+ "Zone Id" + inputResponse.getZoneId() + "-"
+					//+ "Occupation " +inputResponse.getOccupationId() + "-" 
+					//+ "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber()
+					);
+				}
+			}
+			
 				surveyCadreResponceVO=cadreRegistrationService.saveAfflicatedCadreRegistration(inputResponseList,"TAB");	
 		}
 		

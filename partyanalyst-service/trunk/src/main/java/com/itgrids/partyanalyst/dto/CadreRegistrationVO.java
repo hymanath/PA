@@ -136,7 +136,7 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		prsntAddrsDivionId;
 	private Long		prsntAddrsVillId;
 	private Long		prsntAddrsWardId;
-	
+	private String        districtId;
 	
 	public String getUserMode() {
 		return userMode;
@@ -802,8 +802,11 @@ public class CadreRegistrationVO implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-   	
-	
+	public String getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(String districtId) {
+		this.districtId = districtId;
+	}
 	
 }
