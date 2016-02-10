@@ -1689,7 +1689,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						
 						tdpCadre.setIsRelative("Y");
-						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
+						tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
 						/*if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
 						{
 							tdpCadre.setRelationType(voterRelationDAO.get(Long.valueOf(cadreRegistrationVO.getRelationType())));
@@ -11329,7 +11329,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						{
 							surveyCadreResponceVO.setUniqueKey(cadreRegistrationVO.getUniqueKey());
 							surveyCadreResponceVO.setVoterName(cadreRegistrationVO.getVoterName());
-							surveyCadreResponceVO.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
+							if(cadreRegistrationVO.getVoterId()!=null && cadreRegistrationVO.getVoterId().trim().length()>0){
+								surveyCadreResponceVO.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
+							}
+							
 							surveyCadreResponceVO.setRelativeName(cadreRegistrationVO.getRelativeName());
 						}
 					}
