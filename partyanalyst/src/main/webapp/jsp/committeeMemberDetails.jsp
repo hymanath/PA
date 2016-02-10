@@ -212,7 +212,7 @@
 				</div>
 				<div class="col-md-2 locationsCls" id="panchayatDiv">
 					<section>
-							<label class="select-label">Panchayat</label>
+							<label class="select-label" style="margin-top: 10px;">Village/Ward</label>
 							<select class="cs-select cs-skin-slide">
 								<option value="0" >ALL</option>
 							   
