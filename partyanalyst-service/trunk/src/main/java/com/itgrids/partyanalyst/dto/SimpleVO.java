@@ -105,9 +105,18 @@ public class SimpleVO implements java.io.Serializable{
    private Long age=0l;
    private String caste;
    
+   private Long confirmedCount=0L;
+
    
    
-   	public String getCaste() {
+public Long getConfirmedCount() {
+	return confirmedCount;
+}
+public void setConfirmedCount(Long confirmedCount) {
+	this.confirmedCount = confirmedCount;
+}
+
+	public String getCaste() {
 	return caste;
 }
 public void setCaste(String caste) {
