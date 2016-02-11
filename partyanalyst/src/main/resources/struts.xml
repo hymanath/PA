@@ -11485,6 +11485,12 @@
 	    	<param name="root">rtcUnionVO</param>
 	    </result>
 	</action>
+
+         <action name="getLevelIdDetailsForCadreCommitteeAction" class="cadreCommitteeAction" method="getLevelIdDetailsForCadreCommittee">
+			<result type="json" name="success">
+				<param name="root">basicList</param> 
+			</result>
+		</action>
 	
 </package>
 </struts>      
