@@ -19,15 +19,10 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
-
-
-
-
 @Entity
 @Table(name = "ivr_survey_entity")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class IvrSurveyEntity extends BaseModel implements Serializable {
-	
 	
 	private Long ivrSurveyEntityId;
 	private Long ivrSurveyEntityTypeId;
@@ -37,7 +32,9 @@ public class IvrSurveyEntity extends BaseModel implements Serializable {
 	private IvrSurveyEntityType ivrSurveyEntityType;
 	private IvrSurvey ivrSurvey;
 	
-	@Column(name="ivr_survey_entity_id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ivr_survey_entity_id", unique = true, nullable = false)
 	public Long getIvrSurveyEntityId() {
 		return ivrSurveyEntityId;
 	}
@@ -85,6 +82,4 @@ public class IvrSurveyEntity extends BaseModel implements Serializable {
 	public void setIvrSurvey(IvrSurvey ivrSurvey) {
 		this.ivrSurvey = ivrSurvey;
 	}
-	
-	
 }
