@@ -765,6 +765,7 @@
 				 <value>com.itgrids.partyanalyst.model.TdpCadreLocation</value>
 				 <value>com.itgrids.partyanalyst.model.TdpMemberType</value>
 				 <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
+				  <value>com.itgrids.partyanalyst.model.TrainingCampStaff</value>
 				 
 				 <value>com.itgrids.partyanalyst.model.IvrSurvey</value>
 				 <value>com.itgrids.partyanalyst.model.IvrQuestion</value>
@@ -776,7 +777,12 @@
 				 <value>com.itgrids.partyanalyst.model.IvrRespondentCadre</value>
 				 <value>com.itgrids.partyanalyst.model.IvrResponseType</value>
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyAnswerInfo</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyAnswer</value>
+				 <value>com.itgrids.partyanalyst.model.IvrRegionScopes</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyScope</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyLocation</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntityType</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntity</value>
 			     </list>
 			
 		</property>
