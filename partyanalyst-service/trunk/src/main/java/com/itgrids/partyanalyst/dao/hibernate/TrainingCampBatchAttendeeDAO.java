@@ -181,24 +181,39 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
    }
    
    public List<Object[]> getRunningUpcomingCountDetails(List<Long> batchIds){
-	   Query query = getSession().createQuery(" select model.trainingCampBatchId, model.tdpCadreId " +
+	   Query query = getSession().createQuery(" select distinct model.trainingCampBatchId, model.tdpCadreId " +
 	   		" from TrainingCampBatchAttendee model " +
 	   		" where model.trainingCampBatchId in (:batchIds) and model.isDeleted = 'false' and model.trainingCampBatch.isCancelled='false' and model.trainingCampBatch.attendeeType.attendeeTypeId=1 and model.trainingCampBatch.attendeeType.isDeleted='false' ");
 	   query.setParameterList("batchIds", batchIds);
 	   return (List<Object[]>)query.list();
    }
    
-   public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate){
+   public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList){
 	   
 	   StringBuilder sb=new StringBuilder();
 	   
-	   sb.append(" select count(distinct model.tdpCadreId) from TrainingCampBatchAttendee model where model.trainingCampBatchId=:trainingCampBatchId " +
-	   		" and model.trainingCampBatch.attendeeTypeId=1 " );
-	   
-	   if(fromDate!=null && toDate!=null){
-		   sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate ");
+	   sb.append(" select count(distinct model.tdpCadre.tdpCadreId) from TrainingCampBatchAttendee model where  " +
+	   		" model.trainingCampBatch.attendeeTypeId=1 " );
+	   if(batchId != null && batchId.longValue()>0L)
+	   {
+		   sb.append(" and model.trainingCampBatchId=:trainingCampBatchId ");
+		   
+		   if(fromDate!=null && toDate!=null){
+			   sb.append(" and (date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate) ");
+		   }
 	   }
-	   	
+	   else if(searchTypeStr != null && fromDate!=null && toDate!=null){
+		   if(searchTypeStr.trim().equalsIgnoreCase("upcoming"))
+			   sb.append(" and ( date(model.trainingCampBatch.fromDate) > :fromDate and date(model.trainingCampBatch.toDate) > :toDate) ");
+		   else  if(searchTypeStr.trim().equalsIgnoreCase("running"))
+			   sb.append(" and ( (:fromDate between date(model.trainingCampBatch.fromDate)  and date(model.trainingCampBatch.toDate) ) or " +
+			   		" (:toDate between date(model.trainingCampBatch.fromDate)  and date(model.trainingCampBatch.toDate) ) ) ");
+		   else  if(searchTypeStr.trim().equalsIgnoreCase("completed"))
+			   sb.append(" and (date(model.trainingCampBatch.fromDate) < :fromDate and date(model.trainingCampBatch.toDate) < :toDate ) ");
+	   }
+	   if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+		   sb.append(" and model.tdpCadre.tdpCadreId not in (:staffCadreIdsList) " );
+	   
 	   sb.append(" and model.isDeleted = 'false' ");
 	   
 	   Query query=getSession().createQuery(sb.toString());
@@ -206,7 +221,11 @@ public class TrainingCampBatchAttendeeDAO extends GenericDaoHibernate<TrainingCa
 		   query.setParameter("fromDate", fromDate);
 		   query.setParameter("toDate", toDate);
 	   }
-	   query.setParameter("trainingCampBatchId",batchId);
+	   if(batchId != null && batchId.longValue()>0L)
+		   query.setParameter("trainingCampBatchId",batchId);
+	   if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+		   query.setParameterList("staffCadreIdsList",staffCadreIdsList);
+	   
 	   return (Long)query.uniqueResult();
    }
    public List<Object[]> getConfirmedCadreByBatch(Long batchId){

@@ -153,7 +153,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
  public List<Object[]> getCompletedCountDetails(List<Long> batchIds){
 		Query query = getSession().createQuery(" select distinct model.trainingCampBatch.trainingCampBatchId, model.attendance.tdpCadre.tdpCadreId " +
 				" from TrainingCampAttendance model " +
-				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) and model.trainingCampBatch.attendeeTypeId=1  ");
+				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) and model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled='false'  ");
 		query.setParameterList("batchIds", batchIds);
 		return (List<Object[]>)query.list();
 }
@@ -190,7 +190,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	  StringBuilder sb=new StringBuilder();
 	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
 				" from TrainingCampAttendance model " +
-				" where model.trainingCampBatch.trainingCampBatchId =:batchId and model.trainingCampBatch.attendeeTypeId=1  ");
+				" where model.trainingCampBatch.trainingCampBatchId =:batchId and model.trainingCampBatch.attendeeTypeId=1 and  model.trainingCampBatch.isCancelled ='false' ");
 	  if(fromDate!=null && toDate!=null){
 		  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
 	  }
@@ -203,6 +203,81 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		query.setParameter("batchId", batchId);
 		return (Long)query.uniqueResult();
   }
+  
+  public Long getInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr ,List<Long> staffCadreIdsList)
+  {
+	  StringBuilder sb=new StringBuilder();
+	  
+	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
+				" from TrainingCampAttendance model, TrainingCampBatchAttendee model1  " +
+				" where  model1.tdpCadre.tdpCadreId = model.attendance.tdpCadre.tdpCadreId and model1.isDeleted ='false' and " +
+				" model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
+	  if(batchId != null && batchId.longValue()>0L){
+		  sb.append(" and model.trainingCampBatch.trainingCampBatchId =:batchId ");
+		  if(fromDate!=null && toDate!=null){
+			  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+		  }
+	  }
+	  else if(searchTypeStr != null && fromDate!=null && toDate!=null){		   
+		   if(searchTypeStr.trim().equalsIgnoreCase("running"))
+			   sb.append(" and ( (:fromDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) ) or " +
+			   		" (:toDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) )  )");
+		   else  if(searchTypeStr.trim().equalsIgnoreCase("completed"))
+			   sb.append(" and (date(model.trainingCampBatch.fromDate) < :fromDate and date(model.trainingCampBatch.toDate) < :toDate ) ");
+	   }
+	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIdsList) " );
+	  
+	  Query query = getSession().createQuery(sb.toString());
+		if(fromDate!=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(batchId != null && batchId.longValue()>0L)			
+			query.setParameter("batchId", batchId);
+		if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+		   query.setParameterList("staffCadreIdsList",staffCadreIdsList);
+		
+		return (Long)query.uniqueResult();
+  }
+  
+  public Long getNonInviteesAttendedCountByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList)
+  {
+	  StringBuilder sb=new StringBuilder();
+	  
+	  sb.append(" select count(distinct model.attendance.tdpCadre.tdpCadreId) " +
+				" from TrainingCampAttendance model  " +
+				" where  model.attendance.tdpCadre.tdpCadreId not in ( select distinct model1.tdpCadre.tdpCadreId from  TrainingCampBatchAttendee model1  " +
+				" where  model1.isDeleted ='false' )  and " +
+				" model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
+	  if(batchId != null && batchId.longValue()>0L){
+		  sb.append(" and model.trainingCampBatch.trainingCampBatchId =:batchId ");
+		  if(fromDate!=null && toDate!=null){
+			  sb.append(" and date(model.trainingCampBatch.fromDate) >= :fromDate and date(model.trainingCampBatch.toDate) <= :toDate");
+		  }
+	  }
+	  else if(searchTypeStr != null && fromDate!=null && toDate!=null){		   
+		   if(searchTypeStr.trim().equalsIgnoreCase("running"))
+			   sb.append(" and ( (:fromDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate) ) or " +
+			   		" (:toDate between date(model.trainingCampBatch.fromDate) and date(model.trainingCampBatch.toDate))) ");
+		   else  if(searchTypeStr.trim().equalsIgnoreCase("completed"))
+			   sb.append(" and (date(model.trainingCampBatch.fromDate) < :fromDate and date(model.trainingCampBatch.toDate) < :toDate ) ");
+	   }
+	  if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+		   sb.append(" and model.attendance.tdpCadre.tdpCadreId not in (:staffCadreIdsList) " );
+	  Query query = getSession().createQuery(sb.toString());
+		if(fromDate!=null && toDate!=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(batchId != null && batchId.longValue()>0L)			
+			query.setParameter("batchId", batchId);
+		if(staffCadreIdsList != null && staffCadreIdsList.size()>0)
+			query.setParameterList("staffCadreIdsList",staffCadreIdsList);
+		
+		return (Long)query.uniqueResult();
+  }
+  
   public List<Object[]> getDateWiseCountsByBatch(Long batchId,Date fromDate,Date toDate){
 	  StringBuilder sb=new StringBuilder();
 	  
