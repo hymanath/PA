@@ -10873,6 +10873,12 @@
 		</result>
 	</action>
 	
+	<action name="getAllTrainingCampDetailsAjaxAction" class="cadreDetailsAction" method="getAllTrainingCampDetails">
+	    <result type="json" name="success">		   
+		    <param name="root">simpleVoList</param>
+		</result>
+	</action>
+	
 	<action name="getAttendedCountSummaryByBatchAction" class="trainingCampAction" method="getAttendedCountSummaryByBatch">
 	    <result type="json" name="success">		   
 		    <param name="root">simpleVOList</param>
