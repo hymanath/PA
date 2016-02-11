@@ -20,7 +20,7 @@ public interface ITrainingCampBatchAttendeeDAO extends GenericDao<TrainingCampBa
 	public List<String> getAttendeesForATrainingCampBatch(Long trainingCampBatchId);
 	public List<Object[]> getRunningUpcomingCounts(List<Long> batchIds);
     
-	public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate);
+	public Long getConfirmedCountsByBatch(Long batchId,Date fromDate,Date toDate,String searchTypeStr,List<Long> staffCadreIdsList);
 	public List<Object[]> getConfirmedCadreByBatch(Long batchId);
 	public List<TrainingCampBatchAttendee> getAttendeeDetailsByInviteeId(Long inviteeId, Long batchId,Long scheduleId);
 	public List<Long> getRunningUpcomingAttendeeCounts(Long batchId);
