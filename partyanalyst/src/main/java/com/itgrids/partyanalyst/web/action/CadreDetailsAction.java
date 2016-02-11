@@ -760,4 +760,14 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 	}
 
+	public String getAllTrainingCampDetails(){
+		try{
+			simpleVoList=trainingCampService.getAllTrainingCampDetails();			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getTotalIVRDetailsByTdpCadreId() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+
+
 }
