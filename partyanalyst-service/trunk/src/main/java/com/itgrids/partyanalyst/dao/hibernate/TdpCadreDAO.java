@@ -5682,7 +5682,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		public List<Object[]> getAffliatedCadreCountDetails(String type,Date date){
 			
 			StringBuilder str = new StringBuilder();			
-			str.append(" select model.dataSourceType,count(model.tdpCadreId) from TdpCadre model" +
+			str.append(" select model.dataSourceType,count(distinct model.tdpCadreId) from TdpCadre model" +
 					" where model.isDeleted ='N' and model.tdpMemberTypeId = 2 ");			
 			if(type !=null && type.equalsIgnoreCase("toDay")){
 				str.append(" and date(model.updatedTime) = :date ");
@@ -5708,9 +5708,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			*/
 			StringBuilder str = new StringBuilder();
 			
-			str.append(" select model.tdpCadreLocation.rtcZone.rtcZoneId,model.tdpCadreLocation.rtcZone.zoneName," +
+			str.append(" select tdpCadreLocation.rtcZone.rtcZoneId,tdpCadreLocation.rtcZone.zoneName," +
 					" model.dataSourceType,count(distinct model.tdpCadreId) " +
-					" from TdpCadre model" +
+					" from TdpCadre model " +
+					" left join model.tdpCadreLocation tdpCadreLocation " +
 					" where model.tdpMemberTypeId = 2" +
 					"  and model.isDeleted ='N' ");
 			
@@ -5718,8 +5719,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				str.append(" and date(model.updatedTime) = :date ");
 			}	
 			
-			str.append(" group by model.tdpCadreLocation.rtcZone.rtcZoneId,model.dataSourceType " +
-					" order by model.tdpCadreLocation.rtcZone.zoneName ");
+			str.append(" group by tdpCadreLocation.rtcZone.rtcZoneId,model.dataSourceType " +
+					" order by tdpCadreLocation.rtcZone.zoneName ");
 			
 			Query query = getSession().createQuery(str.toString());	
 			
@@ -5735,16 +5736,17 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			StringBuilder str = new StringBuilder();
 			
-			str.append(" select model.tdpCadreLocation.rtcRegion.rtcRegionId,model.tdpCadreLocation.rtcRegion.regionName," +
+			str.append(" select tdpCadreLocation.rtcRegion.rtcRegionId,tdpCadreLocation.rtcRegion.regionName," +
 					" model.dataSourceType,count(distinct model.tdpCadreId) " +
-					" from TdpCadre model" +
+					" from TdpCadre model " +
+					" left join model.tdpCadreLocation tdpCadreLocation " +
 					" where model.tdpMemberTypeId = 2" +
 					"  and model.isDeleted ='N' ");			
 			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
 				str.append(" and date(model.updatedTime) = :date ");
 			}			
-			str.append(" group by model.tdpCadreLocation.rtcRegion.rtcRegionId,model.dataSourceType " +
-					" order by model.tdpCadreLocation.rtcRegion.regionName ");			
+			str.append(" group by tdpCadreLocation.rtcRegion.rtcRegionId,model.dataSourceType " +
+					" order by tdpCadreLocation.rtcRegion.regionName ");			
 			Query query = getSession().createQuery(str.toString());				
 			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
 				query.setParameter("date",date);
@@ -5757,16 +5759,17 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			StringBuilder str = new StringBuilder();
 			
-			str.append(" select model.tdpCadreLocation.rtcDepot.rtcDepotId,model.tdpCadreLocation.rtcDepot.depotName," +
+			str.append(" select tdpCadreLocation.rtcDepot.rtcDepotId,tdpCadreLocation.rtcDepot.depotName," +
 					" model.dataSourceType,count(distinct model.tdpCadreId) " +
-					" from TdpCadre model" +
+					" from TdpCadre model " +
+					" left join model.tdpCadreLocation tdpCadreLocation " +
 					" where model.tdpMemberTypeId = 2" +
 					"  and model.isDeleted ='N' ");			
 			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
 				str.append(" and date(model.updatedTime) = :date ");
 			}			
-			str.append(" group by model.tdpCadreLocation.rtcDepot.rtcDepotId,model.dataSourceType " +
-					" order by model.tdpCadreLocation.rtcDepot.depotName ");			
+			str.append(" group by tdpCadreLocation.rtcDepot.rtcDepotId,model.dataSourceType " +
+					" order by tdpCadreLocation.rtcDepot.depotName ");			
 			Query query = getSession().createQuery(str.toString());				
 			if(searchType !=null && searchType.equalsIgnoreCase("toDay")){
 				query.setParameter("date",date);
