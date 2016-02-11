@@ -412,11 +412,7 @@ footer
 									</c:if>
 									</ul>
 							</li></c:if>
-						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREIVRDASHBOARD' ) || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT_ADMIN') }">
-						 <li>
-							<a href="pollingManagmentAction.action"><i class="fa fa-group ico-white"></i><span>&nbsp;&nbsp; GHMC Elections -  2016 </span></a>
-						</li>
-						</c:if>
+						
 						<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
 					   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'VOTER_SEARCH_AND_EDIT' ) || fn:contains(sessionScope.USER.entitlements, 'PROBLEM_MANAGEMENT_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'ADMIN_PAGE' ) || fn:contains(sessionScope.USER.entitlements, 'VOTER_DATA_TOOLS' )}">
 						 <li>
@@ -486,9 +482,14 @@ footer
 								
 								 <h2><img class=" ico-white line_heightDiv pull-left" src="images/elections.jpg"></img> Elections</h2>
 								 <ul>
-								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) }">
-								 <li>
-									<a href="currentBoothsStatus.action"><i class="fa fa-link ico-white"></i><span>&nbsp;&nbsp;Tirupathi Bye Elections Poll Management</span></a>
+								 <c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREIVRDASHBOARD' ) || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'POLLING_MANAGEMENT_ENTITLEMENT_ADMIN') }">
+									 <li>
+										<a href="pollingManagmentAction.action"><i class="fa fa-group ico-white"></i><span>&nbsp;&nbsp; GHMC Elections -  2016 </span></a>
+									</li>
+									</c:if>
+										<c:if test="${sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TIRUPATHI_BYEELECTION' ) }">
+										<li>
+											<a href="currentBoothsStatus.action"><i class="fa fa-link ico-white"></i><span>&nbsp;&nbsp;Tirupathi Bye Elections Poll Management</span></a>
 									</li></c:if>
 									<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' ) }">
 									  <li>
