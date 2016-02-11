@@ -2061,4 +2061,20 @@ public String getSummaryDetails(){
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getLevelIdDetailsForCadreCommittee() {
+		try{ 
+          jObj = new JSONObject(getTask());
+			
+			Long levelId = jObj.getLong("levelId");
+			
+		basicList =  cadreCommitteeService.getAllCommitteesForLevelId(levelId);
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
