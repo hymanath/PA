@@ -2540,6 +2540,41 @@
 	<bean id="unionTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.UnionTabUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="IvrSurveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="IvrQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrQuestionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="IvrOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrOptionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="IvrSurveyRoundDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyRoundDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="IvrSurveyQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyQuestionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+    <bean id="IvrSurveyQuestionOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyQuestionOptionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="IvrRespondentDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="IvrRespondentCadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentCadreDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="IvrResponseTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrResponseTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="IvrSurveyAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyAnswerInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	
 	<!--  end -->
 </beans>		

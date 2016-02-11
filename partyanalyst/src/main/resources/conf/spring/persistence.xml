@@ -766,6 +766,17 @@
 				 <value>com.itgrids.partyanalyst.model.TdpMemberType</value>
 				 <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
 				 
+				 <value>com.itgrids.partyanalyst.model.IvrSurvey</value>
+				 <value>com.itgrids.partyanalyst.model.IvrQuestion</value>
+				 <value>com.itgrids.partyanalyst.model.IvrOption</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyRound</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyQuestion</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyQuestionOption</value>
+				 <value>com.itgrids.partyanalyst.model.IvrRespondent</value>
+				 <value>com.itgrids.partyanalyst.model.IvrRespondentCadre</value>
+				 <value>com.itgrids.partyanalyst.model.IvrResponseType</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyAnswerInfo</value>
+				 
 			     </list>
 			
 		</property>
