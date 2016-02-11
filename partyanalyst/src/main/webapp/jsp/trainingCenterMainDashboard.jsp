@@ -553,10 +553,10 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
    }).done(function(result){
 		$("#totalTariningPrograms").html("0");
 		$("#totalTrainingCenters").html("0");
-		$("#totalMembers").html("0");
-		$("#upcomingMembers").html("0");
-		$("#runningMembers").html("0");
-		$("#completedMembers").html("0");
+		//$("#totalMembers").html("0");
+		//$("#upcomingMembers").html("0");
+		//$("#runningMembers").html("0");
+		//$("#completedMembers").html("0");
 		$("#totalTrainingBatches").html("0");
 		$("#upcomingBatches").html("0");
 		$("#runningBatches").html("0");
@@ -922,21 +922,21 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 			}
 			str+='</tbody>';
 			str+='</table>';
-			$("#totalMembers").html(upcomingMemGlob+runningMemGlob+compltedMemGlob1);
-			$("#totalMembersIn").html(upcomingMemGlob1+runningMemGlob1+compltedMemGlob);
-			$("#totalMembersNonIn").html(upcomingMemGlob2+runningMemGlob2+compltedMemGlob2);
+			//$("#totalMembers").html(upcomingMemGlob+runningMemGlob+compltedMemGlob1);
+			//$("#totalMembersIn").html(upcomingMemGlob1+runningMemGlob1+compltedMemGlob);
+			//$("#totalMembersNonIn").html(upcomingMemGlob2+runningMemGlob2+compltedMemGlob2);
 			//$("#upcomingMembers").html(upcomingMemGlob+" ("+upcomingMemGlob1+" - Members)"+"");
 			//$("#runningMembers").html(runningMemGlob+" ("+runningMemGlob1+" - Members)"+"");
 			//$("#completedMembers").html(compltedMemGlob1+" ("+compltedMemGlob+" - Members)"+"");
-			$("#upcomingMembers").html(upcomingMemGlob);
-			$("#upcomingMembersAte").html(upcomingMemGlob1);
-			$("#upcomingMembersNonAte").html(upcomingMemGlob2);
-			$("#runningMembers").html(runningMemGlob);
-			$("#runningMembersAte").html(runningMemGlob1);
-			$("#runningMembersNonAte").html(runningMemGlob2);
-			$("#completedMembers").html(compltedMemGlob1);
-			$("#completedMembersAte").html(compltedMemGlob);
-			$("#completedMembersNonAte").html(compltedMemGlob2);
+			//$("#upcomingMembers").html(upcomingMemGlob);
+			//$("#upcomingMembersAte").html(upcomingMemGlob1);
+			//$("#upcomingMembersNonAte").html(upcomingMemGlob2);
+			//$("#runningMembers").html(runningMemGlob);
+			//$("#runningMembersAte").html(runningMemGlob1);
+			//$("#runningMembersNonAte").html(runningMemGlob2);
+			//$("#completedMembers").html(compltedMemGlob1);
+			//$("#completedMembersAte").html(compltedMemGlob);
+			//$("#completedMembersNonAte").html(compltedMemGlob2);
 			$("#totalTrainingBatches").html(totalTrainingBatchesGlob);
 			$("#upcomingBatches").html(upcomingBatchesGlob);
 			$("#runningBatches").html(runningBatchesGlob);
@@ -1644,6 +1644,46 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 		window.open("http://mytdp.com/cadreDetailsAction.action?cadreId="+cadreId,"_blank")
 	}); */
 
+	
+	function getAllTrainingCampDetails(){
+		
+		
+		var jsObj={
+			task : "totalTrainingCampDetails"
+		}
+		$.ajax({
+		   type:'POST',
+		   url :'getAllTrainingCampDetailsAjaxAction.action',
+		   data: {task:JSON.stringify(jsObj)},
+		}).done(function(result){
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+				{
+					//console.log(result[i].confirmedCount);
+					if(i==0){
+						$('#upcomingMembers').html(result[i].confirmedCount);
+						$('#upcomingMembersAte').html(0);
+						$('#upcomingMembersNonAte').html(0);						
+					}else if(i==1){
+						$('#runningMembers').html(result[i].confirmedCount);
+						$('#runningMembersAte').html(result[i].inviteeAttendedCount);
+						$('#runningMembersNonAte').html(result[i].nonInviteeAttendedCount);						
+					}else if(i==2){
+						$('#completedMembers').html(result[i].confirmedCount);
+						$('#completedMembersAte').html(result[i].inviteeAttendedCount);
+						$('#completedMembersNonAte').html(result[i].nonInviteeAttendedCount);						
+					}else if(i==3){
+						$('#totalMembers').html(result[i].count);
+						$('#totalMembersIn').html(result[i].inviteeAttendedCount);
+						$('#totalMembersNonIn').html(result[i].nonInviteeAttendedCount);						
+					}
+						
+				}					
+			}
+		});
+	}
+	getAllTrainingCampDetails();
 	
 </script>
 </body>

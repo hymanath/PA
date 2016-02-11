@@ -6573,6 +6573,7 @@ $(document).on('click', '.activityLvlCls', function(){
 		$("#activityAttendedTableDivId").html(str);
 	});
 });
+$("#mainheading").parent().find("p").removeClass("display-style");
 </script>
 
 </body>
