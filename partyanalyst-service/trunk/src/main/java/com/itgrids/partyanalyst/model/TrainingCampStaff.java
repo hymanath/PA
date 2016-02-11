@@ -21,8 +21,12 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 
+/**
+ * @author Administrator
+ *
+ */
 @Entity
-@Table(name = "training_Camp_staff")
+@Table(name = "training_camp_staff")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TrainingCampStaff extends BaseModel implements Serializable{
 	
@@ -34,15 +38,19 @@ public class TrainingCampStaff extends BaseModel implements Serializable{
 	
 	private TrainingCamp trainingCamp;
 	private TrainingCampProgram trainingCampProgram;
+	private TdpCadre tdpCadre;
 	
-	
-	@Column(name="training_camp_staff_id")
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="training_camp_staff_id", unique=true, nullable=false)
 	public Long getTrainingCampStaffId() {
 		return trainingCampStaffId;
 	}
 	public void setTrainingCampStaffId(Long trainingCampStaffId) {
 		this.trainingCampStaffId = trainingCampStaffId;
 	}
+	
+	
 	@Column(name="training_camp_id")
 	public Long getTrainingCampId() {
 		return trainingCampId;
@@ -50,6 +58,8 @@ public class TrainingCampStaff extends BaseModel implements Serializable{
 	public void setTrainingCampId(Long trainingCampId) {
 		this.trainingCampId = trainingCampId;
 	}
+	
+	
 	@Column(name="training_camp_program_id")
 	public Long getTrainingCampProgramId() {
 		return trainingCampProgramId;
@@ -57,6 +67,7 @@ public class TrainingCampStaff extends BaseModel implements Serializable{
 	public void setTrainingCampProgramId(Long trainingCampProgramId) {
 		this.trainingCampProgramId = trainingCampProgramId;
 	}
+	
 	@Column(name="tdp_cadre_id")
 	public String getTdpCadreId() {
 		return tdpCadreId;
@@ -64,6 +75,7 @@ public class TrainingCampStaff extends BaseModel implements Serializable{
 	public void setTdpCadreId(String tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
 	}
+	
 	@Column(name="desc")
 	public String getDesc() {
 		return desc;
@@ -71,6 +83,8 @@ public class TrainingCampStaff extends BaseModel implements Serializable{
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+	
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="training_camp_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -81,6 +95,8 @@ public class TrainingCampStaff extends BaseModel implements Serializable{
 	public void setTrainingCamp(TrainingCamp trainingCamp) {
 		this.trainingCamp = trainingCamp;
 	}
+	
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="training_camp_program_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -92,11 +108,14 @@ public class TrainingCampStaff extends BaseModel implements Serializable{
 		this.trainingCampProgram = trainingCampProgram;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
 }
