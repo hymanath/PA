@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 @Entity
 @Table(name = "ivr_survey_entity_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -21,7 +20,9 @@ public class IvrSurveyEntityType extends BaseModel implements Serializable{
 	private Long ivrSurveyEntityTypeId;
 	private String  type;
 	
-	@Column(name="ivr_survey_entity_type_id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ivr_survey_entity_type_id", unique = true, nullable = false)
 	public Long getIvrSurveyEntityTypeId() {
 		return ivrSurveyEntityTypeId;
 	}
@@ -35,6 +36,4 @@ public class IvrSurveyEntityType extends BaseModel implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
 }

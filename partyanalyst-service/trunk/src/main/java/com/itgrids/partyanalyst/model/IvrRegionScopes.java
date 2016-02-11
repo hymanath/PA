@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 @Entity
 @Table(name = "ivr_region_scopes")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -21,7 +20,9 @@ public class IvrRegionScopes extends BaseModel implements Serializable{
 	private Long ivrRegionScopesId;
 	private String regionScopes;
 	
-	@Column(name="ivr_region_scopes_id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ivr_region_scopes_id", unique = true, nullable = false)
 	public Long getIvrRegionScopesId() {
 		return ivrRegionScopesId;
 	}
@@ -35,6 +36,4 @@ public class IvrRegionScopes extends BaseModel implements Serializable{
 	public void setRegionScopes(String regionScopes) {
 		this.regionScopes = regionScopes;
 	}
-	
-	
 }
