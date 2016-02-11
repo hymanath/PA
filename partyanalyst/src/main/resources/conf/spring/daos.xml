@@ -2540,39 +2540,68 @@
 	<bean id="unionTabUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.UnionTabUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="IvrSurveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyDAO" >
+	 <bean id="trainingCampStaffDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampStaffDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> 
+	<bean id="ivrSurveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="IvrQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrQuestionDAO" >
+	<bean id="ivrQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrQuestionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="IvrOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrOptionDAO" >
+	<bean id="ivrOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrOptionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		<bean id="IvrSurveyRoundDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyRoundDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="IvrSurveyQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyQuestionDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-    <bean id="IvrSurveyQuestionOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyQuestionOptionDAO" >
+		<bean id="ivrSurveyRoundDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyRoundDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="IvrRespondentDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentDAO" >
+	<bean id="ivrSurveyQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyQuestionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="IvrRespondentCadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentCadreDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="IvrResponseTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrResponseTypeDAO" >
+    <bean id="ivrSurveyQuestionOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyQuestionOptionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="IvrSurveyAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyAnswerInfoDAO" >
+	<bean id="ivrRespondentDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="ivrRespondentCadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentCadreDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ivrResponseTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrResponseTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrSurveyAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyAnswerInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrSurveyAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyAnswerDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrRegionScopesDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRegionScopesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrSurveyScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyScopeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrSurveyLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyLocationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrSurveyEntityTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyEntityTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrSurveyEntityDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyEntityDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	
 	
 	
