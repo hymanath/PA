@@ -508,7 +508,7 @@ public class RtcUnionService implements IRtcUnionService{
 			if(overAllDetails !=null && overAllDetails.size()>0){				
 				Long totalAffliated = 0l;
 				
-				for (Object[] objects : todayDetails) {	
+				for (Object[] objects : overAllDetails) {	
 					
 					if(objects[0] !=null && objects[0].toString().equalsIgnoreCase("WEB")){
 						fnlVo.setWebCount(objects[1] !=null ? (Long)objects[1]:0l);
