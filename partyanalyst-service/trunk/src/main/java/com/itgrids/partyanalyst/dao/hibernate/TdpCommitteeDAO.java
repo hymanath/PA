@@ -948,4 +948,15 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	
 	}
+	public List<Object[]> getCommitteesForLevelId(Long levelId)
+	{
+		
+      Query query = getSession().createQuery("select distinct model.tdpBasicCommitteeId,model.tdpBasicCommittee.name from TdpCommittee model where " +
+      " model.tdpCommitteeLevel.tdpCommitteeLevelId=:levelId" +
+    		 " and model.startedDate is not null and model.isCommitteeConfirmed = 'N' ");
+		query.setParameter("levelId", levelId);
+		
+		return query.list();
+	}
+
 }
