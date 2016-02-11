@@ -17792,4 +17792,26 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 	 return constiList;
  } 
  
+ public List<BasicVO> getAllCommitteesForLevelId(Long levelId)
+	{
+	List<BasicVO> basicCmmty = new ArrayList<BasicVO>();
+		try{
+	List<Object[]> basicCommitteesRslt = tdpCommitteeDAO.getCommitteesForLevelId(levelId);
+	
+	if(basicCommitteesRslt!=null && basicCommitteesRslt.size()>0){
+		for(Object[] obj:basicCommitteesRslt){
+			BasicVO vo = new BasicVO();
+			vo.setId((Long)obj[0]);
+			vo.setName(obj[1].toString());
+			basicCmmty.add(vo);
+			}
+		}
+	}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return basicCmmty;
+	}
+ 
 }
