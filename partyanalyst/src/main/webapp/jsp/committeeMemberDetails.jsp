@@ -1002,7 +1002,9 @@
 
 			function selectChange(divEle)
 			{
-
+			/*if(divEle == "stateSlide")
+				getLevelIdDetailsForCadreCommittee();*/
+			
 			$(".roleCheck").prop('checked', false);
 			$("#checkAll").prop('checked', false);
 			
@@ -1026,6 +1028,7 @@
 				$(this).addClass('cs-selected');
 				
 				var levelId = $(".stateName").attr('value');
+				getLevelIdDetailsForCadreCommittee(levelId);
 				//8888
 				//$('.locationsCls').hide();
 			/*	if(levelId == 10)
@@ -1066,6 +1069,17 @@
 				*/
 			  });
 			   
+			/* $(".stateEle").click(function(e)
+			 {	
+
+				$(".stateName").html($(this).text());
+				$(".stateName").attr("value",$(this).attr("data-value"));
+				$(".stateName").attr("name",$(this).text());
+				$(".stateEle").removeClass('cs-selected');
+				$(this).addClass('cs-selected');
+				getLevelIdDetailsForCadreCommittee($(this).attr("data-value"));
+				//getConstituenciesForDistricts($(this).attr("data-value"));
+			  });*/
 			 $(".distEle").click(function(e)
 			 {	
 
@@ -2735,7 +2749,45 @@
 					}
 				});	
 				
-			
+function getLevelIdDetailsForCadreCommittee(levelId){
+	if(!isEntered)
+  {
+	isEntered = true;
+		$("#committeeId").find('option').remove();
+		     var jsObj={
+					levelId:levelId		
+				};
+				
+				$.ajax({
+					  type:'GET',
+					  url: 'getLevelIdDetailsForCadreCommitteeAction.action',
+					  data: {task:JSON.stringify(jsObj)}
+			   }).done(function(result){
+				    isEntered = false;
+					 var str='';
+					   str+='<section>';
+						  str+='<label class="select-label">From  Cadre Committee</label>';
+						  str+=' <div class="cs-select cs-skin-slide committeeSlide" tabindex="0" onclick="selectChange(\'committeeSlide\')">';
+						  str+='<span class="cs-placeholder committeeName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar comitteeList">';
+						  str+='<li data-value="0" data-option="" class="committeeEle"><span value="0">ALL</span></li>';
+						  for(var i in result)
+						  {
+						  if(result[i].id > 0)
+						  str+='<li data-value="'+result[i].id+'" data-option="" class="committeeEle"><span value="'+result[i].id+'">'+result[i].name+'</span></li>';
+						  }
+						  str+='</ul>';
+						  str+='</div><select class="cs-select cs-skin-slide" id="committeeId">';
+						  for(var i in result)
+						  {
+						   if(result[i].id > 0)
+						  str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+						  }
+						 str+='</select></div></section>';
+						$("#committeeDiv").html(str);
+			   });
+		  }
+}
+		  
 </script>
 <script>
 getDistricts();
