@@ -401,4 +401,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<TdpCadre> checkAffliatedCadreOnlineAccountExistsOrNot(String orderId);
 	  public List<Long> checkVoterAsAffliatedCadre(Long voterId);
 	  public List<TdpCadre> getNormalCadreDetailsByVoterId(Long voterId);
+	  
+	  public List<TdpCadre> getAffliatedCadreByFamilyVoterId(Long voterId, String refNo);
 }

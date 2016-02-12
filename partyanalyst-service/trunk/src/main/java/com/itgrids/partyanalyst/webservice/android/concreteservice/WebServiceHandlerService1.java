@@ -1366,7 +1366,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 					+ "Mobile No" + inputResponse.getMobileNumber() + "-" 
 					+ "Education" +inputResponse.getEducationId() + "-" 
 					+ "Designation" + inputResponse.getDesignationId() + "-"
-					+ "UserMode" + inputResponse.getUserMode() + "-"
+					+ "UserMode" + inputResponse.getMode() + "-"
 					+ "Depot Id" + inputResponse.getDepotId() + "-"
 					+ "Region Id" + inputResponse.getRegionId() + "-"
 					+ "Zone Id" + inputResponse.getZoneId() + "-"

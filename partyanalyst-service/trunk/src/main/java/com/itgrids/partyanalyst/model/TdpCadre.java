@@ -131,7 +131,9 @@ public class TdpCadre {
 	private Designation					designation;
 	private TdpCadreLocation			tdpCadreLocation;
 	private UserAddress 				permanentAddress;
-	
+	private String						voterCardVerified;
+	private String						voterCardType;
+	private String						mode;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -909,5 +911,31 @@ public class TdpCadre {
 	public void setPermanentAddress(UserAddress permanentAddress) {
 		this.permanentAddress = permanentAddress;
 	}
+	
+	@Column(name="voter_card_verified")
+	public String getVoterCardVerified() {
+		return voterCardVerified;
+	}
+	public void setVoterCardVerified(String voterCardVerified) {
+		this.voterCardVerified = voterCardVerified;
+	}
+	
+	@Column(name="voter_card_type")
+	public String getVoterCardType() {
+		return voterCardType;
+	}
+	public void setVoterCardType(String voterCardType) {
+		this.voterCardType = voterCardType;
+	}
+	
+	@Column(name="mode")
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+	
+	
 	
 }
