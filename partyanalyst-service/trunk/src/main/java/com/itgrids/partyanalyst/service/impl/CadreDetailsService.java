@@ -4969,7 +4969,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				if(voterDetails != null && voterDetails.size()>0)
 				{
-					
+					/*for (Object[] voter : voterDetails) {
+						Long voterId = voter[3] != null ? Long.valueOf(voter[3].toString()):0L;
+						returnVO.setFamilyVoterId(voterId.toString());
+					}*/
 					returnVO.setMessage("success");
 				}
 				return returnVO;

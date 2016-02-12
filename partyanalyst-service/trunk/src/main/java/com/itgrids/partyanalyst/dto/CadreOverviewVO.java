@@ -66,10 +66,17 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private String message;
 	private String familyVoterCardNum;
 	private boolean voterExists;
+	private String	familyVoterId;
 	
 	
 	
 	
+	public String getFamilyVoterId() {
+		return familyVoterId;
+	}
+	public void setFamilyVoterId(String familyVoterId) {
+		this.familyVoterId = familyVoterId;
+	}
 	public boolean isVoterExists() {
 		return voterExists;
 	}

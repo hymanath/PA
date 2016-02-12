@@ -413,6 +413,19 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
+	public List<TdpCadre> getAffliatedCadreByFamilyVoterId(Long voterId, String refNo){
+		Query query = getSession().createQuery("select model from TdpCadre model where model.familyVoterId = :voterId " +
+				" and model.isDeleted = 'N'" +
+				" and model.tdpMemberTypeId= :tdpMemberTypeId " +
+				" and model.enrollmentYear = :enrollmentYear" +
+				" and model.refNo =:refNo ");
+		query.setParameter("voterId", voterId);
+		query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
+		query.setParameter("enrollmentYear",  IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
+		query.setParameter("refNo", refNo);
+		return query.list();
+	}
+	
 	public Long checkRandomNoExistsOrNot(String dataSource,String randomNo){
         Query query = getSession().createQuery("select count(*) from TdpCadre model where  model.isDeleted = 'N' and model.dataSourceType=:dataSource and model.refNo =:randomNo ");
 		

@@ -127,7 +127,7 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		perAddrsVillId;
 	private Long		perAddrsWardId;
 	private String 		employeeId;
-	private String		userMode;
+	private String		mode;
 	private Long		prsntAddrsStateId;
 	private Long		prsntAddrsDistId;
 	private Long		prsntAddrsConstId;
@@ -136,13 +136,21 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		prsntAddrsDivionId;
 	private Long		prsntAddrsVillId;
 	private Long		prsntAddrsWardId;
-	private String        districtId;
+	private String      districtId;
+	private String		relativeVoterCardNo;
+	private String      voterCardType;
 	
-	public String getUserMode() {
-		return userMode;
+	public String getRelativeVoterCardNo() {
+		return relativeVoterCardNo;
 	}
-	public void setUserMode(String userMode) {
-		this.userMode = userMode;
+	public void setRelativeVoterCardNo(String relativeVoterCardNo) {
+		this.relativeVoterCardNo = relativeVoterCardNo;
+	}
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
 	}
 	public String getFaceboohUrl() {
 		return faceboohUrl;
@@ -807,6 +815,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setDistrictId(String districtId) {
 		this.districtId = districtId;
+	}
+	public String getVoterCardType() {
+		return voterCardType;
+	}
+	public void setVoterCardType(String voterCardType) {
+		this.voterCardType = voterCardType;
 	}
 	
 }
