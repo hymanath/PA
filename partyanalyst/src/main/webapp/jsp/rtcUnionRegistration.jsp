@@ -2479,7 +2479,9 @@ function getExistingCadreInfo(){
 $("#cardNumber1").keyup(function(){
 	var cardNumberVal = $("#cardNumber").val();
 	if(cardNumberVal.trim().length>2){
+		
 		var constituencyId = '${constiteucnyId}';
+		
 		var panchayatId = '${houseNo}'; 
 		var boothId = '${boothId}';
 		var isPresentCadre = '${panchayatId}';
@@ -2738,15 +2740,15 @@ function showNewTakenImg(){
 			srchDtlsDivId = '#searchDetailsDivFmly';
 			tbleElmntId = '#tableElementFmly';
 		}
-	
-		var cosntiteucnyId = '${constiteucnyId}';
+	    
+		var cosntiteucnyId = '${param.constiteucnyId}';
 		var candidateName = $(srchNameId).val();
 		var voterCardNo = $(srchNameCardId).val();
 		var houseNo = $(hNoId).val();
 		var searchType = "voter";
-		var panchayatId = '${houseNo}';
-		var boothId = '${boothId}';
-		var isPresentCadre = '${panchayatId}';
+		var panchayatId = '${param.houseNo}';
+		var boothId = '${param.boothId}';
+		var isPresentCadre = '${param.panchayatId}';
 				
 		var isError = false ;
 		
@@ -2856,7 +2858,7 @@ function showNewTakenImg(){
 				   
 				request =   $.ajax({
 						type : "POST",
-						url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
+						url : "searchVoterAndCadreInfoBySearchCriteriaRTCAction.action",
 						data : {task:JSON.stringify(jsObj)} ,
 					}).done(function(result){
 						isSubmit = true;
