@@ -24,6 +24,7 @@ public class PublicRepresentativeType implements java.io.Serializable{
 
 	private Long publicRepresentativeTypeId;
 	private String type;
+	private Long orderNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,6 +42,13 @@ public class PublicRepresentativeType implements java.io.Serializable{
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 }

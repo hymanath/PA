@@ -1,14 +1,24 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
-public class IdNameVO implements Serializable{
+public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long id;
 	private String name;
 	private Long districtid;
 	private Long availableCount;
 	private Long actualCount=0l;
+	private Long orderId;
 	
+	
+	@Override
+	public int compare(IdNameVO o2, IdNameVO o1) {
+		// TODO Auto-generated method stub
+		return o2.getOrderId().compareTo(o1.getOrderId());
+		
+	}
+
 	public IdNameVO(){}
 	
 	public IdNameVO(Long id,String name){
@@ -52,7 +62,14 @@ public class IdNameVO implements Serializable{
 	public void setDistrictid(Long districtid) {
 		this.districtid = districtid;
 	}
-	
-	
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
 	
 }
