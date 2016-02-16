@@ -14732,10 +14732,11 @@ return mandalList;
 						
 						vo.setId(publicRepresentativeType.getPublicRepresentativeTypeId());
 						vo.setName(publicRepresentativeType.getType());
-						
+						vo.setOrderId(publicRepresentativeType.getOrderNo());
 						returnList.add(vo);
 					}
 				}
+			 Collections.sort(returnList,new IdNameVO());
 		} catch (Exception e) {
 			LOG.error("Exception rised in getPartyEventGroups() while closing write operation",e);
 		}
