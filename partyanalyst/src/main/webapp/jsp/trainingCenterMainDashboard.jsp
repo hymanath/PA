@@ -1674,7 +1674,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 						$('#completedMembersAte').html(result[i].inviteeAttendedCount);
 						$('#completedMembersNonAte').html(result[i].nonInviteeAttendedCount);						
 					}else if(i==3){
-						$('#totalMembers').html(result[i].count);
+						$('#totalMembers').html(result[i].confirmedCount);
 						$('#totalMembersIn').html(result[i].inviteeAttendedCount);
 						$('#totalMembersNonIn').html(result[i].nonInviteeAttendedCount);						
 					}
