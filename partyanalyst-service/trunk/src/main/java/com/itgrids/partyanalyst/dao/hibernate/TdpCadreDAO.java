@@ -6028,4 +6028,38 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return query.list();
 		}
+		
+		public List<Object[]> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr){
+			
+			StringBuilder queryStr = new StringBuilder();
+			if(searchTypeStr != null && !searchTypeStr.isEmpty())
+			{
+				if(searchTypeStr.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					queryStr.append(" select distinct UA.constituency.constituencyId,UA.constituency.name, ");
+				else if(searchTypeStr.trim().equalsIgnoreCase(IConstants.DISTRICT))
+					queryStr.append("select distinct UA.district.districtId,UA.district.districtName, ");
+				
+				queryStr.append(" TC.dataSourceType, count(distinct TC.tdpCadreId)  from TdpCadre TC, UserAddress UA where TC.userAddress = UA.userAddressId ");
+				
+				if(membereTypeIdsList != null && membereTypeIdsList.size()>0)
+					queryStr.append(" and TC.tdpMemberTypeId in (:membereTypeIdsList) ");
+				queryStr.append(" group by ");
+				if(searchTypeStr.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					queryStr.append(" , UA.constituency.constituencyId, ");
+				else if(searchTypeStr.trim().equalsIgnoreCase(IConstants.DISTRICT))
+					queryStr.append(", UA.district.districtId, ");
+				
+				queryStr.append(" TC.dataSourceType ");
+				
+				queryStr.append(" order by ");
+				if(searchTypeStr.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					queryStr.append(" UA.constituency.name,TC.dataSourceType asc ");
+				else if(searchTypeStr.trim().equalsIgnoreCase(IConstants.DISTRICT))
+					queryStr.append(" UA.district.districtName,TC.dataSourceType asc ");
+				
+			}
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameterList("membereTypeIdsList", membereTypeIdsList);
+			return query.list();
+		}
 }
