@@ -11491,6 +11491,11 @@
 				<param name="root">basicList</param> 
 			</result>
 		</action>
+		<action name="getCadreRegistrationAction" class="cadreDetailsAction" method="getCadreDetails">
+			<result type="json" name="success">
+				<param name="root">cadreList</param> 
+			</result>
+		</action>
 	
 </package>
 </struts>      

@@ -24,10 +24,12 @@ import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -69,7 +71,24 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<CategoryFeedbackVO>		categoryFeedbackVoList;
 	private IVRResponseVO ivrResponseVO;
 	private List<IVRResponseVO> ivrResponseVOlist;
+	private  List<TdpCadreVO>      cadreList;
+	private ICadreRegistrationService cadreRegistrationService;
 	
+	
+	
+	public ICadreRegistrationService getCadreRegistrationService() {
+		return cadreRegistrationService;
+	}
+	public void setCadreRegistrationService(
+			ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
+	public List<TdpCadreVO> getCadreList() {
+		return cadreList;
+	}
+	public void setCadreList(List<TdpCadreVO> cadreList) {
+		this.cadreList = cadreList;
+	}
 	public IVRResponseVO getIvrResponseVO() {
 		return ivrResponseVO;
 	}
@@ -769,5 +788,27 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 	}
 
+	public String getCadreDetails()
+	  {
+		String param=null;
+		param=getTask();
+		
+		try{
+			jObj=new JSONObject(param);
+			org.json.JSONArray membereTypeIdsList=jObj.getJSONArray("membereTypeIds");
+			String searchTypeStr=jObj.getString("searchTypeStr");
+			String startDate=jObj.getString("startDate");
+			String toDate=jObj.getString("toDate");
+			 List<Long>  idList=new ArrayList<Long>();
+			 for(int i=0;i<membereTypeIdsList.length();i++){
+				 Long id= (Long) membereTypeIdsList.get(i);
+				 idList.add(id);
+			 }
+			cadreList=cadreRegistrationService.getLocationwiseCadreRegistraionDetails(idList,searchTypeStr,startDate,toDate);
+			 }catch(Exception e){
+			LOG.error("Exception Occured in getCadreDetails() in CadreDetailsAction ",e);
+		}
+		return SUCCESS;
+	}
 
 }
