@@ -6,6 +6,7 @@ import java.util.List;
 public class TdpCadreVO implements java.io.Serializable
 {
 	private Long id;
+	private String name;
 	private String cadreName;
 	private String relativeName;
 	private String memberShipNo;
@@ -43,9 +44,27 @@ public class TdpCadreVO implements java.io.Serializable
 	private List<TdpCadreVO> voterSearchList = new ArrayList<TdpCadreVO>();
 	private List<CadreCommitteeVO> cadreComitteeVOList = new ArrayList<CadreCommitteeVO>();
 
+	private Long webCount;
+	private Long tabCount;
 	
-	
-	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Long getWebCount() {
+		return webCount;
+	}
+	public void setWebCount(Long webCount) {
+		this.webCount = webCount;
+	}
+	public Long getTabCount() {
+		return tabCount;
+	}
+	public void setTabCount(Long tabCount) {
+		this.tabCount = tabCount;
+	}
 	public String getDeleteReason() {
 		return deleteReason;
 	}

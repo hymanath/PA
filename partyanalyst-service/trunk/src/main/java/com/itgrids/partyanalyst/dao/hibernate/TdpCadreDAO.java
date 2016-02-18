@@ -6029,7 +6029,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
-		public List<Object[]> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr){
+		public List<Object[]> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,
+				Date fromDate,Date toDate){
 			
 			StringBuilder queryStr = new StringBuilder();
 			if(searchTypeStr != null && !searchTypeStr.isEmpty())
@@ -6043,6 +6044,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				
 				if(membereTypeIdsList != null && membereTypeIdsList.size()>0)
 					queryStr.append(" and TC.tdpMemberTypeId in (:membereTypeIdsList) ");
+				if(fromDate != null && toDate != null)
+					queryStr.append(" and (date(TC.insertedTime) between :fromDate and :toDate )");
+				
 				queryStr.append(" group by ");
 				if(searchTypeStr.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
 					queryStr.append(" , UA.constituency.constituencyId, ");
@@ -6060,6 +6064,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			Query query = getSession().createQuery(queryStr.toString());
 			query.setParameterList("membereTypeIdsList", membereTypeIdsList);
+			if(fromDate != null && toDate != null){
+				query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);
+			}
 			return query.list();
 		}
 }
