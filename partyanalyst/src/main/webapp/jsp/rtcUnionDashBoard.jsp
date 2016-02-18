@@ -1,4 +1,7 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta charset="utf-8">
@@ -971,6 +974,43 @@ function getOnlineAndTabUsersCount(){
 			$("#dataLoadingsImgForOnlineAndTab").hide();
 			$("#onlineAndTabUsersDiv").html(str);
 		}
+	});
+}
+
+/*function getCadreRegistrationTotalCount(){
+	var jObj={};
+	alert(1221);
+	$.ajax({
+		type:"GET",
+		url:"getCadreRegistrationAction.action",
+		dataType: 'json',
+		data:{task:JSON.stringify(jObj)}	
+	}).done(function(result) {
+		
+	});
+}*/
+getCadreRegistrationTotalCount();
+function getCadreRegistrationTotalCount() {
+	var membereTypeIds = new Array();
+	membereTypeIds.push(2);
+	//membereTypeIds.push(3);
+	var searchTypeStr = "district";
+	var startDate = "2016-02-18";
+	var toDate = "2016-02-18";
+	
+	var jObj={
+		membereTypeIds:membereTypeIds,
+		searchTypeStr:searchTypeStr,
+		startDate:startDate,
+		toDate:toDate
+	};
+	$.ajax({
+		type:"Post",
+		url:'getCadreRegistrationAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(){
+		
 	});
 }
 

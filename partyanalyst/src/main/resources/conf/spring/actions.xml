@@ -254,6 +254,7 @@
 	<bean id="cadreRegisterAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="dateService" ref="dateService" />
+		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 	</bean> 
 
 	
@@ -1591,6 +1592,7 @@
 			<property name="cadreDetailsService" ref="cadreDetailsService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
 			<property name="trainingCampService" ref="trainingCampService" />
+			<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
 		<property name="trainingCampService" ref="trainingCampService" />
