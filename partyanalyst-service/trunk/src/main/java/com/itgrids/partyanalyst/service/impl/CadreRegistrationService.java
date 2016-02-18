@@ -195,6 +195,7 @@ import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRtcUnionService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -292,6 +293,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private TdpCadreLocationDAO tdpCadreLocationDAO;
 	private IRtcUnionService rtcUnionService;
 	private IRtcDepotDAO rtcDepotDAO;
+	private CommonMethodsUtilService commonMethodsUtilService;
+	
+	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -305,6 +309,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	
 	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+
 	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
 		return cadreMissedCallCampaignDAO;
 	}
@@ -11854,4 +11867,90 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
 		}*/
 	}
+	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate) {
+		
+		List<TdpCadreVO>  returnList = null;
+		try {
+			
+			Map<Long,TdpCadreVO> cadrelocationWiseMap=new HashMap<Long,TdpCadreVO>();
+			
+			if(searchTypeStr.equalsIgnoreCase("Constituency")){
+				List<Object[]> constituencyList=constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(0L,1L,null);
+				if(constituencyList!=null && constituencyList.size()>0){
+					for(Object[] distCadre:constituencyList) {
+						TdpCadreVO tdpvo=new TdpCadreVO();
+						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						tdpvo.setTabCount(0L);
+						tdpvo.setWebCount(0L);
+						tdpvo.setTotalCount(0L);
+						cadrelocationWiseMap.put(tdpvo.getId(), tdpvo);
+					}
+				}	
+			}else if(searchTypeStr.equalsIgnoreCase("District")){
+				List<Object[]> districtList=districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,0L);
+				if(districtList!=null && districtList.size()>0){
+					for(Object[] distCadre:districtList){
+						TdpCadreVO tdpvo=new TdpCadreVO();
+						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						tdpvo.setTabCount(0L);
+						tdpvo.setWebCount(0L);
+						tdpvo.setTotalCount(0L);
+						cadrelocationWiseMap.put(tdpvo.getId(),tdpvo);
+					}
+				}
+			}
+			Date stDate=null;
+			Date edDate=null;
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+			if(startDate!=null && startDate.trim().length()>0){
+				stDate=sdf.parse(startDate.trim());
+			}
+			if(toDate!=null && toDate.trim().length()>0){
+				edDate=sdf.parse(toDate.trim());
+			}
+			
+			List<Object[]> cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, stDate, edDate);
+			if(cadreRegisteredCountdtls != null && cadreRegisteredCountdtls.size()>0)
+			{
+				for (Object[] cadreDtls : cadreRegisteredCountdtls) {
+					Long locationId = commonMethodsUtilService.getLongValueForObject(cadreDtls[0]);
+					TdpCadreVO vo = cadrelocationWiseMap.get(locationId);
+					if(vo != null){
+						String typeStr = commonMethodsUtilService.getStringValueForObject(cadreDtls[1]);
+						Long count = commonMethodsUtilService.getLongValueForObject(cadreDtls[2]);
+						if(typeStr != null && !typeStr.isEmpty())
+						{
+							if(typeStr.trim().equalsIgnoreCase("TAB")){
+								vo.setTabCount(count);
+							}
+							else if(typeStr.trim().equalsIgnoreCase("WEB")){
+								vo.setWebCount(count);								
+							}
+							
+							Long webCount = vo.getWebCount() != null ? Long.valueOf(vo.getWebCount().toString().trim()):0L;
+							Long tabCount = vo.getTabCount() != null ? Long.valueOf(vo.getTabCount().toString().trim()):0L;
+							Long totalCount = webCount + tabCount;
+							if(totalCount != null && totalCount.longValue()>0L)
+								vo.setTotalCount(totalCount);
+						}
+					}
+				}
+			}
+			
+			if(cadrelocationWiseMap != null && cadrelocationWiseMap.size()>0)
+			{
+				returnList = new ArrayList<TdpCadreVO>(0);
+				for (Long locationId : cadrelocationWiseMap.keySet()) {
+					returnList.add(cadrelocationWiseMap.get(locationId));
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getLocationwiseCadreRegistraionDetails in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
+	
 }
