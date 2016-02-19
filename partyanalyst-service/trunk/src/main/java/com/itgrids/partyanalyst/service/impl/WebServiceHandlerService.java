@@ -3767,5 +3767,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		  return returnVO;
 	  }
+	  
+	  public List<PartyMeetingWSVO> getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType)
+	  {
+		  List<PartyMeetingWSVO> returnList = null;
+		  try {
+			  returnList = partyMeetingService.getTdpCadreDetailsForPartyMeeting(partyMeetingId,searchType);
+		} catch (Exception e) {
+			 log.debug("Entered into the getTdpCadreDetailsForPartyMeeting  method in WebServiceHandlerService");
+		}
+		  return returnList;
+	  }
 }
 

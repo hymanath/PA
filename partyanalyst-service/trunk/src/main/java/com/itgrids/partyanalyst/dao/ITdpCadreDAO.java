@@ -404,4 +404,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  
 	  public List<TdpCadre> getAffliatedCadreByFamilyVoterId(Long voterId, String refNo);
 	  public List<Object[]> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,Date fromDate,Date toDate);
+	  public List<Object[]> getCadreFormalDetails(List<Long> tdpCadreIds);
 }

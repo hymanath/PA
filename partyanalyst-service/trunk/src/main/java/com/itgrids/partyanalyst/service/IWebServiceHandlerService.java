@@ -155,4 +155,5 @@ public interface IWebServiceHandlerService {
     public CadreOverviewVO getVoterDetailsByVoterIdCardNum(CadreOverviewVO inputVO);
     public UnionTabUserVO checkLoginUnionTabUser(UnionTabUserVO inputVo);
     public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
+    public List<PartyMeetingWSVO> getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType);
 }

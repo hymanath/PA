@@ -35,7 +35,9 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -86,8 +88,23 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IConstituencyDAO constituencyDAO;
 	private IDistrictDAO districtDAO;
 	private IStateDAO stateDAO;
+	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	
 	
+	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
+		return tdpCadreCandidateDAO;
+	}
+	public void setTdpCadreCandidateDAO(ITdpCadreCandidateDAO tdpCadreCandidateDAO) {
+		this.tdpCadreCandidateDAO = tdpCadreCandidateDAO;
+	}
+	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
+		return tdpCommitteeMemberDAO;
+	}
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+	}
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -2608,6 +2625,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		
 		try {
 			
+			Map<Long,PartyMeetingWSVO> partyMeetingVoMap = new LinkedHashMap<Long, PartyMeetingWSVO>();
 			List<Long> inviteesPresentList = new ArrayList<Long>();
 			List<Long> nonInviteesPresentList = new ArrayList<Long>();
 			List<Long> absentList = new ArrayList<Long>();
@@ -2660,6 +2678,68 @@ public class PartyMeetingService implements IPartyMeetingService{
 			else if(searchType.equalsIgnoreCase("AB")){
 				tdpCadreIdsList = absentList;
 			}
+			
+			//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.mobileNo,5.image,6.memberShipNo
+			List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetails(tdpCadreIdsList);
+			if(cadreDetails != null && cadreDetails.size() > 0){
+				for (Object[] obj : cadreDetails) {
+					PartyMeetingWSVO vo = new PartyMeetingWSVO();
+					
+					Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String image = obj[5] != null ? obj[5].toString():"";
+					vo.setTdpCadreId(cadreId);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
+					vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+					vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
+					
+					partyMeetingVoMap.put(cadreId, vo);
+				}
+			}
+			
+			//0.publicRepresentativeTypeId,1.type,2.tdpCadreId
+			List<Object[]> publicRepDetails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsForCadreIds(tdpCadreIdsList);
+			if(publicRepDetails != null && publicRepDetails.size() > 0){
+				for (Object[] obj : publicRepDetails) {
+					
+					Long cadreId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					String type = obj[1] != null ? obj[1].toString():"";
+					
+					PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
+					vo.setDesignation(type);
+				}
+			}
+			
+			 List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(tdpCadreIdsList);
+			 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+			 {
+				 for (Object[] partyPosition : partyPositionDetails) {
+
+					 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+					 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+					 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
+					 Long cadreId = Long.valueOf(partyPosition[5] != null ? partyPosition[5].toString() : "0"); 
+					 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+					 
+					 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+					 {
+						 level = state+" "+level;
+					 }
+					 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+					 
+					 PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
+					 if(vo.getDesignation() != null && vo.getDesignation().length() > 0){
+						 vo.setDesignation(vo.getDesignation()+" , "+partyPositionStr);
+					 }
+					 else{
+						 vo.setDesignation(partyPositionStr);
+					 }
+				 }
+			 }
+			 
+			 partyMeetingWSVoList.addAll(partyMeetingVoMap.values());
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getTdpCadreDetailsForPartyMeeting() method, Exception - ",e);
