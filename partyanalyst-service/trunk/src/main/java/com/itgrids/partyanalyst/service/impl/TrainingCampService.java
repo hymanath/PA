@@ -5567,7 +5567,9 @@ class TrainingCampService implements ITrainingCampService{
 					if(achieveCount==0){ //save
 						
 					}else{//update=delete+save
-						trainingCampCadreAchievementDAO.deleteAchievementsforACadre(tdpCadreId,batchId);
+						List<Long> trainingCampCadreAchievementIdsList = trainingCampCadreAchievementDAO.getTrainingCampCadreAchievementIdsList(tdpCadreId, batchId);
+						if(trainingCampCadreAchievementIdsList != null && trainingCampCadreAchievementIdsList.size()>0)
+							trainingCampCadreAchievementDAO.deleteAchievementsforACadre(trainingCampCadreAchievementIdsList);
 					}
 					if(achieveList!=null && achieveList.size()>0){
 						cadreDetailsVO.setAchievements(true);
