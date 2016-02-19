@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 
 public interface IPartyMeetingService {
 	public PartyMeetingVO getMeetingTypeWiseDescription(Long partyMeetingTypeId,Long tdpCadreId);
@@ -27,4 +28,5 @@ public interface IPartyMeetingService {
 	public PartyMeetingVO getSummaryForAMeeting(Long meetingId,String type);
 	public MeetingTrackingVO getPartyMeetingsDetailsForCadreByCommitteeLevel(Long tdpCadreId,String searchTypeStr , 
 			 Long committeeLevelId,Long committeeLevelValue,String formDateStr,String toDateStr,String isFirst,int firstRecord,int maxResult);
+	public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
 }
