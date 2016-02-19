@@ -155,4 +155,13 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		return query.list();
 	}
 	
+	public List<Long> getInvitedCadreIdsByPartyMeetingId(Long partyMeetingId){
+		
+		Query query = getSession().createQuery(" select distinct model.tdpCadre.tdpCadreId " +
+						" from PartyMeetingInvitee model " +
+						" where model.partyMeeting.partyMeetingId = :partyMeetingId ");
+		query.setParameter("partyMeetingId", partyMeetingId);
+		
+		return query.list();
+	}
 }

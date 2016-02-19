@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -153,4 +154,5 @@ public interface IWebServiceHandlerService {
     public List<CadreVoterVO> getVoterInfoForBooth(MobileAppUserVoterVO inputVO);
     public CadreOverviewVO getVoterDetailsByVoterIdCardNum(CadreOverviewVO inputVO);
     public UnionTabUserVO checkLoginUnionTabUser(UnionTabUserVO inputVo);
+    public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
 }

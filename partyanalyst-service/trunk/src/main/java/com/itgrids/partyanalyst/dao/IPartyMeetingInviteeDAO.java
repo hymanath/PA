@@ -22,4 +22,6 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> getPublicRepresentativeInviteesForPartyMeetings(List<Long> partyMeetingsList);
 	
 	public List<Object[]> getCommitteeMemberInviteesForPartyMeetings(List<Long> partyMeetingsList);
+	
+	public List<Long> getInvitedCadreIdsByPartyMeetingId(Long partyMeetingId);
 }

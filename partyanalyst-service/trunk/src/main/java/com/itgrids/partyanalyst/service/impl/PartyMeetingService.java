@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
@@ -2534,7 +2535,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 								}
 								returnListMap.put(meetingVO.getMonthName(), meetingVO);
 							}
-						}
+						} 
 					}
 					
 					if(returnListMap != null && returnListMap.size()>0)
@@ -2553,4 +2554,116 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return returnVO;
 	}
 
+	public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId){
+		
+		PartyMeetingWSVO partyMeetingWSVo = new PartyMeetingWSVO();
+		
+		try {
+			Long attendedCount = 0l;
+			Long invitedCount = 0l;
+			Long inviteesAttendedCount = 0l;
+			Long nonInviteesCount = 0l;
+			Long absentCount = 0l;
+			
+			List<Long> inviteesList = partyMeetingInviteeDAO.getInvitedCadreIdsByPartyMeetingId(partyMeetingId);
+			List<Long> attendedList = partyMeetingAttendanceDAO.getAttendedCadreIdsByPartyMeetingId(partyMeetingId);
+			if(attendedList != null && attendedList.size() > 0){
+				attendedCount = (long) attendedList.size();
+			}
+			
+			if(attendedList != null && attendedList.size() > 0){
+				if(inviteesList != null && inviteesList.size() > 0){
+					invitedCount = (long) inviteesList.size();
+					for (Long cadreId : attendedList) {
+						if(inviteesList.contains(cadreId)){
+							inviteesAttendedCount = inviteesAttendedCount+1l;
+						}
+						else{
+							nonInviteesCount = nonInviteesCount+1l;
+						}
+					}
+				}
+				else{
+					nonInviteesCount = (long) attendedList.size();
+				}
+			}
+			
+			absentCount = invitedCount - inviteesAttendedCount;
+			
+			partyMeetingWSVo.setAttendedCount(attendedCount);
+			partyMeetingWSVo.setInviteesCount(invitedCount);
+			partyMeetingWSVo.setInviteesAttendedCount(inviteesAttendedCount);
+			partyMeetingWSVo.setNonInviteesAttendedCount(nonInviteesCount);
+			partyMeetingWSVo.setAbsentCount(absentCount);
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAttendedDetailsForPartyMeeting() method, Exception - ",e);
+		}
+		return partyMeetingWSVo;
+	}
+	
+	public List<PartyMeetingWSVO> getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType){
+		
+		List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
+		
+		try {
+			
+			List<Long> inviteesPresentList = new ArrayList<Long>();
+			List<Long> nonInviteesPresentList = new ArrayList<Long>();
+			List<Long> absentList = new ArrayList<Long>();
+			List<Long> inviteesList = partyMeetingInviteeDAO.getInvitedCadreIdsByPartyMeetingId(partyMeetingId);
+			List<Long> attendedList = partyMeetingAttendanceDAO.getAttendedCadreIdsByPartyMeetingId(partyMeetingId);
+			
+			List<Long> tdpCadreIdsList = new ArrayList<Long>();
+			
+			if(attendedList != null && attendedList.size() > 0){
+				if(inviteesList != null && inviteesList.size() > 0){
+					for (Long cadreId : attendedList) {
+						if(inviteesList.contains(cadreId)){
+							inviteesPresentList.add(cadreId);
+						}
+						else{
+							nonInviteesPresentList.add(cadreId);
+						}
+					}
+				}
+				else{
+					nonInviteesPresentList = attendedList;
+				}
+			}
+			
+			if(inviteesList != null && inviteesList.size() > 0){
+				if(inviteesPresentList != null && inviteesPresentList.size() > 0){
+					for (Long inviteeId : inviteesList) {
+						if(!(inviteesPresentList.contains(inviteeId))){
+							absentList.add(inviteeId);
+						}
+					}
+				}
+				else{
+					absentList = inviteesList;
+				}
+			}
+			
+			if(searchType.equalsIgnoreCase("TP")){
+				tdpCadreIdsList = attendedList;
+			}
+			else if(searchType.equalsIgnoreCase("TI")){
+				tdpCadreIdsList = inviteesList;
+			}
+			else if(searchType.equalsIgnoreCase("IP")){
+				tdpCadreIdsList = inviteesPresentList;
+			}
+			else if(searchType.equalsIgnoreCase("NI")){
+				tdpCadreIdsList = nonInviteesPresentList;
+			}
+			else if(searchType.equalsIgnoreCase("AB")){
+				tdpCadreIdsList = absentList;
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getTdpCadreDetailsForPartyMeeting() method, Exception - ",e);
+		}
+		return partyMeetingWSVoList;
+	}
 }

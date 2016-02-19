@@ -75,6 +75,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -3754,6 +3755,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   
 		   }
 		return vo;
+	  }
+	  
+	  public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId)
+	  {
+		  PartyMeetingWSVO returnVO = null;
+		  try {
+			  returnVO = partyMeetingService.getAttendedDetailsForPartyMeeting(partyMeetingId);
+		} catch (Exception e) {
+			 log.debug("Entered into the getAttendedDetailsForPartyMeeting  method in WebServiceHandlerService");
+		}
+		  return returnVO;
 	  }
 }
 
