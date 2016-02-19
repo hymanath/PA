@@ -100,6 +100,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTravelInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dao.ITdpMemberTypeDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITirupathiByeleMobileBoothDAO;
 import com.itgrids.partyanalyst.dao.ITirupatiByelectionDAO;
@@ -293,8 +294,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private TdpCadreLocationDAO tdpCadreLocationDAO;
 	private IRtcUnionService rtcUnionService;
 	private IRtcDepotDAO rtcDepotDAO;
+	private ITdpMemberTypeDAO tdpMemberTypeDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
-	
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -309,6 +310,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	
 	
+	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
+		return cadreMissedCallCampaignDAO;
+	}
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -318,8 +323,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
 
-	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
-		return cadreMissedCallCampaignDAO;
+	public ITdpMemberTypeDAO getTdpMemberTypeDAO() {
+		return tdpMemberTypeDAO;
+	}
+
+	public void setTdpMemberTypeDAO(ITdpMemberTypeDAO tdpMemberTypeDAO) {
+		this.tdpMemberTypeDAO = tdpMemberTypeDAO;
 	}
 
 	public ITdpCadreFamilyInfoDAO getTdpCadreFamilyInfoDAO() {
@@ -11867,7 +11876,30 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
 		}*/
 	}
-	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate) {
+	
+	public List<GenericVO> getCadreMemberTypeListByYear(Long year){
+		List<GenericVO> returnList  = null;
+		
+		try {
+			List<Object[]> tdpMemberTypeList = tdpMemberTypeDAO.getCadreMemberTypeListByYear(year);
+			if(tdpMemberTypeList != null && tdpMemberTypeList.size()>0){
+				returnList = new ArrayList<GenericVO>(0);
+				for (Object[] member : tdpMemberTypeList) {
+					GenericVO vo = new GenericVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(member[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(member[1]));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getCadreMemberTypeListByYear in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
+	
+	
+	
+public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate) {
 		
 		List<TdpCadreVO>  returnList = null;
 		try {
@@ -11952,5 +11984,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		}
 		return returnList;
 	}
+	
 	
 }
