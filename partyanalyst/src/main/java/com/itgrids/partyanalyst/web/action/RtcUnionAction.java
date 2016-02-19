@@ -281,7 +281,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			
+			  
 			
 			if(user == null)
 				return Action.INPUT;
@@ -337,6 +337,8 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				    	countDownTime = 0L;
 				    }
 	    		}
+	    		
+	    		genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear(null);
 	    		
 			//}
 			
@@ -512,7 +514,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				return Action.SUCCESS;
 			}*/
 			
-		
+			genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear(null);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in rtcUnionDashBoard method in RtcUnionAction Action",e);
