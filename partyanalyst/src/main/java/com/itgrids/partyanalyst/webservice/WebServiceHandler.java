@@ -1943,11 +1943,17 @@ public class WebServiceHandler {
 			return null;
 		}
 		
-		@POST
+		@GET
 		@Path("/getAttendedDetails/{partyMeetingId}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(@PathParam("partyMeetingId") Long partyMeetingId){
 		 return webServiceHandlerService.getAttendedDetailsForPartyMeeting(partyMeetingId);
 		}
 		
+		@GET
+		@Path("/getCadreFormalDetails/{partyMeetingId}/{searchType}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<PartyMeetingWSVO> getAttendedDetailsForPartyMeeting(@PathParam("partyMeetingId") Long partyMeetingId,@PathParam("searchType") String searchType){
+		 return webServiceHandlerService.getTdpCadreDetailsForPartyMeeting(partyMeetingId,searchType);
+		}
 }
