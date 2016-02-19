@@ -10,5 +10,6 @@ public interface ITrainingCampCadreAchievementDAO extends GenericDao<TrainingCam
 
 	public List<Object[]> getAchievmentDetailsforCadre(Long tdpCadreId,Long batchId);
 	public Long checkAchievementsForCadreBycadreAndBatch(Long tdpCadreId,Long batchId);
-	public int deleteAchievementsforACadre(Long tdpCadreId,Long batchId);
+	public int deleteAchievementsforACadre(List<Long> trainingCampCadreAchievementIdsList);
+	public List<Long> getTrainingCampCadreAchievementIdsList(Long tdpCadreId,Long batchId);
 }
