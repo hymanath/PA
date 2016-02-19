@@ -520,7 +520,7 @@ public class TrainingCampScheduleInviteeDAO extends GenericDaoHibernate<Training
 		Query query = getSession().createQuery(" select model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId, " +
 				" count(model.trainingCampScheduleInviteeId),model.trainingCampSchedule.trainingCampProgram.programName " +
 				" from TrainingCampScheduleInvitee model " +
-				" where model.tdpCadre.tdpCadreId =:cadreId " +
+				" where model.tdpCadre.tdpCadreId =:cadreId and model.trainingCampBatch.attendeeTypeId = 1 " +
 				" group by model.trainingCampSchedule.trainingCampProgram.trainingCampProgramId ");
 		
 		query.setParameter("cadreId",cadreId);
