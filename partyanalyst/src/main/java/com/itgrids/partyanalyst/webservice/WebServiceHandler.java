@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PollManagementVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -1942,6 +1943,11 @@ public class WebServiceHandler {
 			return null;
 		}
 		
-		
+		@POST
+		@Path("/getAttendedDetails/{partyMeetingId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(@PathParam("partyMeetingId") Long partyMeetingId){
+		 return webServiceHandlerService.getAttendedDetailsForPartyMeeting(partyMeetingId);
+		}
 		
 }
