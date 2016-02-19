@@ -24,6 +24,8 @@ public class PartyMeetingWSVO {
 	private String mobileNo;
 	private String designation;
 	private String imgStr;
+	private String dateOfBirth;
+	private Long age;
 	
 	private Long inviteesCount = 0l;
 	private Long attendedCount = 0l;
@@ -116,5 +118,17 @@ public class PartyMeetingWSVO {
 	}
 	public void setAbsentCount(Long absentCount) {
 		this.absentCount = absentCount;
+	}
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
 	}
 }

@@ -1724,7 +1724,7 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 				"  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue, model.tdpCadre.tdpCadreId, model.tdpCommitteeRole.tdpCommittee.state" +
 				" from  TdpCommitteeMember model " +
 				" where model.tdpCadre.tdpCadreId in (:cadreIdsList) " +
-				" and model.isActive ='Y'");
+				" and model.isActive ='Y' and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
 		
 		query.setParameterList("cadreIdsList", cadreIdsList);
 		

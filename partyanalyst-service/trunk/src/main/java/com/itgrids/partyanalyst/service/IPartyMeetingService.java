@@ -29,4 +29,5 @@ public interface IPartyMeetingService {
 	public MeetingTrackingVO getPartyMeetingsDetailsForCadreByCommitteeLevel(Long tdpCadreId,String searchTypeStr , 
 			 Long committeeLevelId,Long committeeLevelValue,String formDateStr,String toDateStr,String isFirst,int firstRecord,int maxResult);
 	public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
+	public List<PartyMeetingWSVO> getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType);
 }

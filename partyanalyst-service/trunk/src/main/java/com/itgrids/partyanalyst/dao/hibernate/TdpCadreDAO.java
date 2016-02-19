@@ -5305,6 +5305,24 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			return query.list();
 		}
+		
+		public List<Object[]> getCadreFormalDetails(List<Long> tdpCadreIds){
+			
+			Query query = getSession().createQuery(" select distinct  model.tdpCadreId," +
+								" model.firstname," +
+								" date(model.dateOfBirth)," +
+								" model.age," +
+								" model.mobileNo," +
+								" model.image," +
+								" model.memberShipNo" +
+								" from TdpCadre model" +
+								" where model.tdpCadreId in (:tdpCadreIds)" +
+								" and model.isDeleted ='N' and model.enrollmentYear = 2014 order by model.tdpCadreId asc ");
+			query.setParameterList("tdpCadreIds", tdpCadreIds);
+			
+			return query.list();
+		}
+		
 		public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear){
 
 			
