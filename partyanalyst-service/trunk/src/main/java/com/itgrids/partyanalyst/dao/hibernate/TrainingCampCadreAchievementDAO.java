@@ -35,14 +35,25 @@ public class TrainingCampCadreAchievementDAO extends GenericDaoHibernate<Trainin
 		query.setParameter("trainingCampBatchId",batchId);
 		return (Long)query.uniqueResult();
 	}
-	public int deleteAchievementsforACadre(Long tdpCadreId,Long batchId)
+	
+	public List<Long> getTrainingCampCadreAchievementIdsList(Long tdpCadreId,Long batchId)	
+	{
+		Query query=getSession().createQuery(" select distinct model.trainingCampCadreAchievementId from TrainingCampCadreAchievement model " +
+				" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null " +
+				" and model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
+				query.setParameter("tdpCadreId",tdpCadreId);
+				query.setParameter("trainingCampBatchId",batchId);
+			
+		return query.list();
+	}
+	
+	
+	public int deleteAchievementsforACadre(List<Long> trainingCampCadreAchievementIdsList)
 	{
 		try{
 			Query query=getSession().createQuery(" delete from TrainingCampCadreAchievement model " +
-					" where model.tdpCadreId=:tdpCadreId and model.trainingCampBatchId =:trainingCampBatchId and model.achievement is not null " +
-					" and model.trainingCampBatch.attendeeTypeId=1 and model.trainingCampBatch.isCancelled ='false' ");
-					query.setParameter("tdpCadreId",tdpCadreId);
-					query.setParameter("trainingCampBatchId",batchId);
+					" where model.trainingCampCadreAchievementId in (:trainingCampCadreAchievementIdsList) ");
+			query.setParameterList("trainingCampCadreAchievementIdsList",trainingCampCadreAchievementIdsList);
 			int count = query.executeUpdate();	
 			return count;
 		} catch(Exception e) {
