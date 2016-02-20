@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -2619,13 +2620,17 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return partyMeetingWSVo;
 	}
 	
-	public List<PartyMeetingWSVO> getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType){
+	public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType){
 		
-		List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
+		PartyMeetingWSVO finalvo = new PartyMeetingWSVO();
 		
 		try {
 			
+			List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
 			Map<Long,PartyMeetingWSVO> partyMeetingVoMap = new LinkedHashMap<Long, PartyMeetingWSVO>();
+			Map<String,Long> designationWiseMap = new LinkedHashMap<String, Long>();
+			List<PartyMeetingWSVO> designationWiseCountsList = new ArrayList<PartyMeetingWSVO>();
+			Set<Long> partyMembersTdpCadreIdsList = new java.util.HashSet<Long>();
 			List<Long> inviteesPresentList = new ArrayList<Long>();
 			List<Long> nonInviteesPresentList = new ArrayList<Long>();
 			List<Long> absentList = new ArrayList<Long>();
@@ -2709,6 +2714,16 @@ public class PartyMeetingService implements IPartyMeetingService{
 					
 					PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
 					vo.setDesignation(type);
+					
+					Long count = designationWiseMap.get(type.trim());
+					if(count != null && count.longValue() > 0L){
+						count = count++;
+					}
+					else{
+						designationWiseMap.put(type.trim(), 1l);
+					}
+					
+					partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
 				}
 			}
 			
@@ -2736,14 +2751,83 @@ public class PartyMeetingService implements IPartyMeetingService{
 					 else{
 						 vo.setDesignation(partyPositionStr);
 					 }
+					 
+					 Long count = designationWiseMap.get(role.trim());
+					 if(count != null && count.longValue() > 0L){
+						count = count++;
+					}
+					else{
+						designationWiseMap.put(role.trim(), 1l);
+					}
+					 
+					 partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(partyPosition[5]));
 				 }
 			 }
 			 
+			 int otherMembersCount = 0;
+			 
+			 if(partyMembersTdpCadreIdsList != null && partyMembersTdpCadreIdsList.size()>0) 
+				 otherMembersCount = tdpCadreIdsList.size() - partyMembersTdpCadreIdsList.size();
+			 else 
+				 otherMembersCount = tdpCadreIdsList.size();
+			 if(otherMembersCount >0)
+				 designationWiseMap.put("OTHERS".trim(), Long.valueOf(String.valueOf(otherMembersCount)));
+			 
+			 for (Map.Entry<String, Long> entry : designationWiseMap.entrySet()) {
+				    
+				 String key = entry.getKey();
+				 Long value = entry.getValue();
+				    
+				 PartyMeetingWSVO vo = new PartyMeetingWSVO();   
+				    
+				 vo.setDesignation(key);
+				 vo.setCount(value);
+				 
+				 designationWiseCountsList.add(vo);
+				}
+			 
 			 partyMeetingWSVoList.addAll(partyMeetingVoMap.values());
+			 
+			Long attendedCount = 0l;
+			Long invitedCount = 0l;
+			Long inviteesAttendedCount = 0l;
+			Long nonInviteesCount = 0l;
+			Long absentCount = 0l;
+			
+			if(attendedList != null && attendedList.size() > 0){
+				attendedCount = (long) attendedList.size();
+			}
+			
+			if(attendedList != null && attendedList.size() > 0){
+				if(inviteesList != null && inviteesList.size() > 0){
+					invitedCount = (long) inviteesList.size();
+					for (Long cadreId : attendedList) {
+						if(inviteesList.contains(cadreId)){
+							inviteesAttendedCount = inviteesAttendedCount+1l;
+						}
+						else{
+							nonInviteesCount = nonInviteesCount+1l;
+						}
+					}
+				}
+				else{
+					nonInviteesCount = (long) attendedList.size();
+				}
+			}
+			
+			absentCount = invitedCount - inviteesAttendedCount;
+			
+			finalvo.setAttendedCount(attendedCount);
+			finalvo.setInviteesCount(invitedCount);
+			finalvo.setInviteesAttendedCount(inviteesAttendedCount);
+			finalvo.setNonInviteesAttendedCount(nonInviteesCount);
+			finalvo.setAbsentCount(absentCount);
+			finalvo.setPartyMeetingWSVoList(partyMeetingWSVoList);
+			finalvo.setDesignationWiseCountsList(designationWiseCountsList);
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getTdpCadreDetailsForPartyMeeting() method, Exception - ",e);
 		}
-		return partyMeetingWSVoList;
+		return finalvo;
 	}
 }

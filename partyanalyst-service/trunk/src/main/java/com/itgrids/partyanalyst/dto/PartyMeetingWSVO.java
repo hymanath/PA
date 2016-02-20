@@ -33,7 +33,10 @@ public class PartyMeetingWSVO {
 	private Long nonInviteesAttendedCount = 0l;
 	private Long absentCount = 0l;
 	
+	private Long count = 0l;
+	
 	private List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
+	private List<PartyMeetingWSVO> designationWiseCountsList = new ArrayList<PartyMeetingWSVO>();
 	
 	public Long getId() {
 		return id;
@@ -130,5 +133,18 @@ public class PartyMeetingWSVO {
 	}
 	public void setAge(Long age) {
 		this.age = age;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public List<PartyMeetingWSVO> getDesignationWiseCountsList() {
+		return designationWiseCountsList;
+	}
+	public void setDesignationWiseCountsList(
+			List<PartyMeetingWSVO> designationWiseCountsList) {
+		this.designationWiseCountsList = designationWiseCountsList;
 	}
 }
