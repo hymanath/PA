@@ -995,14 +995,15 @@ function getCadreRegistrationTotalCount() {
 	membereTypeIds.push(2);
 	//membereTypeIds.push(3);
 	var searchTypeStr = "district";
-	var startDate = "2016-02-18";
-	var toDate = "2016-02-18";
-	
+	var startDate = "2016-02-22";
+	var toDate = "2016-02-22";
+	var searchDatType="today";
 	var jObj={
 		membereTypeIds:membereTypeIds,
 		searchTypeStr:searchTypeStr,
 		startDate:startDate,
-		toDate:toDate
+		toDate:toDate,
+		searchDatType:searchDatType
 	};
 	$.ajax({
 		type:"Post",
