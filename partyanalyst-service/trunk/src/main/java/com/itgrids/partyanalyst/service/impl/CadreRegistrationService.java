@@ -296,7 +296,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IRtcUnionService rtcUnionService;
 	private IRtcDepotDAO rtcDepotDAO;
 	private ITdpMemberTypeDAO tdpMemberTypeDAO;
-	private CommonMethodsUtilService commonMethodsUtilService;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -11915,10 +11915,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				if(constituencyList!=null && constituencyList.size()>0){
 					for(Object[] distCadre:constituencyList) {
 						TdpCadreVO tdpvo=new TdpCadreVO();
-						//tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
-						//tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
-						tdpvo.setId(Long.valueOf(distCadre[0]!=null?distCadre[0].toString():"0L"));
-						tdpvo.setName(distCadre[1]!=null?distCadre[1].toString():null);
+						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						/*tdpvo.setId(Long.valueOf(distCadre[0]!=null?distCadre[0].toString():"0L"));
+						tdpvo.setName(distCadre[1]!=null?distCadre[1].toString():null);*/
 						tdpvo.setTabCount(0L);
 						tdpvo.setWebCount(0L);
 						tdpvo.setTotalCount(0L);
@@ -11930,10 +11930,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				if(districtList!=null && districtList.size()>0){
 					for(Object[] distCadre:districtList){
 						TdpCadreVO tdpvo=new TdpCadreVO();
-						//tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
-						//tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
-						tdpvo.setId(Long.valueOf(distCadre[0]!=null? distCadre[0].toString():"0L"));
-						tdpvo.setName(distCadre[1]!=null?distCadre[1].toString():null);
+						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						/*tdpvo.setId(Long.valueOf(distCadre[0]!=null? distCadre[0].toString():"0L"));
+						tdpvo.setName(distCadre[1]!=null?distCadre[1].toString():null);*/
 						tdpvo.setTabCount(0L);
 						tdpvo.setWebCount(0L);
 						tdpvo.setTotalCount(0L);
@@ -11981,14 +11981,12 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			if(cadreRegisteredCountdtls != null && cadreRegisteredCountdtls.size()>0)
 			{
 				for (Object[] cadreDtls : cadreRegisteredCountdtls) {
-					//Long locationId = commonMethodsUtilService.getLongValueForObject(cadreDtls[0]);
-					Long locationId=Long.valueOf(cadreDtls[0]!=null ?cadreDtls[0].toString():"0L");
+					Long locationId = commonMethodsUtilService.getLongValueForObject(cadreDtls[0]);
+					/*Long locationId=Long.valueOf(cadreDtls[0]!=null ?cadreDtls[0].toString():"0L");*/
 					TdpCadreVO vo = cadrelocationWiseMap.get(locationId);
 					if(vo != null){
-						//String typeStr = commonMethodsUtilService.getStringValueForObject(cadreDtls[1]);
-						//Long count = commonMethodsUtilService.getLongValueForObject(cadreDtls[2]);
-						String typeStr=cadreDtls[1]!=null?cadreDtls[1].toString():"";
-						Long count=Long.valueOf(cadreDtls[1]!=null?cadreDtls[1].toString():"0L");
+						String typeStr = commonMethodsUtilService.getStringValueForObject(cadreDtls[2]);
+						Long count = commonMethodsUtilService.getLongValueForObject(cadreDtls[3]);
 						if(typeStr != null && !typeStr.isEmpty())
 						{
 							if(typeStr.trim().equalsIgnoreCase("TAB")){
@@ -12031,7 +12029,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			
 			Date stDate = null;
 			Date edDate = null;
-			Date currentDate=null;
+			Date currentDate = dateUtilService.getCurrentDateAndTime();
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
 			List<AffiliatedCadreVO> voList = new ArrayList<AffiliatedCadreVO>();
 			Map<Long,AffiliatedCadreVO> afflCdrMap = new LinkedHashMap<Long, AffiliatedCadreVO>();
