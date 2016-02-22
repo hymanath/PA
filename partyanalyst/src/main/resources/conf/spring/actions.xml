@@ -1593,6 +1593,8 @@
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
 			<property name="trainingCampService" ref="trainingCampService" />
 			<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+			<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+			<property name="dateUtilService" ref="dateUtilService" />
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
 		<property name="trainingCampService" ref="trainingCampService" />
