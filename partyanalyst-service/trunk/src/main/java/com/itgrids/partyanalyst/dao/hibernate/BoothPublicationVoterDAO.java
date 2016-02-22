@@ -7986,15 +7986,20 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	}
 	
 	
-	public List<Object[]> getCadreVoterInfo()
+	public List<Object[]> getCadreVoterInfo(Long wardId,Integer firstResult,Integer maxResults)
 	{
 		Query query = getSession().createQuery(" select model.booth.partNo,model.serialNo," +
 				" model.booth.villagesCovered,model.voter.name,model.voter.relativeName,model.voter.voterIDCardNo," +
 				" model.booth.localBodyWard.name,model1.mobileNo,model.voter.relationshipType,model.voter.gender,model.booth.latitude,model.booth.longitude from BoothPublicationVoter model,TdpCadre model1" +
-				" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId=17" +
+				" where model.voter.voterId = model1.voter.voterId and model.booth.publicationDate.publicationDateId = 17 " +
 				" and model1.mobileNo is not null and length(model1.mobileNo) = 10 and model1.mobileNo <> '9999999999' and model1.mobileNo !='' " +
+				" and model.booth.localBodyWard.constituencyId = :wardId and model.serialNo is not null and model.serialNo > 0 " +
 				" group by model1.tdpCadreId order by model1.tdpCadreId ");
 		
+		query.setParameter("wardId",wardId);
+		query.setFirstResult(firstResult);
+		query.setMaxResults(maxResults);
+
 		return query.list();
 	
 	}
