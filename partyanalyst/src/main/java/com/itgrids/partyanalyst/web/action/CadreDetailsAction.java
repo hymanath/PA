@@ -799,12 +799,13 @@ public String updateLeaderShip(){
 			String searchTypeStr=jObj.getString("searchTypeStr");
 			String startDate=jObj.getString("startDate");
 			String toDate=jObj.getString("toDate");
+			String searchDatType=jObj.getString("searchDatType");
 			 List<Long>  idList=new ArrayList<Long>();
 			 for(int i=0;i<membereTypeIdsList.length();i++){
-				 Long id= (Long) membereTypeIdsList.get(i);
+				 Long id= Long.valueOf(membereTypeIdsList.get(i).toString());
 				 idList.add(id);
 			 }
-			cadreList=cadreRegistrationService.getLocationwiseCadreRegistraionDetails(idList,searchTypeStr,startDate,toDate);
+			cadreList=cadreRegistrationService.getLocationwiseCadreRegistraionDetails(idList,searchTypeStr,startDate,toDate,searchDatType);
 			 }catch(Exception e){
 			LOG.error("Exception Occured in getCadreDetails() in CadreDetailsAction ",e);
 		}
