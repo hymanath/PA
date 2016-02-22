@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -28,11 +29,6 @@ public class SmsSenderService implements ISmsSenderService{
 	private ISmsGatewayService smsGatewayService;
 	
 	private IMobileAppUserVoterDAO mobileAppUserVoterDAO;
-	
-	
-	
-	
-
 	public IMobileAppUserVoterDAO getMobileAppUserVoterDAO() {
 		return mobileAppUserVoterDAO;
 	}
@@ -76,34 +72,42 @@ public class SmsSenderService implements ISmsSenderService{
 		this.taskExecutor = taskExecutor;
 	}
 
-	public ResultStatus sendSmsToCadre(Integer startIndex,Integer maxIndex)	{
+	public ResultStatus sendSmsToCadre(MobileAppUserVoterVO inputVO)	{
 		
 		LOG.info("Entered in to sendSmsToCadre() method ");
 		ResultStatus result = new ResultStatus();
 		try{
+				String token = inputVO.getVersionNo();
+			    LOG.fatal("Messaging Started -- at --> "+new Date());
+			    cadreRegistrationService.sendSMS("9966542524","Messaging started At - "+new Date()+" Token - "+token);
+			    
 				List<CadreVoterVO> resultList = new ArrayList<CadreVoterVO>();
-				List<Object[]> list = boothPublicationVoterDAO.getCadreVoterInfo();
-					 if(list != null && list.size() > 0)
+				List<Object[]> list = boothPublicationVoterDAO.getCadreVoterInfo(inputVO.getWardId(),inputVO.getFirstResult(),inputVO.getMaxResults());
+				
+				LOG.fatal("Total Mobile Nos are --> "+list.size());
+				cadreRegistrationService.sendSMS("9966542524","Total Mobile Nos are --> "+list.size()+" Token - "+token);
+				
+				if(list != null && list.size() > 0)
+				{
+					 for(Object[] params : list)
 					 {
-							 for(Object[] params : list)
-							 {
-								 CadreVoterVO vo = new CadreVoterVO();
-								 vo.setPartNo(params[0] != null ? params[0].toString() : "");
-								 vo.setSerialNo(params[1] != null ? params[1].toString() : "");
-								 vo.setLocation(params[2] != null ? params[2].toString() : "");
-								 vo.setName(params[3] != null ? params[3].toString() : "");
-								 vo.setRelativeName(params[4] != null ? params[4].toString() : "");
-								 vo.setVoterIdCardNo(params[5] != null ? params[5].toString() : "");
-								 vo.setWardNo(params[6] != null ? params[6].toString() : "");
-								 vo.setMobileNum(params[7] != null ? params[7].toString() : "");
-								 vo.setRelationShipType(params[8] != null ? params[8].toString() : "");
-								 vo.setGender(params[9] != null ? params[9].toString() : "");
-								 vo.setLatitude(params[10] != null ? params[10].toString() : "");
-								 vo.setLongitude(params[11] != null ? params[11].toString() : "");
-								 resultList.add(vo);
-							 }
-					 }
-					 for(;;)
+						 CadreVoterVO vo = new CadreVoterVO();
+						 vo.setPartNo(params[0] != null ? params[0].toString() : "");
+						 vo.setSerialNo(params[1] != null ? params[1].toString() : "");
+						 vo.setLocation(params[2] != null ? params[2].toString() : "");
+						 vo.setName(params[3] != null ? params[3].toString() : "");
+						 vo.setRelativeName(params[4] != null ? params[4].toString() : "");
+						 vo.setVoterIdCardNo(params[5] != null ? params[5].toString() : "");
+						 vo.setWardNo(params[6] != null ? params[6].toString() : "");
+						 vo.setMobileNum(params[7] != null ? params[7].toString() : "");
+						 vo.setRelationShipType(params[8] != null ? params[8].toString() : "");
+						 vo.setGender(params[9] != null ? params[9].toString() : "");
+						 vo.setLatitude(params[10] != null ? params[10].toString() : "");
+						 vo.setLongitude(params[11] != null ? params[11].toString() : "");
+						 resultList.add(vo);
+					}
+				}
+					 /*for(;;)
 						{
 							 if(startIndex >= resultList.size()-1)
 								 break;
@@ -112,8 +116,9 @@ public class SmsSenderService implements ISmsSenderService{
 							 startConsumeMessages(resultList.subList(startIndex, maxIndex));
 							 startIndex = maxIndex;
 							 maxIndex = maxIndex + maxIndex;
-						}
-					 result.setMessage("success");
+						}*/
+					startConsumeMessages(resultList,token);
+					result.setMessage("success");
 				}
 		catch (Exception e) {
 			result.setMessage("fail");
@@ -169,7 +174,8 @@ public class SmsSenderService implements ISmsSenderService{
 								 resultList.add(vo);
 							 }
 					 }
-					 for(;;)
+					 
+					 /*for(;;)
 						{
 							 if(startIndex >= resultList.size()-1)
 								 break;
@@ -178,7 +184,10 @@ public class SmsSenderService implements ISmsSenderService{
 							 startConsumeMessages(resultList.subList(startIndex, maxIndex));
 							 startIndex = maxIndex;
 							 maxIndex = maxIndex + maxIndex;
-						}
+						 
+					  }*/
+					 
+					 startConsumeMessages(resultList,"");
 					 result.setMessage("success");
 				}
 		}
@@ -191,38 +200,22 @@ public class SmsSenderService implements ISmsSenderService{
 		
 	}
 	
-	
-	
-	public void startConsumeMessages(List<CadreVoterVO> resultList)
+	public void startConsumeMessages(List<CadreVoterVO> resultList,String token)
 	{
-		int i=0;
+		int count = 0;
 		for(CadreVoterVO vo : resultList){
 		try{
-			LOG.error(i+1+") Thread is Creating...............");
-			/*String relation = "";
-			if(vo.getRelationShipType().equalsIgnoreCase("Father") && vo.getGender().equalsIgnoreCase("M"))
-				relation = "s/o";
-			else if(vo.getRelationShipType().equalsIgnoreCase("Mother")&& vo.getGender().equalsIgnoreCase("F"))
-				relation = "d/o";
-			
-			else if(vo.getRelationShipType().equalsIgnoreCase("Husband"))
-				relation = "w/o";
-			else
-				relation = "c/o";
-			
-			String msg = vo.getName() +"\n" +relation +" "+vo.getRelativeName() +"\n" +"AIO"+vo.getVoterIdCardNo()+"\n" +
-			 "Polling Booth No:"+vo.getPartNo()+"\n" +"Voter Serial No:"+vo.getSerialNo()+"\n" +"Polling Booth Location:"+vo.getLocation()+"\n" +"Ward No:"+vo.getWardNo();*/
-			 StringBuilder sb = new StringBuilder();
+			   StringBuilder sb = new StringBuilder();
 			   
-			   String voterName =vo.getName() != null ? vo.getName().toString() : "";
+			   String voterName = vo.getName() != null ? vo.getName().toString() : "";
 			   String voterIdCardNo = vo.getVoterIdCardNo() != null ? vo.getVoterIdCardNo().toString() : null;
-			   String relativeName =vo.getRelativeName() != null ? vo.getRelativeName().toString() : null;
+			   String relativeName = vo.getRelativeName() != null ? vo.getRelativeName().toString() : null;
 			   String relation = vo.getRelationShipType() != null ? vo.getRelationShipType().toString() : "";
 			   String gender = vo.getGender();
-			   String serialNo =vo.getSerialNo() != null ? vo.getSerialNo().toString() : null;
-			   String latitude = vo.getLatitude() != null ?vo.getLatitude() .toString() : null;
-			   String longitude = vo.getLongitude() != null ?vo.getLongitude().toString() : null;
-			   String location =vo.getLocation()!= null ? vo.getLocation().toString() : null;
+			   String serialNo = vo.getSerialNo() != null ? vo.getSerialNo().toString() : null;
+			   String latitude = (vo.getLatitude() != null && vo.getLatitude().trim().length() > 0) ? vo.getLatitude() .toString() : null;
+			   String longitude = (vo.getLongitude() != null && vo.getLongitude().trim().length() > 0) ? vo.getLongitude().toString() : null;
+			   String location = vo.getLocation()!= null ? vo.getLocation().toString() : null;
 			   String relationStr = "C/O";
 					   
 			   sb.append("Name : "+voterName+"\n");
@@ -251,6 +244,7 @@ public class SmsSenderService implements ISmsSenderService{
 			   if(location != null)
 			   sb.append("Location : "+location+"\n");
 			   sb.append("Vote on 02-FEB-2016 07:00 AM - 05:00 PM.\n");
+			   sb.append("\nVote For TDP\n\n");
 			   
 			   if(latitude != null && longitude != null)
 			   {
@@ -258,24 +252,31 @@ public class SmsSenderService implements ISmsSenderService{
 				   sb.append("Route to Polling Station\n");
 				   sb.append(url);
 			   }
-			taskExecutor.execute(sendSMSForCader(sb.toString(),"9032411640"));
+			   //String result = smsGatewayService.sendSMS(vo.getMobileNum(),sb.toString(),IConstants.ADMIN_USERNAME_FOR_SMS,IConstants.ADMIN_PASSWORD_FOR_SMS);
+			   String result = smsGatewayService.sendSMS(vo.getMobileNum(),sb.toString(),IConstants.ADMIN_USERNAME_FOR_SMS,IConstants.ADMIN_PASSWORD_FOR_SMS);
+			   count++;
+			   LOG.fatal(count+")Mobile Number - for Ward "+token+" "+vo.getMobileNum()+" Status - "+result+" at -"+new Date());
+			   
+			   if(count%10000 == 0)
+				   cadreRegistrationService.sendSMS("9966542524","Out of "+resultList.size()+" Messages "+count+" are delivered @"+new Date()+" Token - "+token);
+				   
 			}catch(Exception e)
 			{
 				LOG.error("Exception in Creating a thread");
 				LOG.error(e);
 			}
 		}
+		cadreRegistrationService.sendSMS("9966542524","Message Sending Completed for Ward - "+token+", Total are - "+resultList.size()+" Messages "+count+" are delivered @"+new Date());
 	}
-	public Runnable sendSMSForCader(String message,String phoneNumbers)
+	public String sendSMSForCader(String message,String phoneNumbers)
 	{
 		try{
 			//cadreRegistrationService.sendSMS(phoneNumbers,message);
-			smsGatewayService.sendSMS(phoneNumbers,message,IConstants.ITGRIDS_USERNAME_FOR_SMS,IConstants.ITGRIDS_PASSWORD_FOR_SMS);		 
-			return new Thread();
+			return smsGatewayService.sendSMS(phoneNumbers,message,IConstants.ADMIN_USERNAME_FOR_SMS,IConstants.ADMIN_PASSWORD_FOR_SMS);		 
 			
 		}catch (Exception e) {
-			e.printStackTrace();
-			return new Thread();
+			LOG.error(e);
+			return "Failure";
 		}
 	}
 	
