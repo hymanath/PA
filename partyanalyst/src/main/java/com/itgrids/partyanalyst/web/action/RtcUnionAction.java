@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -19,6 +21,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -71,6 +74,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private List<IdNameVO> 						designationList;
 	private List<IdNameVO> 						zonesList;
 	private List<CadreVo> cadrevoList;
+	private  List<TdpCadreVO>      cadreList;
 	
 	
 	public List<CadreVo> getCadrevoList() {
@@ -270,6 +274,13 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		this.zonesList = zonesList;
 	}
 	
+	
+	public List<TdpCadreVO> getCadreList() {
+		return cadreList;
+	}
+	public void setCadreList(List<TdpCadreVO> cadreList) {
+		this.cadreList = cadreList;
+	}
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -619,6 +630,26 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised in getTodayTabAndWebUsersCount()",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCadreDetails()
+	  {		
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray membereTypeIdsList=jObj.getJSONArray("membereTypeIds");
+			String searchTypeStr=jObj.getString("searchTypeStr");
+			String startDate=jObj.getString("startDate");
+			String toDate=jObj.getString("toDate");
+			String searchDatType=jObj.getString("searchDatType");
+			 List<Long>  idList=new ArrayList<Long>();
+			 for(int i=0;i<membereTypeIdsList.length();i++){
+				 Long id= Long.valueOf(membereTypeIdsList.get(i).toString());
+				 idList.add(id);
+			 }
+			cadreList=cadreRegistrationService.getLocationwiseCadreRegistraionDetails(idList,searchTypeStr,startDate,toDate,searchDatType);
+			 }catch(Exception e){
+			LOG.error("Exception Occured in getCadreDetails() in RtcUnionAction ",e);
 		}
 		return Action.SUCCESS;
 	}
