@@ -244,7 +244,74 @@
 					</div>
 				</div>
 			</div>-->
-			<!--<div class="row m_top10">
+			<div class="row m_top10">
+				<div class="col-md-6">
+					<div class="block pad_10">
+						<label class="radio-inline">
+							<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="district" value="today" id="districtTodayId" class="districtRadioCls">Today
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="district" value="last 7 days" id="district7daysId" class="districtRadioCls">Last 7 Days
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
+						</label>
+						<table class="table table-bordered">
+							<thead>
+								<th>District Name</th>
+								<th>Total</th>
+								<th>Tab</th>
+								<th>Web</th>
+							</thead>
+							<tbody id="districtWiseRegistredCountId">
+								<!--<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>-->
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="block pad_10">
+						<label class="radio-inline">
+							<input type="radio" name="constituency" value="total" checked="true"
+							id="constituencyTotalId" class="constituecnyRadioCls" >Total
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="constituency" value="today" class="constituecnyRadioCls">Today
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="constituency" value="last 7 days" class="constituecnyRadioCls">Last 7 Days
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
+						</label>
+						<table class="table table-bordered">
+							<thead>
+								<th>Constituency Name</th>
+								<th>Total</th>
+								<th>Tab</th>
+								<th>Web</th>
+							</thead>
+							<tbody id="constituencyWiseRegistredCountId">
+								<!--<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>-->
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row m_top10">
 				<div class="col-md-4">
 					<div class="block">
 						<div class="pad_10">
@@ -401,7 +468,7 @@
 						<div id="depotWiseTodayDetailsId" style="display:none;"></div>
 					</div>
 				</div>
-			</div>-->
+			</div>
 		</div>
 	</div>
 </div>
@@ -1153,31 +1220,51 @@ function getOnlineAndTabUsersCount(){
 		
 	});
 }*/
-/*getCadreRegistrationTotalCount();
-function getCadreRegistrationTotalCount() {
+getCadreRegistrationTotalCount("total","District");
+getCadreRegistrationTotalCount("total","Constituency");
+function getCadreRegistrationTotalCount(searchType,locationLevel) {
 	var membereTypeIds = new Array();
 	membereTypeIds.push(2);
 	//membereTypeIds.push(3);
-	var searchTypeStr = "district";
-	var startDate = "2016-02-22";
-	var toDate = "2016-02-22";
-	var searchDatType="today";
+	//var searchTypeStr = "Constituency";
+    var startDate = "";
+	var toDate = "";
+	//searchTypeStr replace With locationLevel
 	var jObj={
 		membereTypeIds:membereTypeIds,
-		searchTypeStr:searchTypeStr,
+		searchTypeStr:locationLevel,
 		startDate:startDate,
 		toDate:toDate,
-		searchDatType:searchDatType
+		searchDatType:searchType
 	};
 	$.ajax({
 		type:"Post",
 		url:'getCadreRegistrationAction.action',
 		dataType:'json',
 		data:{task:JSON.stringify(jObj)}
-	}).done(function(){
+	}).done(function(result){
+		var str ='';
+		if(result !=null){
+			
+			for(var i in result){
+				str+='<tr>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].totalCount+'</td>';
+							str+='<td>'+result[i].tabCount+'</td>';	
+							str+='<td>'+result[i].webCount+'</td>';
+				str+='</tr>';
+			}
+			
+			if (locationLevel !=null && locationLevel =="District"){
+				$("#districtWiseRegistredCountId").html(str);
+			}else {
+				$("#constituencyWiseRegistredCountId").html(str);
+			}
+			
+		} 
 		
 	});
-}*/
+}
 getTotalCounts();
 getTodayCounts();
 getLast7DaysCounts();
@@ -1359,6 +1446,16 @@ function getLast30DaysCounts(){
 		$("#apsrtcLast30LoadingId").hide();
 	});
 }
+
+$(document).on("click",".districtRadioCls",function(){
+	var searchType = $(this).val();
+	getCadreRegistrationTotalCount(searchType,"District");
+});
+$(document).on("click",".constituecnyRadioCls",function() {
+	var searchType = $(this).val();
+	getCadreRegistrationTotalCount(searchType,"Constituency");
+});
+
 
 </script>
 </body>
