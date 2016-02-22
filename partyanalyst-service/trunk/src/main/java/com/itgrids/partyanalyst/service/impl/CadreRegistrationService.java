@@ -11886,8 +11886,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				returnList = new ArrayList<GenericVO>(0);
 				for (Object[] member : tdpMemberTypeList) {
 					GenericVO vo = new GenericVO();
-					vo.setId(commonMethodsUtilService.getLongValueForObject(member[0]));
-					vo.setName(commonMethodsUtilService.getStringValueForObject(member[1]));
+					
+					//vo.setId(commonMethodsUtilService.getLongValueForObject(member[0]));
+					//vo.setName(commonMethodsUtilService.getStringValueForObject(member[1]));
+					vo.setId(Long.valueOf(member[0] != null ? member[0].toString():"0L"));
+					vo.setName(member[1]!=null?member[1].toString():null);
 					returnList.add(vo);
 				}
 			}
@@ -11899,7 +11902,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	
 	
 	
-public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate) {
+public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate,String searchDatType) {
 		
 		List<TdpCadreVO>  returnList = null;
 		try {
@@ -11911,8 +11914,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				if(constituencyList!=null && constituencyList.size()>0){
 					for(Object[] distCadre:constituencyList) {
 						TdpCadreVO tdpvo=new TdpCadreVO();
-						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
-						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						//tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						//tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						tdpvo.setId(Long.valueOf(distCadre[0]!=null?distCadre[0].toString():"0L"));
+						tdpvo.setName(distCadre[1]!=null?distCadre[1].toString():null);
 						tdpvo.setTabCount(0L);
 						tdpvo.setWebCount(0L);
 						tdpvo.setTotalCount(0L);
@@ -11924,8 +11929,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				if(districtList!=null && districtList.size()>0){
 					for(Object[] distCadre:districtList){
 						TdpCadreVO tdpvo=new TdpCadreVO();
-						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
-						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						//tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						//tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						tdpvo.setId(Long.valueOf(distCadre[0]!=null? distCadre[0].toString():"0L"));
+						tdpvo.setName(distCadre[1]!=null?distCadre[1].toString():null);
 						tdpvo.setTabCount(0L);
 						tdpvo.setWebCount(0L);
 						tdpvo.setTotalCount(0L);
@@ -11933,9 +11940,35 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 					}
 				}
 			}
+			
 			Date stDate=null;
 			Date edDate=null;
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+			List<Object[]> cadreRegisteredCountdtls =  null;
+	        if(searchDatType.equalsIgnoreCase("total")){
+	        	cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, null, null);
+			}else if(searchDatType.equalsIgnoreCase("today")){
+				dateUtilService.getCurrentDateInStringFormat();
+				 cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, sdf.parse(dateUtilService.getCurrentDateInStringFormat()), sdf.parse(dateUtilService.getCurrentDateInStringFormat()));
+			}else if(searchDatType.equalsIgnoreCase("last 7 days")){
+				Date date=new Date();
+				String todayDatStr = sdf.format(date);
+
+		        Calendar cal = Calendar.getInstance();
+		        cal.add(Calendar.DATE, -7);
+		        Date todate = cal.getTime();    
+		        String fromDatStr = sdf.format(todate);
+		        cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, sdf.parse(todayDatStr), sdf.parse(fromDatStr));
+			}else if(searchDatType.equalsIgnoreCase("last 30 days")){
+				Date date=new Date();
+				String todayDate = sdf.format(date);
+				 Calendar cal = Calendar.getInstance();
+		        cal.add(Calendar.DATE, -30);
+		        Date todate1 = cal.getTime();    
+		        String fromdate = sdf.format(todate1);
+		        cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, sdf.parse(todayDate), sdf.parse(fromdate));
+			}
+		
 			if(startDate!=null && startDate.trim().length()>0){
 				stDate=sdf.parse(startDate.trim());
 			}
@@ -11943,15 +11976,18 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				edDate=sdf.parse(toDate.trim());
 			}
 			
-			List<Object[]> cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, stDate, edDate);
+			//List<Object[]> cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, stDate, edDate);
 			if(cadreRegisteredCountdtls != null && cadreRegisteredCountdtls.size()>0)
 			{
 				for (Object[] cadreDtls : cadreRegisteredCountdtls) {
-					Long locationId = commonMethodsUtilService.getLongValueForObject(cadreDtls[0]);
+					//Long locationId = commonMethodsUtilService.getLongValueForObject(cadreDtls[0]);
+					Long locationId=Long.valueOf(cadreDtls[0]!=null ?cadreDtls[0].toString():"0L");
 					TdpCadreVO vo = cadrelocationWiseMap.get(locationId);
 					if(vo != null){
-						String typeStr = commonMethodsUtilService.getStringValueForObject(cadreDtls[1]);
-						Long count = commonMethodsUtilService.getLongValueForObject(cadreDtls[2]);
+						//String typeStr = commonMethodsUtilService.getStringValueForObject(cadreDtls[1]);
+						//Long count = commonMethodsUtilService.getLongValueForObject(cadreDtls[2]);
+						String typeStr=cadreDtls[1]!=null?cadreDtls[1].toString():"";
+						Long count=Long.valueOf(cadreDtls[1]!=null?cadreDtls[1].toString():"0L");
 						if(typeStr != null && !typeStr.isEmpty())
 						{
 							if(typeStr.trim().equalsIgnoreCase("TAB")){
@@ -11971,6 +12007,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				}
 			}
 			
+			
+			
 			if(cadrelocationWiseMap != null && cadrelocationWiseMap.size()>0)
 			{
 				returnList = new ArrayList<TdpCadreVO>(0);
@@ -11986,4 +12024,6 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 	}
 	
 	
+
+
 }
