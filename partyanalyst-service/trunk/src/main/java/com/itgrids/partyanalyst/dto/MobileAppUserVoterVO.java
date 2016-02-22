@@ -20,13 +20,23 @@ public class MobileAppUserVoterVO {
 	private Long tdpCadreId;
 	private List<Long> voterIds;
 	private List<String> mobileNums;
+	private Integer firstResult;
+	private Integer maxResults;
 	private Long divisonId;
 	private String reqType;
 	
-	
-	
-	
-	
+	public Integer getFirstResult() {
+		return firstResult;
+	}
+	public void setFirstResult(Integer firstResult) {
+		this.firstResult = firstResult;
+	}
+	public Integer getMaxResults() {
+		return maxResults;
+	}
+	public void setMaxResults(Integer maxResults) {
+		this.maxResults = maxResults;
+	}
 	public String getReqType() {
 		return reqType;
 	}
