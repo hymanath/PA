@@ -2329,6 +2329,7 @@
    </bean> 
    
     <bean name="dateUtilService" class="com.itgrids.partyanalyst.utils.DateUtilService" > </bean>
+     <bean name="commonMethodsUtilService" class="com.itgrids.partyanalyst.utils.CommonMethodsUtilService" > </bean>
    
    <bean name="fieldVoterDataService" class="com.itgrids.partyanalyst.service.impl.FieldVoterDataService" >
    	<property name="fieldVoterDataDAO" ref="fieldVoterDataDAO"></property>
@@ -2443,6 +2444,7 @@
 		<property name="rtcUnionService" ref="rtcUnionService" />
 		<property name="rtcDepotDAO" ref="rtcDepotDAO" />
 		<property name="tdpMemberTypeDAO" ref="tdpMemberTypeDAO" />
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 	 </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
