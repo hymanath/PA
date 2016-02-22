@@ -14,6 +14,65 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/dataTables.fixedHeader.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<style type="text/css">
+.tableDiff
+{
+	margin:0px;
+}
+.tableDiff tr:nth-child(odd) td
+{
+	background-color:#F5F2ED !important;
+	text-align:center
+}
+.tableDiff thead th
+{
+	font-size:20px;
+	text-align:center;
+	font-weight:400
+}
+.tableDiff tr td
+{
+	padding:0px !important;
+}
+.tableDiff tr:nth-child(even) td
+{
+	background:#FDFDF3 !important;
+	text-align:center
+}
+.tableDiff tr td:first-child:hover , .tableDiff tr td:first-child
+{
+	box-shadow:none;
+	color:#996533;
+	font-size:20px;
+	vertical-align:middle
+}
+.tableDiff tr td:hover
+{
+	box-shadow:0px 0px 25px rgba(0,0,0,0.4)
+}
+.bg_F9
+{
+	background-color:#F9F5EA;
+	margin:0px !important
+}
+.bg_F4
+{
+	background-color:#F4EEE0;
+	margin:0px !important
+}
+.bg_CC
+{
+	background-color:#CCC !important
+}
+.bg_EF
+{
+	background:#EFF3F4
+}
+.bg_ff
+{
+	background-color:#fff !important
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -28,6 +87,102 @@
 				</div>
 			</div>
 			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading bg_CC">
+							<h4 class="panel-title"><b>AFFLIATED MEMBERS ENROLLMENT DRIVE</b></h4>
+						</div>
+						<div class="panel-body bg_EF">
+							<table class="table table-bordered bg_ff tableDiff m_0">
+								<thead>
+									<th></th>
+									<th>TOTAL REGISTERED</th>
+									<th>TODAY REGISTERED</th>
+									<th>PAST 7 DAYS REGISTERED</th>
+									<th>PAST 30 DAYS REGISTERED</th>
+								</thead>
+								<tr>
+									<td>TEACHERS</td>
+									<td><h3><span id="teachersTotalId"></span></h3>
+										<p class="bg_F4">WEB: <span id="teachersTotalWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="teachersTotalTabId"></span></p>
+									</td>
+									<td><h3><span id="teachersTodayId"></span></h3>
+										<p class="bg_F4">WEB: <span id="teachersTodayWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="teachersTodayTabId"></span></p>
+									</td>
+									<td><h3><span id="teachersLast7Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="teachersLast7WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="teachersLast7TabId"></span></p>
+									</td>
+									<td><h3><span id="teachersLast30Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="teachersLast30WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="teachersLast30TabId"></span></p>
+									</td>
+								</tr>
+								<tr>
+									<td>ANGANWADI</td>
+									<td><h3><span id="anganwadiTotalId"></span></h3>
+										<p class="bg_F4">WEB: <span id="anganwadiTotalWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="anganwadiTotalTabId"></span></p>
+									</td>
+									<td><h3><span id="anganwadiTodayId"></span></h3>
+										<p class="bg_F4">WEB: <span id="anganwadiTodayWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="anganwadiTodayTabId"></span></p>
+									</td>
+									<td><h3><span id="anganwadiLast7Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="anganwadiLast7WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="anganwadiLast7TabId"></span></p>
+									</td>
+									<td><h3><span id="anganwadiLast30Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="anganwadiLast30WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="anganwadiLast30TabId"></span></p>
+									</td>
+								</tr>
+								<tr>
+									<td>MOTOR WORKERS</td>
+									<td><h3><span id="motorTotalId"></span></h3>
+										<p class="bg_F4">WEB: <span id="motorTotalWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="motorTotalTabId"></span></p>
+									</td>
+									<td><h3><span id="motorTodayId"></span></h3>
+										<p class="bg_F4">WEB: <span id="motorTodayWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="motorTodayTabId"></span></p>
+									</td>
+									<td><h3><span id="motorLast7Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="motorLast7WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="motorLast7TabId"></span></p>
+									</td>
+									<td><h3><span id="motorLast30Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="motorLast30WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="motorLast30TabId"></span></p>
+									</td>
+								</tr>
+								<tr>
+									<td>APSRTC</td>
+									<td><h3><span id="apsrtcTotalId"></span></h3>
+										<p class="bg_F4">WEB: <span id="apsrtcTotalWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="apsrtcTotalTabId"></span></p>
+									</td>
+									<td><h3><span id="apsrtcTodayId"></span></h3>
+										<p class="bg_F4">WEB: <span id="apsrtcTodayWebId"></span></p>
+										<p class="bg_F9">TAB: <span id="apsrtcTodayTabId"></span></p>
+									</td>
+									<td><h3><span id="apsrtcLast7Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="apsrtcLast7WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="apsrtcLast7TabId"></span></p>
+									</td>
+									<td><h3><span id="apsrtcLast30Id"></span></h3>
+										<p class="bg_F4">WEB: <span id="apsrtcLast30WebId"></span></p>
+										<p class="bg_F9">TAB: <span id="apsrtcLast30TabId"></span></p>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<div class="row">
 				<div class="col-md-12">
 					<div class="block pad_10">
 						<div class="row">
@@ -79,8 +234,8 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row m_top10">
+			</div>-->
+			<!--<div class="row m_top10">
 				<div class="col-md-4">
 					<div class="block">
 						<div class="pad_10">
@@ -237,7 +392,7 @@
 						<div id="depotWiseTodayDetailsId" style="display:none;"></div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 </div>
@@ -249,7 +404,7 @@
 
 <script>
 
-getRtcUnionRegisteredBasicDetails();
+/*getRtcUnionRegisteredBasicDetails();
 getRtcUnionAllLocationDetails();
 getRtcUnionZoneWiseTotalDetails();
 getRtcUnionTotalLocationWiseDetails();
@@ -975,7 +1130,7 @@ function getOnlineAndTabUsersCount(){
 			$("#onlineAndTabUsersDiv").html(str);
 		}
 	});
-}
+}*/
 
 /*function getCadreRegistrationTotalCount(){
 	var jObj={};
@@ -989,7 +1144,7 @@ function getOnlineAndTabUsersCount(){
 		
 	});
 }*/
-getCadreRegistrationTotalCount();
+/*getCadreRegistrationTotalCount();
 function getCadreRegistrationTotalCount() {
 	var membereTypeIds = new Array();
 	membereTypeIds.push(2);
@@ -1012,6 +1167,155 @@ function getCadreRegistrationTotalCount() {
 		data:{task:JSON.stringify(jObj)}
 	}).done(function(){
 		
+	});
+}*/
+getTotalCounts();
+getTodayCounts();
+getLast7DaysCounts();
+getLast30DaysCounts();
+
+function getTotalCounts(){
+	var jObj={
+		searchType:"Total"
+	};
+	$.ajax({
+		type:"GET",
+		url:'getCadreCountsByTdpMemberTypeAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
+			for(var i in result.affiliatedCadreVoList){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+					$("#apsrtcTotalId").html(result.affiliatedCadreVoList[i].count);
+					$("#apsrtcTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#apsrtcTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+					$("#anganwadiTotalId").html(result.affiliatedCadreVoList[i].count);
+					$("#anganwadiTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#anganwadiTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+					$("#teachersTotalId").html(result.affiliatedCadreVoList[i].count);
+					$("#teachersTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#teachersTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+					$("#motorTotalId").html(result.affiliatedCadreVoList[i].count);
+					$("#motorTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#motorTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+			}
+		}
+	});
+}
+function getTodayCounts(){
+	var jObj={
+		searchType:"Today"
+	};
+	$.ajax({
+		type:"GET",
+		url:'getCadreCountsByTdpMemberTypeAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
+			for(var i in result.affiliatedCadreVoList){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+					$("#apsrtcTodayId").html(result.affiliatedCadreVoList[i].count);
+					$("#apsrtcTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#apsrtcTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+					$("#anganwadiTodayId").html(result.affiliatedCadreVoList[i].count);
+					$("#anganwadiTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#anganwadiTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+					$("#teachersTodayId").html(result.affiliatedCadreVoList[i].count);
+					$("#teachersTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#teachersTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+					$("#motorTodayId").html(result.affiliatedCadreVoList[i].count);
+					$("#motorTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#motorTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+			}
+		}
+	});
+}
+function getLast7DaysCounts(){
+	var jObj={
+		searchType:"Last 7 days"
+	};
+	$.ajax({
+		type:"GET",
+		url:'getCadreCountsByTdpMemberTypeAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
+			for(var i in result.affiliatedCadreVoList){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+					$("#apsrtcLast7Id").html(result.affiliatedCadreVoList[i].count);
+					$("#apsrtcLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#apsrtcLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+					$("#anganwadiLast7Id").html(result.affiliatedCadreVoList[i].count);
+					$("#anganwadiLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#anganwadiLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+					$("#teachersLast7Id").html(result.affiliatedCadreVoList[i].count);
+					$("#teachersLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#teachersLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+					$("#motorLast7Id").html(result.affiliatedCadreVoList[i].count);
+					$("#motorLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#motorLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+			}
+		}
+	});
+}
+function getLast30DaysCounts(){
+	var jObj={
+		searchType:"Last 30 days"
+	};
+	$.ajax({
+		type:"GET",
+		url:'getCadreCountsByTdpMemberTypeAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
+			for(var i in result.affiliatedCadreVoList){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+					$("#apsrtcLast30Id").html(result.affiliatedCadreVoList[i].count);
+					$("#apsrtcLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#apsrtcLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+					$("#anganwadiLast30Id").html(result.affiliatedCadreVoList[i].count);
+					$("#anganwadiLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#anganwadiLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+					$("#teachersLast30Id").html(result.affiliatedCadreVoList[i].count);
+					$("#teachersLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#teachersLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+					$("#motorLast30Id").html(result.affiliatedCadreVoList[i].count);
+					$("#motorLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
+					$("#motorLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
+				}
+			}
+		}
 	});
 }
 

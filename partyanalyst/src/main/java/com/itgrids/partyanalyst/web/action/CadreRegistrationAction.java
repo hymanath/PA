@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
+import com.itgrids.partyanalyst.dto.AffiliatedCadreVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
@@ -116,10 +117,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<TdpCadreFamilyDetailsVO> familyDetails = new ArrayList<TdpCadreFamilyDetailsVO>();
 	
 	private CardPrintUserVO cardPrintUserVO;
+	private AffiliatedCadreVO affiliatedCadreVO;
 	
 	
 	
-	
+	public AffiliatedCadreVO getAffiliatedCadreVO() {
+		return affiliatedCadreVO;
+	}
+	public void setAffiliatedCadreVO(AffiliatedCadreVO affiliatedCadreVO) {
+		this.affiliatedCadreVO = affiliatedCadreVO;
+	}
 	public CardPrintUserVO getCardPrintUserVO() {
 		return cardPrintUserVO;
 	}
@@ -2206,6 +2213,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchVoterAndCadreInfoBySearchCriteriaRTC method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCadreCountsByTdpMemberType(){
+		
+		try {
+			jobj = new JSONObject(getTask());
+			
+			String searchType = jobj.getString("searchType");
+			
+			affiliatedCadreVO = cadreRegistrationService.getCadreCountsByTdpMemberType(searchType);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getCadreCountsByTdpMemberType method in CadreRegistrationAction Action",e);
 		}
 		return Action.SUCCESS;
 	}
