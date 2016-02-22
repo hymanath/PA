@@ -12,11 +12,28 @@
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Dropzone/basic.css" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 <link href="dist/Dropzone/dropzone.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 <style type="text/css">
+.btn {
+    border-radius: 0;
+}
+.btnCustom, .btnCustom:active, .btnCustom {
+    background: #666666 none repeat scroll 0 0;
+    color: #fff;
+}
+.profileImage {
+    height: 75px;
+    width: 75px;
+}
+.attendanceIcon {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+}
 .linkinner label{color:#fff}
 .custom-select
 {
@@ -983,6 +1000,59 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
                 </div>
             </section>
         </div>
+		
+		<!-- added -->
+		<div class="col-md-12 meetingDiv" style="display:none;">
+			<div class="panel panel-default">
+				<div class="panel-heading bg_cc">
+					<h4 class="panel-title" id="meetingTitleId"></h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-12" id="meetingAttendanceCntDiv"></div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-heading bg_E5">
+									<div class="row">
+										<div class="col-md-12">
+											<label class="radio-inline">
+												<input type="radio"  class="meetingradioCls" name="meetingradio" value="TI" checked>All
+											</label>
+											<label class="radio-inline">
+												<input type="radio" class="meetingradioCls" name="meetingradio" value="IP">Invitee Present
+											</label>
+											<label class="radio-inline">
+												<input type="radio" class="meetingradioCls" name="meetingradio" value="AB">Invitee Absent
+											</label>
+											<label class="radio-inline">
+												<input type="radio" class="meetingradioCls" name="meetingradio" value="NI">Non - Invitee Present
+											</label>
+										</div>
+										<div class="col-md-7">
+											<!--<div class="dk-select " id="dk0"><div class="dk-selected " tabindex="0" id="dk0-combobox" aria-live="assertive" aria-owns="dk0-listbox" role="combobox">All Designations</div><ul class="dk-select-options" id="dk0-listbox" role="listbox" aria-expanded="false"><li class="dk-option  dk-option-selected" data-value="All Designations" role="option" aria-selected="true" id="dk0-All-Designations">All Designations</li></ul></div><select data-dkcacheid="0">
+												<option>All Designations</option>-->
+											<select id="disignationDiv">
+											</select>
+										</div>
+										<div class="col-md-2">
+											<button class="btn btn-success btn-block" onclick="buildTdpCadreAttendedMembersByFilter();">APPLY FILTERS</button>
+										</div>
+										<!--<div class="col-md-2">
+											<button class="btn btn-default btnCustom btn-block">CLEAR FILTERS</button>
+										</div>-->
+									</div>
+								</div>
+								<div class="panel-body pad_0" id="meetingAttendedMembersDiv"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+						</div>	
+		<!-- end -->
     </div>
 </main>
 <div class="themeControll">
@@ -1093,6 +1163,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 </footer>-->
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 //$("#mainheading").html(" PARTY MEETINGS DASHBOARD ");
@@ -1390,7 +1461,7 @@ $(document).ready(function(e) {
 						if(meetinglevel==3){
 							str+="<th>"+pmList[i].assemblyNo+"</th>";
 						}
-						str+="<td>"+pmList[i].meetingName+"</td>";
+						str+="<td><a style='cursor:pointer;' class='meetingNameCls' attr-title="+pmList[i].meetingName+" id="+pmList[i].meetingId+">"+pmList[i].meetingName+"</a></td>";
 						str+="<td>"+pmList[i].location+"</td>";
 						str+="<td>"+pmList[i].scheduledOn+"</td>";
 						if(pmList[i].attendanceInfo!=null){
@@ -1548,6 +1619,7 @@ $(document).ready(function(e) {
 	}
 	
 	function updateFunctions(){
+		$(".meetingDiv").css("display","none"); 
 		if($(".themeControll").hasClass("active")){
 			$(".themeControll").removeClass("active");
 		}
@@ -2540,6 +2612,237 @@ $(document).on('click','.getSummary', function() {
 		});
 	 
   });
+  $(document).on('click','.meetingradioCls',function(){
+	  $("#disignationDiv").val(0);
+	  $('#disignationDiv').dropkick('refresh');
+	getTdpCadreDetailsForPartyMeeting();
+  })
+   $(document).on('click','.meetingNameCls',function(){
+	   var id = $(this).attr("id");
+	  
+	   var title = $(this).attr("attr-title");
+	getTdpCadreDetailsForPartyMeetingOverView(id,title);
+  })
+  var membersResult = [];
+  var meetingId;
+  
+  function getTdpCadreDetailsForPartyMeetingOverView(partyMeetingId,title)
+  {
+	 $(".meetingDiv").css("display","block"); 
+	 $("#meetingTitleId").html(''+title+' Cadre Details');
+	 meetingId =partyMeetingId;
+	 var searchType = $("input[type='radio'][name='meetingradio']:checked").val();
+	 var jsObj =	{
+			meetingId : partyMeetingId,
+			searchType:searchType
+			}
+			
+		$.ajax({
+			type: "POST",
+			url:"getTdpCadreDetailsForPartyMeetingAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			 $('html,body').animate({
+                scrollTop: $('#meetingAttendanceCntDiv').offset().top
+            }, 1000);
+
+            membersResult =[];
+			 membersResult = result;
+			buildTdpCadreAttendanceCount(result);
+			buildTdpCadreAttendedMembers(result);
+		})			
+  }
+   
+  function getTdpCadreDetailsForPartyMeeting()
+  {
+	 $("#meetingAttendedMembersDiv").html(' <img src="./images/icons/search.gif" class="offset7" style="width:20px;height:20px;"/>');
+	 var searchType = $("input[type='radio'][name='meetingradio']:checked").val();
+	 var jsObj =	{
+			meetingId : meetingId,
+			searchType:searchType
+			
+			}
+			
+		$.ajax({
+			type: "POST",
+			url:"getTdpCadreDetailsForPartyMeetingAction.action",
+			data:{task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			 membersResult =[];
+			 membersResult = result;
+			 console.log(membersResult)
+			 var designationVal = $("#disignationDiv").val();
+			 if(designationVal > 0)
+			 buildTdpCadreAttendedMembersByFilter();
+			else
+			buildTdpCadreAttendedMembers(result);
+		})			
+  }
+  function buildTdpCadreAttendanceCount(result)
+  { 
+     var str ='';
+	 str+='<table class="table table-bordered bg_ff">';
+	 str+='<tbody><tr>';
+	 str+='<td class="text-center">';
+	 str+='<h3>'+result.inviteesCount+'</h3>';
+	 str+='<h4>TOTAL INVITEES</h4>';
+	 str+='<p>Members in Meeting</p>';
+	 str+='</td>';
+	 str+='<td class="text-center">';
+	 str+='<h3>'+result.attendedCount+'</h3>';
+	 str+='<h4 class="text-danger">INVITEES ATTENDED</h4>';
+	 str+='<p>Members in Meeting</p>';
+	 str+='</td>';
+	 str+='<td class="text-center">';
+	 str+='<h3>'+result.absentCount+'</h3>';
+	 str+='<h4 class="text-warning">INVITEES ABSENT</h4>';
+	 str+='<p>Members in Meeting</p>';
+	 str+='</td>';
+	 str+='<td class="text-center">';
+	 str+='<h3>'+result.nonInviteesAttendedCount+'</h3>';
+	 str+='<h4>NON INVITEES</h4>';
+	 str+='<p>Members in Meeting</p>';
+	 str+='</td>';
+	 str+='</tr>';
+	 str+='</tbody></table>';
+	  
+	  $("#meetingAttendanceCntDiv").html(str);
+	  $("#disignationDiv").html('');
+	  if(result.designationWiseCountsList != null && result.designationWiseCountsList.length > 0)
+	  {
+		  $("#disignationDiv").append("<option value='0'>Select Designation</option>");
+		   for(var i in result.designationWiseCountsList)
+			$("#disignationDiv").append("<option value='"+result.designationWiseCountsList[i].designation+"'>"+result.designationWiseCountsList[i].designation+"</option>");
+	  }
+	 $("#disignationDiv").dropkick();
+	 
+  }
+ 
+  function buildTdpCadreAttendedMembers(result)
+  {
+	 
+	  var str ='';
+	  
+	  if(result.partyMeetingWSVoList == null || result.partyMeetingWSVoList.length == 0)
+	  {
+			$("#meetingAttendedMembersDiv").html("No Data Available..");  
+		    return;
+	  }
+	  str+='<table class="table table-condensed">';
+		str+='<thead class="bg_f0">';
+		str+='<tr><th></th>';
+		str+='<th>Name</th>';
+		str+='<th>Membership ID</th>';
+		str+='<th>Designation</th>';
+		str+='<th>Mobile Number</th>';
+		str+='<th>Attendance</th>';
+		str+='</tr></thead>';
+		str+='<tbody>';
+		for(var i in result.partyMeetingWSVoList)
+		{
+		str+='<tr>';
+	    str+='<td>';
+		str+='<img class="img-thumbnail img-responsive profileImage" src="'+result.partyMeetingWSVoList[i].imgStr+'">';
+		str+='</td>';
+		str+='<td>'+result.partyMeetingWSVoList[i].name+'</td>';
+		str+='<td>'+result.partyMeetingWSVoList[i].memberShipNo+'</td>';
+		if(result.partyMeetingWSVoList[i].designation != null)
+		str+='<td>'+result.partyMeetingWSVoList[i].designation+'</td>';
+		else
+		str+='<td></td>';
+		str+='<td>'+result.partyMeetingWSVoList[i].mobileNo+'</td>';
+		str+='<td>';
+		if(result.partyMeetingWSVoList[i].attendedCount != null && result.partyMeetingWSVoList[i].attendedCount > 0)
+		{
+			str+='<img class="img-responsive attendanceIcon" src=""dist/img/invitee-present.png">';
+			str+='<span>Invitee Present</span>';
+		}
+		else
+		{
+			str+='<img class="img-responsive attendanceIcon" src="dist/img/invitee-absent.png">';
+			str+='<span> Invitee Absent</span>';
+		}
+		str+='</td>';
+		str+='</tr>';
+		
+		}
+		str+='</tbody>';
+		str+='</table>';
+	  $("#meetingAttendedMembersDiv").html(str);
+	  
+  }
+  
+  function buildTdpCadreAttendedMembersByFilter()
+  {
+	 var designationsArr;
+	 $("#meetingAttendedMembersDiv").html('');
+	 var str ='';
+	/* if($("#disignationDiv").val().indexOf(",") > -1)
+	   designationsArr = $("#disignationDiv").val().split(",");
+	else
+	{
+		var arr=[];
+		arr.push($("#disignationDiv").val());
+	}
+	designationsArr =arr;*/
+	 var designationVal = $("#disignationDiv").val();
+	 console.log(membersResult)
+	 if(designationVal == 0)
+		 return;
+	 var result = membersResult;
+	 if(result.partyMeetingWSVoList == null || result.partyMeetingWSVoList.length == 0)
+	  {
+			$("#meetingAttendedMembersDiv").html("No Data Available..");  
+		    return;
+	  }
+	    str+='<table class="table table-condensed">';
+		str+='<thead class="bg_f0">';
+		str+='<tr><th></th>';
+		str+='<th>Name</th>';
+		str+='<th>Membership ID</th>';
+		str+='<th>Designation</th>';
+		str+='<th>Mobile Number</th>';
+		str+='<th>Attendance</th>';
+		str+='</tr></thead>';
+		str+='<tbody>';
+		console.log(designationsArr)
+		for(var i in result.partyMeetingWSVoList)
+		{
+			
+			if(designationVal == result.partyMeetingWSVoList[i].designation)
+			{
+		str+='<tr>';
+	    str+='<td>';
+		str+='<img class="img-thumbnail img-responsive profileImage" src="'+result.partyMeetingWSVoList[i].imgStr+'">';
+		str+='</td>';
+		str+='<td>'+result.partyMeetingWSVoList[i].name+'</td>';
+		str+='<td>'+result.partyMeetingWSVoList[i].memberShipNo+'</td>';
+		if(result.partyMeetingWSVoList[i].designation != null)
+		str+='<td>'+result.partyMeetingWSVoList[i].designation+'</td>';
+		else
+		str+='<td></td>';
+		str+='<td>'+result.partyMeetingWSVoList[i].mobileNo+'</td>';
+		str+='<td>';
+		if(result.partyMeetingWSVoList[i].attendedCount != null && result.partyMeetingWSVoList[i].attendedCount > 0)
+		{
+			str+='<img class="img-responsive attendanceIcon" src=""dist/img/invitee-present.png">';
+			str+='<span>Invitee Present</span>';
+		}
+		else
+		{
+			str+='<img class="img-responsive attendanceIcon" src="dist/img/invitee-absent.png">';
+			str+='<span> Invitee Absent</span>';
+		}
+		str+='</td>';
+		str+='</tr>';
+			}
+		
+		}
+		str+='</tbody>';
+		str+='</table>';
+	  $("#meetingAttendedMembersDiv").html(str);
+	  
+  }
 </script>
 <script>
  var tableToExcel = (function() {
@@ -2553,6 +2856,9 @@ $(document).on('click','.getSummary', function() {
     window.location.href = uri + base64(format(template, ctx))
   }
   })() 
+</script>
+<script>
+
 </script>
 </body>
 </html>
