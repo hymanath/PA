@@ -11491,7 +11491,7 @@
 				<param name="root">basicList</param> 
 			</result>
 		</action>
-		<action name="getCadreRegistrationAction" class="cadreDetailsAction" method="getCadreDetails">
+		<action name="getCadreRegistrationAction" class="rtcUnionAction" method="getCadreDetails">
 			<result type="json" name="success">
 				<param name="root">cadreList</param> 
 			</result>
