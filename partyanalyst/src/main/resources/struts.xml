@@ -11496,6 +11496,10 @@
 				<param name="root">cadreList</param> 
 			</result>
 		</action>
-	
+		<action name="getCadreCountsByTdpMemberTypeAction" class="cadreRegistrationAction" method="getCadreCountsByTdpMemberType">
+			<result type="json" name="success">
+				<param name="root">affiliatedCadreVO</param> 
+			</result>
+		</action>
 </package>
 </struts>      
