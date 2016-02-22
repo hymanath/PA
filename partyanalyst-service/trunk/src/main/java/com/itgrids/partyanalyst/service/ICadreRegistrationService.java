@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AffiliatedCadreVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -180,5 +181,6 @@ public interface ICadreRegistrationService {
 	public List<VoterInfoVO> getSearchDetailsCadreRegistrationRTC(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
 	public List<GenericVO> getCadreMemberTypeListByYear(Long year);
 	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate,String searchDatType);
+	public AffiliatedCadreVO getCadreCountsByTdpMemberType(String searchType);
 	
 }
