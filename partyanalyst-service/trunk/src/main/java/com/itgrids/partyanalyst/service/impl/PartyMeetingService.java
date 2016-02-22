@@ -2628,7 +2628,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
 			Map<Long,PartyMeetingWSVO> partyMeetingVoMap = new LinkedHashMap<Long, PartyMeetingWSVO>();
-			Map<String,Long> designationWiseMap = new LinkedHashMap<String, Long>();
+			//Map<String,Long> designationWiseMap = new LinkedHashMap<String, Long>();
+			Map<String,PartyMeetingWSVO> designationMap = new LinkedHashMap<String, PartyMeetingWSVO>();
 			List<PartyMeetingWSVO> designationWiseCountsList = new ArrayList<PartyMeetingWSVO>();
 			Set<Long> partyMembersTdpCadreIdsList = new java.util.HashSet<Long>();
 			List<Long> inviteesPresentList = new ArrayList<Long>();
@@ -2708,20 +2709,55 @@ public class PartyMeetingService implements IPartyMeetingService{
 			List<Object[]> publicRepDetails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsForCadreIds(tdpCadreIdsList);
 			if(publicRepDetails != null && publicRepDetails.size() > 0){
 				for (Object[] obj : publicRepDetails) {
-					
+					PartyMeetingWSVO vo1 = new PartyMeetingWSVO();
 					Long cadreId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					String type = obj[1] != null ? obj[1].toString():"";
 					
 					PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
 					vo.setDesignation(type);
 					
-					Long count = designationWiseMap.get(type.trim());
+					PartyMeetingWSVO desgvo = designationMap.get(type.trim());
+					if(searchType.equalsIgnoreCase("TP")){
+						if(desgvo != null){
+							desgvo.setCount(desgvo.getCount()+1l);
+							if(inviteesList.contains(cadreId)){
+								desgvo.setInviteesCount(Long.valueOf(desgvo.getInviteesCount().toString())+1l);
+							}
+							else{
+								desgvo.setNonInviteesAttendedCount(Long.valueOf(desgvo.getNonInviteesAttendedCount().toString())+1l);
+							}
+						}
+						else{
+							vo1.setDesignation(type);
+							vo1.setCount(1l);
+							if(inviteesList.contains(cadreId)){
+								vo1.setInviteesCount(1l);
+							}
+							else{
+								vo1.setNonInviteesAttendedCount(1l);
+							}
+							designationMap.put(type.trim(), vo1);
+						}
+					}
+					else{
+						if(desgvo != null){
+							desgvo.setCount(desgvo.getCount()+1l);
+						}
+						else{
+							vo1.setDesignation(type);
+							vo1.setCount(1l);
+							
+							designationMap.put(type.trim(), vo1);
+						}
+					}
+					
+					/*Long count = designationWiseMap.get(type.trim());
 					if(count != null && count.longValue() > 0L){
 						count = count++;
 					}
 					else{
 						designationWiseMap.put(type.trim(), 1l);
-					}
+					}*/
 					
 					partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
 				}
@@ -2731,7 +2767,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
 			 {
 				 for (Object[] partyPosition : partyPositionDetails) {
-
+					 PartyMeetingWSVO vo1 = new PartyMeetingWSVO();
+					 
 					 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
 					 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
 					 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
@@ -2752,13 +2789,47 @@ public class PartyMeetingService implements IPartyMeetingService{
 						 vo.setDesignation(partyPositionStr);
 					 }
 					 
-					 Long count = designationWiseMap.get(role.trim());
+					 PartyMeetingWSVO desgvo = designationMap.get(role.trim());
+					if(searchType.equalsIgnoreCase("TP")){
+						if(desgvo != null){
+							desgvo.setCount(desgvo.getCount()+1l);
+							if(inviteesList.contains(cadreId)){
+								desgvo.setInviteesCount(Long.valueOf(desgvo.getInviteesCount().toString())+1l);
+							}
+							else{
+								desgvo.setNonInviteesAttendedCount(Long.valueOf(desgvo.getNonInviteesAttendedCount().toString())+1l);
+							}
+						}
+						else{
+							vo1.setDesignation(role);
+							vo1.setCount(1l);
+							if(inviteesList.contains(cadreId)){
+								vo1.setInviteesCount(1l);
+							}
+							else{
+								vo1.setNonInviteesAttendedCount(1l);
+							}
+							designationMap.put(role.trim(), vo1);
+						}
+					}
+					else{
+						if(desgvo != null){
+							desgvo.setCount(desgvo.getCount()+1l);
+						}
+						else{
+							vo1.setDesignation(role);
+							vo1.setCount(1l);
+							
+							designationMap.put(role.trim(), vo1);
+						}
+					}
+					/* Long count = designationWiseMap.get(role.trim());
 					 if(count != null && count.longValue() > 0L){
 						count = count++;
 					}
 					else{
 						designationWiseMap.put(role.trim(), 1l);
-					}
+					}*/
 					 
 					 partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(partyPosition[5]));
 				 }
@@ -2770,10 +2841,19 @@ public class PartyMeetingService implements IPartyMeetingService{
 				 otherMembersCount = tdpCadreIdsList.size() - partyMembersTdpCadreIdsList.size();
 			 else 
 				 otherMembersCount = tdpCadreIdsList.size();
-			 if(otherMembersCount >0)
-				 designationWiseMap.put("OTHERS".trim(), Long.valueOf(String.valueOf(otherMembersCount)));
+			 if(otherMembersCount >0){
+				 PartyMeetingWSVO vo = new PartyMeetingWSVO();
+				 vo.setDesignation("OTHERS");
+				 vo.setCount(Long.valueOf(String.valueOf(otherMembersCount)));
+				 
+				 designationMap.put("OTHERS", vo);
+			 }
 			 
-			 for (Map.Entry<String, Long> entry : designationWiseMap.entrySet()) {
+			 designationWiseCountsList.addAll(designationMap.values());
+			 
+			 //designationWiseMap.put("OTHERS".trim(), Long.valueOf(String.valueOf(otherMembersCount)));
+			 
+			 /*for (Map.Entry<String, Long> entry : designationWiseMap.entrySet()) {
 				    
 				 String key = entry.getKey();
 				 Long value = entry.getValue();
@@ -2784,7 +2864,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				 vo.setCount(value);
 				 
 				 designationWiseCountsList.add(vo);
-				}
+				}*/
 			 
 			 partyMeetingWSVoList.addAll(partyMeetingVoMap.values());
 			 

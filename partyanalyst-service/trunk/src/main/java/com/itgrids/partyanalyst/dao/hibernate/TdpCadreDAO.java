@@ -6088,4 +6088,28 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			return query.list();
 		}
+		
+		public List<Object[]> getCadreCountsByTdpMemberType(Date fromDate,Date toDate){
+			
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append(" select count(distinct model.tdpCadreId)," +
+						" model.tdpMemberType.tdpMemberTypeId," +
+						" model.tdpMemberType.memberType," +
+						" model.dataSourceType" +
+						" from TdpCadre model ");
+			if(fromDate != null && toDate != null){
+				sb.append(" where (date(model.surveyTime) between :fromDate and :toDate) ");
+			}
+			sb.append(" group by model.tdpMemberType.tdpMemberTypeId,model.dataSourceType ");
+			
+			Query query = getSession().createQuery(sb.toString());
+			
+			if(fromDate != null && toDate != null){
+				query.setParameter("fromDate", fromDate);
+				query.setParameter("toDate", toDate);
+			}
+			
+			return query.list();
+		}
 }

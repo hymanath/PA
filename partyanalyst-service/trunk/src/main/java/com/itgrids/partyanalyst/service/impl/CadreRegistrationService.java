@@ -119,6 +119,7 @@ import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TdpCadreLocationDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
+import com.itgrids.partyanalyst.dto.AffiliatedCadreVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -12023,7 +12024,96 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		return returnList;
 	}
 	
-	
+	public AffiliatedCadreVO getCadreCountsByTdpMemberType(String searchType){
+		AffiliatedCadreVO finalvo = new AffiliatedCadreVO();
+		
+		try {
+			
+			Date stDate = null;
+			Date edDate = null;
+			Date currentDate=null;
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+			List<AffiliatedCadreVO> voList = new ArrayList<AffiliatedCadreVO>();
+			Map<Long,AffiliatedCadreVO> afflCdrMap = new LinkedHashMap<Long, AffiliatedCadreVO>();
+			
+			if(searchType.equalsIgnoreCase("Total")){
+				stDate = null;
+				edDate = null;
+			}
+			else if(searchType.equalsIgnoreCase("Today")){
+				stDate = dateUtilService.getCurrentDateAndTime();
+				edDate = dateUtilService.getCurrentDateAndTime();
+			}
+			else if(searchType.equalsIgnoreCase("Last 7 days")){
+				
+				currentDate = dateUtilService.getCurrentDateAndTime();
+				Calendar fromCalendar = Calendar.getInstance();
+				fromCalendar.setTime(currentDate);
+				//fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
+				fromCalendar.set(Calendar.DAY_OF_WEEK,  fromCalendar.get(Calendar.DAY_OF_WEEK)-7);
+				Calendar toCalendar = Calendar.getInstance();
+				toCalendar.setTime(currentDate);
+				stDate = fromCalendar.getTime();
+				edDate = toCalendar.getTime();
+			}
+			else if(searchType.equalsIgnoreCase("Last 30 days")){
+				Calendar fromCalendar = Calendar.getInstance();
+				fromCalendar.setTime(currentDate);
+				Calendar toCalendar = Calendar.getInstance();
+				toCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
+				edDate = fromCalendar.getTime();
+				stDate = toCalendar.getTime();
+			}
+			
+			//0.count,1.tdpMemberTypeId,2.memberType,3.dataSourceType
+			List<Object[]> list = tdpCadreDAO.getCadreCountsByTdpMemberType(stDate, edDate);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					AffiliatedCadreVO vo = null;
+					Long id = Long.valueOf(obj[1] != null ? obj[1].toString():"0L");
+					String sourceType = obj[3] != null ? obj[3].toString():"";
+					
+					vo = afflCdrMap.get(id);
+					if(vo != null){
+						if(id.longValue() == vo.getTdpMemberTypeId().longValue()){
+							if(vo.getCount() != null && vo.getCount().longValue() > 0L){
+								vo.setCount(vo.getCount().longValue() + Long.valueOf(Long.valueOf(obj[0] != null ? obj[0].toString():"0L")));
+							}
+							else{
+								vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+							}
+							if(sourceType.trim().equalsIgnoreCase("WEB")){
+								vo.setWebCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+							}
+							else if(sourceType.trim().equalsIgnoreCase("TAB")){
+								vo.setTabCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+							}
+						}
+					}
+					else{
+						vo = new AffiliatedCadreVO();
+						vo.setTdpMemberTypeId(id);
+						vo.setMemberType(obj[2] != null ? obj[2].toString():"");
+						vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+						if(sourceType.trim().equalsIgnoreCase("WEB")){
+							vo.setWebCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+						}
+						else if(sourceType.trim().equalsIgnoreCase("TAB")){
+							vo.setTabCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+						}
+						afflCdrMap.put(id, vo);
+					}
+				}
+			}
+			
+			voList.addAll(afflCdrMap.values());
+			finalvo.setAffiliatedCadreVoList(voList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getCadreCountsByTdpMemberType in CadreRegistrationService service", e);
+		}
+		return finalvo;
+	}
 
 
 }
