@@ -6067,9 +6067,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				
 				queryStr.append(" group by ");
 				if(searchTypeStr.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
-					queryStr.append(" , UA.constituency.constituencyId, ");
+					queryStr.append(" UA.constituency.constituencyId, ");
 				else if(searchTypeStr.trim().equalsIgnoreCase(IConstants.DISTRICT))
-					queryStr.append(", UA.district.districtId, ");
+					queryStr.append(" UA.district.districtId, ");
 				
 				queryStr.append(" TC.dataSourceType ");
 				

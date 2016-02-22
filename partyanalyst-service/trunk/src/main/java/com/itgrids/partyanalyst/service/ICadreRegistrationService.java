@@ -179,6 +179,6 @@ public interface ICadreRegistrationService {
 	public SurveyCadreResponceVO saveAfflicatedCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final String registrationType);
 	public List<VoterInfoVO> getSearchDetailsCadreRegistrationRTC(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
 	public List<GenericVO> getCadreMemberTypeListByYear(Long year);
-	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate);
+	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate,String searchDatType);
 	
 }
