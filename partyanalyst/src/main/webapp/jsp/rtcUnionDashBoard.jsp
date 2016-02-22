@@ -2,6 +2,11 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="utf-8">
@@ -83,96 +88,100 @@
 					<div class="well wellCustom">
 						<img src="dist/2016DashBoard/img/headpart.jpg" class="img-block img-responsive">
 						<h4 class="panel-title text-center"><b>DASHBOARD</b></h4>
+						<div class="col-md-4 pull-right" style="margin-top: -25px;">
+							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue="All" style="width:460px;"/>
+						</div>
 					</div>
 				</div>
+				
 			</div>
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-default">
 						<div class="panel-heading bg_CC">
-							<h4 class="panel-title"><b>AFFLIATED MEMBERS ENROLLMENT DRIVE</b></h4>
+							<h4 class="panel-title"><b>AFFILIATED MEMBERS ENROLLMENT DRIVE</b></h4>
 						</div>
 						<div class="panel-body bg_EF">
 							<table class="table table-bordered bg_ff tableDiff m_0">
 								<thead>
 									<th></th>
 									<th>TOTAL REGISTERED</th>
-									<th>TODAY REGISTERED</th>
-									<th>PAST 7 DAYS REGISTERED</th>
-									<th>PAST 30 DAYS REGISTERED</th>
+									<th>TODAY</th>
+									<th>LAST 7 DAYS</th>
+									<th>LAST 30 DAYS</th>
 								</thead>
 								<tr>
 									<td>TEACHERS</td>
-									<td><h3><span id="teachersTotalId"></span></h3>
+									<td><h3><span id="teachersTotalId"></span><center><img id="teachersTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="teachersTotalWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="teachersTotalTabId"></span></p>
 									</td>
-									<td><h3><span id="teachersTodayId"></span></h3>
+									<td><h3><span id="teachersTodayId"></span><center><img id="teachersTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="teachersTodayWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="teachersTodayTabId"></span></p>
 									</td>
-									<td><h3><span id="teachersLast7Id"></span></h3>
+									<td><h3><span id="teachersLast7Id"></span><center><img id="teachersLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="teachersLast7WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="teachersLast7TabId"></span></p>
 									</td>
-									<td><h3><span id="teachersLast30Id"></span></h3>
+									<td><h3><span id="teachersLast30Id"></span><center><img id="teachersLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="teachersLast30WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="teachersLast30TabId"></span></p>
 									</td>
 								</tr>
 								<tr>
 									<td>ANGANWADI</td>
-									<td><h3><span id="anganwadiTotalId"></span></h3>
+									<td><h3><span id="anganwadiTotalId"></span><center><img id="anganwadiTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="anganwadiTotalWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="anganwadiTotalTabId"></span></p>
 									</td>
-									<td><h3><span id="anganwadiTodayId"></span></h3>
+									<td><h3><span id="anganwadiTodayId"></span><center><img id="anganwadiTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="anganwadiTodayWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="anganwadiTodayTabId"></span></p>
 									</td>
-									<td><h3><span id="anganwadiLast7Id"></span></h3>
+									<td><h3><span id="anganwadiLast7Id"></span><center><img id="anganwadiLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="anganwadiLast7WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="anganwadiLast7TabId"></span></p>
 									</td>
-									<td><h3><span id="anganwadiLast30Id"></span></h3>
+									<td><h3><span id="anganwadiLast30Id"></span><center><img id="anganwadiLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="anganwadiLast30WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="anganwadiLast30TabId"></span></p>
 									</td>
 								</tr>
 								<tr>
 									<td>MOTOR WORKERS</td>
-									<td><h3><span id="motorTotalId"></span></h3>
+									<td><h3><span id="motorTotalId"></span><center><img id="motorTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="motorTotalWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="motorTotalTabId"></span></p>
 									</td>
-									<td><h3><span id="motorTodayId"></span></h3>
+									<td><h3><span id="motorTodayId"></span><center><img id="motorTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="motorTodayWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="motorTodayTabId"></span></p>
 									</td>
-									<td><h3><span id="motorLast7Id"></span></h3>
+									<td><h3><span id="motorLast7Id"></span><center><img id="motorLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="motorLast7WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="motorLast7TabId"></span></p>
 									</td>
-									<td><h3><span id="motorLast30Id"></span></h3>
+									<td><h3><span id="motorLast30Id"></span><center><img id="motorLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="motorLast30WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="motorLast30TabId"></span></p>
 									</td>
 								</tr>
 								<tr>
 									<td>APSRTC</td>
-									<td><h3><span id="apsrtcTotalId"></span></h3>
+									<td><h3><span id="apsrtcTotalId"></span><center><img id="apsrtcTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="apsrtcTotalWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="apsrtcTotalTabId"></span></p>
 									</td>
-									<td><h3><span id="apsrtcTodayId"></span></h3>
+									<td><h3><span id="apsrtcTodayId"></span><center><img id="apsrtcTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="apsrtcTodayWebId"></span></p>
 										<p class="bg_F9">TAB: <span id="apsrtcTodayTabId"></span></p>
 									</td>
-									<td><h3><span id="apsrtcLast7Id"></span></h3>
+									<td><h3><span id="apsrtcLast7Id"></span><center><img id="apsrtcLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="apsrtcLast7WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="apsrtcLast7TabId"></span></p>
 									</td>
-									<td><h3><span id="apsrtcLast30Id"></span></h3>
+									<td><h3><span id="apsrtcLast30Id"></span><center><img id="apsrtcLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="apsrtcLast30WebId"></span></p>
 										<p class="bg_F9">TAB: <span id="apsrtcLast30TabId"></span></p>
 									</td>
@@ -1175,6 +1184,10 @@ getLast7DaysCounts();
 getLast30DaysCounts();
 
 function getTotalCounts(){
+	$("#teachersTotalLoadingId").show();
+	$("#anganwadiTotalLoadingId").show();
+	$("#apsrtcTotalLoadingId").show();
+	$("#motorTotalLoadingId").show();
 	var jObj={
 		searchType:"Total"
 	};
@@ -1208,9 +1221,17 @@ function getTotalCounts(){
 				}
 			}
 		}
+		$("#teachersTotalLoadingId").hide();
+		$("#anganwadiTotalLoadingId").hide();
+		$("#apsrtcTotalLoadingId").hide();
+		$("#motorTotalLoadingId").hide();
 	});
 }
 function getTodayCounts(){
+	$("#teachersTodayLoadingId").show();
+	$("#anganwadiTodayLoadingId").show();
+	$("#motorTodayLoadingId").show();
+	$("#apsrtcTodayLoadingId").show();
 	var jObj={
 		searchType:"Today"
 	};
@@ -1244,9 +1265,17 @@ function getTodayCounts(){
 				}
 			}
 		}
+		$("#teachersTodayLoadingId").hide();
+		$("#anganwadiTodayLoadingId").hide();
+		$("#motorTodayLoadingId").hide();
+		$("#apsrtcTodayLoadingId").hide();
 	});
 }
 function getLast7DaysCounts(){
+	$("#teachersLast7LoadingId").show();
+	$("#anganwadiLast7LoadingId").show();
+	$("#motorLast7LoadingId").show();
+	$("#apsrtcLast7LoadingId").show();
 	var jObj={
 		searchType:"Last 7 days"
 	};
@@ -1280,9 +1309,17 @@ function getLast7DaysCounts(){
 				}
 			}
 		}
+		$("#teachersLast7LoadingId").hide();
+		$("#anganwadiLast7LoadingId").hide();
+		$("#motorLast7LoadingId").hide();
+		$("#apsrtcLast7LoadingId").hide();
 	});
 }
 function getLast30DaysCounts(){
+	$("#teachersLast30LoadingId").show();
+	$("#anganwadiLast30LoadingId").show();
+	$("#motorLast30LoadingId").show();
+	$("#apsrtcLast30LoadingId").show();
 	var jObj={
 		searchType:"Last 30 days"
 	};
@@ -1316,6 +1353,10 @@ function getLast30DaysCounts(){
 				}
 			}
 		}
+		$("#teachersLast30LoadingId").hide();
+		$("#anganwadiLast30LoadingId").hide();
+		$("#motorLast30LoadingId").hide();
+		$("#apsrtcLast30LoadingId").hide();
 	});
 }
 
