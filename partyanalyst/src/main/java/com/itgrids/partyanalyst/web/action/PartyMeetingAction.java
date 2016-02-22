@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.opensymphony.xwork2.Action;
@@ -32,8 +33,18 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private String status;
 	private PartyMeetingSummaryVO partyMeetingsSummary; 
 	private MeetingTrackingVO meetingTrackingVO;
+	private PartyMeetingWSVO partyMeetingWSVO;
 	
 	
+	
+	public PartyMeetingWSVO getPartyMeetingWSVO() {
+		return partyMeetingWSVO;
+	}
+
+	public void setPartyMeetingWSVO(PartyMeetingWSVO partyMeetingWSVO) {
+		this.partyMeetingWSVO = partyMeetingWSVO;
+	}
+
 	public MeetingTrackingVO getMeetingTrackingVO() {
 		return meetingTrackingVO;
 	}
@@ -385,6 +396,18 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 			meetingTrackingVO = partyMeetingService.getPartyMeetingsDetailsForCadreByCommitteeLevel(tdpCadreId,searchTypeStr , committeeLevelId, committeeLevelValue, formDateStr, toDateStr, isFirst, firstRecord, maxResult);
 		} catch (Exception e) {
 			LOG.error("Entered into getSummaryForAMeeting Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTdpCadreDetailsForPartyMeeting()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			partyMeetingWSVO =  partyMeetingService.getTdpCadreDetailsForPartyMeeting(jObj.getLong("meetingId"),jObj.getString("searchType"),jObj.getString("designation"));
+		}
+		catch (Exception e) {
+			LOG.error("Entered into getTdpCadreDetailsForPartyMeeting Action",e);
 		}
 		return Action.SUCCESS;
 	}
