@@ -1033,7 +1033,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 										<div class="col-md-7">
 											<!--<div class="dk-select " id="dk0"><div class="dk-selected " tabindex="0" id="dk0-combobox" aria-live="assertive" aria-owns="dk0-listbox" role="combobox">All Designations</div><ul class="dk-select-options" id="dk0-listbox" role="listbox" aria-expanded="false"><li class="dk-option  dk-option-selected" data-value="All Designations" role="option" aria-selected="true" id="dk0-All-Designations">All Designations</li></ul></div><select data-dkcacheid="0">
 												<option>All Designations</option>-->
-											<select id="disignationDiv">
+											<select id="disignationDiv" multiple>
 											</select>
 										</div>
 										<div class="col-md-2">
@@ -2613,8 +2613,6 @@ $(document).on('click','.getSummary', function() {
 	 
   });
   $(document).on('click','.meetingradioCls',function(){
-	  $("#disignationDiv").val(0);
-	  $('#disignationDiv').dropkick('refresh');
 	getTdpCadreDetailsForPartyMeeting();
   })
    $(document).on('click','.meetingNameCls',function(){
@@ -2649,6 +2647,10 @@ $(document).on('click','.getSummary', function() {
             membersResult =[];
 			 membersResult = result;
 			buildTdpCadreAttendanceCount(result);
+			var designationVal = $("#disignationDiv").val();
+			if(designationVal != null && designationVal.length > 0)
+			 buildTdpCadreAttendedMembersByFilter();
+			else
 			buildTdpCadreAttendedMembers(result);
 		})			
   }
@@ -2672,10 +2674,11 @@ $(document).on('click','.getSummary', function() {
 			 membersResult = result;
 			 console.log(membersResult)
 			 var designationVal = $("#disignationDiv").val();
-			 if(designationVal > 0)
+			if(designationVal != null && designationVal.length > 0)
 			 buildTdpCadreAttendedMembersByFilter();
 			else
 			buildTdpCadreAttendedMembers(result);
+			
 		})			
   }
   function buildTdpCadreAttendanceCount(result)
@@ -2774,21 +2777,24 @@ $(document).on('click','.getSummary', function() {
   
   function buildTdpCadreAttendedMembersByFilter()
   {
+	
 	 var designationsArr;
 	 $("#meetingAttendedMembersDiv").html('');
 	 var str ='';
-	/* if($("#disignationDiv").val().indexOf(",") > -1)
-	   designationsArr = $("#disignationDiv").val().split(",");
+	 if($("#disignationDiv").val().indexOf(",") > -1)
+	 {
+		designationsArr = $("#disignationDiv").val(); 
+	 }
+	   
 	else
 	{
-		var arr=[];
-		arr.push($("#disignationDiv").val());
+		 var designationVal = $("#disignationDiv").val();
+		 designationsArr = new Array();
+		 designationsArr.push($("#disignationDiv").val());
 	}
-	designationsArr =arr;*/
-	 var designationVal = $("#disignationDiv").val();
-	 console.log(membersResult)
-	 if(designationVal == 0)
+	 if(designationsArr.length == 0)
 		 return;
+	 
 	 var result = membersResult;
 	 if(result.partyMeetingWSVoList == null || result.partyMeetingWSVoList.length == 0)
 	  {
@@ -2805,36 +2811,36 @@ $(document).on('click','.getSummary', function() {
 		str+='<th>Attendance</th>';
 		str+='</tr></thead>';
 		str+='<tbody>';
-		console.log(designationsArr)
+		
 		for(var i in result.partyMeetingWSVoList)
 		{
-			
-			if(designationVal == result.partyMeetingWSVoList[i].designation)
+
+		if(jQuery.inArray(result.partyMeetingWSVoList[i].designation, designationsArr[0]) > -1)
 			{
-		str+='<tr>';
-	    str+='<td>';
-		str+='<img class="img-thumbnail img-responsive profileImage" src="'+result.partyMeetingWSVoList[i].imgStr+'">';
-		str+='</td>';
-		str+='<td>'+result.partyMeetingWSVoList[i].name+'</td>';
-		str+='<td>'+result.partyMeetingWSVoList[i].memberShipNo+'</td>';
-		if(result.partyMeetingWSVoList[i].designation != null)
-		str+='<td>'+result.partyMeetingWSVoList[i].designation+'</td>';
-		else
-		str+='<td></td>';
-		str+='<td>'+result.partyMeetingWSVoList[i].mobileNo+'</td>';
-		str+='<td>';
-		if(result.partyMeetingWSVoList[i].attendedCount != null && result.partyMeetingWSVoList[i].attendedCount > 0)
-		{
-			str+='<img class="img-responsive attendanceIcon" src=""dist/img/invitee-present.png">';
-			str+='<span>Invitee Present</span>';
-		}
-		else
-		{
-			str+='<img class="img-responsive attendanceIcon" src="dist/img/invitee-absent.png">';
-			str+='<span> Invitee Absent</span>';
-		}
-		str+='</td>';
-		str+='</tr>';
+				str+='<tr>';
+				str+='<td>';
+				str+='<img class="img-thumbnail img-responsive profileImage" src="'+result.partyMeetingWSVoList[i].imgStr+'">';
+				str+='</td>';
+				str+='<td>'+result.partyMeetingWSVoList[i].name+'</td>';
+				str+='<td>'+result.partyMeetingWSVoList[i].memberShipNo+'</td>';
+				if(result.partyMeetingWSVoList[i].designation != null)
+				str+='<td>'+result.partyMeetingWSVoList[i].designation+'</td>';
+				else
+				str+='<td></td>';
+				str+='<td>'+result.partyMeetingWSVoList[i].mobileNo+'</td>';
+				str+='<td>';
+				if(result.partyMeetingWSVoList[i].attendedCount != null && result.partyMeetingWSVoList[i].attendedCount > 0)
+				{
+					str+='<img class="img-responsive attendanceIcon" src=""dist/img/invitee-present.png">';
+					str+='<span>Invitee Present</span>';
+				}
+				else
+				{
+					str+='<img class="img-responsive attendanceIcon" src="dist/img/invitee-absent.png">';
+					str+='<span> Invitee Absent</span>';
+				}
+				str+='</td>';
+				str+='</tr>';
 			}
 		
 		}
