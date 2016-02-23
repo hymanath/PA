@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
@@ -75,8 +76,16 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private List<IdNameVO> 						zonesList;
 	private List<CadreVo> cadrevoList;
 	private  List<TdpCadreVO>      cadreList;
+	private EntitlementsHelper 					entitlementsHelper;
 	
 	
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public List<CadreVo> getCadrevoList() {
 		return cadrevoList;
 	}
@@ -366,10 +375,28 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		LOG.info("Entered into rtcUnionRegistrationPage method in RtcUnionAction Action");
 		try {
 			
-			session = request.getSession();
+			/*session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
-				return INPUT;
+				return INPUT;*/
+			
+			
+			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(user==null){
+				return "input";
+			}
+			boolean noaccess = false;
+			if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"AFFILIATED_UNION_REGISTRATION_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+			
+			if(user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "error";
+			}
+			
 			
 		//	if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
 			//{
@@ -514,11 +541,30 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	public String rtcUnionDashBoard(){
 		try {
 			LOG.info("Entered into rtcUnionDashBoard method in RtcUnionAction Action");
-			session = request.getSession();
+			
+			/*session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			
 			if(user == null)
-				return Action.INPUT;
+				return Action.INPUT;*/
+			
+			
+			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(user==null){
+				return "input";
+			}
+			boolean noaccess = false;
+			if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"AFFILIATED_UNION_DASHBOARD_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+			
+			if(user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "error";
+			}
+
 			
 			/*if(entitlementsHelper.checkForEntitlementToViewReport(user,""))
 			{
