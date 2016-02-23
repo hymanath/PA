@@ -11964,15 +11964,19 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				toCalendar.setTime(currentDate);
 				stDate = fromCalendar.getTime();
 				edDate = toCalendar.getTime();
-		        cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr,stDate,edDate);
+				
+				cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr,stDate,edDate);
+				 
 			}else if(searchDatType.equalsIgnoreCase("last 30 days")){
+				
 				Calendar fromCalendar = Calendar.getInstance();
 				fromCalendar.setTime(currentDate);
 				Calendar toCalendar = Calendar.getInstance();
 				toCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
 				edDate = fromCalendar.getTime();
 				stDate = toCalendar.getTime();
-		        cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr,stDate,edDate);
+			
+				cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr,stDate,edDate);
 			}
 		
 			if(startDate!=null && startDate.trim().length()>0){
