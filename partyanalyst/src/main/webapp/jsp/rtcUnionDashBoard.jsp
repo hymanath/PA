@@ -250,6 +250,19 @@
 			</div>-->
 			<div class="row m_top10">
 				<div class="col-md-6">
+					<div class="block">
+						<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="block">
+						<h4 class="m_0"><b>CONSTITUENCY WISE AFFLIATED CADRE</b></h4>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row m_top10">
+				<div class="col-md-6">
 					<div class="block pad_10">
 						<label class="radio-inline">
 							<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
