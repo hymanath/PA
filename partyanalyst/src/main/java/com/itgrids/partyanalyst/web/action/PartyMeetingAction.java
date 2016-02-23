@@ -404,7 +404,7 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	{
 		try{
 			jObj = new JSONObject(getTask());
-			partyMeetingWSVO =  partyMeetingService.getTdpCadreDetailsForPartyMeeting(jObj.getLong("meetingId"),jObj.getString("searchType"),jObj.getString("designation"));
+			partyMeetingWSVO =  partyMeetingService.getTdpCadreDetailsForPartyMeeting(jObj.getLong("meetingId"),jObj.getString("searchType"));
 		}
 		catch (Exception e) {
 			LOG.error("Entered into getTdpCadreDetailsForPartyMeeting Action",e);
