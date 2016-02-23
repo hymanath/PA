@@ -1017,8 +1017,11 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 								<div class="panel-heading bg_E5">
 									<div class="row">
 										<div class="col-md-12">
+										<label class="radio-inline">
+												<input type="radio"  class="meetingradioCls" name="meetingradio" value="TP" checked>All
+											</label>
 											<label class="radio-inline">
-												<input type="radio"  class="meetingradioCls" name="meetingradio" value="TI" checked>All
+												<input type="radio"  class="meetingradioCls" name="meetingradio" value="TI" checked>Total Invitees
 											</label>
 											<label class="radio-inline">
 												<input type="radio" class="meetingradioCls" name="meetingradio" value="IP">Invitee Present
@@ -2613,6 +2616,8 @@ $(document).on('click','.getSummary', function() {
 	 
   });
   $(document).on('click','.meetingradioCls',function(){
+	  /*$("#disignationDiv").val(0);
+	  $('#disignationDiv').dropkick('refresh');*/
 	getTdpCadreDetailsForPartyMeeting();
   })
    $(document).on('click','.meetingNameCls',function(){
@@ -2686,13 +2691,18 @@ $(document).on('click','.getSummary', function() {
      var str ='';
 	 str+='<table class="table table-bordered bg_ff">';
 	 str+='<tbody><tr>';
+	  str+='<td class="text-center">';
+	 str+='<h3>'+result.attendedCount+'</h3>';
+	 str+='<h4>ALL </h4>';
+	 str+='<p>Members in Meeting</p>';
+	 str+='</td>';
 	 str+='<td class="text-center">';
 	 str+='<h3>'+result.inviteesCount+'</h3>';
 	 str+='<h4>TOTAL INVITEES</h4>';
 	 str+='<p>Members in Meeting</p>';
 	 str+='</td>';
 	 str+='<td class="text-center">';
-	 str+='<h3>'+result.attendedCount+'</h3>';
+	 str+='<h3>'+result.inviteesAttendedCount+'</h3>';
 	 str+='<h4 class="text-danger">INVITEES ATTENDED</h4>';
 	 str+='<p>Members in Meeting</p>';
 	 str+='</td>';
@@ -2758,7 +2768,7 @@ $(document).on('click','.getSummary', function() {
 		if(result.partyMeetingWSVoList[i].attendedCount != null && result.partyMeetingWSVoList[i].attendedCount > 0)
 		{
 			str+='<img class="img-responsive attendanceIcon" src=""dist/img/invitee-present.png">';
-			str+='<span>Invitee Present</span>';
+			str+='<span>Invitee Attended</span>';
 		}
 		else
 		{
