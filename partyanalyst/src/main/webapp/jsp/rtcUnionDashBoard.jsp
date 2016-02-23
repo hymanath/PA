@@ -20,6 +20,10 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/dataTables.fixedHeader.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <style type="text/css">
+.mCSB_container
+{
+	margin:0px !important;
+}
 .tableDiff
 {
 	margin:0px;
@@ -259,22 +263,21 @@
 						<label class="radio-inline">
 							<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
 						</label>
-						<table class="table table-bordered">
+						<center style="margin-top:20px;"><img id="dataLoadingsImgForDistrictRadioId" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>
+						<div  id="districtWiseRegistredCountId" class="tableBlockScroll3"></div>
+						<!--<table class="table table-bordered">
 							<thead>
 								<th>District Name</th>
 								<th>Total</th>
 								<th>Tab</th>
 								<th>Web</th>
 							</thead>
+							
+							<center style="margin-top: 50px;"><img id="dataLoadingsImgForDistrictRadioId" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>
 							<tbody id="districtWiseRegistredCountId">
-								<!--<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>-->
+								
 							</tbody>
-						</table>
+						</table>-->
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -292,22 +295,20 @@
 						<label class="radio-inline">
 							<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
 						</label>
-						<table class="table table-bordered">
+						<center style="margin-top:20px;"><img id="dataLoadingsImgForConstituencyRadioId" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>
+						<div  id="constituencyWiseRegistredCountId" class="tableBlockScroll4"></div>
+						<!--<table class="table table-bordered">
 							<thead>
 								<th>Constituency Name</th>
 								<th>Total</th>
 								<th>Tab</th>
 								<th>Web</th>
 							</thead>
-							<tbody id="constituencyWiseRegistredCountId">
-								<!--<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>-->
+							<tbody>
+							
+								
 							</tbody>
-						</table>
+						</table>-->
 					</div>
 				</div>
 			</div>
@@ -1220,9 +1221,19 @@ function getOnlineAndTabUsersCount(){
 		
 	});
 }*/
-getCadreRegistrationTotalCount("total","District");
 getCadreRegistrationTotalCount("total","Constituency");
+getCadreRegistrationTotalCount("total","District");
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
+	
+	if (locationLevel !=null && locationLevel =="District"){
+				$("#dataLoadingsImgForDistrictRadioId").show();
+				$("#districtWiseRegistredCountId").html('');
+			}else {
+				$("#dataLoadingsImgForConstituencyRadioId").show();
+				$("#constituencyWiseRegistredCountId").html('');
+			}
+	
+	
 	var membereTypeIds = new Array();
 	membereTypeIds.push(2);
 	//membereTypeIds.push(3);
@@ -1244,21 +1255,46 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		data:{task:JSON.stringify(jObj)}
 	}).done(function(result){
 		var str ='';
-		if(result !=null){
+		if (locationLevel !=null && locationLevel =="District"){
+			str+='<div class="tableBlockScroll3">';
+		}
+		else{
+			str+='<div class="tableBlockScroll4">';
+		}
+		str+='<table class="table table-bordered" >';
+			str+='<thead>';
+				str+='<th>'+locationLevel+' Name</th>';
+				str+='<th>Total</th>';
+				str+='<th>Tab</th>';
+				str+='<th>Web</th>';
+			str+='</thead>';
 			
+		
+		if(result !=null){
+			str+='<tbody>';
 			for(var i in result){
-				str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
+				
+				if((result[i].totalCount !=null && result[i].totalCount>0)){
+					str+='<tr>';
+					str+='<td>'+result[i].name+'</td>';
 							str+='<td>'+result[i].totalCount+'</td>';
 							str+='<td>'+result[i].tabCount+'</td>';	
 							str+='<td>'+result[i].webCount+'</td>';
-				str+='</tr>';
+					str+='</tr>';
+				}					
 			}
+			str+='</tbody>';	
 			
+			str+='</table>';
+			str+='</div>';
 			if (locationLevel !=null && locationLevel =="District"){
+				$("#dataLoadingsImgForDistrictRadioId").hide();
 				$("#districtWiseRegistredCountId").html(str);
+				$(".tableBlockScroll3").mCustomScrollbar();
 			}else {
+				$("#dataLoadingsImgForConstituencyRadioId").hide();
 				$("#constituencyWiseRegistredCountId").html(str);
+				$(".tableBlockScroll4").mCustomScrollbar();
 			}
 			
 		} 
