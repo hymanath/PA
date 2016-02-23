@@ -11892,7 +11892,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					//vo.setName(commonMethodsUtilService.getStringValueForObject(member[1]));
 					vo.setId(Long.valueOf(member[0] != null ? member[0].toString():"0L"));
 					vo.setName(member[1]!=null?member[1].toString():null);
-					returnList.add(vo);
+					if(vo.getId() != null && vo.getId() != 1L)
+						returnList.add(vo);
 				}
 			}
 		} catch (Exception e) {
