@@ -93,7 +93,7 @@
 						<img src="dist/2016DashBoard/img/headpart.jpg" class="img-block img-responsive">
 						<h4 class="panel-title text-center"><b>DASHBOARD</b></h4>
 						<div class="col-md-4 pull-right" style="margin-top: -25px;">
-							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue="All" style="width:460px;"/>
+							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue="All" style="width:460px;" onchange="refreshDetails();"/>
 						</div>
 					</div>
 				</div>
@@ -114,7 +114,7 @@
 									<th>LAST 7 DAYS</th>
 									<th>LAST 30 DAYS</th>
 								</thead>
-								<tr>
+								<tr class="trClass" id="teachersAllId">
 									<td>TEACHERS</td>
 									<td><h3><span id="teachersTotalId"></span><center><img id="teachersTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="teachersTotalWebId"></span></p>
@@ -133,7 +133,7 @@
 										<p class="bg_F9">TAB: <span id="teachersLast30TabId"></span></p>
 									</td>
 								</tr>
-								<tr>
+								<tr class="trClass" id="anganwadiAllId">
 									<td>ANGANWADI</td>
 									<td><h3><span id="anganwadiTotalId"></span><center><img id="anganwadiTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="anganwadiTotalWebId"></span></p>
@@ -152,7 +152,7 @@
 										<p class="bg_F9">TAB: <span id="anganwadiLast30TabId"></span></p>
 									</td>
 								</tr>
-								<tr>
+								<tr class="trClass" id="motorWorkersAllId">
 									<td>MOTOR WORKERS</td>
 									<td><h3><span id="motorTotalId"></span><center><img id="motorTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="motorTotalWebId"></span></p>
@@ -171,7 +171,7 @@
 										<p class="bg_F9">TAB: <span id="motorLast30TabId"></span></p>
 									</td>
 								</tr>
-								<tr>
+								<tr class="trClass" id="apsrtcAllId">
 									<td>APSRTC</td>
 									<td><h3><span id="apsrtcTotalId"></span><center><img id="apsrtcTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
 										<p class="bg_F4">WEB: <span id="apsrtcTotalWebId"></span></p>
@@ -195,9 +195,9 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="row">
+			<!--<div class="row" id="rtcShowId">
 				<div class="col-md-12">
-					<div class="block pad_10">
+					<div class="block pad_10 rtchideCls">
 						<div class="row">
 							<div class="col-md-5 col-md-offset-1">
 								<div class="row">
@@ -248,7 +248,7 @@
 					</div>
 				</div>
 			</div>-->
-			<div class="row m_top10">
+			<div class="row m_top10" id="tableDivsId">
 				<div class="col-md-6">
 					<div class="block">
 						<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
@@ -276,21 +276,22 @@
 						<label class="radio-inline">
 							<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
 						</label>
-						<center style="margin-top:20px;"><img id="dataLoadingsImgForDistrictRadioId" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>
-						<div  id="districtWiseRegistredCountId" class="tableBlockScroll3"></div>
-						<!--<table class="table table-bordered">
+						<table class="table table-bordered">
 							<thead>
 								<th>District Name</th>
 								<th>Total</th>
 								<th>Tab</th>
 								<th>Web</th>
 							</thead>
-							
-							<center style="margin-top: 50px;"><img id="dataLoadingsImgForDistrictRadioId" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>
 							<tbody id="districtWiseRegistredCountId">
-								
+								<!--<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>-->
 							</tbody>
-						</table>-->
+						</table>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -308,24 +309,26 @@
 						<label class="radio-inline">
 							<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
 						</label>
-						<center style="margin-top:20px;"><img id="dataLoadingsImgForConstituencyRadioId" src="images/icons/loading.gif" style="width:50px;height:50px;"/></center>
-						<div  id="constituencyWiseRegistredCountId" class="tableBlockScroll4"></div>
-						<!--<table class="table table-bordered">
+						<table class="table table-bordered">
 							<thead>
 								<th>Constituency Name</th>
 								<th>Total</th>
 								<th>Tab</th>
 								<th>Web</th>
 							</thead>
-							<tbody>
-							
-								
+							<tbody id="constituencyWiseRegistredCountId">
+								<!--<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>-->
 							</tbody>
-						</table>-->
+						</table>
 					</div>
 				</div>
 			</div>
-			<div class="row m_top10">
+			<div class="row m_top10 zonewiseCls" style="display:none">
 				<div class="col-md-4">
 					<div class="block">
 						<div class="pad_10">
@@ -408,7 +411,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row m_top10">
+			<div class="row m_top10 todayOperationalCls" style="display:none">
 				<div class="col-md-4">
 					<div class="block">
 						<div class="pad_10">
@@ -454,7 +457,7 @@
 					<center style="margin-top: 50px;"><img id="dataLoadingsImgForOnlineAndTab" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row depotWiseRegistrationCls" style="display:none">
 				<div class="col-md-12">
 					<div class="block m_top10">
 						<div class="pad_10">
@@ -494,7 +497,7 @@
 
 <script>
 
-/*getRtcUnionRegisteredBasicDetails();
+getRtcUnionRegisteredBasicDetails();
 getRtcUnionAllLocationDetails();
 getRtcUnionZoneWiseTotalDetails();
 getRtcUnionTotalLocationWiseDetails();
@@ -1220,7 +1223,7 @@ function getOnlineAndTabUsersCount(){
 			$("#onlineAndTabUsersDiv").html(str);
 		}
 	});
-}*/
+}
 
 /*function getCadreRegistrationTotalCount(){
 	var jObj={};
@@ -1234,19 +1237,9 @@ function getOnlineAndTabUsersCount(){
 		
 	});
 }*/
-getCadreRegistrationTotalCount("total","Constituency");
 getCadreRegistrationTotalCount("total","District");
+getCadreRegistrationTotalCount("total","Constituency");
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
-	
-	if (locationLevel !=null && locationLevel =="District"){
-				$("#dataLoadingsImgForDistrictRadioId").show();
-				$("#districtWiseRegistredCountId").html('');
-			}else {
-				$("#dataLoadingsImgForConstituencyRadioId").show();
-				$("#constituencyWiseRegistredCountId").html('');
-			}
-	
-	
 	var membereTypeIds = new Array();
 	membereTypeIds.push(2);
 	//membereTypeIds.push(3);
@@ -1268,46 +1261,21 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		data:{task:JSON.stringify(jObj)}
 	}).done(function(result){
 		var str ='';
-		if (locationLevel !=null && locationLevel =="District"){
-			str+='<div class="tableBlockScroll3">';
-		}
-		else{
-			str+='<div class="tableBlockScroll4">';
-		}
-		str+='<table class="table table-bordered" >';
-			str+='<thead>';
-				str+='<th>'+locationLevel+' Name</th>';
-				str+='<th>Total</th>';
-				str+='<th>Tab</th>';
-				str+='<th>Web</th>';
-			str+='</thead>';
-			
-		
 		if(result !=null){
-			str+='<tbody>';
+			
 			for(var i in result){
-				
-				if((result[i].totalCount !=null && result[i].totalCount>0)){
-					str+='<tr>';
-					str+='<td>'+result[i].name+'</td>';
+				str+='<tr>';
+							str+='<td>'+result[i].name+'</td>';
 							str+='<td>'+result[i].totalCount+'</td>';
 							str+='<td>'+result[i].tabCount+'</td>';	
 							str+='<td>'+result[i].webCount+'</td>';
-					str+='</tr>';
-				}					
+				str+='</tr>';
 			}
-			str+='</tbody>';	
 			
-			str+='</table>';
-			str+='</div>';
 			if (locationLevel !=null && locationLevel =="District"){
-				$("#dataLoadingsImgForDistrictRadioId").hide();
 				$("#districtWiseRegistredCountId").html(str);
-				$(".tableBlockScroll3").mCustomScrollbar();
 			}else {
-				$("#dataLoadingsImgForConstituencyRadioId").hide();
 				$("#constituencyWiseRegistredCountId").html(str);
-				$(".tableBlockScroll4").mCustomScrollbar();
 			}
 			
 		} 
@@ -1504,6 +1472,45 @@ $(document).on("click",".constituecnyRadioCls",function() {
 	var searchType = $(this).val();
 	getCadreRegistrationTotalCount(searchType,"Constituency");
 });
+function refreshDetails(){
+	$(".trClass").hide();
+	var id = $("#userMembersId").val();
+	if(id == 3){
+		$("#anganwadiAllId").show();
+		$("#tableDivsId").show();
+		$(".zonewiseCls").hide();
+		$(".depotWiseRegistrationCls").hide();
+		$(".todayOperationalCls").hide();
+	}
+	else if(id == 5){
+		$("#motorWorkersAllId").show();
+		$("#tableDivsId").show();
+		$(".zonewiseCls").hide();
+		$(".depotWiseRegistrationCls").hide();
+		$(".todayOperationalCls").hide();
+	}
+	else if(id == 2){
+		$("#apsrtcAllId").show();
+		$("#tableDivsId").hide();
+		$(".zonewiseCls").show();
+		$(".depotWiseRegistrationCls").show();
+		$(".todayOperationalCls").show(); 
+	}
+    else if(id == 4){
+		$("#teachersAllId").show();
+		$("#tableDivsId").show();
+		$(".zonewiseCls").hide();
+		$(".depotWiseRegistrationCls").hide();
+		$(".todayOperationalCls").hide();
+	}
+	else if(id == 0){
+		$(".trClass").show();
+		$("#tableDivsId").show();
+		$(".zonewiseCls").hide();
+		$(".depotWiseRegistrationCls").hide();
+		$(".todayOperationalCls").hide();
+	}
+}
 
 
 </script>
