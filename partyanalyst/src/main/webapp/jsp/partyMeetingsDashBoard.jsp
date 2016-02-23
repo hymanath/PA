@@ -1042,6 +1042,9 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 										<div class="col-md-2">
 											<button class="btn btn-success btn-block" onclick="buildTdpCadreAttendedMembersByFilter();">APPLY FILTERS</button>
 										</div>
+										<div class="col-md-2">
+											<button class="btn btn-default btnCustom btn-block" onclick="clearDesignations();">CLEAR FILTERS</button>
+										</div>
 										<!--<div class="col-md-2">
 											<button class="btn btn-default btnCustom btn-block">CLEAR FILTERS</button>
 										</div>-->
@@ -2784,7 +2787,11 @@ $(document).on('click','.getSummary', function() {
 	  $("#meetingAttendedMembersDiv").html(str);
 	  
   }
-  
+  function clearDesignations()
+  {
+	  $("#disignationDiv").val(0);
+	  $('#disignationDiv').dropkick('refresh');
+  }
   function buildTdpCadreAttendedMembersByFilter()
   {
 	
