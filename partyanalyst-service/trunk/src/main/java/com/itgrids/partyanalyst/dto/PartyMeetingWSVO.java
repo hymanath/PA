@@ -23,6 +23,7 @@ public class PartyMeetingWSVO {
 	private String memberShipNo;
 	private String mobileNo;
 	private String designation;
+	private String roles;
 	private String imgStr;
 	private String dateOfBirth;
 	private Long age;
@@ -34,10 +35,23 @@ public class PartyMeetingWSVO {
 	private Long absentCount = 0l;
 	
 	private Long count = 0l;
-	
+	private String memberType;
 	private List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
 	private List<PartyMeetingWSVO> designationWiseCountsList = new ArrayList<PartyMeetingWSVO>();
 	
+	
+	public String getRoles() {
+		return roles;
+	}
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+	public String getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
+	}
 	public Long getId() {
 		return id;
 	}

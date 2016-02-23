@@ -2714,7 +2714,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 					String type = obj[1] != null ? obj[1].toString():"";
 					
 					PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
+					if(inviteesList.contains(cadreId)){
+						if(attendedList.contains(cadreId))
+							vo.setMemberType("Invitee Present");
+						else
+							vo.setMemberType("Invitee Absent");
+					}
+					else if(attendedList.contains(cadreId)){
+						vo.setMemberType("Non Invitee Present");
+					}
+						
 					vo.setDesignation(type);
+					vo.setRoles(type);
 					
 					PartyMeetingWSVO desgvo = designationMap.get(type.trim());
 					if(searchType.equalsIgnoreCase("TP")){
@@ -2782,11 +2793,24 @@ public class PartyMeetingService implements IPartyMeetingService{
 					 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
 					 
 					 PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
+					 
+					 if(inviteesList.contains(cadreId)){
+							if(attendedList.contains(cadreId))
+								vo.setMemberType("Invitee Present");
+							else
+								vo.setMemberType("Invitee Absent");
+						}
+						else if(attendedList.contains(cadreId)){
+							vo.setMemberType("Non Invitee Present");
+						}
+					 
 					 if(vo.getDesignation() != null && vo.getDesignation().length() > 0){
 						 vo.setDesignation(vo.getDesignation()+" , "+partyPositionStr);
+						 vo.setRoles(vo.getRoles().trim()+","+role.trim());
 					 }
 					 else{
 						 vo.setDesignation(partyPositionStr);
+						 vo.setRoles(role.trim());
 					 }
 					 
 					 PartyMeetingWSVO desgvo = designationMap.get(role.trim());
@@ -2841,6 +2865,31 @@ public class PartyMeetingService implements IPartyMeetingService{
 				 otherMembersCount = tdpCadreIdsList.size() - partyMembersTdpCadreIdsList.size();
 			 else 
 				 otherMembersCount = tdpCadreIdsList.size();
+			 
+			 if(partyMembersTdpCadreIdsList != null && partyMembersTdpCadreIdsList.size()>0) {
+				 if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0) {
+					 for (Long cadreId : tdpCadreIdsList) {
+						if(!partyMembersTdpCadreIdsList.contains(cadreId)){
+							PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
+							if(vo != null)
+							{
+								vo.setDesignation("OTHERS");
+								vo.setRoles("OTHERS");
+								if(inviteesList.contains(cadreId)){
+									if(attendedList.contains(cadreId))
+										vo.setMemberType("Invitee Present");
+									else
+										vo.setMemberType("Invitee Absent");
+								}
+								else if(attendedList.contains(cadreId)){
+									vo.setMemberType("Non Invitee Present");
+								}
+							}
+						}
+					}
+				 }
+			 }
+			 
 			 if(otherMembersCount >0){
 				 PartyMeetingWSVO vo = new PartyMeetingWSVO();
 				 vo.setDesignation("OTHERS");
