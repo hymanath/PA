@@ -656,12 +656,30 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	}
 	
 	public String checkLoginForPartyMeeting(){
-		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		/*RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO!=null && regVO.getRegistrationID() >0l){
 			return "success";
 		}else{
 			return "input";
+		}*/
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
 		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ADMIN_ENTITLEMENT"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		
+		return Action.SUCCESS;
 	}
 	
 	public String getUserAccessLocationDetails(){

@@ -1604,6 +1604,7 @@
 	</bean>
 	<bean id="partyMeetingsDashBoardAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingsDashBoardAction" singleton="false"> 
 		<property name="partyMeetingDashboardService" ref="partyMeetingDashboardService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="activityAction" class="com.itgrids.partyanalyst.web.action.ActivityAction" singleton="false"> 
@@ -1620,6 +1621,7 @@
 		<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 </beans>	

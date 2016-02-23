@@ -11,8 +11,10 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MeetingSummeryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IPartyMeetingDashboardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -27,8 +29,15 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 	private IPartyMeetingDashboardService partyMeetingDashboardService;
 	private MeetingSummeryVO MeetingsDashboardSummary;
 	private MeetingSummeryVO meetingSummeryVO;
+	private EntitlementsHelper entitlementsHelper;
 	
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public MeetingSummeryVO getMeetingSummeryVO() {
 		return meetingSummeryVO;
 	}
@@ -76,15 +85,34 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 	
 	public String execute()
 	{
-		RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+		/*RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO!=null && regVO.getRegistrationID() >0l){
 			return Action.SUCCESS;
 		}else{
 			return "input";
-		}
+		}*/
 		//Date d1 = new DateUtilService().getDateByStringAndFormat("2015-08-22","yyyy-MM-dd");
 		//Date d2 = new DateUtilService().getDateByStringAndFormat("2015-08-28","yyyy-MM-dd");
 		//MeetingSummeryVO meetingSummeryVO = partyMeetingDashboardService.getMeetingsSummeryForDashboard(2L,d1,d2,null,2l,null);
+		
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ADMIN_ENTITLEMENT"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		
+		return Action.SUCCESS;
 		
 	}
 	
