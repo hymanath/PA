@@ -248,7 +248,8 @@
 					</div>
 				</div>
 			</div>-->
-			<div class="row m_top10" id="tableDivsId">
+			<div id="tableDivsId">
+			<div class="row m_top10">
 				<div class="col-md-6">
 					<div class="block">
 						<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
@@ -327,6 +328,7 @@
 						</table>
 					</div>
 				</div>
+			</div>
 			</div>
 			<div class="row m_top10 zonewiseCls" style="display:none">
 				<div class="col-md-4">
