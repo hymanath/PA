@@ -12,6 +12,7 @@ public class IvrOptionsVO implements Serializable{
 	
 	private Long answeredCount;
 	private Long unAnsweredCount;
+	private Long othersCount;
 	
 	public Long getId() {
 		return id;
@@ -54,6 +55,12 @@ public class IvrOptionsVO implements Serializable{
 	}
 	public void setUnAnsweredCount(Long unAnsweredCount) {
 		this.unAnsweredCount = unAnsweredCount;
+	}
+	public Long getOthersCount() {
+		return othersCount;
+	}
+	public void setOthersCount(Long othersCount) {
+		this.othersCount = othersCount;
 	}
 	
 	
