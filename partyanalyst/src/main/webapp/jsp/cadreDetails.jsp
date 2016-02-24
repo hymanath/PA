@@ -812,7 +812,7 @@ var globalCadreId = '${cadreId}';
 							
                         </div>
                     </div>
-				 <div class="panel panel-default">
+				<!--  <div class="panel panel-default">
 					<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR DETAILS</h4>
                     </div>		
@@ -849,8 +849,8 @@ var globalCadreId = '${cadreId}';
                                         <td> 0 </td>
                                     </tr> 
                                 </table>-->
-					</div>
-				 </div>
+					<!--  </div>
+				 </div>-->
                 
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading">
@@ -6616,7 +6616,7 @@ $("#mainheading").parent().find("p").removeClass("display-style");
 
 
 
-getTypeWiseIvrDetailsOFCadre();
+//getTypeWiseIvrDetailsOFCadre();
 function getTypeWiseIvrDetailsOFCadre(){
 	var jsObj={
 		cadreId:globalCadreId
