@@ -19,7 +19,8 @@ public class TdpMemberType extends BaseModel implements Serializable{
 
 	private Long tdpMemberTypeId;
 	private String memberType;
-	
+	private String isDeleted;
+	private Long orderNo;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="tdp_member_type_id", unique=true, nullable=false)
@@ -37,4 +38,19 @@ public class TdpMemberType extends BaseModel implements Serializable{
 	public void setMemberType(String memberType) {
 		this.memberType = memberType;
 	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	
 }
