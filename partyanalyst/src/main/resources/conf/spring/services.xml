@@ -2444,8 +2444,7 @@
 		<property name="rtcUnionService" ref="rtcUnionService" />
 		<property name="rtcDepotDAO" ref="rtcDepotDAO" />
 		<property name="tdpMemberTypeDAO" ref="tdpMemberTypeDAO" />
-		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
-	 </bean>
+	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
       	 <property name="cadreRegAmountDetailsDAO" ref="cadreRegAmountDetailsDAO" />
@@ -2879,7 +2878,6 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" />
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
-		<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
