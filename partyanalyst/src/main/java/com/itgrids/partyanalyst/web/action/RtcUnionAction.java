@@ -76,10 +76,18 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private List<IdNameVO> 						zonesList;
 	private List<CadreVo> cadrevoList;
 	private  List<TdpCadreVO>      cadreList;
+	private Long tdpMemberTypeId;
 	private EntitlementsHelper 					entitlementsHelper;
 	
 	
 	
+	
+	public List<TdpCadreVO> getCadreList() {
+		return cadreList;
+	}
+	public void setCadreList(List<TdpCadreVO> cadreList) {
+		this.cadreList = cadreList;
+	}
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -282,13 +290,12 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	public void setZonesList(List<IdNameVO> zonesList) {
 		this.zonesList = zonesList;
 	}
-	
-	
-	public List<TdpCadreVO> getCadreList() {
-		return cadreList;
+
+	public Long getTdpMemberTypeId() {
+		return tdpMemberTypeId;
 	}
-	public void setCadreList(List<TdpCadreVO> cadreList) {
-		this.cadreList = cadreList;
+	public void setTdpMemberTypeId(Long tdpMemberTypeId) {
+		this.tdpMemberTypeId = tdpMemberTypeId;
 	}
 	public String execute(){
 		return Action.SUCCESS;
@@ -358,7 +365,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				    }
 	    		}
 	    		
-	    		genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear(null);
+	    		//genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
 	    		
 			//}
 			
@@ -571,7 +578,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				return Action.SUCCESS;
 			}*/
 			
-			genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear(null);
+		//	genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in rtcUnionDashBoard method in RtcUnionAction Action",e);
@@ -696,6 +703,18 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			cadreList=cadreRegistrationService.getLocationwiseCadreRegistraionDetails(idList,searchTypeStr,startDate,toDate,searchDatType);
 			 }catch(Exception e){
 			LOG.error("Exception Occured in getCadreDetails() in RtcUnionAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+public String getMemberTypeSelectedValues(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			
+			genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMemberTypeSelectedValues method in CadreRegistrationAction Action",e);
 		}
 		return Action.SUCCESS;
 	}
