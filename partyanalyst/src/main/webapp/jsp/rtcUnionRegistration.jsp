@@ -59,7 +59,7 @@
 		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
 		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
 		<script src="js/flipclock/flipclock.js"></script>
-  <style>
+  
 	<!-- YUI Dependency files (End) -->
 	
 	
@@ -73,6 +73,7 @@
 
 
 	<style>
+	.m_0{margin:0px !important}
 	body{margin-bottom:120px;}
 	.footerFixedStrip{
 		bottom:0px; 
@@ -230,6 +231,7 @@
 	var boothId 	   = '${boothId}';
 	var srchType	   = '${searchType}';
 	var candiId		   = '${candidateId}';
+	var tdpMemberTypeId   = '${tdpMemberTypeId}';
 	var newCamPhotoTaken = false;
 	var newPhotoUploaded = false;
 	var alreadyImgPresent = false;
@@ -324,10 +326,31 @@
 			$('#nomineeGenderId').val(parseInt(nomineeGender));
 		if(relativeId.trim().length>0)
 			$('#voterRelationId').val(relativeId);
-				
-	
+		if(tdpMemberTypeId == 2){
+		$('#employeeDivId').show();
+		$('#designationDivId').show();
+		$('#zoneDivId').show();
+		$('#regionDivId').show();
+		$('#depotDivId').show();		  
+		} 
+		else if(tdpMemberTypeId == 3) {
+		$('#designDivId').show();
+		$('#schoolNameDiv').show();
+		$('#casteDivId').hide();
+		
+		}
+		else if(tdpMemberTypeId == 4) {
+		$('#designDivId').show();
+		$('#schoolNameDiv').show();
+		$('#casteDivId').hide();
+		
+		}
+		else if(tdpMemberTypeId == 5) {
+		$('#drivingLicenseDiv').show();
+		$('#vehicleTypeDiv').show();
+		}
 	});
-
+	
 	var rolesSize = 1;
 	var isRolesSet = true;
 	
@@ -485,7 +508,7 @@
 	{
 		var isSuccess = false;
 		var isErrorStr = '';
-		
+	
 		var casteId = $('#casteId').val();
 		var mobileNumber = $('#mobileNumberId').val();
 		var cadreAge = $('#cadreAgeId').val();
@@ -510,11 +533,20 @@
 		var regionSelId = $('#regionSelectId').val();
 		var depotSelId = $('#depotSelectId').val();
 		var employeeId = $('#emplyeeId').val();
+		var designationval = $("#designationId").val();
+		var school = $("#schoolId").val();
+		var drivingLicense = $("#drivingId").val();
+		var vehicleVal = $("#vehicleId").val();
+		var addressVal = $("#addressId").val();
+		var roadVal = $("#roadId").val();
+		var landmarkVal = $("#landmarkId").val();
+		
 		
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#employeeErr').html('');
+		$('#landmarkErr,#roadErr,#addressErr,#employeeErr,#designationErr,#zoneErr,#regionErr,#depotErr,#desigErr,#schoolErr,#drivingErr,#vehicleErr').html('');
 		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
 			 $('#gendReqErr').html('Please select gender');
 		 }
@@ -611,26 +643,8 @@
 			isErrorStr = " error";
 			$('#villWardIdErr').html(' Village/Ward is required.');
 		}
-		if(designation == 0)
-		{
-			isErrorStr = " error";
-			$('#designationErr').html(' Designation is required.');
-		}
-		if(zoneSelId == 0)
-		{
-			isErrorStr = " error";
-			$('#zoneErr').html(' Zone is required.');
-		}
-		if(regionSelId == 0)
-		{
-			isErrorStr = " error";
-			$('#regionErr').html(' Region is required.');
-		}
-		if(depotSelId == 0)
-		{
-			isErrorStr = " error";
-			$('#depotErr').html(' Depot is required.');
-		}
+		
+		
 		/*if(NAadharNo != null && NAadharNo.trim().length == 0)
 		{
 			isErrorStr = " error";
@@ -668,13 +682,87 @@
 			isErrorStr = " error";
 			$('#NrelationErr').html(' Nominee Relation required.');
 		}
-		if(employeeId != null && employeeId.trim().length == 0)
+		if(addressVal == 0)
 		{
 			isErrorStr = " error";
-			$('#employeeErr').html(' Employee ID required.');
+			$('#addressErr').html(' Address is required.');
+		}
+		 if(roadVal == 0)
+		{
+			isErrorStr = " error";
+			$('#roadErr').html(' Road is required.');
+		}
+		if(landmarkVal == 0)
+		{
+			isErrorStr = " error";
+			$('#landmarkErr').html(' landMark  is required.');
 		}
 		
-		$('.fromDateCls').each(function(){
+		if(tdpMemberTypeId == 2){
+			if(employeeId != null && employeeId.trim().length == 0)
+			{
+				isErrorStr = " error";
+				$('#employeeErr').html(' Employee ID required.');
+			}
+			if(designation == 0)
+			{
+				isErrorStr = " error";
+				$('#designationErr').html(' Designation is required.');
+			}
+			if(zoneSelId == 0)
+			{
+				isErrorStr = " error";
+				$('#zoneErr').html(' Zone is required.');
+			}
+			if(regionSelId == 0)
+			{
+				isErrorStr = " error";
+				$('#regionErr').html(' Region is required.');
+			}
+			if(depotSelId == 0)
+			{
+				isErrorStr = " error";
+				$('#depotErr').html(' Depot is required.');
+			}
+		}
+		else if(tdpMemberTypeId == 3){
+			if(designationval == 0)
+			{
+				isErrorStr = " error";
+				$('#desigErr').html(' Designation is required.');
+			}
+			if(school == 0)
+			{
+				isErrorStr = " error";
+				$('#schoolErr').html(' School Name is required.');
+			}	
+		}
+		else if(tdpMemberTypeId == 4){
+			if(designationval == 0)
+			{
+				isErrorStr = " error";
+				$('#desigErr').html(' Designation is required.');
+			}
+			if(school == 0)
+			{
+				isErrorStr = " error";
+				$('#schoolErr').html(' School Name is required.');
+			}	
+		}
+		else if(tdpMemberTypeId == 5){
+			if(drivingLicense == 0)
+			{
+				isErrorStr = " error";
+				$('#drivingErr').html(' Driving License is required.');
+			}	
+			if(vehicleVal == 0)
+			{
+				isErrorStr = " error";
+				$('#vehicleErr').html('Vehicle Type is required.');
+			}	
+		}
+	
+			$('.fromDateCls').each(function(){
 		
 			var keyId = $(this).attr('key');
 			$('#fromDateErr'+keyId+'').html('')	;		
@@ -1333,7 +1421,7 @@
 		
 			<div class="span12" >
 				<div class="row-fluid">
-					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 779px;">
+					<div class="span6   show-grid setHeight"  id="fadeInLeft">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${constiteucnyId}" name="cadreRegistrationVO.constituencyId"> 
@@ -1541,7 +1629,7 @@
 								</div>-->
 						
 					</div>
-					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 779px;" >
+					<div class="span6 show-grid pad-10b setHeight" id="fadeInRight">
 							<!-- 
 							<div class=" m_top20" >
 								<h5 class="text-align1">Aadhar Card No .</h5>
@@ -1552,31 +1640,7 @@
 									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
 								    <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
 								</div>
-								
-							  <!-- ADDRESS DETAILS START-->
-							    <h5 class="text-align1" style="text-decoration: underline; font-size: 17px;">ADDRESS</h5>
-								  <div>
-									   <div class="span12">
-									   
-											<div class="span6 "><h5 class="text-align1">H:NO/FLAT:NO</h5>
-											   <input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo"   value="${voterInfoVOList[0].houseNo}"></input>
-											</div>
-											
-											<div class="span6" >
-											   <h5 class="text-align1">ROAD/STREET</h5>
-											   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" name="cadreRegistrationVO.street"   value="${voterInfoVOList[0].street}"></input>
-											</div>
-											
-										</div>
-								 </div>
-									<div class="span12" >
-										<h5 class="text-align1">LANDMARK</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" name="cadreRegistrationVO.landMark"   value="${voterInfoVOList[0].landmark}"></input>
-									</div>
-								
-								
-								
-                              <div>
+								<div>
 										<div class="span12">
 											<!--<div class="span6">
 											 <div class=" m_top20" >
@@ -1588,48 +1652,20 @@
 											   </select>
 										   </div>-->
 											
-											<div class="span6">
-											  <div class=" m_top20" >
-												   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
-												   <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.perAddrsDistId" />	
-												  
-											   </div>
-											</div>
-											<div class="span6">
-												 <div class=" m_top20" >
-													   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
-													   <select id="constituencyId" name="cadreRegistrationVO.perAddrsConstId"> 
-														 <option value="0">Select Constituency</option>
-													   </select>
-												</div>
-											</div>
+											
+											
 										</div>
 									</div>
 									<div>
 									<div class="span12">
 											
-											<div class="span6">
-												<div class="m_top20">
-												   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
-													  <select id="manTowDivId" name="cadreRegistrationVO.perAddrsMandalId"> 
-														  <option value="0">Select Mandal/Town/Division</option>
-													   </select>
-												</div>
-											</div>
-											<div class="span6">
-												   <div class="m_top20">
-													   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
-														  <select id="villWardId" name="cadreRegistrationVO.perAddrsVillId"> 
-															  <option value="0">Select Village/Ward</option>
-														   </select>
-												   </div>
-											 </div>
+											
 									</div>
                              
 							  	</div>
 							   
 								
-							<div class=" m_top20" >
+							<div class=" m_top20" id="casteDivId">
 										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
 								
@@ -1665,66 +1701,211 @@
 									
 							</div>-->
 							
-							<div class="span8" >
-								<h5 class="text-align1">Employee Id <span class="mandatory">*</span> <span id="employeeErr" style="color:red;font-size:12px;"></span></h5>
-								<input type="text" id="emplyeeId" style="width: 138px;"placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value="${voterInfoVOList[0].employeeId}"/>
-							</div>
-							<div class="span8" >
-								<h5 class="text-align1">DESIGNATION <span class="mandatory">*</span> <span id="designationErr" style="color:red;font-size:12px;"></span></h5>
-								<!--<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
-									<option value="0">Select Designation</option>
-								</select>-->
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="designationSelectId" list="designationList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
-							</div>
-							<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
-								<div class="span7">
-									<h5 class="text-align1">ZONE <span class="mandatory">*</span> <span id="zoneErr" style="color:red;font-size:12px;"></span></h5>
-									<!--<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-										<option value="0">Select Zone</option>
-									</select>-->
-									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " style="width:260px;" name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
-								</div>
-								<div class="span7" >
-									<h5 class="text-align1">REGION <span class="mandatory">*</span> <span id="regionErr" style="color:red;font-size:12px;"></span></h5>
-									<select id="regionSelectId" name="cadreRegistrationVO.regionId" "class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-										<option value="0">Select Region</option>
-									</select>
-								</div>
-								<div class="span7">
-									<h5 class="text-align1">DEPOT <span class="mandatory">*</span> <span id="depotErr" style="color:red;font-size:12px;"></span></h5>
-									<select id="depotSelectId" name="cadreRegistrationVO.depotId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
-										<option value="0">Select Depot</option>
-									</select>
-								</div>
-							</s:if>
-							<s:else>
 							
-								<div class="span7" >
-									<h5 class="text-align1">ZONE <span class="mandatory">*</span> <span id="zoneErr" style="color:red;font-size:12px;"></span></h5>
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " style="width:100%;" name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
-								</div>
-								<div class="span7">
-									<h5 class="text-align1">REGION <span class="mandatory">*</span> <span id="regionErr" style="color:red;font-size:12px;"></span></h5>
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="regionSelectId" list="voterInfoVOList[0].regionsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Region " style="width:100%;" name="cadreRegistrationVO.regionId" value="%{voterInfoVOList[0].regionId}"/>
-								</div>
-								<div class="span7">
-									<h5 class="text-align1">DEPOT <span class="mandatory">*</span> <span id="depotErr" style="color:red;font-size:12px;"></span></h5>
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="depotSelectId" list="voterInfoVOList[0].depotsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Depot " style="width:100%;" name="cadreRegistrationVO.depotId" value="%{voterInfoVOList[0].depotId}"/>
-								</div>
-								
-							</s:else>
-						
-					</div>
+				</div>
+				</div>
 				</div>
 		
 		</div>
 	</div>
+	
+	<!--<div class="container m_top10 m_top20">
+		<div style="position: relative;" class="span12 show-grid">
+			<h3 class="text-align ">DETAILS BLOCK</h3>
+		</div>
+	</div>-->
+	<div class="container m_top10">
+		<div class="span12 show-grid">
+			<div class="row">
+			<div class="span12">
+				
+				
+				<div class="span4" id="designDivId" style="display:none">
+					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> <span id="desigErr" style="color:red;font-size:12px;"></span></h5>
+					<!--<input type="text" id="designationId" placeholder="designation" name="cadreRegistrationVO.desigId"/>-->
+					<select class="form-control" id="vehicleId" name="cadreRegistrationVO.vehicleTypeId">
+								<option>vice Prinicipal</option>
+								<option>Assistant Teacher</option>
+					</select>
+				</div>
+				<div class="span4" id="schoolNameDiv" style="display:none">
+					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> <span id="schoolErr" style="color:red;font-size:12px;"></span></h5>
+						<input type="text" id="schoolId" placeholder="SchoolName" name="cadreRegistrationVO.schoolNameId"></input>
+				</div>
+				<div class="span4" id="drivingLicenseDiv" style="display:none">
+					<h5 class="text-align1">DRIVING LICENSE<span class="mandatory">*</span> <span id="drivingErr" style="color:red;font-size:12px;"></span></h5>
+						<input type="text" id="drivingId" placeholder="Driving License" name="cadreRegistrationVO.drivingLicenseId"></input>
+				</div>
+				<div class="span4" id="vehicleTypeDiv" style="display:none">
+					<h5 class="text-align1">VEHICLE TYPE<span class="mandatory">*</span> <span id="vehicleErr" style="color:red;font-size:12px;"></span></h5>
+						<select class="form-control" id="vehicleId" name="cadreRegistrationVO.vehicleTypeId">
+							<option>Two wheeler</option>
+							<option>Three wheeler</option>
+							<option>Four wheeler</option>
+							<option>Six wheeler</option>
+						</select>
+				</div>
+				<div class="span4" id="employeeDivId" style="display:none">
+					<h5 class="text-align1">Employee Id <span class="mandatory">*</span> <span id="employeeErr" style="color:red;font-size:12px;"></span></h5>
+					<input type="text" id="emplyeeId" placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value=" "/>
+				</div>
+				<div class="span4" id="designationDivId" style="display:none">
+					<h5 class="text-align1">DESIGNATION <span class="mandatory">*</span> <span id="designationErr" style="color:red;font-size:12px;"></span></h5>
+					<!--<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
+						<option value="0">Select Designation</option>
+					</select>-->
+					<s:select theme="simple" cssClass=" " id="designationSelectId" list="designationList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
+				</div>
+					<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
+						<div class="span4" id="zoneDivId" style="display:none">
+							<h5 class="text-align1">ZONE <span class="mandatory">*</span> <span id="zoneErr" style="color:red;font-size:12px;"></span></h5>
+							<!--<select id="zoneSelectId" name="cadreRegistrationVO.zoneId" class="form-control border-radius-0 text-align2 " style="width:100%;margin:0px">
+								<option value="0">Select Zone</option>
+							</select>-->
+							<s:select theme="simple" cssClass=" " id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
+						</div>
+						<div class="span4" id="regionDivId" style="display:none">
+							<h5 class="text-align1">REGION <span class="mandatory">*</span> <span id="regionErr" style="color:red;font-size:12px;"></span></h5>
+							<select id="regionSelectId" name="cadreRegistrationVO.regionId" "class="form-control border-radius-0 text-align2 ">
+								<option value="0">Select Region</option>
+							</select>
+						</div>
+						<div class="span4" id="depotDivId" style="display:none">
+							<h5 class="text-align1">DEPOT <span class="mandatory">*</span> <span id="depotErr" style="color:red;font-size:12px;"></span></h5>
+							<select id="depotSelectId" name="cadreRegistrationVO.depotId" class="form-control border-radius-0 text-align2 " style="margin:0px">
+								<option value="0">Select Depot</option>
+							</select>
+						</div>
+					</div>
+					</div>
+					<div class="row">
+					<div class="span12">
+						<div class="span11">
+							<h4>ADDRESS<hr class="m_0"/></h4>
+						</div>
+						<div class="span4" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> <span id="addressErr" style="color:red;font-size:12px;"></span></h5>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.houseNo" value="${voterInfoVOList[0].houseNo}"></input>
+				   </div>
+					<div class="span4" id="roadDivId">
+					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> <span id="roadErr" style="color:red;font-size:12px;"></span></h5>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.street"   value="${voterInfoVOList[0].street}"></input>
+					</div>
+					<div class="span4" id="landmarkDivId">
+						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> <span id="landmarkErr" style="color:red;font-size:12px;"></span></h5>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.landMark"   value="${voterInfoVOList[0].landmark}"></input>
+					</div>
+					<div class="span4">
+				   <div class=" m_top20" >
+					   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
+					   <s:select theme="simple" cssClass="m_0" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.perAddrsDistId" />	
+					  
+				   </div>
+					</div>
+					<div class="span4">
+					 <div class=" m_top20" >
+						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
+						   <select id="constituencyId" name="cadreRegistrationVO.perAddrsConstId"> 
+							 <option value="0">Select Constituency</option>
+						   </select>
+					</div>
+					</div>
+						<div class="span4">
+							<div class="m_top20">
+							   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
+								  <select id="manTowDivId" name="cadreRegistrationVO.perAddrsMandalId"> 
+									  <option value="0">Select Mandal/Town/Division</option>
+								   </select>
+							</div>
+						</div>
+						<div class="span4">
+						   <div class="m_top20">
+							   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
+								  <select id="villWardId" name="cadreRegistrationVO.perAddrsVillId"> 
+									  <option value="0">Select Village/Ward</option>
+								   </select>
+						   </div>
+					   </div>
+					
+					</s:if>
+					<s:else>
+					
+						<div class="span4" id="zoneDivId" style="display:none">
+							<h5 class="text-align1">ZONE <span class="mandatory">*</span> <span id="zoneErr" style="color:red;font-size:12px;"></span></h5>
+						<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="zoneSelectId" list="zonesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Zone " style="width:100%;" name="cadreRegistrationVO.zoneId" value="%{voterInfoVOList[0].zoneId}"/>
+						</div>
+						<div class="span4" id="regionDivId" style="display:none">
+							<h5 class="text-align1">REGION <span class="mandatory">*</span> <span id="regionErr" style="color:red;font-size:12px;"></span></h5>
+						<s:select theme="simple" cssClass=" " id="regionSelectId" list="voterInfoVOList[0].regionsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Region " style="width:100%;" name="cadreRegistrationVO.regionId" value="%{voterInfoVOList[0].regionId}"/>
+						</div>
+						<div class="span4" id="depotDivId" style="display:none">
+							<h5 class="text-align1">DEPOT <span class="mandatory">*</span> <span id="depotErr" style="color:red;font-size:12px;"></span></h5>
+						<s:select theme="simple" cssClass=" " id="depotSelectId" list="voterInfoVOList[0].depotsList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Depot " style=" " name="cadreRegistrationVO.depotId" value="%{voterInfoVOList[0].depotId}"/>
+						</div>
+					</div>
+					</div>
+					<div class="row">
+					<div class="span12">
+						<div class="span11">
+							<h4>ADDRESS<hr class="m_0"/></h4>
+						</div>
+						<div class="span4" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> <span id="addressErr" style="color:red;font-size:12px;"></span></h5>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.houseNo" value="${voterInfoVOList[0].houseNo}"></input>
+				   </div>
+					<div class="span4" id="roadDivId">
+					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> <span id="roadErr" style="color:red;font-size:12px;"></span></h5>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.street"   value="${voterInfoVOList[0].street}"></input>
+					</div>
+					<div class="span4" id="landmarkDivId">
+						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> <span id="landmarkErr" style="color:red;font-size:12px;"></span></h5>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.landMark"   value="${voterInfoVOList[0].landmark}"></input>
+					</div>
+					<div class="span4">
+				   <div class=" m_top20" >
+					   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
+					   <s:select theme="simple" cssClass="m_0" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.perAddrsDistId" />	
+					  
+				   </div>
+					</div>
+					<div class="span4">
+					 <div class=" m_top20" >
+						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
+						   <select id="constituencyId" name="cadreRegistrationVO.perAddrsConstId"> 
+							 <option value="0">Select Constituency</option>
+						   </select>
+					</div>
+					</div>
+						<div class="span4">
+							<div class="m_top20">
+							   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
+								  <select id="manTowDivId" name="cadreRegistrationVO.perAddrsMandalId"> 
+									  <option value="0">Select Mandal/Town/Division</option>
+								   </select>
+							</div>
+						</div>
+						<div class="span4">
+						   <div class="m_top20">
+							   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
+								  <select id="villWardId" name="cadreRegistrationVO.perAddrsVillId"> 
+									  <option value="0">Select Village/Ward</option>
+								   </select>
+						   </div>
+					   </div>
+						
+					</s:else>
+				
+			</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	
 	<!----  srishailam starts  -->
 	
-		<div class="container" >
+	<!--	<div class="container" >
 		  <div class="span12" >
 				<div class="row-fluid">
-					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:0px;margin-bottom:10px;">						
+					<div class="span  offset3 show-grid m_top10"   id="fadeInLeft" style="margin-left:0px;margin-bottom:10px;">						
 						<div class="m_top10">
 						<div class="span12 " style="position: relative;">
 							<h3 class="text-align "> FAMILY DETAILS </h3>
@@ -1758,7 +1939,7 @@
 												<td style="width:25px;text-align:center;">   
 												<!--	<input type="checkbox" id="checkBox${commentLoop.index}"  name="" class="nomineeCls" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
 												-->
-													<a class="icon-remove nomineeCls" style="margin-top:-10px;" id="checkBox${commentLoop.index}" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" title="Click here to add this member as nominee.">
+												<!--	<a class="icon-remove nomineeCls" style="margin-top:-10px;" id="checkBox${commentLoop.index}" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" title="Click here to add this member as nominee.">
 													
 												</td>
 												<td style="width:100px;">	
@@ -1797,7 +1978,7 @@
 													 
 													 <input type="hidden"  id="familyOccupation${commentLoop.index}0" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value="${familyVO.occupationId}"> </input>
 													-->
-											<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" id="familyOccupation%{commentLoop.index}" style="width:180px;margin-left:15px;">
+										<!--	<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" id="familyOccupation%{commentLoop.index}" style="width:180px;margin-left:15px;">
 													<option value="0">Select Occupation</option>
 													
 											<c:forEach var="educationList" items="${selectOptionVOList}" >													
@@ -1818,7 +1999,7 @@
 												
 												<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev${commentLoop.index}">
 												<!--<a class="icon-minus-sign" style="float:right;margin-left:-3px;" onClick="deleteRollesForm('voterDev${commentLoop.index}');" title="Remove Details"></a> -->
-												</td>
+												<!--</td>
 											</tr>
 											
 									</c:forEach>
@@ -1835,9 +2016,9 @@
 											<tbody>	
 										<input type="hidden" value="0" class="countVar"></input>
 											<tr class="voterDev0">
-											    <td style="width:25px;text-align:center;">
-											    <!-- <input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee."> -->
-													<a class="icon-remove nomineeCls" style="margin-top:-10px;" onclick="nomineeUpdate('checkBox0',0)" title="Click here to add this member as nominee.">
+												<td style="width:25px;text-align:center;">
+												<!-- <input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee."> -->
+												<!--	<a class="icon-remove nomineeCls" style="margin-top:-10px;" onclick="nomineeUpdate('checkBox0',0)" title="Click here to add this member as nominee.">
 												</td>
 												<td> 
 													<input type="text" id="voterName0" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  ></input> 
@@ -1872,11 +2053,11 @@
 													<input type="hidden"  id="familyOccupation00" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value=""> </input>
 												-->
 												
-												</td>
+											<!--	</td>
 												<td style="width:15px;"> 
 													<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev0">
 													<!-- <a class="icon-minus-sign" style="float:right;" onClick="deleteRollesForm('voterDev0');" title="Remove Details"> -->
-												</td>
+											<!--	</td>
 											</tr>
 											
 									</tbody>									
@@ -1890,7 +2071,7 @@
 				
 	</div>
 	</div>
-	</div>
+	</div>-->
 	<!----  srishailam end  -->
 	
 	
@@ -3619,7 +3800,18 @@ $(document).ready(function(){
 			$("#designationSelectId").html(str);
 		});
 	}
-	var getHeig = $("#fadeInRight").height()+20;
-	$('#fadeInLeft').css("height",getHeig)
+	//var getHeig = $("#fadeInRight").height()+20;
+	//$('#fadeInLeft').css("height",getHeig)
+	 $(document).ready(function() {
+	   var maxHeight = -1;
+
+	   $('.setHeight').each(function() {
+		 maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
+	   });
+
+	   $('.setHeight').each(function() {
+		 $(this).height(maxHeight);
+	   });
+	 });
 </script>
 </html>
