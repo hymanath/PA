@@ -11,4 +11,5 @@ public class IvrRespondentDAO extends GenericDaoHibernate<IvrRespondent, Long> i
 	{
 		super(IvrRespondent.class);
 	}
+	
 }
