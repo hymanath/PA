@@ -15,7 +15,7 @@ public class TdpMemberTypeDAO extends GenericDaoHibernate<TdpMemberType, Long> i
 		
 	}
 
-	public List<Object[]> getCadreMemberTypeListByYear(Long year){
+	public List<Object[]> getCadreMemberTypeListByYear(){
 		Query query = getSession().createQuery(" select model.tdpMemberTypeId,model.memberType from TdpMemberType model where model.isDeleted='false' " +
 				"  order by model.orderNo asc ");
 		return query.list();
