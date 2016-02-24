@@ -11507,6 +11507,11 @@
 	    </result>
 	</action>
 	
+	<action name="getMemberTypeSelectedValuesAction" class="rtcUnionAction" method="getMemberTypeSelectedValues">
+		<result type="json" name="success">
+	    	<param name="root">genericVOList</param>
+	    </result>
+	</action>
 	
 </package>
 </struts>      
