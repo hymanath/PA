@@ -10,6 +10,8 @@ public class IvrOptionsVO implements Serializable{
 	private String perc;
 	private Long total = 0l;
 	
+	private Long answeredCount;
+	private Long unAnsweredCount;
 	
 	public Long getId() {
 		return id;
@@ -40,6 +42,18 @@ public class IvrOptionsVO implements Serializable{
 	}
 	public void setTotal(Long total) {
 		this.total = total;
+	}
+	public Long getAnsweredCount() {
+		return answeredCount;
+	}
+	public void setAnsweredCount(Long answeredCount) {
+		this.answeredCount = answeredCount;
+	}
+	public Long getUnAnsweredCount() {
+		return unAnsweredCount;
+	}
+	public void setUnAnsweredCount(Long unAnsweredCount) {
+		this.unAnsweredCount = unAnsweredCount;
 	}
 	
 	
