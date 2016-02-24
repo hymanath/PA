@@ -27,6 +27,9 @@ public class PartyMeetingWSVO {
 	private String imgStr;
 	private String dateOfBirth;
 	private Long age;
+	private Long constituencyId;
+	private String participatedConstituency;
+	private String ownConstituency;
 	
 	private Long inviteesCount = 0l;
 	private Long attendedCount = 0l;
@@ -160,5 +163,23 @@ public class PartyMeetingWSVO {
 	public void setDesignationWiseCountsList(
 			List<PartyMeetingWSVO> designationWiseCountsList) {
 		this.designationWiseCountsList = designationWiseCountsList;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getParticipatedConstituency() {
+		return participatedConstituency;
+	}
+	public void setParticipatedConstituency(String participatedConstituency) {
+		this.participatedConstituency = participatedConstituency;
+	}
+	public String getOwnConstituency() {
+		return ownConstituency;
+	}
+	public void setOwnConstituency(String ownConstituency) {
+		this.ownConstituency = ownConstituency;
 	}
 }

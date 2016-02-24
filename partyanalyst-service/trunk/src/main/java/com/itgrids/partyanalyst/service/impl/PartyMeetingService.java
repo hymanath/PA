@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
+import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -91,8 +92,16 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IStateDAO stateDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+	private IPublicRepresentativeDAO publicRepresentativeDAO;
 	
 	
+	public IPublicRepresentativeDAO getPublicRepresentativeDAO() {
+		return publicRepresentativeDAO;
+	}
+	public void setPublicRepresentativeDAO(
+			IPublicRepresentativeDAO publicRepresentativeDAO) {
+		this.publicRepresentativeDAO = publicRepresentativeDAO;
+	}
 	public ITdpCadreCandidateDAO getTdpCadreCandidateDAO() {
 		return tdpCadreCandidateDAO;
 	}
@@ -2630,6 +2639,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 			Map<Long,PartyMeetingWSVO> partyMeetingVoMap = new LinkedHashMap<Long, PartyMeetingWSVO>();
 			//Map<String,Long> designationWiseMap = new LinkedHashMap<String, Long>();
 			Map<String,PartyMeetingWSVO> designationMap = new LinkedHashMap<String, PartyMeetingWSVO>();
+			Map<Long,String> constituencyMap = new LinkedHashMap<Long, String>();
 			List<PartyMeetingWSVO> designationWiseCountsList = new ArrayList<PartyMeetingWSVO>();
 			Set<Long> partyMembersTdpCadreIdsList = new java.util.HashSet<Long>();
 			List<Long> inviteesPresentList = new ArrayList<Long>();
@@ -2685,6 +2695,17 @@ public class PartyMeetingService implements IPartyMeetingService{
 				tdpCadreIdsList = absentList;
 			}
 			
+			List<Object[]> candidateDetails = publicRepresentativeDAO.getCandidateDetailsByCandidateId(tdpCadreIdsList);
+			if(candidateDetails != null && candidateDetails.size() > 0){
+				for (Object[] obj : candidateDetails) {
+					Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0L");
+					Long constituencyId = Long.valueOf(obj[5] != null ? obj[5].toString():"0L");
+					String constituencyName = constituencyDAO.getConstituencyNameByConstituencyId(constituencyId);
+					
+					constituencyMap.put(cadreId, constituencyName);
+				}
+			}
+			
 			//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.mobileNo,5.image,6.memberShipNo
 			List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetails(tdpCadreIdsList);
 			if(cadreDetails != null && cadreDetails.size() > 0){
@@ -2697,9 +2718,15 @@ public class PartyMeetingService implements IPartyMeetingService{
 					vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
 					vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
-					vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+					//vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
 					vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
 					vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
+					vo.setOwnConstituency(obj[8] != null ? obj[8].toString():"");
+					
+					String constituencyName = constituencyMap.get(cadreId);
+					if(constituencyName != null && constituencyName.trim().length() > 0){
+						vo.setParticipatedConstituency(constituencyName);
+					}
 					
 					partyMeetingVoMap.put(cadreId, vo);
 				}

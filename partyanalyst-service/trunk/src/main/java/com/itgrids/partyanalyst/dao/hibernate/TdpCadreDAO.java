@@ -5314,7 +5314,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 								" model.age," +
 								" model.mobileNo," +
 								" model.image," +
-								" model.memberShipNo" +
+								" model.memberShipNo," +
+								" model.userAddress.constituency.constituencyId," +
+								" model.userAddress.constituency.name" +
 								" from TdpCadre model" +
 								" where model.tdpCadreId in (:tdpCadreIds)" +
 								" and model.isDeleted ='N' and model.enrollmentYear = 2014 order by model.tdpCadreId asc ");
