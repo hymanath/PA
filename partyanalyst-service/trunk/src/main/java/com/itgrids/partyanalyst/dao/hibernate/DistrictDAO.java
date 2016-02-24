@@ -207,7 +207,7 @@ public List<Object[]> getDistrictIdAndNameByStateForStateTypeId(Long stateId,Lon
 	{
 		str.append(" and model.districtId between 1 and 10 ");
 	}
-	str.append(" order by model.districtName "); 
+	str.append(" order by model.districtName asc"); 
 	
 	Query query = getSession().createQuery(str.toString());
 	query.setParameter("stateId", stateId);

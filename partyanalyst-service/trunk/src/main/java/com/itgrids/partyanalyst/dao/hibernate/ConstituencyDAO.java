@@ -889,21 +889,21 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 			if(stateTypeId.longValue() == 0L)
 			{
 				Query query = getSession().createQuery("select  distinct C.constituencyId , C.name from Constituency C where C.state.stateId = :stateId and " +
-						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null order by C.name ");
+						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null order by C.name asc");
 				query.setParameter("stateId", stateId);
 				result =  query.list();
 			}		
 			else if(stateTypeId.longValue() == 1L)
 			{
 				Query query = getSession().createQuery("select  distinct  C.constituencyId , C.name  from Constituency C where C.state.stateId = :stateId and " +
-						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId > 10 order by C.name ");	
+						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId > 10 order by C.name asc");	
 				query.setParameter("stateId", stateId);
 				result =   query.list();
 			}
 			else if(stateTypeId.longValue() == 2L)
 			{
 				Query query = getSession().createQuery("select  distinct  C.constituencyId , C.name  from Constituency C where C.state.stateId = :stateId and " +
-						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId < 11 order by C.name ");
+						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId < 11 order by C.name asc");
 				query.setParameter("stateId", stateId);
 				result =   query.list();
 			}
@@ -913,7 +913,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 			if(stateTypeId.longValue() == 0L)
 			{
 				Query query = getSession().createQuery("select  distinct C.constituencyId , C.name from Constituency C,ConstituencyElection CE where C.state.stateId = :stateId and " +
-						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and CE.constituency.constituencyId =  C.constituencyId and CE.election.electionYear ="+electionYear+" order by C.name ");
+						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and CE.constituency.constituencyId =  C.constituencyId and CE.election.electionYear ="+electionYear+" order by C.name asc");
 				query.setParameter("stateId", stateId);
 
 				result =  query.list();
@@ -921,7 +921,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 			else if(stateTypeId.longValue() == 1L)
 			{
 				Query query = getSession().createQuery("select  distinct  C.constituencyId , C.name  from Constituency C ,ConstituencyElection CE where C.state.stateId = :stateId and " +
-						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId > 10 and CE.constituency.constituencyId =  C.constituencyId and CE.election.electionYear = "+electionYear+" order by C.name ");
+						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId > 10 and CE.constituency.constituencyId =  C.constituencyId and CE.election.electionYear = "+electionYear+" order by C.name asc");
 				
 				query.setParameter("stateId", stateId);
 				
@@ -930,7 +930,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 			else if(stateTypeId.longValue() == 2L)
 			{
 				Query query = getSession().createQuery("select  distinct  C.constituencyId , C.name  from Constituency C ,ConstituencyElection CE where C.state.stateId = :stateId and " +
-						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId < 11 and CE.constituency.constituencyId =  C.constituencyId and CE.election.electionYear = "+electionYear+" order by C.name ");
+						"C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null and C.district.districtId < 11 and CE.constituency.constituencyId =  C.constituencyId and CE.election.electionYear = "+electionYear+" order by C.name asc");
 				
 				query.setParameter("stateId", stateId);
 
