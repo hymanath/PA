@@ -2879,6 +2879,7 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" />
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
+		<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
