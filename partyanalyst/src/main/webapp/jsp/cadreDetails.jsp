@@ -812,6 +812,45 @@ var globalCadreId = '${cadreId}';
 							
                         </div>
                     </div>
+				 <div class="panel panel-default">
+					<div class="panel-heading">
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR DETAILS</h4>
+                    </div>		
+					<div class="panel-body">
+						<div id="ivrTypeDetailsDivId"></div>
+						<!--<table class="table m_0 table-bordered">
+                                	<thead>
+                                    	<th class="text-center">IVR TYPE </th>
+                                    	<th class="text-center"> TOTAL </th>
+                                    	<th class="text-center"> ANSWERED </th>
+                                    	<th class="text-center"> UNANSWERED </th>
+                                    </thead>
+									
+									<tbody class="text-center">
+									
+										<tr>
+										</tr>
+									</tbody>
+									
+                                    <tr class="text-center">
+                                    	<td> STATE-PUBLIC REPRESENTATIVES MEETING </td>
+                                        <td> <ul class="list-inline"><li class="show-dropdown">2
+											<ul class="count-hover right_arrow">
+												<li>
+													<table class="table table-bordered table-hover">
+														<tr>
+															<td>sdf</td>
+															<td>dfg</td>
+														</tr>
+													</table>
+												</li>
+											</ul> </td>
+                                        <td> 1 </td>
+                                        <td> 0 </td>
+                                    </tr> 
+                                </table>-->
+					</div>
+				 </div>
                 
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading">
@@ -6574,6 +6613,50 @@ $(document).on('click', '.activityLvlCls', function(){
 	});
 });
 $("#mainheading").parent().find("p").removeClass("display-style");
+
+
+
+getTypeWiseIvrDetailsOFCadre();
+function getTypeWiseIvrDetailsOFCadre(){
+	var jsObj={
+		cadreId:globalCadreId
+	}
+	$.ajax({
+		type:'GET',
+		url :'getTypeWiseIvrDetailsOFCadreAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){		
+		var str='';		
+		if(result !=null && result.length>0){
+			str+='<table class="table m_0 table-bordered">';
+                                	str+='<thead>';
+                                    	str+='<th class="text-center">IVR TYPE </th>';
+                                    	str+='<th class="text-center"> TOTAL </th>';
+                                    	str+='<th class="text-center"> ANSWERED </th>';
+                                    	str+='<th class="text-center"> UNANSWERED </th>';
+                                    str+='</thead>';
+									
+									str+='<tbody class="text-center">';
+									for(var i in result){
+										var totalCount = result[i].answeredCount + result[i].unAnsweredCount + result[i].othersCount;
+										str+='<tr>';
+											str+='<td id='+result[i].id+'>'+result[i].name+'</td>';
+											str+='<td>'+totalCount+'</td>';
+											str+='<td>'+result[i].answeredCount+'</td>';
+											str+='<td>'+result[i].unAnsweredCount+'</td>';
+											
+										str+='</tr>';
+									}										
+									str+='</tbody>';
+                                str+='</table>';		
+		}else{
+			str+='<div>Data Not Available</div>';
+		}		
+		$("#ivrTypeDetailsDivId").html(str);
+		
+	});
+}
+
 </script>
 
 </body>

@@ -2635,6 +2635,11 @@
 		 <property name="studentRecomendationDAO" ref="studentRecomendationDAO" />
 		 <property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
 		 <property name="communicationMediaResponseDAO" ref="communicationMediaResponseDAO" />
+		 
+		 <property name="ivrRespondentCadreDAO" ref="ivrRespondentCadreDAO" />
+		 <property name="ivrSurveyAnswerDAO" ref="ivrSurveyAnswerDAO" />
+		 <property name="ivrSurveyEntityDAO" ref="ivrSurveyEntityDAO" />
+		 
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
