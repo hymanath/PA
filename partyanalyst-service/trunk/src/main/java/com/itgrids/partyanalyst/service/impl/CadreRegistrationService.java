@@ -11878,11 +11878,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		}*/
 	}
 	
-	public List<GenericVO> getCadreMemberTypeListByYear(Long year){
+	public List<GenericVO> getCadreMemberTypeListByYear(){
 		List<GenericVO> returnList  = null;
 		
 		try {
-			List<Object[]> tdpMemberTypeList = tdpMemberTypeDAO.getCadreMemberTypeListByYear(year);
+			List<Object[]> tdpMemberTypeList = tdpMemberTypeDAO.getCadreMemberTypeListByYear();
 			if(tdpMemberTypeList != null && tdpMemberTypeList.size()>0){
 				returnList = new ArrayList<GenericVO>(0);
 				for (Object[] member : tdpMemberTypeList) {
