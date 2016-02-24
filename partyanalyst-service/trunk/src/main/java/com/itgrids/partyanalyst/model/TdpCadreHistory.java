@@ -104,6 +104,12 @@ public class TdpCadreHistory {
 	private String						isPrintReady;
 	private Long 						tdpCadreOnlineId;
 	
+	private Long 						tdpMemberTypeId;
+	private Long 						unionTypeId;
+	private String						idCardNo;
+	private Long						designationId;
+	private Long 						tdpCadreLocationId; 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_history_id", unique = true, nullable = false)
@@ -589,5 +595,44 @@ public class TdpCadreHistory {
 	public void setTdpCadreOnlineId(Long tdpCadreOnlineId) {
 		this.tdpCadreOnlineId = tdpCadreOnlineId;
 	}
+	
+	@Column(name="tdp_member_type_id")
+	public Long getTdpMemberTypeId() {
+		return tdpMemberTypeId;
+	}
+	public void setTdpMemberTypeId(Long tdpMemberTypeId) {
+		this.tdpMemberTypeId = tdpMemberTypeId;
+	}
+	
+	@Column(name="union_type_id")
+	public Long getUnionTypeId() {
+		return unionTypeId;
+	}
+	public void setUnionTypeId(Long unionTypeId) {
+		this.unionTypeId = unionTypeId;
+	}
+	@Column(name="id_card_no")
+	public String getIdCardNo() {
+		return idCardNo;
+	}
+	public void setIdCardNo(String idCardNo) {
+		this.idCardNo = idCardNo;
+	}
+	@Column(name="designation_id")
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	@Column(name="tdp_cadre_location_id")
+	public Long getTdpCadreLocationId() {
+		return tdpCadreLocationId;
+	}
+	public void setTdpCadreLocationId(Long tdpCadreLocationId) {
+		this.tdpCadreLocationId = tdpCadreLocationId;
+	}
+	
+	
 	
 }

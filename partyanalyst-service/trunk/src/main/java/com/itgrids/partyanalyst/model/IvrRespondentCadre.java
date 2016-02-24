@@ -28,6 +28,7 @@ public class IvrRespondentCadre {
 	
 	private Long ivrRespondentCadreId;
 	private Long ivrRespondentId;
+	private Long tdpCadreId ;
 	private Long voterId;
     private Long isVerified;
 	private String isMultiple;
@@ -42,6 +43,7 @@ public class IvrRespondentCadre {
 	private User insertedUser;
 	private User updatedUser;
 	private Voter voter;
+	private TdpCadre tdpCadre;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -145,4 +147,24 @@ public class IvrRespondentCadre {
 	public void setVoter(Voter voter) {
 		this.voter = voter;
 	}
+	
+	@Column(name = "tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_cadre_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	
+	
 }

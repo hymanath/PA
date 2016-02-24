@@ -10,9 +10,9 @@ public class IvrOptionsVO implements Serializable{
 	private String perc;
 	private Long total = 0l;
 	
-	private Long answeredCount;
-	private Long unAnsweredCount;
-	private Long othersCount;
+	private Long answeredCount=0l;
+	private Long unAnsweredCount=0l;
+	private Long othersCount=0l;
 	
 	public Long getId() {
 		return id;

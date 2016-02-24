@@ -60,6 +60,9 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.IvrRespondentCadreDAO;
+import com.itgrids.partyanalyst.dao.hibernate.IvrSurveyAnswerDAO;
+import com.itgrids.partyanalyst.dao.hibernate.IvrSurveyEntityDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -68,6 +71,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
@@ -145,6 +149,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IStudentRecomendationDAO studentRecomendationDAO;
 	private ITdpCadreFamilyInfoDAO  tdpCadreFamilyInfoDAO;
 	private ICommunicationMediaResponseDAO communicationMediaResponseDAO;
+	
+	private IvrRespondentCadreDAO ivrRespondentCadreDAO;
+	private IvrSurveyAnswerDAO	ivrSurveyAnswerDAO;
+	private IvrSurveyEntityDAO ivrSurveyEntityDAO;
 	
 	
 	
@@ -569,6 +577,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.communicationMediaResponseDAO = communicationMediaResponseDAO;
 	}
 	 
+
+	public void setIvrRespondentCadreDAO(IvrRespondentCadreDAO ivrRespondentCadreDAO) {
+		this.ivrRespondentCadreDAO = ivrRespondentCadreDAO;
+	}
+
+	public void setIvrSurveyAnswerDAO(IvrSurveyAnswerDAO ivrSurveyAnswerDAO) {
+		this.ivrSurveyAnswerDAO = ivrSurveyAnswerDAO;
+	}
+
+	public void setIvrSurveyEntityDAO(IvrSurveyEntityDAO ivrSurveyEntityDAO) {
+		this.ivrSurveyEntityDAO = ivrSurveyEntityDAO;
+	}
+
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
 	{
@@ -5261,4 +5282,67 @@ public class CadreDetailsService implements ICadreDetailsService{
 		
 		return returnVO;
 	}
+	
+	public List<IvrOptionsVO> getTypeWiseIvrDetailsOFCadre(Long tdpCadreId){
+		
+		List<IvrOptionsVO> fnlList = new ArrayList<IvrOptionsVO>(0);
+		
+		try{
+		
+		List<Long> ivrRespondantIdsObj =  ivrRespondentCadreDAO.getIvrRespndantDetails(tdpCadreId);
+		
+		Long ivrRespondantId = 0l;
+		if(ivrRespondantIdsObj !=null){
+			ivrRespondantId = ivrRespondantIdsObj.get(0);
+		}
+		
+		List<Long> surveyIds =new ArrayList<Long>(0);
+		if(ivrRespondantId !=null && ivrRespondantId>0){
+			 surveyIds =  ivrSurveyAnswerDAO.getIvrSurveyIdsByRespondantId(ivrRespondantId);
+		}
+		
+		//Default Values For Entity Types For Assigned Surveys		
+		
+		Map<Long,IvrOptionsVO> optionsMap = new HashMap<Long, IvrOptionsVO>();
+
+		if(surveyIds !=null && surveyIds.size()>0){
+			List<Object[]> entityTypeObjResult =  ivrSurveyEntityDAO.getSurveyEntityTypeAndCountDetails(surveyIds,ivrRespondantId);			
+			if(entityTypeObjResult !=null && entityTypeObjResult.size()>0){				
+				for (Object[] entityType : entityTypeObjResult) {
+					
+					IvrOptionsVO vo = optionsMap.get((Long)entityType[0]);
+					
+					if(vo ==null){
+						vo = new IvrOptionsVO();	
+						optionsMap.put((Long)entityType[0], vo);
+					}
+					
+					vo.setId(commonMethodsUtilService.getLongValueForObject(entityType[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(entityType[1]));
+					
+					Long responseTypeId = entityType[3] !=null ? (Long)entityType[3]:0l;
+					Long count = entityType[2] !=null ? (Long)entityType[2]:0l;
+					
+					if(responseTypeId !=null && responseTypeId.equals(1l)){
+						vo.setAnsweredCount(count);
+					}else if(responseTypeId !=null && responseTypeId.equals(2l)){
+						vo.setUnAnsweredCount(count);
+					}else if(responseTypeId !=null && responseTypeId>0){
+						vo.setOthersCount(vo.getOthersCount()+count);
+					}
+					
+				}				
+			}			
+		}
+		
+		if(optionsMap !=null && optionsMap.size()>0){
+			fnlList.addAll(optionsMap.values());
+		}
+		
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
+	return fnlList;
+		
+ }
 }

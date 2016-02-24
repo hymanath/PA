@@ -5,9 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dao.IIvrOptionsDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyAnswerDAO;
-import com.itgrids.partyanalyst.model.IvrOptions;
 import com.itgrids.partyanalyst.model.IvrSurveyAnswer;
 
 
@@ -15,6 +13,19 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 
 	public IvrSurveyAnswerDAO() {
 		super(IvrSurveyAnswer.class);
+	}
+	
+	public List<Long> getIvrSurveyIdsByRespondantId(Long ivrRespondantId){
+		
+		Query query= getSession().createQuery("select model.ivrSurveyId from IvrSurveyAnswer model " +
+				"  where model.ivrRespondentId  = :ivrRespondantId " +
+				" and model.isDeleted = 'false' " +
+				" and model.ivrSurvey.isDeleted ='false'  ");
+		
+		query.setParameter("ivrRespondantId", ivrRespondantId);
+		
+		return query.list(); 
+		
 	}
 
 }

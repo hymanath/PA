@@ -37,6 +37,7 @@ public class IvrSurveyAnswer extends BaseModel implements Serializable {
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long ivrResponseTypeId;
 	
 	
 	private User insertedUser;
@@ -46,6 +47,7 @@ public class IvrSurveyAnswer extends BaseModel implements Serializable {
 	private IvrSurvey ivrSurvey;
 	private IvrSurveyQuestion ivrSurveyQuestion;
 	private IvrSurveyRound ivrSurveyRound;
+	private IvrResponseType ivrResponseType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -203,4 +205,23 @@ public class IvrSurveyAnswer extends BaseModel implements Serializable {
 	public void setIvrSurveyRound(IvrSurveyRound ivrSurveyRound) {
 		this.ivrSurveyRound = ivrSurveyRound;
 	}
+	@Column(name = "ivr_response_type_id")
+	public Long getIvrResponseTypeId() {
+		return ivrResponseTypeId;
+	}
+	public void setIvrResponseTypeId(Long ivrResponseTypeId) {
+		this.ivrResponseTypeId = ivrResponseTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ivr_response_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrResponseType getIvrResponseType() {
+		return ivrResponseType;
+	}
+	public void setIvrResponseType(IvrResponseType ivrResponseType) {
+		this.ivrResponseType = ivrResponseType;
+	}
+	
+	
 }
