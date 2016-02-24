@@ -98,4 +98,20 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getCandidateDetailsByCandidateId(List<Long> candidateIds){
+		
+		Query query = getSession().createQuery(" select model1.tdpCadreId," +
+							" model.publicRepresentativeType.publicRepresentativeTypeId," +
+							" model.publicRepresentativeType.type," +
+							" model.representativeLevel.representativeLevelId," +
+							" model.representativeLevel.representativeLevel," +
+							" model.levelValue" +
+							" from PublicRepresentative model,TdpCadreCandidate model1" +
+							" where model.candidateId = model1.candidateId" +
+							" and model1.tdpCadreId in (:candidateIds) ) ");
+		query.setParameterList("candidateIds", candidateIds);
+		
+		return query.list();
+	}
 }
