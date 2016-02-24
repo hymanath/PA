@@ -139,6 +139,10 @@ public class CadreRegistrationVO implements Serializable{
 	private String      districtId;
 	private String		relativeVoterCardNo;
 	private String      voterCardType;
+	private Long        desigId;
+	private Long        schoolNameId;
+	private Long        drivingLicenseId;
+	private Long        vehicleTypeId;
 	
 	public String getRelativeVoterCardNo() {
 		return relativeVoterCardNo;
@@ -822,5 +826,30 @@ public class CadreRegistrationVO implements Serializable{
 	public void setVoterCardType(String voterCardType) {
 		this.voterCardType = voterCardType;
 	}
+	public Long getDesigId() {
+		return desigId;
+	}
+	public void setDesigId(Long desigId) {
+		this.desigId = desigId;
+	}
+	public Long getSchoolNameId() {
+		return schoolNameId;
+	}
+	public void setSchoolNameId(Long schoolNameId) {
+		this.schoolNameId = schoolNameId;
+	}
+	public Long getDrivingLicenseId() {
+		return drivingLicenseId;
+	}
+	public void setDrivingLicenseId(Long drivingLicenseId) {
+		this.drivingLicenseId = drivingLicenseId;
+	}
+	public Long getVehicleTypeId() {
+		return vehicleTypeId;
+	}
+	public void setVehicleTypeId(Long vehicleTypeId) {
+		this.vehicleTypeId = vehicleTypeId;
+	}
+	
 	
 }
