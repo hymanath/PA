@@ -11506,6 +11506,11 @@
 	    	<param name="root">partyMeetingWSVO</param>
 	    </result>
 	</action>
+	<action name="getTypeWiseIvrDetailsOFCadreAction" class="cadreDetailsAction" method="getTypeWiseIvrDetailsOFCadre">
+		<result type="json" name="success">
+	    	<param name="root">ivrOptionsVOList</param>
+	    </result>
+	</action>
 	
 	<action name="getMemberTypeSelectedValuesAction" class="rtcUnionAction" method="getMemberTypeSelectedValues">
 		<result type="json" name="success">

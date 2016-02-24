@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -72,8 +73,8 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private IVRResponseVO ivrResponseVO;
 	private List<IVRResponseVO> ivrResponseVOlist;
 	private  List<TdpCadreVO>      cadreList;
-	private ICadreRegistrationService cadreRegistrationService;
-	
+	private ICadreRegistrationService cadreRegistrationService;	
+	private List<IvrOptionsVO> ivrOptionsVOList;
 	
 	
 	public ICadreRegistrationService getCadreRegistrationService() {
@@ -376,7 +377,14 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		this.ntrTrustStudentVOList = ntrTrustStudentVOList;
 	}
 
+	
 
+	public List<IvrOptionsVO> getIvrOptionsVOList() {
+		return ivrOptionsVOList;
+	}
+	public void setIvrOptionsVOList(List<IvrOptionsVO> ivrOptionsVOList) {
+		this.ivrOptionsVOList = ivrOptionsVOList;
+	}
 	public String execute(){
 		
 		try{
@@ -810,6 +818,19 @@ public String updateLeaderShip(){
 			LOG.error("Exception Occured in getCadreDetails() in CadreDetailsAction ",e);
 		}
 		return SUCCESS;
+	}
+	public String getTypeWiseIvrDetailsOFCadre(){
+		try{
+			
+			jObj=new JSONObject(getTask());
+			
+			ivrOptionsVOList = cadreDetailsService.getTypeWiseIvrDetailsOFCadre(jObj.getLong("cadreId"));
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getTypeWiseIvrDetailsOFCadre() in CadreDetailsAction ",e);
+		}
+		
+		return Action.SUCCESS;
 	}
 
 }
