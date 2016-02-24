@@ -151,6 +151,9 @@
 			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Location </option></select>		
 			<select style="width:250px;" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
+			
+			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Member Type" style="width:460px;"/>
+			<!--<select style="width:150px;" id="membersList"><option value="0"> Select Members </option></select>	-->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				
 				<h5 class="text-align small m_top15">SEARCH BY</h5>
@@ -330,6 +333,7 @@
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
 		var panchayatId = $('#panchayatList').val();
 		var boothId = $('#boothsList').val();
+		//var tdpMemberTypeId = $('#')
 		//var villageCoveredId = $('#vilagecovrdList').val(); 
 		var ischecked = "0";
 	
@@ -597,15 +601,16 @@
 		var cosntiteucnyId = $('#userConstituencyId').val();	
 		var boothId = $('#boothsList').val();	
 		var houseNo = $('#panchayatList').val();	
-		
+		var tdpMemberTypeId = $('#userMembersId').val();
 		var panchayatId = 0;
 		if($("#isNewCadre").is(':checked'))
 			panchayatId = "true";  // checked
 		else
 			panchayatId = 0  // unchecked
 			
-		window.open('rtcUnionRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'');
-		
+		if(tdpMemberTypeId != 0){
+			window.open('rtcUnionRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'&tdpMemberTypeId='+tdpMemberTypeId+'');
+		}
 	}
 	
 	function getConstituencyWiseDetails()
