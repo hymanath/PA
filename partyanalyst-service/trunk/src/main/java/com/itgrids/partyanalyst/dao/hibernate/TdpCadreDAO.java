@@ -13,6 +13,7 @@ import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -5325,6 +5326,25 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
+		public List<Object[]> getCadreFormalDetailsByYear(List<Long> tdpCadreIds,Long enrollmentYear){
+					
+					Query query = getSession().createQuery(" select distinct  model.tdpCadreId," +
+										" model.firstname," +
+										" date(model.dateOfBirth)," +
+										" model.age," +
+										" model.mobileNo," +
+										" model.image," +
+										" model.memberShipNo," +
+										" model.userAddress.constituency.constituencyId," +
+										" model.userAddress.constituency.name,model.voter.voterIDCardNo,model.dataSourceType" +
+										" from TdpCadre model" +
+										" where model.tdpCadreId in (:tdpCadreIds)" +
+										" and model.isDeleted ='N' and model.enrollmentYear = :enrollmentYear order by model.tdpCadreId asc ");
+					query.setParameterList("tdpCadreIds", tdpCadreIds);
+					query.setParameter("enrollmentYear", enrollmentYear);
+					return query.list();
+				}
+		
 		public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear){
 
 			
@@ -6066,7 +6086,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					queryStr.append(" and TC.tdpMemberTypeId in (:membereTypeIdsList) ");
 				if(fromDate != null && toDate != null)
 					queryStr.append(" and (date(TC.insertedTime) between :fromDate and :toDate )");
-				
+				queryStr.append(" model.isDeleted ='N' and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
 				queryStr.append(" group by ");
 				if(searchTypeStr.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
 					queryStr.append(" UA.constituency.constituencyId, ");
@@ -6103,6 +6123,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			if(fromDate != null && toDate != null){
 				sb.append(" where (date(model.surveyTime) between :fromDate and :toDate) ");
 			}
+			sb.append(" and model.isDeleted ='N' and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
 			sb.append(" group by model.tdpMemberType.tdpMemberTypeId,model.dataSourceType ");
 			
 			Query query = getSession().createQuery(sb.toString());
@@ -6111,6 +6132,43 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				query.setParameter("fromDate", fromDate);
 				query.setParameter("toDate", toDate);
 			}
+			
+			return query.list();
+		}
+		
+		
+	public List<Long> getCadreDetailsByTdpMemberType(Date fromDate,Date toDate,RtcUnionInputVO inputVO){
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select model.tdpCadreId from TdpCadre model where");
+			if(inputVO.getLocationType().equalsIgnoreCase("District"))	
+				sb.append("  model.userAddress.district.districtId = :locationId");
+			if(inputVO.getLocationType().equalsIgnoreCase("constituency"))	
+				sb.append("  model.userAddress.constituency.constituencyId = :locationId");
+			if(fromDate != null && toDate != null){
+				sb.append(" and (date(model.surveyTime) between :fromDate and :toDate) ");
+			}
+			if(inputVO.getAppType() != null && !inputVO.getAppType().isEmpty())
+				sb.append(" and model.dataSourceType = :appType");
+			if(inputVO.getMemeberTypeIds() != null && inputVO.getMemeberTypeIds().size() > 0)
+				sb.append(" and model.tdpMemberType.tdpMemberTypeId in(:memberTypeIds)");
+			sb.append(" and model.isDeleted ='N' and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
+			Query query = getSession().createQuery(sb.toString());
+			if(fromDate != null && toDate != null){
+				query.setParameter("fromDate", fromDate);
+				query.setParameter("toDate", toDate);
+			}
+			if(fromDate != null && toDate != null)
+			{
+				query.setParameter("fromDate", fromDate);
+				query.setParameter("toDate", toDate);
+			}
+			if(fromDate != null && toDate != null)
+				query.setParameter("appType", inputVO.getAppType());
+			if(inputVO.getLocationType() != null)
+				query.setParameter("locationId", inputVO.getLocationId());
+			if(inputVO.getMemeberTypeIds() != null && inputVO.getMemeberTypeIds().size() > 0)
+				query.setParameterList("memberTypeIds", inputVO.getMemeberTypeIds());
 			
 			return query.list();
 		}
