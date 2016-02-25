@@ -1237,6 +1237,7 @@ function getOnlineAndTabUsersCount(){
 	});
 }*/
 $(document).on('click', '.locationTypeRadioCls', function(){
+	
 	var selectedVal = $(this).val();
 	if(selectedVal == "district")
 	{
@@ -1244,7 +1245,7 @@ $(document).on('click', '.locationTypeRadioCls', function(){
 		$(".constituencyCls").css("display","none");
 		getCadreRegistrationTotalCount("total","District");
 		$("#districtWiseTitleId").html('<b>DISTRICT WISE REGISTRATION DETAILS</b>');
-		$("#districtWiseRegistredCountId").html('');
+		$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
 		$("#constituencyWiseRegistredCountId").html('');
 	}
 	else
@@ -1254,7 +1255,7 @@ $(document).on('click', '.locationTypeRadioCls', function(){
 		getCadreRegistrationTotalCount("total","Constituency");
 		$("#districtWiseTitleId").html('<b>CONSTITUENCY WISE REGISTRATION DETAILS</b>');
 		$("#districtWiseRegistredCountId").html('');
-		$("#constituencyWiseRegistredCountId").html('');
+		$("#constituencyWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
 		
 	}
 	
