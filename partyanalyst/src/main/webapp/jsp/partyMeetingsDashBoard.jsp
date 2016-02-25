@@ -1180,7 +1180,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
+<script src="dist/newmultiselect/chosen.jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
 //$("#mainheading").html(" PARTY MEETINGS DASHBOARD ");
 
