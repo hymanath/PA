@@ -75,8 +75,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private  List<TdpCadreVO>      cadreList;
 	private ICadreRegistrationService cadreRegistrationService;	
 	private List<IvrOptionsVO> ivrOptionsVOList;
+	private List<IvrOptionsVO> ivrOptionsList;
 	
 	
+	public List<IvrOptionsVO> getIvrOptionsList() {
+		return ivrOptionsList;
+	}
+	public void setIvrOptionsList(List<IvrOptionsVO> ivrOptionsList) {
+		this.ivrOptionsList = ivrOptionsList;
+	}
 	public ICadreRegistrationService getCadreRegistrationService() {
 		return cadreRegistrationService;
 	}
@@ -833,4 +840,19 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 	}
 
+	public String getIvrSurveyInfoByTdpCadreId()
+	  {
+		try{
+			jObj=new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			Long entityTypeId = jObj.getLong("entityTypeId");
+			String searchType = jObj.getString("searchType");
+			
+			ivrOptionsList=cadreDetailsService.getIvrSurveyInfoByTdpCadreId(tdpCadreId,entityTypeId,searchType);
+		}
+		catch(Exception e){
+			LOG.error("Exception Occured in getCadreDetails() in CadreDetailsAction ",e);
+		}
+		return SUCCESS;
+	}
 }

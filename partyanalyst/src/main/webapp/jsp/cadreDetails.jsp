@@ -812,7 +812,7 @@ var globalCadreId = '${cadreId}';
 							
                         </div>
                     </div>
-				<!--  <div class="panel panel-default">
+				<div class="panel panel-default">
 					<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR DETAILS</h4>
                     </div>		
@@ -849,8 +849,8 @@ var globalCadreId = '${cadreId}';
                                         <td> 0 </td>
                                     </tr> 
                                 </table>-->
-					<!--  </div>
-				 </div>-->
+					 </div>
+				 </div>
                 
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading">
@@ -1353,6 +1353,24 @@ var globalCadreId = '${cadreId}';
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
+		<div class="modal fade" id="ivrDetailsModelId">
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center"><span id="ivrModalHeadingId"></span></h4>
+			  </div>
+			  <div class="modal-body">
+				<div id="ivrDetailsBodyId">
+				</div>
+				<center><img id="dataLoadingsImgForIVRDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -6616,7 +6634,7 @@ $("#mainheading").parent().find("p").removeClass("display-style");
 
 
 
-//getTypeWiseIvrDetailsOFCadre();
+getTypeWiseIvrDetailsOFCadre();
 function getTypeWiseIvrDetailsOFCadre(){
 	var jsObj={
 		cadreId:globalCadreId
@@ -6629,35 +6647,108 @@ function getTypeWiseIvrDetailsOFCadre(){
 		var str='';		
 		if(result !=null && result.length>0){
 			str+='<table class="table m_0 table-bordered">';
-                                	str+='<thead>';
-                                    	str+='<th class="text-center">IVR TYPE </th>';
-                                    	str+='<th class="text-center"> TOTAL </th>';
-                                    	str+='<th class="text-center"> ANSWERED </th>';
-                                    	str+='<th class="text-center"> UNANSWERED </th>';
-                                    str+='</thead>';
-									
-									str+='<tbody class="text-center">';
-									for(var i in result){
-										var totalCount = result[i].answeredCount + result[i].unAnsweredCount + result[i].othersCount;
-										str+='<tr>';
-											str+='<td id='+result[i].id+'>'+result[i].name+'</td>';
-											str+='<td>'+totalCount+'</td>';
-											str+='<td>'+result[i].answeredCount+'</td>';
-											str+='<td>'+result[i].unAnsweredCount+'</td>';
-											
-										str+='</tr>';
-									}										
-									str+='</tbody>';
-                                str+='</table>';		
+				str+='<thead>';
+					str+='<th class="text-center">IVR TYPE </th>';
+					str+='<th class="text-center"> TOTAL </th>';
+					str+='<th class="text-center"> ANSWERED </th>';
+					str+='<th class="text-center"> UNANSWERED </th>';
+				str+='</thead>';
+				
+				str+='<tbody class="text-center">';
+				for(var i in result){
+					var totalCount = result[i].answeredCount + result[i].unAnsweredCount + result[i].othersCount;
+					str+='<tr>';
+						str+='<td id='+result[i].id+'>'+result[i].name+'</td>';
+						if(totalCount != 0){
+							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get Total Details" attr_event_name="'+result[i].name+'" attr_searchType="total" style="cursor:pointer;">'+totalCount+'</span></td>';
+						}
+						else{
+							str+='<td>0</td>';
+						}
+						if(result[i].answeredCount != 0){
+							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get Answered Details" attr_event_name="'+result[i].name+'" attr_searchType="answered" style="cursor:pointer;">'+result[i].answeredCount+'</span></td>';
+						}
+						else{
+							str+='<td>0</td>';
+						}
+						if(result[i].unAnsweredCount != 0){
+							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get UnAnswered Details" attr_event_name="'+result[i].name+'" attr_searchType="unanswered" style="cursor:pointer;">'+result[i].unAnsweredCount+'</span></td>';
+						}
+						else{
+							str+='<td>0</td>';
+						}
+					str+='</tr>';
+				}										
+				str+='</tbody>';
+			str+='</table>';		
 		}else{
 			str+='<div>Data Not Available</div>';
 		}		
 		$("#ivrTypeDetailsDivId").html(str);
+		$('[data-toggle="tooltip"]').tooltip()
 		
 	});
 }
 
-</script>
+function getIvrSurveyDetails(searchType){
+	$("#ivrDetailsBodyId").html("");
+	$("#ivrDetailsModelId").modal("show");
+	$("#dataLoadingsImgForIVRDetails").show();
+	
+	var jsObj={
+		tdpCadreId : globalCadreId,
+		entityTypeId : 4,
+		searchType : searchType
+	}
+	$.ajax({
+		type:'GET',
+		url :'getIvrSurveyInfoByTdpCadreIdAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			var str='';
+			
+			str+='<table class="table m_0 table-bordered">';
+				str+='<thead>';
+					str+='<th class="text-center"> MEETING </th>';
+					str+='<th class="text-center"> DATE </th>';
+					str+='<th class="text-center"> SURVEY </th>';
+					str+='<th class="text-center"> ROUND </th>';
+					str+='<th class="text-center"> QUESTION </th>';
+					str+='<th class="text-center"> OPTION </th>';
+				str+='</thead>';
+				
+				str+='<tbody class="text-center">';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].eventName+'</td>';
+						str+='<td>'+result[i].dateStr+'</td>';
+						str+='<td>'+result[i].surveyName+'</td>';
+						str+='<td>'+result[i].round+'</td>';
+						str+='<td>'+result[i].question+'</td>';
+						str+='<td>'+result[i].option+'</td>';
+					str+='</tr>';
+				}
+				str+='</tbody>';
+			str+='</table>';
+			
+			$("#dataLoadingsImgForIVRDetails").hide();
+			$("#ivrDetailsBodyId").html(str);
+		}
+		else{
+			$("#dataLoadingsImgForIVRDetails").hide();
+			$("#ivrDetailsBodyId").html("NO DATA AVAILABLE...");
+		}
+	});	
+}
 
+$(document).on('click', '.ivrAnsweredCls', function(){
+	var searchType = $(this).attr("attr_searchType");
+	var eventName = $(this).attr("attr_event_name");
+	$("#ivrModalHeadingId").html(eventName);
+	getIvrSurveyDetails(searchType);
+});
+
+</script>
 </body>
 </html>
