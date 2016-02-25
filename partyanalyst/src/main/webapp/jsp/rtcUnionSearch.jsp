@@ -671,7 +671,7 @@
 			   }				   
 			   $.ajax({
 					type : "POST",
-					url : "getLocationWiseDetailsAction.action",
+					url : "getLocationsWiseDetailsAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					$('#loadingImg').hide();
@@ -997,7 +997,7 @@ function getMemberTypeSelectedValues(){
 		data:{task:JSON.stringify(jObj)}
 	}).done(function(result){
 		 if(result!=null && result.length>0){
-				$("#userMembersId").append('<option value="0">All</option>');
+				$("#userMembersId").append('<option value="0">Select Member Type</option>');
 				for(var i in result){
 					$("#userMembersId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				}
