@@ -11501,9 +11501,14 @@
 				<param name="root">affiliatedCadreVO</param> 
 			</result>
 		</action>
-		<action name="getTdpCadreDetailsForPartyMeetingAction" class="partyMeetingAction" method="getTdpCadreDetailsForPartyMeeting">
+	<action name="getTdpCadreDetailsForPartyMeetingAction" class="partyMeetingAction" method="getTdpCadreDetailsForPartyMeeting">
 		<result type="json" name="success">
 	    	<param name="root">partyMeetingWSVO</param>
+	    </result>
+	</action>
+	<action name="getIvrSurveyInfoByTdpCadreIdAction" class="cadreDetailsAction" method="getIvrSurveyInfoByTdpCadreId">
+		<result type="json" name="success">
+	    	<param name="root">ivrOptionsList</param>
 	    </result>
 	</action>
 	<action name="getTypeWiseIvrDetailsOFCadreAction" class="cadreDetailsAction" method="getTypeWiseIvrDetailsOFCadre">
@@ -11517,6 +11522,5 @@
 	    	<param name="root">genericVOList</param>
 	    </result>
 	</action>
-	
 </package>
 </struts>      

@@ -2635,11 +2635,10 @@
 		 <property name="studentRecomendationDAO" ref="studentRecomendationDAO" />
 		 <property name="tdpCadreFamilyInfoDAO" ref="tdpCadreFamilyInfoDAO" />
 		 <property name="communicationMediaResponseDAO" ref="communicationMediaResponseDAO" />
-		 
+		 <property name="ivrSurveyEntityDAO" ref="ivrSurveyEntityDAO" />
 		 <property name="ivrRespondentCadreDAO" ref="ivrRespondentCadreDAO" />
 		 <property name="ivrSurveyAnswerDAO" ref="ivrSurveyAnswerDAO" />
-		 <property name="ivrSurveyEntityDAO" ref="ivrSurveyEntityDAO" />
-		 
+		 <property name="partyMeetingDAO" ref="partyMeetingDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
@@ -2883,6 +2882,7 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" />
 		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" />
+		<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
