@@ -5322,8 +5322,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				for (Object[] obj : surveyList) {
 					IvrOptionsVO vo = new IvrOptionsVO();
 					
-					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0L");
-					Long entityValue = Long.valueOf(obj[2] != null ? obj[2].toString():"0L");
+					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long entityValue = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
 					
 					vo.setSurveyId(surveyId);
 					vo.setEventId(entityValue);
@@ -5365,7 +5365,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
-					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0L");
+					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					IvrOptionsVO vo = surveyMap.get(surveyId);
 					List<IvrOptionsVO> ivrSurveysList = new ArrayList<IvrOptionsVO>(0);
 					if(vo != null)
@@ -5383,12 +5383,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 							surveyVO.setDateStr(meetingDetails[1] != null ? meetingDetails[1].toString():"");
 						}
 						//surveyVO.setEventName(meetingName);
-						surveyVO.setRoundId(Long.valueOf(obj[2] != null ? obj[2].toString():"0L"));
-						surveyVO.setRound(obj[3] != null ? obj[3].toString():"0L");
-						surveyVO.setQuestionId(Long.valueOf(obj[5] != null ? obj[5].toString():"0L"));
-						surveyVO.setQuestion(obj[6] != null ? obj[6].toString():"0L");
-						surveyVO.setOptionId(Long.valueOf(obj[7] != null ? obj[7].toString():"0L"));
-						surveyVO.setOption(obj[8] != null ? obj[8].toString():"0L");
+						surveyVO.setRoundId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						surveyVO.setRound(obj[3] != null ? obj[3].toString():"0");
+						surveyVO.setQuestionId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+						surveyVO.setQuestion(obj[6] != null ? obj[6].toString():"0");
+						surveyVO.setOptionId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+						surveyVO.setOption(obj[8] != null ? obj[8].toString():"0");
 						
 						ivrSurveysList.add(surveyVO);
 						surveyListMap.put(vo.getSurveyId(), ivrSurveysList);
