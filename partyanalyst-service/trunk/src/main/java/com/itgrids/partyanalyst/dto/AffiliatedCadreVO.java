@@ -19,9 +19,9 @@ public class AffiliatedCadreVO {
 	
 	private Long tdpMemberTypeId;
 	private String memberType;
-	private Long count;
-	private Long webCount;
-	private Long tabCount;
+	private Long count = 0L;
+	private Long webCount = 0L;
+	private Long tabCount = 0L;
 	private List<AffiliatedCadreVO> affiliatedCadreVoList;
 	
 	
