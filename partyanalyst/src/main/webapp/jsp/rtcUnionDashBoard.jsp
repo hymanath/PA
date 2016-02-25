@@ -23,6 +23,7 @@
 .bg_ff{background:#fff !important}
 .bg_F5{background:#f5f5f5 !important}
 .pad_0{padding:0px;}
+.cursorH{cursor:pointer}
 .mCSB_container
 {
 	margin:0px !important;
@@ -487,6 +488,58 @@
 			</div>
 		</div>
 	</div>
+	<!-- Model-->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+	  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 id="registrationCadreDetailsTitle" class="modal-title"></h4>
+      <!--  <div class="row">
+			<div class="col-md-6">
+				<label class="radio-inline"><input type="radio">TOTAL REG</label>
+				<label class="radio-inline"><input type="radio">TODAY REG</label> | 
+				<label class="checkbox-inline"><input type="checkbox">WEB</label>	
+				<label class="checkbox-inline"><input type="checkbox">TAB</label>	
+			</div>
+		</div>-->
+		
+      </div>
+      <div class="modal-body" id="registrationCadreDetailsPopupDiv">
+        <!--<table class="table table-bordered">
+			<thead class="bg_cc">
+				<th></th>
+				<th>NAME</th>
+				<th>MOBILE NUMBER</th>
+				<th>VOTER NUMBER</th>
+				<th>EMPLOYEE ID</th>
+				<th>REGISTERED THROUGH</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td><img src="dist/img/profileIcon.jpg" class="thumbnail" style="width:75px;height:75px;"></td>
+					<td>RAMESH</td>
+					<td>9848012345</td>
+					<td>ixr5464</td>
+					<td>31256</td>
+					<td>Tab</td>
+				</tr>
+				<tr>
+					<td><img src="dist/img/profileIcon.jpg" class="thumbnail" style="width:75px;height:75px;"></td>
+					<td>RAMESH</td>
+					<td>9848012345</td>
+					<td>ixr5464</td>
+					<td>31256</td>
+					<td>Tab</td>
+				</tr>
+			</tbody>
+		</table>-->
+      </div>
+    </div>
+  </div>
+</div>
+	<!-- End -->
 </div>
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/js/bootstrap.js" type="text/javascript"></script>
@@ -1263,8 +1316,9 @@ $(document).on('click', '.locationTypeRadioCls', function(){
 
 
 getCadreRegistrationTotalCount("total","Constituency");
+var cadreInput;
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
-	
+	cadreInput = '';
 	if(locationLevel == "District")
 	$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
 	else
@@ -1284,6 +1338,7 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		toDate:toDate,
 		searchDatType:searchType
 	};
+	cadreInput = jObj;
 	$.ajax({
 		type:"Post",
 		url:'getCadreRegistrationAction.action',
@@ -1306,7 +1361,10 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		str+='<tbody>';
 		for(var i in result){
 				str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
+				if(locationLevel == "District")
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModal" onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';
+				else
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModal"  onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';		
 							str+='<td>'+result[i].totalCount+'</td>';
 							str+='<td>'+result[i].tabCount+'</td>';	
 							str+='<td>'+result[i].webCount+'</td>';
@@ -1326,6 +1384,67 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		} 
 		
 	});
+}
+
+function getRegistrationDetails(locationId,title) {
+	$("#registrationCadreDetailsTitle").html(' '+title+' '+cadreInput.searchTypeStr+' ');
+	$("#registrationCadreDetailsPopupDiv").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+	var jObj={
+		membereTypeIds:cadreInput.membereTypeIds,
+		searchTypeStr:cadreInput.searchTypeStr,
+		startDate:cadreInput.startDate,
+		toDate:cadreInput.startDate,
+		searchDateType:cadreInput.searchDatType,
+		locationId:locationId,
+		appType:""
+	};
+	$.ajax({
+		type:"Post",
+		url:'getRegistrationDetailsAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		buildRegisteredCadres(result,title,jObj);
+	})
+}
+
+function buildRegisteredCadres(result,jObj)
+{
+	
+	if(result == null || result.length == 0)
+	{
+	
+	$("#registrationCadreDetailsPopupDiv").html('No Data Available');
+		return;	
+	}
+	var str='';
+str+='<table class="table table-bordered">';
+str+='<thead class="bg_cc">';
+str+='<th></th>';
+str+='<th>NAME</th>';
+str+='<th>MOBILE NUMBER</th>';
+str+='<th>VOTER NUMBER</th>';
+str+='<th>REGISTERED THROUGH</th>';
+str+='</thead>';
+str+='<tbody>';
+for(var i in result)
+{
+str+='<tr>';
+if(result[i].ImgStr != null)
+str+='<td><img src="'+result[i].ImgStr+'" class="thumbnail" style="width:75px;height:75px;"></td>';
+else
+str+='<td><img src="dist/img/profileIcon.jpg" class="thumbnail" style="width:75px;height:75px;"></td>';
+	
+str+='<td>'+result[i].name+'</td>';
+str+='<td>'+result[i].mobileNo+'</td>';
+str+='<td>'+result[i].voterCardNo+'</td>';
+str+='<td>'+result[i].regThrough+'</td>';
+str+='</tr>';
+}
+str+='</tbody>';
+str+='</table>';
+
+$("#registrationCadreDetailsPopupDiv").html(str);
 }
 getTotalCounts();
 getTodayCounts();

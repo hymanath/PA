@@ -18,7 +18,9 @@ import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -78,10 +80,17 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private  List<TdpCadreVO>      cadreList;
 	private Long tdpMemberTypeId;
 	private EntitlementsHelper 					entitlementsHelper;
+	private List<PartyMeetingWSVO> cadreDataList;
 	
 	
 	
 	
+	public List<PartyMeetingWSVO> getCadreDataList() {
+		return cadreDataList;
+	}
+	public void setCadreDataList(List<PartyMeetingWSVO> cadreDataList) {
+		this.cadreDataList = cadreDataList;
+	}
 	public List<TdpCadreVO> getCadreList() {
 		return cadreList;
 	}
@@ -590,7 +599,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				return Action.SUCCESS;
 			}*/
 			
-		//	genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
+			//genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in rtcUnionDashBoard method in RtcUnionAction Action",e);
@@ -727,6 +736,33 @@ public String getMemberTypeSelectedValues(){
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getMemberTypeSelectedValues method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRegistrationCadreDetails()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			//RtcUnionInputVO inputVo = new RtcUnionInputVO(); 
+			RtcUnionInputVO inputVo = new RtcUnionInputVO();
+			JSONArray membereTypeIdsList=jObj.getJSONArray("membereTypeIds");
+			List<Long>  idList=new ArrayList<Long>();
+			 for(int i=0;i<membereTypeIdsList.length();i++){
+				 Long id= Long.valueOf(membereTypeIdsList.get(i).toString());
+				 idList.add(id);
+			 }
+			 inputVo.setMemeberTypeIds(idList);
+			 inputVo.setLocationId(jObj.getLong("locationId"));
+			 inputVo.setLocationType(jObj.getString("searchTypeStr"));
+			 inputVo.setAppType(jObj.getString("appType"));
+			 inputVo.setStartDate(jObj.getString("startDate"));
+			 inputVo.setToDate(jObj.getString("toDate"));
+			 inputVo.setDateType(jObj.getString("searchDateType"));
+			 cadreDataList=cadreRegistrationService.getRegistrationCadreDetails(inputVo); 
+		}
+		catch(Exception e){
+			LOG.error("Exception Occured in getRegistrationCadreDetails() in RtcUnionAction ",e);
 		}
 		return Action.SUCCESS;
 	}
