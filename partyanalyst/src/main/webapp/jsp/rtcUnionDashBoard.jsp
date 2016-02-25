@@ -20,6 +20,9 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/dataTables.fixedHeader.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <style type="text/css">
+.bg_ff{background:#fff !important}
+.bg_F5{background:#f5f5f5 !important}
+.pad_0{padding:0px;}
 .mCSB_container
 {
 	margin:0px !important;
@@ -92,9 +95,9 @@
 					<div class="well wellCustom">
 						<img src="dist/2016DashBoard/img/headpart.jpg" class="img-block img-responsive">
 						<h4 class="panel-title text-center"><b>DASHBOARD</b></h4>
-						<div class="col-md-4 pull-right" style="margin-top: -25px;">
+						<!--<div class="col-md-4 pull-right" style="margin-top: -25px;">
 							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue="All" style="width:460px;" onchange="refreshDetails();"/>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				
@@ -249,86 +252,80 @@
 				</div>
 			</div>-->
 			<div id="tableDivsId">
-			<div class="row m_top10">
-				<div class="col-md-6">
-					<div class="block">
-						<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
+				<div class="panel panel-default">
+					<div class="panel-heading bg_ff">
+						<div class="row m_top10">
+							<!--<div class="col-md-6">
+								<div class="block">
+									<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="block">
+									<h4 class="m_0"><b>CONSTITUENCY WISE AFFLIATED CADRE</b></h4>
+								</div>
+							</div>-->
+							<div class="col-md-3">
+								<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" >District</label>
+								<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" checked>Constituency</label>
+							</div>
+							
+								<div class="col-md-3">
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue="All" style="width:460px;" onchange="refreshDetails();"/>
+								</div>
+							
+							<div class="col-md-12 m_top10">
+							   <h4 class="panel-title" id="districtWiseTitleId"><b>DISTRICT WISE REGISTRATION DETAILS</b></h4>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body pad_0 bg_ff">
+						<div class="row">
+							<div class="col-md-12 districtCls" style="display:none;">
+								<div class="pad_10">
+									<label class="radio-inline">
+										<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="district" value="today" id="districtTodayId" class="districtRadioCls">Today
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="district" value="last 7 days" id="district7daysId" class="districtRadioCls">Last 7 Days
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
+									</label>
+									<div id="districtWiseRegistredCountId">
+									
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 constituencyCls">
+								<div class="block pad_10">
+									<label class="radio-inline">
+										<input type="radio" name="constituency" value="total" checked="true"
+										id="constituencyTotalId" class="constituecnyRadioCls" >Total
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="constituency" value="today" class="constituecnyRadioCls">Today
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="constituency" value="last 7 days" class="constituecnyRadioCls">Last 7 Days
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
+									</label>
+									<div id="constituencyWiseRegistredCountId">
+									
+									</div>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="block">
-						<h4 class="m_0"><b>CONSTITUENCY WISE AFFLIATED CADRE</b></h4>
-					</div>
-				</div>
-			</div>
 			
-			<div class="row m_top10">
-				<div class="col-md-6">
-					<div class="block pad_10">
-						<label class="radio-inline">
-							<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
-						</label>
-						<label class="radio-inline">
-							<input type="radio" name="district" value="today" id="districtTodayId" class="districtRadioCls">Today
-						</label>
-						<label class="radio-inline">
-							<input type="radio" name="district" value="last 7 days" id="district7daysId" class="districtRadioCls">Last 7 Days
-						</label>
-						<label class="radio-inline">
-							<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
-						</label>
-						<table class="table table-bordered">
-							<thead>
-								<th>District Name</th>
-								<th>Total</th>
-								<th>Tab</th>
-								<th>Web</th>
-							</thead>
-							<tbody id="districtWiseRegistredCountId">
-								<!--<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>-->
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="block pad_10">
-						<label class="radio-inline">
-							<input type="radio" name="constituency" value="total" checked="true"
-							id="constituencyTotalId" class="constituecnyRadioCls" >Total
-						</label>
-						<label class="radio-inline">
-							<input type="radio" name="constituency" value="today" class="constituecnyRadioCls">Today
-						</label>
-						<label class="radio-inline">
-							<input type="radio" name="constituency" value="last 7 days" class="constituecnyRadioCls">Last 7 Days
-						</label>
-						<label class="radio-inline">
-							<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
-						</label>
-						<table class="table table-bordered">
-							<thead>
-								<th>Constituency Name</th>
-								<th>Total</th>
-								<th>Tab</th>
-								<th>Web</th>
-							</thead>
-							<tbody id="constituencyWiseRegistredCountId">
-								<!--<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>-->
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+			
 			</div>
 			<div class="row m_top10 zonewiseCls" style="display:none">
 				<div class="col-md-4">
@@ -1239,9 +1236,39 @@ function getOnlineAndTabUsersCount(){
 		
 	});
 }*/
-getCadreRegistrationTotalCount("total","District");
+$(document).on('click', '.locationTypeRadioCls', function(){
+	var selectedVal = $(this).val();
+	if(selectedVal == "district")
+	{
+		$(".districtCls").css("display","block");
+		$(".constituencyCls").css("display","none");
+		getCadreRegistrationTotalCount("total","District");
+		$("#districtWiseTitleId").html('<b>DISTRICT WISE REGISTRATION DETAILS</b>');
+		$("#districtWiseRegistredCountId").html('');
+		$("#constituencyWiseRegistredCountId").html('');
+	}
+	else
+	{
+		$(".districtCls").css("display","none");
+		$(".constituencyCls").css("display","block");
+		getCadreRegistrationTotalCount("total","Constituency");
+		$("#districtWiseTitleId").html('<b>CONSTITUENCY WISE REGISTRATION DETAILS</b>');
+		$("#districtWiseRegistredCountId").html('');
+		$("#constituencyWiseRegistredCountId").html('');
+		
+	}
+	
+})
+
+
 getCadreRegistrationTotalCount("total","Constituency");
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
+	
+	if(locationLevel == "District")
+	$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+	else
+	$("#constituencyWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+	
 	var membereTypeIds = new Array();
 	membereTypeIds.push(2);
 	//membereTypeIds.push(3);
@@ -1265,7 +1292,18 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		var str ='';
 		if(result !=null){
 			
-			for(var i in result){
+		str+='<table class="table table-bordered dataTableId">';
+		str+='<thead class="bg_F5">';
+		if(locationLevel == "District")
+		str+='<th>District Name</th>';
+		else
+		str+='<th>Constituency Name</th>';
+		str+='<th>Total</th>';
+		str+='<th>Tab</th>';
+		str+='<th>Web</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
 				str+='<tr>';
 							str+='<td>'+result[i].name+'</td>';
 							str+='<td>'+result[i].totalCount+'</td>';
@@ -1273,13 +1311,17 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 							str+='<td>'+result[i].webCount+'</td>';
 				str+='</tr>';
 			}
-			
+			str+='</tbody>';
+			str+='</table>';
 			if (locationLevel !=null && locationLevel =="District"){
 				$("#districtWiseRegistredCountId").html(str);
 			}else {
 				$("#constituencyWiseRegistredCountId").html(str);
 			}
-			
+			$('.dataTableId').dataTable({
+		  "aaSorting": [[ 1, "asc" ]],
+		  "iDisplayLength" : 20		
+	  });
 		} 
 		
 	});
