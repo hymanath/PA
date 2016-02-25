@@ -1,330 +1,316 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="s" uri="/struts-tags" %>
-<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.ResourceBundle;" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2016 Affiliated DashBoard</title>
-<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/2016DashBoard/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/2016DashBoard/Icomoon/style.css" rel="stylesheet" type="text/css">
+<title>2016  Registration Drive</title>
+<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
+<link href="dist/Plugins/Scroller/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+
 <link href="dist/2016DashBoard/Plugins/Scroller/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/dataTables.fixedHeader.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
+<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 .bg_ff{background:#fff !important}
 .bg_F5{background:#f5f5f5 !important}
 .pad_0{padding:0px;}
 .cursorH{cursor:pointer}
-.mCSB_container
+body{color:#666 !important}
+.bg_cc
 {
-	margin:0px !important;
+	background:#ccc !important
 }
-.tableDiff
-{
-	margin:0px;
-}
-.tableDiff tr:nth-child(odd) td
-{
-	background-color:#F5F2ED !important;
-	text-align:center
-}
-.tableDiff thead th
-{
-	font-size:20px;
-	text-align:center;
-	font-weight:400
-}
-.tableDiff tr td
-{
-	padding:0px !important;
-}
-.tableDiff tr:nth-child(even) td
-{
-	background:#FDFDF3 !important;
-	text-align:center
-}
-.tableDiff tr td:first-child:hover , .tableDiff tr td:first-child
-{
-	box-shadow:none;
-	color:#996533;
-	font-size:20px;
-	vertical-align:middle
-}
-.tableDiff tr td:hover
-{
-	box-shadow:0px 0px 25px rgba(0,0,0,0.4)
-}
-.bg_F9
-{
-	background-color:#F9F5EA;
-	margin:0px !important
-}
-.bg_F4
-{
-	background-color:#F4EEE0;
-	margin:0px !important
-}
-.bg_CC
-{
-	background-color:#CCC !important
-}
+.thumbnail{margin:0px;}
+.cursorH{cursor:pointer}
 .bg_EF
 {
 	background:#EFF3F4
 }
-.bg_ff
-{
-	background-color:#fff !important
-}
+.m_0{margin:0px !important}
+.bg_ff{background:#fff !important}
+.bg_F5{background:#F5F5F5 !important}
+.m_top10{margin-top:10px !important;}
+.text-valign{vertical-align:middle !important}
+.pad_0{padding:0px;}
 </style>
 </head>
 <body>
-<div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="well wellCustom">
-						<img src="dist/2016DashBoard/img/headpart.jpg" class="img-block img-responsive">
-						<h4 class="panel-title text-center"><b>DASHBOARD</b></h4>
-						<!--<div class="col-md-4 pull-right" style="margin-top: -25px;">
-							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue="All" style="width:460px;" onchange="refreshDetails();"/>
-						</div>-->
-					</div>
-				</div>
-				
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="panel panel-default">
-						<div class="panel-heading bg_CC">
-							<h4 class="panel-title"><b>AFFILIATED MEMBERS ENROLLMENT DRIVE</b></h4>
-						</div>
-						<div class="panel-body bg_EF">
-							<table class="table table-bordered bg_ff tableDiff m_0">
-								<thead>
-									<th></th>
-									<th>TOTAL REGISTERED</th>
-									<th>TODAY</th>
-									<th>LAST 7 DAYS</th>
-									<th>LAST 30 DAYS</th>
-								</thead>
-								<tr class="trClass" id="teachersAllId">
-									<td>TEACHERS</td>
-									<td><h3><span id="teachersTotalId"></span><center><img id="teachersTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="teachersTotalWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="teachersTotalTabId"></span></p>
-									</td>
-									<td><h3><span id="teachersTodayId"></span><center><img id="teachersTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="teachersTodayWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="teachersTodayTabId"></span></p>
-									</td>
-									<td><h3><span id="teachersLast7Id"></span><center><img id="teachersLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="teachersLast7WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="teachersLast7TabId"></span></p>
-									</td>
-									<td><h3><span id="teachersLast30Id"></span><center><img id="teachersLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="teachersLast30WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="teachersLast30TabId"></span></p>
-									</td>
-								</tr>
-								<tr class="trClass" id="anganwadiAllId">
-									<td>ANGANWADI</td>
-									<td><h3><span id="anganwadiTotalId"></span><center><img id="anganwadiTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="anganwadiTotalWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="anganwadiTotalTabId"></span></p>
-									</td>
-									<td><h3><span id="anganwadiTodayId"></span><center><img id="anganwadiTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="anganwadiTodayWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="anganwadiTodayTabId"></span></p>
-									</td>
-									<td><h3><span id="anganwadiLast7Id"></span><center><img id="anganwadiLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="anganwadiLast7WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="anganwadiLast7TabId"></span></p>
-									</td>
-									<td><h3><span id="anganwadiLast30Id"></span><center><img id="anganwadiLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="anganwadiLast30WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="anganwadiLast30TabId"></span></p>
-									</td>
-								</tr>
-								<tr class="trClass" id="motorWorkersAllId">
-									<td>MOTOR WORKERS</td>
-									<td><h3><span id="motorTotalId"></span><center><img id="motorTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="motorTotalWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="motorTotalTabId"></span></p>
-									</td>
-									<td><h3><span id="motorTodayId"></span><center><img id="motorTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="motorTodayWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="motorTodayTabId"></span></p>
-									</td>
-									<td><h3><span id="motorLast7Id"></span><center><img id="motorLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="motorLast7WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="motorLast7TabId"></span></p>
-									</td>
-									<td><h3><span id="motorLast30Id"></span><center><img id="motorLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="motorLast30WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="motorLast30TabId"></span></p>
-									</td>
-								</tr>
-								<tr class="trClass" id="apsrtcAllId">
-									<td>APSRTC</td>
-									<td><h3><span id="apsrtcTotalId"></span><center><img id="apsrtcTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="apsrtcTotalWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="apsrtcTotalTabId"></span></p>
-									</td>
-									<td><h3><span id="apsrtcTodayId"></span><center><img id="apsrtcTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="apsrtcTodayWebId"></span></p>
-										<p class="bg_F9">TAB: <span id="apsrtcTodayTabId"></span></p>
-									</td>
-									<td><h3><span id="apsrtcLast7Id"></span><center><img id="apsrtcLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="apsrtcLast7WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="apsrtcLast7TabId"></span></p>
-									</td>
-									<td><h3><span id="apsrtcLast30Id"></span><center><img id="apsrtcLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-										<p class="bg_F4">WEB: <span id="apsrtcLast30WebId"></span></p>
-										<p class="bg_F9">TAB: <span id="apsrtcLast30TabId"></span></p>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--<div class="row" id="rtcShowId">
-				<div class="col-md-12">
-					<div class="block pad_10 rtchideCls">
-						<div class="row">
-							<div class="col-md-5 col-md-offset-1">
-								<div class="row">
-									<div class="col-md-6">
-										<table class="">
-											<tr>
-											<td class="pad_10">
-												<br/><br/><br/><br/><br/>
-												<img src="dist/2016DashBoard/img/online.jpg" style="width:50px;">
-											<span class="themeColor" style="font-size:18px">WEB</span>
-											</td>
-											</tr>
-											<tr>
-											<td class="pad_10">
-												<img src="dist/2016DashBoard/img/mobile.jpg" style="width:50px;">
-											<span class="themeColor" style="font-size:18px">TAB</span>
-											</td>
-											</tr>
-										</table>						
-									</div>
-									<div class="col-md-6">
-										<table class="table table-bordered tableCust2">
-											<tr><td class="text-center">
-												<h4 class="m_bottom0 themeColor">TOTAL</h4>
-												<p class="text-italic">Registered Members</p>
-											</td></tr>
-											<tr><td class="bg_tab text-center" id="totalWebCountId"><center><img id="dataLoadingsImgForTotalWebCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
-											<tr><td class="bg_tab text-center" id="totalTabCountId"><center><img id="dataLoadingsImgForTotalTabCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
-										</table>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="row">
-									<div class="col-md-5">
-										<table class="table table-bordered tableCust2">
-											<tr><td class="text-center">
-												<h4 class="m_bottom0 themeColor">TODAY</h4>
-												<p class="text-italic">Registered Members</p>
-											</td></tr>
-											<tr><td class="bg_tab text-center" id="todayWebCountId"><center><img id="dataLoadingsImgForTodayWebCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
-											<tr><td class="bg_tab text-center" id="todayTabCountId"><center><img id="dataLoadingsImgForTodayTabCount" src="images/icons/loading.gif" style="width:20px;height:20px;display:none;"/></center></td></tr>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>-->
-			<div id="tableDivsId">
-				<div class="panel panel-default">
-					<div class="panel-heading bg_ff">
-						<div class="row m_top10">
-							<!--<div class="col-md-6">
-								<div class="block">
-									<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="block">
-									<h4 class="m_0"><b>CONSTITUENCY WISE AFFLIATED CADRE</b></h4>
-								</div>
-							</div>-->
-							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" >District</label>
-								<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" checked>Constituency</label>
-							</div>
-							
-								<div class="col-md-3">
-									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue="All" style="width:460px;" onchange="refreshDetails();"/>
-								</div>
-							
-							<div class="col-md-12 m_top10">
-							   <h4 class="panel-title" id="districtWiseTitleId"><b>DISTRICT WISE REGISTRATION DETAILS</b></h4>
-							</div>
-						</div>
-					</div>
-					<div class="panel-body pad_0 bg_ff">
-						<div class="row">
-							<div class="col-md-12 districtCls" style="display:none;">
-								<div class="pad_10">
-									<label class="radio-inline">
-										<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="district" value="today" id="districtTodayId" class="districtRadioCls">Today
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="district" value="last 7 days" id="district7daysId" class="districtRadioCls">Last 7 Days
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
-									</label>
-									<div id="districtWiseRegistredCountId">
-									
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12 constituencyCls">
-								<div class="block pad_10">
-									<label class="radio-inline">
-										<input type="radio" name="constituency" value="total" checked="true"
-										id="constituencyTotalId" class="constituecnyRadioCls" >Total
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="constituency" value="today" class="constituecnyRadioCls">Today
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="constituency" value="last 7 days" class="constituecnyRadioCls">Last 7 Days
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
-									</label>
-									<div id="constituencyWiseRegistredCountId">
-									
-									</div>
-								</div>
-							</div>
-						</div>
+<section>
 
-					</div>
+<div class="container">
+<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading bg_cc">
+						<img src="dist/2016DashBoard/img/affliatedCom.jpg" style="width:100px;display:inline-block">
+						<div class="pull-right col-md-3">
+							<div class="input-group">
+								<input class="form-control" type="text">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</div>
+							</div>
+							</div>
+					<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="panel-body bg_EF">
+											<div id="allTotalCountsId"></div>
+												<table class="table table-bordered bg_ff">
+													<tr>
+														<td colspan="4" class="text-center"><h4 class="m_0">ALL AFFILIATED UNION MEMBERS REGISTERED</h4></td>
+													</tr>
+													<tr>
+														<td class="text-center">
+															<h4 class="m_0">TOTAL</h4>
+															<h3 class="m_0"><span id="tTCount"></span><center><img id="tTCountLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+															<p class="m_0"><span>WEB:<span id="tTWCount"></span></span> | <span>TAB:<span id="tTTCount"></span></span></p>
+														</td>
+														<td class="text-center">
+															<h4 class="m_0">TODAY</h4>
+															<h3 class="m_0"><span id="tTLCount"></span><center><img id="tTLCountLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+															<p class="m_0"><span>WEB:<span id="tTLWCount"></span></span> | <span>TAB:<span id="tTLTCount"></span></span></p>
+														</td>
+														<td class="text-center">
+															<h4 class="m_0">LAST 07 DAYS</h4>
+															<h3 class="m_0"><span id="tL7Count"></span><center><img id="tL7CountLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+															<p class="m_0"><span>WEB:<span id="tL7WCount"></span></span> | <span>TAB:<span id="tL7TCount"></span></span></p>
+														</td>
+														<td class="text-center">
+															<h4 class="m_0">LAST 30 DAYS</h4>
+															<h3 class="m_0"><span id="tL30Count"></span><center><img id="tL30CountLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+															<p class="m_0"><span>WEB:<span id="tL30WCount"></span></span> | <span>TAB:<span id="tL30TCount"></span></span></p>
+														</td>
+													</tr>
+												</table>
+												
+												<table class="table table-bordered m_top10 bg_ff">
+													<thead class="bg_F5">
+														<th class="text-center">AFFILIATED UNION NAME</th>
+														<th class="text-center">TOTAL REGISTER</th>
+														<th class="text-center">TODAY</th>
+														<th class="text-center">PAST 07 DAYS</th>
+														<th class="text-center"	>PAST 30 DAYS</th>
+													</thead>
+													<tr class="trClass" id="teachersAllId">
+															<td class="text-valign"><h3 class="m_0"> TEACHERS</h3></td>
+															<td class="text-center"><h3 class="m_0"><span id="teachersTotalId"></span><center><img id="teachersTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB:<span id="teachersTotalWebId"></span> | TAB:<span id="teachersTotalTabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="teachersTodayId"></span><center><img id="teachersTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="teachersTodayWebId"></span> | TAB:<span id="teachersTodayTabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="teachersLast7Id"></span><center><img id="teachersLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="teachersLast7WebId"></span> | TAB:<span id="teachersLast7TabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="teachersLast30Id"></span><center><img id="teachersLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB:<span id="teachersLast30WebId"></span> | TAB:<span id="teachersLast30TabId"></span></p>
+															</td>
+														</tr>
+														<tr class="trClass" id="anganwadiAllId">
+															<td class="text-valign"><h3 class="m_0">ANGANWADI</h3></td>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiTotalId"></span><center><img id="anganwadiTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="anganwadiTotalWebId"></span> | TAB: <span id="anganwadiTotalTabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiTodayId"></span><center><img id="anganwadiTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="anganwadiTodayWebId"></span> | TAB: <span id="anganwadiTodayTabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiLast7Id"></span><center><img id="anganwadiLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="anganwadiLast7WebId"></span> | TAB: <span id="anganwadiLast7TabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiLast30Id"></span><center><img id="anganwadiLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+															<p class="m_0">WEB: <span id="anganwadiLast30WebId"></span> | TAB: <span 
+															id="anganwadiLast30TabId"></span></p>
+															</td>
+														</tr>
+														<tr class="trClass" id="motorWorkersAllId">
+															<td class="text-valign"><h3 class="m_0">GRADUATES</h3></td>
+															<td class="text-center"><h3 class="m_0"><span id="motorTotalId"></span><center><img id="motorTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorTotalWebId"></span> | TAB: <span 
+																id="motorTotalTabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="motorTodayId"></span><center><img id="motorTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorTodayWebId"></span> | TAB: <span 
+																id="motorTodayTabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="motorLast7Id"></span><center><img id="motorLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorLast7WebId"></span> | TAB: <span 
+																id="motorLast7TabId"></span></p>
+															</td>
+															<td class="text-center"><h3 class="m_0"><span id="motorLast30Id"></span><center><img id="motorLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorLast30WebId"></span> | TAB: <span 
+																id="motorLast30TabId"></span></p>
+															</td>
+														</tr>
+												</table>
+												
+												<!--<div class="panel panel-default m_top10 m_0">
+													<div class="panel-heading bg_ff">
+														<div class="row">
+															<div class="col-md-3">
+																<label class="radio-inline"><input type="radio">District</label>
+																<label class="radio-inline"><input type="radio">Constituency</label>
+															</div>
+															<div class="col-md-3">
+																<select id="userMembersId" onchange="refreshDetails()" multiple>
+																</select>
+															</div>
+															<div class="col-md-12 m_top10">
+																<h4 class="panel-title"><b>DISTRICT WISE REGISTRATION DETAILS</b></h4>
+															</div>
+														</div>
+													</div>
+													<div class="panel-body bg_ff pad_0">
+														<table class="table table-bordered">
+															<thead class="bg_F5">
+																<th>DISTRICT NAME</th>
+																<th>TOTAL REGISTER</th>
+																<th>WEB</th>
+																<th>TAB</th>
+															</thead>
+															<tbody>
+																<tr>
+																	<td class="cursorH" data-toggle="modal" data-target="#myModal">ANANTHAPUR</td>
+																	<td>100</td>
+																	<td>40</td>
+																	<td>60</td>
+																</tr>
+																<tr>
+																	<td class="cursorH" data-toggle="modal" data-target="#myModal">CHITTOOR</td>
+																	<td>100</td>
+																	<td>40</td>
+																	<td>60</td>
+																</tr>
+																<tr>
+																	<td class="cursorH" data-toggle="modal" data-target="#myModal">KRISHNA</td>
+																	<td>100</td>
+																	<td>40</td>
+																	<td>60</td>
+																</tr>
+																<tr>
+																	<td class="cursorH" data-toggle="modal" data-target="#myModal">ANANTHAPUR</td>
+																	<td>100</td>
+																	<td>40</td>
+																	<td>60</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>-->
+											</div>
+										</div>
+
+									</div>
+									<div id="tableDivsId">
+										<div class="panel panel-default">
+											<div class="panel-heading bg_ff">
+												<div class="row m_top10">
+													<!--<div class="col-md-6">
+														<div class="block">
+															<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="block">
+															<h4 class="m_0"><b>CONSTITUENCY WISE AFFLIATED CADRE</b></h4>
+														</div>
+													</div>-->
+													<div class="col-md-3">
+														<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" >District</label>
+														<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" checked>Constituency</label>
+													</div>
+													
+														<div class="col-md-3">
+															<select id="userMembersId" multiple>
+														    </select>
+															<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
+														</div>
+													
+													<div class="col-md-12 m_top10">
+													   <h4 class="panel-title" id="districtWiseTitleId"><b>CONSTITUENCY WISE REGISTRATION DETAILS</b></h4>
+													</div>
+												</div>
+											</div>
+											<div class="panel-body pad_0 bg_ff">
+												<div class="row">
+													<div class="col-md-12 districtCls" style="display:none;">
+														<div class="pad_10">
+															<label class="radio-inline">
+																<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
+															</label>
+															<label class="radio-inline">
+																<input type="radio" name="district" value="today" id="districtTodayId" class="districtRadioCls">Today
+															</label>
+															<label class="radio-inline">
+																<input type="radio" name="district" value="last 7 days" id="district7daysId" class="districtRadioCls">Last 7 Days
+															</label>
+															<label class="radio-inline">
+																<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
+															</label>
+															<div id="districtWiseRegistredCountId">
+															
+															</div>
+														</div>
+													</div>
+													<div class="col-md-12 constituencyCls">
+														<div class="block pad_10">
+															<label class="radio-inline">
+																<input type="radio" name="constituency" value="total" checked="true"
+																id="constituencyTotalId" class="constituecnyRadioCls" >Total
+															</label>
+															<label class="radio-inline">
+																<input type="radio" name="constituency" value="today" class="constituecnyRadioCls">Today
+															</label>
+															<label class="radio-inline">
+																<input type="radio" name="constituency" value="last 7 days" class="constituecnyRadioCls">Last 7 Days
+															</label>
+															<label class="radio-inline">
+																<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
+															</label>
+															<div id="constituencyWiseRegistredCountId">
+															
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+								</div>
+							</div>
+
+
 				</div>
+			</div>
+		</div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      
+	  </section>
+	  <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<div class="row">
+			<div class="col-md-6">
+				<label class="radio-inline"><input type="radio">TOTAL REG</label>
+				<label class="radio-inline"><input type="radio">TODAY REG</label> | 
+				<label class="checkbox-inline"><input type="checkbox">WEB</label>	
+				<label class="checkbox-inline"><input type="checkbox">TAB</label>	
 			
 			
 			</div>
@@ -457,37 +443,42 @@
 					<center style="margin-top: 50px;"><img id="dataLoadingsImgForOnlineAndTab" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
 				</div>
 			</div>
-			<div class="row depotWiseRegistrationCls" style="display:none">
-				<div class="col-md-12">
-					<div class="block m_top10">
-						<div class="pad_10">
-							<label class="radio-inline">
-								<input type="radio" class="depotClass" checked="true" name="depot" value="All">All
-							</label>
-							<label class="radio-inline">
-								<input type="radio" class="depotClass" name="depot" value="Today">Today
-							</label>
-							<span class="pull-right">
-								<img src="dist/2016DashBoard/img/icon.jpg" >
-							</span>
-						</div>
-						<div class="text-left pad_10">
-							<h4 class="text-capitalize m_bottom0">depot wise registrations</h4>
-							<span class="themeColor font-12" id="depotTotalId"></span>
-							<span class="themeColor font-12" id="depotStartedId"></span>
-							<span class="themeColor font-12" id="depotNotStartedId"></span>
-							<span class="themeColor font-12" id="todayDepotTotalId" style="display:none"></span>
-							<span class="themeColor font-12" id="todayDepotStartedId" style="display:none"></span>
-							<span class="themeColor font-12" id="todayDepotNotStartedId" style="display:none"></span>
-						</div>
-						<center><img id="dataLoadingsImgForDepot1" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;"/></center>
-						<div id="depotWiseTotalDetailsId" style="display:none;"></div>
-						<div id="depotWiseTodayDetailsId" style="display:none;"></div>
-					</div>
-				</div>
-			</div>
 		</div>
-	</div>
+		
+
+					</div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+			<thead class="bg_cc">
+				<th></th>
+				<th>NAME</th>
+				<th>MOBILE NUMBER</th>
+				<th>VOTER NUMBER</th>
+				<th>EMPLOYEE ID</th>
+				<th>REGISTERED THROUGH</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td><img src="dist/img/profileIcon.jpg" class="thumbnail" style="width:75px;height:75px;"></td>
+					<td>RAMESH</td>
+					<td>9848012345</td>
+					<td>ixr5464</td>
+					<td>31256</td>
+					<td>Tab</td>
+				</tr>
+				<tr>
+					<td><img src="dist/img/profileIcon.jpg" class="thumbnail" style="width:75px;height:75px;"></td>
+					<td>RAMESH</td>
+					<td>9848012345</td>
+					<td>ixr5464</td>
+					<td>31256</td>
+					<td>Tab</td>
+				</tr>
+			</tbody>
+		</table>
+      </div>
+    </div>
+  </div>
 	<!-- Model-->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -541,12 +532,15 @@
 </div>
 	<!-- End -->
 </div>
-<script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="dist/2016DashBoard/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+
 <script src="dist/2016DashBoard/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/dataTables.fixedHeader.js" type="text/javascript"></script>
-
+<script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
+<script src="dist/newmultiselect/chosen.jquery.js" type="text/javascript"></script>
 <script>
 
 getRtcUnionRegisteredBasicDetails();
@@ -1370,8 +1364,7 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 							str+='<td>'+result[i].webCount+'</td>';
 				str+='</tr>';
 			}
-			str+='</tbody>';
-			str+='</table>';
+			
 			if (locationLevel !=null && locationLevel =="District"){
 				$("#districtWiseRegistredCountId").html(str);
 			}else {
@@ -1450,7 +1443,6 @@ getTotalCounts();
 getTodayCounts();
 getLast7DaysCounts();
 getLast30DaysCounts();
-
 function getTotalCounts(){
 	$("#teachersTotalLoadingId").show();
 	$("#anganwadiTotalLoadingId").show();
@@ -1467,12 +1459,12 @@ function getTotalCounts(){
 	}).done(function(result){
 		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
 			for(var i in result.affiliatedCadreVoList){
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+				/* if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
 					$("#apsrtcTotalId").html(result.affiliatedCadreVoList[i].count);
 					$("#apsrtcTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
-				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				} */
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#anganwadiTotalId").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1482,7 +1474,7 @@ function getTotalCounts(){
 					$("#teachersTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
 					$("#motorTotalId").html(result.affiliatedCadreVoList[i].count);
 					$("#motorTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1511,12 +1503,12 @@ function getTodayCounts(){
 	}).done(function(result){
 		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
 			for(var i in result.affiliatedCadreVoList){
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+				/* if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
 					$("#apsrtcTodayId").html(result.affiliatedCadreVoList[i].count);
 					$("#apsrtcTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
-				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				} */
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#anganwadiTodayId").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1526,12 +1518,26 @@ function getTodayCounts(){
 					$("#teachersTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
 					$("#motorTodayId").html(result.affiliatedCadreVoList[i].count);
 					$("#motorTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
 			}
+		}
+		else {
+			$("#apsrtcTodayId").html(0);
+			$("#apsrtcTodayWebId").html(0);
+			$("#apsrtcTodayTabId").html(0);
+			$("#anganwadiTodayId").html(0);
+			$("#anganwadiTodayWebId").html(0);
+			$("#anganwadiTodayTabId").html(0);
+			$("#teachersTodayId").html(0);
+			$("#teachersTodayWebId").html(0);
+			$("#teachersTodayTabId").html(0);
+			$("#motorTodayId").html(0);
+			$("#motorTodayWebId").html(0);
+			$("#motorTodayTabId").html(0);
 		}
 		$("#teachersTodayLoadingId").hide();
 		$("#anganwadiTodayLoadingId").hide();
@@ -1555,12 +1561,12 @@ function getLast7DaysCounts(){
 	}).done(function(result){
 		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
 			for(var i in result.affiliatedCadreVoList){
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+				/* if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
 					$("#apsrtcLast7Id").html(result.affiliatedCadreVoList[i].count);
 					$("#apsrtcLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
-				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				} */
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#anganwadiLast7Id").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1570,12 +1576,26 @@ function getLast7DaysCounts(){
 					$("#teachersLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
 					$("#motorLast7Id").html(result.affiliatedCadreVoList[i].count);
 					$("#motorLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
 			}
+		}
+		else {
+			$("#apsrtcLast7Id").html(0);
+			$("#apsrtcLast7WebId").html(0);
+			$("#apsrtcLast7TabId").html(0);
+			$("#anganwadiLast7Id").html(0);
+			$("#anganwadiLast7WebId").html(0);
+			$("#anganwadiLast7TabId").html(0);
+			$("#teachersLast7Id").html(0);
+			$("#teachersLast7WebId").html(0);
+			$("#teachersLast7TabId").html(0);
+			$("#motorLast7Id").html(0);
+			$("#motorLast7WebId").html(0);
+			$("#motorLast7TabId").html(0);
 		}
 		$("#teachersLast7LoadingId").hide();
 		$("#anganwadiLast7LoadingId").hide();
@@ -1599,12 +1619,12 @@ function getLast30DaysCounts(){
 	}).done(function(result){
 		if(result.affiliatedCadreVoList != null && result.affiliatedCadreVoList.length > 0){
 			for(var i in result.affiliatedCadreVoList){
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
+				/* if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 2){
 					$("#apsrtcLast30Id").html(result.affiliatedCadreVoList[i].count);
 					$("#apsrtcLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
-				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				} */
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#anganwadiLast30Id").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1614,20 +1634,120 @@ function getLast30DaysCounts(){
 					$("#teachersLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
 					$("#motorLast30Id").html(result.affiliatedCadreVoList[i].count);
 					$("#motorLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
 			}
 		}
+		else {
+			$("#anganwadiLast30Id").html(0);
+			$("#anganwadiLast30WebId").html(0);
+			$("#anganwadiLast30TabId").html(0);
+			$("#teachersLast30Id").html(0);
+			$("#teachersLast30WebId").html(0);
+			$("#teachersLast30TabId").html(0);
+			$("#motorLast30Id").html(0);
+			$("#motorLast30WebId").html(0);
+			$("#motorLast30TabId").html(0);
+		}
 		$("#teachersLast30LoadingId").hide();
 		$("#anganwadiLast30LoadingId").hide();
 		$("#motorLast30LoadingId").hide();
 		$("#apsrtcLast30LoadingId").hide();
+		
+		//allTotalCounts();
 	});
 }
-
+getAllTotalCounts();
+function getAllTotalCounts()
+{
+	$("#tTCountLoadingId").show();
+    var jsObj = {
+		searchType:"Total"
+    }
+  $.ajax(
+  {
+        type: "POST",
+        url:"getAllTotalCountsAction.action",
+        data:{task :JSON.stringify(jsObj)}
+  }
+  ).done(function(result){   
+  if(result != null){
+	  $("#tTCount").html(result.count);
+	  $("#tTWCount").html(result.webCount);
+	  $("#tTTCount").html(result.tabCount);
+  }
+	  $("#tTCountLoadingId").hide();
+   });
+}
+getAllTotalTodayCounts();
+function getAllTotalTodayCounts()
+{
+	$("#tTLCountLoadingId").show();
+    var jsObj = {
+		searchType:"Today"
+    }
+  $.ajax(
+  {
+        type: "POST",
+        url:"getAllTotalCountsAction.action",
+        data:{task :JSON.stringify(jsObj)}
+  }
+  ).done(function(result){
+	  if(result != null){
+	  $("#tTLCount").html(result.count);
+	  $("#tTLWCount").html(result.webCount);
+	  $("#tTLTCount").html(result.tabCount);
+  }
+	  $("#tTLCountLoadingId").hide();
+	  });
+}
+getAllTotalLast7DaysCounts();
+function getAllTotalLast7DaysCounts()
+{
+	$("#tL7CountLoadingId").show();
+    var jsObj = {
+		searchType:"Last 7 days"
+    }
+  $.ajax(
+  {
+        type: "POST",
+        url:"getAllTotalCountsAction.action",
+        data:{task :JSON.stringify(jsObj)}
+  }
+  ).done(function(result){
+	  if(result != null){
+	  $("#tL7Count").html(result.count);
+	  $("#tL7WCount").html(result.webCount);
+	  $("#tL7TCount").html(result.tabCount);
+  }
+	  $("#tL7CountLoadingId").hide();
+	  });
+}
+getAllTotalLast30DaysCounts();
+function getAllTotalLast30DaysCounts()
+{
+	$("#tL30CountLoadingId").show();
+    var jsObj = {
+		searchType:"Last 30 days"
+    }
+  $.ajax(
+  {
+        type: "POST",
+        url:"getAllTotalCountsAction.action",
+        data:{task :JSON.stringify(jsObj)}
+  }
+  ).done(function(result){
+	   if(result != null){
+	  $("#tL30Count").html(result.count);
+	  $("#tL30WCount").html(result.webCount);
+	  $("#tL30TCount").html(result.tabCount);
+  }
+	  $("#tL30CountLoadingId").hide();
+	  });
+}
 $(document).on("click",".districtRadioCls",function(){
 	var searchType = $(this).val();
 	getCadreRegistrationTotalCount(searchType,"District");
@@ -1637,37 +1757,51 @@ $(document).on("click",".constituecnyRadioCls",function() {
 	getCadreRegistrationTotalCount(searchType,"Constituency");
 });
 function refreshDetails(){
-	$(".trClass").hide();
-	var id = $("#userMembersId").val();
-	if(id == 3){
+	var id = [];
+	id = $("#userMembersId").val();
+	if(jQuery.inArray("3", id) > -1)
+	{
 		$("#anganwadiAllId").show();
 		$("#tableDivsId").show();
 		$(".zonewiseCls").hide();
 		$(".depotWiseRegistrationCls").hide();
 		$(".todayOperationalCls").hide();
 	}
-	else if(id == 5){
+	else{
+		$("#anganwadiAllId").hide();
+	}
+	if(jQuery.inArray("6", id) > -1){
 		$("#motorWorkersAllId").show();
 		$("#tableDivsId").show();
 		$(".zonewiseCls").hide();
 		$(".depotWiseRegistrationCls").hide();
 		$(".todayOperationalCls").hide();
 	}
-	else if(id == 2){
+	else{
+		$("#motorWorkersAllId").hide();
+	}
+	if(jQuery.inArray("2", id) > -1){
 		$("#apsrtcAllId").show();
 		$("#tableDivsId").hide();
 		$(".zonewiseCls").show();
 		$(".depotWiseRegistrationCls").show();
 		$(".todayOperationalCls").show(); 
 	}
-    else if(id == 4){
+	else{
+		$("#apsrtcAllId").hide();
+	}
+	if(jQuery.inArray("4", id) > -1){
+    
 		$("#teachersAllId").show();
 		$("#tableDivsId").show();
 		$(".zonewiseCls").hide();
 		$(".depotWiseRegistrationCls").hide();
 		$(".todayOperationalCls").hide();
 	}
-	else if(id == 0){
+	else {
+		$("#teachersAllId").hide();
+	}
+	if(jQuery.inArray("0", id) > -1){
 		$(".trClass").show();
 		$("#tableDivsId").show();
 		$(".zonewiseCls").hide();
@@ -1675,8 +1809,29 @@ function refreshDetails(){
 		$(".todayOperationalCls").hide();
 	}
 }
-
-
+function getMemberTypeSelectedValues(){
+	$("#userMembersId").html("");
+	$("#userMembersIdLoadingId").show();
+	var jObj={
+	};
+	$.ajax({
+		type:"GET",
+		url:'getMemberTypeSelectedValuesAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		 if(result!=null && result.length>0){
+				$("#userMembersId").append('<option value="0">TEACHERS AFFLIATED UNION</option>');
+				for(var i in result){
+					$("#userMembersId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			} 
+			$("#userMembersId").chosen();
+			$("#userMembersIdLoadingId").hide();
+		
+});
+}
+getMemberTypeSelectedValues();
 </script>
 </body>
 </html>
