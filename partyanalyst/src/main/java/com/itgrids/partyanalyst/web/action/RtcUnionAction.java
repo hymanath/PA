@@ -308,10 +308,22 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			  
 			
 			if(user == null)
 				return Action.INPUT;
+
+
+			/*boolean noaccess = false;
+			if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"AFFILIATED_UNION_REGISTRATION_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+			
+			if(user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "error";
+			}*/
 			
 			//if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
 			//{
@@ -389,7 +401,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			
 			
 			RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
-			if(user==null){
+			/*if(user==null){
 				return "input";
 			}
 			boolean noaccess = false;
@@ -402,7 +414,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			}
 			if(noaccess){
 				return "error";
-			}
+			}*/
 			
 			
 		//	if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
