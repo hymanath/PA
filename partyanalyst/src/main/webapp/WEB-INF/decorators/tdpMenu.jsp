@@ -134,7 +134,8 @@ footer
 						
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREDASHBOARD' )}">
 							<li>
-								<a href="home.action"><i class="fa fa-home"></i><span>&nbsp;&nbsp;Home</span></a>
+								<!--  <a href="home.action"><i class="fa fa-home"></i><span>&nbsp;&nbsp;Home</span></a> -->
+								<a href="dashBoardAction.action"><i class="fa fa-home"></i><span>&nbsp;&nbsp;Home</span></a>
 							 </li>
 							</c:if>
 							<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
