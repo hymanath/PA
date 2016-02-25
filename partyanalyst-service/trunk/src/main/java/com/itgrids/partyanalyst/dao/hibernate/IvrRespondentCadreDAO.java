@@ -14,6 +14,17 @@ public class IvrRespondentCadreDAO extends GenericDaoHibernate<IvrRespondentCadr
 		super(IvrRespondentCadre.class);
 	}
 	
+	public Long getRespondentIdByTdpCadreId(Long tdpCadreId){
+		
+		Query query = getSession().createQuery(" select distinct model.ivrRespondentId" +
+							" from IvrRespondentCadre model" +
+							" where model.tdpCadre.tdpCadreId = :tdpCadreId" +
+							" and model.isVerified = 'Y' and model.isDeleted = 'false'");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		
+		return (Long) query.uniqueResult();
+	}
+	
 	public List<Long> getIvrRespndantDetails(Long tdpCadreId){
 		
 		Query query = getSession().createQuery(" select model.ivrRespondentId from IvrRespondentCadre model " +

@@ -28,4 +28,69 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 		
 	}
 
+	public List<Object[]> getIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(List<Long> surveyIds,Long respondentId){
+		
+		Query query = getSession().createQuery(" select model.ivrSurvey.ivrSurveyId," +
+							" model.ivrSurvey.surveyName," +
+							" model.ivrSurveyRound.ivrSurveyRoundId," +
+							" model.ivrSurveyRound.roundName," +
+							" model.ivrSurveyQuestion.ivrSurveyQuestionId," +
+							" model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId," +
+							" model.ivrSurveyQuestion.ivrQuestion.question," +
+							" model.ivrOption.ivrOptionId," +
+							" model.ivrOption.option" +
+							" from IvrSurveyAnswer model" +
+							" where model.ivrSurvey.ivrSurveyId in (:surveyIds)" +
+							" and model.ivrRespondent.ivrRespondentId = :respondentId" +
+							" and model.isValid = 'Y' and model.isDeleted = 'false'");
+		query.setParameterList("surveyIds", surveyIds);
+		query.setParameter("respondentId", respondentId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(List<Long> surveyIds,Long respondentId){
+		
+		Query query = getSession().createQuery(" select model.ivrSurvey.ivrSurveyId," +
+							" model.ivrSurvey.surveyName," +
+							" model.ivrSurveyRound.ivrSurveyRoundId," +
+							" model.ivrSurveyRound.roundName," +
+							" model.ivrSurveyQuestionId," +
+							" question.ivrQuestionId," +
+							" question.question," +
+							" option.ivrOptionId," +
+							" option.option" +
+							" from IvrSurveyAnswer model left join model.ivrSurveyQuestion.ivrQuestion question" +
+							" left join model.ivrOption option" +
+							" where model.ivrSurvey.ivrSurveyId in (:surveyIds)" +
+							" and model.ivrRespondent.ivrRespondentId = :respondentId" +
+							" and model.isValid = 'Y' and model.isDeleted = 'false'");
+		query.setParameterList("surveyIds", surveyIds);
+		query.setParameter("respondentId", respondentId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getUnAnsweredIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(List<Long> surveyIds,Long respondentId){
+		
+		Query query = getSession().createQuery(" select model.ivrSurvey.ivrSurveyId," +
+							" model.ivrSurvey.surveyName," +
+							" model.ivrSurveyRound.ivrSurveyRoundId," +
+							" model.ivrSurveyRound.roundName," +
+							" model.ivrSurveyQuestionId," +
+							" question.ivrQuestionId," +
+							" question.question," +
+							" option.ivrOptionId," +
+							" option.option" +
+							" from IvrSurveyAnswer model left join model.ivrSurveyQuestion.ivrQuestion question" +
+							" left join model.ivrOption option" +
+							" where model.ivrSurvey.ivrSurveyId in (:surveyIds)" +
+							" and model.ivrRespondent.ivrRespondentId = :respondentId" +
+							" and model.isValid = 'Y' and model.isDeleted = 'false'" +
+							" and model.ivrOptionId is null");
+		query.setParameterList("surveyIds", surveyIds);
+		query.setParameter("respondentId", respondentId);
+		
+		return query.list();
+	}
 }

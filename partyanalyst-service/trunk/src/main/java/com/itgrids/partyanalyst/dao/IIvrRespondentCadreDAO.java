@@ -10,4 +10,5 @@ public interface IIvrRespondentCadreDAO extends GenericDao<IvrRespondentCadre, L
 	
 	public List<Long> getIvrRespndantDetails(Long tdpCadreId);
 
+	public Long getRespondentIdByTdpCadreId(Long tdpCadreId);
 }

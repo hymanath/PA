@@ -850,4 +850,15 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			return query.list();
 		}
 
+	    public Object[] getMeetingNameByMeetingId(Long meetingId){
+	    	
+	    	Query query = getSession().createQuery(" select model.meetingName," +
+	    						" date(model.startDate)" +
+	    						" from PartyMeeting model" +
+	    						" where model.partyMeetingId = :meetingId" +
+	    						" and model.isActive = 'Y'");
+	    	query.setParameter("meetingId", meetingId);
+	    	
+	    	return (Object[]) query.uniqueResult();
+	    }
 }

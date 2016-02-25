@@ -37,10 +37,14 @@ import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IEventTypeDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
+import com.itgrids.partyanalyst.dao.IIvrRespondentCadreDAO;
+import com.itgrids.partyanalyst.dao.IIvrSurveyAnswerDAO;
+import com.itgrids.partyanalyst.dao.IIvrSurveyEntityDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStudentAddressDAO;
@@ -149,13 +153,44 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IStudentRecomendationDAO studentRecomendationDAO;
 	private ITdpCadreFamilyInfoDAO  tdpCadreFamilyInfoDAO;
 	private ICommunicationMediaResponseDAO communicationMediaResponseDAO;
+	private IIvrSurveyEntityDAO ivrSurveyEntityDAO;
+	private IIvrRespondentCadreDAO ivrRespondentCadreDAO;
+	private IIvrSurveyAnswerDAO ivrSurveyAnswerDAO;
+	private IPartyMeetingDAO partyMeetingDAO;
 	
-	private IvrRespondentCadreDAO ivrRespondentCadreDAO;
-	private IvrSurveyAnswerDAO	ivrSurveyAnswerDAO;
-	private IvrSurveyEntityDAO ivrSurveyEntityDAO;
-	
-	
-	
+	public IPartyMeetingDAO getPartyMeetingDAO() {
+		return partyMeetingDAO;
+	}
+
+	public void setPartyMeetingDAO(IPartyMeetingDAO partyMeetingDAO) {
+		this.partyMeetingDAO = partyMeetingDAO;
+	}
+
+	public IIvrSurveyEntityDAO getIvrSurveyEntityDAO() {
+		return ivrSurveyEntityDAO;
+	}
+
+	public void setIvrSurveyEntityDAO(IIvrSurveyEntityDAO ivrSurveyEntityDAO) {
+		this.ivrSurveyEntityDAO = ivrSurveyEntityDAO;
+	}
+
+	public IIvrRespondentCadreDAO getIvrRespondentCadreDAO() {
+		return ivrRespondentCadreDAO;
+	}
+
+	public void setIvrRespondentCadreDAO(
+			IIvrRespondentCadreDAO ivrRespondentCadreDAO) {
+		this.ivrRespondentCadreDAO = ivrRespondentCadreDAO;
+	}
+
+	public IIvrSurveyAnswerDAO getIvrSurveyAnswerDAO() {
+		return ivrSurveyAnswerDAO;
+	}
+
+	public void setIvrSurveyAnswerDAO(IIvrSurveyAnswerDAO ivrSurveyAnswerDAO) {
+		this.ivrSurveyAnswerDAO = ivrSurveyAnswerDAO;
+	}
+
 	public void setTdpCadreFamilyInfoDAO(
 			ITdpCadreFamilyInfoDAO tdpCadreFamilyInfoDAO) {
 		this.tdpCadreFamilyInfoDAO = tdpCadreFamilyInfoDAO;
@@ -577,18 +612,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.communicationMediaResponseDAO = communicationMediaResponseDAO;
 	}
 	 
-
-	public void setIvrRespondentCadreDAO(IvrRespondentCadreDAO ivrRespondentCadreDAO) {
-		this.ivrRespondentCadreDAO = ivrRespondentCadreDAO;
-	}
-
-	public void setIvrSurveyAnswerDAO(IvrSurveyAnswerDAO ivrSurveyAnswerDAO) {
-		this.ivrSurveyAnswerDAO = ivrSurveyAnswerDAO;
-	}
-
-	public void setIvrSurveyEntityDAO(IvrSurveyEntityDAO ivrSurveyEntityDAO) {
-		this.ivrSurveyEntityDAO = ivrSurveyEntityDAO;
-	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
@@ -5281,6 +5304,107 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		
 		return returnVO;
+	}
+	
+	public List<IvrOptionsVO> getIvrSurveyInfoByTdpCadreId(Long tdpCadreId,Long entityTypeId,String searchType){
+		List<IvrOptionsVO> finalVoList = new ArrayList<IvrOptionsVO>();
+		
+		try {
+			
+			List<Long> surveyIds = new ArrayList<Long>();
+			Map<Long,IvrOptionsVO> surveyMap = new LinkedHashMap<Long, IvrOptionsVO>();
+			
+			Long respondentId = ivrRespondentCadreDAO.getRespondentIdByTdpCadreId(tdpCadreId);
+			
+			//0.surveyId,1.surveyName,2.entityValue
+			List<Object[]> surveyList = ivrSurveyEntityDAO.getSurveyListByEntityType(entityTypeId);
+			if(surveyList != null && surveyList.size() > 0){
+				for (Object[] obj : surveyList) {
+					IvrOptionsVO vo = new IvrOptionsVO();
+					
+					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0L");
+					Long entityValue = Long.valueOf(obj[2] != null ? obj[2].toString():"0L");
+					
+					vo.setSurveyId(surveyId);
+					vo.setEventId(entityValue);
+					
+					surveyIds.add(surveyId);
+					surveyMap.put(surveyId, vo);
+				}
+			}
+			
+			if(entityTypeId.longValue() == 4l){
+				finalVoList = getSurveyAnswerDetailsForPartyMeetings(surveyMap, surveyIds, respondentId,searchType);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getIvrSurveyInfoByTdpCadreId() Method - ",e);
+		}
+		return finalVoList;
+	}
+	
+	public List<IvrOptionsVO> getSurveyAnswerDetailsForPartyMeetings(Map<Long,IvrOptionsVO> surveyMap,List<Long> surveyIds,Long respondentId,String searchType){
+		List<IvrOptionsVO> returnList = new ArrayList<IvrOptionsVO>();
+		
+		try {
+			
+			//0.ivrSurveyId,1.surveyName,2.ivrSurveyRoundId,3.roundName,4.ivrSurveyQuestionId,5.ivrQuestionId,6.question,7.ivrOptionId,8.option
+			List<Object[]> list = new ArrayList<Object[]>();
+			
+			if(searchType.trim().equalsIgnoreCase("total")){
+				list = ivrSurveyAnswerDAO.getTotalIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			else if(searchType.trim().equalsIgnoreCase("answered")){
+				list = ivrSurveyAnswerDAO.getIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			else if(searchType.trim().equalsIgnoreCase("unanswered")){
+				list = ivrSurveyAnswerDAO.getUnAnsweredIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			
+			Map<Long,List<IvrOptionsVO>> surveyListMap = new LinkedHashMap<Long, List<IvrOptionsVO>>(0);
+					
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0L");
+					IvrOptionsVO vo = surveyMap.get(surveyId);
+					List<IvrOptionsVO> ivrSurveysList = new ArrayList<IvrOptionsVO>(0);
+					if(vo != null)
+					{
+						IvrOptionsVO surveyVO = new IvrOptionsVO();
+						if(surveyListMap.get(vo.getSurveyId()) != null){
+							ivrSurveysList = surveyListMap.get(vo.getSurveyId());
+						}
+						surveyVO.setSurveyId(vo.getSurveyId());
+						surveyVO.setSurveyName(obj[1] != null ? obj[1].toString():"");
+						surveyVO.setEventId(vo.getEventId());
+						Object[] meetingDetails = partyMeetingDAO.getMeetingNameByMeetingId(vo.getEventId());
+						if(meetingDetails != null){
+							surveyVO.setEventName(meetingDetails[0] != null ? meetingDetails[0].toString():"");
+							surveyVO.setDateStr(meetingDetails[1] != null ? meetingDetails[1].toString():"");
+						}
+						//surveyVO.setEventName(meetingName);
+						surveyVO.setRoundId(Long.valueOf(obj[2] != null ? obj[2].toString():"0L"));
+						surveyVO.setRound(obj[3] != null ? obj[3].toString():"0L");
+						surveyVO.setQuestionId(Long.valueOf(obj[5] != null ? obj[5].toString():"0L"));
+						surveyVO.setQuestion(obj[6] != null ? obj[6].toString():"0L");
+						surveyVO.setOptionId(Long.valueOf(obj[7] != null ? obj[7].toString():"0L"));
+						surveyVO.setOption(obj[8] != null ? obj[8].toString():"0L");
+						
+						ivrSurveysList.add(surveyVO);
+						surveyListMap.put(vo.getSurveyId(), ivrSurveysList);
+					}
+				}
+			}
+			
+			for (Long surveyId : surveyListMap.keySet()) {
+				returnList.addAll(surveyListMap.get(surveyId));
+			}
+			//returnList = (List<IvrOptionsVO>)surveyListMap.values();
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSurveyAnswerDetailsForPartyMeetings() Method - ",e);
+		}
+		return returnList;
 	}
 	
 	public List<IvrOptionsVO> getTypeWiseIvrDetailsOFCadre(Long tdpCadreId){

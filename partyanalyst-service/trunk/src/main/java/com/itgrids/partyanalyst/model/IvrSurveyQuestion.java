@@ -38,7 +38,7 @@ public class IvrSurveyQuestion extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	
-	
+	private IvrQuestion ivrQuestion;
 	private User insertedUser;
 	private User updatedUser;
 
@@ -127,5 +127,16 @@ public class IvrSurveyQuestion extends BaseModel implements Serializable{
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ivr_question_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrQuestion getIvrQuestion() {
+		return ivrQuestion;
+	}
+	public void setIvrQuestion(IvrQuestion ivrQuestion) {
+		this.ivrQuestion = ivrQuestion;
 	}	
 }

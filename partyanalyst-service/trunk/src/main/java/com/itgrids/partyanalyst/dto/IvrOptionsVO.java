@@ -14,6 +14,18 @@ public class IvrOptionsVO implements Serializable{
 	private Long unAnsweredCount=0l;
 	private Long othersCount=0l;
 	
+	private Long surveyId;
+	private String surveyName;
+	private Long eventId;
+	private String eventName;
+	private String dateStr;
+	private Long roundId;
+	private String round;
+	private Long questionId;
+	private String question;
+	private Long optionId;
+	private String option;
+	
 	public Long getId() {
 		return id;
 	}
@@ -62,6 +74,70 @@ public class IvrOptionsVO implements Serializable{
 	public void setOthersCount(Long othersCount) {
 		this.othersCount = othersCount;
 	}
-	
-	
+	public Long getSurveyId() {
+		return surveyId;
+	}
+	public void setSurveyId(Long surveyId) {
+		this.surveyId = surveyId;
+	}
+	public String getSurveyName() {
+		return surveyName;
+	}
+	public void setSurveyName(String surveyName) {
+		this.surveyName = surveyName;
+	}
+	public Long getEventId() {
+		return eventId;
+	}
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
+	}
+	public String getEventName() {
+		return eventName;
+	}
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	public Long getRoundId() {
+		return roundId;
+	}
+	public void setRoundId(Long roundId) {
+		this.roundId = roundId;
+	}
+	public String getRound() {
+		return round;
+	}
+	public void setRound(String round) {
+		this.round = round;
+	}
+	public Long getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
+	public String getQuestion() {
+		return question;
+	}
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+	public Long getOptionId() {
+		return optionId;
+	}
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+	public String getOption() {
+		return option;
+	}
+	public void setOption(String option) {
+		this.option = option;
+	}
 }
