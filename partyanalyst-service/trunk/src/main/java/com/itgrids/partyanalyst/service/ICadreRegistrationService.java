@@ -187,4 +187,5 @@ public interface ICadreRegistrationService {
 	public List<PartyMeetingWSVO> getRegistrationCadreDetails(RtcUnionInputVO inputVO);
 	//public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate);
 	//public List<GenericVO> getCadreMemberTypeListByYear(Long year);
+	public AffiliatedCadreVO getAllTotalCountsForAll(String searchType);
 }
