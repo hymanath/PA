@@ -16,6 +16,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActivityAttendanceAcceptanceDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -37,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingOccurrenceDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITabDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -47,11 +49,14 @@ import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
+import com.itgrids.partyanalyst.model.TabDetails;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -92,9 +97,25 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private IStateDAO stateDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+	private IActivityAttendanceAcceptanceDAO activityAttendanceAcceptanceDAO;
+	private ITabDetailsDAO tabDetailsDAO;
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
 	
 	
+	
+	public ITabDetailsDAO getTabDetailsDAO() {
+		return tabDetailsDAO;
+	}
+	public void setTabDetailsDAO(ITabDetailsDAO tabDetailsDAO) {
+		this.tabDetailsDAO = tabDetailsDAO;
+	}
+	public IActivityAttendanceAcceptanceDAO getActivityAttendanceAcceptanceDAO() {
+		return activityAttendanceAcceptanceDAO;
+	}
+	public void setActivityAttendanceAcceptanceDAO(
+			IActivityAttendanceAcceptanceDAO activityAttendanceAcceptanceDAO) {
+		this.activityAttendanceAcceptanceDAO = activityAttendanceAcceptanceDAO;
+	}
 	public IPublicRepresentativeDAO getPublicRepresentativeDAO() {
 		return publicRepresentativeDAO;
 	}
@@ -2629,7 +2650,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return partyMeetingWSVo;
 	}
 	
-	public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType){
+	public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType,List<String> designationsList){
 		
 		PartyMeetingWSVO finalvo = new PartyMeetingWSVO();
 		
@@ -2637,6 +2658,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
 			Map<Long,PartyMeetingWSVO> partyMeetingVoMap = new LinkedHashMap<Long, PartyMeetingWSVO>();
+			Map<Long,PartyMeetingWSVO> finalPPartyMeetingVoMap = new LinkedHashMap<Long, PartyMeetingWSVO>();
 			//Map<String,Long> designationWiseMap = new LinkedHashMap<String, Long>();
 			Map<String,PartyMeetingWSVO> designationMap = new LinkedHashMap<String, PartyMeetingWSVO>();
 			Map<Long,String> constituencyMap = new LinkedHashMap<Long, String>();
@@ -2695,213 +2717,167 @@ public class PartyMeetingService implements IPartyMeetingService{
 				tdpCadreIdsList = absentList;
 			}
 			
-			List<Object[]> candidateDetails = publicRepresentativeDAO.getCandidateDetailsByCandidateId(tdpCadreIdsList);
-			if(candidateDetails != null && candidateDetails.size() > 0){
-				for (Object[] obj : candidateDetails) {
-					Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0L");
-					Long constituencyId = Long.valueOf(obj[5] != null ? obj[5].toString():"0L");
-					String constituencyName = constituencyDAO.getConstituencyNameByConstituencyId(constituencyId);
-					
-					constituencyMap.put(cadreId, constituencyName);
-				}
-			}
-			
-			//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.mobileNo,5.image,6.memberShipNo
-			List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetails(tdpCadreIdsList);
-			if(cadreDetails != null && cadreDetails.size() > 0){
-				for (Object[] obj : cadreDetails) {
-					PartyMeetingWSVO vo = new PartyMeetingWSVO();
-					
-					Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					String image = obj[5] != null ? obj[5].toString():"";
-					vo.setTdpCadreId(cadreId);
-					vo.setName(obj[1] != null ? obj[1].toString():"");
-					vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
-					vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
-					//vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-					vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
-					vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
-					vo.setOwnConstituency(obj[8] != null ? obj[8].toString():"");
-					
-					String constituencyName = constituencyMap.get(cadreId);
-					if(constituencyName != null && constituencyName.trim().length() > 0){
-						vo.setParticipatedConstituency(constituencyName);
-					}
-					
-					partyMeetingVoMap.put(cadreId, vo);
-				}
-			}
-			
-			//0.publicRepresentativeTypeId,1.type,2.tdpCadreId
-			List<Object[]> publicRepDetails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsForCadreIds(tdpCadreIdsList);
-			if(publicRepDetails != null && publicRepDetails.size() > 0){
-				for (Object[] obj : publicRepDetails) {
-					PartyMeetingWSVO vo1 = new PartyMeetingWSVO();
-					Long cadreId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-					String type = obj[1] != null ? obj[1].toString():"";
-					
-					PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
-					if(inviteesList.contains(cadreId)){
-						if(attendedList.contains(cadreId))
-							vo.setMemberType("Invitee Present");
-						else
-							vo.setMemberType("Invitee Absent");
-					}
-					else if(attendedList.contains(cadreId)){
-						vo.setMemberType("Non Invitee Present");
-					}
+			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			{
+				List<Object[]> candidateDetails = publicRepresentativeDAO.getCandidateDetailsByCandidateId(tdpCadreIdsList);
+				if(candidateDetails != null && candidateDetails.size() > 0){
+					for (Object[] obj : candidateDetails) {
+						Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0L");
+						Long constituencyId = Long.valueOf(obj[5] != null ? obj[5].toString():"0L");
+						String constituencyName = constituencyDAO.getConstituencyNameByConstituencyId(constituencyId);
 						
-					vo.setDesignation(type);
-					vo.setRoles(type);
-					
-					PartyMeetingWSVO desgvo = designationMap.get(type.trim());
-					if(searchType.equalsIgnoreCase("TP")){
-						if(desgvo != null){
-							desgvo.setCount(desgvo.getCount()+1l);
-							if(inviteesList.contains(cadreId)){
-								desgvo.setInviteesCount(Long.valueOf(desgvo.getInviteesCount().toString())+1l);
-							}
-							else{
-								desgvo.setNonInviteesAttendedCount(Long.valueOf(desgvo.getNonInviteesAttendedCount().toString())+1l);
-							}
-						}
-						else{
-							vo1.setDesignation(type);
-							vo1.setCount(1l);
-							if(inviteesList.contains(cadreId)){
-								vo1.setInviteesCount(1l);
-							}
-							else{
-								vo1.setNonInviteesAttendedCount(1l);
-							}
-							designationMap.put(type.trim(), vo1);
-						}
+						constituencyMap.put(cadreId, constituencyName);
 					}
-					else{
-						if(desgvo != null){
-							desgvo.setCount(desgvo.getCount()+1l);
-						}
-						else{
-							vo1.setDesignation(type);
-							vo1.setCount(1l);
-							
-							designationMap.put(type.trim(), vo1);
-						}
-					}
-					
-					/*Long count = designationWiseMap.get(type.trim());
-					if(count != null && count.longValue() > 0L){
-						count = count++;
-					}
-					else{
-						designationWiseMap.put(type.trim(), 1l);
-					}*/
-					
-					partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
 				}
-			}
-			
-			 List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(tdpCadreIdsList);
-			 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
-			 {
-				 for (Object[] partyPosition : partyPositionDetails) {
-					 PartyMeetingWSVO vo1 = new PartyMeetingWSVO();
-					 
-					 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
-					 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
-					 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
-					 Long cadreId = Long.valueOf(partyPosition[5] != null ? partyPosition[5].toString() : "0"); 
-					 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
-					 
-					 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
-					 {
-						 level = state+" "+level;
-					 }
-					 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
-					 
-					 PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
-					 
-					 if(inviteesList.contains(cadreId)){
-							if(attendedList.contains(cadreId))
-								vo.setMemberType("Invitee Present");
+				
+				//0.tdpCadreId,1.firstname,2.dateOfBirth,3.age,4.mobileNo,5.image,6.memberShipNo
+				List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetails(tdpCadreIdsList);
+				if(cadreDetails != null && cadreDetails.size() > 0){
+					for (Object[] obj : cadreDetails) {
+						PartyMeetingWSVO vo = new PartyMeetingWSVO();
+						
+						Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						String image = obj[5] != null ? obj[5].toString():"";
+						vo.setTdpCadreId(cadreId);
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+						vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
+						vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+						//vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+						vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+						vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
+						vo.setOwnConstituency(obj[8] != null ? obj[8].toString():"");
+						
+						String constituencyName = constituencyMap.get(cadreId);
+						if(constituencyName != null && constituencyName.trim().length() > 0){
+							vo.setParticipatedConstituency(constituencyName);
+						}
+						
+						partyMeetingVoMap.put(cadreId, vo);
+					}
+				}
+				
+				//0.publicRepresentativeTypeId,1.type,2.tdpCadreId
+				List<Object[]> publicRepDetails = tdpCadreCandidateDAO.getPublicRepresentativeDetailsForCadreIds(tdpCadreIdsList);
+				if(publicRepDetails != null && publicRepDetails.size() > 0){
+					for (Object[] obj : publicRepDetails) {
+						PartyMeetingWSVO vo1 = new PartyMeetingWSVO();
+						Long cadreId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+						String type = obj[1] != null ? obj[1].toString():"";
+						
+						PartyMeetingWSVO vo = null;
+						if(designationsList != null && designationsList.size()>0){
+							if(designationsList.size() == 1 && designationsList.contains("OTHERS"))
+								partyMeetingVoMap.remove(cadreId);
+							else if(designationsList.contains(type)){
+								vo = partyMeetingVoMap.get(cadreId);
+							}
 							else
-								vo.setMemberType("Invitee Absent");
-						}
-						else if(attendedList.contains(cadreId)){
-							vo.setMemberType("Non Invitee Present");
-						}
-					 
-					 if(vo.getDesignation() != null && vo.getDesignation().length() > 0){
-						 vo.setDesignation(vo.getDesignation()+" , "+partyPositionStr);
-						 vo.setRoles(vo.getRoles().trim()+","+role.trim());
-					 }
-					 else{
-						 vo.setDesignation(partyPositionStr);
-						 vo.setRoles(role.trim());
-					 }
-					 
-					 PartyMeetingWSVO desgvo = designationMap.get(role.trim());
-					if(searchType.equalsIgnoreCase("TP")){
-						if(desgvo != null){
-							desgvo.setCount(desgvo.getCount()+1l);
-							if(inviteesList.contains(cadreId)){
-								desgvo.setInviteesCount(Long.valueOf(desgvo.getInviteesCount().toString())+1l);
-							}
-							else{
-								desgvo.setNonInviteesAttendedCount(Long.valueOf(desgvo.getNonInviteesAttendedCount().toString())+1l);
-							}
-						}
-						else{
-							vo1.setDesignation(role);
-							vo1.setCount(1l);
-							if(inviteesList.contains(cadreId)){
-								vo1.setInviteesCount(1l);
-							}
-							else{
-								vo1.setNonInviteesAttendedCount(1l);
-							}
-							designationMap.put(role.trim(), vo1);
-						}
-					}
-					else{
-						if(desgvo != null){
-							desgvo.setCount(desgvo.getCount()+1l);
-						}
-						else{
-							vo1.setDesignation(role);
-							vo1.setCount(1l);
-							
-							designationMap.put(role.trim(), vo1);
-						}
-					}
-					/* Long count = designationWiseMap.get(role.trim());
-					 if(count != null && count.longValue() > 0L){
-						count = count++;
-					}
-					else{
-						designationWiseMap.put(role.trim(), 1l);
-					}*/
-					 
-					 partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(partyPosition[5]));
-				 }
-			 }
-			 
-			 int otherMembersCount = 0;
-			 
-			 if(partyMembersTdpCadreIdsList != null && partyMembersTdpCadreIdsList.size()>0) 
-				 otherMembersCount = tdpCadreIdsList.size() - partyMembersTdpCadreIdsList.size();
-			 else 
-				 otherMembersCount = tdpCadreIdsList.size();
-			 
-			 if(partyMembersTdpCadreIdsList != null && partyMembersTdpCadreIdsList.size()>0) {
-				 if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0) {
-					 for (Long cadreId : tdpCadreIdsList) {
-						if(!partyMembersTdpCadreIdsList.contains(cadreId)){
-							PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
-							if(vo != null)
 							{
-								vo.setDesignation("OTHERS");
-								vo.setRoles("OTHERS");
+								if(designationsList.contains("OTHERS")){
+									partyMeetingVoMap.remove(cadreId);
+								}
+							}
+						}
+						else{
+							vo = partyMeetingVoMap.get(cadreId);
+						}
+						
+						if(vo != null )
+						{
+
+							if(inviteesList.contains(cadreId)){
+								if(attendedList.contains(cadreId))
+									vo.setMemberType("Invitee Present");
+								else
+									vo.setMemberType("Invitee Absent");
+							}
+							else if(attendedList.contains(cadreId)){
+								vo.setMemberType("Non Invitee Present");
+							}
+								
+							vo.setDesignation(type);
+							vo.setRoles(type);
+							
+							PartyMeetingWSVO desgvo = designationMap.get(type.trim());
+							if(searchType.equalsIgnoreCase("TP")){
+								if(desgvo != null){
+									desgvo.setCount(desgvo.getCount()+1l);
+									if(inviteesList.contains(cadreId)){
+										desgvo.setInviteesCount(Long.valueOf(desgvo.getInviteesCount().toString())+1l);
+									}
+									else{
+										desgvo.setNonInviteesAttendedCount(Long.valueOf(desgvo.getNonInviteesAttendedCount().toString())+1l);
+									}
+								}
+								else{
+									vo1.setDesignation(type);
+									vo1.setCount(1l);
+									if(inviteesList.contains(cadreId)){
+										vo1.setInviteesCount(1l);
+									}
+									else{
+										vo1.setNonInviteesAttendedCount(1l);
+									}
+									designationMap.put(type.trim(), vo1);
+								}
+							}
+							else{
+								if(desgvo != null){
+									desgvo.setCount(desgvo.getCount()+1l);
+								}
+								else{
+									vo1.setDesignation(type);
+									vo1.setCount(1l);
+									
+									designationMap.put(type.trim(), vo1);
+								}
+							}
+							
+							/*Long count = designationWiseMap.get(type.trim());
+							if(count != null && count.longValue() > 0L){
+								count = count++;
+							}
+							else{
+								designationWiseMap.put(type.trim(), 1l);
+							}*/
+							
+							partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
+						}
+					}
+				}
+				
+				 List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(tdpCadreIdsList);
+				 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+				 {
+					 for (Object[] partyPosition : partyPositionDetails) {
+						 PartyMeetingWSVO vo1 = new PartyMeetingWSVO();
+						 
+						 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+						 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+						 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
+						 Long cadreId = Long.valueOf(partyPosition[5] != null ? partyPosition[5].toString() : "0"); 
+						 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+						 
+						 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+						 {
+							 level = state+" "+level;
+						 }
+						 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+						 
+						 PartyMeetingWSVO vo = null;
+							if(designationsList != null && designationsList.size()>0){
+								if(designationsList.size() == 1 && designationsList.contains("OTHERS"))
+									partyMeetingVoMap.remove(cadreId);
+								else if(designationsList.contains(role.trim())){
+									vo = partyMeetingVoMap.get(cadreId);
+								}
+							}
+							else{
+								vo = partyMeetingVoMap.get(cadreId);
+							}
+							
+							if(vo != null )
+							{
 								if(inviteesList.contains(cadreId)){
 									if(attendedList.contains(cadreId))
 										vo.setMemberType("Invitee Present");
@@ -2911,79 +2887,249 @@ public class PartyMeetingService implements IPartyMeetingService{
 								else if(attendedList.contains(cadreId)){
 									vo.setMemberType("Non Invitee Present");
 								}
+							 
+							 if(vo.getDesignation() != null && vo.getDesignation().length() > 0){
+								 vo.setDesignation(vo.getDesignation()+" , "+partyPositionStr);
+								 vo.setRoles(vo.getRoles().trim()+","+role.trim());
+							 }
+							 else{
+								 vo.setDesignation(partyPositionStr);
+								 vo.setRoles(role.trim());
+							 }
+							 
+							 PartyMeetingWSVO desgvo = designationMap.get(role.trim());
+							if(searchType.equalsIgnoreCase("TP")){
+								if(desgvo != null){
+									desgvo.setCount(desgvo.getCount()+1l);
+									if(inviteesList.contains(cadreId)){
+										desgvo.setInviteesCount(Long.valueOf(desgvo.getInviteesCount().toString())+1l);
+									}
+									else{
+										desgvo.setNonInviteesAttendedCount(Long.valueOf(desgvo.getNonInviteesAttendedCount().toString())+1l);
+									}
+								}
+								else{
+									vo1.setDesignation(role);
+									vo1.setCount(1l);
+									if(inviteesList.contains(cadreId)){
+										vo1.setInviteesCount(1l);
+									}
+									else{
+										vo1.setNonInviteesAttendedCount(1l);
+									}
+									designationMap.put(role.trim(), vo1);
+								}
+							}
+							else{
+								if(desgvo != null){
+									desgvo.setCount(desgvo.getCount()+1l);
+								}
+								else{
+									vo1.setDesignation(role);
+									vo1.setCount(1l);
+									
+									designationMap.put(role.trim(), vo1);
+								}
+							}
+							/* Long count = designationWiseMap.get(role.trim());
+							 if(count != null && count.longValue() > 0L){
+								count = count++;
+							}
+							else{
+								designationWiseMap.put(role.trim(), 1l);
+							}*/
+							 
+							 partyMembersTdpCadreIdsList.add(commonMethodsUtilService.getLongValueForObject(partyPosition[5]));
+							}
+					 }
+				 }
+				 
+				 int otherMembersCount = 0;
+				 
+				 if(designationsList == null || designationsList.size() == 0){
+					 
+					 if(partyMembersTdpCadreIdsList != null && partyMembersTdpCadreIdsList.size()>0) 
+						 otherMembersCount = tdpCadreIdsList.size() - partyMembersTdpCadreIdsList.size();
+					 else 
+						 otherMembersCount = tdpCadreIdsList.size();
+					 
+					 if(partyMembersTdpCadreIdsList != null && partyMembersTdpCadreIdsList.size()>0) {
+						 if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0) {
+							 for (Long cadreId : tdpCadreIdsList) {
+								if(!partyMembersTdpCadreIdsList.contains(cadreId)){
+									PartyMeetingWSVO vo = partyMeetingVoMap.get(cadreId);
+									if(vo != null)
+									{
+										vo.setDesignation("OTHERS");
+										vo.setRoles("OTHERS");
+										if(inviteesList.contains(cadreId)){
+											if(attendedList.contains(cadreId))
+												vo.setMemberType("Invitee Present");
+											else
+												vo.setMemberType("Invitee Absent");
+										}
+										else if(attendedList.contains(cadreId)){
+											vo.setMemberType("Non Invitee Present");
+										}
+									}
+								}
+							}
+						 }
+					 }
+					 
+					 if(otherMembersCount >0){
+						 PartyMeetingWSVO vo = new PartyMeetingWSVO();
+						 vo.setDesignation("OTHERS");
+						 vo.setCount(Long.valueOf(String.valueOf(otherMembersCount)));
+						 
+						 designationMap.put("OTHERS", vo);
+					 }
+				 }
+				 else{
+					 
+					 if(partyMembersTdpCadreIdsList != null && partyMembersTdpCadreIdsList.size()>0)
+					 {
+						 for (Long tdpCadreId : partyMeetingVoMap.keySet()) {
+							if(partyMembersTdpCadreIdsList.contains(tdpCadreId))
+								finalPPartyMeetingVoMap.put(tdpCadreId,partyMeetingVoMap.get(tdpCadreId));
+						}
+					 }
+					 else
+					 {
+						 if(partyMeetingVoMap != null && partyMeetingVoMap.size()>0)
+						 {
+							 for (Long tdpCadreId : partyMeetingVoMap.keySet()) {
+								PartyMeetingWSVO vo = partyMeetingVoMap.get(tdpCadreId);
+								if(vo != null)
+								{
+									vo.setMemberType("Non Invitee Present");
+									if(vo.getDesignation()!= null)
+										vo.setDesignation(vo.getDesignation());
+									else
+										vo.setDesignation("OTHERS");
+								}
+							}
+						 }
+					 }
+				 }
+				 designationWiseCountsList.addAll(designationMap.values());
+				 
+				 //designationWiseMap.put("OTHERS".trim(), Long.valueOf(String.valueOf(otherMembersCount)));
+				 
+				 /*for (Map.Entry<String, Long> entry : designationWiseMap.entrySet()) {
+					    
+					 String key = entry.getKey();
+					 Long value = entry.getValue();
+					    
+					 PartyMeetingWSVO vo = new PartyMeetingWSVO();   
+					    
+					 vo.setDesignation(key);
+					 vo.setCount(value);
+					 
+					 designationWiseCountsList.add(vo);
+					}*/
+				 
+				 if(finalPPartyMeetingVoMap != null && finalPPartyMeetingVoMap.size()>0)
+					 partyMeetingWSVoList.addAll(finalPPartyMeetingVoMap.values());
+				 else
+					 partyMeetingWSVoList.addAll(partyMeetingVoMap.values());
+				 
+				Long attendedCount = 0l;
+				Long invitedCount = 0l;
+				Long inviteesAttendedCount = 0l;
+				Long nonInviteesCount = 0l;
+				Long absentCount = 0l;
+				
+				if(attendedList != null && attendedList.size() > 0){
+					attendedCount = (long) attendedList.size();
+				}
+				
+				if(attendedList != null && attendedList.size() > 0){
+					if(inviteesList != null && inviteesList.size() > 0){
+						invitedCount = (long) inviteesList.size();
+						for (Long cadreId : attendedList) {
+							if(inviteesList.contains(cadreId)){
+								inviteesAttendedCount = inviteesAttendedCount+1l;
+							}
+							else{
+								nonInviteesCount = nonInviteesCount+1l;
 							}
 						}
 					}
-				 }
-			 }
-			 
-			 if(otherMembersCount >0){
-				 PartyMeetingWSVO vo = new PartyMeetingWSVO();
-				 vo.setDesignation("OTHERS");
-				 vo.setCount(Long.valueOf(String.valueOf(otherMembersCount)));
-				 
-				 designationMap.put("OTHERS", vo);
-			 }
-			 
-			 designationWiseCountsList.addAll(designationMap.values());
-			 
-			 //designationWiseMap.put("OTHERS".trim(), Long.valueOf(String.valueOf(otherMembersCount)));
-			 
-			 /*for (Map.Entry<String, Long> entry : designationWiseMap.entrySet()) {
-				    
-				 String key = entry.getKey();
-				 Long value = entry.getValue();
-				    
-				 PartyMeetingWSVO vo = new PartyMeetingWSVO();   
-				    
-				 vo.setDesignation(key);
-				 vo.setCount(value);
-				 
-				 designationWiseCountsList.add(vo);
-				}*/
-			 
-			 partyMeetingWSVoList.addAll(partyMeetingVoMap.values());
-			 
-			Long attendedCount = 0l;
-			Long invitedCount = 0l;
-			Long inviteesAttendedCount = 0l;
-			Long nonInviteesCount = 0l;
-			Long absentCount = 0l;
-			
-			if(attendedList != null && attendedList.size() > 0){
-				attendedCount = (long) attendedList.size();
-			}
-			
-			if(attendedList != null && attendedList.size() > 0){
-				if(inviteesList != null && inviteesList.size() > 0){
-					invitedCount = (long) inviteesList.size();
-					for (Long cadreId : attendedList) {
-						if(inviteesList.contains(cadreId)){
-							inviteesAttendedCount = inviteesAttendedCount+1l;
-						}
-						else{
-							nonInviteesCount = nonInviteesCount+1l;
-						}
+					else{
+						nonInviteesCount = (long) attendedList.size();
 					}
 				}
-				else{
-					nonInviteesCount = (long) attendedList.size();
-				}
+				
+				absentCount = invitedCount - inviteesAttendedCount;
+				
+				finalvo.setAttendedCount(attendedCount);
+				finalvo.setInviteesCount(invitedCount);
+				finalvo.setInviteesAttendedCount(inviteesAttendedCount);
+				finalvo.setNonInviteesAttendedCount(nonInviteesCount);
+				finalvo.setAbsentCount(absentCount);
+				finalvo.setPartyMeetingWSVoList(partyMeetingWSVoList);
+				finalvo.setDesignationWiseCountsList(designationWiseCountsList);
 			}
-			
-			absentCount = invitedCount - inviteesAttendedCount;
-			
-			finalvo.setAttendedCount(attendedCount);
-			finalvo.setInviteesCount(invitedCount);
-			finalvo.setInviteesAttendedCount(inviteesAttendedCount);
-			finalvo.setNonInviteesAttendedCount(nonInviteesCount);
-			finalvo.setAbsentCount(absentCount);
-			finalvo.setPartyMeetingWSVoList(partyMeetingWSVoList);
-			finalvo.setDesignationWiseCountsList(designationWiseCountsList);
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getTdpCadreDetailsForPartyMeeting() method, Exception - ",e);
 		}
 		return finalvo;
+	}
+	
+	public ResultStatus updateAttendanceAcceptedMemberDetails( final PartyMeetingWSVO inputvo){
+		
+		ResultStatus status = new ResultStatus();
+		try {
+			
+			status = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				public ResultStatus doInTransaction(TransactionStatus arg0) {
+					ResultStatus resultStatus = new ResultStatus();
+					if(inputvo.getId() != null && inputvo.getId().longValue()>0L && inputvo.getTdpCadreId() != null && inputvo.getTdpCadreId().longValue()>0L){
+						
+						TabDetails tabDetails = new TabDetails();
+						
+						tabDetails.setAttendedTime(inputvo.getAttendedTime());
+						tabDetails.setImei(inputvo.getImei());
+						tabDetails.setUniqueKey(inputvo.getUniqueKey());
+						tabDetails.setInsertedTime(inputvo.getInsertedTime());
+						tabDetails.setLatitude(inputvo.getLatitude());
+						tabDetails.setLongitude(inputvo.getLongitude());
+						tabDetails.setTabUserId(inputvo.getTabUserId());
+						tabDetails.setSyncSource("WS");
+						tabDetails.setTabPrimaryKey(inputvo.getTabPrimaryKey());
+						tabDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						
+						tabDetails = tabDetailsDAO.save(tabDetails);
+						
+						ActivityAttendanceAcceptance activityAttendanceAcceptance = new ActivityAttendanceAcceptance();
+						activityAttendanceAcceptance.setTdpCadreId(inputvo.getTdpCadreId());
+						activityAttendanceAcceptance.setActivityValue(inputvo.getId());
+						if(inputvo.getStatus() != null && inputvo.getStatus().trim().length()>0){
+							if(inputvo.getStatus().trim().equalsIgnoreCase("R"))
+								activityAttendanceAcceptance.setApproveType("REJECTED");
+							else if(inputvo.getStatus().trim().equalsIgnoreCase("A"))
+								activityAttendanceAcceptance.setApproveType("ACCEPTED");
+						}
+						activityAttendanceAcceptance.setInsertedBy(1L);
+						activityAttendanceAcceptance.setUpdatedBy(1L);
+						activityAttendanceAcceptance.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						activityAttendanceAcceptance.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						activityAttendanceAcceptanceDAO.save(activityAttendanceAcceptance);
+					}
+					
+					resultStatus.setMessage("SUCCESS");
+					return resultStatus;
+				}
+			});
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in updateAttendanceAcceptedMemberDetails() method, Exception - ",e);
+			status.setMessage("FAILURE");
+		}
+		
+		return status;
 	}
 }

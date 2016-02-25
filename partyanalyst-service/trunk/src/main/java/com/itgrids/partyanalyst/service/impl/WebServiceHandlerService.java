@@ -3772,7 +3772,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  {
 		  PartyMeetingWSVO returnvo = null;
 		  try {
-			  returnvo = partyMeetingService.getTdpCadreDetailsForPartyMeeting(partyMeetingId,searchType);
+			  returnvo = partyMeetingService.getTdpCadreDetailsForPartyMeeting(partyMeetingId,searchType,null);
 		} catch (Exception e) {
 			 log.debug("Entered into the getTdpCadreDetailsForPartyMeeting  method in WebServiceHandlerService");
 		}
