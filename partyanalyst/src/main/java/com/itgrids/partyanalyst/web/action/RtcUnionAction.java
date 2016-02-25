@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dto.AffiliatedCadreVO;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -82,7 +83,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private EntitlementsHelper 					entitlementsHelper;
 	private List<PartyMeetingWSVO> cadreDataList;
 	
-	
+	private AffiliatedCadreVO affiliatedCadreVO;
 	
 	
 	public List<PartyMeetingWSVO> getCadreDataList() {
@@ -90,6 +91,12 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setCadreDataList(List<PartyMeetingWSVO> cadreDataList) {
 		this.cadreDataList = cadreDataList;
+	}
+	public AffiliatedCadreVO getAffiliatedCadreVO() {
+		return affiliatedCadreVO;
+	}
+	public void setAffiliatedCadreVO(AffiliatedCadreVO affiliatedCadreVO) {
+		this.affiliatedCadreVO = affiliatedCadreVO;
 	}
 	public List<TdpCadreVO> getCadreList() {
 		return cadreList;
@@ -599,7 +606,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				return Action.SUCCESS;
 			}*/
 			
-			//genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
+			genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in rtcUnionDashBoard method in RtcUnionAction Action",e);
@@ -739,6 +746,20 @@ public String getMemberTypeSelectedValues(){
 		}
 		return Action.SUCCESS;
 	}
+public String getAllTotalCounts(){
+	
+	try {
+		jObj = new JSONObject(getTask());
+		
+		String searchType = jObj.getString("searchType");
+		
+		affiliatedCadreVO = cadreRegistrationService.getAllTotalCountsForAll(searchType);
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised in getAllTotalCounts method in CadreRegistrationAction Action",e);
+	}
+	return Action.SUCCESS;
+}
 	
 	public String getRegistrationCadreDetails()
 	{
