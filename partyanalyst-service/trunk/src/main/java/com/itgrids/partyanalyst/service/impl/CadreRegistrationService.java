@@ -12124,25 +12124,27 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		}
 		return finalvo;
 	}
-  public List<PartyMeetingWSVO> getRegistrationCadreDetails(RtcUnionInputVO inputVO)
-  {
-	  List<PartyMeetingWSVO> resultList = new ArrayList<PartyMeetingWSVO>();
-	  try{
-		 
-		    Date stDate = null;
+	
+	public AffiliatedCadreVO getAllTotalCountsForAll(String searchType){	
+	AffiliatedCadreVO finalvo = new AffiliatedCadreVO();
+		
+		try {
+			
+			Date stDate = null;
 			Date edDate = null;
 			Date currentDate = dateUtilService.getCurrentDateAndTime();
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+			List<AffiliatedCadreVO> voList = new ArrayList<AffiliatedCadreVO>();
+			//Map<Long,AffiliatedCadreVO> afflCdrMap = new LinkedHashMap<Long, AffiliatedCadreVO>();
 			
-			if(inputVO.getDateType().equalsIgnoreCase("Total")){
+			if(searchType.equalsIgnoreCase("Total")){
 				stDate = null;
 				edDate = null;
 			}
-			else if(inputVO.getDateType().equalsIgnoreCase("Today")){
+			else if(searchType.equalsIgnoreCase("Today")){
 				stDate = dateUtilService.getCurrentDateAndTime();
 				edDate = dateUtilService.getCurrentDateAndTime();
 			}
-			else if(inputVO.getDateType().equalsIgnoreCase("Last 7 days")){
+			else if(searchType.equalsIgnoreCase("Last 7 days")){
 				
 				currentDate = dateUtilService.getCurrentDateAndTime();
 				Calendar fromCalendar = Calendar.getInstance();
@@ -12154,7 +12156,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				stDate = fromCalendar.getTime();
 				edDate = toCalendar.getTime();
 			}
-			else if(inputVO.getDateType().equalsIgnoreCase("Last 30 days")){
+			else if(searchType.equalsIgnoreCase("Last 30 days")){
 				Calendar fromCalendar = Calendar.getInstance();
 				fromCalendar.setTime(currentDate);
 				Calendar toCalendar = Calendar.getInstance();
@@ -12162,32 +12164,95 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				edDate = fromCalendar.getTime();
 				stDate = toCalendar.getTime();
 			}
-			List<Long> tdpCadreIdsList = tdpCadreDAO.getCadreDetailsByTdpMemberType(stDate,edDate,inputVO);
-			List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetailsByYear(tdpCadreIdsList,2016L);
-	        if(cadreDetails != null && cadreDetails.size() > 0){
-	          for (Object[] obj : cadreDetails) {
-	            PartyMeetingWSVO vo = new PartyMeetingWSVO();
-	            
-	            Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-	            String image = obj[5] != null ? obj[5].toString():"";
-	            vo.setTdpCadreId(cadreId);
-	            vo.setName(obj[1] != null ? obj[1].toString():"");
-	            vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
-	            vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
-	            vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
-	            vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
-	            vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
-	            vo.setVoterCardNo(obj[9] != null ? obj[9].toString():"");
-	            vo.setRegThrough(obj[10] != null ? obj[10].toString():"");
-	            resultList.add(vo);
-	          }
-	        }
+				List<Object[]> list = tdpCadreDAO.getAllCountsForUnionMembersRegistered(stDate, edDate);
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {			
+							String sourceType = obj[0] != null ? obj[0].toString():"";
+
+							if(sourceType.trim().equalsIgnoreCase("WEB")){
+								finalvo.setWebCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0L"));
+							}
+							else if(sourceType.trim().equalsIgnoreCase("TAB")){
+								finalvo.setTabCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0L"));
+							}
+							if(finalvo.getCount() != null && finalvo.getCount().longValue() > 0L){
+								finalvo.setCount(finalvo.getCount().longValue() + Long.valueOf(Long.valueOf(obj[1] != null ? obj[1].toString():"0L")));
+							}
+							else{
+								finalvo.setCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0L"));
+							}
+						}
+				}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllTotalCountsForAllAffiliatedUnionMembers in CadreRegistrationService service", e);
+		}
+		return finalvo;
+	}
+	public List<PartyMeetingWSVO> getRegistrationCadreDetails(RtcUnionInputVO inputVO)
+	  {
+		  List<PartyMeetingWSVO> resultList = new ArrayList<PartyMeetingWSVO>();
+		  try{
+			 
+			    Date stDate = null;
+				Date edDate = null;
+				Date currentDate = dateUtilService.getCurrentDateAndTime();
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+				
+				if(inputVO.getDateType().equalsIgnoreCase("Total")){
+					stDate = null;
+					edDate = null;
+				}
+				else if(inputVO.getDateType().equalsIgnoreCase("Today")){
+					stDate = dateUtilService.getCurrentDateAndTime();
+					edDate = dateUtilService.getCurrentDateAndTime();
+				}
+				else if(inputVO.getDateType().equalsIgnoreCase("Last 7 days")){
+					
+					currentDate = dateUtilService.getCurrentDateAndTime();
+					Calendar fromCalendar = Calendar.getInstance();
+					fromCalendar.setTime(currentDate);
+					//fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
+					fromCalendar.set(Calendar.DAY_OF_WEEK,  fromCalendar.get(Calendar.DAY_OF_WEEK)-7);
+					Calendar toCalendar = Calendar.getInstance();
+					toCalendar.setTime(currentDate);
+					stDate = fromCalendar.getTime();
+					edDate = toCalendar.getTime();
+				}
+				else if(inputVO.getDateType().equalsIgnoreCase("Last 30 days")){
+					Calendar fromCalendar = Calendar.getInstance();
+					fromCalendar.setTime(currentDate);
+					Calendar toCalendar = Calendar.getInstance();
+					toCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
+					edDate = fromCalendar.getTime();
+					stDate = toCalendar.getTime();
+				}
+				List<Long> tdpCadreIdsList = tdpCadreDAO.getCadreDetailsByTdpMemberType(stDate,edDate,inputVO);
+				List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetailsByYear(tdpCadreIdsList,2016L);
+		        if(cadreDetails != null && cadreDetails.size() > 0){
+		          for (Object[] obj : cadreDetails) {
+		            PartyMeetingWSVO vo = new PartyMeetingWSVO();
+		            
+		            Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+		            String image = obj[5] != null ? obj[5].toString():"";
+		            vo.setTdpCadreId(cadreId);
+		            vo.setName(obj[1] != null ? obj[1].toString():"");
+		            vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
+		            vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+		            vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+		            vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+		            vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
+		            vo.setVoterCardNo(obj[9] != null ? obj[9].toString():"");
+		            vo.setRegThrough(obj[10] != null ? obj[10].toString():"");
+		            resultList.add(vo);
+		          }
+		        }
+		  }
+		  catch (Exception e) {
+			  e.printStackTrace();
+			  LOG.error("Exception raised in getRegistrationCadreDetails in CadreRegistrationService service", e);	}
+		return resultList;
+		  
 	  }
-	  catch (Exception e) {
-		  e.printStackTrace();
-		  LOG.error("Exception raised in getRegistrationCadreDetails in CadreRegistrationService service", e);	}
-	return resultList;
-	  
-  }
 
 }

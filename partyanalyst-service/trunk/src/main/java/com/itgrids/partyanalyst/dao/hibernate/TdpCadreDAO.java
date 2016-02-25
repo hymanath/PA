@@ -6136,6 +6136,24 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
+	  public List<Object[]> getAllCountsForUnionMembersRegistered(Date fromDate,Date toDate){
+		  	StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select distinct model.dataSourceType , count(distinct model.tdpCadreId) from TdpCadre model where " +
+					" model.tdpMemberType.isDeleted = 'false' and model.tdpMemberType.tdpMemberTypeId !=1 " +
+					" and model.isDeleted='N' and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
+			if(fromDate != null && toDate != null){
+				queryStr.append(" and (date(model.surveyTime) between :fromDate and :toDate) ");
+			}
+			queryStr.append(" group by model.dataSourceType order by model.dataSourceType asc");
+			Query query = getSession().createQuery(queryStr.toString());
+			if(fromDate != null && toDate != null){
+				query.setParameter("fromDate", fromDate);
+				query.setParameter("toDate", toDate);
+			}
+				return query.list();
+	  }
+  
+		
 		
 	public List<Long> getCadreDetailsByTdpMemberType(Date fromDate,Date toDate,RtcUnionInputVO inputVO){
 			
