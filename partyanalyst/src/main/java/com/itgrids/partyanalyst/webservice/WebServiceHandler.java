@@ -1824,9 +1824,9 @@ public class WebServiceHandler {
 	 @Path("/sendSmsForCadre")
 	 @Produces(MediaType.APPLICATION_JSON)
 	 @Consumes(MediaType.APPLICATION_JSON)
-	 public ResultStatus sendSmsForCadre(MobileAppUserVO inputVO){
+	 public ResultStatus sendSmsForCadre(MobileAppUserVoterVO inputVO){
 		 try {
-			 return smsSenderService.sendSmsToCadre(inputVO.getStartIndex(),inputVO.getMaxIndex());
+			 return smsSenderService.sendSmsToCadre(inputVO);
 		 } catch (Exception e) {
 			 LOG.error("Exception Occured in sendSmsForCadre() Method, Exception is ",e);
 		 }
