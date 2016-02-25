@@ -152,7 +152,8 @@
 			<select style="width:250px;" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
 			
-			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userMembersId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Member Type" style="width:460px;"/>
+				<select id="userMembersId">
+				</select>
 			<!--<select style="width:150px;" id="membersList"><option value="0"> Select Members </option></select>	-->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				
@@ -985,6 +986,26 @@
 			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
 		         });
 	}
+function getMemberTypeSelectedValues(){
+	$("#userMembersId").html("");
+	var jObj={
+	};
+	$.ajax({
+		type:"GET",
+		url:'getMemberTypeSelectedValuesAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		 if(result!=null && result.length>0){
+				$("#userMembersId").append('<option value="0">All</option>');
+				for(var i in result){
+					$("#userMembersId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			} 
+		
+});
+}
+getMemberTypeSelectedValues();
 	
 		</script>
 		 <script>$('#yourElement').addClass('animated fadeInDown');</script>
