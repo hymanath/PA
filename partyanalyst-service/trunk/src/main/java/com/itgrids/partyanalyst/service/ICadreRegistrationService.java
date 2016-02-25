@@ -20,7 +20,9 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
+import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
@@ -182,6 +184,7 @@ public interface ICadreRegistrationService {
 	public List<GenericVO> getCadreMemberTypeListByYear();
 	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate,String searchDatType);
 	public AffiliatedCadreVO getCadreCountsByTdpMemberType(String searchType);
+	public List<PartyMeetingWSVO> getRegistrationCadreDetails(RtcUnionInputVO inputVO);
 	//public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate);
 	//public List<GenericVO> getCadreMemberTypeListByYear(Long year);
 }

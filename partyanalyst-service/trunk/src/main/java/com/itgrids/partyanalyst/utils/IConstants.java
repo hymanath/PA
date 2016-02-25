@@ -970,5 +970,5 @@ public interface IConstants {
     public static final Long[] GHMC_OTHER_VOTERS ={1L,2L};
     public static final Long[] GHMC_NONOPTED_VOTERS ={0L};
     public static final Long VOTER_PUBLICATION_ID = 12L;
-    
+    public static final Long UNIONS_REGISTRATION_YEAR = 2016L;
 }

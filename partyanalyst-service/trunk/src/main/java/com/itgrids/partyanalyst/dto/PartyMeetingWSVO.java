@@ -40,10 +40,12 @@ public class PartyMeetingWSVO {
 	
 	private Long count = 0l;
 	private String memberType;
+	private String voterCardNo;
 	private List<PartyMeetingWSVO> partyMeetingWSVoList = new ArrayList<PartyMeetingWSVO>();
 	private List<PartyMeetingWSVO> designationWiseCountsList = new ArrayList<PartyMeetingWSVO>();
 	private String status;
-	
+	private String regThrough;
+
 	/* tab details */
 	
 	private Long 			tabDetailsId;
@@ -64,7 +66,12 @@ public class PartyMeetingWSVO {
 	
 	/* */
 	
-	
+	public String getRegThrough() {
+		return regThrough;
+	}
+	public void setRegThrough(String regThrough) {
+		this.regThrough = regThrough;
+	}
 	public String getRoles() {
 		return roles;
 	}
@@ -173,6 +180,12 @@ public class PartyMeetingWSVO {
 	}
 	public void setMemberType(String memberType) {
 		this.memberType = memberType;
+	}
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
 	}
 	public Long getId() {
 		return id;

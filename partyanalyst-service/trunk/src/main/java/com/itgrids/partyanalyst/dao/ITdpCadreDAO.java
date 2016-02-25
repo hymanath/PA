@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 
 public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
@@ -406,4 +407,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,Date fromDate,Date toDate);
 	  public List<Object[]> getCadreFormalDetails(List<Long> tdpCadreIds);
 	  public List<Object[]> getCadreCountsByTdpMemberType(Date fromDate,Date toDate);
+	  public List<Long> getCadreDetailsByTdpMemberType(Date fromDate,Date toDate,RtcUnionInputVO inputVO);
+	  public List<Object[]> getCadreFormalDetailsByYear(List<Long> tdpCadreIds,Long enrollmentYear);
 }
