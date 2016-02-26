@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.UnionDocument.Union.MemberTypes;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyToOne;
@@ -27,9 +28,11 @@ public class UnionTypeDesignation extends BaseModel implements Serializable{
 	private Long unionTypeDesignationId;
 	private Long unionTypeId;
 	private Long designationId;
+	private Long tdpMemberTypeId;
 	
 	private UnionType unionType;
 	private Designation designation;
+	private TdpMemberType tdpMemberType;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -49,7 +52,7 @@ public class UnionTypeDesignation extends BaseModel implements Serializable{
 		this.unionTypeId = unionTypeId;
 	}
 	
-	@Column(name="designation_id")
+	@Column(name="tdp_member_type")
 	public Long getDesignationId() {
 		return designationId;
 	}
@@ -78,4 +81,25 @@ public class UnionTypeDesignation extends BaseModel implements Serializable{
 	public void setDesignation(Designation designation) {
 		this.designation = designation;
 	}
+	
+	@Column(name="tdp_member_type_id")
+	public Long getTdpMemberTypeId() {
+		return tdpMemberTypeId;
+	}
+	public void setTdpMemberTypeId(Long tdpMemberTypeId) {
+		this.tdpMemberTypeId = tdpMemberTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tdp_member_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpMemberType getTdpMemberType() {
+		return tdpMemberType;
+	}
+	public void setTdpMemberType(TdpMemberType tdpMemberType) {
+		this.tdpMemberType = tdpMemberType;
+	}
+	
+	
 }
