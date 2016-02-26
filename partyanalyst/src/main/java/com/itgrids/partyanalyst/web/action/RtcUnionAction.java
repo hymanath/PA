@@ -86,6 +86,12 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private AffiliatedCadreVO affiliatedCadreVO;
 	
 	
+	public String getConstiteucnyId() {
+		return constiteucnyId;
+	}
+	public void setConstiteucnyId(String constiteucnyId) {
+		this.constiteucnyId = constiteucnyId;
+	}
 	public List<PartyMeetingWSVO> getCadreDataList() {
 		return cadreDataList;
 	}

@@ -415,7 +415,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		try {
 			jObj=new JSONObject(getTask());
 			
-			cadreCommitteeMemberVO=cadreDetailsService.cadreFormalDetailedInformation(jObj.getLong("cadreId"));
+			cadreCommitteeMemberVO=cadreDetailsService.cadreFormalDetailedInformation(jObj.getLong("cadreId"),IConstants.CADRE_ENROLLMENT_NUMBER,1L);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in cadreFormalDetailedInformation  method in CadreDetailsAction.",e);
