@@ -118,15 +118,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private CardPrintUserVO cardPrintUserVO;
 	private AffiliatedCadreVO affiliatedCadreVO;
-	private Long tdpMemberTypeId;
 	
 	
-	public Long getTdpMemberTypeId() {
-		return tdpMemberTypeId;
-	}
-	public void setTdpMemberTypeId(Long tdpMemberTypeId) {
-		this.tdpMemberTypeId = tdpMemberTypeId;
-	}
+	
 	public AffiliatedCadreVO getAffiliatedCadreVO() {
 		return affiliatedCadreVO;
 	}
@@ -889,7 +883,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
-				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,Long.valueOf(tdpMemberTypeId));
+				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,null);
 							
 				if(user.getRegistrationID().longValue() != 3930L) // party office userId
 	    		{
