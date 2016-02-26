@@ -1004,7 +1004,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
         </div>
 		
 		<!-- added -->
-		<div class="col-md-12 meetingDiv" style="display:none;">
+		<div class="col-md-12 meetingDiv" style="display:none;" id="meetingTableDiv">
 			<div class="panel panel-default">
 				<div class="panel-heading bg_cc">
 					<h4 class="panel-title" id="meetingTitleId" style="text-transform: uppercase;font-weight:bold;"></h4>
@@ -2709,7 +2709,7 @@ $(document).on('click','.getSummary', function() {
 				buildTdpCadreAttendanceCount(result);
 				buildTdpCadreAttendedMembers(result,applyFilterTypeId);
 			}
-			
+			$("#meetingTableDiv").hide();
 			
 			/*var designationVal = $("#disignationDiv").val();
 			if(designationVal != null && designationVal.length > 0)
@@ -2769,8 +2769,9 @@ $(document).on('click','.getSummary', function() {
 				buildTdpCadreAttendedMembers(result,applyFilterTypeId);
 				
 			}
+			
 				
-		})			
+		});			
   }
   function buildTdpCadreAttendanceCount(result)
   { 
