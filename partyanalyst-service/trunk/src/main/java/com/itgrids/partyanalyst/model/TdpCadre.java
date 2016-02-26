@@ -902,7 +902,7 @@ public class TdpCadre {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "permanent_address_id")
+	@JoinColumn(name = "present_address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getPermanentAddress() {
