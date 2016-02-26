@@ -465,6 +465,7 @@
 					  isPresentCadre : ischecked,
 					  startIndex : start,
 					  maxIndex:30,
+					  memberTypeId:userMembersId,
 					  task:"searchCandidatesDtailsBySearchCriteria"             
 				   }
 
