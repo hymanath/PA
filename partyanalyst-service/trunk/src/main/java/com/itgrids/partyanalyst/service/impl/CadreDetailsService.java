@@ -4980,7 +4980,7 @@ public class CadreDetailsService implements ICadreDetailsService{
   }
 	// changes
 	
-	public CadreOverviewVO getVoterDetailsByVoterIdCardNum(String voterCardNo,String familyVoterCardNo)
+	public CadreOverviewVO getVoterDetailsByVoterIdCardNum(String voterCardNo,String familyVoterCardNo,String memberType,Long memberTypeId)
 	{
 		CadreOverviewVO returnVO = new CadreOverviewVO();
 		try {
@@ -4989,7 +4989,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(voterCardNo != null && !voterCardNo.isEmpty())
 			{
-				List checkVoter = tdpCadreDAO.checkUnionMemberExists(voterCardNo);
+				List checkVoter = tdpCadreDAO.checkUnionMemberExists(voterCardNo,memberTypeId);
 				if(checkVoter != null && checkVoter.size() > 0)
 				{
 					returnVO.setVoterExists(true);
@@ -4998,8 +4998,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				else
 				{
-				returnVO.setVoterExists(false);
-				voterDetails = boothPublicationVoterDAO.getConstyPublicationIdByVoterIdPublicationId(voterCardNo,IConstants.VOTER_PUBLICATION_ID);
+					returnVO.setVoterExists(false);
+					voterDetails = boothPublicationVoterDAO.getConstyPublicationIdByVoterIdPublicationId(voterCardNo,IConstants.VOTER_PUBLICATION_ID);
 				}
 			}
 			else 
@@ -5028,7 +5028,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				if(voterDetails != null && voterDetails.size()>0)
 				{
-					
 					returnVO.setMessage("success");
 					
 					for (Object[] voter : voterDetails) {
@@ -5046,7 +5045,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 								}
 							}
 							break;
-						
 					}
 				}
 			
@@ -5054,7 +5052,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 			if(tdpCadreId != null && tdpCadreId.longValue()>0L)
 			{
 				CadreCommitteeMemberVO cadreVO = cadreFormalDetailedInformation(tdpCadreId);
-				
 				if(cadreVO != null )
 				{
 					returnVO.setAge(cadreVO.getAge());
@@ -5097,20 +5094,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setDeletedStatus(cadreVO.getDeletedStatus());
 					returnVO.setDeletedReason(cadreVO.getDeletedreason());
 					
-					List<TdpCadreFamilyDetailsVO> familyVOList = getCadreFamilyDetails(tdpCadreId);
-					if(familyVOList != null && familyVOList.size()>0)
-					{
-						returnVO.getFamilyMembersList().addAll(familyVOList);
-						
+					if(memberType == null || !memberType.trim().equalsIgnoreCase("affiliated")){
+						List<TdpCadreFamilyDetailsVO> familyVOList = getCadreFamilyDetails(tdpCadreId);
+						if(familyVOList != null && familyVOList.size()>0)
+						{
+							returnVO.getFamilyMembersList().addAll(familyVOList);
+						}
 					}
-					
-				
 				}
-				
 			}
 			else
 			{
-				
 				if(voterDetails != null && voterDetails.size()>0)
 				{
 					for (Object[] voter : voterDetails) {
@@ -5194,7 +5188,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 							if(localElectionBody != null)
 								returnVO.setLocalElectionBodyId(localElectionBody.getLocalElectionBodyId().toString());
 							
-							
 							List<Object[]> mobileNosList = mobileNumbersDAO.getVotersMobileNumberDetails(voterIdsList);
 							
 							if(mobileNosList != null && mobileNosList.size()>0)
@@ -5212,68 +5205,70 @@ public class CadreDetailsService implements ICadreDetailsService{
 															
 							returnVO.setVoterId(voterId);
 							returnVO.setVoterCardNo(voterCardNo);
-							
-							List<Object[]> familyInfo = boothPublicationVoterDAO.getFamilyDetaislByHouseNoAndBoothId(boothId,hNo);
-							List<TdpCadreFamilyDetailsVO> familyVOList = new ArrayList<TdpCadreFamilyDetailsVO>(0);
-							if(familyInfo != null && familyInfo.size()>0)
-							{
-								List<String> voterIdCardNoList = new ArrayList<String>(0);
+							if(memberType == null || !memberType.trim().equalsIgnoreCase("affiliated")){
 								
-								for (Object[] family : familyInfo) 
-								{
-									Long familyVoterID = family[0] != null ? Long.valueOf(family[0].toString().trim()):0L;
-									
-									if( familyVoterID.longValue() != voterId.longValue())
+									List<Object[]> familyInfo =boothPublicationVoterDAO.getFamilyDetaislByHouseNoAndBoothId(boothId,hNo);
+									List<TdpCadreFamilyDetailsVO> familyVOList = new ArrayList<TdpCadreFamilyDetailsVO>(0);
+									if(familyInfo != null && familyInfo.size()>0)
 									{
-										TdpCadreFamilyDetailsVO fmilyVO = new TdpCadreFamilyDetailsVO();
-										fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
-										fmilyVO.setName(family[1] != null ? family[1].toString():"");
-										fmilyVO.setGender(family[4] != null ? family[4].toString():"");
-										fmilyVO.setAge(family[5] != null ? Long.valueOf(family[5].toString()):0L);								
-										fmilyVO.setVotercardNo(family[6] != null ? family[6].toString():"");
-										fmilyVO.setRelation(family[3] != null ? family[3].toString():"");
-										fmilyVO.setRelativeName(family[7] != null ? family[7].toString():null);
-										voterIdCardNoList.add(fmilyVO.getVotercardNo());
-										familyVOList.add(fmilyVO);
+										List<String> voterIdCardNoList = new ArrayList<String>(0);
 										
-									}								
-								}
-								
-								if(voterIdCardNoList != null && voterIdCardNoList.size() > 0)
-								{
-									
-									List<Object[]> cadreMembersInFamilyList = tdpCadreDAO.checkVoterCardNosCadreNosOrNot(voterIdCardNoList);
-									List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
-									if(cadreMembersInFamilyList != null && cadreMembersInFamilyList.size() > 0)
-									{
-										for(Object[] params: cadreMembersInFamilyList)
+										for (Object[] family : familyInfo) 
 										{
-											if(params[0] != null)
+											Long familyVoterID = family[0] != null ? Long.valueOf(family[0].toString().trim()):0L;
+											
+											if( familyVoterID.longValue() != voterId.longValue())
 											{
-												TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(familyVOList, params[0].toString());
-											    if(VO != null){
-											    	VO.setTdpCadreId(params[1] != null?Long.parseLong(params[1].toString()):0l);
-											    	VO.setMembershipNo(params[2] != null?params[2].toString():"");
-											    	
-											    	if(params[4] !=null){
-											    		VO.setDeletedStatus(params[4].toString());
-														
-														if(VO.getDeletedStatus().equalsIgnoreCase("MD")){
-															VO.setDeletedReason(params[6] !=null ? params[6].toString():"");
-														}
-														else{
-															VO.setDeletedReason("");
-														}
+												TdpCadreFamilyDetailsVO fmilyVO = new TdpCadreFamilyDetailsVO();
+												fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
+												fmilyVO.setName(family[1] != null ? family[1].toString():"");
+												fmilyVO.setGender(family[4] != null ? family[4].toString():"");
+												fmilyVO.setAge(family[5] != null ? Long.valueOf(family[5].toString()):0L);								
+												fmilyVO.setVotercardNo(family[6] != null ? family[6].toString():"");
+												fmilyVO.setRelation(family[3] != null ? family[3].toString():"");
+												fmilyVO.setRelativeName(family[7] != null ? family[7].toString():null);
+												voterIdCardNoList.add(fmilyVO.getVotercardNo());
+												familyVOList.add(fmilyVO);
+												
+											}								
+										}
+										
+										if(voterIdCardNoList != null && voterIdCardNoList.size() > 0)
+										{
+											
+											List<Object[]> cadreMembersInFamilyList = tdpCadreDAO.checkVoterCardNosCadreNosOrNot(voterIdCardNoList);
+											List<Long> tdpCadreIDsList = new ArrayList<Long>(0);
+											if(cadreMembersInFamilyList != null && cadreMembersInFamilyList.size() > 0)
+											{
+												for(Object[] params: cadreMembersInFamilyList)
+												{
+													if(params[0] != null)
+													{
+														TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(familyVOList, params[0].toString());
+													    if(VO != null){
+													    	VO.setTdpCadreId(params[1] != null?Long.parseLong(params[1].toString()):0l);
+													    	VO.setMembershipNo(params[2] != null?params[2].toString():"");
+													    	
+													    	if(params[4] !=null){
+													    		VO.setDeletedStatus(params[4].toString());
+																
+																if(VO.getDeletedStatus().equalsIgnoreCase("MD")){
+																	VO.setDeletedReason(params[6] !=null ? params[6].toString():"");
+																}
+																else{
+																	VO.setDeletedReason("");
+																}
+															}
+													    	
+													    	tdpCadreIDsList.add(VO.getTdpCadreId());
+													    }
 													}
-											    	
-											    	tdpCadreIDsList.add(VO.getTdpCadreId());
-											    }
+												}
 											}
 										}
 									}
-								}
 							}
-							returnVO.getFamilyMembersList().addAll(familyVOList);
+							//returnVO.getFamilyMembersList().addAll(familyVOList);
 							List<RegisteredMembershipCountVO> resultList = new ArrayList<RegisteredMembershipCountVO>();
 							UserAddress userAddress = new UserAddress();
 							if(returnVO.getBoothId() != null && returnVO.getBoothId() > 0)

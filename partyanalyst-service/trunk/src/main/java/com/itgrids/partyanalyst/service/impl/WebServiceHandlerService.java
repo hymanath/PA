@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -37,7 +39,9 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpMemberUnionTabUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IUnionTabUserDAO;
+import com.itgrids.partyanalyst.dao.IUnionTypeDesignationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -133,6 +137,7 @@ import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.Util;
@@ -212,9 +217,38 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ISmsGatewayService smsGatewayService;
     
     private IUnionTabUserDAO unionTabUserDAO;
+    private ITdpMemberUnionTabUserRelationDAO tdpMemberUnionTabUserRelationDAO;
+    private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+    private IUnionTypeDesignationDAO unionTypeDesignationDAO;
     
     
-    
+	public IUnionTypeDesignationDAO getUnionTypeDesignationDAO() {
+		return unionTypeDesignationDAO;
+	}
+
+	public void setUnionTypeDesignationDAO(
+			IUnionTypeDesignationDAO unionTypeDesignationDAO) {
+		this.unionTypeDesignationDAO = unionTypeDesignationDAO;
+	}
+
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+
+	public ITdpMemberUnionTabUserRelationDAO getTdpMemberUnionTabUserRelationDAO() {
+		return tdpMemberUnionTabUserRelationDAO;
+	}
+
+	public void setTdpMemberUnionTabUserRelationDAO(
+			ITdpMemberUnionTabUserRelationDAO tdpMemberUnionTabUserRelationDAO) {
+		this.tdpMemberUnionTabUserRelationDAO = tdpMemberUnionTabUserRelationDAO;
+	}
+
 	public IUnionTabUserDAO getUnionTabUserDAO() {
 		return unionTabUserDAO;
 	}
@@ -3728,7 +3762,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  {
 		  CadreOverviewVO returnVO = null;
 		  try {
-			  returnVO = cadreDetailsService.getVoterDetailsByVoterIdCardNum(inputVO.getVoterCardNo(),inputVO.getFamilyVoterCardNum());
+			  returnVO = cadreDetailsService.getVoterDetailsByVoterIdCardNum(inputVO.getVoterCardNo(),inputVO.getFamilyVoterCardNum(),inputVO.getMemberType(),inputVO.getMemberTypeId());
 		} catch (Exception e) {
 			 log.debug("Entered into the getVoterDetailsByVoterIdCardNum  method in WebServiceHandlerService");
 		}
@@ -3753,6 +3787,51 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			   vo.setUnionTabUserId(params.getUnionTabUserId() != null ? params.getUnionTabUserId() : null);
 			   vo.setName(params.getName() != null ? params.getName() : null);
 			   
+			   List<Object[]> membersList = tdpMemberUnionTabUserRelationDAO.getAccessMemberTypesBtTabUserId(vo.getUnionTabUserId());
+			   Map<Long,UnionTabUserVO> tdpMemberTypesMap = new LinkedHashMap<Long,UnionTabUserVO>(0);
+			   if(membersList != null && membersList.size()>0)
+			   {
+				   for (Object[] member : membersList) {
+					   Long id = commonMethodsUtilService.getLongValueForObject(member[0]);
+					   String name = commonMethodsUtilService.getStringValueForObject(member[1]);
+					   
+					   UnionTabUserVO membervo = new UnionTabUserVO();
+					   membervo.setMemberTypeId(id);
+					   membervo.setMemberTypeName(name);
+					   tdpMemberTypesMap.put(id, membervo);
+					   
+				   }
+				   
+				   if(tdpMemberTypesMap != null && tdpMemberTypesMap.size()>0)
+				   {
+					   List<Object[]> designationsList = unionTypeDesignationDAO.getDesignationsOfTdpMemberTypeIdsList(new ArrayList<Long>(tdpMemberTypesMap.keySet()));
+					   if(designationsList != null && designationsList.size()>0)
+					   {
+						   for (Object[] designation : designationsList) {
+							   Long memberId = commonMethodsUtilService.getLongValueForObject(designation[0]);
+							   Long id = commonMethodsUtilService.getLongValueForObject(designation[0]);
+							   String name = commonMethodsUtilService.getStringValueForObject(designation[1]);
+							   
+							   UnionTabUserVO memberVO = tdpMemberTypesMap.get(memberId);
+							  
+							   if(memberVO != null)
+							   {
+								   UnionTabUserVO designationvo = new UnionTabUserVO();
+								   designationvo.setId(id);
+								   designationvo.setName(name);
+								   
+								   memberVO.getMemberTypesList().add(designationvo);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   
+			   if(tdpMemberTypesMap != null && tdpMemberTypesMap.size()>0)
+			   {
+				   for (Long memberId : tdpMemberTypesMap.keySet())
+					   vo.getMemberTypesList().add(tdpMemberTypesMap.get(memberId));
+			   }
 		   }
 		return vo;
 	  }

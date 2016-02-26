@@ -10587,16 +10587,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		TdpCadreBackupDetails tdpCadreBackupDetails= null;
 		if(IConstants.ENABLE_LOGS_SAVE)
 		{
-			Date d1 = new Date();
 			tdpCadreBackupDetails = updateRequestDetailsForBackup(cadreRegistrationVOList,registrationType);
-			Date d2 = new Date();
-			LOG.error(d2.getTime()-d1.getTime() + "IN MILLI SECONDS");
 		}
 		
 		try {
 			LOG.info("Entered into saveAfflicatedCadreRegistration in CadreRegistrationService service");
-			
-			
 			
 						if(cadreRegistrationVOList != null && cadreRegistrationVOList.size() >0)
 						{
@@ -10822,7 +10817,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 											}
 											   
 											////main else if
-										}else{   //SAVE WHEN FAMILY VOTER ID COMES
+										} else{   //SAVE WHEN FAMILY VOTER ID COMES
 									    	if(cadreRegistrationVO.getFamilyVoterId() != null 
 									    			&& cadreRegistrationVO.getFamilyVoterId().longValue() > 0){
 									    		List<TdpCadre> voterIdsList = tdpCadreDAO.getAffliatedCadreByFamilyVoterId(cadreRegistrationVO.getFamilyVoterId().longValue(), cadreRegistrationVO.getRefNo());
@@ -11070,7 +11065,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	}
 	
 	
-	//SAVING AFFLICATED CADRE SAVING
+	//SAVING AFFLICATED CADRE SAVING 1111
 	public void tdpAffliatedCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadreNew,String insertTypeNew,final boolean statusVar)
 	{
 		
