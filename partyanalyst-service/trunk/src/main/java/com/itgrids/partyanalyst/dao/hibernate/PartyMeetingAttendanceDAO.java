@@ -313,7 +313,8 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	    	
 	    	Query query = getSession().createQuery(" select distinct model.attendance.tdpCadre.tdpCadreId " +
 	    						" from PartyMeetingAttendance model " +
-	    						" where model.partyMeeting.partyMeetingId = :partyMeetingId ");
+	    						" where model.partyMeeting.partyMeetingId = :partyMeetingId  and  model.attendance.tdpCadre.isDeleted='N' and " +
+	    						"  model.attendance.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+" ");
 	    	query.setParameter("partyMeetingId", partyMeetingId);
 	    	
 	    	return query.list();
