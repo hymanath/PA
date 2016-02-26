@@ -137,20 +137,34 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		prsntAddrsDivionId;
 	private Long		prsntAddrsVillId;
 	private Long		prsntAddrsWardId;
-	private String      districtId;
-	private Long        desigId;
-	private String      schoolName;
 	private String      prsntAddrsHNo;
 	private String      prsntAddrsLandmark;
 	private String      prsntAddrsStreet;
 	private String      prsntAddrsPincode;
-	private String      memberTypeId;
 	
+	private Long		workAddrsStateId;
+	private Long		workAddrsDistId;
+	private Long		workAddrsConstId;
+	private Long		workAddrsMandalId;
+	private Long		workAddrsLebId;
+	private Long		workAddrsDivionId;
+	private Long		workAddrsVillId;
+	private Long		workAddrsWardId;
+	private String     	workAddrsHNo;
+	private String     	workAddrsLandmark;
+	private String      workAddrsStreet;
+	private String      workAddrsPincode;
+	
+	private String      districtId;
+	private Long        desigId;
+	private String      schoolName;
+	private String      memberTypeId;
 	private String		relativeVoterCardNo;
 	private String      voterCardType;
 	private Long        drivingLicenseId;
 	private Long        vehicleTypeId;
-	private Long        schoolNameId;
+	private Long        schoolNameId;	
+	private Long 		unionTypeId;
 	
 	private String workHouseNo;
 	private String workStreet;
@@ -203,7 +217,84 @@ public class CadreRegistrationVO implements Serializable{
 		this.workLandMark = workLandMark;
 	}
 	
-	
+	public Long getWorkAddrsStateId() {
+		return workAddrsStateId;
+	}
+	public void setWorkAddrsStateId(Long workAddrsStateId) {
+		this.workAddrsStateId = workAddrsStateId;
+	}
+	public Long getWorkAddrsDistId() {
+		return workAddrsDistId;
+	}
+	public void setWorkAddrsDistId(Long workAddrsDistId) {
+		this.workAddrsDistId = workAddrsDistId;
+	}
+	public Long getWorkAddrsConstId() {
+		return workAddrsConstId;
+	}
+	public void setWorkAddrsConstId(Long workAddrsConstId) {
+		this.workAddrsConstId = workAddrsConstId;
+	}
+	public Long getWorkAddrsMandalId() {
+		return workAddrsMandalId;
+	}
+	public void setWorkAddrsMandalId(Long workAddrsMandalId) {
+		this.workAddrsMandalId = workAddrsMandalId;
+	}
+	public Long getWorkAddrsLebId() {
+		return workAddrsLebId;
+	}
+	public void setWorkAddrsLebId(Long workAddrsLebId) {
+		this.workAddrsLebId = workAddrsLebId;
+	}
+	public Long getWorkAddrsDivionId() {
+		return workAddrsDivionId;
+	}
+	public void setWorkAddrsDivionId(Long workAddrsDivionId) {
+		this.workAddrsDivionId = workAddrsDivionId;
+	}
+	public Long getWorkAddrsVillId() {
+		return workAddrsVillId;
+	}
+	public void setWorkAddrsVillId(Long workAddrsVillId) {
+		this.workAddrsVillId = workAddrsVillId;
+	}
+	public Long getWorkAddrsWardId() {
+		return workAddrsWardId;
+	}
+	public void setWorkAddrsWardId(Long workAddrsWardId) {
+		this.workAddrsWardId = workAddrsWardId;
+	}
+	public String getWorkAddrsHNo() {
+		return workAddrsHNo;
+	}
+	public void setWorkAddrsHNo(String workAddrsHNo) {
+		this.workAddrsHNo = workAddrsHNo;
+	}
+	public String getWorkAddrsLandmark() {
+		return workAddrsLandmark;
+	}
+	public void setWorkAddrsLandmark(String workAddrsLandmark) {
+		this.workAddrsLandmark = workAddrsLandmark;
+	}
+	public String getWorkAddrsStreet() {
+		return workAddrsStreet;
+	}
+	public void setWorkAddrsStreet(String workAddrsStreet) {
+		this.workAddrsStreet = workAddrsStreet;
+	}
+	public String getWorkAddrsPincode() {
+		return workAddrsPincode;
+	}
+	public void setWorkAddrsPincode(String workAddrsPincode) {
+		this.workAddrsPincode = workAddrsPincode;
+	}
+	public Long getUnionTypeId() {
+		return unionTypeId;
+	}
+	public void setUnionTypeId(Long unionTypeId) {
+		this.unionTypeId = unionTypeId;
+	}
 	public String getPrsntAddrsHNo() {
 		return prsntAddrsHNo;
 	}
