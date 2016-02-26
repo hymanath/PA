@@ -17,6 +17,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String		 	 dobStr;
 	private String			 gender;
 	private String 			 relativeName;
+	private String 			 relativeType;
     private Long             cadreId;
 	private String 			 voterId;
 	private String 			 previousEnrollmentNumber;
@@ -109,7 +110,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String faceboohUrl;	
 	private AddressVO addressVO;
 	
-	private String		cadreRegType;
+	//private String		cadreRegType;
 	private Long		cadreRegTypeId;
 	private Long		designationId;
 	private Long		zoneId;
@@ -932,12 +933,12 @@ public class CadreRegistrationVO implements Serializable{
 	public void setPerAddrsWardId(Long perAddrsWardId) {
 		this.perAddrsWardId = perAddrsWardId;
 	}
-	public String getCadreRegType() {
+	/*public String getCadreRegType() {
 		return cadreRegType;
 	}
 	public void setCadreRegType(String cadreRegType) {
 		this.cadreRegType = cadreRegType;
-	}
+	}*/
 	public Long getCadreRegTypeId() {
 		return cadreRegTypeId;
 	}
@@ -1036,6 +1037,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setVehicleTypeId(Long vehicleTypeId) {
 		this.vehicleTypeId = vehicleTypeId;
+	}
+	public String getRelativeType() {
+		return relativeType;
+	}
+	public void setRelativeType(String relativeType) {
+		this.relativeType = relativeType;
 	}
 	
 	
