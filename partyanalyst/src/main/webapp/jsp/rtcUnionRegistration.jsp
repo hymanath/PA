@@ -1846,27 +1846,27 @@
 							<h4>PRESENT ADDRESS<hr class="m_0"/></h4>
 						</div>
 					<div class="span4" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> <span id="addressErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.houseNo" value="${voterInfoVOList[0].houseNo}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 				   </div>
 					<div class="span4" id="roadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> <span id="roadErr" style="color:red;font-size:12px;"></span></h5>
-					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.street"   value="${voterInfoVOList[0].street}"></input>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.prsntAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
 					</div>
 					<div class="span4" id="landmarkDivId">
 						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> <span id="landmarkErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.landMark"   value="${voterInfoVOList[0].landmark}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.prsntAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
 					</div>
 					<div class="span4">
 				   <div class=" m_top20" >
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="presntDistrictIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
-					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.presentPerAddrsDistId" />	
+					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.prsntAddrsDistId" />	
 					  
 				   </div>
 					</div>
 					<div class="span4">
 					 <div class=" m_top20" >
 						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="presentConstituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
-						   <select id="presentConstituencyId" name="cadreRegistrationVO.presentPerAddrsConstId"> 
+						   <select id="presentConstituencyId" name="cadreRegistrationVO.prsntAddrsConstId"> 
 							 <option value="0">Select Constituency</option>
 						   </select>
 					</div>
@@ -1874,7 +1874,7 @@
 						<div class="span4">
 							<div class="m_top20">
 							   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="presentManTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
-								  <select id="presentManTowDivId" name="cadreRegistrationVO.presentPerAddrsMandalId"> 
+								  <select id="presentManTowDivId" name="cadreRegistrationVO.prsntAddrsMandalId"> 
 									  <option value="0">Select Mandal/Town/Division</option>
 								   </select>
 							</div>
@@ -1882,7 +1882,7 @@
 					<div class="span4">
 						   <div class="m_top20">
 							   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="presentVillWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
-								  <select id="presentVillWardId" name="cadreRegistrationVO.presentPerAddrsVillId"> 
+								  <select id="presentVillWardId" name="cadreRegistrationVO.prsntAddrsVillId"> 
 									  <option value="0">Select Village/Ward</option>
 								   </select>
 						   </div>
@@ -1891,27 +1891,27 @@
 							<h4>WORKING ADDRESS<hr class="m_0"/></h4>
 						</div>
 					<div class="span4" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> <span id="workAddressErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workHouseNo" value="${voterInfoVOList[0].houseNo}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 				   </div>
 					<div class="span4" id="workRoadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> <span id="workRoadErr" style="color:red;font-size:12px;"></span></h5>
-					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="WorkRoadId"name="cadreRegistrationVO.workStreet"   value="${voterInfoVOList[0].street}"></input>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="WorkRoadId"name="cadreRegistrationVO.workAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
 					</div>
 					<div class="span4" id="workLandmarkDivId">
 						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> <span id="workLandmarkErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="workLandmarkId" name="cadreRegistrationVO.workLandMark"   value="${voterInfoVOList[0].landmark}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="workLandmarkId" name="cadreRegistrationVO.workAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
 					</div>
 					<div class="span4">
 				   <div class=" m_top20" >
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
-					   <s:select theme="simple" cssClass="m_0" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.perAddrsDistId" />	
+					   <s:select theme="simple" cssClass="m_0" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.workAddrsDistId" />	
 					  
 				   </div>
 					</div>
 					<div class="span4">
 					 <div class=" m_top20" >
 						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
-						   <select id="constituencyId" name="cadreRegistrationVO.perAddrsConstId"> 
+						   <select id="constituencyId" name="cadreRegistrationVO.workAddrsConstId"> 
 							 <option value="0">Select Constituency</option>
 						   </select>
 					</div>
@@ -1919,7 +1919,7 @@
 						<div class="span4">
 							<div class="m_top20">
 							   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
-								  <select id="manTowDivId" name="cadreRegistrationVO.perAddrsMandalId"> 
+								  <select id="manTowDivId" name="cadreRegistrationVO.workAddrsMandalId"> 
 									  <option value="0">Select Mandal/Town/Division</option>
 								   </select>
 							</div>
@@ -1927,7 +1927,7 @@
 						<div class="span4">
 						   <div class="m_top20">
 							   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
-								  <select id="villWardId" name="cadreRegistrationVO.perAddrsVillId"> 
+								  <select id="villWardId" name="cadreRegistrationVO.workAddrsVillId"> 
 									  <option value="0">Select Village/Ward</option>
 								   </select>
 						   </div>
@@ -1959,28 +1959,28 @@
 							<h4>PRESENT ADDRESS<hr class="m_0"/></h4>
 						</div>
 						<div class="span4" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> <span id="addressErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.houseNo" value="${voterInfoVOList[0].houseNo}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 				   </div>
 					<div class="span4" id="roadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> <span id="roadErr" style="color:red;font-size:12px;"></span></h5>
-					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.street"   value="${voterInfoVOList[0].street}"></input>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.prsntAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
 					</div>
 					<div class="span4" id="landmarkDivId">
 						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> <span id="landmarkErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.landMark"   value="${voterInfoVOList[0].landmark}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.prsntAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
 					</div>
 					
 					<div class="span4">
 				   <div class=" m_top20" >
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="presntDistrictIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
-					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.presentPerAddrsDistId" />	
+					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.prsntAddrsDistId" />	
 					  
 				   </div>
 					</div>
 					<div class="span4">
 					 <div class=" m_top20" >
 						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="presentConstituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
-						   <select id="presentConstituencyId" name="cadreRegistrationVO.presentPerAddrsConstId"> 
+						   <select id="presentConstituencyId" name="cadreRegistrationVO.prsntAddrsConstId"> 
 							 <option value="0">Select Constituency</option>
 						   </select>
 					</div>
@@ -1988,7 +1988,7 @@
 						<div class="span4">
 							<div class="m_top20">
 							   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="presentManTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
-								  <select id="presentManTowDivId" name="cadreRegistrationVO.presentPerAddrsMandalId"> 
+								  <select id="presentManTowDivId" name="cadreRegistrationVO.prsntAddrsMandalId"> 
 									  <option value="0">Select Mandal/Town/Division</option>
 								   </select>
 							</div>
@@ -1996,7 +1996,7 @@
 						<div class="span4">
 						   <div class="m_top20">
 							   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="presentVillWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
-								  <select id="presentVillWardId" name="cadreRegistrationVO.presentPerAddrsVillId"> 
+								  <select id="presentVillWardId" name="cadreRegistrationVO.prsntAddrsVillId"> 
 									  <option value="0">Select Village/Ward</option>
 								   </select>
 						   </div>
@@ -2005,27 +2005,27 @@
 							<h4>WORKING ADDRESS<hr class="m_0"/></h4>
 					</div>
 					<div class="span4" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> <span id="workAddressErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workHouseNo" value="${voterInfoVOList[0].houseNo}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 				   </div>
 					<div class="span4" id="workRoadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> <span id="workRoadErr" style="color:red;font-size:12px;"></span></h5>
-					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="WorkRoadId"name="cadreRegistrationVO.workStreet"   value="${voterInfoVOList[0].street}"></input>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="WorkRoadId"name="cadreRegistrationVO.workAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
 					</div>
 					<div class="span4" id="workLandmarkDivId">
 						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> <span id="workLandmarkErr" style="color:red;font-size:12px;"></span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="workLandmarkId" name="cadreRegistrationVO.workLandMark"   value="${voterInfoVOList[0].landmark}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="workLandmarkId" name="cadreRegistrationVO.workAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
 					</div>
 					<div class="span4">
 				   <div class=" m_top20" >
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span><span id="districtIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>  </h5>
-					   <s:select theme="simple" cssClass="m_0" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.perAddrsDistId" />	
+					   <s:select theme="simple" cssClass="m_0" id="districtId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.workAddrsDistId" />	
 					  
 				   </div>
 					</div>
 					<div class="span4">
 					 <div class=" m_top20" >
 						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span><span id="constituencyIdErr" style="color:red;font-size:12px;"></span>  </h5>
-						   <select id="constituencyId" name="cadreRegistrationVO.perAddrsConstId"> 
+						   <select id="constituencyId" name="cadreRegistrationVO.workAddrsConstId"> 
 							 <option value="0">Select Constituency</option>
 						   </select>
 					</div>
@@ -2033,7 +2033,7 @@
 						<div class="span4">
 							<div class="m_top20">
 							   <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span><span id="manTowDivIdErr" style="color:red;font-size:12px;"></span>  </h5>
-								  <select id="manTowDivId" name="cadreRegistrationVO.perAddrsMandalId"> 
+								  <select id="manTowDivId" name="cadreRegistrationVO.workAddrsMandalId"> 
 									  <option value="0">Select Mandal/Town/Division</option>
 								   </select>
 							</div>
@@ -2041,7 +2041,7 @@
 						<div class="span4">
 						   <div class="m_top20">
 							   <h5 class="text-align1">Village/Ward <span class="mandatory">*</span><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span>  </h5>
-								  <select id="villWardId" name="cadreRegistrationVO.perAddrsVillId"> 
+								  <select id="villWardId" name="cadreRegistrationVO.workAddrsVillId"> 
 									  <option value="0">Select Village/Ward</option>
 								   </select>
 						   </div>
