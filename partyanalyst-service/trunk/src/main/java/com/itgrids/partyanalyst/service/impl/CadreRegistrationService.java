@@ -2429,8 +2429,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						List<TdpCadre> tdpCadreList=null;
 						if(tdpMemberTypeId==null){
 							tdpCadreList = tdpCadreDAO.getNormalCadreDetailsByVoterId(voterId);
-						}else if(tdpMemberTypeId==2l){
-							tdpCadreList = tdpCadreDAO.getAffliatedCadreByVoterId(voterId);
+						}else if(tdpMemberTypeId != null){
+							tdpCadreList = tdpCadreDAO.getAffliatedCadreByVoterIdAndMemberType(voterId,tdpMemberTypeId);
 						}
 						
 						if(tdpCadreList != null && tdpCadreList.size()>0)
@@ -10891,7 +10891,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return surveyCadreResponceVO;
 	}
 	
-	public List<VoterInfoVO> getSearchDetailsCadreRegistrationRTC(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex)
+	public List<VoterInfoVO> getSearchDetailsCadreRegistrationRTC(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex,Long memberTypeId)
 	{
 		String cadrePath="images/cadre_images/";
 		String voterPath="voter_images/"+constituencyId+"/Part";
@@ -10952,7 +10952,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				
 				if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0") && voterIds.size()>0)
 				{
-					List<Long> tdpCadreVoterIds = tdpCadreDAO.getVoterDetailsByVoterIdsAndRTCAffliatedCadre(voterIds);
+					List<Long> tdpCadreVoterIds = tdpCadreDAO.getVoterDetailsByVoterIdsAndRTCAffliatedCadre(voterIds,memberTypeId);
 					
 					if(tdpCadreVoterIds != null && tdpCadreVoterIds.size()>0)
 					{
@@ -10987,8 +10987,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				}
 
 				
-				searchList = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencIdRTC(constituencyId, searchQuery.toString(), panchayatId, boothId, isPresentCadre,startIndex,maxIndex);
-				 count = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencIdCountRTC(constituencyId, searchQuery.toString(), panchayatId, boothId, isPresentCadre);
+				searchList = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencIdRTC(constituencyId, searchQuery.toString(), panchayatId, boothId, isPresentCadre,startIndex,maxIndex,memberTypeId);
+				 count = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencIdCountRTC(constituencyId, searchQuery.toString(), panchayatId, boothId, isPresentCadre,memberTypeId);
 				
 				if(searchList != null && searchList.size()>0 )
 				{

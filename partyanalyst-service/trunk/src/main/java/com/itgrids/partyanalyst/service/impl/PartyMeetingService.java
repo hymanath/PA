@@ -2795,8 +2795,15 @@ public class PartyMeetingService implements IPartyMeetingService{
 								vo.setMemberType("Non Invitee Present");
 							}
 								
-							vo.setDesignation(type);
-							vo.setRoles(type);
+							if(vo.getDesignation() != null && !vo.getDesignation().isEmpty())
+							{
+								vo.setDesignation(vo.getDesignation()+","+type);
+								vo.setRoles(vo.getRoles()+","+type);
+							}
+							else{
+								vo.setDesignation(type);
+								vo.setRoles(type);
+							}
 							
 							PartyMeetingWSVO desgvo = designationMap.get(type.trim());
 							if(searchType.equalsIgnoreCase("TP")){
@@ -2817,6 +2824,28 @@ public class PartyMeetingService implements IPartyMeetingService{
 									}
 									else{
 										vo1.setNonInviteesAttendedCount(1l);
+									}
+									designationMap.put(type.trim(), vo1);
+								}
+							}
+							else if(searchType.equalsIgnoreCase("TI")){
+								if(desgvo != null){
+									desgvo.setCount(desgvo.getCount()+1l);
+									if(attendedList.contains(cadreId)){
+										desgvo.setInviteesAttendedCount(Long.valueOf(desgvo.getInviteesAttendedCount().toString())+1l);
+									}
+									else{
+										desgvo.setAbsentCount(Long.valueOf(desgvo.getAbsentCount().toString())+1l);
+									}
+								}
+								else{
+									vo1.setDesignation(type);
+									vo1.setCount(1l);
+									if(attendedList.contains(cadreId)){
+										vo1.setInviteesAttendedCount(1l);
+									}
+									else{
+										vo1.setAbsentCount(1l);
 									}
 									designationMap.put(type.trim(), vo1);
 								}
@@ -2916,6 +2945,28 @@ public class PartyMeetingService implements IPartyMeetingService{
 									}
 									else{
 										vo1.setNonInviteesAttendedCount(1l);
+									}
+									designationMap.put(role.trim(), vo1);
+								}
+							}
+							else if(searchType.equalsIgnoreCase("TI")){
+								if(desgvo != null){
+									desgvo.setCount(desgvo.getCount()+1l);
+									if(attendedList.contains(cadreId)){
+										desgvo.setInviteesAttendedCount(Long.valueOf(desgvo.getInviteesAttendedCount().toString())+1l);
+									}
+									else{
+										desgvo.setAbsentCount(Long.valueOf(desgvo.getAbsentCount().toString())+1l);
+									}
+								}
+								else{
+									vo1.setDesignation(role);
+									vo1.setCount(1l);
+									if(attendedList.contains(cadreId)){
+										vo1.setInviteesAttendedCount(1l);
+									}
+									else{
+										vo1.setAbsentCount(1l);
 									}
 									designationMap.put(role.trim(), vo1);
 								}
