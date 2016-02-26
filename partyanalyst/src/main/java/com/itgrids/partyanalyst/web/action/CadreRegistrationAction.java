@@ -118,9 +118,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private CardPrintUserVO cardPrintUserVO;
 	private AffiliatedCadreVO affiliatedCadreVO;
+	private Long tdpMemberTypeId;
 	
 	
-	
+	public Long getTdpMemberTypeId() {
+		return tdpMemberTypeId;
+	}
+	public void setTdpMemberTypeId(Long tdpMemberTypeId) {
+		this.tdpMemberTypeId = tdpMemberTypeId;
+	}
 	public AffiliatedCadreVO getAffiliatedCadreVO() {
 		return affiliatedCadreVO;
 	}
@@ -883,7 +889,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
-				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,null);
+				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,Long.valueOf(tdpMemberTypeId));
 							
 				if(user.getRegistrationID().longValue() != 3930L) // party office userId
 	    		{
@@ -2200,6 +2206,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long panchayatId = jobj.getLong("panchayatId");
 			Long boothId = jobj.getLong("boothId");
 			String isPresentCadre = jobj.getString("isPresentCadre");
+			Long memberTypeId = jobj.getLong("memberTypeId");
 			Integer startIndex = null;
 			Integer maxIndex = null;
 			try{
@@ -2209,7 +2216,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				
 			}
 			
-			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistrationRTC(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,isPresentCadre,startIndex,maxIndex);
+			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistrationRTC(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,isPresentCadre,startIndex,maxIndex,memberTypeId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchVoterAndCadreInfoBySearchCriteriaRTC method in CadreRegistrationAction Action",e);
