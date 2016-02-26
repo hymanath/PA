@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UnionTabUserVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.RtcZone;
@@ -1151,4 +1152,23 @@ public class RtcUnionService implements IRtcUnionService{
 		return rtcUnionVO;
 	}
 	
+	
+	
+	public List<UnionTabUserVO> getDesignationsOfAffiliatedUnionType(Long tdpMemberTypeId){
+		
+		List<UnionTabUserVO> finalevoList = new ArrayList<UnionTabUserVO>();
+		
+		List<Object[]> designationsList = unionTypeDesignationDAO.getDesignationsOfTdpMemberTypeId(tdpMemberTypeId);
+        if(designationsList != null && designationsList.size()>0)
+        {
+          for (Object[] designation : designationsList) {
+              UnionTabUserVO designationvo = new UnionTabUserVO();
+              designationvo.setId(designation[1]!=null?(Long)designation[1]:0l);
+              designationvo.setName(designation[2]!=null?designation[2].toString():"");
+              finalevoList.add(designationvo);
+  				}
+            }
+		return finalevoList;
+          }
+		
 }
