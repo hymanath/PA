@@ -2156,8 +2156,9 @@
 	  <property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO"/> 
 	  <property name="mobileAppUserAccessLocationDAO" ref="mobileAppUserAccessLocationDAO"/> 
 	  <property name="smsGatewayService" ref="smsGatewayService"/> 
-	   <property name="unionTabUserDAO" ref="unionTabUserDAO"/> 
-	  
+	  <property name="unionTabUserDAO" ref="unionTabUserDAO"/> 
+	  <property name="tdpMemberUnionTabUserRelationDAO" ref="tdpMemberUnionTabUserRelationDAO"/> 
+	  <property name="unionTypeDesignationDAO" ref="unionTypeDesignationDAO"/> 
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
