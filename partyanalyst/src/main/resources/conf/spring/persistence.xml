@@ -784,6 +784,7 @@
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntityType</value>
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntity</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance</value>
+				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
 			     </list>
 			
 		</property>
