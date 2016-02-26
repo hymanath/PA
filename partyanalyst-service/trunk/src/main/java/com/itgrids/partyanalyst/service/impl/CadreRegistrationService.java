@@ -44,6 +44,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.util.StringUtils;
 
 import com.google.gson.Gson;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
@@ -834,7 +835,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					 
 					System.out.println(gson.toJson(inputResponse));
 					
-					
+					if(StringUtils.hasText(inputResponse.getMemberTypeId()))
+						tdpCadreBackupDetails.setTdpMemberTypeId(Long.valueOf(inputResponse.getMemberTypeId()));
+					else 
+						tdpCadreBackupDetails.setTdpMemberTypeId(1L);
 					
 					tdpCadreBackupDetails.setRefNo(inputResponse.getRefNo());
 					//tdpCadreBackupDetails.setCadreBasicInfo(cadreBasicInfo);
