@@ -349,6 +349,9 @@
 		$('#drivingLicenseDiv').show();
 		$('#vehicleTypeDiv').show();
 		}
+		else if(tdpMemberTypeId == 6) {
+		$('#designDiv1Id').show();
+		}
 	});
 	
 	var rolesSize = 1;
@@ -533,7 +536,7 @@
 		var regionSelId = $('#regionSelectId').val();
 		var depotSelId = $('#depotSelectId').val();
 		var employeeId = $('#emplyeeId').val();
-		var designationval = $("#designationId").val();
+		var designationval = $("#desigId").val();
 		var school = $("#schoolId").val();
 		var drivingLicense = $("#drivingId").val();
 		var vehicleVal = $("#vehicleId").val();
@@ -544,11 +547,18 @@
 		var workRoadVal = $("#WorkRoadId").val();
 		var workLandmarkVal = $("#workLandmarkId").val();
 		
+		
+		var presentDistrict = $('#presentDistrictId').val();
+		var presnetConstituency = $('#presentConstituencyId').val();
+		var presentMandalId = $('#presentManTowDivId').val();
+		var presentVillageId = $('#presentVillWardId').val();
+		var designationvalue =$("#designation13Id").val();
+		
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#employeeErr').html('');
-		$('#landmarkErr,#roadErr,#addressErr,#employeeErr,#designationErr,#zoneErr,#regionErr,#depotErr,#desigErr,#schoolErr,#drivingErr,#vehicleErr,#workAddressErr,#workRoadErr,#workLandmarkErr').html('');
+		$('#landmarkErr,#roadErr,#addressErr,#employeeErr,#designationErr,#zoneErr,#regionErr,#depotErr,#desigErr,#schoolErr,#drivingErr,#vehicleErr,#workAddressErr,#workRoadErr,#workLandmarkErr,#presntDistrictIdErr,#presentConstituencyIdErr,#presentManTowDivIdErr,#presentVillWardIdErr,#districtIdErr,#constituencyIdErr,#manTowDivIdErr,#villWardIdErr,#designation13Err').html('');
 		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
 			 $('#gendReqErr').html('Please select gender');
 		 }
@@ -644,6 +654,26 @@
 		{
 			isErrorStr = " error";
 			$('#villWardIdErr').html(' Village/Ward is required.');
+		}
+		if(presentDistrict == 0)
+		{
+			isErrorStr = " error";
+			$('#presntDistrictIdErr').html('Present District is required.');
+		}
+		if(presnetConstituency == 0)
+		{
+			isErrorStr = " error";
+			$('#presentConstituencyIdErr').html('Present Constituency is required.');
+		}
+		if(presentMandalId == 0)
+		{
+			isErrorStr = " error";
+			$('#presentManTowDivIdErr').html('Present Man/Town/Div is required.');
+		}
+		if(presentVillageId == 0)
+		{
+			isErrorStr = " error";
+			$('#presentVillWardIdErr').html('Present Village/Ward is required.');
 		}
 		
 		
@@ -776,6 +806,13 @@
 			{
 				isErrorStr = " error";
 				$('#vehicleErr').html('Vehicle Type is required.');
+			}	
+		}
+		else if(tdpMemberTypeId == 6){
+			if(designationvalue == 0)
+			{
+				isErrorStr = " error";
+				$('#designation13Err').html('Designation is required.');
 			}	
 		}
 	
@@ -1740,10 +1777,15 @@
 				<div class="span4" id="designDivId" style="display:none">
 					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> <span id="desigErr" style="color:red;font-size:12px;"></span></h5>
 					<!--<input type="text" id="designationId" placeholder="designation" name="cadreRegistrationVO.desigId"/>-->
-					<select class="form-control" id="vehicleId" name="cadreRegistrationVO.vehicleTypeId">
+					<select class="form-control" id="desigId" name="cadreRegistrationVO.desigId">
+								<option value="0">Select Designation</option>
 								<option>vice Prinicipal</option>
 								<option>Assistant Teacher</option>
 					</select>
+				</div>
+				<div class="span4" id="designDiv1Id" style="display:none">
+					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> <span id="designation13Err" style="color:red;font-size:12px;"></span></h5>
+					<input type="text" id="designation13Id" placeholder="designation" name="cadreRegistrationVO.designationFrId"/>
 				</div>
 				<div class="span4" id="schoolNameDiv" style="display:none">
 					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> <span id="schoolErr" style="color:red;font-size:12px;"></span></h5>
@@ -3655,6 +3697,18 @@ $(document).ready(function(){
 			getConstituenciesForDistrict(this.value);
 		}
 	});
+	$("#presentDistrictId").change(function() {
+		$("#presentConstituencyId  option").remove();
+		$("#presentConstituencyId").append('<option value="0">Select Constituency</option>');
+		$("#presentManTowDivId  option").remove();
+		$("#presentManTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
+		$("#presentVillWardId  option").remove();
+		$("#presentVillWardId").append('<option value="0">Select Village/Ward</option>');
+		
+		if(this.value!=0){
+			getConstituenciesForDistrict1(this.value);
+		}
+	});
 	$("#constituencyId").change(function(){
 		$("#manTowDivId  option").remove();
 		$("#manTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
@@ -3671,7 +3725,22 @@ $(document).ready(function(){
 		   getMandalVillageDetails(5,this.value);
 		}
 	});
-	
+	$("#presentConstituencyId").change(function(){
+		$("#presentManTowDivId  option").remove();
+		$("#presentManTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
+		$("#presentVillWardId  option").remove();
+		$("#presentVillWardId").append('<option value="0">Select Village/Ward</option>');
+		if(this.value!=0){
+	      getMandalVillageDetails1(4,this.value);
+		}
+	});
+	$("#presentManTowDivId").change(function(){
+		$("#presentVillWardId  option").remove();
+		$("#presentVillWardId").append('<option value="0">Select Village/Ward</option>');
+		if(this.value!=0){
+		   getMandalVillageDetails1(5,this.value);
+		}
+	});
 	
 	
 	
@@ -3704,6 +3773,22 @@ $(document).ready(function(){
 		   if(result!=null && result.length>0){
 			   for(var i in result){
 				   $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+		   }
+	   });
+	}
+	function getConstituenciesForDistrict1(districtId){
+		 var jsObj={ districtId:districtId }
+		          
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesForDistrictAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			   for(var i in result){
+				   $("#presentConstituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 		   }
 	   });
@@ -3741,7 +3826,39 @@ $(document).ready(function(){
 		   }
 		});
 	}
-	
+	function getMandalVillageDetails1(locationLevel,locationId){
+		
+		var mandalId = "0";
+		var constituencyId="0";
+		var divId1 = "";
+		if(locationLevel==4){
+			divId1 = "#presentManTowDivId";
+			constituencyId=locationId;
+		}
+		if(locationLevel==5){
+			divId1 = "#presentVillWardId";
+			mandalId = locationId;
+		}
+		
+	   var jsObj={
+			constituencyId : constituencyId,
+			mandalId : mandalId,
+			locationLevel : locationLevel
+		}
+		
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubLevelLctnsForConstituencyAndMandal.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			 for(var i in result){
+				$(divId1).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}  
+		   }
+		});
+	}
 	getAddressDetails();
 	function getAddressDetails(){
 		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}' }
