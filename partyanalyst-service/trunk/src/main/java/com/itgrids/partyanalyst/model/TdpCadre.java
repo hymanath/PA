@@ -135,6 +135,15 @@ public class TdpCadre {
 	private String						voterCardType;
 	private String						mode;
 	
+	
+	private String validStatus;
+	private Long workLocationId;
+	private String schoolName;
+	private Long presentAddressId;
+	
+	private UserAddress presentAddress;
+	private UserAddress workLocation;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -902,7 +911,7 @@ public class TdpCadre {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "present_address_id")
+	@JoinColumn(name = "permanent_address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getPermanentAddress() {
@@ -936,6 +945,58 @@ public class TdpCadre {
 		this.mode = mode;
 	}
 	
+	@Column(name="valid_status")
+	public String getValidStatus() {
+		return validStatus;
+	}
+	public void setValidStatus(String validStatus) {
+		this.validStatus = validStatus;
+	}
 	
+	@Column(name="work_location_id")
+	public Long getWorkLocationId() {
+		return workLocationId;
+	}
+	public void setWorkLocationId(Long workLocationId) {
+		this.workLocationId = workLocationId;
+	}
+	
+	@Column(name="school_name")
+	public String getSchoolName() {
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+	
+	@Column(name="present_address_id")
+	public Long getPresentAddressId() {
+		return presentAddressId;
+	}
+	public void setPresentAddressId(Long presentAddressId) {
+		this.presentAddressId = presentAddressId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "present_address_id" , updatable=false,insertable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getPresentAddress() {
+		return presentAddress;
+	}
+	public void setPresentAddress(UserAddress presentAddress) {
+		this.presentAddress = presentAddress;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "work_location_id" , updatable=false,insertable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getWorkLocation() {
+		return workLocation;
+	}
+	public void setWorkLocation(UserAddress workLocation) {
+		this.workLocation = workLocation;
+	}
 	
 }
