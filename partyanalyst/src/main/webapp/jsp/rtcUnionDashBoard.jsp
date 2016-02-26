@@ -1412,7 +1412,7 @@ function buildRegisteredCadres(result,jObj)
 		return;	
 	}
 	var str='';
-str+='<table class="table table-bordered">';
+str+='<table class="table table-bordered" id="popupTable">';
 str+='<thead class="bg_cc">';
 str+='<th></th>';
 str+='<th>NAME</th>';
@@ -1439,6 +1439,10 @@ str+='</tbody>';
 str+='</table>';
 
 $("#registrationCadreDetailsPopupDiv").html(str);
+ $("#popupTable").dataTable({
+		  "aaSorting": [[ 1, "asc" ]],
+		  "iDisplayLength" : 20		
+	  });
 }
 getTotalCounts();
 getTodayCounts();
