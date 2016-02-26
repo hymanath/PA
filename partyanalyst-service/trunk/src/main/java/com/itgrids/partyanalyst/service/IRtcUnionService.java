@@ -17,11 +17,14 @@ public interface IRtcUnionService {
 	public List<IdNameVO> getRegionsOfZone(Long zoneId);
 	public List<IdNameVO> getDepotsOfRegion(Long regionId);
 	public List<IdNameVO> getDesignationsOfUnionType(Long uniontypeId);
-	public VoterAddressVO getVoterAddressDetails(Long candidateId,String searchType);
+	public VoterAddressVO getVoterAddressDetails(Long candidateId,String searchType,Long memberTypeId);
 	public RtcUnionVO getRtcUnionBasicDetails();
 	public RtcUnionVO getRtcUnionZoneWiseDetails();
 	public RtcUnionVO getRtcUnionLocationWiseDetails(String type,Long typeId);
 	public RtcUnionVO getRtcUnionAllLocationDetails();
 	public List<CadreVo> getAffiliatedCadreDetails(String type,String searchType,Long locationId);
 	public RtcUnionVO getTodayTabAndWebUsersCount();
+	public VoterAddressVO getVoterPresentAddressDetails(Long candidateId,String searchType,Long memberTypeId);
+	public VoterAddressVO getVoterPermenantAddressDetails(Long candidateId,String searchType,Long memberTypeId);
+	public VoterAddressVO getVoterWorkAddressDetails(Long candidateId,String searchType,Long memberTypeId);
 }

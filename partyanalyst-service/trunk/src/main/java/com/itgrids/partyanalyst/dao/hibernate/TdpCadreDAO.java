@@ -5795,6 +5795,24 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("tdpCadreId",tdpCadreId);
 			return (Long)query.uniqueResult();
 		}
+		public Long getUserPresentAddressId(Long tdpCadreId){
+			
+			Query query=getSession().createQuery(" select tc.presentAddress.userAddressId from TdpCadre tc where tc.tdpCadreId=:tdpCadreId and tc.isDeleted='N' ");
+			query.setParameter("tdpCadreId",tdpCadreId);
+			return (Long)query.uniqueResult();
+		}
+		public Long getUserPermenentAddressId(Long tdpCadreId){
+			
+			Query query=getSession().createQuery(" select tc.permanentAddress.userAddressId from TdpCadre tc where tc.tdpCadreId=:tdpCadreId and tc.isDeleted='N' ");
+			query.setParameter("tdpCadreId",tdpCadreId);
+			return (Long)query.uniqueResult();
+		}
+		public Long getUserWorkAddressId(Long tdpCadreId){
+			
+			Query query=getSession().createQuery(" select tc.workLocation.userAddressId from TdpCadre tc where tc.tdpCadreId=:tdpCadreId and tc.isDeleted='N' ");
+			query.setParameter("tdpCadreId",tdpCadreId);
+			return (Long)query.uniqueResult();
+		}
 		
 		public List<Object[]> getAffliatedCadreCountDetails(String type,Date date){
 			
@@ -6127,12 +6145,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return (Long) query.uniqueResult();
 		}
-		public List<Long> checkVoterAsAffliatedCadre(Long voterId){
+		public List<Long> checkVoterAsAffliatedCadre(Long voterId,Long memberTypeId){
 			
-			Query query=getSession().createQuery(" select model.tdpCadreId from  TdpCadre model where model.isDeleted='N' and model.tdpMemberTypeId=:tdpMemberTypeId and model.voterId=:voterId and model.enrollmentYear in (:enrollmentYear) ");
+			Query query=getSession().createQuery(" select model.tdpCadreId from  TdpCadre model where model.isDeleted='N' and model.tdpMemberTypeId=:memberTypeId and model.voterId=:voterId and model.enrollmentYear in (:enrollmentYear) ");
 			query.setParameter("voterId", voterId);
+			query.setParameter("memberTypeId", memberTypeId);
 			query.setParameter("enrollmentYear",  IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
-			query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
+			//query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
 			
 			return query.list();
 		}
