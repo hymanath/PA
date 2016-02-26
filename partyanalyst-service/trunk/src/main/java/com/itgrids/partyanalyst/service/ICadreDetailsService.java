@@ -26,7 +26,7 @@ public interface ICadreDetailsService {
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender);
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved);
-	public CadreCommitteeMemberVO cadreFormalDetailedInformation(Long cadreId);
+	public CadreCommitteeMemberVO cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear,Long memberTypeId);
 	public CadreCommitteeMemberVO complaintDetailsOfCadre(Long cadreId,String membershipId);
 	public List<CadreCommitteeMemberVO> getEventDetailsOfCadre(Long cadreId);
 	public VerifierVO getTdpCadreSurveyDetails(Long cadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr);
