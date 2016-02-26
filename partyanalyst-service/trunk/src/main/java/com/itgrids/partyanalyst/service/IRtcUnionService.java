@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RtcUnionVO;
+import com.itgrids.partyanalyst.dto.UnionTabUserVO;
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 
 public interface IRtcUnionService {
@@ -24,6 +25,7 @@ public interface IRtcUnionService {
 	public RtcUnionVO getRtcUnionAllLocationDetails();
 	public List<CadreVo> getAffiliatedCadreDetails(String type,String searchType,Long locationId);
 	public RtcUnionVO getTodayTabAndWebUsersCount();
+	public List<UnionTabUserVO> getDesignationsOfAffiliatedUnionType(Long tdpMemberTypeId);
 	public VoterAddressVO getVoterPresentAddressDetails(Long candidateId,String searchType,Long memberTypeId);
 	public VoterAddressVO getVoterPermenantAddressDetails(Long candidateId,String searchType,Long memberTypeId);
 	public VoterAddressVO getVoterWorkAddressDetails(Long candidateId,String searchType,Long memberTypeId);
