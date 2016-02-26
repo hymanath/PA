@@ -137,7 +137,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 				" where model.partyMeeting.partyMeetingId = model1.partyMeeting.partyMeetingId" +
 				" and model.attendance.tdpCadreId = model1.tdpCadre.tdpCadreId " +
 				" and model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
-				" and and model.attendance.tdpCadre.isDeleted='N' " +
+				" and model.attendance.tdpCadre.isDeleted='N' " +
 				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear " +
 				" group by model.partyMeeting.partyMeetingId");
 		
