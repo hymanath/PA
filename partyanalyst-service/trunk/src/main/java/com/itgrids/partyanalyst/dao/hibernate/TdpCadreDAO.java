@@ -419,11 +419,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("voterId", voterId);
 		return query.list();
 	}
-	public List<TdpCadre> getAffliatedCadreByVoterId(Long voterId)
+	public List<TdpCadre> getAffliatedCadreByVoterId(Long voterId,Long memberTypeId)
 	{
 		Query query = getSession().createQuery("select model from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' and model.tdpMemberTypeId=:tdpMemberTypeId and model.enrollmentYear = :enrollmentYear ");
 		query.setParameter("voterId", voterId);
-		query.setParameter("tdpMemberTypeId", IConstants.AFFLIATED_TDP_MEMBER_TYPE_ID);
+		query.setParameter("tdpMemberTypeId", memberTypeId);
 		query.setParameter("enrollmentYear",  IConstants.RTC_AFFLIATED_CADRE_ENROLLMENT_NUMBER);
 		return query.list();
 	}
