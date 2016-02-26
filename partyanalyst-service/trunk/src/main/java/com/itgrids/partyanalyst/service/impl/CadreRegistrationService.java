@@ -897,7 +897,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									if(cadreRegistrationVO.getVoterId() != null && cadreRegistrationVO.getVoterId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
 									{
 										flag = false;
-										List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
+										List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()),1L);
 										if(voterIdsList.size()  == 0)
 										{
 											TdpCadre tdpCadre = new TdpCadre();
@@ -964,7 +964,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 											if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
 											{
 												Long voterId = voterCardNumbersList.get(0);
-												List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(voterId);
+												List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(voterId,1L);
 												if(voterIdsList.size()  == 0)
 												{
 													TdpCadre tdpCadre = new TdpCadre();
@@ -11270,43 +11270,158 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						if(cadreRegistrationVO.getDesignationId() != null){
 							tdpCadre.setDesignationId(cadreRegistrationVO.getDesignationId());
 						}
-						tdpCadre.setTdpMemberTypeId(2l);
-						tdpCadre.setUnionTypeId(1l);
 						
+						//tdpCadre.setTdpMemberTypeId(2l);
+						//tdpCadre.setUnionTypeId(1l);
 						
-						//ZONES SAVING.
-						//SAVING FOR TAB.
-						TdpCadreLocation tdpCadreLocation = new TdpCadreLocation();
-						if((cadreRegistrationVO.getZoneId() == null || cadreRegistrationVO.getZoneId() == 0l) && (cadreRegistrationVO.getRegionId() == null || cadreRegistrationVO.getRegionId() == 0l) && (cadreRegistrationVO.getDepotId() != null)){
-							
-							Object[] regionZoneDetails=rtcDepotDAO.getRegionAndZoneByDepotId(cadreRegistrationVO.getDepotId());
-							if(regionZoneDetails!=null && regionZoneDetails.length>0){
-								
-								tdpCadreLocation.setRtcZoneId(regionZoneDetails[2]!=null?(Long)regionZoneDetails[2]:null);
-								tdpCadreLocation.setRtcRegionId(regionZoneDetails[1]!=null?(Long)regionZoneDetails[1]:null);
-								tdpCadreLocation.setRtcDepotId(cadreRegistrationVO.getDepotId());
-							}
-							
-			            }else{//SAVING FOR WEB.
-			            	
-			            	if(cadreRegistrationVO.getZoneId() != null && cadreRegistrationVO.getZoneId() > 0l){
-								tdpCadreLocation.setRtcZoneId(cadreRegistrationVO.getZoneId());
-							}
-							if(cadreRegistrationVO.getRegionId() != null && cadreRegistrationVO.getRegionId() > 0l){
-								tdpCadreLocation.setRtcRegionId(cadreRegistrationVO.getRegionId());
-							}
-							if(cadreRegistrationVO.getDepotId() != null && cadreRegistrationVO.getDepotId() > 0l){
-								tdpCadreLocation.setRtcDepotId(cadreRegistrationVO.getDepotId());
-							}
-			            	
-			            }
-						
-						
-						tdpCadreLocation = tdpCadreLocationDAO.save(tdpCadreLocation);
-						
-						if(tdpCadreLocation.getTdpCadreLocationId() !=null && tdpCadreLocation.getTdpCadreLocationId() > 0l){
-							tdpCadre.setTdpCadreLocationId(tdpCadreLocation.getTdpCadreLocationId());
+						if(cadreRegistrationVO.getMemberTypeId() != null && !cadreRegistrationVO.getMemberTypeId().isEmpty()){
+							tdpCadre.setTdpMemberTypeId(Long.valueOf(cadreRegistrationVO.getMemberTypeId()));
 						}
+						
+						if(tdpCadre.getTdpMemberTypeId() != null && tdpCadre.getTdpMemberTypeId() == 2L){
+							
+							if(cadreRegistrationVO.getUnionTypeId() != null && cadreRegistrationVO.getUnionTypeId().longValue()>0L){
+								tdpCadre.setUnionTypeId(Long.valueOf(cadreRegistrationVO.getUnionTypeId()));
+							}
+							
+							//ZONES SAVING.
+							//SAVING FOR TAB.
+							TdpCadreLocation tdpCadreLocation = new TdpCadreLocation();
+							if((cadreRegistrationVO.getZoneId() == null || cadreRegistrationVO.getZoneId() == 0l) && (cadreRegistrationVO.getRegionId() == null || cadreRegistrationVO.getRegionId() == 0l) && (cadreRegistrationVO.getDepotId() != null)){
+								
+								Object[] regionZoneDetails=rtcDepotDAO.getRegionAndZoneByDepotId(cadreRegistrationVO.getDepotId());
+								if(regionZoneDetails!=null && regionZoneDetails.length>0){
+									
+									tdpCadreLocation.setRtcZoneId(regionZoneDetails[2]!=null?(Long)regionZoneDetails[2]:null);
+									tdpCadreLocation.setRtcRegionId(regionZoneDetails[1]!=null?(Long)regionZoneDetails[1]:null);
+									tdpCadreLocation.setRtcDepotId(cadreRegistrationVO.getDepotId());
+								}
+								
+				            }else{//SAVING FOR WEB.
+				            	
+				            	if(cadreRegistrationVO.getZoneId() != null && cadreRegistrationVO.getZoneId() > 0l){
+									tdpCadreLocation.setRtcZoneId(cadreRegistrationVO.getZoneId());
+								}
+								if(cadreRegistrationVO.getRegionId() != null && cadreRegistrationVO.getRegionId() > 0l){
+									tdpCadreLocation.setRtcRegionId(cadreRegistrationVO.getRegionId());
+								}
+								if(cadreRegistrationVO.getDepotId() != null && cadreRegistrationVO.getDepotId() > 0l){
+									tdpCadreLocation.setRtcDepotId(cadreRegistrationVO.getDepotId());
+								}
+				            }
+							
+							tdpCadreLocation = tdpCadreLocationDAO.save(tdpCadreLocation);
+							
+							if(tdpCadreLocation.getTdpCadreLocationId() !=null && tdpCadreLocation.getTdpCadreLocationId() > 0l){
+								tdpCadre.setTdpCadreLocationId(tdpCadreLocation.getTdpCadreLocationId());
+							}
+						}
+						
+						boolean isPresentAddressAvailable =false;
+						
+							   UserAddress presentAddress = new UserAddress();
+						       
+							   if(cadreRegistrationVO.getPrsntAddrsDistId() != null && cadreRegistrationVO.getPrsntAddrsDistId() > 0l){
+								   presentAddress.setDistrict(districtDAO.get(cadreRegistrationVO.getPerAddrsDistId()));
+								   isPresentAddressAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getPrsntAddrsConstId() != null && cadreRegistrationVO.getPrsntAddrsConstId() > 0l){
+								   presentAddress.setConstituency(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsConstId()));
+								   isPresentAddressAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getPrsntAddrsMandalId() != null && cadreRegistrationVO.getPrsntAddrsMandalId() > 0l){
+								   presentAddress.setTehsil(tehsilDAO.get(cadreRegistrationVO.getPrsntAddrsMandalId()));
+								   isPresentAddressAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getPrsntAddrsLebId() != null && cadreRegistrationVO.getPrsntAddrsLebId() > 0l){
+								   presentAddress.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getPrsntAddrsLebId()));
+								   isPresentAddressAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getPrsntAddrsVillId() != null && cadreRegistrationVO.getPrsntAddrsVillId() > 0l){
+								   presentAddress.setPanchayatId(cadreRegistrationVO.getPrsntAddrsVillId());
+								   isPresentAddressAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getPrsntAddrsWardId() != null && cadreRegistrationVO.getPrsntAddrsWardId() > 0l){
+								   presentAddress.setWard(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsWardId()));
+								   isPresentAddressAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getPrsntAddrsStreet() != null && cadreRegistrationVO.getPrsntAddrsStreet().trim() != ""){
+								   presentAddress.setStreet(cadreRegistrationVO.getPrsntAddrsStreet());
+								   isPresentAddressAvailable =true;
+								}
+							   
+							   if(cadreRegistrationVO.getPrsntAddrsLandmark() != null && cadreRegistrationVO.getPrsntAddrsLandmark().trim() != ""){
+								   presentAddress.setAddressLane1(cadreRegistrationVO.getPrsntAddrsLandmark());
+								   isPresentAddressAvailable =true;
+							   }
+							   
+							   
+							   if(isPresentAddressAvailable){
+								   presentAddress= userAddressDAO.save(presentAddress);
+								   tdpCadre.setPresentAddress(presentAddress);
+							   }
+							  
+						
+							   boolean isWorkLocationAvailable =false;
+							   
+								if(cadreRegistrationVO.getSchoolName() != null && !cadreRegistrationVO.getSchoolName().isEmpty()){
+									tdpCadre.setSchoolName(cadreRegistrationVO.getSchoolName());
+								}
+							
+							   UserAddress workLocation = new UserAddress();
+						       
+							   if(cadreRegistrationVO.getWorkAddrsDistId() != null && cadreRegistrationVO.getWorkAddrsDistId() > 0l){
+								   workLocation.setDistrict(districtDAO.get(cadreRegistrationVO.getWorkAddrsDistId()));
+								   isWorkLocationAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getWorkAddrsConstId() != null && cadreRegistrationVO.getWorkAddrsConstId() > 0l){
+								   workLocation.setConstituency(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsConstId()));
+								   isWorkLocationAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getWorkAddrsMandalId() != null && cadreRegistrationVO.getWorkAddrsMandalId() > 0l){
+								   workLocation.setTehsil(tehsilDAO.get(cadreRegistrationVO.getWorkAddrsMandalId()));
+								   isWorkLocationAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getWorkAddrsLebId() != null && cadreRegistrationVO.getWorkAddrsLebId() > 0l){
+								   workLocation.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsLebId()));
+								   isWorkLocationAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getWorkAddrsVillId() != null && cadreRegistrationVO.getWorkAddrsVillId() > 0l){
+								   workLocation.setPanchayatId(cadreRegistrationVO.getWorkAddrsVillId());
+								   isWorkLocationAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getWorkAddrsWardId() != null && cadreRegistrationVO.getWorkAddrsWardId() > 0l){
+								   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsWardId()));
+								   isWorkLocationAvailable =true;
+							   }
+							   
+							   if(cadreRegistrationVO.getWorkAddrsStreet() != null && cadreRegistrationVO.getWorkAddrsStreet().trim() != ""){
+								   workLocation.setStreet(cadreRegistrationVO.getStreet());
+								   isWorkLocationAvailable =true;
+								}
+							   
+							   if(cadreRegistrationVO.getWorkAddrsLandmark() != null && cadreRegistrationVO.getWorkAddrsLandmark().trim() != ""){
+								   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
+								   isWorkLocationAvailable =true;
+							   }
+							   
+							   if(isWorkLocationAvailable)
+							   {
+								   workLocation= userAddressDAO.save(workLocation);
+								   tdpCadre.setWorkLocation(workLocation);
+							   }
+						
 						
 						
 						
@@ -11347,10 +11462,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						   
 						   userAddress= userAddressDAO.save(userAddress);
 						   tdpCadre.setUserAddress(userAddress);
-						   
-					
-					
-					
 						
 					TdpCadreOnline tdpCadreOnline = null;
 					if(registrationType.equalsIgnoreCase("ONLINE")){
