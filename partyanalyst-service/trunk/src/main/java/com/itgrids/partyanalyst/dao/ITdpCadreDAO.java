@@ -393,7 +393,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getAffliatedCadreCountDetails(String type,Date today);
 	  public List<Object[]> getRtcUnionZoneWiseDetails(String searchType,Date date);
 	  public List<Object[]> getRtcUnionAllLocationDetails(String searchType,Date date);
-	  public List checkUnionMemberExists(String voterCardNo);
+	  public List checkUnionMemberExists(String voterCardNo,Long memberTypeId);
 	  public List<Object[]> getRtcUnionDeptDetails(String searchType,Date date);
 	  public List<Object[]> getAffiliatedCadreDetails(String type,String searchType,Long locationId);
 	  public List<Long> getVoterDetailsByVoterIdsAndRTCAffliatedCadre(List<Long> voterIdList);
