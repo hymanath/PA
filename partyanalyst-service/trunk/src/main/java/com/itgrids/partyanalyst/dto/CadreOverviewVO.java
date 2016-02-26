@@ -67,10 +67,22 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private String familyVoterCardNum;
 	private boolean voterExists;
 	private String	familyVoterId;
+	private String memberType;
+	private Long memberTypeId;
 	
 	
-	
-	
+	public Long getMemberTypeId() {
+		return memberTypeId;
+	}
+	public void setMemberTypeId(Long memberTypeId) {
+		this.memberTypeId = memberTypeId;
+	}
+	public String getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
+	}
 	public String getFamilyVoterId() {
 		return familyVoterId;
 	}

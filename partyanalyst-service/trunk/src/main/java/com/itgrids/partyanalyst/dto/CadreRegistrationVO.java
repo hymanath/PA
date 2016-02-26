@@ -128,6 +128,7 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		perAddrsWardId;
 	private String 		employeeId;
 	private String		mode;
+	
 	private Long		prsntAddrsStateId;
 	private Long		prsntAddrsDistId;
 	private Long		prsntAddrsConstId;
@@ -137,13 +138,58 @@ public class CadreRegistrationVO implements Serializable{
 	private Long		prsntAddrsVillId;
 	private Long		prsntAddrsWardId;
 	private String      districtId;
+	private Long        desigId;
+	private String      schoolName;
+	private String      prsntAddrsHNo;
+	private String      prsntAddrsLandmark;
+	private String      prsntAddrsStreet;
+	private String      prsntAddrsPincode;
+	private String      memberTypeId;
+	
 	private String		relativeVoterCardNo;
 	private String      voterCardType;
-	private Long        desigId;
-	private Long        schoolNameId;
 	private Long        drivingLicenseId;
 	private Long        vehicleTypeId;
+	private Long        schoolNameId;
 	
+	
+	
+	public String getPrsntAddrsHNo() {
+		return prsntAddrsHNo;
+	}
+	public void setPrsntAddrsHNo(String prsntAddrsHNo) {
+		this.prsntAddrsHNo = prsntAddrsHNo;
+	}
+	public String getPrsntAddrsLandmark() {
+		return prsntAddrsLandmark;
+	}
+	public void setPrsntAddrsLandmark(String prsntAddrsLandmark) {
+		this.prsntAddrsLandmark = prsntAddrsLandmark;
+	}
+	public String getPrsntAddrsStreet() {
+		return prsntAddrsStreet;
+	}
+	public void setPrsntAddrsStreet(String prsntAddrsStreet) {
+		this.prsntAddrsStreet = prsntAddrsStreet;
+	}
+	public String getPrsntAddrsPincode() {
+		return prsntAddrsPincode;
+	}
+	public void setPrsntAddrsPincode(String prsntAddrsPincode) {
+		this.prsntAddrsPincode = prsntAddrsPincode;
+	}
+	public String getMemberTypeId() {
+		return memberTypeId;
+	}
+	public void setMemberTypeId(String memberTypeId) {
+		this.memberTypeId = memberTypeId;
+	}
+	public String getSchoolName() {
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
 	public String getRelativeVoterCardNo() {
 		return relativeVoterCardNo;
 	}
