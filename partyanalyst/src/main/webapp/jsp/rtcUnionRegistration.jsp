@@ -73,6 +73,7 @@
 
 
 	<style>
+	#fadeInLeft{max-height:840px;}
 	.m_0{margin:0px !important}
 	body{margin-bottom:120px;}
 	.footerFixedStrip{
@@ -615,6 +616,7 @@
 			if(!cbck){
 				isErrorStr = " error";
 				$('#cardErr').html(' Voter Card No is required.');
+				
 			}else{
 				var familyVoterId = $('#familyVtrCrdId').val();
 				if(familyVoterId == null || $.trim(familyVoterId).length == 0){
@@ -2943,9 +2945,14 @@ function buildCandidateDetails(result,nominationId)
 function showHideFamRelatinoSts(){
    $("#cardErr").html("");
    if($('#relativeTypeChecked').prop('checked')==true){
+	   
      $('#showHideFammemberType').show();
+	 var checkDiv = $("#fadeInLeft").height()+100;
+	 $(".setHeight").css("height",checkDiv)
    }else{
      $('#showHideFammemberType').hide();
+	 var checkDiv = $("#fadeInLeft").height()-50;
+	 $(".setHeight").css("height",checkDiv)
    }
 }
 function getAllRelationDetails(){
