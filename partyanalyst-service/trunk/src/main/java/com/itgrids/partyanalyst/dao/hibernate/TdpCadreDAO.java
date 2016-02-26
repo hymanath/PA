@@ -6087,7 +6087,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					queryStr.append(" and TC.tdpMemberTypeId in (:membereTypeIdsList) ");
 				if(fromDate != null && toDate != null)
 					queryStr.append(" and (date(TC.insertedTime) between :fromDate and :toDate )");
-				queryStr.append(" and model.isDeleted ='N' and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
+				queryStr.append(" and TC.isDeleted ='N' and TC.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
 				queryStr.append(" group by ");
 				if(searchTypeStr.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
 					queryStr.append(" UA.constituency.constituencyId, ");
