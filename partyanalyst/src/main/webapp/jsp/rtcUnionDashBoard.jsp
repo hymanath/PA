@@ -448,7 +448,7 @@ body{color:#666 !important}
 
 					</div>
       <div class="modal-body">
-        <table class="table table-bordered">
+        <!--<table class="table table-bordered">
 			<thead class="bg_cc">
 				<th></th>
 				<th>NAME</th>
@@ -475,12 +475,13 @@ body{color:#666 !important}
 					<td>Tab</td>
 				</tr>
 			</tbody>
-		</table>
+		</table>-->
       </div>
     </div>
   </div>
+  </div>
 	<!-- Model-->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="myModalDiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -1054,7 +1055,7 @@ $.ajax({
 				str1+='<tbody>';
 				for(var i in result){
 					str1+='<tr>';
-						str1+='<td><img src="dist/2016DashBoard/img/profileIcon.jpg" class="profileIcon"></td>';
+						str1+='<td><img src="dist/2016DashBoard/img/profile.png" class="profileIcon"></td>';
 						str1+='<td>'+result[i].firstName+'</td>';
 						str1+='<td>'+result[i].mobileNo+'</td>';
 						str1+='<td>'+result[i].voterCardId+'</td>';
@@ -1356,9 +1357,9 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		for(var i in result){
 				str+='<tr>';
 				if(locationLevel == "District")
-					str+='<td class="cursorH" data-toggle="modal" data-target="#myModal" onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv" onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';
 				else
-					str+='<td class="cursorH" data-toggle="modal" data-target="#myModal"  onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';		
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv"  onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';		
 							str+='<td>'+result[i].totalCount+'</td>';
 							str+='<td>'+result[i].tabCount+'</td>';	
 							str+='<td>'+result[i].webCount+'</td>';
@@ -1426,7 +1427,7 @@ str+='<tr>';
 if(result[i].ImgStr != null)
 str+='<td><img src="'+result[i].ImgStr+'" class="thumbnail" style="width:75px;height:75px;"></td>';
 else
-str+='<td><img src="dist/img/profileIcon.jpg" class="thumbnail" style="width:75px;height:75px;"></td>';
+str+='<td><img src="dist/2016DashBoard/img/profile.png" class="thumbnail" style="width:75px;height:75px;"></td>';
 	
 str+='<td>'+result[i].name+'</td>';
 str+='<td>'+result[i].mobileNo+'</td>';
