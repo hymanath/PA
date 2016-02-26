@@ -687,10 +687,43 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	public String getVoterAddressDetails(){
 		try {
 			jObj = new JSONObject(getTask());
-			voterAddressVO=rtcUnionService.getVoterAddressDetails(jObj.getLong("candidateId"),jObj.getString("searchType"));
+			voterAddressVO=rtcUnionService.getVoterAddressDetails(jObj.getLong("candidateId"),jObj.getString("searchType"),jObj.getLong("memberTypeId"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getVoterAddressDetails()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getVoterPresentAddressDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			voterAddressVO=rtcUnionService.getVoterPresentAddressDetails(jObj.getLong("candidateId"),jObj.getString("searchType"),jObj.getLong("memberTypeId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVoterPresentAddressDetails()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getVoterPermenantAddressDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			voterAddressVO=rtcUnionService.getVoterPermenantAddressDetails(jObj.getLong("candidateId"),jObj.getString("searchType"),jObj.getLong("memberTypeId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVoterPermenantAddressDetails()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getVoterWorkAddressDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			voterAddressVO=rtcUnionService.getVoterWorkAddressDetails(jObj.getLong("candidateId"),jObj.getString("searchType"),jObj.getLong("memberTypeId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVoterWorkAddressDetails()",e);
 		}
 		return Action.SUCCESS;
 	}
