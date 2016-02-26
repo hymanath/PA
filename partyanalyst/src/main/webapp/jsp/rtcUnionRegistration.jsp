@@ -1635,25 +1635,38 @@
 											</div>
 										  </s:else>
 												<c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
-													<div class="span4 famlyMemClsDiv">												
+													<div class="span6 famlyMemClsDiv">												
 														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();" checked="true"/> Is Family Member
 													</div>
-													<div  class="span6" id="showHideFammemberType" style="display:block; margin-left: 165px;margin-top: -33px;">
-														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-														<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
-														 <span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
-														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
+													<div  id="showHideFammemberType" style="display:block;"  class="span12">
+														<div  class="span6">
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="relativeTypeId" id="relativeTypeId"> </select>
+														</div>
+														<div  class="span6">
+															<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+															<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
+														</div>
+														<div  class="span6">
+															<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
+														</div>
 													</div>
 												</c:if>
 												<c:if test="${empty voterInfoVOList[0].fmlyVCardNo}">	
-													<div class="span4 famlyMemClsDiv">
+													<div class="span6 famlyMemClsDiv">
 														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member 
 													</div>
-													<div  class="span6" id="showHideFammemberType" style="display:none ; margin-left: 165px;margin-top: -33px;">
-														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-														<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
-														<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
-														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
+													<div  id="showHideFammemberType" style="display:none ;" class="span12">
+														<div  class="span6">
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="relativeTypeId" id="relativeTypeId"> </select>
+														</div>
+														<div  class="span6">
+															<label style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</label>
+															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+															<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
+														</div>
+														<div  class="span6">
+															<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
+														</div>
 													</div>
 												</c:if>
 										</div>
@@ -3086,7 +3099,7 @@ function showNewTakenImg(){
 		var panchayatId = '${param.houseNo}';
 		var boothId = '${param.boothId}';
 		var isPresentCadre = '${param.panchayatId}';
-				
+		var tdpMemberTypeId	 = '${param.tdpMemberTypeId}';
 		var isError = false ;
 		
 		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z ]+$/.test(candidateName)))
@@ -3188,6 +3201,7 @@ function showNewTakenImg(){
 					  panchayatId : panchayatId,
 					  boothId : boothId ,
 					  isPresentCadre : isPresentCadre,
+					  memberTypeId:tdpMemberTypeId,
 					  task:"searchCandidatesDtailsBySearchCriteria"             
 				   }
 
@@ -3861,7 +3875,7 @@ $(document).ready(function(){
 	}
 	//getAddressDetails();
 	/*function getAddressDetails(){
-		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}',memberTypeId:'${param.tdpMemberTypeId}' }
+		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}' }
 		
 		$.ajax({
 			  type:'GET',
@@ -3933,7 +3947,6 @@ $(document).ready(function(){
 		}
 		
 	}*/
-	
 	getPresentAddressDetails();
 	function getPresentAddressDetails(){
 		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}',memberTypeId:'${param.tdpMemberTypeId}' }
@@ -4084,7 +4097,6 @@ $(document).ready(function(){
 			}
 		}
 	}
-	
 	//getAllRTCZones();
 	function getAllRTCZones(){
 		var jsObj={};
