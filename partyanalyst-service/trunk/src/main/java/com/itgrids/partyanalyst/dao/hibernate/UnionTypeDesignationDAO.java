@@ -16,10 +16,19 @@ public class UnionTypeDesignationDAO extends GenericDaoHibernate<UnionTypeDesign
 	}
 	
 	public List<Object[]> getDesignationsOfUnionType(Long uniontypeId){
-		Query query = getSession().createQuery(" select model.designation.designationId,model.designation.designation " +
+		Query query = getSession().createQuery(" select distinct model.designation.designationId,model.designation.designation " +
 				" from UnionTypeDesignation model " +
 				" where model.designation.isActive='Y' and model.unionTypeId=:uniontypeId ");
 		query.setParameter("uniontypeId", uniontypeId);
 		return query.list();
 	}
+	
+	public List<Object[]> getDesignationsOfTdpMemberTypeIdsList(List<Long> tdpMemberTypeIdsList){
+		Query query = getSession().createQuery(" select distinct model.tdpMemberTypeId, model.designation.designationId,model.designation.designation " +
+				" from UnionTypeDesignation model " +
+				" where model.designation.isActive='Y' and model.tdpMemberTypeId in (:tdpMemberTypeIdsList) ");
+		query.setParameterList("tdpMemberTypeIdsList", tdpMemberTypeIdsList);
+		return query.list();
+	}
+	
 }

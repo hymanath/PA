@@ -5889,12 +5889,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 		
 		
-		public List checkUnionMemberExists(String voterCardNo)
+		public List checkUnionMemberExists(String voterCardNo,Long memberTypeId)
 		{
-			Query query = getSession().createQuery("select model.tdpCadreId,model.voter.voterIDCardNo from TdpCadre model where model.voter.voterIDCardNo = :voterCardNo" +
-					" and model.tdpMemberType.tdpMemberTypeId = 2 " +
+			Query query = getSession().createQuery("select distinct model.tdpCadreId,model.voter.voterIDCardNo from TdpCadre model where model.voter.voterIDCardNo = :voterCardNo" +
+					" and model.tdpMemberType.tdpMemberTypeId = :memberTypeId " +
 					" and model.isDeleted='N'");
 			query.setParameter("voterCardNo", voterCardNo);
+			query.setParameter("memberTypeId", memberTypeId);
 			return query.list();
 		}
 		
