@@ -113,8 +113,11 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 				" count(distinct model.attendance.tdpCadreId) " +
 				" from PartyMeetingAttendance model" +
 				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" and model.attendance.tdpCadre.isDeleted='N'" +
+				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear " +
 				" group by model.partyMeeting.partyMeetingId");
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		return query.list();
 	}
 	
@@ -134,8 +137,13 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 				" where model.partyMeeting.partyMeetingId = model1.partyMeeting.partyMeetingId" +
 				" and model.attendance.tdpCadreId = model1.tdpCadre.tdpCadreId " +
 				" and model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" and and model.attendance.tdpCadre.isDeleted='N' " +
+				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear " +
 				" group by model.partyMeeting.partyMeetingId");
+		
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		
 		return query.list();
 	}
 	

@@ -116,11 +116,14 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 				" count(model.tdpCadre.tdpCadreId)" +
 				" from PartyMeetingInvitee model" +
 				" where " +
-				" model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
+				" model.partyMeeting.partyMeetingId in(:partyMeetingIds) " +
+				" and model.tdpCadre.isDeleted='N'" +
+				" and model.tdpCadre.enrollmentYear=:enrollmentYear " +
 				" group by model.partyMeeting.partyMeetingId " +
 				" order by model.partyMeeting.partyMeetingId desc ");
 		
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		return query.list();
 	}
 	
