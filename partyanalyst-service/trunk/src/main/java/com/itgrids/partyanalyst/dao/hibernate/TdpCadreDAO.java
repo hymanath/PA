@@ -6120,11 +6120,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 						" model.tdpMemberType.tdpMemberTypeId," +
 						" model.tdpMemberType.memberType," +
 						" model.dataSourceType" +
-						" from TdpCadre model ");
+						" from TdpCadre model where model.isDeleted ='N'");
 			if(fromDate != null && toDate != null){
-				sb.append(" where (date(model.surveyTime) between :fromDate and :toDate) ");
+				sb.append(" and (date(model.surveyTime) between :fromDate and :toDate) ");
 			}
-			sb.append(" and model.isDeleted ='N' and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
+			sb.append(" and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
 			sb.append(" group by model.tdpMemberType.tdpMemberTypeId,model.dataSourceType ");
 			
 			Query query = getSession().createQuery(sb.toString());
