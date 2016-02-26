@@ -109,7 +109,8 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 							" model.levelValue" +
 							" from PublicRepresentative model,TdpCadreCandidate model1" +
 							" where model.candidateId = model1.candidateId" +
-							" and model1.tdpCadreId in (:candidateIds) ) ");
+							" and model1.tdpCadreId in (:candidateIds) )  and  " +
+							" model1.tdpCadre.isDeleted='N' and  model1.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+"");
 		query.setParameterList("candidateIds", candidateIds);
 		
 		return query.list();

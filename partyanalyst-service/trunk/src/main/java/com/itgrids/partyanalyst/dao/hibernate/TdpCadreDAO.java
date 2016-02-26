@@ -393,11 +393,25 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return Long.valueOf(Integer.valueOf(list.size()).toString());
 	}
 	
-	public List<TdpCadre> getVoterByVoterId(Long voterId)
+	public List<TdpCadre> getVoterByVoterId(Long voterId,Long memberTypeId)
 	{
-		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' ");
-		query.setParameter("voterId", voterId);
-		return query.list();
+		if(memberTypeId != null && memberTypeId.longValue()>1L){
+			Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and " +
+					" model.isDeleted = 'N' and model.tdpMemberTypeId=:tdpMemberTypeId and model.enrollmentYear = :enrollmentYear ");
+			query.setParameter("voterId", voterId);
+			query.setParameter("tdpMemberTypeId", memberTypeId);
+			query.setParameter("enrollmentYear",  IConstants.UNIONS_REGISTRATION_YEAR);
+			return query.list();
+		}
+		else
+		{
+			Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and " +
+					" model.isDeleted = 'N' and model.enrollmentYear = :enrollmentYear ");
+			query.setParameter("voterId", voterId);
+			query.setParameter("tdpMemberTypeId", memberTypeId);
+			query.setParameter("enrollmentYear",  IConstants.CADRE_ENROLLMENT_NUMBER);
+			return query.list();
+		}
 	}
 	public List<TdpCadre> getNormalCadreDetailsByVoterId(Long voterId)
 	{
@@ -5355,18 +5369,53 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					return query.list();
 				}
 		
-		public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear){
+		public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear,Long tdpMemberTypeId){
 
 			
 			StringBuilder queryStr=new StringBuilder();
 			
-			queryStr.append(" select model.tdpCadreId,model.firstname,date(model.dateOfBirth),model.age,eduQualification.eduQualificationId,eduQualification.qualification," +
-					"  occupation.occupationId,occupation.occupation,voter.voterId,panchayat.panchayatName,tehsil.tehsilName," +
-					" constituency.name,model.mobileNo,constituency.constituencyId,voter.voterIDCardNo,model.image,model.memberShipNo,model.houseNo " +
-					" ,district.districtName,state.stateName,caste.casteName,model.insertedWebUserId,date(model.insertedTime),model.emailId,model.dataSourceType" +
-					",panchayat.panchayatId,tehsil.tehsilId,district.districtId,state.stateId,parliamentConstituency.constituencyId,parliamentConstituency.name , " +
-					" booth.boothId,booth.partNo, ward.constituencyId, ward.name,constituency.areaType , familyVoter.voterId,familyVoter.voterIDCardNo, model.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
-					" cadreDeleteReason.reason,voter.gender " +
+			queryStr.append(" select model.tdpCadreId," +//0
+					"model.firstname," +
+					"date(model.dateOfBirth)," +
+					"model.age," +
+					"eduQualification.eduQualificationId,eduQualification.qualification," +
+					"  occupation.occupationId," +
+					"occupation.occupation," +
+					"voter.voterId," +
+					"panchayat.panchayatName," +
+					"tehsil.tehsilName," +
+					" constituency.name," +//10
+					"model.mobileNo," +
+					"constituency.constituencyId," +
+					"voter.voterIDCardNo," +
+					"model.image," +
+					"model.memberShipNo," +
+					"model.houseNo " +
+					" ,district.districtName," +
+					"state.stateName," +
+					"caste.casteName," +
+					"model.insertedWebUserId," +//20
+					"date(model.insertedTime)," +
+					"model.emailId,model.dataSourceType" +
+					",panchayat.panchayatId," +
+					"tehsil.tehsilId," +
+					"district.districtId," +
+					"state.stateId," +
+					"parliamentConstituency.constituencyId," +
+					"parliamentConstituency.name , " +
+					" booth.boothId," +
+					"booth.partNo," +//30
+					" ward.constituencyId," +
+					" ward.name," +
+					"constituency.areaType ," +
+					" familyVoter.voterId," +
+					"familyVoter.voterIDCardNo, " +//35
+					"model.isDeleted," +
+					"cadreDeleteReason.cadreDeleteReasonId," +
+					" cadreDeleteReason.reason," +
+					"voter.gender," +
+					"model.relativename," +//40
+					"model.relativeType " +
 					" from TdpCadre model " );
 			queryStr.append(" left join model.educationalQualifications eduQualification ");
 			queryStr.append(" left join model.occupation occupation ");
@@ -5385,17 +5434,22 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" left join model.cadreDeleteReason cadreDeleteReason ");
 			
 			if(cadreId !=null){
-				queryStr.append(" where model.tdpCadreId =:cadreId and (model.isDeleted ='N' or model.isDeleted = 'MD' )");
+				queryStr.append(" where model.tdpCadreId =:cadreId and (model.isDeleted ='N' or model.isDeleted = 'MD' ) ");
 			}
+			if(tdpMemberTypeId != null && tdpMemberTypeId.longValue() >1L)
+				queryStr.append(" and model.tdpMemberTypeId =:tdpMemberTypeId ");
+			
 			if(enrollmentYear !=null){
 				queryStr.append(" and model.enrollmentYear =:enrollmentYear  ");
 			}
-			
+	
 			Query query=getSession().createQuery(queryStr.toString());
-			
 			
 			query.setParameter("cadreId", cadreId);
 			query.setParameter("enrollmentYear", enrollmentYear);
+			
+			if(tdpMemberTypeId != null && tdpMemberTypeId.longValue() >1L)
+				query.setParameter("tdpMemberTypeId", tdpMemberTypeId);
 			
 			return (Object[]) query.uniqueResult();
 		}

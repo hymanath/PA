@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.model.PartyMeetingInvitee;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvitee,Long> implements IPartyMeetingInviteeDAO{
 
@@ -159,7 +160,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 		
 		Query query = getSession().createQuery(" select distinct model.tdpCadre.tdpCadreId " +
 						" from PartyMeetingInvitee model " +
-						" where model.partyMeeting.partyMeetingId = :partyMeetingId ");
+						" where model.partyMeeting.partyMeetingId = :partyMeetingId and  model.tdpCadre.isDeleted='N' and  model.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+" ");
 		query.setParameter("partyMeetingId", partyMeetingId);
 		
 		return query.list();
