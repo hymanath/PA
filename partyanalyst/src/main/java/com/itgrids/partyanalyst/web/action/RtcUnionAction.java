@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.UnionTabUserVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -84,8 +85,15 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 	private List<PartyMeetingWSVO> cadreDataList;
 	
 	private AffiliatedCadreVO affiliatedCadreVO;
+	private List<UnionTabUserVO> unionTabUserList = new ArrayList<UnionTabUserVO>();
 	
 	
+	public List<UnionTabUserVO> getUnionTabUserList() {
+		return unionTabUserList;
+	}
+	public void setUnionTabUserList(List<UnionTabUserVO> unionTabUserList) {
+		this.unionTabUserList = unionTabUserList;
+	}
 	public String getConstiteucnyId() {
 		return constiteucnyId;
 	}
@@ -823,6 +831,17 @@ public String getAllTotalCounts(){
 		}
 		catch(Exception e){
 			LOG.error("Exception Occured in getRegistrationCadreDetails() in RtcUnionAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDesignationsOfAffiliatedUnionType(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			unionTabUserList = rtcUnionService.getDesignationsOfAffiliatedUnionType(jObj.getLong("tdpMemberTypeId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDesignationsOfAffiliatedUnionType",e);
 		}
 		return Action.SUCCESS;
 	}
