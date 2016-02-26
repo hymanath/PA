@@ -11549,5 +11549,11 @@
 	    </result>
 	</action>
 	
+	<action name="getDesignationsOfAffiliatedUnionTypeAction" class="rtcUnionAction" method="getDesignationsOfAffiliatedUnionType">
+		<result type="json" name="success">
+	    	<param name="root">unionTabUserList</param>
+	    </result>
+	</action>	
+	
 </package>
 </struts>      
