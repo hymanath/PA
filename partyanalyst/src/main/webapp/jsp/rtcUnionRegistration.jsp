@@ -278,13 +278,13 @@
 		$('#depotDivId').show();		  
 		} 
 		else if(tdpMemberTypeId == 3) {
-		$('#designDivId').show();
+		//$('#designDivId').show();
 		$('#schoolNameDiv').show();
 		$('#casteDivId').hide();
 		
 		}
 		else if(tdpMemberTypeId == 4) {
-		$('#designDivId').show();
+		//$('#designDivId').show();
 		$('#schoolNameDiv').show();
 		$('#casteDivId').hide();
 		
@@ -475,7 +475,6 @@
 		var constituency = $('#constituencyId').val();
 		var mandalId = $('#manTowDivId').val();
 		var villageId = $('#villWardId').val();
-		var designation = $('#designationSelectId').val();
 		var zoneSelId = $('#zoneSelectId').val();
 		var regionSelId = $('#regionSelectId').val();
 		var depotSelId = $('#depotSelectId').val();
@@ -651,6 +650,52 @@
 		{
 			isErrorStr = " error";
 			$('#workLandmarkErr').html(' landMark  is required.');
+			$('#addressErr').html(' Address is required.');
+		}
+		if(designationval == 0)
+		/* if(roadVal == 0)
+		{
+			isErrorStr = " error";
+			$('#desigErr').html(' Designation is required.');
+		}
+			$('#roadErr').html(' Road is required.');
+		}*/
+		if(tdpMemberTypeId == 2){
+			if(employeeId != null && employeeId.trim().length == 0)
+		if(landmarkVal == 0)
+		{
+			isErrorStr = " error";
+			$('#landmarkErr').html(' landMark  is required.');
+			$('#addressErr').html(' Address is required.');
+			$('#addressErr').html(' Address is required.');
+		}
+		/* if(roadVal == 0)
+			$('#addressErr').html(' Address is required.');
+		}
+		/* if(roadVal == 0)
+		{
+			isErrorStr = " error";
+			$('#roadErr').html(' Road is required.');
+		}*/
+		if(landmarkVal == 0)
+		{
+			isErrorStr = " error";
+			$('#landmarkErr').html(' landMark  is required.');
+		}
+		if(workAddressVal == 0)
+		{
+			isErrorStr = " error";
+			$('#workAddressErr').html(' Address is required.');
+		}
+		 if(workRoadVal == 0)
+		{
+			isErrorStr = " error";
+			$('#workRoadErr').html(' Road is required.');
+		}
+		if(workLandmarkVal == 0)
+		{
+			isErrorStr = " error";
+			$('#workLandmarkErr').html(' landMark  is required.');
 		}
 		
 		if(tdpMemberTypeId == 2){
@@ -658,11 +703,6 @@
 			{
 				isErrorStr = " error";
 				$('#employeeErr').html(' Employee ID required.');
-			}
-			if(designation == 0)
-			{
-				isErrorStr = " error";
-				$('#designationErr').html(' Designation is required.');
 			}
 			if(zoneSelId == 0)
 			{
@@ -681,11 +721,11 @@
 			}
 		}
 		else if(tdpMemberTypeId == 3){
-			if(designationval == 0)
+			/*if(designationval == 0)
 			{
 				isErrorStr = " error";
 				$('#desigErr').html(' Designation is required.');
-			}
+			}*/
 			if(school == 0)
 			{
 				isErrorStr = " error";
@@ -693,11 +733,11 @@
 			}	
 		}
 		else if(tdpMemberTypeId == 4){
-			if(designationval == 0)
+			/*if(designationval == 0)
 			{
 				isErrorStr = " error";
 				$('#desigErr').html(' Designation is required.');
-			}
+			}*/
 			if(school == 0)
 			{
 				isErrorStr = " error";
@@ -715,6 +755,14 @@
 				isErrorStr = " error";
 				$('#vehicleErr').html('Vehicle Type is required.');
 			}	
+		}
+		else if(tdpMemberTypeId == 6){
+			/*if(designationvalue == 0)
+			{
+				isErrorStr = " error";
+				$('#designation13Err').html('Designation is required.');
+			}	*/
+		}
 		}		
 	
 			$('.fromDateCls').each(function(){
@@ -1636,16 +1684,20 @@
 			<div class="span12">
 				
 				
-				<div class="span4" id="designDivId" style="display:none">
+				<div class="span4" id="designDivId">
 					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>
-					<!--<input type="text" id="designationId" placeholder="designation" name="cadreRegistrationVO.desigId"/>-->
 					<select class="form-control" id="desigId" name="cadreRegistrationVO.designationId">
+
 								<option value="0">Select Designation</option>
 								<option value="2">Vice Prinicipal</option>
 								<option value="7" >SCHOOL ASSISTANT</option>
 					</select>
 					<br><span id="desigErr" style="color:red;font-size:12px;"></span>
 				</div>
+				<!--<div class="span4" id="designDiv1Id" style="display:none">
+					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> <span id="designation13Err" style="color:red;font-size:12px;"></span></h5>
+					<input type="text" id="designation13Id" placeholder="designation" name="cadreRegistrationVO.designationFrId"/>
+				</div>-->
 				
 				<div class="span4" id="schoolNameDiv" style="display:none">
 					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> </h5>
@@ -1673,6 +1725,18 @@
 					<input type="text" id="emplyeeId" placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value=" "/>
 					<br><span id="employeeErr" style="color:red;font-size:12px;"></span>
 				</div>
+				<!--<div class="span4" id="designationDivId" style="display:none">
+					<h5 class="text-align1">DESIGNATION <span class="mandatory">*</span> <span id="designationErr" style="color:red;font-size:12px;"></span></h5>
+					<!--<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
+						<option value="0">Select Designation</option>
+					</select>
+				</div>-->
+				<!--<div class="span4" id="designDivId" style="display:none">
+					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> <span id="desigErr" style="color:red;font-size:12px;"></span></h5>
+					<select class="form-control" id="desigId" name="cadreRegistrationVO.desigId">
+					</select>
+				</div>-->
+				
 				
 					<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
 						<div class="span4" id="zoneDivId" style="display:none">
@@ -1756,7 +1820,7 @@
 						   </div>
 					   </div>
 					<div class="span11">
-							<h4 class="text-align1">WORKING ADDRESS<hr class="m_0"/></h4>
+							<h4>WORKING ADDRESS <input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input><hr class="m_0"/></h4>
 						</div>
 					<div class="span4" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </h5>
 							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
@@ -1885,6 +1949,7 @@
 						   </div>
 					   </div>
 					<div class="span11">
+							<h4>WORKING ADDRESS <input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input><hr class="m_0"/></h4>
 							<h4 class="text-align1">WORKING ADDRESS<hr class="m_0"/></h4>
 					</div>
 					<div class="span4" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span></h5>
@@ -3903,7 +3968,6 @@ $(document).ready(function(){
 		}
 		
 	}
-	
 	getWorkAddressDetails();
 	function getWorkAddressDetails(){
 		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}',memberTypeId:'${param.tdpMemberTypeId}' }
@@ -3978,6 +4042,7 @@ $(document).ready(function(){
 			}
 		}
 	}
+	
 	//getAllRTCZones();
 	function getAllRTCZones(){
 		var jsObj={};
@@ -4055,7 +4120,7 @@ $(document).ready(function(){
 		}
 	});
 	//getDesignationsOfUnionType();
-	function getDesignationsOfUnionType(){
+	/* function getDesignationsOfUnionType(){
 		var jObj={
 			unionTypeId : 1
 		};
@@ -4075,7 +4140,7 @@ $(document).ready(function(){
 			}
 			$("#designationSelectId").html(str);
 		});
-	}
+	} */
 	//var getHeig = $("#fadeInRight").height()+20;
 	//$('#fadeInLeft').css("height",getHeig)
 	 $(document).ready(function() {
@@ -4089,5 +4154,122 @@ $(document).ready(function(){
 		 $(this).height(maxHeight);
 	   });
 	 });
+function populateAddressValues(){
+	var populateHouse = $("#addressId").val();
+	var populateStreet = $("#roadId").val();
+	var populateLandMark = $("#landmarkId").val();
+	var populateDistrict = $("#presentDistrictId").val();
+	var populateConstituency = $("#presentConstituencyId").val();
+	var populateMandal = $("#presentManTowDivId").val();
+	var populateVillage = $("#presentVillWardId").val();
+	$("#workAddressId").val(populateHouse);
+	$("#WorkRoadId").val(populateStreet);
+	$("#workLandmarkId").val(populateLandMark);
+	getDistricts(populateDistrict,populateConstituency,populateMandal,populateVillage);
+	}
+getDesignationsOfAffiliatedUnionType();
+function getDesignationsOfAffiliatedUnionType(){
+	$("#desigId").html("");
+	var tdpMemberTypeId   = '${tdpMemberTypeId}';
+	
+		var jObj={
+			tdpMemberTypeId : tdpMemberTypeId
+		};
+		
+		$.ajax({
+			type:"POST",
+			url:"getDesignationsOfAffiliatedUnionTypeAction.action",
+			dataType: 'json',
+			data:{task:JSON.stringify(jObj)}	
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Designation</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+			}
+			$("#desigId").html(str);
+});
+}
+function getDistricts(district,populateConstituency,populateMandal,populateVillage){
+		 var jsObj=
+		 { 
+		 stateId:1 
+		 }
+		          
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsForStateAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			   for(var i in result){
+				   $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			   $("#districtId").val(district);
+			   getConstituencies(district,populateConstituency,populateMandal,populateVillage);
+		   }
+	   });
+	} 
+	function getConstituencies(district,populateConstituency,populateMandal,populateVillage){
+		 var jsObj={ districtId:district }
+		          
+		$.ajax({
+			  type:'GET',
+			  url: 'getConstituenciesForDistrictAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			   for(var i in result){
+				   $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+			   $("#constituencyId").val(populateConstituency);
+			   getMandalVillages(4,populateConstituency,populateMandal,populateVillage,1);
+		   }
+	   });
+	}
+	
+	function getMandalVillages(locationLevel,locationId,populateMandal,populateVillage,index){
+		var mandalId = "0";
+		var constituencyId="0";
+		var divId = "";
+		if(locationLevel==4){
+			divId = "#manTowDivId";
+			constituencyId=locationId;
+		}
+		if(locationLevel==5){
+			divId = "#villWardId";
+			mandalId = locationId;
+		}
+		
+	   var jsObj={
+			constituencyId : constituencyId,
+			mandalId : mandalId,
+			locationLevel : locationLevel
+		}
+		
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubLevelLctnsForConstituencyAndMandal.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result!=null && result.length>0){
+			 for(var i in result){
+				$(divId).append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}  
+			if(index == 1){
+				$(divId).val(populateMandal);
+				getMandalVillages(5,populateMandal,0,populateVillage,2);
+			}
+			else {
+				$(divId).val(populateVillage);
+			}
+		   }
+		});
+	}
 </script>
 </html>
