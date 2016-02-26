@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -151,7 +152,7 @@
 			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Location </option></select>		
 			<select style="width:250px;" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
-			
+			<div id="errorDiv" style="color:#ff0020;"></div>
 				<select id="userMembersId">
 				</select>
 			<!--<select style="width:150px;" id="membersList"><option value="0"> Select Members </option></select>	-->
@@ -334,6 +335,7 @@
 		var searchType = $('input[name="searchTypeRadio"]:checked').val();
 		var panchayatId = $('#panchayatList').val();
 		var boothId = $('#boothsList').val();
+		var userMembersId = $("#userMembersId").val();
 		//var tdpMemberTypeId = $('#')
 		//var villageCoveredId = $('#vilagecovrdList').val(); 
 		var ischecked = "0";
@@ -357,6 +359,12 @@
 		if(cosntiteucnyId == 0 )
 		{
 			$('#errorDiv').html('Please Select Constituency.');
+			return;
+		}
+		$('#errorDiv').html('');
+		if( userMembersId == 0 )
+		{
+			$('#errorDiv').html('Please Select MemberType.');
 			return;
 		}
 	/*	if(panchayatId == 0)
