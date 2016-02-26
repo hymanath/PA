@@ -6182,7 +6182,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				query.setParameter("fromDate", fromDate);
 				query.setParameter("toDate", toDate);
 			}
-			if(fromDate != null && toDate != null)
+			if(inputVO.getAppType() != null && !inputVO.getAppType().isEmpty())
 				query.setParameter("appType", inputVO.getAppType());
 			if(inputVO.getLocationType() != null)
 				query.setParameter("locationId", inputVO.getLocationId());
