@@ -11454,7 +11454,23 @@
 	    </result>
 	</action>	
 	
+	<action name="getVoterPresentAddressDetailsAction" class="rtcUnionAction" method="getVoterPresentAddressDetails">
+		<result type="json" name="success">
+	    	<param name="root">voterAddressVO</param>
+	    </result>
+	</action>
 	
+	<action name="getVoterPermenantAddressDetailsAction" class="rtcUnionAction" method="getVoterPermenantAddressDetails">
+		<result type="json" name="success">
+	    	<param name="root">voterAddressVO</param>
+	    </result>
+	</action>
+	
+	<action name="getVoterWorkAddressDetailsAction" class="rtcUnionAction" method="getVoterWorkAddressDetails">
+		<result type="json" name="success">
+	    	<param name="root">voterAddressVO</param>
+	    </result>
+	</action>
 	
 	<action name="getRtcUnionRegisteredBasicDetailsAction" class="rtcUnionAction" method="getRtcUnionRegisteredBasicDetails">
 		<result type="json" name="success">

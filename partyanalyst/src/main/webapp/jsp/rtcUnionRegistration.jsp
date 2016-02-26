@@ -3859,9 +3859,9 @@ $(document).ready(function(){
 		   }
 		});
 	}
-	getAddressDetails();
-	function getAddressDetails(){
-		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}' }
+	//getAddressDetails();
+	/*function getAddressDetails(){
+		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}',memberTypeId:'${param.tdpMemberTypeId}' }
 		
 		$.ajax({
 			  type:'GET',
@@ -3932,7 +3932,159 @@ $(document).ready(function(){
 			}
 		}
 		
+	}*/
+	
+	getPresentAddressDetails();
+	function getPresentAddressDetails(){
+		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}',memberTypeId:'${param.tdpMemberTypeId}' }
+		
+		$.ajax({
+			  type:'GET',
+			  url: 'getVoterPresentAddressDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		    if(result!=null){
+				buildVoterPresentAddressDetails(result);
+			}
+		});
 	}
+	
+	function buildVoterPresentAddressDetails(result){
+		
+	   $("#presentConstituencyId  option").remove();
+	   $("#presentConstituencyId").append('<option value="0">Select Constituency</option>');
+	   $("#presentManTowDivId  option").remove();
+	   $("#presentManTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
+	   $("#presentVillWardId  option").remove();
+	   $("#presentVillWardId").append('<option value="0">Select Village/Ward</option>');
+		
+       var districtId=result.districtId;
+       var constituencyId=result.constituencyId;
+	   
+	   var tehsilLebid='';
+	   if(result.tehsilId!=null && result.tehsilId>0){
+		  tehsilLebid=result.tehsilId; 
+	   }else if(result.localElectionBodyId!=null && result.localElectionBodyId>0){
+		    tehsilLebid=result.localElectionBodyId; 
+	   }
+	   
+	   var villageWardId='';
+	   if(result.villageId!=null && result.villageId>0){
+		  villageWardId=result.villageId;
+	   }else if(result.wardId!=null && result.wardId>0){
+		  villageWardId=result.wardId;
+	   }
+	    
+		$('#presentDistrictId').val(districtId);
+		if(result.constList!=null && result.constList.length>0){
+			for(var i in result.constList){
+				if(result.constList[i].id == constituencyId){
+					$("#presentConstituencyId").append('<option value='+result.constList[i].id+' selected>'+result.constList[i].name+'</option>');
+				}else{
+					$("#presentConstituencyId").append('<option value='+result.constList[i].id+'>'+result.constList[i].name+'</option>');
+				}
+				
+			}
+		}
+		if(result.tehLebDivList!=null && result.tehLebDivList.length>0){
+			for(var i in result.tehLebDivList){
+				if(result.tehLebDivList[i].locationId == tehsilLebid){
+					$("#presentManTowDivId").append('<option value='+result.tehLebDivList[i].locationId+' selected>'+result.tehLebDivList[i].locationName+'</option>');
+				}else{
+					$("#presentManTowDivId").append('<option value='+result.tehLebDivList[i].locationId+'>'+result.tehLebDivList[i].locationName+'</option>');
+				}
+				
+			}
+		}
+		if(result.villWardList!=null && result.villWardList.length>0){
+			for(var i in result.villWardList){
+				if(result.villWardList[i].locationId == villageWardId){
+					$("#presentVillWardId").append('<option value='+result.villWardList[i].locationId+' selected>'+result.villWardList[i].locationName+'</option>');
+				}else{
+					$("#presentVillWardId").append('<option value='+result.villWardList[i].locationId+'>'+result.villWardList[i].locationName+'</option>');
+				}
+				
+			}
+		}
+		
+	}
+	
+	getWorkAddressDetails();
+	function getWorkAddressDetails(){
+		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}',memberTypeId:'${param.tdpMemberTypeId}' }
+		
+		$.ajax({
+			  type:'GET',
+			  url: 'getVoterWorkAddressDetailsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		    if(result!=null){
+				buildVoterWorkAddressDetails(result);
+			}
+		});
+	}
+	
+	function buildVoterWorkAddressDetails(result){
+		
+	   $("#constituencyId  option").remove();
+	   $("#constituencyId").append('<option value="0">Select Constituency</option>');
+	   $("#manTowDivId  option").remove();
+	   $("#manTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
+	   $("#villWardId  option").remove();
+	   $("#villWardId").append('<option value="0">Select Village/Ward</option>');
+		
+       var districtId=result.districtId;
+       var constituencyId=result.constituencyId;
+	   
+	   var tehsilLebid='';
+	   if(result.tehsilId!=null && result.tehsilId>0){
+		  tehsilLebid=result.tehsilId; 
+	   }else if(result.localElectionBodyId!=null && result.localElectionBodyId>0){
+		    tehsilLebid=result.localElectionBodyId; 
+	   }
+	   
+	   var villageWardId='';
+	   if(result.villageId!=null && result.villageId>0){
+		  villageWardId=result.villageId;
+	   }else if(result.wardId!=null && result.wardId>0){
+		  villageWardId=result.wardId;
+	   }
+	    
+		$('#districtId').val(districtId);
+		if(result.constList!=null && result.constList.length>0){
+			for(var i in result.constList){
+				if(result.constList[i].id == constituencyId){
+					$("#constituencyId").append('<option value='+result.constList[i].id+' selected>'+result.constList[i].name+'</option>');
+				}else{
+					$("#constituencyId").append('<option value='+result.constList[i].id+'>'+result.constList[i].name+'</option>');
+				}
+				
+			}
+		}
+		if(result.tehLebDivList!=null && result.tehLebDivList.length>0){
+			for(var i in result.tehLebDivList){
+				if(result.tehLebDivList[i].locationId == tehsilLebid){
+					$("#manTowDivId").append('<option value='+result.tehLebDivList[i].locationId+' selected>'+result.tehLebDivList[i].locationName+'</option>');
+				}else{
+					$("#manTowDivId").append('<option value='+result.tehLebDivList[i].locationId+'>'+result.tehLebDivList[i].locationName+'</option>');
+				}
+				
+			}
+		}
+		if(result.villWardList!=null && result.villWardList.length>0){
+			for(var i in result.villWardList){
+				if(result.villWardList[i].locationId == villageWardId){
+					$("#villWardId").append('<option value='+result.villWardList[i].locationId+' selected>'+result.villWardList[i].locationName+'</option>');
+				}else{
+					$("#villWardId").append('<option value='+result.villWardList[i].locationId+'>'+result.villWardList[i].locationName+'</option>');
+				}
+				
+			}
+		}
+	}
+	
 	//getAllRTCZones();
 	function getAllRTCZones(){
 		var jsObj={};
