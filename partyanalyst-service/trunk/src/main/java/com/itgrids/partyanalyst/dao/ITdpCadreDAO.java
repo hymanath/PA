@@ -401,7 +401,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<TdpCadre> getAffliatedCadreByVoterId(Long voterId);
 	  public List<TdpCadre> getAffliatedCadreByVoterIdAndMemberType(Long voterId,Long memberTypeId);
 	  public List<TdpCadre> checkAffliatedCadreOnlineAccountExistsOrNot(String orderId);
-	  public List<Long> checkVoterAsAffliatedCadre(Long voterId);
+	  public List<Long> checkVoterAsAffliatedCadre(Long voterId,Long memberTypeId);
 	  public List<TdpCadre> getNormalCadreDetailsByVoterId(Long voterId);
 	  
 	  public List<TdpCadre> getAffliatedCadreByFamilyVoterId(Long voterId, String refNo);
@@ -411,4 +411,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getAllCountsForUnionMembersRegistered(Date fromDate,Date toDate);
 	  public List<Long> getCadreDetailsByTdpMemberType(Date fromDate,Date toDate,RtcUnionInputVO inputVO);
 	  public List<Object[]> getCadreFormalDetailsByYear(List<Long> tdpCadreIds,Long enrollmentYear);
+	  public Long getUserPresentAddressId(Long tdpCadreId);
+	  public Long getUserPermenentAddressId(Long tdpCadreId);
+	  public Long getUserWorkAddressId(Long tdpCadreId);
 }

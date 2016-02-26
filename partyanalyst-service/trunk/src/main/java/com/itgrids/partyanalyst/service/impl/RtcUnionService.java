@@ -354,13 +354,13 @@ public class RtcUnionService implements IRtcUnionService{
 		return finalevoList;
 	}
 	
-	public VoterAddressVO getVoterAddressDetails(Long candidateId,String searchType){
+	public VoterAddressVO getVoterAddressDetails(Long candidateId,String searchType,Long memberTypeId){
 		VoterAddressVO addressVO=null;
 		 try{
 			
 			 if(searchType.equalsIgnoreCase("voter")){
 				 
-				 List<Long> tdpCadrelist=tdpCadreDAO.checkVoterAsAffliatedCadre(candidateId);
+				 List<Long> tdpCadrelist=tdpCadreDAO.checkVoterAsAffliatedCadre(candidateId,memberTypeId);
 				 Long tdpCadreId=null;
 				 if(tdpCadrelist!=null && tdpCadrelist.size()>0){
 					 tdpCadreId=tdpCadrelist.get(0);
@@ -402,6 +402,267 @@ public class RtcUnionService implements IRtcUnionService{
 		
 		try{
 			Long userAddressid=tdpCadreDAO.getUserAddressId(cadreId);
+			List<UserAddress> userAddressList=userAddressDAO.getUserAddressByUserAddressId(userAddressid);
+			
+			if(userAddressList!=null && userAddressList.size()>0){
+				
+				UserAddress address=userAddressList.get(0);
+				
+				if(address!=null){
+					
+					if(address.getDistrict()!=null){
+						addressVO.setDistrictId(address.getDistrict().getDistrictId()!=null?address.getDistrict().getDistrictId():0l);
+					}
+					
+					if(address.getConstituency()!=null){
+						addressVO.setConstituencyId(address.getConstituency().getConstituencyId()!=null?address.getConstituency().getConstituencyId():0l);
+					}
+					
+					if(address.getTehsil()!=null){
+						addressVO.setTehsilId(address.getTehsil().getTehsilId()!=null?Long.valueOf("4"+address.getTehsil().getTehsilId().toString()):0l);
+					}
+					
+					if(address.getLocalElectionBody()!=null){
+						addressVO.setLocalElectionBodyId(address.getLocalElectionBody().getLocalElectionBodyId()!=null?Long.valueOf("5"+address.getLocalElectionBody().getLocalElectionBodyId().toString()):0l);
+					}
+					
+					if(address.getPanchayat()!=null){
+						addressVO.setVillageId(address.getPanchayat().getPanchayatId()!=null?Long.valueOf("7"+address.getPanchayat().getPanchayatId().toString()):0l);
+					}
+					if(address.getWard()!=null){
+						addressVO.setWardId(address.getWard().getConstituencyId()!=null?Long.valueOf("8"+address.getWard().getConstituencyId().toString()):0l);
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception riased at getVoterAddressDetailsByCadreId", e);
+		}
+		return addressVO;
+	}
+	
+	public VoterAddressVO getVoterPresentAddressDetails(Long candidateId,String searchType,Long memberTypeId){
+		VoterAddressVO addressVO=null;
+		 try{
+			
+			 if(searchType.equalsIgnoreCase("voter")){
+				 
+				 List<Long> tdpCadrelist=tdpCadreDAO.checkVoterAsAffliatedCadre(candidateId,memberTypeId);
+				 Long tdpCadreId=null;
+				 if(tdpCadrelist!=null && tdpCadrelist.size()>0){
+					 tdpCadreId=tdpCadrelist.get(0);
+					 if(tdpCadreId!=null && tdpCadreId>0){
+						 addressVO=getVoterPresentAddressDetailsByCadreId(tdpCadreId);
+					 }
+				 }else{
+					 addressVO=getVoterAddressDetailsByVoterId(candidateId);
+				 }
+				 
+			 }else  if(searchType.equalsIgnoreCase("cadre")){
+				 addressVO=getVoterPresentAddressDetailsByCadreId(candidateId);
+			 }
+			 
+			 if(addressVO!=null){
+				 
+				 if(addressVO.getDistrictId()!=null){
+					 addressVO.setConstList(getConstituenciesForDistrict(addressVO.getDistrictId()));
+				 }
+				 if(addressVO.getConstituencyId()!=null){
+					 addressVO.setTehLebDivList(getLocationsOfSublevelConstituencyMandal(addressVO.getConstituencyId(),null,4l));
+				 }
+				 if(addressVO.getTehsilId()!=null){
+					 addressVO.setVillWardList(getLocationsOfSublevelConstituencyMandal(null,addressVO.getTehsilId().toString(),5l));
+				 }
+				 if(addressVO.getLocalElectionBodyId()!=null){
+					 addressVO.setVillWardList(getLocationsOfSublevelConstituencyMandal(null,addressVO.getLocalElectionBodyId().toString(),5l));
+				 }
+			 }
+		} catch(Exception e){
+			LOG.error("Exception riased at voterAddressDetails", e);
+		}
+		 return addressVO;
+	}
+	
+	public VoterAddressVO getVoterPresentAddressDetailsByCadreId(Long cadreId){
+		
+		VoterAddressVO addressVO=new VoterAddressVO();
+		
+		try{
+			Long userAddressid=tdpCadreDAO.getUserPresentAddressId(cadreId);
+			List<UserAddress> userAddressList=userAddressDAO.getUserAddressByUserAddressId(userAddressid);
+			
+			if(userAddressList!=null && userAddressList.size()>0){
+				
+				UserAddress address=userAddressList.get(0);
+				
+				if(address!=null){
+					
+					if(address.getDistrict()!=null){
+						addressVO.setDistrictId(address.getDistrict().getDistrictId()!=null?address.getDistrict().getDistrictId():0l);
+					}
+					
+					if(address.getConstituency()!=null){
+						addressVO.setConstituencyId(address.getConstituency().getConstituencyId()!=null?address.getConstituency().getConstituencyId():0l);
+					}
+					
+					if(address.getTehsil()!=null){
+						addressVO.setTehsilId(address.getTehsil().getTehsilId()!=null?Long.valueOf("4"+address.getTehsil().getTehsilId().toString()):0l);
+					}
+					
+					if(address.getLocalElectionBody()!=null){
+						addressVO.setLocalElectionBodyId(address.getLocalElectionBody().getLocalElectionBodyId()!=null?Long.valueOf("5"+address.getLocalElectionBody().getLocalElectionBodyId().toString()):0l);
+					}
+					
+					if(address.getPanchayat()!=null){
+						addressVO.setVillageId(address.getPanchayat().getPanchayatId()!=null?Long.valueOf("7"+address.getPanchayat().getPanchayatId().toString()):0l);
+					}
+					if(address.getWard()!=null){
+						addressVO.setWardId(address.getWard().getConstituencyId()!=null?Long.valueOf("8"+address.getWard().getConstituencyId().toString()):0l);
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception riased at getVoterAddressDetailsByCadreId", e);
+		}
+		return addressVO;
+	}
+	
+	public VoterAddressVO getVoterPermenantAddressDetails(Long candidateId,String searchType,Long memberTypeId){
+		VoterAddressVO addressVO=null;
+		 try{
+			
+			 if(searchType.equalsIgnoreCase("voter")){
+				 
+				 List<Long> tdpCadrelist=tdpCadreDAO.checkVoterAsAffliatedCadre(candidateId,memberTypeId);
+				 Long tdpCadreId=null;
+				 if(tdpCadrelist!=null && tdpCadrelist.size()>0){
+					 tdpCadreId=tdpCadrelist.get(0);
+					 if(tdpCadreId!=null && tdpCadreId>0){
+						 addressVO=getVoterPermenantAddressDetailsByCadreId(tdpCadreId);
+					 }
+				 }else{
+					 addressVO=getVoterAddressDetailsByVoterId(candidateId);
+				 }
+				 
+			 }else  if(searchType.equalsIgnoreCase("cadre")){
+				 addressVO=getVoterPermenantAddressDetailsByCadreId(candidateId);
+			 }
+			 
+			 if(addressVO!=null){
+				 
+				 if(addressVO.getDistrictId()!=null){
+					 addressVO.setConstList(getConstituenciesForDistrict(addressVO.getDistrictId()));
+				 }
+				 if(addressVO.getConstituencyId()!=null){
+					 addressVO.setTehLebDivList(getLocationsOfSublevelConstituencyMandal(addressVO.getConstituencyId(),null,4l));
+				 }
+				 if(addressVO.getTehsilId()!=null){
+					 addressVO.setVillWardList(getLocationsOfSublevelConstituencyMandal(null,addressVO.getTehsilId().toString(),5l));
+				 }
+				 if(addressVO.getLocalElectionBodyId()!=null){
+					 addressVO.setVillWardList(getLocationsOfSublevelConstituencyMandal(null,addressVO.getLocalElectionBodyId().toString(),5l));
+				 }
+			 }
+		} catch(Exception e){
+			LOG.error("Exception riased at voterAddressDetails", e);
+		}
+		 return addressVO;
+	}
+	
+	public VoterAddressVO getVoterPermenantAddressDetailsByCadreId(Long cadreId){
+		
+		VoterAddressVO addressVO=new VoterAddressVO();
+		
+		try{
+			Long userAddressid=tdpCadreDAO.getUserPermenentAddressId(cadreId);
+			List<UserAddress> userAddressList=userAddressDAO.getUserAddressByUserAddressId(userAddressid);
+			
+			if(userAddressList!=null && userAddressList.size()>0){
+				
+				UserAddress address=userAddressList.get(0);
+				
+				if(address!=null){
+					
+					if(address.getDistrict()!=null){
+						addressVO.setDistrictId(address.getDistrict().getDistrictId()!=null?address.getDistrict().getDistrictId():0l);
+					}
+					
+					if(address.getConstituency()!=null){
+						addressVO.setConstituencyId(address.getConstituency().getConstituencyId()!=null?address.getConstituency().getConstituencyId():0l);
+					}
+					
+					if(address.getTehsil()!=null){
+						addressVO.setTehsilId(address.getTehsil().getTehsilId()!=null?Long.valueOf("4"+address.getTehsil().getTehsilId().toString()):0l);
+					}
+					
+					if(address.getLocalElectionBody()!=null){
+						addressVO.setLocalElectionBodyId(address.getLocalElectionBody().getLocalElectionBodyId()!=null?Long.valueOf("5"+address.getLocalElectionBody().getLocalElectionBodyId().toString()):0l);
+					}
+					
+					if(address.getPanchayat()!=null){
+						addressVO.setVillageId(address.getPanchayat().getPanchayatId()!=null?Long.valueOf("7"+address.getPanchayat().getPanchayatId().toString()):0l);
+					}
+					if(address.getWard()!=null){
+						addressVO.setWardId(address.getWard().getConstituencyId()!=null?Long.valueOf("8"+address.getWard().getConstituencyId().toString()):0l);
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception riased at getVoterAddressDetailsByCadreId", e);
+		}
+		return addressVO;
+	}
+	
+	public VoterAddressVO getVoterWorkAddressDetails(Long candidateId,String searchType,Long memberTypeId){
+		VoterAddressVO addressVO=null;
+		 try{
+			
+			 if(searchType.equalsIgnoreCase("voter")){
+				 
+				 List<Long> tdpCadrelist=tdpCadreDAO.checkVoterAsAffliatedCadre(candidateId,memberTypeId);
+				 Long tdpCadreId=null;
+				 if(tdpCadrelist!=null && tdpCadrelist.size()>0){
+					 tdpCadreId=tdpCadrelist.get(0);
+					 if(tdpCadreId!=null && tdpCadreId>0){
+						 addressVO=getVoterWorkAddressDetailsByCadreId(tdpCadreId);
+					 }
+				 }else{
+					 addressVO=getVoterAddressDetailsByVoterId(candidateId);
+				 }
+				 
+			 }else  if(searchType.equalsIgnoreCase("cadre")){
+				 addressVO=getVoterWorkAddressDetailsByCadreId(candidateId);
+			 }
+			 
+			 if(addressVO!=null){
+				 
+				 if(addressVO.getDistrictId()!=null){
+					 addressVO.setConstList(getConstituenciesForDistrict(addressVO.getDistrictId()));
+				 }
+				 if(addressVO.getConstituencyId()!=null){
+					 addressVO.setTehLebDivList(getLocationsOfSublevelConstituencyMandal(addressVO.getConstituencyId(),null,4l));
+				 }
+				 if(addressVO.getTehsilId()!=null){
+					 addressVO.setVillWardList(getLocationsOfSublevelConstituencyMandal(null,addressVO.getTehsilId().toString(),5l));
+				 }
+				 if(addressVO.getLocalElectionBodyId()!=null){
+					 addressVO.setVillWardList(getLocationsOfSublevelConstituencyMandal(null,addressVO.getLocalElectionBodyId().toString(),5l));
+				 }
+			 }
+		} catch(Exception e){
+			LOG.error("Exception riased at voterAddressDetails", e);
+		}
+		 return addressVO;
+	}
+	
+	public VoterAddressVO getVoterWorkAddressDetailsByCadreId(Long cadreId){
+		
+		VoterAddressVO addressVO=new VoterAddressVO();
+		
+		try{
+			Long userAddressid=tdpCadreDAO.getUserWorkAddressId(cadreId);
 			List<UserAddress> userAddressList=userAddressDAO.getUserAddressByUserAddressId(userAddressid);
 			
 			if(userAddressList!=null && userAddressList.size()>0){
