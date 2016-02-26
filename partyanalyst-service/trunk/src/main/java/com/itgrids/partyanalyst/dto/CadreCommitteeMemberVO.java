@@ -110,6 +110,7 @@ public class CadreCommitteeMemberVO {
 	
 	private Long cadreId;
 	private String relativeName;
+	private String relativeType;
 	private String areaType;
 	private Long invitationCount=0l;
 	
@@ -131,7 +132,12 @@ public class CadreCommitteeMemberVO {
 	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap3 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
 	
 	
-	
+	public String getRelativeType() {
+		return relativeType;
+	}
+	public void setRelativeType(String relativeType) {
+		this.relativeType = relativeType;
+	}
 	public Map<Long, Map<Long, CadreCommitteeMemberVO>> getGenericMap1() {
 		return genericMap1;
 	}
