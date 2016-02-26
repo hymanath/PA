@@ -21,7 +21,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 					" model1.publicRepresentativeType.type " +
 					" from TdpCadreCandidate model,PublicRepresentative model1 " +
 					" where model.candidate.candidateId = model1.candidate.candidateId " +
-					" and model.tdpCadre.tdpCadreId =:cadreId ");
+					" and model.tdpCadre.tdpCadreId =:cadreId  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014  ");
 		
 			query.setParameter("cadreId", cadreId);
 			
@@ -35,7 +35,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 				" model.tdpCadre.tdpCadreId " +
 				" from TdpCadreCandidate model,PublicRepresentative model1 " +
 				" where model.candidate.candidateId = model1.candidate.candidateId " +
-				" and model.tdpCadre.tdpCadreId in (:cadreIds) ");
+				" and model.tdpCadre.tdpCadreId in (:cadreIds) and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014 ");
 	
 		query.setParameterList("cadreIds", cadreIds);
 		
@@ -44,14 +44,15 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 	
 	public List<Long> getTdpCadreCandidate(Long cadreId){
 		Query query=getSession().createQuery(" select distinct model.candidate.candidateId from  TdpCadreCandidate model " +
-				" where model.tdpCadre.tdpCadreId =:cadreId");
+				" where model.tdpCadre.tdpCadreId =:cadreId  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014 ");
 		query.setParameter("cadreId", cadreId);
 		return query.list();
 	}
 	
 	public List<Object[]> getTdpCadreCandidateIds(List<Long> finalCadreIDsList)
 	{
-		Query query=getSession().createQuery("select model.tdpCadre.tdpCadreId, model.candidate.candidateId from TdpCadreCandidate model where model.candidate.candidateId in (:finalCadreIDsList)");
+		Query query=getSession().createQuery("select model.tdpCadre.tdpCadreId, model.candidate.candidateId from TdpCadreCandidate model where " +
+				" model.candidate.candidateId in (:finalCadreIDsList)  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014 ");
 		query.setParameterList("finalCadreIDsList", finalCadreIDsList);
 		return query.list();
 	}
@@ -62,7 +63,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 				" model1.publicRepresentativeType.type,model1.levelId, model1.levelValue " +
 				" from TdpCadreCandidate model,PublicRepresentative model1 " +
 				" where model.candidate.candidateId = model1.candidate.candidateId " +
-				" and model.tdpCadre.tdpCadreId in (:cadreIdsList)  ");
+				" and model.tdpCadre.tdpCadreId in (:cadreIdsList)  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014  ");
 	
 		query.setParameterList("cadreIdsList", cadreIdsList);
 		
@@ -75,7 +76,7 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 				" model1.publicRepresentativeType.type,model1.levelId, model1.levelValue,C.name " +
 				" from TdpCadreCandidate model,PublicRepresentative model1, Constituency C " +
 				" where model.candidate.candidateId = model1.candidate.candidateId " +
-				" and model.tdpCadre.tdpCadreId in (:cadreIdsList)  and model1.levelValue = C.constituencyId  ");
+				" and model.tdpCadre.tdpCadreId in (:cadreIdsList)  and model1.levelValue = C.constituencyId   and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014  ");
 	
 		query.setParameterList("cadreIdsList", cadreIdsList);
 		
