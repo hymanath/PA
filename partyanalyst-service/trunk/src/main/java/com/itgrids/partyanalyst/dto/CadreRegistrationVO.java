@@ -152,6 +152,56 @@ public class CadreRegistrationVO implements Serializable{
 	private Long        vehicleTypeId;
 	private Long        schoolNameId;
 	
+	private String workHouseNo;
+	private String workStreet;
+	private String workLandMark;
+	private Long presentPerAddrsDistId;
+	private Long presentPerAddrsConstId;
+	private Long presentPerAddrsMandalId;
+	private Long presentPerAddrsVillId;
+	
+	public Long getPresentPerAddrsDistId() {
+		return presentPerAddrsDistId;
+	}
+	public void setPresentPerAddrsDistId(Long presentPerAddrsDistId) {
+		this.presentPerAddrsDistId = presentPerAddrsDistId;
+	}
+	public Long getPresentPerAddrsConstId() {
+		return presentPerAddrsConstId;
+	}
+	public void setPresentPerAddrsConstId(Long presentPerAddrsConstId) {
+		this.presentPerAddrsConstId = presentPerAddrsConstId;
+	}
+	public Long getPresentPerAddrsMandalId() {
+		return presentPerAddrsMandalId;
+	}
+	public void setPresentPerAddrsMandalId(Long presentPerAddrsMandalId) {
+		this.presentPerAddrsMandalId = presentPerAddrsMandalId;
+	}
+	public Long getPresentPerAddrsVillId() {
+		return presentPerAddrsVillId;
+	}
+	public void setPresentPerAddrsVillId(Long presentPerAddrsVillId) {
+		this.presentPerAddrsVillId = presentPerAddrsVillId;
+	}
+	public String getWorkHouseNo() {
+		return workHouseNo;
+	}
+	public void setWorkHouseNo(String workHouseNo) {
+		this.workHouseNo = workHouseNo;
+	}
+	public String getWorkStreet() {
+		return workStreet;
+	}
+	public void setWorkStreet(String workStreet) {
+		this.workStreet = workStreet;
+	}
+	public String getWorkLandMark() {
+		return workLandMark;
+	}
+	public void setWorkLandMark(String workLandMark) {
+		this.workLandMark = workLandMark;
+	}
 	
 	
 	public String getPrsntAddrsHNo() {
