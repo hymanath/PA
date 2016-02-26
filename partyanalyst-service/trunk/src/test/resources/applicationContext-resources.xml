@@ -749,6 +749,7 @@
 				 <value>com.itgrids.partyanalyst.model.UnionTypeDesignation</value>
 				 <value>com.itgrids.partyanalyst.model.TdpCadreLocation</value>
 				 <value>com.itgrids.partyanalyst.model.TdpMemberType</value>
+				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
 			</list>
 		</property>
 	</bean>
@@ -3322,7 +3323,7 @@
 	<bean id="tdpCadreLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreLocationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="tdpMemberTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpMemberTypeDAO" >
+	<bean id="tdpMemberUnionTabUserRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpMemberUnionTabUserRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
