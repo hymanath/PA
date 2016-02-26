@@ -17,7 +17,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getRegisterCadreInfoConstituencyWise();
 	
 	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencId(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
-	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencIdRTC(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
+	public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencIdRTC(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex,Long memberTypeId);
 	
 	public List<Object[]> getRegisterCadreInfoDistrictWise();
 	
@@ -188,7 +188,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getLocationWiseAgeRangeCount(List<Long> Ids,String ageRange ,String type);
 	public List<Object[]> getLocationWiseTotalRecords(List<Long> districtIds,String type);
 	public Long getCadreDetailsForCadreRegistratiobByconstituencIdCount(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre);
-	public Long getCadreDetailsForCadreRegistratiobByconstituencIdCountRTC(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre);
+	public Long getCadreDetailsForCadreRegistratiobByconstituencIdCountRTC(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre,Long memberTypeId);
 	public void flushAndclearSession();
 	public List<Object[]> getLocationWiseCount(List<Long> ids,String type);
 	public List<Object[]> getTdpCadreAgeRangeByConstituency(List<Long> constituencyIds);
@@ -396,9 +396,10 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List checkUnionMemberExists(String voterCardNo,Long memberTypeId);
 	  public List<Object[]> getRtcUnionDeptDetails(String searchType,Date date);
 	  public List<Object[]> getAffiliatedCadreDetails(String type,String searchType,Long locationId);
-	  public List<Long> getVoterDetailsByVoterIdsAndRTCAffliatedCadre(List<Long> voterIdList);
+	  public List<Long> getVoterDetailsByVoterIdsAndRTCAffliatedCadre(List<Long> voterIdList,Long memberTypeId);
 	  public Long getTodayTabAndWebUsersCount(String type);
 	  public List<TdpCadre> getAffliatedCadreByVoterId(Long voterId);
+	  public List<TdpCadre> getAffliatedCadreByVoterIdAndMemberType(Long voterId,Long memberTypeId);
 	  public List<TdpCadre> checkAffliatedCadreOnlineAccountExistsOrNot(String orderId);
 	  public List<Long> checkVoterAsAffliatedCadre(Long voterId);
 	  public List<TdpCadre> getNormalCadreDetailsByVoterId(Long voterId);

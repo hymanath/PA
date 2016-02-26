@@ -180,7 +180,7 @@ public interface ICadreRegistrationService {
 	public String sendSMS(String mobileNo,String message);
 	
 	public SurveyCadreResponceVO saveAfflicatedCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final String registrationType);
-	public List<VoterInfoVO> getSearchDetailsCadreRegistrationRTC(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
+	public List<VoterInfoVO> getSearchDetailsCadreRegistrationRTC(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex,Long memberTypeId);
 	public List<GenericVO> getCadreMemberTypeListByYear();
 	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate,String searchDatType);
 	public AffiliatedCadreVO getCadreCountsByTdpMemberType(String searchType);
