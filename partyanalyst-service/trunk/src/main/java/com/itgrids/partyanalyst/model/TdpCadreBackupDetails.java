@@ -31,6 +31,7 @@ public class TdpCadreBackupDetails extends BaseModel implements java.io.Serializ
 	private String dataSourceType;
 	private Long updatedBy;
 	private Date insertedTime;
+	private Long tdpMemberTypeId;
 	
 	private String exception;
 
@@ -132,8 +133,14 @@ public class TdpCadreBackupDetails extends BaseModel implements java.io.Serializ
 	public void setJsonObject(String jsonObject) {
 		this.jsonObject = jsonObject;
 	}
-	
-	
-	
+
+	@Column(name="tdp_member_type_id")
+	public Long getTdpMemberTypeId() {
+		return tdpMemberTypeId;
+	}
+
+	public void setTdpMemberTypeId(Long tdpMemberTypeId) {
+		this.tdpMemberTypeId = tdpMemberTypeId;
+	}
 	
 }
