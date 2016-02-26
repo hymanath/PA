@@ -3809,8 +3809,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					   {
 						   for (Object[] designation : designationsList) {
 							   Long memberId = commonMethodsUtilService.getLongValueForObject(designation[0]);
-							   Long id = commonMethodsUtilService.getLongValueForObject(designation[0]);
-							   String name = commonMethodsUtilService.getStringValueForObject(designation[1]);
+							   Long id = commonMethodsUtilService.getLongValueForObject(designation[1]);
+							   String name = commonMethodsUtilService.getStringValueForObject(designation[2]);
 							   
 							   UnionTabUserVO memberVO = tdpMemberTypesMap.get(memberId);
 							  

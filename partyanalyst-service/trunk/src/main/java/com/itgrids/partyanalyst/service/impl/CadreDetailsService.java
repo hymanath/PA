@@ -1032,7 +1032,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     	
     	return returnVO;
 	}
-	public CadreCommitteeMemberVO cadreFormalDetailedInformation(Long cadreId){
+	public CadreCommitteeMemberVO cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear,Long memberTypeId){
 		
 		CadreCommitteeMemberVO cadreDetailsVO=new CadreCommitteeMemberVO();
 		try {
@@ -1045,15 +1045,20 @@ public class CadreDetailsService implements ICadreDetailsService{
 				//6.occupationId,7.occupation,8.voterId,9.panchayatName,10.tehsilName,11.constName,12.mobileNo,13.ConstituencyId
 				//14.,18.districtName,19.stateName,20.casteName,21.insertedWebUserId(registeredOn),22.registeredTime,23.emailId,24.dataSourceType
 				//25.panchayatId,26.tehsilId,27.districtId,28.stateId,29.pConstId,30.pName,35.areaType
-				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,2014l);
+				Object[] cadreFormalDetails=tdpCadreDAO.cadreFormalDetailedInformation(cadreId,enrollmentYear,memberTypeId);
 				
 				//0.tdpCommitteeLevel,1.role
 				//List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionBycadre(cadreId);  
 				//0.publicRepresentativeTypeId,1.type
-				List<Object[]> publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
+				List<Object[]> publicRepDertails=null;//tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
 				
-				List<Long> candidateList =tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+				List<Long> candidateList =null;//tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
 				
+				if(memberTypeId == null || memberTypeId.longValue() <2)
+				{
+					publicRepDertails=tdpCadreCandidateDAO.getPublicRepresentativeDetailsByCadre(cadreId);
+					candidateList =tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+				}
 				
 				DateFormat dateFormat=null;
 				Date convertedDate = null;
@@ -1089,6 +1094,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 					cadreDetailsVO.setMobileNo(cadreFormalDetails[12] !=null ? cadreFormalDetails[12].toString() : "");
 					cadreDetailsVO.setConstituencyId(cadreFormalDetails[13] !=null ? (Long)cadreFormalDetails[13] : 0l );
 					cadreDetailsVO.setVoterIdCardNo(cadreFormalDetails[14] !=null ? cadreFormalDetails[14].toString() : "");
+					
+					cadreDetailsVO.setRelativeName(cadreFormalDetails[40] !=null ? cadreFormalDetails[40].toString() : "");
+					cadreDetailsVO.setRelativeType(cadreFormalDetails[41] !=null ? cadreFormalDetails[41].toString() : "");
 					
 					if(cadreFormalDetails[15] !=null){
 						String image=cadreFormalDetails[15].toString();
@@ -2174,7 +2182,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						if(publicationDateId != null && publicationDateId.longValue() == IConstants.VOTER_DATA_PUBLICATION_ID)
 						{
 							Long voterId = voter[3] != null ? Long.valueOf(voter[3].toString()):0L;
-							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId);
+							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId,1L);
 							if(tdpCadreList != null && tdpCadreList.size()>0)
 							{
 								TdpCadre tdpCadre =  (TdpCadre) tdpCadreList.get(0);
@@ -4046,7 +4054,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						if(publicationDateId != null && publicationDateId.longValue() == IConstants.VOTER_DATA_PUBLICATION_ID)
 						{
 							Long voterId = voter[3] != null ? Long.valueOf(voter[3].toString()):0L;
-							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId);
+							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId,1L);
 							if(tdpCadreList != null && tdpCadreList.size()>0)
 							{
 								TdpCadre tdpCadre =  (TdpCadre) tdpCadreList.get(0);
@@ -4064,7 +4072,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(tdpCadreId != null && tdpCadreId.longValue()>0L)
 			{
-				CadreCommitteeMemberVO cadreVO = cadreFormalDetailedInformation(tdpCadreId);
+				CadreCommitteeMemberVO cadreVO = cadreFormalDetailedInformation(tdpCadreId,IConstants.CADRE_ENROLLMENT_NUMBER,1L);
 				
 				if(cadreVO != null )
 				{
@@ -5034,7 +5042,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
 						
 							Long voterId = voter[3] != null ? Long.valueOf(voter[3].toString()):0L;
-							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId);
+							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId,memberTypeId);
 							if(tdpCadreList != null && tdpCadreList.size()>0)
 							{
 								TdpCadre tdpCadre =  (TdpCadre) tdpCadreList.get(0);
@@ -5051,13 +5059,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(tdpCadreId != null && tdpCadreId.longValue()>0L)
 			{
-				CadreCommitteeMemberVO cadreVO = cadreFormalDetailedInformation(tdpCadreId);
+				CadreCommitteeMemberVO cadreVO = cadreFormalDetailedInformation(tdpCadreId,IConstants.UNIONS_REGISTRATION_YEAR,memberTypeId);
 				if(cadreVO != null )
 				{
 					returnVO.setAge(cadreVO.getAge());
 					returnVO.setGender(cadreVO.getGender());
 					returnVO.setAreaType(cadreVO.getAreaType());
 					returnVO.setBoothId(cadreVO.getBoothId());
+					returnVO.setRelationType(cadreVO.getRelativeType());
+					returnVO.setRelativeName(cadreVO.getRelativeName());
 					returnVO.setCadreId(cadreVO.getCadreId());
 					returnVO.setCandidateId(cadreVO.getCandidate());
 					returnVO.setConstituencyId(cadreVO.getConstituencyId());
