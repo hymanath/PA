@@ -11158,8 +11158,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 					if(cadreRegistrationVO.getRelativeType() != null && !cadreRegistrationVO.getRelativeType().equalsIgnoreCase("null") && cadreRegistrationVO.getRelativeType().trim().length() > 0)
 					{
-						Long relativeTypeId = cadreRegistrationVO.getRelativeType().trim().length()>0 ? Long.valueOf(cadreRegistrationVO.getRelativeType()):0L;;
-						tdpCadre.setRelativeType(voterRelationDAO.get(relativeTypeId).getDescription());
+						 if(registrationType.equalsIgnoreCase("TAB")){
+							 Long relativeTypeId = cadreRegistrationVO.getRelativeType().trim().length()>0 ? Long.valueOf(cadreRegistrationVO.getRelativeType()):0L;;
+								tdpCadre.setRelativeType(voterRelationDAO.get(relativeTypeId).getDescription());
+						 }
+						 else 
+						 {
+							 tdpCadre.setRelativeType(cadreRegistrationVO.getRelativeType());
+						 }
 					}else{
 						tdpCadre.setRelativeType(null);
 					}
