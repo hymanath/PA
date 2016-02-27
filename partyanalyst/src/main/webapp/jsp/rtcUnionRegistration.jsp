@@ -531,11 +531,7 @@
 		if(isValidName('number')){
 			isErrorStr = " error";	
 		}
-		if(casteId == 0)
-		{
-			isErrorStr = " error";
-			$('#casteErr').html(' Caste is required.');
-		}
+		
 		if(mobileNumber.trim().length == 0)
 		{
 			isErrorStr = " error";
@@ -1537,10 +1533,12 @@
 													</div>
 													<div  id="showHideFammemberType" style="display:block;"  class="span12">
 														<div  class="span6">
-															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="relativeTypeId" id="relativeTypeId"> </select>
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="cadreRegistrationVO.relationTypeId" id="relativeTypeId "> </select>
 														</div>
 														<div  class="span6">
-															<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+															<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span>
+															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;"  name="cadreRegistrationVO.familyVoterId" value="${voterInfoVOList[0].fmlyVCardNo}" name="">
+															<span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
 															<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
 														</div>
 														<div  class="span6">
@@ -1554,11 +1552,11 @@
 													</div>
 													<div  id="showHideFammemberType" style="display:none ;" class="span12">
 														<div  class="span6">
-															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="relativeTypeId" id="relativeTypeId"> </select>
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="cadreRegistrationVO.relationTypeId" id="relativeTypeId"> </select>
 														</div>
 														<div  class="span6">
 															<label style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</label>
-															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;"  name="cadreRegistrationVO.familyVoterId" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');" ></span>
 															<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
 														</div>
 														<div  class="span6">
@@ -1568,7 +1566,7 @@
 												</c:if>
 										</div>
 								</div>	
-								<input type="hidden" id="fmlyVtrId" class="form-control border-radius-0 input-block-level" placeholder="Text input"  style="width:260px;"  name="cadreRegistrationVO.familyVoterId"></input>
+								<input type="hidden" id="fmlyVtrId" class="form-control border-radius-0 input-block-level" placeholder="Text input"  style="width:260px;" ></input>
 								
 								<div class="m_top10">
 										<div class="row-fluid">
