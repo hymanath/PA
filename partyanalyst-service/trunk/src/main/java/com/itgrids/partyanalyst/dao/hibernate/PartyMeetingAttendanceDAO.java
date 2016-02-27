@@ -22,7 +22,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct  PMA.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMA.partyMeeting.partyMeetingLevel.level, " +
-				" PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type, count(PMA.attendance.tdpCadreId)  from PartyMeetingAttendance PMA  where " +
+				" PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type, count(distinct  PMA.attendance.tdpCadreId)  from PartyMeetingAttendance PMA  where " +
 				" date(PMA.partyMeeting.startDate) <= :toDayDate ");
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			queryStr.append("  and PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
@@ -114,7 +114,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 				" from PartyMeetingAttendance model" +
 				" where model.partyMeeting.partyMeetingId in(:partyMeetingIds)" +
 				" and model.attendance.tdpCadre.isDeleted='N'" +
-				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear " +
+				" and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear   " +
 				" group by model.partyMeeting.partyMeetingId");
 		query.setParameterList("partyMeetingIds", partyMeetingIds);
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
