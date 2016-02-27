@@ -11158,7 +11158,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 					if(cadreRegistrationVO.getRelativeType() != null && !cadreRegistrationVO.getRelativeType().equalsIgnoreCase("null") && cadreRegistrationVO.getRelativeType().trim().length() > 0)
 					{
-						tdpCadre.setRelativeType(cadreRegistrationVO.getRelativeType());
+						Long relativeTypeId = cadreRegistrationVO.getRelativeType().trim().length()>0 ? Long.valueOf(cadreRegistrationVO.getRelativeType()):0L;;
+						tdpCadre.setRelativeType(voterRelationDAO.get(relativeTypeId).getDescription());
 					}else{
 						tdpCadre.setRelativeType(null);
 					}
@@ -11379,44 +11380,54 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						   
 						   
 						   UserAddress workLocation = new UserAddress();
-						   
+						   boolean isWorkLocationAvailable = false;
 						   if(cadreRegistrationVO.getWorkAddrsHNo() != null && cadreRegistrationVO.getWorkAddrsHNo().length() > 0l){
 							   workLocation.setHouseNo(cadreRegistrationVO.getWorkAddrsHNo());
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsDistId() != null && cadreRegistrationVO.getWorkAddrsDistId() > 0l){
 							   workLocation.setDistrict(districtDAO.get(cadreRegistrationVO.getWorkAddrsDistId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsConstId() != null && cadreRegistrationVO.getWorkAddrsConstId() > 0l){
 							   workLocation.setConstituency(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsConstId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsMandalId() != null && cadreRegistrationVO.getWorkAddrsMandalId() > 0l){
 							   workLocation.setTehsil(tehsilDAO.get(cadreRegistrationVO.getWorkAddrsMandalId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsLebId() != null && cadreRegistrationVO.getWorkAddrsLebId() > 0l){
 							   workLocation.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsLebId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsVillId() != null && cadreRegistrationVO.getWorkAddrsVillId() > 0l){
 							   workLocation.setPanchayatId(cadreRegistrationVO.getWorkAddrsVillId());
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsWardId() != null && cadreRegistrationVO.getWorkAddrsWardId() > 0l){
 							   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsWardId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsStreet() != null && cadreRegistrationVO.getWorkAddrsStreet().trim() != ""){
 							   workLocation.setStreet(cadreRegistrationVO.getWorkAddrsStreet());
+							   isWorkLocationAvailable = true;
 							}
 						   
 						   if(cadreRegistrationVO.getWorkAddrsLandmark() != null && cadreRegistrationVO.getWorkAddrsLandmark().trim() != ""){
 							   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
+							   isWorkLocationAvailable = true;
 						   }
 						   
-						   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
+						   if(isWorkLocationAvailable)
+							   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
 						 
 					}
 					else{
@@ -11484,17 +11495,20 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 
 							   
 							   UserAddress workLocation = new UserAddress();
-					   
+							   boolean isWorkLocationAvailable = false;
 						   if(cadreRegistrationVO.getWorkAddrsHNo() != null && cadreRegistrationVO.getWorkAddrsHNo().length() > 0l){
 							   workLocation.setHouseNo(cadreRegistrationVO.getWorkAddrsHNo());
+							   isWorkLocationAvailable = true;
 						   }
 							   
 						   if(cadreRegistrationVO.getWorkAddrsDistId() != null && cadreRegistrationVO.getWorkAddrsDistId() > 0l){
 							   workLocation.setDistrict(districtDAO.get(cadreRegistrationVO.getWorkAddrsDistId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsConstId() != null && cadreRegistrationVO.getWorkAddrsConstId() > 0l){
 							   workLocation.setConstituency(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsConstId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsMandalId() != null && cadreRegistrationVO.getWorkAddrsMandalId() > 0l){
@@ -11510,10 +11524,12 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								   workLocation.setLocalElectionBody(leb);
 								   workLocation.setTehsil(leb.getTehsil());
 							   }
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsLebId() != null && cadreRegistrationVO.getWorkAddrsLebId() > 0l){
 							   workLocation.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsLebId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsVillId() != null && cadreRegistrationVO.getWorkAddrsVillId() > 0l){
@@ -11527,21 +11543,26 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							   else if(panchayatORWard.trim().equalsIgnoreCase("8")){
 								   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsVillId()));
 							   }
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsWardId() != null && cadreRegistrationVO.getWorkAddrsWardId() > 0l){
 							   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsWardId()));
+							   isWorkLocationAvailable = true;
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsStreet() != null && cadreRegistrationVO.getWorkAddrsStreet().trim() != ""){
 							   workLocation.setStreet(cadreRegistrationVO.getWorkAddrsStreet());
+							   isWorkLocationAvailable = true;
 							}
 						   
 						   if(cadreRegistrationVO.getWorkAddrsLandmark() != null && cadreRegistrationVO.getWorkAddrsLandmark().trim() != ""){
 							   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
+							   isWorkLocationAvailable = true;
 						   }
 						   
-						   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
+						   if(isWorkLocationAvailable)
+							   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
 					}
 						      
 						
