@@ -134,7 +134,7 @@ public class TdpCadreBackupDetails extends BaseModel implements java.io.Serializ
 		this.jsonObject = jsonObject;
 	}
 
-	@Column(name="tdp_member_type_id")
+	@Column(name="tdp_member_type")
 	public Long getTdpMemberTypeId() {
 		return tdpMemberTypeId;
 	}
