@@ -137,9 +137,9 @@ public class TdpCadre {
 	
 	
 	private String validStatus;
-	private Long workLocationId;
+	//private Long workLocationId;
 	private String schoolName;
-	private Long presentAddressId;
+	//private Long presentAddressId;
 	
 	private UserAddress presentAddress;
 	private UserAddress workLocation;
@@ -952,14 +952,14 @@ public class TdpCadre {
 	public void setValidStatus(String validStatus) {
 		this.validStatus = validStatus;
 	}
-	
+	/*
 	@Column(name="work_location_id")
 	public Long getWorkLocationId() {
 		return workLocationId;
 	}
 	public void setWorkLocationId(Long workLocationId) {
 		this.workLocationId = workLocationId;
-	}
+	}*/
 	
 	@Column(name="school_name")
 	public String getSchoolName() {
@@ -969,16 +969,16 @@ public class TdpCadre {
 		this.schoolName = schoolName;
 	}
 	
-	@Column(name="present_address_id")
+/*	@Column(name="present_address_id")
 	public Long getPresentAddressId() {
 		return presentAddressId;
 	}
 	public void setPresentAddressId(Long presentAddressId) {
 		this.presentAddressId = presentAddressId;
-	}
+	}*/
 	
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "present_address_id" , updatable=false,insertable=false)
+	@JoinColumn(name = "present_address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getPresentAddress() {
@@ -989,7 +989,7 @@ public class TdpCadre {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "work_location_id" , updatable=false,insertable=false)
+	@JoinColumn(name = "work_location_id" )
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getWorkLocation() {
