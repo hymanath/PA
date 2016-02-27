@@ -3052,9 +3052,18 @@ public class PartyMeetingService implements IPartyMeetingService{
 					 }
 					 if(otherMembersCount >0){
 						 PartyMeetingWSVO vo = new PartyMeetingWSVO();
+						 vo.setInviteesCount(0L);
+						 vo.setNonInviteesAttendedCount(0L);
+						 
+						 for (Long cadreId : partyMeetingVoMap.keySet()) {
+							if(inviteesList.contains(cadreId))
+								vo.setInviteesCount(Long.valueOf(vo.getInviteesCount().toString())+1l);							
+							else
+								vo.setNonInviteesAttendedCount(Long.valueOf(vo.getNonInviteesAttendedCount().toString())+1l);
+						}
+						
 						 vo.setDesignation("OTHERS");
 						 vo.setCount(Long.valueOf(String.valueOf(otherMembersCount)));
-						 
 						 designationMap.put("OTHERS", vo);
 					 }
 				 }
