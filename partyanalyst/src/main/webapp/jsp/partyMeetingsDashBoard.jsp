@@ -2707,9 +2707,10 @@ $(document).on('click','.getSummary', function() {
 				$("#attendenceDiv").show();
 
 				buildTdpCadreAttendanceCount(result);
-				buildTdpCadreAttendedMembers(result,applyFilterTypeId);
+				if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0)
+					buildTdpCadreAttendedMembers(result,applyFilterTypeId);
 			}
-			$("#meetingTableDiv").hide();
+			
 			
 			/*var designationVal = $("#disignationDiv").val();
 			if(designationVal != null && designationVal.length > 0)
@@ -2765,8 +2766,9 @@ $(document).on('click','.getSummary', function() {
 				else if(searchType =='AB')
 					titleStr ="TOTAL ABSENT";
 				$('#filterHeading').html(titleStr+' MEMBERS DETAILS ');
-
-				buildTdpCadreAttendedMembers(result,applyFilterTypeId);
+				
+				if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0)
+					buildTdpCadreAttendedMembers(result,applyFilterTypeId);
 				
 			}
 			
@@ -2776,35 +2778,41 @@ $(document).on('click','.getSummary', function() {
   function buildTdpCadreAttendanceCount(result)
   { 
      var str ='';
-	 str+='<table class="table table-bordered bg_ff">';
-	 str+='<tbody><tr>';
-	  str+='<td class="text-center">';
-	 str+='<h3> <a class="meetingradioCls" name="meetingradio" value="TP" style="cursor:pointer;" href="javascript:{};"> <span  style="color:green;font-weight: bold">'+result.attendedCount+' </span> </a></h3>';
-	 str+='<h4> TOTAL ATTENDED </h4>';
-	 //str+='<p>Members in Meeting</p>';
-	 str+='</td>';
-	 str+='<td class="text-center">';
-	 str+='<h3> <a class="meetingradioCls" name="meetingradio" value="TI" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold"> '+result.inviteesCount+' </span> </a></h3>';
-	 str+='<h4>TOTAL INVITEES</h4>';
-	// str+='<p>Members in Meeting</p>';
-	 str+='</td>';
-	 str+='<td class="text-center">';
-	 str+='<h3>  <a class="meetingradioCls" name="meetingradio" value="IP" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold">'+result.inviteesAttendedCount+' </span> </a></h3>';
-	 str+='<h4 class="text-danger">INVITEES ATTENDED</h4>';
-	// str+='<p>Members in Meeting</p>';
-	 str+='</td>';
-	 str+='<td class="text-center">';
-	 str+='<h3>  <a class="meetingradioCls" name="meetingradio" value="AB" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold">'+result.absentCount+' </span> </a></h3>';
-	 str+='<h4 class="text-warning">INVITEES ABSENT</h4>';
-	 //str+='<p>Members in Meeting</p>';
-	 str+='</td>';
-	 str+='<td class="text-center">';
-	 str+='<h3>  <a class="meetingradioCls" name="meetingradio" value="NI" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold">'+result.nonInviteesAttendedCount+' </span></a></h3>';
-	 str+='<h4>NON INVITEES</h4>';
-	 //str+='<p>Members in Meeting</p>';
-	 str+='</td>';
-	 str+='</tr>';
-	 str+='</tbody></table>';
+	 
+	 if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0){
+		 str+='<table class="table table-bordered bg_ff">';
+		 str+='<tbody><tr>';
+		  str+='<td class="text-center">';
+		 str+='<h3> <a class="meetingradioCls" name="meetingradio" value="TP" style="cursor:pointer;" href="javascript:{};"> <span  style="color:green;font-weight: bold">'+result.attendedCount+' </span> </a></h3>';
+		 str+='<h4> TOTAL ATTENDED </h4>';
+		 //str+='<p>Members in Meeting</p>';
+		 str+='</td>';
+		 str+='<td class="text-center">';
+		 str+='<h3> <a class="meetingradioCls" name="meetingradio" value="TI" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold"> '+result.inviteesCount+' </span> </a></h3>';
+		 str+='<h4>TOTAL INVITEES</h4>';
+		// str+='<p>Members in Meeting</p>';
+		 str+='</td>';
+		 str+='<td class="text-center">';
+		 str+='<h3>  <a class="meetingradioCls" name="meetingradio" value="IP" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold">'+result.inviteesAttendedCount+' </span> </a></h3>';
+		 str+='<h4 class="text-danger">INVITEES ATTENDED</h4>';
+		// str+='<p>Members in Meeting</p>';
+		 str+='</td>';
+		 str+='<td class="text-center">';
+		 str+='<h3>  <a class="meetingradioCls" name="meetingradio" value="AB" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold">'+result.absentCount+' </span> </a></h3>';
+		 str+='<h4 class="text-warning">INVITEES ABSENT</h4>';
+		 //str+='<p>Members in Meeting</p>';
+		 str+='</td>';
+		 str+='<td class="text-center">';
+		 str+='<h3>  <a class="meetingradioCls" name="meetingradio" value="NI" style="cursor:pointer;" href="javascript:{};" > <span  style="color:green;font-weight: bold">'+result.nonInviteesAttendedCount+' </span></a></h3>';
+		 str+='<h4>NON INVITEES</h4>';
+		 //str+='<p>Members in Meeting</p>';
+		 str+='</td>';
+		 str+='</tr>';
+		 str+='</tbody></table>';
+	 }
+	 else{
+		 str+='No Data Available ...';
+	 }
 	  
 	  $("#meetingAttendanceCntDiv").html(str);
 	/*  $("#disignationDiv").html('');
