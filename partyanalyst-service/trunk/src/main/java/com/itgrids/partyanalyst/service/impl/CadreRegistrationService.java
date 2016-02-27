@@ -11325,160 +11325,20 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							}
 						}
 						
-								boolean isPresentAddressAvailable =false;
+						if(cadreRegistrationVO.getSchoolName() != null && !cadreRegistrationVO.getSchoolName().isEmpty()){
+							tdpCadre.setSchoolName(cadreRegistrationVO.getSchoolName());
+						}
 						
-								UserAddress presentAddress = new UserAddress();
-
-								   if(cadreRegistrationVO.getPrsntAddrsDistId() != null && cadreRegistrationVO.getPrsntAddrsDistId() > 0l){
-									   presentAddress.setDistrict(districtDAO.get(cadreRegistrationVO.getPrsntAddrsDistId()));
-									   isPresentAddressAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getPrsntAddrsConstId() != null && cadreRegistrationVO.getPrsntAddrsConstId() > 0l){
-									   presentAddress.setConstituency(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsConstId()));
-									   isPresentAddressAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getPrsntAddrsMandalId() != null && cadreRegistrationVO.getPrsntAddrsMandalId() > 0l){
-									   String mandalIdStr = cadreRegistrationVO.getPrsntAddrsMandalId().toString();
-									   cadreRegistrationVO.setPrsntAddrsMandalId(Long.valueOf(mandalIdStr.substring(1)));
-									   String mandalORLeb = String.valueOf(mandalIdStr.charAt(0));
-									   if(mandalORLeb.trim().equalsIgnoreCase("4")){
-										   presentAddress.setTehsil(tehsilDAO.get(cadreRegistrationVO.getPrsntAddrsMandalId()));
-									   }
-									   else if(mandalORLeb.trim().equalsIgnoreCase("5")){
-										   LocalElectionBody leb = localElectionBodyDAO.get(cadreRegistrationVO.getPrsntAddrsMandalId());
-										   presentAddress.setLocalElectionBody(leb);
-										   presentAddress.setTehsil(leb.getTehsil());
-									   }
-									   
-									   isPresentAddressAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getPrsntAddrsLebId() != null && cadreRegistrationVO.getPrsntAddrsLebId() > 0l){
-									   presentAddress.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getPrsntAddrsLebId()));
-									   isPresentAddressAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getPrsntAddrsVillId() != null && cadreRegistrationVO.getPrsntAddrsVillId() > 0l){
-									   
-									   String panchayatIdStr = cadreRegistrationVO.getPrsntAddrsVillId().toString();
-									   cadreRegistrationVO.setPrsntAddrsVillId(Long.valueOf(panchayatIdStr.substring(1)));
-									   String panchayatORWard = String.valueOf(panchayatIdStr.charAt(0));
-									   if(panchayatORWard.trim().equalsIgnoreCase("7")){
-										   presentAddress.setPanchayatId(cadreRegistrationVO.getPrsntAddrsVillId());
-									   }
-									   else if(panchayatORWard.trim().equalsIgnoreCase("8")){
-										   presentAddress.setWard(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsVillId()));
-									   }
-									   
-									   isPresentAddressAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getPrsntAddrsWardId() != null && cadreRegistrationVO.getPrsntAddrsWardId() > 0l){
-									   presentAddress.setWard(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsWardId()));
-									   isPresentAddressAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getPrsntAddrsStreet() != null && cadreRegistrationVO.getPrsntAddrsStreet().trim() != ""){
-									   presentAddress.setStreet(cadreRegistrationVO.getPrsntAddrsStreet());
-									   isPresentAddressAvailable =true;
-									}
-								   
-								   if(cadreRegistrationVO.getPrsntAddrsLandmark() != null && cadreRegistrationVO.getPrsntAddrsLandmark().trim() != ""){
-									   presentAddress.setAddressLane1(cadreRegistrationVO.getPrsntAddrsLandmark());
-									   isPresentAddressAvailable =true;
-								   }
-								   
-								   
-								   if(isPresentAddressAvailable){
-									   presentAddress= userAddressDAO.save(presentAddress);
-									   tdpCadre.setUserAddress(presentAddress);
-								   }
-							
-						
-							   boolean isWorkLocationAvailable =false;
-							   if(cadreRegistrationVO.getSchoolName() != null && !cadreRegistrationVO.getSchoolName().isEmpty()){
-									tdpCadre.setSchoolName(cadreRegistrationVO.getSchoolName());
-								}
-							
-							   UserAddress workLocation = new UserAddress();
-							   
-							   
-								   if(cadreRegistrationVO.getWorkAddrsDistId() != null && cadreRegistrationVO.getWorkAddrsDistId() > 0l){
-									   workLocation.setDistrict(districtDAO.get(cadreRegistrationVO.getWorkAddrsDistId()));
-									   isWorkLocationAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getWorkAddrsConstId() != null && cadreRegistrationVO.getWorkAddrsConstId() > 0l){
-									   workLocation.setConstituency(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsConstId()));
-									   isWorkLocationAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getWorkAddrsMandalId() != null && cadreRegistrationVO.getWorkAddrsMandalId() > 0l){
-									 
-									   String mandalIdStr = cadreRegistrationVO.getWorkAddrsMandalId().toString();
-									   cadreRegistrationVO.setWorkAddrsMandalId(Long.valueOf(mandalIdStr.substring(1)));
-									   String mandalORLeb = String.valueOf(mandalIdStr.charAt(0));
-									   if(mandalORLeb.trim().equalsIgnoreCase("4")){
-										   workLocation.setTehsil(tehsilDAO.get(cadreRegistrationVO.getWorkAddrsMandalId()));
-									   }
-									   else if(mandalORLeb.trim().equalsIgnoreCase("5")){
-										   LocalElectionBody leb = localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsMandalId());
-										   workLocation.setLocalElectionBody(leb);
-										   workLocation.setTehsil(leb.getTehsil());
-									   }
-									   
-									   isWorkLocationAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getWorkAddrsLebId() != null && cadreRegistrationVO.getWorkAddrsLebId() > 0l){
-									   workLocation.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsLebId()));
-									   isWorkLocationAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getWorkAddrsVillId() != null && cadreRegistrationVO.getWorkAddrsVillId() > 0l){
-									   
-									   String panchayatIdStr = cadreRegistrationVO.getWorkAddrsVillId().toString();
-									   cadreRegistrationVO.setWorkAddrsVillId(Long.valueOf(panchayatIdStr.substring(1)));
-									   String panchayatORWard = String.valueOf(panchayatIdStr.charAt(0));
-									   if(panchayatORWard.trim().equalsIgnoreCase("7")){
-										   workLocation.setPanchayatId(cadreRegistrationVO.getWorkAddrsVillId());
-									   }
-									   else if(panchayatORWard.trim().equalsIgnoreCase("8")){
-										   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsVillId()));
-									   }
-									   
-									   isWorkLocationAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getWorkAddrsWardId() != null && cadreRegistrationVO.getWorkAddrsWardId() > 0l){
-									   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsWardId()));
-									   isWorkLocationAvailable =true;
-								   }
-								   
-								   if(cadreRegistrationVO.getWorkAddrsStreet() != null && cadreRegistrationVO.getWorkAddrsStreet().trim() != ""){
-									   workLocation.setStreet(cadreRegistrationVO.getWorkAddrsStreet());
-									   isWorkLocationAvailable =true;
-									}
-								   
-								   if(cadreRegistrationVO.getWorkAddrsLandmark() != null && cadreRegistrationVO.getWorkAddrsLandmark().trim() != ""){
-									   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
-									   isWorkLocationAvailable =true;
-								   }
-														
-							   
-							   if(isWorkLocationAvailable)
-							   {
-								   //workLocation= userAddressDAO.save(workLocation);
-								   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
-							   }
-						
-						
-						//ADDRESS SAVING.
 						 UserAddress userAddress = new UserAddress();
-						 if(!isPresentAddressAvailable){ // TAB Address Saving
+						
+					if(registrationType.equalsIgnoreCase("TAB")){
+						//ADDRESS SAVING.
 							 
+								 if(cadreRegistrationVO.getHouseNo() != null && cadreRegistrationVO.getHouseNo().length() > 0l){
+									 userAddress.setHouseNo(cadreRegistrationVO.getHouseNo());
+									 cadreRegistrationVO.setHouseNo(cadreRegistrationVO.getHouseNo());
+								   }
+						 
 						    	   if(cadreRegistrationVO.getPerAddrsDistId() != null && cadreRegistrationVO.getPerAddrsDistId() > 0l){
 									   userAddress.setDistrict(districtDAO.get(cadreRegistrationVO.getPerAddrsDistId()));
 								   }
@@ -11513,7 +11373,173 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							
 						   userAddress= userAddressDAO.save(userAddress);
 						   tdpCadre.setUserAddress(userAddress);
-						 }
+						   
+						   
+						   UserAddress workLocation = new UserAddress();
+						   
+						   if(cadreRegistrationVO.getWorkAddrsHNo() != null && cadreRegistrationVO.getWorkAddrsHNo().length() > 0l){
+							   workLocation.setHouseNo(cadreRegistrationVO.getWorkAddrsHNo());
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsDistId() != null && cadreRegistrationVO.getWorkAddrsDistId() > 0l){
+							   workLocation.setDistrict(districtDAO.get(cadreRegistrationVO.getWorkAddrsDistId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsConstId() != null && cadreRegistrationVO.getWorkAddrsConstId() > 0l){
+							   workLocation.setConstituency(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsConstId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsMandalId() != null && cadreRegistrationVO.getWorkAddrsMandalId() > 0l){
+							   userAddress.setTehsil(tehsilDAO.get(cadreRegistrationVO.getWorkAddrsMandalId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsLebId() != null && cadreRegistrationVO.getWorkAddrsLebId() > 0l){
+							   workLocation.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsLebId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsVillId() != null && cadreRegistrationVO.getWorkAddrsVillId() > 0l){
+							   workLocation.setPanchayatId(cadreRegistrationVO.getWorkAddrsVillId());
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsWardId() != null && cadreRegistrationVO.getWorkAddrsWardId() > 0l){
+							   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsWardId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsStreet() != null && cadreRegistrationVO.getWorkAddrsStreet().trim() != ""){
+							   workLocation.setStreet(cadreRegistrationVO.getWorkAddrsStreet());
+							}
+						   
+						   if(cadreRegistrationVO.getWorkAddrsLandmark() != null && cadreRegistrationVO.getWorkAddrsLandmark().trim() != ""){
+							   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
+						   }
+						   
+						   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
+						 
+					}
+					else{
+						
+						UserAddress presentAddress = new UserAddress();
+
+						if(cadreRegistrationVO.getPrsntAddrsHNo() != null && cadreRegistrationVO.getPrsntAddrsHNo().length() > 0l){
+							   presentAddress.setHouseNo(cadreRegistrationVO.getPrsntAddrsHNo());
+						   }
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsDistId() != null && cadreRegistrationVO.getPrsntAddrsDistId() > 0l){
+							   presentAddress.setDistrict(districtDAO.get(cadreRegistrationVO.getPrsntAddrsDistId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsConstId() != null && cadreRegistrationVO.getPrsntAddrsConstId() > 0l){
+							   presentAddress.setConstituency(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsConstId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsMandalId() != null && cadreRegistrationVO.getPrsntAddrsMandalId() > 0l){
+							   String mandalIdStr = cadreRegistrationVO.getPrsntAddrsMandalId().toString();
+							   cadreRegistrationVO.setPrsntAddrsMandalId(Long.valueOf(mandalIdStr.substring(1)));
+							   String mandalORLeb = String.valueOf(mandalIdStr.charAt(0));
+							   if(mandalORLeb.trim().equalsIgnoreCase("4")){
+								   presentAddress.setTehsil(tehsilDAO.get(cadreRegistrationVO.getPrsntAddrsMandalId()));
+							   }
+							   else if(mandalORLeb.trim().equalsIgnoreCase("5")){
+								   LocalElectionBody leb = localElectionBodyDAO.get(cadreRegistrationVO.getPrsntAddrsMandalId());
+								   presentAddress.setLocalElectionBody(leb);
+								   presentAddress.setTehsil(leb.getTehsil());
+							   }
+							   
+						   }
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsLebId() != null && cadreRegistrationVO.getPrsntAddrsLebId() > 0l){
+							   presentAddress.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getPrsntAddrsLebId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsVillId() != null && cadreRegistrationVO.getPrsntAddrsVillId() > 0l){
+							   
+							   String panchayatIdStr = cadreRegistrationVO.getPrsntAddrsVillId().toString();
+							   cadreRegistrationVO.setPrsntAddrsVillId(Long.valueOf(panchayatIdStr.substring(1)));
+							   String panchayatORWard = String.valueOf(panchayatIdStr.charAt(0));
+							   if(panchayatORWard.trim().equalsIgnoreCase("7")){
+								   presentAddress.setPanchayatId(cadreRegistrationVO.getPrsntAddrsVillId());
+							   }
+							   else if(panchayatORWard.trim().equalsIgnoreCase("8")){
+								   presentAddress.setWard(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsVillId()));
+							   }
+						   }
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsWardId() != null && cadreRegistrationVO.getPrsntAddrsWardId() > 0l){
+							   presentAddress.setWard(constituencyDAO.get(cadreRegistrationVO.getPrsntAddrsWardId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsStreet() != null && cadreRegistrationVO.getPrsntAddrsStreet().trim() != ""){
+							   presentAddress.setStreet(cadreRegistrationVO.getPrsntAddrsStreet());
+							}
+						   
+						   if(cadreRegistrationVO.getPrsntAddrsLandmark() != null && cadreRegistrationVO.getPrsntAddrsLandmark().trim() != ""){
+							   presentAddress.setAddressLane1(cadreRegistrationVO.getPrsntAddrsLandmark());
+						   }
+						   
+							   presentAddress= userAddressDAO.save(presentAddress);
+							   tdpCadre.setUserAddress(presentAddress);
+
+							   
+							   UserAddress workLocation = new UserAddress();
+					   
+						   if(cadreRegistrationVO.getWorkAddrsHNo() != null && cadreRegistrationVO.getWorkAddrsHNo().length() > 0l){
+							   workLocation.setHouseNo(cadreRegistrationVO.getWorkAddrsHNo());
+						   }
+							   
+						   if(cadreRegistrationVO.getWorkAddrsDistId() != null && cadreRegistrationVO.getWorkAddrsDistId() > 0l){
+							   workLocation.setDistrict(districtDAO.get(cadreRegistrationVO.getWorkAddrsDistId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsConstId() != null && cadreRegistrationVO.getWorkAddrsConstId() > 0l){
+							   workLocation.setConstituency(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsConstId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsMandalId() != null && cadreRegistrationVO.getWorkAddrsMandalId() > 0l){
+							 
+							   String mandalIdStr = cadreRegistrationVO.getWorkAddrsMandalId().toString();
+							   cadreRegistrationVO.setWorkAddrsMandalId(Long.valueOf(mandalIdStr.substring(1)));
+							   String mandalORLeb = String.valueOf(mandalIdStr.charAt(0));
+							   if(mandalORLeb.trim().equalsIgnoreCase("4")){
+								   workLocation.setTehsil(tehsilDAO.get(cadreRegistrationVO.getWorkAddrsMandalId()));
+							   }
+							   else if(mandalORLeb.trim().equalsIgnoreCase("5")){
+								   LocalElectionBody leb = localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsMandalId());
+								   workLocation.setLocalElectionBody(leb);
+								   workLocation.setTehsil(leb.getTehsil());
+							   }
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsLebId() != null && cadreRegistrationVO.getWorkAddrsLebId() > 0l){
+							   workLocation.setLocalElectionBody(localElectionBodyDAO.get(cadreRegistrationVO.getWorkAddrsLebId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsVillId() != null && cadreRegistrationVO.getWorkAddrsVillId() > 0l){
+							   
+							   String panchayatIdStr = cadreRegistrationVO.getWorkAddrsVillId().toString();
+							   cadreRegistrationVO.setWorkAddrsVillId(Long.valueOf(panchayatIdStr.substring(1)));
+							   String panchayatORWard = String.valueOf(panchayatIdStr.charAt(0));
+							   if(panchayatORWard.trim().equalsIgnoreCase("7")){
+								   workLocation.setPanchayatId(cadreRegistrationVO.getWorkAddrsVillId());
+							   }
+							   else if(panchayatORWard.trim().equalsIgnoreCase("8")){
+								   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsVillId()));
+							   }
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsWardId() != null && cadreRegistrationVO.getWorkAddrsWardId() > 0l){
+							   workLocation.setWard(constituencyDAO.get(cadreRegistrationVO.getWorkAddrsWardId()));
+						   }
+						   
+						   if(cadreRegistrationVO.getWorkAddrsStreet() != null && cadreRegistrationVO.getWorkAddrsStreet().trim() != ""){
+							   workLocation.setStreet(cadreRegistrationVO.getWorkAddrsStreet());
+							}
+						   
+						   if(cadreRegistrationVO.getWorkAddrsLandmark() != null && cadreRegistrationVO.getWorkAddrsLandmark().trim() != ""){
+							   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
+						   }
+						   
+						   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
+					}
 						      
 						
 					TdpCadreOnline tdpCadreOnline = null;
@@ -11577,7 +11603,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 					if(cadreRegistrationVO.getAadheerNo() != null && cadreRegistrationVO.getAadheerNo().trim().length() > 0 && !cadreRegistrationVO.getAadheerNo().trim().equalsIgnoreCase("null"))
 					{
-						tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
+						//tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
+						tdpCadre.setCadreAadherNo(cadreRegistrationVO.getAadheerNo());
 					}
 					if(cadreRegistrationVO.getVoterRelationId() != null && cadreRegistrationVO.getVoterRelationId().longValue() > 0)
 					{
@@ -11742,7 +11769,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
 					}
 					boolean noSms = false;
-					if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
+					if(registrationType != null && (registrationType.equalsIgnoreCase("TAB") || registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 						String userId = "0000";
 						if(cadreRegistrationVO.getCreatedUserId() != null){
 						   userId = cadreRegistrationVO.getCreatedUserId().toString();
@@ -11754,7 +11781,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							  tdpCadre.setRefNo(ref);
 							}
 							cadreRegistrationVO.setRefNo(tdpCadre.getRefNo());
-							
 							
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 							//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
