@@ -2660,6 +2660,7 @@ $(document).on('click','.getSummary', function() {
    $(document).on('click','.meetingNameCls',function(){
 	   var id = $(this).attr("id");
 	   var title = $(this).attr("attr-title");
+	   GLSearchTypeStr = "TP"; 
 	getTdpCadreDetailsForPartyMeetingOverView(id,title,2);
 	
   })
