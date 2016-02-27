@@ -1538,7 +1538,7 @@
 														</div>
 														<div  class="span6">
 															<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span>
-															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;"  name="cadreRegistrationVO.familyVoterId" value="${voterInfoVOList[0].fmlyVCardNo}" name="">
+															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;"   value="${voterInfoVOList[0].fmlyVCardNo}"></input>
 															<span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
 															<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
 														</div>
@@ -1557,7 +1557,7 @@
 														</div>
 														<div  class="span6">
 															<label style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</label>
-															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;"  name="cadreRegistrationVO.familyVoterId" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');" ></span>
+															<input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;"   value="${voterInfoVOList[0].fmlyVCardNo}"></input><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');" ></span>
 															<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
 														</div>
 														<div  class="span6">
@@ -1567,7 +1567,7 @@
 												</c:if>
 										</div>
 								</div>	
-								<input type="hidden" id="fmlyVtrId" class="form-control border-radius-0 input-block-level" placeholder="Text input"  style="width:260px;" ></input>
+								<input type="hidden" id="fmlyVtrId" class="form-control border-radius-0 input-block-level" placeholder="Text input"  name="cadreRegistrationVO.familyVoterId" style="width:260px;" ></input>
 								
 								<div class="m_top10">
 										<div class="row-fluid">
@@ -3407,7 +3407,8 @@ function showNewTakenImg(){
 		//$('#myModal').dialog('close');
 		//$("#familyVtrCrdId").val(vCardNo);
 	}
-	
+	</script>
+<script>
 	function updateFamilyVtrId(vCardNo,vCardId){
 		$('#myModal2').dialog('close');
 		$("#familyVtrCrdId").val(vCardNo);
@@ -3925,8 +3926,11 @@ $(document).ready(function(){
 	   }else if(result.wardId!=null && result.wardId>0){
 		  villageWardId=result.wardId;
 	   }
-	    
-		$('#presentDistrictId').val(districtId);
+	    if(districtId != null)
+			$('#presentDistrictId').val(districtId);
+		else
+			$('#presentDistrictId').val(0);
+		//$('#presentDistrictId').val(districtId);
 		if(result.constList!=null && result.constList.length>0){
 			for(var i in result.constList){
 				if(result.constList[i].id == constituencyId){
@@ -3988,6 +3992,7 @@ $(document).ready(function(){
 	   $("#WorkRoadId").val(result.street);
 	   $("#workLandmarkId").val(result.landMark);
 		
+		
        var districtId=result.districtId;
        var constituencyId=result.constituencyId;
 	   
@@ -4004,8 +4009,10 @@ $(document).ready(function(){
 	   }else if(result.wardId!=null && result.wardId>0){
 		  villageWardId=result.wardId;
 	   }
-	    
-		$('#districtId').val(districtId);
+	    if(districtId != null)
+			$('#districtId').val(districtId);
+		else
+			$('#districtId').val(0);
 		if(result.constList!=null && result.constList.length>0){
 			for(var i in result.constList){
 				if(result.constList[i].id == constituencyId){
