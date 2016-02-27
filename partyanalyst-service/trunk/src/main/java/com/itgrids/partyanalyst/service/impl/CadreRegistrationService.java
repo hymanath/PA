@@ -3908,6 +3908,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		if(registrationType.equalsIgnoreCase("ONLINE")){
 			ref="TR-O-"+userId+"-";
 		}
+		else if(registrationType.equalsIgnoreCase("TAB")){
+			ref="TR-T-"+userId+"-";
+		}
 		
 		return ref;
 	}
@@ -11336,7 +11339,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							 
 								 if(cadreRegistrationVO.getHouseNo() != null && cadreRegistrationVO.getHouseNo().length() > 0l){
 									 userAddress.setHouseNo(cadreRegistrationVO.getHouseNo());
-									 cadreRegistrationVO.setHouseNo(cadreRegistrationVO.getHouseNo());
+									 userAddress.setHouseNo(cadreRegistrationVO.getHouseNo());
 								   }
 						 
 						    	   if(cadreRegistrationVO.getPerAddrsDistId() != null && cadreRegistrationVO.getPerAddrsDistId() > 0l){
@@ -11390,7 +11393,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsMandalId() != null && cadreRegistrationVO.getWorkAddrsMandalId() > 0l){
-							   userAddress.setTehsil(tehsilDAO.get(cadreRegistrationVO.getWorkAddrsMandalId()));
+							   workLocation.setTehsil(tehsilDAO.get(cadreRegistrationVO.getWorkAddrsMandalId()));
 						   }
 						   
 						   if(cadreRegistrationVO.getWorkAddrsLebId() != null && cadreRegistrationVO.getWorkAddrsLebId() > 0l){
@@ -11603,7 +11606,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					}
 					if(cadreRegistrationVO.getAadheerNo() != null && cadreRegistrationVO.getAadheerNo().trim().length() > 0 && !cadreRegistrationVO.getAadheerNo().trim().equalsIgnoreCase("null"))
 					{
-						//tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
+						tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
 						tdpCadre.setCadreAadherNo(cadreRegistrationVO.getAadheerNo());
 					}
 					if(cadreRegistrationVO.getVoterRelationId() != null && cadreRegistrationVO.getVoterRelationId().longValue() > 0)
@@ -11787,7 +11790,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 							  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						
-					}else if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
+					}else if(registrationType != null && (registrationType.equalsIgnoreCase("TAB") || registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
 						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 						tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
