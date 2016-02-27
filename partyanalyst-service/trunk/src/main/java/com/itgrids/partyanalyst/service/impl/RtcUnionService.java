@@ -411,6 +411,10 @@ public class RtcUnionService implements IRtcUnionService{
 				
 				if(address!=null){
 					
+					addressVO.setHouseNo(address.getHouseNo() != null ? address.getHouseNo().toString():"");
+					addressVO.setStreet(address.getStreet() != null ? address.getStreet().toString():"");
+					addressVO.setLandMark(address.getAddressLane1() != null ? address.getAddressLane1().toString():"");
+					
 					if(address.getDistrict()!=null){
 						addressVO.setDistrictId(address.getDistrict().getDistrictId()!=null?address.getDistrict().getDistrictId():0l);
 					}
@@ -671,6 +675,10 @@ public class RtcUnionService implements IRtcUnionService{
 				UserAddress address=userAddressList.get(0);
 				
 				if(address!=null){
+					
+					addressVO.setHouseNo(address.getHouseNo() != null ? address.getHouseNo().toString():"");
+					addressVO.setStreet(address.getStreet() != null ? address.getStreet().toString():"");
+					addressVO.setLandMark(address.getAddressLane1() != null ? address.getAddressLane1().toString():"");
 					
 					if(address.getDistrict()!=null){
 						addressVO.setDistrictId(address.getDistrict().getDistrictId()!=null?address.getDistrict().getDistrictId():0l);

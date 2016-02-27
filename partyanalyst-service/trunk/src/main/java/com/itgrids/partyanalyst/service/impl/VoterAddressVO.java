@@ -17,8 +17,29 @@ public class VoterAddressVO implements Serializable{
 	private List<IdNameVO> constList;
 	private List<LocationWiseBoothDetailsVO> tehLebDivList;
 	private List<LocationWiseBoothDetailsVO> villWardList;
+	private String houseNo;
+	private String street;
+	private String landMark;
 	
 	
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getLandMark() {
+		return landMark;
+	}
+	public void setLandMark(String landMark) {
+		this.landMark = landMark;
+	}
 	public Long getDistrictId() {
 		return districtId;
 	}
