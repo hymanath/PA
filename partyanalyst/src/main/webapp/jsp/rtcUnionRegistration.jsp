@@ -1349,7 +1349,7 @@
 			<div class="span12 header-bg text-center">
 				<div class="row-fluid">
 				  <div class="span4 offset4 ">
-						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
+						<img src="images/cadre_images/2016-affliated-Registration-Logo.png">
 				  </div>
 				  <div class="span4">
 					 <a href="newlogoutAction.action" style="font-weight: bold;" class="btn btn-mini pull-left m_top20">Logout</a>
