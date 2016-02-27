@@ -2719,6 +2719,11 @@ public class PartyMeetingService implements IPartyMeetingService{
 				tdpCadreIdsList = absentList;
 			}
 			
+			if(tdpCadreIdsList == null || tdpCadreIdsList.size() == 0)
+			{
+				if(inviteesList != null && inviteesList.size()>0)
+					tdpCadreIdsList.addAll(inviteesList);
+			}
 			if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			{
 				List<Object[]> candidateDetails = publicRepresentativeDAO.getCandidateDetailsByCandidateId(tdpCadreIdsList);
