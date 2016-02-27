@@ -1299,35 +1299,37 @@ public class PartyMeetingService implements IPartyMeetingService{
 			List<Object[]> invtsAttndRslt = partyMeetingAttendanceDAO.getInviteesAttendedCountOfMeetings(partyMeetingIds);
 			List<Object[]> invtsTtlRslt = partyMeetingInviteeDAO.getPartyMeetingInviteesForMeetings(partyMeetingIds);
 			
-			if(ttlRslt!=null && ttlRslt.size()>0){
-				for(Object[] obj:ttlRslt){
-					PartyMeetingSummaryVO temp = new PartyMeetingSummaryVO();
-					temp.setMeetingId(Long.valueOf(obj[0].toString()));
-					temp.setLocationId(Long.valueOf(obj[1].toString()));
-					temp.setTotalAttended(Long.valueOf(obj[2].toString()));
-					
-					temp.setInviteesAttendedPercent("0.0");
-					temp.setAbsentPercentage("0.0");
-					temp.setNonInviteesAttendedPercent("0.0");
-					
-					temp.setInviteesAttended(0l);
-					temp.setTotalInvitees(0l);
-					temp.setNonInviteesAttended(0l);
-					finalVOLst.add(temp);
-				}
-			}
-			
 			if(invtsTtlRslt!=null && invtsTtlRslt.size()>0){
 				for(Object[] obj:invtsTtlRslt){
 					if(obj[0]!=null){
-						Long meetingId = Long.valueOf(obj[0].toString());
+						//Long meetingId = Long.valueOf(obj[0].toString());
 						
-						PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
-						if(temp==null){
-							temp = new PartyMeetingSummaryVO();
-						}
+						PartyMeetingSummaryVO temp = new PartyMeetingSummaryVO();
+						temp.setMeetingId(Long.valueOf(obj[0].toString()));
+						temp.setLocationId(Long.valueOf(obj[1].toString()));
 						temp.setTotalInvitees(Long.valueOf(obj[2].toString()));
+						temp.setInviteesAttendedPercent("0.0");
+						temp.setAbsentPercentage("0.0");
+						temp.setNonInviteesAttendedPercent("0.0");
+						
+						temp.setInviteesAttended(0l);
+						temp.setNonInviteesAttended(0l);
+						temp.setTotalAttended(0L);
+						temp.setTotalAbsent(0L);
+						finalVOLst.add(temp);
+						
 					}
+				}
+			}
+			
+			if(ttlRslt!=null && ttlRslt.size()>0){
+				for(Object[] obj:ttlRslt){
+					Long meetingId = Long.valueOf(obj[0].toString());
+					PartyMeetingSummaryVO temp = getMatchedMeeting(meetingId, finalVOLst);
+					if(temp==null){
+						temp = new PartyMeetingSummaryVO();
+					}
+					temp.setTotalAttended(Long.valueOf(obj[2].toString()));
 				}
 			}
 			
@@ -3027,7 +3029,27 @@ public class PartyMeetingService implements IPartyMeetingService{
 							}
 						 }
 					 }
-					 
+					 else  if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0){
+						 if(partyMeetingVoMap != null && partyMeetingVoMap.size()>0)
+						 {
+							 for (Long tdpCadreId : partyMeetingVoMap.keySet()) {
+								 PartyMeetingWSVO vo = partyMeetingVoMap.get(tdpCadreId);
+								 if(vo != null){
+									 if(vo.getDesignation() != null && !vo.getDesignation().isEmpty()){
+										 vo.setDesignation(vo.getDesignation());
+										 vo.setRoles(vo.getDesignation());
+										 vo.setMemberType("Non Invitee Present");
+									 }
+									 else{
+										 vo.setDesignation("OTHERS");
+										 vo.setRoles("OTHERS");
+										 vo.setMemberType("Non Invitee Present");
+									 }
+								 }
+									
+							}
+						 }
+					 }
 					 if(otherMembersCount >0){
 						 PartyMeetingWSVO vo = new PartyMeetingWSVO();
 						 vo.setDesignation("OTHERS");
