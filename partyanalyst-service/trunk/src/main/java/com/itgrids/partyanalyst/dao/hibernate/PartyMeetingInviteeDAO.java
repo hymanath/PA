@@ -21,7 +21,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct PMI.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMI.partyMeeting.partyMeetingLevel.level," +
-				" PMI.partyMeeting.partyMeetingType.partyMeetingTypeId,  PMI.partyMeeting.partyMeetingType.type, count(PMI.tdpCadreId)  from PartyMeetingInvitee PMI where " +
+				" PMI.partyMeeting.partyMeetingType.partyMeetingTypeId,  PMI.partyMeeting.partyMeetingType.type, count( distinct  PMI.tdpCadreId)  from PartyMeetingInvitee PMI where " +
 				" date(PMI.partyMeeting.startDate) <= :toDayDate  ");
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			queryStr.append(" and  PMI.tdpCadreId in (:tdpCadreIdsList) ");
@@ -98,7 +98,8 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	@SuppressWarnings("unchecked")
 	public List<String> getPartyMeetingInvittees(Long partyMeetingId)
 	{
-		Query query = getSession().createQuery("SELECT DISTINCT model.tdpCadre.memberShipNo FROM PartyMeetingInvitee model where model.partyMeeting.partyMeetingId = :partyMeetingId");
+		Query query = getSession().createQuery("SELECT DISTINCT model.tdpCadre.memberShipNo FROM PartyMeetingInvitee model where model.partyMeeting.partyMeetingId = :partyMeetingId  " +
+				" and model.tdpCadre.isDeleted='false' and model.tdpCadre.enrollmentYear="+IConstants.CADRE_ENROLLMENT_NUMBER+" ");
 		query.setParameter("partyMeetingId",partyMeetingId);
 		return query.list();
 	}
@@ -113,7 +114,7 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	public List<Object[]> getPartyMeetingInviteesForMeetings(List<Long> partyMeetingIds){
 		Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingId," +
 				" model.partyMeeting.locationValue," +
-				" count(model.tdpCadre.tdpCadreId)" +
+				" count(distinct model.tdpCadre.tdpCadreId)" +
 				" from PartyMeetingInvitee model" +
 				" where " +
 				" model.partyMeeting.partyMeetingId in(:partyMeetingIds) " +
