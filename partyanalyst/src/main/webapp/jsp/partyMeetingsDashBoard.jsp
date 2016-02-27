@@ -1478,7 +1478,10 @@ $(document).ready(function(e) {
 							str+="<th>"+pmList[i].assemblyNo+"</th>";
 						}
 						str+="<td><a style='cursor:pointer;' class='meetingNameCls' attr-title='"+pmList[i].meetingName+"' id='"+pmList[i].meetingId+"' value='TA'>"+pmList[i].meetingName+"</a></td>";
-						str+="<td>"+pmList[i].location+"</td>";
+						if(pmList[i].location != null )
+							str+="<td>"+pmList[i].location+"</td>";
+						else 
+							str+="<td></td>";
 						str+="<td>"+pmList[i].scheduledOn+"</td>";
 						if(pmList[i].attendanceInfo!=null){
 							str+="<td>"+pmList[i].attendanceInfo.totalInvitees+"</td>";
@@ -1636,6 +1639,7 @@ $(document).ready(function(e) {
 	
 	function updateFunctions(){
 		$(".meetingDiv").css("display","none"); 
+		GLSearchTypeStr = "TP"; 
 		if($(".themeControll").hasClass("active")){
 			$(".themeControll").removeClass("active");
 		}
@@ -2170,7 +2174,10 @@ $(document).ready(function(e) {
 						str1+="<td rowspan=4>"+pmList[i].assemblyNo+"</td>";
 					}
 					str1+="<td rowspan=4>"+pmList[i].meetingsCount+"</td>";
-					str1+="<td rowspan=4>"+pmList[i].location+"</td>";
+					if(pmList[i].location != null)
+						str1+="<td rowspan=4>"+pmList[i].location+"</td>";
+					else 
+						str1+="<td rowspan=4> - </td>";
 					if(pmList[i].totalInvitees!=null){
 						str1+="<td rowspan=4>"+pmList[i].totalInvitees+"</td>";
 						str1+="<td rowspan=4>"+pmList[i].totalAttended+"</td>";
@@ -2707,7 +2714,7 @@ $(document).on('click','.getSummary', function() {
 				$("#attendenceDiv").show();
 
 				buildTdpCadreAttendanceCount(result);
-				if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0)
+				//if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0)
 					buildTdpCadreAttendedMembers(result,applyFilterTypeId);
 			}
 			
@@ -2767,7 +2774,7 @@ $(document).on('click','.getSummary', function() {
 					titleStr ="TOTAL ABSENT";
 				$('#filterHeading').html(titleStr+' MEMBERS DETAILS ');
 				
-				if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0)
+				//if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0)
 					buildTdpCadreAttendedMembers(result,applyFilterTypeId);
 				
 			}
@@ -2779,7 +2786,7 @@ $(document).on('click','.getSummary', function() {
   { 
      var str ='';
 	 
-	 if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0){
+	// if(result.inviteesAttendedCount != null && result.inviteesAttendedCount >0){
 		 str+='<table class="table table-bordered bg_ff">';
 		 str+='<tbody><tr>';
 		  str+='<td class="text-center">';
@@ -2809,10 +2816,10 @@ $(document).on('click','.getSummary', function() {
 		 str+='</td>';
 		 str+='</tr>';
 		 str+='</tbody></table>';
-	 }
-	 else{
-		 str+='No Data Available ...';
-	 }
+	// }
+	// else{
+	//	 str+='No Data Available ...';
+	// }
 	  
 	  $("#meetingAttendanceCntDiv").html(str);
 	/*  $("#disignationDiv").html('');
@@ -2830,12 +2837,13 @@ $(document).on('click','.getSummary', function() {
  
   function buildTdpCadreAttendedMembers(result,applyFilterTypeId)
   {	 
+	
 	  var str ='';	  
-	  if(result.partyMeetingWSVoList == null || result.partyMeetingWSVoList.length == 0)
+	 /* if(result.partyMeetingWSVoList == null || result.partyMeetingWSVoList.length == 0)
 	  {
 			$("#meetingAttendedMembersDiv").html("No Data Available..");  
 		    return;
-	  }
+	  }*/
 		str+='<table class="table table-condensed" id="membersTab" border=1>';
 		str+='<thead class="bg_f0">';
 		str+='<tr><th></th>';
@@ -2893,8 +2901,11 @@ $(document).on('click','.getSummary', function() {
 		str+='</tbody>';
 		str+='</table>';
 
-$("#meetingAttendedMembersDiv").html(str);
-	  $("#membersTab").dataTable();
+		$("#meetingAttendedMembersDiv").html(str);
+		$("#membersTab").dataTable({
+			"iDisplayLength": 50,
+				"aLengthMenu": [[50,100, 200, 500, -1], [50,100, 200, 500, "All"]]			
+		});
 
 /* START EXPORT EXCEL TABLE */
 str="";
