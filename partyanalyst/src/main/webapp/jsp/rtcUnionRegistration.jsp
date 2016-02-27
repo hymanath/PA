@@ -1937,7 +1937,6 @@
 						   </div>
 					   </div>
 					<div class="span11">
-							<!--<h4>WORKING ADDRESS <input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input><hr class="m_0"/></h4>-->
 							<h4 class="text-align1">WORKING ADDRESS <input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input><hr class="m_0"/></h4>
 					</div>
 					<div class="span4" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span></h5>
@@ -4151,6 +4150,7 @@ $(document).ready(function(){
 	   });
 	 });
 function populateAddressValues(){
+	if(document.getElementById('checkBoxId').checked) {
 	var populateHouse = $("#addressId").val();
 	var populateStreet = $("#roadId").val();
 	var populateLandMark = $("#landmarkId").val();
@@ -4163,6 +4163,16 @@ function populateAddressValues(){
 	$("#workLandmarkId").val(populateLandMark);
 	getDistricts(populateDistrict,populateConstituency,populateMandal,populateVillage);
 	}
+	else {
+	$("#workAddressId").val("");
+	$("#WorkRoadId").val("");
+	$("#workLandmarkId").val("");
+	$("#districtId").val(0);
+	$("#constituencyId").val(0);
+	$("#manTowDivId").val(0);
+	$("#villWardId").val(0);
+	}
+}
 //getDesignationsOfAffiliatedUnionType();
 function getDesignationsOfAffiliatedUnionType(){
 	$("#desigId").html("");
