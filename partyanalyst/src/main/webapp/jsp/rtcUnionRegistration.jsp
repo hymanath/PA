@@ -3897,7 +3897,7 @@ $(document).ready(function(){
 		
 		$.ajax({
 			  type:'GET',
-			  url: 'getVoterPresentAddressDetailsAction.action',
+			  url: 'getAddressDetailsAction.action',
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
@@ -3916,6 +3916,10 @@ $(document).ready(function(){
 	   $("#presentVillWardId  option").remove();
 	   $("#presentVillWardId").append('<option value="0">Select Village/Ward</option>');
 		
+	   $("#addressId").val(result.houseNo);
+	   $("#roadId").val(result.street);
+	   $("#landmarkId").val(result.landMark);
+	   
        var districtId=result.districtId;
        var constituencyId=result.constituencyId;
 	   
@@ -3990,6 +3994,10 @@ $(document).ready(function(){
 	   $("#manTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
 	   $("#villWardId  option").remove();
 	   $("#villWardId").append('<option value="0">Select Village/Ward</option>');
+	   
+	   $("#workAddressId").val(result.houseNo);
+	   $("#WorkRoadId").val(result.street);
+	   $("#workLandmarkId").val(result.landMark);
 		
        var districtId=result.districtId;
        var constituencyId=result.constituencyId;
