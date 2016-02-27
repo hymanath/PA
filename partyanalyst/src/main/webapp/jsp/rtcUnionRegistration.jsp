@@ -291,8 +291,8 @@
 		
 		}
 		else if(tdpMemberTypeId == 5) {
-		$('#drivingLicenseDiv').show();
-		$('#vehicleTypeDiv').show();
+		//$('#drivingLicenseDiv').show();
+		//$('#vehicleTypeDiv').show();
 		}
 		else if(tdpMemberTypeId == 6) {
 		$('#designDiv1Id').show();
@@ -1685,12 +1685,9 @@
 				
 				<div class="span3" id="designDivId">
 					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>
-					<select class="form-control" id="desigId" name="cadreRegistrationVO.designationId">
-
-								<option value="0">Select Designation</option>
-								<option value="2">Vice Prinicipal</option>
-								<option value="7" >SCHOOL ASSISTANT</option>
-					</select>
+					<!--<select class="form-control" id="desigId" name="cadreRegistrationVO.designationId">-->
+						<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="desigId" list="unionTabUserList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
+					<!--</select>-->
 					<br><span id="desigErr" style="color:red;font-size:12px;"></span>
 				</div>
 				<!--<div class="span4" id="designDiv1Id" style="display:none">
@@ -1703,7 +1700,7 @@
 						<input type="text" id="schoolId" placeholder="SchoolName" name="cadreRegistrationVO.schoolName"></input>
 						<br><span id="schoolErr" style="color:red;font-size:12px;"></span>
 				</div>
-				<div class="span3" id="drivingLicenseDiv" style="display:none">
+				<!--<div class="span3" id="drivingLicenseDiv" style="display:none">
 					<h5 class="text-align1">DRIVING LICENSE<span class="mandatory">*</span> </h5>
 						<input type="text" id="drivingId" placeholder="Driving License" name="cadreRegistrationVO.drivingLicenseId"></input>
 						<br><span id="drivingErr" style="color:red;font-size:12px;"></span>
@@ -1718,7 +1715,7 @@
 							<option value="5">Six wheeler</option>
 						</select>
 					<br>	<span id="vehicleErr" style="color:red;font-size:12px;"></span>
-				</div>
+				</div>-->
 				<div class="span4" id="employeeDivId" style="display:none">
 					<h5 class="text-align1">Employee Id <span class="mandatory">*</span> </h5>
 					<input type="text" id="emplyeeId" placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value=" "/>
@@ -4166,7 +4163,7 @@ function populateAddressValues(){
 	$("#workLandmarkId").val(populateLandMark);
 	getDistricts(populateDistrict,populateConstituency,populateMandal,populateVillage);
 	}
-getDesignationsOfAffiliatedUnionType();
+//getDesignationsOfAffiliatedUnionType();
 function getDesignationsOfAffiliatedUnionType(){
 	$("#desigId").html("");
 	var tdpMemberTypeId   = '${tdpMemberTypeId}';

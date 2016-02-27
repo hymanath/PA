@@ -456,6 +456,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
+				unionTabUserList = rtcUnionService.getDesignationsOfAffiliatedUnionType(Long.valueOf(tdpMemberTypeId));
 				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,Long.valueOf(tdpMemberTypeId));
 				idNameVOList=rtcUnionService.getDistrictsForState(1l);			
 				if(user.getRegistrationID().longValue() != 3930L) // party office userId
