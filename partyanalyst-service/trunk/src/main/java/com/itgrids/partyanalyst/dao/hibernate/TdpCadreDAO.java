@@ -399,7 +399,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and " +
 					" model.isDeleted = 'N' and model.tdpMemberTypeId=:tdpMemberTypeId and model.enrollmentYear = :enrollmentYear ");
 			query.setParameter("voterId", voterId);
-			query.setParameter("tdpMemberTypeId", memberTypeId);
+			query.setParameter("tdpMemberTypeId", memberTypeId);//tdpMemberTypeId
 			query.setParameter("enrollmentYear",  IConstants.UNIONS_REGISTRATION_YEAR);
 			return query.list();
 		}
@@ -408,7 +408,6 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and " +
 					" model.isDeleted = 'N' and model.enrollmentYear = :enrollmentYear ");
 			query.setParameter("voterId", voterId);
-			query.setParameter("tdpMemberTypeId", memberTypeId);
 			query.setParameter("enrollmentYear",  IConstants.CADRE_ENROLLMENT_NUMBER);
 			return query.list();
 		}
@@ -5973,12 +5972,20 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List checkUnionMemberExists(String voterCardNo,Long memberTypeId)
 		{
-			Query query = getSession().createQuery("select distinct model.tdpCadreId,model.voter.voterIDCardNo from TdpCadre model where model.voter.voterIDCardNo = :voterCardNo" +
-					" and model.tdpMemberType.tdpMemberTypeId = :memberTypeId " +
-					" and model.isDeleted='N'");
-			query.setParameter("voterCardNo", voterCardNo);
-			query.setParameter("memberTypeId", memberTypeId);
-			return query.list();
+			if(memberTypeId != null && memberTypeId.longValue()>1L){
+				Query query = getSession().createQuery("select distinct model.tdpCadreId,model.voter.voterIDCardNo from TdpCadre model where model.voter.voterIDCardNo = :voterCardNo" +
+						" and model.tdpMemberType.tdpMemberTypeId = :memberTypeId " +
+						" and model.isDeleted='N'");
+				query.setParameter("voterCardNo", voterCardNo);
+				query.setParameter("memberTypeId", memberTypeId);
+				return query.list();
+			}
+			else{
+				Query query = getSession().createQuery("select distinct model.tdpCadreId,model.voter.voterIDCardNo from TdpCadre model where model.voter.voterIDCardNo = :voterCardNo" +
+						" and model.isDeleted='N'");
+				query.setParameter("voterCardNo", voterCardNo);
+				return query.list();
+			}
 		}
 		
 		public List<Object[]> getCadreDetailsForCadreRegistratiobByconstituencIdRTC(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex,Long memberTypeId)
@@ -6005,11 +6012,18 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))//2016
 			{
-				str.append(" and TC.tdpMemberTypeId=:memberTypeId and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
+				str.append(" and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
 			}
-			else
-			{
-				str.append(" and  TC.tdpMemberTypeId=:memberTypeId ");
+			
+			if(memberTypeId != null && memberTypeId.longValue() >1L){
+				if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))//2016
+				{
+					str.append(" and TC.tdpMemberTypeId=:memberTypeId  ");
+				}
+				else
+				{
+					str.append(" and  TC.tdpMemberTypeId=:memberTypeId ");
+				}
 			}
 			
 			str.append(" and TC.userAddress.userAddressId = UA.userAddressId  and TC.isDeleted = 'N'  order by TC.houseNo ");
@@ -6076,11 +6090,18 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
 			{
-				str.append(" and TC.enrollmentYear in (:cadreEnrollmentYear) and TC.tdpMemberTypeId=:memberTypeId ");
+				str.append(" and TC.enrollmentYear in (:cadreEnrollmentYear)  ");
 			}
-			else
-			{
-				str.append(" and TC.enrollmentYear not in (:cadreEnrollmentYear) and TC.tdpMemberTypeId=:memberTypeId ");
+			
+			if(memberTypeId != null && memberTypeId.longValue() >1L){
+				if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+				{
+					str.append(" and TC.tdpMemberTypeId=:memberTypeId  ");
+				}
+				else
+				{
+					str.append(" and TC.enrollmentYear not in (:cadreEnrollmentYear) and TC.tdpMemberTypeId=:memberTypeId ");
+				}
 			}
 			
 			str.append(" and TC.userAddress.userAddressId = UA.userAddressId  and TC.isDeleted = 'N'  order by TC.houseNo ");
