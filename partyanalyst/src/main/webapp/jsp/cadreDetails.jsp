@@ -6721,7 +6721,7 @@ function getIvrSurveyDetails(searchType){
 				str+='<tbody class="text-center">';
 				for(var i in result){
 					str+='<tr>';
-						str+='<td>'+result[i].eventName+'</td>';
+						str+='<td>'+result[i].eventName+' ('+result[i].name+')</td>';
 						str+='<td>'+result[i].dateStr+'</td>';
 						str+='<td>'+result[i].surveyName+'</td>';
 						str+='<td>'+result[i].round+'</td>';
