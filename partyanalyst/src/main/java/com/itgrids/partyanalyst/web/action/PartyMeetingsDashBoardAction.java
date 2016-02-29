@@ -1,6 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,11 +9,12 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeetingSummeryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IPartyMeetingDashboardService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,13 +26,38 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 	private HttpServletRequest  request;
 	private HttpSession session;
 	private JSONObject	jObj;
-	private String 		task;
+	private String 		task,pageAccessType;
 	private IPartyMeetingDashboardService partyMeetingDashboardService;
 	private MeetingSummeryVO MeetingsDashboardSummary;
 	private MeetingSummeryVO meetingSummeryVO;
 	private EntitlementsHelper entitlementsHelper;
+	private ICadreCommitteeService cadreCommitteeService;
+	private IdNameVO idNameVO;
+	private List<IdNameVO> idNameVoList;
+
 	
-	
+	public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	}
+	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+		this.idNameVoList = idNameVoList;
+	}
+	public IdNameVO getIdNameVO() {
+		return idNameVO;
+	}
+	public void setIdNameVO(IdNameVO idNameVO) {
+		this.idNameVO = idNameVO;
+	}
+	public String getPageAccessType() {
+		return pageAccessType;
+	}
+	public void setPageAccessType(String pageAccessType) {
+		this.pageAccessType = pageAccessType;
+	}
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -112,6 +138,31 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 			return "error";
 		}
 		
+		pageAccessType = cadreCommitteeService.userAccessTypeDetailsForDashBoard(regVO.getRegistrationID(),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
+		String accessType = regVO.getAccessType();
+		if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP"))
+		{
+			pageAccessType = accessType;
+		}
+		
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getStatesForLocationLevel(){
+		
+		try{
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			String accessType = regVO.getAccessType();
+			
+			
+			idNameVoList = cadreCommitteeService.getStatesForLocationLevel(accessType,Long.valueOf(regVO.getAccessValue().trim()));
+			
+		}catch (Exception e) {
+			LOG.error("Exception is getStatesForLocationLevel in PartyMeetingsDashBoardAction class- ",e);
+		}
 		return Action.SUCCESS;
 		
 	}

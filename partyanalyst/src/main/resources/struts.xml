@@ -11555,5 +11555,11 @@
 	    </result>
 	</action>	
 	
+	<action name="getStatesForLocationLevelAction" class="partyMeetingsDashBoardAction" method="getStatesForLocationLevel">
+		<result type="json" name="success">
+	    	<param name="root">idNameVoList</param>
+	    </result>
+	</action>
+	
 </package>
 </struts>      
