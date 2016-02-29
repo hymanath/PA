@@ -1479,17 +1479,17 @@ function getTotalCounts(){
 					$("#apsrtcTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				} */
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
 					$("#anganwadiTotalId").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#teachersTotalId").html(result.affiliatedCadreVoList[i].count);
 					$("#teachersTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
 					$("#motorTotalId").html(result.affiliatedCadreVoList[i].count);
 					$("#motorTotalWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorTotalTabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1523,17 +1523,17 @@ function getTodayCounts(){
 					$("#apsrtcTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				} */
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
 					$("#anganwadiTodayId").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#teachersTodayId").html(result.affiliatedCadreVoList[i].count);
 					$("#teachersTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
 					$("#motorTodayId").html(result.affiliatedCadreVoList[i].count);
 					$("#motorTodayWebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorTodayTabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1581,17 +1581,17 @@ function getLast7DaysCounts(){
 					$("#apsrtcLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				} */
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
 					$("#anganwadiLast7Id").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#teachersLast7Id").html(result.affiliatedCadreVoList[i].count);
 					$("#teachersLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
 					$("#motorLast7Id").html(result.affiliatedCadreVoList[i].count);
 					$("#motorLast7WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
@@ -1639,17 +1639,17 @@ function getLast30DaysCounts(){
 					$("#apsrtcLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#apsrtcLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				} */
-				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
+				if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
 					$("#anganwadiLast30Id").html(result.affiliatedCadreVoList[i].count);
 					$("#anganwadiLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#anganwadiLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 4){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 3){
 					$("#teachersLast30Id").html(result.affiliatedCadreVoList[i].count);
 					$("#teachersLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#teachersLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
-				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 6){
+				else if(result.affiliatedCadreVoList[i].tdpMemberTypeId == 5){
 					$("#motorLast30Id").html(result.affiliatedCadreVoList[i].count);
 					$("#motorLast30WebId").html(result.affiliatedCadreVoList[i].webCount);
 					$("#motorLast30TabId").html(result.affiliatedCadreVoList[i].tabCount);
