@@ -10,6 +10,7 @@
 <link href="dist/Plugins/Scroller/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 
+<link href="daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Scroller/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/dataTables.fixedHeader.css" rel="stylesheet" type="text/css">
@@ -48,14 +49,7 @@ body{color:#666 !important}
 				<div class="panel panel-default">
 					<div class="panel-heading bg_cc">
 						<img src="dist/2016DashBoard/img/affliatedCom.jpg" style="width:100px;display:inline-block">
-						<div class="pull-right col-md-3">
-							<div class="input-group">
-								<input class="form-control" type="text">
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</div>
-							</div>
+						
 							</div>
 					<div class="panel-body">
 							<div class="row">
@@ -212,6 +206,14 @@ body{color:#666 !important}
 									<div id="tableDivsId">
 										<div class="panel panel-default">
 											<div class="panel-heading bg_ff">
+												<div class="pull-right col-md-3">
+													<div class="input-group">
+														<input class="form-control getDate" type="text">
+														<span class="input-group-addon">
+															<i class="glyphicon glyphicon-calendar"></i>
+														</span>
+													</div>
+												</div>
 												<div class="row m_top10">
 													<!--<div class="col-md-6">
 														<div class="block">
@@ -536,6 +538,8 @@ body{color:#666 !important}
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="daterangepicker/moment.js" type="text/javascript"></script>
+<script src="daterangepicker/daterangepicker.js" type="text/javascript"></script>
 
 <script src="dist/2016DashBoard/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
@@ -1323,8 +1327,14 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 	membereTypeIds.push(2);
 	//membereTypeIds.push(3);
 	//var searchTypeStr = "Constituency";
-    var startDate = "";
+	var startDate = "";
 	var toDate = "";
+	var dates = $(".getDate").val();
+	if(dates != null && dates.length > 0){
+		var datesArr = dates.split("-");
+		startDate = datesArr[0];
+		toDate = datesArr[1];
+	}
 	//searchTypeStr replace With locationLevel
 	var jObj={
 		membereTypeIds:membereTypeIds,
@@ -1837,6 +1847,7 @@ function getMemberTypeSelectedValues(){
 });
 }
 getMemberTypeSelectedValues();
+$(".getDate").daterangepicker({opens:"left"})
 </script>
 </body>
 </html>
