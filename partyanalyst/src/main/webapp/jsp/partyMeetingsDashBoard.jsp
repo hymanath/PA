@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <!doctype html>
 <html>
 <head>
@@ -1077,12 +1080,12 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
         	<div class="col-md-10 col-md-offset-1 m_top10">
                 <label>Meeting Level</label>
                 <select class="form-control custom-select" id="meetingLevel" onchange="getTypeOfMeeting();">
-					<option value="0">Select Level</option> 
-                     <option value="1">STATE</option> 
+					<option value="0">Select Level</option>
+                    <option value="1">STATE</option> 
 					<option value="2">DISTRICT</option> 
 					<option value="3">CONSTITUENCY</option> 
 					<option value="4">MANDAL/TOWN/DIVISION</option> 
-					<option value="5">VILLAGE/WARD</option> 
+					<option value="5">VILLAGE/WARD</option>
 			    </select>
             </div>
             <div class="col-md-10 col-md-offset-1">
@@ -1115,9 +1118,9 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
                 <label>Select State</label>
                 <select class="form-control custom-select locationCls" id="stateId" onchange="getDistrictsForStates();">
 					<option value="">Select State</option>
-                   	<option value="0">All</option>
+                   	<!--<option value="0">All</option>
 					<option value="1">AndhraPradesh</option>
-					<option value="36">Telangana</option>
+					<option value="36">Telangana</option>-->
                 </select>
             </div>
             <div class="col-md-10 col-md-offset-1 locationDiv" id="districtDiv" style="display:none;">
@@ -1173,6 +1176,8 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
   </div>
 </div>
 
+<s:hidden name="pageAccessTypeName" id="pageAccessTypeId" value="%{pageAccessType}"/>
+
 <!--<footer>
 		<p class="text-center">All &copy; 2015. Telugu Desam Party</p>
 </footer>-->
@@ -1187,6 +1192,8 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 $('input:checkbox').removeAttr('checked');
 
 $(document).ready(function(e) {
+	
+	getStatesForLocationLevel();
 
 	$('.cumulative,.individual').hide();
 	$(document).on('click', '#cumulative', function (event) {
@@ -1207,13 +1214,13 @@ $(document).ready(function(e) {
 	});
 	$('#meetingLevel').val('2').trigger('change');
 	$('#locationLevelSelId').val('2').trigger('change');
-	$('#stateId').val('1').trigger('change');
+	//$('#stateId').val('1').trigger('change');
 	setTimeout(function(){
 	  $('#districtId').val(0);
 	}, 2000);
-	getMeetingSummary(2,0,1,2,0,0,0,0,0);//meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,mtdId,vwId
-	getPartyMeetingDetails(2,0,1,2,0,0,0,0,0);
+	//meetinglevel,typeOfMeeting,meetingduration,locationscope,stateId,distId,constId,mtdId,vwId
 });
+
 
 
 	$("#resultTypeSelId").change(function(){
@@ -1229,6 +1236,15 @@ $(document).ready(function(e) {
 
   
   function getDistrictsForStates(){
+	  
+	  var accessType ='';
+		var pageAccessTypeValue = $("#pageAccessTypeId").val();
+		if(pageAccessTypeValue !=null && pageAccessTypeValue.length>0){
+			accessType = pageAccessTypeValue.split(/[ ]+/).pop();
+		}
+		
+		var lastIndex = pageAccessTypeValue.lastIndexOf(" ");
+	  
   var state = $("#stateId").val();
 	$("#districtId  option").remove();
 	$("#districtId").append('<option value="0">Select District</option>');
@@ -1253,13 +1269,35 @@ $(document).ready(function(e) {
 	   $("#districtId").empty();
 	  
      for(var i in result){
-	   if(result[i].id == 0){
+		 if(accessType !=null && accessType =="District"){
+			 if(pageAccessTypeValue.substring(0,lastIndex) == result[i].name){
+				  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				  
+				   //changing function calls				   
+				   setTimeout(function(){
+					   getMeetingSummary(2,0,1,2,0,0,0,0,0);	
+						getPartyMeetingDetails(2,0,1,2,0,0,0,0,0);
+				   }, 1000);
+					 
+				return;
+			 }			
+	    }		 
+	  else{
+		  if(result[i].id == 0){
 		  $("#districtId").append('<option value="">Select District</option>');
           $("#districtId").append('<option value='+result[i].id+'>ALL</option>');
-	   }else{
-	      $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	   }
+		}else{
+		  $("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+	  } 	  	
 	 }
+	 
+	    setTimeout(function(){
+					   //changing function calls
+						getMeetingSummary(2,0,1,2,0,0,0,0,0);	
+						getPartyMeetingDetails(2,0,1,2,0,0,0,0,0);	 
+				   }, 1000);
+			
    });
   }
 
@@ -1267,7 +1305,6 @@ $(document).ready(function(e) {
 	{
 	 var locationLevel = $("#meetingLevel").val();
 		var jsObj =	{locationLevel:locationLevel}
-		
 		$.ajax(
 		{
 			type: "POST",
@@ -1407,6 +1444,19 @@ $(document).ready(function(e) {
 		}
 		
 		fromDate = temp.getFullYear()+"/"+finalmonth+"/"+temp.getDate();
+		
+		
+		//Only Working In district Scenario
+		var accessType ='';
+		var pageAccessTypeValue = $("#pageAccessTypeId").val();
+		if(pageAccessTypeValue !=null && pageAccessTypeValue.length>0){
+			accessType = pageAccessTypeValue.split(/[ ]+/).pop();
+		}
+		
+		if(accessType !=null && accessType == "District"){
+			stateId = $("#stateId").val();
+			distId = $("#districtId").val();
+		}
 		
 		var jsObj =	{
 			meetinglevel:meetinglevel,
@@ -1815,6 +1865,18 @@ $(document).ready(function(e) {
 		}
 		
 		fromDate = temp.getFullYear()+"/"+finalmonth+"/"+temp.getDate();
+		
+		//Only Working In district Scenario
+		var accessType ='';
+		var pageAccessTypeValue = $("#pageAccessTypeId").val();
+		if(pageAccessTypeValue !=null && pageAccessTypeValue.length>0){
+			accessType = pageAccessTypeValue.split(/[ ]+/).pop();
+		}
+		
+		if(accessType !=null && accessType == "District"){
+			stateId = $("#stateId").val();
+			distId = $("#districtId").val();
+		}
 		
 		var jsObj ={
 				meetingLevel:meetingLevel,
@@ -3005,7 +3067,62 @@ $("#exportMeetingAttendedMembersDiv").html(str);
   })() 
 </script>
 <script>
+var pageAccessTypeValue = $("#pageAccessTypeId").val();
+if(pageAccessTypeValue !=null && pageAccessTypeValue.length>0){
+	var accessType = pageAccessTypeValue.split(/[ ]+/).pop();
+	if(accessType !=null && accessType.length>0 && accessType=="District"){
+		
+		$("#meetingLevel  option").remove();		
+		$("#meetingLevel").append('<option value="0">Select Level</option>');
+		
+		$("#meetingLevel").append('<option value="2">DISTRICT</option>');
+		$("#meetingLevel").append('<option value="3">CONSTITUENCY</option>');
+		$("#meetingLevel").append('<option value="4>MANDAL/TOWN/DIVISION</option>');
+		$("#meetingLevel").append('<option value="5">VILLAGE/WARD</option>');
+		$("#meetingLevel").append('<option value="5">VILLAGE/WARD</option>');
+		
+		$("#locationLevelSelId option").remove();
+		$("#locationLevelSelId").append('<option value="0">Select Location Level</option>');
+		
+		$("#locationLevelSelId").append('<option value="2">District</option>');
+		$("#locationLevelSelId").append('<option value="3">Constituency</option>');
+		$("#locationLevelSelId").append('<option value="4>Mandal/Town/Division</option>');
+		$("#locationLevelSelId").append('<option value="5">Village/Ward</option>');
+	}
+}
 
+function getStatesForLocationLevel(){	
+
+		var accessType ='';
+		var pageAccessTypeValue = $("#pageAccessTypeId").val();
+		if(pageAccessTypeValue !=null && pageAccessTypeValue.length>0){
+			accessType = pageAccessTypeValue.split(/[ ]+/).pop();
+		}
+		
+		
+		$("#stateId  option").remove();	
+		if(accessType !=null && accessType !="District"){
+			$("#stateId").append('<option value="0">All</option>');
+		}
+		
+		
+		$.ajax({
+			type: "POST",
+			url:"getStatesForLocationLevelAction.action",
+			data:{}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				for(var i in result){
+					$("#stateId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			}
+			if(accessType !=null && accessType !="District"){
+				$('#stateId').val('1').trigger('change');
+			}else{
+				getDistrictsForStates();
+			}
+		});
+}
 </script>
 </body>
 </html>

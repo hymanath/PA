@@ -1606,6 +1606,7 @@
 	<bean id="partyMeetingsDashBoardAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingsDashBoardAction" singleton="false"> 
 		<property name="partyMeetingDashboardService" ref="partyMeetingDashboardService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
 	</bean>
 	
 	<bean id="activityAction" class="com.itgrids.partyanalyst.web.action.ActivityAction" singleton="false"> 
