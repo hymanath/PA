@@ -170,4 +170,6 @@ public interface ICadreCommitteeService {
 	 public ResultStatus updateMobileNumberAndCasteForCadre(Long cadreId,String mobileNo,Long casteId,Long userId);
 	 public List<LocationWiseBoothDetailsVO> getConstituencyByDistrictId(Long districtId);
 	 public List<BasicVO> getAllCommitteesForLevelId(Long levelId);
+	 
+	 public List<IdNameVO> getStatesForLocationLevel(String accessType,Long accessValue);
 }
