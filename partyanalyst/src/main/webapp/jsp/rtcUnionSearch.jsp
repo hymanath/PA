@@ -612,6 +612,92 @@
 		var boothId = $('#boothsList').val();	
 		var houseNo = $('#panchayatList').val();	
 		var tdpMemberTypeId = $('#userMembersId').val();
+		var candidateName = $('#searchNameId').val();
+		var voterCardNo = $('#searchVoterCardId').val();
+		var houseNo = $('#searchHNoId').val();
+		
+	cosntiteucnyId = (cosntiteucnyId != null && cosntiteucnyId != null ? cosntiteucnyId = cosntiteucnyId:0);
+	 candidateName = (candidateName != null && candidateName.length > 0 ? candidateName = candidateName:"");
+		$('#errorDiv').html('');
+		if(cosntiteucnyId == 0 )
+		{
+			$('#errorDiv').html('Please Select Constituency.');
+			return;
+		}
+		$('#errorDiv').html('');
+		if( tdpMemberTypeId == 0 )
+		{
+			$('#errorDiv').html('Please Select MemberType.');
+			return;
+		}
+		
+		var isError = false ;
+		
+		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z ]+$/.test(candidateName)))
+		{
+				$('#errorDiv').html('Candidate Name allows only alphabets.');
+			return;
+		}
+		  
+		if(!isValid(candidateName))
+		{
+			$('#errorDiv').html('Special Characters not allowed for Candidate Name.');
+			return ;
+		}
+		if(!isValid(voterCardNo))
+		{
+			var iChars = "`~!@#$%^&*()._-+=}]{[\"':;|\?/><,";		 
+			for (var i = 0; i < voterCardNo.length; i++) 
+			{
+				if (iChars.indexOf(voterCardNo.charAt(i)) != -1) 
+				{			
+					$('#errorDiv').html('Special Characters not allowed for Voter Card No.');
+				return ;
+				}
+			}
+		}
+	
+		if(!isValid(houseNo))
+		{
+			var iChars = "`~!@#$%^&*()_+=}]{[\"':;|\?><,.";		 
+			for (var i = 0; i < houseNo.length; i++) 
+			{
+				if (iChars.indexOf(houseNo.charAt(i)) != -1) 
+				{			
+					$('#errorDiv').html('Special Characters not allowed for House No.');
+					return ;
+				}
+			}
+		}
+		
+		if((voterCardNo == null || voterCardNo.length == 0) && (houseNo == null || houseNo.length == 0) && (candidateName == null || candidateName.length ==0))
+		{
+			$('#errorDiv').html('Enter any search criteria for details.');
+			 isError = true ;
+		}
+		
+		if(candidateName == null || candidateName.length <=2)
+		{	
+			if(voterCardNo != null && voterCardNo.length  >=3 )
+			{
+				 isError = false ;
+			}
+			else if(houseNo != null && houseNo.length >=3 )
+			{						
+				  isError = false ;
+			} 
+			else 
+			{
+				$('#errorDiv').html('Atleast 3 Characters required for Candidate Name.');
+				isError = true ;	
+			}		
+		}
+		else
+		{
+			 isError = false ;
+		}
+		if(!isError)
+		{
 		var panchayatId = 0;
 		if($("#isNewCadre").is(':checked'))
 			panchayatId = "true";  // checked
@@ -619,7 +705,8 @@
 			panchayatId = 0  // unchecked
 			
 		if(tdpMemberTypeId != 0){
-			window.open('rtcUnionRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'&tdpMemberTypeId='+tdpMemberTypeId+'');
+			window.open('affiliatedCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'&tdpMemberTypeId='+tdpMemberTypeId+'');
+		}
 		}
 	}
 	
