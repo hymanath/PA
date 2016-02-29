@@ -314,6 +314,28 @@ footer
 									</c:if>
 									</ul>
 						</li></c:if>
+						<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' ) || 
+						fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_DASHBOARD_ENTITLEMENT' )}">
+						<li>
+							<a href="#"><img class=" ico-white pull-left" src="images/events.jpg"></img><span>&nbsp;&nbsp;Affiliated Cadre </span></a>
+										 <h2><img class=" ico-white line_heightDiv  pull-left" src="images/events.jpg"></img> Affiliated Cadre  </h2>
+							<ul>	
+							
+								<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' )}">
+								 <li>
+									<a href="affiliatedCadreSearchAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Registration</span></a>
+								 </li>
+								</c:if>
+								
+								<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_DASHBOARD_ENTITLEMENT' )}">
+								 <li>
+									<a href="affiliatedCadreDashBoardAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;DashBoard</span></a>
+								 </li>
+								</c:if>
+								
+							</ul>
+						</li>
+						</c:if>
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS')}">
 						 <li>
 								<a href="#"><i class="fa fa-group ico-white"></i><span>&nbsp;&nbsp;Committees</span></a>
@@ -569,30 +591,6 @@ footer
 							</ul>
 						</li>
 						</c:if>-->
-						
-						<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' ) || 
-						fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_DASHBOARD_ENTITLEMENT' )}">
-						<li>
-							<a href="#"><img class=" ico-white pull-left" src="images/events.jpg"></img><span>&nbsp;&nbsp;Affiliated Cadre </span></a>
-										 <h2><img class=" ico-white line_heightDiv  pull-left" src="images/events.jpg"></img> Affiliated Cadre  </h2>
-							<ul>	 
-								<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' )}">
-								 <li>
-									<a href="rtcUnionRegistrationAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Registration</span></a>
-								 </li>
-								</c:if>
-								
-								<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_DASHBOARD_ENTITLEMENT' )}">
-								 <li>
-									<a href="rtcUnionDashBoardAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;DashBoard</span></a>
-								 </li>
-								</c:if>
-								
-							</ul>
-						</li>
-						</c:if>
-						
-						<!--Balu-->
 					
 					<!--<c:if test="${sessionScope.loginStatus == 'out' ||  fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_DASHBOARD_ENTITLEMENT' )}">
 						<li>
