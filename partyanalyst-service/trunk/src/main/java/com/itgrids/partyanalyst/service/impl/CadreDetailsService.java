@@ -5385,7 +5385,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 						Object[] meetingDetails = partyMeetingDAO.getMeetingNameByMeetingId(vo.getEventId());
 						if(meetingDetails != null){
 							surveyVO.setEventName(meetingDetails[0] != null ? meetingDetails[0].toString():"");
-							surveyVO.setDateStr(meetingDetails[1] != null ? meetingDetails[1].toString():"");
+							surveyVO.setName(meetingDetails[1] != null ? meetingDetails[1].toString():"");
+							surveyVO.setDateStr(meetingDetails[2] != null ? meetingDetails[2].toString():"");
 						}
 						//surveyVO.setEventName(meetingName);
 						surveyVO.setRoundId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));

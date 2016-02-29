@@ -853,6 +853,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    public Object[] getMeetingNameByMeetingId(Long meetingId){
 	    	
 	    	Query query = getSession().createQuery(" select model.meetingName," +
+	    						" model.partyMeetingLevel.level," +
 	    						" date(model.startDate)" +
 	    						" from PartyMeeting model" +
 	    						" where model.partyMeetingId = :meetingId" +
