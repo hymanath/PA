@@ -3043,12 +3043,16 @@ public class PartyMeetingService implements IPartyMeetingService{
 									 if(vo.getDesignation() != null && !vo.getDesignation().isEmpty()){
 										 vo.setDesignation(vo.getDesignation());
 										 vo.setRoles(vo.getDesignation());
-										 vo.setMemberType("Non Invitee Present");
+										 
+										 if(!inviteesList.contains(tdpCadreId))
+											 vo.setMemberType("Non Invitee Present");
 									 }
 									 else{
 										 vo.setDesignation("OTHERS");
 										 vo.setRoles("OTHERS");
-										 vo.setMemberType("Non Invitee Present");
+										 
+										 if(!inviteesList.contains(tdpCadreId))
+											 vo.setMemberType("Non Invitee Present");
 									 }
 								 }
 									
@@ -3061,10 +3065,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 						 vo.setNonInviteesAttendedCount(0L);
 						 
 						 for (Long cadreId : partyMeetingVoMap.keySet()) {
-							if(inviteesList.contains(cadreId))
-								vo.setInviteesCount(Long.valueOf(vo.getInviteesCount().toString())+1l);							
-							else
-								vo.setNonInviteesAttendedCount(Long.valueOf(vo.getNonInviteesAttendedCount().toString())+1l);
+							 PartyMeetingWSVO cadreVO = partyMeetingVoMap.get(cadreId);
+							 if(cadreVO.getRoles() != null && cadreVO.getRoles().trim().length()>0 && cadreVO.getRoles().trim().equalsIgnoreCase("OTHERS"))
+								if(inviteesList.contains(cadreId))
+									vo.setInviteesCount(Long.valueOf(vo.getInviteesCount().toString())+1l);							
+								else
+									vo.setNonInviteesAttendedCount(Long.valueOf(vo.getNonInviteesAttendedCount().toString())+1l);
 						}
 						
 						 vo.setDesignation("OTHERS");
@@ -3089,7 +3095,11 @@ public class PartyMeetingService implements IPartyMeetingService{
 								PartyMeetingWSVO vo = partyMeetingVoMap.get(tdpCadreId);
 								if(vo != null)
 								{
-									vo.setMemberType("Non Invitee Present");
+									if(!inviteesList.contains(tdpCadreId))
+										vo.setMemberType("Non Invitee Present");
+									else 
+										vo.setMemberType("Invitee Present");
+									
 									if(vo.getDesignation()!= null)
 										vo.setDesignation(vo.getDesignation());
 									else
