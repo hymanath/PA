@@ -96,52 +96,52 @@ body{color:#666 !important}
 													</thead>
 													<tr class="trClass" id="teachersAllId">
 															<td class="text-valign"><h3 class="m_0"> TEACHERS</h3></td>
-															<td class="text-center"><h3 class="m_0"><span id="teachersTotalId"></span><center><img id="teachersTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB:<span id="teachersTotalWebId"></span> | TAB:<span id="teachersTotalTabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="teachersTotalId">0</span><center><img id="teachersTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB:<span id="teachersTotalWebId">0</span> | TAB:<span id="teachersTotalTabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="teachersTodayId"></span><center><img id="teachersTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="teachersTodayWebId"></span> | TAB:<span id="teachersTodayTabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="teachersTodayId">0</span><center><img id="teachersTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="teachersTodayWebId">0</span> | TAB:<span id="teachersTodayTabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="teachersLast7Id"></span><center><img id="teachersLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="teachersLast7WebId"></span> | TAB:<span id="teachersLast7TabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="teachersLast7Id">0</span><center><img id="teachersLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="teachersLast7WebId">0</span> | TAB:<span id="teachersLast7TabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="teachersLast30Id"></span><center><img id="teachersLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB:<span id="teachersLast30WebId"></span> | TAB:<span id="teachersLast30TabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="teachersLast30Id">0</span><center><img id="teachersLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB:<span id="teachersLast30WebId">0</span> | TAB:<span id="teachersLast30TabId">0</span></p>
 															</td>
 														</tr>
 														<tr class="trClass" id="anganwadiAllId">
 															<td class="text-valign"><h3 class="m_0">ANGANWADI</h3></td>
-															<td class="text-center"><h3 class="m_0"><span id="anganwadiTotalId"></span><center><img id="anganwadiTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="anganwadiTotalWebId"></span> | TAB: <span id="anganwadiTotalTabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiTotalId">0</span><center><img id="anganwadiTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="anganwadiTotalWebId">0</span> | TAB: <span id="anganwadiTotalTabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="anganwadiTodayId"></span><center><img id="anganwadiTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="anganwadiTodayWebId"></span> | TAB: <span id="anganwadiTodayTabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiTodayId">0</span><center><img id="anganwadiTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="anganwadiTodayWebId">0</span> | TAB: <span id="anganwadiTodayTabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="anganwadiLast7Id"></span><center><img id="anganwadiLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="anganwadiLast7WebId"></span> | TAB: <span id="anganwadiLast7TabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiLast7Id">0</span><center><img id="anganwadiLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="anganwadiLast7WebId">0</span> | TAB: <span id="anganwadiLast7TabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="anganwadiLast30Id"></span><center><img id="anganwadiLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-															<p class="m_0">WEB: <span id="anganwadiLast30WebId"></span> | TAB: <span 
-															id="anganwadiLast30TabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="anganwadiLast30Id">0</span><center><img id="anganwadiLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+															<p class="m_0">WEB: <span id="anganwadiLast30WebId">0</span> | TAB: <span 
+															id="anganwadiLast30TabId">0</span></p>
 															</td>
 														</tr>
 														<tr class="trClass" id="motorWorkersAllId">
 															<td class="text-valign"><h3 class="m_0">GRADUATES</h3></td>
-															<td class="text-center"><h3 class="m_0"><span id="motorTotalId"></span><center><img id="motorTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="motorTotalWebId"></span> | TAB: <span 
-																id="motorTotalTabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="motorTotalId">0</span><center><img id="motorTotalLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorTotalWebId">0</span> | TAB: <span 
+																id="motorTotalTabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="motorTodayId"></span><center><img id="motorTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="motorTodayWebId"></span> | TAB: <span 
-																id="motorTodayTabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="motorTodayId">0</span><center><img id="motorTodayLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorTodayWebId">0</span> | TAB: <span 
+																id="motorTodayTabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="motorLast7Id"></span><center><img id="motorLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="motorLast7WebId"></span> | TAB: <span 
-																id="motorLast7TabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="motorLast7Id">0</span><center><img id="motorLast7LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorLast7WebId">0</span> | TAB: <span 
+																id="motorLast7TabId">0</span></p>
 															</td>
-															<td class="text-center"><h3 class="m_0"><span id="motorLast30Id"></span><center><img id="motorLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
-																<p class="m_0">WEB: <span id="motorLast30WebId"></span> | TAB: <span 
-																id="motorLast30TabId"></span></p>
+															<td class="text-center"><h3 class="m_0"><span id="motorLast30Id">0</span><center><img id="motorLast30LoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/></center></h3>
+																<p class="m_0">WEB: <span id="motorLast30WebId">0</span> | TAB: <span 
+																id="motorLast30TabId">0</span></p>
 															</td>
 														</tr>
 												</table>
@@ -1540,20 +1540,6 @@ function getTodayCounts(){
 				}
 			}
 		}
-		else {
-			$("#apsrtcTodayId").html(0);
-			$("#apsrtcTodayWebId").html(0);
-			$("#apsrtcTodayTabId").html(0);
-			$("#anganwadiTodayId").html(0);
-			$("#anganwadiTodayWebId").html(0);
-			$("#anganwadiTodayTabId").html(0);
-			$("#teachersTodayId").html(0);
-			$("#teachersTodayWebId").html(0);
-			$("#teachersTodayTabId").html(0);
-			$("#motorTodayId").html(0);
-			$("#motorTodayWebId").html(0);
-			$("#motorTodayTabId").html(0);
-		}
 		$("#teachersTodayLoadingId").hide();
 		$("#anganwadiTodayLoadingId").hide();
 		$("#motorTodayLoadingId").hide();
@@ -1597,20 +1583,6 @@ function getLast7DaysCounts(){
 					$("#motorLast7TabId").html(result.affiliatedCadreVoList[i].tabCount);
 				}
 			}
-		}
-		else {
-			$("#apsrtcLast7Id").html(0);
-			$("#apsrtcLast7WebId").html(0);
-			$("#apsrtcLast7TabId").html(0);
-			$("#anganwadiLast7Id").html(0);
-			$("#anganwadiLast7WebId").html(0);
-			$("#anganwadiLast7TabId").html(0);
-			$("#teachersLast7Id").html(0);
-			$("#teachersLast7WebId").html(0);
-			$("#teachersLast7TabId").html(0);
-			$("#motorLast7Id").html(0);
-			$("#motorLast7WebId").html(0);
-			$("#motorLast7TabId").html(0);
 		}
 		$("#teachersLast7LoadingId").hide();
 		$("#anganwadiLast7LoadingId").hide();
@@ -1656,23 +1628,10 @@ function getLast30DaysCounts(){
 				}
 			}
 		}
-		else {
-			$("#anganwadiLast30Id").html(0);
-			$("#anganwadiLast30WebId").html(0);
-			$("#anganwadiLast30TabId").html(0);
-			$("#teachersLast30Id").html(0);
-			$("#teachersLast30WebId").html(0);
-			$("#teachersLast30TabId").html(0);
-			$("#motorLast30Id").html(0);
-			$("#motorLast30WebId").html(0);
-			$("#motorLast30TabId").html(0);
-		}
 		$("#teachersLast30LoadingId").hide();
 		$("#anganwadiLast30LoadingId").hide();
 		$("#motorLast30LoadingId").hide();
 		$("#apsrtcLast30LoadingId").hide();
-		
-		//allTotalCounts();
 	});
 }
 getAllTotalCounts();
