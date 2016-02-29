@@ -11955,6 +11955,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		try {
 			
 			Map<Long,TdpCadreVO> cadrelocationWiseMap=new HashMap<Long,TdpCadreVO>();
+			List<Object[]> cadreRegisteredCountdtls =  null;
 			
 			if(searchTypeStr.equalsIgnoreCase("Constituency")){
 				List<Object[]> constituencyList=constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(0L,1L,null);
@@ -11990,49 +11991,41 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			
 			Date stDate=null;
 			Date edDate=null;
-			Date currentDate = dateUtilService.getCurrentDateAndTime();
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
-			List<Object[]> cadreRegisteredCountdtls =  null;
-	        if(searchDatType.equalsIgnoreCase("total")){
-	        	cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, null, null);
-			}else if(searchDatType.equalsIgnoreCase("today")){
-				//dateUtilService.getCurrentDateInStringFormat();
-				stDate = dateUtilService.getCurrentDateAndTime();
-				 cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, stDate,stDate);
-				
-			}else if(searchDatType.equalsIgnoreCase("last 7 days")){
-				currentDate = dateUtilService.getCurrentDateAndTime();
-				Calendar fromCalendar = Calendar.getInstance();
-				fromCalendar.setTime(currentDate);
-				//fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
-				fromCalendar.set(Calendar.DAY_OF_WEEK,  fromCalendar.get(Calendar.DAY_OF_WEEK)-7);
-				Calendar toCalendar = Calendar.getInstance();
-				toCalendar.setTime(currentDate);
-				stDate = fromCalendar.getTime();
-				edDate = toCalendar.getTime();
-				
-				cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr,stDate,edDate);
-				 
-			}else if(searchDatType.equalsIgnoreCase("last 30 days")){
-				
-				Calendar fromCalendar = Calendar.getInstance();
-				fromCalendar.setTime(currentDate);
-				Calendar toCalendar = Calendar.getInstance();
-				toCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
-				edDate = fromCalendar.getTime();
-				stDate = toCalendar.getTime();
-			
-				cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr,stDate,edDate);
-			}
-		
-			if(startDate!=null && startDate.trim().length()>0){
+			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+			Date today = dateUtilService.getCurrentDateAndTime();
+			if(startDate!=null && startDate.trim().length()>0 && toDate!=null && toDate.trim().length()>0){
 				stDate=sdf.parse(startDate.trim());
-			}
-			if(toDate!=null && toDate.trim().length()>0){
 				edDate=sdf.parse(toDate.trim());
+				cadreRegisteredCountdtls =  tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr,stDate,edDate);
+			}				
+				
+			else
+			{
+		        if(searchDatType.equalsIgnoreCase("total")){
+		        	stDate = null;
+					edDate = null;
+				}else if(searchDatType.equalsIgnoreCase("today")){
+					stDate = today;
+					edDate = today;
+				}else if(searchDatType.equalsIgnoreCase("last 7 days")){
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(today);
+					cal.add(Calendar.DATE, -7);
+					Date last7ThDay = cal.getTime();
+					stDate = last7ThDay;
+					edDate = today;
+				}else if(searchDatType.equalsIgnoreCase("last 30 days")){
+					
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(today);
+					cal.add(Calendar.DATE, -30);
+					Date last30ThDay = cal.getTime();
+					stDate = last30ThDay;
+					edDate = today;
+				}
 			}
 			
-			//List<Object[]> cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, stDate, edDate);
+			 cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, stDate,edDate);
 			if(cadreRegisteredCountdtls != null && cadreRegisteredCountdtls.size()>0)
 			{
 				for (Object[] cadreDtls : cadreRegisteredCountdtls) {
@@ -12061,8 +12054,6 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				}
 			}
 			
-			
-			
 			if(cadrelocationWiseMap != null && cadrelocationWiseMap.size()>0)
 			{
 				returnList = new ArrayList<TdpCadreVO>(0);
@@ -12084,8 +12075,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			
 			Date stDate = null;
 			Date edDate = null;
-			Date currentDate = dateUtilService.getCurrentDateAndTime();
-			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+			Date today = dateUtilService.getCurrentDateAndTime();
+			//SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
 			List<AffiliatedCadreVO> voList = new ArrayList<AffiliatedCadreVO>();
 			Map<Long,AffiliatedCadreVO> afflCdrMap = new LinkedHashMap<Long, AffiliatedCadreVO>();
 			
@@ -12094,28 +12085,25 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				edDate = null;
 			}
 			else if(searchType.equalsIgnoreCase("Today")){
-				stDate = dateUtilService.getCurrentDateAndTime();
-				edDate = dateUtilService.getCurrentDateAndTime();
+				stDate = today;
+				edDate = today;
 			}
 			else if(searchType.equalsIgnoreCase("Last 7 days")){
 				
-				currentDate = dateUtilService.getCurrentDateAndTime();
-				Calendar fromCalendar = Calendar.getInstance();
-				fromCalendar.setTime(currentDate);
-				//fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
-				fromCalendar.set(Calendar.DAY_OF_WEEK,  fromCalendar.get(Calendar.DAY_OF_WEEK)-7);
-				Calendar toCalendar = Calendar.getInstance();
-				toCalendar.setTime(currentDate);
-				stDate = fromCalendar.getTime();
-				edDate = toCalendar.getTime();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(today);
+				cal.add(Calendar.DATE, -7);
+				Date last7ThDay = cal.getTime();
+				stDate = last7ThDay;
+				edDate = today;
 			}
 			else if(searchType.equalsIgnoreCase("Last 30 days")){
-				Calendar fromCalendar = Calendar.getInstance();
-				fromCalendar.setTime(currentDate);
-				Calendar toCalendar = Calendar.getInstance();
-				toCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
-				edDate = fromCalendar.getTime();
-				stDate = toCalendar.getTime();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(today);
+				cal.add(Calendar.DATE, -30);
+				Date last30ThDay = cal.getTime();
+				stDate = last30ThDay;
+				edDate = today;
 			}
 			
 			//0.count,1.tdpMemberTypeId,2.memberType,3.dataSourceType
@@ -12175,8 +12163,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			
 			Date stDate = null;
 			Date edDate = null;
-			Date currentDate = dateUtilService.getCurrentDateAndTime();
-			List<AffiliatedCadreVO> voList = new ArrayList<AffiliatedCadreVO>();
+			Date today = dateUtilService.getCurrentDateAndTime();
+			//List<AffiliatedCadreVO> voList = new ArrayList<AffiliatedCadreVO>();
 			//Map<Long,AffiliatedCadreVO> afflCdrMap = new LinkedHashMap<Long, AffiliatedCadreVO>();
 			
 			if(searchType.equalsIgnoreCase("Total")){
@@ -12184,28 +12172,25 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				edDate = null;
 			}
 			else if(searchType.equalsIgnoreCase("Today")){
-				stDate = dateUtilService.getCurrentDateAndTime();
-				edDate = dateUtilService.getCurrentDateAndTime();
+				stDate = today;
+				edDate = today;
 			}
 			else if(searchType.equalsIgnoreCase("Last 7 days")){
 				
-				currentDate = dateUtilService.getCurrentDateAndTime();
-				Calendar fromCalendar = Calendar.getInstance();
-				fromCalendar.setTime(currentDate);
-				//fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
-				fromCalendar.set(Calendar.DAY_OF_WEEK,  fromCalendar.get(Calendar.DAY_OF_WEEK)-7);
-				Calendar toCalendar = Calendar.getInstance();
-				toCalendar.setTime(currentDate);
-				stDate = fromCalendar.getTime();
-				edDate = toCalendar.getTime();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(today);
+				cal.add(Calendar.DATE, -7);
+				Date last7ThDay = cal.getTime();
+				stDate = last7ThDay;
+				edDate = today;
 			}
 			else if(searchType.equalsIgnoreCase("Last 30 days")){
-				Calendar fromCalendar = Calendar.getInstance();
-				fromCalendar.setTime(currentDate);
-				Calendar toCalendar = Calendar.getInstance();
-				toCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
-				edDate = fromCalendar.getTime();
-				stDate = toCalendar.getTime();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(today);
+				cal.add(Calendar.DATE, -30);
+				Date last30ThDay = cal.getTime();
+				stDate = last30ThDay;
+				edDate = today;
 			}
 				List<Object[]> list = tdpCadreDAO.getAllCountsForUnionMembersRegistered(stDate, edDate);
 				if(list != null && list.size() > 0){
@@ -12239,36 +12224,32 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			 
 			    Date stDate = null;
 				Date edDate = null;
-				Date currentDate = dateUtilService.getCurrentDateAndTime();
-				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+				Date today = dateUtilService.getCurrentDateAndTime();
 				
 				if(inputVO.getDateType().equalsIgnoreCase("Total")){
 					stDate = null;
 					edDate = null;
 				}
 				else if(inputVO.getDateType().equalsIgnoreCase("Today")){
-					stDate = dateUtilService.getCurrentDateAndTime();
-					edDate = dateUtilService.getCurrentDateAndTime();
+					stDate = today;
+					edDate = today;
 				}
 				else if(inputVO.getDateType().equalsIgnoreCase("Last 7 days")){
 					
-					currentDate = dateUtilService.getCurrentDateAndTime();
-					Calendar fromCalendar = Calendar.getInstance();
-					fromCalendar.setTime(currentDate);
-					//fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
-					fromCalendar.set(Calendar.DAY_OF_WEEK,  fromCalendar.get(Calendar.DAY_OF_WEEK)-7);
-					Calendar toCalendar = Calendar.getInstance();
-					toCalendar.setTime(currentDate);
-					stDate = fromCalendar.getTime();
-					edDate = toCalendar.getTime();
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(today);
+					cal.add(Calendar.DATE, -7);
+					Date last7ThDay = cal.getTime();
+					stDate = last7ThDay;
+					edDate = today;
 				}
 				else if(inputVO.getDateType().equalsIgnoreCase("Last 30 days")){
-					Calendar fromCalendar = Calendar.getInstance();
-					fromCalendar.setTime(currentDate);
-					Calendar toCalendar = Calendar.getInstance();
-					toCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
-					edDate = fromCalendar.getTime();
-					stDate = toCalendar.getTime();
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(today);
+					cal.add(Calendar.DATE, -30);
+					Date last30ThDay = cal.getTime();
+					stDate = last30ThDay;
+					edDate = today;
 				}
 				List<Long> tdpCadreIdsList = tdpCadreDAO.getCadreDetailsByTdpMemberType(stDate,edDate,inputVO);
 				List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetailsByYear(tdpCadreIdsList,2016L);
