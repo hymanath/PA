@@ -97,8 +97,8 @@ body{color:#666 !important}
 														<th class="text-center">AFFILIATED UNION NAME</th>
 														<th class="text-center">TOTAL REGISTER</th>
 														<th class="text-center">TODAY</th>
-														<th class="text-center">PAST 07 DAYS</th>
-														<th class="text-center"	>PAST 30 DAYS</th>
+														<th class="text-center">LAST 07 DAYS</th>
+														<th class="text-center"	>LAST 30 DAYS</th>
 													</thead>
 													<tr class="trClass" id="teachersAllId">
 															<td class="text-valign"><h3 class="m_0"> TEACHERS</h3></td>
