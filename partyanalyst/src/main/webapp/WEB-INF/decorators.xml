@@ -165,8 +165,10 @@
 		<pattern>/trainingCampFeedback*</pattern>
 		<pattern>/feedbackOverViewDetailsAction*</pattern>
 		<pattern>/showGoogleMapDetails*</pattern>
-		<pattern>/rtcUnionSearchAction*</pattern>
-		<pattern>/rtcUnionRegistrationAction*</pattern>
+		<!--<pattern>/rtcUnionSearchAction*</pattern>-->
+		<pattern>/affiliatedCadreSearchAction*</pattern>
+		<!--<pattern>/rtcUnionRegistrationAction*</pattern>-->
+		<pattern>/affiliatedCadreRegistrationAction*</pattern>
 		
 		</excludes>  
 	
@@ -646,6 +648,7 @@
 	<pattern>/mobileAppDivisionWiseUsersAction*</pattern>
 	<pattern>/pollManagmentDashboardAction*</pattern>
 	<pattern>/pollManagmentAreaWiseInfoAction*</pattern>
-	<pattern>/rtcUnionDashBoardAction*</pattern>
+	<!--<pattern>/rtcUnionDashBoardAction*</pattern>-->
+	<pattern>/affiliatedCadreDashBoardAction*</pattern>
 	 </decorator> 
 </decorators>

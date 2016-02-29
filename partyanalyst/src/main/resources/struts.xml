@@ -11391,20 +11391,20 @@
 	    </result>
 	</action>
 	
-	<action name="rtcUnionSearchAction" class="rtcUnionAction" method="rtcUnionSearch">
+	<action name="affiliatedCadreSearchAction" class="rtcUnionAction" method="rtcUnionSearch">
 			<result name="success">/jsp/rtcUnionSearch.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=rtcUnionSearchAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=affiliatedCadreSearchAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
-	<action name="rtcUnionRegistrationAction" class="rtcUnionAction" method="rtcUnionRegistrationPage">
+	<action name="affiliatedCadreRegistrationAction" class="rtcUnionAction" method="rtcUnionRegistrationPage">
 			<result name="success">/jsp/rtcUnionRegistration.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=rtcUnionSearchAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=affiliatedCadreSearchAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
-	<action name="rtcUnionDashBoardAction" class="rtcUnionAction" method="rtcUnionDashBoard">
+	<action name="affiliatedCadreDashBoardAction" class="rtcUnionAction" method="rtcUnionDashBoard">
 			<result name="success">/jsp/rtcUnionDashBoard.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=rtcUnionSearchAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=affiliatedCadreSearchAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
