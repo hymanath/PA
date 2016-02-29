@@ -9577,6 +9577,40 @@ return constiLst;
 		return userAccessValue;
 	}
 	
+	public List<IdNameVO> getStatesForLocationLevel(String accessType,Long accessValue){
+		
+		List<IdNameVO> statesList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> locationDetails = null;
+			if(accessType !=null && !accessType.equalsIgnoreCase("District")){
+				List<Long> stateIds =new ArrayList<Long>();
+				stateIds.add(1l);
+				stateIds.add(36l);
+				locationDetails = stateDAO.getAllStatesByStateIds(stateIds);
+			}else if(accessType !=null && accessType.equalsIgnoreCase("District")){
+				
+				List<Long> distIds = new ArrayList<Long>();
+				distIds.add(accessValue);
+				
+				locationDetails = districtDAO.getStatesForDistricts(distIds);
+			}
+			
+			if(locationDetails !=null && locationDetails.size()>0){
+				for (Object[] objects : locationDetails) {					
+					IdNameVO vo = new IdNameVO();					
+					vo.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					vo.setName(objects[1] !=null ? objects[1].toString():"");					
+					statesList.add(vo);
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getStatesForLocationLevel", e);
+		}
+		return statesList;
+	}
+	
 	public ResultStatus  approvingChangeDesignations(final Long cadreCommitteeIncreasedPositionsId,final String approvedStatus){
 		 ResultStatus rs=new ResultStatus();
 	 try

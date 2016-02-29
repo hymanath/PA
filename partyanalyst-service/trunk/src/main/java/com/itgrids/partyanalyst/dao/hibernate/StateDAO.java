@@ -196,4 +196,10 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 		return (Long) query.uniqueResult();
 	}
 	
+	public List<Object[]> getAllStatesByStateIds(List<Long> stateIds){
+		Query query = getSession().createQuery("Select model.stateId,model.stateName from State model where model.stateId in (:stateIds)");
+		query.setParameterList("stateIds",stateIds);
+		return query.list();
+	}
+	
 }
