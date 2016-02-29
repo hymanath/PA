@@ -226,8 +226,8 @@ body{color:#666 !important}
 														</div>
 													</div>-->
 													<div class="col-md-3">
-														<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" >District</label>
-														<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" checked>Constituency</label>
+														<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" checked>District</label>
+														<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
 													</div>
 													
 														<div class="col-md-3">
@@ -548,12 +548,12 @@ body{color:#666 !important}
 <script src="dist/newmultiselect/chosen.jquery.js" type="text/javascript"></script>
 <script>
 
-getRtcUnionRegisteredBasicDetails();
-getRtcUnionAllLocationDetails();
-getRtcUnionZoneWiseTotalDetails();
-getRtcUnionTotalLocationWiseDetails();
+//getRtcUnionRegisteredBasicDetails();
+//getRtcUnionAllLocationDetails();
+//getRtcUnionZoneWiseTotalDetails();
+//getRtcUnionTotalLocationWiseDetails();
 //getRtcUnionTotalLocationWiseDetails(2);
-getOnlineAndTabUsersCount();
+//getOnlineAndTabUsersCount();
 
 function getRtcUnionRegisteredBasicDetails(){
 $("#dataLoadingsImgForTotalWebCount").show();
@@ -1318,15 +1318,31 @@ getCadreRegistrationTotalCount("total","Constituency");
 var cadreInput;
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
 	cadreInput = '';
-	if(locationLevel == "District")
-	$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
-	else
+	if(locationLevel == "District"){
+				/*$(".districtCls").css("display","block");
+				$(".constituencyCls").css("display","none");
+				getCadreRegistrationTotalCount("total","District");
+				$("#districtWiseTitleId").html('<b>DISTRICT WISE REGISTRATION DETAILS</b>');
+				$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+				$("#constituencyWiseRegistredCountId").html('');
+				*/
+				$(".districtCls").css("display","block");
+				$(".constituencyCls").css("display","none");
+			$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+	}
+	else{
+		$(".districtCls").css("display","none");
+				$(".constituencyCls").css("display","block");
 	$("#constituencyWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+	}
 	
 	var membereTypeIds = new Array();
-	membereTypeIds.push(2);
-	//membereTypeIds.push(3);
-	//var searchTypeStr = "Constituency";
+	membereTypeIds = $('#userMembersId').val();
+	
+	if(membereTypeIds == null || membereTypeIds.length==0)
+	{
+		membereTypeIds = memberTypesIdsArr;
+	}
 	var startDate = "";
 	var toDate = "";
 	var dates = $(".getDate").val();
@@ -1367,9 +1383,9 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		for(var i in result){
 				str+='<tr>';
 				if(locationLevel == "District")
-					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv" onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv" onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')"><a href="javascript:{};" style="color: red;font-weight: bold">'+result[i].name+'</a></td>';
 				else
-					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv"  onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')">'+result[i].name+'</td>';		
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv"  onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')"><a href="javascript:{};" style="color: red;font-weight: bold">'+result[i].name+'</a></td>';		
 							str+='<td>'+result[i].totalCount+'</td>';
 							str+='<td>'+result[i].tabCount+'</td>';	
 							str+='<td>'+result[i].webCount+'</td>';
@@ -1383,7 +1399,8 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 			}
 			$('.dataTableId').dataTable({
 		  "aaSorting": [[ 1, "asc" ]],
-		  "iDisplayLength" : 20		
+		  "iDisplayLength" : 20	,
+				"aLengthMenu": [[20,50,100, 200, 500, -1], [20,50,100, 200, 500, "All"]]		
 	  });
 		} 
 		
@@ -1783,6 +1800,7 @@ function refreshDetails(){
 		$(".todayOperationalCls").hide();
 	}
 }
+var memberTypesIdsArr = [];
 function getMemberTypeSelectedValues(){
 	$("#userMembersId").html("");
 	$("#userMembersIdLoadingId").show();
@@ -1795,10 +1813,19 @@ function getMemberTypeSelectedValues(){
 		data:{task:JSON.stringify(jObj)}
 	}).done(function(result){
 		 if(result!=null && result.length>0){
-				$("#userMembersId").append('<option value="0">TEACHERS AFFLIATED UNION</option>');
+				//$("#userMembersId").append('<option value="0">TEACHERS AFFLIATED UNION</option>');
 				for(var i in result){
 					$("#userMembersId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					
+					memberTypesIdsArr.push(result[i].id);
 				}
+				
+				$(".districtCls").css("display","block");
+				$(".constituencyCls").css("display","none");
+				getCadreRegistrationTotalCount("total","District");
+				$("#districtWiseTitleId").html('<b>DISTRICT WISE REGISTRATION DETAILS</b>');
+				$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+				$("#constituencyWiseRegistredCountId").html('');
 			} 
 			$("#userMembersId").chosen();
 			$("#userMembersIdLoadingId").hide();
@@ -1806,7 +1833,13 @@ function getMemberTypeSelectedValues(){
 });
 }
 getMemberTypeSelectedValues();
-$(".getDate").daterangepicker({opens:"left"})
+$(".getDate").daterangepicker({opens:"left"});
+
+$(document).on("click",".applyBtn",function(){
+	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
+	getCadreRegistrationTotalCount("",selectedVal);
+	$(".constituecnyRadioCls").removeAttr("checked");
+});
 </script>
 </body>
 </html>
