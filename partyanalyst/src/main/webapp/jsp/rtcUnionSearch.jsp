@@ -709,7 +709,7 @@
 		{
 		var panchayatId = 0;
 		if($("#isNewCadre").is(':checked'))
-			panchayatId = "true";  // checked
+			panchayatId = 0;  // checked
 		else
 			panchayatId = 0  // unchecked
 			
