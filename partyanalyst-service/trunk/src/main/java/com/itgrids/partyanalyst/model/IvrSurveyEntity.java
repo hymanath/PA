@@ -1,3 +1,4 @@
+
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;

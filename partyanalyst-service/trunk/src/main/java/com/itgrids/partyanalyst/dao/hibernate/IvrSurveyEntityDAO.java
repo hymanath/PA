@@ -40,6 +40,7 @@ public class IvrSurveyEntityDAO extends GenericDaoHibernate<IvrSurveyEntity, Lon
 				" and model1.ivrRespondentId =:ivrRespondentId " +
 				" and model.isDeleted='false'" +
 				" and model1.isDeleted = 'false' " +
+				" and model1.isValid = 'Y' " +
 				" group by model.ivrSurveyEntityType.ivrSurveyEntityTypeId,model1.ivrResponseType.ivrResponseTypeId ");
 		
 		query.setParameterList("surveyIds", surveyIds);    
@@ -58,5 +59,48 @@ public class IvrSurveyEntityDAO extends GenericDaoHibernate<IvrSurveyEntity, Lon
 		query.setParameter("entityTypeId", entityTypeId);
 		
 		return query.list();
+	}
+	
+	public List<Object[]> getSurveyAnswerDetailsForActivity(List<Long> surveyIds,Long respondentId,List<Long> entityValuesList,String searchType){
+		
+		StringBuilder quereyStr = new StringBuilder();		
+		quereyStr.append(" select model.activity.activityId,model.activity.activityName," +
+				"  model.activityLevel.activityLevelId, model.activityLevel.level," +
+				" model.startDate,model.endDate,isa.ivrSurvey.ivrSurveyId," +
+				" isa.ivrSurvey.surveyName," +
+				" isa.ivrSurveyRound.ivrSurveyRoundId," +
+				" isa.ivrSurveyRound.roundName," +
+				" isa.ivrSurveyQuestionId," +
+				" question.ivrQuestionId," +
+				" question.question," +
+				" option.ivrOptionId," +
+				" option.option " +				 
+				" from ActivityScope model,IvrSurveyEntity ise,IvrSurveyAnswer isa left join isa.ivrSurveyQuestion.ivrQuestion question" +
+				" left join isa.ivrOption option " +
+				" where " +
+				" isa.ivrSurveyId = ise.ivrSurveyId" +
+				" and model.activityScopeId = ise.entityValue" +
+				" and model.activityScopeId in (:entityValuesList) " +
+				" and model.isDeleted = 'N' " +
+				" and ise.isDeleted = 'false' " +
+				" and isa.isValid = 'Y' " +
+				" and isa.isDeleted ='false' " +
+				" and isa.ivrSurvey.ivrSurveyId in (:surveyIds) " +
+				" and isa.ivrRespondent.ivrRespondentId = :respondentId ");
+		
+		if(searchType !=null && searchType.equalsIgnoreCase("unAnswered")){
+			quereyStr.append(" and isa.ivrOptionId is null");
+		}
+		if(searchType !=null && searchType.equalsIgnoreCase("Answered")){
+			quereyStr.append(" and isa.ivrOptionId is not null ");
+		}
+		
+		Query query = getSession().createQuery(quereyStr.toString());
+		
+		query.setParameterList("surveyIds", surveyIds);
+		query.setParameterList("entityValuesList", entityValuesList);//activityScopeIds
+		query.setParameter("respondentId", respondentId);
+		
+		return query.list();		
 	}
 }

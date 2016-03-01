@@ -5317,6 +5317,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		try {
 			
 			List<Long> surveyIds = new ArrayList<Long>();
+			List<Long> entityValuesList = new ArrayList<Long>(0);
 			Map<Long,IvrOptionsVO> surveyMap = new LinkedHashMap<Long, IvrOptionsVO>();
 			
 			Long respondentId = ivrRespondentCadreDAO.getRespondentIdByTdpCadreId(tdpCadreId);
@@ -5334,12 +5335,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 					vo.setEventId(entityValue);
 					
 					surveyIds.add(surveyId);
+					if(entityValue !=null && entityValue>0){
+						entityValuesList.add(entityValue);
+					}
+					
 					surveyMap.put(surveyId, vo);
 				}
 			}
 			
 			if(entityTypeId.longValue() == 4l){
 				finalVoList = getSurveyAnswerDetailsForPartyMeetings(surveyMap, surveyIds, respondentId,searchType);
+			}else if(entityTypeId.longValue()==2l){
+				finalVoList = getSurveyAnswerDetailsForActivity(surveyMap,surveyIds,respondentId,searchType,entityValuesList);
 			}
 			
 		} catch (Exception e) {
@@ -5409,6 +5416,46 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSurveyAnswerDetailsForPartyMeetings() Method - ",e);
+		}
+		return returnList;
+	}
+	
+	public List<IvrOptionsVO> getSurveyAnswerDetailsForActivity(Map<Long,IvrOptionsVO> surveyMap,List<Long> surveyIds,Long respondentId,
+			String searchType,List<Long> entityValuesList){
+			 List<IvrOptionsVO> returnList = new ArrayList<IvrOptionsVO>();
+			
+		try{
+			
+			//0.activityId,1.activityName,2.activityLevelId,3.level,4.startDate,5.endDate,6.ivrSurveyId,7.surveyName,8.ivrSurveyRoundId,9.roundName,10.ivrSurveyQuestionId,
+			//11.ivrQuestionId,12.question,13.ivrOptionId,14.option
+			List<Object[]> listObjectArr = ivrSurveyEntityDAO.getSurveyAnswerDetailsForActivity(surveyIds,respondentId,entityValuesList,searchType);
+			
+			if(listObjectArr !=null && listObjectArr.size()>0){
+				
+				for (Object[] objects : listObjectArr) {
+					
+					IvrOptionsVO surveyVO = new IvrOptionsVO();					
+					surveyVO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					surveyVO.setName(objects[1] !=null ? objects[1].toString():"");
+					surveyVO.setLevelId(objects[2] !=null ? (Long)objects[2]:0l);
+					surveyVO.setLevelValue(objects[3] !=null ? objects[3].toString():"");
+					surveyVO.setStartDate(objects[4] !=null ? objects[4].toString():"");
+					surveyVO.setEndDate(objects[5] !=null ? objects[5].toString():"");					
+					surveyVO.setSurveyId(objects[6] !=null ? (Long)objects[6]:0l);
+					surveyVO.setSurveyName(objects[7] !=null ?objects[7].toString():"");					
+					surveyVO.setRoundId(objects[8] != null ? (Long)objects[8]:0l);
+					surveyVO.setRound(objects[9] != null ? objects[9].toString():"");					
+					surveyVO.setQuestionId(objects[11] !=null ? (Long)objects[11]:0l);
+					surveyVO.setQuestion(objects[12] !=null ?objects[12].toString():"");					
+					surveyVO.setOptionId(objects[13] !=null ? (Long)objects[13]:0l);
+					surveyVO.setOption(objects[14] != null ? objects[14].toString():"");
+					
+					returnList.add(surveyVO);
+				}				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 		return returnList;
 	}
