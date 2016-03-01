@@ -37,6 +37,9 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private Long tehsilId;
 	private String tehsilName;
 	private String localElectionBodyId;
+	private String localElectionBodyName;
+	private String wardId;
+	private String wardName;
 	private Long constituencyId;
 	private String constituencyName;
 	private Long parliamentId;
@@ -447,6 +450,25 @@ public class CadreOverviewVO implements java.io.Serializable{
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	
+	public String getLocalElectionBodyName() {
+		return localElectionBodyName;
+	}
+	public void setLocalElectionBodyName(String localElectionBodyName) {
+		this.localElectionBodyName = localElectionBodyName;
+	}
+	public String getWardId() {
+		return wardId;
+	}
+	public void setWardId(String wardId) {
+		this.wardId = wardId;
+	}
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
 	}
 
 }
