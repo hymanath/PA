@@ -5101,7 +5101,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			
 		}
-		public SurveyTransactionVO getDaywiseWebUserDetails(Long userId,String FdateStr, String TdateStr)
+		public SurveyTransactionVO getDaywiseWebUserDetails(Long userId,String FdateStr, String TdateStr,Long memberTypeId)
 		{
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -5139,7 +5139,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 				}
 				
-				List<Object[]> webUserRecordsList = tdpCadreDAO.getDaywiseWebuserDetailsByUserANDType(userId, fromDate, toDate,"WEB");
+				List<Object[]> webUserRecordsList = tdpCadreDAO.getDaywiseWebuserDetailsByUserANDType(userId, fromDate, toDate,"WEB",memberTypeId);
 				
 				Long recordsCount = 0L;
 				Long actualAmount = 0L;

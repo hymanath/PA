@@ -178,7 +178,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCadreDetailsByMemberShipId(List<String> memberCardNos);
 	public List<Long> lastHoursActiveUsers(Date presentTime,Date lastHoursTime,List<Long> consituencyIdsList);
 	public List<Long> inActiveUsersCountInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList,List<Long> consituencyIdsList);
-	public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type);
+	//public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type);
 	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList,List<Long> constituencyIds);
 	
 	public List<Object[]> getTotalRecords(List<Long> districtIds,String type,Date date);
@@ -414,4 +414,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getUserPresentAddressId(Long tdpCadreId);
 	  public Long getUserPermenentAddressId(Long tdpCadreId);
 	  public Long getUserWorkAddressId(Long tdpCadreId);
+	  public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type,Long memberTypeId);
 }

@@ -2440,10 +2440,10 @@ public void flushAndclearSession(){
 	
 	
 	 
-		public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type)
+		public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type,Long memberTypeId)
 		{
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select date(model.surveyTime), count(model.tdpCadreId) from TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 and ");
+			queryStr.append(" select date(model.surveyTime), count(model.tdpCadreId) from TdpCadre model where model.isDeleted='N'  and ");
 			queryStr.append(" model.insertedWebUserId = :userId and model.dataSourceType='"+type+"' ");
 			
 			if(fromDate != null && toDate != null)
@@ -2451,6 +2451,13 @@ public void flushAndclearSession(){
 				queryStr.append(" and ( date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  )  ");
 			}
 			
+			if(memberTypeId !=null && memberTypeId.longValue() > 1l)
+			{
+				queryStr.append(" and model.tdpMemberTypeId=:memberTypeId and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
+			}
+			else{
+				queryStr.append(" and model.tdpMemberTypeId=:memberTypeId and model.enrollmentYear = 2014 ");
+			}
 			queryStr.append(" group by date(model.surveyTime) order by date(model.surveyTime) desc ");
 			
 			Query query=getSession().createQuery(queryStr.toString());
@@ -2459,6 +2466,10 @@ public void flushAndclearSession(){
 			{
 				query.setDate("fromDate",fromDate);	
 				query.setDate("toDate",toDate);	
+			}
+			if(memberTypeId.longValue() > 1l)
+			{
+				query.setParameter("memberTypeId",memberTypeId);	
 			}
 			
 			query.setParameter("userId",userId);	
