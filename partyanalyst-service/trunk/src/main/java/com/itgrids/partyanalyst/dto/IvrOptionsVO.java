@@ -26,6 +26,11 @@ public class IvrOptionsVO implements Serializable{
 	private Long optionId;
 	private String option;
 	
+	private Long levelId;
+	private String levelValue;
+	private String startDate;
+	private String endDate;
+	
 	public Long getId() {
 		return id;
 	}
@@ -140,4 +145,29 @@ public class IvrOptionsVO implements Serializable{
 	public void setOption(String option) {
 		this.option = option;
 	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public String getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(String levelValue) {
+		this.levelValue = levelValue;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	
 }
