@@ -1688,7 +1688,7 @@
 				</div>	
 				<div class="span3" id="schoolNameDiv" style="display:none">
 					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> </h5>
-						<input type="text" id="schoolId" placeholder="SchoolName" name="cadreRegistrationVO.schoolName"></input>
+						<input type="text" id="schoolId" placeholder="SchoolName" name="cadreRegistrationVO.schoolName" value="${voterInfoVOList[0].schoolName}"></input>
 						<br><span id="schoolErr" style="color:red;font-size:12px;margin-right"></span>
 				</div>
 				<!--<div class="span3" id="drivingLicenseDiv" style="display:none">
