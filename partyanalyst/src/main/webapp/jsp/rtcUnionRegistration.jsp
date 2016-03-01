@@ -868,7 +868,7 @@
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="tdpCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
@@ -881,7 +881,7 @@
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="tdpCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
@@ -895,7 +895,7 @@
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="tdpCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 			
@@ -907,7 +907,7 @@
 	
 	function openSearchForm()
 	{
-		window.location.assign('tdpCadreSearchAction.action')
+		window.location.assign('affiliatedCadreSearchAction.action')
 	}
 	
 	function prepopulateOptions(){
@@ -1349,7 +1349,8 @@
 			<div class="span12 header-bg text-center">
 				<div class="row-fluid">
 				  <div class="span4 offset4 ">
-						<img src="images/cadre_images/2016-affliated-Registration-Logo.png">
+						<!--<img src="images/cadre_images/2016-affliated-Registration-Logo.png">-->
+						<img src="dist/2016DashBoard/img/2016-affliated-Registration-Logo.png">
 				  </div>
 				  <div class="span4">
 					 <a href="newlogoutAction.action" style="font-weight: bold;" class="btn btn-mini pull-left m_top20">Logout</a>
