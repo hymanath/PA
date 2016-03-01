@@ -11254,7 +11254,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					{
 						tdpCadre.setHouseNo(cadreRegistrationVO.getHouseNo());
 					}else{
-						tdpCadre.setHouseNo(null);
+						
+						if(cadreRegistrationVO.getPrsntAddrsHNo() != null && !cadreRegistrationVO.getPrsntAddrsHNo().equalsIgnoreCase("null") && cadreRegistrationVO.getPrsntAddrsHNo().trim().length() > 0)
+						{
+							tdpCadre.setHouseNo(cadreRegistrationVO.getPrsntAddrsHNo());
+						}else{
+							tdpCadre.setHouseNo(null);
+						}
+						//tdpCadre.setHouseNo(null);
 					}
 					
 					if(cadreRegistrationVO.getCreatedUserId() != null && cadreRegistrationVO.getCreatedUserId().longValue() > 0  )
