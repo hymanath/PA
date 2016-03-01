@@ -769,6 +769,8 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance</value>
 				 
 				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
+				  <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
+				 
 			</list>
 		</property>
 	</bean>
