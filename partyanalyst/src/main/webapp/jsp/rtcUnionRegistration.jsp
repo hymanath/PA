@@ -285,11 +285,12 @@
 		}
 		else if(tdpMemberTypeId == 4) {
 		//$('#designDivId').show();
-		$('#schoolNameDiv').show();
+		$('#schoolNameDiv').hide();
 		}
 		else if(tdpMemberTypeId == 5) {
 		//$('#drivingLicenseDiv').show();
 		//$('#vehicleTypeDiv').show();
+		$('#workingAddressDiv').hide();
 		}
 		else if(tdpMemberTypeId == 6) {
 		$('#designDiv1Id').show();
@@ -1794,9 +1795,10 @@
 						  <br> <span id="presentVillWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						  </div> 
 				    </div>
-					<div class="span11">
+				<div id="workingAddressDiv">
+					<div class="span11" >
 							<h4 class="text-align1">WORKING ADDRESS <label style="display:inline-block;font-size:15px;"><input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input>Check this if same as present address</label><hr class="m_0"/></h4>
-						</div>
+					</div>
 					<div class="span3" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </h5>
 							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 							<br><span id="workAddressErr" style="color:red;font-size:12px;"></span>
@@ -1811,6 +1813,7 @@
 							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="workLandmarkId" name="cadreRegistrationVO.workAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
 							<br><span id="workLandmarkErr" style="color:red;font-size:12px;"></span>
 					</div>
+				
 					<div class="span3">
 				   <div class=" m_top20" >
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span>  </h5>
@@ -1845,7 +1848,7 @@
 								  <br> <span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						   </div>
 					   </div>
-					
+					</div>	
 					</s:if>
 					<s:else>
 					
@@ -1922,7 +1925,8 @@
 								   </select>
 								   <br><span id="presentVillWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						   </div>
-					   </div>
+					   </div> 
+				<div id="workingAddressDiv">	   
 					<div class="span11">
 							<h4 class="text-align1">WORKING ADDRESS <input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input><hr class="m_0"/></h4>
 					</div>
@@ -1974,7 +1978,7 @@
 								   <br><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						   </div>
 					   </div>
-						
+				</div>	
 					</s:else>
 				
 			</div>
