@@ -6660,19 +6660,19 @@ function getTypeWiseIvrDetailsOFCadre(){
 					str+='<tr>';
 						str+='<td id='+result[i].id+'>'+result[i].name+'</td>';
 						if(totalCount != 0){
-							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get Total Details" attr_event_name="'+result[i].name+'" attr_searchType="total" style="cursor:pointer;">'+totalCount+'</span></td>';
+							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get Total Details" attr_event_name="'+result[i].name+'" attr_searchType="total" style="cursor:pointer;" attr_event_type_id='+result[i].id+'>'+totalCount+'</span></td>';
 						}
 						else{
 							str+='<td>0</td>';
 						}
 						if(result[i].answeredCount != 0){
-							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get Answered Details" attr_event_name="'+result[i].name+'" attr_searchType="answered" style="cursor:pointer;">'+result[i].answeredCount+'</span></td>';
+							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get Answered Details" attr_event_name="'+result[i].name+'" attr_searchType="answered" style="cursor:pointer;" attr_event_type_id='+result[i].id+'>'+result[i].answeredCount+'</span></td>';
 						}
 						else{
 							str+='<td>0</td>';
 						}
 						if(result[i].unAnsweredCount != 0){
-							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get UnAnswered Details" attr_event_name="'+result[i].name+'" attr_searchType="unanswered" style="cursor:pointer;">'+result[i].unAnsweredCount+'</span></td>';
+							str+='<td><span class="ivrAnsweredCls" data-toggle="tooltip" data-placement="top" title="Click Here To Get UnAnswered Details" attr_event_name="'+result[i].name+'" attr_searchType="unanswered" style="cursor:pointer;" attr_event_type_id='+result[i].id+'>'+result[i].unAnsweredCount+'</span></td>';
 						}
 						else{
 							str+='<td>0</td>';
@@ -6690,14 +6690,14 @@ function getTypeWiseIvrDetailsOFCadre(){
 	});
 }
 
-function getIvrSurveyDetails(searchType){
+function getIvrSurveyDetails(searchType,eventTypeId){
 	$("#ivrDetailsBodyId").html("");
 	$("#ivrDetailsModelId").modal("show");
 	$("#dataLoadingsImgForIVRDetails").show();
 	
 	var jsObj={
 		tdpCadreId : globalCadreId,
-		entityTypeId : 4,
+		entityTypeId : eventTypeId,
 		searchType : searchType
 	}
 	$.ajax({
@@ -6706,34 +6706,40 @@ function getIvrSurveyDetails(searchType){
 		data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			var str='';
 			
-			str+='<table class="table m_0 table-bordered">';
-				str+='<thead>';
-					str+='<th class="text-center"> MEETING </th>';
-					str+='<th class="text-center"> DATE </th>';
-					str+='<th class="text-center"> SURVEY </th>';
-					str+='<th class="text-center"> ROUND </th>';
-					str+='<th class="text-center"> QUESTION </th>';
-					str+='<th class="text-center"> OPTION </th>';
-				str+='</thead>';
-				
-				str+='<tbody class="text-center">';
-				for(var i in result){
-					str+='<tr>';
-						str+='<td>'+result[i].eventName+' ('+result[i].name+')</td>';
-						str+='<td>'+result[i].dateStr+'</td>';
-						str+='<td>'+result[i].surveyName+'</td>';
-						str+='<td>'+result[i].round+'</td>';
-						str+='<td>'+result[i].question+'</td>';
-						str+='<td>'+result[i].option+'</td>';
-					str+='</tr>';
-				}
-				str+='</tbody>';
-			str+='</table>';
+			if(eventTypeId !=null && eventTypeId==2){
+				buildSurveyAnswerDetailsForActivity(result);
+			}
+			else{
+				var str='';
 			
-			$("#dataLoadingsImgForIVRDetails").hide();
-			$("#ivrDetailsBodyId").html(str);
+				str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+						str+='<th class="text-center"> MEETING </th>';
+						str+='<th class="text-center"> DATE </th>';
+						str+='<th class="text-center"> SURVEY </th>';
+						str+='<th class="text-center"> ROUND </th>';
+						str+='<th class="text-center"> QUESTION </th>';
+						str+='<th class="text-center"> OPTION </th>';
+					str+='</thead>';
+					
+					str+='<tbody class="text-center">';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].eventName+' ('+result[i].name+')</td>';
+							str+='<td>'+result[i].dateStr+'</td>';
+							str+='<td>'+result[i].surveyName+'</td>';
+							str+='<td>'+result[i].round+'</td>';
+							str+='<td>'+result[i].question+'</td>';
+							str+='<td>'+result[i].option+'</td>';
+						str+='</tr>';
+					}
+					str+='</tbody>';
+				str+='</table>';
+			
+				$("#dataLoadingsImgForIVRDetails").hide();
+				$("#ivrDetailsBodyId").html(str);
+			}
 		}
 		else{
 			$("#dataLoadingsImgForIVRDetails").hide();
@@ -6742,11 +6748,52 @@ function getIvrSurveyDetails(searchType){
 	});	
 }
 
+function buildSurveyAnswerDetailsForActivity(result){
+	var str='';
+	
+	var str='';
+			
+				str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+						str+='<th class="text-center"> ACTIVITY </th>';
+						str+='<th class="text-center"> ACTIVITY DATE </th>';
+						str+='<th class="text-center"> ACTIVITY LEVEL </th>';
+						str+='<th class="text-center"> SURVEY </th>';
+						str+='<th class="text-center"> ROUND </th>';
+						str+='<th class="text-center"> QUESTION </th>';
+						str+='<th class="text-center"> OPTION </th>';
+					str+='</thead>';
+					
+					str+='<tbody class="text-center">';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].name+'</td>';
+							if(result[i].startDate !=null && result[i].endDate !=null){
+								str+='<td>'+result[i].startDate +" - "+result[i].endDate+'</td>';
+							}else{
+								str+='<td></td>';
+							}
+							str+='<td>'+result[i].levelValue+'</td>';
+							str+='<td>'+result[i].surveyName+'</td>';
+							str+='<td>'+result[i].round+'</td>';
+							str+='<td>'+result[i].question+'</td>';
+							str+='<td>'+result[i].option+'</td>';
+						str+='</tr>';
+					}
+					str+='</tbody>';
+				str+='</table>';
+			
+				$("#dataLoadingsImgForIVRDetails").hide();
+				$("#ivrDetailsBodyId").html(str);
+}
+
 $(document).on('click', '.ivrAnsweredCls', function(){
 	var searchType = $(this).attr("attr_searchType");
 	var eventName = $(this).attr("attr_event_name");
+	var eventTypeId = $(this).attr("attr_event_type_id");
+	
 	$("#ivrModalHeadingId").html(eventName);
-	getIvrSurveyDetails(searchType);
+	getIvrSurveyDetails(searchType,eventTypeId);
 });
 
 </script>
