@@ -5039,7 +5039,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setMessage("success");
 					
 					for (Object[] voter : voterDetails) {
-						Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
+						//Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
 						
 							Long voterId = voter[3] != null ? Long.valueOf(voter[3].toString()):0L;
 							List<TdpCadre> tdpCadreList = tdpCadreDAO.getVoterByVoterId(voterId,memberTypeId);
@@ -5118,7 +5118,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				if(voterDetails != null && voterDetails.size()>0)
 				{
 					for (Object[] voter : voterDetails) {
-						Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
+						//Long publicationDateId = voter[2] != null ? Long.valueOf(voter[2].toString()):0L;
 						
 							Long constituencyId = voter[0] != null ? Long.valueOf(voter[0].toString()):0L;
 							Long boothId = voter[1] != null ? Long.valueOf(voter[1].toString()):0L;
@@ -5137,7 +5137,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 							String relativeType =  voter[10] != null ? voter[10].toString():"";
 							String hNo = voter[9] != null ? voter[9].toString():"";;
 							String partNo= voter[13] != null ? voter[13].toString():"";
-							LocalElectionBody localElectionBody = null;//voter[14] != null ? (LocalElectionBody) voter[14]:null;
+							Long localElectionBodyId = voter[22] != null && voter[22].toString().trim().length()>0 ? Long.valueOf(voter[22].toString()):0L;
+							String localElectionBodyName = voter[21] != null && voter[21].toString().trim().length()>0 ? voter[21].toString():"";
 							Long panchayatId = voter[15] != null ? Long.valueOf(voter[15].toString()):0L;
 							String panchayatName= voter[16] != null ? voter[16].toString():"";
 							Long tehsilId = voter[17] != null ? Long.valueOf(voter[17].toString()):0L;
@@ -5165,7 +5166,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 							
 							
-							String filePath = "voter_images"+IConstants.FILE_SEPARATOR+constituencyId+IConstants.FILE_SEPARATOR+"Part"+partNo.trim()+IConstants.FILE_SEPARATOR+voterCardNo+".jpg";
+							String filePath = "voter_images/"+constituencyId+"/Part"+partNo.trim()+"/"+voterCardNo+".jpg";
 							
 							returnVO.setCandidateName(voterName);									
 							returnVO.setAge(age);
@@ -5195,9 +5196,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 							returnVO.setTehsilName(tehsilName);
 							returnVO.setStateId(stateId);
 							returnVO.setStateName(stateName);
-							if(localElectionBody != null)
-								returnVO.setLocalElectionBodyId(localElectionBody.getLocalElectionBodyId().toString());
-							
+							if(localElectionBodyId != null && localElectionBodyId.longValue()>0L){
+								returnVO.setLocalElectionBodyId(localElectionBodyId.toString());
+								returnVO.setLocalElectionBodyName(localElectionBodyName.toString());
+								
+								Long wardId = voter[23] != null && voter[23].toString().trim().length()>0 ? Long.valueOf(voter[23].toString()):0L;
+								if(wardId != null && wardId.longValue()>0)
+								{
+									String wardName = voter[24] != null && voter[24].toString().trim().length()>0 ? voter[24].toString():"";
+									returnVO.setWardId(wardId.toString());
+									returnVO.setWardName(wardName);
+								}
+							}
 							List<Object[]> mobileNosList = mobileNumbersDAO.getVotersMobileNumberDetails(voterIdsList);
 							
 							if(mobileNosList != null && mobileNosList.size()>0)
