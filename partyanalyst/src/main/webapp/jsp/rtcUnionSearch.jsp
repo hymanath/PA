@@ -714,7 +714,7 @@
 			panchayatId = 0  // unchecked
 			
 		if(tdpMemberTypeId != 0){
-			window.open('affiliatedCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'&tdpMemberTypeId='+tdpMemberTypeId+'');
+			window.open('affiliatedCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+panchayatId+'&boothId='+boothId+'&panchayatId='+panchayatId+'&tdpMemberTypeId='+tdpMemberTypeId+'');
 		}
 		}
 	}
