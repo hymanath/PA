@@ -281,14 +281,11 @@
 		else if(tdpMemberTypeId == 3) {
 		//$('#designDivId').show();
 		$('#schoolNameDiv').show();
-		$('#casteDivId').hide();
 		
 		}
 		else if(tdpMemberTypeId == 4) {
 		//$('#designDivId').show();
 		$('#schoolNameDiv').show();
-		$('#casteDivId').hide();
-		
 		}
 		else if(tdpMemberTypeId == 5) {
 		//$('#drivingLicenseDiv').show();
@@ -623,15 +620,15 @@
 			isErrorStr = " error";
 			$('#addressErr').html(' Address is required.');
 		}
-		/* if(roadVal == 0)
+		/* if(casteId == 0)
 		{
 			isErrorStr = " error";
-			$('#roadErr').html(' Road is required.');
-		}*/
+			$('#casteErr').html(' Caste is required.');
+		} */
 		if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
-			$('#landmarkErr').html(' landMark  is required.');
+			$('#landmarkErr').html(' LandMark  is required.');
 		}
 		if(workAddressVal == 0)
 		{
@@ -646,7 +643,7 @@
 		if(workLandmarkVal == 0)
 		{
 			isErrorStr = " error";
-			$('#workLandmarkErr').html(' landMark  is required.');
+			$('#workLandmarkErr').html(' LandMark  is required.');
 			$('#addressErr').html(' Address is required.');
 		}
 		if(designationval == 0)
@@ -662,7 +659,7 @@
 		if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
-			$('#landmarkErr').html(' landMark  is required.');
+			$('#landmarkErr').html(' LandMark  is required.');
 			$('#addressErr').html(' Address is required.');
 			$('#addressErr').html(' Address is required.');
 		}
@@ -677,7 +674,7 @@
 		if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
-			$('#landmarkErr').html(' landMark  is required.');
+			$('#landmarkErr').html(' LandMark  is required.');
 		}
 		if(workAddressVal == 0)
 		{
@@ -692,7 +689,7 @@
 		if(workLandmarkVal == 0)
 		{
 			isErrorStr = " error";
-			$('#workLandmarkErr').html(' landMark  is required.');
+			$('#workLandmarkErr').html(' LandMark  is required.');
 		}
 		
 		if(tdpMemberTypeId == 2){
@@ -1630,7 +1627,7 @@
 							   
 								
 							<div class=" m_top20" id="casteDivId">
-										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
+										<h5 class="text-align1">CASTE NAME <span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
 								
 									
@@ -1683,23 +1680,16 @@
 			<div class="row">
 			<div class="span12">
 				
-				
-				<div class="span3" id="designDivId">
+				<div class="span" id="designDivId">
 					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>
 					<!--<select class="form-control" id="desigId" name="cadreRegistrationVO.designationId">-->
 						<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="desigId" list="unionTabUserList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
-					<!--</select>-->
-					<br><span id="desigErr" style="color:red;font-size:12px;"></span>
-				</div>
-				<!--<div class="span4" id="designDiv1Id" style="display:none">
-					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> <span id="designation13Err" style="color:red;font-size:12px;"></span></h5>
-					<input type="text" id="designation13Id" placeholder="designation" name="cadreRegistrationVO.designationFrId"/>
-				</div>-->
-				
+					<br><span id="desigErr" style="color:red;font-size:12px;margin-right: 10px;"></span>
+				</div>	
 				<div class="span3" id="schoolNameDiv" style="display:none">
 					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> </h5>
 						<input type="text" id="schoolId" placeholder="SchoolName" name="cadreRegistrationVO.schoolName"></input>
-						<br><span id="schoolErr" style="color:red;font-size:12px;"></span>
+						<br><span id="schoolErr" style="color:red;font-size:12px;margin-right"></span>
 				</div>
 				<!--<div class="span3" id="drivingLicenseDiv" style="display:none">
 					<h5 class="text-align1">DRIVING LICENSE<span class="mandatory">*</span> </h5>
@@ -1722,18 +1712,6 @@
 					<input type="text" id="emplyeeId" placeholder="Employee Id" name="cadreRegistrationVO.employeeId" value=" "/>
 					<br><span id="employeeErr" style="color:red;font-size:12px;"></span>
 				</div>
-				<!--<div class="span4" id="designationDivId" style="display:none">
-					<h5 class="text-align1">DESIGNATION <span class="mandatory">*</span> <span id="designationErr" style="color:red;font-size:12px;"></span></h5>
-					<!--<select id="designationSelectId" name="cadreRegistrationVO.designationId" style="width:100%">
-						<option value="0">Select Designation</option>
-					</select>
-				</div>-->
-				<!--<div class="span4" id="designDivId" style="display:none">
-					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> <span id="desigErr" style="color:red;font-size:12px;"></span></h5>
-					<select class="form-control" id="desigId" name="cadreRegistrationVO.desigId">
-					</select>
-				</div>-->
-				
 				
 					<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
 						<div class="span4" id="zoneDivId" style="display:none">
@@ -1783,30 +1761,38 @@
 							<br><span id="landmarkErr" style="color:red;font-size:12px;"></span>
 					</div>
 					<div class="span3">
+					<div class=" m_top20" >
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span>  </h5>
 					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.prsntAddrsDistId" />	
 					  <br><span id="presntDistrictIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>
+					 	</div> 
 					</div>
 					<div class="span3">
+					<div class="m_top20">
 						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span> </h5>
 						   <select id="presentConstituencyId" name="cadreRegistrationVO.prsntAddrsConstId"> 
 							 <option value="0">Select Constituency</option>
 						   </select>
 						   <br><span id="presentConstituencyIdErr" style="color:red;font-size:12px;"></span> 
+						   </div>
 					</div>
 					<div class="span3">
+					<div class="m_top20">
 					    <h5 class="text-align1">Mandal/Town/Division <span class="mandatory">*</span>  </h5>
 						<select id="presentManTowDivId" name="cadreRegistrationVO.prsntAddrsMandalId"> 
 						  <option value="0">Select Mandal/Town/Division</option>
 						</select>
 						<br><span id="presentManTowDivIdErr" style="color:red;font-size:12px;"></span>
+						 </div>
 					</div>
-					<div class="span4">
+					<div class="span3">
+					<div class="m_top20">
 						<h5 class="text-align1">Village/Ward <span class="mandatory">*</span> </h5>
 						  <select id="presentVillWardId" name="cadreRegistrationVO.prsntAddrsVillId"> 
 							  <option value="0">Select Village/Ward</option>
 						   </select>
 						  <br> <span id="presentVillWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
+						  </div> 
 				    </div>
 					<div class="span11">
 							<h4 class="text-align1">WORKING ADDRESS <label style="display:inline-block;font-size:15px;"><input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input>Check this if same as present address</label><hr class="m_0"/></h4>
