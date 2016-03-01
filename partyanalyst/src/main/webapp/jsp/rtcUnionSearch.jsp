@@ -124,7 +124,7 @@
 					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>	
 					</span>
 					<span>
-					  <a  class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px;" id="statusDivsId1" href="javascript:{hideDashBoard();}" > Know User Status </a>
+					  <a  class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px;" id="statusDivsId1" href="javascript:{hideDashBoard();}"> Know User Status </a>
 					 </span>
 					<span>
 					  <a class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px; width: 90px;display:none;" id="statusDivsId2" href="javascript:{showDashBoard();}"> Home </a>	
@@ -205,13 +205,21 @@
 				</div>
 			</div>
 			<div class="row-fluid show-grid">
-			   <div class="row-fluid offset3">						
-							<div class="span5" style="margin-bottom:-20px;">
-							<h5 class="text-align1">Form Date : 
-							<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="From Date " id="fromDateId"></h5>
-							</div>							
+			   <div class="row-fluid offset3">	
+					<div id="errorDashboardDiv" style="color:#ff0020;"></div>
+				          <div class="span">
+						   <h5 class="text-align1"> Select MemberType :
+						   <select class="form-control" id="userTdpMembersId">
+				             </select></h5>
+						  </div>	
+						  
 							<div class="span">
-								<h5 class="text-align1"> To Date : 
+							<h5 class="text-align1" style="margin-left:78px;">Form Date : 
+							<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="From Date " id="fromDateId"></h5>
+							</div>	
+							
+							<div class="span">
+								<h5 class="text-align1" style="margin-left:98px;"> To Date : 
 								<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="To Date " id="toDateId"></h5>
 							</div>
 						</div>
@@ -984,16 +992,24 @@
 	function getDashboardDetailsForUser()
 	{
 		$('#dashBoadDiv').html('');
+		$('#errorDashboardDiv').html('');
 		$('#searchDashboardImg').show();
 		//var userId = $('#webUserId).val();
+		var memberTypeId = $("#userTdpMembersId").val();
 		var formDate = $('#fromDateId').val();
 		var toDate = $('#toDateId').val();
 		
+		if( memberTypeId == 0 )
+		{
+			$('#errorDashboardDiv').html('Please Select MemberType..');
+			return;
+		}
 		var jsObj = 
 			   {
 				  userId:0,	 // 4015
 				  fromDate:formDate,					  
-				  toDate:toDate,					  
+				  toDate:toDate,
+			  memberTypeId:memberTypeId,				  
 				  task:"getDaywiseWebUserDetails"             
 			   }	
 		 $.ajax({
@@ -1102,6 +1118,26 @@ function getMemberTypeSelectedValues(){
 		
 });
 }
+function getTdpMemberTypeSelectedValues(){
+	$("#userTdpMembersId").html("");
+	var jObj={
+	};
+	$.ajax({
+		type:"GET",
+		url:'getMemberTypeSelectedValuesAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		 if(result!=null && result.length>0){
+				$("#userTdpMembersId").append('<option value="0">Select Member Type</option>');
+				for(var i in result){
+					$("#userTdpMembersId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				}
+			} 
+		
+});
+}
+getTdpMemberTypeSelectedValues();
 getMemberTypeSelectedValues();
 	
 		</script>
