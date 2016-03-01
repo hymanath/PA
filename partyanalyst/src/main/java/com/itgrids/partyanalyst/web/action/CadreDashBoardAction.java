@@ -692,13 +692,13 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				 Long userId = jObj.getLong("userId");
 				 String FdateStr = jObj.getString("fromDate");
 				 String TdateStr = jObj.getString("toDate");
-			
+				 Long memberTypeId = jObj.getLong("memberTypeId");
 				 if(userId == 0L )
 				 {
 					 userId =  regVO.getRegistrationID();
 				 }
 				 
-				 surveyTransactionVO = cadreDashBoardService.getDaywiseWebUserDetails(userId,FdateStr, TdateStr);
+				 surveyTransactionVO = cadreDashBoardService.getDaywiseWebUserDetails(userId,FdateStr, TdateStr,memberTypeId);
 			}
 						
 		}catch(Exception e){

@@ -890,7 +890,8 @@
 			   {
 				  userId:0,	 // 4015
 				  fromDate:formDate,					  
-				  toDate:toDate,					  
+				  toDate:toDate,
+				  memberTypeId:0,
 				  task:"getDaywiseWebUserDetails"             
 			   }	
 		 $.ajax({
