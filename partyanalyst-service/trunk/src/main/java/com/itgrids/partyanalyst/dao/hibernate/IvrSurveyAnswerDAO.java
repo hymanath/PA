@@ -95,18 +95,4 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getSurveyAnswerDetailsForActivity(List<Long> surveyIds,Long respondentId,List<Long> entityValuesList){
-		
-		Query query = getSession().createQuery(" select model.activity.activityId,model.activity.activityName," +
-				"  model.activityLevel.activityLevelId, model.activityLevel.level," +
-				" model.startDate,model.endDate, " +
-				"  from ActivityScope model,IvrSurveyAnswer model1 " +
-				" where " +
-				" model.isDeleted = 'N'" +
-				" model.activityScopeId " +
-				" model.activityScopeId in (:entityValuesList) ");
-		
-		return null;
-	}
-	
 }
