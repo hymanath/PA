@@ -634,7 +634,7 @@ public class RtcUnionService implements IRtcUnionService{
 						 addressVO=getVoterWorkAddressDetailsByCadreId(tdpCadreId);
 					 }
 				 }else{
-					 addressVO=getVoterAddressDetailsByVoterId(candidateId);
+					 //addressVO=getVoterAddressDetailsByVoterId(candidateId);
 				 }
 				 
 			 }else  if(searchType.equalsIgnoreCase("cadre")){

@@ -66,8 +66,15 @@ public class VoterInfoVO implements java.io.Serializable
 	private List<IdNameVO> depotsList;
 	private String street;
 	private String landmark;
+	private String schoolName;
 	
 	
+	public String getSchoolName() {
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
 	public String getEmailId() {
 		return emailId;
 	}

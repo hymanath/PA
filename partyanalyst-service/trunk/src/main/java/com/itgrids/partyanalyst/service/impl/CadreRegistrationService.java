@@ -2447,6 +2447,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
 								vo.setNameType(tdpCadre.getNameType());
 								vo.setEmailId(tdpCadre.getEmailId() != null ? tdpCadre.getEmailId():"");
+								vo.setSchoolName(tdpCadre.getSchoolName() != null ? tdpCadre.getSchoolName():"");
 								
 								List<Object[]> familyVoterInfo = voterDAO.getVoterInfoByVoterId(tdpCadre.getFamilyVoterId());
 								
@@ -2602,6 +2603,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							vo.setRelativeName(tdpCadre.getRelativename() != null ? tdpCadre.getRelativename():"");
 							vo.setRelationType(tdpCadre.getRelativeType() != null ? tdpCadre.getRelativeType():"");
 							vo.setEmailId(tdpCadre.getEmailId() != null ? tdpCadre.getEmailId():"");
+							vo.setSchoolName(tdpCadre.getSchoolName() != null ? tdpCadre.getSchoolName():"");
 							
 							if(tdpCadre.getGender() != null)
 							{
