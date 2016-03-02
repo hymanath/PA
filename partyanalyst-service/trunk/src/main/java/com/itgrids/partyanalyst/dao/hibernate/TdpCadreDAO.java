@@ -2456,7 +2456,7 @@ public void flushAndclearSession(){
 				queryStr.append(" and model.tdpMemberTypeId=:memberTypeId and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
 			}
 			else{
-				queryStr.append(" and model.tdpMemberTypeId=:memberTypeId and model.enrollmentYear = 2014 ");
+				queryStr.append(" and model.enrollmentYear = 2014 ");
 			}
 			queryStr.append(" group by date(model.surveyTime) order by date(model.surveyTime) desc ");
 			
@@ -2467,7 +2467,7 @@ public void flushAndclearSession(){
 				query.setDate("fromDate",fromDate);	
 				query.setDate("toDate",toDate);	
 			}
-			if(memberTypeId.longValue() > 1l)
+			if(memberTypeId !=null && memberTypeId.longValue() > 1l)
 			{
 				query.setParameter("memberTypeId",memberTypeId);	
 			}
