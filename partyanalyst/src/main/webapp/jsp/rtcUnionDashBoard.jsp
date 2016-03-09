@@ -206,6 +206,20 @@ body{color:#666 !important}
 									<div id="tableDivsId">
 										<div class="panel panel-default">
 											<div class="panel-heading bg_ff">
+											<div class="col-xs-5">
+											<label class="radio-inline">
+												<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="district" value="today" id="districtTodayId" class="districtRadioCls">Today
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="district" value="last 7 days" id="district7daysId" class="districtRadioCls">Last 7 Days
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
+											</label>
+											</div>
 												<div class="pull-right col-md-3">
 													<div class="input-group">
 														<input class="form-control getDate" type="text">
@@ -215,6 +229,17 @@ body{color:#666 !important}
 													</div>
 												</div>
 												<div class="row m_top10">
+												<div class="col-xs-12 m_top10">
+												<div class="col-md-3">
+														<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" checked>District</label>
+														<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
+													</div>
+													<div class="col-md-3">
+															<select id="userMembersId" multiple>
+														    </select>
+															<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
+														</div>
+												</div>
 													<!--<div class="col-md-6">
 														<div class="block">
 															<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
@@ -225,16 +250,6 @@ body{color:#666 !important}
 															<h4 class="m_0"><b>CONSTITUENCY WISE AFFLIATED CADRE</b></h4>
 														</div>
 													</div>-->
-													<div class="col-md-3">
-														<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" checked>District</label>
-														<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
-													</div>
-													
-														<div class="col-md-3">
-															<select id="userMembersId" multiple>
-														    </select>
-															<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
-														</div>
 													
 													<div class="col-md-12 m_top10">
 													   <h4 class="panel-title" id="districtWiseTitleId"><b>CONSTITUENCY WISE REGISTRATION DETAILS</b></h4>
@@ -245,18 +260,7 @@ body{color:#666 !important}
 												<div class="row">
 													<div class="col-md-12 districtCls" style="display:none;">
 														<div class="pad_10">
-															<label class="radio-inline">
-																<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
-															</label>
-															<label class="radio-inline">
-																<input type="radio" name="district" value="today" id="districtTodayId" class="districtRadioCls">Today
-															</label>
-															<label class="radio-inline">
-																<input type="radio" name="district" value="last 7 days" id="district7daysId" class="districtRadioCls">Last 7 Days
-															</label>
-															<label class="radio-inline">
-																<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
-															</label>
+															
 															<div id="districtWiseRegistredCountId">
 															
 															</div>
