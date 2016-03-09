@@ -11967,7 +11967,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			List<Object[]> cadreRegisteredCountdtls =  null;
 			
 			if(searchTypeStr.equalsIgnoreCase("Constituency")){
-				List<Object[]> constituencyList=constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(0L,1L,null);
+				List<Object[]> constituencyList=constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(1L,1L,null);
 				if(constituencyList!=null && constituencyList.size()>0){
 					for(Object[] distCadre:constituencyList) {
 						TdpCadreVO tdpvo=new TdpCadreVO();
@@ -11982,7 +11982,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 					}
 				}	
 			}else if(searchTypeStr.equalsIgnoreCase("District")){
-				List<Object[]> districtList=districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,0L);
+				List<Object[]> districtList=districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,1L);
 				if(districtList!=null && districtList.size()>0){
 					for(Object[] distCadre:districtList){
 						TdpCadreVO tdpvo=new TdpCadreVO();
