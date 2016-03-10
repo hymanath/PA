@@ -145,6 +145,7 @@ import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
+import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -12262,6 +12263,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 				}
 				List<Long> tdpCadreIdsList = tdpCadreDAO.getCadreDetailsByTdpMemberType(stDate,edDate,inputVO);
 				List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetailsByYear(tdpCadreIdsList,2016L);
+				List<Long> voterIds =new ArrayList<Long>();
+				
 		        if(cadreDetails != null && cadreDetails.size() > 0){
 		          for (Object[] obj : cadreDetails) {
 		            PartyMeetingWSVO vo = new PartyMeetingWSVO();
@@ -12277,8 +12280,38 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		            vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
 		            vo.setVoterCardNo(obj[9] != null ? obj[9].toString():"");
 		            vo.setRegThrough(obj[10] != null ? obj[10].toString():"");
+		            vo.setMemberType(obj[12] != null ? obj[12].toString():"");
+		            vo.setVoterId(obj[13] != null ? (Long)obj[13]:0l);
 		            resultList.add(vo);
+		            
+		            
+		            //get voterIds.
+		            if(obj[13]!=null){
+		            	voterIds.add((Long)obj[13]);
+		            }
+		            
 		          }
+		          
+		          //check cadre in 2014.
+		          if(voterIds!=null && voterIds.size()>0){
+		        	  List<Object[]> list=tdpCadreDAO.getmemberShipIdsByVoterIds(IConstants.CADRE_ENROLLMENT_NUMBER,voterIds);
+		        	  if(list!=null && list.size()>0){
+		        		 for(Object[] obj:list){
+		        			 Long voterId=obj[0]!=null?(Long)obj[0]:0l;
+		        			 if(voterId>0){
+		        				 PartyMeetingWSVO voterVO = getMatchedVoter(voterId,resultList);
+		        				 if(voterVO!=null){
+		        					 voterVO.setCadreMembershipno(obj[1]!=null?obj[1].toString():"");
+		        					 voterVO.setCadreDataSourceType(obj[3]!=null?obj[3].toString():"");
+		        				 }
+		        			 }
+		        		 }
+		        	  }
+		        	  
+		          }
+		          
+		          
+		          
 		        }
 		  }
 		  catch (Exception e) {
@@ -12287,5 +12320,23 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		return resultList;
 		  
 	  }
-
+	
+	public PartyMeetingWSVO getMatchedVoter(Long id,List<PartyMeetingWSVO> list){
+		
+			try{
+				if(list == null)
+					return null;
+				for(PartyMeetingWSVO vo : list)
+				{
+					if(id.longValue() == vo.getVoterId().longValue())
+						return vo;
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+			return null;
+		}
+	
 }
