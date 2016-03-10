@@ -1435,6 +1435,7 @@ str+='<table class="table table-bordered" id="popupTable">';
 str+='<thead class="bg_cc">';
 str+='<th></th>';
 str+='<th>NAME</th>';
+str+='<th>MEMBER TYPE</th>';
 str+='<th>MOBILE NUMBER</th>';
 str+='<th>VOTER NUMBER</th>';
 str+='<th>REGISTERED THROUGH</th>';
@@ -1447,8 +1448,13 @@ if(result[i].ImgStr != null)
 str+='<td><img src="'+result[i].ImgStr+'" class="thumbnail" style="width:75px;height:75px;"></td>';
 else
 str+='<td><img src="dist/2016DashBoard/img/profile.png" class="thumbnail" style="width:75px;height:75px;"></td>';
-	
-str+='<td>'+result[i].name+'</td>';
+if(result[i].cadreMembershipno !=null && result[i].cadreMembershipno.length>0){
+	str+='<td>'+result[i].name+' ('+result[i].cadreMembershipno+')</td>';
+}else{
+	str+='<td>'+result[i].name+' </td>';
+}	
+
+str+='<td>'+result[i].memberType+'</td>';
 str+='<td>'+result[i].mobileNo+'</td>';
 str+='<td>'+result[i].voterCardNo+'</td>';
 str+='<td>'+result[i].regThrough+'</td>';
