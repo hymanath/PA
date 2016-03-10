@@ -32,6 +32,17 @@
 	     <!--   server side pagination CSS-->
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <style>
+.referralGrievanceDetails
+{
+  padding:0px;
+}
+.referralGrievanceDetails li
+{
+  list-style:none;
+  padding:8px 5px;
+  background:#ddd;
+  margin-top:8px;
+}
 #menu i{color : #fff !important}
  #paginationDivId .prev,.next{width:60px !important;}
  
@@ -504,6 +515,22 @@ var globalCadreId = '${cadreId}';
 						</div>
                     </div> 
                 </div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					  <h4 class="panel-title"><img src="images/icon.png">REFERRAL GRIEVANCE DETAILS<span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
+					</div>
+					<div class="panel-body" id="referralGrievanceDetailsId">
+					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
+					  <!--<ul class="referralGrievanceDetails" id="referralGrievanceDetailsId">
+					  
+						<li>NOT VERIFIED <span class="pull-right">1</span></li>
+						<li>IN PROGRESS <span class="pull-right">1</span></li>
+						<li>COMPLETED <span class="pull-right">1</span></li>
+						<li>NOT ELIGIBLE <span class="pull-right">1</span></li>
+						<li>NOT POSSIBLE <span class="pull-right">1</span></li>
+					  </ul>-->
+					</div>
+				  </div>
             	<div class="panel panel-default">
                 	<div class="panel-heading">
 					  
@@ -3736,7 +3763,6 @@ function getCandidateAndLocationSummaryNews(){
 		
 		var url = window.location.href;
 		var wurl = url.substr(0,(url.indexOf(".com")+4));
-
 	 $.ajax({
 		url: "http://mytdp.com/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/"+startDate+"/"+endDate+"/"+locationType+"/"+locationId+"/"+candidateId+""
 	}).then(function(result) {
@@ -6795,6 +6821,35 @@ $(document).on('click', '.ivrAnsweredCls', function(){
 	$("#ivrModalHeadingId").html(eventName);
 	getIvrSurveyDetails(searchType,eventTypeId);
 });
+getRefferelDetailsStatusWise();
+function getRefferelDetailsStatusWise(){
+	$("#referralGrievanceDetailsId").html('');
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	var cadreId = globalCadreId;
+	$("#referralGrievanceLoadingImg").show();
+	$.ajax({
+		type:'GET',
+		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+			 contentType: "application/json; charset=utf-8",
+			 dataType: "json",
+			 username: "grievance",
+             password: "grievance@!tG"
+	}).done(function(result){
+		$("#referralGrievanceLoadingImg").hide();
+		var value='';
+		if(result !=null && result.length>0){
+		value+='<ul class="referralGrievanceDetails" >';		
+			for(var i in result){
+				value+='<li>'+result[i].name+'<span class="pull-right">'+result[i].count+'</span></li>';
+			}
+		value+='</ul>';			
+		}
+		$("#referralGrievanceDetailsId").html(value);
+		$("#refferelTotalCountId").html(result[0].totalCount);
+	});
+}
 
 </script>
 </body>
