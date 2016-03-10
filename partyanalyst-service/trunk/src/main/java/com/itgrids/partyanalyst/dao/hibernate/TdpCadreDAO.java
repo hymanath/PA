@@ -5370,10 +5370,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 										" model.image," +
 										" model.memberShipNo," +
 										" model.userAddress.constituency.constituencyId," +
-										" model.userAddress.constituency.name,model.voter.voterIDCardNo,model.dataSourceType" +
-										" from TdpCadre model" +
+										" model.userAddress.constituency.name,model.voter.voterIDCardNo,model.dataSourceType," +
+										" model.tdpMemberType.tdpMemberTypeId,model.tdpMemberType.memberType,model.voter.voterId " +
+										" from TdpCadre model   " +
 										" where model.tdpCadreId in (:tdpCadreIds)" +
-										" and model.isDeleted ='N' and model.enrollmentYear = :enrollmentYear order by model.tdpCadreId asc ");
+										" and model.isDeleted ='N' and model.enrollmentYear = :enrollmentYear and model.tdpMemberType.isDeleted='false' order by model.tdpCadreId asc ");
 					query.setParameterList("tdpCadreIds", tdpCadreIds);
 					query.setParameter("enrollmentYear", enrollmentYear);
 					return query.list();
@@ -6309,4 +6310,24 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return query.list();
 		}
+	
+	  public List<Object[]>  getmemberShipIdsByVoterIds(Long cadreEnrollmentYear,List<Long> voterIds){
+		  
+		  /*select   model.voter_id,model.membership_id,model.tdp_member_type_id
+		    from     tdp_cadre model
+		     where   model.voter_id in (6296782,62932815) 
+		             and model.enrollment_year=2014 and model.is_deleted='N' and model.tdp_member_type_id is null or model.tdp_member_type_id =1;*/
+		  
+		  Query query=getSession().createQuery("" +
+		  " select  model.voterId,model.memberShipNo,model.tdpMemberTypeId,model.dataSourceType " +
+		  " from    TdpCadre model " +
+		  " where   model.voterId in (:voterIds)  and model.enrollmentYear =:cadreEnrollmentYear" +
+		  "         and   model.isDeleted='N' and model.tdpMemberTypeId is null or  model.tdpMemberTypeId =1 ");
+		  query.setParameterList("voterIds", voterIds);
+		  query.setParameter("cadreEnrollmentYear", cadreEnrollmentYear);
+		  
+		  return  query.list();
+		  
+	  }
+	
 }

@@ -63,7 +63,11 @@ public class PartyMeetingWSVO {
 	private List<String> 	availableDates=new ArrayList<String>(0);
 	private String 			surveyDate;
 	private String 			userName;
+	private Long            voterId;
 	
+	
+	private String         cadreMembershipno;
+	private String         cadreDataSourceType;
 	/* */
 	
 	public String getRegThrough() {
@@ -286,7 +290,7 @@ public class PartyMeetingWSVO {
 	public Long getCount() {
 		return count;
 	}
-	public void setCount(Long count) {
+	public void setCount(Long count) {     
 		this.count = count;
 	}
 	public List<PartyMeetingWSVO> getDesignationWiseCountsList() {
@@ -314,4 +318,23 @@ public class PartyMeetingWSVO {
 	public void setOwnConstituency(String ownConstituency) {
 		this.ownConstituency = ownConstituency;
 	}
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
+	public String getCadreMembershipno() {
+		return cadreMembershipno;
+	}
+	public void setCadreMembershipno(String cadreMembershipno) {
+		this.cadreMembershipno = cadreMembershipno;
+	}
+	public String getCadreDataSourceType() {
+		return cadreDataSourceType;
+	}
+	public void setCadreDataSourceType(String cadreDataSourceType) {
+		this.cadreDataSourceType = cadreDataSourceType;
+	}
+	
 }
