@@ -19,7 +19,7 @@ public class IvrRespondentCadreDAO extends GenericDaoHibernate<IvrRespondentCadr
 		Query query = getSession().createQuery(" select distinct model.ivrRespondentId" +
 							" from IvrRespondentCadre model" +
 							" where model.tdpCadre.tdpCadreId = :tdpCadreId" +
-							" and model.isVerified = 'Y' and model.isDeleted = 'false'");
+							" and model.isDeleted = 'false'");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		
 		return (Long) query.uniqueResult();
