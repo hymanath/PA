@@ -268,19 +268,7 @@ body{color:#666 !important}
 													</div>
 													<div class="col-md-12 constituencyCls">
 														<div class="block pad_10">
-															<label class="radio-inline">
-																<input type="radio" name="constituency" value="total" checked="true"
-																id="constituencyTotalId" class="constituecnyRadioCls" >Total
-															</label>
-															<label class="radio-inline">
-																<input type="radio" name="constituency" value="today" class="constituecnyRadioCls">Today
-															</label>
-															<label class="radio-inline">
-																<input type="radio" name="constituency" value="last 7 days" class="constituecnyRadioCls">Last 7 Days
-															</label>
-															<label class="radio-inline">
-																<input type="radio" name="constituency" value="last 30 days" class="constituecnyRadioCls">Last 30 Days
-															</label>
+															
 															<div id="constituencyWiseRegistredCountId">
 															
 															</div>
