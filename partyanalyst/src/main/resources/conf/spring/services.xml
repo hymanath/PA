@@ -3003,8 +3003,14 @@
 	</bean>
 	
 	<bean name="appointmentService" class="com.itgrids.partyanalyst.service.impl.AppointmentService">
-		<property name="appointmentManageUserDAO" ref="appointmentManageUserDAO" />
-		<property name="appointmentDAO" ref="appointmentDAO" />
+		<property name="appointmentDAO" ref="appointmentDAO"/>
+		<property name="districtDAO" ref="districtDAO"/>
+		<property name="constituencyDAO" ref="constituencyDAO"/>
+		<property name="tehsilDAO" ref="tehsilDAO"/>
+		<property name="userAddressDAO" ref="userAddressDAO"/>
+		<property name="voterDAO" ref="voterDAO"/>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
+		<property name="appointmentCandidateDAO" ref="appointmentCandidateDAO"/>
 	</bean>
 </beans>		
 	
