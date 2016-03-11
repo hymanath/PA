@@ -11390,10 +11390,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								   if(cadreRegistrationVO.getLandMark() != null && cadreRegistrationVO.getLandMark().trim() != ""){
 									   userAddress.setAddressLane1(cadreRegistrationVO.getLandMark());
 								   }
-							
+								   if(cadreRegistrationVO.getPrsntAddrsPincode() != null && cadreRegistrationVO.getPrsntAddrsPincode().trim() != ""){
+									   userAddress.setPinCode(cadreRegistrationVO.getPrsntAddrsPincode());
+								   }
 						   userAddress= userAddressDAO.save(userAddress);
 						   tdpCadre.setUserAddress(userAddress);
-						   
 						   
 						   UserAddress workLocation = new UserAddress();
 						   boolean isWorkLocationAvailable = false;
@@ -11441,7 +11442,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
 							   isWorkLocationAvailable = true;
 						   }
-						   
+						   if(cadreRegistrationVO.getWorkAddrsPincode() != null && cadreRegistrationVO.getWorkAddrsPincode().trim() != ""){
+							   workLocation.setPinCode(cadreRegistrationVO.getWorkAddrsPincode());
+							   isWorkLocationAvailable = true;
+						   }
 						   if(isWorkLocationAvailable)
 							   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
 						 
@@ -11641,11 +11645,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					{
 						tdpCadre.setNomineeName(cadreRegistrationVO.getNomineeName());
 					}
-					if(cadreRegistrationVO.getAadheerNo() != null && cadreRegistrationVO.getAadheerNo().trim().length() > 0 && !cadreRegistrationVO.getAadheerNo().trim().equalsIgnoreCase("null"))
+					/*if(cadreRegistrationVO.getAadheerNo() != null && cadreRegistrationVO.getAadheerNo().trim().length() > 0 && !cadreRegistrationVO.getAadheerNo().trim().equalsIgnoreCase("null"))
 					{
 						tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
 						tdpCadre.setCadreAadherNo(cadreRegistrationVO.getAadheerNo());
-					}
+					}*/
 					if(cadreRegistrationVO.getVoterRelationId() != null && cadreRegistrationVO.getVoterRelationId().longValue() > 0)
 					{
 						tdpCadre.setVoterRelationId(cadreRegistrationVO.getVoterRelationId());
