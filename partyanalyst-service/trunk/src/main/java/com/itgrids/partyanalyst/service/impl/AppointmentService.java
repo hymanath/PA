@@ -111,6 +111,30 @@ public class AppointmentService implements IAppointmentService{
 	public void setAppointmentStatusDAO(IAppointmentStatusDAO appointmentStatusDAO) {
 		this.appointmentStatusDAO = appointmentStatusDAO;
 	}
+	public IAppointmentCandidateDesignationDAO getCandidateDesignationDAO() {
+		return candidateDesignationDAO;
+	}
+	public void setCandidateDesignationDAO(
+			IAppointmentCandidateDesignationDAO candidateDesignationDAO) {
+		this.candidateDesignationDAO = candidateDesignationDAO;
+	}
+	public IAppointmentPriorityDAO getAppointmentPriorityDAO() {
+		return appointmentPriorityDAO;
+	}
+	public void setAppointmentPriorityDAO(
+			IAppointmentPriorityDAO appointmentPriorityDAO) {
+		this.appointmentPriorityDAO = appointmentPriorityDAO;
+	}
+	public IAppointmentLableStatusDAO getAppointmentLableStatusDAO() {
+		return appointmentLableStatusDAO;
+	}
+	public void setAppointmentLableStatusDAO(
+			IAppointmentLableStatusDAO appointmentLableStatusDAO) {
+		this.appointmentLableStatusDAO = appointmentLableStatusDAO;
+	}
+	public IAppointmentStatusDAO getAppointmentStatusDAO() {
+		return appointmentStatusDAO;
+	}
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
 		try {
