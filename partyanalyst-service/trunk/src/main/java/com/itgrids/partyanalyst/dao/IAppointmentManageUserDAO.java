@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.dao;
 
-public interface IAppointmentManageUserDAO {
+import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.AppointmentManageUser;
+
+public interface IAppointmentManageUserDAO extends GenericDao<AppointmentManageUser, Long> {
 	
 }
