@@ -48,6 +48,7 @@
 .prev, .next {width:45px !important}
 .customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
 .customclass1{border:none !important;background:none !important}
+#mainheading{font-size:21px !important}
 </style>
 </head>
 
