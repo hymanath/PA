@@ -6,10 +6,11 @@ public class AppointmentBasicInfoVO {
 	private Long designationId;
 	private String mobileNo;
 	private Long locationScopeId;
-	private Long locationValue;
-	private String voterIdCardNo;
-	private String membershipId;
-	
+	private String voterCardNo;
+	private String membershipNum;
+	private Long districtId;
+	private Long constituencyId;
+	private Long tehsilId;
 	
 	public String getName() {
 		return name;
@@ -35,23 +36,35 @@ public class AppointmentBasicInfoVO {
 	public void setLocationScopeId(Long locationScopeId) {
 		this.locationScopeId = locationScopeId;
 	}
-	public Long getLocationValue() {
-		return locationValue;
+	public String getVoterCardNo() {
+		return voterCardNo;
 	}
-	public void setLocationValue(Long locationValue) {
-		this.locationValue = locationValue;
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
 	}
-	public String getVoterIdCardNo() {
-		return voterIdCardNo;
+	public String getMembershipNum() {
+		return membershipNum;
 	}
-	public void setVoterIdCardNo(String voterIdCardNo) {
-		this.voterIdCardNo = voterIdCardNo;
+	public void setMembershipNum(String membershipNum) {
+		this.membershipNum = membershipNum;
 	}
-	public String getMembershipId() {
-		return membershipId;
+	public Long getDistrictId() {
+		return districtId;
 	}
-	public void setMembershipId(String membershipId) {
-		this.membershipId = membershipId;
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
 	}
 	
 	

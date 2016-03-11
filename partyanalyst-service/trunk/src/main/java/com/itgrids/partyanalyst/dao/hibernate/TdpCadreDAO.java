@@ -6329,5 +6329,14 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		  return  query.list();
 		  
 	  }
+	  
+	  public List<Object[]> getTdpCadreIdForMemberShipNums(List<String> membershipNums){
+		  Query query = getSession().createQuery(" select Model.tdpCadreId,model.memberShipNo " +
+		  		" from TdpCadre model " +
+		  		" model.memberShipNo in (:membershipNums) and model.isDeleted = 'N' ");
+		  query.setParameter("membershipNums", membershipNums);
+		  return query.list();
+		  
+	  }
 	
 }

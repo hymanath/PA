@@ -416,4 +416,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getUserWorkAddressId(Long tdpCadreId);
 	  public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type,Long memberTypeId);
 	  public List<Object[]>  getmemberShipIdsByVoterIds(Long cadreEnrollmentYear,List<Long> voterIds);
+	  public List<Object[]> getTdpCadreIdForMemberShipNums(List<String> membershipNums);
 }
