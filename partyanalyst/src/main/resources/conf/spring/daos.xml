@@ -2615,5 +2615,41 @@
 	<bean id="appointmentManageUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentManageUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="appointmentCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentPreferableDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentPreferableDateDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentPriorityDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentPriorityDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentPreferableTimeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentPreferableTimeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentCandidateDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateDesignationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="appointmentLableDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLableDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
+	<bean id="appointmentLableStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLableStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
