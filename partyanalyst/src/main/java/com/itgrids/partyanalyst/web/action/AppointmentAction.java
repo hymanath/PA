@@ -77,7 +77,11 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public void setRegVO(RegistrationVO regVO) {
 		this.regVO = regVO;
 	}
-
+	
+	public String execute(){
+		return Action.SUCCESS;
+	}
+	
 	public String saveAppointment(){
 		try {
 			final HttpSession session = request.getSession();
