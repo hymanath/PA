@@ -650,5 +650,6 @@
 	<pattern>/pollManagmentAreaWiseInfoAction*</pattern>
 	<!--<pattern>/rtcUnionDashBoardAction*</pattern>-->
 	<pattern>/affiliatedCadreDashBoardAction*</pattern>
+	<pattern>/appointmentsAction*</pattern>
 	 </decorator> 
 </decorators>
