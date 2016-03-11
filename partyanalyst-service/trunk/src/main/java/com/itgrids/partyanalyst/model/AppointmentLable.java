@@ -2,15 +2,22 @@ package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="appointment_lable")
@@ -25,6 +32,9 @@ public class AppointmentLable extends BaseModel {
 	private Long insertedBy;
 	private Long  updatedBy;
 	private String isDeleted;
+	
+	private User insertedUser;
+	private User updateUser;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -83,6 +93,26 @@ public class AppointmentLable extends BaseModel {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="inserted_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="updated_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdateUser() {
+		return updateUser;
+	}
+	public void setUpdateUser(User updateUser) {
+		this.updateUser = updateUser;
 	}
 
 }
