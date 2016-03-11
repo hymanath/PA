@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AppointmentVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAppointmentService;
@@ -25,6 +28,10 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private ResultStatus resultStatus;
 	private AppointmentVO appointmentVO = new AppointmentVO();
 	private RegistrationVO regVO = new RegistrationVO();
+	private List<IdNameVO> appointmentStatusList; 
+	private List<IdNameVO> appointmentCandDesigList;
+	private List<IdNameVO> appointmentPrirityList;
+	private List<IdNameVO> appointmentLblStatusList;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -78,10 +85,41 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		this.regVO = regVO;
 	}
 	
+	public List<IdNameVO> getAppointmentStatusList() {
+		return appointmentStatusList;
+	}
+	
 	public String execute(){
 		return Action.SUCCESS;
 	}
 	
+	public void setAppointmentStatusList(List<IdNameVO> appointmentStatusList) {
+		this.appointmentStatusList = appointmentStatusList;
+	}
+	public List<IdNameVO> getAppointmentCandDesigList() {
+		return appointmentCandDesigList;
+	}
+
+	public void setAppointmentCandDesigList(List<IdNameVO> appointmentCandDesigList) {
+		this.appointmentCandDesigList = appointmentCandDesigList;
+	}
+
+	public List<IdNameVO> getAppointmentPrirityList() {
+		return appointmentPrirityList;
+	}
+
+	public void setAppointmentPrirityList(List<IdNameVO> appointmentPrirityList) {
+		this.appointmentPrirityList = appointmentPrirityList;
+	}
+
+	public List<IdNameVO> getAppointmentLblStatusList() {
+		return appointmentLblStatusList;
+	}
+
+	public void setAppointmentLblStatusList(List<IdNameVO> appointmentLblStatusList) {
+		this.appointmentLblStatusList = appointmentLblStatusList;
+	}
+
 	public String saveAppointment(){
 		try {
 			final HttpSession session = request.getSession();
@@ -99,7 +137,44 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;
 	}
-	
-	
-	
+	public String getAppointmentStatus(){
+		try{
+			LOG.info("Entered into getAppointmentStatus() method of AppointmentAction");
+			appointmentStatusList = appointmentService.getAppointmentStatusList();
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentStatus() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAppCandidateDesigList(){
+		try{
+			LOG.info("Entered into getAppCandidateDesigList() method of AppointmentAction");
+			appointmentCandDesigList = appointmentService.getAppCandidateDesigList();
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAppointmentPriorityList(){
+		try{
+			LOG.info("Entered into getAppointmentPriorityList() method of AppointmentAction");
+			appointmentPrirityList = appointmentService.getAppointmentPriorityList();
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentPriorityList() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAppmntLblStatusList(){
+		try{
+			LOG.info("Entered into getAppmntLblStatusList() method of AppointmentAction");
+			appointmentLblStatusList = appointmentService.getAppmntLblStatusList();
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
