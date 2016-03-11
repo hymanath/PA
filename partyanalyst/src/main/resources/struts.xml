@@ -11561,6 +11561,10 @@
 	    </result>
 	</action>
 	
+	<action name="appointmentsAction" class="appointmentAction">
+		<result name="success">/jsp/appointments.jsp</result>
+	</action>
+				
 	<action name="appointmentSavingAction" class="appointmentAction" method="saveAppointment">
 		<result type="json" name="success">
 	    	<param name="root">resultStatus</param>
