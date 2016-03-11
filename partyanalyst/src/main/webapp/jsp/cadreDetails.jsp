@@ -501,8 +501,9 @@ var globalCadreId = '${cadreId}';
 								</a>
 							</div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
-                    <div class="panel-body">
-					  <div id="complaintCountDiv">
+                    <div class="panel-body" id="comaplaintCountInmgMainDivid">
+						<img id="complaintCountImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
+						<div id="complaintCountDiv">					  
 						</div>
                     	<!--<h5 class="m_0">TOTAL COMPLAINTS <span id="totalComplaintsId" class="text-bold"></span></h5>-->
                         <div class="display-style" id="complaintsDiv">
@@ -521,14 +522,7 @@ var globalCadreId = '${cadreId}';
 					</div>
 					<div class="panel-body" id="referralGrievanceDetailsId">
 					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
-					  <!--<ul class="referralGrievanceDetails" id="referralGrievanceDetailsId">
 					  
-						<li>NOT VERIFIED <span class="pull-right">1</span></li>
-						<li>IN PROGRESS <span class="pull-right">1</span></li>
-						<li>COMPLETED <span class="pull-right">1</span></li>
-						<li>NOT ELIGIBLE <span class="pull-right">1</span></li>
-						<li>NOT POSSIBLE <span class="pull-right">1</span></li>
-					  </ul>-->
 					</div>
 				  </div>
             	<div class="panel panel-default">
@@ -539,9 +533,10 @@ var globalCadreId = '${cadreId}';
 						</h4>
 						 
                     </div>
-					 <div class="panel-body pad_0">
-					 <img id="familyMemberImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
-						<div  id="familyMemberDiv"></div>
+					 <div class="panel-body pad_0">					 
+						<div  id="familyMemberDiv">
+							<img id="familyMemberImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
+						</div>
                    		<!--<h5>TOTAL FINANCE REQUESTS <span id="headingId" class="text-bold"></span></h5>
                     	<div id="donutchart2" class="display-style" style="height: 120px;float:left;width:90px;"></div>
                     <ul class="display-style pull-right piechart-list pad_0" id="financeSupportUL">
@@ -561,33 +556,33 @@ var globalCadreId = '${cadreId}';
 							CADRE BENEFITS
 						</h4>
 					</div>
-						<div class="panel-body pad_0">
+					<div class="panel-body pad_0">
 						<ul class="benefits-block">
-						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none;"></center>
-						<li id="candidaterequestedDiv" style="display:none;">
-									 FINANCIAL REQUESTED <span class="pull-right" id="candidateRequestAmount">0</span>
-								</li>
-						<li id="candidateapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="candidateApprovedAmount">0</span></li>
-						<li id="candidatedeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
-							<ul  class="hoverclassli">
-								<li id="candidateDeathInsurance">0
-									
-								</li>
-							</ul>
-							
-							</span></li>
-						<li id="candidatehospitalDiv">HOSPITALIZATION INSURANCE REQUESTS <span class="pull-right" >
-							<ul  class="hoverclassli">
-								<li id="candidateHospitalizationInsurance">0
-									
-								</li>
-							</ul>
-							
-							</span>
+							<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none;"></center>
+							<li id="candidaterequestedDiv" style="display:none;">
+										 FINANCIAL REQUESTED <span class="pull-right" id="candidateRequestAmount">0</span>
 							</li>
-						<li id="candidateEducationBenefitDiv">
-							<span id="cadreIdSpanForEducationBenefit"></span>	
-						</li>
+							<li id="candidateapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="candidateApprovedAmount">0</span></li>
+							<li id="candidatedeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
+								<ul  class="hoverclassli">
+									<li id="candidateDeathInsurance">0
+										
+									</li>
+								</ul>
+								
+								</span></li>
+							<li id="candidatehospitalDiv">HOSPITALIZATION INSURANCE REQUESTS <span class="pull-right" >
+								<ul  class="hoverclassli">
+									<li id="candidateHospitalizationInsurance">0
+										
+									</li>
+								</ul>
+								
+								</span>
+							</li>
+							<li id="candidateEducationBenefitDiv">
+								<span id="cadreIdSpanForEducationBenefit"></span>	
+							</li>
 						</ul>
 					</div>
 				  </div>
@@ -689,7 +684,7 @@ var globalCadreId = '${cadreId}';
                 </div>
 				
 				<!--START  IVR SUMMARY---->
-				 <div class="panel panel-default">
+				 <!--<div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><img style="width: 27px; height: 27px;" src="./images/ivr summary.png"></img>&nbsp;&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
                     </div>
@@ -698,8 +693,18 @@ var globalCadreId = '${cadreId}';
 					<div id="ivrSummaryDetailsId"></div>
                     	
                         </div>
-                    </div>
-				<!-- IVR SUMMARY  END ---->
+                    </div>-->
+					
+					<div class="panel panel-default">
+					<div class="panel-heading">
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
+                    </div>		
+					<div class="panel-body">
+						<div id="ivrTypeDetailsDivId"></div>
+					 </div>
+				 </div>
+					
+				<!-- IVR SUMMARY  END ----> 
                 <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES</h4>
@@ -839,45 +844,14 @@ var globalCadreId = '${cadreId}';
 							
                         </div>
                     </div>
-				<div class="panel panel-default">
+				<!--<div class="panel panel-default">
 					<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR DETAILS</h4>
                     </div>		
 					<div class="panel-body">
 						<div id="ivrTypeDetailsDivId"></div>
-						<!--<table class="table m_0 table-bordered">
-                                	<thead>
-                                    	<th class="text-center">IVR TYPE </th>
-                                    	<th class="text-center"> TOTAL </th>
-                                    	<th class="text-center"> ANSWERED </th>
-                                    	<th class="text-center"> UNANSWERED </th>
-                                    </thead>
-									
-									<tbody class="text-center">
-									
-										<tr>
-										</tr>
-									</tbody>
-									
-                                    <tr class="text-center">
-                                    	<td> STATE-PUBLIC REPRESENTATIVES MEETING </td>
-                                        <td> <ul class="list-inline"><li class="show-dropdown">2
-											<ul class="count-hover right_arrow">
-												<li>
-													<table class="table table-bordered table-hover">
-														<tr>
-															<td>sdf</td>
-															<td>dfg</td>
-														</tr>
-													</table>
-												</li>
-											</ul> </td>
-                                        <td> 1 </td>
-                                        <td> 0 </td>
-                                    </tr> 
-                                </table>-->
 					 </div>
-				 </div>
+				 </div>-->
                 
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading">
@@ -1130,9 +1104,11 @@ var globalCadreId = '${cadreId}';
 						<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
                     	<div id="surveyDetailsMainDivId" class=""></div>
 						
-						<h4 style="font-weight:bold;margin-top:20px;">IVR SURVEY'S</h4>
-						<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
-						<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+						<div id="ivrSurveysMainDivId">
+							<h4 style="font-weight:bold;margin-top:20px;">IVR SURVEY'S</h4>
+							<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
+							<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+						</div>
 						
                     </div>
                 </div>
@@ -2632,7 +2608,7 @@ setcolorsForStatus();
   /*Meeting DatePicker*/
 setcolorsForStatus();
   var MeetingSet = {
-	startDate: moment().subtract(29, 'days'),
+	startDate: moment().subtract(1, 'year'),
 	endDate: moment(),
 	/* minDate: '01/01/2012',
 	maxDate: '12/31/2015', */
@@ -2647,7 +2623,8 @@ setcolorsForStatus();
 	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   'Last Year': [moment().subtract(1, 'year'),moment()]
 	},
 	opens: 'left',
 	buttonClasses: ['btn btn-default'],
@@ -3008,6 +2985,7 @@ function getTotalComplaintsForCandidate()
     $("#complaintCountDiv").html('');
 	$("#financialDiv").html('');
 	$("#complaintsDiv").html('');
+	$("#comaplaintCountInmgMainDivid").html('');
 	 $("#candidateRequestAmount").html('');
 	$("#candidateApprovedAmount").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
 	$("#candidateDeathInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
@@ -3015,6 +2993,9 @@ function getTotalComplaintsForCandidate()
 var votercardNo = $('#cadreVoterCardNo').val();
 var membershipId = $('#cadreMemberShipId').val();
 var arr =[];
+
+$("#complaintCountImg").show();
+
 var obj = {
 	"voterId":votercardNo,
 	"membershipId" :membershipId,
@@ -3034,17 +3015,20 @@ arr.push(obj);
 			 username: "grievance",
              password: "grievance@!tG"	
 			 }).done(function(myresult){
-			 $("#candidateapprovedDiv").hide();
-			$("#candidatedeathDiv").hide();
-			$("#candidatehospitalDiv").hide();
-			$("#candidaterequestedDiv").hide();
-				 if(myresult != null){
-				buildTotalComplaints(myresult,0);
-				buildInsuranceTotalComplaints(myresult,0);
-		}
+				$("#candidateapprovedDiv").hide();
+				$("#candidatedeathDiv").hide();
+				$("#candidatehospitalDiv").hide();
+				$("#candidaterequestedDiv").hide();
+				$("#complaintCountImg").hide();
+				if(myresult != null && myresult !=""){
+					buildTotalComplaints(myresult,0);
+					buildInsuranceTotalComplaints(myresult,0);
+				}
 		else{
-			$("#complaintCountDiv").html('No Data Available.');
-			$("#complaintsDiv").html('No Data Available.');
+			
+			$("#comaplaintCountInmgMainDivid").html("No Data Available.");
+			//$("#complaintCountDiv").html('No Data Available.');
+			//$("#complaintsDiv").html('No Data Available.');
 			
 		}
 			});
@@ -5688,6 +5672,7 @@ function buildCandidateAndConstituencySurveyResult(result,surveyId,divId){
 function getIVRDetails()
 {
 	$("#ivrsurveyDataLoadoing").show();
+	$("#ivrSurveysMainDivId").show();	
 	var candidateId = globalCandidateId;//290951
 	$.ajax({
 		url: "http://mytdp.com/Survey/WebService/getCandidateIVRResult/"+candidateId+""
@@ -5696,6 +5681,7 @@ function getIVRDetails()
 			buildPublicScoreTable(result);
 		}else{
 			$("#ivrsurveyDataLoadoing").hide();
+			$("#ivrSurveysMainDivId").hide();			
 			$(".ivrDetailsCls").html("NO DATA AVAILABLE");
 		}
 	});
@@ -6256,7 +6242,6 @@ $('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:5
 	}
 	
 	$('#meetingDatePicker').val(startDate+" to "+endDate);
-	
 	var jsObj={
 			tdpCadreId:globalCadreId,
 			searchTypeStr:searchTypeStr,
@@ -6830,7 +6815,7 @@ function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceLoadingImg").show();
 	$.ajax({
 		type:'GET',
-		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -6840,11 +6825,14 @@ function getRefferelDetailsStatusWise(){
 		$("#referralGrievanceLoadingImg").hide();
 		var value='';
 		if(result !=null && result.length>0){
-		value+='<ul class="referralGrievanceDetails" >';		
-			for(var i in result){
-				value+='<li>'+result[i].name+'<span class="pull-right">'+result[i].count+'</span></li>';
-			}
-		value+='</ul>';			
+			value+='<ul class="referralGrievanceDetails" >';		
+				for(var i in result){
+					value+='<li>'+result[i].name+'<span class="pull-right">'+result[i].count+'</span></li>';
+				}
+			value+='</ul>';	
+			
+		}else{
+			value+='<ul>No Data Available</ul>';
 		}
 		$("#referralGrievanceDetailsId").html(value);
 		$("#refferelTotalCountId").html(result[0].totalCount);
