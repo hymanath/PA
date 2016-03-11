@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,10 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentLableStatusDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
@@ -20,6 +25,7 @@ import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
@@ -33,6 +39,10 @@ public class AppointmentService implements IAppointmentService{
 	private TransactionTemplate transactionTemplate;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private AppointmentDAO appointmentDAO;
+	private IAppointmentStatusDAO appointmentStatusDAO;
+	private IAppointmentCandidateDesignationDAO candidateDesignationDAO;
+	private IAppointmentPriorityDAO appointmentPriorityDAO;
+	private IAppointmentLableStatusDAO appointmentLableStatusDAO;
 	private DistrictDAO districtDAO;
 	private ConstituencyDAO constituencyDAO;
 	private TehsilDAO tehsilDAO;
@@ -40,6 +50,7 @@ public class AppointmentService implements IAppointmentService{
 	private VoterDAO voterDAO;
 	private TdpCadreDAO tdpCadreDAO;
 	private IAppointmentCandidateDAO appointmentCandidateDAO;
+	
 	
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -97,6 +108,9 @@ public class AppointmentService implements IAppointmentService{
 		this.appointmentCandidateDAO = appointmentCandidateDAO;
 	}
 	
+	public void setAppointmentStatusDAO(IAppointmentStatusDAO appointmentStatusDAO) {
+		this.appointmentStatusDAO = appointmentStatusDAO;
+	}
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
 		try {
@@ -191,5 +205,68 @@ public class AppointmentService implements IAppointmentService{
 			LOG.error("Exception raised at saveAppointment", e);
 		}
 		return rs;
+	}
+	public List<IdNameVO> getAppointmentStatusList(){
+		List<IdNameVO> appointmentStatusList = new ArrayList<IdNameVO>(0);
+		try{
+			LOG.info("Entered into getAppointmentStatusList() method of AppointmentService");
+			List<Object[]>  appStatusLst = appointmentStatusDAO.getAppointmentStatusList();
+			appointmentStatusList = setDataToVO(appStatusLst);
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentStatusList() method of AppointmentService", e);
+		}
+		return appointmentStatusList;
+	}
+	//get appointmentCandidateDesignationList
+	public List<IdNameVO> getAppCandidateDesigList(){
+		//appCndDesigList->appointmentCandidateDesignationList
+		List<IdNameVO> appCndDesigList = new ArrayList<IdNameVO>(0);
+		try{
+			LOG.info("Entered into getAppCandidateDesigList() method of AppointmentService");
+			List<Object[]>  appDesigLst = candidateDesignationDAO.getAppCandidateDesigList();
+			appCndDesigList = setDataToVO(appDesigLst);
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentService", e);
+		}
+		return appCndDesigList;
+	}
+	public List<IdNameVO> getAppointmentPriorityList(){
+		//appPriorityList->appointmentPriorityList
+		List<IdNameVO> appPriorityList = new ArrayList<IdNameVO>(0);
+		try{
+			LOG.info("Entered into getAppointmentPriorityList() method of AppointmentService");
+			List<Object[]>  appPrLst = appointmentPriorityDAO.getAppointmentPriorityList();
+			appPriorityList = setDataToVO(appPrLst);
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentPriorityList() method of AppointmentService", e);
+		}
+		return appPriorityList;
+	}
+	//getAppmntLblStatusList->getAppointmentLabelStatusList
+	public List<IdNameVO> getAppmntLblStatusList(){
+		//appLblStatusList->appointmentLabelStatusList
+		List<IdNameVO> appLblStatusList = new ArrayList<IdNameVO>(0);
+		try{
+			LOG.info("Entered into getAppmntLblStatusList() method of AppointmentService");
+			List<Object[]>  appLblStatusLst = appointmentLableStatusDAO.getAppmntLblStatusList();
+			appLblStatusList = setDataToVO(appLblStatusLst);
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentService", e);
+		}
+		return appLblStatusList;
+	}
+	
+	
+	public List<IdNameVO> setDataToVO(List<Object[]> objList){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>();
+		if(objList != null && objList.size() > 0){
+			for (Object[] objects : objList) {
+				IdNameVO vo = new IdNameVO();
+				vo.setId((Long)objects[0]);
+				vo.setName(objects[1].toString());
+				voList.add(vo);
+			}
+		}
+		return voList;
 	}
 }
