@@ -6489,21 +6489,23 @@ function getActivityDetails()
 				str+='<tbody>';
 					if(result.activityVoList != null && result.activityVoList.length > 0){
 						for(var i in result.activityVoList){
-							str+='<tr class="text-center">';
-								str+='<td>'+result.activityVoList[i].name+'</td>';
-								if(result.activityVoList[i].totalCount != null){
-									str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
-								}
-								else{
-									str+='<td>0</td>';
-								}
-								if(result.activityVoList[i].attendedCount != null){
-									str+='<td class="activityLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
-								}
-								else{
-									str+='<td>0</td>';
-								}
-							str+='</tr>';
+							if(result.activityVoList[i].totalCount != null){
+								str+='<tr class="text-center">';
+									str+='<td>'+result.activityVoList[i].name+'</td>';
+									if(result.activityVoList[i].totalCount != null){
+										str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+									}
+									else{
+										str+='<td>0</td>';
+									}
+									if(result.activityVoList[i].attendedCount != null){
+										str+='<td class="activityLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
+									}
+									else{
+										str+='<td>0</td>';
+									}
+								str+='</tr>';
+							}
 						}
 					}
 				str+='</tbody>';
@@ -6721,7 +6723,10 @@ function getIvrSurveyDetails(searchType,eventTypeId){
 			if(eventTypeId !=null && eventTypeId==2){
 				buildSurveyAnswerDetailsForActivity(result);
 			}
-			else{
+			else if(eventTypeId !=null && eventTypeId==3){
+				buildSurveyAnswerDetailsForTrainingCamps(result);
+			}
+			else  if(eventTypeId !=null && eventTypeId==4){
 				var str='';
 			
 				str+='<table class="table m_0 table-bordered">';
@@ -6796,6 +6801,38 @@ function buildSurveyAnswerDetailsForActivity(result){
 			
 				$("#dataLoadingsImgForIVRDetails").hide();
 				$("#ivrDetailsBodyId").html(str);
+}
+
+function buildSurveyAnswerDetailsForTrainingCamps(result){
+	
+	var str='';
+			
+	str+='<table class="table m_0 table-bordered">';
+		str+='<thead>';
+			str+='<th class="text-center"> PROGRAM </th>';
+			str+='<th class="text-center"> BATCH </th>';
+			str+='<th class="text-center"> SURVEY </th>';
+			str+='<th class="text-center"> ROUND </th>';
+			str+='<th class="text-center"> QUESTION </th>';
+			str+='<th class="text-center"> OPTION </th>';
+		str+='</thead>';
+		
+		str+='<tbody class="text-center">';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].eventName+'</td>';
+				str+='<td>'+result[i].surveyName+'</td>';
+				str+='<td>'+result[i].round+'</td>';
+				str+='<td>'+result[i].question+'</td>';
+				str+='<td>'+result[i].option+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+
+	$("#dataLoadingsImgForIVRDetails").hide();
+	$("#ivrDetailsBodyId").html(str);
 }
 
 $(document).on('click', '.ivrAnsweredCls', function(){
