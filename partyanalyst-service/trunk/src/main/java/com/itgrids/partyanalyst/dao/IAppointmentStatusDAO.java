@@ -1,9 +1,12 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.AppointmentStatus;
 
 public interface IAppointmentStatusDAO extends GenericDao<AppointmentStatus, Long> {
+	public List<Object[]> getAppointmentStatusList();
 
 }
