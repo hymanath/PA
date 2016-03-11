@@ -1,12 +1,23 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AppointmentManageUserDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
+import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -20,9 +31,15 @@ public class AppointmentService implements IAppointmentService{
 	
 	private static Logger LOG = Logger.getLogger(AppointmentService.class);
 	private TransactionTemplate transactionTemplate;
-	private AppointmentManageUserDAO appointmentManageUserDAO; 
 	private DateUtilService dateUtilService = new DateUtilService();
 	private AppointmentDAO appointmentDAO;
+	private DistrictDAO districtDAO;
+	private ConstituencyDAO constituencyDAO;
+	private TehsilDAO tehsilDAO;
+	private UserAddressDAO userAddressDAO;
+	private VoterDAO voterDAO;
+	private TdpCadreDAO tdpCadreDAO;
+	private IAppointmentCandidateDAO appointmentCandidateDAO;
 	
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -30,21 +47,55 @@ public class AppointmentService implements IAppointmentService{
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
-	public AppointmentManageUserDAO getAppointmentManageUserDAO() {
-		return appointmentManageUserDAO;
-	}
-	public void setAppointmentManageUserDAO(
-			AppointmentManageUserDAO appointmentManageUserDAO) {
-		this.appointmentManageUserDAO = appointmentManageUserDAO;
-	}
-	
 	public AppointmentDAO getAppointmentDAO() {
 		return appointmentDAO;
 	}
 	public void setAppointmentDAO(AppointmentDAO appointmentDAO) {
 		this.appointmentDAO = appointmentDAO;
 	}
-	
+	public TehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(TehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public ConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(ConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public DistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(DistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public UserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+	public void setUserAddressDAO(UserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+	public VoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+	public void setVoterDAO(VoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+	public TdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+	public void setTdpCadreDAO(TdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+	public IAppointmentCandidateDAO getAppointmentCandidateDAO() {
+		return appointmentCandidateDAO;
+	}
+	public void setAppointmentCandidateDAO(
+			IAppointmentCandidateDAO appointmentCandidateDAO) {
+		this.appointmentCandidateDAO = appointmentCandidateDAO;
+	}
 	
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
@@ -65,8 +116,39 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setIsDeleted("N");
 		        	appointment = appointmentDAO.save(appointment);
 		        	
-		        	
 		        	if(appointmentVO.getBasicInfoList() != null && appointmentVO.getBasicInfoList().size() > 0){
+		        		//get voterIds for voter card Numbers
+		        		List<String> voterCardNumList = new ArrayList<String>(0);
+		        		Map<String,Long> voterCardIdsMap = new HashMap<String, Long>(0);
+		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
+		        			voterCardNumList.add(basicInfo.getVoterCardNo());
+		        		}
+		        		if(voterCardNumList != null && voterCardNumList.size() > 0){
+		        			List<Object[]> voterIdsObjList = voterDAO.getVoterIdsByCardNos(voterCardNumList);
+		        			if(voterIdsObjList != null && voterIdsObjList.size() > 0){
+		        				for (Object[] objects : voterIdsObjList) {
+		        					voterCardIdsMap.put(objects[1].toString(), (Long)objects[0]);
+								}
+		        				
+		        			}
+		        		}
+		        		
+		        		//gettdpcadre Ids for membership nums
+		        		List<String> membershipNoList = new ArrayList<String>(0);
+		        		Map<String,Long> cadreIdsMap = new HashMap<String, Long>(0);
+		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
+		        			membershipNoList.add(basicInfo.getMembershipNum());
+		        		}
+		        		if(membershipNoList != null && membershipNoList.size() > 0){
+		        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreIdForMemberShipNums(membershipNoList);
+		        			if(cadreIdsObjList != null && cadreIdsObjList.size() > 0){
+		        				for (Object[] objects : cadreIdsObjList) {
+		        					cadreIdsMap.put(objects[0].toString(),(Long)objects[1]);
+								}
+		        			}
+		        		}
+		        		
+		        		
 		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
 		        			AppointmentCandidate appCandi = new AppointmentCandidate();
 		        			appCandi.setAppointmentId(appointment.getAppointmentId());
@@ -74,10 +156,31 @@ public class AppointmentService implements IAppointmentService{
 		        			appCandi.setDesignationId(basicInfo.getDesignationId());
 		        			appCandi.setMobileNo(basicInfo.getMobileNo());
 		        			appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
-		        			appCandi.setLocationValue(basicInfo.getLocationValue());
+		        			if(basicInfo.getLocationScopeId()==1l)//dist
+		        				appCandi.setLocationValue(basicInfo.getDistrictId());
+		        			else if(basicInfo.getLocationScopeId()==2l)//const
+		        				appCandi.setLocationValue(basicInfo.getConstituencyId());
+		        			else if(basicInfo.getLocationScopeId()==3l)//tehsil
+		        				appCandi.setLocationValue(basicInfo.getTehsilId());
+		        			
 		        			//user addres saving logic
-		        			UserAddress userAddress = new UserAddress(); 
+		        			UserAddress userAddress = new UserAddress();
+		        			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
+		        			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
+		        			userAddress.setTehsil(tehsilDAO.get(basicInfo.getTehsilId()));
+		        			userAddress = userAddressDAO.save(userAddress);
+		        			
 		        			appCandi.setAddressId(userAddress.getUserAddressId());
+		        			appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
+		        			appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
+		        			appCandi.setMembershipId(basicInfo.getMembershipNum());
+		        			appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum()));
+		        			appCandi.setCreatedBy(loggerUserId);
+		        			appCandi.setUpdatedBy(loggerUserId);
+		        			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		        			appointmentCandidateDAO.save(appCandi);
+		        			
 		        			
 						}
 		        	}
