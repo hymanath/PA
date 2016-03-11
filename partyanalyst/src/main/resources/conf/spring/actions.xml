@@ -1625,6 +1625,10 @@
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
-	
+
+	<bean id="appointmentAction" class="com.itgrids.partyanalyst.web.action.AppointmentAction" singleton="false">
+		<property name="appointmentService" ref="appointmentService" />		
+	</bean>	
+		
 </beans>	
 	
