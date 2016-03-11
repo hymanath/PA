@@ -785,6 +785,20 @@
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntity</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance</value>
 				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
+				 
+				 <!-- appointment related Models -->
+				 <value>com.itgrids.partyanalyst.model.AppointmentStatus</value>
+				 <value>com.itgrids.partyanalyst.model.Appointment</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentManageUser</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentUser</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentCandidateDesignation</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentPriority</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentPreferableDate</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentPreferableTime</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentCandidate</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentLable</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentLableStatus</value>
+				 <!-- appointment related Models -->
 			     </list>
 			
 		</property>
