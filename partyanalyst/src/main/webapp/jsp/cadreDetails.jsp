@@ -501,7 +501,7 @@ var globalCadreId = '${cadreId}';
 								</a>
 							</div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
-                    <div class="panel-body" id="comaplaintCountInmgMainDivid">
+                    <div class="panel-body pad_0" id="comaplaintCountInmgMainDivid">
 						<img id="complaintCountImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
 						<div id="complaintCountDiv">					  
 						</div>
@@ -520,7 +520,7 @@ var globalCadreId = '${cadreId}';
 					<div class="panel-heading">
 					  <h4 class="panel-title"><img src="images/icon.png">REFERRAL GRIEVANCE DETAILS<span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
 					</div>
-					<div class="panel-body" id="referralGrievanceDetailsId">
+					<div class="panel-body pad_0" id="referralGrievanceDetailsId">
 					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
 					  
 					</div>
@@ -3024,13 +3024,13 @@ arr.push(obj);
 					buildTotalComplaints(myresult,0);
 					buildInsuranceTotalComplaints(myresult,0);
 				}
-		else{
-			
-			$("#comaplaintCountInmgMainDivid").html("No Data Available.");
-			//$("#complaintCountDiv").html('No Data Available.');
-			//$("#complaintsDiv").html('No Data Available.');
-			
-		}
+			/* else{
+				
+				$("#comaplaintCountInmgMainDivid").html("No Data Available.");
+				//$("#complaintCountDiv").html('No Data Available.');
+				//$("#complaintsDiv").html('No Data Available.');
+				
+			} */
 			});
 }
 
@@ -6831,8 +6831,6 @@ function getRefferelDetailsStatusWise(){
 				}
 			value+='</ul>';	
 			
-		}else{
-			value+='<ul>No Data Available</ul>';
 		}
 		$("#referralGrievanceDetailsId").html(value);
 		$("#refferelTotalCountId").html(result[0].totalCount);
