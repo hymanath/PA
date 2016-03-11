@@ -470,10 +470,8 @@
 		var emailId = $.trim($("#emailId").val());
 		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 		
-		var district = $('#districtId').val();
-		var constituency = $('#constituencyId').val();
-		var mandalId = $('#manTowDivId').val();
-		var villageId = $('#villWardId').val();
+		
+		
 		var zoneSelId = $('#zoneSelectId').val();
 		var regionSelId = $('#regionSelectId').val();
 		var depotSelId = $('#depotSelectId').val();
@@ -485,9 +483,6 @@
 		var addressVal = $("#addressId").val();
 		var roadVal = $("#roadId").val();
 		var landmarkVal = $("#landmarkId").val();
-		var workAddressVal = $("#workAddressId").val();
-		var workRoadVal = $("#WorkRoadId").val();
-		var workLandmarkVal = $("#workLandmarkId").val();
 		
 		
 		var presentDistrict = $('#presentDistrictId').val();
@@ -574,26 +569,7 @@
 			$('#nameErr').html(' Candidate Name is required.');
 		}		
 		
-		if(district == 0)
-		{
-			isErrorStr = " error";
-			$('#districtIdErr').html(' District is required.');
-		}
-		if(constituency == 0)
-		{
-			isErrorStr = " error";
-			$('#constituencyIdErr').html(' Constituency is required.');
-		}
-		if(mandalId == 0)
-		{
-			isErrorStr = " error";
-			$('#manTowDivIdErr').html(' Man/Town/Div is required.');
-		}
-		if(villageId == 0)
-		{
-			isErrorStr = " error";
-			$('#villWardIdErr').html(' Village/Ward is required.');
-		}
+		
 		if(presentDistrict == 0)
 		{
 			isErrorStr = " error";
@@ -631,22 +607,53 @@
 			isErrorStr = " error";
 			$('#landmarkErr').html(' LandMark  is required.');
 		}
-		if(workAddressVal == 0)
-		{
-			isErrorStr = " error";
-			$('#workAddressErr').html(' Address is required.');
+		
+		//Working Address validations.
+		
+		var workAddressVal = $("#workAddressId").val();
+		var workRoadVal = $("#WorkRoadId").val();
+		var workLandmarkVal = $("#workLandmarkId").val();
+		var district = $('#districtId').val();
+		var constituency = $('#constituencyId').val();
+		var mandalId = $('#manTowDivId').val();
+		var villageId = $('#villWardId').val();
+		
+		if(tdpMemberTypeId !=5 ){
+			
+			if(workAddressVal == 0){
+				isErrorStr = " error";
+				$('#workAddressErr').html(' Address is required.');
+			}
+			 if(workRoadVal == 0){
+				isErrorStr = " error";
+				$('#workRoadErr').html(' Road is required.');
+			}
+			if(workLandmarkVal == 0){
+				isErrorStr = " error";
+				$('#workLandmarkErr').html(' LandMark  is required.');
+				$('#addressErr').html(' Address is required.');
+			}
+			if(district == 0){
+				isErrorStr = " error";
+				$('#districtIdErr').html(' District is required.');
+			}
+			if(constituency == 0){
+				isErrorStr = " error";
+				$('#constituencyIdErr').html(' Constituency is required.');
+			}
+			if(mandalId == 0){
+				isErrorStr = " error";
+				$('#manTowDivIdErr').html(' Man/Town/Div is required.');
+			}
+			if(villageId == 0){
+				isErrorStr = " error";
+				$('#villWardIdErr').html(' Village/Ward is required.');
+			}
 		}
-		 if(workRoadVal == 0)
-		{
-			isErrorStr = " error";
-			$('#workRoadErr').html(' Road is required.');
-		}
-		if(workLandmarkVal == 0)
-		{
-			isErrorStr = " error";
-			$('#workLandmarkErr').html(' LandMark  is required.');
-			$('#addressErr').html(' Address is required.');
-		}
+		
+		
+		
+		
 		if(designationval == 0)
 		/* if(roadVal == 0)
 		{
