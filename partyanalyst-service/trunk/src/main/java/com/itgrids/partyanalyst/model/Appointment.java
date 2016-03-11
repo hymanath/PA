@@ -39,7 +39,9 @@ public class Appointment extends BaseModel{
 	private AppointmentPriority appointmentPriority;
 	private AppointmentStatus appointmentStatus;
 	private AppointmentPreferableTime appointmentPreferableTime;
-	
+	private User createdUser;
+	private User updateUser;
+	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "appointment_id", unique = true, nullable = false)
@@ -161,5 +163,24 @@ public class Appointment extends BaseModel{
 			AppointmentPreferableTime appointmentPreferableTime) {
 		this.appointmentPreferableTime = appointmentPreferableTime;
 	}
-
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="created_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getCreatedUser() {
+		return createdUser;
+	}
+	public void setCreatedUser(User createdUser) {
+		this.createdUser = createdUser;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="updated_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdateUser() {
+		return updateUser;
+	}
+	public void setUpdateUser(User updateUser) {
+		this.updateUser = updateUser;
+	}
 }
