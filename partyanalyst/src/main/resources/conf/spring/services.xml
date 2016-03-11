@@ -3000,5 +3000,10 @@
 		<property name="userAddressDAO" ref="userAddressDAO" />
 		
 	</bean>
+	
+	<bean name="appointmentService" class="com.itgrids.partyanalyst.service.impl.AppointmentService">
+		<property name="appointmentManageUserDAO" ref="appointmentManageUserDAO" />
+		<property name="appointmentDAO" ref="appointmentDAO" />
+	</bean>
 </beans>		
 	

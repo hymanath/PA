@@ -2607,5 +2607,13 @@
 	<bean id="tdpMemberUnionTabUserRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpMemberUnionTabUserRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="appointmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentManageUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentManageUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
