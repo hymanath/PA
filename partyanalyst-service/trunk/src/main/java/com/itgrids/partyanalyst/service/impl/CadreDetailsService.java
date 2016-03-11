@@ -62,11 +62,9 @@ import com.itgrids.partyanalyst.dao.ITdpCadreInsuranceInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.IvrRespondentCadreDAO;
-import com.itgrids.partyanalyst.dao.hibernate.IvrSurveyAnswerDAO;
-import com.itgrids.partyanalyst.dao.hibernate.IvrSurveyEntityDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -157,7 +155,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IIvrRespondentCadreDAO ivrRespondentCadreDAO;
 	private IIvrSurveyAnswerDAO ivrSurveyAnswerDAO;
 	private IPartyMeetingDAO partyMeetingDAO;
+	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	
+	
+	public ITrainingCampAttendanceDAO getTrainingCampAttendanceDAO() {
+		return trainingCampAttendanceDAO;
+	}
+
+	public void setTrainingCampAttendanceDAO(
+			ITrainingCampAttendanceDAO trainingCampAttendanceDAO) {
+		this.trainingCampAttendanceDAO = trainingCampAttendanceDAO;
+	}
+
 	public IPartyMeetingDAO getPartyMeetingDAO() {
 		return partyMeetingDAO;
 	}
@@ -5355,14 +5364,82 @@ public class CadreDetailsService implements ICadreDetailsService{
 			
 			if(entityTypeId.longValue() == 4l){
 				finalVoList = getSurveyAnswerDetailsForPartyMeetings(surveyMap, surveyIds, respondentId,searchType);
-			}else if(entityTypeId.longValue()==2l){
+			}
+			else if(entityTypeId.longValue()==2l){
 				finalVoList = getSurveyAnswerDetailsForActivity(surveyMap,surveyIds,respondentId,searchType,entityValuesList);
+			}
+			else if(entityTypeId.longValue() == 3l){
+				finalVoList = getSurveyAnswerDetailsForTrainingCamps(surveyMap, surveyIds, respondentId, searchType, tdpCadreId);
 			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getIvrSurveyInfoByTdpCadreId() Method - ",e);
 		}
 		return finalVoList;
+	}
+	
+	public List<IvrOptionsVO> getSurveyAnswerDetailsForTrainingCamps(Map<Long,IvrOptionsVO> surveyMap,List<Long> surveyIds,Long respondentId,String searchType,Long tdpCadreId){
+		List<IvrOptionsVO> returnList = new ArrayList<IvrOptionsVO>();
+		
+		try {
+			
+			List<Object[]> list = new ArrayList<Object[]>();
+			
+			if(searchType.trim().equalsIgnoreCase("total")){
+				list = ivrSurveyAnswerDAO.getTotalIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			else if(searchType.trim().equalsIgnoreCase("answered")){
+				list = ivrSurveyAnswerDAO.getIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			else if(searchType.trim().equalsIgnoreCase("unanswered")){
+				list = ivrSurveyAnswerDAO.getUnAnsweredIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			
+			Map<Long,List<IvrOptionsVO>> surveyListMap = new LinkedHashMap<Long, List<IvrOptionsVO>>(0);
+					
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					IvrOptionsVO vo = surveyMap.get(surveyId);
+					List<IvrOptionsVO> ivrSurveysList = new ArrayList<IvrOptionsVO>(0);
+					if(vo != null)
+					{
+						IvrOptionsVO surveyVO = new IvrOptionsVO();
+						if(surveyListMap.get(vo.getSurveyId()) != null){
+							ivrSurveysList = surveyListMap.get(vo.getSurveyId());
+						}
+						surveyVO.setSurveyId(vo.getSurveyId());
+						surveyVO.setSurveyName(obj[1] != null ? obj[1].toString():"");
+						surveyVO.setEventId(vo.getEventId());
+						List<Object[]> attendedBatchList = trainingCampAttendanceDAO.getAttendedBatchDetailsByTdpCadreId(tdpCadreId,vo.getEventId()); 
+						if(attendedBatchList != null && attendedBatchList.size() > 0){
+							Object[] batchDetails = attendedBatchList.get(0);
+							if(batchDetails != null){
+								surveyVO.setEventName(batchDetails[1] != null ? batchDetails[1].toString():"");
+								surveyVO.setName(batchDetails[3] != null ? batchDetails[3].toString():"");
+							}
+						}
+						surveyVO.setRoundId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						surveyVO.setRound(obj[3] != null ? obj[3].toString():"0");
+						surveyVO.setQuestionId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+						surveyVO.setQuestion(obj[6] != null ? obj[6].toString():"0");
+						surveyVO.setOptionId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+						surveyVO.setOption(obj[8] != null ? obj[8].toString():"0");
+						
+						ivrSurveysList.add(surveyVO);
+						surveyListMap.put(vo.getSurveyId(), ivrSurveysList);
+					}
+				}
+			}
+			
+			for (Long surveyId : surveyListMap.keySet()) {
+				returnList.addAll(surveyListMap.get(surveyId));
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSurveyAnswerDetailsForTrainingCamps() Method - ",e);
+		}
+		return returnList;
 	}
 	
 	public List<IvrOptionsVO> getSurveyAnswerDetailsForPartyMeetings(Map<Long,IvrOptionsVO> surveyMap,List<Long> surveyIds,Long respondentId,String searchType){
