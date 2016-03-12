@@ -42,13 +42,24 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,Long eventId,Long stateId,List<Long> subeventIds,Date startDate,Date endDate)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.locationValue,sum(model.invitees),sum(model.noninvitees) from EventInfo model " +
-				" where model.reportLevelId = :reportLevelId and model.stateId = :stateId " +
+		str.append("select model.locationValue,sum(model.invitees),sum(model.noninvitees) from EventInfo model ");
+		
+		if(reportLevelId == 4)
+			str.append(",Constituency model2 " );
+		
+		str.append(" where model.reportLevelId = :reportLevelId " +
 				" and model.event.parentEventId = :eventId and model.event.eventId in(:subeventIds)");
+		
 		if(stateId == 1l && reportLevelId == 3)
-		str.append(" and model.locationValue between 11 and 23");
+		str.append(" and model.locationValue between 11 and 23 ");
 		else if(stateId == 36l && reportLevelId == 3)
-			str.append(" and model.locationValue between 1 and 10");
+			str.append(" and model.locationValue between 1 and 10 ");
+		
+		if(stateId == 1l && reportLevelId == 4)
+			str.append(" and model.locationValue = model2.constituencyId and model2.district.districtId between 11 and 23 ");
+		else if(stateId == 36l && reportLevelId == 4)
+			str.append(" and model.locationValue = model2.constituencyId and model2.district.districtId between 1 and 10 ");
+		
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
@@ -70,7 +81,6 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 				}
 		}
 		query.setParameter("eventId", eventId);
-		query.setParameter("stateId", stateId);
 		query.setParameterList("subeventIds", subeventIds);
 		return query.list();
 	}
