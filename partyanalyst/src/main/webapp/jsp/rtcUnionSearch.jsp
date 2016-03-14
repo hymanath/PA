@@ -950,10 +950,11 @@
 						$('#tableDivForCadre').html(str);
 				});
 	}
-	function setDefaultImage(img)
-	{
-		img.src = "images/mahaNadu/user image.jpg";
-	}
+		function setDefaultImage(image) {
+			image.onerror = "";
+			image.src = "images/mahaNadu/user image.jpg";
+			return true;
+		}
 
 	function tagVoterNFCNumber(cardNumber,voterId)
 	{
