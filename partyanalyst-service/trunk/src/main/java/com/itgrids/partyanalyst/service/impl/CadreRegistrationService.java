@@ -2579,7 +2579,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								if(tdpCadre.getUserAddress().getAddressLane1() != null && !tdpCadre.getUserAddress().getAddressLane1().isEmpty()){
 									vo.setLandmark(tdpCadre.getUserAddress().getAddressLane1());
 								}
-								
+								if(tdpCadre.getUserAddress().getPinCode() != null && !tdpCadre.getUserAddress().getPinCode().isEmpty()){
+									vo.setPincode(tdpCadre.getUserAddress().getPinCode());
+								}
 								
 							}
 						}
@@ -2750,7 +2752,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							if(tdpCadre.getUserAddress().getAddressLane1() != null && !tdpCadre.getUserAddress().getAddressLane1().isEmpty()){
 								vo.setLandmark(tdpCadre.getUserAddress().getAddressLane1());
 							}
-							
+							if(tdpCadre.getUserAddress().getPinCode() != null && !tdpCadre.getUserAddress().getPinCode().isEmpty()){
+								vo.setPincode(tdpCadre.getUserAddress().getPinCode());
+							}
 							existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
 							existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
 							existingrollsDetails = getExistingRollsInfo(tdpCadreId);
