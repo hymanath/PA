@@ -11509,7 +11509,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						   if(cadreRegistrationVO.getPrsntAddrsLandmark() != null && cadreRegistrationVO.getPrsntAddrsLandmark().trim() != ""){
 							   presentAddress.setAddressLane1(cadreRegistrationVO.getPrsntAddrsLandmark());
 						   }
-						   
+						   if(cadreRegistrationVO.getPrsntAddrsPincode() != null && cadreRegistrationVO.getPrsntAddrsPincode().trim() != ""){
+							   presentAddress.setPinCode(cadreRegistrationVO.getPrsntAddrsPincode());
+						   }
 							   presentAddress= userAddressDAO.save(presentAddress);
 							   tdpCadre.setUserAddress(presentAddress);
 
@@ -11580,7 +11582,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							   workLocation.setAddressLane1(cadreRegistrationVO.getWorkAddrsLandmark());
 							   isWorkLocationAvailable = true;
 						   }
-						   
+						   if(cadreRegistrationVO.getWorkAddrsPincode() != null && cadreRegistrationVO.getWorkAddrsPincode().trim() != ""){
+							   workLocation.setPinCode(cadreRegistrationVO.getWorkAddrsPincode());
+							   isWorkLocationAvailable = true;
+						   }
 						   if(isWorkLocationAvailable)
 							   tdpCadre.setWorkLocation(userAddressDAO.save(workLocation));
 					}
