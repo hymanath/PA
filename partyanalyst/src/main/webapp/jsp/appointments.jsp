@@ -53,7 +53,7 @@
 					<div>
 					  <ul class="nav nav-tabs navTabsCustom" role="tablist">
 						<li role="presentation"  class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
-						<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
+						<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
 						<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><img src="dist/Appointment/img/manageappointments.png">Manage APpointments</a></li>
 						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><img src="dist/Appointment/img/confirmappointments.png">Confirm APpointments</a></li>
 					  </ul>
@@ -1035,10 +1035,8 @@
 										<div class="row">
 											<div class="col-md-4 m_top10">
 												<label>Appointment Type</label>
-												<select>
+												<select class="manageAppTypeCls" id="createAppTypeListId">
 													<option><span class="colorStatus green"></span>High</option>
-													<option><span class="colorStatus blue"></span>Medium</option>
-													<option><span class="colorStatus violet"></span>Low</option>
 												</select>
 											</div>
 											<div class="col-md-8 m_top10">
@@ -1090,7 +1088,7 @@
 											</div>
 											<div class="col-md-4 m_top10">
 												<label>Designation</label>
-												<select>
+												<select class="designationListCls" id="designationListId">
 													<option>A</option>
 												</select>
 											</div>
@@ -1367,24 +1365,20 @@
                                     	<div class="row">
                                             <div class="col-md-4">
                                             	<label>Designation</label>
-                                                <select>
+                                                <select class="designationListCls" id="manageAppDesigId">
                                                 	<option>All</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
                                             	<label>Appointment Type</label>
-                                                <select>
+                                                <select class="manageAppTypeCls" id="manageAppTypeId">
                                                 	<option>High</option>
-                                                    <option>Medium</option>
-                                                    <option>Low</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
                                             	<label>Appointment Status</label>
-                                                <select>
+                                                <select class="manageAppStatusCls" id="manageAppStatusId">
                                                 	<option>Waiting</option>
-                                                    <option>Cancelled</option>
-                                                    <option>Rescheduled</option>
                                                 </select>
                                             </div>
                                           <div class="col-md-4 m_top10">
@@ -2331,6 +2325,102 @@ $(document).on("click","#addOneBlock",function(){
 $(document).on("click",".closeIcon",function(){
 	$(this).parent().parent().remove();
 });
+$(document).ready(function(){
+	$.ajax({
+		type : 'GET',
+		url : 'getCandidateDesignation.action',
+		dataType : 'json',
+		date : {}
+	}).done(function(result){ 
+		if(result != null && result.length > 0){
+			//app-appointment
+			buildDesignationForCreateApp(result);
+			buildDesignationForManageApp(result);
+
+		}
+		
+	});
+	
+});
+function buildDesignationForCreateApp(result){
+		$("#designationListId  option").remove();
+		$("#designationListId").append('<option value="0">Select Designation</option>');
+		for(var i in result){
+			$("#designationListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+		$(".designationListCls").dropkick();
+		var select = new Dropkick("#designationListId");
+		select.refresh();
+} 
+function buildDesignationForManageApp(result){
+		$("#manageAppDesigId  option").remove();
+		$("#manageAppDesigId").append('<option value="0">Select Designation</option>');
+		for(var i in result){
+			$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+		$(".designationListCls").dropkick();
+		var select = new Dropkick("#manageAppDesigId");
+		select.refresh();
+}
+$(document).ready(function(){
+	$.ajax({
+		type : 'GET',
+		url : 'getAppointmentStatusList.action',
+		dataType : 'json',
+		date : {}
+	}).done(function(result){ 
+		if(result != null && result.length > 0){
+			buildAppointmentStatusList(result);
+		}
+		
+	}); 
+});
+function buildAppointmentStatusList(result){
+		$("#manageAppStatusId  option").remove();
+		$("#manageAppStatusId").append('<option value="0">Select Appointment Status</option>');
+		for(var i in result){
+			$("#manageAppStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+		$(".manageAppStatusCls").dropkick();
+		var select = new Dropkick("#manageAppStatusId");
+		select.refresh();
+}
+$(document).ready(function(){
+	$.ajax({
+		type : 'GET',
+		url : 'getAppointmentPriority.action',
+		dataType : 'json',
+		date : {}
+	}).done(function(result){ 
+		if(result != null && result.length > 0){
+			buildAppointmentPriorityList(result);
+			buildPriorityForManageAppointment(result);
+		}
+		
+	});
+});
+function buildAppointmentPriorityList(result){
+		$("#manageAppTypeId  option").remove();
+		$("#manageAppTypeId").append('<option value="0">Select Appointment Type</option>');
+		for(var i in result){
+			$("#manageAppTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+		$(".manageAppTypeCls").dropkick();
+		var select = new Dropkick("#manageAppTypeId");
+		select.refresh();
+}
+function buildPriorityForManageAppointment(result){
+		$("#createAppTypeListId  option").remove();
+		$("#createAppTypeListId").append('<option value="0">Select Appointment Type</option>');
+		for(var i in result){
+			$("#createAppTypeListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		}
+		$(".manageAppTypeCls").dropkick();
+		var select = new Dropkick("#createAppTypeListId");
+		select.refresh();
+}
 </script>
 </body>
 </html>
+			
+				
