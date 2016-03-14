@@ -799,6 +799,8 @@
 				 <value>com.itgrids.partyanalyst.model.AppointmentLable</value>
 				 <value>com.itgrids.partyanalyst.model.AppointmentLableStatus</value>
 				 <!-- appointment related Models -->
+				 
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value>
 			     </list>
 			
 		</property>
