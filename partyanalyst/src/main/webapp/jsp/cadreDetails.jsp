@@ -6726,6 +6726,9 @@ function getIvrSurveyDetails(searchType,eventTypeId){
 			else if(eventTypeId !=null && eventTypeId==3){
 				buildSurveyAnswerDetailsForTrainingCamps(result);
 			}
+			else if(eventTypeId !=null && eventTypeId==5){
+				buildSurveyAnswerDetailsForSpecialSurveys(result);
+			}
 			else  if(eventTypeId !=null && eventTypeId==4){
 				var str='';
 			
@@ -6801,6 +6804,37 @@ function buildSurveyAnswerDetailsForActivity(result){
 			
 				$("#dataLoadingsImgForIVRDetails").hide();
 				$("#ivrDetailsBodyId").html(str);
+}
+
+function buildSurveyAnswerDetailsForSpecialSurveys(result){
+	var str='';
+			
+	str+='<table class="table m_0 table-bordered">';
+		str+='<thead>';
+			str+='<th class="text-center"> EVENT </th>';
+			str+='<th class="text-center"> DATE </th>';
+			str+='<th class="text-center"> SURVEY </th>';
+			str+='<th class="text-center"> ROUND </th>';
+			str+='<th class="text-center"> QUESTION </th>';
+			str+='<th class="text-center"> OPTION </th>';
+		str+='</thead>';
+		
+		str+='<tbody class="text-center">';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].eventName+'</td>';
+				str+='<td>'+result[i].dateStr+'</td>';
+				str+='<td>'+result[i].surveyName+'</td>';
+				str+='<td>'+result[i].round+'</td>';
+				str+='<td>'+result[i].question+'</td>';
+				str+='<td>'+result[i].option+'</td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+
+	$("#dataLoadingsImgForIVRDetails").hide();
+	$("#ivrDetailsBodyId").html(str);
 }
 
 function buildSurveyAnswerDetailsForTrainingCamps(result){

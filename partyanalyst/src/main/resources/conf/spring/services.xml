@@ -2641,6 +2641,7 @@
 		 <property name="ivrSurveyAnswerDAO" ref="ivrSurveyAnswerDAO" />
 		 <property name="partyMeetingDAO" ref="partyMeetingDAO" />
 		 <property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO" />
+		 <property name="ivrSurveyServiceDAO" ref="ivrSurveyServiceDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
