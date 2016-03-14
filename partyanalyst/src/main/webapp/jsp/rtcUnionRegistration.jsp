@@ -1822,17 +1822,18 @@
 							<h4 class="text-align1">WORKING ADDRESS <label style="display:inline-block;font-size:15px;"><input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input>Check this if same as present address</label><hr class="m_0"/></h4>
 					</div>
 					<div class="span3" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" value=""></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" ></input>
+							
 							<br><span id="workAddressErr" style="color:red;font-size:12px;"></span>
 				   </div>
 					<div class="span3" id="workRoadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> </h5>
-					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="WorkRoadId"name="cadreRegistrationVO.workAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="WorkRoadId"name="cadreRegistrationVO.workAddrsStreet"  ></input>
 					   <br><span id="workRoadErr" style="color:red;font-size:12px;"></span>
 					</div>
 					<div class="span3" id="workLandmarkDivId">
 						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="workLandmarkId" name="cadreRegistrationVO.workAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="workLandmarkId" name="cadreRegistrationVO.workAddrsLandmark" ></input>
 							<br><span id="workLandmarkErr" style="color:red;font-size:12px;"></span>
 					</div>
 				
