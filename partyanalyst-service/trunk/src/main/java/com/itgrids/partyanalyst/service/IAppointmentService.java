@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -12,4 +13,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppCandidateDesigList();
 	public List<IdNameVO> getAppointmentPriorityList();
 	public List<IdNameVO> getAppmntLblStatusList();
+	public List<AppointmentBasicInfoVO> getAppointmentUsersDtlsByUserId(Long userId);
 }

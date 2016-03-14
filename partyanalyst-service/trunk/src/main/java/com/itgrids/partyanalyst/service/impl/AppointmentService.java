@@ -11,11 +11,12 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLableStatusDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
-import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
+import com.itgrids.partyanalyst.model.AppointmentUser;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -50,8 +52,16 @@ public class AppointmentService implements IAppointmentService{
 	private VoterDAO voterDAO;
 	private TdpCadreDAO tdpCadreDAO;
 	private IAppointmentCandidateDAO appointmentCandidateDAO;
+	private IAppointmentManageUserDAO appointmentManageUserDAO;
 	
 	
+	public IAppointmentManageUserDAO getAppointmentManageUserDAO() {
+		return appointmentManageUserDAO;
+	}
+	public void setAppointmentManageUserDAO(
+			IAppointmentManageUserDAO appointmentManageUserDAO) {
+		this.appointmentManageUserDAO = appointmentManageUserDAO;
+	}
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -292,5 +302,26 @@ public class AppointmentService implements IAppointmentService{
 			}
 		}
 		return voList;
+	}
+	@Override
+	public List<AppointmentBasicInfoVO> getAppointmentUsersDtlsByUserId(Long userId) {
+		List<AppointmentBasicInfoVO> appntmntUsrDtlsLst=new ArrayList<AppointmentBasicInfoVO>(0);
+		try{
+			LOG.info("Entered into getAppointmentUsersDtlsByUserId() method of AppointmentService");
+			
+			List<Object[]> appntmtnUsrDtlsLst=appointmentManageUserDAO.getAppointmentUsersDtlsByUserId(userId);
+			if(appntmtnUsrDtlsLst!=null && !appntmtnUsrDtlsLst.isEmpty()){
+				for(Object[] param:appntmtnUsrDtlsLst){
+					AppointmentBasicInfoVO appntmntUsrVO=new AppointmentBasicInfoVO();
+					appntmntUsrVO.setAppointmentUserId((Long)param[0]);
+					appntmntUsrVO.setName(param[1]!=null?param[1].toString():"");
+					appntmntUsrVO.setMobileNo(param[2]!=null?param[2].toString():"");
+					appntmntUsrDtlsLst.add(appntmntUsrVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentUsersDtlsByUserId() method of AppointmentService", e);
+		}
+		return appntmntUsrDtlsLst;
 	}
 }

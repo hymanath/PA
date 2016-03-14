@@ -11,7 +11,14 @@ public class AppointmentBasicInfoVO {
 	private Long districtId;
 	private Long constituencyId;
 	private Long tehsilId;
+	private Long appointmentUserId;
 	
+	public Long getAppointmentUserId() {
+		return appointmentUserId;
+	}
+	public void setAppointmentUserId(Long appointmentUserId) {
+		this.appointmentUserId = appointmentUserId;
+	}
 	public String getName() {
 		return name;
 	}
