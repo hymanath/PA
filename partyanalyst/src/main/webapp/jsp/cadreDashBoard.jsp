@@ -315,7 +315,7 @@ table.dataTable tr.odd {
 				</div>
 				</div>
 				<div id="leaderDataDiv2smry" style="margin-left:-30px;"  class="m_top10"></div>
-				<div id="leaderDataDiv2" class="height-300 scrollable_div" style="margin-top: -1px">
+				<div id="leaderDataDiv2" class="" style="margin-top: -1px">
 					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
 				</div>
 			</div>
@@ -339,7 +339,7 @@ table.dataTable tr.odd {
 				</div>
 				</div>
 				<div id="leaderDataDiv1smry" style="margin-left:-30px;"  class="m_top10"></div>
-				<div id="leaderDataDiv1" class="height-300 scrollable_div" style="margin-top: -1px">
+				<div id="leaderDataDiv1" class="scrollable_div" style="margin-top: -1px">
 					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
 				</div>
 			</div>
@@ -448,7 +448,7 @@ function openDialogToTrack(){
 	  });
 	}); */
 	//scrollator
-	$('.scrollable_div').scrollator();
+	//$('.scrollable_div').scrollator();
 	
 $('#fadeInDown').addClass('animated fadeInDown');
 $('#fadeInLeft').addClass('animated fadeInLeft');
@@ -1717,9 +1717,10 @@ function SortByName(a, b){
 								}
 							str1+="</tr>";
 						str1+='</table>';
-						str1+='<div class="span12"> <i class="icon-info-sign pull-right" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: -75px;margin-right:20px ; cursor:pointer;cursor:pointer;"></i> </deiv>';
+						str1+='<div class="span12"> <i class="icon-info-sign pull-right" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: -75px;margin-right:20px ; cursor:pointer;cursor:pointer;"></i>';
 					
 					str1+='</div>';
+					
 					str+='<table class="table table-bordered" id="'+constant+'tabledata1">';
 					str+='<thead><tr>';
 					str+='<th>'+scope+'</th>';
@@ -1784,6 +1785,7 @@ function SortByName(a, b){
 					$(targetDiv+"smry").html(str1);
 					$("#"+constant+"tabledata1").dataTable({
 						"iDisplayLength": -1,
+						"sScrollY" : "200",
 						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 					});
 				 
@@ -1855,7 +1857,7 @@ function SortByName(a, b){
 								}
 							str1+="</tr>";
 						str1+='</table>';
-					str1+='<div class="span12"> <i class="icon-info-sign pull-right" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: -75px;margin-right:20px ; cursor:pointer;"></i> </deiv>';
+					str1+='<div class="span12"> <i class="icon-info-sign pull-right" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: -75px;margin-right:20px ; cursor:pointer;"></i>';
 					str1+='</div>';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata2">';
 					str+='<thead><tr>';
@@ -1924,6 +1926,7 @@ function SortByName(a, b){
 					$(targetDiv+"smry").html(str1);
 					$("#"+constant+"tabledata2").dataTable({
 						"iDisplayLength": -1,
+						"sScrollY" : "200",
 						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 			     });
 				 
@@ -2145,6 +2148,7 @@ function SortByName(a, b){
 					$(targetDiv+"smry").html(str1);
 					$("#"+constant+"tabledata1").dataTable({
 						"iDisplayLength": -1,
+						"sScrollY" : "200",
 						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 					});
 				 
@@ -2288,6 +2292,7 @@ function SortByName(a, b){
 					$(targetDiv+"smry").html(str1);
 					$("#"+constant+"tabledata2").dataTable({
 						"iDisplayLength": -1,
+						"sScrollY" : "200",
 						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 			     });
 				 
