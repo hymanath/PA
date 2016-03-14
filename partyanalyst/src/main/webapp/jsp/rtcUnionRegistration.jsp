@@ -4186,9 +4186,11 @@ function populateAddressValues(){
 	var populateConstituency = $("#presentConstituencyId").val();
 	var populateMandal = $("#presentManTowDivId").val();
 	var populateVillage = $("#presentVillWardId").val();
+	var populatepincode = $("#prsntAddrsPincodeId").val();
 	$("#workAddressId").val(populateHouse);
 	$("#WorkRoadId").val(populateStreet);
 	$("#workLandmarkId").val(populateLandMark);
+	$("#workAddrsPincodeId").val(populatepincode);
 	getDistricts(populateDistrict,populateConstituency,populateMandal,populateVillage);
 	}
 	else {
@@ -4199,6 +4201,7 @@ function populateAddressValues(){
 	$("#constituencyId").val(0);
 	$("#manTowDivId").val(0);
 	$("#villWardId").val(0);
+	$("#workAddrsPincodeId").val("");
 	}
 }
 //getDesignationsOfAffiliatedUnionType();
