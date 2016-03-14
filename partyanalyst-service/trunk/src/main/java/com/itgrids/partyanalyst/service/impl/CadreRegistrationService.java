@@ -3972,6 +3972,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 	}
 	
+	
 	private  String sendSMSInTelugu(String mobileNo,String msg){
 		
 		try {
@@ -11912,24 +11913,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								}
 								
 								if(flag)
-								{/*
-									String jobCode = sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C38\u0C2D\u0C4D\u0C2F\u0C24\u0C4D\u0C35\u0C02 \u0C24\u0C40\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C2E\u0C32\u0C41. ")+cadreRegistrationVO.getRefNo()));
-									Long tdpCadreId = tdpCadre1.getTdpCadreId();
-									if(tdpCadreId!=null){
-										if(tdpCadre1.getMobileNo()!=null){
-											jobCode = jobCode.replace("OK:", "");
-											SmsJobStatus smsJobStatus = new SmsJobStatus();
-											smsJobStatus.setTdpCadreId(tdpCadreId);
-											
-											smsJobStatus.setMobileNumber(tdpCadre1.getMobileNo());
-											smsJobStatus.setJobCode(jobCode);
-											smsJobStatus.setFromTask("Registration");
-											
-											//smsJobStatusDAO.save(smsJobStatus);
-											//tdpCadreDAO.updateSmsJobCode(tdpCadreId, jobCode.trim());
-										}
-									}
-								*/}
+								{
+									String jobCode = sendSMSForAffliatedCadre(cadreRegistrationVO.getMobileNumber().trim(), "Thanks for registration, your Membership ID  :"+tdpCadre1.getMemberShipNo());
+								}
 								
 								
 							}catch (Exception e) {
@@ -11945,6 +11931,48 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
 		}*/
 	}
+	private String sendSMSForAffliatedCadre(String mobileNo,String message){
+		  
+		  if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+        	return "error"; 
+          }
+		  
+	      HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+	      client.getHttpConnectionManager().getParams().setConnectionTimeout(
+	        Integer.parseInt("30000"));
+	    
+	      boolean isEnglish = true;
+	      
+	      PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+	      
+	      post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+	      post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+	      post.addParameter("mobilenumber", mobileNo);
+	      post.addParameter("message", message);
+	      post.addParameter("mtype", isEnglish ? "N" : "OL");
+	      post.addParameter("DR", "Y");
+	      
+	      /* PUSH the URL */
+	      try 
+	      {
+	        int statusCode = client.executeMethod(post);
+	        
+	        if (statusCode != HttpStatus.SC_OK) {
+	          System.out.println("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+	          return "error";
+	        }
+	        else{
+	          return "success";
+	        }
+
+	      }catch (Exception e) {
+	          System.out.println("Exception rised in sending sms while cadre registration "+e);
+	          return "exception";
+	      } finally {
+	          post.releaseConnection();
+	      }
+	      
+	    }
 	
 	public List<GenericVO> getCadreMemberTypeListByYear(){
 		List<GenericVO> returnList  = null;
