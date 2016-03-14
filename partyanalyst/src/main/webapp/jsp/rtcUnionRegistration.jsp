@@ -498,6 +498,7 @@
 		$('#landmarkErr,#roadErr,#addressErr,#employeeErr,#designationErr,#zoneErr,#regionErr,#depotErr,#desigErr,#schoolErr,#drivingErr,#vehicleErr,#workAddressErr,#workRoadErr,#workLandmarkErr,#presntDistrictIdErr,#presentConstituencyIdErr,#presentManTowDivIdErr,#presentVillWardIdErr,#districtIdErr,#constituencyIdErr,#manTowDivIdErr,#villWardIdErr,#designation13Err').html('');
 		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
 			 $('#gendReqErr').html('Please select gender');
+			 isErrorStr = " error";
 		 }
 			$('#imageErr').html('');
 			//To check if user upload any file
@@ -540,7 +541,12 @@
 		{
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age is required.');
-		}		
+		}
+		if( cadreAge > 120)
+		{
+			isErrorStr = " error";
+			$('#ageErr').html(' Candidate Age Should not exceed 120 yrs. ');
+		}
 		if(cadreCardNumber != null && cadreCardNumber.trim().length == 0)
 		{
 			var cbck = $('#relativeTypeChecked').is(':checked'); 
@@ -597,11 +603,11 @@
 			isErrorStr = " error";
 			$('#addressErr').html(' Address is required.');
 		}
-		/* if(casteId == 0)
+		if(casteId == 0)
 		{
 			isErrorStr = " error";
 			$('#casteErr').html(' Caste is required.');
-		} */
+		} 
 		if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
@@ -655,13 +661,13 @@
 		
 		
 		if(designationval == 0)
-		/* if(roadVal == 0)
+		// if(roadVal == 0)
 		{
 			isErrorStr = " error";
 			$('#desigErr').html(' Designation is required.');
 		}
-			$('#roadErr').html(' Road is required.');
-		}*/
+			//$('#roadErr').html(' Road is required.');
+		//}
 		if(tdpMemberTypeId == 2){
 			if(employeeId != null && employeeId.trim().length == 0)
 		if(landmarkVal == 0)
@@ -1277,11 +1283,11 @@
 			$(errDiv).html('Invalid '+AadharNo+'.');			
 			numberFlag = false;
 		}
-		/*else if(mobileNumber.length < 12) 
+		else if(mobileNumber.length < 12 || mobileNumber.length > 12) 
 		{
-			$('#NaadharErr').html(''+AadharNo+' should be 12 digits.');		
+			$(errDiv).html(''+AadharNo+' should be 12 digits.');		
 			numberFlag= false;
-		}*/
+		}
 			return numberFlag;
 	}
 	
@@ -1635,7 +1641,7 @@
 							   
 								
 							<div class=" m_top20" id="casteDivId">
-										<h5 class="text-align1">CASTE NAME <span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
+										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span>&nbsp;<span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
 								
 									
@@ -1692,7 +1698,7 @@
 					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>
 					<!--<select class="form-control" id="desigId" name="cadreRegistrationVO.designationId">-->
 						<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="desigId" list="unionTabUserList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
-					<br><span id="desigErr" style="color:red;font-size:12px;margin-right: 10px;"></span>
+					<span id="desigErr" style="color:red;font-size:12px;margin-right: 10px;"></span>
 				</div>	
 				<div class="span3" id="schoolNameDiv" style="display:none">
 					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> </h5>
@@ -1816,7 +1822,7 @@
 							<h4 class="text-align1">WORKING ADDRESS <label style="display:inline-block;font-size:15px;"><input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input>Check this if same as present address</label><hr class="m_0"/></h4>
 					</div>
 					<div class="span3" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" value=""></input>
 							<br><span id="workAddressErr" style="color:red;font-size:12px;"></span>
 				   </div>
 					<div class="span3" id="workRoadDivId">
@@ -3926,8 +3932,9 @@ $(document).ready(function(){
 	   $("#presentManTowDivId").append('<option value="0">Select Mandal/Town/Division</option>');
 	   $("#presentVillWardId  option").remove();
 	   $("#presentVillWardId").append('<option value="0">Select Village/Ward</option>');
-		
-	   $("#addressId").val(result.houseNo);
+		if(result.houseNo != null){
+			$("#addressId").val(''+result.houseNo+'');
+		}
 	   $("#roadId").val(result.street);
 	   $("#landmarkId").val(result.landMark);
 	   
