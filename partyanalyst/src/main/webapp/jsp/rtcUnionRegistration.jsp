@@ -575,11 +575,11 @@
 			}
 			
 		}
-		/*if(dateOfbirth != null && dateOfbirth.trim().length == 0)
+		if(dateOfbirth != null && dateOfbirth.trim().length == 0)
 		{
 			isErrorStr = " error";
 			$('#dobErr').html(' Date of Birth is required.');
-		}*/
+		}
 		if(cadreName != null && cadreName.trim().length == 0)
 		{
 			isErrorStr = " error";
@@ -1608,11 +1608,11 @@
 												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" style="width: 186px;" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr" id="reqPartyMemberSinceStrId" value="${voterInfoVOList[0].activeDate}"  readOnly="true"></input><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Party Member Since" onclick="clearSelDiv('reqPartyMemberSinceStrId');"></span>
 											</div>-->
 											
-											<div class="span6">
+											<!--<div class="span6">
 											<h5 class="text-align1">Blood Group</h5>
 											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="bloodgroupId" list="voterInfoVOList[0].selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Blood Group" style="width:220px;" name="cadreRegistrationVO.bloodGroupId"  value="%{voterInfoVOList[0].blodGroupId}"/>
 											
-											</div>
+											</div>-->
 										</div>
 								</div>	
 								<!--<div class="m_top10">
