@@ -124,7 +124,7 @@
 					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>	
 					</span>
 					<span>
-					  <a  class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px;" id="statusDivsId1" href="javascript:{hideDashBoard();}"> Know User Status </a>
+					  <a  class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px;display:none;" id="statusDivsId1" href="javascript:{hideDashBoard();}"> Know User Status </a>
 					 </span>
 					<span>
 					  <a class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px; width: 90px;display:none;" id="statusDivsId2" href="javascript:{showDashBoard();}"> Home </a>	

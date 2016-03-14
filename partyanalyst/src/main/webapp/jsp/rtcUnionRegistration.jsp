@@ -447,7 +447,7 @@
 
 				YAHOO.util.Connect.setForm('uploadCadreForm',true);
 				YAHOO.util.Connect.asyncRequest('POST','rtcUnionRegistrationPage.action',uploadHandler);
-		}		
+		}
 	}
 	
 	function validateDetails()
@@ -1260,6 +1260,7 @@
 	
 	function isAadharNumber(fieldId,AadharNo)
 	{
+		
 		var numberFlag = true;
 		var errDiv='#NaadharErr';
 		if(fieldId == "candAdrId"){
@@ -1283,7 +1284,7 @@
 			$(errDiv).html('Invalid '+AadharNo+'.');			
 			numberFlag = false;
 		}
-		else if(mobileNumber.length < 12 || mobileNumber.length > 12) 
+		else if(mobileNumber.length < 12) 
 		{
 			$(errDiv).html(''+AadharNo+' should be 12 digits.');		
 			numberFlag= false;
@@ -1612,7 +1613,7 @@
 							-->
 								<div class=" m_top20" >
 									<h5 class="text-align1">Aadhar Card No .</h5>
-									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
+									<input type="text" class=""  style="width:260px;" maxlength="12" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
 								    <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
 								</div>
 								<div>
