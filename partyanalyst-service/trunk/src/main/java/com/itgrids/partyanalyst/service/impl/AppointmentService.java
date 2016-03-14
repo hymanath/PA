@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentLableDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLableStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
@@ -53,8 +57,15 @@ public class AppointmentService implements IAppointmentService{
 	private TdpCadreDAO tdpCadreDAO;
 	private IAppointmentCandidateDAO appointmentCandidateDAO;
 	private IAppointmentManageUserDAO appointmentManageUserDAO;
+	private IAppointmentLableDAO appointmentLableDAO;
 	
 	
+	public IAppointmentLableDAO getAppointmentLableDAO() {
+		return appointmentLableDAO;
+	}
+	public void setAppointmentLableDAO(IAppointmentLableDAO appointmentLableDAO) {
+		this.appointmentLableDAO = appointmentLableDAO;
+	}
 	public IAppointmentManageUserDAO getAppointmentManageUserDAO() {
 		return appointmentManageUserDAO;
 	}
@@ -323,5 +334,32 @@ public class AppointmentService implements IAppointmentService{
 			LOG.error("Exception raised at getAppointmentUsersDtlsByUserId() method of AppointmentService", e);
 		}
 		return appntmntUsrDtlsLst;
+	}
+	@Override
+	public List<AppointmentBasicInfoVO> getLabelDtslByDate(String slctdDate) {
+		
+		List<AppointmentBasicInfoVO> labelDtlsFnlList=new ArrayList<AppointmentBasicInfoVO>(0);
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		try{
+			LOG.info("Entered into getLabelDtslByDate() method of AppointmentService");
+			Date date=null;
+			if(labelDtlsFnlList!=null){
+				 date=sdf.parse(slctdDate);
+			}
+			List<Object[]> labelDtlsList=appointmentLableDAO.getLabelDtslByDate(date);
+			if(labelDtlsList!=null && !labelDtlsList.isEmpty()){
+				for(Object[] param:labelDtlsList){
+					AppointmentBasicInfoVO labelDtslVO=new AppointmentBasicInfoVO();
+					labelDtslVO.setName(param[0]!=null ? param[0].toString():"");
+					if(param[1]!=null){
+					labelDtslVO.setDate(param[1].toString().split(" ")[0]);
+					labelDtlsFnlList.add(labelDtslVO);
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getLabelDtslByDate() method of AppointmentService", e);
+		}
+		return labelDtlsFnlList;
 	}
 }
