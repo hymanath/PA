@@ -2640,7 +2640,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="appointmentCandidateDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateDesignationDAO" >
+	<bean id="candidateDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateDesignationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 

@@ -3011,6 +3011,10 @@
 		<property name="voterDAO" ref="voterDAO"/>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 		<property name="appointmentCandidateDAO" ref="appointmentCandidateDAO"/>
+		<property name="appointmentStatusDAO" ref="appointmentStatusDAO"/>
+		<property name="candidateDesignationDAO" ref="candidateDesignationDAO"/>
+		<property name="appointmentPriorityDAO" ref="appointmentPriorityDAO"/>
+		<property name="appointmentLableStatusDAO" ref="appointmentLableStatusDAO"/>
 	</bean>
 </beans>		
 	
