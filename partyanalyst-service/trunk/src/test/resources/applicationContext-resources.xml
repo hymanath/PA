@@ -769,8 +769,8 @@
 				 <value>com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance</value>
 				 
 				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
-				  <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
-				 
+				 <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value>
 			</list>
 		</property>
 	</bean>
@@ -3406,6 +3406,10 @@
 	</bean>
 	
 	<bean id="activityAttendanceAcceptanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttendanceAcceptanceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrSurveyServiceDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyServiceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
