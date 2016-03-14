@@ -1,11 +1,12 @@
 package com.itgrids.partyanalyst.utils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -131,7 +132,7 @@ public class DateUtilService {
 			calendar.set(Calendar.YEAR, geCal.get(Calendar.YEAR));
 			calendar.set(Calendar.MONTH, geCal.get(Calendar.MONTH));
 			calendar.set(Calendar.DAY_OF_MONTH, geCal.get(Calendar.DAY_OF_MONTH));
-	            	calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
+	        calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
 			calendar.set(Calendar.MINUTE, geCal.get(Calendar.MINUTE));
 			calendar.set(Calendar.SECOND, geCal.get(Calendar.SECOND));
 			calendar.set(Calendar.MILLISECOND, geCal.get(Calendar.MILLISECOND));
@@ -146,11 +147,8 @@ public class DateUtilService {
 	}
 	
 	public static void main(String[] args) {
-		/*System.out.println(	new DateUtilService().getDayBeforeYesterDayDate());
-		System.out.println( new  DateUtilService().getYesterdayDateString());*/
-		
-		String string = new DateUtilService().getDateInStringFormatByDate(new Date(),"HH:mm:ss");
-		System.out.println(string);
+		List<Date> list = getDatesOfNextMonth();
+		System.out.println(list);
 	}
 	
 	public Date getDateAndTime(String DateString)
@@ -248,6 +246,117 @@ public class DateUtilService {
 				
 			}catch (Exception e) {
 				Log.error("Exception Occured in convert12HoursDateFormat() method, Exception - ",e);
+				return null;
+			}
+		}
+		//bellow method will return a list of seven dates of this current week[Week starts from monday and ends on sunday according the logic]
+		public static List<Date> getDatesOfCurrentWeek(){
+			try{
+				List<Date> listOfSevenDays = new ArrayList<Date>();
+				Calendar now = Calendar.getInstance();
+				int dayPosition = now.get(Calendar.DAY_OF_WEEK);
+				dayPosition--;
+				if(dayPosition==0){
+					dayPosition=7;
+				}
+				now.add(Calendar.DATE, -(dayPosition-1));
+				Date firstDate = now.getTime();
+				Date nextDate = firstDate;
+				for(int i=1;i<=7;i++){
+					now.setTime(nextDate);
+					listOfSevenDays.add(nextDate);
+					now.add(Calendar.DATE, 1);
+					nextDate = now.getTime();
+				}
+				return listOfSevenDays;
+				
+			}catch(Exception e){
+				Log.error("Exception occured in getListOfDateOfCurrentWeek() method of DateUtilService class",e);
+				return null;
+			}
+		}
+		//bellow method will return  a list of seven dates of the week after the current week. 
+		public static List<Date> getDatesOfWeekAfterCurrentWeek(){
+			try{
+				List<Date> listOfSevenDays = new ArrayList<Date>();
+				Calendar now = Calendar.getInstance();
+				int dayPosition = now.get(Calendar.DAY_OF_WEEK);
+				dayPosition--;
+				if(dayPosition==0){
+					dayPosition=7;
+				}
+				dayPosition = 8 - dayPosition;
+				now.add(Calendar.DATE, dayPosition);
+				Date firstDate = now.getTime();
+				Date nextDate = firstDate;
+				for(int i=1;i<=7;i++){
+					now.setTime(nextDate);
+					listOfSevenDays.add(nextDate);
+					now.add(Calendar.DATE, 1);
+					nextDate = now.getTime();
+				}
+				return listOfSevenDays;
+				
+			}catch(Exception e){
+				Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class",e);
+				return null;
+			}
+		}
+		//bellow method will return a list of days of current month.
+		public static List<Date> getDatesOfCurrentMonth(){
+			try{
+				List<Date> listOfDays = new ArrayList<Date>();
+				Calendar now = Calendar.getInstance();
+				int dayPosition = now.get(Calendar.DAY_OF_MONTH);
+				dayPosition--;
+				now.add(Calendar.DATE, -dayPosition);
+				Date firstDate = now.getTime();
+				Date nextDate = firstDate;
+				int currMonth = firstDate.getMonth();
+				for(;;){
+					now.setTime(nextDate);
+					listOfDays.add(nextDate);
+					now.add(Calendar.DATE, 1);
+					nextDate = now.getTime();
+					int nextMonth = nextDate.getMonth();
+					if(currMonth!=nextMonth)
+						break;
+				}
+				return listOfDays;
+				
+			}catch(Exception e){
+				Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class",e);
+				return null;
+			}
+		}
+		//bellow method will return a list of days of next month.
+		public static List<Date> getDatesOfNextMonth(){
+			try{
+				List<Date> listOfDays = new ArrayList<Date>();
+				Calendar nowCal = Calendar.getInstance();
+			    int month = nowCal.get(Calendar.MONTH) + 1;
+			    int year = nowCal.get(Calendar.YEAR);
+			    Calendar cal = Calendar.getInstance();
+			    cal.clear();
+			    cal.set(Calendar.YEAR, year);
+			    cal.set(Calendar.MONTH, month);
+			    cal.set(Calendar.DAY_OF_MONTH, 1);
+			    Date firstDate = new Date(cal.getTimeInMillis());
+				Date nextDate = firstDate;
+				int currMonth = firstDate.getMonth();
+				for(;;){
+					nowCal.setTime(nextDate);
+					listOfDays.add(nextDate);
+					nowCal.add(Calendar.DATE, 1);
+					nextDate = nowCal.getTime();
+					int nextMonth = nextDate.getMonth();
+					if(currMonth!=nextMonth)
+						break;
+				}
+				return listOfDays;
+				
+			}catch(Exception e){
+				Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class",e);
 				return null;
 			}
 		}
