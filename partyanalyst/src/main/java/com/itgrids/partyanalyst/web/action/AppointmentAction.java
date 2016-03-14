@@ -9,11 +9,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAppointmentService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -32,7 +34,17 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<IdNameVO> appointmentCandDesigList;
 	private List<IdNameVO> appointmentPrirityList;
 	private List<IdNameVO> appointmentLblStatusList;
+	private List<AppointmentBasicInfoVO> appointmentUserDtlsList;
 	
+	public List<AppointmentBasicInfoVO> getAppointmentUserDtlsList() {
+		return appointmentUserDtlsList;
+	}
+
+	public void setAppointmentUserDtlsList(
+			List<AppointmentBasicInfoVO> appointmentUserDtlsList) {
+		this.appointmentUserDtlsList = appointmentUserDtlsList;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -174,6 +186,19 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAppointmentUsersDtls(){
+		session = request.getSession();
+		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		try{
+			LOG.info("Entered into getAppointmentUsersDtls() method of AppointmentAction");
+			if(registrationVO!=null){
+				appointmentUserDtlsList=appointmentService.getAppointmentUsersDtlsByUserId(registrationVO.getRegistrationID());
+		}
+		}catch(Exception e){
+		 LOG.error("Exception raised at getAppointmentUsersDtls() method of AppointmentAction", e);
 		}
 		return Action.SUCCESS;
 	}

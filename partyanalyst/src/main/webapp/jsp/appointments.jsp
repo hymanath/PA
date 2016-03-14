@@ -47,7 +47,16 @@
   <div class="col-md-12 col-xs-12 col-sm-12">
 	<div class="panel panel-default panelCustom1">
 				<div class="panel-heading">
-					<h4 class="panel-title">APPOINTMENTS</h4>
+					<div class="row">
+						<div class="col-md-3">
+							<h3 class="m_top10"><b>APPOINTMENTS</b></h3>
+						</div>
+						<div class="col-md-3 col-md-offset-6">
+							<select id="appointmentUserSelectBoxId">
+								<option value="0">Select Appointment User</select>
+							</select>
+						</div>
+					</div>
 				</div>
 				<div class="panel-body">
 					<div>
@@ -2417,6 +2426,31 @@ function buildPriorityForManageAppointment(result){
 		}
 		$(".manageAppTypeCls").dropkick();
 		var select = new Dropkick("#createAppTypeListId");
+		select.refresh();
+}
+$(document).ready(function(){
+	getAppointmentUsersDtls();
+});
+function getAppointmentUsersDtls(){
+	$.ajax({
+		  type:'GET',
+		  url: 'getAppointmentUsersDtlsAction.action',
+		  dataType: 'json',
+		  data: {}
+	}).done(function(result){
+		if(result!=null && result!=0){
+			buildAppntmntUsrSlctBx(result);
+		}
+	});
+}
+function buildAppntmntUsrSlctBx(result){
+	$("#appointmentUserSelectBoxId option").remove();
+	$("#appointmentUserSelectBoxId").append('<option value="0">Select Appointment User</option>');
+	for(var i in result){
+		$("#appointmentUserSelectBoxId").append('<option value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
+	}
+	$("#appointmentUserSelectBoxId").dropkick();
+		var select = new Dropkick("#appointmentUserSelectBoxId");
 		select.refresh();
 }
 </script>
