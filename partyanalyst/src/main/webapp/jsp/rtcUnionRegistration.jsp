@@ -542,7 +542,7 @@
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age is required.');
 		}
-		if(cadreAge <=18 || cadreAge >=60)
+		if(cadreAge <=18 || cadreAge >=70)
 		{
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age Between 18 to 60');

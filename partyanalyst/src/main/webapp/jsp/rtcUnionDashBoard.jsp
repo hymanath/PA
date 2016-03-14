@@ -1390,8 +1390,9 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 				$("#constituencyWiseRegistredCountId").html(str);
 			}
 			$('.dataTableId').dataTable({
-		  "aaSorting": [[ 1, "asc" ]],
-		  "iDisplayLength" : 20	,
+				"aaSorting": [[ 1, "asc" ]],
+				"iDisplayLength" : 20	,
+				 "bDestroy": true,
 				"aLengthMenu": [[20,50,100, 200, 500, -1], [20,50,100, 200, 500, "All"]]		
 	  });
 		} 
