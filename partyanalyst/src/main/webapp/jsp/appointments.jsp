@@ -63,7 +63,7 @@
 					  <ul class="nav nav-tabs navTabsCustom" role="tablist">
 						<li role="presentation"  class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
 						<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
-						<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><img src="dist/Appointment/img/manageappointments.png">Manage APpointments</a></li>
+						<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="MngeAppntmntCls"><img src="dist/Appointment/img/manageappointments.png">Manage APpointments</a></li>
 						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><img src="dist/Appointment/img/confirmappointments.png">Confirm APpointments</a></li>
 					  </ul>
 					  <!-- Tab panes -->
@@ -1232,7 +1232,8 @@
                                         </div>
                                         <div class="panel-body">
                                         	<div class="table-responsive">
-                                                <table class="table table-condensed bg_ff">
+											<div id="buildAppntmntLblTblId"></div>
+                                                <!--<table class="table table-condensed bg_ff">
                                                     <thead>
                                                   <th>APPOINTMENT LABEL NAME</th>
                                                         <th>TOTAL</th>
@@ -1362,7 +1363,7 @@
                                                             <button class="btn btn-success btn-xs">DELETE</button>
                                                         </td>
                                                     </tr>
-                                                </table>
+                                                </table>-->
                                             </div>
                                     </div>
                                   </div>
@@ -2428,31 +2429,82 @@ function buildPriorityForManageAppointment(result){
 		var select = new Dropkick("#createAppTypeListId");
 		select.refresh();
 }
-$(document).ready(function(){
-	getAppointmentUsersDtls();
-});
-function getAppointmentUsersDtls(){
-	$.ajax({
-		  type:'GET',
-		  url: 'getAppointmentUsersDtlsAction.action',
-		  dataType: 'json',
-		  data: {}
-	}).done(function(result){
-		if(result!=null && result!=0){
-			buildAppntmntUsrSlctBx(result);
-		}
+	$(document).ready(function(){
+		getAppointmentUsersDtls();
 	});
-}
-function buildAppntmntUsrSlctBx(result){
-	$("#appointmentUserSelectBoxId option").remove();
-	$("#appointmentUserSelectBoxId").append('<option value="0">Select Appointment User</option>');
-	for(var i in result){
-		$("#appointmentUserSelectBoxId").append('<option value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
+	function getAppointmentUsersDtls(){
+		$.ajax({
+			  type:'GET',
+			  url: 'getAppointmentUsersDtlsAction.action',
+			  dataType: 'json',
+			  data: {}
+		}).done(function(result){
+			if(result!=null && result!=0){
+				buildAppntmntUsrSlctBx(result);
+			}
+		});
 	}
-	$("#appointmentUserSelectBoxId").dropkick();
-		var select = new Dropkick("#appointmentUserSelectBoxId");
-		select.refresh();
-}
+	function buildAppntmntUsrSlctBx(result){
+		$("#appointmentUserSelectBoxId option").remove();
+		$("#appointmentUserSelectBoxId").append('<option value="0">Select Appointment User</option>');
+		for(var i in result){
+			$("#appointmentUserSelectBoxId").append('<option value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
+		}
+		$("#appointmentUserSelectBoxId").dropkick();
+			var select = new Dropkick("#appointmentUserSelectBoxId");
+			select.refresh();
+	}
+	$(document).on("click",".MngeAppntmntCls",function(){
+	 getLabelDtls();
+	});
+	function getLabelDtls(){
+		var jsObj={
+			currentDate:"2016-03-14"
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getLabelDtlsAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			if(result!=null && result!=0){
+				buildAppntmntLblResult(result);
+			}
+		}); 
+	}
+	function buildAppntmntLblResult(result){
+	   var str='';
+	  str+='<table class="table table-condensed bg_ff">';
+		   str+='<thead>';
+				 str+='<th>APPOINTMENT LABEL NAME</th>';
+				 str+='<th>TOTAL</th>';
+				 str+='<th>FIXED</th>';
+				 str+='<th>WAITING</th>';
+				 str+='<th>CANCELLED</th>'
+				 str+='<th>LABEL STATUS</th>';
+		   str+='</thead>';                                                      
+			  str+='<tbody';                                                   
+	  for(var i in result){
+				str+='<tr>';
+					str+='<td>'+result[i].name+'</td>';
+					str+='<td>0</td>';
+					str+='<td>0</td>';
+					str+='<td>0</td>';
+					str+='<td>0</td>';
+					str+='<td>Inprogress</td>';
+					str+='<td>';
+						str+='<button class="btn btn-success btn-xs">VIEW</button>';
+						str+='<button class="btn btn-success btn-xs">ADD MEMBERS</button>';
+						str+='<button class="btn btn-success btn-xs">UPDATE</button>';
+						str+='<button class="btn btn-success btn-xs">STATUS</button>';
+						str+='<button class="btn btn-success btn-xs">DELETE</button>';
+					str+='</td>';
+			  str+='</tr>';
+	  }
+	  str+='</tbody';   
+	  str+='</table';  
+	  $("#buildAppntmntLblTblId").html(str);
+	}
 </script>
 </body>
 </html>

@@ -11595,5 +11595,11 @@
 	    	<param name="root">appointmentUserDtlsList</param>
 	    </result>
 	</action>
+	<action name="getLabelDtlsAction" class="appointmentAction" method="getLabelDtls">
+		<result type="json" name="success">
+	    	<param name="root">appointmentUserDtlsList</param>
+	    </result>
+	</action>
+	
 </package>
 </struts>      
