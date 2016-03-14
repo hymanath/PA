@@ -847,7 +847,10 @@
 			$('html,body').animate({
 			scrollTop:  $("#yourElement").offset().top 
 			});
-			
+			var checkDiv = $("#fadeInLeft").height()+150;
+	        $(".setHeight").css("height",checkDiv)	;
+			var checkDiv1 = $("#fadeInRight").height();
+			$("#fadeInRight").css("height",checkDiv1)	;
 			isSuccess = false;
 		}
 		else
@@ -1592,7 +1595,7 @@
 											
 											<div class="span6">
 											<h5 class="text-align1">Blood Group</h5>
-											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="bloodgroupId" list="voterInfoVOList[0].selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Blood Group" style="width:220px;" name="cadreRegistrationVO.bloodGroupId"  value="%{voterInfoVOList[0].blodGroupId}"/>
+											<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="bloodgroupId" list="voterInfoVOList[0].selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Blood Group" style="width:220px;margin-left:8px" name="cadreRegistrationVO.bloodGroupId"  value="%{voterInfoVOList[0].blodGroupId}"/>
 											
 											</div>
 										</div>
@@ -1764,7 +1767,7 @@
 							<h4  class="text-align1">PRESENT ADDRESS<hr class="m_0"/></h4>
 					</div>
 					<div class="span3" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
+							<input type="text" class="text-align2 form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 							<br><span id="addressErr" style="color:red;font-size:12px;">
 				   </div>
 					<div class="span3" id="roadDivId">
@@ -1778,16 +1781,14 @@
 							<br><span id="landmarkErr" style="color:red;font-size:12px;"></span>
 					</div>
 					<div class="span3">
-					<div class=" m_top20" >
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span>  </h5>
-					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.prsntAddrsDistId" />	
+					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " style="width:215px" name="cadreRegistrationVO.prsntAddrsDistId" />	
 					  <br><span id="presntDistrictIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>
-					 	</div> 
-					</div>
+					</div> 
 					<div class="span3">
 					<div class="m_top20">
 						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span> </h5>
-						   <select id="presentConstituencyId" name="cadreRegistrationVO.prsntAddrsConstId"> 
+						   <select id="presentConstituencyId" name="cadreRegistrationVO.prsntAddrsConstId" class="text-align2"> 
 							 <option value="0">Select Constituency</option>
 						   </select>
 						   <br><span id="presentConstituencyIdErr" style="color:red;font-size:12px;"></span> 
@@ -1814,7 +1815,7 @@
 					<div class="span3">
 					<div class="m_top20">
 						<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span> --></h5>
-						<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" value="${voterInfoVOList[0].pincode}" ></input>
+						<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" value="${voterInfoVOList[0].pincode}" style="width:200px;" ></input>
 					</div> 
 				    </div>
 					 <!--  WORKING ADDRESS LOCATION. -->
@@ -2902,11 +2903,11 @@ function showHideFamRelatinoSts(){
    if($('#relativeTypeChecked').prop('checked')==true){
 	   
      $('#showHideFammemberType').show();
-	 var checkDiv = $("#fadeInLeft").height()+100;
+	 var checkDiv = $("#fadeInLeft").height()+150;
 	 $(".setHeight").css("height",checkDiv)
    }else{
      $('#showHideFammemberType').hide();
-	 var checkDiv = $("#fadeInLeft").height()-50;
+	 var checkDiv = $("#fadeInLeft").height()-80;
 	 $(".setHeight").css("height",checkDiv)
    }
 }
