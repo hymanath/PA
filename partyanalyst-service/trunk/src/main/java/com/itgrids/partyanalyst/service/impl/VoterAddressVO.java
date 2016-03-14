@@ -20,7 +20,7 @@ public class VoterAddressVO implements Serializable{
 	private String houseNo;
 	private String street;
 	private String landMark;
-	
+	private String pincode;
 	
 	public String getHouseNo() {
 		return houseNo;
@@ -94,7 +94,13 @@ public class VoterAddressVO implements Serializable{
 	public void setVillWardList(List<LocationWiseBoothDetailsVO> villWardList) {
 		this.villWardList = villWardList;
 	}
-	
+	public String getPincode() {
+		return pincode;
+	}
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+    	
 	
 	
 	

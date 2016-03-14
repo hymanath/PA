@@ -67,7 +67,7 @@ public class VoterInfoVO implements java.io.Serializable
 	private String street;
 	private String landmark;
 	private String schoolName;
-	
+	private String pincode;
 	
 	public String getSchoolName() {
 		return schoolName;
@@ -419,6 +419,12 @@ public class VoterInfoVO implements java.io.Serializable
 	public void setLandmark(String landmark) {
 		this.landmark = landmark;
 	}
-	
+	public String getPincode() {
+		return pincode;
+	}
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+    	
 	
 }
