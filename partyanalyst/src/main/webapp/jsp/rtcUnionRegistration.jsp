@@ -1721,6 +1721,7 @@
 					<br><span id="employeeErr" style="color:red;font-size:12px;"></span>
 				</div>
 				
+				           
 					<s:if test="voterInfoVOList[0].zoneId == null || voterInfoVOList[0].zoneId.length == 0 ">
 						<div class="span4" id="zoneDivId" style="display:none">
 							<h5 class="text-align1">ZONE <span class="mandatory">*</span> </h5>
@@ -1746,6 +1747,7 @@
 						</div>
 					</div>
 					</div>
+					<!--  PRESENT ADDRESS LOCATION. -->
 					<div class="row">
 					<div>
 					<div class="span11">
@@ -1802,6 +1804,13 @@
 						  <br> <span id="presentVillWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						  </div> 
 				    </div>
+					<div class="span3">
+					<div class="m_top20">
+						<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span> --></h5>
+						<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="" name="cadreRegistrationVO.prsntAddrsPincode" value=""></input>
+					</div> 
+				    </div>
+					 <!--  WORKING ADDRESS LOCATION. -->
 				<div id="workingAddressDiv">
 					<div class="span11" >
 							<h4 class="text-align1">WORKING ADDRESS <label style="display:inline-block;font-size:15px;"><input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input>Check this if same as present address</label><hr class="m_0"/></h4>
@@ -1855,7 +1864,14 @@
 								  <br> <span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						   </div>
 					   </div>
+					   <div class="span3">
+						<div class="m_top20">
+							<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span>--> </h5>
+							<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="" name="cadreRegistrationVO.workAddrsPincode" value=""></input>
+						</div> 
+				    </div>
 					</div>	
+					
 					</s:if>
 					<s:else>
 					
@@ -1933,6 +1949,7 @@
 								   <br><span id="presentVillWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						   </div>
 					   </div> 
+					   
 				<div id="workingAddressDiv">	   
 					<div class="span11">
 							<h4 class="text-align1">WORKING ADDRESS <input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input><hr class="m_0"/></h4>
@@ -1985,6 +2002,12 @@
 								   <br><span id="villWardIdErr" style="color:red;font-size:12px;margin-left: 10px;"></span> 
 						   </div>
 					   </div>
+					   <div class="span4">
+						<div class="m_top20">
+							<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span>--> </h5>
+							<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="" name="" value=""></input>
+						</div> 
+				    </div>
 				</div>	
 					</s:else>
 				
