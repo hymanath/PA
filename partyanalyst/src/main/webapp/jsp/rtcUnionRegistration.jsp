@@ -542,10 +542,10 @@
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age is required.');
 		}
-		if( cadreAge > 120)
+		if(cadreAge <=18 || cadreAge >=60)
 		{
 			isErrorStr = " error";
-			$('#ageErr').html(' Candidate Age Should not exceed 120 yrs. ');
+			$('#ageErr').html(' Candidate Age Between 18 to 60');
 		}
 		if(cadreCardNumber != null && cadreCardNumber.trim().length == 0)
 		{
@@ -3546,6 +3546,7 @@ function getExistingCadreInfo1(){
 			$('#'+errDiv+'').html('Candidate Age must be number.');	
 			$('#cadreAgeId').val('');			
 		}
+		
 	}
 	return reqErstatus;
  }
