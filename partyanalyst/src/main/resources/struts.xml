@@ -11570,6 +11570,25 @@
 	    	<param name="root">resultStatus</param>
 	    </result>
 	</action>
-	
+	<action name="getCandidateDesignation" class="appointmentAction" method="getAppCandidateDesigList">
+		<result type="json" name="success">
+	    	<param name="root">appointmentCandDesigList</param>
+	    </result>
+	</action>
+	<action name="getCandidateDesignation" class="appointmentAction" method="getAppCandidateDesigList">
+		<result type="json" name="success">
+	    	<param name="root">appointmentCandDesigList</param>
+	    </result>
+	</action>
+	<action name="getAppointmentStatusList" class="appointmentAction" method="getAppointmentStatus">
+		<result type="json" name="success">
+	    	<param name="root">appointmentStatusList</param>
+	    </result>
+	</action>
+	<action name="getAppointmentPriority" class="appointmentAction" method="getAppointmentPriorityList">
+		<result type="json" name="success">
+	    	<param name="root">appointmentPrirityList</param>
+	    </result>
+	</action>
 </package>
 </struts>      
