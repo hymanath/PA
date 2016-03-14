@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
 import com.itgrids.partyanalyst.dao.IIvrRespondentCadreDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyAnswerDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyEntityDAO;
+import com.itgrids.partyanalyst.dao.IIvrSurveyServiceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -156,8 +157,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IIvrSurveyAnswerDAO ivrSurveyAnswerDAO;
 	private IPartyMeetingDAO partyMeetingDAO;
 	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
+	private IIvrSurveyServiceDAO ivrSurveyServiceDAO;
 	
 	
+	
+	public IIvrSurveyServiceDAO getIvrSurveyServiceDAO() {
+		return ivrSurveyServiceDAO;
+	}
+
+	public void setIvrSurveyServiceDAO(IIvrSurveyServiceDAO ivrSurveyServiceDAO) {
+		this.ivrSurveyServiceDAO = ivrSurveyServiceDAO;
+	}
+
 	public ITrainingCampAttendanceDAO getTrainingCampAttendanceDAO() {
 		return trainingCampAttendanceDAO;
 	}
@@ -5371,11 +5382,78 @@ public class CadreDetailsService implements ICadreDetailsService{
 			else if(entityTypeId.longValue() == 3l){
 				finalVoList = getSurveyAnswerDetailsForTrainingCamps(surveyMap, surveyIds, respondentId, searchType, tdpCadreId);
 			}
+			else if(entityTypeId.longValue() == 5l){
+				finalVoList = getSurveyAnswerDetailsForSpecialSurveys(surveyMap, surveyIds, respondentId, searchType);
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getIvrSurveyInfoByTdpCadreId() Method - ",e);
 		}
 		return finalVoList;
+	}
+	
+	public List<IvrOptionsVO> getSurveyAnswerDetailsForSpecialSurveys(Map<Long,IvrOptionsVO> surveyMap,List<Long> surveyIds,Long respondentId,String searchType){
+			List<IvrOptionsVO> returnList = new ArrayList<IvrOptionsVO>();
+		
+		try {
+			
+			//0.ivrSurveyId,1.surveyName,2.ivrSurveyRoundId,3.roundName,4.ivrSurveyQuestionId,5.ivrQuestionId,6.question,7.ivrOptionId,8.option
+			List<Object[]> list = new ArrayList<Object[]>();
+			
+			if(searchType.trim().equalsIgnoreCase("total")){
+				list = ivrSurveyAnswerDAO.getTotalIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			else if(searchType.trim().equalsIgnoreCase("answered")){
+				list = ivrSurveyAnswerDAO.getIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			else if(searchType.trim().equalsIgnoreCase("unanswered")){
+				list = ivrSurveyAnswerDAO.getUnAnsweredIvrSurveyAnswerInfoDetailsBySurveyListAndRespondentId(surveyIds, respondentId);
+			}
+			
+			Map<Long,List<IvrOptionsVO>> surveyListMap = new LinkedHashMap<Long, List<IvrOptionsVO>>(0);
+					
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					Long surveyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					IvrOptionsVO vo = surveyMap.get(surveyId);
+					List<IvrOptionsVO> ivrSurveysList = new ArrayList<IvrOptionsVO>(0);
+					if(vo != null)
+					{
+						IvrOptionsVO surveyVO = new IvrOptionsVO();
+						if(surveyListMap.get(vo.getSurveyId()) != null){
+							ivrSurveysList = surveyListMap.get(vo.getSurveyId());
+						}
+						surveyVO.setSurveyId(vo.getSurveyId());
+						surveyVO.setSurveyName(obj[1] != null ? obj[1].toString():"");
+						surveyVO.setEventId(vo.getEventId());
+						Object[] surveyDetails = ivrSurveyServiceDAO.getSurveyServiceBySurveyId(vo.getEventId());
+						if(surveyDetails != null){
+							surveyVO.setEventName(surveyDetails[1] != null ? surveyDetails[1].toString():"");
+							surveyVO.setDateStr(surveyDetails[2] != null ? surveyDetails[2].toString():"");
+						}
+						//surveyVO.setEventName(meetingName);
+						surveyVO.setRoundId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						surveyVO.setRound(obj[3] != null ? obj[3].toString():"0");
+						surveyVO.setQuestionId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+						surveyVO.setQuestion(obj[6] != null ? obj[6].toString():"0");
+						surveyVO.setOptionId(Long.valueOf(obj[7] != null ? obj[7].toString():"0"));
+						surveyVO.setOption(obj[8] != null ? obj[8].toString():"0");
+						
+						ivrSurveysList.add(surveyVO);
+						surveyListMap.put(vo.getSurveyId(), ivrSurveysList);
+					}
+				}
+			}
+			
+			for (Long surveyId : surveyListMap.keySet()) {
+				returnList.addAll(surveyListMap.get(surveyId));
+			}
+			//returnList = (List<IvrOptionsVO>)surveyListMap.values();
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSurveyAnswerDetailsForSpecialSurveys() Method - ",e);
+		}
+		return returnList;
 	}
 	
 	public List<IvrOptionsVO> getSurveyAnswerDetailsForTrainingCamps(Map<Long,IvrOptionsVO> surveyMap,List<Long> surveyIds,Long respondentId,String searchType,Long tdpCadreId){
