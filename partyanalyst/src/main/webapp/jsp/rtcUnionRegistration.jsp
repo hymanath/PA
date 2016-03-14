@@ -489,7 +489,7 @@
 		var presnetConstituency = $('#presentConstituencyId').val();
 		var presentMandalId = $('#presentManTowDivId').val();
 		var presentVillageId = $('#presentVillWardId').val();
-		
+		var prsntAddrsPincode = $("#prsntAddrsPincodeId").val(); 
 		
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
@@ -542,10 +542,21 @@
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age is required.');
 		}
-		if(cadreAge <=18 || cadreAge >=70)
+		if(tdpMemberTypeId == 3 || tdpMemberTypeId == 4){
+			
+		if(cadreAge <21 || cadreAge >70)
 		{
 			isErrorStr = " error";
-			$('#ageErr').html(' Candidate Age Between 18 to 60');
+			$('#ageErr').html(' Candidate Age Between 21 to 70');
+		}
+		}
+		if(tdpMemberTypeId == 5){
+			
+		if(cadreAge <21 || cadreAge >100)
+		{
+			isErrorStr = " error";
+			$('#ageErr').html(' Candidate Age Between 21 to 100');
+		}
 		}
 		if(cadreCardNumber != null && cadreCardNumber.trim().length == 0)
 		{
@@ -613,6 +624,7 @@
 			isErrorStr = " error";
 			$('#landmarkErr').html(' LandMark  is required.');
 		}
+		
 		
 		//Working Address validations.
 		
@@ -826,6 +838,12 @@
 		if(!isAadharNumber('candAdrId','Aadhar No ')){
 			isErrorStr = " error";	
 		}//iferror return false
+		if(!isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO ')){
+			isErrorStr = " error";	
+		}//iferror return false 
+		if(!isWorkerPincodeNumber('workAddrsPincodeId','PinCodeNO ')){
+			isErrorStr = " error";	
+		}//iferror return false 
 		
 		$('.famAgeErrCls').each(function(){
 			var key = $(this).attr('key');
@@ -1814,7 +1832,7 @@
 					<div class="span3">
 					<div class="m_top20">
 						<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span> --></h5>
-						<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" value="${voterInfoVOList[0].pincode}" ></input>
+						<input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" onkeyup="isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO')" value="${voterInfoVOList[0].pincode}" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>
 					</div> 
 				    </div>
 					 <!--  WORKING ADDRESS LOCATION. -->
@@ -1875,7 +1893,7 @@
 					   <div class="span3">
 						<div class="m_top20">
 							<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span>--> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode" ></input>
+							<input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode" onkeyup="isWorkerPincodeNumber('workAddrsPincodeId','PinCodeNO')"></input><br/><span id="errWrkAddpinId" style="color:red;font-size:12px;"></span>
 						</div> 
 				    </div>
 					</div>	
@@ -3418,7 +3436,10 @@ function showNewTakenImg(){
 	}
 	function setDefaultImage(img)
 	{
-		img.src = "images/mahaNadu/user image.jpg";
+		
+			img.onerror = "";
+			img.src = "images/mahaNadu/user image.jpg";
+			return true;
 	}
 	
 	function updateText(vCardNo){
@@ -4318,5 +4339,72 @@ function getDistricts(district,populateConstituency,populateMandal,populateVilla
 		   }
 		});
 	}
+	function isPresentPincodeNumber(fieldId,PinCodeNO)
+	{
+		
+		var numberFlag = true;
+		var errDiv='#NaadharErr';
+		if(fieldId == "prsntAddrsPincodeId"){
+			errDiv='#errprsttAddpinId';
+		}
+		var presentAddrpincode = $('#'+fieldId+'').val().trim();
+		
+		$(errDiv).html('');
+		
+		
+		
+		if(presentAddrpincode.length == 0) 
+		{
+			if(!(fieldId == "prsntAddrsPincodeId")){
+				$(errDiv).html(''+PinCodeNO+' Required.');		
+				numberFlag= false;
+			}
+		}		 
+		else if (isNaN(presentAddrpincode)) 
+		{
+			$(errDiv).html('Invalid '+PinCodeNO+'.');			
+			numberFlag = false;
+		}
+		else if(presentAddrpincode.length < 6) 
+		{
+			$(errDiv).html(''+PinCodeNO+' should be 6 digits.');		
+			numberFlag= false;
+		}
+			return numberFlag;
+	}
+	function isWorkerPincodeNumber(fieldId,PinCodeNO)
+	{
+		
+		var numberFlag = true;
+		var errDiv='#NaadharErr';
+		if(fieldId == "workAddrsPincodeId"){
+			errDiv='#errWrkAddpinId';
+		}
+		var workerAddrpincode = $('#'+fieldId+'').val().trim();
+		
+		$(errDiv).html('');
+		
+		
+		
+		if(workerAddrpincode.length == 0) 
+		{
+			if(!(fieldId == "workAddrsPincodeId")){
+				$(errDiv).html(''+PinCodeNO+' Required.');		
+				numberFlag= false;
+			}
+		}		 
+		else if (isNaN(workerAddrpincode)) 
+		{
+			$(errDiv).html('Invalid '+PinCodeNO+'.');			
+			numberFlag = false;
+		}
+		else if(workerAddrpincode.length < 6) 
+		{
+			$(errDiv).html(''+PinCodeNO+' should be 6 digits.');		
+			numberFlag= false;
+		}
+			return numberFlag;
+	}
+	
 </script>
 </html>
