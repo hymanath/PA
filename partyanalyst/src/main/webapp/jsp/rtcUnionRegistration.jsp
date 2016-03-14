@@ -1807,7 +1807,7 @@
 					<div class="span3">
 					<div class="m_top20">
 						<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span> --></h5>
-						<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="" name="cadreRegistrationVO.prsntAddrsPincode" value=""></input>
+						<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" value="${voterInfoVOList[0].pincode}" ></input>
 					</div> 
 				    </div>
 					 <!--  WORKING ADDRESS LOCATION. -->
@@ -1867,7 +1867,7 @@
 					   <div class="span3">
 						<div class="m_top20">
 							<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span>--> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="" name="cadreRegistrationVO.workAddrsPincode" value=""></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode" ></input>
 						</div> 
 				    </div>
 					</div>	
@@ -4012,7 +4012,7 @@ $(document).ready(function(){
 	   $("#workAddressId").val(result.houseNo);
 	   $("#WorkRoadId").val(result.street);
 	   $("#workLandmarkId").val(result.landMark);
-		
+	   $("#workAddrsPincodeId").val(result.pincode);
 		
        var districtId=result.districtId;
        var constituencyId=result.constituencyId;
