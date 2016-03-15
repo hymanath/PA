@@ -206,7 +206,8 @@ body{color:#666 !important}
 									<div id="tableDivsId">
 										<div class="panel panel-default">
 											<div class="panel-heading bg_ff">
-											<div class="col-xs-5">
+											
+											<!--<div class="col-xs-5">
 											<label class="radio-inline">
 												<input type="radio" name="district" value="total" checked="true" id="districtTotalId" class="districtRadioCls">Total
 											</label>
@@ -219,7 +220,8 @@ body{color:#666 !important}
 											<label class="radio-inline">
 												<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
 											</label>
-											</div>
+											</div> -->
+											
 												<div class="pull-right col-md-3">
 													<div class="input-group">
 														<input class="form-control getDate" type="text">
@@ -1269,18 +1271,7 @@ function getOnlineAndTabUsersCount(){
 	});
 }
 
-/*function getCadreRegistrationTotalCount(){
-	var jObj={};
-	alert(1221);
-	$.ajax({
-		type:"GET",
-		url:"getCadreRegistrationAction.action",
-		dataType: 'json',
-		data:{task:JSON.stringify(jObj)}	
-	}).done(function(result) {
-		
-	});
-}*/
+
 $(document).on('click', '.locationTypeRadioCls', function(){
 	
 	var selectedVal = $(this).val();
@@ -1305,28 +1296,49 @@ $(document).on('click', '.locationTypeRadioCls', function(){
 	}
 	
 })
+$(document).on("click",".districtRadioCls",function(){
+	
+	var searchType = $(this).val();
+	getCadreRegistrationTotalCount(searchType,"District");
+});
+$(document).on("click",".constituecnyRadioCls",function() {
+	
+	var searchType = $(this).val();
+	getCadreRegistrationTotalCount(searchType,"Constituency");
+});
 
+$(document).on("click",".applyBtn",function(){
+	
+	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
+	getCadreRegistrationTotalCount("",selectedVal);
+	$(".constituecnyRadioCls").removeAttr("checked");
+});
+function getSelectedMemberType(){
+	
+	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
+    getCadreRegistrationTotalCount("",selectedVal);
 
-getCadreRegistrationTotalCount("total","Constituency");
+}
+
+$(".ranges ul li").click(function(){
+	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
+}
+
+//getCadreRegistrationTotalCount("total","Constituency");
 var cadreInput;
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
 	cadreInput = '';
 	if(locationLevel == "District"){
-				/*$(".districtCls").css("display","block");
-				$(".constituencyCls").css("display","none");
-				getCadreRegistrationTotalCount("total","District");
-				$("#districtWiseTitleId").html('<b>DISTRICT WISE REGISTRATION DETAILS</b>');
-				$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
-				$("#constituencyWiseRegistredCountId").html('');
-				*/
-				$(".districtCls").css("display","block");
-				$(".constituencyCls").css("display","none");
-			$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
-	}
-	else{
+		
+		$(".districtCls").css("display","block");
+		$(".constituencyCls").css("display","none");
+		$("#districtWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+		
+	}else{
+	
 		$(".districtCls").css("display","none");
-				$(".constituencyCls").css("display","block");
-	$("#constituencyWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+		$(".constituencyCls").css("display","block");
+		$("#constituencyWiseRegistredCountId").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
 	}
 	
 	var membereTypeIds = new Array();
@@ -1340,9 +1352,9 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 	var toDate = "";
 	var dates = $(".getDate").val();
 	if(dates != null && dates.length > 0){
-		var datesArr = dates.split("-");
-		startDate = datesArr[0];
-		toDate = datesArr[1];
+		var datesArr = dates.split("to");
+		startDate = datesArr[0].trim();
+		toDate = datesArr[1].trim();
 	}
 	//searchTypeStr replace With locationLevel
 	var jObj={
@@ -1350,7 +1362,7 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		searchTypeStr:locationLevel,
 		startDate:startDate,
 		toDate:toDate,
-		searchDatType:searchType
+		//searchDatType:searchType
 	};
 	cadreInput = jObj;
 	$.ajax({
@@ -1743,14 +1755,7 @@ function getAllTotalLast30DaysCounts()
 	  $("#tL30CountLoadingId").hide();
 	  });
 }
-$(document).on("click",".districtRadioCls",function(){
-	var searchType = $(this).val();
-	getCadreRegistrationTotalCount(searchType,"District");
-});
-$(document).on("click",".constituecnyRadioCls",function() {
-	var searchType = $(this).val();
-	getCadreRegistrationTotalCount(searchType,"Constituency");
-});
+
 function refreshDetails(){
 	var id = [];
 	id = $("#userMembersId").val();
@@ -1806,6 +1811,7 @@ function refreshDetails(){
 }
 var memberTypesIdsArr = [];
 function getMemberTypeSelectedValues(){
+	
 	$("#userMembersId").html("");
 	$("#userMembersIdLoadingId").show();
 	var jObj={
@@ -1837,7 +1843,11 @@ function getMemberTypeSelectedValues(){
 });
 }
 getMemberTypeSelectedValues();
-//$(".getDate").daterangepicker({opens:"left"});
+
+initiateDateRangePicker();
+function initiateDateRangePicker(){
+	
+	//$(".getDate").daterangepicker({opens:"left"});
 var cb = function(start, end, label) {
 			  $('.getDate').html(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 			  }
@@ -1916,22 +1926,12 @@ var cb = function(start, end, label) {
 		 $('.getDate').data('daterangepicker').remove();
 		 });
 		 $('.daterangepicker').css("right","0px !important;");
+}
+
+
+
 		 
 
-$(document).on("click",".applyBtn",function(){
-	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
-	getCadreRegistrationTotalCount("",selectedVal);
-	$(".constituecnyRadioCls").removeAttr("checked");
-});
-function getSelectedMemberType(){
-	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
-    getCadreRegistrationTotalCount("",selectedVal);
-
-}
-$(document).on("change","#userMembersId",function(){
-getSelectedMemberType();
-
-});
 $(".ranges").find("ul").prepend('<li>Total</li>');
 $(".ranges").find("ul li").removeClass("active");
 $(".ranges").find("ul li:first-child").addClass("active");
