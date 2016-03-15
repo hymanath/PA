@@ -1320,10 +1320,6 @@ function getSelectedMemberType(){
 
 }
 
-$(".ranges ul li").click(function(){
-	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
-}
-
 //getCadreRegistrationTotalCount("total","Constituency");
 var cadreInput;
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
