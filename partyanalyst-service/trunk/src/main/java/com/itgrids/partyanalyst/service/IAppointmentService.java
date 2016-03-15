@@ -16,4 +16,6 @@ public interface IAppointmentService {
 	public List<AppointmentBasicInfoVO> getAppointmentUsersDtlsByUserId(Long userId);
 	public ResultStatus createAppointmentLeble(String labelName,String date);
     public List<AppointmentBasicInfoVO> getLabelDtslByDate(String date);
+	public List<IdNameVO> getVillageWard(Long mandalId);
+	public List<IdNameVO> getConstituenciesForADistrict(Long distId);
 }
