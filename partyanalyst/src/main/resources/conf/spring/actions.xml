@@ -1628,6 +1628,8 @@
 
 	<bean id="appointmentAction" class="com.itgrids.partyanalyst.web.action.AppointmentAction" singleton="false">
 		<property name="appointmentService" ref="appointmentService" />		
+		<property name="mobileService" ref="mobileService" />
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
 	</bean>	
 		
 </beans>	
