@@ -1358,7 +1358,7 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		searchTypeStr:locationLevel,
 		startDate:startDate,
 		toDate:toDate,
-		//searchDatType:searchType
+		searchDatType:searchType
 	};
 	cadreInput = jObj;
 	$.ajax({
@@ -1433,7 +1433,7 @@ function getRegistrationDetails(locationId,title) {
 		toDate:cadreInput.startDate,
 		searchDateType:cadreInput.searchDatType,
 		locationId:locationId,
-		appType:""
+		appType:"",
 	};
 	$.ajax({
 		type:"Post",
