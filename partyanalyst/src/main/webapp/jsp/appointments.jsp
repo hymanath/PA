@@ -1316,6 +1316,7 @@
                                         </div>
                                         <div class="panel-body">
                                         	<div class="table-responsive">
+											<div id="appntmntLblDltSttsId"></div>
 											<div id="buildAppntmntLblTblId"></div>
                                                 <!--<table class="table table-condensed bg_ff">
                                                     <thead>
@@ -2270,6 +2271,7 @@
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 	$(document).on("click",".appointmentSettings",function(e){
 		$(".updateAppointment").hide()
 		$(".messageBlock").hide()
@@ -2761,7 +2763,7 @@ $(document).on('click','#createNewLabelId',function(){
 			  str+='<tbody';                                                   
 	  for(var i in result){
 				str+='<tr>';
-					str+='<td>'+result[i].name+'</td>';
+					str+='<td attr_label_id='+result[i].appointmentLabelId+'>'+result[i].name+'</td>';
 					str+='<td>0</td>';
 					str+='<td>0</td>';
 					str+='<td>0</td>';
@@ -2772,7 +2774,7 @@ $(document).on('click','#createNewLabelId',function(){
 						str+='<button class="btn btn-success btn-xs">ADD MEMBERS</button>';
 						str+='<button class="btn btn-success btn-xs">UPDATE</button>';
 						str+='<button class="btn btn-success btn-xs">STATUS</button>';
-						str+='<button class="btn btn-success btn-xs">DELETE</button>';
+						str+='<button class="btn btn-success btn-xs lblDltCls">DELETE</button>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
@@ -2780,6 +2782,30 @@ $(document).on('click','#createNewLabelId',function(){
 	  str+='</table';  
 	  $("#buildAppntmntLblTblId").html(str);
 	}
+	
+	$(document).on("click",".lblDltCls",function(){
+	  var labelId=$(this).parents("tr").find("td:eq(0)").attr("attr_label_id");
+		deleteAppointmentLabel(labelId);
+	});
+	function deleteAppointmentLabel(labelId){
+		$("#appntmntLblDltSttsId").html(" ");
+		var jsObj={
+				labelId:labelId
+			}
+			$.ajax({
+				type : 'GET',
+				url : 'deleteAppointmentLabelAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				   console.log(result);	
+				if(result!=null && result!=0){
+					if(result.message=="success"){
+					 $("#appntmntLblDltSttsId").html("<div><p style='color:red'>Label Deleted Successfully");		
+					}
+				}
+		  }); 
+	}	
 $("#modalDateId").daterangepicker({singleDatePicker:true});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
 </script>

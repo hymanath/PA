@@ -289,4 +289,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String deleteAppointmentLabel(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			 resultStatus=appointmentService.deleteAppointmentLabel(jObj.getLong("labelId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at deleteAppointmentLabel() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
