@@ -3016,10 +3016,8 @@
 		<property name="candidateDesignationDAO" ref="candidateDesignationDAO"/>
 		<property name="appointmentPriorityDAO" ref="appointmentPriorityDAO"/>
 		<property name="appointmentLableStatusDAO" ref="appointmentLableStatusDAO"/>
-		<property name="appointmentManageUserDAO" ref="appointmentManageUserDAO"/>
 		<property name="appointmentLableDAO" ref="appointmentLableDAO"/>
-	
-		
+		<property name="appointmentManageUserDAO" ref="appointmentManageUserDAO"/>
 	</bean>
 </beans>		
 	
