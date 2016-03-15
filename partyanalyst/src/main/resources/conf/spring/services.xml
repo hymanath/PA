@@ -3018,6 +3018,9 @@
 		<property name="appointmentLableStatusDAO" ref="appointmentLableStatusDAO"/>
 		<property name="appointmentLableDAO" ref="appointmentLableDAO"/>
 		<property name="appointmentManageUserDAO" ref="appointmentManageUserDAO"/>
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+		<property name="regionScopesDAO" ref="regionScopesDAO"/>
+		<property name="panchayatDAO" ref="panchayatDAO"/>
 	</bean>
 </beans>		
 	
