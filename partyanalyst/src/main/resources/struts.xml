@@ -11590,6 +11590,11 @@
 	    	<param name="root">appointmentPrirityList</param>
 	    </result>
 	</action>
+	<action name="createAppointmentLabel" class="appointmentAction" method="createAppointmentLeble">
+		<result type="json" name="success">
+	    	<param name="root">resultStatus</param>
+	    </result>
+	</action>
 	<action name="getAppointmentUsersDtlsAction" class="appointmentAction" method="getAppointmentUsersDtls">
 		<result type="json" name="success">
 	    	<param name="root">appointmentUserDtlsList</param>
