@@ -1416,8 +1416,22 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 function getRegistrationDetails(locationId,title) {
 	$("#registrationCadreDetailsTitle").html(' '+title+' '+cadreInput.searchTypeStr+' ');
 	$("#registrationCadreDetailsPopupDiv").html('<center><img style="width: 20px; height: 20px;" src="images/icons/loading.gif"></center>');
+	// Search With MemberType 
+	var membereTypeIds = new Array();
+	membereTypeIds = $('#userMembersId').val();
+	if(membereTypeIds == null || membereTypeIds.length==0)
+	{
+		membereTypeIds = memberTypesIdsArr;
+	}else{
+		for(var i in membereTypeIds){
+		if(jQuery.inArray( membereTypeIds[i], memberTypesIdsArr ) > 0){
+			alert(membereTypeIds)
+		membereTypeIds = membereTypeIds;
+		}
+		}
+	}
 	var jObj={
-		membereTypeIds:cadreInput.membereTypeIds,
+		membereTypeIds:membereTypeIds,
 		searchTypeStr:cadreInput.searchTypeStr,
 		startDate:cadreInput.startDate,
 		toDate:cadreInput.startDate,
