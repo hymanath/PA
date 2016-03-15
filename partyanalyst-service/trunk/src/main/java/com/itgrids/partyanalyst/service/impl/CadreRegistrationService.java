@@ -12401,5 +12401,93 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			}
 			return null;
 		}
+public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate) {
+		
+		List<TdpCadreVO>  returnList = null;
+		try {
+			
+			Map<Long,TdpCadreVO> cadrelocationWiseMap=new HashMap<Long,TdpCadreVO>();
+			List<Object[]> cadreRegisteredCountdtls =  null;
+			
+			if(searchTypeStr.equalsIgnoreCase("Constituency")){
+				List<Object[]> constituencyList=constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(1L,1L,null);
+				if(constituencyList!=null && constituencyList.size()>0){
+					for(Object[] distCadre:constituencyList) {
+						TdpCadreVO tdpvo=new TdpCadreVO();
+						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						tdpvo.setTabCount(0L);
+						tdpvo.setWebCount(0L);
+						tdpvo.setTotalCount(0L);
+						cadrelocationWiseMap.put(tdpvo.getId(), tdpvo);
+					}
+				}	
+			}else if(searchTypeStr.equalsIgnoreCase("District")){
+				List<Object[]> districtList=districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,1L);
+				if(districtList!=null && districtList.size()>0){
+					for(Object[] distCadre:districtList){
+						TdpCadreVO tdpvo=new TdpCadreVO();
+						tdpvo.setId(commonMethodsUtilService.getLongValueForObject(distCadre[0]));
+						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
+						tdpvo.setTabCount(0L);
+						tdpvo.setWebCount(0L);
+						tdpvo.setTotalCount(0L);
+						cadrelocationWiseMap.put(tdpvo.getId(),tdpvo);
+					}
+				}
+			}
+			
+			Date stDate=null;
+			Date edDate=null;
+			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+			Date today = dateUtilService.getCurrentDateAndTime();
+			if(startDate!=null && startDate.trim().length()>0 && toDate!=null && toDate.trim().length()>0){
+				stDate=sdf.parse(startDate.trim());
+				edDate=sdf.parse(toDate.trim());
+			}				
+				
+			
+			 cadreRegisteredCountdtls = tdpCadreDAO.getLocationwiseCadreRegistraionDetails(membereTypeIdsList, searchTypeStr, stDate,edDate);
+			if(cadreRegisteredCountdtls != null && cadreRegisteredCountdtls.size()>0)
+			{
+				for (Object[] cadreDtls : cadreRegisteredCountdtls) {
+					Long locationId = commonMethodsUtilService.getLongValueForObject(cadreDtls[0]);
+					/*Long locationId=Long.valueOf(cadreDtls[0]!=null ?cadreDtls[0].toString():"0L");*/
+					TdpCadreVO vo = cadrelocationWiseMap.get(locationId);
+					if(vo != null){
+						String typeStr = commonMethodsUtilService.getStringValueForObject(cadreDtls[2]);
+						Long count = commonMethodsUtilService.getLongValueForObject(cadreDtls[3]);
+						if(typeStr != null && !typeStr.isEmpty())
+						{
+							if(typeStr.trim().equalsIgnoreCase("TAB")){
+								vo.setTabCount(count);
+							}
+							else if(typeStr.trim().equalsIgnoreCase("WEB")){
+								vo.setWebCount(count);								
+							}
+							
+							Long webCount = vo.getWebCount() != null ? Long.valueOf(vo.getWebCount().toString().trim()):0L;
+							Long tabCount = vo.getTabCount() != null ? Long.valueOf(vo.getTabCount().toString().trim()):0L;
+							Long totalCount = webCount + tabCount;
+							if(totalCount != null && totalCount.longValue()>0L)
+								vo.setTotalCount(totalCount);
+						}
+					}
+				}
+			}
+			
+			if(cadrelocationWiseMap != null && cadrelocationWiseMap.size()>0)
+			{
+				returnList = new ArrayList<TdpCadreVO>(0);
+				for (Long locationId : cadrelocationWiseMap.keySet()) {
+					returnList.add(cadrelocationWiseMap.get(locationId));
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getLocationwiseCadreRegistraionDetails in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
 	
 }
