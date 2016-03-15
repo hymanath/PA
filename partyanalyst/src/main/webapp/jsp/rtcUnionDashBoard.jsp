@@ -221,7 +221,15 @@ body{color:#666 !important}
 												<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
 											</label>
 											</div> -->
-											
+												<div class="col-xs-3">
+												<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" checked>District</label>
+												<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
+												</div>
+											<div class="col-md-3">
+												<select id="userMembersId" multiple>
+												</select>
+												<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
+											</div>
 												<div class="pull-right col-md-3">
 													<div class="input-group">
 														<input class="form-control getDate" type="text">
@@ -231,18 +239,7 @@ body{color:#666 !important}
 													</div>
 												</div>
 												<div class="row m_top10">
-												<div class="col-xs-12 m_top10">
-												<div class="col-md-3">
-														<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" checked>District</label>
-														<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
-													</div>
-													<div class="col-md-3">
-															<select id="userMembersId" multiple>
-														    </select>
-															<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
-														</div>
-														
-												</div>
+												
 													<!--<div class="col-md-6">
 														<div class="block">
 															<h4 class="m_0"><b>DISTRICT WISE AFFLIATED CADRE</b></h4>
@@ -1320,6 +1317,7 @@ function getSelectedMemberType(){
 
 }
 
+
 //getCadreRegistrationTotalCount("total","Constituency");
 var cadreInput;
 function getCadreRegistrationTotalCount(searchType,locationLevel) {
@@ -1347,6 +1345,7 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 	var startDate = "";
 	var toDate = "";
 	var dates = $(".getDate").val();
+	
 	if(dates != null && dates.length > 0){
 		var datesArr = dates.split("to");
 		startDate = datesArr[0].trim();
@@ -1358,7 +1357,7 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		searchTypeStr:locationLevel,
 		startDate:startDate,
 		toDate:toDate,
-		searchDatType:searchType
+		//searchDatType:searchType
 	};
 	cadreInput = jObj;
 	$.ajax({
@@ -1433,7 +1432,7 @@ function getRegistrationDetails(locationId,title) {
 		toDate:cadreInput.startDate,
 		searchDateType:cadreInput.searchDatType,
 		locationId:locationId,
-		appType:"",
+		appType:""
 	};
 	$.ajax({
 		type:"Post",
@@ -1863,7 +1862,7 @@ var cb = function(start, end, label) {
 			  }
 
 		 var optionSet1 = {
-		 startDate: moment().subtract(29, 'days'),
+		 startDate: moment(),
 		 endDate: moment(),
 		 //dateLimit: { days: 60 },
 		 showDropdowns: true,
@@ -1899,6 +1898,8 @@ var cb = function(start, end, label) {
 
 		 var optionSet2 = {
 		 opens: 'left',
+		  startDate: moment(),
+		 endDate: moment(),
 		 ranges: {
 		 'Today': [moment(), moment()],
 		 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -1909,20 +1910,16 @@ var cb = function(start, end, label) {
 		 }
 		 };
 
-		 $('.getDate').html(moment().subtract(6, 'days').format('YYYY-MM-DD') + ' to  ' + moment().format('YYYY-MM-DD'));
+		  $('.getDate').val(moment().format('MM/DD/YYYY') + ' to  ' + moment().format('MM/DD/YYYY'));
 
 		 $('.getDate').daterangepicker(optionSet1, cb);
 
 		 $('.getDate').on('show.daterangepicker', function() { console.log("show event fired"); });
 		 $('.getDate').on('hide.daterangepicker', function() { console.log("hide event fired"); });
 		 $('.getDate').on('apply.daterangepicker', function(ev, picker) { 
-		 console.log("apply event fired, start/end dates are " 
-		 + picker.startDate.format('MMMM D, YYYY') 
-		 + " to " 
-		 + picker.endDate.format('MMMM D, YYYY')
-		 ); 
+		
 		 });
-		 $('.getDate').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+		 $('.getDate').on('cancel.daterangepicker', function(ev, picker) {  });
 
 		 $('#options1').click(function() {
 		 $('.getDate').data('daterangepicker').setOptions(optionSet1, cb);
@@ -1939,12 +1936,37 @@ var cb = function(start, end, label) {
 }
 
 
+$(".ranges").find("ul").prepend('<li class="activeCls">Total</li>');
+$(".ranges").find("ul .li").removeClass("active");
 
-		 
+$(document).on("click",".ranges li",function(){
 
-$(".ranges").find("ul").prepend('<li>Total</li>');
-$(".ranges").find("ul li").removeClass("active");
-$(".ranges").find("ul li:first-child").addClass("active");
+	$(".ranges").find("ul li").removeClass("active");
+	$(this).addClass("active");
+	
+	var selectedDay=$(this).html().trim();
+	if(selectedDay == 'Total'){
+		$(".getDate").val('');
+	}
+	
+	if(selectedDay != 'Custom'){
+	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
+    getCadreRegistrationTotalCount("",selectedVal);
+	}
+	
+})
+
+$(".ranges li:nth-child(2)").addClass("active");
+$(document).on("click",".activeCls",function(){
+$(".daterangepicker").css("display","none");	
+});	
+$(document).on("click",".getDate",function(){
+$(".daterangepicker").css("display","block");	
+});	
+$(document).on("change","#userMembersId",function(){
+	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
+    getCadreRegistrationTotalCount("",selectedVal);
+});	
 </script>
 </body>
 </html>
