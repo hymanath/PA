@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AppointmentPreferableTime extends BaseModel {
 	private Long appointmentPreferableTimeId;
-	private Date preferableTime;
+	private String preferableTime;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "appointment_preferable_time_id", unique = true, nullable = false)
@@ -27,11 +27,12 @@ public class AppointmentPreferableTime extends BaseModel {
 	public void setAppointmentPreferableTimeId(Long appointmentPreferableTimeId) {
 		this.appointmentPreferableTimeId = appointmentPreferableTimeId;
 	}
+	
 	@Column(name = "preferable_time")
-	public Date getPreferableTime() {
+	public String getPreferableTime() {
 		return preferableTime;
 	}
-	public void setPreferableTime(Date preferableTime) {
+	public void setPreferableTime(String preferableTime) {
 		this.preferableTime = preferableTime;
 	}
 	
