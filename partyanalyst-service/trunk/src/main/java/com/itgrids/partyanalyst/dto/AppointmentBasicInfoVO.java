@@ -14,7 +14,14 @@ public class AppointmentBasicInfoVO {
 	private Long appointmentUserId;
 	private String date;
 	private Long villageId;
+	private Long appointmentLabelId;
 	
+	public Long getAppointmentLabelId() {
+		return appointmentLabelId;
+	}
+	public void setAppointmentLabelId(Long appointmentLabelId) {
+		this.appointmentLabelId = appointmentLabelId;
+	}
 	public String getDate() {
 		return date;
 	}
