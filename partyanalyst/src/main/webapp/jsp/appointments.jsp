@@ -2167,8 +2167,16 @@
       <div class="modal-body" style="padding:25px;">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<label>Enter New Label Name</label>
-		<input type="text" class="form-control">
-		<button class="btn btn-success btn-block m_top10">CREATE NEW LABEL</button>
+		<input type="text" class="form-control" id="labelNameId">
+		<label class="m_top10">Select Date</label>
+		<div class="input-group inputSearch">
+			<span class="input-group-addon">
+				<i class="glyphicon glyphicon-calendar"></i>
+			</span>
+			<input class="form-control" class="text" id="modalDateId">
+		</div>
+		<button class="btn btn-success btn-block m_top10" id="createNewLabelId">CREATE NEW LABEL</button>
+		<div id="successDiv"></div>
 	  </div>
     </div>
   </div>
@@ -2429,7 +2437,24 @@ function buildPriorityForManageAppointment(result){
 		var select = new Dropkick("#createAppTypeListId");
 		select.refresh();
 }
-	$(document).ready(function(){
+$(document).on('click','#createNewLabelId',function(){
+	
+	var jobj = {
+		labelName	:	$("#labelNameId").val(),
+		date		:	$("#modalDateId").val()   
+	}
+	$.ajax({
+		  type     : "POST",
+		  url      : "createAppointmentLabel.action",
+		  dataType : "json",
+		  data     : {task:JSON.stringify(jobj)}
+		}).done(function(result){
+			if(result!=null){
+				$("#successDiv").html(result.message).css("color","green");
+			}
+	  });
+});
+$(document).ready(function(){
 		getAppointmentUsersDtls();
 	});
 	function getAppointmentUsersDtls(){
@@ -2505,6 +2530,7 @@ function buildPriorityForManageAppointment(result){
 	  str+='</table';  
 	  $("#buildAppntmntLblTblId").html(str);
 	}
+$("#modalDateId").daterangepicker({singleDatePicker:true});
 </script>
 </body>
 </html>
