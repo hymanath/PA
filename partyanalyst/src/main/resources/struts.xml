@@ -11572,24 +11572,25 @@
 	</action>
 	<action name="getCandidateDesignation" class="appointmentAction" method="getAppCandidateDesigList">
 		<result type="json" name="success">
-	    	<param name="root">appointmentCandDesigList</param>
+	    	<param name="root">idNameVOList</param>
 	    </result>
 	</action>
 	<action name="getCandidateDesignation" class="appointmentAction" method="getAppCandidateDesigList">
 		<result type="json" name="success">
-	    	<param name="root">appointmentCandDesigList</param>
+	    	<param name="root">idNameVOList</param>
 	    </result>
 	</action>
 	<action name="getAppointmentStatusList" class="appointmentAction" method="getAppointmentStatus">
 		<result type="json" name="success">
-	    	<param name="root">appointmentStatusList</param>
+	    	<param name="root">idNameVOList</param>
 	    </result>
 	</action>
 	<action name="getAppointmentPriority" class="appointmentAction" method="getAppointmentPriorityList">
 		<result type="json" name="success">
-	    	<param name="root">appointmentPrirityList</param>
+	    	<param name="root">idNameVOList</param>
 	    </result>
 	</action>
+	
 	<action name="createAppointmentLabel" class="appointmentAction" method="createAppointmentLeble">
 		<result type="json" name="success">
 	    	<param name="root">resultStatus</param>
@@ -11606,5 +11607,28 @@
 	    </result>
 	</action>
 	
+	<action name="getDistrictsForAppointmentsAction" class="appointmentAction" method="getDistrictsForAppointments">
+		<result type="json" name="success">
+			<param name="root">SelectOptionVOList</param>
+		</result>
+	</action>
+	
+	<action name="getMandamMuncipaltiesAction" class="appointmentAction" method="getMandamMuncipalties">
+		<result type="json" name="success">
+			<param name="root">locationWiseBoothDetailsVOList</param>
+		</result>
+	</action>
+	
+	<action name="getVillageWardAction" class="appointmentAction" method="getVillageWard">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+		
+	<action name="getConstituenciesForADistrictAction" class="appointmentAction" method="getConstituenciesForADistrict">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>	
 </package>
 </struts>      
