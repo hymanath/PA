@@ -65,13 +65,6 @@ public class AppointmentService implements IAppointmentService{
 	private IRegionScopesDAO regionScopesDAO;
 	private IPanchayatDAO panchayatDAO;
 	
-	
-	public IAppointmentLableDAO getAppointmentLableDAO() {
-		return appointmentLableDAO;
-	}
-	public void setAppointmentLableDAO(IAppointmentLableDAO appointmentLableDAO) {
-		this.appointmentLableDAO = appointmentLableDAO;
-	}
 	public IAppointmentManageUserDAO getAppointmentManageUserDAO() {
 		return appointmentManageUserDAO;
 	}
@@ -393,18 +386,22 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return appntmntUsrDtlsLst;
 	}
-	public ResultStatus createAppointmentLeble(String labelName,String date){
+	public ResultStatus createAppointmentLeble(String labelName,String insertedBy,String date){
 		DateUtilService dateUtilService = new DateUtilService();
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			LOG.info("Entered into createAppointmentLeble() method of AppointmentService");
+			Date insertedDate = dateUtilService.getCurrentDateAndTime();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			Date dt = format.parse(date);
 			AppointmentLable appointmentLable = new AppointmentLable();
 			appointmentLable.setLableName(labelName);
 			appointmentLable.setDate(dt);
 			appointmentLable.setIsDeleted("N");
-			appointmentLable.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			appointmentLable.setInsertedTime(insertedDate);
+			appointmentLable.setUpdatedTime(insertedDate);
+			appointmentLable.setInsertedBy(Long.parseLong(insertedBy));
+			appointmentLable.setUpdatedBy(Long.parseLong(insertedBy));
 			appointmentLableDAO.save(appointmentLable);
 			resultStatus.setResultCode(1);
 			resultStatus.setMessage("Appointment Label created...");
