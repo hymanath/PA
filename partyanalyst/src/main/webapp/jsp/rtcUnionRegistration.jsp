@@ -683,6 +683,11 @@
 			isErrorStr = " error";
 			$('#desigErr').html(' Designation is required.');
 		}
+		if(school == 0)
+			{
+				isErrorStr = " error";
+				$('#schoolErr').html(' School Name is required.');
+			}	
 			//$('#roadErr').html(' Road is required.');
 		//}
 		if(tdpMemberTypeId == 2){
@@ -691,7 +696,7 @@
 		{
 			isErrorStr = " error";
 			$('#landmarkErr').html(' LandMark  is required.');
-			$('#addressErr').html(' Address is required.');
+			$('#addressErr1').html(' Address is required.');
 			$('#addressErr').html(' Address is required.');
 		}
 		/* if(roadVal == 0)
@@ -751,11 +756,11 @@
 				isErrorStr = " error";
 				$('#desigErr').html(' Designation is required.');
 			}*/
-			if(school == 0)
+			/* if(school == 0)
 			{
 				isErrorStr = " error";
 				$('#schoolErr').html(' School Name is required.');
-			}	
+			}	 */
 		}
 		else if(tdpMemberTypeId == 4){
 			/*if(designationval == 0)
@@ -763,11 +768,11 @@
 				isErrorStr = " error";
 				$('#desigErr').html(' Designation is required.');
 			}*/
-			if(school == 0)
+			/* if(school == 0)
 			{
 				isErrorStr = " error";
 				$('#schoolErr').html(' School Name is required.');
-			}	
+			}	 */
 		}
 		else if(tdpMemberTypeId == 5){
 			if(drivingLicense == 0)
@@ -1791,7 +1796,7 @@
 					</div>
 					<div class="span3" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </span></h5>
 							<input type="text" class="text-align2 form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
-							<br><span id="addressErr" style="color:red;font-size:12px;">
+							<br><span id="addressErr1" style="color:red;font-size:12px;">
 				   </div>
 					<div class="span3" id="roadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> </h5>
