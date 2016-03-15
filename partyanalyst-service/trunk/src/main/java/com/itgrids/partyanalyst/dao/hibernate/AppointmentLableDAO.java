@@ -16,16 +16,22 @@ public class AppointmentLableDAO extends GenericDaoHibernate<AppointmentLable, L
 	}
 
 	@Override
-	public List<Object[]> getLabelDtslByDate(Date date) {
+	public List<Object[]> getLabelDtslByDate(Date date,Long appntmentUsrId) {
 		StringBuilder builder=new StringBuilder();
 		builder.append(" select model.lableName,model.date  from AppointmentLable model where model.isDeleted='N' ");
 		if(date!=null){
-		  builder.append(" and model.date=:date");	
+		  builder.append(" and model.date=:date ");	
+		}
+		if(appntmentUsrId!=null && appntmentUsrId>0l){
+		  builder.append(" and model.updatedBy=:updatedBy");	
 		}
 		Query query=getSession().createQuery(builder.toString());
 		if(date!=null){
 		  query.setParameter("date",date);	
 		}
+		if(appntmentUsrId!=null && appntmentUsrId>0l){
+			  query.setParameter("updatedBy",appntmentUsrId);	
+			}
 		return query.list();
 	}
 }
