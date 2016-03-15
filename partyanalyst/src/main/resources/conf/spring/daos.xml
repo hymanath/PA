@@ -2651,7 +2651,6 @@
 	<bean id="appointmentLableStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLableStatusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
 	<bean id="ivrSurveyServiceDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyServiceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
