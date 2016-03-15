@@ -13,6 +13,7 @@ public class AppointmentBasicInfoVO {
 	private Long tehsilId;
 	private Long appointmentUserId;
 	private String date;
+	private Long villageId;
 	
 	public String getDate() {
 		return date;
@@ -80,6 +81,13 @@ public class AppointmentBasicInfoVO {
 	public void setTehsilId(Long tehsilId) {
 		this.tehsilId = tehsilId;
 	}
+	public Long getVillageId() {
+		return villageId;
+	}
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+	
 	
 	
 	
