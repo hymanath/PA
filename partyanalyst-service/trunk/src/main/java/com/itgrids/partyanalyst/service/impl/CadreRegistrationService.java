@@ -10909,7 +10909,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	public List<VoterInfoVO> getSearchDetailsCadreRegistrationRTC(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex,Long memberTypeId)
 	{
 		String cadrePath="images/cadre_images/";
-		String voterPath="voter_images/"+constituencyId+"/Part";
+		
 		StringBuilder searchQuery = new StringBuilder();
 		List<VoterInfoVO> returnList = null;
 		List searchList = null;
@@ -10959,9 +10959,31 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						vo.setRelationType(voter[5] != null ? voter[5].toString().trim():"");
 						vo.setGender(voter[6] != null ? voter[6].toString().trim():"");
 						vo.setVoterCardNo(voter[7]!=null ?voter[7].toString().trim():"");
-						vo.setImage(voter[7]!=null ?voterPath+voter[8].toString().trim()+"/"+voter[7].toString().trim()+".jpg":"");
+						//vo.setImage(voter[7]!=null ?voterPath+voter[8].toString().trim()+"/"+voter[7].toString().trim()+".jpg":"");
 						vo.setIsRegistered("N");						
 						returnList.add(vo);
+					}
+				}
+				//get voter images by publication id 11.
+				List<Object[]> imagesList = boothPublicationVoterDAO.getVoterImagesByVoterIds(voterIds,11l);
+				if(imagesList!=null && imagesList.size()>0){
+					for(Object[] obj:imagesList){
+						
+						Long voterId=obj[0]!=null?(Long)obj[0]:0l;
+						if(voterId!=0l){
+							VoterInfoVO voterVO = getmatchedVOByVoterId(returnList,voterId);
+							if(voterVO!=null){
+								Long voterConstituencyId=obj[2]!=null?(Long)obj[2]:0l;
+								String voterCardNo=obj[1]!=null?obj[1].toString().trim():null;
+								if(voterCardNo!=null){
+									String voterPath="voter_images/"+voterConstituencyId+"/Part";
+									voterVO.setImage(voterPath+obj[3].toString().trim()+"/"+voterCardNo+".jpg");
+								}
+								
+							}
+						}
+						
+						
 					}
 				}
 				
