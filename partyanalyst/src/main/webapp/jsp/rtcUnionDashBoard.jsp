@@ -239,6 +239,7 @@ body{color:#666 !important}
 														    </select>
 															<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
 														</div>
+														
 												</div>
 													<!--<div class="col-md-6">
 														<div class="block">
@@ -1832,13 +1833,104 @@ function getMemberTypeSelectedValues(){
 });
 }
 getMemberTypeSelectedValues();
-$(".getDate").daterangepicker({opens:"left"});
+//$(".getDate").daterangepicker({opens:"left"});
+var cb = function(start, end, label,) {
+			  $('.getDate').html(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+			  }
+
+		 var optionSet1 = {
+		 startDate: moment().subtract(29, 'days'),
+		 endDate: moment(),
+		 //dateLimit: { days: 60 },
+		 showDropdowns: true,
+		 showWeekNumbers: true,
+		 timePicker: false,
+		 timePickerIncrement: 1,
+		 timePicker12Hour: true,
+		 ranges: {
+		 'Today': [moment(), moment()],
+		 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+		 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		 'This Month': [moment().startOf('month'), moment().endOf('month')],
+		 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		 },
+		 opens: 'left',
+		 buttonClasses: ['btn btn-default'],
+		 applyClass: 'btn-sm btn-success btn-custom newsSubmitBtn',
+		 cancelClass: 'btn-sm btn-cancel',
+		 format: 'MM/DD/YYYY',
+		 separator: ' to ',
+		 locale: {
+		 applyLabel: 'Submit',
+		 cancelLabel: 'Clear',
+		 fromLabel: 'From',
+		 toLabel: 'To',
+		 customRangeLabel: 'Custom',
+		 daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		 monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		 firstDay: 1
+		 }
+		 };
+
+		 var optionSet2 = {
+		 opens: 'left',
+		 ranges: {
+		 'Today': [moment(), moment()],
+		 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+		 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		 'This Month': [moment().startOf('month'), moment().endOf('month')],
+		 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		 }
+		 };
+
+		 $('.getDate').html(moment().subtract(6, 'days').format('YYYY-MM-DD') + ' to  ' + moment().format('YYYY-MM-DD'));
+
+		 $('.getDate').daterangepicker(optionSet1, cb);
+
+		 $('.getDate').on('show.daterangepicker', function() { console.log("show event fired"); });
+		 $('.getDate').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+		 $('.getDate').on('apply.daterangepicker', function(ev, picker) { 
+		 console.log("apply event fired, start/end dates are " 
+		 + picker.startDate.format('MMMM D, YYYY') 
+		 + " to " 
+		 + picker.endDate.format('MMMM D, YYYY')
+		 ); 
+		 });
+		 $('.getDate').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+
+		 $('#options1').click(function() {
+		 $('.getDate').data('daterangepicker').setOptions(optionSet1, cb);
+		 });
+
+		 $('#options2').click(function() {
+		 $('.getDate').data('daterangepicker').setOptions(optionSet2, cb);
+		 });
+
+		 $('#destroy').click(function() {
+		 $('.getDate').data('daterangepicker').remove();
+		 });
+		 $('.daterangepicker').css("right","0px !important;");
+		 
 
 $(document).on("click",".applyBtn",function(){
 	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
 	getCadreRegistrationTotalCount("",selectedVal);
 	$(".constituecnyRadioCls").removeAttr("checked");
 });
+function getSelectedMemberType(){
+	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
+    getCadreRegistrationTotalCount("",selectedVal);
+
+}
+$(document).on("change","#userMembersId",function(){
+getSelectedMemberType();
+
+});
+$(".ranges").find("ul").prepend('<li>Total</li>');
+$(".ranges").find("ul li").removeClass("active");
+$(".ranges").find("ul li:first-child").addClass("active");
 </script>
 </body>
 </html>
