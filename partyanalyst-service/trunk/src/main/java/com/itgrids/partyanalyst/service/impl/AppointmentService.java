@@ -1,8 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
+import com.itgrids.partyanalyst.model.AppointmentLable;
 import com.itgrids.partyanalyst.model.AppointmentUser;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
@@ -155,6 +156,13 @@ public class AppointmentService implements IAppointmentService{
 	}
 	public IAppointmentStatusDAO getAppointmentStatusDAO() {
 		return appointmentStatusDAO;
+	}
+	
+	public IAppointmentLableDAO getAppointmentLableDAO() {
+		return appointmentLableDAO;
+	}
+	public void setAppointmentLableDAO(IAppointmentLableDAO appointmentLableDAO) {
+		this.appointmentLableDAO = appointmentLableDAO;
 	}
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
@@ -334,6 +342,26 @@ public class AppointmentService implements IAppointmentService{
 			LOG.error("Exception raised at getAppointmentUsersDtlsByUserId() method of AppointmentService", e);
 		}
 		return appntmntUsrDtlsLst;
+	}
+	public ResultStatus createAppointmentLeble(String labelName,String date){
+		DateUtilService dateUtilService = new DateUtilService();
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			LOG.info("Entered into createAppointmentLeble() method of AppointmentService");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			Date dt = format.parse(date);
+			AppointmentLable appointmentLable = new AppointmentLable();
+			appointmentLable.setLableName(labelName);
+			appointmentLable.setDate(dt);
+			appointmentLable.setIsDeleted("N");
+			appointmentLable.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			appointmentLableDAO.save(appointmentLable);
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("Appointment Label created...");
+		}catch(Exception e){
+			LOG.error("Exception raised at createAppointmentLeble() method of AppointmentService", e);
+		}
+		return resultStatus;
 	}
 	@Override
 	public List<AppointmentBasicInfoVO> getLabelDtslByDate(String slctdDate) {
