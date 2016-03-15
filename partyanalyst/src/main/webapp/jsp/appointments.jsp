@@ -2246,6 +2246,7 @@
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<label>Enter New Label Name</label>
 		<input type="text" class="form-control" id="labelNameId">
+		<div id="errLabelName"></div>
 		<label class="m_top10">Select Date</label>
 		<div class="input-group inputSearch">
 			<span class="input-group-addon">
@@ -2659,6 +2660,14 @@ $(".dropkickClass").dropkick();
 		});
 	}
 $(document).on('click','#createNewLabelId',function(){
+	$("#successDiv").html("");
+	$("#successDiv").show();
+	$("#errLabelName").html("");
+	var lblName = $("#labelNameId").val();
+	if(lblName=="" && lblName.length==0){
+		$("#errLabelName").html("please enter label Name.").css("color","red");
+		return;
+	}
 	var jobj = {
 		labelName	:	$("#labelNameId").val(),
 		insertedBy	:	$("#appointmentUserSelectBoxId").val(),
