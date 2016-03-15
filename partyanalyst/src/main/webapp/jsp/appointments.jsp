@@ -2651,9 +2651,9 @@ $(".dropkickClass").dropkick();
 		});
 	}
 $(document).on('click','#createNewLabelId',function(){
-	
 	var jobj = {
 		labelName	:	$("#labelNameId").val(),
+		insertedBy	:	$("#appointmentUserSelectBoxId").val(),
 		date		:	$("#modalDateId").val()   
 	}
 	$.ajax({
@@ -2664,8 +2664,10 @@ $(document).on('click','#createNewLabelId',function(){
 		}).done(function(result){
 			if(result!=null){
 				$("#successDiv").html(result.message).css("color","green");
+				setTimeout(function(){	$("#successDiv").hide(); },3000);
+				$("#labelNameId").val("");
 			}
-	  });
+	  });     
 });
 $(document).ready(function(){
 		getAppointmentUsersDtls();
