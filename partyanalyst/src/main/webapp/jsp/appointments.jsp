@@ -1295,9 +1295,17 @@
 								  <div class="panel panel-default m_top10 panelWhite">
                                     	<div class="panel-heading">
                                         	<div class="row">
-                                            	<div class="col-md-6">
+                                            	<div class="col-md-4">
                                                 	<h4 class="panel-title text-success">VIEW CREATED APPOINTMENT LABEL</h4>
                                                 </div>
+												<div class="col-md-2">
+													<div class="input-group inputSearch">
+														<span class="input-group-addon">
+															<i class="glyphicon glyphicon-calendar"></i>
+														</span>
+														<input class="form-control" type="text" id="mngAppntmntsDtPckrId"/>
+													</div>
+												</div>
                                                 <div class="col-md-3">
                                                 	<button class="btn btn-success btn-block">VIEW ALL APPOINTMENT REQUESTS</button>
                                                 </div>
@@ -2669,10 +2677,8 @@ $(document).on('click','#createNewLabelId',function(){
 			}
 	  });     
 });
-$(document).ready(function(){
-		getAppointmentUsersDtls();
-	});
-	function getAppointmentUsersDtls(){
+		 getAppointmentUsersDtls();
+		function getAppointmentUsersDtls(){
 		$.ajax({
 			  type:'GET',
 			  url: 'getAppointmentUsersDtlsAction.action',
@@ -2685,21 +2691,39 @@ $(document).ready(function(){
 		});
 	}
 	function buildAppntmntUsrSlctBx(result){
-		$("#appointmentUserSelectBoxId option").remove();
-		$("#appointmentUserSelectBoxId").append('<option value="0">Select Appointment User</option>');
 		for(var i in result){
 			$("#appointmentUserSelectBoxId").append('<option value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
 		}
 		$("#appointmentUserSelectBoxId").dropkick();
 			var select = new Dropkick("#appointmentUserSelectBoxId");
 			select.refresh();
+			select.selectOne(result[0].appointmentUserId);
 	}
 	$(document).on("click",".MngeAppntmntCls",function(){
 	 getLabelDtls();
 	});
+	
+	/*Get label details based on selected user.*/
+	$('#appointmentUserSelectBoxId').dropkick({
+	change: function () {
+		if(this.value>0){
+			getLabelDtls();
+		}
+	}
+	});
+	
+	/*Get label details based on selected date.*/
+	$(document).on("change","#mngAppntmntsDtPckrId",function(){
+	   getLabelDtls();
+	});
 	function getLabelDtls(){
+		
+		var slctDate=$("#mngAppntmntsDtPckrId").val();
+		var appntmntUsrId=$("#appointmentUserSelectBoxId").val();
+		
 		var jsObj={
-			currentDate:"2016-03-14"
+			currentDate:slctDate,
+			apptmntUsrId:appntmntUsrId
 		}
 		$.ajax({
 			type : 'GET',
@@ -2709,6 +2733,8 @@ $(document).ready(function(){
 		}).done(function(result){ 
 			if(result!=null && result!=0){
 				buildAppntmntLblResult(result);
+			}else{
+				$("#buildAppntmntLblTblId").html("<div><p>No Data Available</p></div>")
 			}
 		}); 
 	}
@@ -2745,7 +2771,8 @@ $(document).ready(function(){
 	  str+='</table';  
 	  $("#buildAppntmntLblTblId").html(str);
 	}
-$("#modalDateId").daterangepicker({singleDatePicker:true});
+$("#modalDateId").daterangepicker({singleDatePicker:true});	
+$("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
 </script>
 </body>
 </html>
