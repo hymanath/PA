@@ -9,6 +9,6 @@ import com.itgrids.partyanalyst.model.AppointmentLable;
 
 public interface IAppointmentLableDAO extends GenericDao<AppointmentLable, Long> {
 	
-	public List<Object[]> getLabelDtslByDate(Date date);
+	public List<Object[]> getLabelDtslByDate(Date date,Long appntmntUsrId);
 
 }

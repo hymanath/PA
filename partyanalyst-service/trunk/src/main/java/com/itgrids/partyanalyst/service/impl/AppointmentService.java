@@ -411,17 +411,17 @@ public class AppointmentService implements IAppointmentService{
 		return resultStatus;
 	}
 	@Override
-	public List<AppointmentBasicInfoVO> getLabelDtslByDate(String slctdDate) {
+	public List<AppointmentBasicInfoVO> getLabelDtslByDate(String slctdDate,Long appntmntUsrId) {
 		
 		List<AppointmentBasicInfoVO> labelDtlsFnlList=new ArrayList<AppointmentBasicInfoVO>(0);
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
 		try{
 			LOG.info("Entered into getLabelDtslByDate() method of AppointmentService");
 			Date date=null;
 			if(labelDtlsFnlList!=null){
 				 date=sdf.parse(slctdDate);
 			}
-			List<Object[]> labelDtlsList=appointmentLableDAO.getLabelDtslByDate(date);
+			List<Object[]> labelDtlsList=appointmentLableDAO.getLabelDtslByDate(date,appntmntUsrId);
 			if(labelDtlsList!=null && !labelDtlsList.isEmpty()){
 				for(Object[] param:labelDtlsList){
 					AppointmentBasicInfoVO labelDtslVO=new AppointmentBasicInfoVO();
