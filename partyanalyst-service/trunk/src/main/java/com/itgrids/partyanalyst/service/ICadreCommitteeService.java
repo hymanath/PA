@@ -172,4 +172,5 @@ public interface ICadreCommitteeService {
 	 public List<BasicVO> getAllCommitteesForLevelId(Long levelId);
 	 
 	 public List<IdNameVO> getStatesForLocationLevel(String accessType,Long accessValue);
+	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds);
 }
