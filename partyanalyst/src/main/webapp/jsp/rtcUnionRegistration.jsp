@@ -1496,7 +1496,7 @@
 										</div>
 									<div class="span12">
 										<div class="span6">
-											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory"></span></h5>
+											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory"> * </span></h5>
 												
 												<div class="input-prepend text-align2 ">
 													
