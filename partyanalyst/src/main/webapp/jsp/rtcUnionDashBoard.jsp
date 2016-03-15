@@ -1834,7 +1834,7 @@ function getMemberTypeSelectedValues(){
 }
 getMemberTypeSelectedValues();
 //$(".getDate").daterangepicker({opens:"left"});
-var cb = function(start, end, label,) {
+var cb = function(start, end, label) {
 			  $('.getDate').html(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 			  }
 
