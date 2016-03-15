@@ -73,6 +73,9 @@
 
 
 	<style>
+	input , select{
+		margin-bottom:0px !important
+	}
 	#fadeInLeft{max-height:840px;}
 	.m_0{margin:0px !important}
 	select{border-radius:0px !important}
@@ -668,9 +671,11 @@
 				$('#villWardIdErr').html(' Village/Ward is required.');
 			}
 		}
-		
-		
-		
+		 if(roadVal == 0)
+		{
+			isErrorStr = " error";
+			$('#roadErr').html(' Road is required.');
+		}
 		
 		if(designationval == 0)
 		// if(roadVal == 0)
@@ -691,7 +696,7 @@
 		}
 		/* if(roadVal == 0)
 			$('#addressErr').html(' Address is required.');
-		}
+		}*/
 		/* if(roadVal == 0)
 		{
 			isErrorStr = " error";
@@ -865,7 +870,10 @@
 			$('html,body').animate({
 			scrollTop:  $("#yourElement").offset().top 
 			});
-			
+			var checkDiv = $("#fadeInLeft").height()+150;
+	        $(".setHeight").css("height",checkDiv)	;
+			var checkDiv1 = $("#fadeInRight").height();
+			$("#fadeInRight").css("height",checkDiv1)	;
 			isSuccess = false;
 		}
 		else
@@ -1782,30 +1790,30 @@
 							<h4  class="text-align1">PRESENT ADDRESS<hr class="m_0"/></h4>
 					</div>
 					<div class="span3" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </span></h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
+							<input type="text" class="text-align2 form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 							<br><span id="addressErr" style="color:red;font-size:12px;">
 				   </div>
 					<div class="span3" id="roadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> </h5>
-					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.prsntAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId" name="cadreRegistrationVO.prsntAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
 					   <br><span id="roadErr" style="color:red;font-size:12px;"></span>
 					</div>
 					<div class="span3" id="landmarkDivId">
 						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.prsntAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.prsntAddrsLandmark" value="${voterInfoVOList[0].landmark}"></input>
 							<br><span id="landmarkErr" style="color:red;font-size:12px;"></span>
 					</div>
 					<div class="span3">
-					<div class=" m_top20" >
+					
 					   <h5 class="text-align1">Select District <span class="mandatory">*</span>  </h5>
-					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " name="cadreRegistrationVO.prsntAddrsDistId" />	
+					   <s:select theme="simple" cssClass="m_0" id="presentDistrictId" list="idNameVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " style="width:215px" name="cadreRegistrationVO.prsntAddrsDistId" />	
 					  <br><span id="presntDistrictIdErr" style="color:red;font-size:12px;margin-left: 40px;"></span>
-					 	</div> 
+					
 					</div>
 					<div class="span3">
 					<div class="m_top20">
 						   <h5 class="text-align1">Select Constituency <span class="mandatory">*</span> </h5>
-						   <select id="presentConstituencyId" name="cadreRegistrationVO.prsntAddrsConstId"> 
+						   <select id="presentConstituencyId" name="cadreRegistrationVO.prsntAddrsConstId" class="text-align2"> 
 							 <option value="0">Select Constituency</option>
 						   </select>
 						   <br><span id="presentConstituencyIdErr" style="color:red;font-size:12px;"></span> 
@@ -1832,7 +1840,7 @@
 					<div class="span3">
 					<div class="m_top20">
 						<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span> --></h5>
-						<input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" onkeyup="isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO')" value="${voterInfoVOList[0].pincode}" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>
+						<input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" onkeyup="isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO')" value="${voterInfoVOList[0].pincode}" style="width:200px" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>
 					</div> 
 				    </div>
 					 <!--  WORKING ADDRESS LOCATION. -->
@@ -1841,7 +1849,7 @@
 							<h4 class="text-align1">WORKING ADDRESS <label style="display:inline-block;font-size:15px;"><input type="checkbox" id="checkBoxId" class="m_0" onclick="populateAddressValues()"></input>Check this if same as present address</label><hr class="m_0"/></h4>
 					</div>
 					<div class="span3" id="workAddressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" ></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="House Number" id="workAddressId" name="cadreRegistrationVO.workAddrsHNo" style="margin-bottom:0px;" ></input>
 							
 							<br><span id="workAddressErr" style="color:red;font-size:12px;"></span>
 				   </div>
@@ -1932,12 +1940,12 @@
 				   </div>
 					<div class="span4" id="roadDivId">
 					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> </h5>
-					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId"name="cadreRegistrationVO.prsntAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
+					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId" name="cadreRegistrationVO.prsntAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
 					  <br> <span id="roadErr" style="color:red;font-size:12px;"></span>
 					</div>
 					<div class="span4" id="landmarkDivId">
 						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.prsntAddrsLandmark"   value="${voterInfoVOList[0].landmark}"></input>
+							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.prsntAddrsLandmark"   value="${voterInfoVOList[0].landmark}" style="margin-bottom:0px;"></input>
 							<br><span id="landmarkErr" style="color:red;font-size:12px;"></span>
 					</div>
 					
