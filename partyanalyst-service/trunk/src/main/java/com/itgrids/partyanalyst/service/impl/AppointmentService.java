@@ -425,8 +425,9 @@ public class AppointmentService implements IAppointmentService{
 			if(labelDtlsList!=null && !labelDtlsList.isEmpty()){
 				for(Object[] param:labelDtlsList){
 					AppointmentBasicInfoVO labelDtslVO=new AppointmentBasicInfoVO();
-					labelDtslVO.setName(param[0]!=null ? param[0].toString():"");
-				    labelDtslVO.setDate(param[1]!=null ?param[1].toString().split(" ")[0]:"");
+					labelDtslVO.setAppointmentLabelId((Long)param[0]);
+					labelDtslVO.setName(param[1]!=null ? param[1].toString():"");
+				    labelDtslVO.setDate(param[2]!=null ?param[2].toString().split(" ")[0]:"");
 					labelDtlsFnlList.add(labelDtslVO);
 				}
 			}
@@ -478,5 +479,23 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return voList;
 	}
-	
+	@Override
+	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId) {
+	   
+		ResultStatus status=new ResultStatus();
+		try{
+			LOG.info("Entered into deleteAppointmentLabel() method of AppointmentService");
+			if(appointmentLabelId!=null && appointmentLabelId>0l){
+			 Integer deletedCount=appointmentLableDAO.deleteAppointmentLabel(appointmentLabelId);	
+			 if(deletedCount!=null && deletedCount>0){
+				 status.setMessage("success");
+			 }else{
+				 status.setMessage("fail");
+			 }
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at deleteAppointmentLabel() method of AppointmentService", e);
+		}
+		return status;
+	}
 }

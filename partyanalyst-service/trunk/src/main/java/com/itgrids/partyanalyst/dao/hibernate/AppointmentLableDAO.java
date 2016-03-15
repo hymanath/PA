@@ -18,7 +18,7 @@ public class AppointmentLableDAO extends GenericDaoHibernate<AppointmentLable, L
 	@Override
 	public List<Object[]> getLabelDtslByDate(Date date,Long appntmentUsrId) {
 		StringBuilder builder=new StringBuilder();
-		builder.append(" select model.lableName,model.date  from AppointmentLable model where model.isDeleted='N' ");
+		builder.append(" select model.appointmentLableId, model.lableName,model.date  from AppointmentLable model where model.isDeleted='N' ");
 		if(date!=null){
 		  builder.append(" and model.date=:date ");	
 		}
@@ -34,4 +34,10 @@ public class AppointmentLableDAO extends GenericDaoHibernate<AppointmentLable, L
 			}
 		return query.list();
 	}
+		@Override
+	public Integer deleteAppointmentLabel(Long appointmentLabelId) {
+		Query query=getSession().createQuery("update AppointmentLable model set model.isDeleted='Y' where model.appointmentLableId=:appointmentLableId");
+	      query.setParameter("appointmentLableId", appointmentLabelId);  
+	 	return  query.executeUpdate();
+	 }
 }

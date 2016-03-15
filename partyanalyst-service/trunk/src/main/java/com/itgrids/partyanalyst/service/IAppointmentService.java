@@ -18,4 +18,5 @@ public interface IAppointmentService {
     public List<AppointmentBasicInfoVO> getLabelDtslByDate(String date,Long appntmntUsrId);
 	public List<IdNameVO> getVillageWard(Long mandalId);
 	public List<IdNameVO> getConstituenciesForADistrict(Long distId);
+	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId);
 }
