@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import com.itgrids.partyanalyst.dao.IAppointmentLableStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
@@ -59,6 +62,8 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentCandidateDAO appointmentCandidateDAO;
 	private IAppointmentManageUserDAO appointmentManageUserDAO;
 	private IAppointmentLableDAO appointmentLableDAO;
+	private IRegionScopesDAO regionScopesDAO;
+	private IPanchayatDAO panchayatDAO;
 	
 	
 	public IAppointmentLableDAO getAppointmentLableDAO() {
@@ -164,6 +169,20 @@ public class AppointmentService implements IAppointmentService{
 	public void setAppointmentLableDAO(IAppointmentLableDAO appointmentLableDAO) {
 		this.appointmentLableDAO = appointmentLableDAO;
 	}
+	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
+	
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
 		try {
@@ -175,13 +194,43 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setAppointmentPriorityId(appointmentVO.getAppointmentPrioprityId());
 		        	appointment.setReason(appointmentVO.getReason());
 		        	appointment.setAppointmentStatusId(appointmentVO.getAppointmentStatusId());
-		        	appointment.setAppointmentPreferableTimeId(appointmentVO.getAppointmentPreferableIimeId());
+		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
+		        		appointment.setAppointmentPreferableTimeId(1l);
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
+		        		appointment.setAppointmentPreferableTimeId(2l);
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextMonth")){
+		        		appointment.setAppointmentPreferableTimeId(3l);
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
+		        		appointment.setAppointmentPreferableTimeId(4l);
+		        	} 
 		        	appointment.setCreatedBy(loggerUserId);
 		        	appointment.setUpdatedBy(loggerUserId);
 		        	appointment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		        	appointment.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		        	appointment.setIsDeleted("N");
 		        	appointment = appointmentDAO.save(appointment);
+		        	
+		        	List<Date> datesList = new ArrayList<Date>(0);
+		        	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
+		        		if(appointmentVO.getAppointmentDates() != null && appointmentVO.getAppointmentDates().trim() != ""){
+		        			String temp[] = appointmentVO.getAppointmentDates().split(",");
+		        			for(int i=0;i<temp.length;i++){
+		        				try {
+									datesList.add(sdf.parse(temp[i].trim()));
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+			
+		        			}
+		        		} 
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
+		        		appointment.setAppointmentPreferableTimeId(2l);
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextMonth")){
+		        		appointment.setAppointmentPreferableTimeId(3l);
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
+		        		appointment.setAppointmentPreferableTimeId(4l);
+		        	}
 		        	
 		        	if(appointmentVO.getBasicInfoList() != null && appointmentVO.getBasicInfoList().size() > 0){
 		        		//get voterIds for voter card Numbers
@@ -322,6 +371,7 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return voList;
 	}
+	
 	@Override
 	public List<AppointmentBasicInfoVO> getAppointmentUsersDtlsByUserId(Long userId) {
 		List<AppointmentBasicInfoVO> appntmntUsrDtlsLst=new ArrayList<AppointmentBasicInfoVO>(0);
@@ -388,4 +438,48 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return labelDtlsFnlList;
 	}
+	
+	public List<IdNameVO> getVillageWard(Long mandalId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
+		try {
+			List<Long> tempList = new ArrayList<Long>(0);
+			tempList.add(Long.parseLong(mandalId.toString().substring(1).trim()));
+			List<Object[]> rsultObjList = null;
+			if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("4")){
+				rsultObjList = panchayatDAO.getAllPanchayatsInMandals(tempList);
+			}else if(mandalId.toString().substring(0,1).trim().equalsIgnoreCase("5")){
+				rsultObjList = constituencyDAO.getWardsInLocalElectionBody(tempList);
+			}
+			if(rsultObjList != null && rsultObjList.size() > 0){
+				for (Object[] objects : rsultObjList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVillageWard(-) method of AppointmentService", e);
+		}
+		return voList;
+	}
+	
+	public List<IdNameVO> getConstituenciesForADistrict(Long distId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
+		try {
+			List<Object[]> returnObjList = constituencyDAO.getConstituenciesForADistrict(distId,1l);//districtId,stateId
+			if(returnObjList != null && returnObjList.size() > 0){
+				for (Object[] objects : returnObjList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getConstituenciesForADistrict(-) method of AppointmentService", e);
+		}
+		return voList;
+	}
+	
 }
