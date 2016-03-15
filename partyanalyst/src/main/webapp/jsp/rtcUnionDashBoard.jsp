@@ -1910,7 +1910,7 @@ var cb = function(start, end, label) {
 		 }
 		 };
 
-		  $('.getDate').val(moment().format('MM/DD/YYYY') + ' to  ' + moment().format('MM/DD/YYYY'));
+		 // $('.getDate').val(moment().format('MM/DD/YYYY') + ' to  ' + moment().format('MM/DD/YYYY'));
 
 		 $('.getDate').daterangepicker(optionSet1, cb);
 
@@ -1937,7 +1937,7 @@ var cb = function(start, end, label) {
 
 
 $(".ranges").find("ul").prepend('<li class="activeCls">Total</li>');
-$(".ranges").find("ul .li").removeClass("active");
+$(".ranges").find("ul li").removeClass("active");
 
 $(document).on("click",".ranges li",function(){
 
@@ -1956,7 +1956,7 @@ $(document).on("click",".ranges li",function(){
 	
 })
 
-$(".ranges li:nth-child(2)").addClass("active");
+$(".ranges li:nth-child(1)").addClass("active");
 $(document).on("click",".activeCls",function(){
 $(".daterangepicker").css("display","none");	
 });	
