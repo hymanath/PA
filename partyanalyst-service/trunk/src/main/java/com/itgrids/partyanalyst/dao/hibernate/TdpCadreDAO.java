@@ -5360,7 +5360,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 		
-		public List<Object[]> getCadreFormalDetailsByYear(List<Long> tdpCadreIds,Long enrollmentYear){
+		/*public List<Object[]> getCadreFormalDetailsByYear(List<Long> tdpCadreIds,Long enrollmentYear){
 					
 					Query query = getSession().createQuery(" select distinct  model.tdpCadreId," +
 										" model.firstname," +
@@ -5378,7 +5378,26 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					query.setParameterList("tdpCadreIds", tdpCadreIds);
 					query.setParameter("enrollmentYear", enrollmentYear);
 					return query.list();
-				}
+				}*/
+		public List<Object[]> getCadreFormalDetailsByYear(List<Long> tdpCadreIds,Long enrollmentYear){
+			
+			Query query = getSession().createQuery(" select distinct  model.tdpCadreId," +
+								" model.firstname," +
+								" date(model.dateOfBirth)," +
+								" model.age," +
+								" model.mobileNo," +
+								" model.image," +
+								" model.memberShipNo," +
+								" model.userAddress.constituency.constituencyId," +
+								" model.userAddress.constituency.name,vot.voterIDCardNo,model.dataSourceType," +
+								" model.tdpMemberType.tdpMemberTypeId,model.tdpMemberType.memberType,vot.voterId " +
+								" from TdpCadre model left join model.voter vot   " +
+								" where model.tdpCadreId in (:tdpCadreIds)" +
+								" and model.isDeleted ='N' and model.enrollmentYear = :enrollmentYear and model.tdpMemberType.isDeleted='false' order by model.tdpCadreId asc ");
+			query.setParameterList("tdpCadreIds", tdpCadreIds);
+			query.setParameter("enrollmentYear", enrollmentYear);
+			return query.list();
+		}
 		
 		public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear,Long tdpMemberTypeId){
 
