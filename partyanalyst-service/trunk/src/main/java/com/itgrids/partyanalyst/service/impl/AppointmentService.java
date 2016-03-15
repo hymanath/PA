@@ -351,10 +351,8 @@ public class AppointmentService implements IAppointmentService{
 				for(Object[] param:labelDtlsList){
 					AppointmentBasicInfoVO labelDtslVO=new AppointmentBasicInfoVO();
 					labelDtslVO.setName(param[0]!=null ? param[0].toString():"");
-					if(param[1]!=null){
-					labelDtslVO.setDate(param[1].toString().split(" ")[0]);
+				    labelDtslVO.setDate(param[1]!=null ?param[1].toString().split(" ")[0]:"");
 					labelDtlsFnlList.add(labelDtslVO);
-					}
 				}
 			}
 		}catch(Exception e){
