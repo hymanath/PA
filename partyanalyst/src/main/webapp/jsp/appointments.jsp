@@ -14,6 +14,43 @@
 <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/Plugins/TimePicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
+	<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+
+	<!-- YUI Dependency files (End) -->
 <style type="text/css">
 .ui-widget-header
 {
@@ -142,7 +179,7 @@
 											</div>
 											<div class="col-md-3">
                                             	<label>Appointment Created By</label>
-                                                <select>
+                                                <select class="dropkickClass">
                                                 	<option>All</option>
                                                 </select>
                                             </div>
@@ -912,7 +949,7 @@
                                             </div>
 											<div class="col-md-2">
 												<label>Search Type</label>
-                                                <select>
+                                                <select class="dropkickClass">
 													<option>A</option>
 												</select>
 											</div>
@@ -1042,116 +1079,144 @@
                                     </div>
 									<div class="block">
 										<div class="row">
-											<div class="col-md-4 m_top10">
-												<label>Appointment Type</label>
-												<select class="manageAppTypeCls" id="createAppTypeListId">
-													<option><span class="colorStatus green"></span>High</option>
-												</select>
-											</div>
-											<div class="col-md-8 m_top10">
-												<label class="radio-inline">
-													<input type="radio" checked name="dateTypeRadio">Select Preferrable Dates
-												</label>
-												<label class="radio-inline">
-													<input type="radio" name="dateTypeRadio">Next Week
-												</label>
-												<label class="radio-inline">
-													<input type="radio" name="dateTypeRadio">Next Month(Any Date)
-												</label>
-												<label class="radio-inline">
-													<input type="radio" name="dateTypeRadio">This Week
-												</label>
-												<div class="input-group inputSearch m_top5">
-													<span class="input-group-addon">
-														<i class="glyphicon glyphicon-calendar"></i>
-														<span class="caret"></span>
-													</span>
-													<input type="text" class="form-control" id="multiDate">
-												</div>
-											</div>
-											<div class="col-md-6 m_top10">
-												
-												
-											</div>
-											<div class="col-md-12 m_top10">
-												<label>Appointment Reason</label>
-												<textarea class="form-control"></textarea>
-											</div>
-											
-											
-										</div>
-										
-									</div>
-									<div class="block">
-										<div class="row">
 											<div class="col-md-12">
                                             	<h4 class="text-success">CREATE APPOINTMENT REQUEST</h4>
                                             </div>
 										</div>
 									</div>
-									<div class="block">
-										<div class="row">
-											<div class="col-md-4 m_top10">
-												<label>Name</label>
-												<input type="text" class="form-control">
+									<form name="saveAppointment" id="saveAppointment"  method="post">
+										<div class="block">
+											<div class="row">
+												<div class="col-md-4 m_top10">
+													<label>Appointment Priority Type</label>
+													<select name="appointmentVO.appointmentPrioprityId" class="manageAppTypeCls" id="createAppTypeListId">
+														<option value="0">Select Priority</option>
+													</select>
+												</div>
+												<div class="col-md-8 m_top10">
+													<label class="radio-inline">
+														<input type="radio" checked name="dateTypeRadio" value="multipleDates">Select Preferrable Dates
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="dateTypeRadio" value="nextWeek">Next Week
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="dateTypeRadio" name="nextMonth">Next Month(Any Date)
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="dateTypeRadio" name="thisWeek">This Week
+													</label>
+													<div class="input-group inputSearch m_top5">
+														<span class="input-group-addon">
+															<i class="glyphicon glyphicon-calendar"></i>
+															<span class="caret"></span>
+														</span>
+														<input type="text" class="form-control" id="multiDate" name="appointmentVO.appointmentDates">
+													</div>
+												</div>
+												<div class="col-md-6 m_top10">
+													
+													
+												</div>
+												<div class="col-md-12 m_top10">
+													<label>Appointment Reason</label>
+													<textarea class="form-control" name="appointmentVO.reason"></textarea>
+												</div>
+												
+												
 											</div>
-											<div class="col-md-4 m_top10">
-												<label>Designation</label>
-												<select class="designationListCls" id="designationListId">
-													<option>A</option>
-												</select>
-											</div>
-											<div class="col-md-4 m_top10">
-												<label>Contact Number</label>
-												<input type="text" class="form-control">
-											</div>
+											
 										</div>
-										<div class="row">
-											<div class="col-md-4 m_top10">
-												<label>Location</label>
-												<input type="text" class="form-control">
+										<div class="block">
+											<div class="row">
+												<div class="col-md-4 m_top10">
+													<label>Name</label>
+													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].name">
+												</div>
+												<div class="col-md-4 m_top10">
+													<label>Designation</label>
+													<select  name="appointmentVO.basicInfoList[0].designationId" class="designationListCls" id="designationListId">
+														<option value="0">Select Designation</option>
+													</select>
+												</div>
+												<div class="col-md-4 m_top10">
+													<label>Contact Number</label>
+													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].mobileNo">
+												</div>
 											</div>
-											<div class="col-md-4 m_top10">
-												<label>Voter ID</label>
-												<input type="text" class="form-control">
+											<div class="row">
+												<div class="col-md-4 m_top10">
+													<label>Location</label>
+													<input type="text" class="form-control">
+												</div>
+												<div class="col-md-4 m_top10">
+													<label>Voter ID</label>
+													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].voterCardNo">
+												</div>
+												<div class="col-md-4 m_top10">
+													<label>Membership Number</label>
+													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].membershipNum">
+												</div>
 											</div>
-											<div class="col-md-4 m_top10">
-												<label>Membership Number</label>
-												<input type="text" class="form-control">
+											<div class="row m_top10">
+												<div class="col-md-4">
+													<label>Location Scope</label>
+													<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0">
+														<option value="0">Select Scope</option>
+														<option value="3">DISTRICT</option>
+														<option value="4">CONSTITUENCY</option>
+														<option value="5">MANDAL</option>
+														<option value="6">VILLAGE</option>
+														<option value="7">MUNICIPAL-CORP-GMC</option>
+														<option value="8">WARD</option>
+													</select>
+												</div>
+												<div class="col-md-4">
+													<label>Select District</label>
+													<select name="appointmentVO.basicInfoList[0].districtId" class="dropkickClass scopeClearAllCls0" id="districtId0" onChange="getConstituencies(0);">
+														<option value="0">Select District</option>
+													</select>
+												</div>
+												<div class="col-md-4">
+													<label>Select Constituency</label>
+													<select name="appointmentVO.basicInfoList[0].constituencyId" class="dropkickClass scopeClearAllCls0" id="constituencyId0" onChange="getMandamMuncipalties(0);">
+														<option value="0">Select Constituency</option>
+													</select>
+												</div>
+												<div class="col-md-4">
+													<label>Select Mandal/Muncipality</label>
+													<select name="appointmentVO.basicInfoList[0].tehsilId" class="dropkickClass scopeClearAllCls0" id="tehsilId0" onChange="getVillageWard(0);">
+														<option value="0">Select Mandal</option>
+													</select>
+												</div>
+												<div class="col-md-4">
+													<label>Select Village/Ward</label>
+													<select name="appointmentVO.basicInfoList[0].villageId" class="dropkickClass scopeClearAllCls0" id="villageId0">
+														<option value="0">Select VILLAGE</option>
+													</select>
+												</div>
+												
 											</div>
+											
+											
 										</div>
+										<div id="moreCandidatesDivId"></div>
 										<div class="row m_top10">
-											<div class="col-md-4">
-												<label>Location Scope</label>
-												<select>
-													<option>A</option>
-												</select>
-											</div>
-											<div class="col-md-4">
-												<label>Select District</label>
-												<select>
-													<option>A</option>
-												</select>
-											</div>
-											<div class="col-md-4">
-												<label>Select Constituency</label>
-												<select>
-													<option>A</option>
-												</select>
+											<div class="col-md-4 col-md-offset-8">
+												<p style="cursor:pointer;float:right" id="addOneBlock">
+													Add One More Candidate
+													<i class="glyphicon glyphicon-plus-sign text-success"></i>
+												</p>
 											</div>
 										</div>
-										
-										
-									</div>
-									<div id="moreCandidatesDivId"></div>
-									<div class="row m_top10">
-										<div class="col-md-4 col-md-offset-8">
-											<p style="cursor:pointer;float:right" id="addOneBlock">
-												Add One More Candidate
-												<i class="glyphicon glyphicon-plus-sign text-success"></i>
-											</p>
+										<div class="row">
+											<div class="col-md-6 m_top25">
+												<button class="btn btn-success btn-block" type="button" onClick="savingAppointment();">CREATE APPOINTMENT</button>
+											</div>
 										</div>
-									</div>
+										<input type="hidden" id="dateTypeText" name="appointmentVO.appointmentPreferableTimeType">
+									</form>
+									
 									<div class="block cloneBlock" style="display:none;">
 										<div class="row">
 											<span class="closeIcon"><i class="glyphicon glyphicon-remove"></i></span>
@@ -1162,7 +1227,8 @@
 											<div class="col-md-4 m_top10">
 												<label>Designation</label>
 												<select class="cloneDesignationCls">
-													<option>A</option>
+													<option value="0">Select Designation</option>
+													
 												</select>
 											</div>
 											<div class="col-md-4 m_top10">
@@ -1187,29 +1253,39 @@
 										<div class="row m_top10">
 											<div class="col-md-4">
 												<label>Location Scope</label>
-												<select class="cloneLocationScopeCls">
-													<option>A</option>
+												<select class="cloneLocationScopeCls regionScopeCls">
+													<option value="0">select scope</option>
 												</select>
 											</div>
 											<div class="col-md-4">
 												<label>Select District</label>
 												<select class="cloneDistrictCls">
-													<option>A</option>
+													<option value="0">select dist</option>
+													<option value="14">test dist1</option>
 												</select>
 											</div>
 											<div class="col-md-4">
 												<label>Select Constituency</label>
-												<select class="cloneConstituencyCls">
-													<option>A</option>
+												<select class="cloneConstituencyCls" >
+													<option value="0">select const</option>
+													<option value="142">test const1</option>
 												</select>
 											</div>
-										</div>
+											<div class="col-md-4">
+													<label>Select Mandal/Muncilpality</label>
+													<select class="cloneMandalCls">
+														<option value="0">Select Mandal</option>
+													</select>
+												</div>
+												<div class="col-md-4">
+													<label>Select Village/Ward</label>
+													<select class="cloneVillageCls">
+														<option value="0">Select VILLAGE</option>
+													</select>
+												</div>
+											</div>
 									</div>
-									<div class="row">
-										<div class="col-md-6 m_top25">
-											<button class="btn btn-success btn-block">CREATE APPOINTMENT</button>
-										</div>
-								    </div>
+									
 								</div>
 							</div>
 						</div>
@@ -1375,31 +1451,25 @@
                                     	<div class="row">
                                             <div class="col-md-4">
                                             	<label>Designation</label>
-                                                <select class="designationListCls" id="manageAppDesigId">
-                                                	<option>All</option>
-                                                </select>
+                                                <select class="designationListCls" id="manageAppDesigId"></select>
                                             </div>
                                             <div class="col-md-4">
-                                            	<label>Appointment Type</label>
-                                                <select class="manageAppTypeCls" id="manageAppTypeId">
-                                                	<option>High</option>
-                                                </select>
+                                            	<label>Appointment Priority Type</label>
+                                                <select class="manageAppTypeCls" id="manageAppTypeId"></select>
                                             </div>
                                             <div class="col-md-4">
                                             	<label>Appointment Status</label>
-                                                <select class="manageAppStatusCls" id="manageAppStatusId">
-                                                	<option>Waiting</option>
-                                                </select>
+                                                <select class="manageAppStatusCls" id="manageAppStatusId"></select>
                                             </div>
                                           <div class="col-md-4 m_top10">
                                             	<label>Select District</label>
-                                                <select>
+                                                <select class="dropkickClass">
                                                 	<option>District Name</option>
                                                 </select>
                                           </div>
                                           <div class="col-md-4 m_top10">
                                             	<label>Select Constituency</label>
-                                                <select>
+                                                <select class="dropkickClass">
                                                 	<option>Constituency Name</option>
                                                 </select>
                                           </div>
@@ -1956,7 +2026,7 @@
                                     	<div class="row">
                                         	<div class="col-md-6">
                                             	<label>Select Appointment Label</label>
-                                                <select>
+                                                <select class="dropkickClass">
                                                 	<option>Feb-28_29-Appointments</option>
                                                 </select>
                                             </div>
@@ -2090,7 +2160,7 @@
                                                             <label>From Time</label>
                                                             <div class="input-group inputSearch">
                                                                 <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                                    <i class="glyphicon glyphicon-time"></i>
                                                                     <span class="caret"></span>
                                                                 </span>
                                                                 <input type="text" class="form-control">
@@ -2100,7 +2170,7 @@
                                                             <label>To Time</label>
                                                             <div class="input-group inputSearch">
                                                                 <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                                    <i class="glyphicon glyphicon-time"></i>
                                                                     <span class="caret"></span>
                                                                 </span>
                                                                 <input type="text" class="form-control">
@@ -2182,7 +2252,8 @@
   </div>
 </div>
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="dist/2016DashBoard/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/js/AppointmentScreenBootstrap.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
@@ -2315,128 +2386,270 @@ $(function () {
 });
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
+
+var cloneCount=1;
 $(document).on("click","#addOneBlock",function(){
 	var e = $(".cloneBlock").clone();
 	e.css("display","block");
-	e.find(".cloneNameCls").addClass("candidateNameCls");
-	e.find(".cloneDesignationCls").addClass("candidateDesignationCls");
-	e.find(".cloneMobileCls").addClass("candidateMobileCls");
-	e.find(".cloneLocationCls").addClass("candidateLocationCls");
-	e.find(".cloneMembershipNumCls").addClass("candidateMembershipNumCls");
-	e.find(".cloneVoterIdCls").addClass("candidateVoterIdCls");
-	e.find(".cloneLocationScopeCls").addClass("candidateLocationScopeCls");
-	e.find(".cloneDistrictCls").addClass("candidateDistrictCls");
-	e.find(".cloneConstituencyCls").addClass("candidateConstituencyCls");
-	e.removeClass("cloneNameCls");
-	e.removeClass("cloneDesignationCls");
-	e.removeClass("cloneMobileCls");
-	e.removeClass("cloneLocationCls");
-	e.removeClass("cloneMembershipNumCls");
-	e.removeClass("cloneVoterIdCls");
-	e.removeClass("cloneLocationScopeCls");
-	e.removeClass("cloneDistrictCls");
-	e.removeClass("cloneConstituencyCls");
+	
+	e.find(".cloneNameCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].name');
+	e.find(".cloneDesignationCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].designationId');
+	e.find(".cloneDesignationCls").attr("id",'designationSelId'+cloneCount);
+	e.find(".cloneMobileCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].mobileNo');
+	e.find(".cloneMembershipNumCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].membershipNum');
+	e.find(".cloneVoterIdCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].voterCardNo');
+	e.find(".cloneLocationScopeCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].locationScopeId');
+	e.find(".cloneDistrictCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].districtId');
+	e.find(".cloneConstituencyCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].constituencyId');
+	 
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
+	
+	var t = "designationSelId"+cloneCount;
+	$("#"+t).dropkick();
+	var select2 = new Dropkick("#"+t);
+	select2.refresh();
+	
+	cloneCount=cloneCount+1;
 });
 
 $(document).on("click",".closeIcon",function(){
 	$(this).parent().parent().remove();
 });
-$(document).ready(function(){
-	$.ajax({
-		type : 'GET',
-		url : 'getCandidateDesignation.action',
-		dataType : 'json',
-		date : {}
-	}).done(function(result){ 
-		if(result != null && result.length > 0){
-			//app-appointment
-			buildDesignationForCreateApp(result);
-			buildDesignationForManageApp(result);
-
-		}
+$(".dropkickClass").dropkick();
+	//swadin functions
+	$(document).ready(function(){
+		$.ajax({
+			type : 'GET',
+			url : 'getCandidateDesignation.action',
+			dataType : 'json',
+			date : {}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){
+				//app-appointment
+				buildDesignationForCreateApp(result);
+			}
+			
+		});
 		
 	});
+	function buildDesignationForCreateApp(result){
+			$("#designationListId  option").remove();
+			$("#designationListId").append('<option value="0">Select Designation</option>');
+			$(".cloneDesignationCls option").remove(); 
+			$(".cloneDesignationCls").append('<option value="0">Select Designation</option>');
+			
+			$("#manageAppDesigId  option").remove();
+			$("#manageAppDesigId").append('<option value="0">Select Designation</option>');
+			for(var i in result){
+				$("#designationListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$(".cloneDesignationCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$(".designationListCls").dropkick();
+			var select = new Dropkick("#designationListId");
+			select.refresh();
+			
+			var select1 = new Dropkick("#manageAppDesigId");
+			select1.refresh();
+			
+			
+			
+	} 
 	
-});
-function buildDesignationForCreateApp(result){
-		$("#designationListId  option").remove();
-		$("#designationListId").append('<option value="0">Select Designation</option>');
-		for(var i in result){
-			$("#designationListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-		}
-		$(".designationListCls").dropkick();
-		var select = new Dropkick("#designationListId");
-		select.refresh();
-} 
-function buildDesignationForManageApp(result){
-		$("#manageAppDesigId  option").remove();
-		$("#manageAppDesigId").append('<option value="0">Select Designation</option>');
-		for(var i in result){
-			$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-		}
-		$(".designationListCls").dropkick();
-		var select = new Dropkick("#manageAppDesigId");
-		select.refresh();
-}
-$(document).ready(function(){
-	$.ajax({
-		type : 'GET',
-		url : 'getAppointmentStatusList.action',
-		dataType : 'json',
-		date : {}
-	}).done(function(result){ 
-		if(result != null && result.length > 0){
-			buildAppointmentStatusList(result);
-		}
-		
-	}); 
-});
-function buildAppointmentStatusList(result){
-		$("#manageAppStatusId  option").remove();
-		$("#manageAppStatusId").append('<option value="0">Select Appointment Status</option>');
-		for(var i in result){
-			$("#manageAppStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-		}
-		$(".manageAppStatusCls").dropkick();
-		var select = new Dropkick("#manageAppStatusId");
-		select.refresh();
-}
-$(document).ready(function(){
-	$.ajax({
-		type : 'GET',
-		url : 'getAppointmentPriority.action',
-		dataType : 'json',
-		date : {}
-	}).done(function(result){ 
-		if(result != null && result.length > 0){
-			buildAppointmentPriorityList(result);
-			buildPriorityForManageAppointment(result);
-		}
-		
+	$(document).ready(function(){
+		$.ajax({
+			type : 'GET',
+			url : 'getAppointmentStatusList.action',
+			dataType : 'json',
+			date : {}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){
+				buildAppointmentStatusList(result);
+			}
+			
+		}); 
 	});
-});
-function buildAppointmentPriorityList(result){
+	function buildAppointmentStatusList(result){
+			$("#manageAppStatusId  option").remove();
+			$("#manageAppStatusId").append('<option value="0">Select Appointment Status</option>');
+			for(var i in result){
+				$("#manageAppStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$(".manageAppStatusCls").dropkick();
+			var select = new Dropkick("#manageAppStatusId");
+			select.refresh();
+	}
+	$(document).ready(function(){
+		$.ajax({
+			type : 'GET',
+			url : 'getAppointmentPriority.action',
+			dataType : 'json',
+			date : {}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){
+				buildAppointmentPriorityList(result);
+				
+			}
+			
+		});
+	});
+	function buildAppointmentPriorityList(result){
 		$("#manageAppTypeId  option").remove();
-		$("#manageAppTypeId").append('<option value="0">Select Appointment Type</option>');
+		$("#manageAppTypeId").append('<option value="0">Select Priority</option>');
+		$("#createAppTypeListId  option").remove();
+		$("#createAppTypeListId").append('<option value="0">Select Appointment Type</option>');
 		for(var i in result){
 			$("#manageAppTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			$("#createAppTypeListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		}
 		$(".manageAppTypeCls").dropkick();
 		var select = new Dropkick("#manageAppTypeId");
 		select.refresh();
-}
-function buildPriorityForManageAppointment(result){
-		$("#createAppTypeListId  option").remove();
-		$("#createAppTypeListId").append('<option value="0">Select Appointment Type</option>');
-		for(var i in result){
-			$("#createAppTypeListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		
+		var select1 = new Dropkick("#createAppTypeListId");
+		select1.refresh();
+	}
+	
+	function savingAppointment(){
+		$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
+		//dateTypeText.text($('input[name=dateTypeRadio]:checked').val());
+		var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				//showStatusEdit(uploadResult,num);
+			}
+		};
+
+		YAHOO.util.Connect.setForm('saveAppointment',true);
+		YAHOO.util.Connect.asyncRequest('POST','appointmentSavingAction.action',uploadHandler);
+	}
+	
+	$(document).on("change",".regionScopeCls",function(){
+		var id = $(this).attr("attr_val");
+		$(".scopeClearAllCls"+id).val(0);
+		if($(this).val()==3){
+			$("#districtId"+id).show();
+		}else if($(this).val()==4){
+			$("#districtId"+id).show();
+			$("#constituencyId"+id).show();
+		}else if($(this).val()==5){
+			$("#districtId"+id).show();
+			$("#constituencyId"+id).show();
+			$("#tehsilId"+id).show();
+		}else if($(this).val()==6){
+			$("#districtId"+id).show();
+			$("#constituencyId"+id).show();
+			$("#tehsilId"+id).show();
+			$("#villageId"+id).show();
+		}else if($(this).val()==7){
+			$("#districtId"+id).show();
+			$("#constituencyId"+id).show();
+			$("#munCorpId"+id).show();
+		}else if($(this).val()==8){
+			$("#districtId"+id).show();
+			$("#constituencyId"+id).show();
+			$("#munCorpId"+id).show();
+			$("#wardId"+id).show();
 		}
-		$(".manageAppTypeCls").dropkick();
-		var select = new Dropkick("#createAppTypeListId");
-		select.refresh();
-}
+	});
+	
+	getDistricts();
+	var distArr=[];
+	function getDistricts(){
+		$.ajax({
+			type : 'GET',
+			url : 'getDistrictsForAppointmentsAction.action',
+			dataType : 'json',
+			date : {}
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select District</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					var obj={id:result[i].id,value:result[i].name};
+					distArr.push(obj);
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
+				}
+			}
+			$("#districtId0").html(str);
+			$("#districtId0").dropkick();
+			var select = new Dropkick("#districtId0");
+			select.refresh();
+		});
+	}
+	
+	function getConstituencies(num){
+		var distId = $("#districtId"+num).val();
+		var jsObj ={
+					districtId:distId
+					}
+					
+		$.ajax({
+			type : 'post',
+			url : 'getConstituenciesForADistrictAction.action',
+			dataType: 'json',
+			data:    {task:JSON.stringify(jsObj)} 
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Constituency</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
+				}
+			}
+			var id="constituencyId"+num;
+			$("#"+id).html(str);
+			$("#"+id).dropkick();
+			var select = new Dropkick("#"+id);
+			select.refresh();
+		});
+	}
+	
+	function getMandamMuncipalties(num){
+		var constId = $("#constituencyId"+num).val();
+		var jsObj ={
+					constId:constId
+					}
+					
+		$.ajax({
+			type : 'GET',
+			url : 'getMandamMuncipaltiesAction.action',
+			dataType: 'json',
+			data:    {task:JSON.stringify(jsObj)} 
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Mandal/Muncipality</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>';	
+				}
+			}
+			$("#tehsilId"+num).html(str);
+		});
+	}
+	
+	function getVillageWard(num){
+		var jsObj ={
+					tehsilId:$("#tehsilId"+num).val()
+					}
+					
+		$.ajax({
+			type : 'GET',
+			url : 'getVillageWardAction.action',
+			dataType : 'json',
+			date : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Village/Ward</option>';
+			if(result != null && result.length > 0){
+				for(var i in result){
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
+				}
+			}
+			$("#villageId"+num).html(str);
+		});
+	}
 $(document).on('click','#createNewLabelId',function(){
 	
 	var jobj = {
@@ -2534,5 +2747,3 @@ $("#modalDateId").daterangepicker({singleDatePicker:true});
 </script>
 </body>
 </html>
-			
-				
