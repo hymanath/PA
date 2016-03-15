@@ -216,8 +216,9 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			LOG.info("Entered into createAppointmentLeble() method of AppointmentAction");
 			jObj = new JSONObject(getTask());
 			String labelName = jObj.getString("labelName");
+			String insertedBy = jObj.getString("insertedBy");
 			String date = jObj.getString("date");
-			resultStatus = appointmentService.createAppointmentLeble(labelName,date);
+			resultStatus = appointmentService.createAppointmentLeble(labelName,insertedBy,date);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
