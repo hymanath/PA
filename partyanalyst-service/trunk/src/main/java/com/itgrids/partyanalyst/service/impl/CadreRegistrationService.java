@@ -12295,7 +12295,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 		  List<PartyMeetingWSVO> resultList = new ArrayList<PartyMeetingWSVO>();
 		  try{
 			 
-			    Date stDate = null;
+			   /* Date stDate = null;
 				Date edDate = null;
 				Date today = dateUtilService.getCurrentDateAndTime();
 				
@@ -12323,7 +12323,18 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 					Date last30ThDay = cal.getTime();
 					stDate = last30ThDay;
 					edDate = today;
+				}*/
+				
+				Date stDate=null;
+				Date edDate=null;
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+				Date today = dateUtilService.getCurrentDateAndTime();
+				if(inputVO.getStartDate()!=null && inputVO.getStartDate().trim().length()>0 && inputVO.getToDate()!=null && inputVO.getToDate().trim().length()>0){
+					stDate=sdf.parse(inputVO.getStartDate().trim());
+					edDate=sdf.parse(inputVO.getToDate().trim());
 				}
+				
+				
 				List<Long> tdpCadreIdsList = tdpCadreDAO.getCadreDetailsByTdpMemberType(stDate,edDate,inputVO);
 				List<Object[]> cadreDetails = tdpCadreDAO.getCadreFormalDetailsByYear(tdpCadreIdsList,2016L);
 				List<Long> voterIds =new ArrayList<Long>();
