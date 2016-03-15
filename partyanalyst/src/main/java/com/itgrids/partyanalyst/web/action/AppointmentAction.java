@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +13,14 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.IMobileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -28,14 +33,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private JSONObject jObj;
 	private IAppointmentService appointmentService; 
 	private ResultStatus resultStatus;
-	private AppointmentVO appointmentVO = new AppointmentVO();
+	private AppointmentVO appointmentVO;
 	private RegistrationVO regVO = new RegistrationVO();
-	private List<IdNameVO> appointmentStatusList; 
-	private List<IdNameVO> appointmentCandDesigList;
-	private List<IdNameVO> appointmentPrirityList;
-	private List<IdNameVO> appointmentLblStatusList;
+	private List<IdNameVO> idNameVOList;
+	private IMobileService mobileService;
+	private List<SelectOptionVO> SelectOptionVOList;
+	private ICadreCommitteeService cadreCommitteeService;
+	private List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList;
 	private List<AppointmentBasicInfoVO> appointmentUserDtlsList;
-	
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -44,7 +49,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-
+	
 	public List<AppointmentBasicInfoVO> getAppointmentUserDtlsList() {
 		return appointmentUserDtlsList;
 	}
@@ -53,7 +58,6 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			List<AppointmentBasicInfoVO> appointmentUserDtlsList) {
 		this.appointmentUserDtlsList = appointmentUserDtlsList;
 	}
-
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -106,41 +110,50 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		this.regVO = regVO;
 	}
 	
-	public List<IdNameVO> getAppointmentStatusList() {
-		return appointmentStatusList;
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
 	}
-	
+
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
+	}
+	public IMobileService getMobileService() {
+		return mobileService;
+	}
+
+	public void setMobileService(IMobileService mobileService) {
+		this.mobileService = mobileService;
+	}
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return SelectOptionVOList;
+	}
+
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		SelectOptionVOList = selectOptionVOList;
+	}
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
+	public List<LocationWiseBoothDetailsVO> getLocationWiseBoothDetailsVOList() {
+		return locationWiseBoothDetailsVOList;
+	}
+
+	public void setLocationWiseBoothDetailsVOList(
+			List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList) {
+		this.locationWiseBoothDetailsVOList = locationWiseBoothDetailsVOList;
+	}
+
+
 	public String execute(){
 		return Action.SUCCESS;
 	}
 	
-	public void setAppointmentStatusList(List<IdNameVO> appointmentStatusList) {
-		this.appointmentStatusList = appointmentStatusList;
-	}
-	public List<IdNameVO> getAppointmentCandDesigList() {
-		return appointmentCandDesigList;
-	}
-
-	public void setAppointmentCandDesigList(List<IdNameVO> appointmentCandDesigList) {
-		this.appointmentCandDesigList = appointmentCandDesigList;
-	}
-
-	public List<IdNameVO> getAppointmentPrirityList() {
-		return appointmentPrirityList;
-	}
-
-	public void setAppointmentPrirityList(List<IdNameVO> appointmentPrirityList) {
-		this.appointmentPrirityList = appointmentPrirityList;
-	}
-
-	public List<IdNameVO> getAppointmentLblStatusList() {
-		return appointmentLblStatusList;
-	}
-
-	public void setAppointmentLblStatusList(List<IdNameVO> appointmentLblStatusList) {
-		this.appointmentLblStatusList = appointmentLblStatusList;
-	}
-
 	public String saveAppointment(){
 		try {
 			final HttpSession session = request.getSession();
@@ -148,7 +161,6 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			if(user == null || user.getRegistrationID() == null){
 				return ERROR;
 			}
-			jObj = new JSONObject(getTask());
 			
 			resultStatus = appointmentService.saveAppointment(appointmentVO,user.getRegistrationID());
 			
@@ -161,7 +173,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public String getAppointmentStatus(){
 		try{
 			LOG.info("Entered into getAppointmentStatus() method of AppointmentAction");
-			appointmentStatusList = appointmentService.getAppointmentStatusList();
+			idNameVOList = appointmentService.getAppointmentStatusList();
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentStatus() method of AppointmentAction", e);
@@ -171,7 +183,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public String getAppCandidateDesigList(){
 		try{
 			LOG.info("Entered into getAppCandidateDesigList() method of AppointmentAction");
-			appointmentCandDesigList = appointmentService.getAppCandidateDesigList();
+			idNameVOList = appointmentService.getAppCandidateDesigList();
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentAction", e);
@@ -181,7 +193,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public String getAppointmentPriorityList(){
 		try{
 			LOG.info("Entered into getAppointmentPriorityList() method of AppointmentAction");
-			appointmentPrirityList = appointmentService.getAppointmentPriorityList();
+			idNameVOList = appointmentService.getAppointmentPriorityList();
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentPriorityList() method of AppointmentAction", e);
@@ -191,13 +203,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public String getAppmntLblStatusList(){
 		try{
 			LOG.info("Entered into getAppmntLblStatusList() method of AppointmentAction");
-			appointmentLblStatusList = appointmentService.getAppmntLblStatusList();
+			idNameVOList = appointmentService.getAppmntLblStatusList();
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String createAppointmentLeble(){
 		try{
 			LOG.info("Entered into createAppointmentLeble() method of AppointmentAction");
@@ -232,6 +245,47 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
        }catch(Exception e){
     	   LOG.error("Exception raised at getLabelDtls() method of AppointmentAction", e);
        }
+		return Action.SUCCESS;
+	}
+
+	public String getDistrictsForAppointments(){
+		try {
+			SelectOptionVOList = mobileService.getDistrictsList(1l);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictsForAppointments() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMandamMuncipalties(){
+		try {
+			jObj = new JSONObject(getTask());
+			List<Long> tempList = new ArrayList<Long>(0);
+			tempList.add(jObj.getLong("constId"));
+			locationWiseBoothDetailsVOList = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(tempList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMandamMuncipalties() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getVillageWard(){
+		try {
+			jObj = new JSONObject(getTask());
+			idNameVOList = appointmentService.getVillageWard(jObj.getLong("tehsilId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMandamMuncipalties() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituenciesForADistrict(){
+		try {
+			jObj = new JSONObject(getTask());
+			idNameVOList =appointmentService.getConstituenciesForADistrict(jObj.getLong("districtId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getConstituenciesForADistrict() method of AppointmentAction", e);
+		}
 		return Action.SUCCESS;
 	}
 }
