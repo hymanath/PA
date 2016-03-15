@@ -36,6 +36,15 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<IdNameVO> appointmentLblStatusList;
 	private List<AppointmentBasicInfoVO> appointmentUserDtlsList;
 	
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public List<AppointmentBasicInfoVO> getAppointmentUserDtlsList() {
 		return appointmentUserDtlsList;
 	}
@@ -183,6 +192,19 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		try{
 			LOG.info("Entered into getAppmntLblStatusList() method of AppointmentAction");
 			appointmentLblStatusList = appointmentService.getAppmntLblStatusList();
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String createAppointmentLeble(){
+		try{
+			LOG.info("Entered into createAppointmentLeble() method of AppointmentAction");
+			jObj = new JSONObject(getTask());
+			String labelName = jObj.getString("labelName");
+			String date = jObj.getString("date");
+			resultStatus = appointmentService.createAppointmentLeble(labelName,date);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
