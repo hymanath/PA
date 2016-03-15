@@ -33,8 +33,8 @@ public class AppointmentLable extends BaseModel {
 	private Long  updatedBy;
 	private String isDeleted;
 	
-	private User insertedUser;
-	private User updateUser;
+	private AppointmentUser insertedUser;
+	private AppointmentUser updateUser;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -98,20 +98,20 @@ public class AppointmentLable extends BaseModel {
 	@JoinColumn(name="inserted_by", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getInsertedUser() {
+	public AppointmentUser getInsertedUser() {
 		return insertedUser;
 	}
-	public void setInsertedUser(User insertedUser) {
+	public void setInsertedUser(AppointmentUser insertedUser) {
 		this.insertedUser = insertedUser;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="updated_by", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getUpdateUser() {
+	public AppointmentUser getUpdateUser() {
 		return updateUser;
 	}
-	public void setUpdateUser(User updateUser) {
+	public void setUpdateUser(AppointmentUser updateUser) {
 		this.updateUser = updateUser;
 	}
 
