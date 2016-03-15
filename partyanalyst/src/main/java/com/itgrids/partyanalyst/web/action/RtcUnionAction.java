@@ -827,7 +827,7 @@ public String getAllTotalCounts(){
 			 inputVo.setAppType(jObj.getString("appType"));
 			 inputVo.setStartDate(jObj.getString("startDate"));
 			 inputVo.setToDate(jObj.getString("toDate"));
-			 inputVo.setDateType(jObj.getString("searchDateType"));
+			 //inputVo.setDateType(jObj.getString("searchDateType"));
 			 cadreDataList=cadreRegistrationService.getRegistrationCadreDetails(inputVo); 
 		}
 		catch(Exception e){
