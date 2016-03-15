@@ -1446,10 +1446,14 @@ str+='<tbody>';
 for(var i in result)
 {
 str+='<tr>';
-if(result[i].ImgStr != null)
-str+='<td><img src="'+result[i].ImgStr+'" class="thumbnail" style="width:75px;height:75px;"></td>';
-else
+if(result[i].imgStr != null){
+	
+str+='<td><img src="'+result[i].imgStr+'" class="thumbnail" style="width:75px;height:75px;"></td>';
+}
+else{
+	
 str+='<td><img src="dist/2016DashBoard/img/profile.png" class="thumbnail" style="width:75px;height:75px;"></td>';
+}
 if(result[i].cadreMembershipno !=null && result[i].cadreMembershipno.length>0){
 	str+='<td>'+result[i].name+' ('+result[i].cadreMembershipno+')</td>';
 }else{
