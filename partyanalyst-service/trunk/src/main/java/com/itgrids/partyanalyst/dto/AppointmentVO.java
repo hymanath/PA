@@ -8,7 +8,7 @@ public class AppointmentVO {
 	private Long appointmentPrioprityId;
 	private String reason;
 	private Long appointmentStatusId;
-	private Long appointmentPreferableIimeId;
+	private String appointmentPreferableTimeType;
 	private String appointmentDates;
 	private List<AppointmentBasicInfoVO> basicInfoList = new ArrayList<AppointmentBasicInfoVO>();
 	private Long appointmentUserId;
@@ -32,11 +32,12 @@ public class AppointmentVO {
 	public void setAppointmentStatusId(Long appointmentStatusId) {
 		this.appointmentStatusId = appointmentStatusId;
 	}
-	public Long getAppointmentPreferableIimeId() {
-		return appointmentPreferableIimeId;
+	public String getAppointmentPreferableTimeType() {
+		return appointmentPreferableTimeType;
 	}
-	public void setAppointmentPreferableIimeId(Long appointmentPreferableIimeId) {
-		this.appointmentPreferableIimeId = appointmentPreferableIimeId;
+	public void setAppointmentPreferableTimeType(
+			String appointmentPreferableTimeType) {
+		this.appointmentPreferableTimeType = appointmentPreferableTimeType;
 	}
 	public String getAppointmentDates() {
 		return appointmentDates;
