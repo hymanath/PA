@@ -8208,4 +8208,21 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return (Long)query.uniqueResult();	
 		
 	}
+	
+	public List<Object[]> getVoterImagesByVoterIds(List<Long> voterIds,Long publicationId){
+		
+		Query query=getSession().createQuery("" +
+		 " select  BPV.voter.voterId,BPV.voter.voterIDCardNo,BPV.booth.constituency.constituencyId,BPV.booth.partNo " +
+		 " from    BoothPublicationVoter BPV " +
+		 " where   BPV.booth.publicationDate.publicationDateId = :publicationDate and BPV.voter.voterId in (:voterIds)");
+		
+		query.setParameter("publicationDate", publicationId);
+		query.setParameterList("voterIds",voterIds );
+		return query.list();
+		
+	}
+	
+	
+	
+	
 }
