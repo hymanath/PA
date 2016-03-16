@@ -1456,8 +1456,9 @@ function buildRegisteredCadres(result,jObj)
 	var str='';
 str+='<table class="table table-bordered" id="popupTable">';
 str+='<thead class="bg_cc">';
-str+='<th></th>';
+str+='<th>Image</th>';
 str+='<th>NAME</th>';
+str+='<th>MEMBERSHIP NO</th>';
 str+='<th>MEMBER TYPE</th>';
 str+='<th>MOBILE NUMBER</th>';
 str+='<th>VOTER NUMBER</th>';
@@ -1475,11 +1476,14 @@ else{
 	
 str+='<td><img src="dist/2016DashBoard/img/profile.png" class="thumbnail" style="width:75px;height:75px;"></td>';
 }
-if(result[i].cadreMembershipno !=null && result[i].cadreMembershipno.length>0){
-	str+='<td>'+result[i].name+' ('+result[i].cadreMembershipno+')</td>';
-}else{
-	str+='<td>'+result[i].name+' </td>';
-}	
+
+str+='<td>'+result[i].name+' </td>';
+str+='<td>'+result[i].memberShipNo+' - (2016)';
+
+if(result[i].cadreMembershipno !=null && result[i].cadreMembershipno.length>0){	
+  str+='<br>'+result[i].cadreMembershipno+' - (2014)';
+}
+str+='</td>';
 
 str+='<td>'+result[i].memberType+'</td>';
 str+='<td>'+result[i].mobileNo+'</td>';
@@ -1493,8 +1497,10 @@ str+='</table>';
 $("#registrationCadreDetailsPopupDiv").html(str);
  $("#popupTable").dataTable({
 		  "aaSorting": [[ 1, "asc" ]],
-		  "iDisplayLength" : 20		
-	  });
+		  "iDisplayLength" : 20	,
+		  "bDestroy": true,
+		  "aLengthMenu": [[20,40,60, 80, -1], [20,40,60, 80, "All"]]	
+		 });
 }
 getTotalCounts();
 getTodayCounts();
