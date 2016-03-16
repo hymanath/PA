@@ -455,6 +455,7 @@
 	
 	function validateDetails()
 	{
+		
 		var isSuccess = false;
 		var isErrorStr = '';
 	
@@ -498,7 +499,7 @@
 		$('#familyVtrCrdIdErr').html("");
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#employeeErr').html('');
-		$('#landmarkErr,#roadErr,#addressErr,#employeeErr,#designationErr,#zoneErr,#regionErr,#depotErr,#desigErr,#schoolErr,#drivingErr,#vehicleErr,#workAddressErr,#workRoadErr,#workLandmarkErr,#presntDistrictIdErr,#presentConstituencyIdErr,#presentManTowDivIdErr,#presentVillWardIdErr,#districtIdErr,#constituencyIdErr,#manTowDivIdErr,#villWardIdErr,#designation13Err').html('');
+		$('#landmarkErr,#roadErr,#addressErr1,#employeeErr,#designationErr,#zoneErr,#regionErr,#depotErr,#desigErr,#schoolErr,#drivingErr,#vehicleErr,#workAddressErr,#workRoadErr,#workLandmarkErr,#presntDistrictIdErr,#presentConstituencyIdErr,#presentManTowDivIdErr,#presentVillWardIdErr,#districtIdErr,#constituencyIdErr,#manTowDivIdErr,#villWardIdErr,#designation13Err').html('');
 		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
 			 $('#gendReqErr').html('Please select gender');
 			 isErrorStr = " error";
@@ -552,6 +553,14 @@
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age Between 21 to 70');
 		}
+			
+		}
+		if(tdpMemberTypeId == 3){
+			if(school == 0)
+			{
+				isErrorStr = " error";
+				$('#schoolErr').html(' School Name is required.');
+			}
 		}
 		if(tdpMemberTypeId == 5){
 			
@@ -615,7 +624,7 @@
 		if(addressVal == 0)
 		{
 			isErrorStr = " error";
-			$('#addressErr').html(' Address is required.');
+			$('#addressErr1').html(' Address is required.');
 		}
 		if(casteId == 0)
 		{
@@ -683,11 +692,7 @@
 			isErrorStr = " error";
 			$('#desigErr').html(' Designation is required.');
 		}
-		if(school == 0)
-			{
-				isErrorStr = " error";
-				$('#schoolErr').html(' School Name is required.');
-			}	
+		 	 
 			//$('#roadErr').html(' Road is required.');
 		//}
 		if(tdpMemberTypeId == 2){
@@ -756,11 +761,11 @@
 				isErrorStr = " error";
 				$('#desigErr').html(' Designation is required.');
 			}*/
-			/* if(school == 0)
+			 /* if(school == 0)
 			{
 				isErrorStr = " error";
 				$('#schoolErr').html(' School Name is required.');
-			}	 */
+			}	 */ 
 		}
 		else if(tdpMemberTypeId == 4){
 			/*if(designationval == 0)
@@ -768,11 +773,11 @@
 				isErrorStr = " error";
 				$('#desigErr').html(' Designation is required.');
 			}*/
-			/* if(school == 0)
+			 /* if(school == 0)
 			{
 				isErrorStr = " error";
 				$('#schoolErr').html(' School Name is required.');
-			}	 */
+			}	 */ 
 		}
 		else if(tdpMemberTypeId == 5){
 			if(drivingLicense == 0)
