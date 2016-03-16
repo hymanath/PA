@@ -6734,8 +6734,8 @@ function getIvrSurveyDetails(searchType,eventTypeId){
 			
 				str+='<table class="table m_0 table-bordered">';
 					str+='<thead>';
-						str+='<th class="text-center"> MEETING </th>';
-						str+='<th class="text-center"> DATE </th>';
+						/*str+='<th class="text-center"> MEETING </th>';
+						str+='<th class="text-center"> DATE </th>';*/
 						str+='<th class="text-center"> SURVEY </th>';
 						str+='<th class="text-center"> ROUND </th>';
 						str+='<th class="text-center"> QUESTION </th>';
@@ -6745,8 +6745,8 @@ function getIvrSurveyDetails(searchType,eventTypeId){
 					str+='<tbody class="text-center">';
 					for(var i in result){
 						str+='<tr>';
-							str+='<td>'+result[i].eventName+' ('+result[i].name+')</td>';
-							str+='<td>'+result[i].dateStr+'</td>';
+							/*str+='<td>'+result[i].eventName+' ('+result[i].name+')</td>';
+							str+='<td>'+result[i].dateStr+'</td>';*/
 							str+='<td>'+result[i].surveyName+'</td>';
 							str+='<td>'+result[i].round+'</td>';
 							str+='<td>'+result[i].question+'</td>';
@@ -6774,9 +6774,9 @@ function buildSurveyAnswerDetailsForActivity(result){
 			
 				str+='<table class="table m_0 table-bordered">';
 					str+='<thead>';
-						str+='<th class="text-center"> ACTIVITY </th>';
+						/*str+='<th class="text-center"> ACTIVITY </th>';
 						str+='<th class="text-center"> ACTIVITY DATE </th>';
-						str+='<th class="text-center"> ACTIVITY LEVEL </th>';
+						str+='<th class="text-center"> ACTIVITY LEVEL </th>';*/
 						str+='<th class="text-center"> SURVEY </th>';
 						str+='<th class="text-center"> ROUND </th>';
 						str+='<th class="text-center"> QUESTION </th>';
@@ -6786,13 +6786,13 @@ function buildSurveyAnswerDetailsForActivity(result){
 					str+='<tbody class="text-center">';
 					for(var i in result){
 						str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
+							/*str+='<td>'+result[i].name+'</td>';
 							if(result[i].startDate !=null && result[i].endDate !=null){
 								str+='<td>'+result[i].startDate +" - "+result[i].endDate+'</td>';
 							}else{
 								str+='<td></td>';
 							}
-							str+='<td>'+result[i].levelValue+'</td>';
+							str+='<td>'+result[i].levelValue+'</td>';*/
 							str+='<td>'+result[i].surveyName+'</td>';
 							str+='<td>'+result[i].round+'</td>';
 							str+='<td>'+result[i].question+'</td>';
@@ -6811,8 +6811,8 @@ function buildSurveyAnswerDetailsForSpecialSurveys(result){
 			
 	str+='<table class="table m_0 table-bordered">';
 		str+='<thead>';
-			str+='<th class="text-center"> EVENT </th>';
-			str+='<th class="text-center"> DATE </th>';
+			/*str+='<th class="text-center"> EVENT </th>';
+			str+='<th class="text-center"> DATE </th>';*/
 			str+='<th class="text-center"> SURVEY </th>';
 			str+='<th class="text-center"> ROUND </th>';
 			str+='<th class="text-center"> QUESTION </th>';
@@ -6822,8 +6822,8 @@ function buildSurveyAnswerDetailsForSpecialSurveys(result){
 		str+='<tbody class="text-center">';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td>'+result[i].eventName+'</td>';
-				str+='<td>'+result[i].dateStr+'</td>';
+				/*str+='<td>'+result[i].eventName+'</td>';
+				str+='<td>'+result[i].dateStr+'</td>';*/
 				str+='<td>'+result[i].surveyName+'</td>';
 				str+='<td>'+result[i].round+'</td>';
 				str+='<td>'+result[i].question+'</td>';
@@ -6843,8 +6843,8 @@ function buildSurveyAnswerDetailsForTrainingCamps(result){
 			
 	str+='<table class="table m_0 table-bordered">';
 		str+='<thead>';
-			str+='<th class="text-center"> PROGRAM </th>';
-			str+='<th class="text-center"> BATCH </th>';
+			/*str+='<th class="text-center"> PROGRAM </th>';
+			str+='<th class="text-center"> BATCH </th>';*/
 			str+='<th class="text-center"> SURVEY </th>';
 			str+='<th class="text-center"> ROUND </th>';
 			str+='<th class="text-center"> QUESTION </th>';
@@ -6854,8 +6854,8 @@ function buildSurveyAnswerDetailsForTrainingCamps(result){
 		str+='<tbody class="text-center">';
 		for(var i in result){
 			str+='<tr>';
-				str+='<td>'+result[i].name+'</td>';
-				str+='<td>'+result[i].eventName+'</td>';
+				/*str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].eventName+'</td>';*/
 				str+='<td>'+result[i].surveyName+'</td>';
 				str+='<td>'+result[i].round+'</td>';
 				str+='<td>'+result[i].question+'</td>';
