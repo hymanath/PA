@@ -3984,12 +3984,14 @@ $(document).ready(function(){
        var constituencyId=result.constituencyId;
 	   
 	   var tehsilLebid='';
-	   if(result.tehsilId!=null && result.tehsilId>0){
-		  tehsilLebid=result.tehsilId; 
-	   }else if(result.localElectionBodyId!=null && result.localElectionBodyId>0){
-		    tehsilLebid=result.localElectionBodyId; 
-	   }
 	   
+	   if(result.localElectionBodyId!=null && result.localElectionBodyId>0){
+		    tehsilLebid=result.localElectionBodyId; 
+	   }else if(result.tehsilId!=null && result.tehsilId>0){
+		  tehsilLebid=result.tehsilId; 
+		   
+	   }
+	  
 	   var villageWardId='';
 	   if(result.villageId!=null && result.villageId>0){
 		  villageWardId=result.villageId;
@@ -4067,11 +4069,12 @@ $(document).ready(function(){
        var constituencyId=result.constituencyId;
 	   
 	   var tehsilLebid='';
-	   if(result.tehsilId!=null && result.tehsilId>0){
-		  tehsilLebid=result.tehsilId; 
-	   }else if(result.localElectionBodyId!=null && result.localElectionBodyId>0){
+	   if(result.localElectionBodyId!=null && result.localElectionBodyId>0){
 		    tehsilLebid=result.localElectionBodyId; 
+	   }else  if(result.tehsilId!=null && result.tehsilId>0){
+		  tehsilLebid=result.tehsilId; 
 	   }
+	   
 	   
 	   var villageWardId='';
 	   if(result.villageId!=null && result.villageId>0){
@@ -4083,6 +4086,7 @@ $(document).ready(function(){
 			$('#districtId').val(districtId);
 		else
 			$('#districtId').val(0);
+		
 		if(result.constList!=null && result.constList.length>0){
 			for(var i in result.constList){
 				if(result.constList[i].id == constituencyId){
@@ -4093,6 +4097,7 @@ $(document).ready(function(){
 				
 			}
 		}
+		
 		if(result.tehLebDivList!=null && result.tehLebDivList.length>0){
 			for(var i in result.tehLebDivList){
 				if(result.tehLebDivList[i].locationId == tehsilLebid){
