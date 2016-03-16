@@ -2599,6 +2599,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo = new VoterInfoVO();
 						try {
 							Long tdpCadreId = tdpCadre.getTdpCadreId();
+							vo.setVoterId(tdpCadre.getVoterId());
 							vo.setNameType(tdpCadre.getNameType());
 							vo.setCadreId(tdpCadre.getTdpCadreId());
 							vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getDateOfBirth()):"");
