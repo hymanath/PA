@@ -4373,24 +4373,22 @@ function getDistricts(district,populateConstituency,populateMandal,populateVilla
 	}
 	function isPresentPincodeNumber(fieldId,PinCodeNO)
 	{
-		
 		var numberFlag = true;
 		var errDiv='#NaadharErr';
 		if(fieldId == "prsntAddrsPincodeId"){
 			errDiv='#errprsttAddpinId';
 		}
 		var presentAddrpincode = $('#'+fieldId+'').val().trim();
-		
 		$(errDiv).html('');
-		
-		
-		
 		if(presentAddrpincode.length == 0) 
 		{
 			if(!(fieldId == "prsntAddrsPincodeId")){
 				$(errDiv).html(''+PinCodeNO+' Required.');		
 				numberFlag= false;
 			}
+		}else if(presentAddrpincode.charAt(0) != 5){
+			$(errDiv).html(''+PinCodeNO+' Must start with no 5.');		
+				numberFlag= false;
 		}		 
 		else if (isNaN(presentAddrpincode)) 
 		{
@@ -4413,17 +4411,16 @@ function getDistricts(district,populateConstituency,populateMandal,populateVilla
 			errDiv='#errWrkAddpinId';
 		}
 		var workerAddrpincode = $('#'+fieldId+'').val().trim();
-		
 		$(errDiv).html('');
-		
-		
-		
 		if(workerAddrpincode.length == 0) 
 		{
 			if(!(fieldId == "workAddrsPincodeId")){
 				$(errDiv).html(''+PinCodeNO+' Required.');		
 				numberFlag= false;
 			}
+		}else if(workerAddrpincode.charAt(0) != 5){
+			$(errDiv).html(''+PinCodeNO+' Must start with no 5.');		
+				numberFlag= false;
 		}		 
 		else if (isNaN(workerAddrpincode)) 
 		{
