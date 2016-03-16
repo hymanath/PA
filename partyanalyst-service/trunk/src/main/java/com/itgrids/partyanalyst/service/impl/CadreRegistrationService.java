@@ -11897,7 +11897,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						  String membershipNo = getMemberShipNo(distId,tdpCadre1.getTdpCadreId());
 						  tdpCadre1.setMemberShipNo(membershipNo);
 						}
-					   uploadProfileImageForAffliatedCadre(cadreRegistrationVO,registrationType,tdpCadre1,cadreImgConstituency);
+					   uploadProfileImageForAffliatedCadre(cadreRegistrationVO,registrationType,tdpCadre1,cadreImgConstituency, insertType);
 					   tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					   tdpCadre1 = tdpCadreDAO.save(tdpCadre1);
 					   
@@ -12036,7 +12036,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			
 		}
 	}
-	public void uploadProfileImageForAffliatedCadre(CadreRegistrationVO cadreRegistrationVO,String registrationType,TdpCadre tdpCadre,String cadreImgConstituency){
+	public void uploadProfileImageForAffliatedCadre(CadreRegistrationVO cadreRegistrationVO,String registrationType,TdpCadre tdpCadre,String cadreImgConstituency,String insertType){
 		
 		
 		LOG.error("PHOTOTYPE: "+cadreRegistrationVO.getPhotoType());
@@ -12161,6 +12161,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					   String status = copyFile(sourcePath,destinationPath);
 					   LOG.error("Status : "+status);
 					   if(status.equalsIgnoreCase("success")){
+						   tdpCadre.setImage(cadreImgConstituency + "/" + tdpCadre.getMemberShipNo()+".jpg");
 						   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
 					   }
 					}
@@ -12246,8 +12247,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
 					}
 			}else{
+				
 				  LOG.error("16");
-				 if(tdpCadre.getVoterId() != null){
+				 if(tdpCadre.getVoterId() != null && !insertType.equalsIgnoreCase("update")){// For save scanario only it should work.
 					  LOG.error("17");
 					    String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 					    
@@ -12272,6 +12274,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					   }
 				  }
 			}
+			
 		}
 		
 	}
