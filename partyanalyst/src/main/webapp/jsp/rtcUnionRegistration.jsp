@@ -487,8 +487,6 @@
 		var addressVal = $("#addressId").val();
 		var roadVal = $("#roadId").val();
 		var landmarkVal = $("#landmarkId").val();
-		
-		
 		var presentDistrict = $('#presentDistrictId').val();
 		var presnetConstituency = $('#presentConstituencyId').val();
 		var presentMandalId = $('#presentManTowDivId').val();
@@ -512,6 +510,13 @@
 				isErrorStr = " error";
 			}
 
+			//Age Updation As Per Date Of Birth
+			var d = new Date();
+			var curntYer = d.getFullYear();
+			var doYer = dateOfbirth.substring('-',4);
+			var age = parseInt(curntYer)-parseInt(doYer);
+			$('#cadreAgeId').val(age);
+			
 		if(validateName('nameErr','cadreNameId',1)){
 			isErrorStr = " error";	
 		}
@@ -548,7 +553,7 @@
 		}
 		if(tdpMemberTypeId == 3 || tdpMemberTypeId == 4){
 			
-		if(cadreAge <21 || cadreAge >70)
+		if(age <21 || age >70)
 		{
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age Between 21 to 70');
@@ -564,7 +569,7 @@
 		}
 		if(tdpMemberTypeId == 5){
 			
-		if(cadreAge <21 || cadreAge >100)
+		if(age <21 || age >100)
 		{
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age Between 21 to 100');
@@ -591,6 +596,10 @@
 		{
 			isErrorStr = " error";
 			$('#dobErr').html(' Date of Birth is required.');
+		}
+		if(age < 21 || age > 70){
+			isErrorStr = " error";
+			$('#dobErr').html(' Date of Birth Between 21 to 70 Yrs.');
 		}
 		if(cadreName != null && cadreName.trim().length == 0)
 		{
@@ -4428,6 +4437,5 @@ function getDistricts(district,populateConstituency,populateMandal,populateVilla
 		}
 			return numberFlag;
 	}
-	
 </script>
 </html>
