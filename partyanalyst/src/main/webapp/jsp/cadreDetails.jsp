@@ -6886,7 +6886,7 @@ function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceLoadingImg").show();
 	$.ajax({
 		type:'GET',
-		url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
