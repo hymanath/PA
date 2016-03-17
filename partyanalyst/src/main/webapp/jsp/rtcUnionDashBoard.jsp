@@ -226,7 +226,7 @@ body{color:#666 !important}
 												<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
 												</div>
 											<div class="col-md-3">
-												<select id="userMembersId" multiple>
+												<select id="userMembersId" multiple data-placeholder="Select Union Type">
 												</select>
 												<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
 											</div>
