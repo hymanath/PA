@@ -1161,7 +1161,7 @@
 											<div class="row m_top10">
 												<div class="col-md-4">
 													<label>Location Scope</label>
-													<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0">
+													<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0" onChange="showhideLocationBoxes(0);">
 														<option value="0">Select Scope</option>
 														<option value="3">DISTRICT</option>
 														<option value="4">CONSTITUENCY</option>
@@ -1171,25 +1171,25 @@
 														<option value="8">WARD</option>
 													</select>
 												</div>
-												<div class="col-md-4">
+												<div class="col-md-4 locationCls0" id="districtId0DivId" style="display:none;">
 													<label>Select District</label>
 													<select name="appointmentVO.basicInfoList[0].districtId" class="dropkickClass scopeClearAllCls0" id="districtId0" onChange="getConstituencies(0);">
 														<option value="0">Select District</option>
 													</select>
 												</div>
-												<div class="col-md-4">
+												<div class="col-md-4 locationCls0" id="constituencyId0DivId" style="display:none;">
 													<label>Select Constituency</label>
 													<select name="appointmentVO.basicInfoList[0].constituencyId" class="dropkickClass scopeClearAllCls0" id="constituencyId0" onChange="getMandamMuncipalties(0);">
 														<option value="0">Select Constituency</option>
 													</select>
 												</div>
-												<div class="col-md-4">
+												<div class="col-md-4 locationCls0" id="tehsilId0DivId" style="display:none;">
 													<label>Select Mandal/Muncipality</label>
 													<select name="appointmentVO.basicInfoList[0].tehsilId" class="dropkickClass scopeClearAllCls0" id="tehsilId0" onChange="getVillageWard(0);">
 														<option value="0">Select Mandal</option>
 													</select>
 												</div>
-												<div class="col-md-4">
+												<div class="col-md-4 locationCls0" id="villageId0DivId" style="display:none;">
 													<label>Select Village/Ward</label>
 													<select name="appointmentVO.basicInfoList[0].villageId" class="dropkickClass scopeClearAllCls0" id="villageId0">
 														<option value="0">Select VILLAGE</option>
@@ -1254,30 +1254,36 @@
 											<div class="col-md-4">
 												<label>Location Scope</label>
 												<select class="cloneLocationScopeCls regionScopeCls">
-													<option value="0">select scope</option>
+													<option value="0">Select Scope</option>
+													<option value="3">DISTRICT</option>
+													<option value="4">CONSTITUENCY</option>
+													<option value="5">MANDAL</option>
+													<option value="6">VILLAGE</option>
+													<option value="7">MUNICIPAL-CORP-GMC</option>
+													<option value="8">WARD</option>
 												</select>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 cloneDistDivCls" style="display:none;">
 												<label>Select District</label>
 												<select class="cloneDistrictCls">
 													<option value="0">select dist</option>
-													<option value="14">test dist1</option>
+													<!--<option value="14">test dist1</option>-->
 												</select>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 cloneConstDivCls" style="display:none;">
 												<label>Select Constituency</label>
 												<select class="cloneConstituencyCls" >
 													<option value="0">select const</option>
-													<option value="142">test const1</option>
+													<!--<option value="142">test const1</option>-->
 												</select>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 cloneMandalDivCLs" style="display:none;">
 													<label>Select Mandal/Muncilpality</label>
 													<select class="cloneMandalCls">
 														<option value="0">Select Mandal</option>
 													</select>
 												</div>
-												<div class="col-md-4">
+												<div class="col-md-4 cloneVillageDivCls" style="display:none;">
 													<label>Select Village/Ward</label>
 													<select class="cloneVillageCls">
 														<option value="0">Select VILLAGE</option>
@@ -2410,9 +2416,48 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneMembershipNumCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].membershipNum');
 	e.find(".cloneVoterIdCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].voterCardNo');
 	e.find(".cloneLocationScopeCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].locationScopeId');
-	e.find(".cloneDistrictCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].districtId');
-	e.find(".cloneConstituencyCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].constituencyId');
+	//e.find(".cloneDistrictCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].districtId');
+	//e.find(".cloneConstituencyCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].constituencyId');
 	 
+	 
+	e.find(".cloneLocationScopeCls").attr("id",'locationScopeSelId'+cloneCount);
+	e.find(".cloneLocationScopeCls").attr("attr_val",cloneCount);
+	e.find(".cloneLocationScopeCls").attr("id","locationScopeSelId"+cloneCount);
+	e.find(".cloneLocationScopeCls").attr("onChange","showhideLocationBoxes("+cloneCount+")");
+	
+	e.find(".cloneDistDivCls").attr("id","districtId"+cloneCount+"DivId");
+	e.find(".cloneDistDivCls").addClass("locationCls"+cloneCount);
+	
+	
+	e.find(".cloneDistrictCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].districtId');
+	e.find(".cloneDistrictCls").attr("id",'districtId'+cloneCount);
+	e.find(".cloneDistrictCls").attr("onChange",'getConstituencies('+cloneCount+');');
+	e.find(".cloneDistrictCls").attr("attr_val",cloneCount);
+	
+	e.find(".cloneConstDivCls").attr("id","constituencyId"+cloneCount+"DivId");
+	e.find(".cloneConstDivCls").addClass("locationCls"+cloneCount);
+	
+	e.find(".cloneConstituencyCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].constituencyId');
+	e.find(".cloneConstituencyCls").attr("id",'constituencyId'+cloneCount);
+	e.find(".cloneConstituencyCls").attr("onChange",'getMandamMuncipalties('+cloneCount+');');
+	e.find(".cloneConstituencyCls").attr("attr_val",cloneCount);
+	
+	e.find(".cloneMandalDivCLs").attr("id","tehsilId"+cloneCount+"DivId");
+	e.find(".cloneMandalDivCLs").addClass("locationCls"+cloneCount);
+
+	e.find(".cloneMandalCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].tehsilId');
+	e.find(".cloneMandalCls").attr("id",'tehsilId'+cloneCount);
+	e.find(".cloneMandalCls").attr("onChange",'getVillageWard('+cloneCount+');');
+	e.find(".cloneMandalCls").attr("attr_val",cloneCount);
+	
+	e.find(".cloneVillageDivCls").attr("id","villageId"+cloneCount+"DivId");
+	e.find(".cloneVillageDivCls").addClass("locationCls"+cloneCount);
+	
+	e.find(".cloneVillageCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].villageId');
+	e.find(".cloneVillageCls").attr("id",'villageId'+cloneCount);
+	e.find(".cloneVillageCls").attr("attr_val",cloneCount);
+
+	
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
 	
@@ -2420,6 +2465,26 @@ $(document).on("click","#addOneBlock",function(){
 	$("#"+t).dropkick();
 	var select2 = new Dropkick("#"+t);
 	select2.refresh();
+	
+	var loc = "locationScopeSelId"+cloneCount;
+	var select3 = new Dropkick("#"+loc);
+	select3.refresh();
+	
+	var dis = "districtId"+cloneCount;
+	var select4 = new Dropkick("#"+dis);
+	select4.refresh();
+	
+	var con = "constituencyId"+cloneCount;
+	var select5 = new Dropkick("#"+con);
+	select5.refresh();
+	
+	var man = "tehsilId"+cloneCount;
+	var select6 = new Dropkick("#"+man);
+	select6.refresh();
+	
+	var village = "villageId"+cloneCount; 
+	var select6 = new Dropkick("#"+village);
+	select6.refresh();
 	
 	cloneCount=cloneCount+1;
 });
@@ -2536,37 +2601,39 @@ $(".dropkickClass").dropkick();
 		YAHOO.util.Connect.asyncRequest('POST','appointmentSavingAction.action',uploadHandler);
 	}
 	
-	$(document).on("change",".regionScopeCls",function(){
-		var id = $(this).attr("attr_val");
-		$(".scopeClearAllCls"+id).val(0);
-		if($(this).val()==3){
-			$("#districtId"+id).show();
-		}else if($(this).val()==4){
-			$("#districtId"+id).show();
-			$("#constituencyId"+id).show();
-		}else if($(this).val()==5){
-			$("#districtId"+id).show();
-			$("#constituencyId"+id).show();
-			$("#tehsilId"+id).show();
-		}else if($(this).val()==6){
-			$("#districtId"+id).show();
-			$("#constituencyId"+id).show();
-			$("#tehsilId"+id).show();
-			$("#villageId"+id).show();
-		}else if($(this).val()==7){
-			$("#districtId"+id).show();
-			$("#constituencyId"+id).show();
-			$("#munCorpId"+id).show();
-		}else if($(this).val()==8){
-			$("#districtId"+id).show();
-			$("#constituencyId"+id).show();
-			$("#munCorpId"+id).show();
-			$("#wardId"+id).show();
+	function showhideLocationBoxes(num){
+		$(".locationCls"+num).css("display","none");
+		var id = $("#locationScopeSelId"+num).attr("attr_val");
+		var selId = "locationScopeSelId"+num;
+		if($("#"+selId).val()==3){
+			var divId = "districtId"+id+"DivId";
+			$("#"+divId).css("display","block");
+		}else if($("#"+selId).val()==4){
+			var divId = "districtId"+id+"DivId";
+			$("#"+divId).css("display","block");
+			var divId1 = "constituencyId"+id+"DivId";
+			$("#"+divId1).css("display","block");
+		}else if($("#"+selId).val()==5 || $("#"+selId).val()==7){
+			var divId = "districtId"+id+"DivId";
+			$("#"+divId).css("display","block");
+			var divId1 = "constituencyId"+id+"DivId";
+			$("#"+divId1).css("display","block");
+			var divId2	 = "tehsilId"+id+"DivId";
+			$("#"+divId2).css("display","block");
+		}else if($("#"+selId).val()==6 || $("#"+selId).val()==8){
+			var divId = "districtId"+id+"DivId";
+			$("#"+divId).css("display","block");
+			var divId1 = "constituencyId"+id+"DivId";
+			$("#"+divId1).css("display","block");
+			var divId2	 = "tehsilId"+id+"DivId";
+			$("#"+divId2).css("display","block");
+			var divId3	 = "villageId"+id+"DivId";
+			$("#"+divId3).css("display","block");
 		}
-	});
+	}
 	
 	getDistricts();
-	var distArr=[];
+	//var distArr=[];
 	function getDistricts(){
 		$.ajax({
 			type : 'GET',
@@ -2578,15 +2645,19 @@ $(".dropkickClass").dropkick();
 			str+='<option value="0">Select District</option>';
 			if(result != null && result.length > 0){
 				for(var i in result){
-					var obj={id:result[i].id,value:result[i].name};
-					distArr.push(obj);
+					//var obj={id:result[i].id,value:result[i].name};
+					//distArr.push(obj);
 					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
 				}
 			}
 			$("#districtId0").html(str);
+			$(".cloneDistrictCls").html(str);
+			
 			$("#districtId0").dropkick();
 			var select = new Dropkick("#districtId0");
 			select.refresh();
+			
+			
 		});
 	}
 	
@@ -2636,7 +2707,12 @@ $(".dropkickClass").dropkick();
 					str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>';	
 				}
 			}
-			$("#tehsilId"+num).html(str);
+			
+			var id="tehsilId"+num;
+			$("#"+id).html(str);
+			$("#"+id).dropkick();
+			var select = new Dropkick("#"+id);
+			select.refresh();
 		});
 	}
 	
@@ -2649,7 +2725,7 @@ $(".dropkickClass").dropkick();
 			type : 'GET',
 			url : 'getVillageWardAction.action',
 			dataType : 'json',
-			date : {task:JSON.stringify(jsObj)}
+			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			var str='';
 			str+='<option value="0">Select Village/Ward</option>';
@@ -2658,36 +2734,42 @@ $(".dropkickClass").dropkick();
 					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
 				}
 			}
-			$("#villageId"+num).html(str);
+			
+			var id="villageId"+num;
+			$("#"+id).html(str);
+			$("#"+id).dropkick();
+			var select = new Dropkick("#"+id);
+			select.refresh();
 		});
 	}
-$(document).on('click','#createNewLabelId',function(){
-	$("#successDiv").html("");
-	$("#successDiv").show();
-	$("#errLabelName").html("");
-	var lblName = $("#labelNameId").val();
-	if(lblName=="" && lblName.length==0){
-		$("#errLabelName").html("please enter label Name.").css("color","red");
-		return;
-	}
-	var jobj = {
-		labelName	:	$("#labelNameId").val(),
-		insertedBy	:	$("#appointmentUserSelectBoxId").val(),
-		date		:	$("#modalDateId").val()   
-	}
-	$.ajax({
-		  type     : "POST",
-		  url      : "createAppointmentLabel.action",
-		  dataType : "json",
-		  data     : {task:JSON.stringify(jobj)}
-		}).done(function(result){
-			if(result!=null){
-				$("#successDiv").html(result.message).css("color","green");
-				setTimeout(function(){	$("#successDiv").hide(); },3000);
-				$("#labelNameId").val("");
-			}
-	  });     
-});
+	
+	$(document).on('click','#createNewLabelId',function(){
+		$("#successDiv").html("");
+		$("#successDiv").show();
+		$("#errLabelName").html("");
+		var lblName = $("#labelNameId").val();
+		if(lblName=="" && lblName.length==0){
+			$("#errLabelName").html("please enter label Name.").css("color","red");
+			return;
+		}
+		var jobj = {
+			labelName	:	$("#labelNameId").val(),
+			insertedBy	:	$("#appointmentUserSelectBoxId").val(),
+			date		:	$("#modalDateId").val()   
+		}
+		$.ajax({
+			  type     : "POST",
+			  url      : "createAppointmentLabel.action",
+			  dataType : "json",
+			  data     : {task:JSON.stringify(jobj)}
+			}).done(function(result){
+				if(result!=null){
+					$("#successDiv").html(result.message).css("color","green");
+					setTimeout(function(){	$("#successDiv").hide(); },3000);
+					$("#labelNameId").val("");
+				}
+		  });     
+	});
 		 getAppointmentUsersDtls();
 		function getAppointmentUsersDtls(){
 		$.ajax({
