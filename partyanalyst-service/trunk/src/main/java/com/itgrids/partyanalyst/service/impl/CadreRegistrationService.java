@@ -2666,7 +2666,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 							
 							vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
-							vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
+							vo.setCasteId(tdpCadre.getCasteStateId() != null ? tdpCadre.getCasteStateId():0L);							
 							vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
 							
 							vo.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
