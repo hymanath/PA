@@ -459,7 +459,7 @@
 		var isSuccess = false;
 		var isErrorStr = '';
 	
-		var casteId = $('#casteId').val();
+		
 		var mobileNumber = $('#mobileNumberId').val();
 		var cadreAge = $('#cadreAgeId').val();
 		var cadreCardNumber = $('#cardNumber').val();
@@ -635,11 +635,18 @@
 			isErrorStr = " error";
 			$('#addressErr1').html(' Address is required.');
 		}
-		if(casteId == 0)
-		{
-			isErrorStr = " error";
-			$('#casteErr').html(' Caste is required.');
-		} 
+		
+		/* 
+			//caste validation.
+			var casteId = $('#casteId').val();
+			if(casteId == 0)
+			{
+				isErrorStr = " error";
+				$('#casteErr').html(' Caste is required.');
+			} 
+		*/
+		
+		
 		if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
@@ -861,13 +868,18 @@
 		}*///iferror return false
 		if(!isAadharNumber('candAdrId','Aadhar No ')){
 			isErrorStr = " error";	
-		}//iferror return false
-		if(!isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO ')){
-			isErrorStr = " error";	
-		}//iferror return false 
-		if(!isWorkerPincodeNumber('workAddrsPincodeId','PinCodeNO ')){
-			isErrorStr = " error";	
-		}//iferror return false 
+		}
+		
+		/*
+			//pincode validation
+			if(!isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO ')){
+				isErrorStr = " error";	
+			}
+			if(!isWorkerPincodeNumber('workAddrsPincodeId','PinCodeNO ')){
+				isErrorStr = " error";	
+		} 
+		
+		*/
 		
 		$('.famAgeErrCls').each(function(){
 			var key = $(this).attr('key');
@@ -1567,6 +1579,7 @@
 								</div>
 								<div class="m_top10">
 										<div class="row-fluid">
+										
 										  <s:if test="voterInfoVOList[0].voterCardNo == null || voterInfoVOList[0].voterCardNo.length == 0 ">
 											<div style="width:150px;float:left;">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
@@ -1574,11 +1587,13 @@
 												 <div id="cardErr" style="color:red;font-size:12px;"></div>
 												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
 											</div>
-											
-											<div style="width: 120px; float: left; margin-top: 20px;">
+											          <!-- look up -->
+											<!-- <div style="width: 120px; float: left; margin-top: 20px;">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableLookupName();}" style="margin-top: 20px; width: 120px; margin-left: 16px;">LookUp</a>
-											</div>
+											</div> -->
+											
 										    </s:if>
+											
 										  <s:else>
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
@@ -1586,13 +1601,15 @@
 												 <div id="cardErr" style="color:red;font-size:12px;"></div>
 											</div>
 										  </s:else>
+										            
 												<c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
+												
 													<div class="span6 famlyMemClsDiv">												
 														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();" checked="true"/> Is Family Member
 													</div>
 													<div  id="showHideFammemberType" style="display:block;"  class="span12">
 														<div  class="span6">
-															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="cadreRegistrationVO.relationTypeId" id="relativeTypeId "> </select>
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="cadreRegistrationVO.relationTypeId" id="relationshipTypeId"></select>
 														</div>
 														<div  class="span6">
 															<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span>
@@ -1606,12 +1623,13 @@
 													</div>
 												</c:if>
 												<c:if test="${empty voterInfoVOList[0].fmlyVCardNo}">	
+												
 													<div class="span6 famlyMemClsDiv">
 														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member 
 													</div>
 													<div  id="showHideFammemberType" style="display:none ;" class="span12">
 														<div  class="span6">
-															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="cadreRegistrationVO.relationTypeId" id="relativeTypeId"> </select>
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="cadreRegistrationVO.relationTypeId" id="relationshipTypeId"> </select>
 														</div>
 														<div  class="span6">
 															<label style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</label>
@@ -1687,7 +1705,7 @@
 							   
 								
 							<div class=" m_top20" id="casteDivId">
-										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span>&nbsp;<span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
+										<h5 class="text-align1">CASTE NAME <span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
 								
 									
@@ -1859,7 +1877,8 @@
 					<div class="span3">
 					<div class="m_top20">
 						<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span> --></h5>
-						<input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" onkeyup="isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO')" value="${voterInfoVOList[0].pincode}" style="width:200px" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>
+						<!-- <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" onkeyup="isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO')" value="${voterInfoVOList[0].pincode}" style="width:200px" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>-->
+						 <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode"  value="${voterInfoVOList[0].pincode}" style="width:200px" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>
 					</div> 
 				    </div>
 					 <!--  WORKING ADDRESS LOCATION. -->
@@ -1920,7 +1939,8 @@
 					   <div class="span3">
 						<div class="m_top20">
 							<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span>--> </h5>
-							<input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode" onkeyup="isWorkerPincodeNumber('workAddrsPincodeId','PinCodeNO')"></input><br/><span id="errWrkAddpinId" style="color:red;font-size:12px;"></span>
+							<!-- <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode" onkeyup="isWorkerPincodeNumber('workAddrsPincodeId','PinCodeNO')"></input><br/><span id="errWrkAddpinId" style="color:red;font-size:12px;"></span>-->
+						     <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode"></input><br/><span id="errWrkAddpinId" style="color:red;font-size:12px;"></span>
 						</div> 
 				    </div>
 					</div>	
@@ -2955,26 +2975,8 @@ function showHideFamRelatinoSts(){
 	 $(".setHeight").css("height",checkDiv)
    }
 }
-function getAllRelationDetails(){
-	 $.ajax({
-		type : "POST",
-		url : "getAllRelationDetails.action"
-	}).done(function(result){
-	  if(result != null && result.length > 0){
-	   //$('#relativeTypeId').append('<option value="0">Select Relation</option>');
-	   for(var i in result){
-		 $('#relativeTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-	    }
-	  }
-	 
-	  <s:if test="voterInfoVOList[0].relative != null">
-	    $('#relativeTypeId').val('${voterInfoVOList[0].relationTypeId}');
-		$('#relativeTypeChecked').attr("checked","checked");
-		showHideFamRelatinoSts();
-	  </s:if>
-	});
-}
-getAllRelationDetails();
+
+
 function deleteDetails(id)
 	{
 		if(confirm('Are you sure want to delete it? '))
@@ -3651,13 +3653,20 @@ function showTakeImage(){
 $(document).ready(function(){
 	$("#wrapper").hide();
 });
-
-	if(srchType=="voter" && candiId =="0"){
-		$(".famlyMemClsDiv").css("display","block");
-	}else if(srchType=="voter" && candiId !="0"){
-		$(".famlyMemClsDiv").css("display","none");
-	}else{
-		$(".famlyMemClsDiv").css("display","block");
+    hideShowFamilyRelatedDiv();
+	function hideShowFamilyRelatedDiv(){
+		if(srchType=="voter" && candiId =="0"){
+			$(".famlyMemClsDiv").css("display","block");
+		}else if(srchType=="voter" && candiId !="0"){
+			$(".famlyMemClsDiv").css("display","none");
+		}else{
+			var voterCardNoExists = '${voterInfoVOList[0].voterCardNo}';
+			if(voterCardNoExists != null &&  voterCardNoExists.trim().length>0 ){
+				$(".famlyMemClsDiv").css("display","none");
+			}else{
+				$(".famlyMemClsDiv").css("display","block");
+			}
+		}
 	}
 	
 	function updateNameSelection(id)
@@ -4044,7 +4053,29 @@ $(document).ready(function(){
 		}
 		
 	}
+	
+	function getAllRelationDetails(){
+		 $.ajax({
+			type : "POST",
+			url : "getAllRelationDetails.action"
+		}).done(function(result){
+		  if(result != null && result.length > 0){
+		   $('#relativeTypeId').append('<option value="0">Select Relation</option>');
+		   for(var i in result){
+			 $('#relationshipTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+		  }
+		 <s:if test="voterInfoVOList[0].relative != null">
+			$('#relationshipTypeId').val('${voterInfoVOList[0].relationTypeId}');
+			$('#relativeTypeChecked').attr("checked","checked");
+			showHideFamRelatinoSts();
+		  </s:if> 
+		});
+	}
+	
+	
 	getWorkAddressDetails();
+	getAllRelationDetails();
 	function getWorkAddressDetails(){
 		var jsObj={ candidateId:'${param.candidateId}',searchType:'${param.searchType}',memberTypeId:'${param.tdpMemberTypeId}' }
 		
