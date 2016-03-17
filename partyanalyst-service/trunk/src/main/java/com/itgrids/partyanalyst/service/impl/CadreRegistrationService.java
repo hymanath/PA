@@ -2690,6 +2690,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
 							  vo.setRelative("true");
 							  vo.setRelationTypeId(tdpCadre.getRelationType() != null ? tdpCadre.getRelationType().getVoterRelationId() : 0l);
+							  
+							  if(tdpMemberTypeId != null){
+								  vo.setRelationTypeId(tdpCadre.getRelationTypeId() != null ? tdpCadre.getRelationTypeId(): 0l);
+							  }
 							}
 														
 							vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo() : "");
