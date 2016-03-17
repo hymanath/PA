@@ -2450,7 +2450,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		return query.list();
 	}
 	
-	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdMultipleALocation(Long userId,String locationType,List<Long> locationIds,Long publicationDateId,Long constituencyId)
+	/*public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdMultipleALocation(Long userId,String locationType,List<Long> locationIds,Long publicationDateId,Long constituencyId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model2.casteState,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName,  ");
@@ -2504,7 +2504,72 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 			query.setParameter("constituencyId", constituencyId);
 		}
 		return query.list();
+	}*/
+	
+	public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdMultipleALocation(Long userId,String locationType,List<Long> locationIds,Long publicationDateId,Long constituencyId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model2.casteState,model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName,  ");
+		
+		
+		if(locationType.equalsIgnoreCase("constituency")){
+			
+			str.append(" model.booth.constituency.constituencyId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append(" model.booth.constituency.constituencyId = :constituencyId2 group by ");
+			
+		}else if(locationType.equalsIgnoreCase("mandal")){
+			
+			str.append(" model.booth.tehsil.tehsilId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.tehsil.tehsilId in (:locationId) and model3.constituency.constituencyId = :constituencyId and model3.localBody is null  and model3.publicationDate.publicationDateId = :publicationDateId ) " +
+					" group by model.booth.tehsil.tehsilId,");
+			
+		}else if(locationType.equalsIgnoreCase("booth")){
+			
+			str.append(" model.booth.boothId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append(" model.booth.constituency.constituencyId = :constituencyId2  group by model.booth.boothId,");
+			
+		}else if(locationType.equalsIgnoreCase("panchayat")){
+			
+			str.append(" model.booth.panchayat.panchayatId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append(" model.booth.constituency.constituencyId = :constituencyId2 and model.booth.panchayat.panchayatId is not null group by model.booth.panchayat.panchayatId, ");
+			
+		}else if(locationType.equalsIgnoreCase("localElectionBody") || "Local Election Body".equalsIgnoreCase(locationType)){
+			
+			str.append("model.booth.localBody.localElectionBodyId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append(" model.booth.boothId in(select model3.boothId from Booth model3 where model3.localBody.localElectionBodyId  in (:locationId) and model3.constituency.constituencyId = :constituencyId and model3.publicationDate.publicationDateId = :publicationDateId ) " +
+					"  group by model.booth.localBody.localElectionBodyId,");
+			
+		}else if(locationType.equalsIgnoreCase("ward")){
+			
+			str.append(" model.booth.localBodyWard.constituencyId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append(" model.booth.constituency.constituencyId = :constituencyId2 group by model.booth.localBodyWard.constituencyId,");
+			
+		}else if(locationType.equalsIgnoreCase("hamlet")){
+			
+			str.append("model2.hamlet.hamletId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and model.booth.constituency.constituencyId = :constituencyId and ");
+			str.append(" model2.hamlet.hamletId  in (:locationId)  group by model2.hamlet.hamletId,");
+		}
+		str.append("  model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
+		
+		Query query = getSession().createQuery(str.toString()) ;
+		
+		if(locationType.equalsIgnoreCase("constituency") || locationType.equalsIgnoreCase("booth") || locationType.equalsIgnoreCase("panchayat") ||
+				locationType.equalsIgnoreCase("ward")){
+			query.setParameter("constituencyId2", constituencyId);
+		}
+		else
+			query.setParameterList("locationId", locationIds);
+		
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		if(locationType.equalsIgnoreCase("hamlet") || locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("localElectionBody") ||  "Local Election Body".equalsIgnoreCase(locationType)){
+			query.setParameter("constituencyId", constituencyId);
+		}
+		return query.list();
 	}
+	
+	
 	public List<Object[]> getPublicationDetailsBasedOnConstituencyId(Long constituencyId)
 	{
 		return getHibernateTemplate().find("select distinct model.booth.publicationDate.publicationDateId , DATE_FORMAT( model.booth.publicationDate.date ,'%d-%m-%Y ')  " +
@@ -8222,7 +8287,13 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 	}
 	
-	
+	public List<Object[]> getVoterImageDetailsByVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("SELECT model.booth.constituency.constituencyId,model.booth.partNo,model.voter.voterIDCardNo FROM " +
+				" BoothPublicationVoter model WHERE model.voter.voterId = :voterId AND  model.booth.publicationDate.publicationDateId = "+IConstants.PUBLICATION_DATE_FOR_VOTER_IMG_PATH);
+		query.setParameter("voterId",voterId);
+		return query.list();
+	}
 	
 	
 }
