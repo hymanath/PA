@@ -102,4 +102,6 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public List<Object[]> getVoterInfoByVoterId(Long voterId);
 	
 	public List<Object[]> getVotersInfoByVoterId(List<Long> voterIds);
+	
+	public List<Object[]> getVoterCardNoByVoterId(Long voterId);
 }
