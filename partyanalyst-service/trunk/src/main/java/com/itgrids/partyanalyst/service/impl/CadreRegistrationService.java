@@ -2750,6 +2750,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							   }
 							}
 							
+							
+							if(tdpCadre.getVoter() == null && tdpCadre.getVoterId() != null && tdpMemberTypeId != null ){
+								
+								List<Object[]> voterIdAndCardNo = voterDAO.getVoterCardNoByVoterId(tdpCadre.getVoterId());
+								if(voterIdAndCardNo!= null && voterIdAndCardNo.size()>0){
+									Object[] obj = voterIdAndCardNo.get(0);
+									vo.setVoterCardNo(obj[1]!=null ? obj[1].toString() :"");
+								}
+							}
+							
+							
+							
 							if(tdpCadre.getUserAddress().getStreet() != null && tdpCadre.getUserAddress().getStreet().trim() != ""){
 								vo.setStreet(tdpCadre.getUserAddress().getStreet());
 							}
