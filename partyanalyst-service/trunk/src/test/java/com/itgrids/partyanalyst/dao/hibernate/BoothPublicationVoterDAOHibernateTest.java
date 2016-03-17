@@ -500,7 +500,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		}
 	}*/
 	
-	public void testGetBoothVoterDetails()
+	/*public void testGetBoothVoterDetails()
 	{
 		List<Object[]> list = boothPublicationVoterDAO.getBoothVoterDetails(7473570l);
 		System.out.println(list.size());
@@ -509,6 +509,15 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		{
 			System.out.println(obj.toString());
 		}
+	}*/
+	
+	public void testGetVoterImageDetailsByVoterId()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getVoterImageDetailsByVoterId(36017197l);
+		System.out.println(list.size());
+		System.out.println(list.get(0)[0].toString());
+		System.out.println(list.get(0)[1].toString());
+		System.out.println(list.get(0)[2].toString());
 	}
 	
 }
