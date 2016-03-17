@@ -849,7 +849,7 @@ public interface IConstants {
     public static final boolean ENABLE_CADRE_LOGS = false;
     public static final boolean ENABLE_LOGS_SAVE = true;
     public static final Long CADREPERCENTAGE = 30l;
-    public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","saveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl"};
+    public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","saveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction","saveMessageInfo","publicMembershipCardStatusAction","sampleWebServiceCalls","cadreMissedCallCampaignUrl","insertVotersCasteAndPartyDataToIntermediateTablesAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
     
@@ -971,4 +971,6 @@ public interface IConstants {
     public static final Long[] GHMC_NONOPTED_VOTERS ={0L};
     public static final Long VOTER_PUBLICATION_ID = 12L;
     public static final Long UNIONS_REGISTRATION_YEAR = 2016L;
+    
+    public static final Long PUBLICATION_DATE_FOR_VOTER_IMG_PATH = 11L;
 }
