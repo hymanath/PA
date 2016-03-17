@@ -12,7 +12,7 @@
 <link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
-<link href="dist/Plugins/TimePicker/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
+<link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 	<!-- YUI Dependency files (Start) -->
@@ -2172,7 +2172,7 @@
                                                                     <i class="glyphicon glyphicon-time"></i>
                                                                     <span class="caret"></span>
                                                                 </span>
-                                                                <input type="text" class="form-control">
+                                                                <input type="text" id="fromTimeId" class="form-control">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
@@ -2182,7 +2182,7 @@
                                                                     <i class="glyphicon glyphicon-time"></i>
                                                                     <span class="caret"></span>
                                                                 </span>
-                                                                <input type="text" class="form-control">
+                                                                <input type="text" id="toTimeId" class="form-control">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
@@ -2267,7 +2267,7 @@
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="dist/Plugins/TimePicker/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -2805,7 +2805,9 @@ $(document).on('click','#createNewLabelId',function(){
 					}
 				}
 		  }); 
-	}	
+	}
+$("#toTimeId").datetimepicker({format: 'LT'})	
+$("#fromTimeId").datetimepicker({format: 'LT'})
 $("#modalDateId").daterangepicker({singleDatePicker:true});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
 </script>
