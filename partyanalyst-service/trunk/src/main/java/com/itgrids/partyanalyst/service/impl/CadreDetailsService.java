@@ -5186,7 +5186,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 							
 							
-							String filePath = "voter_images/"+constituencyId+"/Part"+partNo.trim()+"/"+voterCardNo+".jpg";
+							//String filePath = "voter_images/"+constituencyId+"/Part"+partNo.trim()+"/"+voterCardNo+".jpg";
+							String filePath = getVoterImageUrlByVoterId(voterId);
 							
 							returnVO.setCandidateName(voterName);									
 							returnVO.setAge(age);
@@ -5687,4 +5688,20 @@ public class CadreDetailsService implements ICadreDetailsService{
 	return fnlList;
 		
  }
+	
+	public String getVoterImageUrlByVoterId(Long voterId)
+	{
+		try{
+			List<Object[]> list = boothPublicationVoterDAO.getVoterImageDetailsByVoterId(voterId);
+			
+			if(list != null && list.size() > 0)
+			{
+				return "http://mytdp.com/voter_images/"+list.get(0)[0].toString()+"/Part"+list.get(0)[1].toString()+"/"+list.get(0)[2].toString()+".jpg";
+			}
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in getVoterImageUrlByVoterId() Method ",e);
+		}
+		return null;
+	}
 }
