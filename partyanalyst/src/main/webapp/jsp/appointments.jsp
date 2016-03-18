@@ -1460,16 +1460,16 @@
                                 	<div class="block">
                                     	<div class="row">
                                             <div class="col-md-4">
-                                            	<label>Designation</label>
-                                                <select class="designationListCls" id="manageAppDesigId"></select>
+                                            	<label>Designation<span style='color:red' id="appDesigErrId"></span></label>
+                                                <select class="designationListCls errClearCls" id="manageAppDesigId"></select>
                                             </div>
                                             <div class="col-md-4">
-                                            	<label>Appointment Priority Type</label>
-                                                <select class="manageAppTypeCls" id="manageAppTypeId"></select>
+                                            	<label>Appointment Priority Type<span style='color:red' id="appPrrtyErrTypId"></span></label>
+                                                <select class="manageAppTypeCls errClearCls" id="manageAppTypeId"></select>
                                             </div>
                                             <div class="col-md-4">
-                                            	<label>Appointment Status</label>
-                                                <select class="manageAppStatusCls" id="manageAppStatusId"></select>
+                                            	<label>Appointment Status<span style='color:red' id="appStatusErrId"></span></label>
+                                                <select class="manageAppStatusCls errClearCls" id="manageAppStatusId"></select>
                                             </div>
                                           <div class="col-md-4 m_top10">
                                             	<label>Select District</label>
@@ -1485,14 +1485,15 @@
                                           </div>
                                           <div class="col-md-12 m_top10">
                                             	<label class="checkbox-inline">
-                                                	<input type="checkbox">This Month(Any Date)
+                                                	<input type="checkbox" class="checkboxCls" id="mnthChckbxId" value="currentMonth">This Month(Any Date)
                                                 </label>
                                                 <label class="checkbox-inline">
-                                                	<input type="checkbox">Any Date
-                                                </label>
+                                                	<input type="checkbox" class="checkboxCls " id="anyDtChckbxId" value="anyDate">Any Date
+                                                </label><span style='color:red' id="checkBoxErrId">
+												
                                           </div>
                                           <div class="col-md-2 m_top10">
-                                            	<button class="btn btn-success btn-block">VIEW</button>
+                                            	<button class="btn btn-success btn-block" onclick="validateFields();">VIEW</button>
                                           </div>
                                         </div>
                                     </div>
@@ -1502,8 +1503,8 @@
                             	<div class="col-md-12">
                                 	<div class="block">
                                     	<h4 class="text-success">APPOINTMENT REQUESTED MEMBERS</h4>
-                                    	<ul class="appointmentRequestedMembers">
-                                            <li>
+                                    	<ul class="appointmentRequestedMembers" id="appntmntCnddtSttsUlId">
+                                           <!-- <li>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                     	<span class="requestedCheckbox">
@@ -1715,7 +1716,7 @@
                                                         </table>
                                                     </div>
                                                 </div>
-                                            </li>
+                                            </li>-->
 
                                         </ul>
                                         <button class="btn btn-success">UPDATE LABEL</button>
@@ -2827,7 +2828,7 @@ $(".dropkickClass").dropkick();
 			if(result!=null && result!=0){
 				buildAppntmntLblResult(result);
 			}else{
-				$("#buildAppntmntLblTblId").html("<div><p>No Data Available</p></div>")
+				$("#buildAppntmntLblTblId").html("<div><p style='color:green;font-size:20px'>No Data Available</p></div>")
 			}
 		}); 
 	}
@@ -2880,10 +2881,10 @@ $(".dropkickClass").dropkick();
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				   console.log(result);	
 				if(result!=null && result!=0){
 					if(result.message=="success"){
-					 $("#appntmntLblDltSttsId").html("<div><p style='color:red'>Label Deleted Successfully");		
+					 $("#appntmntLblDltSttsId").html("<div><p style='color:red'>Label Deleted Successfully");	
+                      setTimeout('$("#appntmntLblDltSttsId").hide()', 2000);					 
 					}
 				}
 		  }); 
@@ -2895,6 +2896,151 @@ $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
+		
+	/*This code is used to select only one checkbox while displaying the appointment details.*/	
+	 $('#mnthChckbxId').click(function(){
+		  var isCheckedMonth=$("#mnthChckbxId").is(':checked');
+			if(isCheckedMonth){
+			   $('#anyDtChckbxId').attr('checked', false);
+		   }
+	 });
+	 $('#anyDtChckbxId').click(function(){
+		  var isCheckedAnyDate=$("#anyDtChckbxId").is(':checked');
+			if(isCheckedAnyDate){
+			   $('#mnthChckbxId').attr('checked', false);
+		   }
+	 });
+	 
+	 function validateFields(){
+		 
+		 var appDesigId=$("#manageAppDesigId").val();
+		 var appPrrtyTypId= $("#manageAppTypeId").val();
+		 var appStatusId=$("#manageAppStatusId").val();
+		 
+		 if(appDesigId==0){
+		  $("#appDesigErrId").html("Please select Designation.");
+           return;		  
+		 }
+		  $("#appDesigErrId").html(" ");
+		 if(appPrrtyTypId==0){
+		  $("#appPrrtyErrTypId").html("Please select Priority Type.");
+           return;		  
+		 }
+		  $("#appPrrtyErrTypId").html(" ");
+		 if(appStatusId==0){
+		  $("#appStatusErrId").html("Please select Appointment Status.");
+           return;		  
+		 }
+		 $("#appStatusErrId").html(" ");
+    	 var isCheckedMonth=$("#mnthChckbxId").is(':checked');
+	     var isCheckedAnyDate=$("#anyDtChckbxId").is(':checked');
+		 var flag=true;
+		 if(isCheckedAnyDate==false && isCheckedMonth==false){
+			 $("#checkBoxErrId").html("Please select one checkbox."); 
+			 flag=false;
+			 return;
+		 }
+		 if(flag){
+			 $("#checkBoxErrId").html(" ");
+			  getAppntmntsCnddtDtls();
+		 }
+	 }
+	 function getAppntmntsCnddtDtls(){
+		 
+		  var isCheckedMonth=$("#mnthChckbxId").is(':checked');
+		  var isCheckedAnyDate=$("#anyDtChckbxId").is(':checked');
+		  var currentMonth='';
+		  var anyDate='';
+	  
+		   if(isCheckedMonth){
+			  currentMonth=$("#mnthChckbxId").val();
+		   }
+		   if(isCheckedAnyDate){
+			  anyDate=$("#anyDtChckbxId").val();
+		   }
+		   
+    	var jsObj={
+			candidateDsgntnId:$("#manageAppDesigId").val(),
+			appntmntPrprtyId:$("#manageAppTypeId").val(),
+			appntmntSttsId:$("#manageAppStatusId").val(),
+			currentMonth:currentMonth,
+			anyDate:anyDate
+		  }
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAppntmntsCnddtDtlsAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				console.log(result);
+				if(result!=null && result!=0){
+				  buildAppntmntCnddtDtlsRsult(result);
+				}else{
+				  $("#appntmntCnddtSttsUlId").html("<div><p style='color:green;font-size:20px'>No record available.")	
+				}
+		  }); 
+	 }
+   function buildAppntmntCnddtDtlsRsult(result){
+	var str=''; 
+	for(var i in result){
+	    str+='<li>';
+		 str+='<div class="row">';
+			str+='<div class="col-md-12">';
+				str+='<span class="requestedCheckbox">';
+					str+='<input type="checkbox">';
+				str+='</span>';
+			str+='</div>';
+			str+='<div class="col-md-6">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='<span class="colorStatus green"></span>';
+					str+='</div>';
+					str+='<div class="media-body">';
+					str+='<p>'+result[i].name+'</p>';
+						str+='<p>Contact Number:'+result[i].mobileNo+'</p>';
+						str+='<p>Designation   :'+result[i].designation+'</p>';
+						str+='<p>Constituency  :'+result[i].constituencyName+'</p>';
+						str+='<p>Last Visit    :'+result[i].date+'</p>';
+						str+='<p>Appt Type     :'+result[i].priority+'</p>';
+						str+='<p>Subject       :'+result[i].reason+'</p>';
+					str+='</div>';
+				str+='</div>';
+				str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
+				str+='<table class="table table-bordered">';
+				  if(result[i].appointStatusCountList!=null && result[i].appointStatusCountList.length>0){
+				     str+='<tr>';					 
+					 for(var j in result[i].appointStatusCountList){
+						 str+='<td><h4>'+result[i].appointStatusCountList[j].statusCount+'</h4><p>'+result[i].appointStatusCountList[j].status+'</p></td>'; 
+					  }
+					  str+='</tr>';
+				  }
+				  str+='</table>'
+				str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
+				str+='<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>';
+			str+='</div>';
+			str+='<div class="col-md-6">';
+				str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
+				str+='<table class="table table-bordered m_top10">';
+					str+='<thead>';
+				        str+='<th>Appt Last Requested Date</th>';
+						str+='<th colspan="2">Appt Status</th>';
+					str+='</thead>';
+				if(result[i].appointStatusRequestedList!=null && result[i].appointStatusRequestedList.length>0){
+					for(var j in result[i].appointStatusRequestedList){
+						str+='<tr>';
+							str+='<td>'+result[i].appointStatusRequestedList[j].updatedTime+'</td>';
+							str+='<td>'+result[i].appointStatusRequestedList[j].status+'</td>';
+						str+='</tr>';					
+					}
+				}
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+	str+='</li>';
+	}
+	$("#appntmntCnddtSttsUlId").html(str);
+  }	 
 </script>
 </body>
 </html>
