@@ -29,7 +29,8 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 	      		          " from AppointmentCandidate model " +
 	      		          " where model.candidateDesignation.appointmentCandidateDesignationId=:appointmentCandidateDesignationId " +
 	      		          " and model.appointment.appointmentStatusId=:appointmentStatusId " +
-	      		          " and model.appointment.appointmentPriorityId=:appointmenPriorityId ");
+	      		          " and model.appointment.appointmentPriorityId=:appointmenPriorityId " +
+	      		          " and model.appointment.isDeleted='N'");
 		   
 				   if(crrntMnth!=null && crrntMnth>0l){
 					   queryStr.append(" and month(model.appointment.insertedTime)=:crrntMnth");
@@ -52,15 +53,16 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		
 		     StringBuilder queryStr=new StringBuilder();
 		     
-		      queryStr.append("select model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,count(model.appointment.appointmentStatus.appointmentStatusId) from AppointmentCandidate model ");
+		      queryStr.append("select model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,count(model.appointment.appointmentStatus.appointmentStatusId) from AppointmentCandidate model " +
+		      		" where model.appointment.isDeleted='N'");
 		     
 		     if(tdpCadreId!=null && tdpCadreId>0l){
-		       queryStr.append(" where model.tdpCadreId=:tdpCadreId");
+		       queryStr.append(" and model.tdpCadreId=:tdpCadreId");
 		      }
 		      if(mobileNO!=null && !mobileNO.isEmpty()){
-		    	queryStr.append(" where model.mobileNo=:mobileNo ");  
+		    	queryStr.append(" and model.mobileNo=:mobileNo ");  
 		      }
-		      
+		     
 		      if(crrntMnth!=null && crrntMnth>0l){
 				   queryStr.append(" and month(model.appointment.insertedTime)=:crrntMnth");
 			   }
@@ -84,13 +86,13 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 	public List<Object[]> getAppCandidatePreviousRequestedDetails(Long tdpCadreId, String mobileNO,Integer crrntMnth) {
 		  StringBuilder queryStr=new StringBuilder();
 		     
-	      queryStr.append("select model.appointment.updatedTime,model.appointment.appointmentStatus.status from AppointmentCandidate model ");
+	      queryStr.append("select model.appointment.updatedTime,model.appointment.appointmentStatus.status from AppointmentCandidate model where model.appointment.isDeleted='N' ");
 	     
 	     if(tdpCadreId!=null && tdpCadreId>0l){
-	       queryStr.append(" where model.tdpCadreId=:tdpCadreId");
+	       queryStr.append(" and model.tdpCadreId=:tdpCadreId");
 	      }
 	      if(mobileNO!=null && !mobileNO.isEmpty()){
-	    	queryStr.append(" where model.mobileNo=:mobileNo ");  
+	    	queryStr.append(" and model.mobileNo=:mobileNo ");  
 	      }
 	      if(crrntMnth!=null && crrntMnth>0l){
 			   queryStr.append(" and month(model.appointment.insertedTime)=:crrntMnth");
@@ -115,13 +117,13 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		
 	      StringBuilder queryStr=new StringBuilder();
 	   
-	        queryStr.append("select max(model.appointment.updatedTime)  from AppointmentCandidate model");
+	        queryStr.append("select max(model.appointment.updatedTime)  from AppointmentCandidate model where model.appointment.isDeleted='N'");
 	     
 	        if(tdpCadreId!=null && tdpCadreId>0l){
-			       queryStr.append(" where model.tdpCadreId=:tdpCadreId");
+			       queryStr.append(" and model.tdpCadreId=:tdpCadreId");
 			 }
 		    if(mobileNo!=null && !mobileNo.isEmpty()){
-		    	queryStr.append(" where model.mobileNo=:mobileNo ");  
+		    	queryStr.append(" and model.mobileNo=:mobileNo ");  
 		     }
 		   
 		    if(crrntMnth!=null && crrntMnth>0l){
