@@ -308,4 +308,15 @@ public String getTotalAppointmentStatus(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getAppointmentsCandidateDetails(){
+		
+		try{
+			LOG.info("Entered into getAppointsDetails() method of AppointmentAction");
+			jObj = new JSONObject(getTask());
+			appointmentUserDtlsList=appointmentService.getAppointmentsCandidateDetails(jObj.getLong("candidateDsgntnId"),jObj.getLong("appntmntPrprtyId"),jObj.getLong("appntmntSttsId"),jObj.getString("currentMonth"),jObj.getString("anyDate"));  
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointsDetails() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }

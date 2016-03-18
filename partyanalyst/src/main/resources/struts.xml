@@ -11634,10 +11634,15 @@
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
-	</action>	
+	</action>
 	<action name="getTotalAppointmentStatusAction" class="appointmentAction" method="getTotalAppointmentStatus">
 		<result type="json" name="success">
 			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	<action name="getAppntmntsCnddtDtlsAction" class="appointmentAction" method="getAppointmentsCandidateDetails">
+		<result type="json" name="success">
+			<param name="root">appointmentUserDtlsList</param>
 		</result>
 	</action>
 </package>
