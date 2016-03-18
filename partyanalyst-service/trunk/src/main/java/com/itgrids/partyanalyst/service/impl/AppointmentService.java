@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,7 +37,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.AppointmentLable;
-import com.itgrids.partyanalyst.model.AppointmentUser;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -392,7 +390,7 @@ public class AppointmentService implements IAppointmentService{
 		try{
 			LOG.info("Entered into createAppointmentLeble() method of AppointmentService");
 			Date insertedDate = dateUtilService.getCurrentDateAndTime();
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 			Date dt = format.parse(date);
 			AppointmentLable appointmentLable = new AppointmentLable();
 			appointmentLable.setLableName(labelName);
@@ -497,5 +495,36 @@ public class AppointmentService implements IAppointmentService{
 			LOG.error("Exception raised at deleteAppointmentLabel() method of AppointmentService", e);
 		}
 		return status;
+	}
+	public List<IdNameVO> getTotalAppointmentStatus(){
+		List<IdNameVO> totalAppointmentStatusList = new ArrayList<IdNameVO>();
+		IdNameVO idNameVO = null;
+		try{
+			LOG.info("Entered into getTotalAppointmentStatus() method of AppointmentService");
+			List<Object[]> appointmentStatusList = appointmentStatusDAO.getAppointmentStatusList();
+			//appDtlsStatusList->Appointment Details Status List
+			List<Object[]> appDtlsStatusList = appointmentDAO.getTotalAppointmentStatus();
+			for(Object[] appointmentStatus:appointmentStatusList){
+				idNameVO = new IdNameVO();
+				idNameVO.setId((Long)appointmentStatus[0]);
+				idNameVO.setName(appointmentStatus[1].toString());
+				if(appDtlsStatusList.size()>0){
+					if(((Long)appointmentStatus[0]).equals((Long)appDtlsStatusList.get(0)[0])){
+						idNameVO.setAvailableCount((Long)appDtlsStatusList.get(0)[1]);
+						appDtlsStatusList.remove(0);
+					}else{
+						idNameVO.setAvailableCount(0l);
+					}
+				}
+				else{
+					idNameVO.setAvailableCount(0l);
+				}
+				totalAppointmentStatusList.add(idNameVO);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getTotalAppointmentStatus() method of AppointmentService", e);
+			return null;
+		}
+		return totalAppointmentStatusList;
 	}
 }
