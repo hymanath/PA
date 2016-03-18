@@ -144,13 +144,8 @@
 													<tr>
 														<td>
 															<h4>TOTAL APPOINTMENTS</h4>
-															<ul class="columnChartUl">
-																<li style="color:#3F51B5"><span class="columnChart" style="background:#3F51B5"></span>Pending Requests - 500</li>
-																<li style="color:#2095F1"><span class="columnChart" style="background:#2095F1;"></span>Cancelled - 100</li>
-																<li style="color:#4BAF4F"><span class="columnChart "  style="background:#4BAF4F;"></span>Confirmed - 100</li>
-																<li style="color:#00BBD4"><span class="columnChart "  style="background:#00BBD4"></span>Completed - 100</li>
-																<li style="color:#A86FC5"><span class="columnChart "  style="background:#A86FC5;"></span>Upcoming - 100</li>
-																<li style="color:#FE9601"><span class="columnChart "  style="background:#FE9601;"></span>Not Attended - 10</li>
+															<ul class="columnChartUl" id="totalAppointmentsId">
+																
 															</ul>
 														</td>
 														<td>
@@ -2168,7 +2163,7 @@
                                                                     <i class="glyphicon glyphicon-calendar"></i>
                                                                     <span class="caret"></span>
                                                                 </span>
-                                                                <input type="text" class="form-control">
+                                                                <input type="text" class="form-control" id="appointmentDateSlotId">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
@@ -2277,7 +2272,39 @@
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
 <script type="text/javascript">
+var jsonObj = [];
+var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
+function buildJSONForAppStatus(result){
+	for(var i in result){
+	item = {} 
+    item ["name"] = result[i].name;
+	item ["y"] = result[i].availableCount;
+	item ["color"] = color[i%6];
+    jsonObj.push(item);
+	}
+	buildChartForAppStatus();
+}
 
+getTotalAppointmentStatus();
+function getTotalAppointmentStatus(){
+	$.ajax({
+		type : 'GET',
+		url : 'getTotalAppointmentStatusAction.action',
+		dataType : 'json',
+		data : {}  
+	}).done(function(result){ 
+		if(result != null && result.length > 0){
+			buildJSONForAppStatus(result);
+			buildTotalAppointmentStatus(result);
+		}
+		
+	});     
+}
+function buildTotalAppointmentStatus(result){
+	for(var i in result){
+	$("#totalAppointmentsId").append('<li style="color:'+color[i%6]+'"><span class="columnChart" style="background:'+color[i%6]+'"></span>'+result[i].name+' - '+result[i].availableCount+'</li>');
+	}
+}
 	$(document).on("click",".appointmentSettings",function(e){
 		$(".updateAppointment").hide()
 		$(".messageBlock").hide()
@@ -2311,7 +2338,7 @@
 		e.stopPropagation()
 		$(this).parent().parent().find(".messageBlock").show()
 	})
-$(function () {
+function buildChartForAppStatus() {
     // Create the chart
     $('#LineChart').highcharts({
         chart: {
@@ -2319,7 +2346,7 @@ $(function () {
 			backgroundColor: 'transparent' 
         },
         title: {
-            text: ' '
+            text: ''
         },
         subtitle: {
             text: ' '
@@ -2373,37 +2400,10 @@ $(function () {
 		},
         series: [{
             colorByPoint: true,
-            data: [{
-                name: "Cancelled",
-                y: 56.33,
-				color:"#2095F1"
-            }, {
-                name: "Confirmed",
-                y: 24.03,
-				color:"#4BAF4F"
-            }, {
-                name: "Pending Requests",
-                y: 10.38,
-				color:"#3F51B5"
-            }, {
-                name: "Completed",
-                y: 4.77,
-				color:"#00BBD4"
-            }, {
-                name: "Upcoming",
-                y: 8.91,
-				color:"#A86FC5"
-            }, {
-                name: "Not Attended",
-                y: 2.2,
-				color:"#FE9601"
-            }]
+            data: jsonObj
         }],
     });
-});
-$("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
-$("#dashboardSelectDateIds").daterangepicker({opens:"left"});
-
+}
 var cloneCount=1;
 $(document).on("click","#addOneBlock",function(){
 	var e = $(".cloneBlock").clone();
@@ -2499,7 +2499,7 @@ $(".dropkickClass").dropkick();
 			type : 'GET',
 			url : 'getCandidateDesignation.action',
 			dataType : 'json',
-			date : {}
+			data : {}
 		}).done(function(result){ 
 			if(result != null && result.length > 0){
 				//app-appointment
@@ -2538,7 +2538,7 @@ $(".dropkickClass").dropkick();
 			type : 'GET',
 			url : 'getAppointmentStatusList.action',
 			dataType : 'json',
-			date : {}
+			data : {}
 		}).done(function(result){ 
 			if(result != null && result.length > 0){
 				buildAppointmentStatusList(result);
@@ -2561,7 +2561,7 @@ $(".dropkickClass").dropkick();
 			type : 'GET',
 			url : 'getAppointmentPriority.action',
 			dataType : 'json',
-			date : {}
+			data : {}
 		}).done(function(result){ 
 			if(result != null && result.length > 0){
 				buildAppointmentPriorityList(result);
@@ -2639,7 +2639,7 @@ $(".dropkickClass").dropkick();
 			type : 'GET',
 			url : 'getDistrictsForAppointmentsAction.action',
 			dataType : 'json',
-			date : {}
+			data : {}
 		}).done(function(result){
 			var str='';
 			str+='<option value="0">Select District</option>';
@@ -2755,7 +2755,7 @@ $(".dropkickClass").dropkick();
 		var jobj = {
 			labelName	:	$("#labelNameId").val(),
 			insertedBy	:	$("#appointmentUserSelectBoxId").val(),
-			date		:	$("#modalDateId").val()   
+			data		:	$("#modalDateId").val()   
 		}
 		$.ajax({
 			  type     : "POST",
@@ -2892,6 +2892,9 @@ $("#toTimeId").datetimepicker({format: 'LT'})
 $("#fromTimeId").datetimepicker({format: 'LT'})
 $("#modalDateId").daterangepicker({singleDatePicker:true});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
+$("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
+$("#dashboardSelectDateIds").daterangepicker({opens:"left"});
+$("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 </script>
 </body>
 </html>
