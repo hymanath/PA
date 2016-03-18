@@ -144,6 +144,13 @@ public class TdpCadre {
 	private UserAddress presentAddress;
 	private UserAddress workLocation;
 	
+	private Long createdUnionTabUserId;
+	private Long updatedUnionTabUserId;
+	
+	private UnionTabUser createdUnionTabUser;
+	private UnionTabUser updatedUnionTabUser;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -998,5 +1005,45 @@ public class TdpCadre {
 	public void setWorkLocation(UserAddress workLocation) {
 		this.workLocation = workLocation;
 	}
+	
+	
+	@Column(name="created_union_tab_user_id")
+	public Long getCreatedUnionTabUserId() {
+		return createdUnionTabUserId;
+	}
+	public void setCreatedUnionTabUserId(Long createdUnionTabUserId) {
+		this.createdUnionTabUserId = createdUnionTabUserId;
+	}
+	
+	@Column(name="updated_union_tab_user_id")
+	public Long getUpdatedUnionTabUserId() {
+		return updatedUnionTabUserId;
+	}
+	public void setUpdatedUnionTabUserId(Long updatedUnionTabUserId) {
+		this.updatedUnionTabUserId = updatedUnionTabUserId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "created_union_tab_user_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UnionTabUser getCreatedUnionTabUser() {
+		return createdUnionTabUser;
+	}
+	public void setCreatedUnionTabUser(UnionTabUser createdUnionTabUser) {
+		this.createdUnionTabUser = createdUnionTabUser;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "updated_union_tab_user_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UnionTabUser getUpdatedUnionTabUser() {
+		return updatedUnionTabUser;
+	}
+	public void setUpdatedUnionTabUser(UnionTabUser updatedUnionTabUser) {
+		this.updatedUnionTabUser = updatedUnionTabUser;
+	}
+	
 	
 }

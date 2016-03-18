@@ -11320,13 +11320,13 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					{
 					  if(!insertType.equalsIgnoreCase("update")){
 						if(registrationType.equalsIgnoreCase("TAB")){
-						  if(tdpCadre.getInsertedUserId() == null && tdpCadre.getInsertedWebUserId() == null){
-						      tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						  if(tdpCadre.getCreatedUnionTabUserId() == null && tdpCadre.getInsertedWebUserId() == null){
+						      tdpCadre.setCreatedUnionTabUserId(cadreRegistrationVO.getCreatedUserId().longValue());
 						  }else{
-							  tdpCadre.setUpdatedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+							  tdpCadre.setUpdatedUnionTabUserId(cadreRegistrationVO.getCreatedUserId().longValue());
 						  }
 						}else{
-							if(tdpCadre.getInsertedUserId() == null && tdpCadre.getInsertedWebUserId() == null){
+							if(tdpCadre.getCreatedUnionTabUserId() == null && tdpCadre.getInsertedWebUserId() == null){
 							    tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
 							}else{
 								tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
@@ -11334,7 +11334,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						}
 					  }else{
 					    if(registrationType.equalsIgnoreCase("TAB")){
-						     tdpCadre.setUpdatedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						     tdpCadre.setUpdatedUnionTabUserId(cadreRegistrationVO.getCreatedUserId().longValue());
 						}else{
 							 tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
 						}
