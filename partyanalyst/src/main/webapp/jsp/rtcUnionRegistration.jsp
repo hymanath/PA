@@ -495,6 +495,7 @@
 		
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
+		$('#relativeTypeErr').html('');
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#employeeErr').html('');
 		$('#landmarkErr,#roadErr,#addressErr1,#employeeErr,#designationErr,#zoneErr,#regionErr,#depotErr,#desigErr,#schoolErr,#drivingErr,#vehicleErr,#workAddressErr,#workRoadErr,#workLandmarkErr,#presntDistrictIdErr,#presentConstituencyIdErr,#presentManTowDivIdErr,#presentVillWardIdErr,#districtIdErr,#constituencyIdErr,#manTowDivIdErr,#villWardIdErr,#designation13Err').html('');
@@ -589,6 +590,12 @@
 					isErrorStr = " error";
 					$('#familyVtrCrdIdErr').html('Family  Voter CardId Required');
 				}
+				var relativeType = $('#relativeTypeId').val();
+					if(relativeType == 0){
+					isErrorStr = " error";
+					$("#relativeTypeErr").html('Relation is Required');
+				}
+			
 			}
 			
 		}
@@ -1609,7 +1616,7 @@
 													</div>
 													<div  id="showHideFammemberType" style="display:block;"  class="span12">
 														<div  class="span6">
-															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="relativeTypeId" id="relativeTypeId"></select>
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;  <span class="mandatory">*</span></label><select name="relativeTypeId" id="relativeTypeId"></select><span id="relativeTypeErr" style="color:red;font-size:12px;"></span>
 														</div>
 														<div  class="span6">
 															<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span>
@@ -1629,7 +1636,7 @@
 													</div>
 													<div  id="showHideFammemberType" style="display:none ;" class="span12">
 														<div  class="span6">
-															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</label><select name="relativeTypeId" id="relativeTypeId"> </select>
+															<label style="color: #9a9a9a;font-weight: bold;">Relation &nbsp; <span class="mandatory">*</span></label><select name="relativeTypeId" id="relativeTypeId"> </select><span id="relativeTypeErr" style="color:red;font-size:12px;"></span>
 														</div>
 														<div  class="span6">
 															<label style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</label>
