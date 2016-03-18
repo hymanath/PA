@@ -11630,11 +11630,15 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>	
-		<action name="deleteAppointmentLabelAction" class="appointmentAction" method="deleteAppointmentLabel">
+	<action name="deleteAppointmentLabelAction" class="appointmentAction" method="deleteAppointmentLabel">
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
 	</action>	
-	
+	<action name="getTotalAppointmentStatusAction" class="appointmentAction" method="getTotalAppointmentStatus">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
