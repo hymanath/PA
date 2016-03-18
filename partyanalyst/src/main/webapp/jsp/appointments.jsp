@@ -2277,11 +2277,7 @@ var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 function buildJSONForAppStatus(result){
 	for(var i in result){
-	item = {} 
-    item ["name"] = result[i].name;
-	item ["y"] = result[i].availableCount;
-	item ["color"] = color[i%6];
-    jsonObj.push(item);
+	jsonObj.push({"name":result[i].name,"y":result[i].availableCount,"color":color[i%6]});
 	}
 	buildChartForAppStatus();
 }
