@@ -112,31 +112,8 @@
 										<tr>
 											<td>
 												<h4 class="panel-title">TODAY APPOINTMENTS</h4>
-												<table class="table table-condensed tableAppointment">
-													<tr class="text-success">
-														<td>Completed</td>
-														<td>14</td>
-													</tr>
-													<tr style="color:#7BC2BB">
-														<td>Inprogress</td>
-														<td>14</td>
-													</tr>
-													<tr style="color:#9358B6">
-														<td>Upcoming</td>
-														<td>14</td>
-													</tr>
-													<tr class="text-warning">
-														<td>Not Attended</td>
-														<td>14</td>
-													</tr>
-													<tr style="color:#A32D2D">
-														<td>Rescheduled</td>
-														<td>14</td>
-													</tr>
-													<tr class="text-danger">
-														<td>Cancelled</td>
-														<td>14</td>
-													</tr>
+												<table class="table table-condensed tableAppointment" id="todayAppointmentsId">
+													
 												</table>
 											</td>
 											<td>
@@ -2301,6 +2278,24 @@ function buildTotalAppointmentStatus(result){
 	for(var i in result){
 	$("#totalAppointmentsId").append('<li style="color:'+color[i%6]+'"><span class="columnChart" style="background:'+color[i%6]+'"></span>'+result[i].name+' - '+result[i].availableCount+'</li>');
 	}
+}
+getTotalAppointmentStatusForToday();
+function getTotalAppointmentStatusForToday(){
+	$.ajax({
+		type : 'GET',
+		url : 'getTotalAppointmentStatusForTodayAction.action',
+		dataType : 'json',
+		data : {}  
+	}).done(function(result){ 
+		if(result != null && result.length > 0){
+			buildTotalAppointmentStatusForToday(result);
+		}    
+	});     
+}
+function buildTotalAppointmentStatusForToday(result){
+	$.each(result,function(index,value){
+	$("#todayAppointmentsId").append('<tr style="color:'+color[index%6]+'"> <td>'+value.name+'</td><td>'+value.availableCount+'</td> </tr>');
+	});
 }
 	$(document).on("click",".appointmentSettings",function(e){
 		$(".updateAppointment").hide()
