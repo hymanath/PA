@@ -4,6 +4,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
+import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -495,6 +497,118 @@ public class AppointmentService implements IAppointmentService{
 			LOG.error("Exception raised at deleteAppointmentLabel() method of AppointmentService", e);
 		}
 		return status;
+	}
+	@Override
+	public List<AppointmentBasicInfoVO> getAppointmentsCandidateDetails(Long candidateDsgntnId, Long appntmntPrrtyId, Long appntmntSttsId,String currentMonth,String anyDate) {
+		
+		List<AppointmentBasicInfoVO> fnlAppntCnddtSttsList=new ArrayList<AppointmentBasicInfoVO>(0);
+		try{
+			LOG.info("Entered into getAppointmentsCandidateDetails() method of AppointmentService");
+			if(candidateDsgntnId!=null && candidateDsgntnId>0l && appntmntPrrtyId!=null && appntmntPrrtyId>0l && appntmntSttsId!=null && appntmntSttsId>0l){
+				
+				  Calendar cal = Calendar.getInstance();
+				  Integer crrntMnth=(Integer) (cal.get(Calendar.MONTH) + 1);
+				  List<Object[]> returnAppCndidateDtlsList=null;
+				if(currentMonth!=null && currentMonth.equalsIgnoreCase("currentMonth")){
+				   returnAppCndidateDtlsList=appointmentCandidateDAO.getAppointmentCandidateDetails(candidateDsgntnId, appntmntPrrtyId, appntmntSttsId,crrntMnth);
+				}else if(anyDate!=null && anyDate.equalsIgnoreCase("anyDate")){
+					returnAppCndidateDtlsList=appointmentCandidateDAO.getAppointmentCandidateDetails(candidateDsgntnId, appntmntPrrtyId, appntmntSttsId,null);
+				}
+				  
+			if(returnAppCndidateDtlsList!=null && !returnAppCndidateDtlsList.isEmpty()){
+			
+				for(Object[] param:returnAppCndidateDtlsList){
+					
+				 AppointmentBasicInfoVO appntmntCnddtVO=new AppointmentBasicInfoVO();		
+					
+					Long tdpCadreId=param[7]!=null ?(Long)param[7]:0l;
+					String mobileNo=param[2]!=null ? param[2].toString():" ";
+					appntmntCnddtVO.setAppointCandidateId((Long)param[0]);
+					appntmntCnddtVO.setName(param[1]!=null ?param[1].toString():" ");
+					appntmntCnddtVO.setMobileNo(param[2]!=null ? param[2].toString():" ");
+					appntmntCnddtVO.setDesignation(param[3]!=null ? param[3].toString():"");
+					appntmntCnddtVO.setConstituencyName(param[4]!=null ?param[4].toString():"");
+					appntmntCnddtVO.setReason(param[5]!=null ? param[5].toString():" ");
+					appntmntCnddtVO.setPriority(param[6]!=null ? param[6].toString(): "");
+					
+					List<Object[]> rtrnAppSttsCntList=null;
+					if(tdpCadreId!=null && tdpCadreId>0l){
+						if(currentMonth!=null && currentMonth.equalsIgnoreCase("currentMonth")){
+						   rtrnAppSttsCntList=appointmentCandidateDAO.getAppCandidatePreviousCountDetails(tdpCadreId, null,crrntMnth);
+						}else if(anyDate!=null && anyDate.equalsIgnoreCase("anyDate")){
+						  rtrnAppSttsCntList=appointmentCandidateDAO.getAppCandidatePreviousCountDetails(tdpCadreId, null,null);
+						}
+					}else if(mobileNo!=null && !mobileNo.isEmpty()){
+						if(currentMonth!=null && currentMonth.equalsIgnoreCase("currentMonth")){
+							rtrnAppSttsCntList=appointmentCandidateDAO.getAppCandidatePreviousCountDetails(null, mobileNo,crrntMnth);	
+						}else if(anyDate!=null && anyDate.equalsIgnoreCase("anyDate")){
+							rtrnAppSttsCntList=appointmentCandidateDAO.getAppCandidatePreviousCountDetails(null, mobileNo,null);	
+						}
+					}
+					
+					List<AppointmentStatusVO> sttsCntVOList=new ArrayList<AppointmentStatusVO>(0);
+					
+					if(rtrnAppSttsCntList!=null && !rtrnAppSttsCntList.isEmpty()){
+						for(Object[] obj:rtrnAppSttsCntList){
+							AppointmentStatusVO sttsCntVO=new AppointmentStatusVO();
+							 sttsCntVO.setAppointmentStatusId((Long)obj[0]);
+							 sttsCntVO.setStatus(obj[1]!=null ? obj[1].toString():" ");
+							 sttsCntVO.setStatusCount(obj[2]!=null? (Long)obj[2]:0l);
+							 sttsCntVOList.add(sttsCntVO);
+						}
+					}
+					appntmntCnddtVO.setAppointStatusCountList(sttsCntVOList);
+					List<Object[]> rtrnSttsRqstdList=null;
+					if(tdpCadreId!=null && tdpCadreId>0l){
+						if(currentMonth!=null && currentMonth.equalsIgnoreCase("currentMonth")){
+							rtrnSttsRqstdList=appointmentCandidateDAO.getAppCandidatePreviousRequestedDetails(tdpCadreId, null,crrntMnth);
+						}else if(anyDate!=null && anyDate.equalsIgnoreCase("anyDate")){
+							rtrnSttsRqstdList=appointmentCandidateDAO.getAppCandidatePreviousRequestedDetails(tdpCadreId, null,null);
+						}
+					}else if(mobileNo!=null && !mobileNo.isEmpty()){
+						if(currentMonth!=null && currentMonth.equalsIgnoreCase("currentMonth")){
+						  rtrnSttsRqstdList=appointmentCandidateDAO.getAppCandidatePreviousRequestedDetails(null,mobileNo,crrntMnth);
+						}else if(anyDate!=null && anyDate.equalsIgnoreCase("anyDate")){
+						  rtrnSttsRqstdList=appointmentCandidateDAO.getAppCandidatePreviousRequestedDetails(null,mobileNo,null);
+						}
+					}
+					
+					List<AppointmentStatusVO> sttsRqustdList=new ArrayList<AppointmentStatusVO>(0);
+					
+					if(rtrnSttsRqstdList!=null && !rtrnSttsRqstdList.isEmpty()){
+						for(Object[] obj:rtrnSttsRqstdList){
+							AppointmentStatusVO sttRqstVO=new AppointmentStatusVO();
+							  sttRqstVO.setUpdatedTime(obj[0]!=null?obj[0].toString().split(" ")[0]:" ");
+							  sttRqstVO.setStatus(obj[1]!=null?obj[1].toString():"");
+							  sttsRqustdList.add(sttRqstVO);
+						}  
+					}
+					if(sttsRqustdList!=null && !sttsRqustdList.isEmpty()){
+						Object latestDate=null;
+						if(tdpCadreId!=null && tdpCadreId>0l){
+							if(currentMonth!=null && currentMonth.equalsIgnoreCase("currentMonth")){
+								latestDate=appointmentCandidateDAO.getMaxDate(tdpCadreId,null,crrntMnth);	
+							}else if(anyDate!=null && anyDate.equalsIgnoreCase("anyDate")){
+								latestDate=appointmentCandidateDAO.getMaxDate(tdpCadreId,null,null);	
+							}
+						}else if(mobileNo!=null && !mobileNo.isEmpty()){
+							if(currentMonth!=null && currentMonth.equalsIgnoreCase("currentMonth")){
+								latestDate=appointmentCandidateDAO.getMaxDate(null,mobileNo,crrntMnth);
+							}else if(anyDate!=null && anyDate.equalsIgnoreCase("anyDate")){
+								latestDate=appointmentCandidateDAO.getMaxDate(null,mobileNo,null);
+							}
+						}
+						appntmntCnddtVO.setDate(latestDate.toString().split(" ")[0]);
+					}
+				     appntmntCnddtVO.setAppointStatusRequestedList(sttsRqustdList);   
+					 fnlAppntCnddtSttsList.add(appntmntCnddtVO);
+				}
+			}
+		 }
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentsCandidateDetails() method of AppointmentService", e);
+		}
+		return fnlAppntCnddtSttsList;
 	}
 	public List<IdNameVO> getTotalAppointmentStatus(){
 		List<IdNameVO> totalAppointmentStatusList = new ArrayList<IdNameVO>();

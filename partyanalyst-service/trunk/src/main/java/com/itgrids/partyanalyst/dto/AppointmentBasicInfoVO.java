@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class AppointmentBasicInfoVO {
 
 	private String name;
@@ -15,7 +17,58 @@ public class AppointmentBasicInfoVO {
 	private String date;
 	private Long villageId;
 	private Long appointmentLabelId;
-	
+	private Long appointCandidateId;
+	private String designation;
+	private String constituencyName;
+	private String reason;
+	private String priority;
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	public String getPriority() {
+		return priority;
+	}
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	private List<AppointmentStatusVO> appointStatusCountList;
+    private List<AppointmentStatusVO> appointStatusRequestedList;
+
+    public Long getAppointCandidateId() {
+		return appointCandidateId;
+	}
+	public void setAppointCandidateId(Long appointCandidateId) {
+		this.appointCandidateId = appointCandidateId;
+	}
+	public List<AppointmentStatusVO> getAppointStatusCountList() {
+		return appointStatusCountList;
+	}
+	public void setAppointStatusCountList(
+			List<AppointmentStatusVO> appointStatusCountList) {
+		this.appointStatusCountList = appointStatusCountList;
+	}
+	public List<AppointmentStatusVO> getAppointStatusRequestedList() {
+		return appointStatusRequestedList;
+	}
+	public void setAppointStatusRequestedList(
+			List<AppointmentStatusVO> appointStatusRequestedList) {
+		this.appointStatusRequestedList = appointStatusRequestedList;
+	}
 	public Long getAppointmentLabelId() {
 		return appointmentLabelId;
 	}
