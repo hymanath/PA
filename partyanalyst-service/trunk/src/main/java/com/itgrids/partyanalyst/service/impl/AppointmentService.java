@@ -641,4 +641,36 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return totalAppointmentStatusList;
 	}
+	public List<IdNameVO> getTotalAppointmentStatusForToday(){
+		List<IdNameVO> totalAppointmentStatusList = new ArrayList<IdNameVO>();
+		IdNameVO idNameVO = null;
+		Date today = dateUtilService.getCurrentDateAndTime();
+		try{
+			LOG.info("Entered into getTotalAppointmentStatus() method of AppointmentService");
+			List<Object[]> appointmentStatusList = appointmentStatusDAO.getAppointmentStatusList();
+			//appDtlsStatusList->Appointment Details Status List
+			List<Object[]> appDtlsStatusList = appointmentDAO.getTotalAppointmentStatusForToday(today);
+			for(Object[] appointmentStatus:appointmentStatusList){
+				idNameVO = new IdNameVO();
+				idNameVO.setId((Long)appointmentStatus[0]);
+				idNameVO.setName(appointmentStatus[1].toString());
+				if(appDtlsStatusList.size()>0){
+					if(((Long)appointmentStatus[0]).equals((Long)appDtlsStatusList.get(0)[0])){
+						idNameVO.setAvailableCount((Long)appDtlsStatusList.get(0)[1]);
+						appDtlsStatusList.remove(0);
+					}else{
+						idNameVO.setAvailableCount(0l);
+					}
+				}
+				else{
+					idNameVO.setAvailableCount(0l);
+				}
+				totalAppointmentStatusList.add(idNameVO);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getTotalAppointmentStatus() method of AppointmentService", e);
+			return null;
+		}
+		return totalAppointmentStatusList;
+	}
 }
