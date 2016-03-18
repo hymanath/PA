@@ -299,4 +299,13 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+public String getTotalAppointmentStatus(){
+		
+		try{
+			 idNameVOList=appointmentService.getTotalAppointmentStatus();
+		}catch(Exception e){
+			LOG.error("Exception raised at getTotalAppointmentStatus() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
