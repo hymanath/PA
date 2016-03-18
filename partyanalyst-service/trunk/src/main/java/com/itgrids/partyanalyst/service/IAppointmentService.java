@@ -21,4 +21,5 @@ public interface IAppointmentService {
 	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId);
 	public List<AppointmentBasicInfoVO> getAppointmentsCandidateDetails(Long candidateDsgntnId,Long appntmntPrrtyId,Long appntmntSttsId,String currentMonth,String anyDate);
 	public List<IdNameVO> getTotalAppointmentStatus();
+	public List<IdNameVO> getTotalAppointmentStatusForToday();
 }
