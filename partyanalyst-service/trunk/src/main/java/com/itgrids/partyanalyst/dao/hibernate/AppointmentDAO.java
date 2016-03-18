@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.model.Appointment;
@@ -13,5 +16,10 @@ public class AppointmentDAO extends GenericDaoHibernate<Appointment, Long> imple
 	public AppointmentDAO() {
 		super(Appointment.class);
 	}
+	public List<Object[]> getTotalAppointmentStatus(){
+		Query query = getSession().createQuery("select model.appointmentStatusId, count(model.appointmentStatusId) from Appointment model where model.isDeleted='N' group by model.appointmentStatusId order by model.appointmentStatusId");
+		return query.list();
+	}
+
 
 }
