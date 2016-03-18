@@ -19,5 +19,6 @@ public interface IAppointmentService {
 	public List<IdNameVO> getVillageWard(Long mandalId);
 	public List<IdNameVO> getConstituenciesForADistrict(Long distId);
 	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId);
+	public List<AppointmentBasicInfoVO> getAppointmentsCandidateDetails(Long candidateDsgntnId,Long appntmntPrrtyId,Long appntmntSttsId,String currentMonth,String anyDate);
 	public List<IdNameVO> getTotalAppointmentStatus();
 }
