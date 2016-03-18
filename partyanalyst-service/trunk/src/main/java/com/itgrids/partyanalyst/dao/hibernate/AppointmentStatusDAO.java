@@ -14,7 +14,7 @@ public class AppointmentStatusDAO extends GenericDaoHibernate<AppointmentStatus,
 		super(AppointmentStatus.class);
 	}
 	public List<Object[]> getAppointmentStatusList(){
-		Query query=getSession().createQuery(" select model.appointmentStatusId,model.status from AppointmentStatus model ");
+		Query query=getSession().createQuery(" select model.appointmentStatusId,model.status from AppointmentStatus model order by model.appointmentStatusId");
 		return query.list();
 		}
  }
