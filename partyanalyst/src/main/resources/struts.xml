@@ -11640,6 +11640,11 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="getTotalAppointmentStatusForTodayAction" class="appointmentAction" method="getTotalAppointmentStatusForToday">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
 	<action name="getAppntmntsCnddtDtlsAction" class="appointmentAction" method="getAppointmentsCandidateDetails">
 		<result type="json" name="success">
 			<param name="root">appointmentUserDtlsList</param>
