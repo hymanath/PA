@@ -1067,16 +1067,16 @@
 												</div>
 												<div class="col-md-8 m_top10">
 													<label class="radio-inline">
-														<input type="radio" checked name="dateTypeRadio" value="multipleDates">Select Preferrable Dates
+														<input type="radio" class="dateRadioCls" checked name="dateTypeRadio" value="multipleDates">Select Preferrable Dates
 													</label>
 													<label class="radio-inline">
-														<input type="radio" name="dateTypeRadio" value="nextWeek">Next Week
+														<input type="radio" class="dateRadioCls" name="dateTypeRadio" value="nextWeek">Next Week
 													</label>
 													<label class="radio-inline">
-														<input type="radio" name="dateTypeRadio" name="nextMonth">Next Month(Any Date)
+														<input type="radio" class="dateRadioCls" name="dateTypeRadio" value="nextMonth">Next Month(Any Date)
 													</label>
 													<label class="radio-inline">
-														<input type="radio" name="dateTypeRadio" name="thisWeek">This Week
+														<input type="radio" class="dateRadioCls" name="dateTypeRadio" value="thisWeek">This Week
 													</label>
 													<div class="input-group inputSearch m_top5">
 														<span class="input-group-addon">
@@ -1117,10 +1117,10 @@
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-md-4 m_top10">
+												<!--<div class="col-md-4 m_top10">
 													<label>Location</label>
 													<input type="text" class="form-control">
-												</div>
+												</div>-->
 												<div class="col-md-4 m_top10">
 													<label>Voter ID</label>
 													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].voterCardNo">
@@ -1129,9 +1129,7 @@
 													<label>Membership Number</label>
 													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].membershipNum">
 												</div>
-											</div>
-											<div class="row m_top10">
-												<div class="col-md-4">
+												<div class="col-md-4 m_top10">
 													<label>Location Scope</label>
 													<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0" onChange="showhideLocationBoxes(0);">
 														<option value="0">Select Scope</option>
@@ -1143,6 +1141,20 @@
 														<option value="8">WARD</option>
 													</select>
 												</div>
+											</div>
+											<div class="row m_top10">
+												<!--<div class="col-md-4">
+													<label>Location Scope</label>
+													<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0" onChange="showhideLocationBoxes(0);">
+														<option value="0">Select Scope</option>
+														<option value="3">DISTRICT</option>
+														<option value="4">CONSTITUENCY</option>
+														<option value="5">MANDAL</option>
+														<option value="6">VILLAGE</option>
+														<option value="7">MUNICIPAL-CORP-GMC</option>
+														<option value="8">WARD</option>
+													</select>
+												</div>-->
 												<div class="col-md-4 locationCls0" id="districtId0DivId" style="display:none;">
 													<label>Select District</label>
 													<select name="appointmentVO.basicInfoList[0].districtId" class="dropkickClass scopeClearAllCls0" id="districtId0" onChange="getConstituencies(0);">
@@ -1209,10 +1221,10 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-md-4 m_top10">
+											<!--<div class="col-md-4 m_top10">
 												<label>Location</label>
 												<input type="text" class="form-control cloneLocationCls">
-											</div>
+											</div>-->
 											<div class="col-md-4 m_top10">
 												<label>Voter ID</label>
 												<input type="text" class="form-control cloneVoterIdCls">
@@ -1221,9 +1233,7 @@
 												<label>Membership Number</label>
 												<input type="text" class="form-control cloneMembershipNumCls">
 											</div>
-										</div>
-										<div class="row m_top10">
-											<div class="col-md-4">
+											<div class="col-md-4 m_top10">
 												<label>Location Scope</label>
 												<select class="cloneLocationScopeCls regionScopeCls">
 													<option value="0">Select Scope</option>
@@ -1235,6 +1245,20 @@
 													<option value="8">WARD</option>
 												</select>
 											</div>
+										</div>
+										<div class="row m_top10">
+											<!--<div class="col-md-4">
+												<label>Location Scope</label>
+												<select class="cloneLocationScopeCls regionScopeCls">
+													<option value="0">Select Scope</option>
+													<option value="3">DISTRICT</option>
+													<option value="4">CONSTITUENCY</option>
+													<option value="5">MANDAL</option>
+													<option value="6">VILLAGE</option>
+													<option value="7">MUNICIPAL-CORP-GMC</option>
+													<option value="8">WARD</option>
+												</select>
+											</div>-->
 											<div class="col-md-4 cloneDistDivCls" style="display:none;">
 												<label>Select District</label>
 												<select class="cloneDistrictCls">
@@ -3032,6 +3056,10 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	}
 	$("#appntmntCnddtSttsUlId").html(str);
   }	 
+  
+  $(document).on("click",".dateRadioCls",function(){
+	  $("#multiDate").val("");
+  });
 </script>
 </body>
 </html>

@@ -3021,6 +3021,9 @@
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="regionScopesDAO" ref="regionScopesDAO"/>
 		<property name="panchayatDAO" ref="panchayatDAO"/>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+		<property name="stateDAO" ref="stateDAO"/>
+		<property name="appointmentPreferableDateDAO" ref="appointmentPreferableDateDAO"/>
 	</bean>
 </beans>		
 	
