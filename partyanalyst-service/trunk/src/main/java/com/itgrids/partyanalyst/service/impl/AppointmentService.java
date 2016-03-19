@@ -20,13 +20,19 @@ import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLableDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLableStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
+import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.hibernate.StateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
@@ -39,6 +45,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.AppointmentLable;
+import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -64,7 +71,30 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentLableDAO appointmentLableDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private IPanchayatDAO panchayatDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IStateDAO stateDAO;
+	private IAppointmentPreferableDateDAO appointmentPreferableDateDAO;
 	
+	
+	public IAppointmentPreferableDateDAO getAppointmentPreferableDateDAO() {
+		return appointmentPreferableDateDAO;
+	}
+	public void setAppointmentPreferableDateDAO(
+			IAppointmentPreferableDateDAO appointmentPreferableDateDAO) {
+		this.appointmentPreferableDateDAO = appointmentPreferableDateDAO;
+	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
 	public IAppointmentManageUserDAO getAppointmentManageUserDAO() {
 		return appointmentManageUserDAO;
 	}
@@ -219,10 +249,27 @@ public class AppointmentService implements IAppointmentService{
 		        		} 
 		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
 		        		appointment.setAppointmentPreferableTimeId(2l);
+		        		datesList = dateUtilService.getDatesOfWeekAfterCurrentWeek();
 		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextMonth")){
 		        		appointment.setAppointmentPreferableTimeId(3l);
+		        		datesList = dateUtilService.getDatesOfNextMonth();
 		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
 		        		appointment.setAppointmentPreferableTimeId(4l);
+		        		datesList = dateUtilService.getDatesOfCurrentWeek();
+		        	}
+		        	
+		        	if(datesList != null && datesList.size() > 0){
+		        		Long order = 1l;
+		        		for (Date date : datesList) {
+		        			AppointmentPreferableDate appointmentPreferableDate = new AppointmentPreferableDate();
+		        			
+		        			appointmentPreferableDate.setAppointmentId(appointment.getAppointmentId());
+		        			appointmentPreferableDate.setAppointmentDate(date);
+		        			appointmentPreferableDate.setOrderNo(order);
+		        			
+		        			appointmentPreferableDate = appointmentPreferableDateDAO.save(appointmentPreferableDate);
+		        			order++;
+						}
 		        	}
 		        	
 		        	if(appointmentVO.getBasicInfoList() != null && appointmentVO.getBasicInfoList().size() > 0){
@@ -252,7 +299,7 @@ public class AppointmentService implements IAppointmentService{
 		        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreIdForMemberShipNums(membershipNoList);
 		        			if(cadreIdsObjList != null && cadreIdsObjList.size() > 0){
 		        				for (Object[] objects : cadreIdsObjList) {
-		        					cadreIdsMap.put(objects[0].toString(),(Long)objects[1]);
+		        					cadreIdsMap.put(objects[0].toString(),Long.valueOf(objects[1].toString()));
 								}
 		        			}
 		        		}
@@ -265,18 +312,42 @@ public class AppointmentService implements IAppointmentService{
 		        			appCandi.setDesignationId(basicInfo.getDesignationId());
 		        			appCandi.setMobileNo(basicInfo.getMobileNo());
 		        			appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
-		        			if(basicInfo.getLocationScopeId()==1l)//dist
+		        			if(basicInfo.getLocationScopeId().longValue() == 3l){			 		//dist
 		        				appCandi.setLocationValue(basicInfo.getDistrictId());
-		        			else if(basicInfo.getLocationScopeId()==2l)//const
+		        			}
+		        			else if(basicInfo.getLocationScopeId().longValue() == 4l){				//const
 		        				appCandi.setLocationValue(basicInfo.getConstituencyId());
-		        			else if(basicInfo.getLocationScopeId()==3l)//tehsil
-		        				appCandi.setLocationValue(basicInfo.getTehsilId());
+		        			}
+		        			else if(basicInfo.getLocationScopeId().longValue() == 5l || basicInfo.getLocationScopeId().longValue() == 7l){		//tehsil || Muncipality
+		        				Long id = Long.valueOf(basicInfo.getTehsilId().toString().substring(1));
+		        				appCandi.setLocationValue(id);
+		        			}
+		        			else if(basicInfo.getLocationScopeId().longValue() == 6l || basicInfo.getLocationScopeId().longValue() == 8l){		//Village || Ward
+		        				//Long id = Long.valueOf(basicInfo.getVillageId().toString().substring(1));
+		        				appCandi.setLocationValue(basicInfo.getVillageId());
+		        			}
 		        			
 		        			//user addres saving logic
 		        			UserAddress userAddress = new UserAddress();
+		        			userAddress.setState(stateDAO.get(1l));
 		        			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
 		        			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
-		        			userAddress.setTehsil(tehsilDAO.get(basicInfo.getTehsilId()));
+		        			if(basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
+		        				userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
+		        				userAddress.setPanchayat(panchayatDAO.get(basicInfo.getVillageId()));
+		        			}
+		        			else if(basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
+		        				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
+		        				userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
+		        			}
+		        			
+		        			/*if(basicInfo.getVillageId().toString().substring(0, 1).equalsIgnoreCase("3")){
+		        				userAddress.setPanchayat(panchayatDAO.get(Long.valueOf(basicInfo.getVillageId().toString().substring(1))));
+		        			}
+		        			else if(basicInfo.getVillageId().toString().substring(0, 1).equalsIgnoreCase("2")){
+		        				userAddress.setWard(constituencyDAO.get(Long.valueOf(basicInfo.getVillageId().toString().substring(1))));
+		        			}*/
+		        			//userAddress.setTehsil(tehsilDAO.get(basicInfo.getTehsilId()));
 		        			userAddress = userAddressDAO.save(userAddress);
 		        			
 		        			appCandi.setAddressId(userAddress.getUserAddressId());
