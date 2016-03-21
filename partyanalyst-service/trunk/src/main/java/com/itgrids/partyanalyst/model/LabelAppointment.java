@@ -34,6 +34,8 @@ public class LabelAppointment extends BaseModel {
 	
 	private AppointmentLable appointmentLable;
 	private Appointment appointment;
+	private User createdUser;
+	private User updetedUser;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -113,10 +115,24 @@ public class LabelAppointment extends BaseModel {
 	public void setAppointment(Appointment appointment) {
 		this.appointment = appointment;
 	}
-	
-	
-	
-	
-	
-
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="created_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getCreatedUser() {
+		return createdUser;
+	}
+	public void setCreatedUser(User createdUser) {
+		this.createdUser = createdUser;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="updated_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdetedUser() {
+		return updetedUser;
+	}
+	public void setUpdetedUser(User updetedUser) {
+		this.updetedUser = updetedUser;
+	}
 }
