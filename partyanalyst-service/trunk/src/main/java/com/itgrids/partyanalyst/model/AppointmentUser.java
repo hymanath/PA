@@ -18,6 +18,7 @@ public class AppointmentUser extends BaseModel {
 	private Long 	appointmenUserId;
 	private String name;
 	private String mobile;
+	private String uniqueIdPrefix;
   
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,4 +44,13 @@ public class AppointmentUser extends BaseModel {
 		this.mobile = mobile;
 	}
 	
+	@Column(name = "unique_id_prefix")
+	public String getUniqueIdPrefix() {
+		return uniqueIdPrefix;
 	}
+	public void setUniqueIdPrefix(String uniqueIdPrefix) {
+		this.uniqueIdPrefix = uniqueIdPrefix;
+	}
+	
+	
+}

@@ -32,9 +32,11 @@ public class AppointmentLable extends BaseModel {
 	private Long insertedBy;
 	private Long  updatedBy;
 	private String isDeleted;
+	private Long appointmentLableStatusId;
 	
 	private AppointmentUser insertedUser;
 	private AppointmentUser updateUser;
+	private AppointmentLableStatus appointmentLableStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -114,5 +116,26 @@ public class AppointmentLable extends BaseModel {
 	public void setUpdateUser(AppointmentUser updateUser) {
 		this.updateUser = updateUser;
 	}
+	
+	@Column(name="appointment_lable_status_id")
+	public Long getAppointmentLableStatusId() {
+		return appointmentLableStatusId;
+	}
+	public void setAppointmentLableStatusId(Long appointmentLableStatusId) {
+		this.appointmentLableStatusId = appointmentLableStatusId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="appointment_lable_status_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AppointmentLableStatus getAppointmentLableStatus() {
+		return appointmentLableStatus;
+	}
+	public void setAppointmentLableStatus(
+			AppointmentLableStatus appointmentLableStatus) {
+		this.appointmentLableStatus = appointmentLableStatus;
+	}
 
+	
 }

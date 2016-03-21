@@ -41,6 +41,7 @@ public class Appointment extends BaseModel{
 	private AppointmentPreferableTime appointmentPreferableTime;
 	private User createdUser;
 	private User updateUser;
+	private String appointmentUniqueId;
 	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -183,4 +184,14 @@ public class Appointment extends BaseModel{
 	public void setUpdateUser(User updateUser) {
 		this.updateUser = updateUser;
 	}
+	
+	@Column(name = "appointment_unique_id")
+	public String getAppointmentUniqueId() {
+		return appointmentUniqueId;
+	}
+	public void setAppointmentUniqueId(String appointmentUniqueId) {
+		this.appointmentUniqueId = appointmentUniqueId;
+	}
+	
+	
 }
