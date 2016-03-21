@@ -434,6 +434,7 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			   
 			   return query.list();
 			}
-
+			
+			
 			
 }

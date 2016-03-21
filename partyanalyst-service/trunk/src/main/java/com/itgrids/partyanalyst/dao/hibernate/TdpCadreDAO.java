@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -5843,7 +5844,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("tdpCadreId",tdpCadreId);
 			return (Long)query.uniqueResult();
 		}
-		
+		public List<UserAddress> getUserAddress(Long tdpCadreId){
+			
+			Query query=getSession().createQuery(" select tc.userAddress.userAddress from TdpCadre tc where tc.tdpCadreId=:tdpCadreId ");
+			query.setParameter("tdpCadreId",tdpCadreId);
+			return query.list();
+		}
 		public List<Object[]> getAffliatedCadreCountDetails(String type,Date date){
 			
 			StringBuilder str = new StringBuilder();			
@@ -6357,5 +6363,30 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		  return query.list();
 		  
 	  }
+	  
+	  public List<Object[]>  searchMemberByCriteria(String searchType,String searchValue){
+			
+			StringBuilder sb=new StringBuilder();
+			
+			sb.append(" select  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name " +
+					"   from TdpCadre model where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear ");
+			if(searchType.equalsIgnoreCase("mobileno")){
+				
+				sb.append(" and model.mobileNo = :searchValue ");
+				
+			}else if(searchType.equalsIgnoreCase("mebershipno")){
+				
+				sb.append(" and model.memberShipNo = :searchValue ");
+				
+			}else if(searchType.equalsIgnoreCase("votercardno")){
+				
+				sb.append(" and model.voter.voterIDCardNo = :searchValue ");
+			}
+			
+			Query query = getSession().createQuery(sb.toString());
+			query.setParameter("searchValue",searchValue);
+			query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_NUMBER);
+			return query.list();
+		}
 	
 }

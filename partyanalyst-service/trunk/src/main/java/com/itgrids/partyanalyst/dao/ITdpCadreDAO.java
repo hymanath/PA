@@ -9,6 +9,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 
@@ -417,4 +418,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type,Long memberTypeId);
 	  public List<Object[]>  getmemberShipIdsByVoterIds(Long cadreEnrollmentYear,List<Long> voterIds);
 	  public List<Object[]> getTdpCadreIdForMemberShipNums(List<String> membershipNums);
+	  public List<Object[]>  searchMemberByCriteria(String searchType,String searchValue);
+	  public List<UserAddress> getUserAddress(Long tdpCadreId);
 }

@@ -23,21 +23,20 @@ import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
-import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.hibernate.StateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
+import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -74,6 +73,8 @@ public class AppointmentService implements IAppointmentService{
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IStateDAO stateDAO;
 	private IAppointmentPreferableDateDAO appointmentPreferableDateDAO;
+	private IBoothPublicationVoterDAO     boothPublicationVoterDAO;
+	private RtcUnionService               rtcUnionService;  
 	
 	
 	public IAppointmentPreferableDateDAO getAppointmentPreferableDateDAO() {
@@ -204,6 +205,20 @@ public class AppointmentService implements IAppointmentService{
 	}
 	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
 		this.panchayatDAO = panchayatDAO;
+	}
+	
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+	public RtcUnionService getRtcUnionService() {
+		return rtcUnionService;
+	}
+	public void setRtcUnionService(RtcUnionService rtcUnionService) {
+		this.rtcUnionService = rtcUnionService;
 	}
 	
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
@@ -744,4 +759,171 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return totalAppointmentStatusList;
 	}
+	
+	//search
+	public  List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue){
+		 List<AppointmentCandidateVO>  finalList = null;
+		 
+		 try {
+			      List<Object[]> membersList = null;
+			 
+			      membersList = appointmentCandidateDAO.searchAppointmentRequestedMember(searchType,searchValue);
+			      
+			      if(membersList != null && membersList.size()>0){
+			    	  finalList = new ArrayList<AppointmentCandidateVO>(); 
+			    	  
+			    	  for(Object[] obj:membersList){
+			    		  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+			    		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+			    		  vo.setCandidateType("appointmentCandidate");
+			    		  vo.setName(obj[1]!=null?obj[1].toString():"");
+			    		  if(obj[2]!=null && (Long)obj[2]>0){
+			    			  vo.setCadre(true);
+			    		  }
+			    		  vo.setMobileNo(obj[3]!=null?obj[3].toString():"");
+			    		  vo.setDesignation(obj[4]!=null?obj[4].toString():"");
+			    		  vo.setConstituency(obj[5]!=null?obj[5].toString():"");
+			    		  finalList.add(vo);
+			    	  }
+			      }
+			      else{
+			    	  
+			    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);
+			    	  
+			    	  if(membersList!=null && membersList.size()>0){
+			    		  finalList = new ArrayList<AppointmentCandidateVO>(); 
+			    		  for(Object[] obj: membersList){
+			    			  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+				    		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+				    		  vo.setCandidateType("cadre");
+				    		  vo.setName(obj[1]!=null?obj[1].toString():"");
+				    		  vo.setCadre(true);
+				    		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
+				    		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+				    		  finalList.add(vo);
+			    		  }
+			    	  }
+			    	  
+			      }
+			      
+			      if(membersList==null ||  membersList.size()==0 && searchType.equalsIgnoreCase("votercardno")){
+			    	  membersList = boothPublicationVoterDAO.getVoterDetailsVoterId(searchValue);
+			    	  if(membersList!=null && membersList.size()>0){
+			    		  finalList = new ArrayList<AppointmentCandidateVO>();
+			    		  for(Object[] obj: membersList){
+			    			  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+				    		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+				    		  vo.setCandidateType("voter");
+				    		  vo.setName(obj[1]!=null?obj[1].toString():"");
+				    		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
+				    		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+				    		  finalList.add(vo);
+			    		  }
+			    	  }
+			    	  
+			      }
+			 	
+		} catch (Exception e) {
+			LOG.error("Exception raised at searchApptRequestedMembers() method of AppointmentService", e);
+		}
+		 return finalList;
+	 }
+	
+	public VoterAddressVO getMemberDetails(String candidateType,Long id){
+		
+		VoterAddressVO addressVO = null;
+		try {
+			  if(candidateType.equalsIgnoreCase("appointmentCandidate")){
+				  addressVO=getVoterWorkAddressDetailsByCadreId(id,candidateType);
+			  }else if(candidateType.equalsIgnoreCase("cadre")){
+				  addressVO=getVoterWorkAddressDetailsByCadreId(id,candidateType);
+			  }else if(candidateType.equalsIgnoreCase("voter")){
+				  List<Object[]> list = boothPublicationVoterDAO.getVoterAddressDetailsVoterId(id);
+				  if(list!=null && list.size()>0){
+					  Object[] obj= list.get(0);
+					  if(obj!=null){
+						  addressVO = new VoterAddressVO();
+						  addressVO.setDistrictId(obj[0]!=null?(Long)obj[0]:0l);
+						  addressVO.setConstituencyId(obj[1]!=null?(Long)obj[1]:0l);
+						  addressVO.setTehsilId(obj[2]!=null?Long.valueOf("4"+obj[2].toString()):0l);
+						  addressVO.setLocalElectionBodyId(obj[3]!=null?Long.valueOf("5"+obj[3].toString()):0l);
+						  addressVO.setVillageId(obj[4]!=null?Long.valueOf("7"+obj[4].toString()):0l);
+						  addressVO.setWardId(obj[5]!=null?Long.valueOf("8"+obj[5].toString()):0l);
+					  }
+				  }
+			  }
+			  if(addressVO!=null){
+					 
+					 if(addressVO.getDistrictId()!=null){
+						 addressVO.setConstList(rtcUnionService.getConstituenciesForDistrict(addressVO.getDistrictId()));
+					 }
+					 if(addressVO.getConstituencyId()!=null){
+						 addressVO.setTehLebDivList(rtcUnionService.getLocationsOfSublevelConstituencyMandal(addressVO.getConstituencyId(),null,4l));
+					 }
+					 if(addressVO.getTehsilId()!=null){
+						 addressVO.setVillWardList(rtcUnionService.getLocationsOfSublevelConstituencyMandal(null,addressVO.getTehsilId().toString(),5l));
+					 }
+					 if(addressVO.getLocalElectionBodyId()!=null){
+						addressVO.setVillWardList(rtcUnionService.getLocationsOfSublevelConstituencyMandal(null,addressVO.getLocalElectionBodyId().toString(),5l));
+					 }
+			 }
+			
+		} catch (Exception e) {
+			LOG.error("Exception riased at getMemberDetails", e);
+		}
+		return addressVO;
+	}
+	
+     public VoterAddressVO getVoterWorkAddressDetailsByCadreId(Long id,String candidateType){
+		
+		VoterAddressVO addressVO=new VoterAddressVO();
+		
+		try{
+			List<UserAddress> userAddressList=null;
+			if(candidateType.equalsIgnoreCase("appointmentCandidate")){
+				userAddressList = appointmentCandidateDAO.getUserWorkAddress(id);
+			}else if(candidateType.equalsIgnoreCase("cadre")){
+				userAddressList=tdpCadreDAO.getUserAddress(id);
+			}
+			
+			
+			if(userAddressList!=null && userAddressList.size()>0){
+				
+				UserAddress address=userAddressList.get(0);
+				
+				if(address!=null){
+					
+					
+					if(address.getDistrict()!=null){
+						addressVO.setDistrictId(address.getDistrict().getDistrictId()!=null?address.getDistrict().getDistrictId():0l);
+					}
+					
+					if(address.getConstituency()!=null){
+						addressVO.setConstituencyId(address.getConstituency().getConstituencyId()!=null?address.getConstituency().getConstituencyId():0l);
+					}
+					
+					if(address.getTehsil()!=null){
+						addressVO.setTehsilId(address.getTehsil().getTehsilId()!=null?Long.valueOf("4"+address.getTehsil().getTehsilId().toString()):0l);
+					}
+					
+					if(address.getLocalElectionBody()!=null){
+						addressVO.setLocalElectionBodyId(address.getLocalElectionBody().getLocalElectionBodyId()!=null?Long.valueOf("5"+address.getLocalElectionBody().getLocalElectionBodyId().toString()):0l);
+					}
+					
+					if(address.getPanchayat()!=null){
+						addressVO.setVillageId(address.getPanchayat().getPanchayatId()!=null?Long.valueOf("7"+address.getPanchayat().getPanchayatId().toString()):0l);
+					}
+					if(address.getWard()!=null){
+						addressVO.setWardId(address.getWard().getConstituencyId()!=null?Long.valueOf("8"+address.getWard().getConstituencyId().toString()):0l);
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception riased at getVoterAddressDetailsByCadreId", e);
+		}
+		return addressVO;
+	}
+	
+	
 }

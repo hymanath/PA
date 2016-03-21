@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCandidate, Long> implements IAppointmentCandidateDAO {
 
@@ -145,5 +146,41 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		    
 	    return query.uniqueResult();
 	}
+	
+	
+	public List<Object[]>  searchAppointmentRequestedMember(String searchType,String searchValue){
+		
+		StringBuilder sb=new StringBuilder();
+		
+		sb.append(" select model.appointmentCandidateId,model.name,model.tdpCadreId,model.mobileNo," +
+				"          model.candidateDesignation.designation,model.userAddress.constituency.name " +
+				"  from AppointmentCandidate model  ");
+		if(searchType.equalsIgnoreCase("mobileno")){
+			
+			sb.append(" where model.mobileNo = :searchValue ");
+			
+		}else if(searchType.equalsIgnoreCase("mebershipno")){
+			
+			sb.append(" where model.membershipId = :searchValue ");
+			
+		}else if(searchType.equalsIgnoreCase("votercardno")){
+			
+			sb.append(" where model.voterIdCardNo = :searchValue ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("searchValue",searchValue);
+		return query.list();
+	}
+	
+	public List<UserAddress> getUserWorkAddress(Long id){
+		
+		Query query=getSession().createQuery(" select ac.userAddress.userAddress from AppointmentCandidate ac where ac.appointmentCandidateId=:appointmentCandidateId ");
+		query.setParameter("appointmentCandidateId",id);
+		return query.list();
+	}
+	
+	
+	
 
 }

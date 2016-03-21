@@ -8295,5 +8295,25 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
 	
-	
+	public List<Object[]> getVoterDetailsVoterId(String voterIDCardNo)
+	{
+		Query query = getSession().createQuery("SELECT model.voter.voterId, model.voter.name,model.voter.mobileNo,model.booth.constituency.constituencyId " +
+				" FROM  BoothPublicationVoter model WHERE model.voter.voterIDCardNo = :voterIDCardNo AND  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_PUBLICATION_ID);
+		query.setParameter("voterIDCardNo",voterIDCardNo);
+		return query.list();
+	}
+	public List<Object[]> getVoterAddressDetailsVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("" +
+				" SELECT model.booth.constituency.district.districtId,model.booth.constituency.constituencyId, " +
+				"        tehsil.tehsilId,leb.localElectionBodyId ," +
+				"        panchayat.panchayatId,ward.constituencyId " +
+				" FROM  BoothPublicationVoter model left join model.booth.tehsil tehsil " +
+				"       left join model.booth.localBody leb " +
+				"       left join model.booth.panchayat panchayat " +
+				"       left join model.booth.localBodyWard ward " +
+				" WHERE model.voter.voterId = :voterId AND  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_PUBLICATION_ID);
+		query.setParameter("voterId",voterId);
+		return query.list();
+	}
 }

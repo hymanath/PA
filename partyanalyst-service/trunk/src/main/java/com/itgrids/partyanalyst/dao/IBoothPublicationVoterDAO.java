@@ -730,5 +730,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVoterImagesByVoterIds(List<Long> voterIds,Long publicationId);
 	  
 	  public List<Object[]> getVoterImageDetailsByVoterId(Long voterId);
+	  public List<Object[]> getVoterDetailsVoterId(String voterIDCardNo);
+	  public List<Object[]> getVoterAddressDetailsVoterId(Long voterId);
 	  
 }
