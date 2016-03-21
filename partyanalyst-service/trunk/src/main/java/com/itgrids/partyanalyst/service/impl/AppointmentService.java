@@ -307,7 +307,7 @@ public class AppointmentService implements IAppointmentService{
 		        		
 		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
 		        			AppointmentCandidate appCandi = new AppointmentCandidate();
-		        			appCandi.setAppointmentId(appointment.getAppointmentId());
+		        			//appCandi.setAppointmentId(appointment.getAppointmentId());
 		        			appCandi.setName(basicInfo.getName());
 		        			appCandi.setDesignationId(basicInfo.getDesignationId());
 		        			appCandi.setMobileNo(basicInfo.getMobileNo());
