@@ -26,7 +26,6 @@ import org.hibernate.annotations.NotFoundAction;
 public class AppointmentCandidate extends BaseModel {
 
 	 private Long appointmentCandidateId;
-	 private Long appointmentId;
 	 private String name;
 	 private Long designationId;
 	 private String mobileNo;
@@ -42,7 +41,6 @@ public class AppointmentCandidate extends BaseModel {
 	 private Date insertedTime;
 	 private Date updatedTime;
 	 
-	 private Appointment appointment;
 	 private AppointmentCandidateDesignation candidateDesignation;
 	 private UserAddress userAddress;
 	 private Voter voter;
@@ -59,13 +57,6 @@ public class AppointmentCandidate extends BaseModel {
 	}
 	public void setAppointmentCandidateId(Long appointmentCandidateId) {
 		this.appointmentCandidateId = appointmentCandidateId;
-	}
-	@Column(name = "appointment_id")
-	public Long getAppointmentId() {
-		return appointmentId;
-	}
-	public void setAppointmentId(Long appointmentId) {
-		this.appointmentId = appointmentId;
 	}
 	@Column(name = "name")
 	public String getName() {
@@ -164,16 +155,6 @@ public class AppointmentCandidate extends BaseModel {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
-	}
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="appointment_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Appointment getAppointment() {
-		return appointment;
-	}
-	public void setAppointment(Appointment appointment) {
-		this.appointment = appointment;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="designation_id", insertable=false, updatable = false)
