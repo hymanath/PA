@@ -33,6 +33,7 @@ public class AppointmentLable extends BaseModel {
 	private Long  updatedBy;
 	private String isDeleted;
 	private Long appointmentLableStatusId;
+	private String deletedRemarks;
 	
 	private AppointmentUser insertedUser;
 	private AppointmentUser updateUser;
@@ -136,6 +137,14 @@ public class AppointmentLable extends BaseModel {
 			AppointmentLableStatus appointmentLableStatus) {
 		this.appointmentLableStatus = appointmentLableStatus;
 	}
-
+	
+	@Column(name="deleted_remarks")
+	public String getDeletedRemarks() {
+		return deletedRemarks;
+	}
+	public void setDeletedRemarks(String deletedRemarks) {
+		this.deletedRemarks = deletedRemarks;
+	}
+	
 	
 }
