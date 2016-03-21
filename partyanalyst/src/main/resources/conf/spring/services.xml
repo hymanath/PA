@@ -3024,6 +3024,9 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
 		<property name="stateDAO" ref="stateDAO"/>
 		<property name="appointmentPreferableDateDAO" ref="appointmentPreferableDateDAO"/>
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+		<property name="rtcUnionService" ref="rtcUnionService"/>
+		
 	</bean>
 </beans>		
 	
