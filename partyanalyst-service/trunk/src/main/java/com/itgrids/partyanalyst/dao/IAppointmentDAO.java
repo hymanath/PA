@@ -10,4 +10,5 @@ import com.itgrids.partyanalyst.model.Appointment;
 public interface IAppointmentDAO extends GenericDao<Appointment, Long>{
 	public List<Object[]> getTotalAppointmentStatus();
 	public List<Object[]> getTotalAppointmentStatusForToday(Date today);
+	public Integer updateUniquesIdForAppointment(String uniqueCode,Long appointmentId); 
 }
