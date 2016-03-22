@@ -28,6 +28,12 @@ public class AppointmentDAO extends GenericDaoHibernate<Appointment, Long> imple
 		query.setDate("today", today);
 		return query.list();
 	}
-
+	
+	public Integer updateUniquesIdForAppointment(String uniqueCode,Long appointmentId){
+		Query query = getSession().createQuery(" update Appointment model set model.appointmentUniqueId=:uniqueCode where model.appointmentId=:appointmentId ");
+		query.setParameter("appointmentId", appointmentId);
+		query.setParameter("uniqueCode", uniqueCode);
+		return query.executeUpdate();
+	}
 
 }
