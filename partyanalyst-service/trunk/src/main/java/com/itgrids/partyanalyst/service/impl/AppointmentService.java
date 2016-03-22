@@ -17,8 +17,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
-import com.itgrids.partyanalyst.dao.IAppointmentLableDAO;
-import com.itgrids.partyanalyst.dao.IAppointmentLableStatusDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentLabelDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentLabelStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
@@ -43,7 +44,8 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
-import com.itgrids.partyanalyst.model.AppointmentLable;
+import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
+import com.itgrids.partyanalyst.model.AppointmentLabel;
 import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
@@ -58,7 +60,7 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentStatusDAO appointmentStatusDAO;
 	private IAppointmentCandidateDesignationDAO candidateDesignationDAO;
 	private IAppointmentPriorityDAO appointmentPriorityDAO;
-	private IAppointmentLableStatusDAO appointmentLableStatusDAO;
+	private IAppointmentLabelStatusDAO appointmentLabelStatusDAO;
 	private DistrictDAO districtDAO;
 	private ConstituencyDAO constituencyDAO;
 	private TehsilDAO tehsilDAO;
@@ -67,14 +69,15 @@ public class AppointmentService implements IAppointmentService{
 	private TdpCadreDAO tdpCadreDAO;
 	private IAppointmentCandidateDAO appointmentCandidateDAO;
 	private IAppointmentManageUserDAO appointmentManageUserDAO;
-	private IAppointmentLableDAO appointmentLableDAO;
+	private IAppointmentLabelDAO appointmentLabelDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private IPanchayatDAO panchayatDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IStateDAO stateDAO;
 	private IAppointmentPreferableDateDAO appointmentPreferableDateDAO;
 	private IBoothPublicationVoterDAO     boothPublicationVoterDAO;
-	private RtcUnionService               rtcUnionService;  
+	private RtcUnionService               rtcUnionService;
+	private IAppointmentCandidateRelationDAO appointmentCandidateRelationDAO;
 	
 	
 	public IAppointmentPreferableDateDAO getAppointmentPreferableDateDAO() {
@@ -176,22 +179,22 @@ public class AppointmentService implements IAppointmentService{
 			IAppointmentPriorityDAO appointmentPriorityDAO) {
 		this.appointmentPriorityDAO = appointmentPriorityDAO;
 	}
-	public IAppointmentLableStatusDAO getAppointmentLableStatusDAO() {
-		return appointmentLableStatusDAO;
+	public IAppointmentLabelStatusDAO getAppointmentLabelStatusDAO() {
+		return appointmentLabelStatusDAO;
 	}
-	public void setAppointmentLableStatusDAO(
-			IAppointmentLableStatusDAO appointmentLableStatusDAO) {
-		this.appointmentLableStatusDAO = appointmentLableStatusDAO;
+	public void setAppointmentLabelStatusDAO(
+			IAppointmentLabelStatusDAO appointmentLabelStatusDAO) {
+		this.appointmentLabelStatusDAO = appointmentLabelStatusDAO;
 	}
 	public IAppointmentStatusDAO getAppointmentStatusDAO() {
 		return appointmentStatusDAO;
 	}
 	
-	public IAppointmentLableDAO getAppointmentLableDAO() {
-		return appointmentLableDAO;
+	public IAppointmentLabelDAO getAppointmentLabelDAO() {
+		return appointmentLabelDAO;
 	}
-	public void setAppointmentLableDAO(IAppointmentLableDAO appointmentLableDAO) {
-		this.appointmentLableDAO = appointmentLableDAO;
+	public void setAppointmentLabelDAO(IAppointmentLabelDAO appointmentLabelDAO) {
+		this.appointmentLabelDAO = appointmentLabelDAO;
 	}
 	
 	public IRegionScopesDAO getRegionScopesDAO() {
@@ -206,7 +209,6 @@ public class AppointmentService implements IAppointmentService{
 	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
 		this.panchayatDAO = panchayatDAO;
 	}
-	
 	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
 		return boothPublicationVoterDAO;
 	}
@@ -220,6 +222,13 @@ public class AppointmentService implements IAppointmentService{
 	public void setRtcUnionService(RtcUnionService rtcUnionService) {
 		this.rtcUnionService = rtcUnionService;
 	}
+	public IAppointmentCandidateRelationDAO getAppointmentCandidateRelationDAO() {
+		return appointmentCandidateRelationDAO;
+	}
+	public void setAppointmentCandidateRelationDAO(
+			IAppointmentCandidateRelationDAO appointmentCandidateRelationDAO) {
+		this.appointmentCandidateRelationDAO = appointmentCandidateRelationDAO;
+	}
 	
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
@@ -231,7 +240,14 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setAppointmentUserId(appointmentVO.getAppointmentUserId());
 		        	appointment.setAppointmentPriorityId(appointmentVO.getAppointmentPrioprityId());
 		        	appointment.setReason(appointmentVO.getReason());
-		        	appointment.setAppointmentStatusId(appointmentVO.getAppointmentStatusId());
+		        	appointment.setAppointmentStatusId(1l);
+		        	
+		        	if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("")){
+		        		String temp[] = appointmentVO.getUniqueCode().split("_");
+		        		appointment.setAppointmentUserId(Long.parseLong(temp[1]));
+			        	appointment.setAppointmentUniqueId(appointmentVO.getUniqueCode());
+		        	}
+		        	
 		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
 		        		appointment.setAppointmentPreferableTimeId(1l);
 		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
@@ -356,13 +372,6 @@ public class AppointmentService implements IAppointmentService{
 		        				userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
 		        			}
 		        			
-		        			/*if(basicInfo.getVillageId().toString().substring(0, 1).equalsIgnoreCase("3")){
-		        				userAddress.setPanchayat(panchayatDAO.get(Long.valueOf(basicInfo.getVillageId().toString().substring(1))));
-		        			}
-		        			else if(basicInfo.getVillageId().toString().substring(0, 1).equalsIgnoreCase("2")){
-		        				userAddress.setWard(constituencyDAO.get(Long.valueOf(basicInfo.getVillageId().toString().substring(1))));
-		        			}*/
-		        			//userAddress.setTehsil(tehsilDAO.get(basicInfo.getTehsilId()));
 		        			userAddress = userAddressDAO.save(userAddress);
 		        			
 		        			appCandi.setAddressId(userAddress.getUserAddressId());
@@ -376,7 +385,10 @@ public class AppointmentService implements IAppointmentService{
 		        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		        			appointmentCandidateDAO.save(appCandi);
 		        			
-		        			
+		        			AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
+		        			acr.setAppointmentId(appointment.getAppointmentId());
+		        			acr.setAppointmentCandidateId(appCandi.getAppointmentCandidateId());
+		        			appointmentCandidateRelationDAO.save(acr);
 						}
 		        	}
 		        }
@@ -429,7 +441,7 @@ public class AppointmentService implements IAppointmentService{
 		List<IdNameVO> appLblStatusList = new ArrayList<IdNameVO>(0);
 		try{
 			LOG.info("Entered into getAppmntLblStatusList() method of AppointmentService");
-			List<Object[]>  appLblStatusLst = appointmentLableStatusDAO.getAppmntLblStatusList();
+			List<Object[]>  appLblStatusLst = appointmentLabelStatusDAO.getAppmntLblStatusList();
 			appLblStatusList = setDataToVO(appLblStatusLst);
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentService", e);
@@ -464,6 +476,7 @@ public class AppointmentService implements IAppointmentService{
 					appntmntUsrVO.setAppointmentUserId((Long)param[0]);
 					appntmntUsrVO.setName(param[1]!=null?param[1].toString():"");
 					appntmntUsrVO.setMobileNo(param[2]!=null?param[2].toString():"");
+					appntmntUsrVO.setDate(param[3]!=null?param[3].toString():"");
 					appntmntUsrDtlsLst.add(appntmntUsrVO);
 				}
 			}
@@ -472,7 +485,7 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return appntmntUsrDtlsLst;
 	}
-	public ResultStatus createAppointmentLeble(String labelName,String insertedBy,String date){
+	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String date){
 		DateUtilService dateUtilService = new DateUtilService();
 		ResultStatus resultStatus = new ResultStatus();
 		try{
@@ -480,15 +493,15 @@ public class AppointmentService implements IAppointmentService{
 			Date insertedDate = dateUtilService.getCurrentDateAndTime();
 			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 			Date dt = format.parse(date);
-			AppointmentLable appointmentLable = new AppointmentLable();
-			appointmentLable.setLableName(labelName);
-			appointmentLable.setDate(dt);
-			appointmentLable.setIsDeleted("N");
-			appointmentLable.setInsertedTime(insertedDate);
-			appointmentLable.setUpdatedTime(insertedDate);
-			appointmentLable.setInsertedBy(Long.parseLong(insertedBy));
-			appointmentLable.setUpdatedBy(Long.parseLong(insertedBy));
-			appointmentLableDAO.save(appointmentLable);
+			AppointmentLabel appointmentLabel = new AppointmentLabel();
+			appointmentLabel.setLabelName(labelName);
+			appointmentLabel.setDate(dt);
+			appointmentLabel.setIsDeleted("N");
+			appointmentLabel.setInsertedTime(insertedDate);
+			appointmentLabel.setUpdatedTime(insertedDate);
+			appointmentLabel.setInsertedBy(insertedBy);
+			appointmentLabel.setUpdatedBy(insertedBy);
+			appointmentLabelDAO.save(appointmentLabel);
 			resultStatus.setResultCode(1);
 			resultStatus.setMessage("Appointment Label created...");
 		}catch(Exception e){
@@ -504,10 +517,10 @@ public class AppointmentService implements IAppointmentService{
 		try{
 			LOG.info("Entered into getLabelDtslByDate() method of AppointmentService");
 			Date date=null;
-			if(labelDtlsFnlList!=null){
+			if(slctdDate != null && !slctdDate.isEmpty()){
 				 date=sdf.parse(slctdDate);
 			}
-			List<Object[]> labelDtlsList=appointmentLableDAO.getLabelDtslByDate(date,appntmntUsrId);
+			List<Object[]> labelDtlsList=appointmentLabelDAO.getLabelDtslByDate(date,appntmntUsrId);
 			if(labelDtlsList!=null && !labelDtlsList.isEmpty()){
 				for(Object[] param:labelDtlsList){
 					AppointmentBasicInfoVO labelDtslVO=new AppointmentBasicInfoVO();
@@ -572,7 +585,7 @@ public class AppointmentService implements IAppointmentService{
 		try{
 			LOG.info("Entered into deleteAppointmentLabel() method of AppointmentService");
 			if(appointmentLabelId!=null && appointmentLabelId>0l){
-			 Integer deletedCount=appointmentLableDAO.deleteAppointmentLabel(appointmentLabelId,remarks);	
+			 Integer deletedCount=appointmentLabelDAO.deleteAppointmentLabel(appointmentLabelId,remarks);	
 			 if(deletedCount!=null && deletedCount>0){
 				 status.setMessage("success");
 			 }else{
