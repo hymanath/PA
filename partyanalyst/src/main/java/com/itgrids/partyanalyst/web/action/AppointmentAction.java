@@ -214,11 +214,17 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public String createAppointmentLeble(){
 		try{
 			LOG.info("Entered into createAppointmentLeble() method of AppointmentAction");
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
 			jObj = new JSONObject(getTask());
 			String labelName = jObj.getString("labelName");
-			String insertedBy = jObj.getString("insertedBy");
 			String date = jObj.getString("date");
-			resultStatus = appointmentService.createAppointmentLeble(labelName,insertedBy,date);
+			resultStatus = appointmentService.createAppointmentLeble(labelName,user.getRegistrationID(),date);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
@@ -226,13 +232,17 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	public String getAppointmentUsersDtls(){
-		session = request.getSession();
-		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
 		try{
 			LOG.info("Entered into getAppointmentUsersDtls() method of AppointmentAction");
+			session = request.getSession();
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if(registrationVO == null || registrationVO.getRegistrationID() == null){
+				return ERROR;
+			}
+		
 			if(registrationVO!=null){
 				appointmentUserDtlsList=appointmentService.getAppointmentUsersDtlsByUserId(registrationVO.getRegistrationID());
-		}
+			}
 		}catch(Exception e){
 		 LOG.error("Exception raised at getAppointmentUsersDtls() method of AppointmentAction", e);
 		}
