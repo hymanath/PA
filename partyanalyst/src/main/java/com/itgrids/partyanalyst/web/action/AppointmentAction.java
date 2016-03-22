@@ -13,14 +13,15 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAppointmentService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -41,6 +42,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private ICadreCommitteeService cadreCommitteeService;
 	private List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList;
 	private List<AppointmentBasicInfoVO> appointmentUserDtlsList;
+	private List<LabelStatusVO> labelStatusVOList; 
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -148,8 +150,15 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList) {
 		this.locationWiseBoothDetailsVOList = locationWiseBoothDetailsVOList;
 	}
+	public List<LabelStatusVO> getLabelStatusVOList() {
+		return labelStatusVOList;
+	}
 
+	public void setLabelStatusVOList(List<LabelStatusVO> labelStatusVOList) {
+		this.labelStatusVOList = labelStatusVOList;
+	}
 
+	
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -252,7 +261,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
        try{
     	   LOG.info("Entered into getLabelDtls() method of AppointmentAction");
     	     jObj = new JSONObject(getTask());
-    	     appointmentUserDtlsList=appointmentService.getLabelDtslByDate(jObj.getString("currentDate"),jObj.getLong("apptmntUsrId"));
+    	     labelStatusVOList=appointmentService.getLabelDtslByDate(jObj.getString("currentDate"),jObj.getLong("apptmntUsrId"));
        }catch(Exception e){
     	   LOG.error("Exception raised at getLabelDtls() method of AppointmentAction", e);
        }
