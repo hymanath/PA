@@ -2605,7 +2605,8 @@ $(".dropkickClass").dropkick();
 	
 	function savingAppointment(){
 		$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
-		$("#uniqueCode").val($("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code"));
+		var temp = $("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code")+"_"+$("#appointmentUserSelectBoxId").val();
+		$("#uniqueCode").val(temp);
 		
 		var uploadHandler = {
 			upload: function(o) {
@@ -2864,20 +2865,31 @@ $(".dropkickClass").dropkick();
 		   str+='<thead>';
 				 str+='<th>APPOINTMENT LABEL NAME</th>';
 				 str+='<th>TOTAL</th>';
-				 str+='<th>FIXED</th>';
-				 str+='<th>WAITING</th>';
-				 str+='<th>CANCELLED</th>'
+				 if(result[0].staticStatusList != null && result[0].staticStatusList.length > 0){
+					 for(var i in result[0].staticStatusList){
+						 if(result[0].staticStatusList[i].appointmentStatusId != 3 && result[0].staticStatusList[i].appointmentStatusId !=4)
+							str+='<th>'+result[0].staticStatusList[i].status+'</th>';
+					 }
+				 }
 				 str+='<th>LABEL STATUS</th>';
 		   str+='</thead>';                                                      
 			  str+='<tbody';                                                   
 	  for(var i in result){
 				str+='<tr>';
-					str+='<td attr_label_id='+result[i].appointmentLabelId+'>'+result[i].name+'</td>';
-					str+='<td>0</td>';
-					str+='<td>0</td>';
-					str+='<td>0</td>';
-					str+='<td>0</td>';
-					str+='<td>Inprogress</td>';
+					str+='<td attr_label_id='+result[i].labelId+'>'+result[i].labelName+'</td>';
+					var totalCount=0;
+					if(result[i].statusList != null && result[i].statusList.length >0){
+						for(var j in result[i].statusList){
+							totalCount=totalCount+result[i].statusList[j].totalCount;
+						}
+					}
+					str+='<td>'+totalCount+'</td>';
+					if(result[i].statusList != null && result[i].statusList.length >0){
+						for(var j in result[i].statusList){
+							str+='<td>'+result[i].statusList[j].totalCount+'</td>';
+						}
+					}
+					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
 						str+='<button class="btn btn-success btn-xs">VIEW</button>';
 						str+='<button class="btn btn-success btn-xs">ADD MEMBERS</button>';
