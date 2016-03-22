@@ -34,10 +34,10 @@ public class LabelAppointmentHistory extends BaseModel {
 	private Date updatedTime;
 	private String isDeleted;
 	
-	private AppointmentLable appointmentLable;
+	private AppointmentLabel appointmentLabel;
 	private LabelAppointment labelAppointment;
 	private Appointment appointment;
-	private AppointmentLableStatus appointmentLableStatus;
+	private AppointmentLabelStatus appointmentLabelStatus;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "label_appointment_history_id", unique = true, nullable = false)
@@ -115,11 +115,11 @@ public class LabelAppointmentHistory extends BaseModel {
 	@JoinColumn(name="appointment_label_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AppointmentLable getAppointmentLable() {
-		return appointmentLable;
+	public AppointmentLabel getAppointmentLabel() {
+		return appointmentLabel;
 	}
-	public void setAppointmentLable(AppointmentLable appointmentLable) {
-		this.appointmentLable = appointmentLable;
+	public void setAppointmentLabel(AppointmentLabel appointmentLabel) {
+		this.appointmentLabel = appointmentLabel;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="label_appointment_id", insertable=false, updatable = false)
@@ -145,12 +145,12 @@ public class LabelAppointmentHistory extends BaseModel {
 	@JoinColumn(name="label_status_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AppointmentLableStatus getAppointmentLableStatus() {
-		return appointmentLableStatus;
+	public AppointmentLabelStatus getAppointmentLabelStatus() {
+		return appointmentLabelStatus;
 	}
-	public void setAppointmentLableStatus(
-			AppointmentLableStatus appointmentLableStatus) {
-		this.appointmentLableStatus = appointmentLableStatus;
+	public void setAppointmentLabelStatus(
+			AppointmentLabelStatus appointmentLabelStatus) {
+		this.appointmentLabelStatus = appointmentLabelStatus;
 	}
 	
 	
