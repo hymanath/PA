@@ -35,9 +35,10 @@ public class AppointmentLableDAO extends GenericDaoHibernate<AppointmentLable, L
 		return query.list();
 	}
 	@Override
-	public Integer deleteAppointmentLabel(Long appointmentLabelId) {
-		Query query=getSession().createQuery("update AppointmentLable model set model.isDeleted='Y' where model.appointmentLableId=:appointmentLableId");
-	    query.setParameter("appointmentLableId", appointmentLabelId);  
-	 	return  query.executeUpdate();
+	public Integer deleteAppointmentLabel(Long appointmentLabelId,String remarks) {
+		Query query=getSession().createQuery("update AppointmentLable model set model.isDeleted='Y',model.deletedRemarks=:remarks where model.appointmentLableId=:appointmentLableId");
+		query.setParameter("remarks", remarks);  
+		query.setParameter("appointmentLableId", appointmentLabelId);  
+	    return  query.executeUpdate();
 	 }
 }
