@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 
@@ -17,7 +18,7 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppmntLblStatusList();
 	public List<AppointmentBasicInfoVO> getAppointmentUsersDtlsByUserId(Long userId);
 	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String date);
-    public List<AppointmentBasicInfoVO> getLabelDtslByDate(String date,Long appntmntUsrId);
+    public List<LabelStatusVO> getLabelDtslByDate(String date,Long appntmntUsrId);
 	public List<IdNameVO> getVillageWard(Long mandalId);
 	public List<IdNameVO> getConstituenciesForADistrict(Long distId);
 	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId,String remarks);
