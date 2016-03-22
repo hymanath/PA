@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
@@ -27,4 +28,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getTotalAppointmentStatusForToday();
 	public List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue);
 	public VoterAddressVO getMemberDetails(String candidateType,Long id);
+	public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid);
 }
