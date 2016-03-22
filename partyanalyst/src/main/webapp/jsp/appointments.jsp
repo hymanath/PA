@@ -1319,6 +1319,7 @@
                                         <div class="panel-body">
                                         	<div class="table-responsive">
 											<div id="appntmntLblDltSttsId"></div>
+											<div id="bldCnfrmtnMdlBoxId"></div>
 											<div id="buildAppntmntLblTblId"></div>
                                                 <!--<table class="table table-condensed bg_ff">
                                                     <thead>
@@ -2771,7 +2772,7 @@ $(".dropkickClass").dropkick();
 		var jobj = {
 			labelName	:	$("#labelNameId").val(),
 			insertedBy	:	$("#appointmentUserSelectBoxId").val(),
-			data		:	$("#modalDateId").val()   
+			date		:	$("#modalDateId").val()   
 		}
 		$.ajax({
 			  type     : "POST",
@@ -2876,19 +2877,42 @@ $(".dropkickClass").dropkick();
 					str+='</td>';
 			  str+='</tr>';
 	  }
-	  str+='</tbody';   
-	  str+='</table';  
+	  str+='</tbody>';   
+	  str+='</table>';  
 	  $("#buildAppntmntLblTblId").html(str);
 	}
-	
+	var labelId='';
+	var labelName='';
 	$(document).on("click",".lblDltCls",function(){
-	  var labelId=$(this).parents("tr").find("td:eq(0)").attr("attr_label_id");
-		deleteAppointmentLabel(labelId);
+	     labelId=$(this).parents("tr").find("td:eq(0)").attr("attr_label_id");
+		 labelName=$(this).parents("tr").find("td:eq(0)").attr("attr_label_name");
+		   showConfirmationBox();
 	});
-	function deleteAppointmentLabel(labelId){
+	$(document).on("click","#dlteLblBttnId",function(){
+	 var isCheckedDelete=$("#dltChckbxMdlId").is(':checked');
+	 var remarks = $("#remarksId").val();
+     if(isCheckedDelete==true){
+			$("#deleteLabelErr").html(" ");
+		}else{
+		 $("#deleteLabelErr").html("Please select agree to delete.");	
+		 return;
+	 }
+	 if(remarks.length==0){
+		 $("#deleteLabelErr").html("Please enter remarks.");	
+		 return;
+	 }else{
+		 $("#deleteLabelErr").html(" ");
+	 }
+	 deleteAppointmentLabel(labelId,remarks);
+	
+		
+	});
+	function deleteAppointmentLabel(labelId,remarks){
 		$("#appntmntLblDltSttsId").html(" ");
+		$("#appntmntLblDltSttsId").show();
 		var jsObj={
-				labelId:labelId
+				labelId:labelId,   
+				remarks:remarks
 			}
 			$.ajax({
 				type : 'GET',
@@ -2901,8 +2925,34 @@ $(".dropkickClass").dropkick();
 					 $("#appntmntLblDltSttsId").html("<div><p style='color:red'>Label Deleted Successfully");	
                       setTimeout('$("#appntmntLblDltSttsId").hide()', 2000);					 
 					}
+					getLabelDtls();
 				}
 		  }); 
+	}
+function showConfirmationBox(){
+		 var str='';
+		str+='<div class="modal fade" id="myModal" role="dialog">';
+		  str+='<div class="modal-dialog modal-sm">';
+				str+='<div class="modal-content">';
+				  str+='<button style="margin-left:260px" type="button" class="btn btn-default" data-dismiss="modal">X</button>';
+				  str+='<div class="modal-body text-center">';
+				  str+='<p class="text-center">'+labelName+'</p>';
+				  str+='<p class="text-center m_top10"><b>Are you sure want to delete Label ?</b></p>';
+				  str+='<p class="text-center text-success m_top10">Current Status - INPROGRESS</p>';
+				  str+='<label class="checkbox-inline text-center m_top10"><input id="dltChckbxMdlId" type="checkbox"/>Agree to delete</label>';
+				  str+='<br>';
+				  str+='<div class="m_top10">';
+				  str+='<input type="text" class="form-control" name="" id="remarksId" placeholder="Remarks">';
+				  str+='</div>';
+				  str+='<p  style="color:red" id="deleteLabelErr"></p>';
+				  str+='<input class="btn btn-success btn-block m_top10" type="button" id="dlteLblBttnId" value="DELETE"/>';
+				  str+='<p>*Note : if you select (Agree to delete) total label remove  from appointment label list'; 
+				  str+='</div>';
+				str+='</div>';
+			 str+='</div>';
+		 str+='</div>';
+		  $("#bldCnfrmtnMdlBoxId").html(str);
+		  $("#myModal").modal("show");
 	}
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
@@ -2911,7 +2961,6 @@ $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
-		
 	/*This code is used to select only one checkbox while displaying the appointment details.*/	
 	 $('#mnthChckbxId').click(function(){
 		  var isCheckedMonth=$("#mnthChckbxId").is(':checked');
