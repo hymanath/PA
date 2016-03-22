@@ -2644,13 +2644,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="appointmentLableDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLableDAO" >
+	<bean id="appointmentLabelDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLabelDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 	
-	<bean id="appointmentLableStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLableStatusDAO" >
+	<bean id="appointmentLabelStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLabelStatusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
 	<bean id="ivrSurveyServiceDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyServiceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -2663,5 +2664,16 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 	
+	<bean id="labelAppointmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.LabelAppointmentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="labelAppointmentHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.LabelAppointmentHistoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		

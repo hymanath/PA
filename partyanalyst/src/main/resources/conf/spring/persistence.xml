@@ -796,8 +796,12 @@
 				 <value>com.itgrids.partyanalyst.model.AppointmentPreferableDate</value>
 				 <value>com.itgrids.partyanalyst.model.AppointmentPreferableTime</value>
 				 <value>com.itgrids.partyanalyst.model.AppointmentCandidate</value>
-				 <value>com.itgrids.partyanalyst.model.AppointmentLable</value>
-				 <value>com.itgrids.partyanalyst.model.AppointmentLableStatus</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentLabel</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentLabelStatus</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.LabelAppointment</value>
+				 <value>com.itgrids.partyanalyst.model.LabelAppointmentHistory</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentCandidateRelation</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlot</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlotHistory</value>
 				 <!-- appointment related Models -->
