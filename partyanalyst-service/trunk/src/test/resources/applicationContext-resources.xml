@@ -770,7 +770,9 @@
 				 
 				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
 				 <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
-				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value> 
+				 <value>com.itgrids.partyanalyst.model.AppointmentTimeSlotHistory</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentTimeSlot</value>
 			</list>
 		</property>
 	</bean>
@@ -3410,6 +3412,14 @@
 	</bean>
 	
 	<bean id="ivrSurveyServiceDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyServiceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentTimeSlotHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentTimeSlotHistoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentTimeSlotDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentTimeSlotDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
