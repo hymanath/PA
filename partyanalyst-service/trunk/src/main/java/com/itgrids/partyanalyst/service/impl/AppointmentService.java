@@ -566,13 +566,13 @@ public class AppointmentService implements IAppointmentService{
 		return voList;
 	}
 	@Override
-	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId) {
+	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId,String remarks) {
 	   
 		ResultStatus status=new ResultStatus();
 		try{
 			LOG.info("Entered into deleteAppointmentLabel() method of AppointmentService");
 			if(appointmentLabelId!=null && appointmentLabelId>0l){
-			 Integer deletedCount=appointmentLableDAO.deleteAppointmentLabel(appointmentLabelId);	
+			 Integer deletedCount=appointmentLableDAO.deleteAppointmentLabel(appointmentLabelId,remarks);	
 			 if(deletedCount!=null && deletedCount>0){
 				 status.setMessage("success");
 			 }else{
