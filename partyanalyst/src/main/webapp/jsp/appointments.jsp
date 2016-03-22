@@ -1461,30 +1461,30 @@
                                 	<div class="block">
                                     	<div class="row">
                                             <div class="col-md-4">
-                                            	<label>Designation<span style='color:red' id="appDesigErrId"></span></label>
+                                            	<label>Designation<span style='color:red'> &nbsp * </span><span style='color:red' id="appDesigErrId"></span></label>
                                                 <select class="designationListCls errClearCls" id="manageAppDesigId"></select>
                                             </div>
                                             <div class="col-md-4">
-                                            	<label>Appointment Priority Type<span style='color:red' id="appPrrtyErrTypId"></span></label>
+                                            	<label>Appointment Priority Type<span style='color:red'> &nbsp * </span><span style='color:red' id="appPrrtyErrTypId"></span></label>
                                                 <select class="manageAppTypeCls errClearCls" id="manageAppTypeId"></select>
                                             </div>
                                             <div class="col-md-4">
-                                            	<label>Appointment Status<span style='color:red' id="appStatusErrId"></span></label>
+                                            	<label>Appointment Status<span style='color:red'> &nbsp * </span><span style='color:red' id="appStatusErrId"></span></label>
                                                 <select class="manageAppStatusCls errClearCls" id="manageAppStatusId"></select>
                                             </div>
                                           <div class="col-md-4 m_top10">
-                                            	<label>Select District</label>
-                                                <select class="dropkickClass">
-                                                	<option>District Name</option>
+                                            	<label>Select District<span style='color:red' >&nbsp *</span><span style='color:red' id="appDistErrId"></span></label>
+                                                <select id="manageAppDistId" class="dropkickClass">
+                                                	<option value="0">Select District</option>
                                                 </select>
                                           </div>
                                           <div class="col-md-4 m_top10">
-                                            	<label>Select Constituency</label>
-                                                <select class="dropkickClass">
-                                                	<option>Constituency Name</option>
+                                            	<label>Select Constituency<span style='color:red'>&nbsp *</span><span style='color:red' id="appConstErrId"></span></label>
+                                                <select id="manageAppConstId" class="dropkickClass">
+                                                	<option value="0">Constituency Name</option>
                                                 </select>
                                           </div>
-                                          <div class="col-md-12 m_top10">
+                                          <!--<div class="col-md-12 m_top10">
                                             	<label class="checkbox-inline">
                                                 	<input type="checkbox" class="checkboxCls" id="mnthChckbxId" value="currentMonth">This Month(Any Date)
                                                 </label>
@@ -1492,9 +1492,9 @@
                                                 	<input type="checkbox" class="checkboxCls " id="anyDtChckbxId" value="anyDate">Any Date
                                                 </label><span style='color:red' id="checkBoxErrId">
 												
-                                          </div>
-                                          <div class="col-md-2 m_top10">
-                                            	<button class="btn btn-success btn-block" onclick="validateFields();">VIEW</button>
+                                          </div>-->
+                                          <div class="col-md-2">
+                                            	<button class="btn btn-success btn-block" style="margin-top: 33px;" id="searchAppointmentdetailsId" >VIEW</button>
                                           </div>
                                         </div>
                                     </div>
@@ -1504,223 +1504,9 @@
                             	<div class="col-md-12">
                                 	<div class="block">
                                     	<h4 class="text-success">APPOINTMENT REQUESTED MEMBERS</h4>
-                                    	<ul class="appointmentRequestedMembers" id="appntmntCnddtSttsUlId">
-                                           <!-- <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                    	<span class="requestedCheckbox">
-	                                                        <input type="checkbox">
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus green"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Constituency</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Appt Type</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-                                                        <table class="table table-bordered m_top10">
-                                                            <thead>
-                                                          <th>Appt Last Requested Date</th>
-                                                                <th colspan="2">Appt Status</th>
-                                                            </thead>
-                                                            <tr>
-                                                                <td>28-feb-2016</td>
-                                                                <td>Fixed</td>
-                                                                <td>Appt Fixed on 28-feb-2016 10:30AM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                    	<span class="requestedCheckbox">
-	                                                        <input type="checkbox">
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus blue"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Constituency</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Appt Type</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-                                                        <table class="table table-bordered m_top10">
-                                                            <thead>
-                                                          <th>Appt Last Requested Date</th>
-                                                                <th colspan="2">Appt Status</th>
-                                                            </thead>
-                                                            <tr>
-                                                                <td>28-feb-2016</td>
-                                                                <td>Fixed</td>
-                                                                <td>Appt Fixed on 28-feb-2016 10:30AM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                    	<span class="requestedCheckbox">
-	                                                        <input type="checkbox">
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus violet"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Constituency</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Appt Type</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-                                                        <table class="table table-bordered m_top10">
-                                                            <thead>
-                                                          <th>Appt Last Requested Date</th>
-                                                                <th colspan="2">Appt Status</th>
-                                                            </thead>
-                                                            <tr>
-                                                                <td>28-feb-2016</td>
-                                                                <td>Fixed</td>
-                                                                <td>Appt Fixed on 28-feb-2016 10:30AM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </li>-->
-
-                                        </ul>
-                                        <button class="btn btn-success">UPDATE LABEL</button>
+                                    	<div class="appointmentRequestedMembers" id="appointmentRequestedMembersId">
+                                        </div>
+                                        <button class="btn btn-success" id="updateLabelId" >UPDATE LABEL</button>
                                     </div>
                                 </div>
                           </div>
@@ -1728,6 +1514,7 @@
                             	<div class="col-md-12">
                                 	<div class="block">
                                     	<h4 class="text-success">VIEWING (FEB-27_28 APPOINTMENT-REQUEST) LABEL</h4>
+										<div id="appointmentManage"></div>
                                    	  <ul class="viewAppointmentRequestedMembers">
                                             <li>
                                                 <div class="row">
@@ -2663,8 +2450,8 @@ $(".dropkickClass").dropkick();
 			str+='<option value="0">Select District</option>';
 			if(result != null && result.length > 0){
 				for(var i in result){
-					//var obj={id:result[i].id,value:result[i].name};
-					//distArr.push(obj);
+					// var obj={id:result[i].id,value:result[i].name};
+					 //distArr.push(obj);
 					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
 				}
 			}
@@ -2675,9 +2462,42 @@ $(".dropkickClass").dropkick();
 			var select = new Dropkick("#districtId0");
 			select.refresh();
 			
+			$("#manageAppDistId").html(str);
+			$("#manageAppDistId").dropkick();
+			var select1 = new Dropkick("#manageAppDistId");
+			select1.refresh();
 			
 		});
 	}
+	
+	$('#manageAppDistId').dropkick({
+      change: function () {
+		
+		   var distId = $("#manageAppDistId").val();
+			var jsObj ={
+						districtId:distId
+						}
+						
+			$.ajax({
+				type : 'post',
+				url : 'getConstituenciesForADistrictAction.action',
+				dataType: 'json',
+				data:    {task:JSON.stringify(jsObj)} 
+			}).done(function(result){
+				var str='';
+				str+='<option value="0">Select Constituency</option>';
+				if(result != null && result.length > 0){
+					for(var i in result){
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
+					}
+				}
+				$("#manageAppConstId").html(str);
+				$("#manageAppConstId").dropkick();
+				var select = new Dropkick("#manageAppConstId");
+				select.refresh();
+			});
+	    }
+	});
 	
 	function getConstituencies(num){
 		var distId = $("#districtId"+num).val();
@@ -3132,6 +2952,161 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
   $(document).on("click",".dateRadioCls",function(){
 	  $("#multiDate").val("");
   });
+  
+  
+   $(document).on("click","#searchAppointmentdetailsId",function(){
+	  getAppointmentsBySearchCriteria();
+  });
+  function clearAppointmentsSearchFields(){
+	  $("#appDesigErrId,#appPrrtyErrTypId,#appStatusErrId,#appDistErrId,#appConstErrId").html('');  
+  }
+  function getAppointmentsBySearchCriteria(){
+		  
+		  clearAppointmentsSearchFields();
+		  $("#appointmentRequestedMembersId").html('');  
+		  
+		 var designationId=$("#manageAppDesigId").val();
+		 var priorityId= $("#manageAppTypeId").val();
+		 var statusId=$("#manageAppStatusId").val();
+		 var districtId = $("#manageAppDistId").val();
+		 var constituencyId = $("#manageAppConstId").val();
+		 
+		 if(designationId==0){
+		  $("#appDesigErrId").html("Select Designation.");
+           return;		  
+		 }
+		  
+		 if(priorityId==0){
+		  $("#appPrrtyErrTypId").html("Select Priority Type.");
+           return;		  
+		 }
+		 
+		 if(statusId==0){
+		  $("#appStatusErrId").html("Select Appointment Status.");
+           return;		  
+		 }
+		 if(districtId==0){
+		  $("#appDistErrId").html("Select District.");
+           return;		  
+		 }
+		 if(constituencyId==0){
+		  $("#appConstErrId").html("Select Constituency.");
+           return;		  
+		 }
+    	var jsObj={
+			designationId:designationId,
+			priorityId:priorityId,
+			statusId:statusId,
+			districtId:districtId,
+			constituencyid:constituencyId
+		  }
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAppointmentsBySearchCriteriaAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				
+				if(result!=null && result!=0){
+				  buidResult(result);
+				}else{
+				  $("#appointmentRequestedMembersId").html("<div><p style='color:green;font-size:20px'>No Data available.</p></div>")	
+				}
+		  }); 
+	 }
+	 function buidResult(result){
+		 var i = 0;
+		 var str='';
+		 
+		 for(var i in result){
+			
+			  str+='<div class="panel panel-default manageAppViewPanelClass">';
+				str+='<div class="panel-heading">';
+						str+='<span><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
+						str+='<p>Subject : '+result[i].subject+'</p>';
+						str+='<p>Priority Type : '+result[i].priority+'</p>';
+						str+='<p>Requested Date : '+result[i].dateString+'</p>';
+						str+='<p>Status : '+result[i].status+'</p>';
+						str+='<p>Requested Dates : '+result[i].apptpreferableDates+'</p>';
+				str+='</div>';
+				  str+='<div class="panel-body">';
+					for(var j in result[i].subList){
+						str+='<ul class="viewAppointmentRequestedMembers">';
+							str+='<li>';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+										str+='<span class="requestedCheckbox text-success"></span>';
+									str+='</div>';
+									str+='<div class="col-md-6">';
+										str+='<div class="media">';
+											str+='<div class="media-left">';
+												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+											//	str+='<span class="colorStatus green"></span>';
+											str+='</div>';
+											str+='<div class="media-body">';
+												str+='<p>'+result[i].subList[j].name+' - Cadre</p>';
+												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
+												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
+												str+='<p>Last Visit:</p>';
+												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
+											str+='</div>';
+										str+='</div>';
+										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
+										str+='<table class="table table-bordered">';
+											str+='<tr>';
+												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
+												for(var k in result[i].subList[j].statusList){
+													str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+												}
+											str+='</tr>';
+										str+='</table>';
+										//str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
+										//str+='<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>';
+									str+='</div>';
+									str+='<div class="col-md-6">';
+										str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
+										str+='<table class="table table-bordered m_top10">';
+											str+='<thead>';
+										  str+='<th>Appt Last Requested Date</th>';
+												str+='<th colspan="2">Appt Status</th>';
+											str+='</thead>';
+											
+											str+='<tr>';
+												str+='<td>28-feb-2016</td>';
+												str+='<td>Fixed</td>';
+												str+='<td>Appt Fixed on 28-feb-2016 10:30AM</td>';
+											str+='</tr>';
+											
+										str+='</table>';
+									str+='</div>';
+								str+='</div>';
+							str+='</li>';
+						str+='</ul>';
+						}	
+				  str+='</div>';
+				str+='</div>';
+		 }
+		 $("#appointmentRequestedMembersId").html(str)  
+	 }
+	 
+	  $(document).on("click","#updateLabelId",function(){
+	      addAppointmentsToLable();
+      });
+	 
+	  function addAppointmentsToLable(){
+		  
+		  var appointmentsArray = [];
+		  $('.appointmentcheckBoxClass').each(function(){
+			  if ($(this).is(':checked')){
+				  appointmentsArray.push( $(this).val() );
+			  }
+          });
+		  
+	  }
+	 
+	 
+	 
 </script>
 </body>
 </html>

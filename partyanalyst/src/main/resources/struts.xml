@@ -11650,5 +11650,10 @@
 			<param name="root">appointmentUserDtlsList</param>
 		</result>
 	</action>
+	<action name="getAppointmentsBySearchCriteriaAction" class="appointmentAction" method="getAppointmentsBySearchCriteria">
+		<result type="json" name="success">
+			<param name="root">apptDetailsList</param>
+		</result>
+	</action>
 </package>
 </struts>      
