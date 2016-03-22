@@ -380,3 +380,22 @@ body
 	list-style:none;
 	padding:2px;
 }
+.manageAppViewPanelClass
+{
+	border-radius:0px;
+	box-shadow:0 0 5px rgba(0, 0, 0, 0.4)
+}
+.manageAppViewPanelClass .panel-heading
+{
+	background:#f4f4f4 !important;
+	border-bottom:1px solid #ddd !important;
+}
+.manageAppViewPanelClass .panel-body
+{
+	background:#fff;
+}
+.manageAppViewPanelClass .panel-body ul li
+{
+	box-shadow:none;
+	border:1px solid #ddd;
+}

@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
+import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
@@ -42,6 +43,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private ICadreCommitteeService cadreCommitteeService;
 	private List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList;
 	private List<AppointmentBasicInfoVO> appointmentUserDtlsList;
+	private  List<AppointmentDetailsVO> apptDetailsList;
 	private List<LabelStatusVO> labelStatusVOList; 
 	
 	public ResultStatus getResultStatus() {
@@ -150,10 +152,18 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList) {
 		this.locationWiseBoothDetailsVOList = locationWiseBoothDetailsVOList;
 	}
+    
+
+	public List<AppointmentDetailsVO> getApptDetailsList() {
+		return apptDetailsList;
+	}
 	public List<LabelStatusVO> getLabelStatusVOList() {
 		return labelStatusVOList;
 	}
 
+	public void setApptDetailsList(List<AppointmentDetailsVO> apptDetailsList) {
+		this.apptDetailsList = apptDetailsList;
+	}
 	public void setLabelStatusVOList(List<LabelStatusVO> labelStatusVOList) {
 		this.labelStatusVOList = labelStatusVOList;
 	}
@@ -346,5 +356,22 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		LOG.error("Exception raised at getTotalAppointmentStatusForToday() method of AppointmentAction", e);
 	}
 	return Action.SUCCESS;
+	}
+	
+	public String getAppointmentsBySearchCriteria(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long designationId    =   jObj.getLong("designationId");
+			Long priorityId       =   jObj.getLong("priorityId");
+			Long statusId         =   jObj.getLong("statusId");
+			Long districtId       =   jObj.getLong("districtId");
+			Long constituencyid   =   jObj.getLong("constituencyid");
+			
+			apptDetailsList =appointmentService.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid);
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentsBySearchCriteria() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
 	}
 }
