@@ -32,7 +32,7 @@ public class LabelAppointment extends BaseModel {
 	private Date updatedTime;
 	private String isDeleted;
 	
-	private AppointmentLable appointmentLable;
+	private AppointmentLabel appointmentLabel;
 	private Appointment appointment;
 	private User createdUser;
 	private User updetedUser;
@@ -99,11 +99,11 @@ public class LabelAppointment extends BaseModel {
 	@JoinColumn(name="appointment_label_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AppointmentLable getAppointmentLable() {
-		return appointmentLable;
+	public AppointmentLabel getAppointmentLabel() {
+		return appointmentLabel;
 	}
-	public void setAppointmentLable(AppointmentLable appointmentLable) {
-		this.appointmentLable = appointmentLable;
+	public void setAppointmentLabel(AppointmentLabel appointmentLabel) {
+		this.appointmentLabel = appointmentLabel;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="appointment_id", insertable=false, updatable = false)
