@@ -3015,8 +3015,8 @@
 		<property name="appointmentStatusDAO" ref="appointmentStatusDAO"/>
 		<property name="candidateDesignationDAO" ref="candidateDesignationDAO"/>
 		<property name="appointmentPriorityDAO" ref="appointmentPriorityDAO"/>
-		<property name="appointmentLableStatusDAO" ref="appointmentLableStatusDAO"/>
-		<property name="appointmentLableDAO" ref="appointmentLableDAO"/>
+		<property name="appointmentLabelStatusDAO" ref="appointmentLabelStatusDAO"/>
+		<property name="appointmentLabelDAO" ref="appointmentLabelDAO"/>
 		<property name="appointmentManageUserDAO" ref="appointmentManageUserDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="regionScopesDAO" ref="regionScopesDAO"/>
