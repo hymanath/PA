@@ -12,7 +12,7 @@ public class AppointmentVO {
 	private String appointmentDates;
 	private List<AppointmentBasicInfoVO> basicInfoList = new ArrayList<AppointmentBasicInfoVO>();
 	private Long appointmentUserId;
-	
+	private String uniqueCode;
 	
 	public Long getAppointmentPrioprityId() {
 		return appointmentPrioprityId;
@@ -57,8 +57,10 @@ public class AppointmentVO {
 	public void setAppointmentUserId(Long appointmentUserId) {
 		this.appointmentUserId = appointmentUserId;
 	}
-	
-
-	
-	
+	public String getUniqueCode() {
+		return uniqueCode;
+	}
+	public void setUniqueCode(String uniqueCode) {
+		this.uniqueCode = uniqueCode;
+	}
 }
