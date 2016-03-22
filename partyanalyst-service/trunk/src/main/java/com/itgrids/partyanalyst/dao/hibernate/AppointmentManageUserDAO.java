@@ -17,7 +17,7 @@ public class AppointmentManageUserDAO extends GenericDaoHibernate<AppointmentMan
 	
 	@Override
 	public List<Object[]> getAppointmentUsersDtlsByUserId(Long userId) {
-	   Query query=getSession().createQuery(" select model.appointmentUser.appointmenUserId,model.appointmentUser.name,model.appointmentUser.mobile  from AppointmentManageUser model where model.user.userId=:userId");
+	   Query query=getSession().createQuery(" select model.appointmentUser.appointmenUserId,model.appointmentUser.name,model.appointmentUser.mobile,model.appointmentUser.uniqueIdPrefix  from AppointmentManageUser model where model.user.userId=:userId");
 	    query.setParameter("userId", userId);
 		return query.list();
 	}
