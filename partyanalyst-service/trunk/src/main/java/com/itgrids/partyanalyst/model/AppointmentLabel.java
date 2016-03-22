@@ -20,40 +20,40 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name="appointment_lable")
+@Table(name="appointment_label")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class AppointmentLable extends BaseModel {
+public class AppointmentLabel extends BaseModel {
 	
-	private Long appointmentLableId; 
-	private String lableName;
+	private Long appointmentLabelId; 
+	private String labelName;
 	private Date date;
 	private Date insertedTime;
 	private Date updatedTime;
 	private Long insertedBy;
 	private Long  updatedBy;
 	private String isDeleted;
-	private Long appointmentLableStatusId;
+	private Long appointmentLabelStatusId;
 	private String deletedRemarks;
 	
 	private AppointmentUser insertedUser;
 	private AppointmentUser updateUser;
-	private AppointmentLableStatus appointmentLableStatus;
+	private AppointmentLabelStatus appointmentLabelStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "appointment_lable_id", unique = true, nullable = false)
-	public Long getAppointmentLableId() {
-		return appointmentLableId;
+	@Column(name = "appointment_label_id", unique = true, nullable = false)
+	public Long getAppointmentLabelId() {
+		return appointmentLabelId;
 	}
-	public void setAppointmentLableId(Long appointmentLableId) {
-		this.appointmentLableId = appointmentLableId;
+	public void setAppointmentLabelId(Long appointmentLabelId) {
+		this.appointmentLabelId = appointmentLabelId;
 	}
-	@Column(name = "lable_name")
-	public String getLableName() {
-		return lableName;
+	@Column(name = "label_name")
+	public String getLabelName() {
+		return labelName;
 	}
-	public void setLableName(String lableName) {
-		this.lableName = lableName;
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
 	}
 	@Column(name = "date")
 	public Date getDate() {
@@ -118,24 +118,24 @@ public class AppointmentLable extends BaseModel {
 		this.updateUser = updateUser;
 	}
 	
-	@Column(name="appointment_lable_status_id")
-	public Long getAppointmentLableStatusId() {
-		return appointmentLableStatusId;
+	@Column(name="appointment_label_status_id")
+	public Long getAppointmentLabelStatusId() {
+		return appointmentLabelStatusId;
 	}
-	public void setAppointmentLableStatusId(Long appointmentLableStatusId) {
-		this.appointmentLableStatusId = appointmentLableStatusId;
+	public void setAppointmentLabelStatusId(Long appointmentLabelStatusId) {
+		this.appointmentLabelStatusId = appointmentLabelStatusId;
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="appointment_lable_status_id", insertable=false, updatable = false)
+	@JoinColumn(name="appointment_label_status_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public AppointmentLableStatus getAppointmentLableStatus() {
-		return appointmentLableStatus;
+	public AppointmentLabelStatus getAppointmentLabelStatus() {
+		return appointmentLabelStatus;
 	}
-	public void setAppointmentLableStatus(
-			AppointmentLableStatus appointmentLableStatus) {
-		this.appointmentLableStatus = appointmentLableStatus;
+	public void setAppointmentLabelStatus(
+			AppointmentLabelStatus appointmentLabelStatus) {
+		this.appointmentLabelStatus = appointmentLabelStatus;
 	}
 	
 	@Column(name="deleted_remarks")
