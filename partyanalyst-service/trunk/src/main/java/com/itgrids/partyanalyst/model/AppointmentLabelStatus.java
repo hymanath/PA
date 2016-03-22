@@ -11,21 +11,21 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name ="appointment_lable_status")
+@Table(name ="appointment_label_status")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class AppointmentLableStatus extends BaseModel {
+public class AppointmentLabelStatus extends BaseModel {
 	
-	private Long appointmentLableStatusId;
+	private Long appointmentLabelStatusId;
 	private String status;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "appointment_lable_status_id", unique = true, nullable = false)
-	public Long getAppointmentLableStatusId() {
-		return appointmentLableStatusId;
+	@Column(name = "appointment_label_status_id", unique = true, nullable = false)
+	public Long getAppointmentLabelStatusId() {
+		return appointmentLabelStatusId;
 	}
-	public void setAppointmentLableStatusId(Long appointmentLableStatusId) {
-		this.appointmentLableStatusId = appointmentLableStatusId;
+	public void setAppointmentLabelStatusId(Long appointmentLabelStatusId) {
+		this.appointmentLabelStatusId = appointmentLabelStatusId;
 	}
 	@Column(name = "status")
 	public String getStatus() {
