@@ -89,9 +89,7 @@
 							<h3 class="m_top10"><b>APPOINTMENTS</b></h3>
 						</div>
 						<div class="col-md-3 col-md-offset-6">
-							<select id="appointmentUserSelectBoxId">
-								<option value="0">Select Appointment User</select>
-							</select>
+							<select id="appointmentUserSelectBoxId"></select>
 						</div>
 					</div>
 				</div>
@@ -1199,6 +1197,7 @@
 											</div>
 										</div>
 										<input type="hidden" id="dateTypeText" name="appointmentVO.appointmentPreferableTimeType">
+										<input type="hidden" id="uniqueCode" name="appointmentVO.uniqueCode">
 									</form>
 									
 									<div class="block cloneBlock" style="display:none;">
@@ -2606,7 +2605,8 @@ $(".dropkickClass").dropkick();
 	
 	function savingAppointment(){
 		$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
-		//dateTypeText.text($('input[name=dateTypeRadio]:checked').val());
+		$("#uniqueCode").val($("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code"));
+		
 		var uploadHandler = {
 			upload: function(o) {
 				uploadResult = o.responseText;
@@ -2769,9 +2769,9 @@ $(".dropkickClass").dropkick();
 			$("#errLabelName").html("please enter label Name.").css("color","red");
 			return;
 		}
+		
 		var jobj = {
 			labelName	:	$("#labelNameId").val(),
-			insertedBy	:	$("#appointmentUserSelectBoxId").val(),
 			date		:	$("#modalDateId").val()   
 		}
 		$.ajax({
@@ -2802,33 +2802,43 @@ $(".dropkickClass").dropkick();
 	}
 	function buildAppntmntUsrSlctBx(result){
 		for(var i in result){
-			$("#appointmentUserSelectBoxId").append('<option value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
+			$("#appointmentUserSelectBoxId").append('<option attr_unique_code="'+result[i].date+'" value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
 		}
-		$("#appointmentUserSelectBoxId").dropkick();
+		/* $("#appointmentUserSelectBoxId").dropkick();
 			var select = new Dropkick("#appointmentUserSelectBoxId");
 			select.refresh();
-			select.selectOne(result[0].appointmentUserId);
+			select.selectOne(result[0].appointmentUserId); */
 	}
 	$(document).on("click",".MngeAppntmntCls",function(){
-	 getLabelDtls();
+		getLabelDtls("all");
 	});
 	
 	/*Get label details based on selected user.*/
-	$('#appointmentUserSelectBoxId').dropkick({
-	change: function () {
-		if(this.value>0){
-			getLabelDtls();
+	/* $('#appointmentUserSelectBoxId').dropkick({
+		change: function () {
+			if(this.value>0){
+				getLabelDtls();
+			}
 		}
-	}
+	}); */
+	
+	$('#appointmentUserSelectBoxId').change(function(){
+		getLabelDtls("all");
 	});
 	
 	/*Get label details based on selected date.*/
 	$(document).on("change","#mngAppntmntsDtPckrId",function(){
-	   getLabelDtls();
+	   getLabelDtls("Change");
 	});
-	function getLabelDtls(){
+	function getLabelDtls(callType){
 		
-		var slctDate=$("#mngAppntmntsDtPckrId").val();
+		var slctDate="";
+		if(callType=="all"){
+			slctDate="";
+		}else if(callType=="change"){
+			slctDate=$("#mngAppntmntsDtPckrId").val();
+		}
+		
 		var appntmntUsrId=$("#appointmentUserSelectBoxId").val();
 		
 		var jsObj={
@@ -2958,6 +2968,7 @@ $("#toTimeId").datetimepicker({format: 'LT'})
 $("#fromTimeId").datetimepicker({format: 'LT'})
 $("#modalDateId").daterangepicker({singleDatePicker:true});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
+$("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
