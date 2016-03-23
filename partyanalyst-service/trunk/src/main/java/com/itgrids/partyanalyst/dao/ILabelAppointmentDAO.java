@@ -16,4 +16,8 @@ public interface ILabelAppointmentDAO extends GenericDao<LabelAppointment, Long>
 	public Integer updateLabeledAppointments(Long appointmentLabelId,List<Long> appointmentIds,Long userId,Date date);
 	public List<LabelAppointment> getDetailsOfLabelledAppointments(Long appointmentLabelId , List<Long> appointmentIds);
 	public List<Object[]> getAppointmentsOfALableForUpdate(Long lableId);
+	public List<Object[]> getLabelAppointmentsForFixed(Date toDayDate,String searchType,String type);
+	public List<Object[]> getStatusLabelAppointments(Date toDayDate,String type);
+	public List<Object[]> getLabelAppointmentsForFixedSatus(Date toDayDate,String searchType,String type);
+	public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type);
 }

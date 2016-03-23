@@ -14,6 +14,7 @@ public class LabelStatusVO {
 	
 	private Long totalCount=0l;
 	private List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>(0);
+	private List<LabelStatusVO> overAllStatusList = new ArrayList<LabelStatusVO>(0);
 	private List<AppointmentStatus> staticStatusList = new ArrayList<AppointmentStatus>(0);
 	
 	
@@ -60,5 +61,12 @@ public class LabelStatusVO {
 	public void setStaticStatusList(List<AppointmentStatus> staticStatusList) {
 		this.staticStatusList = staticStatusList;
 	}
+	public List<LabelStatusVO> getOverAllStatusList() {
+		return overAllStatusList;
+	}
+	public void setOverAllStatusList(List<LabelStatusVO> overAllStatusList) {
+		this.overAllStatusList = overAllStatusList;
+	}
+	
 	
 }

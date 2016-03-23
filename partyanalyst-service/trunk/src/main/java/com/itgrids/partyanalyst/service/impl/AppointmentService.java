@@ -1310,7 +1310,6 @@ public class AppointmentService implements IAppointmentService{
 		return null;
 	}
 	
-	
 	public ResultStatus addAppointmentstoLabel(final Long apptLabelId,final List<Long> appointmentIds,final Long loggerUserId){
 		final ResultStatus rs = new ResultStatus();
 		final DateUtilService dateUtilService = new DateUtilService();
@@ -1474,5 +1473,282 @@ public class AppointmentService implements IAppointmentService{
 		}
 		
 		return finalVOList;
+	}
+	
+	public LabelStatusVO getLabelAndStatuswiseCountsOfAppointments(){
+		
+		LabelStatusVO finalVo = new LabelStatusVO();
+		
+		try{			
+			//toDay Block
+			
+					DateUtilService dt = new DateUtilService();
+					Date curentDateTime = dt.getCurrentDateAndTime();
+					
+					List<Object[]> totalTodayObjList = new ArrayList<Object[]>();
+					List<Object[]> totalObjList = new ArrayList<Object[]>();
+					
+							//Fixed Status
+					List<Object[]> inProgreeList = labelAppointmentDAO.getLabelAppointmentsForFixed(curentDateTime,"Inprogress","ToDay");
+					List<Object[]> upcomingList  = labelAppointmentDAO.getLabelAppointmentsForFixed(curentDateTime,"Upcoming","ToDay");
+					List<Object[]> completedList  = labelAppointmentDAO.getLabelAppointmentsForFixed(curentDateTime,"Completed","ToDay");
+					
+					if(inProgreeList !=null && inProgreeList.size()>0){
+						inProgreeList = setStatusOfObjectList(inProgreeList,"Inprogress");	
+						totalTodayObjList.addAll(inProgreeList);
+					}if(upcomingList !=null && upcomingList.size()>0){
+						upcomingList = setStatusOfObjectList(upcomingList,"Upcoming");
+						totalTodayObjList.addAll(upcomingList);
+					}
+					if(completedList !=null && completedList.size()>0){
+						completedList = setStatusOfObjectList(completedList,"Completed");
+						totalTodayObjList.addAll(completedList);
+					}
+								
+							//Status Wise
+					
+					List<Object[]> statusObjList = labelAppointmentDAO.getStatusLabelAppointments(curentDateTime,"ToDay");
+					
+					if(statusObjList !=null && statusObjList.size()>0){
+						totalTodayObjList.addAll(statusObjList);
+					}
+					
+					finalVo = settingStausDetailsDataToFinalVo(finalVo,totalTodayObjList,"toDay");
+			
+			//OverAll Block
+					
+					List<Object[]> inProgreeOverAllList = labelAppointmentDAO.getLabelAppointmentsForFixed(curentDateTime,"Inprogress","overall");
+					List<Object[]> upcomingOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixed(curentDateTime,"Upcoming","overall");
+					List<Object[]> completedOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixed(curentDateTime,"Completed","overall");
+					
+					
+					if(inProgreeOverAllList !=null && inProgreeOverAllList.size()>0){
+						inProgreeOverAllList = setStatusOfObjectList(inProgreeOverAllList,"Inprogress");						
+						totalObjList.addAll(inProgreeOverAllList);
+					}if(upcomingOverAllList !=null && upcomingOverAllList.size()>0){
+						upcomingOverAllList = setStatusOfObjectList(upcomingOverAllList,"Upcoming");
+						totalObjList.addAll(upcomingOverAllList);
+					}
+					if(completedOverAllList !=null && completedOverAllList.size()>0){
+						completedOverAllList =setStatusOfObjectList(completedOverAllList,"Completed");
+						totalObjList.addAll(completedOverAllList);
+					}
+								
+							//Status Wise
+					
+					List<Object[]> statusObjOverAllList = labelAppointmentDAO.getStatusLabelAppointments(curentDateTime,"overall");
+					
+					if(statusObjOverAllList !=null && statusObjOverAllList.size()>0){
+						totalObjList.addAll(statusObjOverAllList);
+					}
+					
+					finalVo = settingStausDetailsDataToFinalVo(finalVo,totalObjList,"overAll");
+			
+					
+		}catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return finalVo;
+	}
+	
+	public LabelStatusVO settingStausDetailsDataToFinalVo(LabelStatusVO finalVo,List<Object[]> objList,String type){
+		try{
+			
+			//labelId
+			Map<Long,LabelStatusVO> labelStatusMap = new HashMap<Long, LabelStatusVO>();
+			
+			if(objList !=null && objList.size()>0){
+				for (Object[] objects : objList) {					
+					LabelStatusVO labelVo = labelStatusMap.get(objects[0] !=null ? (Long)objects[0]:0l);	
+					
+					if(labelVo == null){
+						labelVo = new LabelStatusVO();
+						labelVo.setLabelId(objects[0] !=null ? (Long)objects[0]:0l);
+						labelVo.setLabelName(objects[1] !=null ? objects[1].toString():"");	
+						//assigning LabelVo to Map
+						labelStatusMap.put((Long)objects[0], labelVo);
+					}else{
+						List<LabelStatusVO> statusList = labelVo.getStatusList();						
+						if(statusList !=null){
+							statusList = setValuesToStatusList(statusList,objects);						
+						}						
+					}
+					
+				}
+			}
+			
+			if(labelStatusMap !=null && labelStatusMap.size()>0){
+				List<LabelStatusVO> list = new ArrayList<LabelStatusVO>(labelStatusMap.values());
+				if(type !=null && type.toString().trim().equalsIgnoreCase("toDay")){					
+					finalVo.setStatusList(list);
+				}else{
+					finalVo.setOverAllStatusList(list);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalVo;
+	}
+	public List<LabelStatusVO> setValuesToStatusList(List<LabelStatusVO> statusList,Object[] objects){
+		
+		try{
+			if(statusList !=null && statusList.size()>0){				
+				for (LabelStatusVO param : statusList) {						
+					if(!param.getStatus().trim().equalsIgnoreCase(objects[3].toString())){						
+						LabelStatusVO vo = new LabelStatusVO();
+						vo.setStatus(objects[3].toString());
+						vo.setStatusId((Long)objects[2]);
+						vo.setTotalCount(objects[4] !=null ? (Long)objects[4]:0l);
+						vo.setLabelId((Long)objects[0]);
+						vo.setLabelName(objects[1].toString());
+						
+						statusList.add(vo);
+					}					
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return statusList;
 	}	
+	public List<Object[]> setStatusOfObjectList(List<Object[]> fixedList,String type){
+		try{
+				if(fixedList !=null && fixedList.size()>0){
+					for (Object[] objects : fixedList) {
+						if(objects[3] !=null && !objects[3].toString().trim().isEmpty()){																			
+							objects[3] = type;								
+						}
+					}
+				}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return fixedList;
+	}
+	
+	
+	public LabelStatusVO getStatusWiseCountsOfAppointments(){
+		LabelStatusVO finalVo = new LabelStatusVO();
+		
+		try{
+			
+			DateUtilService dt = new DateUtilService();
+			Date curentDateTime = dt.getCurrentDateAndTime();
+			
+			List<Object[]> totalTodayObjList = new ArrayList<Object[]>();
+			List<Object[]> totalObjList = new ArrayList<Object[]>();
+			
+			//toDay Block
+				//Fixed Status
+						//0.statusId,1.status,2.count
+						List<Object[]> inProgreeList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","ToDay");
+						List<Object[]> upcomingList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","ToDay");
+						List<Object[]> completedList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","ToDay");
+						
+						if(inProgreeList !=null && inProgreeList.size()>0){
+							inProgreeList = setStatusOfObjectList1(inProgreeList,"Inprogress");	
+							totalTodayObjList.addAll(inProgreeList);
+						}if(upcomingList !=null && upcomingList.size()>0){
+							upcomingList = setStatusOfObjectList1(upcomingList,"Upcoming");
+							totalTodayObjList.addAll(upcomingList);
+						}
+						if(completedList !=null && completedList.size()>0){
+							completedList = setStatusOfObjectList1(completedList,"Completed");
+							totalTodayObjList.addAll(completedList);
+						}
+									
+								//Status Wise
+						
+						List<Object[]> statusObjList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"ToDay");
+						
+						if(statusObjList !=null && statusObjList.size()>0){
+							totalTodayObjList.addAll(statusObjList);
+						}
+						
+						finalVo = settingStausDetailsDataToFinalVo1(finalVo,totalTodayObjList,"toDay");
+				
+			//OverAll Scenario
+						List<Object[]> inProgreeOverAllList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","overall");
+						List<Object[]> upcomingOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","overall");
+						List<Object[]> completedOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","overall");
+						
+						
+						if(inProgreeOverAllList !=null && inProgreeOverAllList.size()>0){
+							inProgreeOverAllList = setStatusOfObjectList1(inProgreeOverAllList,"Inprogress");						
+							totalObjList.addAll(inProgreeOverAllList);
+						}if(upcomingOverAllList !=null && upcomingOverAllList.size()>0){
+							upcomingOverAllList = setStatusOfObjectList1(upcomingOverAllList,"Upcoming");
+							totalObjList.addAll(upcomingOverAllList);
+						}
+						if(completedOverAllList !=null && completedOverAllList.size()>0){
+							completedOverAllList =setStatusOfObjectList1(completedOverAllList,"Completed");
+							totalObjList.addAll(completedOverAllList);
+						}
+									
+								//Status Wise
+						
+						List<Object[]> statusObjOverAllList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"overall");
+						
+						if(statusObjOverAllList !=null && statusObjOverAllList.size()>0){
+							totalObjList.addAll(statusObjOverAllList);
+						}
+						
+						finalVo = settingStausDetailsDataToFinalVo1(finalVo,totalObjList,"overAll");
+				
+			
+		}catch(Exception e){
+			
+		}
+		return finalVo;
+	}
+	
+	public List<Object[]> setStatusOfObjectList1(List<Object[]> fixedList,String type){
+		try{
+				if(fixedList !=null && fixedList.size()>0){
+					for (Object[] objects : fixedList) {
+						if(objects[1] !=null && !objects[1].toString().trim().isEmpty()){																			
+							objects[1] = type;								
+						}
+					}
+				}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return fixedList;
+	}
+	
+	public LabelStatusVO settingStausDetailsDataToFinalVo1(LabelStatusVO finalVo,List<Object[]> objList,String type){		
+		try{
+			
+			if(objList !=null && objList.size()>0){
+				List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>();
+				for (Object[] objects : objList) {					
+					LabelStatusVO vo = new LabelStatusVO();					
+					vo.setStatus(objects[1].toString());
+					vo.setStatusId((Long)objects[0]);
+					vo.setTotalCount(objects[2] !=null ? (Long)objects[2]:0l);
+										
+					statusList.add(vo);		
+					
+					if(type !=null && type.toString().trim().equalsIgnoreCase("toDay")){
+						finalVo.setStatusList(statusList);
+					}else if(type !=null && type.toString().trim().equalsIgnoreCase("overAll")){
+						finalVo.setOverAllStatusList(statusList);
+					}				
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalVo;
+		
+	}
+	
+	
 }

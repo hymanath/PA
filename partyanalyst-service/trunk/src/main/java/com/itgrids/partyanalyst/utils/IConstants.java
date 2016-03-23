@@ -973,4 +973,5 @@ public interface IConstants {
     public static final Long UNIONS_REGISTRATION_YEAR = 2016L;
     
     public static final Long PUBLICATION_DATE_FOR_VOTER_IMG_PATH = 11L;
+    public static final Long[] APPOINTMENT_STATUS_IDS = {4L,5L,6L};
 }
