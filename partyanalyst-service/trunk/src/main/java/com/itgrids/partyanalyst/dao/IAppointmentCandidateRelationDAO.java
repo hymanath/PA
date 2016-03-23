@@ -12,4 +12,5 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId);
 	public List<Object[]> getAppointmentRelatedCandidates(List<Long> appointmentIds);
 	public List<Object[]> getCandidatePreviousApptDetails(List<Long> candidateIds);
+	public List<Object[]> getAppointmentCandidateDetails(List<Long> appointmentIds);
 }
