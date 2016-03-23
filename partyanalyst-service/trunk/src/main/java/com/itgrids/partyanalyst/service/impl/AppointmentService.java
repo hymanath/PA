@@ -892,6 +892,8 @@ public class AppointmentService implements IAppointmentService{
 			    		  vo.setMobileNo(obj[3]!=null?obj[3].toString():"");
 			    		  vo.setDesignation(obj[4]!=null?obj[4].toString():"");
 			    		  vo.setConstituency(obj[5]!=null?obj[5].toString():"");
+			    		  vo.setMemberShipId(obj[6]!=null?obj[6].toString():"");
+			    		  vo.setVoterCardNo(obj[7]!=null?obj[7].toString():"");
 			    		  finalList.add(vo);
 			    	  }
 			      }
@@ -909,6 +911,8 @@ public class AppointmentService implements IAppointmentService{
 				    		  vo.setCadre(true);
 				    		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
 				    		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+				    		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
+				    		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
 				    		  finalList.add(vo);
 			    		  }
 			    	  }
@@ -926,6 +930,7 @@ public class AppointmentService implements IAppointmentService{
 				    		  vo.setName(obj[1]!=null?obj[1].toString():"");
 				    		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
 				    		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+				    		  vo.setVoterCardNo(searchValue);
 				    		  finalList.add(vo);
 			    		  }
 			    	  }

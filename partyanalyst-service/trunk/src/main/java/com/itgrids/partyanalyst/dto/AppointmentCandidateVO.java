@@ -11,7 +11,8 @@ public class AppointmentCandidateVO implements Serializable{
     private String  mobileNo;
     private String  constituency;
     private String  candidateType;
-    
+    private String  memberShipId;
+    private String voterCardNo;
     
 	public String getName() {
 		return name;
@@ -55,6 +56,18 @@ public class AppointmentCandidateVO implements Serializable{
 	}
 	public void setCandidateType(String candidateType) {
 		this.candidateType = candidateType;
+	}
+	public String getMemberShipId() {
+		return memberShipId;
+	}
+	public void setMemberShipId(String memberShipId) {
+		this.memberShipId = memberShipId;
+	}
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
 	}
        
     

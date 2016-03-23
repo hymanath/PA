@@ -6368,7 +6368,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			StringBuilder sb=new StringBuilder();
 			
-			sb.append(" select  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name " +
+			sb.append(" select  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
+					"           model.memberShipNo,model.voter.voterIDCardNo " +
 					"   from TdpCadre model where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear ");
 			if(searchType.equalsIgnoreCase("mobileno")){
 				
