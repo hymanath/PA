@@ -56,30 +56,32 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		query.setParameter("appointmentLabelId", appointmentLabelId);
 		return query.list();
 	}
-	 public Integer updateLabeledAppointments(List<Long> appointmentIds,Long userId,Date date){
+	 public Integer updateLabeledAppointments(Long appointmentLabelId,List<Long> appointmentIds,Long userId,Date date){
 			
 		Query query=getSession().createQuery("update LabelAppointment model set model.updatedBy=:userId ,model.updatedTime= :date " +
 				" where " +
-				" model.appointmentId  in (:appointmentIds) ");
+				" model.appointmentLabelId = :appointmentLabelId and  model.appointmentId  in (:appointmentIds) ");
 		
+		query.setParameter("appointmentLabelId",appointmentLabelId);
 		query.setParameterList("appointmentIds",appointmentIds);
 		query.setParameter("userId",userId);
 		query.setTimestamp("date",date);
 		return query.executeUpdate();
 	}
-	 public Integer deleteLabeledAppointments(List<Long> appointmentIds){
+	 public Integer deleteLabeledAppointments(Long appointmentLabelId ,List<Long> appointmentIds){
 			
-		Query query=getSession().createQuery("update LabelAppointment model set model.isDeleted='N' " +
+		Query query=getSession().createQuery("update LabelAppointment model set model.isDeleted='Y' " +
 				" where " +
-				" model.appointmentId  in (:appointmentIds) ");
+				" model.appointmentLabelId = :appointmentLabelId and model.appointmentId  in (:appointmentIds) ");
 		
+		query.setParameter("appointmentLabelId",appointmentLabelId);
 		query.setParameterList("appointmentIds",appointmentIds);
 		return query.executeUpdate();
 	 }
 	 
 	 public List<LabelAppointment> getDetailsOfLabelledAppointments(Long appointmentLabelId , List<Long> appointmentIds){
 		 
-		 Query query = getSession().createQuery(" select model from  LabelAppointment where model.appointmentLabelId = :appointmentLabelId and model.appointmentId in (:appointmentIds)");
+		 Query query = getSession().createQuery(" select model from  LabelAppointment model where model.appointmentLabelId = :appointmentLabelId and model.appointmentId in (:appointmentIds)");
 		 query.setParameter("appointmentLabelId",appointmentLabelId);
 		 query.setParameterList("appointmentIds", appointmentIds);
 	     return query.list();

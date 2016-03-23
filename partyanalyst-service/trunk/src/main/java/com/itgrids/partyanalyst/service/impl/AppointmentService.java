@@ -1344,13 +1344,13 @@ public class AppointmentService implements IAppointmentService{
 			        			List<Long> updateAndDeletedAppointmentIds = new ArrayList<Long>();
 			        			
 			        			if(updatingAppointmentIds!=null && updatingAppointmentIds.size()>0){
-			        				labelAppointmentDAO.updateLabeledAppointments(updatingAppointmentIds,loggerUserId,dateUtilService.getCurrentDateAndTime());
+			        				int updatedCount = labelAppointmentDAO.updateLabeledAppointments(apptLabelId,updatingAppointmentIds,loggerUserId,dateUtilService.getCurrentDateAndTime());
 			        				
 			        				updateAndDeletedAppointmentIds.addAll(updatingAppointmentIds);
 			        			}
 			        			
 			        			if(deletedAppointmentIds!=null && deletedAppointmentIds.size()>0){
-			        				labelAppointmentDAO.deleteLabeledAppointments(deletedAppointmentIds);
+			        				int deletedCount = labelAppointmentDAO.deleteLabeledAppointments(apptLabelId,deletedAppointmentIds);
 			        				
 			        				updateAndDeletedAppointmentIds.addAll(deletedAppointmentIds);
 			        			}
@@ -1364,7 +1364,7 @@ public class AppointmentService implements IAppointmentService{
 					        			history.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
 					        			history.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
 					        			history.setAppointmentId(labelAppointment.getAppointmentId());
-					        			history.setLabelStatusId(null);
+					        			history.setLabelStatusId(labelAppointment.getAppointmentLabel()!=null? labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId()!=null?labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId():null :null);
 					        			history.setCreatedBy(labelAppointment.getCreatedBy());
 					        			history.setUpdatedBy(labelAppointment.getUpdatedBy());
 					        			history.setInsertedTime(labelAppointment.getInsertedTime());
@@ -1396,7 +1396,7 @@ public class AppointmentService implements IAppointmentService{
 				        			history.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
 				        			history.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
 				        			history.setAppointmentId(labelAppointment.getAppointmentId());
-				        			history.setLabelStatusId(null);
+				        			history.setLabelStatusId(labelAppointment.getAppointmentLabel()!=null? labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId()!=null?labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId():null :null);
 				        			history.setCreatedBy(labelAppointment.getCreatedBy());
 				        			history.setUpdatedBy(labelAppointment.getUpdatedBy());
 				        			history.setInsertedTime(labelAppointment.getInsertedTime());
