@@ -919,131 +919,23 @@
                                             </div>
 											<div class="col-md-2">
 												<label>Search Type</label>
-                                                <select class="dropkickClass">
-													<option>A</option>
+                                                <select class="dropkickClass"  id="searchTypeId">
+													<option value="0">Select Search Type</option>
+													<option value="mobileno">MobileNo</option>
+													<option value="mebershipno">MembershipNo</option>
+													<option value="votercardno">VoterIdCardNo</option>
 												</select>
 											</div>
                                             <div class="col-md-4 pad_0">
                                             	<label>Search By Membership No/ Phone No/ Voter ID</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" id="searchValueId">
                                             </div>
                                             <div class="col-md-2 pad_left0">
-                                            	<button class="btn btn-block btn-success m_top25">SEARCH MEMBER</button>
+                                            	<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
                                             </div>
                                         </div>
                                         <div class="row m_top25">
-                                        	<div class="col-md-12">
-                                            	<ul class="createAppointmentSearch">
-                                                	<li>
-                                                    	<div class="row">
-                                                        	<div class="col-md-7">
-                                                            	<div class="media">
-                                                                    <div class="media-left">
-                                                                        <img class="media-object thumbnailSearch thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p>Laxman - Cadre</p>
-                                                                        <p>Contact Number: 9848012345</p>
-                                                                        <p>Designation: MLC</p>
-                                                                        <p>Constituency</p>
-                                                                        <p>Recent Appt History: 20-feb-2016</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>
-                                                            </div>
-                                                            <div class="col-md-1 m_top10">
-                                                            	<input type="checkbox">
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                    	<div class="row">
-                                                        	<div class="col-md-7">
-                                                            	<div class="media">
-                                                                    <div class="media-left">
-                                                                        <img class="media-object thumbnailSearch thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p>Laxman - Cadre</p>
-                                                                        <p>Contact Number: 9848012345</p>
-                                                                        <p>Designation: MLC</p>
-                                                                        <p>Constituency</p>
-                                                                        <p>Recent Appt History: 20-feb-2016</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>
-                                                            </div>
-                                                            <div class="col-md-1 m_top10">
-                                                            	<input type="checkbox">
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                    	<div class="row">
-                                                        	<div class="col-md-7">
-                                                            	<div class="media">
-                                                                    <div class="media-left">
-                                                                        <img class="media-object thumbnailSearch thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p>Laxman - Cadre</p>
-                                                                        <p>Contact Number: 9848012345</p>
-                                                                        <p>Designation: MLC</p>
-                                                                        <p>Constituency</p>
-                                                                        <p>Recent Appt History: 20-feb-2016</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>
-                                                            </div>
-                                                            <div class="col-md-1 m_top10">
-                                                            	<input type="checkbox">
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                    	<div class="row">
-                                                        	<div class="col-md-7">
-                                                            	<div class="media">
-                                                                    <div class="media-left">
-                                                                        <img class="media-object thumbnailSearch thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p>Laxman - Cadre</p>
-                                                                        <p>Contact Number: 9848012345</p>
-                                                                        <p>Designation: MLC</p>
-                                                                        <p>Constituency</p>
-                                                                        <p>Recent Appt History: 20-feb-2016</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                            	<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>
-                                                            </div>
-                                                            <div class="col-md-1 m_top10">
-                                                            	<input type="checkbox">
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                        	<div id="apptmemberDetailsDiv"></div>
                                         </div>
                                         
                                     </div>
@@ -1097,99 +989,83 @@
 											</div>
 											
 										</div>
-										<div class="block">
-											<div class="row">
-												<div class="col-md-4 m_top10">
-													<label>Name</label>
-													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].name">
+										<div id="showapptDetails">
+											<!--<div class="block" >
+												<div class="row">
+													<div class="col-md-4 m_top10">
+														<label>Name</label>
+														<input type="text" class="form-control" id="populateCandidateName" name="appointmentVO.basicInfoList[0].name">
+														</div>
+													<div class="col-md-4 m_top10">
+														<label>Designation</label>
+														<select  name="appointmentVO.basicInfoList[0].designationId"  class=" " id="designationListId">
+															<option value="0">Select Designation</option>
+														</select>
+													</div>
+													<div class="col-md-4 m_top10">
+														<label>Contact Number</label>
+														<input type="text" class="form-control" id="populateMobileNo" name="appointmentVO.basicInfoList[0].mobileNo">
+													</div>
 												</div>
-												<div class="col-md-4 m_top10">
-													<label>Designation</label>
-													<select  name="appointmentVO.basicInfoList[0].designationId" class="designationListCls" id="designationListId">
-														<option value="0">Select Designation</option>
-													</select>
+												<div class="row">
+													<div class="col-md-4 m_top10">
+														<label>Voter ID</label>
+														<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].voterCardNo">
+													</div>
+													<div class="col-md-4 m_top10">
+														<label>Membership Number</label>
+														<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].membershipNum">
+													</div>
+													<div class="col-md-4 m_top10">
+														<label>Location Scope</label>
+														<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0" onChange="showhideLocationBoxes(0);">
+															<option value="0">Select Scope</option>
+															<option value="3">DISTRICT</option>
+															<option value="4">CONSTITUENCY</option>
+															<option value="5">MANDAL</option>
+															<option value="6">VILLAGE</option>
+															<option value="7">MUNICIPAL-CORP-GMC</option>
+															<option value="8">WARD</option>
+														</select>
+													</div>
 												</div>
-												<div class="col-md-4 m_top10">
-													<label>Contact Number</label>
-													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].mobileNo">
+												<div class="row m_top10">
+													<div class="col-md-4 locationCls0" id="districtId0DivId" style="display:none;">
+														<label>Select District</label>
+														<select name="appointmentVO.basicInfoList[0].districtId" class="dropkickClass scopeClearAllCls0" id="districtId0" onChange="getConstituencies(0);">
+															<option value="0">Select District</option>
+														</select>
+													</div>
+													<div class="col-md-4 locationCls0" id="constituencyId0DivId" style="display:none;">
+														<label>Select Constituency</label>
+														<select name="appointmentVO.basicInfoList[0].constituencyId" class="dropkickClass scopeClearAllCls0" id="constituencyId0" onChange="getMandamMuncipalties(0);">
+															<option value="0">Select Constituency</option>
+														</select>
+													</div>
+													<div class="col-md-4 locationCls0" id="tehsilId0DivId" style="display:none;">
+														<label>Select Mandal/Muncipality</label>
+														<select name="appointmentVO.basicInfoList[0].tehsilId" class="dropkickClass scopeClearAllCls0" id="tehsilId0" onChange="getVillageWard(0);">
+															<option value="0">Select Mandal</option>
+														</select>
+													</div>
+													<div class="col-md-4 locationCls0" id="villageId0DivId" style="display:none;">
+														<label>Select Village/Ward</label>
+														<select name="appointmentVO.basicInfoList[0].villageId" class="dropkickClass scopeClearAllCls0" id="villageId0">
+															<option value="0">Select VILLAGE</option>
+														</select>
+													</div>
+													
 												</div>
-											</div>
-											<div class="row">
-												<!--<div class="col-md-4 m_top10">
-													<label>Location</label>
-													<input type="text" class="form-control">
-												</div>-->
-												<div class="col-md-4 m_top10">
-													<label>Voter ID</label>
-													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].voterCardNo">
+											</div>-->
+											<div id="moreCandidatesDivId"></div>
+												<div class="row m_top10">
+													<div class="col-md-4 col-md-offset-8">
+														<p style="cursor:pointer;float:right" id="addOneBlock">
+															Add One More Candidate
+															<i class="glyphicon glyphicon-plus-sign text-success"></i>
+														</p>
+													</div>
 												</div>
-												<div class="col-md-4 m_top10">
-													<label>Membership Number</label>
-													<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].membershipNum">
-												</div>
-												<div class="col-md-4 m_top10">
-													<label>Location Scope</label>
-													<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0" onChange="showhideLocationBoxes(0);">
-														<option value="0">Select Scope</option>
-														<option value="3">DISTRICT</option>
-														<option value="4">CONSTITUENCY</option>
-														<option value="5">MANDAL</option>
-														<option value="6">VILLAGE</option>
-														<option value="7">MUNICIPAL-CORP-GMC</option>
-														<option value="8">WARD</option>
-													</select>
-												</div>
-											</div>
-											<div class="row m_top10">
-												<!--<div class="col-md-4">
-													<label>Location Scope</label>
-													<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0" onChange="showhideLocationBoxes(0);">
-														<option value="0">Select Scope</option>
-														<option value="3">DISTRICT</option>
-														<option value="4">CONSTITUENCY</option>
-														<option value="5">MANDAL</option>
-														<option value="6">VILLAGE</option>
-														<option value="7">MUNICIPAL-CORP-GMC</option>
-														<option value="8">WARD</option>
-													</select>
-												</div>-->
-												<div class="col-md-4 locationCls0" id="districtId0DivId" style="display:none;">
-													<label>Select District</label>
-													<select name="appointmentVO.basicInfoList[0].districtId" class="dropkickClass scopeClearAllCls0" id="districtId0" onChange="getConstituencies(0);">
-														<option value="0">Select District</option>
-													</select>
-												</div>
-												<div class="col-md-4 locationCls0" id="constituencyId0DivId" style="display:none;">
-													<label>Select Constituency</label>
-													<select name="appointmentVO.basicInfoList[0].constituencyId" class="dropkickClass scopeClearAllCls0" id="constituencyId0" onChange="getMandamMuncipalties(0);">
-														<option value="0">Select Constituency</option>
-													</select>
-												</div>
-												<div class="col-md-4 locationCls0" id="tehsilId0DivId" style="display:none;">
-													<label>Select Mandal/Muncipality</label>
-													<select name="appointmentVO.basicInfoList[0].tehsilId" class="dropkickClass scopeClearAllCls0" id="tehsilId0" onChange="getVillageWard(0);">
-														<option value="0">Select Mandal</option>
-													</select>
-												</div>
-												<div class="col-md-4 locationCls0" id="villageId0DivId" style="display:none;">
-													<label>Select Village/Ward</label>
-													<select name="appointmentVO.basicInfoList[0].villageId" class="dropkickClass scopeClearAllCls0" id="villageId0">
-														<option value="0">Select VILLAGE</option>
-													</select>
-												</div>
-												
-											</div>
-											
-											
-										</div>
-										<div id="moreCandidatesDivId"></div>
-										<div class="row m_top10">
-											<div class="col-md-4 col-md-offset-8">
-												<p style="cursor:pointer;float:right" id="addOneBlock">
-													Add One More Candidate
-													<i class="glyphicon glyphicon-plus-sign text-success"></i>
-												</p>
-											</div>
 										</div>
 										<div class="row">
 											<div class="col-md-6 m_top25">
@@ -1200,7 +1076,7 @@
 										<input type="hidden" id="uniqueCode" name="appointmentVO.uniqueCode">
 									</form>
 									
-									<div class="block cloneBlock" style="display:none;">
+									<div class="block cloneBlock addattrid" style="display:none;">
 										<div class="row">
 											<span class="closeIcon"><i class="glyphicon glyphicon-remove"></i></span>
 											<div class="col-md-4 m_top10">
@@ -2207,15 +2083,22 @@ function buildChartForAppStatus() {
         }],
     });
 }
-var cloneCount=1;
+var cloneCount=0;
+
 $(document).on("click","#addOneBlock",function(){
-	var e = $(".cloneBlock").clone();
-	e.css("display","block");
 	
+	var e = $(".cloneBlock").clone();
+	
+	
+	e.css("display","block");
+	e.attr("id",'block'+cloneCount);
 	e.find(".cloneNameCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].name');
+	e.find(".cloneNameCls").attr("id",'candidateNameId'+cloneCount);
 	e.find(".cloneDesignationCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].designationId');
 	e.find(".cloneDesignationCls").attr("id",'designationSelId'+cloneCount);
+	e.find(".cloneDesignationCls").attr("attr_val",cloneCount);
 	e.find(".cloneMobileCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].mobileNo');
+	e.find(".cloneMobileCls").attr("id",'mobileNoId'+cloneCount);
 	e.find(".cloneMembershipNumCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].membershipNum');
 	e.find(".cloneVoterIdCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].voterCardNo');
 	e.find(".cloneLocationScopeCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].locationScopeId');
@@ -2264,10 +2147,10 @@ $(document).on("click","#addOneBlock",function(){
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
 	
-	var t = "designationSelId"+cloneCount;
+	 var t = "designationSelId"+cloneCount;
 	$("#"+t).dropkick();
 	var select2 = new Dropkick("#"+t);
-	select2.refresh();
+	select2.refresh(); 
 	
 	var loc = "locationScopeSelId"+cloneCount;
 	var select3 = new Dropkick("#"+loc);
@@ -2294,10 +2177,17 @@ $(document).on("click","#addOneBlock",function(){
 
 $(document).on("click",".closeIcon",function(){
 	$(this).parent().parent().remove();
+	var attrId = $(this).attr("attr_id");
+	$("#"+attrId).prop('checked', false);
 });
 $(".dropkickClass").dropkick();
 	//swadin functions
 	$(document).ready(function(){
+		
+		
+	});
+	getCandidateDesignation();
+	function getCandidateDesignation(){
 		$.ajax({
 			type : 'GET',
 			url : 'getCandidateDesignation.action',
@@ -2310,8 +2200,7 @@ $(".dropkickClass").dropkick();
 			}
 			
 		});
-		
-	});
+	}
 	function buildDesignationForCreateApp(result){
 			$("#designationListId  option").remove();
 			$("#designationListId").append('<option value="0">Select Designation</option>');
@@ -2325,12 +2214,12 @@ $(".dropkickClass").dropkick();
 				$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				$(".cloneDesignationCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
-			$(".designationListCls").dropkick();
-			var select = new Dropkick("#designationListId");
-			select.refresh();
+			 $(".designationListCls").dropkick();
+			 var select = new Dropkick("#designationListId");
+			select.refresh(); 
 			
 			var select1 = new Dropkick("#manageAppDesigId");
-			select1.refresh();
+			select1.refresh(); 
 			
 			
 			
@@ -2952,9 +2841,140 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
   $(document).on("click",".dateRadioCls",function(){
 	  $("#multiDate").val("");
   });
-  
-  
-   $(document).on("click","#searchAppointmentdetailsId",function(){
+   $(document).on("click",".getDetailsBySrch",function(){
+		getAppntmntSearchDetails();
+	}); 
+	function getAppntmntSearchDetails(){
+	  
+	  var searchType = $("#searchTypeId").val();
+	  var searchValue = $("#searchValueId").val();
+		var jsObj={
+			searchType:searchType,
+			searchValue:searchValue
+		  }
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAppntmntSearchDetailsAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildapptmemberDetails(result);
+				
+		  }); 
+	 }
+	 
+	function buildapptmemberDetails(result){
+		var str='';
+		if(result !=null && result.length>0){
+			for(var i in result){
+					str+='<div class="col-md-12">';
+					str+='<ul class="createAppointmentSearch">';
+						str+='<li>';
+							str+='<div class="row">';
+								str+='<div class="col-md-7">';
+									str+='<div class="media">';
+										str+='<div class="media-left">';
+											str+='<img class="media-object thumbnailSearch thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+										str+='</div>';
+										str+='<div class="media-body">';
+										if(result[i].candidateType !=null && result[i].candidateType.length>0){
+											str+='<p >'+result[i].name+' - '+result[i].candidateType+'</p>';
+										}else{
+											str+='<p>'+result[i].name+'</p>';
+										}
+										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
+												str+='<p >Contact Number: '+result[i].mobileNo+'</p>';
+										}else{
+											str+='<p>Contact Number: - </p>';
+										}
+										if(result[i].designation !=null && result[i].designation.length>0){
+												str+='<p >Designation: '+result[i].designation+'</p>';
+										}else{
+											str+='<p>Designation: - </p>';
+										}
+										if(result[i].constituency !=null && result[i].constituency.length>0){
+												str+='<p>Constituency: '+result[i].constituency+'</p>';
+										}else{
+											str+='<p>Constituency: - </p>';
+										}
+										   str+='<p>Recent Appt History: 20-feb-2016</p>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							   str+='<div class="col-md-2">';
+									str+='<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>';
+								str+='</div>';
+								str+='<div class="col-md-2">';
+									str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
+								str+='</div>';
+								
+								str+='<div class="col-md-1 m_top10" attr_id='+result[i].id+'   attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designation+'" >';
+									str+='<input type="checkbox" class="apptDetailsDiv" id="'+result[i].id+'" attr_id=block'+result[i].id+'>';
+								str+='</div>';
+								
+							str+='</div>';
+						str+='</li>';
+					 
+					str+='</ul>';
+				str+='</div>';
+			}
+		}
+		
+		$("#apptmemberDetailsDiv").html(str);
+	}
+	
+	 $(document).on("click",".apptDetailsDiv",function(){
+		 if($(this).is(':checked')){
+				$(this).attr("clone_block_count",cloneCount);
+				
+				var closeId=$(this).attr("attr_id");
+				$(".closeIcon").attr("id",closeId);
+				
+				$("#addOneBlock").trigger("click");
+				
+			 var candidateType = $(this).parent().attr("attr_candidatetype");
+			 var id = $(this).parent().attr("attr_id");
+			 
+			 var name = $(this).parent().attr("attr_name");
+			 var mobile = $(this).parent().attr("attr_mobile");
+			 var desg = $(this).parent().attr("attr_desg");
+			 var closeId1 = $(this).attr("attr_id");
+		
+		
+		var jsObj={
+			candidateType:candidateType,
+			id:id
+		  }
+		  	$.ajax({
+				type : 'POST',
+				url : 'getCandidateWiseDetailsAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				
+				var lctscpid = ''+result.locationScopeId+'';
+				var temp=parseInt(cloneCount)-1;
+					$('#candidateNameId'+temp).val(name);
+					$('#block'+temp).attr("attr_blk",closeId1);
+					$('#mobileNoId'+temp).val(mobile);
+					$('#designationSelId'+temp).val(desg);
+					$('#designationSelId'+temp).dropkick();
+					$('#locationScopeSelId'+temp).val(lctscpid);
+					$('#locationScopeSelId'+temp).trigger("click");
+					var select = new Dropkick('#locationScopeSelId'+temp);
+						select.refresh();
+					var select = new Dropkick('#designationSelId'+temp);
+						select.refresh();
+					showhideLocationBoxes(temp);
+				}); 
+		 }else{
+			var blockCount = $(this).attr("clone_block_count");
+			 $('#block'+blockCount).remove();
+			}
+			
+		
+	}); 	 
+    $(document).on("click","#searchAppointmentdetailsId",function(){
 	  getAppointmentsBySearchCriteria();
   });
   function clearAppointmentsSearchFields(){
@@ -3104,9 +3124,6 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
           });
 		  
 	  }
-	 
-	 
-	 
 </script>
 </body>
 </html>
