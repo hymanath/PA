@@ -2248,6 +2248,12 @@ $(".dropkickClass").dropkick();
 					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
 				}
 			}
+			
+			$("#manageAppDistId").html(str);
+			$("#manageAppDistId").dropkick();
+			var select1 = new Dropkick("#manageAppDistId");
+			select1.refresh();
+			
 			$("#districtId0").html(str);
 			$(".cloneDistrictCls").html(str);
 			
@@ -2255,10 +2261,7 @@ $(".dropkickClass").dropkick();
 			var select = new Dropkick("#districtId0");
 			select.refresh();
 			
-			$("#manageAppDistId").html(str);
-			$("#manageAppDistId").dropkick();
-			var select1 = new Dropkick("#manageAppDistId");
-			select1.refresh();
+			
 			
 		});
 	}
@@ -3055,7 +3058,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
           });
 		  
 		  var jsObj={
-				  	  apptLabelId:21,
+				  	  apptLabelId:appointmentlabelId,
 				  	  appointmentsArray:appointmentsArray
 				  }
 		  
@@ -3075,7 +3078,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		  }); 
 		  
 	  }
-	var noOfRow = 5;
+	  
+	  var noOfRow = 5;
 	$(document).on("click","#viewAllAppointmentId",function(){
 		var startIndex = 0;
 		var maxIndex = noOfRow;
@@ -3149,8 +3153,6 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		$("#appointmentReqBlock").hide();
 		$("#allAppointmentsHideBlock").show();
 	})
-  
-  
 </script>
 </body>
 </html>
