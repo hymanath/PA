@@ -3029,6 +3029,7 @@
 		<property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO"/>
 		<property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO"/>
 		<property name="labelAppointmentDAO" ref="labelAppointmentDAO"/>
+		<property name="labelAppointmentHistoryDAO" ref="labelAppointmentHistoryDAO"/>
 	</bean>
 </beans>		
 	
