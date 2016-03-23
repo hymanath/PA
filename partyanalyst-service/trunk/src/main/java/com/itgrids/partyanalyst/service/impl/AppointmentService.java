@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -46,12 +47,14 @@ import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 import com.itgrids.partyanalyst.model.AppointmentLabel;
 import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
+import com.itgrids.partyanalyst.model.AppointmentStatus;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -245,14 +248,14 @@ public class AppointmentService implements IAppointmentService{
 		        	
 		        	Appointment appointment = new Appointment();
 		        	appointment.setAppointmentUserId(appointmentVO.getAppointmentUserId());
-		        	appointment.setAppointmentPriorityId(appointmentVO.getAppointmentPrioprityId());
+		        	appointment.setAppointmentPriorityId(appointmentVO.getAppointmentPriorityId());
 		        	appointment.setReason(appointmentVO.getReason());
 		        	appointment.setAppointmentStatusId(1l);
 		        	
 		        	if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("")){
 		        		String temp[] = appointmentVO.getUniqueCode().split("_");
 		        		appointment.setAppointmentUserId(Long.parseLong(temp[1]));
-			        	appointment.setAppointmentUniqueId(appointmentVO.getUniqueCode());
+			        	//appointment.setAppointmentUniqueId(appointmentVO.getUniqueCode());
 		        	}
 		        	
 		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
@@ -270,6 +273,11 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		        	appointment.setIsDeleted("N");
 		        	appointment = appointmentDAO.save(appointment);
+		        	
+		        	if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("") && appointment != null && appointment.getAppointmentId() != null && appointment.getAppointmentId()>0l){
+		        		String temp[] = appointmentVO.getUniqueCode().split("_");
+		        		appointmentDAO.updateUniquesIdForAppointment(temp[0]+"_"+appointment.getAppointmentId(),appointment.getAppointmentId());
+		        	}
 		        	
 		        	List<Date> datesList = new ArrayList<Date>(0);
 		        	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -368,15 +376,20 @@ public class AppointmentService implements IAppointmentService{
 		        			//user addres saving logic
 		        			UserAddress userAddress = new UserAddress();
 		        			userAddress.setState(stateDAO.get(1l));
+		        			if(basicInfo.getDistrictId() == 0l)basicInfo.setDistrictId(null);
 		        			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
+		        			if(basicInfo.getConstituencyId() == 0l)basicInfo.setConstituencyId(null);
 		        			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
-		        			if(basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
+		        			
+		        			if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
 		        				userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-		        				userAddress.setPanchayat(panchayatDAO.get(basicInfo.getVillageId()));
+		        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
+		        					userAddress.setPanchayat(panchayatDAO.get(basicInfo.getVillageId()));
 		        			}
-		        			else if(basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
+		        			else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
 		        				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-		        				userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
+		        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
+		        					userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
 		        			}
 		        			
 		        			userAddress = userAddressDAO.save(userAddress);
@@ -390,7 +403,7 @@ public class AppointmentService implements IAppointmentService{
 		        			appCandi.setUpdatedBy(loggerUserId);
 		        			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		        			appointmentCandidateDAO.save(appCandi);
+		        			appCandi = appointmentCandidateDAO.save(appCandi);
 		        			
 		        			AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
 		        			acr.setAppointmentId(appointment.getAppointmentId());
@@ -503,6 +516,7 @@ public class AppointmentService implements IAppointmentService{
 			AppointmentLabel appointmentLabel = new AppointmentLabel();
 			appointmentLabel.setLabelName(labelName);
 			appointmentLabel.setDate(dt);
+			appointmentLabel.setAppointmentLabelStatusId(1l);
 			appointmentLabel.setIsDeleted("N");
 			appointmentLabel.setInsertedTime(insertedDate);
 			appointmentLabel.setUpdatedTime(insertedDate);
@@ -517,9 +531,9 @@ public class AppointmentService implements IAppointmentService{
 		return resultStatus;
 	}
 	@Override
-	public List<AppointmentBasicInfoVO> getLabelDtslByDate(String slctdDate,Long appntmntUsrId) {
+	public List<LabelStatusVO> getLabelDtslByDate(String slctdDate,Long appntmntUsrId) {
 		
-		List<AppointmentBasicInfoVO> labelDtlsFnlList=new ArrayList<AppointmentBasicInfoVO>(0);
+		List<LabelStatusVO> finalVoList=new ArrayList<LabelStatusVO>(0);
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
 		try{
 			LOG.info("Entered into getLabelDtslByDate() method of AppointmentService");
@@ -527,22 +541,117 @@ public class AppointmentService implements IAppointmentService{
 			if(slctdDate != null && !slctdDate.isEmpty()){
 				 date=sdf.parse(slctdDate);
 			}
-			List<Object[]> labelDtlsList=appointmentLabelDAO.getLabelDtslByDate(date,appntmntUsrId);
-			if(labelDtlsList!=null && !labelDtlsList.isEmpty()){
-				for(Object[] param:labelDtlsList){
-					AppointmentBasicInfoVO labelDtslVO=new AppointmentBasicInfoVO();
-					labelDtslVO.setAppointmentLabelId((Long)param[0]);
-					labelDtslVO.setName(param[1]!=null ? param[1].toString():"");
-				    labelDtslVO.setDate(param[2]!=null ?param[2].toString().split(" ")[0]:"");
-					labelDtlsFnlList.add(labelDtslVO);
+			
+			List<AppointmentStatus> asList = appointmentStatusDAO.getAll();
+			
+			List<Object[]> allLablesObjList = appointmentLabelDAO.getAllLabels(date,appntmntUsrId);
+			Map<Long,LabelStatusVO> tempMap = new HashMap<Long, LabelStatusVO>(0);
+			if(allLablesObjList != null && allLablesObjList.size() > 0){
+				for (Object[] objects : allLablesObjList) {
+					LabelStatusVO vo = new LabelStatusVO();
+					vo.setLabelId((Long)objects[0]);
+					vo.setLabelName(objects[1].toString());
+					vo.setStatusId((Long)objects[2]);
+					vo.setStatus(objects[3].toString());
+					tempMap.put((Long)objects[0], vo);
+					
+					if(asList != null && asList.size()>0){
+						for ( AppointmentStatus  as: asList) {
+							if(as.getAppointmentStatusId() != 3 && as.getAppointmentStatusId() != 4){
+								LabelStatusVO invo = new LabelStatusVO();
+								invo.setStatusId(as.getAppointmentStatusId());
+								invo.setStatus(as.getStatus());
+								vo.getStatusList().add(invo);
+							}
+						}
+					}
 				}
+			}
+			
+			
+			
+			List<Object[]> objList = labelAppointmentDAO.getLableDetailsWithStatusWiseCounts(date,appntmntUsrId);
+			Map<Long,LabelStatusVO> finalMap = new HashMap<Long, LabelStatusVO>(0);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					if(finalMap.get((Long)objects[0]) == null){
+						LabelStatusVO vo = new LabelStatusVO();
+						vo.setLabelId((Long)objects[0]);
+						vo.setLabelName(objects[1].toString());
+						vo.setStatusId((Long)objects[2]);
+						vo.setStatus(objects[3].toString());
+						finalMap.put((Long)objects[0],vo);
+					}
+					
+					LabelStatusVO labelVO = finalMap.get((Long)objects[0]);
+					if(labelVO.getStatusList() == null || labelVO.getStatusList().size() <= 0){
+						if(asList != null && asList.size()>0){
+							for ( AppointmentStatus  as: asList) {
+								if(as.getAppointmentStatusId() != 3 && as.getAppointmentStatusId() != 4){
+									LabelStatusVO invo = new LabelStatusVO();
+									invo.setStatusId(as.getAppointmentStatusId());
+									invo.setStatus(as.getStatus());
+									labelVO.getStatusList().add(invo);
+								}
+							}
+						}
+					}
+					
+					if((Long)objects[4]==3l || (Long)objects[4]==4l){//consider attended and not attended status as fixed status
+						objects[4]=2l;
+					}
+					LabelStatusVO matchedStatusVO = getMatchedStatusVO(labelVO.getStatusList(),(Long)objects[4]);
+					if(matchedStatusVO != null){
+						matchedStatusVO.setTotalCount(matchedStatusVO.getTotalCount()+(Long)objects[6]);
+					}else{
+						LabelStatusVO vo = new LabelStatusVO();
+						vo.setStatusId((Long)objects[4]);
+						vo.setStatus(objects[5].toString());
+						vo.setTotalCount(vo.getTotalCount()+(Long)objects[6]);
+						labelVO.getStatusList().add(vo);
+					}
+					
+				}
+			}
+			
+
+			if(tempMap != null && tempMap.size()>0){
+				for (Entry<Long, LabelStatusVO> entry : tempMap.entrySet()) {
+					if(finalMap.get(entry.getKey())==null){
+						finalVoList.add(tempMap.get(entry.getKey()));
+					}else{
+						finalVoList.add(finalMap.get(entry.getKey()));
+					}
+				}
+			}
+			
+			/*if(finalMap != null && finalMap.size() > 0){
+				for (Entry<Long, LabelStatusVO> entry : finalMap.entrySet()) {
+					finalVoList.add(entry.getValue());
+				}
+			}*/
+			
+			
+			if(finalVoList != null && finalVoList.size() > 0){
+				finalVoList.get(0).setStaticStatusList(asList);
 			}
 		}catch(Exception e){
 			LOG.error("Exception raised at getLabelDtslByDate() method of AppointmentService", e);
 		}
-		return labelDtlsFnlList;
+		return finalVoList;
 	}
 	
+	public LabelStatusVO getMatchedStatusVO(List<LabelStatusVO> voList,Long statusId){
+		if(voList != null && voList.size()>0){
+			for (LabelStatusVO labelStatusVO : voList) {
+				if(labelStatusVO.getStatusId().equals(statusId)){
+					return labelStatusVO;
+				}
+			}
+		}
+		return null;
+	}
+		
 	public List<IdNameVO> getVillageWard(Long mandalId){
 		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
 		try {
@@ -1163,5 +1272,58 @@ public class AppointmentService implements IAppointmentService{
 		return null;
 	}
 	
-
+	public List<AppointmentVO> getAppointmentsOfALableForUpdate(Long lableId){
+		List<AppointmentVO> finalVOList = new ArrayList<AppointmentVO>(0); 
+		try {
+			List<Long> assignedAppointmentIds = new ArrayList<Long>(0);
+			Map<Long,AppointmentVO> map = new HashMap<Long, AppointmentVO>(0);
+			List<Object[]> assignedAppointmentsObjList = labelAppointmentDAO.getAppointmentsOfALableForUpdate(lableId);
+			
+			if(assignedAppointmentsObjList != null && assignedAppointmentsObjList.size() > 0){
+				for (Object[] objects : assignedAppointmentsObjList) {
+					assignedAppointmentIds.add((Long)objects[0]);
+					AppointmentVO vo = new AppointmentVO();
+					vo.setAppointmentId((Long)objects[0]);
+					vo.setAppointmentPriorityId((Long)objects[1]);
+					vo.setPriority(objects[2].toString());
+					vo.setReason(objects[3].toString());
+					vo.setAppointmentStatusId((Long)objects[4]);
+					vo.setStatus(objects[5].toString());
+					map.put((Long)objects[0], vo);
+				}
+			}
+			
+			//get appointment candidate Details
+			if(assignedAppointmentIds != null && assignedAppointmentIds.size() > 0){
+				
+				List<Object[]> candidateDetails = appointmentCandidateRelationDAO.getAppointmentCandidateDetails(assignedAppointmentIds);
+				
+				if(candidateDetails != null && candidateDetails.size() > 0){
+					for (Object[] objects : candidateDetails) {
+						if(map.get((Long)objects[5])!=null){
+							AppointmentVO matchedVo = map.get((Long)objects[5]);
+							
+							AppointmentBasicInfoVO vo = new AppointmentBasicInfoVO();
+							vo.setId((Long)objects[0]);
+							vo.setName(objects[1].toString());
+							vo.setMobileNo(objects[2].toString());
+							vo.setDesignation(objects[3].toString());
+							vo.setMembershipNum(objects[4]!=null?objects[4].toString():null);
+							matchedVo.getBasicInfoList().add(vo);
+						}
+					}
+				}
+				
+			}
+			
+			if(map != null && map.size() > 0){
+				finalVOList.addAll(map.values());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentsOfALableForUpdate", e);
+		}
+		
+		return finalVOList;
+	}	
 }
