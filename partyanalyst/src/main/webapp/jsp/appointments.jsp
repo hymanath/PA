@@ -2102,7 +2102,9 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneMobileCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].mobileNo');
 	e.find(".cloneMobileCls").attr("id",'mobileNoId'+cloneCount);
 	e.find(".cloneMembershipNumCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].membershipNum');
+	e.find(".cloneMembershipNumCls").attr("id",'membershipNumId'+cloneCount);
 	e.find(".cloneVoterIdCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].voterCardNo');
+	e.find(".cloneVoterIdCls").attr("id",'voterCardNoID'+cloneCount);
 	e.find(".cloneLocationScopeCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].locationScopeId');
 	//e.find(".cloneDistrictCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].districtId');
 	//e.find(".cloneConstituencyCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].constituencyId');
@@ -2867,7 +2869,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				buildapptmemberDetails(result);
 				
 				}else{
-					$("#apptmemberDetailsDiv").html("No Data Available");
+					$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
 				}
 		  }); 
 	 }
@@ -2917,7 +2919,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 									str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
 								str+='</div>';
 								
-								str+='<div class="col-md-1 m_top10" attr_id='+result[i].id+'   attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designation+'" >';
+								str+='<div class="col-md-1 m_top10" attr_id='+result[i].id+'   attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designation+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'">';
 									str+='<input type="checkbox" class="apptDetailsDiv" id="block'+result[i].id+'" attr_id=block'+result[i].id+'>';
 								str+='</div>';
 								
@@ -2949,6 +2951,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			 var name = $(this).parent().attr("attr_name");
 			 var mobile = $(this).parent().attr("attr_mobile");
 			 var desg = $(this).parent().attr("attr_desg");
+			 var membershipno = $(this).parent().attr("attr_memberShipNo");
+			 var votercardno = $(this).parent().attr("attr_voterCardNo");
+			 
 			 var closeId1 = $(this).attr("attr_id");
 		
 		
@@ -2969,7 +2974,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					$('#block'+temp).attr("attr_blk",closeId1);
 					$('#mobileNoId'+temp).val(mobile);
 					$('#designationSelId'+temp).val(desg);
-					$('#designationSelId'+temp).dropkick();
+					$('#voterCardNoID'+temp).val(votercardno);
+					$('#membershipNumId'+temp).val(membershipno);
+					
 					$('#locationScopeSelId'+temp).val(lctscpid);
 					$('#locationScopeSelId'+temp).trigger("click");
 					var select = new Dropkick('#locationScopeSelId'+temp);
