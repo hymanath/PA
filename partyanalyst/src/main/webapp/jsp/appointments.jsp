@@ -77,6 +77,10 @@
 .block{
 	position:relative;
 }
+.m_top10
+{
+	margin-top:10px;
+}
 .prev,.next{width:60px !important;}
 </style>
 </head>
@@ -1278,12 +1282,8 @@
                             </div>
                           <div class="row">
                             	<div class="col-md-12">
-                                	<div class="block">
-                                    	<h4 class="text-success">APPOINTMENT REQUESTED MEMBERS</h4>
-                                    	<div class="appointmentRequestedMembers" id="appointmentRequestedMembersId">
-                                        </div>
-                                        <button class="btn btn-success" id="updateLabelId" >UPDATE LABEL</button>
-                                    </div>
+                                	<div class="appointmentRequestedMembers m_top10" id="appointmentRequestedMembersId">
+										</div>
                                 </div>
                           </div>
                             <div class="row">
@@ -2248,12 +2248,11 @@ $(".dropkickClass").dropkick();
 					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
 				}
 			}
-			
 			$("#manageAppDistId").html(str);
 			$("#manageAppDistId").dropkick();
 			var select1 = new Dropkick("#manageAppDistId");
 			select1.refresh();
-			
+
 			$("#districtId0").html(str);
 			$(".cloneDistrictCls").html(str);
 			
@@ -2963,10 +2962,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				}
 		  }); 
 	 }
-	 function buidResult(result){
+  function buidResult(result){
 		 var i = 0;
 		 var str='';
-		 
+		  str+='<div class="block">';
+			 str+='<h4 class="text-success">APPOINTMENT REQUESTED MEMBERS</h4>';
+			  str+='<center><img id="apptRqstMemberAjax" src="images/icons/loading.gif" style="display:none;"/></center>';
+			 
 		 for(var i in result){
 			
 			  str+='<div class="panel panel-default manageAppViewPanelClass">';
@@ -3021,17 +3023,33 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 									str+='<div class="col-md-6">';
 										str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
 										str+='<table class="table table-bordered m_top10">';
+										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 											str+='<thead>';
 										  str+='<th>Appt Last Requested Date</th>';
 												str+='<th colspan="2">Appt Status</th>';
+												
 											str+='</thead>';
+											str+='<tbody>';
 											
-											str+='<tr>';
-												str+='<td>28-feb-2016</td>';
-												str+='<td>Fixed</td>';
-												str+='<td>Appt Fixed on 28-feb-2016 10:30AM</td>';
-											str+='</tr>';
+												for(var l in result[i].subList[j].subList){
+													str+='<tr>';
+													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
+													str+='<td>'+result[i].subList[j].subList[l].status+'</td>';
+													str+='<td> - </td>';
+													str+='</tr>';
+												}
+											}else{
+													str+='<thead>';
+													str+='<th>Appt Last Requested Date</th>';
+													str+='<th colspan="3">Appt Status</th>';
+													str+='</thead>';
+												
+													str+='<tr>';
+													str+='<td  colspan="2"><center>No Data Available</center></td>';
+													str+='</tr>';
+											}
 											
+											str+='</tbody>';
 										str+='</table>';
 									str+='</div>';
 								str+='</div>';
@@ -3040,7 +3058,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 						}	
 				  str+='</div>';
 				str+='</div>';
+			
 		 }
+		  str+='<button class="btn btn-success" id="updateLabelId" >UPDATE LABEL</button>';
+		  str+=' <span id="statusMsgAppntReqt"></span>';
+		 str+='<div ><center ><img style="display: none;margin-top: -30px;" src="images/icons/loading.gif" id="updateMemberAjax"></center></div>';
+		 str+='</div>';
+		
 		 $("#appointmentRequestedMembersId").html(str)  
 	 }
 	 
@@ -3050,6 +3074,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	 
 	  function addAppointmentsToLable(){
 		  
+		  $("#updateMemberAjax").css("display","block");
 		  var appointmentsArray = [];
 		  $('.appointmentcheckBoxClass').each(function(){
 			  if ($(this).is(':checked')){
@@ -3058,7 +3083,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
           });
 		  
 		  var jsObj={
-				  	  apptLabelId:appointmentlabelId,
+				  	  apptLabelId:apptLabelId:appointmentlabelId,
 				  	  appointmentsArray:appointmentsArray
 				  }
 		  
@@ -3068,13 +3093,19 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				
+				  $("#updateMemberAjax").css("display","none");
 				if(result!=null && result!=0){
-				  //buidResult(result);
-				  alert("success");
+				  if(result.resultCode == 1){
+					   setTimeout(function () {
+						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Appointments Added To Label Successfully</h4></center>").fadeOut(2000);
+						}, 5000);
+				  }
 				}else{
-				 // $("#appointmentRequestedMembersId").html("<div><p style='color:green;font-size:20px'>No Data available.</p></div>")	
-				}
+					setTimeout(function () {
+						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Updation Failed..Try Later</h4></center>").fadeOut(2000);
+						}, 5000);
+					
+				 }
 		  }); 
 		  
 	  }
