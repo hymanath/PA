@@ -11650,6 +11650,16 @@
 			<param name="root">appointmentUserDtlsList</param>
 		</result>
 	</action>
+	<action name="getAppntmntSearchDetailsAction" class="appointmentAction" method="getAppntmntSearchDetails">
+		<result type="json" name="success">
+			<param name="root">candidatesList</param>
+		</result>
+	</action>
+	<action name="getCandidateWiseDetailsAction" class="appointmentAction" method="getCandidateWiseDetails">
+		<result type="json" name="success">
+			<param name="root">voterAddressVO</param>
+		</result>
+	</action>
 	<action name="getAppointmentsBySearchCriteriaAction" class="appointmentAction" method="getAppointmentsBySearchCriteria">
 		<result type="json" name="success">
 			<param name="root">apptDetailsList</param>
