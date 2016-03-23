@@ -3027,7 +3027,6 @@
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
 		<property name="rtcUnionService" ref="rtcUnionService"/>
 		<property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO"/>
-		<property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO"/>
 		<property name="labelAppointmentDAO" ref="labelAppointmentDAO"/>
 		<property name="labelAppointmentHistoryDAO" ref="labelAppointmentHistoryDAO"/>
 	</bean>
