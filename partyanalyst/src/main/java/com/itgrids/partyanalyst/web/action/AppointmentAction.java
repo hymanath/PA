@@ -51,6 +51,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private  List<AppointmentDetailsVO> apptDetailsList;
 	private List<LabelStatusVO> labelStatusVOList;
 	private List<AppointmentVO> appointmentVOList;
+	private LabelStatusVO labelStatusVO;
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -194,9 +195,16 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 
 	public void setAppointmentVOList(List<AppointmentVO> appointmentVOList) {
 		this.appointmentVOList = appointmentVOList;
+	}	
+	
+	public LabelStatusVO getLabelStatusVO() {
+		return labelStatusVO;
 	}
 
-	
+	public void setLabelStatusVO(LabelStatusVO labelStatusVO) {
+		this.labelStatusVO = labelStatusVO;
+	}
+
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -481,4 +489,16 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getStatusWiseCountsOfAppointments(){
+		try{
+			
+			labelStatusVO = appointmentService.getStatusWiseCountsOfAppointments();
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
