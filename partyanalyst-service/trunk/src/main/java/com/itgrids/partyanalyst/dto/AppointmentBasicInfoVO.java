@@ -22,6 +22,20 @@ public class AppointmentBasicInfoVO {
 	private String constituencyName;
 	private String reason;
 	private String priority;
+	private String uniqueId;
+	private Integer count;
+	public Integer getCount() {
+		return count;
+	}
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+	public String getUniqueId() {
+		return uniqueId;
+	}
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
 	public String getReason() {
 		return reason;
 	}

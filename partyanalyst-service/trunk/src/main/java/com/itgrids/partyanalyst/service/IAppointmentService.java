@@ -28,5 +28,6 @@ public interface IAppointmentService {
 	public List<IdNameVO> getTotalAppointmentStatusForToday();
 	public List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue);
 	public VoterAddressVO getMemberDetails(String candidateType,Long id);
+	public List<AppointmentBasicInfoVO> getAllAppointmentDetails(int startIndex,int maxIndex);
 	public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid);
 }
