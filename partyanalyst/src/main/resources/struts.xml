@@ -11665,5 +11665,10 @@
 			<param name="root">apptDetailsList</param>
 		</result>
 	</action>
+	<action name="getAllAppointmentDetailsAction" class="appointmentAction" method="getAllAppointmentDetails">
+		<result type="json" name="success">
+			<param name="root">appointmentUserDtlsList</param>
+		</result>
+	</action>
 </package>
 </struts>      
