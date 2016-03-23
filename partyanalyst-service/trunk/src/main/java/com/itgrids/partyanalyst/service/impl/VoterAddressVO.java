@@ -22,6 +22,8 @@ public class VoterAddressVO implements Serializable{
 	private String landMark;
 	private String pincode;
 	
+	private Long locationScopeId;
+	
 	public String getHouseNo() {
 		return houseNo;
 	}
@@ -99,6 +101,12 @@ public class VoterAddressVO implements Serializable{
 	}
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
+	}
+	public Long getLocationScopeId() {
+		return locationScopeId;
+	}
+	public void setLocationScopeId(Long locationScopeId) {
+		this.locationScopeId = locationScopeId;
 	}
     	
 	

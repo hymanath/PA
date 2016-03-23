@@ -952,12 +952,31 @@ public class AppointmentService implements IAppointmentService{
 					  Object[] obj= list.get(0);
 					  if(obj!=null){
 						  addressVO = new VoterAddressVO();
-						  addressVO.setDistrictId(obj[0]!=null?(Long)obj[0]:0l);
-						  addressVO.setConstituencyId(obj[1]!=null?(Long)obj[1]:0l);
-						  addressVO.setTehsilId(obj[2]!=null?Long.valueOf("4"+obj[2].toString()):0l);
-						  addressVO.setLocalElectionBodyId(obj[3]!=null?Long.valueOf("5"+obj[3].toString()):0l);
-						  addressVO.setVillageId(obj[4]!=null?Long.valueOf("7"+obj[4].toString()):0l);
-						  addressVO.setWardId(obj[5]!=null?Long.valueOf("8"+obj[5].toString()):0l);
+						  if(obj[0]!=null){
+							  addressVO.setDistrictId(obj[0]!=null?(Long)obj[0]:0l);
+							  addressVO.setLocationScopeId(3l);
+						  }
+						  if(obj[1]!=null){
+							  addressVO.setConstituencyId(obj[1]!=null?(Long)obj[1]:0l);
+							  addressVO.setLocationScopeId(4l);
+						  }
+						  if(obj[2]!=null){
+							  addressVO.setTehsilId(obj[2]!=null?Long.valueOf("4"+obj[2].toString()):0l);
+							  addressVO.setLocationScopeId(5l);
+						  }
+						  if(obj[3]!=null){
+							  addressVO.setLocalElectionBodyId(obj[3]!=null?Long.valueOf("5"+obj[3].toString()):0l);
+							  addressVO.setLocationScopeId(7l);
+						  }
+						  if(obj[4]!=null){
+							  addressVO.setVillageId(obj[4]!=null?Long.valueOf("7"+obj[4].toString()):0l);
+							  addressVO.setLocationScopeId(6l);
+						  }
+						  if(obj[5]!=null){
+							  addressVO.setWardId(obj[5]!=null?Long.valueOf("8"+obj[5].toString()):0l);
+							  addressVO.setLocationScopeId(8l);
+						  }
+						  
 					  }
 				  }
 			  }
@@ -1005,25 +1024,31 @@ public class AppointmentService implements IAppointmentService{
 					
 					if(address.getDistrict()!=null){
 						addressVO.setDistrictId(address.getDistrict().getDistrictId()!=null?address.getDistrict().getDistrictId():0l);
+						addressVO.setLocationScopeId(3l);
 					}
 					
 					if(address.getConstituency()!=null){
 						addressVO.setConstituencyId(address.getConstituency().getConstituencyId()!=null?address.getConstituency().getConstituencyId():0l);
+						addressVO.setLocationScopeId(4l);
 					}
 					
 					if(address.getTehsil()!=null){
 						addressVO.setTehsilId(address.getTehsil().getTehsilId()!=null?Long.valueOf("4"+address.getTehsil().getTehsilId().toString()):0l);
+						addressVO.setLocationScopeId(5l);
 					}
 					
 					if(address.getLocalElectionBody()!=null){
 						addressVO.setLocalElectionBodyId(address.getLocalElectionBody().getLocalElectionBodyId()!=null?Long.valueOf("5"+address.getLocalElectionBody().getLocalElectionBodyId().toString()):0l);
+						addressVO.setLocationScopeId(7l);
 					}
 					
 					if(address.getPanchayat()!=null){
 						addressVO.setVillageId(address.getPanchayat().getPanchayatId()!=null?Long.valueOf("7"+address.getPanchayat().getPanchayatId().toString()):0l);
+						addressVO.setLocationScopeId(6l);
 					}
 					if(address.getWard()!=null){
 						addressVO.setWardId(address.getWard().getConstituencyId()!=null?Long.valueOf("8"+address.getWard().getConstituencyId().toString()):0l);
+						addressVO.setLocationScopeId(8l);
 					}
 				}
 			}
