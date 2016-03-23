@@ -11666,6 +11666,13 @@
 			<param name="root">apptDetailsList</param>
 		</result>
 	</action>
+	
+	<action name="addAppointmentstoLabelAction" class="appointmentAction" method="addAppointmentstoLabel">
+		<result type="json" name="success">
+	    	<param name="root">resultStatus</param>
+	    </result>
+	</action>
+	
 	<action name="getAllAppointmentDetailsAction" class="appointmentAction" method="getAllAppointmentDetails">
 		<result type="json" name="success">
 			<param name="root">appointmentUserDtlsList</param>

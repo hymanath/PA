@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
@@ -399,18 +400,55 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		
 		try{
 			jObj = new JSONObject(getTask());
-			Long designationId    =   jObj.getLong("designationId");
-			Long priorityId       =   jObj.getLong("priorityId");
-			Long statusId         =   jObj.getLong("statusId");
-			Long districtId       =   jObj.getLong("districtId");
-			Long constituencyid   =   jObj.getLong("constituencyid");
+			Long designationId      =   jObj.getLong("designationId");
+			Long priorityId         =   jObj.getLong("priorityId");
+			Long statusId           =   jObj.getLong("statusId");
+			Long districtId         =   jObj.getLong("districtId");
+			Long constituencyid     =   jObj.getLong("constituencyid");
+			Long appointmentlabelId =   jObj.getLong("appointmentlabelId");
 			
-			apptDetailsList =appointmentService.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid);
+			apptDetailsList =appointmentService.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid,appointmentlabelId);
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentsBySearchCriteria() method of AppointmentAction", e);
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String addAppointmentstoLabel(){
+		try {
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			
+			List<Long> appointmentIds=new ArrayList<Long>();
+			
+			JSONArray appointmentsArray=jObj.getJSONArray("appointmentsArray");
+			if(appointmentsArray!=null &&  appointmentsArray.length()>0){
+				
+				for( int i=0;i<appointmentsArray.length();i++){
+					
+					String appointmentString = appointmentsArray.getString(i);
+					if(appointmentString!=null && appointmentString.trim().length()>0){
+						appointmentIds.add(Long.valueOf(appointmentString));
+					}
+				}
+			}
+			
+			Long apptLabelId =  jObj.getLong("apptLabelId");
+			
+			resultStatus = appointmentService.addAppointmentstoLabel(apptLabelId,appointmentIds,user.getRegistrationID());
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveAppointment", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	public String getAppntmntSearchDetails(){
 		
 		try {
