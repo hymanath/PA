@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentDAO;
+import com.itgrids.partyanalyst.dao.ILabelAppointmentHistoryDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
@@ -55,6 +56,8 @@ import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 import com.itgrids.partyanalyst.model.AppointmentLabel;
 import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
 import com.itgrids.partyanalyst.model.AppointmentStatus;
+import com.itgrids.partyanalyst.model.LabelAppointment;
+import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -87,7 +90,7 @@ public class AppointmentService implements IAppointmentService{
 	private RtcUnionService               		rtcUnionService;  
 	private IAppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
 	private ILabelAppointmentDAO labelAppointmentDAO;
-	
+	private ILabelAppointmentHistoryDAO labelAppointmentHistoryDAO;
 	
 	
 	public IAppointmentPreferableDateDAO getAppointmentPreferableDateDAO() {
@@ -239,7 +242,20 @@ public class AppointmentService implements IAppointmentService{
 			IAppointmentCandidateRelationDAO appointmentCandidateRelationDAO) {
 		this.appointmentCandidateRelationDAO = appointmentCandidateRelationDAO;
 	}
+	public ILabelAppointmentDAO getLabelAppointmentDAO() {
+		return labelAppointmentDAO;
+	}
+	public void setLabelAppointmentDAO(ILabelAppointmentDAO labelAppointmentDAO) {
+		this.labelAppointmentDAO = labelAppointmentDAO;
+	}
 	
+	public ILabelAppointmentHistoryDAO getLabelAppointmentHistoryDAO() {
+		return labelAppointmentHistoryDAO;
+	}
+	public void setLabelAppointmentHistoryDAO(
+			ILabelAppointmentHistoryDAO labelAppointmentHistoryDAO) {
+		this.labelAppointmentHistoryDAO = labelAppointmentHistoryDAO;
+	}
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
 		try {
@@ -1082,7 +1098,7 @@ public class AppointmentService implements IAppointmentService{
      }
  	
      // Appointments search criteria.
-     public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid){
+     public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		try {
 			
@@ -1222,6 +1238,28 @@ public class AppointmentService implements IAppointmentService{
 				}
 			}
 			
+			//does label has already elements.
+			if (appointmentlabelId!=null && appointmentlabelId>0l && appointments!=null && appointments.size()>0){
+				
+				List<Object[]> labelAppointmentsList = labelAppointmentDAO.checkLabelWithAppointment(appointmentlabelId,appointments);
+				
+				if(labelAppointmentsList!=null && labelAppointmentsList.size()>0){
+					
+					for(Object[] obj : labelAppointmentsList){
+						
+						if(obj[2]!=null){
+							AppointmentDetailsVO appointmentVO = appointmentsMap.get((Long)obj[2]);
+							if(appointmentVO!=null){
+								appointmentVO.setLabeled(true);	
+							}
+						}
+					}
+					
+				}
+				
+			}
+			
+			
 			if(appointmentsMap!=null && appointmentsMap.size()>0){
 				for (Map.Entry<Long, AppointmentDetailsVO> entry : appointmentsMap.entrySet()) {
 					
@@ -1272,6 +1310,117 @@ public class AppointmentService implements IAppointmentService{
 		return null;
 	}
 	
+	
+	public ResultStatus addAppointmentstoLabel(final Long apptLabelId,final List<Long> appointmentIds,final Long loggerUserId){
+		final ResultStatus rs = new ResultStatus();
+		final DateUtilService dateUtilService = new DateUtilService();
+		
+		try {
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+		        	
+			        	if(apptLabelId !=null && apptLabelId>0l){
+			        		
+			        		if(appointmentIds!=null && appointmentIds.size()>0){
+			        			
+			        			
+			        			List<Long> labeledAppointmentIds = labelAppointmentDAO.getAppointmentsForALabel(apptLabelId);
+			        			
+			        			
+			        			List<Long> savingAppointmentIds   =  new ArrayList<Long>(appointmentIds);
+			        			List<Long> updatingAppointmentIds =  null;
+			        			List<Long> deletedAppointmentIds  =  null;
+			        			
+			        			if(labeledAppointmentIds!=null && labeledAppointmentIds.size()>0){
+			        				updatingAppointmentIds = new ArrayList<Long>(labeledAppointmentIds);
+			        				deletedAppointmentIds  = new ArrayList<Long>(labeledAppointmentIds);
+			        				
+			        				updatingAppointmentIds.retainAll(appointmentIds);
+			        				deletedAppointmentIds.removeAll(appointmentIds);
+			        				savingAppointmentIds.removeAll(labeledAppointmentIds);
+			        			}
+			        			
+			        			List<Long> updateAndDeletedAppointmentIds = new ArrayList<Long>();
+			        			
+			        			if(updatingAppointmentIds!=null && updatingAppointmentIds.size()>0){
+			        				labelAppointmentDAO.updateLabeledAppointments(updatingAppointmentIds,loggerUserId,dateUtilService.getCurrentDateAndTime());
+			        				
+			        				updateAndDeletedAppointmentIds.addAll(updatingAppointmentIds);
+			        			}
+			        			
+			        			if(deletedAppointmentIds!=null && deletedAppointmentIds.size()>0){
+			        				labelAppointmentDAO.deleteLabeledAppointments(deletedAppointmentIds);
+			        				
+			        				updateAndDeletedAppointmentIds.addAll(deletedAppointmentIds);
+			        			}
+			        			
+			        			
+			        			
+			        			List<LabelAppointment>  deletedAndupdatedList = labelAppointmentDAO.getDetailsOfLabelledAppointments(apptLabelId,updateAndDeletedAppointmentIds);
+			        			if(deletedAndupdatedList!=null && deletedAndupdatedList.size()>0){
+			        				for(LabelAppointment labelAppointment :deletedAndupdatedList){
+			        					LabelAppointmentHistory history = new LabelAppointmentHistory();
+					        			history.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
+					        			history.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
+					        			history.setAppointmentId(labelAppointment.getAppointmentId());
+					        			history.setLabelStatusId(null);
+					        			history.setCreatedBy(labelAppointment.getCreatedBy());
+					        			history.setUpdatedBy(labelAppointment.getUpdatedBy());
+					        			history.setInsertedTime(labelAppointment.getInsertedTime());
+					        			history.setUpdatedTime(labelAppointment.getUpdatedTime());
+					        			history.setIsDeleted(labelAppointment.getIsDeleted());
+					        			
+					        			labelAppointmentHistoryDAO.save(history);
+			        				}
+			        			}
+			        			
+			        			
+			        			//saving.
+			        			for(Long appointmentId : savingAppointmentIds){
+			        				
+			        				LabelAppointment labelAppointment = new LabelAppointment();
+				        			labelAppointment.setAppointmentLabelId(apptLabelId);
+				        			labelAppointment.setAppointmentId(appointmentId);
+				        			labelAppointment.setCreatedBy(loggerUserId);
+				        			labelAppointment.setUpdatedBy(loggerUserId);
+				        			labelAppointment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				        			labelAppointment.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				        			labelAppointment.setIsDeleted("N");
+				        			
+				        			labelAppointment = labelAppointmentDAO.save(labelAppointment);
+				        			
+				        			
+				        			//move to history.
+				        			LabelAppointmentHistory history = new LabelAppointmentHistory();
+				        			history.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
+				        			history.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
+				        			history.setAppointmentId(labelAppointment.getAppointmentId());
+				        			history.setLabelStatusId(null);
+				        			history.setCreatedBy(labelAppointment.getCreatedBy());
+				        			history.setUpdatedBy(labelAppointment.getUpdatedBy());
+				        			history.setInsertedTime(labelAppointment.getInsertedTime());
+				        			history.setUpdatedTime(labelAppointment.getUpdatedTime());
+				        			history.setIsDeleted(labelAppointment.getIsDeleted());
+				        			
+				        			labelAppointmentHistoryDAO.save(history);
+				        			
+			        			}
+			        			
+			        		}
+			        	}
+			        	rs.setResultCode(1);
+			        	rs.setMessage("success");
+		         }
+		    });
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveAppointment", e);
+			rs.setResultCode(0);
+			rs.setMessage("failure");
+		}
+		return rs;
+	}
 	public List<AppointmentVO> getAppointmentsOfALableForUpdate(Long lableId){
 		List<AppointmentVO> finalVOList = new ArrayList<AppointmentVO>(0); 
 		try {

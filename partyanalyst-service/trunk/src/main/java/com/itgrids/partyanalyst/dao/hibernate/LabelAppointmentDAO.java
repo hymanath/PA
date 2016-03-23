@@ -39,6 +39,52 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		return query.list();
 	}
 	
+	public  List<Object[]>  checkLabelWithAppointment(Long appointmentLabelId,List<Long> appointmentIds){
+		
+		Query query = getSession().createQuery(" select model.labelAppointmentId ,model.appointmentLabelId,model.appointmentId " +
+				" from    LabelAppointment model " +
+				" where   model.appointmentLabelId = :appointmentLabelId and model.appointmentId in (:appointmentIds) and model.isDeleted='N' ");
+		query.setParameter("appointmentLabelId", appointmentLabelId);
+		query.setParameterList("appointmentIds", appointmentIds);
+		return query.list();
+	}
+	
+	public List<Long> getAppointmentsForALabel(Long appointmentLabelId){
+		Query query = getSession().createQuery(" select model.appointmentId " +
+				" from    LabelAppointment model " +
+				" where   model.appointmentLabelId = :appointmentLabelId  and model.isDeleted='N' ");
+		query.setParameter("appointmentLabelId", appointmentLabelId);
+		return query.list();
+	}
+	 public Integer updateLabeledAppointments(List<Long> appointmentIds,Long userId,Date date){
+			
+		Query query=getSession().createQuery("update LabelAppointment model set model.updatedBy=:userId ,model.updatedTime= :date " +
+				" where " +
+				" model.appointmentId  in (:appointmentIds) ");
+		
+		query.setParameterList("appointmentIds",appointmentIds);
+		query.setParameter("userId",userId);
+		query.setTimestamp("date",date);
+		return query.executeUpdate();
+	}
+	 public Integer deleteLabeledAppointments(List<Long> appointmentIds){
+			
+		Query query=getSession().createQuery("update LabelAppointment model set model.isDeleted='N' " +
+				" where " +
+				" model.appointmentId  in (:appointmentIds) ");
+		
+		query.setParameterList("appointmentIds",appointmentIds);
+		return query.executeUpdate();
+	 }
+	 
+	 public List<LabelAppointment> getDetailsOfLabelledAppointments(Long appointmentLabelId , List<Long> appointmentIds){
+		 
+		 Query query = getSession().createQuery(" select model from  LabelAppointment where model.appointmentLabelId = :appointmentLabelId and model.appointmentId in (:appointmentIds)");
+		 query.setParameter("appointmentLabelId",appointmentLabelId);
+		 query.setParameterList("appointmentIds", appointmentIds);
+	     return query.list();
+	 }
+	
 	public List<Object[]> getAppointmentsOfALableForUpdate(Long lableId){
 		Query query = getSession().createQuery(" select model.appointment.appointmentId," +
 				"model.appointment.appointmentPriority.appointmentPriorityId,model.appointment.appointmentPriority.priority," +

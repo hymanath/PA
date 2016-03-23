@@ -74,7 +74,7 @@ public class LabelAppointment extends BaseModel {
 	public void setUpdatedBy(Long updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	@Column(name = "insertedTime")
+	@Column(name = "inserted_time")
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
