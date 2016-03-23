@@ -10,6 +10,7 @@
 <title>Appointment</title>
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
@@ -49,9 +50,11 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
+.prev,.next{width:60px !important;}
 .ui-widget-header
 {
 	background:#fff !important;
@@ -76,6 +79,10 @@
 .block{
 	position:relative;
 }
+.b_bottom0
+{
+	border-bottom:0px;
+}
 </style>
 </head>
 <body>
@@ -89,7 +96,9 @@
 							<h3 class="m_top10"><b>APPOINTMENTS</b></h3>
 						</div>
 						<div class="col-md-3 col-md-offset-6">
-							<select id="appointmentUserSelectBoxId"></select>
+							<select id="appointmentUserSelectBoxId">
+								<option value="0">Select Appointment User</select>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -1074,6 +1083,7 @@
 												<button class="btn btn-success btn-block" type="button" onClick="savingAppointment();">CREATE APPOINTMENT</button>
 											</div>
 										</div>
+										
 										<input type="hidden" id="dateTypeText" name="appointmentVO.appointmentPreferableTimeType">
 										<input type="hidden" id="uniqueCode" name="appointmentVO.uniqueCode">
 									</form>
@@ -1168,10 +1178,11 @@
 								</div>
 							</div>
 						</div>
+						
 						<div role="tabpanel" class="tab-pane" id="messages">
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
-								  <div class="panel panel-default m_top10 panelWhite">
+								  <div class="panel panel-default m_top10 panelWhite" id="allAppointmentsHideBlock">
                                     	<div class="panel-heading">
                                         	<div class="row">
                                             	<div class="col-md-4">
@@ -1186,7 +1197,7 @@
 													</div>
 												</div>
                                                 <div class="col-md-3">
-                                                	<button class="btn btn-success btn-block">VIEW ALL APPOINTMENT REQUESTS</button>
+                                                	<button class="btn btn-success btn-block" id="viewAllAppointmentId">VIEW ALL APPOINTMENT REQUESTS</button>
                                                 </div>
                                                 <div class="col-md-3">
                                                 	<button class="btn btn-success btn-block"  data-toggle="modal" data-target=".bs-example-modal-sm">CREATE APPOINTMENT LABEL</button>
@@ -1195,141 +1206,39 @@
                                         </div>
                                         <div class="panel-body">
                                         	<div class="table-responsive">
-											<div id="appntmntLblDltSttsId"></div>
-											<div id="bldCnfrmtnMdlBoxId"></div>
-											<div id="buildAppntmntLblTblId"></div>
-                                                <!--<table class="table table-condensed bg_ff">
-                                                    <thead>
-                                                  <th>APPOINTMENT LABEL NAME</th>
-                                                        <th>TOTAL</th>
-                                                        <th>FIXED</th>
-                                                        <th>WAITING</th>
-                                                        <th>CANCELLED</th>
-                                                        <th>LABEL STATUS</th>
-                                                        <th></th>
-                                                    </thead>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                </table>-->
-                                            </div>
+												<div id="appntmntLblDltSttsId"></div>
+												<div id="bldCnfrmtnMdlBoxId"></div>
+												<div id="buildAppntmntLblTblId"></div>
+											</div>
+                                    </div>
+                                  </div>
+								  <!--Swadhin-->
+								  <div class="panel panel-default m_top10 panelWhite" id="appointmentReqBlock">
+								 
+									<div class="panel-heading b_bottom0">
+										<h4 class="text-success">ALL OPPOINTMENT REQUEST MEMBER
+											<span class="pull-right" style="cursor:pointer;font-size:13px;" id="backToReqBlock">
+												<u><i class="glyphicon glyphicon-arrow-left"></i> BACK TO APPOINTMENT LABEL</u>
+											</span>
+										</h4>
+									</div>
+								  
+                                        <div class="panel-body">
+											<div class="row">
+												<!--<div class="col-md-8" style="padding-right:0px;">
+													<input class="form-control" type="text"/>
+												</div>
+												<div class="col-md-2" style="padding-left:0px">
+													<button class="btn btn-success btn-block">SEARCH</button>
+												</div>-->
+												<div class="col-md-2 col-md-offset-10">
+													<button class="btn btn-success btn-block">EXPORT TO EXCEL</button>
+												</div>
+											</div>
+                                        	<div class="table-responsive m_top10">
+												<div id="appointmentListId" ></div>
+												<div id="paginationDivId" ></div>	
+											</div>
                                     </div>
                                   </div>
 							  </div>
@@ -1696,6 +1605,7 @@
                                 </div>
                             </div>
 						</div>
+						
 						<div role="tabpanel" class="tab-pane" id="settings">
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
@@ -1931,6 +1841,7 @@
 </div>
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/js/AppointmentScreenBootstrap.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
@@ -1938,6 +1849,7 @@
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
+<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script type="text/javascript">
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
@@ -2287,7 +2199,6 @@ $(".dropkickClass").dropkick();
 		$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
 		var temp = $("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code")+"_"+$("#appointmentUserSelectBoxId").val();
 		$("#uniqueCode").val(temp);
-		
 		var uploadHandler = {
 			upload: function(o) {
 				uploadResult = o.responseText;
@@ -2483,9 +2394,9 @@ $(".dropkickClass").dropkick();
 			$("#errLabelName").html("please enter label Name.").css("color","red");
 			return;
 		}
-		
 		var jobj = {
 			labelName	:	$("#labelNameId").val(),
+			insertedBy	:	$("#appointmentUserSelectBoxId").val(),
 			date		:	$("#modalDateId").val()   
 		}
 		$.ajax({
@@ -2524,17 +2435,17 @@ $(".dropkickClass").dropkick();
 			select.selectOne(result[0].appointmentUserId); */
 	}
 	$(document).on("click",".MngeAppntmntCls",function(){
-		getLabelDtls("all");
+	 getLabelDtls("all");
 	});
 	
 	/*Get label details based on selected user.*/
-	/* $('#appointmentUserSelectBoxId').dropkick({
-		change: function () {
-			if(this.value>0){
-				getLabelDtls();
-			}
+	/*$('#appointmentUserSelectBoxId').dropkick({
+	change: function () {
+		if(this.value>0){
+			getLabelDtls();
 		}
-	}); */
+	}
+	});*/
 	
 	$('#appointmentUserSelectBoxId').change(function(){
 		getLabelDtls("all");
@@ -2552,7 +2463,6 @@ $(".dropkickClass").dropkick();
 		}else if(callType=="change"){
 			slctDate=$("#mngAppntmntsDtPckrId").val();
 		}
-		
 		var appntmntUsrId=$("#appointmentUserSelectBoxId").val();
 		
 		var jsObj={
@@ -2693,7 +2603,6 @@ $("#toTimeId").datetimepicker({format: 'LT'})
 $("#fromTimeId").datetimepicker({format: 'LT'})
 $("#modalDateId").daterangepicker({singleDatePicker:true});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
-$("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
@@ -2841,11 +2750,86 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	}
 	$("#appntmntCnddtSttsUlId").html(str);
   }	 
-  
+
   $(document).on("click",".dateRadioCls",function(){
 	  $("#multiDate").val("");
   });
-   $(document).on("click",".getDetailsBySrch",function(){
+  var noOfRow = 5;
+  $(document).on("click","#viewAllAppointmentId",function(){
+	  var startIndex = 0;
+	  var maxIndex = noOfRow;
+	  viewAllAppointment(startIndex,maxIndex);
+	  
+  });
+  function viewAllAppointment(startIndex,maxIndex){
+	var jsObj={
+			startIndex:startIndex,
+			maxIndex:maxIndex
+		}  
+	$.ajax({  
+		type : 'GET',
+		url : 'getAllAppointmentDetailsAction.action',
+		dataType : 'json',
+		data: {task:JSON.stringify(jsObj)}                  
+		}).done(function(result){ 
+			buildAppointmentDetails(result); 
+	});   
+  }
+  function buildAppointmentDetails(result){
+	var str = '';
+	str+='<table class="table table-condensed bg_ff" id="allMemberTableId">';
+	str+='<thead>';
+	str+='<th>APPOINTMENT UNIQUE CODE</th>';
+	str+='<th>NAME</th>';
+	str+='<th>CONTACT NUMBER</th>';
+	str+='<th>DESIGNATION</th>';
+	str+='<th>LAST APPOINTMENT DATE</th>';
+	str+='</thead>';
+	for(var i in result){
+	str+='<tr>';
+	str+='<td>'+result[i].uniqueId+'</td>';
+	str+='<td>'+result[i].name+'</td>';
+	str+='<td>'+result[i].membershipNum+'</td>';
+	str+='<td>'+result[i].designation+'</td>';
+	str+='<td>'+result[i].date+'</td>';
+	str+='</tr>';
+	}	
+	str+='</table>';
+	$("#appointmentListId").html(str);
+	$('#allMemberTableId').DataTable({
+		responsive: true,
+		"info":     false,
+		"bSearching": false,
+		"sDom": '<"bottom"flp><"clear">',
+		"columnDefs": [{  "targets": 0 }],		
+		"bPaginate": false,
+		"bLengthChange": false,
+		"bAutoWidth": false,
+		
+	});
+	var total=result[0].count;
+	if(total> noOfRow){
+		$("#paginationDivId").pagination({
+		items: total,
+		itemsOnPage: noOfRow,
+		cssStyle: 'light-theme',
+		onPageClick: function(pageNumber, event) {
+			var num=(pageNumber-1)*noOfRow;
+			viewAllAppointment(num,noOfRow);
+			}
+			});
+	}
+  }
+  $("#appointmentReqBlock").hide();
+  $(document).on("click","#viewAllAppointmentId",function(){
+	  $("#appointmentReqBlock").show();
+	  $("#allAppointmentsHideBlock").hide();
+  })
+  $(document).on("click","#backToReqBlock",function(){
+	  $("#appointmentReqBlock").hide();
+	  $("#allAppointmentsHideBlock").show();
+  })
+     $(document).on("click",".getDetailsBySrch",function(){
 		getAppntmntSearchDetails();
 		$(".addattrid").hide();
 	}); 
@@ -3141,6 +3125,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
           });
 		  
 	  }
+  
 </script>
 </body>
 </html>
