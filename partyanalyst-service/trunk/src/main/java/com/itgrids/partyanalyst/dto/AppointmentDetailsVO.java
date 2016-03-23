@@ -25,6 +25,7 @@ public class AppointmentDetailsVO implements Serializable{
 	private List<AppointmentDetailsVO> subList;
 	private List<IdNameVO> statusList;
 	
+	private boolean isLabeled;
 	
 	public String getName() {
 		return name;
@@ -121,6 +122,12 @@ public class AppointmentDetailsVO implements Serializable{
 	}
 	public void setRequestCount(Long requestCount) {
 		this.requestCount = requestCount;
+	}
+	public boolean isLabeled() {
+		return isLabeled;
+	}
+	public void setLabeled(boolean isLabeled) {
+		this.isLabeled = isLabeled;
 	}
 	
 	

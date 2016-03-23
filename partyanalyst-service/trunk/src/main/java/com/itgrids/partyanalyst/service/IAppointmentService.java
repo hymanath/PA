@@ -29,6 +29,8 @@ public interface IAppointmentService {
 	public List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue);
 	public VoterAddressVO getMemberDetails(String candidateType,Long id);
 	public List<AppointmentBasicInfoVO> getAllAppointmentDetails(int startIndex,int maxIndex);
-	public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid);
+	public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId);
+	public ResultStatus addAppointmentstoLabel(final Long apptLabelId,final List<Long> appointmentIds,final Long loggerUserId);
+	
 	public List<AppointmentVO> getAppointmentsOfALableForUpdate(Long lableId);
 }
