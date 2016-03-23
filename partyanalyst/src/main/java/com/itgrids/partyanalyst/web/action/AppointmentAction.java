@@ -48,7 +48,8 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private VoterAddressVO voterAddressVO;
 	private List<AppointmentCandidateVO> candidatesList;
 	private  List<AppointmentDetailsVO> apptDetailsList;
-	private List<LabelStatusVO> labelStatusVOList; 
+	private List<LabelStatusVO> labelStatusVOList;
+	private List<AppointmentVO> appointmentVOList;
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -185,6 +186,13 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	}
 	public void setLabelStatusVOList(List<LabelStatusVO> labelStatusVOList) {
 		this.labelStatusVOList = labelStatusVOList;
+	}
+	public List<AppointmentVO> getAppointmentVOList() {
+		return appointmentVOList;
+	}
+
+	public void setAppointmentVOList(List<AppointmentVO> appointmentVOList) {
+		this.appointmentVOList = appointmentVOList;
 	}
 
 	
@@ -425,5 +433,14 @@ public String getCandidateWiseDetails(){
 	
 	return Action.SUCCESS;
 	}
-
+	
+	public String getAppointmentsOfALableForUpdate(){
+		try {
+			jObj = new JSONObject(getTask());
+			appointmentVOList = appointmentService.getAppointmentsOfALableForUpdate(jObj.getLong("labelId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentsOfALableForUpdate", e);
+		}
+		return Action.SUCCESS;
+	}
 }
