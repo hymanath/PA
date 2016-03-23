@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-import java.util.Set;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -95,4 +95,14 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		return query.list();
 	}
 	
+	public List<Object[]> getAppointmentCandidateDetails(List<Long> appointmentIds){
+		Query query = getSession().createQuery(" select model.appointmentCandidate.appointmentCandidateId,model.appointmentCandidate.name," +
+				"model.appointmentCandidate.mobileNo, " +
+				"model.appointmentCandidate.candidateDesignation.designation," +
+				"model.appointmentCandidate.tdpCadreId,model.appointment.appointmentId  " +
+				" from AppointmentCandidateRelation model " +
+				" where model.appointment.isDeleted='N' and model.appointment.appointmentId in (:appointmentIds) ");
+		query.setParameterList("appointmentIds", appointmentIds);
+		return query.list();
+	}
 }
