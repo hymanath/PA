@@ -2605,7 +2605,7 @@ $(".dropkickClass").dropkick();
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
 						str+='<button class="btn btn-success btn-xs">VIEW</button>';
-						str+='<button class="btn btn-success btn-xs">ADD MEMBERS</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
 						str+='<button class="btn btn-success btn-xs">UPDATE</button>';
 						str+='<button class="btn btn-success btn-xs">STATUS</button>';
 						str+='<button class="btn btn-success btn-xs lblDltCls">DELETE</button>';
@@ -2845,7 +2845,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
   $(document).on("click",".dateRadioCls",function(){
 	  $("#multiDate").val("");
   });
-   $(document).on("click",".getDetailsBySrch",function(){
+  
+  
+  $(document).on("click",".getDetailsBySrch",function(){
 		getAppntmntSearchDetails();
 		$(".addattrid").hide();
 	}); 
@@ -2988,10 +2990,16 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			var blockCount = $(this).attr("clone_block_count");
 			 $('#block'+blockCount).remove();
 			}
-			
-		
-	}); 	 
-    $(document).on("click","#searchAppointmentdetailsId",function(){
+	});
+  
+  
+  var appointmentlabelId;
+  $(document).on("click",".addMembersClass",function(){
+	  appointmentlabelId = '';
+	  appointmentlabelId = $(this).closest("tr").find("td:eq(0)").attr("attr_label_id");
+   });
+   
+   $(document).on("click","#searchAppointmentdetailsId",function(){
 	  getAppointmentsBySearchCriteria();
   });
   function clearAppointmentsSearchFields(){
@@ -3035,7 +3043,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			priorityId:priorityId,
 			statusId:statusId,
 			districtId:districtId,
-			constituencyid:constituencyId
+			constituencyid:constituencyId,
+			appointmentlabelId : appointmentlabelId
 		  }
 		  	$.ajax({
 				type : 'POST',
@@ -3059,7 +3068,12 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			
 			  str+='<div class="panel panel-default manageAppViewPanelClass">';
 				str+='<div class="panel-heading">';
-						str+='<span><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
+				        if(result[i].labeled){
+							str+='<span><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" checked></span>';
+						}else{
+							str+='<span><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
+						}
+						
 						str+='<p>Subject : '+result[i].subject+'</p>';
 						str+='<p>Priority Type : '+result[i].priority+'</p>';
 						str+='<p>Requested Date : '+result[i].dateString+'</p>';
@@ -3139,6 +3153,26 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				  appointmentsArray.push( $(this).val() );
 			  }
           });
+		  
+		  var jsObj={
+				  	  apptLabelId:21,
+				  	  appointmentsArray:appointmentsArray
+				  }
+		  
+		  	$.ajax({
+				type : 'POST',
+				url :  'addAppointmentstoLabelAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				
+				if(result!=null && result!=0){
+				  //buidResult(result);
+				  alert("success");
+				}else{
+				 // $("#appointmentRequestedMembersId").html("<div><p style='color:green;font-size:20px'>No Data available.</p></div>")	
+				}
+		  }); 
 		  
 	  }
 </script>
