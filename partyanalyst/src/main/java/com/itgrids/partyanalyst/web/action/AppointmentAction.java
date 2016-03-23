@@ -368,13 +368,24 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	public String getTotalAppointmentStatusForToday(){
-	
-	try{
-		 idNameVOList=appointmentService.getTotalAppointmentStatusForToday();
-	}catch(Exception e){
-		LOG.error("Exception raised at getTotalAppointmentStatusForToday() method of AppointmentAction", e);
+		
+		try{
+			idNameVOList=appointmentService.getTotalAppointmentStatusForToday();
+		}catch(Exception e){
+			LOG.error("Exception raised at getTotalAppointmentStatusForToday() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
 	}
-	return Action.SUCCESS;
+	public String getAllAppointmentDetails(){
+		
+		try{
+			LOG.info("Entered into getAllAppointmentDetails() method of AppointmentAction");
+			jObj = new JSONObject(getTask());
+			appointmentUserDtlsList=appointmentService.getAllAppointmentDetails(jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getAllAppointmentDetails() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
 	}
 	public String getAppointmentsBySearchCriteria(){
 		
@@ -414,4 +425,5 @@ public String getCandidateWiseDetails(){
 	
 	return Action.SUCCESS;
 	}
+
 }
