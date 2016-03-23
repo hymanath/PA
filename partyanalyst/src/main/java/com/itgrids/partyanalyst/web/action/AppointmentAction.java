@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
+import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -43,6 +45,8 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private ICadreCommitteeService cadreCommitteeService;
 	private List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVOList;
 	private List<AppointmentBasicInfoVO> appointmentUserDtlsList;
+	private VoterAddressVO voterAddressVO;
+	private List<AppointmentCandidateVO> candidatesList;
 	private  List<AppointmentDetailsVO> apptDetailsList;
 	private List<LabelStatusVO> labelStatusVOList; 
 	
@@ -159,6 +163,21 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	}
 	public List<LabelStatusVO> getLabelStatusVOList() {
 		return labelStatusVOList;
+	}
+	public VoterAddressVO getVoterAddressVO() {
+		return voterAddressVO;
+	}
+
+	public void setVoterAddressVO(VoterAddressVO voterAddressVO) {
+		this.voterAddressVO = voterAddressVO;
+	}
+    
+	public List<AppointmentCandidateVO> getCandidatesList() {
+		return candidatesList;
+	}
+
+	public void setCandidatesList(List<AppointmentCandidateVO> candidatesList) {
+		this.candidatesList = candidatesList;
 	}
 
 	public void setApptDetailsList(List<AppointmentDetailsVO> apptDetailsList) {
@@ -357,7 +376,6 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	}
 	return Action.SUCCESS;
 	}
-	
 	public String getAppointmentsBySearchCriteria(){
 		
 		try{
@@ -373,5 +391,27 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception raised at getAppointmentsBySearchCriteria() method of AppointmentAction", e);
 		}
 		return Action.SUCCESS;
+	}
+	public String getAppntmntSearchDetails(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			candidatesList =appointmentService.searchApptRequestedMembers(jObj.getString("searchType"),jObj.getString("searchValue"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppntmntSearchDetails() method of AppointmentAction", e);
+		}
+	
+	return Action.SUCCESS;
+	}
+public String getCandidateWiseDetails(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			voterAddressVO =appointmentService.getMemberDetails(jObj.getString("candidateType"),jObj.getLong("id"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppntmntSearchDetails() method of AppointmentAction", e);
+		}
+	
+	return Action.SUCCESS;
 	}
 }
