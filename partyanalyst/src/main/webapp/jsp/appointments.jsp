@@ -11,6 +11,7 @@
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
@@ -49,7 +50,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
 .ui-widget-header
@@ -76,6 +77,7 @@
 .block{
 	position:relative;
 }
+.prev,.next{width:60px !important;}
 </style>
 </head>
 <body>
@@ -1171,7 +1173,7 @@
 						<div role="tabpanel" class="tab-pane" id="messages">
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
-								  <div class="panel panel-default m_top10 panelWhite">
+								  <div class="panel panel-default m_top10 panelWhite" id="allAppointmentsHideBlock">
                                     	<div class="panel-heading">
                                         	<div class="row">
                                             	<div class="col-md-4">
@@ -1186,7 +1188,7 @@
 													</div>
 												</div>
                                                 <div class="col-md-3">
-                                                	<button class="btn btn-success btn-block">VIEW ALL APPOINTMENT REQUESTS</button>
+                                                	<button class="btn btn-success btn-block" id="viewAllAppointmentId">VIEW ALL APPOINTMENT REQUESTS</button>
                                                 </div>
                                                 <div class="col-md-3">
                                                 	<button class="btn btn-success btn-block"  data-toggle="modal" data-target=".bs-example-modal-sm">CREATE APPOINTMENT LABEL</button>
@@ -1197,139 +1199,35 @@
                                         	<div class="table-responsive">
 											<div id="appntmntLblDltSttsId"></div>
 											<div id="bldCnfrmtnMdlBoxId"></div>
-											<div id="buildAppntmntLblTblId"></div>
-                                                <!--<table class="table table-condensed bg_ff">
-                                                    <thead>
-                                                  <th>APPOINTMENT LABEL NAME</th>
-                                                        <th>TOTAL</th>
-                                                        <th>FIXED</th>
-                                                        <th>WAITING</th>
-                                                        <th>CANCELLED</th>
-                                                        <th>LABEL STATUS</th>
-                                                        <th></th>
-                                                    </thead>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Inprogress</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Feb-28_29 Appointment-Request</td>
-                                                        <td>30</td>
-                                                        <td>15</td>
-                                                        <td>10</td>
-                                                        <td>05</td>
-                                                        <td>Completed</td>
-                                                        <td>
-                                                            <button class="btn btn-success btn-xs">VIEW</button>
-                                                            <button class="btn btn-success btn-xs">ADD MEMBERS</button>
-                                                            <button class="btn btn-success btn-xs">UPDATE</button>
-                                                            <button class="btn btn-success btn-xs">STATUS</button>
-                                                            <button class="btn btn-success btn-xs">DELETE</button>
-                                                        </td>
-                                                    </tr>
-                                                </table>-->
-                                            </div>
+											<div id="buildAppntmntLblTblId"></div>  
+											</div>
+										</div>
+                                  </div>
+								<!--Swadhin-->
+								<div class="panel panel-default m_top10 panelWhite" id="appointmentReqBlock">
+									<div class="panel-heading b_bottom0">
+										<h4 class="text-success">ALL OPPOINTMENT REQUEST MEMBER
+											<span class="pull-right" style="cursor:pointer;font-size:13px;" id="backToReqBlock">
+												<u><i class="glyphicon glyphicon-arrow-left"></i> BACK TO APPOINTMENT LABEL</u>
+											</span>
+										</h4>
+									</div>
+                                        <div class="panel-body">
+											<div class="row">
+												<!--<div class="col-md-8" style="padding-right:0px;">
+													<input class="form-control" type="text"/>
+												</div>
+												<div class="col-md-2" style="padding-left:0px">
+													<button class="btn btn-success btn-block">SEARCH</button>
+												</div>-->
+												<div class="col-md-2 col-md-offset-10">
+													<button class="btn btn-success btn-block">EXPORT TO EXCEL</button>
+												</div>
+											</div>
+                                        	<div class="table-responsive m_top10">
+												<div id="appointmentListId" ></div>
+												<div id="paginationDivId" ></div>	
+											</div>
                                     </div>
                                   </div>
 							  </div>
@@ -1938,6 +1836,8 @@
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script type="text/javascript">
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
@@ -3175,6 +3075,82 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		  }); 
 		  
 	  }
+	var noOfRow = 5;
+	$(document).on("click","#viewAllAppointmentId",function(){
+		var startIndex = 0;
+		var maxIndex = noOfRow;
+		viewAllAppointment(startIndex,maxIndex);
+	});
+	function viewAllAppointment(startIndex,maxIndex){
+		var jsObj={
+				startIndex:startIndex,
+				maxIndex:maxIndex
+			}  
+		$.ajax({  
+			type : 'GET',
+			url : 'getAllAppointmentDetailsAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}                  
+			}).done(function(result){ 
+				buildAppointmentDetails(result); 
+			});   
+	}
+	function buildAppointmentDetails(result){
+		var str = '';
+		str+='<table class="table table-condensed bg_ff" id="allMemberTableId">';
+		str+='<thead>';
+		str+='<th>APPOINTMENT UNIQUE CODE</th>';
+		str+='<th>NAME</th>';
+		str+='<th>CONTACT NUMBER</th>';
+		str+='<th>DESIGNATION</th>';
+		str+='<th>LAST APPOINTMENT DATE</th>';
+		str+='</thead>';
+		for(var i in result){
+		str+='<tr>';
+		str+='<td>'+result[i].uniqueId+'</td>';
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].membershipNum+'</td>';
+		str+='<td>'+result[i].designation+'</td>';
+		str+='<td>'+result[i].date+'</td>';
+		str+='</tr>';
+		}	
+		str+='</table>';
+		$("#appointmentListId").html(str);
+		$('#allMemberTableId').DataTable({
+			responsive: true,
+			"info":     false,
+			"bSearching": false,
+			"sDom": '<"bottom"flp><"clear">',
+			"columnDefs": [{  "targets": 0 }],		
+			"bPaginate": false,
+			"bLengthChange": false,
+			"bAutoWidth": false,
+			
+		});
+		var total=result[0].count;
+		if(total> noOfRow){
+			$("#paginationDivId").pagination({
+			items: total,
+			itemsOnPage: noOfRow,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*noOfRow;
+				viewAllAppointment(num,noOfRow);
+				}
+				});
+		}
+	}
+	$("#appointmentReqBlock").hide();
+	$(document).on("click","#viewAllAppointmentId",function(){
+		$("#appointmentReqBlock").show();
+		$("#allAppointmentsHideBlock").hide();
+	})
+	$(document).on("click","#backToReqBlock",function(){
+		$("#appointmentReqBlock").hide();
+		$("#allAppointmentsHideBlock").show();
+	})
+  
+  
 </script>
 </body>
 </html>
