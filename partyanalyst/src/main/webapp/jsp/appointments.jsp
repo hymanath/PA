@@ -933,6 +933,7 @@
                                             <div class="col-md-2 pad_left0">
                                             	<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
                                             </div>
+												<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
                                         </div>
                                         <div class="row m_top25">
                                         	<div id="apptmemberDetailsDiv"></div>
@@ -989,6 +990,7 @@
 											</div>
 											
 										</div>
+										<div style="margin-top: 50px;"><img id="checkboxMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 										<div id="showapptDetails">
 											<!--<div class="block" >
 												<div class="row">
@@ -2177,8 +2179,8 @@ $(document).on("click","#addOneBlock",function(){
 
 $(document).on("click",".closeIcon",function(){
 	$(this).parent().parent().remove();
-	var attrId = $(this).attr("attr_id");
-	$("#"+attrId).prop('checked', false);
+	var Uncheckpop = $(this).attr("attr_close");
+	$("#"+Uncheckpop).attr('checked', false);
 });
 $(".dropkickClass").dropkick();
 	//swadin functions
@@ -2843,9 +2845,11 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
   });
    $(document).on("click",".getDetailsBySrch",function(){
 		getAppntmntSearchDetails();
+		$(".addattrid").hide();
 	}); 
 	function getAppntmntSearchDetails(){
 	  
+	  $("#searchMemberAjax").css("display","block");
 	  var searchType = $("#searchTypeId").val();
 	  var searchValue = $("#searchValueId").val();
 		var jsObj={
@@ -2858,8 +2862,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+				 $("#searchMemberAjax").css("display","none");
+				if(result !=null && result.length>0){
 				buildapptmemberDetails(result);
 				
+				}else{
+					$("#apptmemberDetailsDiv").html("No Data Available");
+				}
 		  }); 
 	 }
 	 
@@ -2909,7 +2918,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 								str+='</div>';
 								
 								str+='<div class="col-md-1 m_top10" attr_id='+result[i].id+'   attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designation+'" >';
-									str+='<input type="checkbox" class="apptDetailsDiv" id="'+result[i].id+'" attr_id=block'+result[i].id+'>';
+									str+='<input type="checkbox" class="apptDetailsDiv" id="block'+result[i].id+'" attr_id=block'+result[i].id+'>';
 								str+='</div>';
 								
 							str+='</div>';
@@ -2924,11 +2933,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	}
 	
 	 $(document).on("click",".apptDetailsDiv",function(){
+		 
+		 
 		 if($(this).is(':checked')){
+			 $("#checkboxMemberAjax").css("display","block");
 				$(this).attr("clone_block_count",cloneCount);
-				
-				var closeId=$(this).attr("attr_id");
-				$(".closeIcon").attr("id",closeId);
+				var Uncheck = $(this).attr("attr_id");
+				$(".closeIcon").attr("attr_close",Uncheck);
 				
 				$("#addOneBlock").trigger("click");
 				
@@ -2951,7 +2962,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				
+				 $("#checkboxMemberAjax").css("display","none");
 				var lctscpid = ''+result.locationScopeId+'';
 				var temp=parseInt(cloneCount)-1;
 					$('#candidateNameId'+temp).val(name);
@@ -2963,8 +2974,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					$('#locationScopeSelId'+temp).trigger("click");
 					var select = new Dropkick('#locationScopeSelId'+temp);
 						select.refresh();
-					var select = new Dropkick('#designationSelId'+temp);
-						select.refresh();
+					
 					showhideLocationBoxes(temp);
 				}); 
 		 }else{
