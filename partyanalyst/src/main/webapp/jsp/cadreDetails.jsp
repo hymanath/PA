@@ -32,6 +32,10 @@
 	     <!--   server side pagination CSS-->
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <style>
+#tableId thead th
+{
+	cursor:pointer
+}
 .referralGrievanceDetails
 {
   padding:0px;
@@ -363,6 +367,23 @@ var globalCadreId = '${cadreId}';
 
 </head>
 <body>
+<div class="modal fade" id="myModalForTableGrieId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog " role="document" style="width: 990px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Candidate Name Complaint Information</h4>
+	  </div>
+      <div class="modal-body" >
+		<div id="modelheightincr">
+			<div id="popupContentDiv" ></div>
+			<div id="paginationDivId" ></div>			
+		</div>		
+      </div>
+     
+    </div>
+  </div>
+</div>
 <section>
 	<div class="container">
     	<div class="row">
@@ -1795,6 +1816,7 @@ var globalCadreId = '${cadreId}';
 					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
 					getTotalComplaintsForCandidate();
+					getRefferelDetailsStatusWise();
 					  getConductedPartyMeetingDetails("","","true");
 				}
 			});
@@ -6877,7 +6899,7 @@ $(document).on('click', '.ivrAnsweredCls', function(){
 	$("#ivrModalHeadingId").html(eventName);
 	getIvrSurveyDetails(searchType,eventTypeId);
 });
-getRefferelDetailsStatusWise();
+
 function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceDetailsId").html('');
 	var url = window.location.href;
@@ -6886,7 +6908,7 @@ function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceLoadingImg").show();
 	$.ajax({
 		type:'GET',
-		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+	 url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -6898,16 +6920,94 @@ function getRefferelDetailsStatusWise(){
 		if(result !=null && result.length>0){
 			value+='<ul class="referralGrievanceDetails" >';		
 				for(var i in result){
-					value+='<li>'+result[i].name+'<span class="pull-right">'+result[i].count+'</span></li>';
+					value+='<li>'+result[i].name+'<span class="pull-right"><a onclick="getReferealComplaintDetails(\''+result[i].name+'\');" href="#">'+result[i].count+'</a></span></li>';
 				}
 			value+='</ul>';	
 			
 		}
 		$("#referralGrievanceDetailsId").html(value);
-		$("#refferelTotalCountId").html(result[0].totalCount);
+		$("#refferelTotalCountId").html('<a style="cursor:pointer;" onclick="getReferealComplaintDetails(\'All\');" href="#">'+result[0].totalCount+'</a>');
 	});
 }
 
+
+function getReferealComplaintDetails(status) {
+	
+	var obj={
+		 cadreId : globalCadreId,
+		  status :status
+	}
+	
+	$.ajax({
+		type:'POST',
+		url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+			 dataType: "json",
+			 data: JSON.stringify(obj),
+			 contentType: "application/json; charset=utf-8",
+			 username: "grievance",
+             password: "grievance@!tG"
+	}).done(function(result){
+		console.log(result);
+	buildPopupComplaintInfo1(result);
+		
+	});
+}
+
+function buildPopupComplaintInfo1(result) {
+	$("#myModalForTableGrieId").modal("show");
+	var str = '';
+	str+='	<div style="display:block;" id="autoExport"></div>';
+	str+='<table class="display table table-bordered table-striped table-hover m_top5" id="tableId">';
+    str+='<thead style="border-top:1px solid #ccc;background:#ccc;">';
+    str+='<th >Complaint ID</th>';
+	str+='<th >Complaint Person Details</th>';
+    str+='<th >Subject</th>';
+    str+='<th >Is Party Member?</th>';
+    str+='<th >Status</th>';
+	str+='<th >Referer Name</th>';
+    str+='<th >Posted Date</th>';
+	str+='<th >Last Updated Date</th>';
+	str+='</thead>';
+   str+='<tbody>';
+	for(var i in result){
+		str+='<tr>';
+          str+='<td>'+result[i].complaintId+'</td>';
+		str+='<td>';
+		str+='N :'+result[i].name+'<br/>';
+		str+='D :'+result[i].location+'<br/>C :'+result[i].constituency+'<br/>M :'+result[i].mandal+'<br/>V :'+result[i].villageName+'</td>';
+        
+		str+='<td>'+result[i].subject+'</td>';
+	
+		if(result[i].memberType == null)
+		{
+			str+='<td>-</td>';
+		}
+		else{
+		str+='<td>'+result[i].memberType.toUpperCase()+'</td>';	
+			var color = getColorCodeByStatus(result[i].status);
+			 str+='<td><span>'+result[i].status.toUpperCase()+'</span></td>';
+		
+			}
+		if(result[i].referDetailsVO != null && result[i].referDetailsVO.referName !=''){
+			
+			str+='<td>'+result[i].referDetailsVO.referName.toUpperCase()+'</td>';
+		}
+		else{
+			str+='<td>-</td>';
+		}
+		str+='<td>'+result[i].raisedDate+'</td>';
+		str+='<td>'+result[i].updatedDate+'</td>';
+		str +='<td></td>';
+        str+='</tr>';
+	}
+	str+='</tbody>';
+    str+='</table>';
+	$("#popupContentDiv").html(str)
+	$("#tableId").dataTable();
+	$("#tableId").removeClass("dataTable")
+}
+
 </script>
+
 </body>
 </html>
