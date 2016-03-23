@@ -11684,5 +11684,13 @@
 			<param name="root">appointmentVOList</param>
 		</result>
 	</action>
+	
+	<action name="getStatusWiseCountsOfAppointmentsAction" class="appointmentAction" method="getStatusWiseCountsOfAppointments">
+		<result type="json" name="success">
+			<param name="root">labelStatusVO</param>
+		</result>
+	</action>
+	
+	
 </package>
 </struts>      
