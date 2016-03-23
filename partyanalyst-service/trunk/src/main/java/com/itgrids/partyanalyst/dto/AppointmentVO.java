@@ -5,7 +5,8 @@ import java.util.List;
 
 public class AppointmentVO {
 	
-	private Long appointmentPrioprityId;
+	private Long appointmentId;
+	private Long appointmentPriorityId;
 	private String reason;
 	private Long appointmentStatusId;
 	private String appointmentPreferableTimeType;
@@ -13,12 +14,20 @@ public class AppointmentVO {
 	private List<AppointmentBasicInfoVO> basicInfoList = new ArrayList<AppointmentBasicInfoVO>();
 	private Long appointmentUserId;
 	private String uniqueCode;
+	private String priority;
+	private String status;
 	
-	public Long getAppointmentPrioprityId() {
-		return appointmentPrioprityId;
+	public Long getAppointmentId() {
+		return appointmentId;
 	}
-	public void setAppointmentPrioprityId(Long appointmentPrioprityId) {
-		this.appointmentPrioprityId = appointmentPrioprityId;
+	public void setAppointmentId(Long appointmentId) {
+		this.appointmentId = appointmentId;
+	}
+	public Long getAppointmentPriorityId() {
+		return appointmentPriorityId;
+	}
+	public void setAppointmentPriorityId(Long appointmentPriorityId) {
+		this.appointmentPriorityId = appointmentPriorityId;
 	}
 	public String getReason() {
 		return reason;
@@ -63,4 +72,17 @@ public class AppointmentVO {
 	public void setUniqueCode(String uniqueCode) {
 		this.uniqueCode = uniqueCode;
 	}
+	public String getPriority() {
+		return priority;
+	}
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class AppointmentBasicInfoVO {
 
+	private Long id;
 	private String name;
 	private Long designationId;
 	private String mobileNo;
@@ -161,8 +162,11 @@ public class AppointmentBasicInfoVO {
 	public void setVillageId(Long villageId) {
 		this.villageId = villageId;
 	}
-	
-	
-	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
 }
