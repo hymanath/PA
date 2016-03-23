@@ -16,17 +16,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AppointmentPriority extends BaseModel {
 	
-	private Long appointmenPriorityId;
+	private Long appointmentPriorityId;
 	private String priority;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "appointment_priority_id", unique = true, nullable = false)
-	public Long getAppointmenPriorityId() {
-		return appointmenPriorityId;
+	public Long getAppointmentPriorityId() {
+		return appointmentPriorityId;
 	}
-	public void setAppointmenPriorityId(Long appointmenPriorityId) {
-		this.appointmenPriorityId = appointmenPriorityId;
+	public void setAppointmentPriorityId(Long appointmentPriorityId) {
+		this.appointmentPriorityId = appointmentPriorityId;
 	}
 	@Column(name = "priority")
 	public String getPriority() {
