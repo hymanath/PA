@@ -1727,14 +1727,15 @@ public class AppointmentService implements IAppointmentService{
 			
 			if(objList !=null && objList.size()>0){
 				List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>();
-				for (Object[] objects : objList) {					
-					LabelStatusVO vo = new LabelStatusVO();					
-					vo.setStatus(objects[1].toString());
-					vo.setStatusId((Long)objects[0]);
-					vo.setTotalCount(objects[2] !=null ? (Long)objects[2]:0l);
-										
-					statusList.add(vo);		
-								
+				for (Object[] objects : objList) {	
+					//setting default statuses
+					statusList = setStatusListOfAppointments(statusList);	
+					//Matching VO returning
+					LabelStatusVO vo = getMatchedVoOfStatus(statusList,objects[1].toString());
+					if(vo !=null){
+						vo.setTotalCount(objects[2] !=null ? (Long)objects[2]:0l);
+						statusList.add(vo);		
+					}			
 				}
 				if(type !=null && type.toString().trim().equalsIgnoreCase("toDay")){
 					finalVo.setStatusList(statusList);
@@ -1748,6 +1749,73 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return finalVo;
 		
+	}
+	
+	public List<LabelStatusVO> setStatusListOfAppointments(List<LabelStatusVO> labelStatusList){
+		
+		try{
+			
+			LabelStatusVO vo = null;
+			
+			vo = new LabelStatusVO();			
+			vo.setStatusId(4l);
+			vo.setStatus("Not Attended");
+			vo.setTotalCount(0l);
+			labelStatusList.add(vo);
+			
+			vo = new LabelStatusVO();
+			vo.setStatusId(5l);
+			vo.setStatus("Reschedule");
+			vo.setTotalCount(0l);
+			labelStatusList.add(vo);
+			
+			vo = new LabelStatusVO();
+			vo.setStatusId(6l);
+			vo.setStatus("Cancelled");
+			vo.setTotalCount(0l);
+			labelStatusList.add(vo);
+			
+			vo = new LabelStatusVO();			
+			vo.setStatusId(2l);
+			vo.setStatus("Completed");
+			vo.setTotalCount(0l);
+			labelStatusList.add(vo);
+			
+			vo = new LabelStatusVO();			
+			vo.setStatusId(2l);
+			vo.setStatus("InProgress");
+			vo.setTotalCount(0l);
+			labelStatusList.add(vo);
+			
+			vo = new LabelStatusVO();			
+			vo.setStatusId(2l);
+			vo.setStatus("UpComing");
+			vo.setTotalCount(0l);
+			labelStatusList.add(vo);
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at setStatusListOfAppointments", e);
+		}
+		return labelStatusList;		
+	}
+	
+	public LabelStatusVO getMatchedVoOfStatus(List<LabelStatusVO> labelStatusList,String status){
+		
+		try{
+			
+			if(labelStatusList !=null && labelStatusList.size()>0){				
+				for (LabelStatusVO labelStatusVO : labelStatusList) {					
+					String stts = status.trim();				
+					if(labelStatusVO.getStatus().trim().equalsIgnoreCase(stts)){
+						return labelStatusVO;
+					}					
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVoOfStatus", e);
+		}
+		return null;
 	}
 	
 	
