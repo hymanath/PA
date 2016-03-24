@@ -1734,12 +1734,12 @@ public class AppointmentService implements IAppointmentService{
 					vo.setTotalCount(objects[2] !=null ? (Long)objects[2]:0l);
 										
 					statusList.add(vo);		
-					
-					if(type !=null && type.toString().trim().equalsIgnoreCase("toDay")){
-						finalVo.setStatusList(statusList);
-					}else if(type !=null && type.toString().trim().equalsIgnoreCase("overAll")){
-						finalVo.setOverAllStatusList(statusList);
-					}				
+								
+				}
+				if(type !=null && type.toString().trim().equalsIgnoreCase("toDay")){
+					finalVo.setStatusList(statusList);
+				}else if(type !=null && type.toString().trim().equalsIgnoreCase("overAll")){
+					finalVo.setOverAllStatusList(statusList);
 				}
 			}
 			
