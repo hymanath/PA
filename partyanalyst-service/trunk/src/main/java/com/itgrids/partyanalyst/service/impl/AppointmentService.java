@@ -1669,7 +1669,15 @@ public class AppointmentService implements IAppointmentService{
 							totalTodayObjList.addAll(statusObjList);
 						}
 						
-						finalVo = settingStausDetailsDataToFinalVo1(finalVo,totalTodayObjList,"toDay");
+						//default Status List
+						List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>();
+						//setting default statuses
+						statusList = setStatusListOfAppointments(statusList);
+						
+						statusList = settingStausDetailsDataToFinalVo1(finalVo,totalTodayObjList,statusList);
+						if(statusList !=null && statusList.size()>0){
+							finalVo.setStatusList(statusList);
+						}
 				
 			//OverAll Scenario
 						List<Object[]> inProgreeOverAllList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","overall");
@@ -1697,8 +1705,17 @@ public class AppointmentService implements IAppointmentService{
 							totalObjList.addAll(statusObjOverAllList);
 						}
 						
-						finalVo = settingStausDetailsDataToFinalVo1(finalVo,totalObjList,"overAll");
+						//clearing if any values
+						statusList.clear();			
+						//setting default statuses
+						statusList = setStatusListOfAppointments(statusList);
+						
+						statusList = settingStausDetailsDataToFinalVo1(finalVo,totalObjList,statusList);
 				
+						if(statusList !=null && statusList.size()>0){
+							finalVo.setOverAllStatusList(statusList);
+						}
+						
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);
@@ -1722,32 +1739,25 @@ public class AppointmentService implements IAppointmentService{
 		return fixedList;
 	}
 	
-	public LabelStatusVO settingStausDetailsDataToFinalVo1(LabelStatusVO finalVo,List<Object[]> objList,String type){		
+	public List<LabelStatusVO> settingStausDetailsDataToFinalVo1(LabelStatusVO finalVo,List<Object[]> objList,List<LabelStatusVO> statusList){		
 		try{
 			
 			if(objList !=null && objList.size()>0){
-				List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>();
-				for (Object[] objects : objList) {	
-					//setting default statuses
-					statusList = setStatusListOfAppointments(statusList);	
+			//	List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>();
+				
+				for (Object[] objects : objList) {					
 					//Matching VO returning
 					LabelStatusVO vo = getMatchedVoOfStatus(statusList,objects[1].toString());
 					if(vo !=null){
-						vo.setTotalCount(objects[2] !=null ? (Long)objects[2]:0l);
-						statusList.add(vo);		
+						vo.setTotalCount(objects[2] !=null ? (Long)objects[2]:0l);	
 					}			
-				}
-				if(type !=null && type.toString().trim().equalsIgnoreCase("toDay")){
-					finalVo.setStatusList(statusList);
-				}else if(type !=null && type.toString().trim().equalsIgnoreCase("overAll")){
-					finalVo.setOverAllStatusList(statusList);
-				}
+				}				
 			}
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at settingStausDetailsDataToFinalVo1", e);
 		}
-		return finalVo;
+		return statusList;
 		
 	}
 	
