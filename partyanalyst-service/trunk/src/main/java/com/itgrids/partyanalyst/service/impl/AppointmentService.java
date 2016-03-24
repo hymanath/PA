@@ -1437,6 +1437,8 @@ public class AppointmentService implements IAppointmentService{
 					vo.setReason(objects[3].toString());
 					vo.setAppointmentStatusId((Long)objects[4]);
 					vo.setStatus(objects[5].toString());
+					vo.setUserId((Long)objects[6]);
+					vo.setUserName(objects[7].toString());
 					map.put((Long)objects[0], vo);
 				}
 			}
