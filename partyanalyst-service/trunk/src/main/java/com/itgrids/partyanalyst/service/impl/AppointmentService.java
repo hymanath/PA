@@ -1546,7 +1546,7 @@ public class AppointmentService implements IAppointmentService{
 			
 					
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised at getLabelAndStatuswiseCountsOfAppointments", e);
 		}		
 		return finalVo;
 	}
@@ -1587,7 +1587,7 @@ public class AppointmentService implements IAppointmentService{
 			}
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised at settingStausDetailsDataToFinalVo", e);
 		}
 		return finalVo;
 	}
@@ -1610,7 +1610,7 @@ public class AppointmentService implements IAppointmentService{
 			}
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised at setValuesToStatusList", e);
 		}		
 		return statusList;
 	}	
@@ -1625,7 +1625,7 @@ public class AppointmentService implements IAppointmentService{
 				}
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			LOG.error("Exception raised at setStatusOfObjectList", e);
 		}
 		return fixedList;
 	}
@@ -1701,7 +1701,7 @@ public class AppointmentService implements IAppointmentService{
 				
 			
 		}catch(Exception e){
-			
+			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);
 		}
 		return finalVo;
 	}
@@ -1717,7 +1717,7 @@ public class AppointmentService implements IAppointmentService{
 				}
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			LOG.error("Exception raised at setStatusOfObjectList1", e);
 		}
 		return fixedList;
 	}
@@ -1744,7 +1744,7 @@ public class AppointmentService implements IAppointmentService{
 			}
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised at settingStausDetailsDataToFinalVo1", e);
 		}
 		return finalVo;
 		
