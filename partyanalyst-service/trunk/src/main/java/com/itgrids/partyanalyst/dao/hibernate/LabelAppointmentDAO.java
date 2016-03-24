@@ -93,9 +93,10 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		Query query = getSession().createQuery(" select model.appointment.appointmentId," +
 				"model.appointment.appointmentPriority.appointmentPriorityId,model.appointment.appointmentPriority.priority," +
 				"model.appointment.reason," +
-				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status " +
-				" from LabelAppointment model " +
-				" where model.appointmentLabel.appointmentLabelId=:lableId and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' ");
+				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,model1.userId,model1.firstName " +
+				" from LabelAppointment model,User model1 " +
+				" where model.appointmentLabel.appointmentLabelId=:lableId and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
+				" and model.createdBy=model1.userId ");
 		query.setParameter("lableId", lableId);
 		return query.list();
 	}
