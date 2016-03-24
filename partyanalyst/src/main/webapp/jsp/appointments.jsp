@@ -1839,11 +1839,12 @@
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 function buildJSONForAppStatus(result){
-	for(var i in result){
-	jsonObj.push({"name":result[i].name,"y":result[i].availableCount,"color":color[i%6]});
+	for(var i in result.overAllStatusList){
+	jsonObj.push({"name":result.overAllStatusList[i].status,"y":result.overAllStatusList[i].totalCount,"color":color[i%6]});
 	}
 	buildChartForAppStatus();
 }
@@ -1852,11 +1853,12 @@ getTotalAppointmentStatus();
 function getTotalAppointmentStatus(){
 	$.ajax({
 		type : 'GET',
-		url : 'getTotalAppointmentStatusAction.action',
+		url : 'getStatusWiseCountsOfAppointmentsAction.action',
 		dataType : 'json',
 		data : {}  
 	}).done(function(result){ 
-		if(result != null && result.length > 0){
+		if(result != null){
+			buildTotalAppointmentStatusForToday(result);
 			buildJSONForAppStatus(result);
 			buildTotalAppointmentStatus(result);
 		}
@@ -1864,26 +1866,14 @@ function getTotalAppointmentStatus(){
 	});     
 }
 function buildTotalAppointmentStatus(result){
-	for(var i in result){
-	$("#totalAppointmentsId").append('<li style="color:'+color[i%6]+'"><span class="columnChart" style="background:'+color[i%6]+'"></span>'+result[i].name+' - '+result[i].availableCount+'</li>');
+	for(var i in result.overAllStatusList){
+	$("#totalAppointmentsId").append('<li style="color:'+color[i%6]+'"><span class="columnChart" style="background:'+color[i%6]+'"></span>'+result.overAllStatusList[i].status+' - '+result.overAllStatusList[i].totalCount+'</li>');
 	}
 }
-getTotalAppointmentStatusForToday();
-function getTotalAppointmentStatusForToday(){
-	$.ajax({
-		type : 'GET',
-		url : 'getTotalAppointmentStatusForTodayAction.action',
-		dataType : 'json',
-		data : {}  
-	}).done(function(result){ 
-		if(result != null && result.length > 0){
-			buildTotalAppointmentStatusForToday(result);
-		}    
-	});     
-}
+
 function buildTotalAppointmentStatusForToday(result){
-	$.each(result,function(index,value){
-	$("#todayAppointmentsId").append('<tr style="color:'+color[index%6]+'"> <td>'+value.name+'</td><td>'+value.availableCount+'</td> </tr>');
+	$.each(result.statusList,function(index,value){
+	$("#todayAppointmentsId").append('<tr style="color:'+color[index%6]+'"> <td>'+value.status+'</td><td>'+value.totalCount+'</td> </tr>');
 	});
 }
 	$(document).on("click",".appointmentSettings",function(e){
