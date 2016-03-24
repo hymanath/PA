@@ -95,7 +95,7 @@
 							<h3 class="m_top10"><b>APPOINTMENTS</b></h3>
 						</div>
 						<div class="col-md-3 col-md-offset-6">
-							<select id="appointmentUserSelectBoxId"></select>
+							<select id="appointmentUserSelectBoxId" class="form-control"></select>
 						</div>
 					</div>
 				</div>
@@ -1513,7 +1513,8 @@
                             	<div class="col-md-12">
                                 	<div class="block">
                                     	<h4 class="text-success">UPDATE LABEL MEMBER(FEB-28_29 APPOINTMENT-REQUEST)</h4>
-                                        <ul class="updateLabelMembers">
+										<div id="updateAppointmentsForLabelDivId"></div>
+                                      <!--  <ul class="updateLabelMembers">
                                             <li>
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -1589,7 +1590,7 @@
                                                 </div>
                                             </li>
                                             <button class="btn btn-success m_top25">UPDATE LABEL</button>
-                                        </ul>
+                                        </ul>-->
                                     </div>
                                 </div>
                             </div>
@@ -2498,7 +2499,7 @@ $(".dropkickClass").dropkick();
 					str+='<td>';
 						str+='<button class="btn btn-success btn-xs">VIEW</button>';
 						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
-						str+='<button class="btn btn-success btn-xs">UPDATE</button>';
+						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_id="'+result[i].labelId+'">UPDATE</button>';
 						str+='<button class="btn btn-success btn-xs">STATUS</button>';
 						str+='<button class="btn btn-success btn-xs lblDltCls">DELETE</button>';
 					str+='</td>';
@@ -3073,7 +3074,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
           });
 		  
 		  var jsObj={
-				  	  apptLabelId:apptLabelId:appointmentlabelId,
+				  	  apptLabelId:appointmentlabelId,
 				  	  appointmentsArray:appointmentsArray
 				  }
 		  
@@ -3165,15 +3166,96 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				});
 		}
 	}
+	
 	$("#appointmentReqBlock").hide();
+	
 	$(document).on("click","#viewAllAppointmentId",function(){
 		$("#appointmentReqBlock").show();
 		$("#allAppointmentsHideBlock").hide();
-	})
+	});
+	
 	$(document).on("click","#backToReqBlock",function(){
 		$("#appointmentReqBlock").hide();
 		$("#allAppointmentsHideBlock").show();
-	})
+	});
+	
+	$(document).on("click",".updateLableAppointmentsCls",function(){
+	 
+		var jsObj={
+			labelId : $(this).attr("attr_label_id")
+		}
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAppointmentsOfALableForUpdateAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				var str = ''
+				if(result != null && result.length > 0){
+					for(var i in result){
+						str+='<div class="panel panel-default manageAppViewPanelClass">';
+							str+='<div class="panel-body">';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+										str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
+									str+='</div>';
+								str+='</div>';
+								str+='<ul class="updateLabelMembers" style="list-style-type: none;">';
+									str+='<p>Subject : '+result[i].reason+'</p>';
+									str+='<p>Priority Type : '+result[i].priority+'</p>';
+									if(result[i].basicInfoList != null && result[i].basicInfoList.length > 0){
+										for(var j in result[i].basicInfoList){
+											str+='<li>';
+												str+='<div class="row">';
+													str+='<div class="col-md-5">';
+														str+='<div class="media">';
+															str+='<div class="media-left">';
+																str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+															str+='</div>';
+															str+='<div class="media-body">';
+																str+='<p>'+result[i].basicInfoList[j].name+'';
+																if(result[i].basicInfoList[j].membershipNum != null)
+																	str+='- Cadre</p>';
+																else
+																	str+='</p>';
+																str+='<p>Contact Number: '+result[i].basicInfoList[j].mobileNo+'</p>';
+																str+='<p>Designation: '+result[i].basicInfoList[j].designation+'</p>';
+															str+='</div>';
+														str+='</div>';
+													str+='</div>';
+													str+='<div class="col-md-3">';
+														str+='<label>Update Status</label>';
+														str+='<select class="form-control">';
+															str+='<option>Cancelled</option>';
+														str+='</select>';
+													str+='</div>';
+												  str+='<div class="col-md-2">';
+														str+='<select class="form-control m_top25">';
+															str+='<option>Tentitive</option>';
+															str+='<option>Next 2 weeks</option>';
+														str+='</select>';
+												  str+='</div>';
+													
+												str+='</div>';
+											str+='</li>';
+										}
+									}
+									
+								str+='</ul>';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+									  str+='<p class="pull-right">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="message"></p>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					}
+					
+				}
+				$("#updateAppointmentsForLabelDivId").html(str);
+			});
+	  
+	});
 </script>
 </body>
 </html>
