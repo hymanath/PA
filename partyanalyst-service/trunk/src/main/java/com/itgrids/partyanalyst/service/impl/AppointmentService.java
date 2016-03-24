@@ -1708,14 +1708,14 @@ public class AppointmentService implements IAppointmentService{
 						}
 						
 						//clearing if any values
-						statusList.clear();			
+						List<LabelStatusVO> overAllstatusList = new ArrayList<LabelStatusVO>();	
 						//setting default statuses
-						statusList = setStatusListOfAppointments(statusList);
+						overAllstatusList = setStatusListOfAppointments(overAllstatusList);
 						
-						statusList = settingStausDetailsDataToFinalVo1(finalVo,totalObjList,statusList);
+						overAllstatusList = settingStausDetailsDataToFinalVo1(finalVo,totalObjList,overAllstatusList);
 				
-						if(statusList !=null && statusList.size()>0){
-							finalVo.setOverAllStatusList(statusList);
+						if(overAllstatusList !=null && overAllstatusList.size()>0){
+							finalVo.setOverAllStatusList(overAllstatusList);
 						}
 						
 			
