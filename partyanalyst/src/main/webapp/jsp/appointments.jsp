@@ -1842,10 +1842,14 @@
 <script type="text/javascript">
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
+var flag = false;
 function buildJSONForAppStatus(result){
 	for(var i in result.overAllStatusList){
-	jsonObj.push({"name":result.overAllStatusList[i].status,"y":result.overAllStatusList[i].totalCount,"color":color[i%6]});
+		if(result.overAllStatusList[i].totalCount>0)
+			flag = true;
+		jsonObj.push({"name":result.overAllStatusList[i].status,"y":result.overAllStatusList[i].totalCount,"color":color[i%6]});
 	}
+	if(flag==true)  
 	buildChartForAppStatus();
 }
 
@@ -3103,7 +3107,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		  
 	  }
 	  
-	  var noOfRow = 5;
+	var noOfRow = 5;
 	$(document).on("click","#viewAllAppointmentId",function(){
 		var startIndex = 0;
 		var maxIndex = noOfRow;
