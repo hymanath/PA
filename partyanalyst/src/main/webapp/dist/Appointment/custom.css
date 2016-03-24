@@ -311,12 +311,14 @@ body
 	float:right;
 	margin:-8px -8px 0px;
 }
-.viewAppointmentRequestedMembers li .requestedCheckbox , .updateLabelMembers li .requestedCheckbox
+.requestedCheckboxPanel
 {
 	padding:2px 4px;
 	background-color:#ccc;
-	float:right;
-	margin:-8px -8px 0px;
+	float:right !important;
+	position:absolute;
+	right:0px;
+	top:-15px;
 }
 .colorStatus
 {
