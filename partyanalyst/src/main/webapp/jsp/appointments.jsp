@@ -958,7 +958,7 @@
 											<div class="row">
 												<div class="col-md-4 m_top10">
 													<label>Appointment Priority Type</label>
-													<select name="appointmentVO.appointmentPrioprityId" class="manageAppTypeCls" id="createAppTypeListId">
+													<select name="appointmentVO.appointmentPriorityId" class="manageAppTypeCls" id="createAppTypeListId">
 														<option value="0">Select Priority</option>
 													</select>
 												</div>
@@ -1236,7 +1236,7 @@
                                   </div>
 							  </div>
 							</div>
-                            <div class="row">
+                            <div class="row searchDivCls commonDivCls" style="display:none">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<div class="block">
                                     	<div class="row">
@@ -1282,234 +1282,234 @@
                             </div>
                           <div class="row">
                             	<div class="col-md-12">
-                                	<div class="appointmentRequestedMembers m_top10" id="appointmentRequestedMembersId">
-										</div>
+                                	<div class="appointmentRequestedMembers m_top10 commonDivCls" id="appointmentRequestedMembersId">
+									</div>
                                 </div>
                           </div>
-                            <div class="row">
+                            <div class="row appointmentsViewDivCls commonDivCls" style="display:none;">
                             	<div class="col-md-12">
                                 	<div class="block">
                                     	<h4 class="text-success">VIEWING (FEB-27_28 APPOINTMENT-REQUEST) LABEL</h4>
 										<div id="appointmentManage"></div>
-                                   	  <ul class="viewAppointmentRequestedMembers">
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                    	<span class="requestedCheckbox text-success">
-	                                                        Appointment Fixed
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus green"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Constituency</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Appt Type</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-                                                        <table class="table table-bordered m_top10">
-                                                            <thead>
-                                                          <th>Appt Last Requested Date</th>
-                                                                <th colspan="2">Appt Status</th>
-                                                            </thead>
-                                                            <tr>
-                                                                <td>28-feb-2016</td>
-                                                                <td>Fixed</td>
-                                                                <td>Appt Fixed on 28-feb-2016 10:30AM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                    	<span class="requestedCheckbox text-danger">
-	                                                        Cancelled
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus blue"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Constituency</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Appt Type</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-                                                        <table class="table table-bordered m_top10">
-                                                            <thead>
-                                                          <th>Appt Last Requested Date</th>
-                                                                <th colspan="2">Appt Status</th>
-                                                            </thead>
-                                                            <tr>
-                                                                <td>28-feb-2016</td>
-                                                                <td>Fixed</td>
-                                                                <td>Appt Fixed on 28-feb-2016 10:30AM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                    	<span class="requestedCheckbox text-danger">
-	                                                        Cancelled
-                                                      </span>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus violet"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Constituency</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Appt Type</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-                                                        <table class="table table-bordered">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-                                                        <table class="table table-bordered m_top10">
-                                                            <thead>
-                                                          <th>Appt Last Requested Date</th>
-                                                                <th colspan="2">Appt Status</th>
-                                                            </thead>
-                                                            <tr>
-                                                                <td>28-feb-2016</td>
-                                                                <td>Fixed</td>
-                                                                <td>Appt Fixed on 28-feb-2016 10:30AM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>8-feb-2016</td>
-                                                                <td>Waiting</td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                      </ul>
+										<ul class="viewAppointmentRequestedMembers">
+											<li>
+												<div class="row">
+													<div class="col-md-12">
+														<span class="requestedCheckbox text-success">
+															Appointment Fixed
+														</span>
+													</div>
+													<div class="col-md-6">
+														<div class="media">
+															<div class="media-left">
+																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
+																<span class="colorStatus green"></span>
+															</div>
+															<div class="media-body">
+																<p>Laxman - Cadre</p>
+																<p>Contact Number: 9848012345</p>
+																<p>Designation: MLC</p>
+																<p>Constituency</p>
+																<p>Last Visit:</p>
+																<p>Appt Type</p>
+																<p>Subject</p>
+															</div>
+														</div>
+														<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
+														<table class="table table-bordered">
+															<tr>
+																<td><h4>20</h4><p>Requests</p></td>
+																<td><h4>20</h4><p>Confirmed</p></td>
+																<td><h4>20</h4><p>Rescheduled</p></td>
+																<td><h4>20</h4><p>Cancelled</p></td>
+															</tr>
+														</table>
+														<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
+														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
+													</div>
+													<div class="col-md-6">
+														<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
+														<table class="table table-bordered m_top10">
+															<thead>
+														  <th>Appt Last Requested Date</th>
+																<th colspan="2">Appt Status</th>
+															</thead>
+															<tr>
+																<td>28-feb-2016</td>
+																<td>Fixed</td>
+																<td>Appt Fixed on 28-feb-2016 10:30AM</td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+														</table>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="row">
+													<div class="col-md-12">
+														<span class="requestedCheckbox text-danger">
+															Cancelled
+														</span>
+													</div>
+													<div class="col-md-6">
+														<div class="media">
+															<div class="media-left">
+																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
+																<span class="colorStatus blue"></span>
+															</div>
+															<div class="media-body">
+																<p>Laxman - Cadre</p>
+																<p>Contact Number: 9848012345</p>
+																<p>Designation: MLC</p>
+																<p>Constituency</p>
+																<p>Last Visit:</p>
+																<p>Appt Type</p>
+																<p>Subject</p>
+															</div>
+														</div>
+														<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
+														<table class="table table-bordered">
+															<tr>
+																<td><h4>20</h4><p>Requests</p></td>
+																<td><h4>20</h4><p>Confirmed</p></td>
+																<td><h4>20</h4><p>Rescheduled</p></td>
+																<td><h4>20</h4><p>Cancelled</p></td>
+															</tr>
+														</table>
+														<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
+														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
+													</div>
+													<div class="col-md-6">
+														<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
+														<table class="table table-bordered m_top10">
+															<thead>
+														  <th>Appt Last Requested Date</th>
+																<th colspan="2">Appt Status</th>
+															</thead>
+															<tr>
+																<td>28-feb-2016</td>
+																<td>Fixed</td>
+																<td>Appt Fixed on 28-feb-2016 10:30AM</td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+														</table>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="row">
+													<div class="col-md-12">
+														<span class="requestedCheckbox text-danger">
+															Cancelled
+													  </span>
+													</div>
+													<div class="col-md-6">
+														<div class="media">
+															<div class="media-left">
+																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
+																<span class="colorStatus violet"></span>
+															</div>
+															<div class="media-body">
+																<p>Laxman - Cadre</p>
+																<p>Contact Number: 9848012345</p>
+																<p>Designation: MLC</p>
+																<p>Constituency</p>
+																<p>Last Visit:</p>
+																<p>Appt Type</p>
+																<p>Subject</p>
+															</div>
+														</div>
+														<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
+														<table class="table table-bordered">
+															<tr>
+																<td><h4>20</h4><p>Requests</p></td>
+																<td><h4>20</h4><p>Confirmed</p></td>
+																<td><h4>20</h4><p>Rescheduled</p></td>
+																<td><h4>20</h4><p>Cancelled</p></td>
+															</tr>
+														</table>
+														<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
+														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
+													</div>
+													<div class="col-md-6">
+														<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
+														<table class="table table-bordered m_top10">
+															<thead>
+														  <th>Appt Last Requested Date</th>
+																<th colspan="2">Appt Status</th>
+															</thead>
+															<tr>
+																<td>28-feb-2016</td>
+																<td>Fixed</td>
+																<td>Appt Fixed on 28-feb-2016 10:30AM</td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+															<tr>
+																<td>8-feb-2016</td>
+																<td>Waiting</td>
+																<td></td>
+															</tr>
+														</table>
+													</div>
+												</div>
+											</li>
+									  </ul>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row appointmentsUpdateDivCls commonDivCls" style="display:none;">
                             	<div class="col-md-12">
                                 	<div class="block">
                                     	<h4 class="text-success">UPDATE LABEL MEMBER(FEB-28_29 APPOINTMENT-REQUEST)</h4>
@@ -1840,7 +1840,6 @@
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script type="text/javascript">
-
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 function buildJSONForAppStatus(result){
@@ -2417,6 +2416,7 @@ $(".dropkickClass").dropkick();
 			select.selectOne(result[0].appointmentUserId); */
 	}
 	$(document).on("click",".MngeAppntmntCls",function(){
+		$(".commonDivCls").hide();
 		getLabelDtls("all");
 	});
 	
@@ -2497,7 +2497,7 @@ $(".dropkickClass").dropkick();
 					}
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
-						str+='<button class="btn btn-success btn-xs">VIEW</button>';
+						str+='<button class="btn btn-success btn-xs viewMembersClass">VIEW</button>';
 						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
 						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_id="'+result[i].labelId+'">UPDATE</button>';
 						str+='<button class="btn btn-success btn-xs">STATUS</button>';
@@ -2890,6 +2890,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
   $(document).on("click",".addMembersClass",function(){
 	  appointmentlabelId = '';
 	  appointmentlabelId = $(this).closest("tr").find("td:eq(0)").attr("attr_label_id");
+	  $(".commonDivCls").hide();
+	  $(".searchDivCls").show();
    });
    
    $(document).on("click","#searchAppointmentdetailsId",function(){
@@ -3254,8 +3256,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				}
 				$("#updateAppointmentsForLabelDivId").html(str);
 			});
-	  
+		$(".commonDivCls").hide();
+		$(".appointmentsUpdateDivCls").show();
 	});
+	$(document).on("click",".viewMembersClass",function(){
+		$(".commonDivCls").hide();
+		$(".appointmentsViewDivCls").show();
+	})
 </script>
 </body>
 </html>
