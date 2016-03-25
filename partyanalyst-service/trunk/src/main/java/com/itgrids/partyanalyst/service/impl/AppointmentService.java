@@ -429,9 +429,12 @@ public class AppointmentService implements IAppointmentService{
 		        	}
 		        }
 		    });
-			
+			rs.setExceptionMsg("success");
+			rs.setResultCode(0);
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveAppointment", e);
+			rs.setExceptionMsg("failure");
+			rs.setResultCode(1);
 		}
 		return rs;
 	}
@@ -531,7 +534,7 @@ public class AppointmentService implements IAppointmentService{
 			Date dt = format.parse(date);
 			AppointmentLabel appointmentLabel = new AppointmentLabel();
 			appointmentLabel.setLabelName(labelName);
-			appointmentLabel.setDate(dt);
+			//appointmentLabel.setDate(dt);
 			appointmentLabel.setAppointmentLabelStatusId(1l);
 			appointmentLabel.setIsDeleted("N");
 			appointmentLabel.setInsertedTime(insertedDate);
