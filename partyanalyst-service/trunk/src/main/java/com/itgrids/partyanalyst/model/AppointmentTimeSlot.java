@@ -26,6 +26,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class AppointmentTimeSlot extends BaseModel implements Serializable{
 	
 	private Long appointmentTimeSlotId;
+	private Date date;
 	private Date fromDate;
 	private Date toDate;
 	private String isDeleted;
@@ -121,4 +122,13 @@ public class AppointmentTimeSlot extends BaseModel implements Serializable{
 	public void setAppointmentId(Long appointmentId) {
 		this.appointmentId = appointmentId;
 	}
+	
+	@Column(name="date")
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 }

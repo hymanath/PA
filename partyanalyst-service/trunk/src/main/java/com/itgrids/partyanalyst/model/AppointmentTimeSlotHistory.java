@@ -21,6 +21,7 @@ public class AppointmentTimeSlotHistory extends BaseModel implements Serializabl
 	private Long appointmentTimeSlotHistoryId;
 	private Long appointmentTimeSlotId;
 	private Long appointmentId;
+	private Date date;
 	private Date fromDate;
 	private Date toDate;
 	private String isDeleted;
@@ -110,5 +111,13 @@ public class AppointmentTimeSlotHistory extends BaseModel implements Serializabl
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	@Column(name="date")
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 	
 }
