@@ -465,12 +465,12 @@
                                                 	<h4 class="panel-title text-success">VIEW CREATED APPOINTMENT LABEL</h4>
                                                 </div>
 												<div class="col-md-2">
-													<div class="input-group inputSearch">
+													<!--<div class="input-group inputSearch">
 														<span class="input-group-addon">
 															<i class="glyphicon glyphicon-calendar"></i>
 														</span>
 														<input class="form-control" type="text" id="mngAppntmntsDtPckrId"/>
-													</div>
+													</div>-->
 												</div>
                                                 <div class="col-md-3">
                                                 	<button class="btn btn-success btn-block" id="viewAllAppointmentId">VIEW ALL APPOINTMENT REQUESTS</button>
@@ -1011,7 +1011,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div class="modal fade bs-example-modal-sm" id="createLabelModelId" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-body" style="padding:25px;">
@@ -1599,9 +1599,18 @@ $(".dropkickClass").dropkick();
 			return;
 		}
 		
+		var fromDate='';
+		var toDate='';
+		var dateStr = $("#modalDateId").val(); 
+		if(dateStr !=null && dateStr.length>0){
+			fromDate = dateStr.split("-")[0];
+			toDate = dateStr.split("-")[1];
+		}
+	
 		var jobj = {
 			labelName	:	$("#labelNameId").val(),
-			date		:	$("#modalDateId").val()   
+			fromDate	:	fromDate,
+			toDate		:	toDate		
 		}
 		$.ajax({
 			  type     : "POST",
@@ -1613,6 +1622,7 @@ $(".dropkickClass").dropkick();
 					$("#successDiv").html(result.message).css("color","green");
 					setTimeout(function(){	$("#successDiv").hide(); },3000);
 					$("#labelNameId").val("");
+					$("#createLabelModelId").modal('hide');
 				}
 		  });     
 	});
@@ -1664,11 +1674,11 @@ $(".dropkickClass").dropkick();
 	function getLabelDtls(callType){
 		
 		var slctDate="";
-		if(callType=="all"){
+		/* if(callType=="all"){
 			slctDate="";
 		}else if(callType=="change"){
 			slctDate=$("#mngAppntmntsDtPckrId").val();
-		}
+		} */
 		
 		var appntmntUsrId=$("#appointmentUserSelectBoxId").val();
 		
@@ -1808,7 +1818,7 @@ function showConfirmationBox(){
 	}
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
-$("#modalDateId").daterangepicker({singleDatePicker:true});	
+$("#modalDateId").daterangepicker({singleDatePicker:false});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
 $("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})

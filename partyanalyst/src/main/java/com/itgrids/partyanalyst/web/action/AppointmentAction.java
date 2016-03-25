@@ -307,8 +307,12 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			
 			jObj = new JSONObject(getTask());
 			String labelName = jObj.getString("labelName");
-			String date = jObj.getString("date");
-			resultStatus = appointmentService.createAppointmentLeble(labelName,user.getRegistrationID(),date);
+			/*String date = jObj.getString("date");*/
+			
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			
+			resultStatus = appointmentService.createAppointmentLeble(labelName,user.getRegistrationID(),fromDateStr,toDateStr);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
