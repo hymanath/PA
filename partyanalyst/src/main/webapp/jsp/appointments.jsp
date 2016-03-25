@@ -1512,86 +1512,9 @@
                             <div class="row appointmentsUpdateDivCls commonDivCls" style="display:none;">
                             	<div class="col-md-12">
                                 	<div class="block">
-                                    	<h4 class="text-success">UPDATE LABEL MEMBER(FEB-28_29 APPOINTMENT-REQUEST)</h4>
+                                    	<h4 class="text-success" style="margin-bottom:10px;">UPDATE LABEL MEMBER ( <span id="updateLabelNameSpanId"></span> )</h4>
 										<div id="updateAppointmentsForLabelDivId"></div>
-                                      <!--  <ul class="updateLabelMembers">
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="requestedCheckbox text-danger">
-                                                            Cancelled
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Appt Subject</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label>Update Status</label>
-                                                        <select>
-                                                        	<option>Cancelled</option>
-                                                        </select>
-                                                    </div>
-                                                  <div class="col-md-3">
-                                                        <select class="m_top25">
-                                                        	<option>Tentitive</option>
-                                                            <option>Next 2 weeks</option>
-                                                        </select>
-                                                  </div>
-                                                    <div class="col-md-12">
-                                                   	  <p class="pull-right">Appt Created By: Rakesh &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="message"></p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                             <li>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="requestedCheckbox text-danger">
-                                                            Cancelled
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Appt Subject</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label>Update Status</label>
-                                                        <select>
-                                                        	<option>Cancelled</option>
-                                                        </select>
-                                                    </div>
-                                                  <div class="col-md-3">
-                                                        <select class="m_top25">
-                                                        	<option>Tentitive</option>
-                                                            <option>Next 2 weeks</option>
-                                                        </select>
-                                                  </div>
-                                                    <div class="col-md-12">
-                                                   	  <p class="pull-right">Appt Created By: Rakesh &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="message"></p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <button class="btn btn-success m_top25">UPDATE LABEL</button>
-                                        </ul>-->
-                                    </div>
+                                     </div>
                                 </div>
                             </div>
 						</div>
@@ -2185,13 +2108,27 @@ $(".dropkickClass").dropkick();
 		var uploadHandler = {
 			upload: function(o) {
 				uploadResult = o.responseText;
-				//showStatusEdit(uploadResult,num);
+				console.log(uploadResult);
+				showStatus(uploadResult);
 			}
 		};
 
 		YAHOO.util.Connect.setForm('saveAppointment',true);
 		YAHOO.util.Connect.asyncRequest('POST','appointmentSavingAction.action',uploadHandler);
 	}
+	
+	function showStatus(myResult,num){
+		var result = (String)(myResult);
+		var resultAray = result.split(',');
+		
+		if(result.search('success') != -1){
+			alert("Appointment Created Failed. Please Try Again");
+		}else{
+			alert("Appointment Created Successfully.");
+		}
+			
+	}
+	
 	
 	function showhideLocationBoxes(num){
 		$(".locationCls"+num).css("display","none");
@@ -2503,7 +2440,7 @@ $(".dropkickClass").dropkick();
 					str+='<td>';
 						str+='<button class="btn btn-success btn-xs viewMembersClass">VIEW</button>';
 						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
-						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_id="'+result[i].labelId+'">UPDATE</button>';
+						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">UPDATE</button>';
 						str+='<button class="btn btn-success btn-xs">STATUS</button>';
 						str+='<button class="btn btn-success btn-xs lblDltCls">DELETE</button>';
 					str+='</td>';
@@ -3186,7 +3123,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	});
 	
 	$(document).on("click",".updateLableAppointmentsCls",function(){
-	 
+		$("#updateLabelNameSpanId").text($(this).attr("attr_label_name"));
 		var jsObj={
 			labelId : $(this).attr("attr_label_id")
 		}
@@ -3196,8 +3133,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				var str = ''
 				if(result != null && result.length > 0){
+					var str = ''
 					for(var i in result){
 						str+='<div class="panel panel-default manageAppViewPanelClass">';
 							str+='<div class="panel-body">';
@@ -3256,9 +3193,11 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 							str+='</div>';
 						str+='</div>';
 					}
-					
+					$("#updateAppointmentsForLabelDivId").html(str);
+				}else{
+					$("#updateAppointmentsForLabelDivId").html("<h5>No Data Available.</h5>");
 				}
-				$("#updateAppointmentsForLabelDivId").html(str);
+				
 			});
 		$(".commonDivCls").hide();
 		$(".appointmentsUpdateDivCls").show();
