@@ -93,7 +93,8 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		Query query = getSession().createQuery(" select model.appointment.appointmentId," +
 				"model.appointment.appointmentPriority.appointmentPriorityId,model.appointment.appointmentPriority.priority," +
 				"model.appointment.reason," +
-				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,model1.userId,model1.firstName " +
+				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,model1.userId,model1.firstName," +
+				"model.appointment.insertedTime " +
 				" from LabelAppointment model,User model1 " +
 				" where model.appointmentLabel.appointmentLabelId=:lableId and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
 				" and model.createdBy=model1.userId ");
@@ -211,10 +212,28 @@ public List<Object[]> getLabelAppointmentsForFixedSatus(Date toDayDate,String se
 				" and model.isDeleted = 'N' " +
 				" and ATS.appointmentId = model.appointment.appointmentId ");
 		
-		if(type !=null && type.trim().equalsIgnoreCase("overall")){
+		if(type !=null && !type.isEmpty()){
+			if(toDayDate !=null){
+				if(type !=null && type.trim().equalsIgnoreCase("toDay")){
+					str.append(" and date(ATS.date) = date(:toDayDate) ");
+				}
+				
+				if(searchType !=null && searchType.trim().equalsIgnoreCase("Inprogress")){
+					str.append(" and :toDayDate between ATS.fromDate and ATS.toDate ");
+				}else if(searchType !=null && searchType.trim().equalsIgnoreCase("Upcoming")){
+					str.append(" and ATS.fromDate > :toDayDate  ");
+				}else if(searchType !=null && searchType.trim().equalsIgnoreCase("Completed")){
+					str.append(" and ATS.toDate <  :toDayDate  ");
+				}	
+			}
+			
+		}
+		
+		
+		/*if(type !=null && type.trim().equalsIgnoreCase("overall")){
 			if(toDayDate !=null){
 				if(searchType !=null && searchType.trim().equalsIgnoreCase("Inprogress")){
-					str.append(" and ATS.fromDate  >= :toDayDate and ATS.toDate <= :toDayDate ");
+					str.append(" and :toDayDate between ATS.fromDate and ATS.toDate ");
 				}else if(searchType !=null && searchType.trim().equalsIgnoreCase("Upcoming")){
 					str.append(" and ATS.fromDate > :toDayDate  ");
 				}else if(searchType !=null && searchType.trim().equalsIgnoreCase("Completed")){
@@ -224,14 +243,14 @@ public List<Object[]> getLabelAppointmentsForFixedSatus(Date toDayDate,String se
 		}else{
 			if(toDayDate !=null){
 				if(searchType !=null && searchType.trim().equalsIgnoreCase("Inprogress")){
-					str.append(" and date(ATS.fromDate)  >= :toDayDate and date(ATS.toDate) <= :toDayDate ");
+					str.append(" and :toDayDate between date(ATS.fromDate)  and date(ATS.toDate) ");
 				}else if(searchType !=null && searchType.trim().equalsIgnoreCase("Upcoming")){
 					str.append(" and date(ATS.fromDate) > :toDayDate  ");
 				}else if(searchType !=null && searchType.trim().equalsIgnoreCase("Completed")){
 					str.append(" and date(ATS.toDate) <  :toDayDate  ");
 				}
 			}
-		}
+		}*/
 		
 		str.append(" group by model.appointment.appointmentStatusId ");
 		

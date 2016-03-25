@@ -44,7 +44,6 @@ import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
-import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -54,7 +53,6 @@ import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
-import com.itgrids.partyanalyst.dto.ResultObjectVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
@@ -67,7 +65,6 @@ import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 public class AppointmentService implements IAppointmentService{
 	
@@ -1945,6 +1942,193 @@ public class AppointmentService implements IAppointmentService{
 				e.printStackTrace();
 			}
 		return scheduleType;
+	}
+	
+	//view apointments for label
+	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId){
+		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
+		try {
+			
+			Set<Long> appointmentIds = new HashSet<Long>(0);
+			Set<Long> candidateIds = new HashSet<Long>(0);
+			
+			List<Object[]> statList = appointmentStatusDAO.getAppointmentStatusList();
+			
+			Map<Long,AppointmentDetailsVO> appointmentsMap = null;
+			
+			//List<Object[]>   list = appointmentCandidateRelationDAO.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid);
+			List<Object[]> list = labelAppointmentDAO.getAppointmentsOfALableForUpdate(labelId);
+			if(list !=null && list.size()>0){
+				
+				appointmentsMap = new LinkedHashMap<Long, AppointmentDetailsVO>();
+				
+				for(Object[]  obj: list){
+					AppointmentDetailsVO appointment =new AppointmentDetailsVO();
+					appointment.setAppointmentId(obj[0]!=null?(Long)obj[0]:0l);
+					appointment.setSubject(obj[3]!=null?obj[3].toString():"");
+					appointment.setPriority(obj[2]!=null?obj[2].toString():"");
+					appointment.setStatus(obj[5]!=null?obj[5].toString():"");
+					appointment.setDateString(obj[8]!=null?obj[8].toString():"");
+					appointmentsMap.put(appointment.getAppointmentId(),appointment);
+					
+					//appointmentIds
+					appointmentIds.add(appointment.getAppointmentId());
+				}
+			}
+			
+			
+			List<Long> appointments = null;
+			if(appointmentIds!=null && appointmentIds.size()>0){
+				appointments = new ArrayList<Long>(appointmentIds);
+			}
+			
+			//get dates for appointments.
+			if(appointments!=null && appointments.size()>0){
+				
+				List<Object[]>  apptDateslist = appointmentPreferableDateDAO.getMultipleDatesforAppointments(appointments);
+				if(apptDateslist!=null && apptDateslist.size()>0){
+					for(Object[] obj : apptDateslist){
+						AppointmentDetailsVO   appointmentVO = appointmentsMap.get((Long)obj[0]);
+						if(appointmentVO.getApptpreferableDates()==null){
+							appointmentVO.setApptpreferableDates(obj[1]!=null?obj[1].toString():"");
+						}else{
+							appointmentVO.setApptpreferableDates(appointmentVO.getApptpreferableDates() + " , " + (obj[1]!=null?obj[1].toString():"") );
+						}
+					}
+				}
+			}
+			
+			
+			
+			//appointment related candidates.
+			
+			if(appointments!=null && appointments.size()>0){
+				List<Object[]> candiList = appointmentCandidateRelationDAO.getAppointmentRelatedCandidates(appointments);
+				
+				if(candiList !=null && candiList.size()>0){
+					for(Object[] obj : candiList){
+						AppointmentDetailsVO appointmentVO = appointmentsMap.get((Long)obj[0]);
+						
+						if(appointmentVO!=null){
+							
+							if(appointmentVO.getSubMap()==null){
+								appointmentVO.setSubMap(new HashMap<Long,AppointmentDetailsVO>(0));
+							}
+							AppointmentDetailsVO candidateVO = new AppointmentDetailsVO();
+							candidateVO.setCandidateId(obj[1]!=null?(Long)obj[1]:0l);
+							candidateVO.setName(obj[2]!=null?obj[2].toString():"");
+							if(obj[3]!=null){
+								candidateVO.setCadre(true);
+							}
+							candidateVO.setMobileNo(obj[4]!=null?obj[4].toString():"");
+							candidateVO.setDesignation(obj[5]!=null?obj[5].toString():"");
+							candidateVO.setConstituency(obj[6]!=null?obj[6].toString():"");
+							candidateVO.setStatusList(setStatusList(statList));
+							appointmentVO.getSubMap().put(candidateVO.getCandidateId(),candidateVO);
+							
+							//candidateIds
+							candidateIds.add(candidateVO.getCandidateId());
+						}
+					}
+				}
+			}
+			
+			//candidate prevoius info.
+			List<Long> candidates = null;
+			if(candidateIds!=null && candidateIds.size()>0){
+				candidates = new ArrayList<Long>(candidateIds);
+			}
+			
+			if(candidates!=null && candidates.size()>0){
+				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails(candidates);
+				if(candidPreviousDetails !=null && candidPreviousDetails.size()>0){
+					
+					for(Object[] obj : candidPreviousDetails){
+						
+						Long candidateId  = obj[0]!=null?(Long)obj[0]:0l;
+						Long appointmentId = obj[1]!=null?(Long)obj[1]:0l;
+						Long status      = obj[3]!=null?(Long)obj[3]:0l;
+						
+						if(candidateId != 0l){
+							
+							//set the data to candidate.
+							for (Map.Entry<Long, AppointmentDetailsVO> entry : appointmentsMap.entrySet()) {
+								
+									AppointmentDetailsVO appointmentVO = entry.getValue();
+									
+									if (appointmentVO.getSubMap()!=null && appointmentVO.getSubMap().size()>0){
+											AppointmentDetailsVO candidateVO = appointmentVO.getSubMap().get(candidateId);
+											if(candidateVO !=null){
+											
+												if(!appointmentId.equals(entry.getKey().longValue())){
+													
+													if(candidateVO.getSubList() == null){
+												    	candidateVO.setSubList(new ArrayList<AppointmentDetailsVO>());
+												    }
+													AppointmentDetailsVO apptvo = new AppointmentDetailsVO();
+													apptvo.setAppointmentId(appointmentId);
+													apptvo.setDateString(obj[2]!=null?obj[2].toString():"");
+													apptvo.setStatus(obj[4]!=null?obj[4].toString():"");
+													candidateVO.getSubList().add(apptvo);
+													
+													IdNameVO statusVO = getMatchedVo(candidateVO.getStatusList(),status);
+													if(statusVO!=null){
+														statusVO.setActualCount(statusVO.getActualCount() + 1l);
+													}
+													candidateVO.setRequestCount(candidateVO.getRequestCount()+1l);
+												}
+											}
+									 }
+							  }
+						}
+						
+					}
+				}
+			}
+			
+			//does label has already elements.
+			if (labelId != null && labelId > 0l && appointments!=null && appointments.size()>0){
+				
+				List<Object[]> labelAppointmentsList = labelAppointmentDAO.checkLabelWithAppointment(labelId,appointments);
+				
+				if(labelAppointmentsList!=null && labelAppointmentsList.size()>0){
+					
+					for(Object[] obj : labelAppointmentsList){
+						
+						if(obj[2]!=null){
+							AppointmentDetailsVO appointmentVO = appointmentsMap.get((Long)obj[2]);
+							if(appointmentVO!=null){
+								appointmentVO.setLabeled(true);	
+							}
+						}
+					}
+					
+				}
+				
+			}
+			
+			
+			if(appointmentsMap!=null && appointmentsMap.size()>0){
+				for (Map.Entry<Long, AppointmentDetailsVO> entry : appointmentsMap.entrySet()) {
+					
+					AppointmentDetailsVO appointmentVO = entry.getValue();
+					if(appointmentVO.getSubMap()!=null && appointmentVO.getSubMap().size()>0){
+						appointmentVO.setSubList(new ArrayList<AppointmentDetailsVO>(appointmentVO.getSubMap().values()));
+						appointmentVO.getSubMap().clear();
+					}
+				}
+				
+				finalList.addAll(appointmentsMap.values());
+				appointmentsMap.clear();
+			}
+			
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalList;
 	}
 	
 }
