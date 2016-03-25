@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<LabelStatusVO> labelStatusVOList;
 	private List<AppointmentVO> appointmentVOList;
 	private LabelStatusVO labelStatusVO;
+	private InputStream inputStream;
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -209,6 +212,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 	
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+	
 	public String saveAppointment(){
 		try {
 			final HttpSession session = request.getSession();
@@ -218,6 +229,12 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			}
 			
 			resultStatus = appointmentService.saveAppointment(appointmentVO,user.getRegistrationID());
+			
+			if(resultStatus != null && resultStatus.getExceptionMsg().equalsIgnoreCase("success")){
+				inputStream = new StringBufferInputStream("success");
+			}else{
+	        	 inputStream = new StringBufferInputStream("fail");
+	        }
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveAppointment", e);
