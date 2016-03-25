@@ -1900,17 +1900,17 @@ public class AppointmentService implements IAppointmentService{
 			if (date1.compareTo(date2) < 0)
 			{
 					scheduleType = "Completed";
-			        System.out.println("date1 is before date2");
+			       // System.out.println("date1 is before date2");
 			}
 			else if (date1.compareTo(date2) > 0)
 			{
 				scheduleType = "UpCome";
-			    System.out.println("date1 is after date2");
+			   // System.out.println("date1 is after date2");
 			}
 			else
 			{
 				scheduleType = "InProgress";
-			    System.out.println("date1 is equal to date2");
+			   // System.out.println("date1 is equal to date2");
 			}
 		 } catch (ParseException e) {
 				
