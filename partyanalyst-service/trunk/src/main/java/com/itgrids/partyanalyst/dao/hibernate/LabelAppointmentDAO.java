@@ -22,7 +22,7 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		sb.append(" select model.appointmentLabel.appointmentLabelId,model.appointmentLabel.labelName," +
 				" model.appointmentLabel.appointmentLabelStatus.appointmentLabelStatusId, " +
 				" model.appointmentLabel.appointmentLabelStatus.status, " +
-				" model.appointment.appointmentStatusId,model.appointment.appointmentStatus.status,count(model.appointment.appointmentStatusId) " +
+				" model.appointment.appointmentStatusId,model.appointment.appointmentStatus.status,count(model.appointment.appointmentStatusId),model.appointmentLabel.updatedTime " +
 				" from LabelAppointment model " +
 				" where model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " );
 		if(labelDate != null)

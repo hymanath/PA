@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.model.AppointmentStatus;
@@ -11,6 +12,7 @@ public class LabelStatusVO {
 	private String labelName;
 	private String Status;
 	private Long StatusId;
+	private Date dateTime;
 	
 	private Long totalCount=0l;
 	private List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>(0);
@@ -66,6 +68,12 @@ public class LabelStatusVO {
 	}
 	public void setOverAllStatusList(List<LabelStatusVO> overAllStatusList) {
 		this.overAllStatusList = overAllStatusList;
+	}
+	public Date getDateTime() {
+		return dateTime;
+	}
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
 	}
 	
 	
