@@ -38,4 +38,5 @@ public interface IAppointmentService {
 	public LabelStatusVO getLabelAndStatuswiseCountsOfAppointments();
 	public LabelStatusVO getStatusWiseCountsOfAppointments();
 	public List<AppointmentScheduleVO>  getAppointmentSearchDetails(AppointmentInputVO inputVo);
+	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId);
 }
