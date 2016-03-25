@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
+import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 
 public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<AppointmentCandidateRelation, Long> implements	IAppointmentCandidateRelationDAO {
@@ -105,4 +107,48 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		query.setParameterList("appointmentIds", appointmentIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getAppointmentSearchDetails(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
+	{
+		StringBuffer str = new StringBuffer();
+		str.append("select model.appointmentCandidate.appointmentCandidateId,model.appointmentCandidate.name," +
+				"model.appointmentCandidate.mobileNo, " +
+				"model.appointmentCandidate.candidateDesignation.designation," +
+				"model.appointment.reason,model.appointment.createdUser.userId,model.appointment.createdUser.firstName," +
+				" model.appointment.createdUser.lastName,model1.insertedTime " +
+				" from AppointmentCandidateRelation model,AppointmentTimeSlot model1 " +
+				" where model.appointment.isDeleted='N'" +
+				" and model.appointment.appointmentId = model1.appointment.appointmentId");
+		if(inputVo.getCreatedBy() != null && inputVo.getCreatedBy()  > 0)
+			str.append(" and model.appointment.createdUser.userId = :createdBy");
+		if(inputVo.getName()!= null && !inputVo.getName().isEmpty())
+		{
+			if(searchType.equalsIgnoreCase("name"))
+			str.append(" and model.appointmentCandidate.name like '%"+inputVo.getName()+"%'");
+			else
+				str.append(" and model.appointmentCandidate.mobileNo like '%"+inputVo.getName()+"%'");	
+		}
+		if(inputVo.getUserId() != null && inputVo.getUserId()  > 0)
+			str.append(" and model.appointment.appointmentUser.appointmenUserId =:appointmenUserId");		
+		
+		if(fromDate != null)
+		{
+			str.append(" and date(model.appointment.insertedTime) >=:fromDate and date(model.appointment.insertedTime)<=:toDate");
+		}
+		str.append(" order by model1.insertedTime");
+		Query query = getSession().createQuery(str.toString());
+		if(fromDate != null)
+		{
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(inputVo.getUserId() != null && inputVo.getUserId()  > 0)
+			query.setParameter("appointmenUserId", inputVo.getUserId());
+		if(inputVo.getCreatedBy() != null && inputVo.getCreatedBy()  > 0)
+			query.setParameter("createdBy", inputVo.getCreatedBy());
+		
+		return query.list();
+		
+	}
+	
 }
