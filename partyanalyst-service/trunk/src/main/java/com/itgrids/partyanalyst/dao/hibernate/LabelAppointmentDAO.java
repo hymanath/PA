@@ -261,7 +261,7 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type){
 			"  count(distinct model.appointment.appointmentId) " +
 			" from LabelAppointment model" +
 			" where model.appointment.isDeleted = 'N'" +
-			" and model.appointmentLabel.isDeleted = 'N'" +
+			" " +
 			" and model.isDeleted = 'N' ");
 	
 	
