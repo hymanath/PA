@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 
 public interface IAppointmentCandidateRelationDAO extends GenericDao<AppointmentCandidateRelation, Long> {
@@ -13,4 +15,5 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> getAppointmentRelatedCandidates(List<Long> appointmentIds);
 	public List<Object[]> getCandidatePreviousApptDetails(List<Long> candidateIds);
 	public List<Object[]> getAppointmentCandidateDetails(List<Long> appointmentIds);
+	public List<Object[]> getAppointmentSearchDetails(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType);
 }

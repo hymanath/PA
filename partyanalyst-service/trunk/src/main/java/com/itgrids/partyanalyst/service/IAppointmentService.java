@@ -5,10 +5,13 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
+import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 
 public interface IAppointmentService {
@@ -34,4 +37,5 @@ public interface IAppointmentService {
 	public List<AppointmentVO> getAppointmentsOfALableForUpdate(Long lableId);
 	public LabelStatusVO getLabelAndStatuswiseCountsOfAppointments();
 	public LabelStatusVO getStatusWiseCountsOfAppointments();
+	public List<AppointmentScheduleVO>  getAppointmentSearchDetails(AppointmentInputVO inputVo);
 }

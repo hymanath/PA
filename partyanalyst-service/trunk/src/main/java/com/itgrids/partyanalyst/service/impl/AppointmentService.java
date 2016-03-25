@@ -45,10 +45,13 @@ import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
+import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
+import com.itgrids.partyanalyst.dto.ResultObjectVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
@@ -61,6 +64,7 @@ import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 public class AppointmentService implements IAppointmentService{
 	
@@ -1833,5 +1837,86 @@ public class AppointmentService implements IAppointmentService{
 		return null;
 	}
 	
+	public List<AppointmentScheduleVO> getAppointmentSearchDetails(AppointmentInputVO inputVo)
+	{
+		List<AppointmentScheduleVO> resultList = null;
+		try{
+			
+			String searchType = null;
+			Date strDate = null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			if(inputVo.getStrDate() != null && !inputVo.getStrDate().isEmpty())
+			{
+				strDate = format.parse(inputVo.getStrDate());
+				endDate = format.parse(inputVo.getEndDate());
+			}
+			 if(inputVo.getName() != null && !inputVo.getName().isEmpty())
+			 {
+				 if(inputVo.getName().matches("\\d+"))
+				 searchType = "mobile";
+				 else
+				searchType = "name"; 
+			}
+			 
+				List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentSearchDetails(strDate,endDate,inputVo,searchType);
+				if(list != null && list.size() > 0)
+				{
+					resultList = new ArrayList<AppointmentScheduleVO>();
+					for(Object[] params : list)
+					{
+						AppointmentScheduleVO vo = new AppointmentScheduleVO();
+						if(params[8] != null && !params[8].toString().isEmpty())
+						{
+							Date date= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[8].toString().substring(0, 19));
+							String convertDate = new SimpleDateFormat("hh:mm a").format(date);
+							vo.setScheduleType(getAppointmentSchedule(params[8].toString().substring(0, 19)));
+							vo.setTime(convertDate);
+						}
+						vo.setName(params[1] != null ? params[1].toString() :"");
+						vo.setMobileNo(params[2] != null ? params[2].toString() : "");
+						vo.setSubject(params[4] != null ? params[4].toString() : "");
+						vo.setDesignation(params[3] != null ? params[3].toString() : "");
+						String fname = params[6] != null ? params[6].toString() : "";
+						String lname = params[7] != null ?params[7].toString() : "";
+						vo.setCreatedBy(fname+" "+lname);
+						resultList.add(vo);
+					}
+				}
+			   
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppointmentSearchDetails", e);
+		}
+		return resultList;
+		
+	}
+	public String getAppointmentSchedule(String appointmentDate)
+	{
+		String scheduleType = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		 try {
+			Date date1 = format.parse(appointmentDate);
+			Date date2 = new Date();
+			if (date1.compareTo(date2) < 0)
+			{
+					scheduleType = "Completed";
+			        System.out.println("date1 is before date2");
+			}
+			else if (date1.compareTo(date2) > 0)
+			{
+				scheduleType = "UpCome";
+			    System.out.println("date1 is after date2");
+			}
+			else
+			{
+				scheduleType = "InProgress";
+			    System.out.println("date1 is equal to date2");
+			}
+		 } catch (ParseException e) {
+				
+				e.printStackTrace();
+			}
+		return scheduleType;
+	}
 	
 }
