@@ -14,8 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
-import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
+import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
@@ -54,8 +56,18 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<LabelStatusVO> labelStatusVOList;
 	private List<AppointmentVO> appointmentVOList;
 	private LabelStatusVO labelStatusVO;
+	private List<AppointmentScheduleVO> searchList;
+	
 	private InputStream inputStream;
 	
+	public List<AppointmentScheduleVO> getSearchList() {
+		return searchList;
+	}
+
+	public void setSearchList(List<AppointmentScheduleVO> searchList) {
+		this.searchList = searchList;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -514,6 +526,24 @@ public String getCandidateWiseDetails(){
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAppointmentSearchDetails()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			AppointmentInputVO inputVo = new AppointmentInputVO();
+			inputVo.setCreatedBy(jObj.getLong("createdBy"));
+			inputVo.setUserId(jObj.getLong("appointmentUserId"));
+			inputVo.setName(jObj.getString("searchStr"));
+			inputVo.setStrDate(jObj.getString("strDate"));
+			inputVo.setEndDate(jObj.getString("endDate"));
+			searchList = appointmentService.getAppointmentSearchDetails(inputVo);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentSearchDetails", e);
 		}
 		return Action.SUCCESS;
 	}
