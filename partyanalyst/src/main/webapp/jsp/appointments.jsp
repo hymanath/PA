@@ -568,7 +568,7 @@
                                 </div>
                           </div>
                             <div class="row appointmentsViewDivCls commonDivCls" style="display:none;">
-                            	<div class="col-md-12">
+                            	<!--<div class="col-md-12">
                                 	<div class="block">
                                     	<h4 class="text-success">VIEWING (FEB-27_28 APPOINTMENT-REQUEST) LABEL</h4>
 										<div id="appointmentManage"></div>
@@ -788,7 +788,7 @@
 											</li>
 									  </ul>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="row appointmentsUpdateDivCls commonDivCls" style="display:none;">
                             	<div class="col-md-12">
@@ -1731,7 +1731,7 @@ $(".dropkickClass").dropkick();
 					}
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
-						str+='<button class="btn btn-success btn-xs viewMembersClass">VIEW</button>';
+						str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">VIEW</button>';
 						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
 						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">UPDATE</button>';
 						str+='<button class="btn btn-success btn-xs">STATUS</button>';
@@ -2181,7 +2181,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				
+				$("#appointmentRequestedMembersId").show();
 				if(result!=null && result!=0){
 				  buidResult(result);
 				}else{
@@ -2430,15 +2430,21 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					var str = ''
 					for(var i in result){
 						str+='<div class="panel panel-default manageAppViewPanelClass">';
-							str+='<div class="panel-body">';
+							str+='<div class="panel-heading">';
 								str+='<div class="row">';
 									str+='<div class="col-md-12">';
 										str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
 									str+='</div>';
 								str+='</div>';
+								str+='<p>Subject : '+result[i].reason+'</p>';
+								str+='<p>Priority Type : '+result[i].priority+'</p>';
+								
+							str+='</div>';
+							
+							str+='<div class="panel-body">';
+								
 								str+='<ul class="updateLabelMembers" style="list-style-type: none;">';
-									str+='<p>Subject : '+result[i].reason+'</p>';
-									str+='<p>Priority Type : '+result[i].priority+'</p>';
+									
 									if(result[i].basicInfoList != null && result[i].basicInfoList.length > 0){
 										for(var j in result[i].basicInfoList){
 											str+='<li>';
@@ -2488,17 +2494,143 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					}
 					$("#updateAppointmentsForLabelDivId").html(str);
 				}else{
-					$("#updateAppointmentsForLabelDivId").html("<h5>No Data Available.</h5>");
+					$("#updateAppointmentsForLabelDivId").html("<span style='color:green;font-size:20px'>No Data Available.</span>");
 				}
 				
 			});
 		$(".commonDivCls").hide();
 		$(".appointmentsUpdateDivCls").show();
 	});
+	
 	$(document).on("click",".viewMembersClass",function(){
 		$(".commonDivCls").hide();
-		$(".appointmentsViewDivCls").show();
-	})
+		
+		var labelName = $(this).attr("attr_label_name");
+		
+		var jsObj={
+			labelId : $(this).attr("attr_label_id")
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'viewAppointmentsOfALableAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$(".appointmentsViewDivCls").show();
+			if(result!=null && result!=0){
+			  buildViewResult(result,labelName);
+			}else{
+			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><div><p style='color:green;font-size:20px'>No Data available.</p></div></div></div>");	
+			}
+		});		
+	});
+	
+	function buildViewResult(result,labelName){
+		var i = 0;
+		var str='';
+			str+='<div class="col-md-12">';
+			str+='<div class="block">';
+			str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
+			for(var i in result){
+			
+				str+='<div class="panel panel-default manageAppViewPanelClass">';
+				str+='<div class="panel-heading">';
+				    str+='<div class="row">';
+						str+='<div class="col-md-12">';
+						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
+						str+='</div>';
+					str+='</div>';
+						
+					str+='<p>Subject : '+result[i].subject+'</p>';
+					str+='<p>Priority Type : '+result[i].priority+'</p>';
+					str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					
+				str+='</div>';
+				str+='<div class="panel-body">';
+					for(var j in result[i].subList){
+						str+='<ul class="viewAppointmentRequestedMembers">';
+							str+='<li>';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+										str+='<span class="requestedCheckbox text-success"></span>';
+									str+='</div>';
+									str+='<div class="col-md-6">';
+										str+='<div class="media">';
+											str+='<div class="media-left">';
+												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+											//	str+='<span class="colorStatus green"></span>';
+											str+='</div>';
+											str+='<div class="media-body">';
+												str+='<p>'+result[i].subList[j].name+' - Cadre</p>';
+												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
+												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
+												str+='<p>Last Visit:</p>';
+												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
+											str+='</div>';
+										str+='</div>';
+										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
+										str+='<table class="table table-bordered">';
+											str+='<tr>';
+												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
+												for(var k in result[i].subList[j].statusList){
+													str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+												}
+											str+='</tr>';
+										str+='</table>';
+										if(result[i].apptpreferableDates != null){
+											str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
+											str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+										}
+											
+									str+='</div>';
+									str+='<div class="col-md-6">';
+										str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
+										str+='<table class="table table-bordered m_top10">';
+										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
+											str+='<thead>';
+											str+='<th>Appt Last Requested Date</th>';
+												str+='<th colspan="2">Appt Status</th>';
+												
+											str+='</thead>';
+											str+='<tbody>';
+											
+												for(var l in result[i].subList[j].subList){
+													str+='<tr>';
+													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
+													str+='<td>'+result[i].subList[j].subList[l].status+'</td>';
+													str+='<td> - </td>';
+													str+='</tr>';
+												}
+											}else{
+													str+='<thead>';
+													str+='<th>Appt Last Requested Date</th>';
+													str+='<th colspan="3">Appt Status</th>';
+													str+='</thead>';
+												
+													str+='<tr>';
+													str+='<td  colspan="2"><center>No Data Available</center></td>';
+													str+='</tr>';
+											}
+											
+											str+='</tbody>';
+										str+='</table>';
+									str+='</div>';
+								str+='</div>';
+							str+='</li>';
+						str+='</ul>';
+						}	
+				  str+='</div>';
+				str+='</div>';
+			}
+		
+			str+='</div>';
+			str+='</div>';
+		
+		$(".appointmentsViewDivCls").html(str)  
+	}
+	 
 	function getSearchDetails()
 	{
 		
@@ -2531,96 +2663,97 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	}
 	function buildUpcomingResult(result)
 	{
-var str = '';
-var flag = false;
-str+='<h4 class="text-success">UPCOMING APPOINTMENTS ';
-str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
-str+='</h4>';
-str+='<div class="updateAppointment arrow_box">';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Reschedule';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Cancel';
-str+='</label>';
-str+='<textarea class="form-control m_top10"></textarea>';
-str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
-str+='</div>';
-str+='<ul>';
+		var str = '';
+		var flag = false;
+		str+='<h4 class="text-success">UPCOMING APPOINTMENTS ';
+		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+		str+='</h4>';
+		str+='<div class="updateAppointment arrow_box">';
+		str+='<label class="checkbox-inline">';
+		str+='<input type="checkbox">Reschedule';
+		str+='</label>';
+		str+='<label class="checkbox-inline">';
+		str+='<input type="checkbox">Cancel';
+		str+='</label>';
+		str+='<textarea class="form-control m_top10"></textarea>';
+		str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+		str+='</div>';
+		str+='<ul>';
 		if(result != null)
 		{
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "UpCome")
 				{
-flag = true;
-str+='<li>';
-str+='<p class="font12">';
-str+='<span class="pull-left text-danger"></span>';
-str+='<span class="pull-right text-success">';
-str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-str+='<div class="appointmentSettingsBLock arrow_box">';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Reschedule';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Cancel';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Not Attended';
-str+='</label>';
-str+='<label>Select Location</label>';
-str+='<select>';
-str+='<option>Hyderbad</option>';
-str+='</select>';
-str+='<label>Select Date</label>';
-str+='<div class="input-group inputSearch">';
-str+='<span class="input-group-addon">';
-str+='<i class="glyphicon glyphicon-calendar"></i>';
-str+='<span class="caret"></span>';
-str+='</span>';
-str+='<input type="text" class="form-control">';
-str+='</div>';
-str+='<div class="input-group inputSearch">';
-str+='<span class="input-group-addon">';
-str+='<i class="glyphicon glyphicon-time"></i>';
-str+='<span class="caret"></span>';
-str+='</span>';
-str+='<input type="text" class="form-control">';
-str+='</div>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Send SMS';
-str+='</label>';
-str+='<textarea class="form-control"></textarea>';
-str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
-str+='</div>';
-str+='<div class="media">';
-str+='<div class="media-left">';
-str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
-str+='</div>';
-str+='<div class="media-body">';
-str+='<p>'+result[i].name+'</p>';
-str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
-str+='<p>'+result[i].subject+'</p>';
-str+='</div>';
-str+='</div>';
-str+='<p class="font12 m_top10">';
-str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
-str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
-str+='<div class="messageBlock arrow_box">';
-str+='<textarea class="form-control"></textarea>';
-str+='<button class="btn btn-success btn-block">SEND SMS</button>';
-str+='</div>';
-str+='</li>';
+					flag = true;
+					str+='<li>';
+					str+='<p class="font12">';
+					str+='<span class="pull-left text-danger"></span>';
+					str+='<span class="pull-right text-success">';
+					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+					str+='<div class="appointmentSettingsBLock arrow_box">';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Reschedule';
+					str+='</label>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Cancel';
+					str+='</label>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Not Attended';
+					str+='</label>';
+					str+='<label>Select Location</label>';
+					str+='<select>';
+					str+='<option>Hyderbad</option>';
+					str+='</select>';
+					str+='<label>Select Date</label>';
+					str+='<div class="input-group inputSearch">';
+					str+='<span class="input-group-addon">';
+					str+='<i class="glyphicon glyphicon-calendar"></i>';
+					str+='<span class="caret"></span>';
+					str+='</span>';
+					str+='<input type="text" class="form-control">';
+					str+='</div>';
+					str+='<div class="input-group inputSearch">';
+					str+='<span class="input-group-addon">';
+					str+='<i class="glyphicon glyphicon-time"></i>';
+					str+='<span class="caret"></span>';
+					str+='</span>';
+					str+='<input type="text" class="form-control">';
+					str+='</div>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Send SMS';
+					str+='</label>';
+					str+='<textarea class="form-control"></textarea>';
+					str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
+					str+='</div>';
+					str+='<div class="media">';
+					str+='<div class="media-left">';
+					str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+					str+='</div>';
+					str+='<div class="media-body">';
+					str+='<p>'+result[i].name+'</p>';
+					str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
+					str+='<p>'+result[i].subject+'</p>';
+					str+='</div>';
+					str+='</div>';
+					str+='<p class="font12 m_top10">';
+					str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+					str+='<div class="messageBlock arrow_box">';
+					str+='<textarea class="form-control"></textarea>';
+					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+					str+='</div>';
+					str+='</li>';
 
 				}
 			}
-str+='</ul>';
-	}
+			str+='</ul>';
+		}
 		else
 		{
-		str+='No Data';	
+			str+='No Data';	
 		}
+		
 		if(flag == false)
 		{
 			str+='No Data';	
@@ -2633,94 +2766,95 @@ str+='</ul>';
 	{
 		var str = '';
 		var flag = false;
-str+='<h4 class="text-success">INPROGRESS APPOINTMENTS ';
-str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
-str+='</h4>';
-str+='<div class="updateAppointment arrow_box">';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Reschedule';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Cancel';
-str+='</label>';
-str+='<textarea class="form-control m_top10"></textarea>';
-str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
-str+='</div>';
-str+='<ul>';
+		str+='<h4 class="text-success">INPROGRESS APPOINTMENTS ';
+		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+		str+='</h4>';
+		str+='<div class="updateAppointment arrow_box">';
+		str+='<label class="checkbox-inline">';
+		str+='<input type="checkbox">Reschedule';
+		str+='</label>';
+		str+='<label class="checkbox-inline">';
+		str+='<input type="checkbox">Cancel';
+		str+='</label>';
+		str+='<textarea class="form-control m_top10"></textarea>';
+		str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+		str+='</div>';
+		str+='<ul>';
 		if(result != null)
 		{
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "InProgress")
 				{
-flag = true;
-str+='<li>';
-str+='<p class="font12">';
-str+='<span class="pull-left text-danger"></span>';
-str+='<span class="pull-right text-success">';
-str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-str+='<div class="appointmentSettingsBLock arrow_box">';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Reschedule';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Cancel';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Not Attended';
-str+='</label>';
-str+='<label>Select Location</label>';
-str+='<select>';
-str+='<option>Hyderbad</option>';
-str+='</select>';
-str+='<label>Select Date</label>';
-str+='<div class="input-group inputSearch">';
-str+='<span class="input-group-addon">';
-str+='<i class="glyphicon glyphicon-calendar"></i>';
-str+='<span class="caret"></span>';
-str+='</span>';
-str+='<input type="text" class="form-control">';
-str+='</div>';
-str+='<div class="input-group inputSearch">';
-str+='<span class="input-group-addon">';
-str+='<i class="glyphicon glyphicon-time"></i>';
-str+='<span class="caret"></span>';
-str+='</span>';
-str+='<input type="text" class="form-control">';
-str+='</div>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Send SMS';
-str+='</label>';
-str+='<textarea class="form-control"></textarea>';
-str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
-str+='</div>';
-str+='<div class="media">';
-str+='<div class="media-left">';
-str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
-str+='</div>';
-str+='<div class="media-body">';
-str+='<p>'+result[i].name+'</p>';
-str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
-str+='<p>'+result[i].subject+'</p>';
-str+='</div>';
-str+='</div>';
-str+='<p class="font12 m_top10">';
-str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
-str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
-str+='<div class="messageBlock arrow_box">';
-str+='<textarea class="form-control"></textarea>';
-str+='<button class="btn btn-success btn-block">SEND SMS</button>';
-str+='</div>';
-str+='</li>';
+					flag = true;
+					str+='<li>';
+					str+='<p class="font12">';
+					str+='<span class="pull-left text-danger"></span>';
+					str+='<span class="pull-right text-success">';
+					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+					str+='<div class="appointmentSettingsBLock arrow_box">';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Reschedule';
+					str+='</label>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Cancel';
+					str+='</label>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Not Attended';
+					str+='</label>';
+					str+='<label>Select Location</label>';
+					str+='<select>';
+					str+='<option>Hyderbad</option>';
+					str+='</select>';
+					str+='<label>Select Date</label>';
+					str+='<div class="input-group inputSearch">';
+					str+='<span class="input-group-addon">';
+					str+='<i class="glyphicon glyphicon-calendar"></i>';
+					str+='<span class="caret"></span>';
+					str+='</span>';
+					str+='<input type="text" class="form-control">';
+					str+='</div>';
+					str+='<div class="input-group inputSearch">';
+					str+='<span class="input-group-addon">';
+					str+='<i class="glyphicon glyphicon-time"></i>';
+					str+='<span class="caret"></span>';
+					str+='</span>';
+					str+='<input type="text" class="form-control">';
+					str+='</div>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Send SMS';
+					str+='</label>';
+					str+='<textarea class="form-control"></textarea>';
+					str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
+					str+='</div>';
+					str+='<div class="media">';
+					str+='<div class="media-left">';
+					str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+					str+='</div>';
+					str+='<div class="media-body">';
+					str+='<p>'+result[i].name+'</p>';
+					str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
+					str+='<p>'+result[i].subject+'</p>';
+					str+='</div>';
+					str+='</div>';
+					str+='<p class="font12 m_top10">';
+					str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+					str+='<div class="messageBlock arrow_box">';
+					str+='<textarea class="form-control"></textarea>';
+					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+					str+='</div>';
+					str+='</li>';
 
 				}
 			}
-str+='</ul>';
-	}
+			str+='</ul>';
+		}
 		else
 		{
-		str+='No Data';	
+			str+='No Data';	
 		}
+		
 		if(flag == false)
 		{
 			str+='No Data';	
@@ -2733,94 +2867,95 @@ str+='</ul>';
 	{
 		var str = '';
 		var flag = false;
-str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
-str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
-str+='</h4>';
-str+='<div class="updateAppointment arrow_box">';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Reschedule';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Cancel';
-str+='</label>';
-str+='<textarea class="form-control m_top10"></textarea>';
-str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
-str+='</div>';
-str+='<ul>';
+		str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
+		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+		str+='</h4>';
+		str+='<div class="updateAppointment arrow_box">';
+		str+='<label class="checkbox-inline">';
+		str+='<input type="checkbox">Reschedule';
+		str+='</label>';
+		str+='<label class="checkbox-inline">';
+		str+='<input type="checkbox">Cancel';
+		str+='</label>';
+		str+='<textarea class="form-control m_top10"></textarea>';
+		str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+		str+='</div>';
+		str+='<ul>';
 		if(result != null)
 		{
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "Completed")
 				{
-flag = true;
-str+='<li>';
-str+='<p class="font12">';
-str+='<span class="pull-left text-danger"></span>';
-str+='<span class="pull-right text-success">';
-str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-str+='<div class="appointmentSettingsBLock arrow_box">';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Reschedule';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Cancel';
-str+='</label>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Not Attended';
-str+='</label>';
-str+='<label>Select Location</label>';
-str+='<select>';
-str+='<option>Hyderbad</option>';
-str+='</select>';
-str+='<label>Select Date</label>';
-str+='<div class="input-group inputSearch">';
-str+='<span class="input-group-addon">';
-str+='<i class="glyphicon glyphicon-calendar"></i>';
-str+='<span class="caret"></span>';
-str+='</span>';
-str+='<input type="text" class="form-control">';
-str+='</div>';
-str+='<div class="input-group inputSearch">';
-str+='<span class="input-group-addon">';
-str+='<i class="glyphicon glyphicon-time"></i>';
-str+='<span class="caret"></span>';
-str+='</span>';
-str+='<input type="text" class="form-control">';
-str+='</div>';
-str+='<label class="checkbox-inline">';
-str+='<input type="checkbox">Send SMS';
-str+='</label>';
-str+='<textarea class="form-control"></textarea>';
-str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
-str+='</div>';
-str+='<div class="media">';
-str+='<div class="media-left">';
-str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
-str+='</div>';
-str+='<div class="media-body">';
-str+='<p>'+result[i].name+'</p>';
-str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
-str+='<p>'+result[i].subject+'</p>';
-str+='</div>';
-str+='</div>';
-str+='<p class="font12 m_top10">';
-str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
-str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
-str+='<div class="messageBlock arrow_box">';
-str+='<textarea class="form-control"></textarea>';
-str+='<button class="btn btn-success btn-block">SEND SMS</button>';
-str+='</div>';
-str+='</li>';
+					flag = true;
+					str+='<li>';
+					str+='<p class="font12">';
+					str+='<span class="pull-left text-danger"></span>';
+					str+='<span class="pull-right text-success">';
+					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+					str+='<div class="appointmentSettingsBLock arrow_box">';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Reschedule';
+					str+='</label>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Cancel';
+					str+='</label>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Not Attended';
+					str+='</label>';
+					str+='<label>Select Location</label>';
+					str+='<select>';
+					str+='<option>Hyderbad</option>';
+					str+='</select>';
+					str+='<label>Select Date</label>';
+					str+='<div class="input-group inputSearch">';
+					str+='<span class="input-group-addon">';
+					str+='<i class="glyphicon glyphicon-calendar"></i>';
+					str+='<span class="caret"></span>';
+					str+='</span>';
+					str+='<input type="text" class="form-control">';
+					str+='</div>';
+					str+='<div class="input-group inputSearch">';
+					str+='<span class="input-group-addon">';
+					str+='<i class="glyphicon glyphicon-time"></i>';
+					str+='<span class="caret"></span>';
+					str+='</span>';
+					str+='<input type="text" class="form-control">';
+					str+='</div>';
+					str+='<label class="checkbox-inline">';
+					str+='<input type="checkbox">Send SMS';
+					str+='</label>';
+					str+='<textarea class="form-control"></textarea>';
+					str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
+					str+='</div>';
+					str+='<div class="media">';
+					str+='<div class="media-left">';
+					str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+					str+='</div>';
+					str+='<div class="media-body">';
+					str+='<p>'+result[i].name+'</p>';
+					str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
+					str+='<p>'+result[i].subject+'</p>';
+					str+='</div>';
+					str+='</div>';
+					str+='<p class="font12 m_top10">';
+					str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+					str+='<div class="messageBlock arrow_box">';
+					str+='<textarea class="form-control"></textarea>';
+					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+					str+='</div>';
+					str+='</li>';
 
 				}
 			}
-str+='</ul>';
-	}
+			str+='</ul>';
+		}
 		else
 		{
-		str+='No Data';	
+			str+='No Data';	
 		}
+		
 		if(flag == false)
 		{
 			str+='No Data';	
