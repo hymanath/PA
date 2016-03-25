@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,6 +44,7 @@ import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
+import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -528,17 +531,25 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return appntmntUsrDtlsLst;
 	}
-	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String date){
+	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String fromDateStr,String toDateStr){
 		DateUtilService dateUtilService = new DateUtilService();
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			LOG.info("Entered into createAppointmentLeble() method of AppointmentService");
 			Date insertedDate = dateUtilService.getCurrentDateAndTime();
 			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-			Date dt = format.parse(date);
+			
+			Date fromDate =null;
+			Date toDate =null;
+			if(fromDateStr !=null && toDateStr !=null){
+				fromDate = format.parse(fromDateStr);
+				toDate = format.parse(toDateStr);
+			}
+		
 			AppointmentLabel appointmentLabel = new AppointmentLabel();
 			appointmentLabel.setLabelName(labelName);
-			//appointmentLabel.setDate(dt);
+			appointmentLabel.setLabelFromDate(fromDate);
+			appointmentLabel.setLabelToDate(toDate);			
 			appointmentLabel.setAppointmentLabelStatusId(1l);
 			appointmentLabel.setIsDeleted("N");
 			appointmentLabel.setInsertedTime(insertedDate);
@@ -565,6 +576,8 @@ public class AppointmentService implements IAppointmentService{
 				 date=sdf.parse(slctdDate);
 			}
 			
+			SimpleDateFormat timeDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
 			List<AppointmentStatus> asList = appointmentStatusDAO.getAll();
 			
 			List<Object[]> allLablesObjList = appointmentLabelDAO.getAllLabels(date,appntmntUsrId);
@@ -576,6 +589,7 @@ public class AppointmentService implements IAppointmentService{
 					vo.setLabelName(objects[1].toString());
 					vo.setStatusId((Long)objects[2]);
 					vo.setStatus(objects[3].toString());
+					vo.setDateTime(timeDate.parse(objects[4].toString()));
 					tempMap.put((Long)objects[0], vo);
 					
 					if(asList != null && asList.size()>0){
@@ -603,6 +617,7 @@ public class AppointmentService implements IAppointmentService{
 						vo.setLabelName(objects[1].toString());
 						vo.setStatusId((Long)objects[2]);
 						vo.setStatus(objects[3].toString());
+						vo.setDateTime(timeDate.parse(objects[7].toString()));
 						finalMap.put((Long)objects[0],vo);
 					}
 					
@@ -655,6 +670,10 @@ public class AppointmentService implements IAppointmentService{
 			}*/
 			
 			
+			if(finalVoList !=null && finalVoList.size()>0){
+				Collections.sort(finalVoList,comparedLabelName);
+			}
+			
 			if(finalVoList != null && finalVoList.size() > 0){
 				finalVoList.get(0).setStaticStatusList(asList);
 			}
@@ -663,6 +682,15 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return finalVoList;
 	}
+	
+	public static Comparator<LabelStatusVO> comparedLabelName = new Comparator<LabelStatusVO>()
+			{
+
+				public int compare(LabelStatusVO cstVO1, LabelStatusVO cstVO2)
+				{
+					 return cstVO2.getDateTime().compareTo(cstVO1.getDateTime());
+				}
+			};
 	
 	public LabelStatusVO getMatchedStatusVO(List<LabelStatusVO> voList,Long statusId){
 		if(voList != null && voList.size()>0){

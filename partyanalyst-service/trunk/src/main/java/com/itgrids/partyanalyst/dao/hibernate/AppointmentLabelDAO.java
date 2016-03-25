@@ -45,11 +45,14 @@ public class AppointmentLabelDAO extends GenericDaoHibernate<AppointmentLabel, L
 	public List<Object[]> getAllLabels(Date date,Long userID){
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.appointmentLabelId,model.labelName,model.appointmentLabelStatusId,model.appointmentLabelStatus.status " +
+		sb.append(" select model.appointmentLabelId,model.labelName,model.appointmentLabelStatusId,model.appointmentLabelStatus.status,model.updatedTime " +
 				" from AppointmentLabel model " +
 				" where model.insertedBy=:userID and model.isDeleted='N' ");
 		if(date != null)
-			sb.append(" date(model.updatedTime=:date) ");
+			sb.append(" and date(model.updatedTime=:date) ");
+		
+		sb.append(" order by model.updatedTime desc ");
+		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("userID", userID);
 		if(date != null)

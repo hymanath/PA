@@ -26,8 +26,8 @@ public class AppointmentLabel extends BaseModel {
 	
 	private Long appointmentLabelId; 
 	private String labelName;
-	private Date appointmentFromDate;
-	private Date appointmentToDate;
+	private Date labelFromDate;
+	private Date labelToDate;
 	private Date insertedTime;
 	private Date updatedTime;
 	private Long insertedBy;
@@ -56,19 +56,20 @@ public class AppointmentLabel extends BaseModel {
 	public void setLabelName(String labelName) {
 		this.labelName = labelName;
 	}
-	@Column(name = "appointment_from_date")
-	public Date getAppointmentFromDate() {
-		return appointmentFromDate;
+
+	@Column(name = "label_from_date")
+	public Date getLabelFromDate() {
+		return labelFromDate;
 	}
-	public void setAppointmentFromDate(Date appointmentFromDate) {
-		this.appointmentFromDate = appointmentFromDate;
+	public void setLabelFromDate(Date labelFromDate) {
+		this.labelFromDate = labelFromDate;
 	}
-	@Column(name = "appointment_to_date")
-	public Date getAppointmentToDate() {
-		return appointmentToDate;
+	@Column(name = "label_to_date")
+	public Date getLabelToDate() {
+		return labelToDate;
 	}
-	public void setAppointmentToDate(Date appointmentToDate) {
-		this.appointmentToDate = appointmentToDate;
+	public void setLabelToDate(Date labelToDate) {
+		this.labelToDate = labelToDate;
 	}
 	@Column(name = "inserted_time")
 	public Date getInsertedTime() {
