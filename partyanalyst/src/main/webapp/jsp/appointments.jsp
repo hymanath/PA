@@ -2533,7 +2533,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	{
 var str = '';
 var flag = false;
-str+='<h4 class="text-success">UpCOMING APPOINTMENTS ';
+str+='<h4 class="text-success">UPCOMING APPOINTMENTS ';
 str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
 str+='</h4>';
 str+='<div class="updateAppointment arrow_box">';
