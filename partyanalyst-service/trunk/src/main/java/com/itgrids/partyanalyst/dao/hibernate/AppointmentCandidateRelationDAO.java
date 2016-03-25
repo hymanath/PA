@@ -133,7 +133,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		
 		if(fromDate != null)
 		{
-			str.append(" and date(model.appointment.insertedTime) >=:fromDate and date(model.appointment.insertedTime)<=:toDate");
+			str.append(" and date(model1.fromDate) >=:fromDate and date(model1.toDate)<=:toDate");
 		}
 		str.append(" order by model1.insertedTime");
 		Query query = getSession().createQuery(str.toString());
