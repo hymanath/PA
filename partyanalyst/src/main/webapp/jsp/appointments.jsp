@@ -82,6 +82,7 @@
 	margin-top:10px;
 }
 .prev,.next{width:60px !important;}
+#upcomingAppointments,#inprogreessAppointMentId,#completedAppointMentId {height:36px;}
 </style>
 </head>
 <body>
@@ -147,7 +148,7 @@
 											<div class="col-md-6">
 												<label>Search</label>
 												<div class="input-group inputSearch">
-													<input class="form-control" type="text">
+													<input class="form-control" type="text" id="searchStrId">
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-search"></i>
 													</span>
@@ -155,8 +156,8 @@
 											</div>
 											<div class="col-md-3">
                                             	<label>Appointment Created By</label>
-                                                <select class="dropkickClass">
-                                                	<option>All</option>
+                                                <select class="dropkickClass" id="appointmentcreatedBy">
+                                                	<option value="0">All</option>
                                                 </select>
                                             </div>
 											<div class="col-md-3">
@@ -175,738 +176,18 @@
 							</div>
                             <div class="row">
                             	<div class="col-md-4">
-                                	<div class="upcomingAppointments heightAdjust">
-                                    	<h4 class="text-success">UPCOMING APPOINTMENTS
-                                        <img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">
-                                        </h4>
-                                        <div class="updateAppointment arrow_box">
-                                        	<label class="checkbox-inline">
-                                            	<input type="checkbox">Reschedule
-                                            </label>
-                                            <label class="checkbox-inline">
-                                            	<input type="checkbox">Cancel
-                                            </label>
-                                            <textarea class="form-control m_top10"></textarea>
-                                            <button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>
-                                        </div>
-                                        <ul>
-                                        	<li>
-                                            	<p class="font12">
-													<span class="pull-left text-danger">Cancelled</span>
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                    <label>Select Location</label>
-                                                    <select>
-                                                    	<option>Hyderbad</option>
-                                                    </select>
-                                                    <label>Select Date</label>
-                                                    <div class="input-group inputSearch">
-                                                    	<span class="input-group-addon">
-                                                        	<i class="glyphicon glyphicon-calendar"></i>
-                                                            <span class="caret"></span>
-                                                        </span>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                    <div class="input-group inputSearch">
-                                                    	<span class="input-group-addon">
-                                                        	<i class="glyphicon glyphicon-time"></i>
-                                                            <span class="caret"></span>
-                                                        </span>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Send SMS
-                                                    </label>
-                                                    <textarea class="form-control"></textarea>
-                                                    <button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-													<span class="pull-left text-danger">Rescheduled(29-feb-2016 3:05 AM)</span>
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                	<div class="upcomingAppointments heightAdjust" id="upcomingAppointMentId" >
+                                    
                                     </div>
                                 </div>
-                                <div class="col-md-4 pad_0 ">
-                                	<div class="inprogressAppointments heightAdjust">
-                                    	<h4 class="text-success">INPROGRESS APPOINTMENTS
-                                        <img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">
-                                        </h4>
-                                        <div class="updateAppointment arrow_box">
-                                        	<label class="checkbox-inline">
-                                            	<input type="checkbox">Reschedule
-                                            </label>
-                                            <label class="checkbox-inline">
-                                            	<input type="checkbox">Cancel
-                                            </label>
-                                            <textarea class="form-control m_top10"></textarea>
-                                            <button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>
-                                        </div>
-                                        <ul>
-                                        	<li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                                <div class="appointmentSettingsBLock arrow_box">
-                                                	<label class="checkbox-inline">
-                                                    	<input type="checkbox">Reschedule
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Cancel
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                    	<input type="checkbox">Not Attended
-                                                    </label>
-                                                </div>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-													<button class="btn btn-success btn-block">SEND SMS</button>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                <div class="col-md-4 pad_0 " >
+                                	<div class="inprogressAppointments heightAdjust" id="inprogreessAppointMentId">
+                                    
                                     </div>
                                 </div>
                                 <div class="col-md-4 ">
-                                	<div class="completedAppointments heightAdjust">
-                                    	<h4 class="text-success">COMPLETED APPOINTMENTS
-                                       	 <img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">
-                                        </h4>
-                                        <div class="updateAppointment arrow_box">
-                                        	<label class="checkbox-inline">
-                                            	<input type="checkbox">Reschedule
-                                            </label>
-                                            <label class="checkbox-inline">
-                                            	<input type="checkbox">Cancel
-                                            </label>
-                                            <textarea class="form-control m_top10"></textarea>
-                                            <button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>
-                                        </div>
-                                        <ul>
-                                        	<li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<p class="font12">
-                                                	<span class="pull-right text-success">
-                                                    	<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;2:30 PM &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>
-                                            	<div class="media">
-                                                	<div class="media-left">
-                                                    	<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                    </div>
-                                                    <div class="media-body">
-                                                    	<p>Laxman - Cadre</p>
-                                                        <p>Contact Number: 9848012345</p>
-                                                        <p>Appointment SUB</p>
-                                                    </div>
-                                                </div>
-                                                <p class="font12 m_top10">
-                                                <i>Appt Created By: Rakesh</i>
-                                                <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                <div class="messageBlock arrow_box">
-                                                	<textarea class="form-control"></textarea>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                	<div class="completedAppointments heightAdjust" id="completedAppointMentId">
+                                    	</div>
                                 </div>
                             </div>
 						</div>
@@ -2115,6 +1396,7 @@ $(".dropkickClass").dropkick();
 
 		YAHOO.util.Connect.setForm('saveAppointment',true);
 		YAHOO.util.Connect.asyncRequest('POST','appointmentSavingAction.action',uploadHandler);
+		
 	}
 	
 	function showStatus(myResult,num){
@@ -2351,6 +1633,7 @@ $(".dropkickClass").dropkick();
 		for(var i in result){
 			$("#appointmentUserSelectBoxId").append('<option attr_unique_code="'+result[i].date+'" value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
 		}
+		getSearchDetails();
 		/* $("#appointmentUserSelectBoxId").dropkick();
 			var select = new Dropkick("#appointmentUserSelectBoxId");
 			select.refresh();
@@ -3206,6 +2489,337 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		$(".commonDivCls").hide();
 		$(".appointmentsViewDivCls").show();
 	})
+	function getSearchDetails()
+	{
+		
+		var createdBy =$("#appointmentcreatedBy").val();
+		var appointmentUserId =$("#appointmentUserSelectBoxId").val();
+		
+		var searchStr=$("#searchStrId").val().trim();
+		var date = $("#dashboardSelectDateIds").val().split("-"); 
+		var strDate =date[0];
+		var endDate =date[1];
+		var jsObj={
+			createdBy : createdBy,
+			appointmentUserId:appointmentUserId,
+			searchStr:searchStr,
+			strDate:strDate,
+			endDate:endDate,
+			task:""
+			
+		}
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAppointmentSearchDetailsAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildUpcomingResult(result);
+				buildInprogressResult(result);
+				buildCompletedResult(result);
+			})
+	}
+	function buildUpcomingResult(result)
+	{
+var str = '';
+var flag = false;
+str+='<h4 class="text-success">UpCOMING APPOINTMENTS ';
+str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+str+='</h4>';
+str+='<div class="updateAppointment arrow_box">';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Reschedule';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Cancel';
+str+='</label>';
+str+='<textarea class="form-control m_top10"></textarea>';
+str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+str+='</div>';
+str+='<ul>';
+		if(result != null)
+		{
+			for(var i in result)
+			{
+				if(result[i].scheduleType == "UpCome")
+				{
+flag = true;
+str+='<li>';
+str+='<p class="font12">';
+str+='<span class="pull-left text-danger"></span>';
+str+='<span class="pull-right text-success">';
+str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+str+='<div class="appointmentSettingsBLock arrow_box">';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Reschedule';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Cancel';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Not Attended';
+str+='</label>';
+str+='<label>Select Location</label>';
+str+='<select>';
+str+='<option>Hyderbad</option>';
+str+='</select>';
+str+='<label>Select Date</label>';
+str+='<div class="input-group inputSearch">';
+str+='<span class="input-group-addon">';
+str+='<i class="glyphicon glyphicon-calendar"></i>';
+str+='<span class="caret"></span>';
+str+='</span>';
+str+='<input type="text" class="form-control">';
+str+='</div>';
+str+='<div class="input-group inputSearch">';
+str+='<span class="input-group-addon">';
+str+='<i class="glyphicon glyphicon-time"></i>';
+str+='<span class="caret"></span>';
+str+='</span>';
+str+='<input type="text" class="form-control">';
+str+='</div>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Send SMS';
+str+='</label>';
+str+='<textarea class="form-control"></textarea>';
+str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
+str+='</div>';
+str+='<div class="media">';
+str+='<div class="media-left">';
+str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+str+='</div>';
+str+='<div class="media-body">';
+str+='<p>'+result[i].name+'</p>';
+str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
+str+='<p>'+result[i].subject+'</p>';
+str+='</div>';
+str+='</div>';
+str+='<p class="font12 m_top10">';
+str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+str+='<div class="messageBlock arrow_box">';
+str+='<textarea class="form-control"></textarea>';
+str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+str+='</div>';
+str+='</li>';
+
+				}
+			}
+str+='</ul>';
+	}
+		else
+		{
+		str+='No Data';	
+		}
+		if(flag == false)
+		{
+			str+='No Data';	
+		}
+		$("#upcomingAppointMentId").html(str);
+	}
+	
+	
+	function buildInprogressResult(result)
+	{
+		var str = '';
+		var flag = false;
+str+='<h4 class="text-success">INPROGRESS APPOINTMENTS ';
+str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+str+='</h4>';
+str+='<div class="updateAppointment arrow_box">';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Reschedule';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Cancel';
+str+='</label>';
+str+='<textarea class="form-control m_top10"></textarea>';
+str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+str+='</div>';
+str+='<ul>';
+		if(result != null)
+		{
+			for(var i in result)
+			{
+				if(result[i].scheduleType == "InProgress")
+				{
+flag = true;
+str+='<li>';
+str+='<p class="font12">';
+str+='<span class="pull-left text-danger"></span>';
+str+='<span class="pull-right text-success">';
+str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+str+='<div class="appointmentSettingsBLock arrow_box">';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Reschedule';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Cancel';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Not Attended';
+str+='</label>';
+str+='<label>Select Location</label>';
+str+='<select>';
+str+='<option>Hyderbad</option>';
+str+='</select>';
+str+='<label>Select Date</label>';
+str+='<div class="input-group inputSearch">';
+str+='<span class="input-group-addon">';
+str+='<i class="glyphicon glyphicon-calendar"></i>';
+str+='<span class="caret"></span>';
+str+='</span>';
+str+='<input type="text" class="form-control">';
+str+='</div>';
+str+='<div class="input-group inputSearch">';
+str+='<span class="input-group-addon">';
+str+='<i class="glyphicon glyphicon-time"></i>';
+str+='<span class="caret"></span>';
+str+='</span>';
+str+='<input type="text" class="form-control">';
+str+='</div>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Send SMS';
+str+='</label>';
+str+='<textarea class="form-control"></textarea>';
+str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
+str+='</div>';
+str+='<div class="media">';
+str+='<div class="media-left">';
+str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+str+='</div>';
+str+='<div class="media-body">';
+str+='<p>'+result[i].name+'</p>';
+str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
+str+='<p>'+result[i].subject+'</p>';
+str+='</div>';
+str+='</div>';
+str+='<p class="font12 m_top10">';
+str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+str+='<div class="messageBlock arrow_box">';
+str+='<textarea class="form-control"></textarea>';
+str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+str+='</div>';
+str+='</li>';
+
+				}
+			}
+str+='</ul>';
+	}
+		else
+		{
+		str+='No Data';	
+		}
+		if(flag == false)
+		{
+			str+='No Data';	
+		}
+		$("#inprogreessAppointMentId").html(str);
+	}
+	
+	
+	function buildCompletedResult(result)
+	{
+		var str = '';
+		var flag = false;
+str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
+str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+str+='</h4>';
+str+='<div class="updateAppointment arrow_box">';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Reschedule';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Cancel';
+str+='</label>';
+str+='<textarea class="form-control m_top10"></textarea>';
+str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+str+='</div>';
+str+='<ul>';
+		if(result != null)
+		{
+			for(var i in result)
+			{
+				if(result[i].scheduleType == "Completed")
+				{
+flag = true;
+str+='<li>';
+str+='<p class="font12">';
+str+='<span class="pull-left text-danger"></span>';
+str+='<span class="pull-right text-success">';
+str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+str+='<div class="appointmentSettingsBLock arrow_box">';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Reschedule';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Cancel';
+str+='</label>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Not Attended';
+str+='</label>';
+str+='<label>Select Location</label>';
+str+='<select>';
+str+='<option>Hyderbad</option>';
+str+='</select>';
+str+='<label>Select Date</label>';
+str+='<div class="input-group inputSearch">';
+str+='<span class="input-group-addon">';
+str+='<i class="glyphicon glyphicon-calendar"></i>';
+str+='<span class="caret"></span>';
+str+='</span>';
+str+='<input type="text" class="form-control">';
+str+='</div>';
+str+='<div class="input-group inputSearch">';
+str+='<span class="input-group-addon">';
+str+='<i class="glyphicon glyphicon-time"></i>';
+str+='<span class="caret"></span>';
+str+='</span>';
+str+='<input type="text" class="form-control">';
+str+='</div>';
+str+='<label class="checkbox-inline">';
+str+='<input type="checkbox">Send SMS';
+str+='</label>';
+str+='<textarea class="form-control"></textarea>';
+str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
+str+='</div>';
+str+='<div class="media">';
+str+='<div class="media-left">';
+str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+str+='</div>';
+str+='<div class="media-body">';
+str+='<p>'+result[i].name+'</p>';
+str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
+str+='<p>'+result[i].subject+'</p>';
+str+='</div>';
+str+='</div>';
+str+='<p class="font12 m_top10">';
+str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+str+='<div class="messageBlock arrow_box">';
+str+='<textarea class="form-control"></textarea>';
+str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+str+='</div>';
+str+='</li>';
+
+				}
+			}
+str+='</ul>';
+	}
+		else
+		{
+		str+='No Data';	
+		}
+		if(flag == false)
+		{
+			str+='No Data';	
+		}
+		$("#completedAppointMentId").html(str);
+	}
+</script>
+<script>
+
 </script>
 </body>
 </html>
