@@ -11,4 +11,5 @@ public interface IAppointmentLabelDAO extends GenericDao<AppointmentLabel, Long>
 	
 	public Integer deleteAppointmentLabel(Long appointmentLabelId,String remarks);
 	public List<Object[]> getAllLabels(Date date,Long userID);
+	public List<Object[]> getAppointmentLabels();
 }
