@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
+import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
@@ -56,10 +57,19 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<LabelStatusVO> labelStatusVOList;
 	private List<AppointmentVO> appointmentVOList;
 	private LabelStatusVO labelStatusVO;
+	private AppointmentSlotsVO appointmentSlotsVO;
 	private List<AppointmentScheduleVO> searchList;
 	
 	private InputStream inputStream;
 	
+	public AppointmentSlotsVO getAppointmentSlotsVO() {
+		return appointmentSlotsVO;
+	}
+
+	public void setAppointmentSlotsVO(AppointmentSlotsVO appointmentSlotsVO) {
+		this.appointmentSlotsVO = appointmentSlotsVO;
+	}
+
 	public List<AppointmentScheduleVO> getSearchList() {
 		return searchList;
 	}
@@ -558,6 +568,23 @@ public String getCandidateWiseDetails(){
 			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"));
 		} catch (Exception e) {
 			LOG.error("Exception riased at viewAppointmentsOfALable", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTimeSlotsDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			appointmentSlotsVO = appointmentService.getTimeSlotsDetails(jObj.getLong("appointmentLabelId"));
+		}catch (Exception e) {
+			LOG.error("Exception raised at getTimeSlotsDetails()", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAppointmentLabels(){
+		try {
+			idNameVOList = appointmentService.getAppointmentLabels();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentLabels() method of AppointmentAction", e);
 		}
 		return Action.SUCCESS;
 	}
