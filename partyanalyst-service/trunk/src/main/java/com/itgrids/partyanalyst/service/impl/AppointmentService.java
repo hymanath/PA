@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
+import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
@@ -95,7 +97,6 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
 	private ILabelAppointmentDAO labelAppointmentDAO;
 	private ILabelAppointmentHistoryDAO labelAppointmentHistoryDAO;
-	
 	
 	public IAppointmentPreferableDateDAO getAppointmentPreferableDateDAO() {
 		return appointmentPreferableDateDAO;
@@ -1860,6 +1861,53 @@ public class AppointmentService implements IAppointmentService{
 			LOG.error("Exception raised at getMatchedVoOfStatus", e);
 		}
 		return null;
+	}
+	public AppointmentSlotsVO getTimeSlotsDetails(long appointmentLabelId){
+		AppointmentSlotsVO appointmentSlotsVO = new AppointmentSlotsVO();
+		List<String> timePair = null;
+		List<List<String>> timePairsPerDay = new ArrayList<List<String>>(0);
+		List<List<String>> timePairsPerDay1 = null;
+		Collection<List<List<String>>> listOfTimePairsPerDate=null;
+		List<String> dateList = new ArrayList<String>();
+		Map<String,List<List<String>>> timeSlotsMap = new HashMap<String,List<List<String>>>();
+		String date;
+		
+		try{
+			List<Object[]> list = labelAppointmentDAO.getTimeSlotsDetails(appointmentLabelId);
+			for(Object[] object:list){
+				timePair = new ArrayList<String>(0);
+				timePair.add(object[3].toString());
+				timePair.add(object[4].toString());
+				date = object[2].toString();
+				timePairsPerDay1 = new ArrayList<List<String>>(0);
+				timePairsPerDay1.add(timePair);
+				timePairsPerDay = timeSlotsMap.get(date);
+				if(timePairsPerDay==null){
+					dateList.add(date);
+					timeSlotsMap.put(date, timePairsPerDay1);
+				}else{
+					timePairsPerDay.add(timePair);
+					timeSlotsMap.put(date, timePairsPerDay);
+				}
+			}
+			listOfTimePairsPerDate = new ArrayList<List<List<String>>>();
+			listOfTimePairsPerDate =(Collection<List<List<String>>>) timeSlotsMap.values();
+			appointmentSlotsVO.setDateList(dateList);
+			appointmentSlotsVO.setListOfTimePairPerDate(listOfTimePairsPerDate);
+		}catch(Exception e){
+			LOG.error("Exception raised at getTimeSlotsDetails() method of AppointmentService", e);
+		}
+		return appointmentSlotsVO;
+	}
+	public List<IdNameVO> getAppointmentLabels(){
+		List<IdNameVO> labelList = new ArrayList<IdNameVO>();
+		try{
+			List<Object[]> list=appointmentLabelDAO.getAppointmentLabels();
+			labelList = setDataToVO(list);
+		}catch(Exception e){
+			LOG.error("Exception raised at getTimeSlotsDetails() method of AppointmentService",e);
+		}
+		return labelList;
 	}
 	
 	public List<AppointmentScheduleVO> getAppointmentSearchDetails(AppointmentInputVO inputVo)
