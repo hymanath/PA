@@ -1873,27 +1873,30 @@ public class AppointmentService implements IAppointmentService{
 		String date;
 		
 		try{
+			LOG.info("Entered into getTimeSlotsDetails() method of AppointmentService");
 			List<Object[]> list = labelAppointmentDAO.getTimeSlotsDetails(appointmentLabelId);
-			for(Object[] object:list){
-				timePair = new ArrayList<String>(0);
-				timePair.add(object[3].toString());
-				timePair.add(object[4].toString());
-				date = object[2].toString();
-				timePairsPerDay1 = new ArrayList<List<String>>(0);
-				timePairsPerDay1.add(timePair);
-				timePairsPerDay = timeSlotsMap.get(date);
-				if(timePairsPerDay==null){
-					dateList.add(date);
-					timeSlotsMap.put(date, timePairsPerDay1);
-				}else{
-					timePairsPerDay.add(timePair);
-					timeSlotsMap.put(date, timePairsPerDay);
+			if(list!=null && list.size()>0){
+				for(Object[] object:list){
+					timePair = new ArrayList<String>(0);
+					timePair.add(object[3]!=null?object[3].toString():"");
+					timePair.add(object[4]!=null?object[4].toString():"");
+					date = object[2]!=null?object[2].toString():"";
+					timePairsPerDay1 = new ArrayList<List<String>>(0);
+					timePairsPerDay1.add(timePair);
+					timePairsPerDay = timeSlotsMap.get(date);
+					if(timePairsPerDay==null){
+						dateList.add(date);
+						timeSlotsMap.put(date, timePairsPerDay1);
+					}else{
+						timePairsPerDay.add(timePair);
+						timeSlotsMap.put(date, timePairsPerDay);
+					}
 				}
+				listOfTimePairsPerDate = new ArrayList<List<List<String>>>();
+				listOfTimePairsPerDate =(Collection<List<List<String>>>) timeSlotsMap.values();
+				appointmentSlotsVO.setDateList(dateList);
+				appointmentSlotsVO.setListOfTimePairPerDate(listOfTimePairsPerDate);
 			}
-			listOfTimePairsPerDate = new ArrayList<List<List<String>>>();
-			listOfTimePairsPerDate =(Collection<List<List<String>>>) timeSlotsMap.values();
-			appointmentSlotsVO.setDateList(dateList);
-			appointmentSlotsVO.setListOfTimePairPerDate(listOfTimePairsPerDate);
 		}catch(Exception e){
 			LOG.error("Exception raised at getTimeSlotsDetails() method of AppointmentService", e);
 		}
