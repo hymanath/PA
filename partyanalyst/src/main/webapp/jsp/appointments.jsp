@@ -806,12 +806,13 @@
                                     	<div class="row">
                                         	<div class="col-md-6">
                                             	<label>Select Appointment Label</label>
-                                                <select class="dropkickClass">
+												<div id="timeSlotsErrId" class="text-danger"></div>
+                                                <select class="dropkickClass" id="appointmentLabelToGetSlotsId">
                                                 	<option>Feb-28_29-Appointments</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                            	<button class="btn btn-success btn-block">VIEW</button>
+                                            	<button class="btn btn-success btn-block showTimeSlotsCls" id="showTimeSlotsId">VIEW</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1044,6 +1045,7 @@
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 var flag = false;
@@ -2965,6 +2967,55 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 </script>
 <script>
 
+	//getAppointmentLabelsAction
+	 getAppointmentLabels();
+	function getAppointmentLabels(){
+		$.ajax({
+		type : 'GET',
+		url : 'getAppointmentLabelsAction.action',
+		dataType : 'json',
+		data : {}  
+		}).done(function(result){ 
+		if(result!=null && result!=0){
+			buildAppointmentLabel(result);
+		}
+		
+	});     
+	}
+	function buildAppointmentLabel(result){
+		$("#appointmentLabelToGetSlotsId  option").remove();
+			$("#appointmentLabelToGetSlotsId").append('<option value="0">Select Appointment Status</option>');
+			for(var i in result){
+				$("#appointmentLabelToGetSlotsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#appointmentLabelToGetSlotsId").dropkick();
+			var select = new Dropkick("#appointmentLabelToGetSlotsId");
+			select.refresh();
+	} 
+	$("#showTimeSlotsId").click(function(){
+		$("#timeSlotsErrId").html("");
+		var appointmentLabelId = $("#appointmentLabelToGetSlotsId").val();
+		if(appointmentLabelId==0){
+			$("#timeSlotsErrId").html("please select a label");
+			return;
+		}
+		var jsObj = {
+		appointmentLabelId:appointmentLabelId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getTimeSlotsDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+		if(result != null){
+			
+		}
+		
+	});
+	var user = $("#appointmentUserSelectBoxId").text();
+	//alert(user);
+	});
 </script>
 </body>
 </html>
