@@ -56,7 +56,6 @@ public class AppointmentLabel extends BaseModel {
 	public void setLabelName(String labelName) {
 		this.labelName = labelName;
 	}
-
 	@Column(name = "label_from_date")
 	public Date getLabelFromDate() {
 		return labelFromDate;
