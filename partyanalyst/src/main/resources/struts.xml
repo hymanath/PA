@@ -11695,12 +11695,20 @@
 			<param name="root">searchList</param>
 		</result>
 	</action>
-	
 	<action name="viewAppointmentsOfALableAction" class="appointmentAction" method="viewAppointmentsOfALable">
 		<result type="json" name="success">
 			<param name="root">apptDetailsList</param>
 		</result>
 	</action>
-	
+	<action name="getTimeSlotsDetailsAction" class="appointmentAction" method="getTimeSlotsDetails">
+		<result type="json" name="success">
+			<param name="root">appointmentSlotsVO</param>
+		</result>
+	</action>
+	<action name="getAppointmentLabelsAction" class="appointmentAction" method="getAppointmentLabels">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
