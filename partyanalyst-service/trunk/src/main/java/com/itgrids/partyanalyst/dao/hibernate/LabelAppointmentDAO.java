@@ -302,5 +302,16 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type){
 	}
 	query.setParameterList("statusIds",IConstants.APPOINTMENT_STATUS_IDS);
 	return query.list();
-}
+	}
+	public List<Object[]> getTimeSlotsDetails(Long appointmentLabelId){
+		StringBuilder str = new StringBuilder();
+		str.append("select model.appointmentLabelId, model.appointmentId, model1.date, model1.fromDate, model1.toDate "+
+		" from LabelAppointment model,AppointmentTimeSlot model1 "+
+		" where model.appointmentId = model1.appointmentId and model.appointmentLabelId=:appointmentLabelId "+
+		"order by model1.date");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("appointmentLabelId", appointmentLabelId);
+		return query.list();
+		
+	}
 }

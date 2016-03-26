@@ -59,4 +59,9 @@ public class AppointmentLabelDAO extends GenericDaoHibernate<AppointmentLabel, L
 			query.setParameter("date", date);
 		return query.list();
 	}
+	public List<Object[]> getAppointmentLabels(){
+		Query query = getSession().createQuery("select model.appointmentLabelId,model.labelName from AppointmentLabel model where model.appointmentLabelStatusId=1 and model.isDeleted='N'");
+		return query.list();
+	}
+	
 }
