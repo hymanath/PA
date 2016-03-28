@@ -176,18 +176,17 @@
 							</div>
                             <div class="row">
                             	<div class="col-md-4">
-                                	<div class="upcomingAppointments heightAdjust" id="upcomingAppointMentId" >
+                                	<div id="upcomingAppointMentId" >
                                     
                                     </div>
                                 </div>
                                 <div class="col-md-4 pad_0 " >
-                                	<div class="inprogressAppointments heightAdjust" id="inprogreessAppointMentId">
+                                	<div id="inprogreessAppointMentId">
                                     
                                     </div>
                                 </div>
                                 <div class="col-md-4 ">
-                                	<div class="completedAppointments heightAdjust" id="completedAppointMentId">
-                                    	</div>
+                                	<div id="completedAppointMentId"></div>
                                 </div>
                             </div>
 						</div>
@@ -1100,12 +1099,12 @@ function buildTotalAppointmentStatusForToday(result){
 		$(".appointmentSettingsBLock").hide()
 		$(".messageBlock").hide()		
 		});
-	var maxHeight = 0;
+	/* var maxHeight = 0;
 
 	$(".heightAdjust").each(function(){
 	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 	});
-	$(".heightAdjust").height(maxHeight);
+	$(".heightAdjust").height(maxHeight); */
 
 	$(document).on("click",".settingsIcon",function(e){
 		$(".updateAppointment").hide()
@@ -1738,8 +1737,8 @@ $(".dropkickClass").dropkick();
 						str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">VIEW</button>';
 						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
 						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">UPDATE</button>';
-						str+='<button class="btn btn-success btn-xs labelStatusCls" onclick="getAppointmentsLabelStatus();">STATUS</button>';
-						str+='<button class="btn btn-success btn-xs lblDltCls">DELETE</button>';
+						str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'">STATUS</button>';
+						str+='<button class="btn btn-success btn-xs lblDltCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">DELETE</button>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
@@ -1750,18 +1749,10 @@ $(".dropkickClass").dropkick();
 	var labelId='';
 	var labelName='';
 	$(document).on("click",".lblDltCls",function(){
-	     labelId=$(this).parents("tr").find("td:eq(0)").attr("attr_label_id");
-		 labelName=$(this).parents("tr").find("td:eq(0)").attr("attr_label_name");
+	     labelId=$(this).attr("attr_label_id");
+		 labelName=$(this).attr("attr_label_name");
 		   showConfirmationBox();
 	});
-	var lblStsId='';
-	var lblStsName='';	
-	$(document).on("click",".labelStatusCls",function(){
-	     lblStsId=$(this).parents("tr").find("td:eq(0)").attr("attr_label_id");
-		 lblStsName=$(this).parents("tr").find("td:eq(0)").attr("attr_label_name");
-		 showStatusBox();
-	});
-	
 	
 	$(document).on("click","#dlteLblBttnId",function(){
 	 var isCheckedDelete=$("#dltChckbxMdlId").is(':checked');
@@ -1830,30 +1821,7 @@ function showConfirmationBox(){
 		  $("#myModal").modal("show");
 	}
 	
-function showStatusBox(){
-		 var str='';
-		str+='<div class="modal fade" id="myModalId" role="dialog">';
-		  str+='<div class="modal-dialog modal-sm">';
-				str+='<div class="modal-content">';
-				  str+='<button style="margin-left:260px" type="button" class="btn btn-default" data-dismiss="modal">X</button>';
-				  str+='<div class="modal-body text-center">';
-				  str+='<p class="text-center">'+labelName+'</p>';
-				  str+='<p class="text-center m_top10"><b>Are you sure you want to change label status ?</b></p>';
-				  str+='<p class="text-center text-success m_top10">Current Status - INPROGRESS</p>';
-				 // str+='<label class="checkbox-inline text-center m_top10"><input id="dltChckId" type="checkbox"/>Agree to delete</label>';
-				  str+='<br>';
-				  str+='<div class="m_top10">';
-				str+='<select id="selectStsId" class="form-control" placeholder="Select Status"></select>';
-				  str+='</div>';
-				  str+='<p  style="color:red" id="updateStsErr"></p>';
-				  str+='<input class="btn btn-success btn-block m_top10" type="button" id="updateStsBttnId" value="UPDATE"/>';
-				  str+='</div>';
-				str+='</div>';
-			 str+='</div>';
-		 str+='</div>';
-		  $("#buildAppntmntStsTblId").html(str);
-		  $("#myModalId").modal("show");
-	}
+
 	
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
@@ -2811,6 +2779,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	{
 		var str = '';
 		var flag = false;
+		str+='<div class="upcomingAppointments heightAdjust">';
 		str+='<h4 class="text-success">UPCOMING APPOINTMENTS ';
 		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
 		str+='</h4>';
@@ -2893,7 +2862,6 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 				}
 			}
-			str+='</ul>';
 		}
 		else
 		{
@@ -2904,6 +2872,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		{
 			str+='No Data';	
 		}
+			str+='</ul>';
+		str+='</div>';
 		$("#upcomingAppointMentId").html(str);
 	}
 	
@@ -2912,6 +2882,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	{
 		var str = '';
 		var flag = false;
+		str+='<div class="upcomingAppointments heightAdjust">';
 		str+='<h4 class="text-success">INPROGRESS APPOINTMENTS ';
 		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
 		str+='</h4>';
@@ -2994,7 +2965,6 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 				}
 			}
-			str+='</ul>';
 		}
 		else
 		{
@@ -3005,6 +2975,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		{
 			str+='No Data';	
 		}
+			str+='</ul>';
+		str+='</div>';
 		$("#inprogreessAppointMentId").html(str);
 	}
 	
@@ -3013,6 +2985,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	{
 		var str = '';
 		var flag = false;
+		str+='<div class="upcomingAppointments heightAdjust">';
 		str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
 		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
 		str+='</h4>';
@@ -3095,8 +3068,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 				}
 			}
-			str+='</ul>';
+			
 		}
+			
 		else
 		{
 			str+='No Data';	
@@ -3104,8 +3078,10 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		
 		if(flag == false)
 		{
-			str+='No Data';	
+			str+='<p>No Data</p>';	
 		}
+		str+='</ul>';
+		str+='</div>';
 		$("#completedAppointMentId").html(str);
 	}
 </script>
@@ -3268,8 +3244,37 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		
 		$("#confirmAppointmentsDivId").html(str)  
 	}
-//getAppointmentsLabelStatus()
-function getAppointmentsLabelStatus(){
+	
+	$(document).on("click",".labelStatusCls",function(){
+	     showStatusBox($(this).attr("attr_label_id"),$(this).attr("attr_label_name"),$(this).attr("attr_status"),$(this).attr("attr_status_id"));
+	});
+	
+	function showStatusBox(labelId,labelName,labelStatus,statusId){
+		 var str='';
+		str+='<div class="modal fade" id="myModalId" role="dialog">';
+		  str+='<div class="modal-dialog modal-sm">';
+				str+='<div class="modal-content">';
+				  str+='<button style="margin-left:260px" type="button" class="btn btn-default" data-dismiss="modal">X</button>';
+				  str+='<div class="modal-body text-center">';
+				  str+='<p class="text-center">'+labelName+'</p>';
+				  str+='<p class="text-center m_top10"><b>Are you sure you want to change label status ?</b></p>';
+				  str+='<p class="text-center text-success m_top10">Current Status - '+labelStatus+'</p>';
+				  str+='<br>';
+				  str+='<div class="m_top10">';
+				str+='<select id="selectStsId" class="form-control" placeholder="Select Status"></select>';
+				  str+='</div>';
+				  str+='<p  style="color:red" id="updateStsErr"></p>';
+				  str+='<input class="btn btn-success btn-block m_top10" attr_label_id="'+labelId+'" attr_label_status_id="'+statusId+'" type="button" id="updateStsBttnId" value="UPDATE"/>';
+				  str+='</div>';
+				str+='</div>';
+			 str+='</div>';
+		 str+='</div>';
+		 getAppointmentsLabelStatus();
+		  $("#buildAppntmntStsTblId").html(str);
+		  $("#myModalId").modal("show");
+	}
+	
+	function getAppointmentsLabelStatus(){
 		var jsObj={
 		}
 		$.ajax({
@@ -3278,13 +3283,19 @@ function getAppointmentsLabelStatus(){
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#selectStsId").append('<option value="0">Select Status</option>');
 		if(result!=null && result.length>0){
 			   for(var i in result){
-$("#selectStsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+					$("#selectStsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			   }
 		   }
 		});
-	}	
+	}
+
+	$(document).on("click","#updateStsBttnId",function(){
+		
+	});
+	
 </script>
 </body>
 </html>
