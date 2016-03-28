@@ -42,4 +42,5 @@ public interface IAppointmentService {
 	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId);
 	public AppointmentSlotsVO getTimeSlotsDetails(long appointmentLabelId);
 	public List<IdNameVO> getAppointmentLabels();
+	public List<IdNameVO> getAppointmentsLabelStatus();
 }

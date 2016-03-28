@@ -14,7 +14,7 @@ public class AppointmentLabelStatusDAO extends GenericDaoHibernate<AppointmentLa
 		super(AppointmentLabelStatus.class);
 	}
 	public List<Object[]> getAppmntLblStatusList(){
-		Query query = getSession().createQuery("select model.appointmentLableStatusId, model.status from AppointmentLabelStatus model");
+		Query query = getSession().createQuery("select model.appointmentLabelStatusId, model.status from AppointmentLabelStatus model");
 		return query.list();
 	}
 
