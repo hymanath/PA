@@ -2218,5 +2218,15 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return finalList;
 	}
+public List<IdNameVO> getAppointmentsLabelStatus(){
+			List<IdNameVO> labelList = new ArrayList<IdNameVO>();
+			try{
+				List<Object[]> list=appointmentLabelStatusDAO.getAppmntLblStatusList();
+				labelList = setDataToVO(list);
+			}catch(Exception e){
+				LOG.error("Exception raised at getAppointmentsLabelStatus() method of AppointmentService",e);
+			}
+			return labelList;
+		}
 	
 }
