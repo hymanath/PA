@@ -485,6 +485,7 @@
 											<div id="appntmntLblDltSttsId"></div>
 											<div id="bldCnfrmtnMdlBoxId"></div>
 											<div id="buildAppntmntLblTblId"></div>  
+											<div id="buildAppntmntStsTblId"></div>  
 											</div>
 										</div>
                                   </div>
@@ -1737,7 +1738,7 @@ $(".dropkickClass").dropkick();
 						str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">VIEW</button>';
 						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
 						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">UPDATE</button>';
-						str+='<button class="btn btn-success btn-xs">STATUS</button>';
+						str+='<button class="btn btn-success btn-xs labelStatusCls" onclick="getAppointmentsLabelStatus();">STATUS</button>';
 						str+='<button class="btn btn-success btn-xs lblDltCls">DELETE</button>';
 					str+='</td>';
 			  str+='</tr>';
@@ -1753,6 +1754,15 @@ $(".dropkickClass").dropkick();
 		 labelName=$(this).parents("tr").find("td:eq(0)").attr("attr_label_name");
 		   showConfirmationBox();
 	});
+	var lblStsId='';
+	var lblStsName='';	
+	$(document).on("click",".labelStatusCls",function(){
+	     lblStsId=$(this).parents("tr").find("td:eq(0)").attr("attr_label_id");
+		 lblStsName=$(this).parents("tr").find("td:eq(0)").attr("attr_label_name");
+		 showStatusBox();
+	});
+	
+	
 	$(document).on("click","#dlteLblBttnId",function(){
 	 var isCheckedDelete=$("#dltChckbxMdlId").is(':checked');
 	 var remarks = $("#remarksId").val();
@@ -1819,6 +1829,32 @@ function showConfirmationBox(){
 		  $("#bldCnfrmtnMdlBoxId").html(str);
 		  $("#myModal").modal("show");
 	}
+	
+function showStatusBox(){
+		 var str='';
+		str+='<div class="modal fade" id="myModalId" role="dialog">';
+		  str+='<div class="modal-dialog modal-sm">';
+				str+='<div class="modal-content">';
+				  str+='<button style="margin-left:260px" type="button" class="btn btn-default" data-dismiss="modal">X</button>';
+				  str+='<div class="modal-body text-center">';
+				  str+='<p class="text-center">'+labelName+'</p>';
+				  str+='<p class="text-center m_top10"><b>Are you sure you want to change label status ?</b></p>';
+				  str+='<p class="text-center text-success m_top10">Current Status - INPROGRESS</p>';
+				 // str+='<label class="checkbox-inline text-center m_top10"><input id="dltChckId" type="checkbox"/>Agree to delete</label>';
+				  str+='<br>';
+				  str+='<div class="m_top10">';
+				str+='<select id="selectStsId" class="form-control" placeholder="Select Status"></select>';
+				  str+='</div>';
+				  str+='<p  style="color:red" id="updateStsErr"></p>';
+				  str+='<input class="btn btn-success btn-block m_top10" type="button" id="updateStsBttnId" value="UPDATE"/>';
+				  str+='</div>';
+				str+='</div>';
+			 str+='</div>';
+		 str+='</div>';
+		  $("#buildAppntmntStsTblId").html(str);
+		  $("#myModalId").modal("show");
+	}
+	
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
 $("#modalDateId").daterangepicker({singleDatePicker:false});	
@@ -3177,6 +3213,23 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		
 		$("#confirmAppointmentsDivId").html(str)  
 	}
+//getAppointmentsLabelStatus()
+function getAppointmentsLabelStatus(){
+		var jsObj={
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'getAppointmentsLabelStatusAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+		if(result!=null && result.length>0){
+			   for(var i in result){
+$("#selectStsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			   }
+		   }
+		});
+	}	
 </script>
 </body>
 </html>

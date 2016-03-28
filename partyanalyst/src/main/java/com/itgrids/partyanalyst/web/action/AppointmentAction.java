@@ -589,4 +589,13 @@ public String getCandidateWiseDetails(){
 		return Action.SUCCESS;
 	}
 	
+	public String getAppointmentsLabelStatus(){
+		try {
+			idNameVOList = appointmentService.getAppointmentsLabelStatus();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentsLabelStatus() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
