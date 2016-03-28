@@ -1324,10 +1324,10 @@ $(".dropkickClass").dropkick();
 				$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				$(".cloneDesignationCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
-			 $(".designationListCls").dropkick();
+			 /* $(".designationListCls").dropkick();
 			 var select = new Dropkick("#designationListId");
-			select.refresh(); 
-			
+			select.refresh(); */ 
+			$("#manageAppDesigId").dropkick();
 			var select1 = new Dropkick("#manageAppDesigId");
 			select1.refresh(); 
 			
@@ -1477,9 +1477,9 @@ $(".dropkickClass").dropkick();
 			$("#districtId0").html(str);
 			$(".cloneDistrictCls").html(str);
 			
-			$("#districtId0").dropkick();
+			/* $("#districtId0").dropkick();
 			var select = new Dropkick("#districtId0");
-			select.refresh();
+			select.refresh(); */
 			
 			
 			
