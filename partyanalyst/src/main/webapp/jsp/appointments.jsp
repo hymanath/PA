@@ -2129,6 +2129,18 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	  appointmentlabelId = $(this).closest("tr").find("td:eq(0)").attr("attr_label_id");
 	  $(".commonDivCls").hide();
 	  $(".searchDivCls").show();
+	  
+	  $("#manageAppDesigId").val(0);
+	  $("#manageAppDesigId").dropkick('reset');
+		
+	  $("#manageAppTypeId").val(0);
+	  $("#manageAppTypeId").dropkick('reset');
+	  $("#manageAppStatusId").val(0);
+	  $("#manageAppStatusId").dropkick('reset');
+	  $("#manageAppDistId").val(0);
+	  $("#manageAppDistId").dropkick('reset');
+	  $("#manageAppConstId").val(0);
+	  $("#manageAppConstId").dropkick('reset');
    });
    
    $(document).on("click","#searchAppointmentdetailsId",function(){
@@ -2188,7 +2200,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				if(result!=null && result!=0){
 				  buidResult(result);
 				}else{
-				  $("#appointmentRequestedMembersId").html("<div><p style='color:green;font-size:20px'>No Data available.</p></div>")	
+				  $("#appointmentRequestedMembersId").html("<center><p style='color:green;font-size:20px'>No Data available.</p></center>")	
 				}
 		  }); 
 	 }
@@ -2208,12 +2220,28 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 						}else{
 							str+='<span><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
 						}
-						
-						str+='<p>Subject : '+result[i].subject+'</p>';
-						str+='<p>Priority Type : '+result[i].priority+'</p>';
-						str+='<p>Requested Date : '+result[i].dateString+'</p>';
-						str+='<p>Status : '+result[i].status+'</p>';
-						str+='<p>Requested Dates : '+result[i].apptpreferableDates+'</p>';
+						if(result[i].subject !=null && result[i].subject.length>0){
+							str+='<p>Subject : '+result[i].subject+'</p>';
+						}else{
+							str+='<p>Subject : - </p>';
+						}if(result[i].priority !=null && result[i].priority.length>0){
+							str+='<p>Priority Type : '+result[i].priority+'</p>';
+						}else{
+							str+='<p>Priority Type : - </p>';
+						}if(result[i].dateString !=null && result[i].dateString.length>0){
+							str+='<p>Requested Date : '+result[i].dateString+'</p>';
+						}else{
+							str+='<p>Requested Date : - </p>';
+						}if(result[i].status !=null && result[i].status.length>0){
+							str+='<p>Status : '+result[i].status+'</p>';
+						}else{
+							str+='<p>Status : - </p>';
+						}if(result[i].apptpreferableDates !=null && result[i].apptpreferableDates.length>0){
+							str+='<p>Requested Dates : '+result[i].apptpreferableDates+'</p>';
+						}else{
+							str+='<p>Requested Dates : - </p>';
+						}
+					
 				str+='</div>';
 				  str+='<div class="panel-body">';
 					for(var j in result[i].subList){
@@ -2230,12 +2258,25 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
+											if(result[i].subList[j].cadre == true){
 												str+='<p>'+result[i].subList[j].name+' - Cadre</p>';
+											}else{
+												str+='<p>'+result[i].subList[j].name+'</p>';
+											}if(result[i].subList[j].mobileNo != null && result[i].subList[j].mobileNo.length>0){
 												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+											}else{
+												str+='<p>Contact Number: - </p>';
+											}if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
+											}else{
+												str+='<p>Designation: - </p>';
+											}if(result[i].subList[j].constituency !=null &&  result[i].subList[j].constituency.length>0){
 												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
-												str+='<p>Last Visit:</p>';
-												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
+											}else{
+												str+='<p>Constituency : - </p>';
+											}
+											str+='<p>Last Visit: - </p>';	
+											//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
 											str+='</div>';
 										str+='</div>';
 										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
@@ -2327,13 +2368,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				if(result!=null && result!=0){
 				  if(result.resultCode == 1){
 					   setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Appointments Added To Label Successfully</h4></center>").fadeOut(2000);
-						}, 5000);
+						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Appointments Added To Label Successfully</h4></center>").fadeOut(6000);
+						}, 500);
 				  }
 				}else{
 					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Updation Failed..Try Later</h4></center>").fadeOut(2000);
-						}, 5000);
+						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Updation Failed..Try Later</h4></center>").fadeOut(6000);
+						}, 500);
 					
 				 }
 		  }); 
@@ -2524,7 +2565,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			if(result!=null && result!=0){
 			  buildViewResult(result,labelName);
 			}else{
-			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><div><p style='color:green;font-size:20px'>No Data available.</p></div></div></div>");	
+			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
 			}
 		});		
 	});
@@ -2544,10 +2585,19 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
 						str+='</div>';
 					str+='</div>';
-						
-					str+='<p>Subject : '+result[i].subject+'</p>';
-					str+='<p>Priority Type : '+result[i].priority+'</p>';
-					str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					if(result[i].subject !=null && result[i].subject.length>0){
+						str+='<p>Subject : '+result[i].subject+'</p>';
+					}else{
+						str+='<p>Subject : - </p>';
+					}if(result[i].priority !=null && result[i].priority.length>0){
+						str+='<p>Priority Type : '+result[i].priority+'</p>';
+					}else{
+						str+='<p>Priority Type : - </p>';
+					}if(result[i].dateString !=null && result[i].dateString.length>0){
+						str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					}else{
+						str+='<p>Requested Date : - </p>';
+					}	
 					
 				str+='</div>';
 				str+='<div class="panel-body">';
@@ -2565,10 +2615,24 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
+											if(result[i].subList[j].cadre == true){
 												str+='<p>'+result[i].subList[j].name+' - Cadre</p>';
-												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+											}else{
+												str+='<p>'+result[i].subList[j].name+' </p>';
+											}if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
+													str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+											}else{
+													str+='<p>Contact Number: - </p>';
+											}if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
+											}else{
+												str+='<p>Designation: - </p>';
+											}if(result[i].subList[j].constituency !=null && result[i].subList[j].constituency.length>0){
 												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
+											}else{
+												str+='<p>Constituency : - </p>';
+											}
+												
 												str+='<p>Last Visit:</p>';
 												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
 											str+='</div>';
@@ -2585,6 +2649,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 										if(result[i].apptpreferableDates != null){
 											str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
 											str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+										}else{
+											str+='<p><span> - </span></p>';
 										}
 											
 									str+='</div>';
