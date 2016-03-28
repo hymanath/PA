@@ -2221,7 +2221,7 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return finalList;
 	}
-public List<IdNameVO> getAppointmentsLabelStatus(){
+	 public List<IdNameVO> getAppointmentsLabelStatus(){
 			List<IdNameVO> labelList = new ArrayList<IdNameVO>();
 			try{
 				List<Object[]> list=appointmentLabelStatusDAO.getAppmntLblStatusList();
@@ -2231,5 +2231,23 @@ public List<IdNameVO> getAppointmentsLabelStatus(){
 			}
 			return labelList;
 		}
-	
+	 
+
+	 public ResultStatus updateAppointmentsLabelStatus(Long labelId,Long labelstatusId) {
+		   
+			ResultStatus status=new ResultStatus();
+			try{
+				
+				 Integer updateCount=appointmentLabelDAO.updateAppointmentsLabelStatus(labelId,labelstatusId);	
+				 if(updateCount!=null && updateCount>0){
+					 status.setMessage("success");
+				 }else{
+					 status.setMessage("fail");
+				 }
+				
+			}catch(Exception e){
+				LOG.error("Exception raised at updateAppointmentsLabelStatus() method of AppointmentService", e);
+			}
+			return status;
+		}
 }
