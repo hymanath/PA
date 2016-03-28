@@ -11715,5 +11715,10 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="updateAppointmentsLabelStatusAction" class="appointmentAction" method="updateAppointmentsLabelStatus">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
 </package>
 </struts>      

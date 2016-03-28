@@ -3283,13 +3283,16 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				  str+='<div class="modal-body text-center">';
 				  str+='<p class="text-center">'+labelName+'</p>';
 				  str+='<p class="text-center m_top10"><b>Are you sure you want to change label status ?</b></p>';
-				  str+='<p class="text-center text-success m_top10">Current Status - '+labelStatus+'</p>';
+				  str+='<p class="text-center text-success m_top10" >Current Status - '+labelStatus+'</p>';
 				  str+='<br>';
 				  str+='<div class="m_top10">';
 				str+='<select id="selectStsId" class="form-control" placeholder="Select Status"></select>';
 				  str+='</div>';
 				  str+='<p  style="color:red" id="updateStsErr"></p>';
 				  str+='<input class="btn btn-success btn-block m_top10" attr_label_id="'+labelId+'" attr_label_status_id="'+statusId+'" type="button" id="updateStsBttnId" value="UPDATE"/>';
+				   str+='<div class="m_top10">';
+				  str+='<p id="updateStatusMsg"></p>';
+				  str+='</div>';
 				  str+='</div>';
 				str+='</div>';
 			 str+='</div>';
@@ -3319,7 +3322,49 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 	$(document).on("click","#updateStsBttnId",function(){
 		
+		var labelId = $("#updateStsBttnId").attr("attr_label_id");
+		var attrlabelstatusId = $("#updateStsBttnId").attr("attr_label_status_id");
+		var labelstatusId = $("#selectStsId").val();
+		if(attrlabelstatusId == labelstatusId){
+			alert("Both Status are Same.,Please Select Another Status");
+		}else{
+			updateAppointmentsLabelStatus(labelId,labelstatusId);
+			
+		}
+		
 	});
+	function updateAppointmentsLabelStatus(labelId,labelstatusId){
+		
+		var labelId = $("#updateStsBttnId").attr("attr_label_id");
+		var labelstatusId = $("#selectStsId").val();
+		
+		var jsObj={
+				labelId:labelId,   
+				labelstatusId:labelstatusId
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'updateAppointmentsLabelStatusAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result!=null && result!=0){
+				  if(result.message=="success"){
+					  setTimeout(function () {
+						$("#updateStatusMsg").html("<center><h4 style='color: green;'>Status Updated Successfully</h4></center>").fadeOut(3000);
+						}, 500);
+						setTimeout(function () {
+						$("#myModalId").modal("hide");
+						}, 4000);
+				  }
+				}else{
+					setTimeout(function () {
+						$("#updateStatusMsg").html("<center><h4 style='color: green;'>Updation Failed..Try Later</h4></center>").fadeOut(3000);
+						}, 500);
+					
+				 }
+		});
+	}
 	
 </script>
 </body>
