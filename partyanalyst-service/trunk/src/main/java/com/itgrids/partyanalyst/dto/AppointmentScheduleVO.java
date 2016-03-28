@@ -11,11 +11,18 @@ private String appointmentStatus;
 private String scheduleType;
 private String designation;
 private String createdBy;
+private Long statusId;
 
 
 
 
 
+public Long getStatusId() {
+	return statusId;
+}
+public void setStatusId(Long statusId) {
+	this.statusId = statusId;
+}
 public String getCreatedBy() {
 	return createdBy;
 }
