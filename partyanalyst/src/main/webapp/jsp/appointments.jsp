@@ -2319,9 +2319,25 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 										str+='<table class="table table-bordered">';
 											str+='<tr>';
 												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
+												
+												var confirmedCount=0;
+												
 												for(var k in result[i].subList[j].statusList){
-													str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+													
+													if(result[i].subList[j].statusList[k].id==2 || result[i].subList[j].statusList[k].id ==3){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														
+													}
+													else if(result[i].subList[j].statusList[k].id==4){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														str+='<td><h4>'+confirmedCount+'</h4><p> Confirmed </p></td>';
+														
+													}
+													else{
+														str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+													}
 												}
+												
 											str+='</tr>';
 										str+='</table>';
 										//str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
@@ -2362,7 +2378,14 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 								str+='</div>';
 							str+='</li>';
 						str+='</ul>';
-						}	
+						}
+						if(result[i].apptpreferableDates != null){
+							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+						}else{
+							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+							str+='<p><span> - </span></p>';
+						}						
 				  str+='</div>';
 				str+='</div>';
 			
@@ -2677,17 +2700,28 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 										str+='<table class="table table-bordered">';
 											str+='<tr>';
 												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
+												
+												var confirmedCount=0;
+												
 												for(var k in result[i].subList[j].statusList){
-													str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+													
+													if(result[i].subList[j].statusList[k].id==2 || result[i].subList[j].statusList[k].id ==3){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														
+													}
+													else if(result[i].subList[j].statusList[k].id==4){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														str+='<td><h4>'+confirmedCount+'</h4><p> Confirmed </p></td>';
+														
+													}
+													else{
+														str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+													}
 												}
+												
 											str+='</tr>';
 										str+='</table>';
-										if(result[i].apptpreferableDates != null){
-											str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
-											str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
-										}else{
-											str+='<p><span> - </span></p>';
-										}
+										
 											
 									str+='</div>';
 									str+='<div class="col-md-6">';
@@ -2726,6 +2760,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 							str+='</li>';
 						str+='</ul>';
 						}	
+						if(result[i].apptpreferableDates != null){
+							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+						}else{
+							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+							str+='<p><span> - </span></p>';
+						}
 				  str+='</div>';
 				str+='</div>';
 			}
@@ -3189,8 +3230,22 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 										str+='<table class="table table-bordered">';
 											str+='<tr>';
 												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
+												var confirmedCount=0;
+												
 												for(var k in result[i].subList[j].statusList){
-													str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+													
+													if(result[i].subList[j].statusList[k].id==2 || result[i].subList[j].statusList[k].id ==3){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														
+													}
+													else if(result[i].subList[j].statusList[k].id==4){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														str+='<td><h4>'+confirmedCount+'</h4><p> Confirmed </p></td>';
+														
+													}
+													else{
+														str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+													}
 												}
 											str+='</tr>';
 										str+='</table>';
