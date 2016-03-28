@@ -2250,4 +2250,22 @@ public class AppointmentService implements IAppointmentService{
 			}
 			return status;
 		}
+	 
+	 	public ResultStatus updateMemberAppointmentsStatus(Long memberAppntId,Long updateAppntStatusId) {
+		   
+			ResultStatus status=new ResultStatus();
+			try{
+				
+				 Integer updateCount=appointmentLabelDAO.updateMemberAppointmentsStatus(memberAppntId,updateAppntStatusId);	
+				 if(updateCount!=null && updateCount>0){
+					 status.setMessage("success");
+				 }else{
+					 status.setMessage("fail");
+				 }
+				
+			}catch(Exception e){
+				LOG.error("Exception raised at updateAppointmentsLabelStatus() method of AppointmentService", e);
+			}
+			return status;
+		}
 }

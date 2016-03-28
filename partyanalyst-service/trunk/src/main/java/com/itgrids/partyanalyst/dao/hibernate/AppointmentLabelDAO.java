@@ -70,4 +70,11 @@ public class AppointmentLabelDAO extends GenericDaoHibernate<AppointmentLabel, L
 	    query.setParameter("labelstatusId", labelstatusId);
 	 	return  query.executeUpdate();
 	 }
+	
+	public Integer updateMemberAppointmentsStatus(Long memberAppntId,Long updateAppntStatusId){
+		Query query=getSession().createQuery("update Appointment model set model.appointmentStatusId=:updateAppntStatusId where model.appointmentId=:memberAppntId");
+	    query.setParameter("memberAppntId", memberAppntId);
+	    query.setParameter("updateAppntStatusId", updateAppntStatusId);
+	 	return  query.executeUpdate();
+	 }
 }
