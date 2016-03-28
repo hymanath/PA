@@ -217,8 +217,9 @@
 												</select>
 											</div>
                                             <div class="col-md-4 pad_0">
-                                            	<label>Search By Membership No/ Phone No/ Voter ID</label>
+                                            	<label>Search By Membership No/ Phone No/ Voter ID<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="searchValueId">
+												<span id="errDigitsId" class="full-right" style="color:red;"></span>
                                             </div>
                                             <div class="col-md-2 pad_left0">
                                             	<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
@@ -510,7 +511,7 @@
 													<button class="btn btn-success btn-block">SEARCH</button>
 												</div>-->
 												<div class="col-md-2 col-md-offset-10">
-													<button class="btn btn-success btn-block">EXPORT TO EXCEL</button>
+					                               <input type="button" value="Export to Excel" onClick="generateToExcel()" class="btn btn-success pull-right"/>
 												</div>
 											</div>
                                         	<div class="table-responsive m_top10">
@@ -1984,9 +1985,31 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
   });
   
   
-  $(document).on("click",".getDetailsBySrch",function(){
-		getAppntmntSearchDetails();
-		$(".addattrid").hide();
+	$(document).on("click",".getDetailsBySrch",function(){
+		if($("#searchTypeId").val()==0){
+			 $("#errDigitsId").html("Please Select Mobile Number Or VoterCardNo or MemberShipId");
+			return;
+		}else if($("#searchValueId").val().trim()=="" || $("#searchValueId").val().trim()==null){
+			 $("#errDigitsId").html("plase Enter Valid MobileNumber"); 
+			return;
+		}
+		else if($("#searchTypeId").val()=="mobileno"){
+			var searchValue=$("#searchValueId").val();
+		      var digits=/^(\+\d{1,3}[- ]?)?\d{10}$/;
+			
+			if(searchValue == null || searchValue.length==0 || searchValue.length == ""){
+				 $("#errDigitsId").html("Please Enter 10 Digits."); 
+				return;
+			
+			}else if($("#searchValueId").val().trim().length<10){
+				$("#errDigitsId").html("Mobile Number Should be 10 Digits");
+				return;
+			}else{
+				getAppntmntSearchDetails();
+				$(".addattrid").hide();
+			}
+		}
+		$("#errDigitsId").html(" ");
 	}); 
 	function getAppntmntSearchDetails(){
 	  
@@ -3366,6 +3389,25 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		});
 	}
 	
+</script>
+<script>
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+function generateToExcel()
+{	
+	tableToExcel('allMemberTableId', 'Users Report');
+	
+}
 </script>
 </body>
 </html>
