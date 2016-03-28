@@ -820,7 +820,8 @@
 							</div>
                             <div class="row">
                             	<div class="col-md-4">
-                                	<div class="block">
+								<div id="confirmAppointmentsDivId"></div>
+                                	<!--<div class="block">
                                     	<ul class="confirmAppointments">
                                         	<li>
                                             	<div class="row">
@@ -910,7 +911,7 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="col-md-8">
                                 	<div class="block">
@@ -2994,28 +2995,122 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	} 
 	$("#showTimeSlotsId").click(function(){
 		$("#timeSlotsErrId").html("");
+		//get appointments of a lable
+		getAppointmentsOfALabel();
 		var appointmentLabelId = $("#appointmentLabelToGetSlotsId").val();
 		if(appointmentLabelId==0){
 			$("#timeSlotsErrId").html("please select a label");
 			return;
 		}
 		var jsObj = {
-		appointmentLabelId:appointmentLabelId
-	}
-	$.ajax({
-		type : 'GET',
-		url : 'getTimeSlotsDetailsAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}  
-	}).done(function(result){ 
-		if(result != null){
+			appointmentLabelId:appointmentLabelId
+		}
+		$.ajax({
+			type : 'GET',
+			url : 'getTimeSlotsDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){ 
+			if(result != null){
+				
+			}
 			
+		});
+		var user = $("#appointmentUserSelectBoxId").text();
+		//alert(user);
+	});
+	
+	function getAppointmentsOfALabel(){
+		var jsObj={
+			labelId : $("#appointmentLabelToGetSlotsId").val()
 		}
 		
-	});
-	var user = $("#appointmentUserSelectBoxId").text();
-	//alert(user);
-	});
+		$.ajax({
+			type : 'POST',
+			url : 'viewAppointmentsOfALableAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result!=null && result!=0){
+			  buildLabelResult(result,labelName);
+			}else{
+			  $("#confirmAppointmentsDivId").html("<div class='col-md-12'><div class='block'><div><p style='color:green;font-size:20px'>No Data available.</p></div></div></div>");	
+			}
+		});
+	}
+	
+	function buildLabelResult(result,labelName){
+		var i = 0;
+		var str='';
+			str+='<div class="col-md-12">';
+			str+='<div class="block">';
+			//str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
+			for(var i in result){
+			
+				str+='<div class="panel panel-default manageAppViewPanelClass">';
+				str+='<div class="panel-heading">';
+				    str+='<div class="row">';
+						str+='<div class="col-md-12">';
+						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
+						str+='</div>';
+					str+='</div>';
+						
+					str+='<p>Subject : '+result[i].subject+'</p>';
+					str+='<p>Priority Type : '+result[i].priority+'</p>';
+					str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					
+				str+='</div>';
+				str+='<div class="panel-body">';
+					for(var j in result[i].subList){
+						str+='<ul class="viewAppointmentRequestedMembers">';
+							str+='<li>';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+										str+='<span class="requestedCheckbox text-success"></span>';
+									str+='</div>';
+									str+='<div class="col-md-12">';
+										str+='<div class="media">';
+											str+='<div class="media-left">';
+												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+											//	str+='<span class="colorStatus green"></span>';
+											str+='</div>';
+											str+='<div class="media-body">';
+												str+='<p>'+result[i].subList[j].name+' - Cadre</p>';
+												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
+												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
+												str+='<p>Last Visit:</p>';
+												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
+											str+='</div>';
+										str+='</div>';
+										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
+										str+='<table class="table table-bordered">';
+											str+='<tr>';
+												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
+												for(var k in result[i].subList[j].statusList){
+													str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+												}
+											str+='</tr>';
+										str+='</table>';
+										if(result[i].apptpreferableDates != null){
+											str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
+											str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+										}
+											
+									str+='</div>';
+								str+='</div>';
+							str+='</li>';
+						str+='</ul>';
+						}	
+				  str+='</div>';
+				str+='</div>';
+			}
+		
+			str+='</div>';
+			str+='</div>';
+		
+		$("#confirmAppointmentsDivId").html(str)  
+	}
 </script>
 </body>
 </html>
