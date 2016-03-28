@@ -2789,7 +2789,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		
 		str+='<div class="updateAppointment arrow_box">';
 		str+='<label class="checkbox-inline">';
-		str+='<input type="checkbox">Reschedule';
+		str+='<input type="checkbox" class="">Reschedule';
 		str+='</label>';
 		str+='<label class="checkbox-inline">';
 		str+='<input type="checkbox">Cancel';
@@ -2812,32 +2812,32 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 					str+='<div class="appointmentSettingsBLock arrow_box">';
 					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Reschedule';
+					str+='<input type="checkbox" value="5" class="upcomeStatus">Reschedule';
 					str+='</label>';
 					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Cancel';
+					str+='<input type="checkbox" value="3"  class="upcomeStatus">Cancel';
 					str+='</label>';
 					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Not Attended';
+					str+='<input type="checkbox" value="4"  class="upcomeStatus">Not Attended';
 					str+='</label>';
 					str+='<label>Select Location</label>';
-					str+='<select>';
+					str+='<select class="form-control">';
 					str+='<option>Hyderbad</option>';
 					str+='</select>';
-					str+='<label>Select Date</label>';
-					str+='<div class="input-group inputSearch">';
+					str+='<label class="upcomedateCls1">Select Date</label>';
+					str+='<div class="input-group inputSearch upcomedateCls1">';
 					str+='<span class="input-group-addon">';
 					str+='<i class="glyphicon glyphicon-calendar"></i>';
 					str+='<span class="caret"></span>';
 					str+='</span>';
-					str+='<input type="text" class="form-control">';
+					str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
 					str+='</div>';
-					str+='<div class="input-group inputSearch">';
+					str+='<div class="input-group inputSearch upcomedateCls1">';
 					str+='<span class="input-group-addon">';
 					str+='<i class="glyphicon glyphicon-time"></i>';
 					str+='<span class="caret"></span>';
 					str+='</span>';
-					str+='<input type="text" class="form-control">';
+					str+='<input type="text" class="form-control upcometimeCls">';
 					str+='</div>';
 					str+='<label class="checkbox-inline">';
 					str+='<input type="checkbox">Send SMS';
@@ -2881,8 +2881,20 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		$("#upcomingAppointMentId").html(str);
 		if(!flag)
 		$(".upcomingSetting").hide();
-	}
+	$(".upcomedateCls").daterangepicker({singleDatePicker:true});
+	$(".upcometimeCls").datetimepicker({format: "LT"});
 	
+	}
+	$(document).on("click",".upcomeStatus",function(){
+		var val = $(this).val();
+		$(".upcomeStatus").prop("checked",false);
+		$(this).prop("checked",true);
+		if(val == 5)
+			$(".upcomedateCls1").show();
+		else
+				$(".upcomedateCls1").hide();
+		
+	});
 	
 	function buildInprogressResult(result)
 	{
