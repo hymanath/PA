@@ -1388,11 +1388,47 @@ public class AppointmentService implements IAppointmentService{
 			        			}
 			        			
 			        			
+			        			if(updateAndDeletedAppointmentIds!=null && updateAndDeletedAppointmentIds.size()>0){
+			        				
+			        				List<LabelAppointment>  deletedAndupdatedList = labelAppointmentDAO.getDetailsOfLabelledAppointments(apptLabelId,updateAndDeletedAppointmentIds);
+				        			if(deletedAndupdatedList!=null && deletedAndupdatedList.size()>0){
+				        				for(LabelAppointment labelAppointment :deletedAndupdatedList){
+				        					LabelAppointmentHistory history = new LabelAppointmentHistory();
+						        			history.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
+						        			history.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
+						        			history.setAppointmentId(labelAppointment.getAppointmentId());
+						        			history.setLabelStatusId(labelAppointment.getAppointmentLabel()!=null? labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId()!=null?labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId():null :null);
+						        			history.setCreatedBy(labelAppointment.getCreatedBy());
+						        			history.setUpdatedBy(labelAppointment.getUpdatedBy());
+						        			history.setInsertedTime(labelAppointment.getInsertedTime());
+						        			history.setUpdatedTime(labelAppointment.getUpdatedTime());
+						        			history.setIsDeleted(labelAppointment.getIsDeleted());
+						        			
+						        			labelAppointmentHistoryDAO.save(history);
+				        				}
+				        			}
+			        			}
 			        			
-			        			List<LabelAppointment>  deletedAndupdatedList = labelAppointmentDAO.getDetailsOfLabelledAppointments(apptLabelId,updateAndDeletedAppointmentIds);
-			        			if(deletedAndupdatedList!=null && deletedAndupdatedList.size()>0){
-			        				for(LabelAppointment labelAppointment :deletedAndupdatedList){
-			        					LabelAppointmentHistory history = new LabelAppointmentHistory();
+			        			
+			        			
+			        			//saving.
+			        			if(savingAppointmentIds!=null && savingAppointmentIds.size()>0){
+			        				for(Long appointmentId : savingAppointmentIds){
+				        				
+				        				LabelAppointment labelAppointment = new LabelAppointment();
+					        			labelAppointment.setAppointmentLabelId(apptLabelId);
+					        			labelAppointment.setAppointmentId(appointmentId);
+					        			labelAppointment.setCreatedBy(loggerUserId);
+					        			labelAppointment.setUpdatedBy(loggerUserId);
+					        			labelAppointment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					        			labelAppointment.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					        			labelAppointment.setIsDeleted("N");
+					        			
+					        			labelAppointment = labelAppointmentDAO.save(labelAppointment);
+					        			
+					        			
+					        			//move to history.
+					        			LabelAppointmentHistory history = new LabelAppointmentHistory();
 					        			history.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
 					        			history.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
 					        			history.setAppointmentId(labelAppointment.getAppointmentId());
@@ -1404,40 +1440,11 @@ public class AppointmentService implements IAppointmentService{
 					        			history.setIsDeleted(labelAppointment.getIsDeleted());
 					        			
 					        			labelAppointmentHistoryDAO.save(history);
-			        				}
+					        			
+				        			}
 			        			}
 			        			
 			        			
-			        			//saving.
-			        			for(Long appointmentId : savingAppointmentIds){
-			        				
-			        				LabelAppointment labelAppointment = new LabelAppointment();
-				        			labelAppointment.setAppointmentLabelId(apptLabelId);
-				        			labelAppointment.setAppointmentId(appointmentId);
-				        			labelAppointment.setCreatedBy(loggerUserId);
-				        			labelAppointment.setUpdatedBy(loggerUserId);
-				        			labelAppointment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				        			labelAppointment.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				        			labelAppointment.setIsDeleted("N");
-				        			
-				        			labelAppointment = labelAppointmentDAO.save(labelAppointment);
-				        			
-				        			
-				        			//move to history.
-				        			LabelAppointmentHistory history = new LabelAppointmentHistory();
-				        			history.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
-				        			history.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
-				        			history.setAppointmentId(labelAppointment.getAppointmentId());
-				        			history.setLabelStatusId(labelAppointment.getAppointmentLabel()!=null? labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId()!=null?labelAppointment.getAppointmentLabel().getAppointmentLabelStatusId():null :null);
-				        			history.setCreatedBy(labelAppointment.getCreatedBy());
-				        			history.setUpdatedBy(labelAppointment.getUpdatedBy());
-				        			history.setInsertedTime(labelAppointment.getInsertedTime());
-				        			history.setUpdatedTime(labelAppointment.getUpdatedTime());
-				        			history.setIsDeleted(labelAppointment.getIsDeleted());
-				        			
-				        			labelAppointmentHistoryDAO.save(history);
-				        			
-			        			}
 			        			
 			        		}
 			        	}
