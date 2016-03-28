@@ -172,6 +172,10 @@
                                             </div>
 										</div>
 									</div>
+									
+									<div  class="col-md-2 m_top10" style="float: right;">
+                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
+                                            </div>
 								</div>
 							</div>
                             <div class="row">
@@ -1753,7 +1757,6 @@ $(".dropkickClass").dropkick();
 		 labelName=$(this).attr("attr_label_name");
 		   showConfirmationBox();
 	});
-	
 	$(document).on("click","#dlteLblBttnId",function(){
 	 var isCheckedDelete=$("#dltChckbxMdlId").is(':checked');
 	 var remarks = $("#remarksId").val();
@@ -2727,14 +2730,14 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 								str+='</div>';
 							str+='</li>';
 						str+='</ul>';
-						}	
+						}
 						if(result[i].apptpreferableDates != null){
 							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{
 							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span> - </span></p>';
-						}
+						}	
 				  str+='</div>';
 				str+='</div>';
 			}
@@ -2747,7 +2750,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	 
 	function getSearchDetails()
 	{
-		
+		$(".appointmentSettings").show();
 		var createdBy =$("#appointmentcreatedBy").val();
 		var appointmentUserId =$("#appointmentUserSelectBoxId").val();
 		
@@ -2781,8 +2784,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
 		str+='<h4 class="text-success">UPCOMING APPOINTMENTS ';
-		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings upcomingSetting">';
 		str+='</h4>';
+		
 		str+='<div class="updateAppointment arrow_box">';
 		str+='<label class="checkbox-inline">';
 		str+='<input type="checkbox">Reschedule';
@@ -2803,7 +2807,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					flag = true;
 					str+='<li>';
 					str+='<p class="font12">';
-					str+='<span class="pull-left text-danger"></span>';
+					str+='<span class="pull-left text-danger">'+result[i].appointmentStatus+'</span>';
 					str+='<span class="pull-right text-success">';
 					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 					str+='<div class="appointmentSettingsBLock arrow_box">';
@@ -2862,9 +2866,11 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 				}
 			}
+			str+='</ul>';
 		}
 		else
 		{
+			flag = false;
 			str+='No Data';	
 		}
 		
@@ -2872,9 +2878,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		{
 			str+='No Data';	
 		}
-			str+='</ul>';
-		str+='</div>';
 		$("#upcomingAppointMentId").html(str);
+		if(!flag)
+		$(".upcomingSetting").hide();
 	}
 	
 	
@@ -2884,7 +2890,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
 		str+='<h4 class="text-success">INPROGRESS APPOINTMENTS ';
-		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings inprogressSetting">';
 		str+='</h4>';
 		str+='<div class="updateAppointment arrow_box">';
 		str+='<label class="checkbox-inline">';
@@ -2906,7 +2912,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					flag = true;
 					str+='<li>';
 					str+='<p class="font12">';
-					str+='<span class="pull-left text-danger"></span>';
+					str+='<span class="pull-left text-danger">'+result[i].appointmentStatus+'</span>';
 					str+='<span class="pull-right text-success">';
 					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 					str+='<div class="appointmentSettingsBLock arrow_box">';
@@ -2965,9 +2971,11 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 				}
 			}
+			
 		}
 		else
 		{
+			flag = false;
 			str+='No Data';	
 		}
 		
@@ -2978,6 +2986,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			str+='</ul>';
 		str+='</div>';
 		$("#inprogreessAppointMentId").html(str);
+		if(!flag)
+			$(".inprogressSetting").hide();	
+		
 	}
 	
 	
@@ -2987,7 +2998,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
 		str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
-		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings">';
+		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings completedSetting">';
 		str+='</h4>';
 		str+='<div class="updateAppointment arrow_box">';
 		str+='<label class="checkbox-inline">';
@@ -3009,7 +3020,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 					flag = true;
 					str+='<li>';
 					str+='<p class="font12">';
-					str+='<span class="pull-left text-danger"></span>';
+					str+='<span class="pull-left text-danger">'+result[i].appointmentStatus+'</span>';
 					str+='<span class="pull-right text-success">';
 					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 					str+='<div class="appointmentSettingsBLock arrow_box">';
@@ -3068,21 +3079,23 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 				}
 			}
-			
+			str+='</ul>';
 		}
-			
+		
 		else
 		{
+			flag = false;
 			str+='No Data';	
 		}
 		
 		if(flag == false)
 		{
-			str+='<p>No Data</p>';	
+			$(".completedSetting").hide();
+			str+='No Data';	
 		}
-		str+='</ul>';
-		str+='</div>';
 		$("#completedAppointMentId").html(str);
+		if(flag == false)
+		$(".completedSetting").hide();
 	}
 </script>
 <script>
