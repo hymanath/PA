@@ -1993,6 +1993,9 @@ public class AppointmentService implements IAppointmentService{
 						String fname = params[6] != null ? params[6].toString() : "";
 						String lname = params[7] != null ?params[7].toString() : "";
 						vo.setCreatedBy(fname+" "+lname);
+						vo.setStatusId(params[9] != null ? (Long)params[9] : null);
+						vo.setAppointmentStatus(params[10] != null ? params[10].toString() : "");
+						
 						resultList.add(vo);
 					}
 				}
