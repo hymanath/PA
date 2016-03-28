@@ -2266,11 +2266,12 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 							str+='<p>Status : '+result[i].status+'</p>';
 						}else{
 							str+='<p>Status : - </p>';
-						}if(result[i].apptpreferableDates !=null && result[i].apptpreferableDates.length>0){
+						}
+						/* if(result[i].apptpreferableDates !=null && result[i].apptpreferableDates.length>0){
 							str+='<p>Requested Dates : '+result[i].apptpreferableDates+'</p>';
 						}else{
 							str+='<p>Requested Dates : - </p>';
-						}
+						} */
 					
 				str+='</div>';
 				  str+='<div class="panel-body">';
@@ -2531,12 +2532,27 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 								str+='<div class="row">';
 									str+='<div class="col-md-12">';
 										str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
+									str+='<div class="col-xs-5">';
+										str+='<p>Subject : '+result[i].reason+'</p>';
+										str+='<p>Priority Type : '+result[i].priority+'</p>';
+									str+='</div>';
+									str+='<div class="col-xs-7">';
+									str+='<div class="col-xs-5">';
+											str+='<label>Update Status</label>';
+											str+='<select class="form-control"  id="upadteAppntStatus" attr_appnt_id="'+result[i].appointmentId+'">';
+											str+='<option value="0"> Select Status</option>';
+											str+='<option value="5"> Reschedule</option>';
+											str+='<option value="6"> Cancelled</option>';
+											str+='</select>';
+										str+='</div>';
+										str+='<div class="col-xs-7" id="appointmentStatusMsg'+result[i].appointmentId+'" style="margin-top: 25px;"></div>';
+									str+='</div>';
+									
 									str+='</div>';
 								str+='</div>';
-								str+='<p>Subject : '+result[i].reason+'</p>';
-								str+='<p>Priority Type : '+result[i].priority+'</p>';
 								
-							str+='</div>';
+									
+							   str+='</div>';
 							
 							str+='<div class="panel-body">';
 								
@@ -2562,18 +2578,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 															str+='</div>';
 														str+='</div>';
 													str+='</div>';
-													str+='<div class="col-md-3">';
-														str+='<label>Update Status</label>';
-														str+='<select class="form-control">';
-															str+='<option>Cancelled</option>';
-														str+='</select>';
-													str+='</div>';
-												  str+='<div class="col-md-2">';
+													
+												 /*  str+='<div class="col-md-2">';
 														str+='<select class="form-control m_top25">';
 															str+='<option>Tentitive</option>';
 															str+='<option>Next 2 weeks</option>';
 														str+='</select>';
-												  str+='</div>';
+												  str+='</div>'; */
 													
 												str+='</div>';
 											str+='</li>';
@@ -3345,8 +3356,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 
 	$(document).on("click","#updateStsBttnId",function(){
 		
-		var labelId = $("#updateStsBttnId").attr("attr_label_id");
-		var attrlabelstatusId = $("#updateStsBttnId").attr("attr_label_status_id");
+		var labelId = $(this).attr("attr_label_id");
+		var attrlabelstatusId = $(this).attr("attr_label_status_id");
 		var labelstatusId = $("#selectStsId").val();
 		if(attrlabelstatusId == labelstatusId){
 			alert("Both Status are Same.,Please Select Another Status");
@@ -3357,9 +3368,6 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		
 	});
 	function updateAppointmentsLabelStatus(labelId,labelstatusId){
-		
-		var labelId = $("#updateStsBttnId").attr("attr_label_id");
-		var labelstatusId = $("#selectStsId").val();
 		
 		var jsObj={
 				labelId:labelId,   
@@ -3388,7 +3396,41 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				 }
 		});
 	}
+	$(document).on("change","#upadteAppntStatus",function(){
+		var memberAppntId = $(this).attr("attr_appnt_id");
+		var updateAppntStatusId = $(this).val();
+		updateMemberAppointmentsStatus(memberAppntId,updateAppntStatusId);
+		$("#appointmentStatusMsg").css("display","block");
+	});	
+	function updateMemberAppointmentsStatus(memberAppntId,updateAppntStatusId){
+		
 	
+		var jsObj={
+				memberAppntId:memberAppntId,   
+				updateAppntStatusId:updateAppntStatusId
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'updateMemberAppointmentsStatusAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result!=null && result!=0){
+				if(result.message=="success"){
+					setTimeout(function () {
+					$("#appointmentStatusMsg"+memberAppntId).html("<center style='color: green; font-size: 16px;'>Appointment Updated Successfully</center>").fadeOut(3000);
+					}, 500); 
+				}
+			}else{
+			setTimeout(function () {
+				$("#appointmentStatusMsg"+memberAppntId).html("<center style='color: green; font-size: 16px;'>Updation Failed..Try Later</center>").fadeOut(3000);
+				}, 500);
+			
+		 }
+		
+		});
+		
+	}
 </script>
 <script>
 var tableToExcel = (function() {

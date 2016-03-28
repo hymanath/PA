@@ -11720,5 +11720,10 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	<action name="updateMemberAppointmentsStatusAction" class="appointmentAction" method="updateMemberAppointmentsStatus">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
 </package>
 </struts>      

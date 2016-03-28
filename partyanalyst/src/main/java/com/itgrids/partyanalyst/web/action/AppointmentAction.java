@@ -607,4 +607,15 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	public String updateMemberAppointmentsStatus(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			 resultStatus=appointmentService.updateMemberAppointmentsStatus(jObj.getLong("memberAppntId"),jObj.getLong("updateAppntStatusId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at updateMemberAppointmentsStatus() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+
 }
