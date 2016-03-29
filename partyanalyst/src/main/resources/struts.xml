@@ -11733,10 +11733,20 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
-	
 	<action name="getViewAppointmentsOfALableAction" class="appointmentAction" method="getViewAppointmentsOfALable">
 		<result type="json" name="success">
 			<param name="root">apptDetailsList</param>
+		</result>
+	</action>
+	
+	<action name="updateAppointmentStatusAction" class="appointmentAction" method="updateAppointmentStatus">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
+	<action name="sendSmsForAppointmentAction" class="appointmentAction" method="sendSmsForAppointment">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
 		</result>
 	</action>
 	

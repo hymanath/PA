@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
+
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
@@ -638,13 +640,57 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getViewAppointmentsOfALable(){
 		try {
 			jObj = new JSONObject(getTask());
 			apptDetailsList = appointmentService.getViewAppointmentsOfALable(jObj.getLong("labelId"));
 		} catch (Exception e) {
 			LOG.error("Exception riased at getViewAppointmentsOfALable", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String updateAppointmentStatus(){
+		try {
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
+			inputVO.setAppointmentId(jObj.getLong("appointmentId"));
+			inputVO.setTime(jObj.getString("time"));
+			inputVO.setDate(jObj.getString("date"));
+			inputVO.setIssmsChecked(jObj.getBoolean("smsCheck"));
+			inputVO.setSmsText(jObj.getString("smsText"));
+			inputVO.setStatusId(jObj.getLong("statusId"));
+			resultStatus = appointmentService.updateAppointmentStatus(inputVO,user.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception raised at updateAppointmentStatus", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String sendSmsForAppointment(){
+		try {
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
+			inputVO.setAppointmentId(jObj.getLong("appointmentId"));
+			inputVO.setSmsText(jObj.getString("smsText"));
+		    resultStatus = appointmentService.sendSmsForAppointment(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at sendSmsForAppointment", e);
 		}
 		return Action.SUCCESS;
 	}
