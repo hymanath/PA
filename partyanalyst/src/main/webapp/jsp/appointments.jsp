@@ -10,6 +10,7 @@
 <title>Appointment</title>
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
@@ -818,7 +819,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                            	<button class="btn btn-success btn-block showTimeSlotsCls" id="showTimeSlotsId">VIEW</button>
+                                            	<button class="btn btn-success btn-block showTimeSlotsCls m_top24" id="showTimeSlotsId">VIEW</button>
                                             </div>
                                         </div>
                                     </div>
@@ -828,7 +829,7 @@
                             	<div class="col-md-4">
 								<div id="confirmAppointmentsDivId"></div>
                                 	<!--<div class="block">
-                                    	<ul class="confirmAppointments">
+                                    	<ul class="confirmAppointments" id="confirmAppointmentBlockDragId">
                                         	<li>
                                             	<div class="row">
                                                     <div class="col-md-12">
@@ -926,47 +927,82 @@
                                             <button class="btn btn-success pull-right">VIEW BOOKED TIME SLOTS</button>
                                         </h4>
                                         <div class="row">
+											<div class="col-md-12">
+												<div class="row">
+													<div class="col-md-12">
+														<div id="timeSlotsWarnId"></div>
+														<div class="pluginTable" id="pluginTableId">
+															<ul class="row">
+																<li class="col-md-2 col-xs-4 col-sm-2">
+																	<table class="table tablePluginDate" id="tablePluginDateId">
+																		
+																	</table>
+																</li>
+																<li class="col-md-10 col-xs-8 col-sm-10">
+																	<table class="table table-bordered tablePlugin" id="tablePluginId">
+																	
+																	</table>
+																</li>
+															</ul>
+															<div class="row">
+																<div class="col-md-12">
+																	<p class="pull-right"><span class="boxIcon">&nbsp;</span>Appointment Booked Time Slot</p>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
                                         	<div class="col-md-12">
                                             	 <div class="confirmAppointmentBlock">
                                                     <div class="row">
                                                     	<div class="col-md-12">
-                                                        	<div class="drophere"></div>
+                                                        	<div class="drophere">
+																<ul id="confirmAppointmentBlockDropId" class="confirmAppointmentsDropBlock" style="height:150px;">
+																	<h4 class="deleteTag">DROP HERE</h4>
+																</ul>
+															</div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                   	    <div class="col-md-4">
-                                                            <label>Select Date</label>
-                                                            <div class="input-group inputSearch">
-                                                                <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-calendar"></i>
-                                                                    <span class="caret"></span>
-                                                                </span>
-                                                                <input type="text" class="form-control" id="appointmentDateSlotId">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label>From Time</label>
-                                                            <div class="input-group inputSearch">
-                                                                <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-time"></i>
-                                                                    <span class="caret"></span>
-                                                                </span>
-                                                                <input type="text" id="fromTimeId" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <label>To Time</label>
-                                                            <div class="input-group inputSearch">
-                                                                <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-time"></i>
-                                                                    <span class="caret"></span>
-                                                                </span>
-                                                                <input type="text" id="toTimeId" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <button class="btn btn-success m_top25" id="setTimeSlotBtnId">SET</button>
-                                                        </div>
+                                                    <div class="row m_top20">
+														<div class="col-md-12">
+															<div style="background:#F3f3f3;margin:0px -10px;padding:12px 0px;" class="row">
+																<div class="col-md-4">
+																	<label>Select Date</label>
+																	<div class="input-group inputSearch">
+																		<span class="input-group-addon">
+																			<i class="glyphicon glyphicon-calendar"></i>
+																			<span class="caret"></span>
+																		</span>
+																		<input type="text" class="form-control" id="appointmentDateSlotId">
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<label>From Time</label>
+																	<div class="input-group inputSearch">
+																		<span class="input-group-addon">
+																			<i class="glyphicon glyphicon-time"></i>
+																			<span class="caret"></span>
+																		</span>
+																		<input type="text" id="fromTimeId" class="form-control">
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<label>To Time</label>
+																	<div class="input-group inputSearch">
+																		<span class="input-group-addon">
+																			<i class="glyphicon glyphicon-time"></i>
+																			<span class="caret"></span>
+																		</span>
+																		<input type="text" id="toTimeId" class="form-control">
+																	</div>
+																</div>
+																<div class="col-md-2">
+																	<button class="btn btn-success m_top25" id="setTimeSlotBtnId">SET</button>
+																</div>
+															</div>
+														</div>
+                                                   	    
                                                     </div>
                                                 </div>
                                             </div>
@@ -1051,8 +1087,70 @@
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
+<script src="dist/Appointment/DragDrop/Sortable.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+/* Drag and Drop */
+	Sortable.create(confirmAppointmentBlockDragId,{
+      filter: '.js-remove',
+      onFilter: function (evt) {
+        evt.item.parentNode.removeChild(evt.item);
+      },
+      setData: function (dataTransfer, dragEl) {
+        dataTransfer.setData('Text', dragEl.textContent);
+      },
+      //group: "QuestionnOptions",
+	  group: { name: "confirmAppointmentsBlock", put: false },
+      animation: 150,
+      store: {
+        get: function (sortable) {
+          var order = localStorage.getItem(sortable.options.group);
+          return order ? order.split('|') : [];
+        },
+        set: function (sortable) {
+          var order = sortable.toArray();
+          localStorage.setItem(sortable.options.group, order.join('|'));
+        }
+      },
+      onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);},
+      onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]); },
+      onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
+      onStart:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
+      onSort:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
+      onEnd: function(evt){ console.log('onEnd.editable:', [evt.item, evt.from]);}
+  });
+  Sortable.create(confirmAppointmentBlockDropId,{
+      filter: '.js-remove',
+      onFilter: function (evt) {
+        evt.item.parentNode.removeChild(evt.item);
+      },
+      setData: function (dataTransfer, dragEl) {
+        dataTransfer.setData('Text', dragEl.textContent);
+      },
+      //group: "QuestionnOptions",
+	  group: { name: "confirmAppointmentsBlock",pull: false},
+      animation: 150,
+      store: {
+        get: function (sortable) {
+          var order = localStorage.getItem(sortable.options.group);
+          return order ? order.split('|') : [];
+        },
+        set: function (sortable) {
+          var order = sortable.toArray();
+          localStorage.setItem(sortable.options.group, order.join('|'));
+        }
+      },
+      onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);
+		$("#confirmAppointmentBlockDropId").find(".deleteTag").remove();
+		$("#confirmAppointmentBlockDropId").css("height","");
+	  },
+      onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]);},
+      onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
+      onStart:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
+      onSort:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
+      onEnd: function(evt){ console.log('onEnd.editable:', [evt.item, evt.from]);}
+  });
+  
+/* Drag and Drop END */
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 var flag = false;
@@ -3172,6 +3270,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			var select = new Dropkick("#appointmentLabelToGetSlotsId");
 			select.refresh();
 	} 
+	$("#pluginTableId").hide();
 	$("#showTimeSlotsId").click(function(){
 		$("#timeSlotsErrId").html("");
 		//get appointments of a lable
@@ -3182,18 +3281,22 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			return;
 		}
 		var jsObj = {
-			appointmentLabelId:appointmentLabelId
-		}
-		$.ajax({
-			type : 'GET',
-			url : 'getTimeSlotsDetailsAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}  
-		}).done(function(result){ 
-			if(result != null){
-				
-			}
-			
+		appointmentLabelId:appointmentLabelId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getTimeSlotsDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+		if(result.listOfTimePairPerDate != null && result.listOfTimePairPerDate.length!=0 ){
+			$("#pluginTableId").show();
+			buildTimeSlotsTable(result);
+			$("#timeSlotsWarnId").hide();
+		}else{
+			$("#pluginTableId").hide();
+			$("#timeSlotsWarnId").show();
+			$("#timeSlotsWarnId").css("color","green").html("No slot is available");
 		});
 		var user = $("#appointmentUserSelectBoxId").text();
 		//alert(user);
@@ -3479,6 +3582,92 @@ var tableToExcel = (function() {
 		
 		
 	});
+	function buildTimeSlotsTable(result){
+		var str='';
+		str+='<tr>';
+		str+='<td class="text-center">';
+		str+='<i class="glyphicon glyphicon-triangle-top"></i>';
+		str+='</td>';
+		str+='</tr>';
+		for(var i in result.listOfTimePairPerDate){
+			str+='<tr>';
+			
+			str+='<td class="text-center">'+(((result.listOfTimePairPerDate[i])[0])[0]).substr(0,10)+'</td>';
+			str+='</tr>';
+		}
+		str+='<tr>';
+		str+='<td class="text-center">';
+		str+='<i class="glyphicon glyphicon-triangle-bottom"></i>';
+		str+='</td>';
+		str+='</tr>';
+		$("#tablePluginDateId").html(str);
+		var str1='';
+		str1+='<thead>';
+		str1+='<th colspan="4">8a</th>';
+		str1+='<th colspan="4">9</th>';
+		str1+='<th colspan="4">10</th>';
+		str1+='<th colspan="4">11</th>';
+		str1+='<th colspan="4">12p</th>';
+		str1+='<th colspan="4">1</th>';
+		str1+='<th colspan="4">2</th>';
+		str1+='<th colspan="4">3</th>';
+		str1+='<th colspan="4">4</th>';
+		str1+='<th colspan="4">5</th>';
+		str1+='<th colspan="4">6</th>';
+		str1+='<th colspan="4">7</th>';
+		str1+='<th colspan="4">8</th>';
+		str1+='</thead>';
+		for(var i in result.listOfTimePairPerDate){
+			str1+='<tr id="'+i+'"class="borderSlot">';
+			for(var unique=0;unique<=47;unique++){
+				str1+='<td id="'+i+''+unique+'"></td>';
+			}
+			str1+='</tr>';
+			
+			}
+			$("#tablePluginId").html(str1);
+		for(var i in result.listOfTimePairPerDate){
+			for(var j in result.listOfTimePairPerDate[i]){
+				//alert((result.listOfTimePairPerDate[i])[j]);
+				var start=((result.listOfTimePairPerDate[i])[j])[0];
+				var end = ((result.listOfTimePairPerDate[i])[j])[1];
+				var startIdForHour=start.substr(11,2);
+				var startIdForMin=start.substr(14,2);
+				var startId=(startIdForHour-8)*4;
+				if(startIdForMin=="00"){
+					startId=startId+0;
+				}
+				if(startIdForMin=="15"){
+					startId=startId+1;
+				}
+				if(startIdForMin=="30"){
+					startId=startId+2;
+				}
+				if(startIdForMin=="45"){
+					startId=startId+3;
+				}
+				var endIdForHour=end.substr(11,2);
+				var endIdForMin=end.substr(14,2);
+				var endId=(endIdForHour-8)*4;
+				if(endIdForMin=="00"){
+					endId=endId+0;
+				}
+				if(endIdForMin=="15"){
+					endId=endId+1;
+				}
+				if(endIdForMin=="30"){
+					endId=endId+2;
+				}
+				if(endIdForMin=="45"){
+					endId=endId+3;
+				}
+				endId=endId-1;
+				for(var start=startId;start<=endId;start++){
+					$("#"+i+""+start).addClass("bookedSlots");
+				}
+			}
+		}
+	}
 </script>
 </body>
 </html>
