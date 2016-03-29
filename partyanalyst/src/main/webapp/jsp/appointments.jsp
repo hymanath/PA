@@ -528,25 +528,49 @@
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<div class="block">
                                     	<div class="row">
-                                            <div class="col-md-4">
+										
+										<div class="col-md-3">
+											<label>From Date</label>
+											<div class="input-group inputSearch">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+													<span class="caret"></span>
+												</span>
+												<input type="text" class="form-control" id="addMembersFromDateId">
+											</div>
+										</div>
+										
+										<div class="col-md-3">
+											<label>To Date</label>
+											<div class="input-group inputSearch">
+												<span class="input-group-addon">
+													<i class="glyphicon glyphicon-calendar"></i>
+													<span class="caret"></span>
+												</span>
+												<input type="text" class="form-control" id="addMembersToDateId">
+											</div>
+										</div>
+										
+                                            <div class="col-md-3">
                                             	<label>Designation<span style='color:red'> &nbsp * </span><span style='color:red' id="appDesigErrId"></span></label>
                                                 <select class="designationListCls errClearCls" id="manageAppDesigId"></select>
                                             </div>
-                                            <div class="col-md-4">
+											
+                                            <div class="col-md-3">
                                             	<label>Appointment Priority Type<span style='color:red'> &nbsp * </span><span style='color:red' id="appPrrtyErrTypId"></span></label>
                                                 <select class="manageAppTypeCls errClearCls" id="manageAppTypeId"></select>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                             	<label>Appointment Status<span style='color:red'> &nbsp * </span><span style='color:red' id="appStatusErrId"></span></label>
                                                 <select class="manageAppStatusCls errClearCls" id="manageAppStatusId"></select>
                                             </div>
-                                          <div class="col-md-4 m_top10">
+                                          <div class="col-md-3 m_top10">
                                             	<label>Select District<span style='color:red' >&nbsp *</span><span style='color:red' id="appDistErrId"></span></label>
                                                 <select id="manageAppDistId" class="dropkickClass">
                                                 	<option value="0">Select District</option>
                                                 </select>
                                           </div>
-                                          <div class="col-md-4 m_top10">
+                                          <div class="col-md-3 m_top10">
                                             	<label>Select Constituency<span style='color:red'>&nbsp *</span><span style='color:red' id="appConstErrId"></span></label>
                                                 <select id="manageAppConstId" class="dropkickClass">
                                                 	<option value="0">Constituency Name</option>
@@ -1911,6 +1935,10 @@ $("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2]})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
+$("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker:true});
+
+
+
 	/*This code is used to select only one checkbox while displaying the appointment details.*/	
 	 $('#mnthChckbxId').click(function(){
 		  var isCheckedMonth=$("#mnthChckbxId").is(':checked');
@@ -2260,6 +2288,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 		  clearAppointmentsSearchFields();
 		  $("#appointmentRequestedMembersId").html('');  
 		  
+		 var fromDate =  $("#addMembersFromDateId").val();
+		 var toDate =    $("#addMembersToDateId").val();
+		 
 		 var designationId=$("#manageAppDesigId").val();
 		 var priorityId= $("#manageAppTypeId").val();
 		 var statusId=$("#manageAppStatusId").val();
@@ -2294,7 +2325,9 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			statusId:statusId,
 			districtId:districtId,
 			constituencyid:constituencyId,
-			appointmentlabelId : appointmentlabelId
+			appointmentlabelId : appointmentlabelId,
+			fromDate :fromDate,
+			toDate:toDate
 		  }
 		  	$.ajax({
 				type : 'POST',
@@ -2382,8 +2415,13 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 											}else{
 												str+='<p>Constituency : - </p>';
 											}
-											str+='<p>Last Visit: - </p>';	
-											//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
+                                            
+                                            if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
+												str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
+											}else{
+												str+='<p>Last Visit: - </p>';
+											}
+												
 											str+='</div>';
 										str+='</div>';
 										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
@@ -2411,8 +2449,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 												
 											str+='</tr>';
 										str+='</table>';
-										//str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
-										//str+='<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>';
+										
 									str+='</div>';
 									str+='<div class="col-md-6">';
 										str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
@@ -2429,7 +2466,12 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 													str+='<tr>';
 													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
 													str+='<td>'+result[i].subList[j].subList[l].status+'</td>';
-													str+='<td> - </td>';
+													if(result[i].subList[j].subList[l].apptStatus!=null && result[i].subList[j].subList[l].apptStatus.trim().length>0){
+														str+='<td> '+result[i].subList[j].subList[l].apptStatus+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+													
 													str+='</tr>';
 												}
 											}else{
