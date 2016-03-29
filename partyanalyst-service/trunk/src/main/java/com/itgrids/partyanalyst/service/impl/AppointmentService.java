@@ -2711,7 +2711,7 @@ public class AppointmentService implements IAppointmentService{
 			} catch (Exception e) {
 				LOG.error("Exception raised in getViewAppointmentsOfALable", e);
 			}
-			return rs;
+			return finalList;
 		}
 	
 	
