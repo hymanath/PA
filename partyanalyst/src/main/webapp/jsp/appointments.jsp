@@ -826,101 +826,105 @@
 								</div>
 							</div>
                             <div class="row">
-                            	<div class="col-md-4">
-								<div id="confirmAppointmentsDivId"></div>
-                                	<!--<div class="block">
-                                    	<ul class="confirmAppointments" id="confirmAppointmentBlockDragId">
-                                        	<li>
-                                            	<div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus green"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <table class="table table-bordered table-condensed">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <p class="m_top10"><b>NEW REQUESTED DATES</b></p>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus green"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <table class="table table-bordered table-condensed">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <p class="m_top10"><b>NEW REQUESTED DATES</b></p>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                            	<div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="media">
-                                                            <div class="media-left">
-                                                                <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                <span class="colorStatus green"></span>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <p>Laxman - Cadre</p>
-                                                                <p>Contact Number: 9848012345</p>
-                                                                <p>Designation: MLC</p>
-                                                                <p>Last Visit:</p>
-                                                                <p>Subject</p>
-                                                            </div>
-                                                        </div>
-                                                        <table class="table table-bordered table-condensed">
-                                                            <tr>
-                                                                <td><h4>20</h4><p>Requests</p></td>
-                                                                <td><h4>20</h4><p>Confirmed</p></td>
-                                                                <td><h4>20</h4><p>Rescheduled</p></td>
-                                                                <td><h4>20</h4><p>Cancelled</p></td>
-                                                            </tr>
-                                                        </table>
-                                                        <p class="m_top10"><b>NEW REQUESTED DATES</b></p>
-                                                        <p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>-->
-                                </div>
-                                <div class="col-md-8">
+								<div class="col-md-5">
+									<div class="block">
+										<div id="confirmAppointmentsDivId"></div>
+									</div>
+								</div>
+								<!--<div class="col-md-4">
+									<div class="block">
+										<ul class="confirmAppointments" id="confirmAppointmentBlockDragId">
+											<li>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="media">
+															<div class="media-left">
+																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
+																<span class="colorStatus green"></span>
+															</div>
+															<div class="media-body">
+																<p>Laxman - Cadre</p>
+																<p>Contact Number: 9848012345</p>
+																<p>Designation: MLC</p>
+																<p>Last Visit:</p>
+																<p>Subject</p>
+															</div>
+														</div>
+														<table class="table table-bordered table-condensed">
+															<tr>
+																<td><h4>20</h4><p>Requests</p></td>
+																<td><h4>20</h4><p>Confirmed</p></td>
+																<td><h4>20</h4><p>Rescheduled</p></td>
+																<td><h4>20</h4><p>Cancelled</p></td>
+															</tr>
+														</table>
+														<p class="m_top10"><b>NEW REQUESTED DATES</b></p>
+														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="media">
+															<div class="media-left">
+																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
+																<span class="colorStatus green"></span>
+															</div>
+															<div class="media-body">
+																<p>Laxman - Cadre</p>
+																<p>Contact Number: 9848012345</p>
+																<p>Designation: MLC</p>
+																<p>Last Visit:</p>
+																<p>Subject</p>
+															</div>
+														</div>
+														<table class="table table-bordered table-condensed">
+															<tr>
+																<td><h4>20</h4><p>Requests</p></td>
+																<td><h4>20</h4><p>Confirmed</p></td>
+																<td><h4>20</h4><p>Rescheduled</p></td>
+																<td><h4>20</h4><p>Cancelled</p></td>
+															</tr>
+														</table>
+														<p class="m_top10"><b>NEW REQUESTED DATES</b></p>
+														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="media">
+															<div class="media-left">
+																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
+																<span class="colorStatus green"></span>
+															</div>
+															<div class="media-body">
+																<p>Laxman - Cadre</p>
+																<p>Contact Number: 9848012345</p>
+																<p>Designation: MLC</p>
+																<p>Last Visit:</p>
+																<p>Subject</p>
+															</div>
+														</div>
+														<table class="table table-bordered table-condensed">
+															<tr>
+																<td><h4>20</h4><p>Requests</p></td>
+																<td><h4>20</h4><p>Confirmed</p></td>
+																<td><h4>20</h4><p>Rescheduled</p></td>
+																<td><h4>20</h4><p>Cancelled</p></td>
+															</tr>
+														</table>
+														<p class="m_top10"><b>NEW REQUESTED DATES</b></p>
+														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>-->
+                                <div class="col-md-7">
                                 	<div class="block">
                                     	<h4 class="text-success">
                                         	CREATE APPOINTMENT TIME SLOT
@@ -1090,34 +1094,7 @@
 <script src="dist/Appointment/DragDrop/Sortable.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* Drag and Drop */
-	Sortable.create(confirmAppointmentBlockDragId,{
-      filter: '.js-remove',
-      onFilter: function (evt) {
-        evt.item.parentNode.removeChild(evt.item);
-      },
-      setData: function (dataTransfer, dragEl) {
-        dataTransfer.setData('Text', dragEl.textContent);
-      },
-      //group: "QuestionnOptions",
-	  group: { name: "confirmAppointmentsBlock", put: false },
-      animation: 150,
-      store: {
-        get: function (sortable) {
-          var order = localStorage.getItem(sortable.options.group);
-          return order ? order.split('|') : [];
-        },
-        set: function (sortable) {
-          var order = sortable.toArray();
-          localStorage.setItem(sortable.options.group, order.join('|'));
-        }
-      },
-      onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);},
-      onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]); },
-      onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
-      onStart:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
-      onSort:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
-      onEnd: function(evt){ console.log('onEnd.editable:', [evt.item, evt.from]);}
-  });
+	
   Sortable.create(confirmAppointmentBlockDropId,{
       filter: '.js-remove',
       onFilter: function (evt) {
@@ -3297,6 +3274,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			$("#pluginTableId").hide();
 			$("#timeSlotsWarnId").show();
 			$("#timeSlotsWarnId").css("color","green").html("No slot is available");
+		}
 		});
 		var user = $("#appointmentUserSelectBoxId").text();
 		//alert(user);
@@ -3316,7 +3294,7 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 			if(result!=null && result!=0){
 			  buildLabelResult(result,labelName);
 			}else{
-			  $("#confirmAppointmentsDivId").html("<div class='col-md-12'><div class='block'><div><p style='color:green;font-size:20px'>No Data available.</p></div></div></div>");	
+			  $("#confirmAppointmentsDivId").html("<div class='col-md-4'><div class='block'><div><p style='color:green;font-size:20px'>No Data available.</p></div></div></div>");	
 			}
 		});
 	}
@@ -3324,8 +3302,8 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 	function buildLabelResult(result,labelName){
 		var i = 0;
 		var str='';
-			str+='<div class="col-md-12">';
-			str+='<div class="block">';
+			
+			
 			//str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
 			for(var i in result){
 			
@@ -3401,11 +3379,35 @@ $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 				  str+='</div>';
 				str+='</div>';
 			}
-		
-			str+='</div>';
-			str+='</div>';
-		
-		$("#confirmAppointmentsDivId").html(str)  
+		$("#confirmAppointmentsDivId").html(str)
+		Sortable.create(confirmAppointmentsDivId,{
+			  filter: '.js-remove',
+			  onFilter: function (evt) {
+				evt.item.parentNode.removeChild(evt.item);
+			  },
+			  setData: function (dataTransfer, dragEl) {
+				dataTransfer.setData('Text', dragEl.textContent);
+			  },
+			  //group: "QuestionnOptions",
+			  group: { name: "confirmAppointmentsBlock", put: false },
+			  animation: 150,
+			  store: {
+				get: function (sortable) {
+				  var order = localStorage.getItem(sortable.options.group);
+				  return order ? order.split('|') : [];
+				},
+				set: function (sortable) {
+				  var order = sortable.toArray();
+				  localStorage.setItem(sortable.options.group, order.join('|'));
+				}
+			  },
+			  onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);},
+			  onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]); },
+			  onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
+			  onStart:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
+			  onSort:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
+			  onEnd: function(evt){ console.log('onEnd.editable:', [evt.item, evt.from]);}
+		  });		
 	}
 	
 	$(document).on("click",".labelStatusCls",function(){
