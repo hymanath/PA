@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppointmentScheduleVO {
 private Long userId;
 private Long tdpCadreId;
@@ -12,11 +15,49 @@ private String scheduleType;
 private String designation;
 private String createdBy;
 private Long statusId;
+private Long appointmentId;
+private String toTime;
+private String fromDate;
+private String toDate;
+
+
+
+public String getFromDate() {
+	return fromDate;
+}
+public void setFromDate(String fromDate) {
+	this.fromDate = fromDate;
+}
+public String getToDate() {
+	return toDate;
+}
+public void setToDate(String toDate) {
+	this.toDate = toDate;
+}
+public String getToTime() {
+	return toTime;
+}
+public void setToTime(String toTime) {
+	this.toTime = toTime;
+}
+public Long getAppointmentId() {
+	return appointmentId;
+}
+public void setAppointmentId(Long appointmentId) {
+	this.appointmentId = appointmentId;
+}
+private List<AppointmentScheduleVO> subList = new ArrayList<AppointmentScheduleVO>();
 
 
 
 
 
+public List<AppointmentScheduleVO> getSubList() {
+	return subList;
+}
+public void setSubList(List<AppointmentScheduleVO> subList) {
+	this.subList = subList;
+}
 public Long getStatusId() {
 	return statusId;
 }

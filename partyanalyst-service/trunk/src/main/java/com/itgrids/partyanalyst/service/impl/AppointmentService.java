@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,6 +54,7 @@ import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
+import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
@@ -68,7 +70,9 @@ import com.itgrids.partyanalyst.model.LabelAppointment;
 import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+
 
 public class AppointmentService implements IAppointmentService{
 	
@@ -97,9 +101,19 @@ public class AppointmentService implements IAppointmentService{
 	private IBoothPublicationVoterDAO     		boothPublicationVoterDAO;
 	private RtcUnionService               		rtcUnionService;  
 	private IAppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
+	
+
 	private ILabelAppointmentDAO labelAppointmentDAO;
 	private ILabelAppointmentHistoryDAO labelAppointmentHistoryDAO;
 	private IAppointmentTimeSlotDAO appointmentTimeSlotDAO;
+	private ICadreRegistrationService cadreRegistrationService;
+	
+	public ICadreRegistrationService getCadreRegistrationService() {
+		return cadreRegistrationService;
+	}
+	public void setCadreRegistrationService(ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
 	
 	public IAppointmentPreferableDateDAO getAppointmentPreferableDateDAO() {
 		return appointmentPreferableDateDAO;
@@ -2080,25 +2094,41 @@ public class AppointmentService implements IAppointmentService{
 					resultList = new ArrayList<AppointmentScheduleVO>();
 					for(Object[] params : list)
 					{
-						AppointmentScheduleVO vo = new AppointmentScheduleVO();
-						if(params[8] != null && !params[8].toString().isEmpty())
+						
+						AppointmentScheduleVO vo = getMatchedAppointment(resultList,(Long)params[11]);
+						if(vo == null)
 						{
-							Date date= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[8].toString().substring(0, 19));
-							String convertDate = new SimpleDateFormat("hh:mm a").format(date);
-							vo.setScheduleType(getAppointmentSchedule(params[8].toString().substring(0, 19)));
-							vo.setTime(convertDate);
+							vo = new AppointmentScheduleVO();
+							vo.setAppointmentId((Long)params[11]);
+							if(params[8] != null && !params[8].toString().isEmpty() && params[12] != null && !params[12].toString().isEmpty())
+							{
+								Date date= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[8].toString().substring(0, 19));
+								String convertDate = new SimpleDateFormat("hh:mm a").format(date);
+								
+								Date date1= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[12].toString().substring(0, 19));
+								String convertDate1 = new SimpleDateFormat("hh:mm a").format(date1);
+								vo.setScheduleType(getAppointmentSchedule(params[8].toString().substring(0, 19),params[12].toString().substring(0, 19)));
+								vo.setSubject(params[4] != null ? params[4].toString() : "");
+								vo.setStatusId(params[9] != null ? (Long)params[9] : null);
+								vo.setAppointmentStatus(params[10] != null ? params[10].toString() : "");
+								vo.setTime(convertDate);
+								vo.setToTime(convertDate1);
+								vo.setFromDate(params[8].toString());
+								vo.setToDate(params[12].toString());
+								
+							}
+							resultList.add(vo);
 						}
-						vo.setName(params[1] != null ? params[1].toString() :"");
-						vo.setMobileNo(params[2] != null ? params[2].toString() : "");
-						vo.setSubject(params[4] != null ? params[4].toString() : "");
-						vo.setDesignation(params[3] != null ? params[3].toString() : "");
+						AppointmentScheduleVO candidateVo = new AppointmentScheduleVO();
+						candidateVo.setName(params[1] != null ? params[1].toString() :"");
+						candidateVo.setMobileNo(params[2] != null ? params[2].toString() : "");
+						
+						candidateVo.setDesignation(params[3] != null ? params[3].toString() : "");
 						String fname = params[6] != null ? params[6].toString() : "";
 						String lname = params[7] != null ?params[7].toString() : "";
-						vo.setCreatedBy(fname+" "+lname);
-						vo.setStatusId(params[9] != null ? (Long)params[9] : null);
-						vo.setAppointmentStatus(params[10] != null ? params[10].toString() : "");
-						
-						resultList.add(vo);
+						candidateVo.setCreatedBy(fname+" "+lname);
+					
+						vo.getSubList().add(candidateVo);
 					}
 				}
 			   
@@ -2108,22 +2138,35 @@ public class AppointmentService implements IAppointmentService{
 		return resultList;
 		
 	}
-	public String getAppointmentSchedule(String appointmentDate)
+	
+	public AppointmentScheduleVO getMatchedAppointment(List<AppointmentScheduleVO> resultList,Long id)
+	{
+		if(resultList == null || resultList.size() == 0)
+			return null;
+		for(AppointmentScheduleVO vo : resultList)
+		{
+			if(vo.getAppointmentId().longValue() == id.longValue())
+				return vo;
+		}
+		return null;
+	}
+	public String getAppointmentSchedule(String fromDate,String toDate)
 	{
 		String scheduleType = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		 try {
-			Date date1 = format.parse(appointmentDate);
+			Date fromDate1 = format.parse(fromDate);
+			Date toDate1 = format.parse(toDate);
 			Date date2 = new Date();
-			if (date1.compareTo(date2) < 0)
+			if (toDate1.compareTo(date2) < 0)
 			{
 					scheduleType = "Completed";
 			       // System.out.println("date1 is before date2");
 			}
-			else if (date1.compareTo(date2) > 0)
+			else if (fromDate1.compareTo(date2) > 0)
 			{
 				scheduleType = "UpCome";
-			   // System.out.println("date1 is after date2");
+			   // System.out.println("fromDate1 is after date2");
 			}
 			else
 			{
@@ -2668,6 +2711,64 @@ public class AppointmentService implements IAppointmentService{
 			} catch (Exception e) {
 				LOG.error("Exception raised in getViewAppointmentsOfALable", e);
 			}
-			return finalList;
-		 }
+			return rs;
+		}
+	
+	
+	public ResultStatus updateAppointmentStatus(AppointmentUpdateStatusVO inputVO,Long userId)
+	{
+		ResultStatus result = new ResultStatus();
+		try{
+			
+			Appointment appointment = appointmentDAO.get(inputVO.getAppointmentId());
+			appointment.setAppointmentStatusId(inputVO.getStatusId());;
+			appointment.setUpdatedBy(userId);
+			appointmentDAO.save(appointment);
+			if(inputVO.isIssmsChecked())
+			{
+				 List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params : list)
+					 {
+						 if(params[2] != null && !params[2].toString().isEmpty())
+						 cadreRegistrationService.sendSMS("9032411640", inputVO.getSmsText()); 
+					 }
+				 }
+				
+			}
+			result.setMessage("success");
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in updateAppointmentStatus", e);
+			result.setMessage("fail");
+			
+		}
+		return result;
+	}
+	
+	public ResultStatus sendSmsForAppointment(AppointmentUpdateStatusVO inputVO)
+	{
+		ResultStatus result = new ResultStatus();
+		try{
+			     List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params : list)
+					 {
+						 if(params[2] != null && !params[2].toString().isEmpty())
+						 cadreRegistrationService.sendSMS("9032411640", inputVO.getSmsText()); 
+					 }
+				 }
+				
+			
+			result.setMessage("success");
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in sendSmsForAppointment", e);
+			result.setMessage("fail");
+			
+		}
+		return result;
+	}
 }

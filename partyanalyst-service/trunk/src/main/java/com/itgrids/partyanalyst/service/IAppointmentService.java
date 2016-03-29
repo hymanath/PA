@@ -2,10 +2,12 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
@@ -47,4 +49,6 @@ public interface IAppointmentService {
 	public ResultStatus updateMemberAppointmentsStatus(Long memberAppntId,Long updateAppntStatusId);
 	public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long registrationId);
 	public List<AppointmentDetailsVO> getViewAppointmentsOfALable(Long labelId);
+	public ResultStatus updateAppointmentStatus(AppointmentUpdateStatusVO inputVO,Long userId);
+	public ResultStatus sendSmsForAppointment(AppointmentUpdateStatusVO inputVO);
 }
