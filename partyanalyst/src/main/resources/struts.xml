@@ -11567,7 +11567,7 @@
 				
 	<action name="appointmentSavingAction" class="appointmentAction" method="saveAppointment">
 		<result name="success" type="stream">
-	    	<param name="root">resultStatus</param>
+	    	<param name="inputName">inputStream</param>
 	    </result>
 	</action>
 	<action name="getCandidateDesignation" class="appointmentAction" method="getAppCandidateDesigList">
@@ -11715,15 +11715,24 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	
 	<action name="updateAppointmentsLabelStatusAction" class="appointmentAction" method="updateAppointmentsLabelStatus">
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	
 	<action name="updateMemberAppointmentsStatusAction" class="appointmentAction" method="updateMemberAppointmentsStatus">
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	
+	<action name="setTimeSlotForAppointmentAction" class="appointmentAction" method="setTimeSlotForAppointment">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
