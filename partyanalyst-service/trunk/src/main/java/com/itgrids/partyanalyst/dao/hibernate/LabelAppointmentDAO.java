@@ -314,4 +314,21 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type){
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getViewAppointmentsOfALable(Long lableId){
+		Query query = getSession().createQuery(" select model.appointment.appointmentId," +
+				"model.appointment.appointmentPriority.appointmentPriorityId,model.appointment.appointmentPriority.priority," +
+				"model.appointment.reason," +
+				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,model1.userId,model1.firstName," +
+				" ATS.fromDate,ATS.toDate " +
+				" from LabelAppointment model,User model1,AppointmentTimeSlot ATS " +
+				" where model.appointmentLabel.appointmentLabelId=:lableId and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
+				" and model.createdBy=model1.userId " +
+				" and model.appointment.appointmentId = ATS.appointmentId" +
+				" and ATS.isDeleted = 'N' ");
+		
+		query.setParameter("lableId", lableId);
+		return query.list();
+	} 
+	
 }
