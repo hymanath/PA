@@ -2363,54 +2363,62 @@ public class AppointmentService implements IAppointmentService{
 				}
 				return status;
 			}
-		
-		public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long registrationId){
-			ResultStatus rs = new ResultStatus();
-			try {
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-				Date date = sdf.parse(dateStr);
+	
+	@SuppressWarnings("unused")
+	public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId){
+		ResultStatus rs = new ResultStatus();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date date = sdf.parse(dateStr);
+			
+			 SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+		       SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+		       
+		       SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 				
-				if(fromTime.split(" ")[1].equalsIgnoreCase("PM")){
-					Long t = Long.parseLong(fromTime.split(" ")[0].split(":")[0])+12l;
-					fromTime=dateStr+" "+t.toString()+":"+fromTime.split(":")[1];
-				}else{
-					fromTime=dateStr+" "+fromTime.split(" ")[0];
-				}
-				SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-				Date fromTime1 = sdf1.parse(fromTime);
-				
-				
-				if(toTime.split(" ")[1].equalsIgnoreCase("PM")){
-					Long t = Long.parseLong(toTime.split(" ")[0].split(":")[0])+12l;
-					toTime=dateStr+" "+t.toString()+":"+toTime.split(":")[1];
-				}else{
-					toTime=dateStr+" "+toTime.split(" ")[0];
-				}
-				
-				Date toTime1 = sdf1.parse(toTime);
-				
-				AppointmentTimeSlot timeSlot = new AppointmentTimeSlot();
-				timeSlot.setAppointmentId(appointmentId);
-				timeSlot.setDate(date);
-				timeSlot.setFromDate(fromTime1);
-				timeSlot.setToDate(toTime1);
-				timeSlot.setInsertedBy(registrationId);
-				timeSlot.setUpdatedBy(registrationId);
-				timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				timeSlot.setIsDeleted("N");
-				
-				appointmentTimeSlotDAO.save(timeSlot);
-				
-				rs.setExceptionMsg("success");
-				rs.setResultCode(0);
-				
-			} catch (Exception e) {
-				LOG.error("Exception raised in setTimeSlotForAppointment", e);
-				rs.setExceptionMsg("failure");
-				rs.setResultCode(1);
-			}
-			return rs;
+		       
+		       Date dateFromTime = null;
+		       Date dateToTime =null;
+		       
+		       Date appointmentFromTime = null;
+		       Date appointmentToTime =null;
+		       
+		       if(fromTime !=null && !fromTime.isEmpty()){
+		    	   dateFromTime = parseFormat.parse(fromTime);
+		    	   fromTime = dateStr + " " +displayFormat.format(dateFromTime);
+		       }
+		       if(toTime !=null && !toTime.isEmpty()){
+		    	   dateToTime = parseFormat.parse(toTime);
+		    	   toTime = dateStr + " " +displayFormat.format(dateToTime);
+		       }
+		   
+		       if(fromTime !=null && toTime !=null){
+			    	  appointmentFromTime = sdf1.parse(fromTime);
+			    	  appointmentToTime = sdf1.parse(toTime);
+			     }
+		  
+			
+			AppointmentTimeSlot timeSlot = new AppointmentTimeSlot();
+			timeSlot.setAppointmentId(appointmentId);
+			timeSlot.setDate(date);
+			timeSlot.setFromDate(appointmentFromTime);
+			timeSlot.setToDate(appointmentToTime);
+			timeSlot.setInsertedBy(userId);
+			timeSlot.setUpdatedBy(userId);
+			timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			timeSlot.setIsDeleted("N");
+			
+			appointmentTimeSlotDAO.save(timeSlot);
+			
+			rs.setExceptionMsg("success");
+			rs.setResultCode(0);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in setTimeSlotForAppointment", e);
+			rs.setExceptionMsg("failure");
+			rs.setResultCode(1);
 		}
-		
+		return rs;
 	}
+}
