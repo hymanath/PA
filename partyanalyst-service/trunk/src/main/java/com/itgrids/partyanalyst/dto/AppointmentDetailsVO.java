@@ -26,6 +26,8 @@ public class AppointmentDetailsVO implements Serializable{
 	private List<IdNameVO> statusList;
 	
 	private boolean isLabeled;
+	private String  lastVisit;
+    private String  apptStatus;
 	
 	public String getName() {
 		return name;
@@ -129,6 +131,18 @@ public class AppointmentDetailsVO implements Serializable{
 	public void setLabeled(boolean isLabeled) {
 		this.isLabeled = isLabeled;
 	}
-	
+	public String getLastVisit() {
+		return lastVisit;
+	}
+	public void setLastVisit(String lastVisit) {
+		this.lastVisit = lastVisit;
+	}
+	public String getApptStatus() {
+		return apptStatus;
+	}
+	public void setApptStatus(String apptStatus) {
+		this.apptStatus = apptStatus;
+	}
+    	
 	
 }
