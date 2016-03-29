@@ -2860,8 +2860,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 											}else{
 												str+='<p>Constituency : - </p>';
 											}
-												
-												str+='<p>Last Visit:</p>';
+											
+											if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
+												str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
+											}else{
+												str+='<p>Last Visit: - </p>';
+											}
 												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
 											str+='</div>';
 										str+='</div>';
@@ -2898,7 +2902,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 										str+='<table class="table table-bordered m_top10">';
 										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 											str+='<thead>';
-											str+='<th>Appt Last Requested Date</th>';
+										  	str+='<th>Appt Last Requested Date</th>';
 												str+='<th colspan="2">Appt Status</th>';
 												
 											str+='</thead>';
@@ -2908,7 +2912,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 													str+='<tr>';
 													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
 													str+='<td>'+result[i].subList[j].subList[l].status+'</td>';
-													str+='<td> - </td>';
+													if(result[i].subList[j].subList[l].apptStatus!=null && result[i].subList[j].subList[l].apptStatus.trim().length>0){
+														str+='<td> '+result[i].subList[j].subList[l].apptStatus+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+													
 													str+='</tr>';
 												}
 											}else{
@@ -3427,7 +3436,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
 												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
-												str+='<p>Last Visit:</p>';
+												if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
+													str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
+												}else{
+													str+='<p>Last Visit: - </p>';
+												}
 												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
 											str+='</div>';
 										str+='</div>';
