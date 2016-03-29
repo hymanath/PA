@@ -3346,6 +3346,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	} 
 	$("#pluginTableId").hide();
 	$("#showTimeSlotsId").click(function(){
+		
+		//View Details Of Appointments call Balu
+		getViewAppointmentsOfALable();
+		
+		
 		$("#timeSlotsErrId").html("");
 		//get appointments of a lable
 		getAppointmentsOfALabel();
@@ -3678,9 +3683,10 @@ var tableToExcel = (function() {
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
-				alert("success");
+				getViewAppointmentsOfALable();
+				alert("New Time Slot Created Successfully");				
 			}else{
-				alert("failure");
+				alert("failure,some problem occured While creating time slot");
 			}
 		});
 		
@@ -3971,6 +3977,21 @@ var tableToExcel = (function() {
 	//div emtty checking
 	function isEmpty(el){
       return !$.trim(el.html())
+	}
+	
+	function getViewAppointmentsOfALable(){
+		var jsObj={
+			labelId : $("#appointmentLabelToGetSlotsId").val()
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getViewAppointmentsOfALableAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
 	}
 </script>
 </body>
