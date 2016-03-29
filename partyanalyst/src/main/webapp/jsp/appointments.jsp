@@ -379,6 +379,7 @@
 									</form>
 									
 									<div class="block cloneBlock addattrid" style="display:none;">
+										<input type="hidden" class="cloneCandidateIdCls"/>
 										<div class="row">
 											<span class="closeIcon"><i class="glyphicon glyphicon-remove"></i></span>
 											<div class="col-md-4 m_top10">
@@ -1387,7 +1388,9 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneVillageCls").attr("id",'villageId'+cloneCount);
 	e.find(".cloneErrCandidateVillageCls").attr("id",'cloneErrCandidateVillageId'+cloneCount);
 	e.find(".cloneVillageCls").attr("attr_val",cloneCount);
-
+	
+	e.find(".cloneCandidateIdCls").attr("id","candidateId"+cloneCount);
+	e.find(".cloneCandidateIdCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].appointCandidateId');
 	
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
@@ -2256,7 +2259,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				$(".closeIcon").attr("attr_close",Uncheck);
 				
 				$("#addOneBlock").trigger("click");
-				
+				var temp = cloneCount-1;
+				$("#candidateId"+temp).val($(this).parent().attr("attr_id"));
 			 var candidateType = $(this).parent().attr("attr_candidatetype");
 			 var id = $(this).parent().attr("attr_id");
 			 
