@@ -638,4 +638,15 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getViewAppointmentsOfALable(){
+		try {
+			jObj = new JSONObject(getTask());
+			apptDetailsList = appointmentService.getViewAppointmentsOfALable(jObj.getLong("labelId"));
+		} catch (Exception e) {
+			LOG.error("Exception riased at getViewAppointmentsOfALable", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
