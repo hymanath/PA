@@ -390,7 +390,8 @@ body
 .manageAppViewPanelClass
 {
 	border-radius:0px;
-	box-shadow:0 0 5px rgba(0, 0, 0, 0.4)
+	box-shadow:0 0 5px rgba(0, 0, 0, 0.4);
+	position:relative;
 }
 .manageAppViewPanelClass .panel-heading
 {
@@ -406,6 +407,8 @@ body
 	box-shadow:none;
 	border:1px solid #ddd;
 }
+.pad_5{padding:5px}
+.m_0{margin:0px;}
 .pluginTable
 {
 	margin-top:20px;
@@ -515,7 +518,7 @@ body
 {
   border:0px !important;
   color:#333 !important;
-  background:none;
+  background:none !important;
 }
 .ui-datepicker-calendar
 {
