@@ -3395,7 +3395,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			//str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
 			for(var i in result){
 			
-				str+='<div class="panel panel-default manageAppViewPanelClass">';
+				str+='<div class="panel panel-default manageAppViewPanelClass" attr_appointment_id='+result[i].appointmentId+'>';
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-12">';
@@ -3645,7 +3645,8 @@ var tableToExcel = (function() {
 	}
 	
 	$(document).on("click","#setTimeSlotBtnId",function(){
-		var appointmentId = $("#appointmentLabelToGetSlotsId").val();
+		//var appointmentId = $("#appointmentLabelToGetSlotsId").val();		
+		var appointmentId = $("#confirmAppointmentBlockDropId div").attr("attr_appointment_id");
 		var date = $("#appointmentDateSlotId").val();
 		var fromTime = $("#fromTimeId").val();
 		var toTime = $("#toTimeId").val();
@@ -3796,7 +3797,6 @@ var tableToExcel = (function() {
 			$(".errorArCls").html("Please Specify The Reason");	
 			isErrAvailable=true;				
 		}
-		debugger;
 		if (isEmpty($('#moreCandidatesDivId'))) {
 			$(".errorCandidateMainDivCls").html("Please Add Candidate");	
 			isErrAvailable=true;				
