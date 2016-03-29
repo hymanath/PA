@@ -364,6 +364,7 @@
 											<div class="col-md-6 m_top25">
 												<button class="btn btn-success btn-block" type="button" onClick="savingAppointment();">CREATE APPOINTMENT</button>
 											</div>
+											<div class="col-md-6 m_top25" id="savingStatusDivId"></div>
 										</div>
 										<input type="hidden" id="dateTypeText" name="appointmentVO.appointmentPreferableTimeType">
 										<input type="hidden" id="uniqueCode" name="appointmentVO.uniqueCode">
@@ -964,7 +965,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <button class="btn btn-success m_top25">SET</button>
+                                                            <button class="btn btn-success m_top25" id="setTimeSlotBtnId">SET</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1408,13 +1409,13 @@ $(".dropkickClass").dropkick();
 	}
 	
 	function showStatus(myResult,num){
-		var result = (String)(myResult);
-		var resultAray = result.split(',');
-		
-		if(result.search('success') != -1){
-			alert("Appointment Created Failed. Please Try Again");
+		var result = myResult.split("<pre>");
+		var result1 = result[1].split("</pre>");
+		if(result1[0] == "success"){
+			$("#savingStatusDivId").html("<sapn style='font-size:18px;color:green;'>Appointment Created Successfully.</span>");
 		}else{
-			alert("Appointment Created Successfully.");
+			$("#savingStatusDivId").html("<sapn style='font-size:16px;color:red;'>Appointment Creation Failed. Please Try Again.</span>");
+			
 		}
 			
 	}
@@ -3445,11 +3446,39 @@ var tableToExcel = (function() {
   }
 })()
 
-function generateToExcel()
-{	
-	tableToExcel('allMemberTableId', 'Users Report');
+	function generateToExcel()
+	{	
+		tableToExcel('allMemberTableId', 'Users Report');
+	}
 	
-}
+	$(document).on("click","#setTimeSlotBtnId",function(){
+		var appointmentId = $("#appointmentLabelToGetSlotsId").val();
+		var date = $("#appointmentDateSlotId").val();
+		var fromTime = $("#fromTimeId").val();
+		var toTime = $("#toTimeId").val();
+		
+		var jsObj={
+			appointmentId : appointmentId,
+			date : date,
+			fromTime : fromTime,
+			toTime : toTime
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'setTimeSlotForAppointmentAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
+				alert("success");
+			}else{
+				alert("failure");
+			}
+		});
+		
+		
+	});
 </script>
 </body>
 </html>
