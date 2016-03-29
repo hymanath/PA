@@ -3030,6 +3030,8 @@
 		<property name="labelAppointmentDAO" ref="labelAppointmentDAO"/>
 		<property name="labelAppointmentHistoryDAO" ref="labelAppointmentHistoryDAO"/>
 		<property name="appointmentTimeSlotDAO" ref="appointmentTimeSlotDAO"/>
+		<property name="cadreRegistrationService" ref="cadreRegistrationService"/>
+		
 	</bean>
 </beans>		
 	

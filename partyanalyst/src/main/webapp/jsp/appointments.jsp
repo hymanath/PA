@@ -149,7 +149,7 @@
 								<div class="col-md-12">
 									<div class="todayBlock ">
 										<div class="row m_top10">
-											<div class="col-md-6">
+											<div class="col-md-4">
 												<label>Search</label>
 												<div class="input-group inputSearch">
 													<input class="form-control" type="text" id="searchStrId">
@@ -174,12 +174,13 @@
                                                     <input type="text" class="form-control" id="dashboardSelectDateIds">                                               
 												</div>
                                             </div>
+											<div  class="col-md-2 m_top25" style="float: right;">
+                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
+                                            </div>
 										</div>
 									</div>
 									
-									<div  class="col-md-2 m_top10" style="float: right;">
-                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
-                                            </div>
+										
 								</div>
 							</div>
                             <div class="row">
@@ -1217,32 +1218,28 @@ function buildTotalAppointmentStatusForToday(result){
 		e.stopPropagation()
 		$(this).parent().parent().find(".updateAppointment").show()
 		})
-	$(document).on("click","body",function(e){
+	$(document).on("click","body",function(){
 		$(".updateAppointment").hide()
 		$(".appointmentSettingsBLock").hide()
 		$(".messageBlock").hide()		
 		});
-	/* var maxHeight = 0;
-
-	$(".heightAdjust").each(function(){
-	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
-	});
-	$(".heightAdjust").height(maxHeight); */
-
 	$(document).on("click",".settingsIcon",function(e){
+		e.stopPropagation();
 		$(".updateAppointment").hide()
 		$(".messageBlock").hide()
 		$(".appointmentSettingsBLock").hide()
-		e.stopPropagation()
 		$(this).parent().parent().parent().find(".appointmentSettingsBLock ").show()
 	})
 	$(document).on("click",".messageIcon",function(e){
+		e.stopPropagation();
 		$(".updateAppointment").hide()
 		$(".messageBlock").hide()
 		$(".appointmentSettingsBLock").hide()
-		e.stopPropagation()
 		$(this).parent().parent().find(".messageBlock").show()
 	})
+	$(document).on("click",".appointmentSettingsBLock,.messageBlock,.updateAppointment",function(event){
+		event.stopPropagation();
+	});
 function buildChartForAppStatus() {
     // Create the chart
     $('#LineChart').highcharts({
@@ -3008,76 +3005,85 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		str+='<textarea class="form-control m_top10"></textarea>';
 		str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
 		str+='</div>';
-		str+='<ul>';
 		if(result != null)
 		{
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "UpCome")
 				{
-					flag = true;
-					str+='<li>';
-					str+='<p class="font12">';
-					str+='<span class="pull-left text-danger">'+result[i].appointmentStatus+'</span>';
-					str+='<span class="pull-right text-success">';
-					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-					str+='<div class="appointmentSettingsBLock arrow_box">';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox" value="5" class="upcomeStatus">Reschedule';
-					str+='</label>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox" value="3"  class="upcomeStatus">Cancel';
-					str+='</label>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox" value="4"  class="upcomeStatus">Not Attended';
-					str+='</label>';
-					str+='<label>Select Location</label>';
-					str+='<select class="form-control">';
-					str+='<option>Hyderbad</option>';
-					str+='</select>';
-					str+='<label class="upcomedateCls1">Select Date</label>';
-					str+='<div class="input-group inputSearch upcomedateCls1">';
-					str+='<span class="input-group-addon">';
-					str+='<i class="glyphicon glyphicon-calendar"></i>';
-					str+='<span class="caret"></span>';
-					str+='</span>';
-					str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
-					str+='</div>';
-					str+='<div class="input-group inputSearch upcomedateCls1">';
-					str+='<span class="input-group-addon">';
-					str+='<i class="glyphicon glyphicon-time"></i>';
-					str+='<span class="caret"></span>';
-					str+='</span>';
-					str+='<input type="text" class="form-control upcometimeCls">';
-					str+='</div>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Send SMS';
-					str+='</label>';
-					str+='<textarea class="form-control"></textarea>';
-					str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
-					str+='</div>';
-					str+='<div class="media">';
-					str+='<div class="media-left">';
-					str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
-					str+='</div>';
-					str+='<div class="media-body">';
-					str+='<p>'+result[i].name+'</p>';
-					str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
-					str+='<p>'+result[i].subject+'</p>';
-					str+='</div>';
-					str+='</div>';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
+						str+='<div class="panel-heading">';
+							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
+							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							str+='<p class="m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<div class="appointmentSettingsBLock arrow_box">';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
+							str+='</label>';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="3"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
+							str+='</label>';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
+							str+='</label>';
+							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
+							str+='<div class="input-group inputSearch upcomedateCls1">';
+							str+='<span class="input-group-addon">';
+							str+='<i class="glyphicon glyphicon-calendar"></i>';
+							str+='<span class="caret"></span>';
+							str+='</span>';
+							str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
+							str+='</div>';
+							str+='<label class="upcomedateCls1 m_top10">Select Time</label>';
+							str+='<div class="input-group inputSearch upcomedateCls1">';
+							str+='<span class="input-group-addon">';
+							str+='<i class="glyphicon glyphicon-time"></i>';
+							str+='<span class="caret"></span>';
+							str+='</span>';
+							str+='<input type="text" class="form-control upcometimeCls">';
+							str+='</div>';
+							str+='<label class="checkbox-inline">';
+							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
+							str+='</label>';
+							str+='<textarea class="form-control smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
+							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='</div>';
+							
+						str+='</div>';
+						str+='<div class="panel-body pad_5">';
+						str+='<ul>';
+						flag = true;
+						for(var j in result[i].subList)
+						{
+						
+						str+='<li>';
+						str+='<div class="media m_0">';
+						str+='<div class="media-left">';
+						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='</div>';
+						str+='<div class="media-body">';
+						str+='<p>'+result[i].subList[j].name+'</p>';
+						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+						str+='<p></p>';
+						str+='</div>';
+						str+='</div>';
+						str+='</li>';
+						}
+						str+='</ul>';
+					
 					str+='<p class="font12 m_top10">';
-					str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
 					str+='<textarea class="form-control"></textarea>';
 					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
 					str+='</div>';
-					str+='</li>';
-
+					str+='</div>';
+				str+='</div>';
 				}
 			}
-			str+='</ul>';
+			
 		}
 		else
 		{
@@ -3096,17 +3102,91 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	$(".upcometimeCls").datetimepicker({format: "LT"});
 	
 	}
-	$(document).on("click",".upcomeStatus",function(){
+	$(document).on("click",".appointmentStatus",function() {
+	
+		$(".msgDiv"+appointmentId).html("").css("color","");;
+		var appointmentId = $(this).attr("appointmentId");
+		var statusId;
+		var smsCheck = false;
+		var smsText = '';
+		$(".status"+appointmentId).each(function(){
+			if($(this).is(':checked'))
+			{
+				statusId = $(this).val();
+			}
+		})
+		if($(".smsCheckedCls"+appointmentId).is(':checked'))
+		{
+			smsCheck = true;
+			smsText = $(".smsTextCls"+appointmentId).val().trim();
+		}
+		
+		var jsObj={
+			appointmentId : appointmentId,
+			date : '',
+			time : '',
+			smsCheck : smsCheck,
+			smsText:smsText,
+			statusId:statusId
+		}
+			$.ajax({
+			type : 'POST',
+			url : 'updateAppointmentStatusAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$(".msgDiv"+appointmentId).html("Updated Successfully..").css("color","green");
+			setTimeout(function(){
+ $(".msgDiv"+appointmentId).html("");
+},2000);
+		});
+	})
+	
+	/*function updateAppointmentUpcomeStatus(appointmentId)
+	{
+		
+		var statusId;
+		var smsCheck = false;
+		var smsText = '';
+		$(".upcomeStatus").each(function(){
+			if($(this).is(':checked'))
+			{
+				statusId = $(this).val();
+			}
+		})
+		if($("#upcomeSmsCheckedId").is(':checked'))
+		{
+			smsCheck = true;
+			smsText = $("#upcomeSmsTextId").val().trim();
+		}
+		
+		var jsObj={
+			appointmentId : appointmentId,
+			date : '',
+			time : '',
+			smsCheck : smsCheck,
+			smsText:smsText,
+			statusId:statusId
+		}
+			$.ajax({
+			type : 'POST',
+			url : 'updateAppointmentStatusAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
+	
+	*/
+	$(document).on("click",".status",function(){
 		var val = $(this).val();
-		$(".upcomeStatus").prop("checked",false);
-		$(this).prop("checked",true);
-		if(val == 5)
+			if(val == 5)
 			$(".upcomedateCls1").show();
 		else
 				$(".upcomedateCls1").hide();
 		
 	});
-	
 	function buildInprogressResult(result)
 	{
 		var str = '';
@@ -3132,66 +3212,76 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			{
 				if(result[i].scheduleType == "InProgress")
 				{
-					flag = true;
-					str+='<li>';
-					str+='<p class="font12">';
-					str+='<span class="pull-left text-danger">'+result[i].appointmentStatus+'</span>';
-					str+='<span class="pull-right text-success">';
-					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-					str+='<div class="appointmentSettingsBLock arrow_box">';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Reschedule';
-					str+='</label>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Cancel';
-					str+='</label>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Not Attended';
-					str+='</label>';
-					str+='<label>Select Location</label>';
-					str+='<select>';
-					str+='<option>Hyderbad</option>';
-					str+='</select>';
-					str+='<label>Select Date</label>';
-					str+='<div class="input-group inputSearch">';
-					str+='<span class="input-group-addon">';
-					str+='<i class="glyphicon glyphicon-calendar"></i>';
-					str+='<span class="caret"></span>';
-					str+='</span>';
-					str+='<input type="text" class="form-control">';
-					str+='</div>';
-					str+='<div class="input-group inputSearch">';
-					str+='<span class="input-group-addon">';
-					str+='<i class="glyphicon glyphicon-time"></i>';
-					str+='<span class="caret"></span>';
-					str+='</span>';
-					str+='<input type="text" class="form-control">';
-					str+='</div>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Send SMS';
-					str+='</label>';
-					str+='<textarea class="form-control"></textarea>';
-					str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
-					str+='</div>';
-					str+='<div class="media">';
-					str+='<div class="media-left">';
-					str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
-					str+='</div>';
-					str+='<div class="media-body">';
-					str+='<p>'+result[i].name+'</p>';
-					str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
-					str+='<p>'+result[i].subject+'</p>';
-					str+='</div>';
-					str+='</div>';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
+						str+='<div class="panel-heading">';
+							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
+							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							str+='<p class="m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<div class="appointmentSettingsBLock arrow_box">';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
+							str+='</label>';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="3"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
+							str+='</label>';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
+							str+='</label>';
+							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
+							str+='<div class="input-group inputSearch upcomedateCls1">';
+							str+='<span class="input-group-addon">';
+							str+='<i class="glyphicon glyphicon-calendar"></i>';
+							str+='<span class="caret"></span>';
+							str+='</span>';
+							str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
+							str+='</div>';
+							str+='<label class="upcomedateCls1 m_top10">Select Time</label>';
+							str+='<div class="input-group inputSearch upcomedateCls1">';
+							str+='<span class="input-group-addon">';
+							str+='<i class="glyphicon glyphicon-time"></i>';
+							str+='<span class="caret"></span>';
+							str+='</span>';
+							str+='<input type="text" class="form-control upcometimeCls">';
+							str+='</div>';
+							str+='<label class="checkbox-inline">';
+							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
+							str+='</label>';
+							str+='<textarea class="form-control smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
+							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='</div>';
+							
+						str+='</div>';
+						str+='<div class="panel-body pad_5">';
+						str+='<ul>';
+						flag = true;
+						for(var j in result[i].subList)
+						{
+						
+						str+='<li>';
+						str+='<div class="media m_0">';
+						str+='<div class="media-left">';
+						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='</div>';
+						str+='<div class="media-body">';
+						str+='<p>'+result[i].subList[j].name+'</p>';
+						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+						str+='<p></p>';
+						str+='</div>';
+						str+='</div>';
+						str+='</li>';
+						}
+						str+='</ul>';
+					
 					str+='<p class="font12 m_top10">';
-					str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
 					str+='<textarea class="form-control"></textarea>';
 					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
 					str+='</div>';
-					str+='</li>';
-
+					str+='</div>';
+				str+='</div>';
 				}
 			}
 			
@@ -3240,71 +3330,80 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			{
 				if(result[i].scheduleType == "Completed")
 				{
-					flag = true;
-					str+='<li>';
-					str+='<p class="font12">';
-					str+='<span class="pull-left text-danger">'+result[i].appointmentStatus+'</span>';
-					str+='<span class="pull-right text-success">';
-					str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-					str+='<div class="appointmentSettingsBLock arrow_box">';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Reschedule';
-					str+='</label>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Cancel';
-					str+='</label>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Not Attended';
-					str+='</label>';
-					str+='<label>Select Location</label>';
-					str+='<select>';
-					str+='<option>Hyderbad</option>';
-					str+='</select>';
-					str+='<label>Select Date</label>';
-					str+='<div class="input-group inputSearch">';
-					str+='<span class="input-group-addon">';
-					str+='<i class="glyphicon glyphicon-calendar"></i>';
-					str+='<span class="caret"></span>';
-					str+='</span>';
-					str+='<input type="text" class="form-control">';
-					str+='</div>';
-					str+='<div class="input-group inputSearch">';
-					str+='<span class="input-group-addon">';
-					str+='<i class="glyphicon glyphicon-time"></i>';
-					str+='<span class="caret"></span>';
-					str+='</span>';
-					str+='<input type="text" class="form-control">';
-					str+='</div>';
-					str+='<label class="checkbox-inline">';
-					str+='<input type="checkbox">Send SMS';
-					str+='</label>';
-					str+='<textarea class="form-control"></textarea>';
-					str+='<button class="btn btn-block btn-success">UPDATRE APPOINTMENT</button>';
-					str+='</div>';
-					str+='<div class="media">';
-					str+='<div class="media-left">';
-					str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
-					str+='</div>';
-					str+='<div class="media-body">';
-					str+='<p>'+result[i].name+'</p>';
-					str+='<p>Contact Number: '+result[i].mobileNo+'</p>';
-					str+='<p>'+result[i].subject+'</p>';
-					str+='</div>';
-					str+='</div>';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
+						str+='<div class="panel-heading">';
+							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
+							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							str+='<p class="m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<div class="appointmentSettingsBLock arrow_box">';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
+							str+='</label>';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="3"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
+							str+='</label>';
+							str+='<label class="radio-inline">';
+							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
+							str+='</label>';
+							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
+							str+='<div class="input-group inputSearch upcomedateCls1">';
+							str+='<span class="input-group-addon">';
+							str+='<i class="glyphicon glyphicon-calendar"></i>';
+							str+='<span class="caret"></span>';
+							str+='</span>';
+							str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
+							str+='</div>';
+							str+='<label class="upcomedateCls1 m_top10">Select Time</label>';
+							str+='<div class="input-group inputSearch upcomedateCls1">';
+							str+='<span class="input-group-addon">';
+							str+='<i class="glyphicon glyphicon-time"></i>';
+							str+='<span class="caret"></span>';
+							str+='</span>';
+							str+='<input type="text" class="form-control upcometimeCls">';
+							str+='</div>';
+							str+='<label class="checkbox-inline">';
+							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
+							str+='</label>';
+							str+='<textarea class="form-control smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
+							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='</div>';
+							
+						str+='</div>';
+						str+='<div class="panel-body pad_5">';
+						str+='<ul>';
+						flag = true;
+						for(var j in result[i].subList)
+						{
+						
+						str+='<li>';
+						str+='<div class="media m_0">';
+						str+='<div class="media-left">';
+						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='</div>';
+						str+='<div class="media-body">';
+						str+='<p>'+result[i].subList[j].name+'</p>';
+						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+						str+='<p></p>';
+						str+='</div>';
+						str+='</div>';
+						str+='</li>';
+						}
+						str+='</ul>';
+					
 					str+='<p class="font12 m_top10">';
-					str+='<i>Appt Created By: '+result[i].createdBy+'</i>';
+					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
 					str+='<textarea class="form-control"></textarea>';
 					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
 					str+='</div>';
-					str+='</li>';
-
+					str+='</div>';
+				str+='</div>';
 				}
 			}
-			str+='</ul>';
+			
 		}
-		
 		else
 		{
 			flag = false;
@@ -3693,10 +3792,8 @@ var tableToExcel = (function() {
 				alert("failure,some problem occured While creating time slot");
 			}
 		});
-		
-		
 	});
-	function buildTimeSlotsTable(result){
+function buildTimeSlotsTable(result){
 		var str='';
 		str+='<tr>';
 		str+='<td class="text-center">';
@@ -3782,7 +3879,6 @@ var tableToExcel = (function() {
 			}
 		}
 	}
-	
 	function clearAllValidationCls(){
 		$(".errorAptCls").html('');
 		$(".errorSpdCls").html('');
@@ -3982,7 +4078,6 @@ var tableToExcel = (function() {
 	function isEmpty(el){
       return !$.trim(el.html())
 	}
-	
 	function getViewAppointmentsOfALable(){
 		var jsObj={
 			labelId : $("#appointmentLabelToGetSlotsId").val()
