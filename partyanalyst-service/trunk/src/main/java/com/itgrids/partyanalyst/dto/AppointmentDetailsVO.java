@@ -28,6 +28,9 @@ public class AppointmentDetailsVO implements Serializable{
 	private boolean isLabeled;
 	private String  lastVisit;
     private String  apptStatus;
+    
+    private String fromDateStr;
+    private String toDateStr;
 	
 	public String getName() {
 		return name;
@@ -142,6 +145,18 @@ public class AppointmentDetailsVO implements Serializable{
 	}
 	public void setApptStatus(String apptStatus) {
 		this.apptStatus = apptStatus;
+	}
+	public String getFromDateStr() {
+		return fromDateStr;
+	}
+	public void setFromDateStr(String fromDateStr) {
+		this.fromDateStr = fromDateStr;
+	}
+	public String getToDateStr() {
+		return toDateStr;
+	}
+	public void setToDateStr(String toDateStr) {
+		this.toDateStr = toDateStr;
 	}
     	
 	
