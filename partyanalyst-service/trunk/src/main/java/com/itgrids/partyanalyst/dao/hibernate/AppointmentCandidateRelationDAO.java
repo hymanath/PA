@@ -129,7 +129,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
     	 " select distinct acr.appointment_candidate_id as candidId,acr.appointment_id as appId,date(a.inserted_time) as date, " +
     	 "        a.appointment_status_id as statusId,ass.status as status," +
     	 "        a.inserted_time as insertedtime,a.updated_time updatedtime,ats.from_date as fromDate,ats.to_date as toDate" +
-    	 " from   appointment_candidate_relation acr left join appointment_time_slot ats on acr.appointment_id=ats.appointment_id and is_deleted='N' " +
+    	 " from   appointment_candidate_relation acr left join appointment_time_slot ats on acr.appointment_id=ats.appointment_id and ats.is_deleted='N' " +
     	 "        join appointment a on a.appointment_id = acr.appointment_id " +
     	 "        join appointment_status ass on ass.appointment_status_id = a.appointment_status_id " +
     	 " where  a.is_deleted='N' and acr.appointment_candidate_id in (:candidateIds)" )
@@ -207,7 +207,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 				" select    model.appointmentCandidateId,max(model1.fromDate),max(model1.toDate)" +
 				" from      AppointmentCandidateRelation model,AppointmentTimeSlot model1 " +
 				" where     model.appointment.appointmentId = model1.appointment.appointmentId   and model.appointment.isDeleted='N' " +
-				"           and model.appointmentCandidateId in (:candidateIds)" +
+				"           and model.appointmentCandidateId in (:candidateIds) and model1.isDeleted='N' " +
 				" group by  model.appointmentCandidateId ");
 		query.setParameterList("candidateIds",candidateIds);
 		return query.list();
