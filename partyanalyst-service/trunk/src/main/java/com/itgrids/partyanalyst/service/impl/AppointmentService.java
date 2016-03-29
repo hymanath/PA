@@ -1436,7 +1436,7 @@ public class AppointmentService implements IAppointmentService{
 			
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised at getAppointmentsBySearchCriteria",e);
 		}
 		return finalList;
 	}
@@ -2133,6 +2133,7 @@ public class AppointmentService implements IAppointmentService{
 	//view apointments for label
 	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
+		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
 		try {
 			
 			Set<Long> appointmentIds = new HashSet<Long>(0);
@@ -2226,7 +2227,7 @@ public class AppointmentService implements IAppointmentService{
 			}
 			
 			if(candidates!=null && candidates.size()>0){
-				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails(candidates);
+				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails1(candidates);
 				if(candidPreviousDetails !=null && candidPreviousDetails.size()>0){
 					
 					for(Object[] obj : candidPreviousDetails){
@@ -2255,6 +2256,37 @@ public class AppointmentService implements IAppointmentService{
 													apptvo.setAppointmentId(appointmentId);
 													apptvo.setDateString(obj[2]!=null?obj[2].toString():"");
 													apptvo.setStatus(obj[4]!=null?obj[4].toString():"");
+													
+													if(obj[7]!=null){
+														
+														Date startDate = (Date)obj[7];
+														Date  endDate=   obj[8]!=null?(Date)obj[8]:null;
+														String startDateStr = sdf1.format(startDate);
+														String endDateStr   = sdf1.format(endDate);
+														if(status==2l){
+															apptvo.setApptStatus("Appt Fixed on "+startDateStr +" to "+endDateStr.split(" ")[3]+" "+endDateStr.split(" ")[4]);
+														}else if(status==3l){
+															apptvo.setApptStatus("Attended at "+startDateStr);
+														}else if(status==4l){
+															apptvo.setApptStatus("Not Attended at "+startDateStr);
+														}
+														
+													}else if(obj[5]!=null){
+														Date startDate = (Date)obj[5];
+														Date  endDate=   obj[6]!=null?(Date)obj[6]:null;
+														String startDateStr = sdf1.format(startDate);
+														String endDateStr   = sdf1.format(endDate);
+														
+														if(status==1){
+															apptvo.setApptStatus(" waiting from "+startDateStr);
+														}else if(status==5l){
+															apptvo.setApptStatus(" rescheduled at "+endDateStr);
+														}else if(status==6l){
+															apptvo.setApptStatus(" cancelled on "+endDateStr);
+														}
+														
+													}
+													
 													candidateVO.getSubList().add(apptvo);
 													
 													IdNameVO statusVO = getMatchedVo(candidateVO.getStatusList(),status);
@@ -2293,6 +2325,30 @@ public class AppointmentService implements IAppointmentService{
 				
 			}
 			
+			//get last visits by candidates.
+			if(candidates!=null && candidates.size()>0){
+				List<Object[]> lastVisitList = appointmentCandidateRelationDAO.getLastVisitsByCandidates(candidates);
+				if(lastVisitList!=null && lastVisitList.size()>0){
+					for(Object[] obj : lastVisitList){
+						Long candidateId  = obj[0]!=null?(Long)obj[0]:0l;
+						
+						for (Map.Entry<Long, AppointmentDetailsVO> entry : appointmentsMap.entrySet()) {
+							
+								AppointmentDetailsVO appointmentVO = entry.getValue();
+								
+								if (appointmentVO.getSubMap()!=null && appointmentVO.getSubMap().size()>0){
+										AppointmentDetailsVO candidateVO = appointmentVO.getSubMap().get(candidateId);
+										if(candidateVO !=null){
+										
+											candidateVO.setLastVisit(obj[1]!=null?sdf1.format((Date)obj[1]):"");
+										}
+								 }
+						  }
+					}
+				}
+			}
+			
+			
 			
 			if(appointmentsMap!=null && appointmentsMap.size()>0){
 				for (Map.Entry<Long, AppointmentDetailsVO> entry : appointmentsMap.entrySet()) {
@@ -2309,13 +2365,11 @@ public class AppointmentService implements IAppointmentService{
 			}
 			
 			
-			
-			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception raised at getAppointmentsBySearchCriteria",e);
 		}
 		return finalList;
-	 }
+	}
 		
 		public List<IdNameVO> getAppointmentsLabelStatus(){
 			List<IdNameVO> labelList = new ArrayList<IdNameVO>();
