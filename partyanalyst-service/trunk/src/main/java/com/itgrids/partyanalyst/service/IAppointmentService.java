@@ -45,4 +45,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentsLabelStatus();
 	public ResultStatus updateAppointmentsLabelStatus(Long labelId,Long labelstatusId);
 	public ResultStatus updateMemberAppointmentsStatus(Long memberAppntId,Long updateAppntStatusId);
+	public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long registrationId);
 }
