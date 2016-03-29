@@ -164,8 +164,8 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 				"model.appointmentCandidate.mobileNo, " +
 				"model.appointmentCandidate.candidateDesignation.designation," +
 				"model.appointment.reason,model.appointment.createdUser.userId,model.appointment.createdUser.firstName," +
-				" model.appointment.createdUser.lastName,model1.insertedTime,model.appointment.appointmentStatus.appointmentStatusId," +
-				" model.appointment.appointmentStatus.status" +
+				" model.appointment.createdUser.lastName,model1.fromDate,model.appointment.appointmentStatus.appointmentStatusId," +
+				" model.appointment.appointmentStatus.status,model.appointment.appointmentId,model1.toDate" +
 				" from AppointmentCandidateRelation model,AppointmentTimeSlot model1 " +
 				" where model.appointment.isDeleted='N'" +
 				" and model.appointment.appointmentId = model1.appointment.appointmentId");
@@ -185,7 +185,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		{
 			str.append(" and date(model1.fromDate) >=:fromDate and date(model1.toDate)<=:toDate");
 		}
-		str.append(" order by model1.insertedTime");
+		str.append(" group by model.appointment.appointmentId,model.appointmentCandidate.appointmentCandidateId order by model1.insertedTime");
 		Query query = getSession().createQuery(str.toString());
 		if(fromDate != null)
 		{
@@ -200,8 +200,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		return query.list();
 		
 	}
-	
-	public List<Object[]> getLastVisitsByCandidates(List<Long> candidateIds){
+public List<Object[]> getLastVisitsByCandidates(List<Long> candidateIds){
 		
 		Query query = getSession().createQuery("" +
 				" select    model.appointmentCandidateId,max(model1.fromDate),max(model1.toDate)" +
@@ -213,5 +212,13 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		return query.list();
 	}
 	
+	public List<Object[]> getAppointmentCandidateMobileNos(Long appointmentId){
+		Query query = getSession().createQuery(" select model.appointmentCandidate.appointmentCandidateId,model.appointmentCandidate.name," +
+				"model.appointmentCandidate.mobileNo " +
+				" from AppointmentCandidateRelation model " +
+				" where model.appointment.isDeleted='N' and model.appointment.appointmentId =:appointmentId ");
+		query.setParameter("appointmentId", appointmentId);
+		return query.list();
+	}
 	
 }
