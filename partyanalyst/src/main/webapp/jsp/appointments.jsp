@@ -2829,8 +2829,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		$(".appointmentsViewDivCls").html(str)  
 	}
 	 
+	 var searchJobj;
 	function getSearchDetails()
 	{
+		searchJobj;
 		$(".appointmentSettings").show();
 		var createdBy =$("#appointmentcreatedBy").val();
 		var appointmentUserId =$("#appointmentUserSelectBoxId").val();
@@ -2848,6 +2850,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			task:""
 			
 		}
+		searchJobj = jsObj;
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppointmentSearchDetailsAction.action',
@@ -2869,14 +2872,15 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		str+='</h4>';
 		
 		str+='<div class="updateAppointment arrow_box">';
-		str+='<label class="checkbox-inline">';
-		str+='<input type="checkbox" class="">Reschedule';
+		str+='<label class="radio-inline">';
+		str+='<input type="radio" value="5" name="upcomeRadio1" class="statusAllupcome" checked>Reschedule';
 		str+='</label>';
-		str+='<label class="checkbox-inline">';
-		str+='<input type="checkbox">Cancel';
+		str+='<label class="radio-inline">';
+		str+='<input type="radio" value="3" name="upcomeRadio1" class="statusAllupcome">Cancel';
 		str+='</label>';
-		str+='<textarea class="form-control m_top10"></textarea>';
-		str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+		str+='<textarea class="form-control m_top10 upcomeSmsText" ></textarea>';
+		str+='<span class="msgDiv2upcome"></span>';
+		str+='<button class="btn btn-block btn-success updateAll" value="upcome">UPDATE APPOINTMENT</button>';
 		str+='</div>';
 		if(result != null)
 		{
@@ -2949,8 +2953,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
-					str+='<textarea class="form-control"></textarea>';
-					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+					str+='<span class="msgDiv1'+result[i].appointmentId+'"></span>';
+					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
+					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
 					str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -2975,10 +2980,34 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	$(".upcometimeCls").datetimepicker({format: "LT"});
 	
 	}
+	$(document).on("click",".sendsms",function() {
+		
+		var appointmentId = $(this).attr("value");
+		$(".msgDiv1"+appointmentId).html("").css("color","");;
+		var smsText = $(".sendSms"+appointmentId).val();
+		var jsObj={
+			appointmentId : appointmentId,
+			smsText:smsText
+			}
+			$.ajax({
+			type : 'POST',
+			url : 'sendSmsForAppointmentAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$(".msgDiv1"+appointmentId).html("Updated Successfully..").css("color","green");
+			setTimeout(function(){
+			 $(".msgDiv1"+appointmentId).html("");
+			},2000);
+			$(".sendSms"+appointmentId).val('');
+		});
+	})
+	
 	$(document).on("click",".appointmentStatus",function() {
 	
-		$(".msgDiv"+appointmentId).html("").css("color","");;
+		
 		var appointmentId = $(this).attr("appointmentId");
+		$(".msgDiv"+appointmentId).html("").css("color","");;
 		var statusId;
 		var smsCheck = false;
 		var smsText = '';
@@ -3015,6 +3044,43 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		});
 	})
 	
+	
+	$(document).on("click",".updateAll",function() {
+		console.log(searchJobj)
+		var appointmentType = $(this).attr("value");
+		$(".msgDiv2"+appointmentType).html("").css("color","");
+		var statusId;
+			$(".statusAll"+appointmentType).each(function(){
+			if($(this).is(':checked'))
+			{
+				statusId = $(this).val();
+			}
+		})
+	  	var jsObj={
+			appointmentType : appointmentType,
+			statusId:statusId,
+			appointmentUserId:searchJobj.appointmentUserId,
+			createdBy:searchJobj.createdBy,
+			endDate:searchJobj.endDate,
+			searchStr:searchJobj.searchStr,
+			strDate:searchJobj.strDate,
+			task:""
+		}
+		
+		
+			$.ajax({
+			type : 'POST',
+			url : 'updateAllAppointmentStatusAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$(".msgDiv2"+appointmentType).html("Updated Successfully..").css("color","green");
+			setTimeout(function(){
+			 $(".msgDiv2"+appointmentId).html("");
+			},2000);
+			
+		});
+	})
 	/*function updateAppointmentUpcomeStatus(appointmentId)
 	{
 		
@@ -3069,14 +3135,15 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings inprogressSetting">';
 		str+='</h4>';
 		str+='<div class="updateAppointment arrow_box">';
-		str+='<label class="checkbox-inline">';
-		str+='<input type="checkbox">Reschedule';
+			str+='<label class="radio-inline">';
+		str+='<input type="radio" value="5" name="InProgressRadio1" class="statusAllInProgress" checked>Reschedule';
 		str+='</label>';
-		str+='<label class="checkbox-inline">';
-		str+='<input type="checkbox">Cancel';
+		str+='<label class="radio-inline">';
+		str+='<input type="radio" value="3" name="InProgressRadio1" class="statusAllInProgress">Cancel';
 		str+='</label>';
-		str+='<textarea class="form-control m_top10"></textarea>';
-		str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+		str+='<textarea class="form-control m_top10 InProgressSmsText" ></textarea>';
+		str+='<span class="msgDiv2InProgress"></span>';
+		str+='<button class="btn btn-block btn-success updateAll" value="InProgress">UPDATE APPOINTMENT</button>';
 		str+='</div>';
 		str+='<ul>';
 		if(result != null)
@@ -3150,8 +3217,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
-					str+='<textarea class="form-control"></textarea>';
-					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+					str+='<span class="msgDiv1'+result[i].appointmentId+'"></span>';
+					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
+					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
 					str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -3187,14 +3255,15 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings completedSetting">';
 		str+='</h4>';
 		str+='<div class="updateAppointment arrow_box">';
-		str+='<label class="checkbox-inline">';
-		str+='<input type="checkbox">Reschedule';
+			str+='<label class="radio-inline">';
+		str+='<input type="radio" value="5" name="CompletedRadio1" class="statusAllCompleted" checked>Reschedule';
 		str+='</label>';
-		str+='<label class="checkbox-inline">';
-		str+='<input type="checkbox">Cancel';
+		str+='<label class="radio-inline">';
+		str+='<input type="radio" value="3" name="CompletedRadio1" class="statusAllCompleted">Cancel';
 		str+='</label>';
-		str+='<textarea class="form-control m_top10"></textarea>';
-		str+='<button class="btn btn-block btn-success">UPDATE APPOINTMENT</button>';
+		str+='<textarea class="form-control m_top10 CompletedSmsText" ></textarea>';
+		str+='<span class="msgDiv2Completed"></span>';
+		str+='<button class="btn btn-block btn-success updateAll" value="Completed">UPDATE APPOINTMENT</button>';
 		str+='</div>';
 		str+='<ul>';
 		if(result != null)
@@ -3268,8 +3337,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
-					str+='<textarea class="form-control"></textarea>';
-					str+='<button class="btn btn-success btn-block">SEND SMS</button>';
+					str+='<span class="msgDiv1'+result[i].appointmentId+'"></span>';
+					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
+					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
 					str+='</div>';
 					str+='</div>';
 				str+='</div>';
