@@ -390,7 +390,7 @@
 											</div>
 											<div class="col-md-4 m_top10">
 												<label>Designation</label>
-												<select class="cloneDesignationCls form-control">
+												<select class="cloneDesignationCls">
 													<option value="0">Select Designation</option>
 													
 												</select>
@@ -419,7 +419,7 @@
 											</div>
 											<div class="col-md-4 m_top10">
 												<label>Location Scope</label>
-												<select class="cloneLocationScopeCls regionScopeCls form-control">
+												<select class="cloneLocationScopeCls regionScopeCls ">
 													<option value="0">Select Scope</option>
 													<option value="3">DISTRICT</option>
 													<option value="4">CONSTITUENCY</option>
@@ -446,7 +446,7 @@
 											</div>-->
 											<div class="col-md-4 cloneDistDivCls" style="display:none;">
 												<label>Select District</label>
-												<select class="cloneDistrictCls form-control">
+												<select class="cloneDistrictCls ">
 													<option value="0">select dist</option>
 													<!--<option value="14">test dist1</option>-->
 												</select>
@@ -454,7 +454,7 @@
 											</div>
 											<div class="col-md-4 cloneConstDivCls" style="display:none;">
 												<label>Select Constituency</label>
-												<select class="cloneConstituencyCls form-control" >
+												<select class="cloneConstituencyCls " >
 													<option value="0">select const</option>
 													<!--<option value="142">test const1</option>-->
 												</select>
@@ -462,14 +462,14 @@
 											</div>
 											<div class="col-md-4 cloneMandalDivCLs" style="display:none;">
 													<label>Select Mandal/Muncilpality</label>
-													<select class="cloneMandalCls form-control">
+													<select class="cloneMandalCls ">
 														<option value="0">Select Mandal</option>
 													</select>
 													<div class="cloneErrCandidateMandalCls validateClr"></div>
 												</div>
 												<div class="col-md-4 cloneVillageDivCls" style="display:none;">
 													<label>Select Village/Ward</label>
-													<select class="cloneVillageCls form-control">
+													<select class="cloneVillageCls ">
 														<option value="0">Select VILLAGE</option>
 													</select>
 													<div class="cloneErrCandidateVillageCls validateClr"></div>
@@ -1492,14 +1492,7 @@ $(".dropkickClass").dropkick();
 			$("#manageAppDistId").dropkick();
 			var select1 = new Dropkick("#manageAppDistId");
 			select1.refresh();
-
-			$("#districtId0").html(str);
 			$(".cloneDistrictCls").html(str);
-			
-			/* $("#districtId0").dropkick();
-			var select = new Dropkick("#districtId0");
-			select.refresh(); */
-			
 			
 			
 		});
@@ -2155,6 +2148,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			}).done(function(result){
 				 $("#checkboxMemberAjax").css("display","none");
 				var lctscpid = ''+result.locationScopeId+'';
+				var consId = ''+result.constituencyId+'';
+				var distId = ''+result.districtId+'';
+				var locEleId = ''+result.localElectionBodyId+'';
+				var tehsilId = ''+result.tehsilId+'';
+				var villageId = ''+result.villageId+'';
+				var wardId = ''+result.wardId+'';
+				
 				var temp=parseInt(cloneCount)-1;
 					$('#candidateNameId'+temp).val(name);
 					$('#block'+temp).attr("attr_blk",closeId1);
@@ -2164,10 +2164,15 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					$('#membershipNumId'+temp).val(membershipno);
 					
 					$('#locationScopeSelId'+temp).val(lctscpid);
-					$('#locationScopeSelId'+temp).trigger("click");
+					$('#districtId'+temp).val(distId);
+					$('#constituencyId'+temp).val(consId);
+					$('#tehsilId'+temp).val(tehsilId);
+					$('#villageId'+temp).val(villageId);
+					
 					var select = new Dropkick('#locationScopeSelId'+temp);
 						select.refresh();
-					
+					var select2 = new Dropkick('#districtId'+temp);
+						select2.refresh();
 					showhideLocationBoxes(temp);
 				}); 
 		 }else{
