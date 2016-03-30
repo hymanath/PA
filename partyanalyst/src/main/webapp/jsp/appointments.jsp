@@ -2981,10 +2981,20 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	
 	}
 	$(document).on("click",".sendsms",function() {
-		
+		var flag = false;
 		var appointmentId = $(this).attr("value");
 		$(".msgDiv1"+appointmentId).html("").css("color","");;
-		var smsText = $(".sendSms"+appointmentId).val();
+		var smsText = $(".sendSms"+appointmentId).val().trim();
+		if(smsText == "" || smsText.length == 0)
+		{
+		  $(".msgDiv1"+appointmentId).html("Sms Text is Required..").css("color","red");
+		  flag = true;
+		}
+
+		if(flag == true)
+		{
+			return;
+		}
 		var jsObj={
 			appointmentId : appointmentId,
 			smsText:smsText
