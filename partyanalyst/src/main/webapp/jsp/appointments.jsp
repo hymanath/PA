@@ -1753,8 +1753,8 @@ $(".dropkickClass").dropkick();
 					}
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
-						str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">VIEW</button>';
-						str+='<button class="btn btn-success btn-xs addMembersClass">ADD MEMBERS</button>';
+						str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_totalCount ='+totalCount+'>VIEW</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass">ADD APPOINTMENTS</button>';
 						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"  attr_totalCount ='+totalCount+'>UPDATE</button>';
 						str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" attr_totalCount ='+totalCount+'>STATUS</button>';
 						str+='<button class="btn btn-success btn-xs lblDltCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">DELETE</button>';
@@ -2660,6 +2660,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	});
 	
 	$(document).on("click",".viewMembersClass",function(){
+		
+		var totalCount = $(this).attr("attr_totalCount");
+		if(totalCount ==null || totalCount<=0 || totalCount == undefined || totalCount ==""){
+			return;
+		}
+		
 		$(".commonDivCls").hide();
 		
 		var labelName = $(this).attr("attr_label_name");
