@@ -2021,30 +2021,50 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
   
   
 	$(document).on("click",".getDetailsBySrch",function(){
+		
+		//clearing the Data Div
+		$("#apptmemberDetailsDiv").html("");
+		//clearing err Div
+		$("#errDigitsId").html(" ");
+		
+		var searchValue=$("#searchValueId").val();
+		var errStr=false;
+		//Validations
 		if($("#searchTypeId").val()==0){
 			 $("#errDigitsId").html("Please Select Mobile Number Or VoterCardNo or MemberShipId");
-			return;
-		}else if($("#searchValueId").val().trim()=="" || $("#searchValueId").val().trim()==null){
-			 $("#errDigitsId").html("plase Enter Valid MobileNumber"); 
-			return;
+			 errStr=true;
 		}
-		else if($("#searchTypeId").val()=="mobileno"){
-			var searchValue=$("#searchValueId").val();
-		      var digits=/^(\+\d{1,3}[- ]?)?\d{10}$/;
-			
-			if(searchValue == null || searchValue.length==0 || searchValue.length == ""){
-				 $("#errDigitsId").html("Please Enter 10 Digits."); 
-				return;
-			
-			}else if($("#searchValueId").val().trim().length<10){
-				$("#errDigitsId").html("Mobile Number Should be 10 Digits");
-				return;
-			}else{
-				getAppntmntSearchDetails();
-				$(".addattrid").hide();
+		else if($("#searchTypeId").val()=="mobileno"){			
+			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
+					  $("#errDigitsId").html("Please enter Mobile No");
+					  errStr=true;
+				 }	
+				else if(searchValue.length != 10 || isNaN(searchValue)){		
+					$("#errDigitsId").html("Please enter Valid Mobile Number");
+					 errStr=true;
+				}
+		}else if($("#searchTypeId").val() == "mebershipno"){
+			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
+					  $("#errDigitsId").html("Please enter MembershipNo ");
+					  errStr=true;
+			}else if(searchValue.length !=8 || isNaN(searchValue)){
+				  $("#errDigitsId").html("Please enter valid Membership ");
+					  errStr=true;
+			}
+		}else if($("#searchTypeId").val() == "votercardno"){
+			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
+					  $("#errDigitsId").html("Please enter Votercardno ");
+					  errStr=true;
 			}
 		}
-		$("#errDigitsId").html(" ");
+		
+		if(errStr){
+			return;
+		}else{
+				getAppntmntSearchDetails();
+				//$(".addattrid").hide();
+			}
+		
 	}); 
 	function getAppntmntSearchDetails(){
 	  
@@ -3434,7 +3454,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	$("#pluginTableId").hide();
 	$("#showTimeSlotsId").click(function(){
 		
-		//View Details Of Appointments call Balu
+		//View Details Of Appointments call
 		getViewAppointmentsOfALable();
 		
 		
