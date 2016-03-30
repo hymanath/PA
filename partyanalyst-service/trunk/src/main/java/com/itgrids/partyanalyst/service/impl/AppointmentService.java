@@ -432,7 +432,7 @@ public class AppointmentService implements IAppointmentService{
 			        			if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
 			        				userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
 			        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-			        					userAddress.setPanchayat(panchayatDAO.get(basicInfo.getVillageId()));
+			        					userAddress.setPanchayatId(basicInfo.getVillageId());
 			        			}
 			        			else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
 			        				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
