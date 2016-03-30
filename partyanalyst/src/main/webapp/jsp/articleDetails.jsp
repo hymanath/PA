@@ -18,6 +18,10 @@
 
 <body>
 <style>
+.modal-backdrop
+{
+	z-index:104 !important
+}
 body
 {
 	background:#f5f5f5
@@ -84,13 +88,28 @@ body
  #prevNxtId li:first-child{float:left;}
  #prevNxtId li:last-child{float:right;}
  .light-theme a, .light-theme span{font-weight:bold !important;padding:2px 18px !important;}
- 
+ .thumbnail-widget {
+    border: 2px solid #ccc !important;
+    border-radius: 0;
+    height: 390px;
+}
+#dummyDiv {
+    display: table-cell !important;
+    float: left;
+    width: 100%;
+}
+.m_top40{
+	margin-top: 80px;
+}
+
 </style>
-<div class="container">
+<div class="container-fluid" style="padding-left: 35px;">
 	
-	<div id="dummyDiv"><center><img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:75px;height:75px;margin-left:auto;margin-right:auto;"/></center></div>
-	<div class="row">
-		<div class="col-md-10 col-md-offset-5 m_top20">
+	<div id="dummyDiv" class="row" style="background: rgb(236, 236, 236) none repeat scroll 0% 0%; padding: 10px 10px 10px 5px;"><center><img id="dataLoadingsImgForImagePath" src="images/icons/loading.gif" style="width:75px;height:75px;margin-left:auto;margin-right:auto;"/></center></div>
+	
+		<div class="row">
+		
+		<div class="span6 offset7 m_top40">
 			<div class="paginationId"></div>
 		</div>
 	</div>
@@ -102,12 +121,14 @@ body
 </button>-->
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModal" style="width:900px;left:35%;top:43%;bottom:5%;">
  </div>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+<link href="NewBootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
  <script type="text/javascript" src="js/simplePagination/simplePagination3.js" ></script>
+ <script type="text/javascript" src="NewBootstrap/bootstrap.js"></script>
 <script>
 
 
@@ -164,6 +185,7 @@ function dummyfun(num){
 	var url = window.location.href;
 		var wurl = url.substr(0,(url.indexOf(".com")+4));
  $.ajax({
+	 
 	url:wurl+'/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+stNO+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
 	//url:'http://localhost:8080/CommunityNewsPortal/webservice/getCandidateAndLocationSummary/'+candidateId+'/'+categoryId+'/'+benefitId+'/'+deptId+'/'+fromDate+'/'+toDate+'/'+stNO+'/'+endNO+'/'+locationType+'/'+locationId+'/'+secondaryPartyId+'/'+type+'/'+partyId+'/'+propertyId+''
  }).then(function(data) {
@@ -176,7 +198,7 @@ function dummyfun(num){
 	for(var i in result){
 		//totalArticleIds.push(result[i].articleDetails[0].articleId);
 		var artclNmbr  = parseInt(stNO) + parseInt(i);
-		str+='<div class="col-md-3 col-sm-3 widgets widget-hide" style="height:350px;"><div class="thumbnail thumbnail-widget"><a style="cursor:pointer;" attr_articleid="'+result[i].articleDetails[0].articleId+'" class="viewArticleDetailsByAllArticlesPage"><img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" style="width:100px;height:100px;border:2px solid #adadad;" class="artclMdl" attr_artclNo="'+artclNmbr+'" attr_artclId='+result[i].articleDetails[0].articleId+'></a><div class="caption" ><p style="font-size:14px;height:40px;">'+result[i].articleDetails[0].articleTitle+'</p><p><small><i>'+result[i].articleDetails[0].editionSource+'<br>Date: '+result[i].articleDetails[0].articleInsertedTime+'<br>';
+		str+='<div class="span4 widgets widget-hide"><div class="thumbnail thumbnail-widget" style="background: #fff none repeat scroll 0 0; !important"><a style="cursor:pointer;" attr_articleid="'+result[i].articleDetails[0].articleId+'" class="viewArticleDetailsByAllArticlesPage"><img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" style="width:285px;height:180px;border:1px solid #adadad;" class="artclMdl" attr_artclNo="'+artclNmbr+'" attr_artclId='+result[i].articleDetails[0].articleId+'></a><div class="caption" ><p style="font-size:14px;">'+result[i].articleDetails[0].articleTitle+'</p><p><small><i>'+result[i].articleDetails[0].editionSource+'<br>Date: '+result[i].articleDetails[0].articleInsertedTime+'<br>';
 		if(result[i].articleDetails[0].selectedArea!=null){
 			str+='<br>Location: '+result[i].articleDetails[0].selectedArea+'<br>';
 		}else{
@@ -217,6 +239,7 @@ function dummyfun(num){
 }
 
 $(document).on("click",".artclMdl",function(){
+	alert(2);
 	var articleId = $(this).attr("attr_artclId");
 	var articleNo = $(this).attr("attr_artclNo");
 	getClickedArticle(articleNo);
@@ -227,6 +250,7 @@ $(document).on("click",".artclMdl",function(){
  	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	$.ajax({
+		
 	url: wurl+'/CommunityNewsPortal/webservice/getArticleDetailsForAArticle/'+artclId+''
 	//url: 'http://localhost:8080/CommunityNewsPortal/webservice/getArticleDetailsForAArticle/'+artclId+''
 	 }).then(function(data) {
@@ -234,7 +258,7 @@ $(document).on("click",".artclMdl",function(){
 		 
 		 var str = '';
 			for(var i in result){
-				$("#mdlArtclTtl").html('<p class="m_bottom0" style="height:40px;">'+result[i].articleDetails[0].articleTitle+'</p>');
+				$("#mdlArtclTtl").html('<p class="m_bottom0" >'+result[i].articleDetails[0].articleTitle+'</p>');
 				$("#mdlArtclDesc").html('<p class="m_bottom0 text-italic font-10">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>');
 				
 					  
@@ -511,19 +535,20 @@ function getClickedArticle(artclePosNo){
 				str+='<h4 class="modal-title" id="myModalLabel">';
 					str+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result[i].articleDetails[0].articleTitle+'</p>';
 					str+='<p class="m_bottom0 text-italic font-10" id="mdlArtclDesc">Edition Source :'+result[i].articleDetails[0].editionSource+' [ Date : '+result[i].articleDetails[0].articleInsertedTime+' ]</p>';
+					str+='<div id="prevNxtId" style="margin-top: 12px;"></div>';
 				str+='</h4>';
 			  str+='</div>';
 			  str+='<div class="modal-body">';
-				str+='<div id="prevNxtId"></div>';
-				str+='<div class="row" id="mdlInBodyId">';
-					str+='<div class="col-md-12">';
+			
+				str+='<div class="row-fluid" id="mdlInBodyId">';
+					str+='<div class="span12">';
 						str+='<img src="../NewsReaderImages/'+result[i].articleDetails[0].imageURL+'" class="img-responsive mainImage"/>';
 						
 						
 						str+='<p class="m_top10 m_bottom0">Description</p>';
 						str+='<p>'+result[i].articleDetails[0].description+'</p>';
-						str+='<div class="row">';
-							str+='<div class="col-md-6">';
+						str+='<div class="row-fluid">';
+							str+='<div class="span6">';
 								str+='<div class="panel panel-default">';
 									str+='<div class="panel-heading">';
 										str+='<h4 class="panel-title">FROM WHOM</h4>';
@@ -550,7 +575,7 @@ function getClickedArticle(artclePosNo){
 									 }
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-md-6">';
+							str+='<div class="span6">';
 								str+='<div class="panel panel-default">';
 									str+='<div class="panel-heading">';
 										str+='<h4 class="panel-title">TO WHOM</h4>';
@@ -578,8 +603,8 @@ function getClickedArticle(artclePosNo){
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-						str+='<div class="row">';
-							str+='<div class="col-md-4">';
+						str+='<div class="row-fluid">';
+							str+='<div class="span4">';
 								str+='<div class="panel panel-default">';
 									str+='<div class="panel-heading">';
 										str+='<h4 class="panel-title">NEWS TYPE</h4>';
@@ -631,7 +656,7 @@ function getClickedArticle(artclePosNo){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-md-4">';
+							str+='<div class="span4">';
 								str+='<div class="panel panel-default">';
 									str+='<div class="panel-heading">';
 										str+='<h4 class="panel-title">LOCATION DETAILS</h4>';
@@ -658,7 +683,7 @@ function getClickedArticle(artclePosNo){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-md-4">';
+							str+='<div class="span4">';
 								str+='<div class="panel panel-default">';
 									str+='<div class="panel-heading">';
 										str+='<h4 class="panel-title">KEYWORDS</h4>';
@@ -673,14 +698,14 @@ function getClickedArticle(artclePosNo){
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-						str+='<div class="row">';
-							str+='<div class="col-md-6">';
+						str+='<div class="row-fluid">';
+							str+='<div class="span6">';
 								str+='<div class="panel panel-default">';
 									str+='<div class="panel-heading">';
 										str+='<h4 class="panel-title">LINKED ARTICLES</h4>';
 									str+='</div>';
 									str+='<div class="panel-body pad_10">';
-									   str+='<div class="row">';
+									   str+='<div class="row-fluid">';
 											if(result[i].linkedArticles.imageList2.length>1){
 											 for(var j in result[i].linkedArticles.imageList2){
 												linkResult = result[i].linkedArticles.imageList2;
@@ -697,18 +722,18 @@ function getClickedArticle(artclePosNo){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-md-6">';
+							str+='<div class="span6">';
 								str+='<div class="panel panel-default">';
 									str+='<div class="panel-heading">';
 										str+='<h4 class="panel-title">GROUPED ARTICLES</h4>';
 									str+='</div>';
 									str+='<div class="panel-body pad_10">';
-										str+='<div class="row">';
+										str+='<div class="row-fluid">';
 											if(result[i].groupedArticles.imageList2.length>1){
 												 for(var j in result[i].groupedArticles.imageList2){
 													 groupResult = result[i].groupedArticles.imageList2;
 													 if(result[i].groupedArticles.imageList2[j].articleId!=artclId){
-														 str+='<div class="col-md-4">';
+														 str+='<div class="span4">';
 														 str+='<img class="img-responsive groupedArticlesClickId" attr_groupedArticleId='+result[i].groupedArticles.imageList2[j].articleId+' src="../NewsReaderImages/'+result[i].groupedArticles.imageList2[j].imageURL+'"/>';
 														 str+='</div>';
 													 }
