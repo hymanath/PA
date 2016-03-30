@@ -2772,4 +2772,34 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return result;
 	}
+	
+	public ResultStatus updateAllAppointmentStatusByType(AppointmentUpdateStatusVO statusinputVo,AppointmentInputVO inputVo,Long userId)
+	{
+		ResultStatus result = new ResultStatus();
+		try{
+			
+			List<AppointmentScheduleVO> list =  getAppointmentSearchDetails(inputVo);
+			if(list != null && list.size() > 0)
+			{
+				for(AppointmentScheduleVO vo : list)
+				{
+					if(vo.getScheduleType().equalsIgnoreCase(statusinputVo.getAppointmentType()))
+					{
+						Appointment appointment = appointmentDAO.get(vo.getAppointmentId());
+						appointment.setAppointmentStatusId(statusinputVo.getStatusId());;
+						appointment.setUpdatedBy(userId);
+						appointmentDAO.save(appointment);
+					}
+				}
+			}
+			result.setMessage("success");
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in updateAppointmentStatus", e);
+			result.setMessage("fail");
+			
+		}
+		return result;
+	}
+	
 }
