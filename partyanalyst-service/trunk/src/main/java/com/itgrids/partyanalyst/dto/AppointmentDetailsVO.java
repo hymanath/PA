@@ -31,6 +31,8 @@ public class AppointmentDetailsVO implements Serializable{
     
     private String fromDateStr;
     private String toDateStr;
+    
+    private String userName;
 	
 	public String getName() {
 		return name;
@@ -157,6 +159,12 @@ public class AppointmentDetailsVO implements Serializable{
 	}
 	public void setToDateStr(String toDateStr) {
 		this.toDateStr = toDateStr;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
     	
 	
