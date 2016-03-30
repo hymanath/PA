@@ -2552,6 +2552,7 @@ public class AppointmentService implements IAppointmentService{
 						//appointment.setDateString(obj[8]!=null?obj[8].toString():"");
 						appointment.setFromDateStr(obj[8]!=null?obj[8].toString():"");
 						appointment.setToDateStr(obj[9]!=null?obj[9].toString():"");
+						appointment.setUserName(obj[10] !=null ? obj[10].toString():"");
 						appointmentsMap.put(appointment.getAppointmentId(),appointment);
 						
 						//appointmentIds
