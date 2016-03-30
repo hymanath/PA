@@ -7,6 +7,14 @@ public class AppointmentUpdateStatusVO {
 	private boolean issmsChecked;
 	private String smsText;
 	private Long statusId;
+	private String appointmentType;
+	
+	public String getAppointmentType() {
+		return appointmentType;
+	}
+	public void setAppointmentType(String appointmentType) {
+		this.appointmentType = appointmentType;
+	}
 	public Long getAppointmentId() {
 		return appointmentId;
 	}
