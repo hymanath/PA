@@ -54,6 +54,9 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
+.m_left16{
+	 margin-left: 16px !important;
+}
 .validateClr{
 	color:red;
 }
@@ -110,7 +113,7 @@
 						<li role="presentation"  class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
 						<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
 						<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="MngeAppntmntCls"><img src="dist/Appointment/img/manageappointments.png">Manage APpointments</a></li>
-						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><img src="dist/Appointment/img/confirmappointments.png">Confirm APpointments</a></li>
+						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm APpointments</a></li>
 					  </ul>
 					  <!-- Tab panes -->
 					  <div class="tab-content">
@@ -928,7 +931,7 @@
 																	</div>
 																</div>
 																<div class="col-md-3">
-																	<label>From Time</label>
+																	<label>From Time</label><span style='color:red'> &nbsp * </span>
 																	<div class="input-group inputSearch">
 																		<span class="input-group-addon">
 																			<i class="glyphicon glyphicon-time"></i>
@@ -938,7 +941,7 @@
 																	</div>
 																</div>
 																<div class="col-md-3">
-																	<label>To Time</label>
+																	<label>To Time</label><span style='color:red'> &nbsp * </span>
 																	<div class="input-group inputSearch">
 																		<span class="input-group-addon">
 																			<i class="glyphicon glyphicon-time"></i>
@@ -950,6 +953,7 @@
 																<div class="col-md-2">
 																	<button class="btn btn-success m_top25" id="setTimeSlotBtnId">SET</button>
 																</div>
+																<div id="errorDivForTimeSlotId" class="validateClr m_left16"  ></div>
 															</div>
 														</div>
 														
@@ -3785,6 +3789,19 @@ var tableToExcel = (function() {
 		var fromTime = $("#fromTimeId").val();
 		var toTime = $("#toTimeId").val();
 		
+		//Validations For Time Slot Creation
+		if(appointmentId ==null || appointmentId <=0 || appointmentId ==undefined){
+			$("#errorDivForTimeSlotId").html("Please Specify the Appointment");
+			return;
+		}
+		if(fromTime ==null || fromTime.length ==0 || fromTime == undefined){
+			$("#errorDivForTimeSlotId").html("Please Specify the From Time");
+			return;
+		}if(toTime ==null || toTime.length ==0 || toTime == undefined){
+			$("#errorDivForTimeSlotId").html("Please Specify the To Time");
+			return;
+		}
+		
 		var jsObj={
 			appointmentId : appointmentId,
 			date : date,
@@ -4199,9 +4216,9 @@ function buildTimeSlotsTable(result){
 	$(".errrLabelClearCls").click(function(){
 		$("#errLabelName").html('');
 	});
-	
-	
-	
+	$(".cnfrmaptsCls").click(function(){
+		
+	});
 	
 </script>
 </body>
