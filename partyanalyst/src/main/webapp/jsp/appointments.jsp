@@ -501,7 +501,7 @@
                                                 	<button class="btn btn-success btn-block" id="viewAllAppointmentId">VIEW ALL APPOINTMENT REQUESTS</button>
                                                 </div>
                                                 <div class="col-md-3">
-                                                	<button class="btn btn-success btn-block"  data-toggle="modal" data-target=".bs-example-modal-sm">CREATE APPOINTMENT LABEL</button>
+                                                	<button class="btn btn-success btn-block errrLabelClearCls"  data-toggle="modal" data-target=".bs-example-modal-sm">CREATE APPOINTMENT LABEL</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -4183,6 +4183,26 @@ function buildTimeSlotsTable(result){
 		}
 		$("#appointmentMembersId").html(str);
 	}
+	
+	$(document).on("click",".createAppReqCls",function(){
+		clearAllValidationCls();
+		$("#errDigitsId").html('');
+		$("#searchTypeId").val(0);
+		$("#createAppTypeListId").val(0);
+		
+		var searchTypeSelect = new Dropkick("#searchTypeId");
+		searchTypeSelect.refresh();
+		var createAppTypeSelect = new Dropkick("#createAppTypeListId");
+		createAppTypeSelect.refresh();
+	});
+	
+	$(".errrLabelClearCls").click(function(){
+		$("#errLabelName").html('');
+	});
+	
+	
+	
+	
 </script>
 </body>
 </html>
