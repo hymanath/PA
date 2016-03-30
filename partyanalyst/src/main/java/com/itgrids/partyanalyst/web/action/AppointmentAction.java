@@ -695,4 +695,37 @@ public String getCandidateWiseDetails(){
 		return Action.SUCCESS;
 	}
 	
+	public String updateAllAppointmentStatus(){
+		try {
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			AppointmentUpdateStatusVO statusVo = new AppointmentUpdateStatusVO();
+			//statusVo.setTime(jObj.getString("time"));
+			//statusVo.setDate(jObj.getString("date"));
+			//statusVo.setIssmsChecked(jObj.getBoolean("smsCheck"));
+			//statusVo.setSmsText(jObj.getString("smsText"));
+			statusVo.setStatusId(jObj.getLong("statusId"));
+			statusVo.setAppointmentType(jObj.getString("appointmentType"));
+			
+			AppointmentInputVO inputVo = new AppointmentInputVO();
+			inputVo.setCreatedBy(jObj.getLong("createdBy"));
+			inputVo.setUserId(jObj.getLong("appointmentUserId"));
+			inputVo.setName(jObj.getString("searchStr"));
+			inputVo.setStrDate(jObj.getString("strDate"));
+			inputVo.setEndDate(jObj.getString("endDate"));
+			
+			resultStatus = appointmentService.updateAllAppointmentStatusByType(statusVo,inputVo,user.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception raised at updateAppointmentStatus", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
