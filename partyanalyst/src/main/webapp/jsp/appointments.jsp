@@ -1753,10 +1753,27 @@ $(".dropkickClass").dropkick();
 					}
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
-						str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_totalCount ='+totalCount+'>VIEW</button>';
+					
+					if(totalCount !=null && totalCount >0 ){
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">VIEW</button>';
+						}else{
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>VIEW</button>';
+						}
+						
 						str+='<button class="btn btn-success btn-xs addMembersClass">ADD APPOINTMENTS</button>';
-						str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"  attr_totalCount ='+totalCount+'>UPDATE</button>';
-						str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" attr_totalCount ='+totalCount+'>STATUS</button>';
+						if(totalCount !=null && totalCount >0 ){
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"  >UPDATE</button>';
+						}else{
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>UPDATE</button>';
+						}
+						
+						if(totalCount !=null && totalCount >0 ){
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'">STATUS</button>';
+						}else{
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled>STATUS</button>';
+						}
+						
+						
 						str+='<button class="btn btn-success btn-xs lblDltCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">DELETE</button>';
 					str+='</td>';
 			  str+='</tr>';
@@ -2558,11 +2575,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		$("#allAppointmentsHideBlock").show();
 	});
 	
-	$(document).on("click",".updateLableAppointmentsCls",function(){
-		var totalCount = $(this).attr("attr_totalCount");
-		if(totalCount ==null || totalCount<=0 || totalCount == undefined || totalCount ==""){
-			return;
-		}
+	$(document).on("click",".updateLableAppointmentsCls",function(){		
 		$("#updateLabelNameSpanId").text($(this).attr("attr_label_name"));
 		var jsObj={
 			labelId : $(this).attr("attr_label_id")
@@ -2660,11 +2673,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	});
 	
 	$(document).on("click",".viewMembersClass",function(){
-		
-		var totalCount = $(this).attr("attr_totalCount");
-		if(totalCount ==null || totalCount<=0 || totalCount == undefined || totalCount ==""){
-			return;
-		}
 		
 		$(".commonDivCls").hide();
 		
@@ -3601,11 +3609,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		  });		
 	}
 	
-	$(document).on("click",".labelStatusCls",function(){
-		var totalCount = $(this).attr("attr_totalCount");
-		if(totalCount ==null || totalCount<=0 || totalCount == undefined || totalCount ==""){
-			return;
-		}
+	$(document).on("click",".labelStatusCls",function(){		
 	     showStatusBox($(this).attr("attr_label_id"),$(this).attr("attr_label_name"),$(this).attr("attr_status"),$(this).attr("attr_status_id"));
 	});
 	
