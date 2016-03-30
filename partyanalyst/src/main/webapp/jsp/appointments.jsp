@@ -869,111 +869,14 @@
 								</div>
 							</div>
                             <div class="row">
-								<div class="col-md-5">
+								<div id="confirmAppointmentsDivId"></div>
+								<div class="col-md-12 changeClass">
 									<div class="block">
-										<div id="confirmAppointmentsDivId"></div>
-									</div>
-								</div>
-								<!--<div class="col-md-4">
-									<div class="block">
-										<ul class="confirmAppointments" id="confirmAppointmentBlockDragId">
-											<li>
-												<div class="row">
-													<div class="col-md-12">
-														<div class="media">
-															<div class="media-left">
-																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-																<span class="colorStatus green"></span>
-															</div>
-															<div class="media-body">
-																<p>Laxman - Cadre</p>
-																<p>Contact Number: 9848012345</p>
-																<p>Designation: MLC</p>
-																<p>Last Visit:</p>
-																<p>Subject</p>
-															</div>
-														</div>
-														<table class="table table-bordered table-condensed">
-															<tr>
-																<td><h4>20</h4><p>Requests</p></td>
-																<td><h4>20</h4><p>Confirmed</p></td>
-																<td><h4>20</h4><p>Rescheduled</p></td>
-																<td><h4>20</h4><p>Cancelled</p></td>
-															</tr>
-														</table>
-														<p class="m_top10"><b>NEW REQUESTED DATES</b></p>
-														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-													</div>
-												</div>
-											</li>
-											<li>
-												<div class="row">
-													<div class="col-md-12">
-														<div class="media">
-															<div class="media-left">
-																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-																<span class="colorStatus green"></span>
-															</div>
-															<div class="media-body">
-																<p>Laxman - Cadre</p>
-																<p>Contact Number: 9848012345</p>
-																<p>Designation: MLC</p>
-																<p>Last Visit:</p>
-																<p>Subject</p>
-															</div>
-														</div>
-														<table class="table table-bordered table-condensed">
-															<tr>
-																<td><h4>20</h4><p>Requests</p></td>
-																<td><h4>20</h4><p>Confirmed</p></td>
-																<td><h4>20</h4><p>Rescheduled</p></td>
-																<td><h4>20</h4><p>Cancelled</p></td>
-															</tr>
-														</table>
-														<p class="m_top10"><b>NEW REQUESTED DATES</b></p>
-														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-													</div>
-												</div>
-											</li>
-											<li>
-												<div class="row">
-													<div class="col-md-12">
-														<div class="media">
-															<div class="media-left">
-																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-																<span class="colorStatus green"></span>
-															</div>
-															<div class="media-body">
-																<p>Laxman - Cadre</p>
-																<p>Contact Number: 9848012345</p>
-																<p>Designation: MLC</p>
-																<p>Last Visit:</p>
-																<p>Subject</p>
-															</div>
-														</div>
-														<table class="table table-bordered table-condensed">
-															<tr>
-																<td><h4>20</h4><p>Requests</p></td>
-																<td><h4>20</h4><p>Confirmed</p></td>
-																<td><h4>20</h4><p>Rescheduled</p></td>
-																<td><h4>20</h4><p>Cancelled</p></td>
-															</tr>
-														</table>
-														<p class="m_top10"><b>NEW REQUESTED DATES</b></p>
-														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-													</div>
-												</div>
-											</li>
-										</ul>
-									</div>
-								</div>-->
-                                <div class="col-md-7">
-                                	<div class="block">
-                                    	<h4 class="text-success">
-                                        	CREATE APPOINTMENT TIME SLOT
-                                            <button class="btn btn-success pull-right">VIEW BOOKED TIME SLOTS</button>
-                                        </h4>
-                                        <div class="row">
+										<h4 class="text-success">
+											CREATE APPOINTMENT TIME SLOT
+											<button class="btn btn-success pull-right">VIEW BOOKED TIME SLOTS</button>
+										</h4>
+										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
 													<div class="col-md-12">
@@ -1000,18 +903,18 @@
 													</div>
 												</div>
 											</div>
-                                        	<div class="col-md-12">
-                                            	 <div class="confirmAppointmentBlock">
-                                                    <div class="row">
-                                                    	<div class="col-md-12">
-                                                        	<div class="drophere">
-																<ul id="confirmAppointmentBlockDropId" class="confirmAppointmentsDropBlock" style="height:150px;">
+											<div class="col-md-12">
+												 <div class="confirmAppointmentBlock">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="drophere">
+																<div id="confirmAppointmentBlockDropId" class="confirmAppointmentsDropBlock" style="height:150px;">
 																	<h4 class="deleteTag">DROP HERE</h4>
-																</ul>
+																</div>
 															</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row m_top20">
+														</div>
+													</div>
+													<div class="row m_top20">
 														<div class="col-md-12">
 															<div style="background:#F3f3f3;margin:0px -10px;padding:12px 0px;" class="row">
 																<div class="col-md-4">
@@ -1049,50 +952,16 @@
 																</div>
 															</div>
 														</div>
-                                                   	    
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                        	<div class="col-md-12">
-                                            	<ul class="searchConfirm">
-                                                	<li>
-                                                    	<div class="row">
-                                                        	<div class="col-md-5 col-md-offset-7 font12">
-                                                            	<span>
-                                                                	<i class="glyphicon glyphicon-calendar"></i>28-feb-2016
-                                                                </span>&nbsp;
-                                                                <span class="text-success">
-                                                                	<i class="glyphicon glyphicon-time"></i>
-                                                                    2:18 AM to 3:18 PM
-                                                                </span>&nbsp;
-                                                            	<i class="glyphicon glyphicon-cog settingsIconConfirm"></i>
-                                                            </div>
-                                                        	<div class="col-md-12">
-                                                            	<div class="media">
-                                                                    <div class="media-left">
-                                                                        <img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p>Laxman - Cadre</p>
-                                                                        <p>Contact Number: 9848012345</p>
-                                                                        <p>Appointment SUB</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                            	<p class="font12 m_top10">
-                                                                    <i>Appt Created By: Rakesh</i>
-                                                                    <img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+														
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12" id="appointmentMembersId"></div>
+										</div>
+									</div>
+								</div>
                             </div>
 						</div>
 					  </div>
@@ -1139,15 +1008,19 @@
 /* Drag and Drop */
 	
   Sortable.create(confirmAppointmentBlockDropId,{
-      filter: '.js-remove',
+      filter: '.hidelabel',
       onFilter: function (evt) {
         evt.item.parentNode.removeChild(evt.item);
+		if($("#confirmAppointmentBlockDropId").has( ".manageAppViewPanelClass" ))
+		{
+			$("#confirmAppointmentBlockDropId").append("<h4 class='deleteTag'>DROP HERE</h4>")
+		}
       },
       setData: function (dataTransfer, dragEl) {
         dataTransfer.setData('Text', dragEl.textContent);
       },
       //group: "QuestionnOptions",
-	  group: { name: "confirmAppointmentsBlock",pull: false},
+	  group: { name: "confirmAppointmentsBlock", pull: false, put: true},
       animation: 150,
       store: {
         get: function (sortable) {
@@ -3474,6 +3347,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		if(result.listOfTimePairPerDate != null && result.listOfTimePairPerDate.length!=0 ){
 			$("#pluginTableId").show();
 			buildTimeSlotsTable(result);
+			$(".changeClass").removeClass("col-md-12")
+			$(".changeClass").addClass("col-md-8")
 			$("#timeSlotsWarnId").hide();
 		}else{
 			$("#pluginTableId").hide();
@@ -3507,7 +3382,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	function buildLabelResult(result,labelName){
 		var i = 0;
 		var str='';
-			
+			str+='<div class="col-md-4">';
+				str+='<div class="block"  id="dragId">';
 			
 			//str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
 			for(var i in result){
@@ -3516,7 +3392,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-12">';
-						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
+						str+='<span class="requestedCheckboxPanel text-danger" style="margin-right:25px">'+result[i].status+'</span>';
+						str+='<span class="requestedCheckboxPanel hidelabel"><i class="glyphicon glyphicon-remove"></i></span>';
 						str+='</div>';
 					str+='</div>';
 						
@@ -3525,9 +3402,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					str+='<p>Requested Date : '+result[i].dateString+'</p>';
 					
 				str+='</div>';
-				str+='<div class="panel-body">';
+				str+='<div class="panel-body pad_5">';
+					str+='<ul class="viewAppointmentRequestedMembers">';
 					for(var j in result[i].subList){
-						str+='<ul class="viewAppointmentRequestedMembers">';
 							str+='<li>';
 								str+='<div class="row">';
 									str+='<div class="col-md-12">';
@@ -3583,13 +3460,15 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									str+='</div>';
 								str+='</div>';
 							str+='</li>';
-						str+='</ul>';
 						}	
+					str+='</ul>';	
 				  str+='</div>';
 				str+='</div>';
 			}
+			str+='</div>'
+			str+='</div>'
 		$("#confirmAppointmentsDivId").html(str)
-		Sortable.create(confirmAppointmentsDivId,{
+		Sortable.create(dragId,{
 			  filter: '.js-remove',
 			  onFilter: function (evt) {
 				evt.item.parentNode.removeChild(evt.item);
@@ -3598,7 +3477,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				dataTransfer.setData('Text', dragEl.textContent);
 			  },
 			  //group: "QuestionnOptions",
-			  group: { name: "confirmAppointmentsBlock", put: false },
+			  group: { name: "confirmAppointmentsBlock", put: false, pull: ['clone'] },
 			  animation: 150,
 			  store: {
 				get: function (sortable) {
@@ -4089,8 +3968,86 @@ function buildTimeSlotsTable(result){
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			
+			if(result!=null){
+				buildAppointmentMembers(result);
+			}
 		});
+	}
+	
+	function buildAppointmentMembers(result){
+		var str = '';
+		var fromTime = 0;
+		var toTime = 0;
+		var firstMean = '';
+		var secondMean = '';
+		var firstHour = 0;
+		var firstMin = 0;
+		var secondHour = 0;
+		var secondMin = 0;
+		for(var i in result){
+			str+='<div class="panel panel-default manageAppViewPanelClass m_top10">';
+			str+='<div class="panel-heading">';
+			str+='<i class="glyphicon glyphicon-cog settingsIconConfirm pull-right"></i>';
+			str+='<span class="text-success pull-right">';
+			str+='<i class="glyphicon glyphicon-time"></i>';
+			fromTime = result[i].fromDateStr.substr(11,5);
+			firstHour = fromTime.substr(0,2);
+			firstMin = fromTime.substr(3,2);
+			if(firstHour>12){
+				firstHour = firstHour-12;
+				firstMean = "PM";
+			}else{
+				firstMean = "AM";
+			}
+			
+			toTime = result[i].toDateStr.substr(11,5);
+			secondHour = toTime.substr(0,2);
+			secondMin = toTime.substr(3,2);
+			/* if(toTime>12){
+				to
+			} */
+			if(secondHour>12){
+				secondHour = secondHour-12;
+				secondMean = "PM";
+			}else{
+				secondMean = "AM";
+			}
+			str+=''+firstHour+' : '+firstMin+' '+firstMean +' to '+secondHour+' : '+secondMin+' '+secondMean +'';
+			str+='</span>&nbsp;';
+			str+='<span class="pull-right">';
+			str+='<i class="glyphicon glyphicon-calendar"></i>'+result[i].fromDateStr.substr(0,10)+'</span>&nbsp;';
+			
+			str+='<p>Subject:'+result[i].subject+'</p>';
+			str+='<p>Priority Type:'+result[i].priority+'</p>';
+			str+='</div>';
+			str+='<div class="panel-body pad_5">';
+			str+='<ul class="confirmSearchUl">';
+			for(var j in result[i].subList){
+				str+='<li>';
+				str+='<div class="row">';
+				str+='<div class="col-md-12">';
+				str+='<div class="media">';
+				str+='<div class="media-left">';
+				str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+				str+='</div>';
+				str+='<div class="media-body">';
+				str+='<p>'+result[i].subList[j].name+' - '+result[i].subList[j].designation+'</p>';
+				str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+				str+='<p>Appointment SUB</p>';
+				str+='</div>';
+				str+='</div>';
+				str+='</div>';  
+				str+='</div>';
+				str+='</li>';
+			}
+			str+='</ul>';
+			str+='<p class="font12 m_top10">';
+			str+='<i>Appt Created By: Rakesh</i>';
+			str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+			str+='</div>';
+			str+='</div>';
+		}
+		$("#appointmentMembersId").html(str);
 	}
 </script>
 </body>
