@@ -204,7 +204,7 @@
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="block">
                                     	<h4 class="text-success">SEARCH MEMBER TO CREATE APPOINTMENT REQUESTED</h4>
-                                        <div class="row">
+                                        <div class="row m_top20">
                                         	<!--<div class="col-md-4 pad_right0">
                                             	<label>Select Location</label>
                                                 <input type="text" class="form-control"/>
