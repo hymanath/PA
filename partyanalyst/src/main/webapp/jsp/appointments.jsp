@@ -874,7 +874,7 @@
 									<div class="block">
 										<h4 class="text-success">
 											CREATE APPOINTMENT TIME SLOT
-											<button class="btn btn-success pull-right">VIEW BOOKED TIME SLOTS</button>
+											<!--<button class="btn btn-success pull-right">VIEW BOOKED TIME SLOTS</button>-->
 										</h4>
 										<div class="row">
 											<div class="col-md-12">
@@ -1035,6 +1035,8 @@
       onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);
 		$("#confirmAppointmentBlockDropId").find(".deleteTag").remove();
 		$("#confirmAppointmentBlockDropId").css("height","");
+		$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
+		$("#confirmAppointmentBlockDropId").find(".manageAppViewPanelClass").removeClass("newClass");
 	  },
       onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]);},
       onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
@@ -3479,7 +3481,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			//str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
 			for(var i in result){
 			
-				str+='<div class="panel panel-default manageAppViewPanelClass" attr_appointment_id='+result[i].appointmentId+'>';
+				str+='<div class="panel panel-default manageAppViewPanelClass newClass" attr_appointment_id='+result[i].appointmentId+'>';
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-12">';
@@ -3521,7 +3523,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 											str+='</div>';
 										str+='</div>';
 										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
-										str+='<table class="table table-bordered">';
+										str+='<table class="table table-bordered" style="font-size:10px;">';
 											str+='<tr>';
 												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
 												var confirmedCount=0;
@@ -3609,6 +3611,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				  str+='</div>';
 				  str+='<p  style="color:red" id="updateStsErr"></p>';
 				  str+='<input class="btn btn-success btn-block m_top10" attr_label_id="'+labelId+'" attr_label_status_id="'+statusId+'" type="button" id="updateStsBttnId" value="UPDATE"/>';
+				  str+='<div id="statusErrDivId"></div>';
 				   str+='<div class="m_top10">';
 				  str+='<p id="updateStatusMsg"></p>';
 				  str+='</div>';
@@ -3644,8 +3647,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		var labelId = $(this).attr("attr_label_id");
 		var attrlabelstatusId = $(this).attr("attr_label_status_id");
 		var labelstatusId = $("#selectStsId").val();
-		if(attrlabelstatusId == labelstatusId){
-			alert("Both Status are Same.,Please Select Another Status");
+		if(labelstatusId == 0){
+			$("#statusErrDivId").html("<span style='color:red;'>Please Select Status.</span>");
+		}else if(attrlabelstatusId == labelstatusId){
+			$("#statusErrDivId").html("<span style='color:red;'>Label Already In Selected Status.</span>");
 		}else{
 			updateAppointmentsLabelStatus(labelId,labelstatusId);
 			
@@ -3653,7 +3658,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		
 	});
 	function updateAppointmentsLabelStatus(labelId,labelstatusId){
-		
+		$("#statusErrDivId").html("");
 		var jsObj={
 				labelId:labelId,   
 				labelstatusId:labelstatusId
