@@ -26,6 +26,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLabelDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLabelStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
@@ -79,7 +80,7 @@ public class AppointmentService implements IAppointmentService{
 	private static Logger LOG = Logger.getLogger(AppointmentService.class);
 	private TransactionTemplate transactionTemplate;
 	private DateUtilService dateUtilService = new DateUtilService();
-	private AppointmentDAO appointmentDAO;
+	private IAppointmentDAO appointmentDAO;
 	private IAppointmentStatusDAO appointmentStatusDAO;
 	private IAppointmentCandidateDesignationDAO candidateDesignationDAO;
 	private IAppointmentPriorityDAO appointmentPriorityDAO;
@@ -147,10 +148,11 @@ public class AppointmentService implements IAppointmentService{
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
-	public AppointmentDAO getAppointmentDAO() {
+
+	public IAppointmentDAO getAppointmentDAO() {
 		return appointmentDAO;
 	}
-	public void setAppointmentDAO(AppointmentDAO appointmentDAO) {
+	public void setAppointmentDAO(IAppointmentDAO appointmentDAO) {
 		this.appointmentDAO = appointmentDAO;
 	}
 	public TehsilDAO getTehsilDAO() {
@@ -2733,7 +2735,7 @@ public class AppointmentService implements IAppointmentService{
 					 for(Object[] params : list)
 					 {
 						 if(params[2] != null && !params[2].toString().isEmpty())
-						 cadreRegistrationService.sendSMS("9032411640", inputVO.getSmsText()); 
+						 cadreRegistrationService.sendSMS(params[2].toString(), inputVO.getSmsText()); 
 					 }
 				 }
 				
@@ -2758,7 +2760,7 @@ public class AppointmentService implements IAppointmentService{
 					 for(Object[] params : list)
 					 {
 						 if(params[2] != null && !params[2].toString().isEmpty())
-						 cadreRegistrationService.sendSMS("9032411640", inputVO.getSmsText()); 
+						 cadreRegistrationService.sendSMS(params[2].toString(), inputVO.getSmsText()); 
 					 }
 				 }
 				
