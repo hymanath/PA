@@ -204,14 +204,14 @@
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="block">
                                     	<h4 class="text-success">SEARCH MEMBER TO CREATE APPOINTMENT REQUESTED</h4>
-                                        <div class="row m_top20" >
-                                        	<!--<div class="col-md-4 pad_right0">
+                                        <div class="row">
+                                        	<div class="col-md-4 pad_right0">
                                             	<label>Select Location</label>
                                                 <input type="text" class="form-control"/>
                                                 <ul class="searchOptions">
                                                 	<li></li>
                                                 </ul>
-                                            </div>-->
+                                            </div>
 											<div class="col-md-2">
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="searchTypeId">
@@ -226,7 +226,7 @@
                                                 <input type="text" class="form-control" id="searchValueId">
 												<span id="errDigitsId" class="full-right" style="color:red;"></span>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 pad_left0">
                                             	<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
                                             </div>
 												<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
@@ -247,7 +247,7 @@
 										<div class="block">
 											<div class="row">
 												<div class="col-md-4 m_top10">
-													<label>Appointment Priority Type</label><span style='color:red'> &nbsp * </span>
+													<label>Appointment Priority Type</label>
 													<select name="appointmentVO.appointmentPriorityId" class="manageAppTypeCls" id="createAppTypeListId">
 														<option value="0">Select Priority</option>
 													</select>
@@ -255,7 +255,7 @@
 												</div>
 												<div class="col-md-8 m_top10">
 													<label class="radio-inline">
-														<input type="radio" id="selectManualDateId" class="dateRadioCls" checked name="dateTypeRadio" value="multipleDates">Select Preferrable Dates<span style='color:red'> &nbsp * </span>
+														<input type="radio" id="selectManualDateId" class="dateRadioCls" checked name="dateTypeRadio" value="multipleDates">Select Preferrable Dates
 													</label>
 													<label class="radio-inline">
 														<input type="radio" class="dateRadioCls" name="dateTypeRadio" value="nextWeek">Next Week
@@ -280,7 +280,7 @@
 													
 												</div>
 												<div class="col-md-12 m_top10">
-													<label>Appointment Reason</label><span style='color:red'> &nbsp * </span>
+													<label>Appointment Reason</label>
 													<textarea class="form-control" id="appointmentReasonId" name="appointmentVO.reason"></textarea>
 													<div class="errorArCls validateClr"></div>
 												</div>
@@ -384,12 +384,12 @@
 										<div class="row">
 											<span class="closeIcon"><i class="glyphicon glyphicon-remove"></i></span>
 											<div class="col-md-4 m_top10">
-												<label>Name</label><span style='color:red'> &nbsp * </span>
+												<label>Name</label>
 												<input type="text" class="form-control cloneNameCls">
 												<div class="cloneErrCandidateNameCls validateClr"></div>
 											</div>
 											<div class="col-md-4 m_top10">
-												<label>Designation</label><span style='color:red'> &nbsp * </span>
+												<label>Designation</label>
 												<select class="cloneDesignationCls form-control">
 													<option value="0">Select Designation</option>
 													
@@ -397,7 +397,7 @@
 												<div class="cloneErrCandidateDesgCls validateClr"></div>
 											</div>
 											<div class="col-md-4 m_top10">
-												<label>Contact Number</label><span style='color:red'> &nbsp * </span>
+												<label>Contact Number</label>
 												<input type="text" class="form-control cloneMobileCls">
 												<div class="cloneErrCandidateMobileCls validateClr"></div>
 											</div>
@@ -418,7 +418,7 @@
 												<div class="cloneErrCandidateMemShipCls validateClr"></div>
 											</div>
 											<div class="col-md-4 m_top10">
-												<label>Location Scope</label><span style='color:red'> &nbsp * </span>
+												<label>Location Scope</label>
 												<select class="cloneLocationScopeCls regionScopeCls form-control">
 													<option value="0">Select Scope</option>
 													<option value="3">DISTRICT</option>
@@ -445,7 +445,7 @@
 												</select>
 											</div>-->
 											<div class="col-md-4 cloneDistDivCls" style="display:none;">
-												<label>Select District</label><span style='color:red'> &nbsp * </span>
+												<label>Select District</label>
 												<select class="cloneDistrictCls form-control">
 													<option value="0">select dist</option>
 													<!--<option value="14">test dist1</option>-->
@@ -453,7 +453,7 @@
 												<div class="cloneErrCandidateDistrictCls validateClr"></div>
 											</div>
 											<div class="col-md-4 cloneConstDivCls" style="display:none;">
-												<label>Select Constituency</label><span style='color:red'> &nbsp * </span>
+												<label>Select Constituency</label>
 												<select class="cloneConstituencyCls form-control" >
 													<option value="0">select const</option>
 													<!--<option value="142">test const1</option>-->
@@ -461,14 +461,14 @@
 												<div class="cloneErrCandidateConstCls validateClr"></div>
 											</div>
 											<div class="col-md-4 cloneMandalDivCLs" style="display:none;">
-													<label>Select Mandal/Muncilpality</label><span style='color:red'> &nbsp * </span>
+													<label>Select Mandal/Muncilpality</label>
 													<select class="cloneMandalCls form-control">
 														<option value="0">Select Mandal</option>
 													</select>
 													<div class="cloneErrCandidateMandalCls validateClr"></div>
 												</div>
 												<div class="col-md-4 cloneVillageDivCls" style="display:none;">
-													<label>Select Village/Ward</label><span style='color:red'> &nbsp * </span>
+													<label>Select Village/Ward</label>
 													<select class="cloneVillageCls form-control">
 														<option value="0">Select VILLAGE</option>
 													</select>
@@ -579,7 +579,7 @@
                                             	<label>Appointment Priority Type<span style='color:red'> &nbsp * </span><span style='color:red' id="appPrrtyErrTypId"></span></label>
                                                 <select class="manageAppTypeCls errClearCls" id="manageAppTypeId"></select>
                                             </div>
-                                            <div class="col-md-3 m_top10">
+                                            <div class="col-md-3">
                                             	<label>Appointment Status<span style='color:red'> &nbsp * </span><span style='color:red' id="appStatusErrId"></span></label>
                                                 <select class="manageAppStatusCls errClearCls" id="manageAppStatusId"></select>
                                             </div>
@@ -2953,7 +2953,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
-					str+='<span class="msgDiv1'+result[i].appointmentId+'"></span>';
+					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
 					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
 					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
 					str+='</div>';
@@ -2980,7 +2980,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	$(".upcometimeCls").datetimepicker({format: "LT"});
 	
 	}
+	
+	$(document).on("click",".messageIcon",function() {
+		
+		$(".errorCls").html("");
+	})
 	$(document).on("click",".sendsms",function() {
+		
 		var flag = false;
 		var appointmentId = $(this).attr("value");
 		$(".msgDiv1"+appointmentId).html("").css("color","");;
@@ -3227,7 +3233,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
-					str+='<span class="msgDiv1'+result[i].appointmentId+'"></span>';
+					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
 					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
 					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
 					str+='</div>';
@@ -3347,7 +3353,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
-					str+='<span class="msgDiv1'+result[i].appointmentId+'"></span>';
+					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
 					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
 					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
 					str+='</div>';
