@@ -4015,13 +4015,13 @@ function buildTimeSlotsTable(result){
 			str+=''+firstHour+' : '+firstMin+' '+firstMean +' to '+secondHour+' : '+secondMin+' '+secondMean +'';
 			str+='</span>&nbsp;';
 			str+='<span class="pull-right">';
-			str+='<i class="glyphicon glyphicon-calendar"></i>'+result[i].fromDateStr.substr(0,10)+'</span>&nbsp;';
+			str+='<i class="glyphicon glyphicon-calendar"></i> '+result[i].fromDateStr.substr(0,10)+'</span>&nbsp;';
 			
-			str+='<p>Subject:'+result[i].subject+'</p>';
-			str+='<p>Priority Type:'+result[i].priority+'</p>';
+			str+='<p>Subject: '+result[i].subject+'</p>';
+			str+='<p>Priority Type: '+result[i].priority+'</p>';
 			str+='</div>';
 			str+='<div class="panel-body pad_5">';
-			str+='<ul class="confirmSearchUl">';
+			str+='<ul class="confirmSearchUl" style="list-style: none;">';
 			for(var j in result[i].subList){
 				str+='<li>';
 				str+='<div class="row">';
@@ -4033,7 +4033,7 @@ function buildTimeSlotsTable(result){
 				str+='<div class="media-body">';
 				str+='<p>'+result[i].subList[j].name+' - '+result[i].subList[j].designation+'</p>';
 				str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
-				str+='<p>Appointment SUB</p>';
+				//str+='<p>Appointment SUB</p>';
 				str+='</div>';
 				str+='</div>';
 				str+='</div>';  
@@ -4042,7 +4042,7 @@ function buildTimeSlotsTable(result){
 			}
 			str+='</ul>';
 			str+='<p class="font12 m_top10">';
-			str+='<i>Appt Created By: Rakesh</i>';
+			str+="<i>Appt Created By: "+result[i].userName+"</i>";
 			str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 			str+='</div>';
 			str+='</div>';
