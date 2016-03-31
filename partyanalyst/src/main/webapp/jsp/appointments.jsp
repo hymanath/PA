@@ -1916,25 +1916,75 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				var wardId = ''+result.wardId+'';
 				
 				var temp=parseInt(cloneCount)-1;
-					$('#candidateNameId'+temp).val(name);
-					$('#block'+temp).attr("attr_blk",closeId1);
-					$('#mobileNoId'+temp).val(mobile);
-					$('#designationSelId'+temp).val(desg);
-					$('#voterCardNoID'+temp).val(votercardno);
-					$('#membershipNumId'+temp).val(membershipno);
+				$('#candidateNameId'+temp).val(name);
+				$('#block'+temp).attr("attr_blk",closeId1);
+				$('#mobileNoId'+temp).val(mobile);
+				$('#designationSelId'+temp).val(desg);
+				
+				$('#designationSelId'+temp).val(distId);
+				var selectDi = new Dropkick('#designationSelId'+temp);
+				selectDi.refresh();
 					
-					$('#locationScopeSelId'+temp).val(lctscpid);
-					$('#districtId'+temp).val(distId);
+				$('#voterCardNoID'+temp).val(votercardno);
+				$('#membershipNumId'+temp).val(membershipno);
+				
+				$('#locationScopeSelId'+temp).val(lctscpid);
+				var selectL = new Dropkick('#locationScopeSelId'+temp);
+				selectL.refresh();
+				 showhideLocationBoxes(temp);
+					 
+
+				$('#districtId'+temp).val(distId);
+				var selectD = new Dropkick('#districtId'+temp);
+				selectD.refresh();
+					
+				if(result.constList != null && result.constList.length > 0){
+					var str='';
+					str+='<option value="0">Select Constituency</option>';
+					for(var i in result.constList){
+						str+='<option value="'+result.constList[i].id+'">'+result.constList[i].name+'</option>';
+					}
+					$('#constituencyId'+temp).html(str);
+					var select = new Dropkick('#constituencyId'+temp);
+					select.refresh();
+					}
 					$('#constituencyId'+temp).val(consId);
-					$('#tehsilId'+temp).val(tehsilId);
-					$('#villageId'+temp).val(villageId);
+					var selectC = new Dropkick('#constituencyId'+temp);
+					selectC.refresh();
 					
-					var select = new Dropkick('#locationScopeSelId'+temp);
-						select.refresh();
-					var select2 = new Dropkick('#districtId'+temp);
-						select2.refresh();
-					showhideLocationBoxes(temp);
-				}); 
+				if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
+					var str='';
+					str+='<option value="0">Select Mandal/Muncilpality</option>';
+					for(var i in result.tehLebDivList){
+						str+='<option value="'+result.tehLebDivList[i].locationId+'">'+result.tehLebDivList[i].locationName+'</option>';
+					}
+					$('#tehsilId'+temp).html(str);
+					var select = new Dropkick('#tehsilId'+temp);
+					select.refresh();
+					}	
+					$('#tehsilId'+temp).val(tehsilId);
+					$('#tehsilId'+temp).val(locEleId);
+					var selectT = new Dropkick('#tehsilId'+temp);
+					selectT.refresh();
+					
+				
+				if(result.villWardList != null && result.villWardList.length > 0){
+					var str='';
+					str+='<option value="0">Select Village/Ward</option>';
+					for(var i in result.villWardList){
+						str+='<option value="'+result.villWardList[i].locationId+'">'+result.villWardList[i].locationName+'</option>';
+					}
+					$('#villageId'+temp).html(str);
+					var select = new Dropkick('#villageId'+temp);
+					select.refresh();
+					}
+					
+					$('#villageId'+temp).val(villageId);
+					$('#villageId'+temp).val(wardId);
+					var selectV = new Dropkick('#villageId'+temp);
+					selectV.refresh();
+				
+			}); 
 		 }else{
 			var blockCount = $(this).attr("clone_block_count");
 			 $('#block'+blockCount).remove();
