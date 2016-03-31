@@ -58,6 +58,12 @@
 			   <param name="root">cadreManagementVO</param>
 			 </result>
 		</action>
+		
+	    <action name="appointmentCreatedUsers" class="appointmentAction" method="getAppointmentCreatedUsers">
+			<result type="json" name="success">
+			   <param name="root">idNameVOList</param>
+			 </result>
+		</action>
 		<action name="landing" class="com.itgrids.partyanalyst.web.action.LandingAction">
 			<result>/jsp/landing.jsp</result>
 		</action> 
