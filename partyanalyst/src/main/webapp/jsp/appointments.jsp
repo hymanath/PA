@@ -983,7 +983,7 @@ $(document).on("click","#addOneBlock",function(){
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
 	
-	   var t = "designationSelId"+cloneCount;
+	 var t = "designationSelId"+cloneCount;
 	$("#"+t).dropkick();
 	var select2 = new Dropkick("#"+t);
 	select2.refresh();   
@@ -1121,7 +1121,9 @@ $(".dropkickClass").dropkick();
 	
 	function savingAppointment(){
 		clearAllValidationCls();
-		
+		setTimeout(function () {
+			$("#savingStatusDivId").html('');
+		}, 2500);
 		var flag = validateSavingDetails();
 		if(!flag){	
 			$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
@@ -1139,26 +1141,31 @@ $(".dropkickClass").dropkick();
 			YAHOO.util.Connect.setForm('saveAppointment',true);
 			YAHOO.util.Connect.asyncRequest('POST','appointmentSavingAction.action',uploadHandler);
 		}
+		
 	}
 	
 	function showStatus(myResult,num){
 		var result = myResult.split("<pre>");
 		var result1 = result[1].split("</pre>");
 		if(result1[0] == "success"){
-			$("#savingStatusDivId").html("<sapn style='font-size:18px;color:green;'>Appointment Created Successfully.</span>");
-			$( ".closeIcon" ).trigger( "click" );
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Created Successfully.</span>");
+			//$( ".closeIcon" ).trigger( "click" );
+			$("#moreCandidatesDivId").html('');
+			cloneCount = 0;
 			saveFieldsEmpty();
 		}else{
-			$("#savingStatusDivId").html("<sapn style='font-size:16px;color:red;'>Appointment Creation Failed. Please Try Again.</span>");
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>")
 			
 		}
 			
 	}
 	
 	function saveFieldsEmpty(){
+		
 		$("#createAppTypeListId").val(0);
-		$("#multiDate").html('');
-		$("#appointmentReasonId").html('');		
+		$("#createAppTypeListId").dropkick('reset');
+		$("#selectManualDateId").trigger('click');
+		$("#appointmentReasonId").val("");	
 	}
 	
 	function showhideLocationBoxes(num){
@@ -1880,11 +1887,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		 
 		 
 		 if($(this).is(':checked')){
-			 $("#checkboxMemberAjax").css("display","block");
+			  $("#addOneBlock").trigger("click");
+			
+				 $("#checkboxMemberAjax").css("display","block");
 				 $(this).attr("clone_block_count",cloneCount);
 				 var Uncheck = $(this).attr("attr_close_id");
 				 $(".closeIcon").attr("attr_close",Uncheck);
-				 $("#addOneBlock").trigger("click");
 				 
 				 var temp = cloneCount-1;
 				 $("#candidateId"+temp).val($(this).attr("attr_id"));
@@ -1993,6 +2001,22 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					}
 				
 				if(lctscpid == 6){
+					
+					if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
+						var str='';
+						str+='<option value="0">Select Mandal/Muncilpality</option>';
+						for(var i in result.tehLebDivList){
+							str+='<option value="'+result.tehLebDivList[i].locationId+'">'+result.tehLebDivList[i].locationName+'</option>';
+						}
+						$('#tehsilId'+temp).html(str);
+						var select = new Dropkick('#tehsilId'+temp);
+						select.refresh();
+						}
+						
+						$('#tehsilId'+temp).val(tehsilId);
+						var selectT = new Dropkick('#tehsilId'+temp);
+						selectT.refresh();
+						
 					if(result.villWardList != null && result.villWardList.length > 0){
 					var str='';
 					str+='<option value="0">Select Village/Ward</option>';
@@ -3749,6 +3773,7 @@ function buildTimeSlotsTable(result){
 		$(".cloneErrCandidateConstCls").html('');
 		$(".cloneErrCandidateMandalCls").html('');
 		$(".cloneErrCandidateVillageCls").html('');
+		
 	}
 	
 	//Required validation For Appointment Creation
