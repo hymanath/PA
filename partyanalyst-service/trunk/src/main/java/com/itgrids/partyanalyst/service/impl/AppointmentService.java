@@ -999,6 +999,7 @@ public class AppointmentService implements IAppointmentService{
 			    		  vo.setConstituency(obj[5]!=null?obj[5].toString():"");
 			    		  vo.setMemberShipId(obj[6]!=null?obj[6].toString():"");
 			    		  vo.setVoterCardNo(obj[7]!=null?obj[7].toString():"");
+			    		  vo.setDesignationId(obj[8]!=null?(Long)obj[8]:0l);
 			    		  finalList.add(vo);
 			    	  }
 			      }
