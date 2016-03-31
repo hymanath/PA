@@ -984,10 +984,10 @@ $(document).on("click","#addOneBlock",function(){
 	$("#moreCandidatesDivId").append(e);
 	
 	 var t = "designationSelId"+cloneCount;
-	$("#"+t).dropkick();
+    $("#"+t).dropkick();
 	var select2 = new Dropkick("#"+t);
 	select2.refresh(); 
-	
+	 
 	var loc = "locationScopeSelId"+cloneCount;
 	var select3 = new Dropkick("#"+loc);
 	select3.refresh();
@@ -1920,10 +1920,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				$('#block'+temp).attr("attr_blk",closeId1);
 				$('#mobileNoId'+temp).val(mobile);
 				$('#designationSelId'+temp).val(desg);
-				
-				$('#designationSelId'+temp).val(distId);
-				var selectDi = new Dropkick('#designationSelId'+temp);
-				selectDi.refresh();
 					
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
@@ -1933,7 +1929,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				selectL.refresh();
 				 showhideLocationBoxes(temp);
 					 
-
+				
 				$('#districtId'+temp).val(distId);
 				var selectD = new Dropkick('#districtId'+temp);
 				selectD.refresh();
@@ -1951,24 +1947,44 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					$('#constituencyId'+temp).val(consId);
 					var selectC = new Dropkick('#constituencyId'+temp);
 					selectC.refresh();
-					
-				if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
-					var str='';
-					str+='<option value="0">Select Mandal/Muncilpality</option>';
-					for(var i in result.tehLebDivList){
-						str+='<option value="'+result.tehLebDivList[i].locationId+'">'+result.tehLebDivList[i].locationName+'</option>';
-					}
-					$('#tehsilId'+temp).html(str);
-					var select = new Dropkick('#tehsilId'+temp);
-					select.refresh();
-					}	
-					$('#tehsilId'+temp).val(tehsilId);
-					$('#tehsilId'+temp).val(locEleId);
-					var selectT = new Dropkick('#tehsilId'+temp);
-					selectT.refresh();
-					
+					if(lctscpid == 5 ){	
 				
-				if(result.villWardList != null && result.villWardList.length > 0){
+					if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
+						var str='';
+						str+='<option value="0">Select Mandal/Muncilpality</option>';
+						for(var i in result.tehLebDivList){
+							str+='<option value="'+result.tehLebDivList[i].locationId+'">'+result.tehLebDivList[i].locationName+'</option>';
+						}
+						$('#tehsilId'+temp).html(str);
+						var select = new Dropkick('#tehsilId'+temp);
+						select.refresh();
+						}
+						
+						$('#tehsilId'+temp).val(tehsilId);
+						var selectT = new Dropkick('#tehsilId'+temp);
+						selectT.refresh();
+					}
+					if(lctscpid == 7){	
+					
+					if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
+						var str='';
+						str+='<option value="0">Select Mandal/Muncilpality</option>';
+						for(var i in result.tehLebDivList){
+							str+='<option value="'+result.tehLebDivList[i].locationId+'">'+result.tehLebDivList[i].locationName+'</option>';
+						}
+						$('#tehsilId'+temp).html(str);
+						var select = new Dropkick('#tehsilId'+temp);
+						select.refresh();
+						}
+						
+						$('#tehsilId'+temp).val(locEleId);
+						var selectT = new Dropkick('#tehsilId'+temp);
+						selectT.refresh();
+					}
+				
+				if(lctscpid == 6){
+					alert(2);
+					if(result.villWardList != null && result.villWardList.length > 0){
 					var str='';
 					str+='<option value="0">Select Village/Ward</option>';
 					for(var i in result.villWardList){
@@ -1980,9 +1996,42 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					}
 					
 					$('#villageId'+temp).val(villageId);
-					$('#villageId'+temp).val(wardId);
 					var selectV = new Dropkick('#villageId'+temp);
 					selectV.refresh();
+				}
+				if(lctscpid == 8 ){
+					alert(1);
+					if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
+					var str='';
+					str+='<option value="0">Select Mandal/Muncilpality</option>';
+					for(var i in result.tehLebDivList){
+						str+='<option value="'+result.tehLebDivList[i].locationId+'">'+result.tehLebDivList[i].locationName+'</option>';
+					}
+					$('#tehsilId'+temp).html(str);
+					var select = new Dropkick('#tehsilId'+temp);
+					select.refresh();
+					}
+					
+					$('#tehsilId'+temp).val(locEleId);
+					var selectT = new Dropkick('#tehsilId'+temp);
+					selectT.refresh();
+					
+					if(result.villWardList != null && result.villWardList.length > 0){
+					var str='';
+					str+='<option value="0">Select Village/Ward</option>';
+					for(var i in result.villWardList){
+						str+='<option value="'+result.villWardList[i].locationId+'">'+result.villWardList[i].locationName+'</option>';
+					}
+					$('#villageId'+temp).html(str);
+					var select = new Dropkick('#villageId'+temp);
+					select.refresh();
+					}
+					
+					$('#villageId'+temp).val(wardId);
+					var selectW = new Dropkick('#villageId'+temp);
+					selectW.refresh();
+				}
+				
 				
 			}); 
 		 }else{
