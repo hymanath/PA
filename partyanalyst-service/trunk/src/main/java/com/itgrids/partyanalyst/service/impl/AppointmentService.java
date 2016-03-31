@@ -2436,7 +2436,7 @@ public class AppointmentService implements IAppointmentService{
 		public List<IdNameVO> getAppointmentCreatedUsers(){
 			List<IdNameVO> idNameVoList = new ArrayList<IdNameVO>();
 			try{
-				List<Object[]> list=AppointmentDAO.getAppointmentCreatedUsers();
+				List<Object[]> list=appointmentDAO.getAppointmentCreatedUsers();
 				if(list != null && list.size() > 0)
 				{
 					for(Object[] params :list)
@@ -2829,4 +2829,42 @@ public class AppointmentService implements IAppointmentService{
 		return result;
 	}
 	
+	public ResultStatus deleteAppointmentsOfLabel(final List<Long> ids,final Long labelId,final Long registrationId){
+		ResultStatus rs = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+		        	if(ids != null && ids.size() > 0 && labelId != null && labelId > 0l){
+						//move the previous recoeds to history
+						List<LabelAppointment> laObjList = labelAppointmentDAO.getAppointmentsOfLabel(ids,labelId);
+						if(laObjList != null && laObjList.size() > 0){
+							for (LabelAppointment labelAppointment : laObjList) {
+								LabelAppointmentHistory lah = new LabelAppointmentHistory();
+								lah.setLabelAppointmentId(labelAppointment.getLabelAppointmentId());
+								lah.setAppointmentLabelId(labelAppointment.getAppointmentLabelId());
+								lah.setAppointmentId(labelAppointment.getAppointmentId());
+								lah.setLabelStatusId(labelAppointment.getLabelAppointmentId());
+								lah.setCreatedBy(labelAppointment.getCreatedBy());
+								lah.setUpdatedBy(labelAppointment.getUpdatedBy());
+								lah.setInsertedTime(labelAppointment.getInsertedTime());
+								lah.setUpdatedTime(labelAppointment.getUpdatedTime());
+								lah.setIsDeleted(labelAppointment.getIsDeleted());
+								labelAppointmentHistoryDAO.save(lah);
+							}
+						}
+						
+						labelAppointmentDAO.updateIsDeletedStatus(ids,labelId,registrationId,dateUtilService.getCurrentDateAndTime());
+						
+					}
+		        }
+			});
+			rs.setExceptionMsg("success");
+			rs.setResultCode(0);
+		} catch (Exception e) {
+			rs.setExceptionMsg("failure");
+			rs.setResultCode(1);
+			LOG.error("Exception raised at deleteAppointmentsOfLabel", e);
+		}
+		return rs;
+	}
 }
