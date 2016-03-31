@@ -274,7 +274,7 @@
 															<i class="glyphicon glyphicon-calendar"></i>
 															<span class="caret"></span>
 														</span>
-														<input type="text" class="form-control multiDateCls" id="multiDate" name="appointmentVO.appointmentDates">
+														<input type="text" class="form-control multiDateCls disableCls" id="multiDate" name="appointmentVO.appointmentDates">
 													</div>
 													<div class="errorSpdCls validateClr"></div>
 												</div>
@@ -295,73 +295,6 @@
 										<div style="margin-top: 50px;"><img id="checkboxMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 										<div class="errorCandidateMainDivCls validateClr"></div>
 										<div id="showapptDetails">
-											<!--<div class="block" >
-												<div class="row">
-													<div class="col-md-4 m_top10">
-														<label>Name</label>
-														<input type="text" class="form-control" id="populateCandidateName" name="appointmentVO.basicInfoList[0].name">
-														</div>
-													<div class="col-md-4 m_top10">
-														<label>Designation</label>
-														<select  name="appointmentVO.basicInfoList[0].designationId"  class=" " id="designationListId">
-															<option value="0">Select Designation</option>
-														</select>
-													</div>
-													<div class="col-md-4 m_top10">
-														<label>Contact Number</label>
-														<input type="text" class="form-control" id="populateMobileNo" name="appointmentVO.basicInfoList[0].mobileNo">
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-4 m_top10">
-														<label>Voter ID</label>
-														<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].voterCardNo">
-													</div>
-													<div class="col-md-4 m_top10">
-														<label>Membership Number</label>
-														<input type="text" class="form-control" name="appointmentVO.basicInfoList[0].membershipNum">
-													</div>
-													<div class="col-md-4 m_top10">
-														<label>Location Scope</label>
-														<select name="appointmentVO.basicInfoList[0].locationScopeId" attr_val="0" class="regionScopeCls dropkickClass" id="locationScopeSelId0" onChange="showhideLocationBoxes(0);">
-															<option value="0">Select Scope</option>
-															<option value="3">DISTRICT</option>
-															<option value="4">CONSTITUENCY</option>
-															<option value="5">MANDAL</option>
-															<option value="6">VILLAGE</option>
-															<option value="7">MUNICIPAL-CORP-GMC</option>
-															<option value="8">WARD</option>
-														</select>
-													</div>
-												</div>
-												<div class="row m_top10">
-													<div class="col-md-4 locationCls0" id="districtId0DivId" style="display:none;">
-														<label>Select District</label>
-														<select name="appointmentVO.basicInfoList[0].districtId" class="dropkickClass scopeClearAllCls0" id="districtId0" onChange="getConstituencies(0);">
-															<option value="0">Select District</option>
-														</select>
-													</div>
-													<div class="col-md-4 locationCls0" id="constituencyId0DivId" style="display:none;">
-														<label>Select Constituency</label>
-														<select name="appointmentVO.basicInfoList[0].constituencyId" class="dropkickClass scopeClearAllCls0" id="constituencyId0" onChange="getMandamMuncipalties(0);">
-															<option value="0">Select Constituency</option>
-														</select>
-													</div>
-													<div class="col-md-4 locationCls0" id="tehsilId0DivId" style="display:none;">
-														<label>Select Mandal/Muncipality</label>
-														<select name="appointmentVO.basicInfoList[0].tehsilId" class="dropkickClass scopeClearAllCls0" id="tehsilId0" onChange="getVillageWard(0);">
-															<option value="0">Select Mandal</option>
-														</select>
-													</div>
-													<div class="col-md-4 locationCls0" id="villageId0DivId" style="display:none;">
-														<label>Select Village/Ward</label>
-														<select name="appointmentVO.basicInfoList[0].villageId" class="dropkickClass scopeClearAllCls0" id="villageId0">
-															<option value="0">Select VILLAGE</option>
-														</select>
-													</div>
-													
-												</div>
-											</div>-->
 											<div id="moreCandidatesDivId"></div>
 												<div class="row m_top10">
 													<div class="col-md-4 col-md-offset-8">
@@ -4214,8 +4147,15 @@ function buildTimeSlotsTable(result){
 		$("#errLabelName").html('');
 	});
 	$(".cnfrmaptsCls").click(function(){
-		
+			$("#errorDivForTimeSlotId").html('');
 	});
+	$(".dateRadioCls").click(function(){		
+		if($("#selectManualDateId").is(":checked")){
+			$(".disableCls").attr('disabled', false); 
+		}else{
+			$(".disableCls").attr('disabled', true); 
+		}		
+	}); 
 	
 </script>
 </body>
