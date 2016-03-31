@@ -626,6 +626,12 @@ footer
                         <a href="dashBoardAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Dashboard</span></a>
                     </li>
 					</c:if>
+					<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'APPOINTMENTS_MANAGE_ENTITLEMENT' )}">
+						<li>
+							<a href="appointmentsAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Appointments</span></a>
+						</li>	
+					</c:if>
+
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
