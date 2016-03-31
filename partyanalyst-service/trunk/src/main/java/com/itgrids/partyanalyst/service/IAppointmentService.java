@@ -24,7 +24,7 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentPriorityList();
 	public List<IdNameVO> getAppmntLblStatusList();
 	public List<AppointmentBasicInfoVO> getAppointmentUsersDtlsByUserId(Long userId);
-	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String fromDate,String toDate);
+	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String fromDate,String toDate,Long aptUserId);
     public List<LabelStatusVO> getLabelDtslByDate(String date,Long appntmntUsrId);
 	public List<IdNameVO> getVillageWard(Long mandalId);
 	public List<IdNameVO> getConstituenciesForADistrict(Long distId);
@@ -43,7 +43,7 @@ public interface IAppointmentService {
 	public List<AppointmentScheduleVO>  getAppointmentSearchDetails(AppointmentInputVO inputVo);
 	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId);
 	public AppointmentSlotsVO getTimeSlotsDetails(long appointmentLabelId);
-	public List<IdNameVO> getAppointmentLabels();
+	public List<IdNameVO> getAppointmentLabels(Long aptUserId);
 	public List<IdNameVO> getAppointmentsLabelStatus();
 	public ResultStatus updateAppointmentsLabelStatus(Long labelId,Long labelstatusId);
 	public ResultStatus updateMemberAppointmentsStatus(Long memberAppntId,Long updateAppntStatusId);
