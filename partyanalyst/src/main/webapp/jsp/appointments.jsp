@@ -4272,6 +4272,31 @@ function buildTimeSlotsTable(result){
 			}
 		});
 	});
+	getAppointmentCreatedUsers();
+function getAppointmentCreatedUsers(){
+		$.ajax({
+			type : 'GET',
+			url : 'appointmentCreatedUsers.action',
+			dataType : 'json',
+			data : {}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){
+				//app-appointment
+				buildAppointmentCreatedUsers(result);
+			}
+			
+		});
+	}
+	function buildAppointmentCreatedUsers(result){
+		$("#appointmentcreatedBy  option").remove();
+		$("#appointmentcreatedBy").append('<option value="0">appointment created by</option>');
+	  for(var i in result){
+			$("#appointmentcreatedBy").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		 }
+		//$(".appointmentCreatedidCls").dropkick();
+		var select = new Dropkick("#appointmentcreatedBy");
+		select.refresh();
+	}
 </script>
 </body>
 </html>
