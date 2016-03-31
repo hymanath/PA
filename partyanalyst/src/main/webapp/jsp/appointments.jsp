@@ -326,7 +326,7 @@
 											</div>
 											<div class="col-md-4 m_top10">
 												<label>Designation</label><span style='color:red'> &nbsp * </span>
-												<select class="cloneDesignationCls">
+												<select class="cloneDesignationCls " >
 													<option value="0">Select Designation</option>
 													
 												</select>
@@ -983,11 +983,11 @@ $(document).on("click","#addOneBlock",function(){
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
 	
-	 var t = "designationSelId"+cloneCount;
-    $("#"+t).dropkick();
+	   var t = "designationSelId"+cloneCount;
+	$("#"+t).dropkick();
 	var select2 = new Dropkick("#"+t);
-	select2.refresh(); 
-	 
+	select2.refresh();   
+	
 	var loc = "locationScopeSelId"+cloneCount;
 	var select3 = new Dropkick("#"+loc);
 	select3.refresh();
@@ -1040,8 +1040,8 @@ $(".dropkickClass").dropkick();
 	function buildDesignationForCreateApp(result){
 			$("#designationListId  option").remove();
 			$("#designationListId").append('<option value="0">Select Designation</option>');
-			$(".cloneDesignationCls option").remove(); 
-			$(".cloneDesignationCls").append('<option value="0">Select Designation</option>');
+			 $(".cloneDesignationCls option").remove(); 
+			$(".cloneDesignationCls").append('<option value="0">Select Designation</option>'); 
 			
 			$("#manageAppDesigId  option").remove();
 			$("#manageAppDesigId").append('<option value="0">Select Designation</option>');
@@ -1053,9 +1053,9 @@ $(".dropkickClass").dropkick();
 			 /* $(".designationListCls").dropkick();
 			 var select = new Dropkick("#designationListId");
 			select.refresh(); */ 
-			$("#manageAppDesigId").dropkick();
+			 $("#manageAppDesigId").dropkick();
 			var select1 = new Dropkick("#manageAppDesigId");
-			select1.refresh(); 
+			select1.refresh();  
 			
 			
 			
@@ -1857,8 +1857,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
 								str+='</div>';
 								
-								str+='<div class="col-md-1 m_top10" attr_id='+result[i].id+'   attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designation+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'">';
-									str+='<input type="checkbox" class="apptDetailsDiv" id="block'+result[i].id+'" attr_id=block'+result[i].id+'>';
+								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
+									str+='<input type="checkbox" class="apptDetailsDiv" id="block'+result[i].id+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designation+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id=block'+result[i].id+'>';
 								str+='</div>';
 								
 							str+='</div>';
@@ -1877,23 +1877,23 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		 
 		 if($(this).is(':checked')){
 			 $("#checkboxMemberAjax").css("display","block");
-				$(this).attr("clone_block_count",cloneCount);
-				var Uncheck = $(this).attr("attr_id");
-				$(".closeIcon").attr("attr_close",Uncheck);
-				
-				$("#addOneBlock").trigger("click");
-				var temp = cloneCount-1;
-				$("#candidateId"+temp).val($(this).parent().attr("attr_id"));
-			 var candidateType = $(this).parent().attr("attr_candidatetype");
-			 var id = $(this).parent().attr("attr_id");
-			 
-			 var name = $(this).parent().attr("attr_name");
-			 var mobile = $(this).parent().attr("attr_mobile");
-			 var desg = $(this).parent().attr("attr_desg");
-			 var membershipno = $(this).parent().attr("attr_memberShipNo");
-			 var votercardno = $(this).parent().attr("attr_voterCardNo");
-			 
-			 var closeId1 = $(this).attr("attr_id");
+				 $(this).attr("clone_block_count",cloneCount);
+				 var Uncheck = $(this).attr("attr_id");
+				 $(".closeIcon").attr("attr_close",Uncheck);
+				 $("#addOneBlock").trigger("click");
+				 
+				 var temp = cloneCount-1;
+				 $("#candidateId"+temp).val($(this).attr("attr_id"));
+				 
+				 var candidateType = $(this).attr("attr_candidatetype");
+				 var id = $(this).parent().attr("attr_id");
+				 
+				 var name = $(this).attr("attr_name");
+				 var mobile = $(this).attr("attr_mobile");
+				 var desg = $(this).attr("attr_desg");
+				 var membershipno = $(this).attr("attr_memberShipNo");
+				 var votercardno = $(this).attr("attr_voterCardNo");
+				 var closeId1 = $(this).attr("attr_id");
 		
 		
 		var jsObj={
@@ -1916,11 +1916,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				var wardId = ''+result.wardId+'';
 				
 				var temp=parseInt(cloneCount)-1;
+				
 				$('#candidateNameId'+temp).val(name);
 				$('#block'+temp).attr("attr_blk",closeId1);
 				$('#mobileNoId'+temp).val(mobile);
-				$('#designationSelId'+temp).val(desg);
-					
+				
+				
+				
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
 				
@@ -1983,7 +1985,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					}
 				
 				if(lctscpid == 6){
-					alert(2);
 					if(result.villWardList != null && result.villWardList.length > 0){
 					var str='';
 					str+='<option value="0">Select Village/Ward</option>';
@@ -2000,7 +2001,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					selectV.refresh();
 				}
 				if(lctscpid == 8 ){
-					alert(1);
 					if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
 					var str='';
 					str+='<option value="0">Select Mandal/Muncilpality</option>';
@@ -2032,6 +2032,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					selectW.refresh();
 				}
 				
+				$('#designationSelId'+temp+' option[value="'+desg+'"]').prop('selected', 'selected');
+				$('#designationSelId'+temp+' option:selected').text(desg);
+				var selectx = new Dropkick('#designationSelId'+temp);
+					selectx.refresh();
 				
 			}); 
 		 }else{
