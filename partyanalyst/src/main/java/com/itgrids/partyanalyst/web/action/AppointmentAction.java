@@ -727,5 +727,27 @@ public String getCandidateWiseDetails(){
 		return Action.SUCCESS;
 	}
 	
-	
+	public String deleteAppointmentsOfLabel(){
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			JSONArray jsonArray = jObj.getJSONArray("idsArr");
+			
+			List<Long> ids = new ArrayList<Long>(0);
+			for (int i = 0; i < jsonArray.length(); i++) 
+			{
+				ids.add(Long.parseLong(jsonArray.get(i).toString()));
+			}
+			
+			resultStatus = appointmentService.deleteAppointmentsOfLabel(ids,jObj.getLong("labelId"),user.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception raised at deleteAppointmentsOfLabel",e);
+		}
+		return Action.SUCCESS;
+	}
 }
