@@ -259,7 +259,7 @@
 												<div class="col-md-8 m_top10">
 													<label class="radio-inline">
 														<input type="radio" id="selectManualDateId" class="dateRadioCls" checked name="dateTypeRadio" value="multipleDates">Select Preferrable Dates
-													</label><span style='color:red'> &nbsp * </span>
+													</label>
 													<label class="radio-inline">
 														<input type="radio" class="dateRadioCls" name="dateTypeRadio" value="nextWeek">Next Week
 													</label>
@@ -570,14 +570,14 @@
                                 	<div class="block">
                                     	<div class="row">
                                         	<div class="col-md-6">
-                                            	<label>Select Appointment Label</label>
-												<div id="timeSlotsErrId" class="text-danger"></div>
+                                            	
                                                 <select class="dropkickClass" id="appointmentLabelToGetSlotsId">
                                                 	<option>Feb-28_29-Appointments</option>
                                                 </select>
+												<div id="timeSlotsErrId" class="text-danger"></div>
                                             </div>
                                             <div class="col-md-2">
-                                            	<button class="btn btn-success btn-block showTimeSlotsCls m_top24" id="showTimeSlotsId">VIEW</button>
+                                            	<button class="btn btn-success btn-block showTimeSlotsCls " id="showTimeSlotsId">VIEW</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1855,14 +1855,14 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									str+='</div>';
 								str+='</div>';
 							   str+='<div class="col-md-2">';
-									str+='<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>';
+									//str+='<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>';
 								str+='</div>';
 								str+='<div class="col-md-2">';
-									str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
+									//str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
 								str+='</div>';
 								
 								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
-									str+='<input type="checkbox" class="apptDetailsDiv" id="block'+result[i].id+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designation+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id=block'+result[i].id+'>';
+									str+='<input type="checkbox" class="apptDetailsDiv" id="uncheck'+result[i].id+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'">';
 								str+='</div>';
 								
 							str+='</div>';
@@ -1882,7 +1882,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		 if($(this).is(':checked')){
 			 $("#checkboxMemberAjax").css("display","block");
 				 $(this).attr("clone_block_count",cloneCount);
-				 var Uncheck = $(this).attr("attr_id");
+				 var Uncheck = $(this).attr("attr_close_id");
 				 $(".closeIcon").attr("attr_close",Uncheck);
 				 $("#addOneBlock").trigger("click");
 				 
@@ -1890,7 +1890,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 $("#candidateId"+temp).val($(this).attr("attr_id"));
 				 
 				 var candidateType = $(this).attr("attr_candidatetype");
-				 var id = $(this).parent().attr("attr_id");
+				 var id = $(this).attr("attr_id");
 				 
 				 var name = $(this).attr("attr_name");
 				 var mobile = $(this).attr("attr_mobile");
@@ -1929,6 +1929,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
+				
+				$('#designationSelId'+temp).val(desg);
+				var selectx = new Dropkick('#designationSelId'+temp);
+					selectx.refresh();
 				
 				$('#locationScopeSelId'+temp).val(lctscpid);
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
@@ -2036,10 +2040,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					selectW.refresh();
 				}
 				
-				$('#designationSelId'+temp+' option[value="'+desg+'"]').prop('selected', 'selected');
-				$('#designationSelId'+temp+' option:selected').text(desg);
-				var selectx = new Dropkick('#designationSelId'+temp);
-					selectx.refresh();
+				
 				
 			}); 
 		 }else{
@@ -3272,7 +3273,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	}
 	function buildAppointmentLabel(result){
 		$("#appointmentLabelToGetSlotsId  option").remove();
-			$("#appointmentLabelToGetSlotsId").append('<option value="0">Select Appointment Status</option>');
+			$("#appointmentLabelToGetSlotsId").append('<option value="0">Select Label</option>');
 			for(var i in result){
 				$("#appointmentLabelToGetSlotsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
@@ -3283,18 +3284,19 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	$("#pluginTableId").hide();
 	$("#showTimeSlotsId").click(function(){
 		
-		//View Details Of Appointments call
-		getViewAppointmentsOfALable();
-		
-		
 		$("#timeSlotsErrId").html("");
-		//get appointments of a lable
-		getAppointmentsOfALabel();
+
 		var appointmentLabelId = $("#appointmentLabelToGetSlotsId").val();
 		if(appointmentLabelId==0){
-			$("#timeSlotsErrId").html("please select a label");
+			$("#timeSlotsErrId").html("Please select a label");
 			return;
 		}
+
+		//View Details Of Appointments call
+		getViewAppointmentsOfALable();
+		//get appointments of a lable
+		getAppointmentsOfALabel();
+		
 		var jsObj = {
 		appointmentLabelId:appointmentLabelId
 	}
@@ -4086,7 +4088,7 @@ function buildTimeSlotsTable(result){
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-12">';
-						str+='<span><input type="checkbox" value="'+result[i].appointmentId+'" class="deleteAppointmentChckCls"></input></span>';
+						str+='<span class="pull-right"><input type="checkbox" value="'+result[i].appointmentId+'" class="deleteAppointmentChckCls"></input></span>';
 						str+='</div>';
 					str+='</div>';
 					if(result[i].subject !=null && result[i].subject.length>0){
