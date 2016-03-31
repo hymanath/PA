@@ -553,229 +553,7 @@
 									</div>
                                 </div>
                           </div>
-                            <div class="row appointmentsViewDivCls commonDivCls" style="display:none;">
-                            	<!--<div class="col-md-12">
-                                	<div class="block">
-                                    	<h4 class="text-success">VIEWING (FEB-27_28 APPOINTMENT-REQUEST) LABEL</h4>
-										<div id="appointmentManage"></div>
-										<ul class="viewAppointmentRequestedMembers">
-											<li>
-												<div class="row">
-													<div class="col-md-12">
-														<span class="requestedCheckbox text-success">
-															Appointment Fixed
-														</span>
-													</div>
-													<div class="col-md-6">
-														<div class="media">
-															<div class="media-left">
-																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-																<span class="colorStatus green"></span>
-															</div>
-															<div class="media-body">
-																<p>Laxman - Cadre</p>
-																<p>Contact Number: 9848012345</p>
-																<p>Designation: MLC</p>
-																<p>Constituency</p>
-																<p>Last Visit:</p>
-																<p>Appt Type</p>
-																<p>Subject</p>
-															</div>
-														</div>
-														<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-														<table class="table table-bordered">
-															<tr>
-																<td><h4>20</h4><p>Requests</p></td>
-																<td><h4>20</h4><p>Confirmed</p></td>
-																<td><h4>20</h4><p>Rescheduled</p></td>
-																<td><h4>20</h4><p>Cancelled</p></td>
-															</tr>
-														</table>
-														<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-													</div>
-													<div class="col-md-6">
-														<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-														<table class="table table-bordered m_top10">
-															<thead>
-														  <th>Appt Last Requested Date</th>
-																<th colspan="2">Appt Status</th>
-															</thead>
-															<tr>
-																<td>28-feb-2016</td>
-																<td>Fixed</td>
-																<td>Appt Fixed on 28-feb-2016 10:30AM</td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-														</table>
-													</div>
-												</div>
-											</li>
-											<li>
-												<div class="row">
-													<div class="col-md-12">
-														<span class="requestedCheckbox text-danger">
-															Cancelled
-														</span>
-													</div>
-													<div class="col-md-6">
-														<div class="media">
-															<div class="media-left">
-																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-																<span class="colorStatus blue"></span>
-															</div>
-															<div class="media-body">
-																<p>Laxman - Cadre</p>
-																<p>Contact Number: 9848012345</p>
-																<p>Designation: MLC</p>
-																<p>Constituency</p>
-																<p>Last Visit:</p>
-																<p>Appt Type</p>
-																<p>Subject</p>
-															</div>
-														</div>
-														<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-														<table class="table table-bordered">
-															<tr>
-																<td><h4>20</h4><p>Requests</p></td>
-																<td><h4>20</h4><p>Confirmed</p></td>
-																<td><h4>20</h4><p>Rescheduled</p></td>
-																<td><h4>20</h4><p>Cancelled</p></td>
-															</tr>
-														</table>
-														<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-													</div>
-													<div class="col-md-6">
-														<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-														<table class="table table-bordered m_top10">
-															<thead>
-														  <th>Appt Last Requested Date</th>
-																<th colspan="2">Appt Status</th>
-															</thead>
-															<tr>
-																<td>28-feb-2016</td>
-																<td>Fixed</td>
-																<td>Appt Fixed on 28-feb-2016 10:30AM</td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-														</table>
-													</div>
-												</div>
-											</li>
-											<li>
-												<div class="row">
-													<div class="col-md-12">
-														<span class="requestedCheckbox text-danger">
-															Cancelled
-													  </span>
-													</div>
-													<div class="col-md-6">
-														<div class="media">
-															<div class="media-left">
-																<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">
-																<span class="colorStatus violet"></span>
-															</div>
-															<div class="media-body">
-																<p>Laxman - Cadre</p>
-																<p>Contact Number: 9848012345</p>
-																<p>Designation: MLC</p>
-																<p>Constituency</p>
-																<p>Last Visit:</p>
-																<p>Appt Type</p>
-																<p>Subject</p>
-															</div>
-														</div>
-														<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>
-														<table class="table table-bordered">
-															<tr>
-																<td><h4>20</h4><p>Requests</p></td>
-																<td><h4>20</h4><p>Confirmed</p></td>
-																<td><h4>20</h4><p>Rescheduled</p></td>
-																<td><h4>20</h4><p>Cancelled</p></td>
-															</tr>
-														</table>
-														<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>
-														<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>
-													</div>
-													<div class="col-md-6">
-														<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>
-														<table class="table table-bordered m_top10">
-															<thead>
-														  <th>Appt Last Requested Date</th>
-																<th colspan="2">Appt Status</th>
-															</thead>
-															<tr>
-																<td>28-feb-2016</td>
-																<td>Fixed</td>
-																<td>Appt Fixed on 28-feb-2016 10:30AM</td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>8-feb-2016</td>
-																<td>Waiting</td>
-																<td></td>
-															</tr>
-														</table>
-													</div>
-												</div>
-											</li>
-									  </ul>
-                                    </div>
-                                </div>-->
-                            </div>
+                            <div class="row appointmentsViewDivCls commonDivCls" style="display:none;"></div>
                             <div class="row appointmentsUpdateDivCls commonDivCls" style="display:none;">
                             	<div class="col-md-12">
                                 	<div class="block">
@@ -784,6 +562,7 @@
                                      </div>
                                 </div>
                             </div>
+							<div class="row appointmentsDeleteDivCls commonDivCls" style="display:none;"></div>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="settings">
 							<div class="row">
@@ -1692,26 +1471,31 @@ $(".dropkickClass").dropkick();
 					str+='<td>';
 					
 					if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">VIEW</button>';
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">View</button>';
 						}else{
-							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>VIEW</button>';
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>View</button>';
 						}
 						
-						str+='<button class="btn btn-success btn-xs addMembersClass">ADD APPOINTMENTS</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass">Add Appointments</button>';
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"  >UPDATE</button>';
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"  >Update</button>';
 						}else{
-							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>UPDATE</button>';
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Update</button>';
 						}
 						
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'">STATUS</button>';
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'">Status</button>';
 						}else{
-							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled>STATUS</button>';
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled>Status</button>';
+						}
+						if(totalCount !=null && totalCount >0 ){
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">Delete Appointments</button>';
+						}else{
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Delete Appointments</button>';
 						}
 						
 						
-						str+='<button class="btn btn-success btn-xs lblDltCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">DELETE</button>';
+						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"></i>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
@@ -4157,6 +3941,229 @@ function buildTimeSlotsTable(result){
 		}		
 	}); 
 	
+	$(document).on("click",".deleteAppointments",function(){
+		
+		$(".commonDivCls").hide();
+		
+		var labelName = $(this).attr("attr_label_name");
+		var labelId = $(this).attr("attr_label_id");
+		var jsObj={
+			labelId : labelId
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'viewAppointmentsOfALableAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$(".appointmentsDeleteDivCls").show();
+			if(result!=null && result!=0){
+			  buildDeleteAppResult(result,labelName,labelId);
+			}else{
+			  $(".appointmentsDeleteDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
+			}
+		});		
+	});
+	
+	function buildDeleteAppResult(result,labelName,labelId){
+		var i = 0;
+		var str='';
+			str+='<div class="col-md-12">';
+			str+='<div class="block">';
+			str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
+			for(var i in result){
+			
+				str+='<div class="panel panel-default manageAppViewPanelClass">';
+				str+='<div class="panel-heading">';
+				    str+='<div class="row">';
+						str+='<div class="col-md-12">';
+						str+='<span><input type="checkbox" value="'+result[i].appointmentId+'" class="deleteAppointmentChckCls"></input></span>';
+						str+='</div>';
+					str+='</div>';
+					if(result[i].subject !=null && result[i].subject.length>0){
+						str+='<p>Subject : '+result[i].subject+'</p>';
+					}else{
+						str+='<p>Subject : - </p>';
+					}if(result[i].priority !=null && result[i].priority.length>0){
+						str+='<p>Priority Type : '+result[i].priority+'</p>';
+					}else{
+						str+='<p>Priority Type : - </p>';
+					}if(result[i].dateString !=null && result[i].dateString.length>0){
+						str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					}else{
+						str+='<p>Requested Date : - </p>';
+					}
+					if(result[i].status != null){
+						str+='<p>Status : '+result[i].status+'</p>';
+					}else{
+						str+='<p>Status : - </p>';
+					}					
+					
+				str+='</div>';
+				str+='<div class="panel-body">';
+					for(var j in result[i].subList){
+						str+='<ul class="viewAppointmentRequestedMembers">';
+							str+='<li>';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+										str+='<span class="requestedCheckbox text-success"></span>';
+									str+='</div>';
+									str+='<div class="col-md-6">';
+										str+='<div class="media">';
+											str+='<div class="media-left">';
+												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+											//	str+='<span class="colorStatus green"></span>';
+											str+='</div>';
+											str+='<div class="media-body">';
+											if(result[i].subList[j].cadre == true){
+												str+='<p>'+result[i].subList[j].name+' - Cadre</p>';
+											}else{
+												str+='<p>'+result[i].subList[j].name+' </p>';
+											}if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
+													str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+											}else{
+													str+='<p>Contact Number: - </p>';
+											}if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
+												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
+											}else{
+												str+='<p>Designation: - </p>';
+											}if(result[i].subList[j].constituency !=null && result[i].subList[j].constituency.length>0){
+												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
+											}else{
+												str+='<p>Constituency : - </p>';
+											}
+											
+											if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
+												str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
+											}else{
+												str+='<p>Last Visit: - </p>';
+											}
+												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
+											str+='</div>';
+										str+='</div>';
+										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
+										str+='<table class="table table-bordered">';
+											str+='<tr>';
+												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
+												
+												var confirmedCount=0;
+												
+												for(var k in result[i].subList[j].statusList){
+													
+													if(result[i].subList[j].statusList[k].id==2 || result[i].subList[j].statusList[k].id ==3){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														
+													}
+													else if(result[i].subList[j].statusList[k].id==4){
+														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
+														str+='<td><h4>'+confirmedCount+'</h4><p> Confirmed </p></td>';
+														
+													}
+													else{
+														str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
+													}
+												}
+												
+											str+='</tr>';
+										str+='</table>';
+										
+											
+									str+='</div>';
+									str+='<div class="col-md-6">';
+										str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
+										str+='<table class="table table-bordered m_top10">';
+										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
+											str+='<thead>';
+										  	str+='<th>Appt Last Requested Date</th>';
+												str+='<th colspan="2">Appt Status</th>';
+												
+											str+='</thead>';
+											str+='<tbody>';
+											
+												for(var l in result[i].subList[j].subList){
+													str+='<tr>';
+													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
+													str+='<td>'+result[i].subList[j].subList[l].status+'</td>';
+													if(result[i].subList[j].subList[l].apptStatus!=null && result[i].subList[j].subList[l].apptStatus.trim().length>0){
+														str+='<td> '+result[i].subList[j].subList[l].apptStatus+'</td>';
+													}else{
+														str+='<td> - </td>';
+													}
+													
+													str+='</tr>';
+												}
+											}else{
+													str+='<thead>';
+													str+='<th>Appt Last Requested Date</th>';
+													str+='<th colspan="3">Appt Status</th>';
+													str+='</thead>';
+												
+													str+='<tr>';
+													str+='<td  colspan="2"><center>No Data Available</center></td>';
+													str+='</tr>';
+											}
+											
+											str+='</tbody>';
+										str+='</table>';
+									str+='</div>';
+								str+='</div>';
+							str+='</li>';
+						str+='</ul>';
+						}
+						if(result[i].apptpreferableDates != null){
+							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+						}else{
+							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+							str+='<p><span> - </span></p>';
+						}	
+				  str+='</div>';
+				str+='</div>';
+			}
+			str+='<button class="btn btn-success" attr_label_id="'+labelId+'" id="deleteMultipleAppointmentsId">Delete Appointments</button>';
+			str+='<div id="deleteAppointmentErrDivId"></div>';
+			str+='</div>';
+			str+='</div>';
+		
+		$(".appointmentsDeleteDivCls").html(str)  
+	}
+	
+	$(document).on("click","#deleteMultipleAppointmentsId",function(){
+		$("#deleteAppointmentErrDivId").html("");
+		var idsArr=[];
+		$(".deleteAppointmentChckCls").each(function(){
+			if($(this).prop('checked')==true){
+				idsArr.push($(this).val());
+			}
+		});
+		
+		if(idsArr != null && idsArr.length <= 0){
+			$("#deleteAppointmentErrDivId").html("<span style='color:red;'>Please Select Appointments To Delete.</span>");
+			return;
+		}
+		
+		var jsObj={
+			idsArr : idsArr,
+			labelId : $(this).attr("attr_label_id")
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'deleteAppointmentsOfLabelAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				if(result.exceptionMsg != null && result.exceptionMsg == "success" && result.resultCode != null && result.resultCode == 0){
+					$("#deleteAppointmentErrDivId").html("<span style='color:green;'>Appointments Deleted</span>");
+					setTimeout(function(){	$("#deleteAppointmentErrDivId").hide(); },2000);
+				}else{
+					$("#deleteAppointmentErrDivId").html("<span style='color:red;'>Appointments Not Deleted, Please Try Again.</span>");
+				}
+			}
+		});
+	});
 </script>
 </body>
 </html>
