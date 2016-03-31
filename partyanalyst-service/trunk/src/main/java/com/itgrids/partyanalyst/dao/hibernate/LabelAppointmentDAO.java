@@ -24,7 +24,7 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 				" model.appointmentLabel.appointmentLabelStatus.status, " +
 				" model.appointment.appointmentStatusId,model.appointment.appointmentStatus.status,count(model.appointment.appointmentStatusId),model.appointmentLabel.updatedTime " +
 				" from LabelAppointment model " +
-				" where model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " );
+				" where model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' and model.isDeleted='N' " );
 		if(labelDate != null)
 				sb.append("and date(model.appointmentLabel.updatedTime)=:labelDate ");
 		sb.append(" and model.appointmentLabel.insertedBy=:userId ");
@@ -96,7 +96,7 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,model1.userId,model1.firstName," +
 				"model.appointment.insertedTime " +
 				" from LabelAppointment model,User model1 " +
-				" where model.appointmentLabel.appointmentLabelId=:lableId and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
+				" where model.appointmentLabel.appointmentLabelId=:lableId and model.isDeleted='N' and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
 				" and model.createdBy=model1.userId ");
 		query.setParameter("lableId", lableId);
 		return query.list();
@@ -331,4 +331,21 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type){
 		return query.list();
 	} 
 	
+	public List<LabelAppointment> getAppointmentsOfLabel(List<Long> appotIds,Long labelId){
+		Query query = getSession().createQuery(" select model from LabelAppointment model where model.appointmentLabelId=:labelId " +
+				"and model.appointmentId in (:appotIds) and model.isDeleted='N' ");
+		query.setParameter("labelId", labelId);
+		query.setParameterList("appotIds", appotIds);
+		return query.list();
+	}
+	
+	public Integer updateIsDeletedStatus(List<Long> apptIds,Long labelId,Long registrationId,Date date){
+		Query query = getSession().createQuery("update LabelAppointment model set model.isDeleted='Y',model.updatedTime=:date,model.updatedBy=:registrationId " +
+				" where model.appointmentId in (:apptIds) and model.appointmentLabelId=:labelId ");
+		query.setParameter("labelId", labelId);
+		query.setParameter("date", date);
+		query.setParameter("registrationId", registrationId);
+		query.setParameterList("apptIds", apptIds);
+		return query.executeUpdate();
+	}
 }
