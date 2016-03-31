@@ -27,7 +27,7 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 				" where model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' and model.isDeleted='N' " );
 		if(labelDate != null)
 				sb.append("and date(model.appointmentLabel.updatedTime)=:labelDate ");
-		sb.append(" and model.appointmentLabel.insertedBy=:userId ");
+		sb.append(" and model.appointmentLabel.appointmentUserId=:userId ");
 		sb.append(" group by model.appointment.appointmentStatusId,model.appointmentLabel.appointmentLabelId ");
 		
 		Query query = getSession().createQuery(sb.toString());
