@@ -323,8 +323,9 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDate");
+			Long appointmentuserId=jObj.getLong("aptuserId");
 			
-			resultStatus = appointmentService.createAppointmentLeble(labelName,user.getRegistrationID(),fromDateStr,toDateStr);
+			resultStatus = appointmentService.createAppointmentLeble(labelName,user.getRegistrationID(),fromDateStr,toDateStr,appointmentuserId);
 			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppmntLblStatusList() method of AppointmentAction", e);
@@ -586,8 +587,9 @@ public String getCandidateWiseDetails(){
 		return Action.SUCCESS;
 	}
 	public String getAppointmentLabels(){
-		try {
-			idNameVOList = appointmentService.getAppointmentLabels();
+		try {			
+			jObj = new JSONObject(getTask());
+			idNameVOList = appointmentService.getAppointmentLabels(jObj.getLong("aptUserId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAppointmentLabels() method of AppointmentAction", e);
 		}
