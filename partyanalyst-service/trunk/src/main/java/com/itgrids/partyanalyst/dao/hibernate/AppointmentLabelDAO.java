@@ -47,7 +47,7 @@ public class AppointmentLabelDAO extends GenericDaoHibernate<AppointmentLabel, L
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.appointmentLabelId,model.labelName,model.appointmentLabelStatusId,model.appointmentLabelStatus.status,model.updatedTime " +
 				" from AppointmentLabel model " +
-				" where model.insertedBy=:userID and model.isDeleted='N' ");
+				" where model.appointmentUserId=:userID and model.isDeleted='N' ");
 		if(date != null)
 			sb.append(" and date(model.updatedTime=:date) ");
 		
@@ -59,8 +59,20 @@ public class AppointmentLabelDAO extends GenericDaoHibernate<AppointmentLabel, L
 			query.setParameter("date", date);
 		return query.list();
 	}
-	public List<Object[]> getAppointmentLabels(){
-		Query query = getSession().createQuery("select model.appointmentLabelId,model.labelName from AppointmentLabel model where model.appointmentLabelStatusId=1 and model.isDeleted='N'");
+	public List<Object[]> getAppointmentLabels(Long aptUserId){
+		
+		StringBuilder str = new StringBuilder();		
+			str.append(" select model.appointmentLabelId,model.labelName from AppointmentLabel model where model.appointmentLabelStatusId=1 and model.isDeleted='N' ");
+		if(aptUserId !=null && aptUserId>0){
+			str.append(" and model.appointmentUserId = :aptUserId ");
+		}
+		
+		Query query = getSession().createQuery(str.toString());		
+		
+		if(aptUserId !=null && aptUserId>0){
+			query.setParameter("aptUserId",aptUserId);
+		}
+		
 		return query.list();
 	}
 	

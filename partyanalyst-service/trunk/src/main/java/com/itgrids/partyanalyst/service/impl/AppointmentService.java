@@ -564,7 +564,7 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return appntmntUsrDtlsLst;
 	}
-	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String fromDateStr,String toDateStr){
+	public ResultStatus createAppointmentLeble(String labelName,Long insertedBy,String fromDateStr,String toDateStr,Long aptUserId){
 		DateUtilService dateUtilService = new DateUtilService();
 		ResultStatus resultStatus = new ResultStatus();
 		try{
@@ -589,6 +589,7 @@ public class AppointmentService implements IAppointmentService{
 			appointmentLabel.setUpdatedTime(insertedDate);
 			appointmentLabel.setInsertedBy(insertedBy);
 			appointmentLabel.setUpdatedBy(insertedBy);
+			appointmentLabel.setAppointmentUserId(aptUserId);
 			appointmentLabelDAO.save(appointmentLabel);
 			resultStatus.setResultCode(1);
 			resultStatus.setMessage("Appointment Label created...");
@@ -2057,10 +2058,10 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return appointmentSlotsVO;
 	}
-	public List<IdNameVO> getAppointmentLabels(){
+	public List<IdNameVO> getAppointmentLabels(Long aptUserId){
 		List<IdNameVO> labelList = new ArrayList<IdNameVO>();
 		try{
-			List<Object[]> list=appointmentLabelDAO.getAppointmentLabels();
+			List<Object[]> list=appointmentLabelDAO.getAppointmentLabels(aptUserId);
 			labelList = setDataToVO(list);
 		}catch(Exception e){
 			LOG.error("Exception raised at getTimeSlotsDetails() method of AppointmentService",e);

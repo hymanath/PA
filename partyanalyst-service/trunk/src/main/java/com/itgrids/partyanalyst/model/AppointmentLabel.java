@@ -40,6 +40,9 @@ public class AppointmentLabel extends BaseModel {
 	private AppointmentUser updateUser;
 	private AppointmentLabelStatus appointmentLabelStatus;
 	
+	private Long appointmentUserId;
+	private AppointmentUser appointmentUser;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "appointment_label_id", unique = true, nullable = false)
@@ -153,6 +156,25 @@ public class AppointmentLabel extends BaseModel {
 	public void setDeletedRemarks(String deletedRemarks) {
 		this.deletedRemarks = deletedRemarks;
 	}
+	
+	@Column(name="appointment_user_id")
+	public Long getAppointmentUserId() {
+		return appointmentUserId;
+	}
+	public void setAppointmentUserId(Long appointmentUserId) {
+		this.appointmentUserId = appointmentUserId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="appointment_user_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AppointmentUser getAppointmentUser() {
+		return appointmentUser;
+	}
+	public void setAppointmentUser(AppointmentUser appointmentUser) {
+		this.appointmentUser = appointmentUser;
+	}
+	
 	
 	
 }
