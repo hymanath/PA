@@ -4154,9 +4154,6 @@ function buildTimeSlotsTable(result){
 			toTime = result[i].toDateStr.substr(11,5);
 			secondHour = toTime.substr(0,2);
 			secondMin = toTime.substr(3,2);
-			/* if(toTime>12){
-				to
-			} */
 			if(secondHour>12){
 				secondHour = secondHour-12;
 				secondMean = "PM";
