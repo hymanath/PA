@@ -13,6 +13,7 @@ public class AppointmentCandidateVO implements Serializable{
     private String  candidateType;
     private String  memberShipId;
     private String voterCardNo;
+    private Long designationId=0l;
     
 	public String getName() {
 		return name;
@@ -68,6 +69,12 @@ public class AppointmentCandidateVO implements Serializable{
 	}
 	public void setVoterCardNo(String voterCardNo) {
 		this.voterCardNo = voterCardNo;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
 	}
        
     
