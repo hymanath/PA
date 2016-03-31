@@ -2433,6 +2433,31 @@ public class AppointmentService implements IAppointmentService{
 			}
 			return labelList;
 		}
+		public List<IdNameVO> getAppointmentCreatedUsers(){
+			List<IdNameVO> idNameVoList = new ArrayList<IdNameVO>();
+			try{
+				List<Object[]> list=AppointmentDAO.getAppointmentCreatedUsers();
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params :list)
+						
+					{
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)params[0]);
+					String fname = params[1] != null ? params[1].toString() : "";
+					String lname = params[2] != null ? params[2].toString() : "";
+					vo.setName(fname +""+lname);
+					idNameVoList.add(vo);
+					}
+				}
+				//labelList = setDataToVO(list);
+			}catch(Exception e){
+				
+				LOG.error("Exception raised at getAppointmentCreatedUsers() method of AppointmentService",e);
+			}
+			return idNameVoList;
+		}
+		
 		
 		public ResultStatus updateAppointmentsLabelStatus(Long labelId,Long labelstatusId) {
 			   

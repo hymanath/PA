@@ -51,5 +51,6 @@ public interface IAppointmentService {
 	public List<AppointmentDetailsVO> getViewAppointmentsOfALable(Long labelId);
 	public ResultStatus updateAppointmentStatus(AppointmentUpdateStatusVO inputVO,Long userId);
 	public ResultStatus sendSmsForAppointment(AppointmentUpdateStatusVO inputVO);
+	public List<IdNameVO> getAppointmentCreatedUsers();
 	public ResultStatus updateAllAppointmentStatusByType(AppointmentUpdateStatusVO statusinputVo,AppointmentInputVO inputVo,Long userId);
 }
