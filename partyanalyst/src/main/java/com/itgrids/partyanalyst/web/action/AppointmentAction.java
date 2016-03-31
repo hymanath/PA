@@ -549,6 +549,16 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	public String  getAppointmentCreatedUsers(){
+		try{
+			
+			idNameVOList = appointmentService.getAppointmentCreatedUsers();
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentCreatedUsers", e);
+		}
+		return Action.SUCCESS;
+	}
 	public String getAppointmentSearchDetails()
 	{
 		try{
