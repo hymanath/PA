@@ -387,6 +387,19 @@ body
 	list-style:none;
 	padding:2px;
 }
+#confirmAppointmentBlockDropId .manageAppViewPanelClass
+{
+	box-shadow:none;
+}
+#confirmAppointmentsDivId .hidelabel
+{
+	display:none;
+}
+.hidelabel
+{
+	cursor:pointer;
+	padding:5px 4px
+}
 .manageAppViewPanelClass
 {
 	border-radius:0px;
@@ -516,7 +529,7 @@ body
 }
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default
 {
-  border:0px !important;
+  border:0px !important;   
   color:#333 !important;
   background:none !important;
 }
@@ -527,4 +540,8 @@ body
 .ui-datepicker-calendar thead th
 {
   border-bottom:1px solid #ddd !important
+}
+.pad_5
+{
+	padding:5px;
 }
