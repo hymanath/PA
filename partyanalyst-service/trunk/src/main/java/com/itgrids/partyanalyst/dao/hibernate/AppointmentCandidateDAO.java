@@ -154,7 +154,7 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		
 		sb.append(" select model.appointmentCandidateId,model.name,model.tdpCadreId,model.mobileNo," +
 				"          model.candidateDesignation.designation,constituency.name," +
-				"          model.membershipId,model.voterIdCardNo " +
+				"          model.membershipId,model.voterIdCardNo,model.designationId " +
 				"  from AppointmentCandidate model  left join model.userAddress.constituency constituency");
 		if(searchType.equalsIgnoreCase("mobileno")){
 			
