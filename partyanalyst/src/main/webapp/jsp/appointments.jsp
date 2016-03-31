@@ -1019,9 +1019,13 @@ $(document).on("click",".closeIcon",function(){
 $(".dropkickClass").dropkick();
 	//swadin functions
 	$(document).ready(function(){
-		
-		
+		//getAppointmentLabelsAction						
+			setTimeout(function(){ 
+				getAppointmentLabels();	
+			}, 1000);
+			
 	});
+	getAppointmentUsersDtls();
 	getCandidateDesignation();
 	function getCandidateDesignation(){
 		$.ajax({
@@ -1344,11 +1348,12 @@ $(".dropkickClass").dropkick();
 			fromDate = dateStr.split("-")[0];
 			toDate = dateStr.split("-")[1];
 		}
-	
+		var aptuserId = $("#appointmentUserSelectBoxId").val();
 		var jobj = {
 			labelName	:	$("#labelNameId").val(),
 			fromDate	:	fromDate,
-			toDate		:	toDate		
+			toDate		:	toDate,
+			aptuserId	:	aptuserId
 		}
 		$.ajax({
 			  type     : "POST",
@@ -1363,8 +1368,7 @@ $(".dropkickClass").dropkick();
 					$("#createLabelModelId").modal('hide');
 				}
 		  });     
-	});
-		 getAppointmentUsersDtls();
+	});		 
 		function getAppointmentUsersDtls(){
 		$.ajax({
 			  type:'GET',
@@ -3249,15 +3253,16 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	}
 </script>
 <script>
-
-	//getAppointmentLabelsAction
-	 getAppointmentLabels();
 	function getAppointmentLabels(){
+		var aptUserId = $("#appointmentUserSelectBoxId").val();
+		var jsObj = {
+			aptUserId:aptUserId
+		}
 		$.ajax({
 		type : 'GET',
 		url : 'getAppointmentLabelsAction.action',
 		dataType : 'json',
-		data : {}  
+		data : {task:JSON.stringify(jsObj)}  
 		}).done(function(result){ 
 		if(result!=null && result!=0){
 			buildAppointmentLabel(result);
