@@ -33,7 +33,13 @@ public class AppointmentDetailsVO implements Serializable{
     private String toDateStr;
     
     private String userName;
-	
+    
+    private String minDate;
+    private String maxDate;
+    private Long dateTypeId;
+    private String dateType;
+	private Long   minDateCheck=0l;
+    
 	public String getName() {
 		return name;
 	}
@@ -166,6 +172,36 @@ public class AppointmentDetailsVO implements Serializable{
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-    	
+	public String getMinDate() {
+		return minDate;
+	}
+	public void setMinDate(String minDate) {
+		this.minDate = minDate;
+	}
+	public String getMaxDate() {
+		return maxDate;
+	}
+	public void setMaxDate(String maxDate) {
+		this.maxDate = maxDate;
+	}
+	public Long getDateTypeId() {
+		return dateTypeId;
+	}
+	public void setDateTypeId(Long dateTypeId) {
+		this.dateTypeId = dateTypeId;
+	}
+	public String getDateType() {
+		return dateType;
+	}
+	public void setDateType(String dateType) {
+		this.dateType = dateType;
+	}
+	public Long getMinDateCheck() {
+		return minDateCheck;
+	}
+	public void setMinDateCheck(Long minDateCheck) {
+		this.minDateCheck = minDateCheck;
+	}
+    
 	
 }
