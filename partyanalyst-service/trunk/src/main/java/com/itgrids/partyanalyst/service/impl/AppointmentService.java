@@ -1248,12 +1248,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		}
 		return addressVO;
 	}
-     public List<AppointmentBasicInfoVO> getAllAppointmentDetails(int startIndex,int maxIndex){
+     public List<AppointmentBasicInfoVO> getAllAppointmentDetails(int startIndex,int maxIndex,Long aptUserId){
     	 List<AppointmentBasicInfoVO> appointmentBasicInfoVOs = new ArrayList<AppointmentBasicInfoVO>(0);
     	 AppointmentBasicInfoVO appointmentBasicInfoVO = null;
     	 try{
  			LOG.info("Entered into getAllAppointmentDetails() method of AppointmentService");
- 			List<Object[]> list = appointmentCandidateRelationDAO.getAllAppointmentDetails(startIndex,maxIndex);
+ 			List<Object[]> list = appointmentCandidateRelationDAO.getAllAppointmentDetails(startIndex,maxIndex,aptUserId);
  			if(list!=null && list.size()>0){
  				for(Object[] obj:list){
  					appointmentBasicInfoVO = new AppointmentBasicInfoVO();

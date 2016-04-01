@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 
 public interface IAppointmentCandidateRelationDAO extends GenericDao<AppointmentCandidateRelation, Long> {
-	public List<Object[]> getAllAppointmentDetails(int startIndex,int maxIndex);
+	public List<Object[]> getAllAppointmentDetails(int startIndex,int maxIndex,Long aptUserId);
 	public List<Object[]> countAppointmentDetails();
 	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate);
 	public List<Object[]> getAppointmentRelatedCandidates(List<Long> appointmentIds);
