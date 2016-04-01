@@ -517,6 +517,18 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	
 	return Action.SUCCESS;
 	}
+	public String getAppntmntAdvancedSearchDetails(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			candidatesList =appointmentService.advancedSearchApptRequestedMembers(jObj.getString("searchType"),jObj.getString("searchValue"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at advancedSearchApptRequestedMembers() method of AppointmentAction", e);
+		}
+	
+	return Action.SUCCESS;
+	}
+	
 public String getCandidateWiseDetails(){
 		
 		try {
