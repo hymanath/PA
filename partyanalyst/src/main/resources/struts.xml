@@ -11767,5 +11767,10 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	<action name="getAppntmntAdvancedSearchDetailsAction" class="appointmentAction" method="getAppntmntAdvancedSearchDetails">
+		<result type="json" name="success">
+			<param name="root">candidatesList</param>
+		</result>
+	</action>
 </package>
 </struts>      

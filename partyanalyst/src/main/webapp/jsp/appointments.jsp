@@ -215,7 +215,7 @@
                                                 	<li></li>
                                                 </ul>
                                             </div>-->
-											<div class="col-md-2">
+											<div class="col-md-2 searchCls">
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="searchTypeId">
 													<option value="0">Select Search Type</option>
@@ -224,14 +224,56 @@
 													<option value="votercardno">VoterIdCardNo</option>
 												</select>
 											</div>
-                                            <div class="col-md-4 pad_0">
+                                            <div class="col-md-4 pad_0 searchCls">
                                             	<label>Search By Membership No/ Phone No/ Voter ID<span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="searchValueId">
+                                                <input type="text" class="form-control clearCls" id="searchValueId">
 												<span id="errDigitsId" class="full-right" style="color:red;"></span>
                                             </div>
-                                            <div class="col-md-2">
-                                            	<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
+											
+											<div class="col-md-2 advanceSearchCls">
+												<label>Search Type</label>
+                                                <select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();">
+													<option value="0">Select Search Type</option>
+													<option value="1">Name</option>
+													<option value="2">Public Representative</option>
+												</select>
+											</div>
+                                            <div class="col-md-4 pad_0 advanceSearchCls">
+                                            	<label class="advanceNameCls">Search By Name<span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
+												<label class="advancePRCls">Search Designation</label>
+												 <select class="form-control advancePRCls"  id="advanceDesignationId">
+													<option value="0">Select Designation</option>
+													<option value="1">MP</option>
+													<option value="2">MLA</option>
+													<option value="6">2014 AP STATE MINISTERS</option>
+													<option value="7">2014 CENTRAL MINISTERS</option>
+													<option value="8">EX-MLA</option>
+													<option value="9">EX-MP</option>
+													<option value="10">2014 ASSEMBLY CONTESTED</option>
+													<option value="11">2014 PARLIAMENT CONTESTED</option>
+													<option value="12">MLC</option>
+													<option value="16">MP (RAJYA SABHA)</option>
+													<option value="23">EX-STATE MINISTER</option>
+												</select>
+												<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
                                             </div>
+                                            <div class="col-md-3 m_top20">
+												    <div class="onoffswitch">
+														<input type="checkbox" value="1" name="searchTypeRadio" class="onoffswitch-checkbox searchTypeRadioCls" id="myonoffswitch" checked>
+														<label class="onoffswitch-label" for="myonoffswitch">
+															<span class="onoffswitch-inner"></span>
+															<span class="onoffswitch-switch"></span>
+														</label>
+													</div>
+                                            	<!--<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
+												<button class="btn btn-block btn-success m_top25 getDetailsByAdvancedSearch">Advanced Search</button>-->
+												<!--<input type="radio" value="1" name="searchTypeRadio" class="searchTypeRadioCls" checked/>SEARCH MEMBER
+												<input type="radio" value="2" name="searchTypeRadio" class="searchTypeRadioCls"/>Advanced Search-->
+                                            </div>
+											<div class="col-md-2">
+												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();">Submit</button>
+											</div>
 												<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
                                         </div>
                                         <div class="row m_top25">
@@ -1751,9 +1793,24 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	  $("#multiDate").val("");
   });
   
-  
-	$(document).on("click",".getDetailsBySrch",function(){
-		
+  function showHideSearch(type)
+  {
+	  if(type == "search")
+	  {
+		  $(".searchCls").show();
+		  $(".advanceSearchCls").hide();
+	  }
+	  else
+	  {
+		 $(".advanceSearchCls").show();  
+		  $(".searchCls").hide();
+	  }
+		 
+	  
+  }
+ 
+	function getDetailsBySrch()
+	{
 		//clearing the Data Div
 		$("#apptmemberDetailsDiv").html("");
 		//clearing err Div
@@ -1797,7 +1854,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				//$(".addattrid").hide();
 			}
 		
-	}); 
+	}
+	
+
 	function getAppntmntSearchDetails(){
 	  
 	  $("#searchMemberAjax").css("display","block");
@@ -4268,6 +4327,20 @@ function buildTimeSlotsTable(result){
 		$(".appointmentsDeleteDivCls").html(str)  
 	}
 	
+    function showHideBySearchType()
+	{
+			var selectVal = $("#advanceSearchTypeId").val();
+			if(selectVal == 2)
+			{
+				$(".advancePRCls").show();
+				$(".advanceNameCls").hide();
+			}
+			else
+			{
+				$(".advanceNameCls").show();
+				$(".advancePRCls").hide();
+			}
+	}
 	$(document).on("click","#deleteMultipleAppointmentsId",function(){
 		$("#deleteAppointmentErrDivId").html("");
 		var idsArr=[];
@@ -4328,6 +4401,74 @@ function getAppointmentCreatedUsers(){
 		var select = new Dropkick("#appointmentcreatedBy");
 		select.refresh();
 	}
+	function getAdvancedSearchDetails()
+	{
+		var searchType;
+		var searchValue;
+		var advanceSearchType = $("#advanceSearchTypeId").val();
+		if(advanceSearchType == 1)
+		{
+			 searchType = "name";
+			 searchValue = $("#advanceSearchValueId").val();
+			 
+		}
+		
+		else if(advanceSearchType == 2)
+		{
+			 searchType = "publicRepresentative";
+			 searchValue = $("#advanceDesignationId").val();
+		}
+		var jsObj={
+			searchType:searchType,
+			searchValue:searchValue
+		  }
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAppntmntAdvancedSearchDetailsAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				// $("#searchMemberAjax").css("display","none");
+				if(result !=null && result.length>0){
+				buildapptmemberDetails(result);
+				
+				}else{
+					$("#apptmemberDetailsDiv").html("<center><h4>No Data Available</h4></center>");
+				}
+		  }); 
+	}
+		$(document).on("click",".searchTypeRadioCls",function(){
+			searchTypeRadioCls();
+		})
+	function searchTypeRadioCls()
+	{
+		$(".clearCls").val("");
+		var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
+		if(selected == 1)
+		{
+			showHideSearch("search");
+		}
+		else
+		{
+			showHideSearch("advanceSearch");
+			showHideBySearchType();
+		}
+	}
+	function handleBySearchType()
+	{
+		var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
+		if(selected == 1)
+		{
+			getDetailsBySrch();
+		}
+		else
+		{
+			getAdvancedSearchDetails();
+		}
+	}
+</script>
+<script>
+searchTypeRadioCls();
 </script>
 </body>
 </html>

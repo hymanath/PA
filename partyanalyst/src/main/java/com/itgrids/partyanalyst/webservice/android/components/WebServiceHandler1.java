@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.webservice.android.components;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -39,18 +40,15 @@ public class WebServiceHandler1 {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void loginFieldDataUser (UserLoginVO inputs)
 	{
-		
 		Map<String,String> userDetails= new HashMap<String, String>();
 		userDetails.put("","");
 		try{
 			
-		
 		}
 		catch(Exception e)
 		{
 			
 		}
-		
 	}
 	
 	
