@@ -552,9 +552,9 @@ public String getCandidateWiseDetails(){
 	}
 	
 	public String getStatusWiseCountsOfAppointments(){
-		try{
-			
-			labelStatusVO = appointmentService.getStatusWiseCountsOfAppointments();
+		try{			
+			jObj = new JSONObject(getTask());			
+			labelStatusVO = appointmentService.getStatusWiseCountsOfAppointments(jObj.getLong("aptUserId"));
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);

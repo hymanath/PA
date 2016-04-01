@@ -125,7 +125,7 @@
 											<td>
 												<h4 class="panel-title">TODAY APPOINTMENTS</h4>
 												<table class="table table-condensed tableAppointment" id="todayAppointmentsId">
-													
+													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
 											</td>
 											<td>
@@ -133,6 +133,7 @@
 													<tr>
 														<td>
 															<h4>TOTAL APPOINTMENTS</h4>
+																<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="totalAptLoadingId"></center></div>
 															<ul class="columnChartUl" id="totalAppointmentsId">
 																
 															</ul>
@@ -549,29 +550,34 @@
 										</div>
 										
                                             <div class="col-md-3">
-                                            	<label>Designation<span style='color:red'> &nbsp * </span><span style='color:red' id="appDesigErrId"></span></label>
+                                            	<label>Designation<span style='color:red'> &nbsp * </span></label>
                                                 <select class="designationListCls errClearCls" id="manageAppDesigId"></select>
+												<span style='color:red' id="appDesigErrId"></span>
                                             </div>
 											
                                             <div class="col-md-3">
-                                            	<label>Appointment Priority Type<span style='color:red'> &nbsp * </span><span style='color:red' id="appPrrtyErrTypId"></span></label>
+                                            	<label>Appointment Priority Type<span style='color:red'> &nbsp * </span></label>
                                                 <select class="manageAppTypeCls errClearCls" id="manageAppTypeId"></select>
+												<span style='color:red' id="appPrrtyErrTypId"></span>
                                             </div>
                                             <div class="col-md-3 m_top10">
-                                            	<label>Appointment Status<span style='color:red'> &nbsp * </span><span style='color:red' id="appStatusErrId"></span></label>
+                                            	<label>Appointment Status<span style='color:red'> &nbsp * </span></label>
                                                 <select class="manageAppStatusCls errClearCls" id="manageAppStatusId"></select>
+												<span style='color:red' id="appStatusErrId"></span>
                                             </div>
                                           <div class="col-md-3 m_top10">
-                                            	<label>Select District<span style='color:red' >&nbsp *</span><span style='color:red' id="appDistErrId"></span></label>
+                                            	<label>Select District<span style='color:red' >&nbsp *</label>
                                                 <select id="manageAppDistId" class="dropkickClass">
                                                 	<option value="0">Select District</option>
                                                 </select>
+												</span><span style='color:red' id="appDistErrId"></span>
                                           </div>
                                           <div class="col-md-3 m_top10">
-                                            	<label>Select Constituency<span style='color:red'>&nbsp *</span><span style='color:red' id="appConstErrId"></span></label>
+                                            	<label>Select Constituency<span style='color:red'>&nbsp *</span></label>
                                                 <select id="manageAppConstId" class="dropkickClass">
                                                 	<option value="0">Constituency Name</option>
                                                 </select>
+												<span style='color:red' id="appConstErrId"></span>
                                           </div>
                                           <!--<div class="col-md-12 m_top10">
                                             	<label class="checkbox-inline">
@@ -637,7 +643,7 @@
 											<div class="col-md-12">
 												<div class="row">
 													<div class="col-md-12">
-														<div id="timeSlotsWarnId"></div>
+														<div id="timeSlotsWarnId" class="validateClr"></div>
 														<div class="pluginTable" id="pluginTableId">
 															<ul class="row">
 																<li class="col-md-2 col-xs-4 col-sm-2">
@@ -817,14 +823,27 @@ function buildJSONForAppStatus(result){
 	buildChartForAppStatus();
 }
 
-getTotalAppointmentStatus();
+//getTotalAppointmentStatus();
 function getTotalAppointmentStatus(){
+	
+	$("#totalAppointmentsId").html('');
+	$("#todayAppointmentsId").html('');
+	
+	$("#todayAptLoadingId").show();
+	$("#totalAptLoadingId").show();
+	
+	var aptUserId = $("#appointmentUserSelectBoxId").val();
+		var jsObj = {
+			aptUserId:aptUserId
+		}
 	$.ajax({
 		type : 'GET',
 		url : 'getStatusWiseCountsOfAppointmentsAction.action',
 		dataType : 'json',
-		data : {}  
+		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
+	$("#todayAptLoadingId").hide();
+	$("#totalAptLoadingId").hide();
 		if(result != null){
 			buildTotalAppointmentStatusForToday(result);
 			buildJSONForAppStatus(result);
@@ -834,15 +853,23 @@ function getTotalAppointmentStatus(){
 	});     
 }
 function buildTotalAppointmentStatus(result){
-	for(var i in result.overAllStatusList){
-	$("#totalAppointmentsId").append('<li style="color:'+color[i%6]+'"><span class="columnChart" style="background:'+color[i%6]+'"></span>'+result.overAllStatusList[i].status+' - '+result.overAllStatusList[i].totalCount+'</li>');
+	var str='';
+	for(var i in result.overAllStatusList){	
+	
+		str+='<li style="color:'+color[i%6]+'"><span class="columnChart" style="background:'+color[i%6]+'"></span>'+result.overAllStatusList[i].status+' - '+result.overAllStatusList[i].totalCount+'</li>'		
 	}
+	$("#totalAppointmentsId").html(str);
 }
 
 function buildTotalAppointmentStatusForToday(result){
-	$.each(result.statusList,function(index,value){
-	$("#todayAppointmentsId").append('<tr style="color:'+color[index%6]+'"> <td>'+value.status+'</td><td>'+value.totalCount+'</td> </tr>');
+	var str='';
+	$.each(result.statusList,function(index,value){		
+		str+='<tr style="color:'+color[index%6]+'">';
+			str+='<td>'+value.status+'</td>';
+			str+='<td>'+value.totalCount+'</td>';
+		str+='</tr>';	
 	});
+	$("#todayAppointmentsId").html(str);
 }
 	$(document).on("click",".appointmentSettings",function(e){
 		$(".updateAppointment").hide()
@@ -1059,16 +1086,23 @@ $(document).on("click",".closeIcon",function(){
 	$("#"+Uncheckpop).attr('checked', false);
 });
 $(".dropkickClass").dropkick();
-	//swadin functions
 	$(document).ready(function(){
 		//getAppointmentLabelsAction						
 			setTimeout(function(){ 
-				getAppointmentLabels();	
+			/* balu */
+				getAppointmentLabels();					
+				getTotalAppointmentStatus();
+				getCandidateDesignation();
+				getDistricts();
+				getAppointmentCreatedUsers();
+				getAppointmentStatusList();
+				getAppointmentPriority();
+				
 			}, 1000);
 			
 	});
 	getAppointmentUsersDtls();
-	getCandidateDesignation();
+	//getCandidateDesignation();
 	function getCandidateDesignation(){
 		$.ajax({
 			type : 'GET',
@@ -1107,8 +1141,9 @@ $(".dropkickClass").dropkick();
 			
 	} 
 	
-	$(document).ready(function(){
-		$.ajax({
+
+	function getAppointmentStatusList(){
+			$.ajax({
 			type : 'GET',
 			url : 'getAppointmentStatusList.action',
 			dataType : 'json',
@@ -1119,7 +1154,9 @@ $(".dropkickClass").dropkick();
 			}
 			
 		}); 
-	});
+	}
+		
+
 	function buildAppointmentStatusList(result){
 			$("#manageAppStatusId  option").remove();
 			$("#manageAppStatusId").append('<option value="0">Select Appointment Status</option>');
@@ -1130,7 +1167,8 @@ $(".dropkickClass").dropkick();
 			var select = new Dropkick("#manageAppStatusId");
 			select.refresh();
 	}
-	$(document).ready(function(){
+	function getAppointmentPriority(){
+		
 		$.ajax({
 			type : 'GET',
 			url : 'getAppointmentPriority.action',
@@ -1140,10 +1178,9 @@ $(".dropkickClass").dropkick();
 			if(result != null && result.length > 0){
 				buildAppointmentPriorityList(result);
 				
-			}
-			
+			}				
 		});
-	});
+	}
 	function buildAppointmentPriorityList(result){
 		$("#manageAppTypeId  option").remove();
 		$("#manageAppTypeId").append('<option value="0">Select Priority</option>');
@@ -1241,7 +1278,7 @@ $(".dropkickClass").dropkick();
 		}
 	}
 	
-	getDistricts();
+	//getDistricts();
 	//var distArr=[];
 	function getDistricts(){
 		$.ajax({
@@ -1820,7 +1857,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		var errStr=false;
 		//Validations
 		if($("#searchTypeId").val()==0){
-			 $("#errDigitsId").html("Please Select Mobile Number Or VoterCardNo or MemberShipId");
+			 $("#errDigitsId").html("Please Select Search Type");
 			 errStr=true;
 		}
 		else if($("#searchTypeId").val()=="mobileno"){			
@@ -1829,20 +1866,20 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					  errStr=true;
 				 }	
 				else if(searchValue.length != 10 || isNaN(searchValue)){		
-					$("#errDigitsId").html("Please enter Valid Mobile Number");
+					$("#errDigitsId").html("Please Enter Valid Mobile Number");
 					 errStr=true;
 				}
 		}else if($("#searchTypeId").val() == "mebershipno"){
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please enter MembershipNo ");
+					  $("#errDigitsId").html("Please Enter MembershipNo ");
 					  errStr=true;
 			}else if(searchValue.length !=8 || isNaN(searchValue)){
-				  $("#errDigitsId").html("Please enter valid Membership ");
+				  $("#errDigitsId").html("Please Enter valid Membership ");
 					  errStr=true;
 			}
 		}else if($("#searchTypeId").val() == "votercardno"){
 			if(searchValue ==null || searchValue.length ==0 || searchValue == undefined || searchValue ==""){
-					  $("#errDigitsId").html("Please enter Votercardno ");
+					  $("#errDigitsId").html("Please Enter Votercardno ");
 					  errStr=true;
 			}
 		}
@@ -3342,6 +3379,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 </script>
 <script>
 	function getAppointmentLabels(){
+		
 		var aptUserId = $("#appointmentUserSelectBoxId").val();
 		var jsObj = {
 			aptUserId:aptUserId
@@ -3354,16 +3392,21 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		}).done(function(result){ 
 		if(result!=null && result!=0){
 			buildAppointmentLabel(result);
+		}else{
+			$("#appointmentLabelToGetSlotsId").html("<option value='0'>Select Label</option>");
+			var select = new Dropkick("#appointmentLabelToGetSlotsId");
+			select.refresh();
 		}
 		
 	});     
 	}
 	function buildAppointmentLabel(result){
-		$("#appointmentLabelToGetSlotsId  option").remove();
-			$("#appointmentLabelToGetSlotsId").append('<option value="0">Select Label</option>');
+		var str='';
+			str+='<option value="0">Select Label</option>';
 			for(var i in result){
-				$("#appointmentLabelToGetSlotsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				str+='<option value='+result[i].id+'>'+result[i].name+'</option>';
 			}
+			$("#appointmentLabelToGetSlotsId").html(str);
 			$("#appointmentLabelToGetSlotsId").dropkick();
 			var select = new Dropkick("#appointmentLabelToGetSlotsId");
 			select.refresh();
@@ -3402,7 +3445,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		}else{
 			$("#pluginTableId").hide();
 			$("#timeSlotsWarnId").show();
-			$("#timeSlotsWarnId").css("color","green").html("No slot is available");
 		}
 		});
 		var user = $("#appointmentUserSelectBoxId").text();
@@ -4116,6 +4158,7 @@ function buildTimeSlotsTable(result){
 	$(document).on("click",".createAppReqCls",function(){
 		clearAllValidationCls();
 		$("#errDigitsId").html('');
+		$("#searchValueId").val('');
 		$("#searchTypeId").val(0);
 		$("#createAppTypeListId").val(0);
 		
@@ -4376,7 +4419,7 @@ function buildTimeSlotsTable(result){
 			}
 		});
 	});
-	getAppointmentCreatedUsers();
+	//getAppointmentCreatedUsers();
 function getAppointmentCreatedUsers(){
 		$.ajax({
 			type : 'GET',
@@ -4401,6 +4444,7 @@ function getAppointmentCreatedUsers(){
 		var select = new Dropkick("#appointmentcreatedBy");
 		select.refresh();
 	}
+	
 	function getAdvancedSearchDetails()
 	{
 		var searchType;
@@ -4466,9 +4510,12 @@ function getAppointmentCreatedUsers(){
 			getAdvancedSearchDetails();
 		}
 	}
-</script>
-<script>
-searchTypeRadioCls();
+	
+	$( "#appointmentUserSelectBoxId" ).change(function() {
+		getAppointmentLabels();					
+		getTotalAppointmentStatus();
+	});
+	
 </script>
 </body>
 </html>
