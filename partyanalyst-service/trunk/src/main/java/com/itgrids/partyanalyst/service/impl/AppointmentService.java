@@ -1350,10 +1350,24 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				if(apptDateslist!=null && apptDateslist.size()>0){
 					for(Object[] obj : apptDateslist){
 						AppointmentDetailsVO   appointmentVO = appointmentsMap.get((Long)obj[0]);
-						if(appointmentVO.getApptpreferableDates()==null){
-							appointmentVO.setApptpreferableDates(obj[1]!=null?obj[1].toString():"");
+						appointmentVO.setDateTypeId((Long)obj[2]);
+						appointmentVO.setDateType(obj[3].toString());
+						if((Long)obj[2]==1l){
+							if(appointmentVO.getApptpreferableDates()==null){
+								appointmentVO.setApptpreferableDates(obj[1]!=null?obj[1].toString():"");
+							}else{
+								appointmentVO.setApptpreferableDates(appointmentVO.getApptpreferableDates() + " , " + (obj[1]!=null?obj[1].toString():"") );
+							}
+							
 						}else{
-							appointmentVO.setApptpreferableDates(appointmentVO.getApptpreferableDates() + " , " + (obj[1]!=null?obj[1].toString():"") );
+							if(appointmentVO.getMinDateCheck() == 0l){
+								appointmentVO.setMinDate(obj[1]!=null?obj[1].toString():"");
+								appointmentVO.setMaxDate(obj[1]!=null?obj[1].toString():"");
+							}else{
+								appointmentVO.setMaxDate(obj[1]!=null?obj[1].toString():"");
+							}
+							appointmentVO.setMinDateCheck(appointmentVO.getMinDateCheck()+1l);
+							
 						}
 					}
 				}
@@ -2309,10 +2323,24 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				if(apptDateslist!=null && apptDateslist.size()>0){
 					for(Object[] obj : apptDateslist){
 						AppointmentDetailsVO   appointmentVO = appointmentsMap.get((Long)obj[0]);
-						if(appointmentVO.getApptpreferableDates()==null){
-							appointmentVO.setApptpreferableDates(obj[1]!=null?obj[1].toString():"");
+						appointmentVO.setDateTypeId((Long)obj[2]);
+						appointmentVO.setDateType(obj[3].toString());
+						if((Long)obj[2]==1l){
+							if(appointmentVO.getApptpreferableDates()==null){
+								appointmentVO.setApptpreferableDates(obj[1]!=null?obj[1].toString():"");
+							}else{
+								appointmentVO.setApptpreferableDates(appointmentVO.getApptpreferableDates() + " , " + (obj[1]!=null?obj[1].toString():"") );
+							}
+							
 						}else{
-							appointmentVO.setApptpreferableDates(appointmentVO.getApptpreferableDates() + " , " + (obj[1]!=null?obj[1].toString():"") );
+							if(appointmentVO.getMinDateCheck() == 0l){
+								appointmentVO.setMinDate(obj[1]!=null?obj[1].toString():"");
+								appointmentVO.setMaxDate(obj[1]!=null?obj[1].toString():"");
+							}else{
+								appointmentVO.setMaxDate(obj[1]!=null?obj[1].toString():"");
+							}
+							appointmentVO.setMinDateCheck(appointmentVO.getMinDateCheck()+1l);
+							
 						}
 					}
 				}
