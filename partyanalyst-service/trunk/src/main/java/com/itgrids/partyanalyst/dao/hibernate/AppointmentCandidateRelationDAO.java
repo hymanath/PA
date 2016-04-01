@@ -16,10 +16,12 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 	public AppointmentCandidateRelationDAO(){
 		super(AppointmentCandidateRelation.class);
 	}
-	public List<Object[]> getAllAppointmentDetails(int startIndex,int maxIndex){
-		Query query = getSession().createQuery("select model.appointmentCandidate.name, model.appointmentCandidate.mobileNo,model.appointmentCandidate.updatedTime,model.appointment.appointmentUniqueId,model.appointmentCandidate.candidateDesignation.designation from AppointmentCandidateRelation model where model.appointment.isDeleted='N'");
+	public List<Object[]> getAllAppointmentDetails(int startIndex,int maxIndex,Long aptUserId){
+		Query query = getSession().createQuery("select model.appointmentCandidate.name, model.appointmentCandidate.mobileNo,model.appointmentCandidate.updatedTime,model.appointment.appointmentUniqueId,model.appointmentCandidate.candidateDesignation.designation from AppointmentCandidateRelation model where model.appointment.isDeleted='N'" +
+				" and model.appointment.appointmentUserId = :aptUserId");
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
+		query.setParameter("aptUserId", aptUserId);
 		return query.list();
 	}
 	public List<Object[]> countAppointmentDetails(){
