@@ -200,7 +200,7 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		return query.list();
 	}
 	
-public List<Object[]> getLabelAppointmentsForFixedSatus(Date toDayDate,String searchType,String type){
+public List<Object[]> getLabelAppointmentsForFixedSatus(Date toDayDate,String searchType,String type,Long aptUserId){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -227,6 +227,10 @@ public List<Object[]> getLabelAppointmentsForFixedSatus(Date toDayDate,String se
 				}	
 			}
 			
+		}
+		
+		if(aptUserId !=null && aptUserId>0){
+			str.append(" and model.appointment.appointmentUserId =:aptUserId ");
 		}
 		
 		
@@ -260,11 +264,14 @@ public List<Object[]> getLabelAppointmentsForFixedSatus(Date toDayDate,String se
 		if(toDayDate !=null){
 			query.setDate("toDayDate", toDayDate);
 		}
+		if(aptUserId !=null && aptUserId>0){
+			query.setParameter("aptUserId",aptUserId);
+		}
 		
 		return query.list();
 	}
 
-public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type){
+public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type,Long aptUserId){
 	
 	/*select al.appointment_label_id,a.appointment_status_id,count(distinct a.appointment_id) 
 	from label_appointment la,appointment_label al,appointment a
@@ -290,6 +297,10 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type){
 			}
 	}
 	
+	if(aptUserId !=null && aptUserId>0){
+		str.append(" and model.appointment.appointmentUserId =:aptUserId ");
+	}
+	
 	str.append(" and model.appointment.appointmentStatusId in (:statusIds) ");		
 	str.append(" group by model.appointment.appointmentStatusId ");
 	
@@ -299,6 +310,9 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type){
 		if(toDayDate !=null){
 			query.setDate("toDayDate", toDayDate);
 		}
+	}
+	if(aptUserId !=null && aptUserId>0){
+		query.setParameter("aptUserId", aptUserId);
 	}
 	query.setParameterList("statusIds",IConstants.APPOINTMENT_STATUS_IDS);
 	return query.list();

@@ -39,7 +39,7 @@ public interface IAppointmentService {
 	public ResultStatus addAppointmentstoLabel(final Long apptLabelId,final List<Long> appointmentIds,final Long loggerUserId);	
 	public List<AppointmentVO> getAppointmentsOfALableForUpdate(Long lableId);
 	public LabelStatusVO getLabelAndStatuswiseCountsOfAppointments();
-	public LabelStatusVO getStatusWiseCountsOfAppointments();
+	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId);
 	public List<AppointmentScheduleVO>  getAppointmentSearchDetails(AppointmentInputVO inputVo);
 	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId);
 	public AppointmentSlotsVO getTimeSlotsDetails(long appointmentLabelId);
