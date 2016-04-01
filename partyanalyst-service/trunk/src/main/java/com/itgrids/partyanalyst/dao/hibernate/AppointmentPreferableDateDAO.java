@@ -16,8 +16,8 @@ public class AppointmentPreferableDateDAO extends GenericDaoHibernate<Appointmen
    
 	public List<Object[]> getMultipleDatesforAppointments(List<Long> appointmentIds){
 		Query query = getSession().createQuery(" " +
-				" select  model.appointment.appointmentId , date(model.appointmentDate) " +
-				" from   AppointmentPreferableDate model where model.appointment.appointmentPreferableTimeId = 1 and model.appointment.appointmentId in (:appointmentIds)");
+				" select  model.appointment.appointmentId , date(model.appointmentDate),model.appointment.appointmentPreferableTimeId,model.appointment.appointmentPreferableTime.preferableTime " +
+				" from   AppointmentPreferableDate model where  model.appointment.appointmentId in (:appointmentIds)");
 		query.setParameterList("appointmentIds",appointmentIds);
 		return query.list();
 				
