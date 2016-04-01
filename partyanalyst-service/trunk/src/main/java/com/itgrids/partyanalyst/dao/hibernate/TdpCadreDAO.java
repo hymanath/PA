@@ -6369,8 +6369,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder sb=new StringBuilder();
 			
 			sb.append(" select  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
-					"           model.memberShipNo,model.voter.voterIDCardNo " +
-					"   from TdpCadre model where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear ");
+					"           model.memberShipNo, voter.voterIDCardNo " +
+					"   from    TdpCadre model left join model.voter voter" +
+					"   where   model.isDeleted='N' and model.enrollmentYear = :enrollmentYear ");
 			if(searchType.equalsIgnoreCase("mobileno")){
 				
 				sb.append(" and model.mobileNo = :searchValue ");
@@ -6381,7 +6382,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				
 			}else if(searchType.equalsIgnoreCase("votercardno")){
 				
-				sb.append(" and model.voter.voterIDCardNo = :searchValue ");
+				sb.append(" and voter.voterIDCardNo = :searchValue ");
 			}
 			else if(searchType.equalsIgnoreCase("name"))
 			{
