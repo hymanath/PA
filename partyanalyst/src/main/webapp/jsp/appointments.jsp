@@ -1894,8 +1894,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 var Uncheck = $(this).attr("attr_close_id");
 				 $(".closeIcon").attr("attr_close",Uncheck);
 				 
-				 var temp = cloneCount-1;
-				 $("#candidateId"+temp).val($(this).attr("attr_id"));
+				 
+				 if($(this).attr("attr_candidateType")=="appointmentCandidate"){
+					 var temp = cloneCount-1;
+					$("#candidateId"+temp).val($(this).attr("attr_id")); //setting value to hidden variable for saving
+				 }
+				 
 				 
 				 var candidateType = $(this).attr("attr_candidatetype");
 				 var id = $(this).attr("attr_id");
