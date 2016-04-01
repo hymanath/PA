@@ -575,7 +575,7 @@
                                           <div class="col-md-3 m_top10">
                                             	<label>Select Constituency<span style='color:red'>&nbsp *</span></label>
                                                 <select id="manageAppConstId" class="dropkickClass">
-                                                	<option value="0">Constituency Name</option>
+                                                	<option value="select">Constituency Name</option>
                                                 </select>
 												<span style='color:red' id="appConstErrId"></span>
                                           </div>
@@ -1125,7 +1125,8 @@ $(".dropkickClass").dropkick();
 			$(".cloneDesignationCls").append('<option value="0">Select Designation</option>'); 
 			
 			$("#manageAppDesigId  option").remove();
-			$("#manageAppDesigId").append('<option value="0">Select Designation</option>');
+			$("#manageAppDesigId").append('<option value="select">Select Designation</option>');
+			$("#manageAppDesigId").append('<option value="0">ALL</option>');
 			for(var i in result){
 				$("#designationListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -1160,7 +1161,8 @@ $(".dropkickClass").dropkick();
 
 	function buildAppointmentStatusList(result){
 			$("#manageAppStatusId  option").remove();
-			$("#manageAppStatusId").append('<option value="0">Select Appointment Status</option>');
+			$("#manageAppStatusId").append('<option value="select">Select Appointment Status</option>');
+			$("#manageAppStatusId").append('<option value="0">ALL</option>');
 			for(var i in result){
 				$("#manageAppStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
@@ -1184,7 +1186,8 @@ $(".dropkickClass").dropkick();
 	}
 	function buildAppointmentPriorityList(result){
 		$("#manageAppTypeId  option").remove();
-		$("#manageAppTypeId").append('<option value="0">Select Priority</option>');
+		$("#manageAppTypeId").append('<option value="select">Select Priority</option>');
+		$("#manageAppTypeId").append('<option value="0">ALL</option>');
 		$("#createAppTypeListId  option").remove();
 		$("#createAppTypeListId").append('<option value="0">Select Appointment Type</option>');
 		for(var i in result){
@@ -1289,7 +1292,8 @@ $(".dropkickClass").dropkick();
 			data : {}
 		}).done(function(result){
 			var str='';
-			str+='<option value="0">Select District</option>';
+			str+='<option value="select">Select District</option>';
+			str+='<option value="0">ALL</option>';
 			if(result != null && result.length > 0){
 				for(var i in result){
 					// var obj={id:result[i].id,value:result[i].name};
@@ -1322,7 +1326,8 @@ $(".dropkickClass").dropkick();
 				data:    {task:JSON.stringify(jsObj)} 
 			}).done(function(result){
 				var str='';
-				str+='<option value="0">Select Constituency</option>';
+				str+='<option value="select">Select Constituency</option>';
+				str+='<option value="0">ALL</option>';
 				if(result != null && result.length > 0){
 					for(var i in result){
 						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
@@ -1557,7 +1562,7 @@ $(".dropkickClass").dropkick();
 							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>View</button>';
 						}
 						
-						str+='<button class="btn btn-success btn-xs addMembersClass">Add Appointments</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'">Add Appointments</button>';
 						if(totalCount !=null && totalCount >0 ){
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"  >Update</button>';
 						}else{
@@ -2171,6 +2176,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	  appointmentlabelId = $(this).closest("tr").find("td:eq(0)").attr("attr_label_id");
 	  $(".commonDivCls").hide();
 	  $(".searchDivCls").show();
+	  $("#searchAppointmentdetailsId").attr("attr_label_name",$(this).attr("attr_label_name"));
 	  
 	  $("#manageAppDesigId").val(0);
 	  $("#manageAppDesigId").dropkick('reset');
@@ -2186,12 +2192,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
    });
    
    $(document).on("click","#searchAppointmentdetailsId",function(){
-	  getAppointmentsBySearchCriteria();
+	  getAppointmentsBySearchCriteria($(this).attr("attr_label_name"));
   });
   function clearAppointmentsSearchFields(){
 	  $("#appDesigErrId,#appPrrtyErrTypId,#appStatusErrId,#appDistErrId,#appConstErrId").html('');  
   }
-  function getAppointmentsBySearchCriteria(){
+  function getAppointmentsBySearchCriteria(labelName){
 		  
 		  clearAppointmentsSearchFields();
 		  $("#appointmentRequestedMembersId").html('');  
@@ -2205,25 +2211,25 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		 var districtId = $("#manageAppDistId").val();
 		 var constituencyId = $("#manageAppConstId").val();
 		 
-		 if(designationId==0){
+		 if(designationId=="select"){
 		  $("#appDesigErrId").html("Select Designation.");
            return;		  
 		 }
 		  
-		 if(priorityId==0){
+		 if(priorityId=="select"){
 		  $("#appPrrtyErrTypId").html("Select Priority Type.");
            return;		  
 		 }
 		 
-		 if(statusId==0){
+		 if(statusId=="select"){
 		  $("#appStatusErrId").html("Select Appointment Status.");
            return;		  
 		 }
-		 if(districtId==0){
+		 if(districtId=="select"){
 		  $("#appDistErrId").html("Select District.");
            return;		  
 		 }
-		 if(constituencyId==0){
+		 if(constituencyId=="select"){
 		  $("#appConstErrId").html("Select Constituency.");
            return;		  
 		 }
@@ -2245,18 +2251,23 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			}).done(function(result){
 				$("#appointmentRequestedMembersId").show();
 				if(result!=null && result!=0){
-				  buidResult(result);
+				  buidResult(result,labelName);
 				}else{
-				  $("#appointmentRequestedMembersId").html("<center><p style='color:green;font-size:20px'>No Data available.</p></center>")	
+					var str='';
+					str+='<div class="block">';
+					str+='<h4 class="text-success">APPOINTMENT REQUESTED MEMBERS To '+labelName+'</h4>';
+					str+='<p class="m_top20" style="color:green;font-size:20px">No Data available.</p>';
+					str+='</div>';
+				  $("#appointmentRequestedMembersId").html(str);	
 				}
 		  }); 
 	 }
-  function buidResult(result){
+  function buidResult(result,labelName){
 		 var i = 0;
 		 var str='';
 		  str+='<div class="block">';
-			 str+='<h4 class="text-success">APPOINTMENT REQUESTED MEMBERS</h4>';
-			  str+='<center><img id="apptRqstMemberAjax" src="images/icons/loading.gif" style="display:none;"/></center>';
+			 str+='<h4 class="text-success">Assign Appointments To '+labelName+'</h4>';
+			  //str+='<center><img id="apptRqstMemberAjax" src="images/icons/loading.gif" style="display:none;"/></center>';
 			 
 		 for(var i in result){
 			
@@ -2400,12 +2411,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='</li>';
 						str+='</ul>';
 						}
-						if(result[i].apptpreferableDates != null){
-							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+						str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+						if(result[i].apptpreferableDates != null && result[i].dateTypeId == 1){
 							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
-						}else{
-							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
-							str+='<p><span> - </span></p>';
+						}else{ 
+							str+='<p><span>'+result[i].dateType.toUpperCase()+' : '+ result[i].minDate +' - '+result[i].maxDate+'</span></p>';
 						}						
 				  str+='</div>';
 				str+='</div>';
@@ -2806,13 +2816,19 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='</li>';
 						str+='</ul>';
 						}
-						if(result[i].apptpreferableDates != null){
+						/* if(result[i].apptpreferableDates != null){
 							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{
 							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span> - </span></p>';
-						}	
+						} */	
+						str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+						if(result[i].apptpreferableDates != null && result[i].dateTypeId == 1){
+							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+						}else{ 
+							str+='<p><span>'+result[i].dateType.toUpperCase()+' : '+ result[i].minDate +' - '+result[i].maxDate+'</span></p>';
+						}
 				  str+='</div>';
 				str+='</div>';
 			}
