@@ -6383,11 +6383,38 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				
 				sb.append(" and model.voter.voterIDCardNo = :searchValue ");
 			}
-			
+			else if(searchType.equalsIgnoreCase("name"))
+			{
+				sb.append(" and model.firstname like '%"+searchValue+"%' ");
+			}
 			Query query = getSession().createQuery(sb.toString());
+			if(!searchType.equalsIgnoreCase("name"))
 			query.setParameter("searchValue",searchValue);
 			query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_NUMBER);
 			return query.list();
 		}
+	  
+	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,Long searchValue){
+			
+			StringBuilder sb=new StringBuilder();
+			
+			sb.append(" select  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
+					"           model.memberShipNo,model.voter.voterIDCardNo " +
+					"   from TdpCadre model,PublicRepresentative model2,TdpCadreCandidate model1 where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
+					+ " and model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadreId = model1.tdpCadre.tdpCadreId ");
+			
+			 if(searchType.equalsIgnoreCase("name"))
+			{
+				sb.append(" and model.firstname like '%"+searchValue+"%' ");
+			}
+			sb.append(" and model2.publicRepresentativeType.publicRepresentativeTypeId = :searchValue");
+			Query query = getSession().createQuery(sb.toString());
+			if(!searchType.equalsIgnoreCase("name"))
+			query.setParameter("searchValue",searchValue);
+			query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_NUMBER);
+			return query.list();
+		}
+	  
+	  
 	
 }

@@ -1049,6 +1049,85 @@ public class AppointmentService implements IAppointmentService{
 		 return finalList;
 	 }
 	
+//Advanced Search
+public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue){
+		 List<AppointmentCandidateVO>  finalList = new ArrayList<AppointmentCandidateVO>(); 
+		 try {
+			      List<Object[]> membersList = null;
+			      if(searchType.equalsIgnoreCase("name"))
+			      {
+			    	  membersList = appointmentCandidateDAO.searchAppointmentRequestedMember(searchType,searchValue);
+			    	  if(membersList != null && membersList.size()>0){
+			    		  setDataMembers(membersList,finalList);
+			    	  }
+			    	  else
+			    	  {
+			    		  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);  
+			    		  setDataMembersForCadre(membersList,finalList);
+			    	  }
+			      }
+			      else if(searchType.equalsIgnoreCase("publicRepresentative"))
+			      {
+			    	  membersList = appointmentCandidateDAO.advancedSearchAppointmentRequestedMembersForPublicRepresentative(searchType,new Long(searchValue));
+			    	  if(membersList != null && membersList.size()>0){
+			    		  setDataMembers(membersList,finalList);
+			    	  }
+			    	  else
+			    	  {
+			    		  membersList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,new Long(searchValue));  
+			    		  setDataMembersForCadre(membersList,finalList);
+			    	  }
+			    	  
+			      }
+			      
+			    	  
+		 	}
+		 catch (Exception e) {
+		LOG.error("Exception raised at advancedSearchApptRequestedMembers() method of AppointmentService", e);
+		 }
+	 return finalList;
+ }
+public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList)
+{
+  if(membersList != null && membersList.size()>0){
+  	  for(Object[] obj:membersList){
+  		  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+  		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+  		  vo.setCandidateType("appointmentCandidate");
+  		  vo.setName(obj[1]!=null?obj[1].toString():"");
+  		  if(obj[2]!=null && (Long)obj[2]>0){
+  			  vo.setCadre(true);
+  		  }
+  		  vo.setMobileNo(obj[3]!=null?obj[3].toString():"");
+  		  vo.setDesignation(obj[4]!=null?obj[4].toString():"");
+  		  vo.setConstituency(obj[5]!=null?obj[5].toString():"");
+  		  vo.setMemberShipId(obj[6]!=null?obj[6].toString():"");
+  		  vo.setVoterCardNo(obj[7]!=null?obj[7].toString():"");
+  		  vo.setDesignationId(obj[8]!=null?(Long)obj[8]:0l);
+  		  finalList.add(vo);
+  	  }
+    }
+}
+
+public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList)
+{
+	if(membersList!=null && membersList.size()>0){
+		 
+		  for(Object[] obj: membersList){
+			  AppointmentCandidateVO vo =new AppointmentCandidateVO();
+  		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+  		  vo.setCandidateType("cadre");
+  		  vo.setName(obj[1]!=null?obj[1].toString():"");
+  		  vo.setCadre(true);
+  		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
+  		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+  		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
+  		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
+  		  finalList.add(vo);
+		  }
+	  }
+}
+
 	public VoterAddressVO getMemberDetails(String candidateType,Long id){
 		
 		VoterAddressVO addressVO = null;

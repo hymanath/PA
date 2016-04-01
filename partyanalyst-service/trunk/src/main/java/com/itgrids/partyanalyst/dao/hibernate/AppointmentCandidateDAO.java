@@ -168,8 +168,13 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 			
 			sb.append(" where model.voterIdCardNo = :searchValue ");
 		}
+		else if(searchType.equalsIgnoreCase("name"))
+		{
+			sb.append(" where model.name like '%"+searchValue+"%' ");
+		}
 		
 		Query query = getSession().createQuery(sb.toString());
+		if(!searchType.equalsIgnoreCase("name"))
 		query.setParameter("searchValue",searchValue);
 		return query.list();
 	}
@@ -181,7 +186,23 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		return query.list();
 	}
 	
-	
+public List<Object[]>  advancedSearchAppointmentRequestedMembersForPublicRepresentative(String searchType,Long searchValue){
+		StringBuilder sb=new StringBuilder();
+		sb.append("select model.appointmentCandidateId,model.name,model.tdpCadreId,model.mobileNo," +
+				" model.candidateDesignation.designation,constituency.name," +
+				" model.membershipId,model.voterIdCardNo,model.designationId " +
+				"  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidate model  left join model.userAddress.constituency constituency");
+		sb.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
+		 if(searchType.equalsIgnoreCase("name"))
+		{
+			sb.append(" and model.name like '%"+searchValue+"%' ");
+		}
+		sb.append(" and model2.publicRepresentativeType.publicRepresentativeTypeId = :searchValue");
+		Query query = getSession().createQuery(sb.toString());
+		if(!searchType.equalsIgnoreCase("name"))
+		query.setParameter("searchValue",searchValue);
+		return query.list();
+	}
 	
 
 }

@@ -54,4 +54,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentCreatedUsers();
 	public ResultStatus updateAllAppointmentStatusByType(AppointmentUpdateStatusVO statusinputVo,AppointmentInputVO inputVo,Long userId);
 	public ResultStatus deleteAppointmentsOfLabel(List<Long> ids,Long labelId,Long registrationId);
+	public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue);
 }

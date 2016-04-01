@@ -420,4 +420,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getTdpCadreIdForMemberShipNums(List<String> membershipNums);
 	  public List<Object[]>  searchMemberByCriteria(String searchType,String searchValue);
 	  public List<UserAddress> getUserAddress(Long tdpCadreId);
+	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,Long searchValue);
+	  
 }
