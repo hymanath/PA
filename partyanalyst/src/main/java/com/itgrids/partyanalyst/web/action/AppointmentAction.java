@@ -444,7 +444,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		try{
 			LOG.info("Entered into getAllAppointmentDetails() method of AppointmentAction");
 			jObj = new JSONObject(getTask());
-			appointmentUserDtlsList=appointmentService.getAllAppointmentDetails(jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+			appointmentUserDtlsList=appointmentService.getAllAppointmentDetails(jObj.getInt("startIndex"),jObj.getInt("maxIndex"),jObj.getLong("aptUserId"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getAllAppointmentDetails() method of AppointmentAction", e);
 		}
