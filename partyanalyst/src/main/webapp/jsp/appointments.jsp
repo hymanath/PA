@@ -1097,6 +1097,7 @@ $(".dropkickClass").dropkick();
 				getAppointmentCreatedUsers();
 				getAppointmentStatusList();
 				getAppointmentPriority();
+				searchTypeRadioCls();
 				
 			}, 1000);
 			
@@ -1452,6 +1453,7 @@ $(".dropkickClass").dropkick();
 					setTimeout(function(){	$("#successDiv").hide(); },3000);
 					$("#labelNameId").val("");
 					$("#createLabelModelId").modal('hide');
+					getLabelDtls();
 				}
 		  });     
 	});		 
@@ -1492,21 +1494,10 @@ $(".dropkickClass").dropkick();
 	}); */
 	
 	$('#appointmentUserSelectBoxId').change(function(){
-		getLabelDtls("all");
+		getLabelDtls();
 	});
 	
-	/*Get label details based on selected date.*/
-	$(document).on("change","#mngAppntmntsDtPckrId",function(){
-	   getLabelDtls("Change");
-	});
-	function getLabelDtls(callType){
-		
-		var slctDate="";
-		/* if(callType=="all"){
-			slctDate="";
-		}else if(callType=="change"){
-			slctDate=$("#mngAppntmntsDtPckrId").val();
-		} */
+	function getLabelDtls(){
 		
 		var appntmntUsrId=$("#appointmentUserSelectBoxId").val();
 		
@@ -2459,6 +2450,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					   setTimeout(function () {
 						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Appointments Added To Label Successfully</h4></center>").fadeOut(6000);
 						}, 500);
+						
+						getLabelDtls();
 				  }
 				}else{
 					setTimeout(function () {
@@ -2470,16 +2463,19 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		  
 	  }
 	  
-	var noOfRow = 5;
+
 	$(document).on("click","#viewAllAppointmentId",function(){
 		var startIndex = 0;
-		var maxIndex = noOfRow;
-		viewAllAppointment(startIndex,maxIndex);
+		viewAllAppointment(startIndex,5);
 	});
 	function viewAllAppointment(startIndex,maxIndex){
+		
+		var aptUserId = $("#appointmentUserSelectBoxId").val();
+	
 		var jsObj={
-				startIndex:startIndex,
-				maxIndex:maxIndex
+				startIndex:	startIndex,
+				maxIndex  :	maxIndex,
+				aptUserId : aptUserId
 			}  
 		$.ajax({  
 			type : 'GET',
@@ -2523,14 +2519,14 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			
 		});
 		var total=result[0].count;
-		if(total> noOfRow){
+		if(total> 5){
 			$("#paginationDivId").pagination({
 			items: total,
-			itemsOnPage: noOfRow,
+			itemsOnPage: 5,
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*noOfRow;
-				viewAllAppointment(num,noOfRow);
+				var num=(pageNumber-1)*5;
+				viewAllAppointment(num,5);
 				}
 				});
 		}
