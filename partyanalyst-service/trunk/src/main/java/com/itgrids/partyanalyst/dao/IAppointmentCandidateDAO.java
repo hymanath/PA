@@ -15,4 +15,5 @@ public interface IAppointmentCandidateDAO extends GenericDao<AppointmentCandidat
  public Object getMaxDate(Long tdpCadreId,String mobileNo,Integer crrntMnth);
  public List<Object[]>  searchAppointmentRequestedMember(String searchType,String searchValue);
  public List<UserAddress> getUserWorkAddress(Long id);
+ public List<Object[]>  advancedSearchAppointmentRequestedMembersForPublicRepresentative(String searchType,Long searchValue);
 }
