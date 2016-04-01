@@ -1902,7 +1902,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	}
 	
 	
-	public LabelStatusVO getStatusWiseCountsOfAppointments(){
+	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 		LabelStatusVO finalVo = new LabelStatusVO();
 		
 		try{
@@ -1916,9 +1916,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			//toDay Block
 				//Fixed Status
 						//0.statusId,1.status,2.count
-						List<Object[]> inProgreeList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","ToDay");
-						List<Object[]> upcomingList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","ToDay");
-						List<Object[]> completedList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","ToDay");
+						List<Object[]> inProgreeList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","ToDay",aptUserId);
+						List<Object[]> upcomingList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","ToDay",aptUserId);
+						List<Object[]> completedList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","ToDay",aptUserId);
 						
 						if(inProgreeList !=null && inProgreeList.size()>0){
 							inProgreeList = setStatusOfObjectList1(inProgreeList,"Inprogress");	
@@ -1934,7 +1934,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									
 								//Status Wise
 						
-						List<Object[]> statusObjList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"ToDay");
+						List<Object[]> statusObjList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"ToDay",aptUserId);
 						
 						if(statusObjList !=null && statusObjList.size()>0){
 							totalTodayObjList.addAll(statusObjList);
@@ -1951,9 +1951,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						}
 				
 			//OverAll Scenario
-						List<Object[]> inProgreeOverAllList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","overall");
-						List<Object[]> upcomingOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","overall");
-						List<Object[]> completedOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","overall");
+						List<Object[]> inProgreeOverAllList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","overall",aptUserId);
+						List<Object[]> upcomingOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","overall",aptUserId);
+						List<Object[]> completedOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","overall",aptUserId);
 						
 						
 						if(inProgreeOverAllList !=null && inProgreeOverAllList.size()>0){
@@ -1970,7 +1970,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									
 								//Status Wise
 						
-						List<Object[]> statusObjOverAllList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"overall");
+						List<Object[]> statusObjOverAllList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"overall",aptUserId);
 						
 						if(statusObjOverAllList !=null && statusObjOverAllList.size()>0){
 							totalObjList.addAll(statusObjOverAllList);
