@@ -345,7 +345,8 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type,Long
 				" where model.appointmentLabel.appointmentLabelId=:lableId and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
 				" and model.createdBy=model1.userId " +
 				" and model.appointment.appointmentId = ATS.appointmentId" +
-				" and ATS.isDeleted = 'N' ");
+				" and ATS.isDeleted = 'N'" +
+				" and model.isDeleted = 'N' ");
 		
 		query.setParameter("lableId", lableId);
 		return query.list();
