@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.text.ParseException;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentHistoryDAO;
@@ -41,7 +41,6 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
@@ -59,7 +58,9 @@ import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
@@ -108,6 +109,8 @@ public class AppointmentService implements IAppointmentService{
 	private ILabelAppointmentHistoryDAO labelAppointmentHistoryDAO;
 	private IAppointmentTimeSlotDAO appointmentTimeSlotDAO;
 	private ICadreRegistrationService cadreRegistrationService;
+	private RegionServiceDataImp regionServiceDataImp;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
 	public ICadreRegistrationService getCadreRegistrationService() {
 		return cadreRegistrationService;
@@ -289,6 +292,20 @@ public class AppointmentService implements IAppointmentService{
 	}
 	
 	
+	
+	public RegionServiceDataImp getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
 		try {
@@ -439,6 +456,7 @@ public class AppointmentService implements IAppointmentService{
 			        			else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
 			        				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
 			        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
+			        					//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
 			        					userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
 			        			}
 			        			
@@ -453,6 +471,7 @@ public class AppointmentService implements IAppointmentService{
 			        			appCandi.setUpdatedBy(loggerUserId);
 			        			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			        			appCandi.setImageURL(basicInfo.getCandiImageUrl());
 			        			appCandi = appointmentCandidateDAO.save(appCandi);
 			        			
 			        			AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
@@ -1004,7 +1023,6 @@ public class AppointmentService implements IAppointmentService{
 			    	  }
 			      }
 			      else{
-			    	  
 			    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);
 			    	  
 			    	  if(membersList!=null && membersList.size()>0){
@@ -1019,6 +1037,7 @@ public class AppointmentService implements IAppointmentService{
 				    		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
 				    		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
 				    		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
+				    		  vo.setImageURL(obj[6]!=null?"images/cadre_images/"+obj[6].toString():null);
 				    		  finalList.add(vo);
 			    		  }
 			    	  }
@@ -2976,4 +2995,41 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		}
 		return rs;
 	}
+	
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds,Long locationScopeId){
+		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO vo = null;
+		List<Long> greaterCorpIds = new ArrayList<Long>();
+		if(locationScopeId == 6l || locationScopeId == 5l){
+			List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByAllConstituencies(constituencyIds);
+			for(SelectOptionVO location:locations){
+		       	vo = new LocationWiseBoothDetailsVO();
+		       	vo.setLocationId(Long.valueOf("4"+location.getId()));
+		       	vo.setLocationName(location.getName()+" Mandal");
+		       	locationsList.add(vo);
+		    }
+		}else if(locationScopeId == 8l || locationScopeId == 7l){
+			List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+			   
+	        for(Object[] localBodi:localBodies){
+	        	Long localBdyId = (Long)localBodi[0];
+	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
+		        	vo.setLocationName(localBodi[1].toString() +" "+ localBodi[2].toString());
+		        	locationsList.add(vo);
+	        	}else{
+	        		if(!greaterCorpIds.contains(localBdyId)){
+	        			greaterCorpIds.add(localBdyId);
+	        			vo = new LocationWiseBoothDetailsVO();
+			        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
+			        	vo.setLocationName(localBodi[4].toString());
+			        	locationsList.add(vo);
+	        		}
+	        	}
+	        }
+		}
+		
+		return locationsList;
+	} 
 }
