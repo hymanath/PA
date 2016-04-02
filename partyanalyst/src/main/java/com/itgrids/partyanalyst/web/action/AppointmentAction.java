@@ -353,7 +353,8 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
        try{
     	   LOG.info("Entered into getLabelDtls() method of AppointmentAction");
     	     jObj = new JSONObject(getTask());
-    	     labelStatusVOList=appointmentService.getLabelDtslByDate(jObj.getString("currentDate"),jObj.getLong("apptmntUsrId"));
+    	     
+    	     labelStatusVOList=appointmentService.getLabelDtslByDate(jObj.getString("currentDate"),jObj.getLong("apptmntUsrId"),jObj.getLong("status"));
        }catch(Exception e){
     	   LOG.error("Exception raised at getLabelDtls() method of AppointmentAction", e);
        }
