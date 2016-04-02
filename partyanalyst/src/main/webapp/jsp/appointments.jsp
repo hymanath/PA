@@ -4584,6 +4584,13 @@ function getAppointmentCreatedUsers(){
 	function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
+   $(document).on('click','.addMembersClass',function(){
+		$("#appDesigErrId").html('');
+		$("#appPrrtyErrTypId").html('');
+		$("#appStatusErrId").html('');
+		$("#appDistErrId").html('');
+		$("#appConstErrId").html('');
+	});
 </script>
 </body>
 </html>
