@@ -599,7 +599,7 @@ public class AppointmentService implements IAppointmentService{
 		return resultStatus;
 	}
 	@Override
-	public List<LabelStatusVO> getLabelDtslByDate(String slctdDate,Long appntmntUsrId) {
+	public List<LabelStatusVO> getLabelDtslByDate(String slctdDate,Long appntmntUsrId,Long statusId) {
 		
 		List<LabelStatusVO> finalVoList=new ArrayList<LabelStatusVO>(0);
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
@@ -614,7 +614,7 @@ public class AppointmentService implements IAppointmentService{
 			
 			List<AppointmentStatus> asList = appointmentStatusDAO.getAll();
 			
-			List<Object[]> allLablesObjList = appointmentLabelDAO.getAllLabels(date,appntmntUsrId);
+			List<Object[]> allLablesObjList = appointmentLabelDAO.getAllLabels(date,appntmntUsrId,statusId);
 			Map<Long,LabelStatusVO> tempMap = new HashMap<Long, LabelStatusVO>(0);
 			if(allLablesObjList != null && allLablesObjList.size() > 0){
 				for (Object[] objects : allLablesObjList) {
@@ -641,7 +641,7 @@ public class AppointmentService implements IAppointmentService{
 			
 			
 			
-			List<Object[]> objList = labelAppointmentDAO.getLableDetailsWithStatusWiseCounts(date,appntmntUsrId);
+			List<Object[]> objList = labelAppointmentDAO.getLableDetailsWithStatusWiseCounts(date,appntmntUsrId,statusId);
 			Map<Long,LabelStatusVO> finalMap = new HashMap<Long, LabelStatusVO>(0);
 			if(objList != null && objList.size() > 0){
 				for (Object[] objects : objList) {

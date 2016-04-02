@@ -42,7 +42,7 @@ public class AppointmentLabelDAO extends GenericDaoHibernate<AppointmentLabel, L
 	 	return  query.executeUpdate();
 	 }
 	
-	public List<Object[]> getAllLabels(Date date,Long userID){
+	public List<Object[]> getAllLabels(Date date,Long userID,Long statusId){
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.appointmentLabelId,model.labelName,model.appointmentLabelStatusId,model.appointmentLabelStatus.status,model.updatedTime " +
@@ -51,12 +51,20 @@ public class AppointmentLabelDAO extends GenericDaoHibernate<AppointmentLabel, L
 		if(date != null)
 			sb.append(" and date(model.updatedTime=:date) ");
 		
+		if(statusId !=null && statusId>0){
+			sb.append(" and model.appointmentLabelStatusId = :statusId");	
+		}
+		
+		
 		sb.append(" order by model.updatedTime desc ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("userID", userID);
 		if(date != null)
 			query.setParameter("date", date);
+		if(statusId !=null && statusId>0){
+			query.setParameter("statusId", statusId);
+		}
 		return query.list();
 	}
 	public List<Object[]> getAppointmentLabels(Long aptUserId){
