@@ -4575,6 +4575,10 @@ function getAppointmentCreatedUsers(){
 		getAppointmentLabels();					
 		getTotalAppointmentStatus();
 	});
+	$( "#selectStsForLabelId" ).change(function() {
+		getLabelDtls();
+	})
+	
 	
 	function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
