@@ -1486,7 +1486,7 @@ $(".dropkickClass").dropkick();
 	}
 	$(document).on("click",".MngeAppntmntCls",function(){
 		$(".commonDivCls").hide();
-		getLabelDtls("all");
+		getLabelDtls();
 	});
 	
 	/*Get label details based on selected user.*/
@@ -1504,6 +1504,7 @@ $(".dropkickClass").dropkick();
 	
 	function getLabelDtls(){
 		
+		var slctDate='';
 		var appntmntUsrId=$("#appointmentUserSelectBoxId").val();
 		
 		var jsObj={
