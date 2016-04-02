@@ -16,7 +16,7 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		super(LabelAppointment.class);
 	}
 
-	public List<Object[]> getLableDetailsWithStatusWiseCounts(Date labelDate,Long userId){
+	public List<Object[]> getLableDetailsWithStatusWiseCounts(Date labelDate,Long userId,Long statusId){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select model.appointmentLabel.appointmentLabelId,model.appointmentLabel.labelName," +
@@ -28,11 +28,17 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 		if(labelDate != null)
 				sb.append("and date(model.appointmentLabel.updatedTime)=:labelDate ");
 		sb.append(" and model.appointmentLabel.appointmentUserId=:userId ");
+		if(statusId !=null && statusId>0){
+			sb.append(" and model.appointmentLabel.appointmentLabelStatusId=:statusId ");
+		}
 		sb.append(" group by model.appointment.appointmentStatusId,model.appointmentLabel.appointmentLabelId ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameter("userId", userId);
+		if(statusId !=null && statusId>0){
+			query.setParameter("statusId", statusId);
+		}
 		
 		if(labelDate != null)
 			query.setParameter("labelDate", labelDate);

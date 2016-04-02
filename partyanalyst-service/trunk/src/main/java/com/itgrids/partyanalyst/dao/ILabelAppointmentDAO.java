@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.model.LabelAppointment;
 
 public interface ILabelAppointmentDAO extends GenericDao<LabelAppointment, Long> {
 	
-	public  List<Object[]> getLableDetailsWithStatusWiseCounts(Date labelDate,Long userId);
+	public  List<Object[]> getLableDetailsWithStatusWiseCounts(Date labelDate,Long userId,Long statusId);
 	public  List<Object[]>  checkLabelWithAppointment(Long appointmentLabelId,List<Long> appointmentIds);
 	public List<Long> getAppointmentsForALabel(Long appointmentLabelId);
 	public Integer deleteLabeledAppointments(Long appointmentLabelId,List<Long> appointmentIds);
