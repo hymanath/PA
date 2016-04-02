@@ -560,6 +560,8 @@
                                                 <select class="manageAppTypeCls errClearCls" id="manageAppTypeId"></select>
 												<span style='color:red' id="appPrrtyErrTypId"></span>
                                             </div>
+										</div>
+										<div class="row">
                                             <div class="col-md-3 m_top10">
                                             	<label>Appointment Status<span style='color:red'> &nbsp * </span></label>
                                                 <select class="manageAppStatusCls errClearCls" id="manageAppStatusId"></select>
@@ -3456,12 +3458,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			$(".changeClass").addClass("col-md-8")
 			$("#timeSlotsWarnId").hide();
 		}else{
+			$(".changeClass").removeClass("col-md-12")
+			$(".changeClass").addClass("col-md-8")
 			$("#pluginTableId").hide();
 			$("#timeSlotsWarnId").show();
 		}
 		});
 		var user = $("#appointmentUserSelectBoxId").text();
-		//alert(user);
 	});
 	
 	function getAppointmentsOfALabel(){
