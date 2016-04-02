@@ -31,4 +31,11 @@ public class UserAddressDAO extends GenericDaoHibernate<UserAddress, Long> imple
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getUserAddressDetails(List<Long> candidateIdsList){
+		Query query = getSession().createQuery(" select model.district.districtId,model.constituency.constituencyId,model.tehsil.tehsilId,model.hamlet.hamletId,model.parliamentConstituency.constituencyId" +
+				" from UserAddress model where model.userAddressId in(:candidateIdsList) ");
+		query.setParameterList("candidateIdsList", candidateIdsList);
+		return query.list();
+	}
 }

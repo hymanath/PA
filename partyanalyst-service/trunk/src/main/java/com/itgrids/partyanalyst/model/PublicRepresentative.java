@@ -30,6 +30,8 @@ public class PublicRepresentative implements java.io.Serializable{
 	private RepresentativeLevel representativeLevel;
 	private Long levelId;
 	private Long levelValue;
+	private Long addressId;
+	private UserAddress userAddress;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -106,6 +108,23 @@ public class PublicRepresentative implements java.io.Serializable{
 	}
 	public void setLevelValue(Long levelValue) {
 		this.levelValue = levelValue;
+	}
+	@Column(name="address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "user_address_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
 	}
 	
 }

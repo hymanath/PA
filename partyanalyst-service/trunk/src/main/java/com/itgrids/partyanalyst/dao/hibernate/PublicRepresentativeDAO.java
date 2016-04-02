@@ -115,4 +115,10 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		
 		return query.list();
 	}
-}
+	
+	public List<Long> getCandidateCadreDetils(Long candidateId){
+		Query query=getSession().createQuery("select model.addressId from PublicRepresentative model where model.candidateId =:candidateId");
+		query.setParameter("candidateId", candidateId);
+		return query.list(); 
+	}
+ }

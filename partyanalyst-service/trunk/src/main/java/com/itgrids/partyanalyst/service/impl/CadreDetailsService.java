@@ -64,8 +64,10 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -75,6 +77,7 @@ import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
@@ -158,7 +161,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IPartyMeetingDAO partyMeetingDAO;
 	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	private IIvrSurveyServiceDAO ivrSurveyServiceDAO;
-	
+	private IUserAddressDAO userAddressDAO;
 	
 	
 	public IIvrSurveyServiceDAO getIvrSurveyServiceDAO() {
@@ -631,7 +634,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 			ICommunicationMediaResponseDAO communicationMediaResponseDAO) {
 		this.communicationMediaResponseDAO = communicationMediaResponseDAO;
 	}
+	
 	 
+
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved)
@@ -5703,5 +5715,36 @@ public class CadreDetailsService implements ICadreDetailsService{
 			LOG.error("Exception occured in getVoterImageUrlByVoterId() Method ",e);
 		}
 		return null;
+	}
+	
+	public List<LocationVO> getCheckCandidateCadreDtls(Long tdpCadreId){
+		List<LocationVO> resultList=new ArrayList<LocationVO>();
+		try{
+			Long  candidateIds=tdpCadreCandidateDAO.getCheckCadreIdExits(tdpCadreId);//candidateId
+			if(candidateIds == null) {
+				return null;
+			}else {
+				List<Long> cadreCheckIds=publicRepresentativeDAO.getCandidateCadreDetils(candidateIds);//userIds list
+				
+				if(cadreCheckIds!=null && cadreCheckIds.size()>0){
+					List<Object[]> userDetils=userAddressDAO.getUserAddressDetails(cadreCheckIds);
+					if(userDetils!=null && userDetils.size()>0){
+						
+						for(Object[] param:userDetils){
+							LocationVO location=new LocationVO();
+							location.setDistrictId(param[0]!=null?(Long)param[0]:0l);//districtId
+							location.setConstituencyId(param[1]!=null?(Long)param[1]:0l);//constituencyId
+							location.setTehsilId(param[2]!=null?(Long)param[2]:0l);//tehsilId
+							location.setVillageId(param[3]!=null?(Long)param[3]:0l);//villageId
+							location.setParliamentConstituencyId(param[4]!=null?(Long)param[4]:0l);//parliamentConstiId
+							resultList.add(location);
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured in getCheckCandidateCadreDtls() Method ",e);
+		}
+		return resultList;
 	}
 }

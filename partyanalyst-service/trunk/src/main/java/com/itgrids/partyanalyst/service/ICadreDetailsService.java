@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -65,4 +66,5 @@ public interface ICadreDetailsService {
 	public List<IvrOptionsVO> getIvrSurveyInfoByTdpCadreId(Long tdpCadreId,Long entityTypeId,String searchType);
 	public List<IvrOptionsVO> getTypeWiseIvrDetailsOFCadre(Long tdpCadreId);
 	public String getVoterImageUrlByVoterId(Long voterId);
+	public List<LocationVO> getCheckCandidateCadreDtls(Long tdpCadreId);
 }
