@@ -14,6 +14,7 @@ public class AppointmentCandidateVO implements Serializable{
     private String  memberShipId;
     private String voterCardNo;
     private Long designationId=0l;
+    private String imageURL;
     
 	public String getName() {
 		return name;
@@ -75,6 +76,12 @@ public class AppointmentCandidateVO implements Serializable{
 	}
 	public void setDesignationId(Long designationId) {
 		this.designationId = designationId;
+	}
+	public String getImageURL() {
+		return imageURL;
+	}
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
        
     
