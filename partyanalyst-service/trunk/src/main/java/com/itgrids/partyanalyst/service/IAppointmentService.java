@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
@@ -55,4 +56,5 @@ public interface IAppointmentService {
 	public ResultStatus updateAllAppointmentStatusByType(AppointmentUpdateStatusVO statusinputVo,AppointmentInputVO inputVo,Long userId);
 	public ResultStatus deleteAppointmentsOfLabel(List<Long> ids,Long labelId,Long registrationId);
 	public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue);
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds,Long locationScopeId);
 }
