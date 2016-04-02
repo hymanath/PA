@@ -4477,7 +4477,7 @@ var globalCandidateResult;
 		url :'getCheckCandidateCadreExitsAction.action',
 		data : {task:JSON.stringify(obj)} 
 	}).done(function(result){
-		gCandidateResult=[];
+		globalCandidateResult=[];
 		if(result!=null && result.length>0){
 			globalCandidateResult = result;
 			
@@ -4491,8 +4491,8 @@ function getDeathsAndHospitalizationDetails(){
 	//data Loading image
 	$("#dataLoadingsImgForDeathCount").show();
 	$("#deathHospitalDivId").html("");
-	
-	 if(globalCandidateResult != null && gCandidateResult.length > 0)
+
+	if(globalCandidateResult != null && globalCandidateResult.length > 0)
 	   {
 		for(var i in globalCandidateResult){
 			
@@ -4561,8 +4561,6 @@ function getDeathsAndHospitalizationDetails(){
 			 url: 'getDeathsAndHospitalizationDetailsAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				console.log(districtId);
-				console.log(constituencyId);
 				$("#dataLoadingsImgForDeathCount").hide();
 				var str='';
 				if(result !=null){

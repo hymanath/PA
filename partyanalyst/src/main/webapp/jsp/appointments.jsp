@@ -258,6 +258,7 @@
 													<option value="23">EX-STATE MINISTER</option>
 												</select>
 												<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
+												<p id="errorDivId" style="color:red"></p>
                                             </div>
                                             <div class="col-md-3 m_top20">
 												    <div class="onoffswitch">
@@ -275,8 +276,12 @@
 											<div class="col-md-2">
 												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();">Submit</button>
 											</div>
+											<div class="col-md-1">
+												<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
+											</div>
 												<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
-                                        </div>
+									 </div>
+										
                                         <div class="row m_top25">
                                         	<div id="apptmemberDetailsDiv"></div>
                                         </div>
@@ -4507,13 +4512,24 @@ function getAppointmentCreatedUsers(){
 	
 	function getAdvancedSearchDetails()
 	{
+		
+		var errorstr='';
+		$("#errorDivId").html('');
 		var searchType;
 		var searchValue;
 		var advanceSearchType = $("#advanceSearchTypeId").val();
+		
 		if(advanceSearchType == 1)
 		{
 			 searchType = "name";
 			 searchValue = $("#advanceSearchValueId").val();
+			
+			 if(searchValue == null || searchValue.length ==0){
+				 errorstr='Search By Name Should not be empty';
+				 $("#errorDivId").html(errorstr);
+				 return;
+			 }
+			
 			 
 		}
 		
@@ -4521,7 +4537,19 @@ function getAppointmentCreatedUsers(){
 		{
 			 searchType = "publicRepresentative";
 			 searchValue = $("#advanceDesignationId").val();
+			 if(searchValue == 0 || searchValue.length ==0)
+			 {
+				 errorstr='Please Select Designation';
+				 $("#errorDivId").html(errorstr);
+				 return;
+			 }
 		}
+		
+		if(errorstr.length>0){
+			$("#errorDivId").html(errorstr);
+			return;
+		}
+		$("#ajaxImgForAppintId").show();
 		var jsObj={
 			searchType:searchType,
 			searchValue:searchValue
@@ -4532,6 +4560,7 @@ function getAppointmentCreatedUsers(){
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+				$("#ajaxImgForAppintId").hide();
 				// $("#searchMemberAjax").css("display","none");
 				if(result !=null && result.length>0){
 				buildapptmemberDetails(result);
@@ -4576,7 +4605,6 @@ function getAppointmentCreatedUsers(){
 		getTotalAppointmentStatus();
 	});
 	$( "#selectStsForLabelId" ).change(function() {
-		 $(".commonDivCls").hide();
 		getLabelDtls();
 	})
 	
