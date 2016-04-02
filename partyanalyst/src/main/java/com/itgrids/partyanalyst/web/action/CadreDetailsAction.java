@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -76,6 +77,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private ICadreRegistrationService cadreRegistrationService;	
 	private List<IvrOptionsVO> ivrOptionsVOList;
 	private List<IvrOptionsVO> ivrOptionsList;
+	private List<LocationVO>  cadreDetlsLst;
 	
 	
 	public List<IvrOptionsVO> getIvrOptionsList() {
@@ -391,6 +393,16 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 	public void setIvrOptionsVOList(List<IvrOptionsVO> ivrOptionsVOList) {
 		this.ivrOptionsVOList = ivrOptionsVOList;
+	
+	}
+	
+	
+	
+	public List<LocationVO> getCadreDetlsLst() {
+		return cadreDetlsLst;
+	}
+	public void setCadreDetlsLst(List<LocationVO> cadreDetlsLst) {
+		this.cadreDetlsLst = cadreDetlsLst;
 	}
 	public String execute(){
 		
@@ -854,5 +866,16 @@ public String updateLeaderShip(){
 			LOG.error("Exception Occured in getCadreDetails() in CadreDetailsAction ",e);
 		}
 		return SUCCESS;
+	}
+	
+	public String getCheckCandidateDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long tdpCadreId=jObj.getLong("cadreId");
+			cadreDetlsLst=cadreDetailsService.getCheckCandidateCadreDtls(tdpCadreId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCheckCandidateDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
 	}
 }
