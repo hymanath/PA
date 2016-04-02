@@ -496,7 +496,7 @@
 								<!--Swadhin-->
 								<div class="panel panel-default m_top10 panelWhite" id="appointmentReqBlock">
 									<div class="panel-heading b_bottom0">
-										<h4 class="text-success">ALL OPPOINTMENT REQUEST MEMBER
+										<h4 class="text-success">ALL APPOINTMENT REQUEST MEMBER
 											<span class="pull-right" style="cursor:pointer;font-size:13px;" id="backToReqBlock">
 												<u><i class="glyphicon glyphicon-arrow-left"></i> BACK TO APPOINTMENT LABEL</u>
 											</span>
