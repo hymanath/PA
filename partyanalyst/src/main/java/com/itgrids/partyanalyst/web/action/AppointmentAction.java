@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
-
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +16,10 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
-import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
-import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
+import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
@@ -31,6 +30,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.IRtcUnionService;
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -61,6 +61,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private LabelStatusVO labelStatusVO;
 	private AppointmentSlotsVO appointmentSlotsVO;
 	private List<AppointmentScheduleVO> searchList;
+	private IRtcUnionService rtcUnionService;
 	
 	private InputStream inputStream;
 	
@@ -231,7 +232,16 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public void setLabelStatusVO(LabelStatusVO labelStatusVO) {
 		this.labelStatusVO = labelStatusVO;
 	}
+	
+	public IRtcUnionService getRtcUnionService() {
+		return rtcUnionService;
+	}
 
+	public void setRtcUnionService(IRtcUnionService rtcUnionService) {
+		this.rtcUnionService = rtcUnionService;
+	}
+
+	
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -375,7 +385,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(getTask());
 			List<Long> tempList = new ArrayList<Long>(0);
 			tempList.add(jObj.getLong("constId"));
-			locationWiseBoothDetailsVOList = cadreCommitteeService.getMandalMunicCorpDetailsOfConstituencies(tempList);
+			locationWiseBoothDetailsVOList = appointmentService.getMandalMunicCorpDetailsOfConstituencies(tempList,jObj.getLong("locationScopeId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getMandamMuncipalties() method of AppointmentAction", e);
 		}
