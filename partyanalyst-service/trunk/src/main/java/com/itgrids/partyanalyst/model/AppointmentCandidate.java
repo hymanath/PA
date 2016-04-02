@@ -40,6 +40,7 @@ public class AppointmentCandidate extends BaseModel {
 	 private Long updatedBy;
 	 private Date insertedTime;
 	 private Date updatedTime;
+	 private String imageURL;
 	 
 	 private AppointmentCandidateDesignation candidateDesignation;
 	 private UserAddress userAddress;
@@ -217,4 +218,14 @@ public class AppointmentCandidate extends BaseModel {
 	public void setUpdateUser(User updateUser) {
 		this.updateUser = updateUser;
 	}
+	
+	@Column(name = "image_url")
+	public String getImageURL() {
+		return imageURL;
+	}
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+	
+	
 }
