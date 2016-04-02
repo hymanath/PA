@@ -3795,18 +3795,17 @@ var tableToExcel = (function() {
 function buildTimeSlotsTable(result){
 		var str='';
 		str+='<tr>';
-		str+='<td class="text-center">';
+		str+='<td class="text-center" style="height:29px;">';
 		str+='<i class="glyphicon glyphicon-triangle-top"></i>';
 		str+='</td>';
 		str+='</tr>';
 		for(var i in result.listOfTimePairPerDate){
 			str+='<tr>';
-			
-			str+='<td class="text-center">'+(((result.listOfTimePairPerDate[i])[0])[0]).substr(0,10)+'</td>';
+			str+='<td class="text-center" style="height:29px;">'+(((result.listOfTimePairPerDate[i])[0])[0]).substr(0,10)+'</td>';
 			str+='</tr>';
 		}
 		str+='<tr>';
-		str+='<td class="text-center">';
+		str+='<td class="text-center" style="height:29px;">';
 		str+='<i class="glyphicon glyphicon-triangle-bottom"></i>';
 		str+='</td>';
 		str+='</tr>';
