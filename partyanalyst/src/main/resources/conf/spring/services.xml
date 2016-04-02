@@ -3033,7 +3033,8 @@
 		<property name="labelAppointmentHistoryDAO" ref="labelAppointmentHistoryDAO"/>
 		<property name="appointmentTimeSlotDAO" ref="appointmentTimeSlotDAO"/>
 		<property name="cadreRegistrationService" ref="cadreRegistrationService"/>
-		
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	</bean>
 </beans>		
 	
