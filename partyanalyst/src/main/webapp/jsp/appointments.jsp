@@ -4576,6 +4576,7 @@ function getAppointmentCreatedUsers(){
 		getTotalAppointmentStatus();
 	});
 	$( "#selectStsForLabelId" ).change(function() {
+		 $(".commonDivCls").hide();
 		getLabelDtls();
 	})
 	
