@@ -360,6 +360,7 @@
 									
 									<div class="block cloneBlock addattrid" style="display:none;">
 										<input type="hidden" class="cloneCandidateIdCls"/>
+										<input type="hidden" class="cloneCandiImageUrlCls"/>
 										<div class="row">
 											<span class="closeIcon"><i class="glyphicon glyphicon-remove"></i></span>
 											<div class="col-md-4 m_top10">
@@ -1056,6 +1057,10 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneCandidateIdCls").attr("id","candidateId"+cloneCount);
 	e.find(".cloneCandidateIdCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].appointCandidateId');
 	
+	e.find(".cloneCandiImageUrlCls").attr("id","candiImageUrlId"+cloneCount);
+	e.find(".cloneCandiImageUrlCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].candiImageUrl');
+	
+	
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
 	
@@ -1300,20 +1305,23 @@ $(".dropkickClass").dropkick();
 			data : {}
 		}).done(function(result){
 			var str='';
+			var str1='';
 			str+='<option value="select">Select District</option>';
+			str1+='<option value="select">Select District</option>';
 			str+='<option value="0">ALL</option>';
 			if(result != null && result.length > 0){
 				for(var i in result){
 					// var obj={id:result[i].id,value:result[i].name};
 					 //distArr.push(obj);
-					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
+					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					str1+='<option value="'+result[i].id+'">'+result[i].name+'</option>';					
 				}
 			}
 			$("#manageAppDistId").html(str);
 			$("#manageAppDistId").dropkick();
 			var select1 = new Dropkick("#manageAppDistId");
 			select1.refresh();
-			$(".cloneDistrictCls").html(str);
+			$(".cloneDistrictCls").html(str1);
 			
 			
 		});
@@ -1378,8 +1386,10 @@ $(".dropkickClass").dropkick();
 	
 	function getMandamMuncipalties(num){
 		var constId = $("#constituencyId"+num).val();
+		var locationScopeId = $("#locationScopeSelId"+num).val();
 		var jsObj ={
-					constId:constId
+					constId:constId,
+					locationScopeId:locationScopeId
 					}
 					
 		$.ajax({
@@ -1937,7 +1947,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='<div class="col-md-7">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
-											str+='<img class="media-object thumbnailSearch thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 										str+='</div>';
 										str+='<div class="media-body">';
 										if(result[i].candidateType !=null && result[i].candidateType.length>0){
@@ -1972,7 +1982,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='</div>';
 								
 								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
-									str+='<input type="checkbox" class="apptDetailsDiv" id="uncheck'+result[i].id+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'">';
+									str+='<input type="checkbox" class="apptDetailsDiv" id="uncheck'+result[i].id+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'">';
 								str+='</div>';
 								
 							str+='</div>';
@@ -1997,10 +2007,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 var Uncheck = $(this).attr("attr_close_id");
 				 $(".closeIcon").attr("attr_close",Uncheck);
 				 
+				 var temp = cloneCount-1;
+				 
+				 $("#candiImageUrlId"+temp).val($(this).attr("attr_img_url"));//setting imageUrl to hidden variable for saving
 				 
 				 if($(this).attr("attr_candidateType")=="appointmentCandidate"){
-					 var temp = cloneCount-1;
-					$("#candidateId"+temp).val($(this).attr("attr_id")); //setting value to hidden variable for saving
+					 
+					$("#candidateId"+temp).val($(this).attr("attr_id")); //setting existingCandidateId to hidden variable for saving
 				 }
 				 
 				 
@@ -4563,6 +4576,9 @@ function getAppointmentCreatedUsers(){
 		getTotalAppointmentStatus();
 	});
 	
+	function setDefaultImage(img){
+	  img.src = "dist/Appointment/img/thumb.jpg";
+   }
 </script>
 </body>
 </html>
