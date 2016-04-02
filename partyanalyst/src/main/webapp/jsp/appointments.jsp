@@ -1059,7 +1059,7 @@ $(document).on("click","#addOneBlock",function(){
 	
 	e.find(".cloneCandiImageUrlCls").attr("id","candiImageUrlId"+cloneCount);
 	e.find(".cloneCandiImageUrlCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].candiImageUrl');
-	
+	e.find(".closeIcon").attr("clone_block_count",cloneCount);
 	
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
@@ -1094,8 +1094,8 @@ $(document).on("click","#addOneBlock",function(){
 
 $(document).on("click",".closeIcon",function(){
 	$(this).parent().parent().remove();
-	var Uncheckpop = $(this).attr("attr_close");
-	$("#"+Uncheckpop).attr('checked', false);
+	var blockCount = $(this).attr("clone_block_count");
+	$("#uncheck"+blockCount).parent().find(".apptDetailsDiv").prop('checked', false); 
 });
 $(".dropkickClass").dropkick();
 	$(document).ready(function(){
@@ -1982,7 +1982,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='</div>';
 								
 								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
-									str+='<input type="checkbox" class="apptDetailsDiv" id="uncheck'+result[i].id+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'">';
+									str+='<input type="checkbox" class="apptDetailsDiv"  attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'">';
 								str+='</div>';
 								
 							str+='</div>';
@@ -2003,9 +2003,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			  $("#addOneBlock").trigger("click");
 			
 				 $("#checkboxMemberAjax").css("display","block");
-				 $(this).attr("clone_block_count",cloneCount);
-				 var Uncheck = $(this).attr("attr_close_id");
-				 $(".closeIcon").attr("attr_close",Uncheck);
+				
 				 
 				 var temp = cloneCount-1;
 				 
@@ -2016,7 +2014,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					$("#candidateId"+temp).val($(this).attr("attr_id")); //setting existingCandidateId to hidden variable for saving
 				 }
 				 
-				 
+				   $(this).attr("clone_block_count",temp);
+				   $(this).attr("id",'uncheck'+temp);
+				   
 				 var candidateType = $(this).attr("attr_candidatetype");
 				 var id = $(this).attr("attr_id");
 				 
