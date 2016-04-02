@@ -11772,5 +11772,11 @@
 			<param name="root">candidatesList</param>
 		</result>
 	</action>
+	
+	<action name="getCheckCandidateCadreExitsAction" class="cadreDetailsAction" method="getCheckCandidateDetails">
+		<result type="json" name="success">
+			<param name="root">cadreDetlsLst</param>
+		</result>
+	</action>
 </package>
 </struts>      

@@ -1812,6 +1812,7 @@ var globalCadreId = '${cadreId}';
 					 getCandidateAndConstituencySurveyResult();
 					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					 getCandidateElectDetatails(localCadreId);
+					 getCheckCandidateExits();
 					 getDeathsAndHospitalizationDetails();
 					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
@@ -4465,6 +4466,25 @@ $(document).on("click",".summaryNewsCls",function(){
 	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&lid='+locationId+'&ltp='+locationType+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
 });
 
+var globalCandidateResult;	
+ function getCheckCandidateExits(){
+	var obj={
+		 cadreId : globalCadreId
+		  }
+		  
+    $.ajax({
+		type:'GET',
+		url :'getCheckCandidateCadreExitsAction.action',
+		data : {task:JSON.stringify(obj)} 
+	}).done(function(result){
+		gCandidateResult=[];
+		if(result!=null && result.length>0){
+			globalCandidateResult = result;
+			
+		}
+	});
+};
+
 
 function getDeathsAndHospitalizationDetails(){
 	
@@ -4472,44 +4492,78 @@ function getDeathsAndHospitalizationDetails(){
 	$("#dataLoadingsImgForDeathCount").show();
 	$("#deathHospitalDivId").html("");
 	
-	var panchayatId=globalPanchayatId;
-	if(panchayatId ==undefined || panchayatId =="" || panchayatId ==null){
-		panchayatId=0;
-	}
-	var mandalId=globalTehsilId;
-	if(mandalId ==undefined || mandalId =="" || mandalId ==null){
-		mandalId=0;
-	}
-	
-	var constituencyId=globalConstituencyId;
-	if(constituencyId ==undefined || constituencyId =="" || constituencyId ==null){
-		constituencyId=0;
-	}
-	
-	var parliamentId=globalParliamentId;
-	if(parliamentId ==undefined || parliamentId =="" || parliamentId ==null){
-		parliamentId=0;
-	}
-	
-	var districtId=globalDistrictId;
-	if(districtId ==undefined || districtId =="" || districtId ==null){
-		districtId=0;
-	}
+	 if(globalCandidateResult != null && gCandidateResult.length > 0)
+	   {
+		for(var i in globalCandidateResult){
+			
+			var panchayatId=globalCandidateResult[i].villageId;
+             if(panchayatId ==undefined || panchayatId ==0 || panchayatId ==null){
+				panchayatId=0;
+			}
+			
+			var mandalId=globalCandidateResult[i].tehsilId;
+			if(mandalId ==undefined || mandalId ==0 || mandalId ==null){
+				mandalId=0;
+			}
+			
+			var constituencyId=globalCandidateResult[i].constituencyId;
+			if(constituencyId ==undefined || constituencyId ==0 || constituencyId ==null){
+				constituencyId=0;
+			}
+			
+			var districtId=globalCandidateResult[i].districtId;
+		    if(districtId ==undefined || districtId =="" || districtId ==null){
+				districtId=0;
+			}
 
+	         var parliamentId=globalCandidateResult[i].ParliamentConstituencyId;;
+				if(parliamentId ==undefined || parliamentId =="" || parliamentId ==null){
+					parliamentId=0;
+				}	
+		} 
+	}
+	else
+	{
+			var panchayatId=globalPanchayatId;
+			if(panchayatId ==undefined || panchayatId =="" || panchayatId ==null){
+				panchayatId=0;
+			}
+			var mandalId=globalTehsilId;
+			if(mandalId ==undefined || mandalId =="" || mandalId ==null){
+				mandalId=0;
+			}
+			
+			var constituencyId=globalConstituencyId;
+			if(constituencyId ==undefined || constituencyId =="" || constituencyId ==null){
+				constituencyId=0;
+			}
+			
+			var parliamentId=globalParliamentId;
+			if(parliamentId ==undefined || parliamentId =="" || parliamentId ==null){
+				parliamentId=0;
+			}
+			
+			var districtId=globalDistrictId;
+			if(districtId ==undefined || districtId =="" || districtId ==null){
+				districtId=0;
+			}
+	}
 	var jsObj={
 		panchayatId:panchayatId,
 		mandalId:mandalId,
 		constituencyId:constituencyId,
 		parliamentId:parliamentId, 
 		districtId:districtId
+		
 	}
 	$.ajax({
 			type:'POST',
 			 url: 'getDeathsAndHospitalizationDetailsAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				console.log(districtId);
+				console.log(constituencyId);
 				$("#dataLoadingsImgForDeathCount").hide();
-				
 				var str='';
 				if(result !=null){
 					if(result.verifierVOList !=null && result.verifierVOList.length>0){
@@ -7006,6 +7060,8 @@ function buildPopupComplaintInfo1(result) {
 	$("#tableId").dataTable();
 	$("#tableId").removeClass("dataTable")
 }
+
+
 
 </script>
 
