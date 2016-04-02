@@ -25,6 +25,8 @@ public class AppointmentBasicInfoVO {
 	private String priority;
 	private String uniqueId;
 	private Integer count;
+	private String candiImageUrl;
+	
 	public Integer getCount() {
 		return count;
 	}
@@ -167,6 +169,12 @@ public class AppointmentBasicInfoVO {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getCandiImageUrl() {
+		return candiImageUrl;
+	}
+	public void setCandiImageUrl(String candiImageUrl) {
+		this.candiImageUrl = candiImageUrl;
 	}
 	
 }
