@@ -484,6 +484,11 @@
                                                 </div>
                                             </div>
                                         </div>
+										<div class="row" style="margin-left:5px;">
+											<div class=" col-md-2 m_top10">
+												<select id="selectStsForLabelId" class="form-control" placeholder="Select Status"></select>
+											</div>
+										</div>
                                         <div class="panel-body">
                                         	<div class="table-responsive">
 											<div id="appntmntLblDltSttsId"></div>
@@ -1102,6 +1107,7 @@ $(".dropkickClass").dropkick();
 				searchTypeRadioCls();
 				
 			}, 1000);
+			getAppointmentsLabelStatus("onload");
 			
 	});
 	getAppointmentUsersDtls();
@@ -1508,10 +1514,12 @@ $(".dropkickClass").dropkick();
 		
 		var slctDate='';
 		var appntmntUsrId=$("#appointmentUserSelectBoxId").val();
+		var status = $("#selectStsForLabelId").val();
 		
 		var jsObj={
 			currentDate:slctDate,
-			apptmntUsrId:appntmntUsrId
+			apptmntUsrId:appntmntUsrId,
+			status: status
 		}
 		$.ajax({
 			type : 'GET',
@@ -3633,12 +3641,19 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				str+='</div>';
 			 str+='</div>';
 		 str+='</div>';
-		 getAppointmentsLabelStatus();
+		 getAppointmentsLabelStatus("status");
 		  $("#buildAppntmntStsTblId").html(str);
 		  $("#myModalId").modal("show");
 	}
 	
-	function getAppointmentsLabelStatus(){
+	function getAppointmentsLabelStatus(type){
+		
+		if(type !=null && type == "status"){
+			$("#selectStsId option").remove();
+		}else if(type !=null && type == "onload"){
+			$("#selectStsForLabelId option").remove();
+		}
+		
 		var jsObj={
 		}
 		$.ajax({
@@ -3647,12 +3662,29 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#selectStsId").append('<option value="0">Select Status</option>');
-		if(result!=null && result.length>0){
-			   for(var i in result){
+			var str='';
+			if(type !=null && type == "status"){
+				$("#selectStsId").append('<option value="0">Select Status</option>');
+				if(result!=null && result.length>0){
+				for(var i in result){
 					$("#selectStsId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			   }
-		   }
+				}
+			  }
+			}else if(type !=null && type == "onload"){
+					str+='<option value="0">Select Status</option>';
+				if(result!=null && result.length>0){
+				for(var i in result){
+					if(result[i].id==1){
+						str+='<option value='+result[i].id+' selected>'+result[i].name+'</option>';
+					}else{
+						str+='<option value='+result[i].id+'>'+result[i].name+'</option>';
+					}
+				}
+				$("#selectStsForLabelId").html(str);
+				
+			  }
+			}
+			
 		});
 	}
 
