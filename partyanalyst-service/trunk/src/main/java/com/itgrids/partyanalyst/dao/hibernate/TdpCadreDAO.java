@@ -6368,25 +6368,25 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			StringBuilder sb=new StringBuilder();
 			
-			sb.append(" select  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
-					"           model.memberShipNo, voter.voterIDCardNo " +
-					"   from    TdpCadre model left join model.voter voter" +
-					"   where   model.isDeleted='N' and model.enrollmentYear = :enrollmentYear ");
+			sb.append(" SELECT  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
+					"           model.memberShipNo, voter.voterIDCardNo, model.image " +
+					"   FROM    TdpCadre model LEFT JOIN model.voter voter" +
+					"   WHERE   model.isDeleted='N' AND model.enrollmentYear = :enrollmentYear ");
 			if(searchType.equalsIgnoreCase("mobileno")){
 				
-				sb.append(" and model.mobileNo = :searchValue ");
+				sb.append(" AND model.mobileNo = :searchValue ");
 				
 			}else if(searchType.equalsIgnoreCase("mebershipno")){
 				
-				sb.append(" and model.memberShipNo = :searchValue ");
+				sb.append(" AND model.memberShipNo = :searchValue ");
 				
 			}else if(searchType.equalsIgnoreCase("votercardno")){
 				
-				sb.append(" and voter.voterIDCardNo = :searchValue ");
+				sb.append(" AND voter.voterIDCardNo = :searchValue ");
 			}
 			else if(searchType.equalsIgnoreCase("name"))
 			{
-				sb.append(" and model.firstname like '%"+searchValue+"%' ");
+				sb.append(" AND model.firstname LIKE '%"+searchValue+"%' ");
 			}
 			Query query = getSession().createQuery(sb.toString());
 			if(!searchType.equalsIgnoreCase("name"))
