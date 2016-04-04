@@ -260,6 +260,9 @@
 												<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
 												<p id="errorDivId" style="color:red"></p>
                                             </div>
+											<div class="col-md-2">
+												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Submit</button>
+											</div>
                                             <div class="col-md-3 m_top20">
 												    <div class="onoffswitch">
 														<input type="checkbox" value="1" name="searchTypeRadio" class="onoffswitch-checkbox searchTypeRadioCls" id="myonoffswitch" checked>
@@ -273,9 +276,7 @@
 												<!--<input type="radio" value="1" name="searchTypeRadio" class="searchTypeRadioCls" checked/>SEARCH MEMBER
 												<input type="radio" value="2" name="searchTypeRadio" class="searchTypeRadioCls"/>Advanced Search-->
                                             </div>
-											<div class="col-md-2">
-												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();">Submit</button>
-											</div>
+											
 											<div class="col-md-1">
 												<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
 											</div>
@@ -283,7 +284,9 @@
 									 </div>
 										
                                         <div class="row m_top25">
-                                        	<div id="apptmemberDetailsDiv"></div>
+											<div class="col-md-12">
+												<div id="apptmemberDetailsDiv"></div>
+											</div>
                                         </div>
                                         
                                     </div>
@@ -1944,7 +1947,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	function buildapptmemberDetails(result){
 		var str='';
 		if(result !=null && result.length>0){
+			str+='<table id="searchedMembersId">';
+			str+='<thead><th></th></thead>';
+			str+='<tbody>';
 			for(var i in result){
+					str+='<tr><td>';
 					str+='<div class="col-md-12">';
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
@@ -1995,16 +2002,22 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					 
 					str+='</ul>';
 				str+='</div>';
+				str+='</td>';
+				str+='</tr>';
 			}
+			str+='</tbody>';
+			str+='</table>';
 		}
 		
 		$("#apptmemberDetailsDiv").html(str);
+		applyPagination();
 	}
 	
 	 $(document).on("click",".apptDetailsDiv",function(){
 		 
 		 
 		 if($(this).is(':checked')){
+			 
 			  $("#addOneBlock").trigger("click");
 			
 				 $("#checkboxMemberAjax").css("display","block");
@@ -2012,6 +2025,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 
 				 var temp = cloneCount-1;
 				 
+				 $('html, body').animate({
+                    scrollTop: $('#block'+temp).offset().top
+                }, 2000);
 				 $("#candiImageUrlId"+temp).val($(this).attr("attr_img_url"));//setting imageUrl to hidden variable for saving
 				 
 				 if($(this).attr("attr_candidateType")=="appointmentCandidate"){
@@ -4644,11 +4660,12 @@ function getAppointmentCreatedUsers(){
 		$("#appDistErrId").html('');
 		$("#appConstErrId").html('');
 	});
-	
 	$(document).on("click","#myonoffswitch",function(){
 		$("#apptmemberDetailsDiv").html('');
 	});
-		
+	function applyPagination(){
+		$('#searchedMembersId').DataTable();
+	}
 </script>
 </body>
 </html>
