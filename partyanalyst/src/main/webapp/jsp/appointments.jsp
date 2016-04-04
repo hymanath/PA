@@ -604,8 +604,9 @@
                                                 </label><span style='color:red' id="checkBoxErrId">
 												
                                           </div>-->
-                                          <div class="col-md-2">
-                                            	<button class="btn btn-success btn-block" style="margin-top: 33px;" id="searchAppointmentdetailsId" >VIEW</button>
+                                          <div class="col-md-3">
+                                            	<button class="btn btn-success" style="margin-top: 33px;" id="searchAppointmentdetailsId" >VIEW</button>
+                                            	<img src="images/search.gif" style="display:none;"  id="ajaxImgForApntSearchId"/> 
                                           </div>
                                         </div>
                                     </div>
@@ -2278,6 +2279,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		  $("#appConstErrId").html("Select Constituency.");
            return;		  
 		 }
+		 $("#ajaxImgForApntSearchId").show();
     	var jsObj={
 			designationId:designationId,
 			priorityId:priorityId,
@@ -2294,6 +2296,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+				 $("#ajaxImgForApntSearchId").hide();
 				$("#appointmentRequestedMembersId").show();
 				if(result!=null && result!=0){
 				  buidResult(result,labelName);
