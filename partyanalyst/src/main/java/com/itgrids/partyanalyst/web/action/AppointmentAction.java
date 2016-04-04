@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -651,7 +652,20 @@ public String getCandidateWiseDetails(){
 		
 		try{
 			jObj = new JSONObject(getTask());
-			 resultStatus=appointmentService.updateMemberAppointmentsStatus(jObj.getLong("memberAppntId"),jObj.getLong("updateAppntStatusId"));
+			JSONArray jsonarr = jObj.getJSONArray("statusList");
+			List<String> list = new ArrayList<String>(0);
+			if(jsonarr != null && jsonarr.length() > 0){
+				for(int i=0;i<jsonarr.length();i++){
+					list.add(jsonarr.getString(i));
+				}
+			}
+			
+			HashMap<Long,Long> map = new HashMap<Long, Long>(0);
+			for (String string : list) {
+				String[] str = string.split(":");
+				map.put(Long.parseLong(str[2].split("}")[0]),Long.parseLong(str[1].split(",")[0]));
+			}
+			 resultStatus=appointmentService.updateMemberAppointmentsStatus(map);
 		}catch(Exception e){
 			LOG.error("Exception raised at updateMemberAppointmentsStatus() method of AppointmentAction", e);
 		}
