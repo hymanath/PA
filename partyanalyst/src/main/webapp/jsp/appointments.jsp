@@ -592,6 +592,7 @@
                                             	<label>Select Constituency<span style='color:red'>&nbsp *</span></label>
                                                 <select id="manageAppConstId" class="dropkickClass">
                                                 	<option value="select">Constituency Name</option>
+													<option value="0" selected>ALL</option>
                                                 </select>
 												<span style='color:red' id="appConstErrId"></span>
                                           </div>
@@ -1148,7 +1149,7 @@ $(".dropkickClass").dropkick();
 			
 			$("#manageAppDesigId  option").remove();
 			$("#manageAppDesigId").append('<option value="select">Select Designation</option>');
-			$("#manageAppDesigId").append('<option value="0">ALL</option>');
+			$("#manageAppDesigId").append('<option value="0" selected>ALL</option>');
 			for(var i in result){
 				$("#designationListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -1184,7 +1185,7 @@ $(".dropkickClass").dropkick();
 	function buildAppointmentStatusList(result){
 			$("#manageAppStatusId  option").remove();
 			$("#manageAppStatusId").append('<option value="select">Select Appointment Status</option>');
-			$("#manageAppStatusId").append('<option value="0">ALL</option>');
+			$("#manageAppStatusId").append('<option value="0" selected>ALL</option>');
 			for(var i in result){
 				$("#manageAppStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
@@ -1209,7 +1210,7 @@ $(".dropkickClass").dropkick();
 	function buildAppointmentPriorityList(result){
 		$("#manageAppTypeId  option").remove();
 		$("#manageAppTypeId").append('<option value="select">Select Priority</option>');
-		$("#manageAppTypeId").append('<option value="0">ALL</option>');
+		$("#manageAppTypeId").append('<option value="0" selected>ALL</option>');
 		$("#createAppTypeListId  option").remove();
 		$("#createAppTypeListId").append('<option value="0">Select Appointment Type</option>');
 		for(var i in result){
@@ -1317,7 +1318,7 @@ $(".dropkickClass").dropkick();
 			var str1='';
 			str+='<option value="select">Select District</option>';
 			str1+='<option value="select">Select District</option>';
-			str+='<option value="0">ALL</option>';
+			str+='<option value="0" selected>ALL</option>';
 			if(result != null && result.length > 0){
 				for(var i in result){
 					// var obj={id:result[i].id,value:result[i].name};
@@ -1352,7 +1353,7 @@ $(".dropkickClass").dropkick();
 			}).done(function(result){
 				var str='';
 				str+='<option value="select">Select Constituency</option>';
-				str+='<option value="0">ALL</option>';
+				str+='<option value="0" selected>ALL</option>';
 				if(result != null && result.length > 0){
 					for(var i in result){
 						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';	
@@ -2482,15 +2483,19 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
       });
 	 
 	  function addAppointmentsToLable(){
+		  $("#statusMsgAppntReqt").html("");
+		var appointmentsArray = [];
+		$('.appointmentcheckBoxClass').each(function(){
+			if ($(this).is(':checked')){
+				appointmentsArray.push( $(this).val() );
+			 }
+        });
 		  
-		  $("#updateMemberAjax").css("display","block");
-		  var appointmentsArray = [];
-		  $('.appointmentcheckBoxClass').each(function(){
-			  if ($(this).is(':checked')){
-				  appointmentsArray.push( $(this).val() );
-			  }
-          });
-		  
+		if(appointmentsArray == null || appointmentsArray.length <= 0){
+			$("#statusMsgAppntReqt").html("<center><h5 style='margin-top: -22px;color: red;'>Please Select Atleast One Appointment.</h5></center>");
+			return;
+		  }
+		   $("#updateMemberAjax").css("display","block");
 		  var jsObj={
 				  	  apptLabelId:appointmentlabelId,
 				  	  appointmentsArray:appointmentsArray
