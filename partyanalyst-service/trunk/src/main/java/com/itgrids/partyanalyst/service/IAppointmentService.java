@@ -1,21 +1,20 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.HashMap;
 import java.util.List;
-
 
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
-import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
-import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
+import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 
 public interface IAppointmentService {
@@ -47,7 +46,7 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentLabels(Long aptUserId);
 	public List<IdNameVO> getAppointmentsLabelStatus();
 	public ResultStatus updateAppointmentsLabelStatus(Long labelId,Long labelstatusId);
-	public ResultStatus updateMemberAppointmentsStatus(Long memberAppntId,Long updateAppntStatusId);
+	public ResultStatus updateMemberAppointmentsStatus(HashMap<Long,Long> statusMap);
 	public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long registrationId);
 	public List<AppointmentDetailsVO> getViewAppointmentsOfALable(Long labelId);
 	public ResultStatus updateAppointmentStatus(AppointmentUpdateStatusVO inputVO,Long userId);
