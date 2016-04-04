@@ -2605,19 +2605,26 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				return status;
 			}
 		 
-		 	public ResultStatus updateMemberAppointmentsStatus(Long memberAppntId,Long updateAppntStatusId) {
+		 	public ResultStatus updateMemberAppointmentsStatus(final HashMap<Long,Long> statusMap) {
 			   
 				ResultStatus status=new ResultStatus();
 				try{
+
+					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+				        	if(statusMap != null && statusMap.size() > 0){
+				        		for (Entry<Long,Long> entry : statusMap.entrySet()) {
+				        			appointmentLabelDAO.updateMemberAppointmentsStatus(entry.getKey(),entry.getValue());	
+								}
+				        	}
+				        }
+					});
 					
-					 Integer updateCount=appointmentLabelDAO.updateMemberAppointmentsStatus(memberAppntId,updateAppntStatusId);	
-					 if(updateCount!=null && updateCount>0){
-						 status.setMessage("success");
-					 }else{
-						 status.setMessage("fail");
-					 }
-					
+					status.setMessage("success");
+					status.setResultCode(0);
 				}catch(Exception e){
+					 status.setMessage("fail");
+					 status.setResultCode(1);
 					LOG.error("Exception raised at updateAppointmentsLabelStatus() method of AppointmentService", e);
 				}
 				return status;
