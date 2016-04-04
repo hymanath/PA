@@ -1325,10 +1325,11 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				
 				for(Object[]  obj: list){
 					
-					if(obj[5]!=null && (Long)obj[5]>0){
+					if(obj[5]!=null && (Long)obj[5]>0){//checking wether the appointment is already for any label or not
 						
 						Long apptLabelId = (Long)obj[5];
-						if(apptLabelId == appointmentlabelId){
+						
+						if(apptLabelId.equals(appointmentlabelId)){//if assigned label is same label
 							AppointmentDetailsVO appointment =new AppointmentDetailsVO();
 							appointment.setAppointmentId(obj[0]!=null?(Long)obj[0]:0l);
 							appointment.setSubject(obj[1]!=null?obj[1].toString():"");
@@ -1340,7 +1341,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							//appointmentIds
 							appointmentIds.add(appointment.getAppointmentId());
 						}
-					}else{
+					}else{//adding not assigned appointments to any label
 						AppointmentDetailsVO appointment =new AppointmentDetailsVO();
 						appointment.setAppointmentId(obj[0]!=null?(Long)obj[0]:0l);
 						appointment.setSubject(obj[1]!=null?obj[1].toString():"");
