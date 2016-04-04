@@ -4233,12 +4233,25 @@ function buildTimeSlotsTable(result){
 		$("#errDigitsId").html('');
 		$("#searchValueId").val('');
 		$("#searchTypeId").val(0);
+		 $("#advanceSearchTypeId").val(0); 
+		 $("#advanceSearchValueId").val('');
 		$("#createAppTypeListId").val(0);
+		$("#errorDivId").html('');
 		
 		var searchTypeSelect = new Dropkick("#searchTypeId");
 		searchTypeSelect.refresh();
 		var createAppTypeSelect = new Dropkick("#createAppTypeListId");
 		createAppTypeSelect.refresh();
+		var advanceSearchType = new Dropkick("#advanceSearchTypeId");
+		advanceSearchType.refresh();
+		
+		var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
+		if(selected != 1){
+			$( "#myonoffswitch" ).trigger( "click" );
+		}
+		
+		$("#apptmemberDetailsDiv").html('');
+		
 	});
 	
 	$(".errrLabelClearCls").click(function(){
@@ -4527,13 +4540,17 @@ function getAppointmentCreatedUsers(){
 		var searchValue;
 		var advanceSearchType = $("#advanceSearchTypeId").val();
 		
+		 if(advanceSearchType==0){
+			 errorstr='Please Select Search Type';
+			 $("#errorDivId").html(errorstr);
+		 }
 		if(advanceSearchType == 1)
 		{
 			 searchType = "name";
 			 searchValue = $("#advanceSearchValueId").val();
 			
 			 if(searchValue == null || searchValue.length ==0){
-				 errorstr='Search By Name Should not be empty';
+				 errorstr='Please Enter Name';
 				 $("#errorDivId").html(errorstr);
 				 return;
 			 }
@@ -4627,6 +4644,11 @@ function getAppointmentCreatedUsers(){
 		$("#appDistErrId").html('');
 		$("#appConstErrId").html('');
 	});
+	
+	$(document).on("click","#myonoffswitch",function(){
+		$("#apptmemberDetailsDiv").html('');
+	});
+		
 </script>
 </body>
 </html>
