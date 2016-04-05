@@ -792,7 +792,11 @@
   Sortable.create(confirmAppointmentBlockDropId,{
       filter: '.hidelabel',
       onFilter: function (evt) {
-        evt.item.parentNode.removeChild(evt.item);
+		 var cloningData = $(evt.item.parentNode).html();
+		 
+		 $("#dragId").html(cloningData)
+		// $("#dragId").find(".panel-default").addClass("newClass")
+		evt.item.parentNode.removeChild(evt.item);
 		if($("#confirmAppointmentBlockDropId").has( ".manageAppViewPanelClass" ))
 		{
 			$("#confirmAppointmentBlockDropId").append("<h4 class='deleteTag'>DROP HERE</h4>")
@@ -817,8 +821,8 @@
       onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);
 		$("#confirmAppointmentBlockDropId").find(".deleteTag").remove();
 		$("#confirmAppointmentBlockDropId").css("height","");
-		$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
-		$("#confirmAppointmentBlockDropId").find(".manageAppViewPanelClass").removeClass("newClass");
+		//$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
+		//$("#confirmAppointmentBlockDropId").find(".manageAppViewPanelClass").removeClass("newClass");
 	  },
       onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]);},
       onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
@@ -3642,7 +3646,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				dataTransfer.setData('Text', dragEl.textContent);
 			  },
 			  //group: "QuestionnOptions",
-			  group: { name: "confirmAppointmentsBlock", put: false, pull: ['clone'] },
+			  group: { name: "confirmAppointmentsBlock", put: false, pull: true },
 			  animation: 150,
 			  store: {
 				get: function (sortable) {
