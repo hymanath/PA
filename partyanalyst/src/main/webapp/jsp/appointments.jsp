@@ -2717,7 +2717,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		var labelName = $(this).attr("attr_label_name");
 		
 		var jsObj={
-			labelId : $(this).attr("attr_label_id")
+			labelId : $(this).attr("attr_label_id"),
+			callFrom : ""
 		}
 		
 		$.ajax({
@@ -3525,7 +3526,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	
 	function getAppointmentsOfALabel(){
 		var jsObj={
-			labelId : $("#appointmentLabelToGetSlotsId").val()
+			labelId : $("#appointmentLabelToGetSlotsId").val(),
+			callFrom : "timeSlot"
 		}
 		
 		$.ajax({
@@ -4299,7 +4301,8 @@ function buildTimeSlotsTable(result){
 		var labelName = $(this).attr("attr_label_name");
 		var labelId = $(this).attr("attr_label_id");
 		var jsObj={
-			labelId : labelId
+			labelId : labelId,
+			callFrom : ""
 		}
 		
 		$.ajax({
