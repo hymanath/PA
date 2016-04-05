@@ -2298,7 +2298,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	}
 	
 	//view apointments for label
-	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId){
+	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
 		try {
@@ -2545,45 +2545,49 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				appointmentsMap.clear();
 			}
 			
-			//Getting appointments which are allocating to the TimeSlot 
-			List<Object[]> timeSlotAptList = labelAppointmentDAO.getViewAppointmentsOfALable(labelId);
-			
-			List<Long> timeSlotApntmenttList = new ArrayList<Long>();
-			if(list !=null && list.size()>0){				
-				appointmentsMap = new LinkedHashMap<Long, AppointmentDetailsVO>();				
-				for(Object[]  obj: list){				
-					timeSlotApntmenttList.add(obj[0]!=null?(Long)obj[0]:0l);				
-				}
+			if(callFrom.equalsIgnoreCase("timeSlot")){
+				removeTimeSlotExistedAppointments(labelId,finalList,appointmentsMap);
 			}
-			
-			//removing element from final List If it's already allocated to time slot 
-			if(finalList !=null && finalList.size()>0){
-				
-				List<AppointmentDetailsVO> duplicateList = new ArrayList<AppointmentDetailsVO>();
-				
-				duplicateList.addAll(finalList);								
-				
-				for (AppointmentDetailsVO aptntmnt : finalList) {					
-					if(timeSlotAptList !=null && timeSlotAptList.size()>0){						
-						for(Long apt :timeSlotApntmenttList){							
-							if(aptntmnt.getAppointmentId().equals(apt)){
-								duplicateList.remove(aptntmnt);
-							}							
-						}
-						
-					}					
-				}
-				finalList.clear();
-				finalList.addAll(duplicateList);
-			}
-			
-			
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at viewAppointmentsOfALable",e);
 		}
 		return finalList;
 	}
+	 
+	public void removeTimeSlotExistedAppointments(Long labelId,List<AppointmentDetailsVO> finalList,Map<Long, AppointmentDetailsVO> appointmentsMap){
+		//Getting appointments which are allocating to the TimeSlot 
+		List<Object[]> timeSlotAptList = labelAppointmentDAO.getViewAppointmentsOfALable(labelId);
+		
+		List<Long> timeSlotApntmenttList = new ArrayList<Long>();
+		if(timeSlotAptList !=null && timeSlotAptList.size()>0){				
+			appointmentsMap = new LinkedHashMap<Long, AppointmentDetailsVO>();				
+			for(Object[]  obj: timeSlotAptList){				
+				timeSlotApntmenttList.add(obj[0]!=null?(Long)obj[0]:0l);				
+			}
+		}
+		
+		//removing element from final List If it's already allocated to time slot 
+		if(finalList !=null && finalList.size()>0){
+			
+			List<AppointmentDetailsVO> duplicateList = new ArrayList<AppointmentDetailsVO>();
+			
+			duplicateList.addAll(finalList);								
+			
+			for (AppointmentDetailsVO aptntmnt : finalList) {					
+				if(timeSlotAptList !=null && timeSlotAptList.size()>0){						
+					for(Long apt :timeSlotApntmenttList){							
+						if(aptntmnt.getAppointmentId().equals(apt)){
+							duplicateList.remove(aptntmnt);
+						}							
+					}
+					
+				}					
+			}
+			finalList.clear();
+			finalList.addAll(duplicateList);
+		}
+	} 
 		
 		public List<IdNameVO> getAppointmentsLabelStatus(){
 			List<IdNameVO> labelList = new ArrayList<IdNameVO>();
