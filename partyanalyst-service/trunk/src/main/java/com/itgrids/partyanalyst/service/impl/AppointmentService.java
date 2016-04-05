@@ -35,18 +35,19 @@ import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentDAO;
 import com.itgrids.partyanalyst.dao.ILabelAppointmentHistoryDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
-import com.itgrids.partyanalyst.dao.hibernate.DistrictDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -86,12 +87,12 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentCandidateDesignationDAO candidateDesignationDAO;
 	private IAppointmentPriorityDAO appointmentPriorityDAO;
 	private IAppointmentLabelStatusDAO appointmentLabelStatusDAO;
-	private DistrictDAO districtDAO;
-	private ConstituencyDAO constituencyDAO;
-	private TehsilDAO tehsilDAO;
-	private UserAddressDAO userAddressDAO;
-	private VoterDAO voterDAO;
-	private TdpCadreDAO tdpCadreDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private IUserAddressDAO userAddressDAO;
+	private IVoterDAO voterDAO;
+	private ITdpCadreDAO tdpCadreDAO;
 	private IAppointmentCandidateDAO appointmentCandidateDAO;
 	private IAppointmentManageUserDAO appointmentManageUserDAO;
 	private IAppointmentLabelDAO appointmentLabelDAO;
@@ -157,39 +158,48 @@ public class AppointmentService implements IAppointmentService{
 	}
 	public void setAppointmentDAO(IAppointmentDAO appointmentDAO) {
 		this.appointmentDAO = appointmentDAO;
+	}	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
 	}
-	public TehsilDAO getTehsilDAO() {
-		return tehsilDAO;
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
 	}
-	public void setTehsilDAO(TehsilDAO tehsilDAO) {
-		this.tehsilDAO = tehsilDAO;
-	}
-	public ConstituencyDAO getConstituencyDAO() {
-		return constituencyDAO;
-	}
-	public void setConstituencyDAO(ConstituencyDAO constituencyDAO) {
-		this.constituencyDAO = constituencyDAO;
-	}
-	public DistrictDAO getDistrictDAO() {
+	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
 	}
-	public void setDistrictDAO(DistrictDAO districtDAO) {
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
-	public UserAddressDAO getUserAddressDAO() {
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public IUserAddressDAO getUserAddressDAO() {
 		return userAddressDAO;
 	}
-	public void setUserAddressDAO(UserAddressDAO userAddressDAO) {
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
 	}
-	public VoterDAO getVoterDAO() {
+	public IVoterDAO getVoterDAO() {
 		return voterDAO;
 	}
-	public void setVoterDAO(VoterDAO voterDAO) {
+	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
 	}
-	public TdpCadreDAO getTdpCadreDAO() {
+	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
+	}
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
 	}
 	public void setTdpCadreDAO(TdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
