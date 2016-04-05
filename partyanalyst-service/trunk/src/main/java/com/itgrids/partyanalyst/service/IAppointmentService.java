@@ -41,7 +41,7 @@ public interface IAppointmentService {
 	public LabelStatusVO getLabelAndStatuswiseCountsOfAppointments();
 	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId);
 	public List<AppointmentScheduleVO>  getAppointmentSearchDetails(AppointmentInputVO inputVo);
-	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId);
+	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom);
 	public AppointmentSlotsVO getTimeSlotsDetails(long appointmentLabelId);
 	public List<IdNameVO> getAppointmentLabels(Long aptUserId);
 	public List<IdNameVO> getAppointmentsLabelStatus();
