@@ -605,7 +605,7 @@ public String getCandidateWiseDetails(){
 	public String viewAppointmentsOfALable(){
 		try {
 			jObj = new JSONObject(getTask());
-			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"));
+			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"),jObj.getString("callFrom"));
 		} catch (Exception e) {
 			LOG.error("Exception riased at viewAppointmentsOfALable", e);
 		}
