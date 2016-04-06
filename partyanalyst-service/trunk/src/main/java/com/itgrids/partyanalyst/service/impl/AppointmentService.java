@@ -2764,6 +2764,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						appointment.setFromDateStr(obj[8]!=null?obj[8].toString():"");
 						appointment.setToDateStr(obj[9]!=null?obj[9].toString():"");
 						appointment.setUserName(obj[10] !=null ? obj[10].toString():"");
+						appointment.setTimeSlotId(obj[11]!=null?(Long)obj[11]:0l);
 						appointmentsMap.put(appointment.getAppointmentId(),appointment);
 						
 						//appointmentIds

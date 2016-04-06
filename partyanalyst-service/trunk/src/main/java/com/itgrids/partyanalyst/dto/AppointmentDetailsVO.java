@@ -39,6 +39,8 @@ public class AppointmentDetailsVO implements Serializable{
     private Long dateTypeId;
     private String dateType;
 	private Long   minDateCheck=0l;
+	
+	private Long timeSlotId;
     
 	public String getName() {
 		return name;
@@ -201,6 +203,12 @@ public class AppointmentDetailsVO implements Serializable{
 	}
 	public void setMinDateCheck(Long minDateCheck) {
 		this.minDateCheck = minDateCheck;
+	}
+	public Long getTimeSlotId() {
+		return timeSlotId;
+	}
+	public void setTimeSlotId(Long timeSlotId) {
+		this.timeSlotId = timeSlotId;
 	}
     
 	
