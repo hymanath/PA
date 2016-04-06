@@ -4843,6 +4843,7 @@ function getAppointmentCreatedUsers(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
+				$("#errorDivForTimeSlotId").show();
 				getViewAppointmentsOfALable();
 				if(type=="save"){
 				 $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Saved Successfully</p>");
