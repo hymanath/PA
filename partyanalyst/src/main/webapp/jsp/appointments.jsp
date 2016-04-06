@@ -4858,7 +4858,6 @@ function getAppointmentCreatedUsers(){
 				}
 			}else{
 				 $("#errorDivForTimeSlotId").html("<p style='color:red;font-size:20px'>Failure,Some problem occured while creating time slot.</p>");
-				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
 				   $('html, body').animate({
 				    scrollTop: $("#errorDivForTimeSlotId").offset().top
 					}, 2000);
