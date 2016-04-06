@@ -1729,10 +1729,22 @@ function buildDayWiseAttendnenceForBatch(result,center){
 				str+='<th>Batch</th>';
 				str+='<th>Day 1 Count</th>';
 				str+='<th>Day 2 Count</th>';
-				str+='<th>Day 3 Count</th>';
+				
+				var flag=false;
+				if(result.simpleVOList1 !=null && result.simpleVOList1.length>0 && 
+					 result.simpleVOList1.length>2){						
+						flag = true;			
+				}
+				if(flag){
+					str+='<th>Day 3 Count</th>';
+				}
+				
 				str+='<th>1 Day Attended Members</th>';
 				str+='<th>2 Days Attended Members</th>';
-				str+='<th>3 Days Attended Members</th>';
+				if(flag){
+					str+='<th>3 Days Attended Members</th>';
+				}
+				
 				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -1751,16 +1763,18 @@ function buildDayWiseAttendnenceForBatch(result,center){
 					}else{
 						str+='<td>0</td>';
 					}
-					if(result.day1Count !=null){
+					if(result.day2Count !=null){
 						str+='<td>'+result.day2Count+' - IA<br/>'+result.twoDaysNIACount+' - NIA</td>';
 					}else{
 						str+='<td>0</td>';
-					}if(result.day1Count !=null){
-						str+='<td>'+result.day3Count+' - IA<br/>'+result.threeDaysNIACount+' - NIA</td>';
-					}else{
-						str+='<td>0</td>';
 					}
-					
+					if(flag){
+						if(result.day3Count !=null){
+						str+='<td>'+result.day3Count+' - IA<br/>'+result.threeDaysNIACount+' - NIA</td>';
+						}else{
+							str+='<td>0</td>';
+						}
+					}
 					str+='</tr>';
 				
 				str+='</tbody>';
