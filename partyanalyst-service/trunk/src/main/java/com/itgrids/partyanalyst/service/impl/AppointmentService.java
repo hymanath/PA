@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.model.AppointmentLabel;
 import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
 import com.itgrids.partyanalyst.model.AppointmentStatus;
 import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LabelAppointment;
 import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -3087,4 +3088,103 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		
 		return locationsList;
 	} 
+	 public List<IdNameVO> getDistrictsList(){
+			
+			List<IdNameVO> districtsList = null;
+			try{
+				List<Object[]> result = districtDAO.getDistrictsList();
+				if(result != null && result.size()  > 0){
+					districtsList = new ArrayList<IdNameVO>();
+					for(Object[] obj :result){
+						IdNameVO vo = new IdNameVO();
+						vo.setId((Long)obj[0]);
+						vo.setName(obj[1] != null?obj[1].toString():"");	
+						districtsList.add(vo);
+					}			
+				}
+			}
+			catch (Exception e) {
+				LOG.error("Exception in getDistrictsList()",e);	
+			}
+			return districtsList;
+		}
+	public List<IdNameVO> getConstituenciesByDistrict(Long districtId)
+	{
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+			 List<Constituency> list = constituencyDAO.getConstituenciesByDistrictID(districtId);	
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Constituency params : list)
+				 {
+					 IdNameVO vo = new IdNameVO();
+					 vo.setId(params.getConstituencyId());
+					 vo.setName(params.getName());
+					 returnList.add(vo);
+				 }
+			 }
+		}
+		catch (Exception e) {
+			LOG.error("Exception in getConstituenciesByDistrict()",e);	
+		}
+		return returnList;
+	}
+	
+	
+	public List<IdNameVO> getAllMandalsByConstituencyID(Long constituencyID){
+
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		List<Object[]> mandals = constituencyDAO.getTehsilsByConstituency(constituencyID);
+		if(mandals != null && mandals.size() > 0)
+		{
+			for(Object[] obj : mandals){
+				IdNameVO objVO = new IdNameVO();
+				objVO.setId((Long)obj[0]);
+				objVO.setName(obj[1].toString() +" " +"Mandal");
+				returnList.add(objVO);
+			}
+		}
+		List<Object[]> localbodies = constituencyDAO.getLocalElectionBodiesByconstituency(constituencyID);
+		if(localbodies != null && localbodies.size() > 0)
+		{
+				for(Object[] obj : localbodies){
+					IdNameVO objVO = new IdNameVO();
+					objVO.setId((Long)obj[0]);
+					objVO.setName(obj[1].toString());
+					returnList.add(objVO);
+				}
+		}
+		
+		
+		return returnList;
+	}
+	
+	
+	public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
+		
+		List<IdNameVO> panachatiesList = new ArrayList<IdNameVO>();
+		List<Object[]> panchayties=null;
+		if(tehsilId !=null ){
+			if(type.equalsIgnoreCase("mandal")){
+				 panchayties = constituencyDAO.getPanchayatsByTehsilId(Long.valueOf(tehsilId));
+			}
+			if(type.equalsIgnoreCase("muncipality")){
+				 panchayties = constituencyDAO.getWardIdAndName(Long.valueOf(tehsilId));
+			}
+			if(panchayties !=null ){
+				for (Object[] list : panchayties) {
+					IdNameVO panchayaties = new IdNameVO();
+					panchayaties.setId(Long.valueOf(list[0].toString()));
+					panchayaties.setName(list[1].toString());
+					panachatiesList.add(panchayaties);
+				}
+				return panachatiesList;
+			}
+			else{	
+				return null;
+			}
+		}
+		return panachatiesList;
+	}
+	
 }

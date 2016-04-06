@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -1539,5 +1540,39 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameter("distId", distId);
 		query.setParameter("stateId", stateId);
 		return query.list();
+	}
+	public List<Object[]> getTehsilsByConstituency(Long constituencyId)
+	{
+		Query query = getSession().createSQLQuery("select distinct t.tehsil_id as tehsilId ,t.tehsil_name as name from " +
+				" tehsil t,delimitation_constituency_mandal_details dcmd where t.tehsil_id = dcmd.tehsil_id and delimitation_constituency_id =" +
+				" (select delimitation_constituency_id from delimitation_constituency where constituency_id =:constituencyId and year = 2009)")
+				.addScalar("tehsilId",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getLocalElectionBodiesByconstituency(Long constituencyId)
+	{
+		Query query = getSession().createSQLQuery("select localBody.local_election_body_id as id,concat(localBody.name,' ',et.election_type) as name from assembly_local_election_body assemblyLocalBody,local_election_body  localBody," +
+				"election_type et  " +
+				" where assemblyLocalBody.local_election_body_id = localBody.local_election_body_id and  year = " +
+				" (select max(year) from assembly_local_election_body) and et.election_type_id = localBody.election_type_id " +
+				"and assemblyLocalBody.constituency_id = :constituencyId ")
+				.addScalar("id",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+		
+	}
+	public List<Object[]> getPanchayatsByTehsilId(Long tehsilId)
+	{
+		Query query = getSession().createSQLQuery("select model.panchayat_id as id , model.panchayat_name as name from panchayat model where model.tehsil_id = :tehsilId")
+		.addScalar("id",Hibernate.LONG)
+		.addScalar("name",Hibernate.STRING);
+		query.setParameter("tehsilId", tehsilId);
+		
+		return query.list();
+		
 	}
 }

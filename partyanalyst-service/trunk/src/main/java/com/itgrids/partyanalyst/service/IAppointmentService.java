@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.HashMap;
 import java.util.List;
 
+//import com.itgrids.grievance.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -56,4 +57,10 @@ public interface IAppointmentService {
 	public ResultStatus deleteAppointmentsOfLabel(List<Long> ids,Long labelId,Long registrationId);
 	public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue);
 	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds,Long locationScopeId);
+	public List<IdNameVO> getConstituenciesByDistrict(Long districtId);
+	public List<IdNameVO> getAllMandalsByConstituencyID(Long constituencyID);
+	public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type);
+	 public List<IdNameVO> getDistrictsList();
+	
+	
 }
