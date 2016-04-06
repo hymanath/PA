@@ -1059,10 +1059,12 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				var flag=false;
 				for(var i in result){
 					if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length>0 && 
-					 result[i].simpleVOList1.length>2){
-						str+='<th>Day 3 Count</th>';
+					 result[i].simpleVOList1.length>2){						
 						flag = true;
 					}					
+				}
+				if(flag){
+					str+='<th>Day 3 Count</th>';
 				}
 				
 				str+='<th>1 Day Attended Members</th>';
@@ -1078,12 +1080,21 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='<tr>';
 					str+='<td>'+result[i].centerName+'</td>';
 					str+='<td>'+result[i].batchName+'</td>';
-					for(var j in result[i].simpleVOList1){
+					var innternalFlag=false;
+					if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length<=2){
+						if(flag){
+							innternalFlag = true;
+						}
+					}
+					for(var j in result[i].simpleVOList1){						
 						if(result[i].simpleVOList1[j].total!=null){
 							str+='<td>'+result[i].simpleVOList1[j].total+' - IA <br/>'+result[i].simpleVOList1[j].nonInviteeAttendedCount+' - NIA</td>'
 						}else{
-							str+='<td>0</td>'
+							str+='<td>0</td>';
 						}
+					}
+					if(innternalFlag){
+						str+='<td>0</td>';
 					}
 					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day1Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].oneDayNIACount+'</a> - NIA</td>';
 					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day2Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].twoDaysNIACount+'</a> - NIA</td>';
