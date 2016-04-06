@@ -1055,10 +1055,22 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 				str+='<th>Batch</th>';
 				str+='<th>Day 1 Count</th>';
 				str+='<th>Day 2 Count</th>';
-				str+='<th>Day 3 Count</th>';
+				
+				var flag=false;
+				for(var i in result){
+					if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length>0 && 
+					 result[i].simpleVOList1.length>2){
+						str+='<th>Day 3 Count</th>';
+						flag = true;
+					}					
+				}
+				
 				str+='<th>1 Day Attended Members</th>';
 				str+='<th>2 Days Attended Members</th>';
-				str+='<th>3 Days Attended Members</th>';
+				if(flag){
+					str+='<th>3 Days Attended Members</th>';
+				}
+				
 				str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -1076,8 +1088,9 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day1Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="oneDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].oneDayNIACount+'</a> - NIA</td>';
 					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day2Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="twoDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].twoDaysNIACount+'</a> - NIA</td>';
 					
-					str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day3Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].threeDaysNIACount+'</a> - NIA</td>';
-					
+					if(flag){
+						str+='<td><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="Invitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].day3Count+'</a> - IA<br/><a attr_batchId='+result[i].batchId+' attr_dataType="threeDay" attr_type="nonInvitee" style="cursor:pointer" class="cadreDetailsCls">'+result[i].threeDaysNIACount+'</a> - NIA</td>';
+					}					
 					str+='</tr>';
 				}
 				str+='</tbody>';
