@@ -293,4 +293,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	 public List<Object[]> getConstituencyDetailsByCintiId(Long constiId);
 	 public List<Object[]> getConstituenciesByDistId(Long districtId);
 	 public List<Object[]> getConstituenciesForADistrict(Long distId,Long stateId);
+	 public List<Object[]> getTehsilsByConstituency(Long constituencyId);
+	 public List<Object[]> getLocalElectionBodiesByconstituency(Long constituencyId);
+	 public List<Object[]> getPanchayatsByTehsilId(Long tehsilId);
 }

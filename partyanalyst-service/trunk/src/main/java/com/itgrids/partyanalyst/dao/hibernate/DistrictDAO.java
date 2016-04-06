@@ -348,5 +348,12 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		return (Long)query.uniqueResult();
 	}
 	
+	public List<Object[]> getDistrictsList(){
+		
+		Query query = getSession().createQuery(" select model.districtId,model.districtName from District model where model.state.stateId in (1,36) order by model.districtName ");
+			
+			return query.list();
+		}
+
 	
 }
