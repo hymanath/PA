@@ -678,13 +678,14 @@
                                         	<div class="col-md-6">
                                             	
                                                 <select class="dropkickClass" id="appointmentLabelToGetSlotsId">
-                                                	<option>Feb-28_29-Appointments</option>
+                                                	<option value="0">Select Label</option>
                                                 </select>
-												<div id="timeSlotsErrId" class="text-danger"></div>
+												<div id="timeSlotsErrId"></div>
                                             </div>
                                             <div class="col-md-2">
                                             	<button class="btn btn-success btn-block showTimeSlotsCls " id="showTimeSlotsId">VIEW</button>
                                             </div>
+											<img id="apptRqstMemberAjax" src="images/icons/loading.gif" style="display:none; height:20px;"/>
                                         </div>
                                     </div>
 								</div>
@@ -1664,7 +1665,7 @@ $(".dropkickClass").dropkick();
 						}
 						
 						
-						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"></i>';
+						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Click Here To Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;"></i>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
@@ -3545,13 +3546,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	$("#showTimeSlotsId").click(function(){
 		
 		$("#timeSlotsErrId").html("");
-
+		
 		var appointmentLabelId = $("#appointmentLabelToGetSlotsId").val();
 		if(appointmentLabelId==0){
-			$("#timeSlotsErrId").html("Please select a label");
+			$("#timeSlotsErrId").html("<span style='color:red'>Please select a label</span>");
 			return;
 		}
-
+		$("#apptRqstMemberAjax").show();
 		//View Details Of Appointments call
 		getViewAppointmentsOfALable();
 		//get appointments of a lable
@@ -3566,6 +3567,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
+		$("#apptRqstMemberAjax").hide();
 		if(result.listOfTimePairPerDate != null && result.listOfTimePairPerDate.length!=0 ){
 			$("#pluginTableId").show();
 			buildTimeSlotsTable(result);
