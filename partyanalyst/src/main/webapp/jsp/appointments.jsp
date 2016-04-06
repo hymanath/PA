@@ -1156,7 +1156,7 @@ $(".dropkickClass").dropkick();
 		//getAppointmentLabelsAction						
 			setTimeout(function(){ 
 			/* balu */
-				getAppointmentLabels();					
+				//getAppointmentLabels();					
 				getTotalAppointmentStatus();
 				getCandidateDesignation();
 				getDistricts();
@@ -3503,6 +3503,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	}
 </script>
 <script>
+	
+	$(document).on("click",".cnfrmaptsCls",function(){
+		getAppointmentLabels();
+	});
+	
 	function getAppointmentLabels(){
 		
 		var aptUserId = $("#appointmentUserSelectBoxId").val();
