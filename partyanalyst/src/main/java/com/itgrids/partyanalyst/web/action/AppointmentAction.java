@@ -799,4 +799,49 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getDistrictsList()
+	{
+		try{
+			idNameVOList = appointmentService.getDistrictsList();			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getDistrictsList",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getConstituenciesByDistrict()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = appointmentService.getConstituenciesByDistrict(jObj.getLong("districtId"));
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getConstituenciesByDistrict",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getMandalsByConstituency()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = appointmentService.getAllMandalsByConstituencyID(jObj.getLong("constituencyId"));			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getMandalsByConstituency",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+public String getPanchayatiesByMandalOrMuncipality(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = appointmentService.getPanchayatDetailsByMandalId(jObj.getLong("mandalId"),jObj.getString("type"));
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getPanchayatiesByMandalOrMuncipality()",e);
+		}
+		
+		return Action.SUCCESS;	
+	}
 }
