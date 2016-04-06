@@ -399,6 +399,7 @@
 											<div class="col-md-6 m_top25">
 												<button class="btn btn-success btn-block" type="button" onClick="savingAppointment();">CREATE APPOINTMENT</button>
 											</div>
+											<div style="margin-top:12px;"><img id="appntCreateAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 											<div class="col-md-6 m_top25" id="savingStatusDivId"></div>
 										</div>
 										<input type="hidden" id="dateTypeText" name="appointmentVO.appointmentPreferableTimeType">
@@ -1274,13 +1275,15 @@ $(".dropkickClass").dropkick();
 			$("#savingStatusDivId").html('');
 		}, 2500);
 		var flag = validateSavingDetails();
-		if(!flag){	
+		if(!flag){
+			$("#appntCreateAjax").css("display","block");			
 			$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
 			var temp = $("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code")+"_"+$("#appointmentUserSelectBoxId").val();
 			$("#uniqueCode").val(temp);
 			
 			var uploadHandler = {
 				upload: function(o) {
+					$("#appntCreateAjax").css("display","none");
 					uploadResult = o.responseText;
 					console.log(uploadResult);
 					showStatus(uploadResult);
@@ -1297,19 +1300,25 @@ $(".dropkickClass").dropkick();
 		var result = myResult.split("<pre>");
 		var result1 = result[1].split("</pre>");
 		if(result1[0] == "success"){
-			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Created Successfully.</span>");
+			setTimeout(function(){
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Created Successfully.</span>").delay( 2500 );
+			}, 1000);
 			//$( ".closeIcon" ).trigger( "click" );
 			$("#moreCandidatesDivId").html('');
+			$( "#multiDate" ).multiDatesPicker("resetDates");
 			cloneCount = 0;
 			saveFieldsEmpty();
 		}else{
-			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>")
+			setTimeout(function(){
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>").delay( 2500 );
+			}, 1000);
 			
 		}
 			
 	}
 	
 	function saveFieldsEmpty(){
+		
 		
 		$("#createAppTypeListId").val(0);
 		$("#createAppTypeListId").dropkick('reset');
@@ -1744,7 +1753,8 @@ $("#fromTimeId").datetimepicker({format: 'LT'})
 $("#modalDateId").daterangepicker({singleDatePicker:false});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
 $("#mngAppntmntsDtPckrId").val("");
-$("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0})
+$("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
+})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker:true});
@@ -4695,6 +4705,12 @@ function getAppointmentCreatedUsers(){
 		}
 	}
 	
+	$('#searchValueId').keydown(function(event){    
+    if(event.keyCode==13){
+       $('.advancedSearchBtn').trigger('click');
+    }
+	});
+
 	$( "#appointmentUserSelectBoxId" ).change(function() {
 		getAppointmentLabels();					
 		getTotalAppointmentStatus();
