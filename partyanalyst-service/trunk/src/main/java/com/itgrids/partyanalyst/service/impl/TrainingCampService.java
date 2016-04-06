@@ -6024,7 +6024,7 @@ class TrainingCampService implements ITrainingCampService{
 							  count=count+1;
 						  }
 					  }
-					 
+						 
 					 //date wise counts.
 					 //List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDateWiseCountsByBatch(batchId,null,null);
 					  List<Object[]> dateWiseCounts=trainingCampAttendanceDAO.getDayWiseInviteeCountsForBatch(batchId);
@@ -7720,19 +7720,36 @@ class TrainingCampService implements ITrainingCampService{
 						
 						if(batchVO.getSimpleVOList1()!=null && batchVO.getSimpleVOList1().size()>0){
 							
+							List<Long> list3 = new ArrayList<Long>(0);
 							List<Long> list1=batchVO.getSimpleVOList1().get(0).getInviteeAttendedList();
 							List<Long> list2=batchVO.getSimpleVOList1().get(1).getInviteeAttendedList();
-							List<Long> list3=batchVO.getSimpleVOList1().get(2).getInviteeAttendedList();
 							
-							if( (list1!=null && list1.contains(invitedCadreId)) && (list2!=null && list2.contains(invitedCadreId))  && (list3!=null && list3.contains(invitedCadreId))){
-								batchVO.setThreeDaysInvitedAttendedCount(batchVO.getThreeDaysInvitedAttendedCount()+1l);	
-							}else if( (list1!=null && list1.contains(invitedCadreId) && list2!=null && list2.contains(invitedCadreId)) ||  
-									  (list2!=null && list2.contains(invitedCadreId) && list3!=null && list3.contains(invitedCadreId)) ||
-									  (list1!=null && list1.contains(invitedCadreId) && list3!=null && list3.contains(invitedCadreId))
-									){
-								batchVO.setTwoDaysInvitedAttendedCount(batchVO.getTwoDaysInvitedAttendedCount()+1l);	
-							}else if( (list1!=null && list1.contains(invitedCadreId)) || (list2!=null && list2.contains(invitedCadreId)) || (list3!=null && list3.contains(invitedCadreId)) ){
-								batchVO.setOneDayInvitedAttendedCount(batchVO.getOneDayInvitedAttendedCount()+1l);	
+							//Size checking
+							boolean sizeValue=false;
+							if(batchVO.getSimpleVOList1() !=null && batchVO.getSimpleVOList1().size()>2 ){
+								list3=batchVO.getSimpleVOList1().get(2).getInviteeAttendedList();
+								sizeValue = true;
+							}
+							
+							if(sizeValue){
+								if( (list1!=null && list1.contains(invitedCadreId)) && (list2!=null && list2.contains(invitedCadreId))  && (list3!=null && list3.contains(invitedCadreId))){
+									batchVO.setThreeDaysInvitedAttendedCount(batchVO.getThreeDaysInvitedAttendedCount()+1l);	
+								}else if( (list1!=null && list1.contains(invitedCadreId) && list2!=null && list2.contains(invitedCadreId)) ||  
+										  (list2!=null && list2.contains(invitedCadreId) && list3!=null && list3.contains(invitedCadreId)) ||
+										  (list1!=null && list1.contains(invitedCadreId) && list3!=null && list3.contains(invitedCadreId))
+										){
+									batchVO.setTwoDaysInvitedAttendedCount(batchVO.getTwoDaysInvitedAttendedCount()+1l);	
+								}else if( (list1!=null && list1.contains(invitedCadreId)) || (list2!=null && list2.contains(invitedCadreId)) || (list3!=null && list3.contains(invitedCadreId)) ){
+									batchVO.setOneDayInvitedAttendedCount(batchVO.getOneDayInvitedAttendedCount()+1l);	
+								}
+							}else{
+								
+								if( (list1!=null && list1.contains(invitedCadreId)) && (list2!=null && list2.contains(invitedCadreId)) ){
+									batchVO.setTwoDaysInvitedAttendedCount(batchVO.getTwoDaysInvitedAttendedCount()+1l);	
+								}else{
+									batchVO.setOneDayInvitedAttendedCount(batchVO.getOneDayInvitedAttendedCount()+1l);	
+								}
+								
 							}
 							
 						}
