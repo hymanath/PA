@@ -340,7 +340,7 @@ public List<Object[]> getLabelAppointmentsStatus(Date toDayDate,String type,Long
 				"model.appointment.appointmentPriority.appointmentPriorityId,model.appointment.appointmentPriority.priority," +
 				"model.appointment.reason," +
 				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,model1.userId,model1.firstName," +
-				" ATS.fromDate,ATS.toDate,model.appointment.createdUser.firstName " +
+				" ATS.fromDate,ATS.toDate,model.appointment.createdUser.firstName,ATS.appointmentTimeSlotId " +
 				" from LabelAppointment model,User model1,AppointmentTimeSlot ATS " +
 				" where model.appointmentLabel.appointmentLabelId=:lableId and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
 				" and model.createdBy=model1.userId " +
