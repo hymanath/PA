@@ -673,22 +673,27 @@ public String getCandidateWiseDetails(){
 	}
 
 	public String setTimeSlotForAppointment(){
-		try {
-			
-			final HttpSession session = request.getSession();
-			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			if(user == null || user.getRegistrationID() == null){
-				return ERROR;
-			}
-			
-			jObj = new JSONObject(getTask());
-			
-			resultStatus = appointmentService.setTimeSlotForAppointment(jObj.getLong("appointmentId"),jObj.getString("date"),jObj.getString("fromTime"),jObj.getString("toTime"),user.getRegistrationID());
-		} catch (Exception e) {
-			LOG.error("Exception raised at setTimeSlotForAppointment", e);
-		}
-		return Action.SUCCESS;
-	}
+	    try {
+	      
+	      final HttpSession session = request.getSession();
+	      final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+	      if(user == null || user.getRegistrationID() == null){
+	        return ERROR;
+	      }
+	      
+	      jObj = new JSONObject(getTask());
+	      
+	      Long timeSlotId = jObj.getLong("timeSlotId");
+	      if(timeSlotId ==null){
+	        timeSlotId =0l;
+	      }
+	      resultStatus = appointmentService.setTimeSlotForAppointment(jObj.getLong("appointmentId"),jObj.getString("date"),jObj.getString("fromTime"),jObj.getString("toTime"),user.getRegistrationID()
+	          ,jObj.getString("type"),timeSlotId);
+	    } catch (Exception e) {
+	      LOG.error("Exception raised at setTimeSlotForAppointment", e);
+	    }
+	    return Action.SUCCESS;
+	  }
 	public String getViewAppointmentsOfALable(){
 		try {
 			jObj = new JSONObject(getTask());

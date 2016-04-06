@@ -780,7 +780,7 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-md-12" id="appointmentMembersId"></div>
+											<div class="col-md-12 m_top20" id="appointmentMembersId"></div>
 										</div>
 									</div>
 								</div>
@@ -3903,8 +3903,11 @@ var tableToExcel = (function() {
 		var fromTime = $("#fromTimeId").val();
 		var toTime = $("#toTimeId").val();
 		
+		//Saving
+		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0);
+		
 		//Validations For Time Slot Creation
-		if(appointmentId ==null || appointmentId <=0 || appointmentId ==undefined){
+		/*if(appointmentId ==null || appointmentId <=0 || appointmentId ==undefined){
 			$("#errorDivForTimeSlotId").html("Please Specify the Appointment");
 			return;
 		}
@@ -3935,7 +3938,7 @@ var tableToExcel = (function() {
 			}else{
 				alert("failure,some problem occured While creating time slot");
 			}
-		});
+		});*/
 	});
 function buildTimeSlotsTable(result){
 		var str='';
@@ -4249,11 +4252,34 @@ function buildTimeSlotsTable(result){
 		var firstMin = 0;
 		var secondHour = 0;
 		var secondMin = 0;
+		str+='<table id="appntmntMmbrsTblId">';
+		str+='<thead><th></th></thead>';
 		for(var i in result){
-			str+='<div class="panel panel-default manageAppViewPanelClass m_top10">';
+			str+='<tr>';
+			str+='<td>';
+			str+='<div class="panel panel-default manageAppViewPanelClass m_top15">';
 			str+='<div class="panel-heading">';
-			str+='<i class="glyphicon glyphicon-cog settingsIconConfirm pull-right"></i>';
-			str+='<span class="text-success pull-right">';
+			str+='<i class="glyphicon glyphicon-edit settingsIconConfirm settingsIcon pull-right" style="margin-left:10px;"></i>';
+			str+='<div class="appointmentSettingsBLock arrow_box" style="display: none;">';
+			str+='<div class="row updateAppMemCls" attr_timeSlotId="'+result[i].timeSlotId+'" attr_appointmentId="'+result[i].appointmentId+'">';
+			str+='<div class="col-md-12 m_top10">';
+			str+='<label>Select Date</label>';
+			str+='<div class="inputSearch input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span><input type="text"    class="form-control appntmntCnddteUpdtDtRngPckrCls"/></div>';
+			str+='</div>';
+			str+='<div class="col-md-12 m_top10">';
+			str+='<label>From Time</label>';
+			str+='<div class="inputSearch input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span><input type="text" class="form-control appntmntCnddteUpdtFrmTmCls "/></div>';
+			str+='</div>';
+			str+='<div class="col-md-12 m_top10">';
+			str+='<label>To Time</label>';
+			str+='<div class="inputSearch input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span><input type="text" class="form-control appntmntCnddteUpdtTotmCls"/></div>';
+			str+='</div>';
+			str+='<div class="col-md-12">';
+			str+='<button class="btn btn-success btn-block m_top10 updateTimeSlotCls">SET</button>';
+			str+='</div>';
+			str+='</div>';
+			str+='</div>';
+			str+='<span class="text-success pull-right" style="margin-left:8px;">';
 			str+='<i class="glyphicon glyphicon-time"></i>';
 			fromTime = result[i].fromDateStr.substr(11,5);
 			firstHour = fromTime.substr(0,2);
@@ -4276,31 +4302,48 @@ function buildTimeSlotsTable(result){
 			}
 			str+=''+firstHour+' : '+firstMin+' '+firstMean +' to '+secondHour+' : '+secondMin+' '+secondMean +'';
 			str+='</span>&nbsp;';
-			str+='<span class="pull-right">';
+			str+='<span class="pull-right" style="margin-left:8px;">';
 			str+='<i class="glyphicon glyphicon-calendar"></i> '+result[i].fromDateStr.substr(0,10)+'</span>&nbsp;';
 			
 			str+='<p>Subject: '+result[i].subject+'</p>';
 			str+='<p>Priority Type: '+result[i].priority+'</p>';
 			str+='</div>';
 			str+='<div class="panel-body pad_5">';
-			str+='<ul class="confirmSearchUl" style="list-style: none;">';
+			str+='<ul class="confirmSearchUl" style="list-style: none;padding:0px">';
 			for(var j in result[i].subList){
 				str+='<li>';
-				str+='<div class="row">';
-				str+='<div class="col-md-12">';
-				str+='<div class="media">';
-				str+='<div class="media-left">';
-				str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
-				str+='</div>';
-				str+='<div class="media-body">';
-				str+='<p>'+result[i].subList[j].name+' - '+result[i].subList[j].designation+'</p>';
-				str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
-				//str+='<p>Appointment SUB</p>';
-				str+='</div>';
-				str+='</div>';
-				str+='</div>';  
-				str+='</div>';
-				str+='</li>';
+					str+='<div class="row">';
+							str+='<div class="col-md-7">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+										str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+									str+='</div>';
+									str+='<div class="media-body">';
+									if(result[i].subList[j].name !=null){
+										str+='<p>'+result[i].subList[j].name+'</p>';
+									}else{
+										str+='<p> -- </p>';
+									}
+									if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
+											str+='<p >Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+									}else{
+										str+='<p>Contact Number: - </p>';
+									}
+									if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
+											str+='<p >Designation: '+result[i].subList[j].designation+'</p>';
+									}else{
+										str+='<p>Designation: - </p>';
+									}
+									if(result[i].subList[j].constituency !=null && result[i].subList[j].constituency.length>0){
+											str+='<p>Constituency: '+result[i].subList[j].constituency+'</p>';
+									}else{
+										str+='<p>Constituency: - </p>';
+									}
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						str+='</li>';
 			}
 			str+='</ul>';
 			str+='<p class="font12 m_top10">';
@@ -4308,8 +4351,22 @@ function buildTimeSlotsTable(result){
 			str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 			str+='</div>';
 			str+='</div>';
+			str+='</td>';
+			str+='</tr>';
 		}
+		str+='</table>';
 		$("#appointmentMembersId").html(str);
+        $(".appntmntCnddteUpdtDtRngPckrCls").daterangepicker({singleDatePicker:true});
+		$(".appntmntCnddteUpdtFrmTmCls").datetimepicker({format:"LT"});
+	 	$(".appntmntCnddteUpdtTotmCls").datetimepicker({format:"LT"});
+	    $('#appntmntMmbrsTblId').dataTable({
+		   // "bPaginate" : $('#appntmntMmbrsTblBdyId tr').length>10,
+			"iDisplayLength": 2,
+			//"bAutoWidth": false,
+			//"aoColumnDefs": [
+				//{"bSortable": true, "aTargets": [0,2]}
+			//]
+		});
 	}
 	
 	$(document).on("click",".createAppReqCls",function(){
@@ -4741,6 +4798,74 @@ function getAppointmentCreatedUsers(){
 	function applyPagination(){
 		$('#searchedMembersId').DataTable();
 	}
+		
+	$(document).on("click",".updateTimeSlotCls",function(){
+		
+		var appointmentId =$(this).closest("tr").find(".updateAppMemCls").attr("attr_appointmentId");
+		var timeSlotId = $(this).closest("tr").find(".updateAppMemCls").attr("attr_timeSlotId");
+		var date = $(this).closest("tr").find(".appntmntCnddteUpdtDtRngPckrCls").val();
+		var fromTime = $(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val();
+		var toTime = $(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val();
+		
+	    setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"update",timeSlotId)
+	});
+	
+	function setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,type,timeSlotId){
+		
+		//Validations For Time Slot Creation
+		if(appointmentId ==null || appointmentId <=0 || appointmentId ==undefined){
+			$("#errorDivForTimeSlotId").html("Please Specify the Appointment");
+			return;
+		}
+		if(fromTime ==null || fromTime.length ==0 || fromTime == undefined){
+			$("#errorDivForTimeSlotId").html("Please Specify the From Time");
+			return;
+		}if(toTime ==null || toTime.length ==0 || toTime == undefined){
+			$("#errorDivForTimeSlotId").html("Please Specify the To Time");
+			return;
+		}
+		
+		var jsObj={
+			appointmentId : appointmentId,
+			date : date,
+			fromTime : fromTime,
+			toTime : toTime,
+			type :type,
+			timeSlotId:timeSlotId
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'setTimeSlotForAppointmentAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
+				getViewAppointmentsOfALable();
+				if(type=="save"){
+				 $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Saved Successfully</p>");
+				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
+				  $('html, body').animate({
+				   scrollTop: $("#errorDivForTimeSlotId").offset().top
+					}, 2000);
+					}else{
+			    $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Updated Successfully</p>");
+				 setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
+				   $('html, body').animate({
+				    scrollTop: $("#errorDivForTimeSlotId").offset().top
+					}, 2000);
+				}
+			}else{
+				 $("#errorDivForTimeSlotId").html("<p style='color:red;font-size:20px'>Updated Successfully</p>");
+				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
+				   $('html, body').animate({
+				    scrollTop: $("#errorDivForTimeSlotId").offset().top
+					}, 2000);
+			}
+		});
+		
+	}
+	
 </script>
 
 <script>
@@ -4961,8 +5086,7 @@ function getPanchayatsForReferPopup(){
 		var select = new Dropkick("#referpanchayatId");
 		select.refresh();
   } 
-  
-
+ 
 </script>
 </body>
 </html>
