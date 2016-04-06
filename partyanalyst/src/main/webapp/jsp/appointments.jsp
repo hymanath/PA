@@ -1665,7 +1665,7 @@ $(".dropkickClass").dropkick();
 						}
 						
 						
-						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Click Here To Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;"></i>';
+						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Click Here To Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;cursor:pointer;"></i>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
