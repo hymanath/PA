@@ -678,14 +678,13 @@
                                         	<div class="col-md-6">
                                             	
                                                 <select class="dropkickClass" id="appointmentLabelToGetSlotsId">
-                                                	<option value="0">Select Label</option>
+                                                	<option>Feb-28_29-Appointments</option>
                                                 </select>
-												<div id="timeSlotsErrId"></div>
+												<div id="timeSlotsErrId" class="text-danger"></div>
                                             </div>
                                             <div class="col-md-2">
                                             	<button class="btn btn-success btn-block showTimeSlotsCls " id="showTimeSlotsId">VIEW</button>
                                             </div>
-											<img id="apptRqstMemberAjax" src="images/icons/loading.gif" style="display:none; height:20px;"/>
                                         </div>
                                     </div>
 								</div>
@@ -1665,7 +1664,7 @@ $(".dropkickClass").dropkick();
 						}
 						
 						
-						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Click Here To Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;cursor:pointer;"></i>';
+						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"></i>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
@@ -3546,13 +3545,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	$("#showTimeSlotsId").click(function(){
 		
 		$("#timeSlotsErrId").html("");
-		
+
 		var appointmentLabelId = $("#appointmentLabelToGetSlotsId").val();
 		if(appointmentLabelId==0){
-			$("#timeSlotsErrId").html("<span style='color:red'>Please select a label</span>");
+			$("#timeSlotsErrId").html("Please select a label");
 			return;
 		}
-		$("#apptRqstMemberAjax").show();
+
 		//View Details Of Appointments call
 		getViewAppointmentsOfALable();
 		//get appointments of a lable
@@ -3567,7 +3566,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
-		$("#apptRqstMemberAjax").hide();
 		if(result.listOfTimePairPerDate != null && result.listOfTimePairPerDate.length!=0 ){
 			$("#pluginTableId").show();
 			buildTimeSlotsTable(result);
@@ -4842,8 +4840,8 @@ function getAppointmentCreatedUsers(){
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#errorDivForTimeSlotId").show();
 			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
-				$("#errorDivForTimeSlotId").show();
 				getViewAppointmentsOfALable();
 				if(type=="save"){
 				 $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Saved Successfully</p>");
@@ -4859,7 +4857,7 @@ function getAppointmentCreatedUsers(){
 					}, 2000);
 				}
 			}else{
-				 $("#errorDivForTimeSlotId").html("<p style='color:red;font-size:20px'>Updated Successfully</p>");
+				 $("#errorDivForTimeSlotId").html("<p style='color:red;font-size:20px'>Failure,Some problem occured while creating time slot.</p>");
 				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
 				   $('html, body').animate({
 				    scrollTop: $("#errorDivForTimeSlotId").offset().top
