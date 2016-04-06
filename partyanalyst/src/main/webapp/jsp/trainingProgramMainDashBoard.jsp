@@ -607,10 +607,24 @@ function buildAttendedCountSummaryByBatch(result){
 			str+='<th>Batch</th>';
 			str+='<th>Day 1 Count</th>';
 			str+='<th>Day 2 Count</th>';
-			str+='<th>Day 3 Count</th>';
+			
+			var flag=false;
+			for(var i in result){
+				if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length>0 && 
+					 result[i].simpleVOList1.length>2){						 
+						flag = true;
+				}
+			}
+			if(flag){
+				str+='<th>Day 3 Count</th>';
+			}
+			
+			
 			str+='<th>1 Day Attended Members</th>';
 			str+='<th>2 Days Attended Members</th>';
-			str+='<th>3 Days Attended Members</th>';
+			if(flag){
+				str+='<th>3 Days Attended Members</th>';
+			}			
 			str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -618,6 +632,12 @@ function buildAttendedCountSummaryByBatch(result){
 				str+='<tr>';
 				str+='<td>'+result[i].centerName+'</td>';
 				str+='<td>'+result[i].batchName+'</td>';
+				var innternalFlag=false;
+				if(result[i].simpleVOList1 !=null && result[i].simpleVOList1.length<=2){
+					if(flag){
+						innternalFlag = true;
+					}
+				}
 				for(var j in result[i].simpleVOList1){
 					
 					
@@ -625,10 +645,13 @@ function buildAttendedCountSummaryByBatch(result){
 						var inviteeAttendedCount='<b>'+result[i].simpleVOList1[j].inviteeAttendedCount+'</b>'+" IA";
 						var nonInviteeAttendedCount='<b>'+result[i].simpleVOList1[j].nonInviteeAttendedCount+'</b>'+" NIA";
 						var counts=inviteeAttendedCount+" - "+nonInviteeAttendedCount;
-						str+='<td>'+counts+'</td>'
+						str+='<td>'+counts+'</td>';
 					}else{
-						str+='<td>0</td>'
+						str+='<td>0</td>';
 					}
+				}
+				if(innternalFlag){
+							str+='<td>0</td>';
 				}
 				if((result[i].oneDayInvitedAttendedCount!=null && result[i].oneDayInvitedAttendedCount!=0) || (result[i].oneDayNonInvitedAttendedCount!=null && result[i].oneDayNonInvitedAttendedCount!=0)){
 				  str+='<td><b>'+result[i].oneDayInvitedAttendedCount+'</b> IA  -<b>'+result[i].oneDayNonInvitedAttendedCount+'</b> NIA </td>';	
@@ -640,12 +663,14 @@ function buildAttendedCountSummaryByBatch(result){
 				}else{
 					str+='<td>0</td>'
 				}
-				if((result[i].threeDaysInvitedAttendedCount!=null && result[i].threeDaysInvitedAttendedCount!=0) || (result[i].threeDaysNonInvitedAttendedCount!=null && result[i].threeDaysNonInvitedAttendedCount!=0)){
-				  str+='<td><b>'+result[i].threeDaysInvitedAttendedCount+'</b> IA  -<b>'+result[i].threeDaysNonInvitedAttendedCount+'</b> NIA </td>';
-				}else{
-					str+='<td>0</td>'
-				}
 				
+				if(flag){
+					if((result[i].threeDaysInvitedAttendedCount!=null && result[i].threeDaysInvitedAttendedCount!=0) || (result[i].threeDaysNonInvitedAttendedCount!=null && result[i].threeDaysNonInvitedAttendedCount!=0)){
+						str+='<td><b>'+result[i].threeDaysInvitedAttendedCount+'</b> IA  -<b>'+result[i].threeDaysNonInvitedAttendedCount+'</b> NIA </td>';
+					}else{
+						str+='<td>0</td>'
+					}
+				}
 				str+='</tr>';
 			}
 			str+='</tbody>';
