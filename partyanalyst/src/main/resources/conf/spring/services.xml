@@ -3035,6 +3035,7 @@
 		<property name="cadreRegistrationService" ref="cadreRegistrationService"/>
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="appointmentCandidateTypeDAO" ref="appointmentCandidateTypeDAO" />
 	</bean>
 </beans>		
 	

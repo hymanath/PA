@@ -2675,5 +2675,9 @@
 	<bean id="appointmentCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="appointmentCandidateTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		

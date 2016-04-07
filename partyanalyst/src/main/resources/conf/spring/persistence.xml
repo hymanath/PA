@@ -804,6 +804,7 @@
 				 <value>com.itgrids.partyanalyst.model.AppointmentCandidateRelation</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlot</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlotHistory</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentCandidateType</value>
 				 <!-- appointment related Models -->
 				 
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value>

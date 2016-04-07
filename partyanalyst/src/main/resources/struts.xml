@@ -11803,6 +11803,12 @@
 			</result>
 		</action>
 		
+		<action name="getAllCandidateTypesAction" class="appointmentAction" method="getAllCandidateTypes">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action>
+		
 	   	
 </package>
 </struts>      
