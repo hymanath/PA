@@ -1661,31 +1661,31 @@ $(".dropkickClass").dropkick();
 					str+='<td>';
 					
 					if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">View</button>';
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="View Appointments Of '+result[i].labelName+'">View</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>View</button>';
 						}
 						
-						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'">Add Appointments</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'">Add Appointments</button>';
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"  >Update</button>';
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments">Update</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Update</button>';
 						}
 						
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'">Status</button>';
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label">Status</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled>Status</button>';
 						}
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'">Delete Appointments</button>';
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'">Delete Appointments</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Delete Appointments</button>';
 						}
 						
 						
-						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Click Here To Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;cursor:pointer;"></i>';
+						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Delete Label '+result[i].labelName+'" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;cursor:pointer;"></i>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
