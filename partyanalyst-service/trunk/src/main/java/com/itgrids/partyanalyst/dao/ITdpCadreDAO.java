@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -420,6 +421,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getTdpCadreIdForMemberShipNums(List<String> membershipNums);
 	  public List<Object[]>  searchMemberByCriteria(String searchType,String searchValue);
 	  public List<UserAddress> getUserAddress(Long tdpCadreId);
-	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,Long searchValue);
+	//  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,Long searchValue);
+	  public List<Object[]> advancedSearchMemberForCadreCommittee(String searchType,LocationInputVO locationVo,String locationType,LocationInputVO inputVo);
+	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,LocationInputVO locationVo,LocationInputVO inputVo);
 	  
 }

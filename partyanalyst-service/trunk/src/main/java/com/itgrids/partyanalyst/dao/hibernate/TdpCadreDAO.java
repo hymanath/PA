@@ -13,6 +13,7 @@ import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -6391,30 +6392,213 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			Query query = getSession().createQuery(sb.toString());
 			if(!searchType.equalsIgnoreCase("name"))
 			query.setParameter("searchValue",searchValue);
+			 if(searchType.equalsIgnoreCase("name"))
+			 {
+				 query.setFirstResult(0);
+				 query.setMaxResults(100);
+			 }
 			query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_NUMBER);
 			return query.list();
 		}
 	  
-	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,Long searchValue){
+	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,LocationInputVO locationVo,LocationInputVO inputVo){
 			
-			StringBuilder sb=new StringBuilder();
+			StringBuilder str=new StringBuilder();
 			
-			sb.append(" select  model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
-					"           model.memberShipNo,model.voter.voterIDCardNo " +
+			str.append(" select model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
+					"   model.memberShipNo,model.voter.voterIDCardNo " +
 					"   from TdpCadre model,PublicRepresentative model2,TdpCadreCandidate model1 where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
 					+ " and model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 			
-			 if(searchType.equalsIgnoreCase("name"))
-			{
-				sb.append(" and model.firstname like '%"+searchValue+"%' ");
+			if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
+				str.append(" and model2.publicRepresentativeType.publicRepresentativeTypeId in(:roles) ");
 			}
-			sb.append(" and model2.publicRepresentativeType.publicRepresentativeTypeId = :searchValue");
-			Query query = getSession().createQuery(sb.toString());
-			if(!searchType.equalsIgnoreCase("name"))
-			query.setParameter("searchValue",searchValue);
+			if(locationVo != null)
+			{
+					if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)//State
+					{
+						str.append("and model2.userAddress.state.stateId in (:locationStateIds) ");
+					}
+					if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)//District
+					{
+						str.append("and model2.userAddress.district.districtId in(:districtIds) ");
+					}
+					if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)//Tehsil
+					{
+						str.append("and model2.userAddress.tehsil.tehsilId in(:tehsilIds) ");
+					}
+					if(locationVo.getVillageIdsList() != null && locationVo.getVillageIdsList().size() > 0)//Village
+					{
+						str.append(" and model2.userAddress.panchayat.panchayatId in (:panchayatIds) ");
+					}
+					if(locationVo.getWardIdsList() != null && locationVo.getWardIdsList().size() > 0)//ward
+					{
+						str.append(" and model2.userAddress.ward.constituencyId in (:wardIds) ");
+					}
+					if(locationVo.getTownIdsList() != null && locationVo.getTownIdsList().size() > 0)//Town
+					{
+						str.append(" and model2.userAddress.localElectionBody.localElectionBodyId in(:townIds) ");
+					}
+					if(locationVo.getDivisionIdsList() != null && locationVo.getDivisionIdsList().size() > 0)//Divison
+					{
+						str.append(" and model2.userAddress.ward.constituencyId in(:divisonIds) ");
+					}
+					
+			}
+			Query query = getSession().createQuery(str.toString());
+			if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
+				query.setParameterList("roles", inputVo.getDesignationIds());
+			}
+			if(locationVo != null)
+			{
+				if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)
+					query.setParameterList("locationStateIds", locationVo.getStateIdsList());
+				if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)
+					query.setParameterList("districtIds", locationVo.getDistrictIdsList());
+				if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
+					query.setParameterList("tehsilIds", locationVo.getTehsilIdsList());
+				if(locationVo.getVillageIdsList() != null && locationVo.getVillageIdsList().size() > 0)
+					query.setParameterList("panchayatIds", locationVo.getVillageIdsList());
+				if(locationVo.getWardIdsList() != null && locationVo.getWardIdsList().size() > 0)
+					query.setParameterList("wardIds", locationVo.getWardIdsList());
+				if(locationVo.getTownIdsList() != null && locationVo.getTownIdsList().size() > 0)
+					query.setParameterList("townIds", locationVo.getTownIdsList());
+				if(locationVo.getDivisionIdsList() != null && locationVo.getDivisionIdsList().size() > 0)
+					query.setParameterList("divisonIds", locationVo.getDivisionIdsList());
+			}
 			query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_NUMBER);
 			return query.list();
 		}
+	  
+	  
+	  public List<Object[]> advancedSearchMemberForCadreCommittee(String searchType,LocationInputVO locationVo,String locationType,LocationInputVO inputVo){
+			
+			StringBuilder str=new StringBuilder();
+			
+			str.append(" select model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
+					"  model.memberShipNo,model.voter.voterIDCardNo " +
+					"  from TdpCadre model,TdpCommitteeMember TCM where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
+					+ " and model.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
+			str.append(" and  model.isDeleted = 'N' " +
+					" and  model.enrollmentYear = :enrollmentYear " +
+					" and TCM.isActive = 'Y'" );
+		 	if(locationVo != null) // For Location Filter
+		 	{
+					if( locationVo.getLevelId().equals(5l))//mandal,town,div
+					{
+						if(locationType.equalsIgnoreCase("mandal"))
+						{
+							str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:mandalLevelId  ");
+						}
+						else if(locationType.equalsIgnoreCase("town"))
+						{
+							str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:townLevelId  ");
+						}
+						
+						else if(locationType.equalsIgnoreCase("division"))
+						{
+							str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:divisionLevelId ");
+						}
+						
+						str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues) ");
+						
+						
+					}else if(locationVo.getLevelId().equals(6l))//village,ward
+					{
+						
+						if(locationType.equalsIgnoreCase("panchayat"))
+						{
+							str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:panchayatLevelId  ");
+						}
+						else if(locationType.equalsIgnoreCase("ward"))
+						{
+							str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:wardLevelId  ");
+						}
+						str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues) ");
+						
+						
+					}else//State,District Level
+					{
+						str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId ");
+						str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues) ");
+					}
+			
+		}		
+		if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
+			str.append(" and TCM.tdpCommitteeRole.tdpCommitteeRoleId in  (:roles) ");
+		}
+		
+		if(inputVo.getCommitteeId() !=null && inputVo.getCommitteeId()>0){
+			str.append( " and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeId =:basicCommitteeId  ");
+		}
+		Query query = getSession().createQuery(str.toString());
+		if(locationVo != null)
+		{
+				if(locationVo.getLevelId().equals(5l))//mandal,town,div
+				{
+					
+					if(locationType.equalsIgnoreCase("mandal"))
+					{
+						query.setParameter("mandalLevelId", IConstants.MANDAL_LEVEL_ID);
+						if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
+							query.setParameterList("levelValues", locationVo.getTehsilIdsList());
+					}
+					else if(locationType.equalsIgnoreCase("town"))
+					{
+						
+						query.setParameter("townLevelId", IConstants.TOWN_LEVEL_ID);
+						if(locationVo.getTownIdsList() != null && locationVo.getTownIdsList().size() > 0)
+							query.setParameterList("levelValues", locationVo.getTownIdsList());
+					}
+					
+					else if(locationType.equalsIgnoreCase("division"))
+					{
+						
+						query.setParameter("divisionLevelId", IConstants.DIVISION_LEVEL_ID);
+						if(locationVo.getDivisionIdsList() != null && locationVo.getDivisionIdsList().size() > 0)
+							query.setParameterList("levelValues", locationVo.getDivisionIdsList());
+					}
+				
+			}else if(locationVo.getLevelId().equals(6l))//village,ward
+				{
+					
+					if(locationType.equalsIgnoreCase("panchayat"))
+					{
+						query.setParameter("panchayatLevelId", IConstants.VILLAGE_LEVEL_ID);
+						if(locationVo.getVillageIdsList() != null && locationVo.getVillageIdsList().size() > 0)
+							query.setParameterList("levelValues", locationVo.getVillageIdsList());
+						
+					}
+					else if(locationType.equalsIgnoreCase("ward"))
+					{
+						query.setParameter("wardLevelId", IConstants.WARD_LEVEL_ID);
+						if(locationVo.getWardIdsList() != null && locationVo.getWardIdsList().size() > 0)
+							query.setParameterList("levelValues", locationVo.getWardIdsList());
+						
+					}
+				
+				}else//State,District Level
+				{
+					query.setParameter("levelId",locationVo.getLevelId());
+					if(locationVo.getLevelId() == 10l && locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)
+					{
+						query.setParameterList("levelValues", locationVo.getStateIdsList());
+					}
+					else
+						query.setParameterList("levelValues", locationVo.getDistrictIdsList());
+					
+				}
+		}
+		if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
+			query.setParameterList("roles", inputVo.getDesignationIds());
+		}
+		
+		if(inputVo.getCommitteeId() !=null && inputVo.getCommitteeId()>0){
+			query.setParameter("basicCommitteeId",inputVo.getCommitteeId() );
+		}
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		return query.list();
+	}
 	  
 	  
 	

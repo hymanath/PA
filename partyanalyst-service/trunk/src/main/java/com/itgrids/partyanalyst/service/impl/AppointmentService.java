@@ -48,7 +48,6 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -60,6 +59,7 @@ import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
+import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -77,6 +77,8 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.LocationService;
+
 
 
 public class AppointmentService implements IAppointmentService{
@@ -114,8 +116,16 @@ public class AppointmentService implements IAppointmentService{
 	private ICadreRegistrationService cadreRegistrationService;
 	private RegionServiceDataImp regionServiceDataImp;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private LocationService locationService;
 	private IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO;
 	
+	
+	public LocationService getLocationService() {
+		return locationService;
+	}
+	public void setLocationService(LocationService locationService) {
+		this.locationService = locationService;
+	}
 	public ICadreRegistrationService getCadreRegistrationService() {
 		return cadreRegistrationService;
 	}
@@ -161,18 +171,18 @@ public class AppointmentService implements IAppointmentService{
 	}
 	public void setAppointmentDAO(IAppointmentDAO appointmentDAO) {
 		this.appointmentDAO = appointmentDAO;
-	}	
+	}
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
 	}
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
 	}
-	public IDistrictDAO getDistrictDAO() {
-		return districtDAO;
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
 	}
-	public void setDistrictDAO(IDistrictDAO districtDAO) {
-		this.districtDAO = districtDAO;
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
 	}
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
@@ -180,11 +190,11 @@ public class AppointmentService implements IAppointmentService{
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
-	public ITehsilDAO getTehsilDAO() {
-		return tehsilDAO;
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
 	}
-	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
-		this.tehsilDAO = tehsilDAO;
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 	public IUserAddressDAO getUserAddressDAO() {
 		return userAddressDAO;
@@ -202,9 +212,6 @@ public class AppointmentService implements IAppointmentService{
 		return tdpCadreDAO;
 	}
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
-		this.tdpCadreDAO = tdpCadreDAO;
-	}
-	public void setTdpCadreDAO(TdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
 	public IAppointmentCandidateDAO getAppointmentCandidateDAO() {
@@ -319,8 +326,11 @@ public class AppointmentService implements IAppointmentService{
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
-	public void setAppointmentCandidateTypeDAO(
-			IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO) {
+	
+	public IAppointmentCandidateTypeDAO getAppointmentCandidateTypeDAO() {
+		return appointmentCandidateTypeDAO;
+	}
+	public void setAppointmentCandidateTypeDAO(IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO) {
 		this.appointmentCandidateTypeDAO = appointmentCandidateTypeDAO;
 	}
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
@@ -1093,38 +1103,172 @@ public class AppointmentService implements IAppointmentService{
 	 }
 	
 //Advanced Search
-public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue){
+public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue,LocationInputVO inputVo){
 		 List<AppointmentCandidateVO>  finalList = new ArrayList<AppointmentCandidateVO>(); 
 		 try {
-			      List<Object[]> membersList = null;
-			      if(searchType.equalsIgnoreCase("name"))
+			     LocationInputVO locationVo = locationService.getCandidateLocationDetails(inputVo);
+			 	 if(searchType.equalsIgnoreCase("CadreCommittee"))
+				    {
+				    if(inputVo.getLevelId() == 5l)//Mandal,Town,Div Levels 
+						    {
+						    	  List<Object[]> mandalMemList = null;
+						    	  List<Object[]> townMemList = null;
+						    	  List<Object[]> divisonMemList =null;
+						    	if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
+									{
+							    	 mandalMemList = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,locationVo,"mandal",inputVo); 
+							    	 if(mandalMemList != null && mandalMemList.size()>0){
+							    		  setDataMembers(mandalMemList,finalList);
+						    	  }
+						    	  else
+						    	  {
+							    		  mandalMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"mandal",inputVo);  
+							    		  setDataMembersForCadre(mandalMemList,finalList);
+						    	  }
+						    	}
+						    	if(locationVo.getTownIdsList() != null && locationVo.getTownIdsList().size() > 0)
+						    	{
+						    		townMemList = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,locationVo,"town",inputVo); 
+							    	
+							    	 if(townMemList != null && townMemList.size()>0){
+							    		  setDataMembers(townMemList,finalList);
+							    	  }
+							    	  else
+							    	  {
+							    		  townMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"town",inputVo);  
+							    		  setDataMembersForCadre(townMemList,finalList);
+							    	  }
+						    	}
+						    	if(locationVo.getDivisionIdsList() != null && locationVo.getDivisionIdsList().size() > 0){
+						    	 divisonMemList = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,locationVo,"division",inputVo); 
+							    	
+							    	 if(divisonMemList != null && divisonMemList.size()>0){
+							    		  setDataMembers(divisonMemList,finalList);
+							    	  }
+							    	  else
+							    	  {
+							    		  divisonMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"division",inputVo);  
+							    		  setDataMembersForCadre(divisonMemList,finalList);
+							    	  }
+						    	}
+						    	
+						   }
+						    
+						    else if(inputVo.getLevelId() == 6l)//Village,Ward Levels 
+						    {
+						    	List<Object[]> panchayatMemList = null;
+						    	List<Object[]> wardMemList = null;
+						    	if(locationVo.getVillageIdsList() != null && locationVo.getVillageIdsList().size() > 0){
+						    		panchayatMemList = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,locationVo,"panchayat",inputVo); 
+							    	
+							    	 if(panchayatMemList != null && panchayatMemList.size()>0){
+							    		  setDataMembers(panchayatMemList,finalList);
+							    	  }
+							    	  else
+							    	  {
+							    		  panchayatMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"panchayat",inputVo);  
+							    		  setDataMembersForCadre(panchayatMemList,finalList);
+							    	  }
+						    	}
+						    	if(locationVo.getWardIdsList() != null && locationVo.getWardIdsList().size() > 0){
+						    		
+						    		wardMemList = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,locationVo,"ward",inputVo); 
+							    	
+							    	 if(wardMemList != null && wardMemList.size()>0){
+							    		  setDataMembers(wardMemList,finalList);
+							    	  }
+							    	  else
+							    	  {
+							    		  wardMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"ward",inputVo);  
+							    		  setDataMembersForCadre(wardMemList,finalList);
+							    	  }
+						    	}
+						   }
+						    
+						    else if(inputVo.getLevelId() == 10l || inputVo.getLevelId() == 11l)//State ,District Levels 
+						    {
+						    	if(locationVo.getStateIdsList() == null) 
+						    	{
+						    		locationVo.setStateIdsList(new ArrayList<Long>());
+						    	}
+						    	
+						    	if(locationVo.getLevelId() == 10l)
+						    	{
+						    		locationVo.setStateIdsList(new ArrayList<Long>());
+						    		locationVo.getStateIdsList().add(1l);locationVo.getStateIdsList().add(36l);
+						    	}
+						    	List<Object[]> memList = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,locationVo,"",inputVo); 
+						    	
+						    	 if(memList != null && memList.size()>0){
+						    		  setDataMembers(memList,finalList);
+						    	  }
+						    	  else
+						    	  {
+						    		   memList  = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"",inputVo);  
+						    		  setDataMembersForCadre(memList,finalList);
+						    	  }
+						    }
+						    else // All
+						   {
+						    	List<Object[]> memList1 = null;
+						    
+						    	 memList1 = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,null,"",inputVo); 
+						    	
+						    	 if(memList1 != null && memList1.size()>0){
+						    		  setDataMembers(memList1,finalList);
+						    	  }
+						    	  else
+						    	  {
+						    		 memList1  = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,null,"",inputVo);  
+						    		  setDataMembersForCadre(memList1,finalList);
+						    	  }
+						    }
+				    }
+				    
+			      
+			 	 else if(searchType.equalsIgnoreCase("name"))
 			      {
-			    	  membersList = appointmentCandidateDAO.searchAppointmentRequestedMember(searchType,searchValue);
-			    	  if(membersList != null && membersList.size()>0){
-			    		  setDataMembers(membersList,finalList);
+			    	  List<Object[]> nameList = null;
+			    	  nameList = appointmentCandidateDAO.searchAppointmentRequestedMember(searchType,searchValue);
+			    	  if(nameList != null && nameList.size()>0){
+			    		  setDataMembers(nameList,finalList);
 			    	  }
 			    	  else
 			    	  {
-			    		  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);  
-			    		  setDataMembersForCadre(membersList,finalList);
+			    		  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);  
+			    		  setDataMembersForCadre(nameList,finalList);
 			    	  }
 			      }
 			      else if(searchType.equalsIgnoreCase("publicRepresentative"))
 			      {
-			    	  membersList = appointmentCandidateDAO.advancedSearchAppointmentRequestedMembersForPublicRepresentative(searchType,new Long(searchValue));
-			    	  if(membersList != null && membersList.size()>0){
-			    		  setDataMembers(membersList,finalList);
-			    	  }
-			    	  else
-			    	  {
-			    		  membersList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,new Long(searchValue));  
-			    		  setDataMembersForCadre(membersList,finalList);
-			    	  }
+			    	  List<Object[]> prList = null;
 			    	  
+			    	  if(inputVo.getLevelId() == 0l) //All
+			    		{
+			    		  prList = appointmentCandidateDAO.advancedSearchAppointmentRequestedMembersForPublicRepresentative(searchType,null,inputVo);
+					    	if(prList != null && prList.size()>0){
+					    		  setDataMembers(prList,finalList);
+					    	  }
+					    	  else
+					    	  {
+					    		  prList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,null,inputVo);  
+					    		  setDataMembersForCadre(prList,finalList);
+					    	  }
+			    		}
+			    		else
+			    		{
+			    			  prList = appointmentCandidateDAO.advancedSearchAppointmentRequestedMembersForPublicRepresentative(searchType,locationVo,inputVo);
+						    	if(prList != null && prList.size()>0){
+						    		  setDataMembers(prList,finalList);
+						    	  }
+						    	  else
+						    	  {
+						    		  prList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,locationVo,inputVo);  
+						    		  setDataMembersForCadre(prList,finalList);
+						    	  }
+			    		}
 			      }
-			      
-			    	  
-		 	}
+		 		}
 		 catch (Exception e) {
 		LOG.error("Exception raised at advancedSearchApptRequestedMembers() method of AppointmentService", e);
 		 }
@@ -2579,40 +2723,40 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		return finalList;
 	}
 	 
-	public void removeTimeSlotExistedAppointments(Long labelId,List<AppointmentDetailsVO> finalList,Map<Long, AppointmentDetailsVO> appointmentsMap){
-		//Getting appointments which are allocating to the TimeSlot 
-		List<Object[]> timeSlotAptList = labelAppointmentDAO.getViewAppointmentsOfALable(labelId);
-		
-		List<Long> timeSlotApntmenttList = new ArrayList<Long>();
-		if(timeSlotAptList !=null && timeSlotAptList.size()>0){				
-			appointmentsMap = new LinkedHashMap<Long, AppointmentDetailsVO>();				
-			for(Object[]  obj: timeSlotAptList){				
-				timeSlotApntmenttList.add(obj[0]!=null?(Long)obj[0]:0l);				
+		public void removeTimeSlotExistedAppointments(Long labelId,List<AppointmentDetailsVO> finalList,Map<Long, AppointmentDetailsVO> appointmentsMap){
+			//Getting appointments which are allocating to the TimeSlot 
+			List<Object[]> timeSlotAptList = labelAppointmentDAO.getViewAppointmentsOfALable(labelId);
+			
+			List<Long> timeSlotApntmenttList = new ArrayList<Long>();
+			if(timeSlotAptList !=null && timeSlotAptList.size()>0){				
+				appointmentsMap = new LinkedHashMap<Long, AppointmentDetailsVO>();				
+				for(Object[]  obj: timeSlotAptList){				
+					timeSlotApntmenttList.add(obj[0]!=null?(Long)obj[0]:0l);				
+				}
 			}
-		}
-		
-		//removing element from final List If it's already allocated to time slot 
-		if(finalList !=null && finalList.size()>0){
 			
-			List<AppointmentDetailsVO> duplicateList = new ArrayList<AppointmentDetailsVO>();
-			
-			duplicateList.addAll(finalList);								
-			
-			for (AppointmentDetailsVO aptntmnt : finalList) {					
-				if(timeSlotAptList !=null && timeSlotAptList.size()>0){						
-					for(Long apt :timeSlotApntmenttList){							
-						if(aptntmnt.getAppointmentId().equals(apt)){
-							duplicateList.remove(aptntmnt);
-						}							
-					}
-					
-				}					
+			//removing element from final List If it's already allocated to time slot 
+			if(finalList !=null && finalList.size()>0){
+				
+				List<AppointmentDetailsVO> duplicateList = new ArrayList<AppointmentDetailsVO>();
+				
+				duplicateList.addAll(finalList);								
+				
+				for (AppointmentDetailsVO aptntmnt : finalList) {					
+					if(timeSlotAptList !=null && timeSlotAptList.size()>0){						
+						for(Long apt :timeSlotApntmenttList){							
+							if(aptntmnt.getAppointmentId().equals(apt)){
+								duplicateList.remove(aptntmnt);
+							}							
+						}
+						
+					}					
+				}
+				finalList.clear();
+				finalList.addAll(duplicateList);
 			}
-			finalList.clear();
-			finalList.addAll(duplicateList);
-		}
-	} 
-		
+		} 
+			
 		public List<IdNameVO> getAppointmentsLabelStatus(){
 			List<IdNameVO> labelList = new ArrayList<IdNameVO>();
 			try{
@@ -2691,68 +2835,68 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				}
 				return status;
 			}
-	@SuppressWarnings("unused")
-	  public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId,String type,Long timeSlotId){
-	    ResultStatus rs = new ResultStatus();
-	    try {
-	      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-	      Date date = sdf.parse(dateStr);
-	      
-	       SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
-	           SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
-	           
-	           SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-	        
-	           
-	           Date dateFromTime = null;
-	           Date dateToTime =null;
-	           
-	           Date appointmentFromTime = null;
-	           Date appointmentToTime =null;
-	           
-	           if(fromTime !=null && !fromTime.isEmpty()){
-	             dateFromTime = parseFormat.parse(fromTime);
-	             fromTime = dateStr + " " +displayFormat.format(dateFromTime);
-	           }
-	           if(toTime !=null && !toTime.isEmpty()){
-	             dateToTime = parseFormat.parse(toTime);
-	             toTime = dateStr + " " +displayFormat.format(dateToTime);
-	           }
-	       
-	           if(fromTime !=null && toTime !=null){
-	              appointmentFromTime = sdf1.parse(fromTime);
-	              appointmentToTime = sdf1.parse(toTime);
-	           }
-	      
-	           AppointmentTimeSlot timeSlot = null;
-	           if(type !=null && type.equalsIgnoreCase("update")){
-	             timeSlot = appointmentTimeSlotDAO.get(timeSlotId);
-	           }else{
-	             timeSlot = new AppointmentTimeSlot();
-	           }
-	           
-		       timeSlot.setAppointmentId(appointmentId);
-		       timeSlot.setDate(date);
-		       timeSlot.setFromDate(appointmentFromTime);
-		       timeSlot.setToDate(appointmentToTime);
-		       timeSlot.setInsertedBy(userId);
-		       timeSlot.setUpdatedBy(userId);
-		       timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-		       timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		       timeSlot.setIsDeleted("N");
-	      
-	          appointmentTimeSlotDAO.save(timeSlot);
-	      
-	      rs.setExceptionMsg("success");
-	      rs.setResultCode(0);
-	      
-	    } catch (Exception e) {
-	      LOG.error("Exception raised in setTimeSlotForAppointment", e);
-	      rs.setExceptionMsg("failure");
-	      rs.setResultCode(1);
-	    }
-	    return rs;
-	  }
+			@SuppressWarnings("unused")
+			  public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId,String type,Long timeSlotId){
+			    ResultStatus rs = new ResultStatus();
+			    try {
+			      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			      Date date = sdf.parse(dateStr);
+			      
+			       SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+			           SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+			           
+			           SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			        
+			           
+			           Date dateFromTime = null;
+			           Date dateToTime =null;
+			           
+			           Date appointmentFromTime = null;
+			           Date appointmentToTime =null;
+			           
+			           if(fromTime !=null && !fromTime.isEmpty()){
+			             dateFromTime = parseFormat.parse(fromTime);
+			             fromTime = dateStr + " " +displayFormat.format(dateFromTime);
+			           }
+			           if(toTime !=null && !toTime.isEmpty()){
+			             dateToTime = parseFormat.parse(toTime);
+			             toTime = dateStr + " " +displayFormat.format(dateToTime);
+			           }
+			       
+			           if(fromTime !=null && toTime !=null){
+			              appointmentFromTime = sdf1.parse(fromTime);
+			              appointmentToTime = sdf1.parse(toTime);
+			           }
+			      
+			           AppointmentTimeSlot timeSlot = null;
+			           if(type !=null && type.equalsIgnoreCase("update")){
+			             timeSlot = appointmentTimeSlotDAO.get(timeSlotId);
+			           }else{
+			             timeSlot = new AppointmentTimeSlot();
+			           }
+			           
+				       timeSlot.setAppointmentId(appointmentId);
+				       timeSlot.setDate(date);
+				       timeSlot.setFromDate(appointmentFromTime);
+				       timeSlot.setToDate(appointmentToTime);
+				       timeSlot.setInsertedBy(userId);
+				       timeSlot.setUpdatedBy(userId);
+				       timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				       timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				       timeSlot.setIsDeleted("N");
+			      
+			          appointmentTimeSlotDAO.save(timeSlot);
+			      
+			      rs.setExceptionMsg("success");
+			      rs.setResultCode(0);
+			      
+			    } catch (Exception e) {
+			      LOG.error("Exception raised in setTimeSlotForAppointment", e);
+			      rs.setExceptionMsg("failure");
+			      rs.setResultCode(1);
+			    }
+			    return rs;
+			  }
 		 public List<AppointmentDetailsVO> getViewAppointmentsOfALable(Long labelId){
 			   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 			try {
@@ -3129,14 +3273,14 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	{
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
-			 List<Constituency> list = constituencyDAO.getConstituenciesByDistrictID(districtId);	
+			 List<Object[]> list = constituencyDAO.getConstituenciesByDistrictId(districtId);	
 			 if(list != null && list.size() > 0)
 			 {
-				 for(Constituency params : list)
+				 for(Object[] params : list)
 				 {
 					 IdNameVO vo = new IdNameVO();
-					 vo.setId(params.getConstituencyId());
-					 vo.setName(params.getName());
+					 vo.setId((Long)params[0]);
+					 vo.setName(params[1].toString());
 					 returnList.add(vo);
 				 }
 			 }

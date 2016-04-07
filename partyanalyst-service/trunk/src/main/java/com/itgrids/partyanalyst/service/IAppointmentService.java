@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.HashMap;
+
 import java.util.List;
 
 //import com.itgrids.grievance.dto.BasicVO;
@@ -14,6 +15,7 @@ import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
+import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
@@ -55,11 +57,15 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentCreatedUsers();
 	public ResultStatus updateAllAppointmentStatusByType(AppointmentUpdateStatusVO statusinputVo,AppointmentInputVO inputVo,Long userId);
 	public ResultStatus deleteAppointmentsOfLabel(List<Long> ids,Long labelId,Long registrationId);
-	public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue);
+	//public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue);
 	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds,Long locationScopeId);
+
+	public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String searchType,String searchValue,LocationInputVO locationVo);
+
 	public List<IdNameVO> getConstituenciesByDistrict(Long districtId);
 	public List<IdNameVO> getAllMandalsByConstituencyID(Long constituencyID);
 	public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type);
-	public List<IdNameVO> getDistrictsList();
+	 public List<IdNameVO> getDistrictsList();
+
 	public List<IdNameVO> getAllCandidateTypes();
 }
