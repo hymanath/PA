@@ -3,11 +3,13 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.DistrictColumnNames;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DistrictDAO extends GenericDaoHibernate<District, Long> implements
 IDistrictDAO {
@@ -347,13 +349,35 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		query.setParameter("districtName",districtName);
 		return (Long)query.uniqueResult();
 	}
-	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getDistrictsList(){
 		
 		Query query = getSession().createQuery(" select model.districtId,model.districtName from District model where model.state.stateId in (1,36) order by model.districtName ");
 			
 			return query.list();
 		}
-
 	
+	
+	
+	  public List<Long> getLocalBodiesOfDistrict(List<Long> distrctIds){
+		  
+		  StringBuilder str = new StringBuilder();
+		  
+		  str.append(" select local_election_body_id from local_election_body where election_type_id in (:Town) ");
+		  
+		  if(distrctIds !=null && distrctIds.size()>0){
+			  str.append(" and district_id in (:distrctIds) ");
+		  }
+		  
+		  Query query = getSession().createSQLQuery(str.toString())
+		  
+		  .addScalar("local_election_body_id",Hibernate.LONG);	  
+		  
+		  if(distrctIds !=null && distrctIds.size()>0){
+			  query.setParameterList("distrctIds", distrctIds);
+		  }
+		  query.setParameter("Town", IConstants.TOWN_TYPE_IDS);
+		  
+		  return query.list();
+	  }
 }

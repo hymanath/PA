@@ -1541,6 +1541,162 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameter("stateId", stateId);
 		return query.list();
 	}
+
+	public List<Long> getDivisionIdsOfGreater(List<Long> greaterIds){
+		Query query=getSession().createSQLQuery("select distinct c.constituency_id from constituency c " +
+				" where " +
+				" c.local_election_body_id in (:localBodyIds) ")
+				.addScalar("constituency_id",Hibernate.LONG);	
+		query.setParameterList("localBodyIds", greaterIds);	
+		return query.list();
+	}
+	public List<Long> getAllTehsilsByConstituency(List<Long> constituencyIds)
+	{
+		Query query = getSession().createSQLQuery("select distinct t.tehsil_id as tehsilId from " +
+				" tehsil t,delimitation_constituency_mandal_details dcmd where t.tehsil_id = dcmd.tehsil_id and delimitation_constituency_id in " +
+				" (select delimitation_constituency_id from delimitation_constituency where constituency_id in (:constituencyIds) and year = 2009)")
+				.addScalar("tehsilId",Hibernate.LONG);
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
+	
+	public List<Long> getAllLocalBodiesForConstituency(List<Long> constituencyIds){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select distinct alcb.local_election_body_id " +
+				" from assembly_local_election_body alcb,local_election_body leb " +
+				" where " +
+				" leb.local_election_body_id = alcb.local_election_body_id " +
+				" and leb.election_type_id  in (:Town) ");
+		
+		 if(constituencyIds !=null && constituencyIds.size()>0){
+			 str.append(" and alcb.constituency_id in (:constituencyIds) ");
+		 }
+		 
+		 Query query = getSession().createSQLQuery(str.toString())				
+				 .addScalar("local_election_body_id",Hibernate.LONG);
+		 
+		 query.setParameterList("constituencyIds", constituencyIds);
+		 query.setParameterList("Town", IConstants.TOWN_TYPE_IDS);
+		 
+		 return query.list();
+		
+	}
+	
+	public List<Long> getAllDivisions(List<Long> locationIds){
+		
+		  StringBuilder str = new StringBuilder();
+		  
+		 //str.append(" select distinct constituency_id from constituency " +
+		  		//"where local_election_body_id in (select local_election_body_id from local_election_body where election_type_id in (:Division) and district_id in (:locationIds) ");
+		  
+		  str.append(" select distinct c.constituency_id from constituency c,local_election_body leb"
+		  		+ " where"
+		  		+ " c.local_election_body_id = leb.local_election_body_id "
+		  		+ " and leb.election_type_id in (:Division)  "
+		  		+ " and  leb.district_id in (:locationIds)"
+		  		+ " and  leb.local_election_body_id is not null " );
+
+		  
+		  Query query = getSession().createSQLQuery(str.toString())
+		  .addScalar("constituency_id",Hibernate.LONG);
+		  query.setParameterList("locationIds", locationIds);
+		  query.setParameterList("Division", IConstants.DIVISION_TYPE_IDS);
+		  
+		  return query.list();
+	}
+	public List<Long> getAllDivisionsOfConstituency(List<Long> constituencyIds){
+		
+		 StringBuilder str = new StringBuilder();
+		 
+		 str.append(" select distinct c.constituency_id" +
+		 		" from " +
+		 		" assembly_local_election_body alcb,local_election_body leb,constituency c" +
+		 		" where " +
+		 		" leb.local_election_body_id = alcb.local_election_body_id" +
+		 		" and alcb.local_election_body_id = c.local_election_body_id " +
+		 		" and  leb.election_type_id  in (:Division) ");
+		 
+		 if(constituencyIds !=null && constituencyIds.size()>0){
+			 str.append(" and alcb.constituency_id in (:constituencyIds) ");
+		 }
+		 
+		 Query query = getSession().createSQLQuery(str.toString())				
+		 .addScalar("constituency_id",Hibernate.LONG);
+		 query.setParameterList("constituencyIds", constituencyIds);
+		 query.setParameterList("Division", IConstants.DIVISION_TYPE_IDS);
+		 
+		 return query.list();				
+	}
+	public List<Long> getAllPanchayatsForDistrict(List<Long> districtIds){
+		
+		Query query=getSession().createSQLQuery(" select distinct p.panchayat_id from panchayat p,tehsil t " +
+				" where p.tehsil_id =  t.tehsil_id " +
+				" and t.district_id in (:districtIds) " )
+				
+				.addScalar("panchayat_id",Hibernate.LONG);	
+			query.setParameterList("districtIds", districtIds);
+			return query.list();
+	}
+	public List<Long> getAllPanchayatsForConstituency(List<Long> constituencyIds){
+		
+		Query query=getSession().createSQLQuery("select distinct p.panchayat_id  from tehsil t,delimitation_constituency_mandal_details dcmd,panchayat p " +
+				" where t.tehsil_id = dcmd.tehsil_id " +
+				" and p.tehsil_id = t.tehsil_id" +
+				" and dcmd.delimitation_constituency_id in " +
+				" (select delimitation_constituency_id from delimitation_constituency " +
+				" where year = :delimitationYear and constituency_id in (:constituencyIds)) ")
+		
+				.addScalar("panchayat_id",Hibernate.LONG);	
+			
+			query.setParameterList("constituencyIds", constituencyIds);	
+			query.setParameter("delimitationYear", IConstants.DELIMITATION_YEAR);
+			return query.list();		
+	}
+	public List<Long> getAllPanchayatsByTehsilId(List<Long> tehsilId)
+	{
+		Query query = getSession().createSQLQuery("select distinct model.panchayat_id as id from panchayat model where model.tehsil_id in (:tehsilId) ")
+		.addScalar("id",Hibernate.LONG);
+		query.setParameterList("tehsilId", tehsilId);
+		
+		return query.list();
+		
+	}
+	public List<Long> getAllWardsForDistrict(List<Long> districtIds){
+		
+		Query query=getSession().createSQLQuery(" select distinct c.constituency_id from constituency c,local_election_body l " +
+				"  where " +
+				" c.local_election_body_id = l.local_election_body_id" +
+				" and l.district_id  in (:districtIds) " +
+				" and c.local_election_body_id is not null ")
+		
+				.addScalar("constituency_id",Hibernate.LONG);	
+		query.setParameterList("districtIds", districtIds);	
+		
+		return query.list();	
+	}
+	public List<Long> getAllWardsForConstituency(List<Long> constituencyIds,Long publicationDateId){
+		
+		Query query=getSession().createSQLQuery("select distinct c.constituency_id from constituency c,local_election_body l,booth b  " +
+				" where " +
+				" c.local_election_body_id = l.local_election_body_id " +
+				" and l.local_election_body_id = b.local_election_body_id" +
+				" and b.constituency_id in (:constituencyIds) and b.publication_date_id = :publicationDateId " +
+				" and c.local_election_body_id is not null ")
+				
+				.addScalar("constituency_id",Hibernate.LONG);	
+		query.setParameterList("constituencyIds", constituencyIds);	
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();	
+	}
+	public List<Long> getAllWardIdsForLocalBody(List<Long> localElectionBodyId){
+		Query query=getSession().createSQLQuery("select distinct C.constituency_id as id from constituency C,local_election_body LEB where C.local_election_body_id in (:localElectionBodyId) " +
+				"  and C.local_election_body_id = LEB.local_election_body_id  ")
+		.addScalar("id",Hibernate.LONG);		
+		query.setParameterList("localElectionBodyId", localElectionBodyId);
+		return query.list();
+	}
+
 	public List<Object[]> getTehsilsByConstituency(Long constituencyId)
 	{
 		Query query = getSession().createSQLQuery("select distinct t.tehsil_id as tehsilId ,t.tehsil_name as name from " +
@@ -1575,4 +1731,5 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return query.list();
 		
 	}
+
 }

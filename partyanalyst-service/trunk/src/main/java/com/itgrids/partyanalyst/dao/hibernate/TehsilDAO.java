@@ -242,5 +242,13 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		Object[] params = {stateId, publicationDateId};
 		return getHibernateTemplate().find("select distinct model.tehsil.tehsilId , model.tehsil.tehsilName from Booth model where model.tehsil.district.state.stateId = ? and model.publicationDate.publicationDateId = ? ", params);
 	}
+	public List<Long> getAllTehsilDetails(List<Long> districtIds){
+		
+		Query query = getSession().createQuery("select model.tehsilId from Tehsil model where model.district.districtId in (:districtIds)");
+		query.setParameterList("districtIds", districtIds);
+		return query.list();
+		
+	}
+	
 	
 }

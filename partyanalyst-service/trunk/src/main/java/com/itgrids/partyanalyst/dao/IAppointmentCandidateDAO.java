@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.UserAddress;
 
@@ -15,5 +16,8 @@ public interface IAppointmentCandidateDAO extends GenericDao<AppointmentCandidat
  public Object getMaxDate(Long tdpCadreId,String mobileNo,Integer crrntMnth);
  public List<Object[]>  searchAppointmentRequestedMember(String searchType,String searchValue);
  public List<UserAddress> getUserWorkAddress(Long id);
- public List<Object[]>  advancedSearchAppointmentRequestedMembersForPublicRepresentative(String searchType,Long searchValue);
+ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String searchType,LocationInputVO locationVo,String locationType,LocationInputVO inputVo);
+ //public List<Object[]>  advancedSearchAppointmentRequestedMembersForPublicRepresentative(String searchType,Long searchValue);
+ public List<Object[]>  advancedSearchAppointmentRequestedMembersForPublicRepresentative(String searchType,LocationInputVO locationVo,LocationInputVO inputVo);
+ 
 }
