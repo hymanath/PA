@@ -61,4 +61,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAllMandalsByConstituencyID(Long constituencyID);
 	public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type);
 	public List<IdNameVO> getDistrictsList();
+	public List<IdNameVO> getAllCandidateTypes();
 }

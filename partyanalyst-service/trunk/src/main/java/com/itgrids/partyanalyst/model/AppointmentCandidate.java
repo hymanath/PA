@@ -49,6 +49,9 @@ public class AppointmentCandidate extends BaseModel {
 	 private User createdUser;
 	 private User updateUser; 
 	 
+	 private Long appointmentCandidateTypeId;
+	 private AppointmentCandidateType appointmentCandidateType;
+	 
 		
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -225,6 +228,25 @@ public class AppointmentCandidate extends BaseModel {
 	}
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="appointment_candidate_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AppointmentCandidateType getAppointmentCandidateType() {
+		return appointmentCandidateType;
+	}
+	public void setAppointmentCandidateType(
+			AppointmentCandidateType appointmentCandidateType) {
+		this.appointmentCandidateType = appointmentCandidateType;
+	}
+	@Column(name="appointment_candidate_type_id")
+	public Long getAppointmentCandidateTypeId() {
+		return appointmentCandidateTypeId;
+	}
+	public void setAppointmentCandidateTypeId(Long appointmentCandidateTypeId) {
+		this.appointmentCandidateTypeId = appointmentCandidateTypeId;
 	}
 	
 	
