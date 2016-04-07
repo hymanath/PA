@@ -29,7 +29,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		return query.list();
 	}
     
-	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate){
+	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId){
 		
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select  distinct acr.appointment_id as appid, a.reason as reason, ap.priority as priority, ass.status as status," +
@@ -43,6 +43,10 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 				"           join user_address                 ua   on  ac.address_id=ua.user_address_id " +
 				"           left join label_appointment       la   on  la.appointment_id=a.appointment_id and la.is_deleted='N' " +
 				" where     a.is_deleted='N' ");
+		
+		if(selUserId != null && selUserId > 0l){
+			sb.append(" and a.appointment_user_id = :selUserId ");
+		}
 		
 		if(designationId!=null && designationId >0l){
 		  sb.append(" and ac.designation_id = :designationId");	
@@ -76,6 +80,9 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 				 .addScalar("insertedTime",Hibernate.TIMESTAMP)
 				 .addScalar("applabelId",Hibernate.LONG);
 		        
+		if(selUserId != null && selUserId > 0l){
+			query.setParameter("selUserId",selUserId);
+		}
 		
 		if(designationId!=null && designationId >0l){
 			  query.setParameter("designationId",designationId);
