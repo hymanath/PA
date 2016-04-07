@@ -411,20 +411,28 @@
 										<input type="hidden" class="cloneCandiImageUrlCls"/>
 										<div class="row">
 											<span class="closeIcon"><i class="glyphicon glyphicon-remove"></i></span>
-											<div class="col-md-4 m_top10">
+											<div class="col-md-3 m_top10">
 												<label>Name</label><span style='color:red'> &nbsp * </span>
 												<input type="text" class="form-control cloneNameCls">
 												<div class="cloneErrCandidateNameCls validateClr"></div>
 											</div>
-											<div class="col-md-4 m_top10">
+											<div class="col-md-3 m_top10">
 												<label>Designation</label><span style='color:red'> &nbsp * </span>
 												<select class="cloneDesignationCls " >
 													<option value="0">Select Designation</option>
 													
-												</select>
+											 	</select>
 												<div class="cloneErrCandidateDesgCls validateClr"></div>
 											</div>
-											<div class="col-md-4 m_top10">
+											<div class="col-md-3 m_top10">
+												<label>Candidate Type</label><span style='color:red'> &nbsp * </span>
+												<select class="cloneCandidateTypeCls">
+													<option value="0">Select Candidate Type</option>
+													
+												</select>
+												<div class="cloneErrCandidateTypeCls validateClr"></div>
+											</div>
+											<div class="col-md-3 m_top10">
 												<label>Contact Number</label><span style='color:red'> &nbsp * </span>
 												<input type="text" class="form-control cloneMobileCls">
 												<div class="cloneErrCandidateMobileCls validateClr"></div>
@@ -1116,6 +1124,11 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneCandiImageUrlCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].candiImageUrl');
 	e.find(".closeIcon").attr("clone_block_count",cloneCount);
 	
+	e.find(".cloneCandidateTypeCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].candidateTypeId');
+	e.find(".cloneCandidateTypeCls").attr("id",'candidateTypeSelId'+cloneCount);
+	e.find(".cloneCandidateTypeCls").attr("attr_val",cloneCount);	
+	e.find(".cloneErrCandidateTypeCls").attr("id",'cloneErrCandidateTypeId'+cloneCount);
+	
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
 	
@@ -1144,6 +1157,11 @@ $(document).on("click","#addOneBlock",function(){
 	var select6 = new Dropkick("#"+village);
 	select6.refresh();
 	
+	 var t = "candidateTypeSelId"+cloneCount;
+	$("#"+t).dropkick();
+	var select2 = new Dropkick("#"+t);
+	select2.refresh();
+	
 	cloneCount=cloneCount+1;
 });
 
@@ -1165,6 +1183,7 @@ $(".dropkickClass").dropkick();
 				getAppointmentStatusList();
 				getAppointmentPriority();
 				searchTypeRadioCls();
+				getAllCandidateTypes();
 				
 			}, 1000);
 			getAppointmentsLabelStatus("onload");
@@ -2051,7 +2070,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='</div>';
 								
 								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
-									str+='<input type="checkbox" class="apptDetailsDiv"  attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'">';
+									str+='<input type="checkbox" class="apptDetailsDiv"  attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
 								str+='</div>';
 								
 							str+='</div>';
@@ -2104,6 +2123,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 var membershipno = $(this).attr("attr_memberShipNo");
 				 var votercardno = $(this).attr("attr_voterCardNo");
 				 var closeId1 = $(this).attr("attr_id");
+				 var candidateTypeId = $(this).attr("attr_candidateType_id");
 		
 		
 		var jsObj={
@@ -2138,6 +2158,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				
 				$('#designationSelId'+temp).val(desg);
 				var selectx = new Dropkick('#designationSelId'+temp);
+					selectx.refresh();
+					
+				$('#candidateTypeSelId'+temp).val(candidateTypeId);
+				var selectx = new Dropkick('#candidateTypeSelId'+temp);
 					selectx.refresh();
 				
 				$('#locationScopeSelId'+temp).val(lctscpid);
@@ -4081,7 +4105,7 @@ function buildTimeSlotsTable(result){
 				 
 				 var desgValue=$("#designationSelId"+i).val();
 				 if(desgValue ==null || desgValue ==0 || desgValue == undefined || desgValue ==""){
-					  $("#cloneErrCandidateDesgId"+i).html("Please enter Designation");
+					  $("#cloneErrCandidateDesgId"+i).html("Please Select Designation");
 					  isErrAvailable=true;	
 				 }
 				 
@@ -4094,6 +4118,12 @@ function buildTimeSlotsTable(result){
 					$("#cloneErrCandidateMobileId"+i).html("Please enter Valid Mobile Number");
 					isErrAvailable=true;
 				}
+				
+				 var canTypeValue=$("#candidateTypeSelId"+i).val();
+				 if(canTypeValue ==null || canTypeValue ==0 || canTypeValue == undefined || canTypeValue ==""){
+					  $("#cloneErrCandidateTypeId"+i).html("Please Select Candidate Type");
+					  isErrAvailable=true;	
+				 }
 				
 							 
 			 var locationScopeValue=$("#locationScopeSelId"+i).val();
@@ -5090,8 +5120,31 @@ function getPanchayatsForReferPopup(){
 		select.refresh();
 		var select = new Dropkick("#referpanchayatId");
 		select.refresh();
-  } 
- 
+  }
+
+  function getAllCandidateTypes(){
+		$.ajax({
+			type : 'GET',
+			url : 'getAllCandidateTypesAction.action',
+			dataType : 'json',
+			data : {}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){
+				//app-appointment
+				buildAllCandidateTypes(result);
+			}
+			
+		});
+	}
+	
+	function buildAllCandidateTypes(result){
+		$(".cloneCandidateTypeCls option").remove(); 
+			$(".cloneCandidateTypeCls").append('<option value="0">Select Candidate Type</option>'); 
+			for(var i in result){
+				$(".cloneCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+	}
+
 </script>
 </body>
 </html>
