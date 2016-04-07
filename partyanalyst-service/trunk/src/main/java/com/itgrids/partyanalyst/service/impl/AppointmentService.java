@@ -459,7 +459,12 @@ public class AppointmentService implements IAppointmentService{
 			        			
 			        			//user addres saving logic
 			        			UserAddress userAddress = new UserAddress();
-			        			userAddress.setState(stateDAO.get(1l));
+			        			if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()>10){
+			        				userAddress.setState(stateDAO.get(1l));
+			        			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()<=10){
+			        				userAddress.setState(stateDAO.get(36l));
+			        			}
+			        			
 			        			if(basicInfo.getDistrictId() > 0l)
 			        			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
 			        			if(basicInfo.getConstituencyId() > 0l)
@@ -489,6 +494,7 @@ public class AppointmentService implements IAppointmentService{
 			        			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			        			appCandi.setImageURL(basicInfo.getCandiImageUrl());
+			        			appCandi.setAppointmentCandidateTypeId(basicInfo.getCandidateTypeId());
 			        			appCandi = appointmentCandidateDAO.save(appCandi);
 			        			
 			        			AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
@@ -1036,6 +1042,7 @@ public class AppointmentService implements IAppointmentService{
 			    		  vo.setMemberShipId(obj[6]!=null?obj[6].toString():"");
 			    		  vo.setVoterCardNo(obj[7]!=null?obj[7].toString():"");
 			    		  vo.setDesignationId(obj[8]!=null?(Long)obj[8]:0l);
+			    		  vo.setCandidateTypeId(obj[9]!=null?(Long)obj[9]:0l);
 			    		  finalList.add(vo);
 			    	  }
 			      }
@@ -1734,7 +1741,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		    });
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at saveAppointment", e);
+			LOG.error("Exception raised at addAppointmentstoLabel", e);
 			rs.setResultCode(0);
 			rs.setMessage("failure");
 		}

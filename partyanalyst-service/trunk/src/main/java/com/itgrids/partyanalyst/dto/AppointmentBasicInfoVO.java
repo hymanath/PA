@@ -26,6 +26,7 @@ public class AppointmentBasicInfoVO {
 	private String uniqueId;
 	private Integer count;
 	private String candiImageUrl;
+	private Long candidateTypeId;
 	
 	public Integer getCount() {
 		return count;
@@ -175,6 +176,12 @@ public class AppointmentBasicInfoVO {
 	}
 	public void setCandiImageUrl(String candiImageUrl) {
 		this.candiImageUrl = candiImageUrl;
+	}
+	public Long getCandidateTypeId() {
+		return candidateTypeId;
+	}
+	public void setCandidateTypeId(Long candidateTypeId) {
+		this.candidateTypeId = candidateTypeId;
 	}
 	
 }
