@@ -117,7 +117,7 @@ public class PublicRepresentative implements java.io.Serializable{
 		this.addressId = addressId;
 	}
 	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "user_address_id",insertable = false, updatable = false)
+	@JoinColumn(name = "address_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
