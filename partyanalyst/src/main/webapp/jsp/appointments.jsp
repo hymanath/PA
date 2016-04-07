@@ -678,13 +678,14 @@
                                         	<div class="col-md-6">
                                             	
                                                 <select class="dropkickClass" id="appointmentLabelToGetSlotsId">
-                                                	<option>Feb-28_29-Appointments</option>
+                                                	<option value="0">Select Label</option>
                                                 </select>
-												<div id="timeSlotsErrId" class="text-danger"></div>
+												<div id="timeSlotsErrId"></div>
                                             </div>
                                             <div class="col-md-2">
                                             	<button class="btn btn-success btn-block showTimeSlotsCls " id="showTimeSlotsId">VIEW</button>
                                             </div>
+                                            <img id="apptRqstMemberAjax" src="images/icons/loading.gif" style="display:none; height:20px;"/>
                                         </div>
                                     </div>
 								</div>
@@ -1566,6 +1567,7 @@ $(".dropkickClass").dropkick();
 	}
 	$(document).on("click",".MngeAppntmntCls",function(){
 		$(".commonDivCls").hide();
+		$("#selectStsForLabelId").val(1);
 		getLabelDtls();
 	});
 	
@@ -1664,7 +1666,7 @@ $(".dropkickClass").dropkick();
 						}
 						
 						
-						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'"></i>';
+						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Click Here To Delete Label" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;cursor:pointer;"></i>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
@@ -2342,7 +2344,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			constituencyid:constituencyId,
 			appointmentlabelId : appointmentlabelId,
 			fromDate :fromDate,
-			toDate:toDate
+			toDate:toDate,
+			selUserId:$("#appointmentUserSelectBoxId").val()
 		  }
 		  	$.ajax({
 				type : 'POST',
@@ -3548,10 +3551,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 
 		var appointmentLabelId = $("#appointmentLabelToGetSlotsId").val();
 		if(appointmentLabelId==0){
-			$("#timeSlotsErrId").html("Please select a label");
+			$("#timeSlotsErrId").html("<span style='color:red'>Please select a label</span>");
 			return;
 		}
-
+		$("#apptRqstMemberAjax").show();
 		//View Details Of Appointments call
 		getViewAppointmentsOfALable();
 		//get appointments of a lable
@@ -3565,7 +3568,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		url : 'getTimeSlotsDetailsAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
-	}).done(function(result){ 
+	}).done(function(result){
+		$("#apptRqstMemberAjax").hide();
 		if(result.listOfTimePairPerDate != null && result.listOfTimePairPerDate.length!=0 ){
 			$("#pluginTableId").show();
 			buildTimeSlotsTable(result);
@@ -3825,12 +3829,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		}).done(function(result){
 			if(result!=null && result!=0){
 				  if(result.message=="success"){
+					  getLabelDtls();
 					  setTimeout(function () {
 						$("#updateStatusMsg").html("<center><h4 style='color: green;'>Status Updated Successfully</h4></center>").fadeOut(3000);
 						}, 500);
 						setTimeout(function () {
 						$("#myModalId").modal("hide");
-						}, 4000);
+						}, 1000);
 				  }
 				}else{
 					setTimeout(function () {
