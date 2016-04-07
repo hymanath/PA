@@ -54,6 +54,31 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
+.SelectPosition li
+{
+	padding:5px;
+	width:100%;
+	border-top:1px solid #ccc;
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+	list-style:none;
+	cursor:pointer;
+}
+.SelectPosition li:last-child
+{
+	border-bottom:1px solid #ccc;
+}
+.SelectPositionScroll 
+{
+	width: 100%;
+	height: 140px;
+	overflow: auto;
+}
+.SelectPosition
+{
+	padding:0px;
+	margin-top:10px;
+}
 .m_left16{
 	 margin-left: 16px !important;
 }
@@ -207,7 +232,22 @@
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="block">
-                                    	<h4 class="text-success">SEARCH MEMBER TO CREATE APPOINTMENT REQUESTED</h4>
+										<div class="col-md-9">
+											<h4 class="text-success">SEARCH MEMBER TO CREATE APPOINTMENT REQUESTED</h4>
+										</div>
+										<div class="col-md-3">
+												<div class="onoffswitch">
+													<input type="checkbox" value="1" name="searchTypeRadio" class="onoffswitch-checkbox searchTypeRadioCls" id="myonoffswitch" checked>
+													<label class="onoffswitch-label" for="myonoffswitch">
+														<span class="onoffswitch-inner"></span>
+														<span class="onoffswitch-switch"></span>
+													</label>
+												</div>
+											<!--<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
+											<button class="btn btn-block btn-success m_top25 getDetailsByAdvancedSearch">Advanced Search</button>-->
+											<!--<input type="radio" value="1" name="searchTypeRadio" class="searchTypeRadioCls" checked/>SEARCH MEMBER
+											<input type="radio" value="2" name="searchTypeRadio" class="searchTypeRadioCls"/>Advanced Search-->
+										</div>
                                         <div class="row m_top20">
                                         	<!--<div class="col-md-4 pad_right0">
                                             	<label>Select Location</label>
@@ -216,6 +256,7 @@
                                                 	<li></li>
                                                 </ul>
                                             </div>-->
+											
 											<div class="col-md-2 searchCls">
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="searchTypeId">
@@ -231,15 +272,16 @@
 												<span id="errDigitsId" class="full-right" style="color:red;"></span>
                                             </div>
 											
-											<div class="col-md-2 advanceSearchCls">
+											<div class="col-md-3 advanceSearchCls">
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();">
 													<option value="0">Select Search Type</option>
 													<option value="1">Name</option>
 													<option value="2">Public Representative</option>
+													<option value="3">Cadre Committee</option>
 												</select>
 											</div>
-                                            <div class="col-md-4 pad_0 advanceSearchCls">
+                                            <div class="col-md-4 pad_0 advanceSearchCls advanceprcls">
                                             	<label class="advanceNameCls">Search By Name<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 												<label class="advancePRCls">Search Designation</label>
@@ -258,24 +300,80 @@
 													<option value="23">EX-STATE MINISTER</option>
 												</select>
 												<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
-												<p id="errorDivId" style="color:red"></p>
+												
                                             </div>
+											<div id="OtherSelectlocationsDiv">
+												<div>
+													<div class="col-md-2 locationsFilterCls">
+														<label>Level</label>
+														<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
+														<!--<option value="0">ALL</option>-->
+														<option value="10">State</option>
+														<option value="11">District</option>
+														<option value="5">Mandal/Muncipality</option>
+														<option value="6">Village/Ward</option>
+														</select>
+													</div>
+													<div class="col-md-2 locationsFilterCls">
+														<label>District</label>
+														<select class="dropkickClass" id="referdistrictId" onchange="getConstituenciesBydistrictForReferPopup();">
+														<option value="0">All</option></select>
+													</div>
+													<div class="col-md-2 locationsFilterCls">
+														<label>Assembly</label>
+														<select class="dropkickClass" id="referconstituencyId" onchange="getMandalsByConstituencyForReferPopup();">
+															<option value="0">All</option>
+														</select>
+													</div>
+													<div class="col-md-3 locationsFilterCls">
+														<label>Mandal/ Municipality</label>
+														<select class="dropkickClass" id="refermandalNameId" onchange="getPanchayatsForReferPopup();">
+															<option value="0">All</option>
+														</select>
+													</div>
+													<div class="col-md-3 locationsFilterCls">
+														<label>Panchayat</label>
+														<select class="dropkickClass" id="referpanchayatId">
+															<option value="0">All</option>
+														</select>
+													</div>
+													
+													
+													<div>
+														
+								
+														<div class="advanceCadreCommittee" style="margin-top:5px;" id="referCommitteeDiv">
+														 <div class="col-md-5">
+															<label>Select Committee</label>
+															<select id="referCommitteeId" class="dropkickClass" >
+																<option value="0">All</option>
+																<option value="1">Main</option><option value="2">Telugu Yuvatha</option>
+																<option value="3">Telugu Mahila</option><option value="4">Telugu Rythu</option>
+																<option value="17">Trade</option><option value="6">BC Cell</option><option value="7">SC Cell</option>
+																<option value="8">ST Cell</option><option value="9">Minority Cell</option><option value="18">Christian</option>
+																<option value="11">TNSF (Student Union)</option><option value="5">TNTUC</option><option value="15">TSNV (Technical Expert Cell)</option>
+																<option value="10">Legal Cell</option><option value="16">Doctor Cell</option><option value="20">Kallu Geetha Karmikulu</option>
+																<option value="21">Chenetha</option><option value="19">Telugu Rakshana Vedika</option><option value="14">TNUS ( Teachers Union) </option>
+																<option value="12">Commercial Cell</option><option value="13">Cultural Cell</option>
+															</select>
+														  </div>
+														</div> 
+														<div >
+															<div class="col-md-12">
+																<div id="cadreCommitteeDiv" class="advanceCadreCommittee"></div>
+																<div id="representativesDiv"></div>
+																<div id="referRoleErrorDiv"></div>
+															</div>
+														</div>
+													</div></br>
+												</div>
+											</div>
+											<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
 											<div class="col-md-2">
+											
 												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Submit</button>
 											</div>
-                                            <div class="col-md-3 m_top20">
-												    <div class="onoffswitch">
-														<input type="checkbox" value="1" name="searchTypeRadio" class="onoffswitch-checkbox searchTypeRadioCls" id="myonoffswitch" checked>
-														<label class="onoffswitch-label" for="myonoffswitch">
-															<span class="onoffswitch-inner"></span>
-															<span class="onoffswitch-switch"></span>
-														</label>
-													</div>
-                                            	<!--<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
-												<button class="btn btn-block btn-success m_top25 getDetailsByAdvancedSearch">Advanced Search</button>-->
-												<!--<input type="radio" value="1" name="searchTypeRadio" class="searchTypeRadioCls" checked/>SEARCH MEMBER
-												<input type="radio" value="2" name="searchTypeRadio" class="searchTypeRadioCls"/>Advanced Search-->
-                                            </div>
+                                            
 											
 											<div class="col-md-1">
 												<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
@@ -283,42 +381,7 @@
 												<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 												
 												
-										<div class="col-md-12" id="OtherSelectlocationsDiv">
-											<div class="row">
-												<div class="col-md-2">
-													<label>Level</label>
-													<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
-													<option value="10">State</option>
-													<option value="11">District</option>
-													<option value="5">Mandal/Muncipality</option>
-													<option value="6">Village/Ward</option>
-													</select>
-												</div>
-												<div class="col-md-2">
-													<label>District</label>
-													<select class="dropkickClass" id="referdistrictId" onchange="getConstituenciesBydistrictForReferPopup();">
-													<option value="0">All</option></select>
-												</div>
-												<div class="col-md-2">
-													<label>Assembly</label>
-													<select class="dropkickClass" id="referconstituencyId" onchange="getMandalsByConstituencyForReferPopup();">
-														<option value="0">All</option>
-													</select>
-												</div>
-												<div class="col-md-3">
-													<label>Mandal/ Municipality</label>
-													<select class="dropkickClass" id="refermandalNameId" onchange="getPanchayatsForReferPopup();">
-														<option value="0">All</option>
-													</select>
-												</div>
-												<div class="col-md-3">
-													<label>Panchayat</label>
-													<select class="dropkickClass" id="referpanchayatId">
-														<option value="0">All</option>
-													</select>
-												</div>
-											</div>
-										</div>
+										
 									</div>
 										
 										
@@ -3935,6 +3998,7 @@ var tableToExcel = (function() {
 		//Saving
 		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0);
 		
+		
 		//Validations For Time Slot Creation
 		/*if(appointmentId ==null || appointmentId <=0 || appointmentId ==undefined){
 			$("#errorDivForTimeSlotId").html("Please Specify the Appointment");
@@ -4635,16 +4699,33 @@ function buildTimeSlotsTable(result){
 	
     function showHideBySearchType()
 	{
+			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
 			if(selectVal == 2)
 			{
 				$(".advancePRCls").show();
 				$(".advanceNameCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").show();
+				$(".advanceprcls").show();
+			}
+			else if(selectVal == 3)
+			{
+				$(".advancePRCls").hide();
+				$(".advanceNameCls").hide();
+				$(".advanceCadreCommittee").show();
+				$(".locationsFilterCls").show();
+				$(".advanceprcls").hide();
+				getCommitteeRoles();
 			}
 			else
 			{
+				$(".advanceprcls").show();
 				$(".advanceNameCls").show();
 				$(".advancePRCls").hide();
+				$(".advanceCadreCommittee").hide();
+				$(".locationsFilterCls").hide();
+				
 			}
 	}
 	$(document).on("click","#deleteMultipleAppointmentsId",function(){
@@ -4710,60 +4791,223 @@ function getAppointmentCreatedUsers(){
 	
 	function getAdvancedSearchDetails()
 	{
-		
-		var errorstr='';
+		$("#apptmemberDetailsDiv").html("");
+		var statusArr=[];
+		var tdpCadreIds=[];
+		var level;
+		var levelValue;
+		var tehsilId = 0;
+		var committeeId = 0;
+		var referCommitteeId;
+		var errorStr='';
+		var levelStr;
 		$("#errorDivId").html('');
 		var searchType;
-		var searchValue;
+		var searchValue = "";
+		var districtId=0;
+		var constituencyId=0;
+		var mandalId = 0;
+		var panchayatId=0;
+		var levelId=0;
 		var advanceSearchType = $("#advanceSearchTypeId").val();
-		
 		 if(advanceSearchType==0){
-			 errorstr='Please Select Search Type';
-			 $("#errorDivId").html(errorstr);
+			 errorStr='Please Select Search Type';
+			 $("#errorDivId").html(errorStr);
 		 }
 		if(advanceSearchType == 1)
 		{
+			levelStr ="";
 			 searchType = "name";
 			 searchValue = $("#advanceSearchValueId").val();
-			
 			 if(searchValue == null || searchValue.length ==0){
-				 errorstr='Please Enter Name';
-				 $("#errorDivId").html(errorstr);
+				 errorStr='Please Enter Name';
+				 $("#errorDivId").html(errorStr);
 				 return;
 			 }
-			
-			 
 		}
-		
 		else if(advanceSearchType == 2)
 		{
 			 searchType = "publicRepresentative";
 			 searchValue = $("#advanceDesignationId").val();
 			 if(searchValue == 0 || searchValue.length ==0)
 			 {
-				 errorstr='Please Select Designation';
-				 $("#errorDivId").html(errorstr);
+				 errorStr='Please Select Designation';
+				 $("#errorDivId").html(errorStr);
 				 return;
 			 }
 		}
+		else if(advanceSearchType == 3)
+		{
+			 searchType = "CadreCommittee";
+				$("input[name='designationName']:checked").each(function ()
+			{		
+				var desgnaValue = $(this).attr("value");
+				if(desgnaValue ==null || desgnaValue =="" || desgnaValue == undefined){
+					return false;
+				}
+				else{
+					statusArr.push($(this).attr("value"));
+				}		
+			});
+			 referCommitteeId = $("#referCommitteeId").val();
+			 
+		}
+		if(advanceSearchType > 1)
+		{
+		 districtId = $("#referdistrictId").val();
+		 constituencyId = $("#referconstituencyId").val();
+		var tehsilName =  $("#refermandalNameId selected:option").text();
+		if($("#refermandalNameId").val() > 0){
+			if(tehsilName.indexOf('Mandal') == -1)
+		tehsilId = "2"+$("#refermandalNameId").val();
+		else
+		tehsilId = "1"+$("#refermandalNameId").val();
+		}
+		if($("#refermandalNameId").val() == 0)
+		tehsilId = $("#refermandalNameId").val();
+	     panchayatId = $("#referpanchayatId").val();
+		 levelId  = $("#levelId").val();
+		if(levelId == 10)
+			level = "state";
+		if(levelId == 11)
+			level = "district";
+		if(levelId == 5)
+			level = "mandal";
+		if(levelId == 6)
+			level = "village";
+	 if(districtId == 0)
+		{
+			levelStr = "state";
+			levelValue = 0;
+			
+		}
+		else if(districtId > 0 && constituencyId == 0)
+		{
+			levelStr = "district";
+			levelValue = districtId;
+			
+		}
+		else if(districtId > 0 && constituencyId > 0 && tehsilId == 0)
+		{
+			levelStr = "constituency";
+			levelValue = constituencyId;
+			
+		}
 		
-		if(errorstr.length>0){
-			$("#errorDivId").html(errorstr);
+		else if(districtId > 0 && constituencyId > 0 && tehsilId > 0 && panchayatId == 0)
+		{
+			
+			levelStr = "mandal";
+			levelValue = tehsilId;
+			
+		}
+		
+		else if(districtId > 0 && constituencyId > 0 && tehsilId > 0 && panchayatId > 0)
+		{
+			levelStr = "village";
+			levelValue = panchayatId;
+			
+		}
+		
+	
+		$('#errorDivId').html(errorStr);
+          if(levelId == 5){
+		
+			 districtId = $("#referdistrictId").val();
+			
+			if(districtId==0 || districtId=='select'){
+			
+				errorStr +="Please Select District";
+			}
+		}
+		
+		 else if(levelId == 6){
+			 districtId = $("#referdistrictId").val();
+			if(districtId==0 || districtId=='select'){
+				
+				errorStr +="Please Select District";
+				$("#errorDivId").html(errorStr);
+				return ;
+				
+			}
+			  if(constituencyId == 0 || constituencyId=='select'){
+				 constituencyId = $("#referconstituencyId").val();
+				errorStr +="Please Select Assembly";
+				$("#errorDivId").html(errorStr);
+				return;
+			}
+		}
+		
+		}
+	
+		if(errorStr.length >0)
+       {
+	  $('#errorDivId').html(errorStr);
+	  return ;
+       } 
+	   
+	//Party Commitee Members	
+	if(advanceSearchType !=null && advanceSearchType == 3){
+		$("input[name='designationName']:checked").each(function ()
+		{		
+			var desgnaValue = $(this).attr("value");
+			if(desgnaValue ==null || desgnaValue =="" || desgnaValue == undefined){
+				return false;
+			}
+			else{
+				statusArr.push($(this).attr("value"));
+			}		
+		});
+		committeeId = referCommitteeId;	
+	}
+	
+	//Public Representatives
+	if(advanceSearchType !=null && advanceSearchType == 2){
+		/*$("input[name='designationPRName']:checked").each(function ()
+		{		
+			var desgnaValue = $(this).attr("value");
+			if(desgnaValue ==null || desgnaValue =="" || desgnaValue == undefined){
+				return false;
+			}
+			else{
+				statusArr.push($(this).attr("value"));
+			}		
+		});*/
+		var desgnaValue = $("#advanceDesignationId").val();
+		statusArr.push(desgnaValue);
+		committeeId = "0";	
+	}
+	
+	
+	//$("#processingImgCandidateId").show();
+	if(errorStr.length>0){
+			$("#errorDivId").html(errorStr);
 			return;
 		}
-		$("#ajaxImgForAppintId").show();
+		//$("#ajaxImgForAppintId").show();
+	
+		$("#apptmemberDetailsDiv").html("<center><img src='images/search.gif'/> </center>");
+		
 		var jsObj={
 			searchType:searchType,
-			searchValue:searchValue
-		  }
+			searchValue:searchValue,
+			designations:statusArr,
+			committeeId:committeeId, // "PR" -- if public representatives
+			levelId:levelId,
+			districtId:districtId,
+			constituencyId:constituencyId,
+			mandalId:tehsilId,
+			panchayatId:panchayatId,
+			levelStr:levelStr
+		}
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppntmntAdvancedSearchDetailsAction.action',
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				$("#ajaxImgForAppintId").hide();
-				// $("#searchMemberAjax").css("display","none");
+				//$("#ajaxImgForAppintId").hide();
+				$("#apptmemberDetailsDiv").html("");
 				if(result !=null && result.length>0){
 				buildapptmemberDetails(result);
 				
@@ -4782,6 +5026,9 @@ function getAppointmentCreatedUsers(){
 		if(selected == 1)
 		{
 			showHideSearch("search");
+			$(".locationsFilterCls").hide();
+			$(".advanceCadreCommittee").hide();
+			
 		}
 		else
 		{
@@ -4914,7 +5161,7 @@ function getDistrictsForReferPopup()
 		data : {}
 	}).done(function(result){
 		var str='';
-		str+='<option value="select">Select District</option>';
+		//str+='<option value="select">Select District</option>';
 		str+='<option value="0">ALL</option>';
 		if(result != null && result.length > 0){
 			for(var i in result){
@@ -5120,9 +5367,8 @@ function getPanchayatsForReferPopup(){
 		select.refresh();
 		var select = new Dropkick("#referpanchayatId");
 		select.refresh();
-  }
-
-  function getAllCandidateTypes(){
+  } 
+   function getAllCandidateTypes(){
 		$.ajax({
 			type : 'GET',
 			url : 'getAllCandidateTypesAction.action',
@@ -5144,7 +5390,28 @@ function getPanchayatsForReferPopup(){
 				$(".cloneCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 	}
-
+function getCommitteeRoles(){
+    	
+    	var jsObj={
+    			task:"roles"
+    		}
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getAllCommitteesAction.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+			var str ='';
+				str+='<ul class="SelectPosition SelectPositionScroll">';
+				str+=' <li  id="0">All<input type="checkbox" name="" value="0" class="pull-right" attr_value="All" id="allDesignationId"></input></li>';
+			   for(var i in result){
+				   str+=' <li  id="'+result[i].id+'">'+result[i].name+'   <input type="checkbox" name="designationName" value="'+result[i].id+'" class="referRolesCheck pull-right" attr_value="'+result[i].name+'"></input></li>';
+				}
+				
+				str+='</ul>';
+				$("#cadreCommitteeDiv").html(str);
+				$(".SelectPositionScroll").mCustomScrollbar();
+			   });			  
+      }
 </script>
 </body>
 </html>

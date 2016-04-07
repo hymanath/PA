@@ -3036,6 +3036,12 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 		<property name="appointmentCandidateTypeDAO" ref="appointmentCandidateTypeDAO" />
+		<property name="locationService" ref="locationService"/>
+	</bean>
+	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
+		<property name="constituencyDAO" ref="constituencyDAO"/>
+		<property name="districtDAO" ref="districtDAO"/>
+		<property name="tehsilDAO" ref="tehsilDAO"/>		
 	</bean>
 </beans>		
 	

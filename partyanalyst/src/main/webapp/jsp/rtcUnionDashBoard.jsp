@@ -48,9 +48,9 @@ body{color:#666 !important}
 			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading bg_cc">
-						<img src="dist/2016DashBoard/img/affliatedCom.jpg" style="width:100px;display:inline-block">
-						
-							</div>
+						<!--<img src="dist/2016DashBoard/img/affliatedCom.jpg" style="width:100px;display:inline-block">-->
+						AFFLIATED UNIONS DASHBOARD
+					</div>
 					<div class="panel-body">
 							<div class="row">
 								<div class="col-md-12">
@@ -60,7 +60,7 @@ body{color:#666 !important}
 											<div id="allTotalCountsId"></div>
 												<table class="table table-bordered bg_ff">
 													<tr>
-														<td colspan="4" class="text-center"><h4 class="m_0">ALL AFFILIATED UNION MEMBERS REGISTERED</h4></td>
+														<td colspan="4" class="text-center bg_cc	"><h4 class="m_0">ALL AFFILIATED UNION MEMBERS REGISTERED</h4></td>
 													</tr>
 													<tr>
 														<td class="text-center">
@@ -86,8 +86,8 @@ body{color:#666 !important}
 													</tr>
 												</table>
 												
-												<table class="table table-bordered m_top10 bg_ff">
-													<thead class="bg_F5">
+												<table class="table table-condensed m_top10 bg_ff">
+													<thead class="bg_cc">
 														<th class="text-center">AFFILIATED UNION NAME</th>
 														<th class="text-center">TOTAL REGISTER</th>
 														<th class="text-center">TODAY</th>
@@ -204,8 +204,8 @@ body{color:#666 !important}
 
 									</div>
 									<div id="tableDivsId">
-										<div class="panel panel-default">
-											<div class="panel-heading bg_ff">
+										<div class="panel panel-default m_top10">
+											<div class="panel-heading bg_dd">
 											
 											<!--<div class="col-xs-5">
 											<label class="radio-inline">
@@ -221,15 +221,16 @@ body{color:#666 !important}
 												<input type="radio" name="district" value="last 30 days" id="district30DaysId" class="districtRadioCls">Last 30 Days
 											</label>
 											</div> -->
-												<div class="col-xs-3">
-												<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" checked>District</label>
-												<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
+											<div class="row">
+												<div class="col-xs-3" style="margin-top:6px;">
+													<label class="radio-inline"><input type="radio" value="district" class="locationTypeRadioCls" name="locationTypeRadio" checked>District</label>
+													<label class="radio-inline"><input type="radio" value="constituency" class="locationTypeRadioCls" name="locationTypeRadio" >Constituency</label>
 												</div>
-											<div class="col-md-3">
-												<select id="userMembersId" multiple data-placeholder="Select Union Type">
-												</select>
-												<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
-											</div>
+												<div class="col-md-3">
+													<select id="userMembersId" multiple data-placeholder="Select Union Type">
+													</select>
+													<img id="userMembersIdLoadingId" src="images/icons/loading.gif" style="width:20px;height:20px;display:none"/>
+												</div>
 												<div class="pull-right col-md-3">
 													<div class="input-group">
 														<input class="form-control getDate" type="text">
@@ -238,7 +239,8 @@ body{color:#666 !important}
 														</span>
 													</div>
 												</div>
-												<div class="row m_top10">
+											</div>
+												<div class="row">
 												
 													<!--<div class="col-md-6">
 														<div class="block">
@@ -251,7 +253,7 @@ body{color:#666 !important}
 														</div>
 													</div>-->
 													
-													<div class="col-md-12 m_top10">
+													<div class="col-md-12 m_top10 bg_cc" style="padding: 8px">
 													   <h4 class="panel-title" id="districtWiseTitleId"><b>CONSTITUENCY WISE REGISTRATION DETAILS</b></h4>
 													</div>
 												</div>
