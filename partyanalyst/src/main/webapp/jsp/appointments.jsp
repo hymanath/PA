@@ -831,7 +831,7 @@
 																	</div>
 																</div>
 																<div class="col-md-3">
-																	<label>To Time</label><span style='color:red'> &nbsp * </span>
+																	<label>To Time</label><span style='color:red;width:500px'> &nbsp * &nbsp </span>
 																	<div class="input-group inputSearch">
 																		<span class="input-group-addon">
 																			<i class="glyphicon glyphicon-time"></i>
@@ -911,7 +911,7 @@
 		evt.item.parentNode.removeChild(evt.item);
 		if($("#confirmAppointmentBlockDropId").has( ".manageAppViewPanelClass" ))
 		{
-			$("#confirmAppointmentBlockDropId").append("<h4 class='deleteTag'>DROP HERE</h4>")
+			$("#confirmAppointmentBlockDropId").append("<h4 class='deleteTag' style='height:150px;'>DROP HERE</h4>")
 		}
       },
       setData: function (dataTransfer, dragEl) {
@@ -933,7 +933,7 @@
       onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);
 		$("#confirmAppointmentBlockDropId").find(".deleteTag").remove();
 		$("#confirmAppointmentBlockDropId").css("height","");
-		//$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
+	//	$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
 		//$("#confirmAppointmentBlockDropId").find(".manageAppViewPanelClass").removeClass("newClass");
 	  },
       onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]);},
@@ -2654,22 +2654,19 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				if(result!=null && result!=0){
 				  if(result.resultCode == 1){
 					   setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Appointments Added To Label Successfully</h4></center>").fadeOut(6000);
+						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Appointments Added To Label Successfully</h4></center>").fadeOut(4000);
 						}, 500);
-						
-						getLabelDtls();
+					    setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
+						 getLabelDtls();
 				  }
 				}else{
 					setTimeout(function () {
-						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Updation Failed..Try Later</h4></center>").fadeOut(6000);
+						 $("#statusMsgAppntReqt").html("<center><h4 style='margin-top: -22px;color: green;'>Updation Failed..Try Later</h4></center>").fadeOut(4000);
 						}, 500);
-					
+						setTimeout(function() {$('html, body').animate({scrollTop:0}, 5000); },5000);
 				 }
 		  }); 
-		  
 	  }
-	  
-
 	$(document).on("click","#viewAllAppointmentId",function(){
 		var startIndex = 0;
 		viewAllAppointment(startIndex,5);
@@ -3992,9 +3989,23 @@ var tableToExcel = (function() {
 		//var appointmentId = $("#appointmentLabelToGetSlotsId").val();		
 		var appointmentId = $("#confirmAppointmentBlockDropId div").attr("attr_appointment_id");
 		var date = $("#appointmentDateSlotId").val();
-		var fromTime = $("#fromTimeId").val();
-		var toTime = $("#toTimeId").val();
-		
+		var fromTime = $("#fromTimeId").val().trim();
+		var toTime = $("#toTimeId").val().trim();
+		$("#errorDivForTimeSlotId").show();
+		var d=new Date();
+		var currentDate=(d.getMonth()+1)+ "/" + (d.getDate()) + "/" + d.getFullYear();
+        if(fromTime.length==0){
+			$("#errorDivForTimeSlotId").html("Please select From Time.");
+			return;
+		}else if(toTime.length==0){
+			$("#errorDivForTimeSlotId").html("Please select To Time.");
+			return;
+		 }else if(Date.parse(currentDate+" "+toTime) > Date.parse(currentDate+" "+fromTime)){
+			 $("#errorDivForTimeSlotId").html(" ");
+		 }else{
+			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
+			 return;
+		}
 		//Saving
 		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0);
 		
@@ -4358,7 +4369,7 @@ function buildTimeSlotsTable(result){
 			str+='<td>';
 			str+='<div class="panel panel-default manageAppViewPanelClass m_top15">';
 			str+='<div class="panel-heading">';
-			str+='<i class="glyphicon glyphicon-edit settingsIconConfirm settingsIcon pull-right" style="margin-left:10px;"></i>';
+			str+='<i class="glyphicon glyphicon-edit settingsIconConfirm settingsIcon pull-right" title="Click here to update label time slot." style="margin-left:10px;cursor:pointer;"></i>';
 			str+='<div class="appointmentSettingsBLock arrow_box" style="display: none;">';
 			str+='<div class="row updateAppMemCls" attr_timeSlotId="'+result[i].timeSlotId+'" attr_appointmentId="'+result[i].appointmentId+'">';
 			str+='<div class="col-md-12 m_top10">';
@@ -5133,7 +5144,7 @@ function getAppointmentCreatedUsers(){
 					}, 2000);
 					}else{
 			    $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Updated Successfully</p>");
-				 setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
+				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
 				   $('html, body').animate({
 				    scrollTop: $("#errorDivForTimeSlotId").offset().top
 					}, 2000);
