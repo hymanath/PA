@@ -11571,6 +11571,11 @@
 	<action name="appointmentsAction" class="appointmentAction">
 		<result name="success">/jsp/appointments.jsp</result>
 	</action>
+	
+	<action name="appointmentsReportDashBoardAction" class="appointmentReportDashBoardAction">
+		<result name="success">/jsp/appointmentReportDashBoard.jsp</result>
+	</action>			
+				
 				
 	<action name="appointmentSavingAction" class="appointmentAction" method="saveAppointment">
 		<result name="success" type="stream">

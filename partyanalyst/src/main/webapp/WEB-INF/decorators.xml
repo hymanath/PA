@@ -651,5 +651,6 @@
 	<!--<pattern>/rtcUnionDashBoardAction*</pattern>-->
 	<pattern>/affiliatedCadreDashBoardAction*</pattern>
 	<pattern>/appointmentsAction*</pattern>
-	 </decorator> 
+	<pattern>/appointmentsReportDashBoardAction*</pattern>
+	</decorator> 
 </decorators>
