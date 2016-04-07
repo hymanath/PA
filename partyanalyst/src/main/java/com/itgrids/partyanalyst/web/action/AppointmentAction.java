@@ -849,4 +849,14 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		
 		return Action.SUCCESS;	
 	}
+	public String getAllCandidateTypes(){
+		try{
+			
+			idNameVOList = appointmentService.getAllCandidateTypes();
+			
+		}catch (Exception e) {
+			LOG.error("Exception occured in getAllCandidateTypes()",e);
+		}
+		return Action.SUCCESS;
+	}
 }
