@@ -25,6 +25,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentCandidateTypeDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLabelDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentLabelStatusDAO;
@@ -113,6 +114,7 @@ public class AppointmentService implements IAppointmentService{
 	private ICadreRegistrationService cadreRegistrationService;
 	private RegionServiceDataImp regionServiceDataImp;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO;
 	
 	public ICadreRegistrationService getCadreRegistrationService() {
 		return cadreRegistrationService;
@@ -316,6 +318,10 @@ public class AppointmentService implements IAppointmentService{
 	public void setAssemblyLocalElectionBodyDAO(
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+	public void setAppointmentCandidateTypeDAO(
+			IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO) {
+		this.appointmentCandidateTypeDAO = appointmentCandidateTypeDAO;
 	}
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		ResultStatus rs = new ResultStatus();
@@ -3189,6 +3195,36 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			}
 		}
 		return panachatiesList;
+	}
+	
+	public List<IdNameVO> getAllCandidateTypes(){
+		List<IdNameVO> fnlList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> candidateTypes = appointmentCandidateTypeDAO.getAllCandidateTypes();
+			if(candidateTypes !=null && candidateTypes.size()>0){
+				fnlList = setToIdNameList(candidateTypes,fnlList);
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception in getAllCandidateTypes()",e);	
+		}
+		return fnlList;
+	}
+	public List<IdNameVO> setToIdNameList(List<Object[]> listObj,List<IdNameVO> fnlList){
+		try{
+			
+			for (Object[] obj : listObj) {
+				IdNameVO vo = new IdNameVO();
+				vo.setId(obj[0] !=null ? (Long)obj[0]:0l);
+				vo.setName(obj[1] !=null ? obj[1].toString():"");
+				fnlList.add(vo);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return fnlList;
 	}
 	
 }
