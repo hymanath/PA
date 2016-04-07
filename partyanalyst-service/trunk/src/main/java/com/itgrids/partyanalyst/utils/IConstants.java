@@ -974,4 +974,12 @@ public interface IConstants {
     
     public static final Long PUBLICATION_DATE_FOR_VOTER_IMG_PATH = 11L;
     public static final Long[] APPOINTMENT_STATUS_IDS = {4L,5L,6L};
+	public static final Long[] TOWN_TYPE_IDS = {5L,6L};
+	public static final Long[] DIVISION_TYPE_IDS = {7L};
+	public static final Long CADRE_ENROLLMENT_YEAR = 2014L;
+	public static final Long MANDAL_LEVEL_ID = 5L; 
+	public static final Long TOWN_LEVEL_ID =7L; 
+	public static final Long DIVISION_LEVEL_ID = 9L; 
+	public static final Long VILLAGE_LEVEL_ID = 6L; 
+	public static final Long WARD_LEVEL_ID = 8L; 
 }
