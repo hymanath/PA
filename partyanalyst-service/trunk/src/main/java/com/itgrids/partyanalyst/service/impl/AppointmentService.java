@@ -1313,7 +1313,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
      }
  	
      // Appointments search criteria.
-     public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr){
+     public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr,Long selUserID){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf =  new SimpleDateFormat("MM/dd/yyyy");
 		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
@@ -1335,7 +1335,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 			Map<Long,AppointmentDetailsVO> appointmentsMap = null;
 			
-			List<Object[]>   list = appointmentCandidateRelationDAO.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid,fromDate,toDate);
+			List<Object[]>   list = appointmentCandidateRelationDAO.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid,fromDate,toDate,selUserID);
 			if(list !=null && list.size()>0){
 				
 				appointmentsMap = new LinkedHashMap<Long, AppointmentDetailsVO>();
