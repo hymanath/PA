@@ -474,9 +474,10 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			Long appointmentlabelId =   jObj.getLong("appointmentlabelId");
 			String fromDateStr      =   jObj.getString("fromDate");
 			String toDateStr        =   jObj.getString("toDate");
+			Long selUserId 			= 	jObj.getLong("selUserId");
 			
 			
-			apptDetailsList =appointmentService.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid,appointmentlabelId,fromDateStr,toDateStr);
+			apptDetailsList =appointmentService.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid,appointmentlabelId,fromDateStr,toDateStr,selUserId);
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentsBySearchCriteria() method of AppointmentAction", e);
 		}
