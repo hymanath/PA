@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
+
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
+import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -534,7 +536,64 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		
 		try {
 			jObj = new JSONObject(getTask());
-			candidatesList =appointmentService.advancedSearchApptRequestedMembers(jObj.getString("searchType"),jObj.getString("searchValue"));
+				// Location Inputs
+				LocationInputVO locationVo = new LocationInputVO();
+						List<Long> states = new ArrayList<Long>();
+						List<Long> dists = new ArrayList<Long>();
+						List<Long> consties = new ArrayList<Long>();
+						List<Long> mandals = new ArrayList<Long>();
+						List<Long> panchayats = new ArrayList<Long>();
+						String levelStr = jObj.getString("levelStr");
+						Long districtId = jObj.getLong("districtId");
+						Long constituencyId = jObj.getLong("constituencyId");
+						Long mandalId = jObj.getLong("mandalId");
+						Long panchayatId = jObj.getLong("panchayatId");
+						Long levelId = jObj.getLong("levelId");
+						Long committeeId = jObj.getLong("committeeId");
+						JSONArray designations = jObj.getJSONArray("designations");
+						locationVo.setCommitteeId(committeeId);
+						locationVo.setLevelStr(levelStr);
+						locationVo.setLevelId(levelId);
+						List<Long> designationIds = new ArrayList<Long>();
+						if(designations != null && designations.length() > 0)
+						{
+							for (int i = 0; i < designations.length(); i++) {
+								//String desgId = sttsArr.get(i).toString();
+								//designations.add(desgId);
+								designationIds.add(new Long(designations.get(i).toString()));
+							}
+							locationVo.setDesignationIds(designationIds);
+						}
+						
+						if(levelStr.equalsIgnoreCase("state") && districtId == 0l)
+						{
+							states.add(1l);states.add(2l);
+							locationVo.setLocalStateIds(states);
+						}
+						if(districtId > 0l)
+						{
+							dists.add(districtId);
+							locationVo.setLocalDistrictIds(dists);
+						}
+						
+						if(constituencyId > 0l)
+						{
+							consties.add(constituencyId);
+							locationVo.setLocalConstituencyIds(consties);
+						}
+						
+						if(mandalId > 0l)
+						{
+							mandals.add(mandalId);
+							locationVo.setLocalMandalIds(mandals);
+						}
+						
+						if(panchayatId > 0l)
+						{
+							panchayats.add(panchayatId);
+							locationVo.setLocalPanchayatIds(panchayats);
+						}
+			candidatesList =appointmentService.advancedSearchApptRequestedMembers(jObj.getString("searchType"),jObj.getString("searchValue"),locationVo);
 		} catch (Exception e) {
 			LOG.error("Exception raised at advancedSearchApptRequestedMembers() method of AppointmentAction", e);
 		}
