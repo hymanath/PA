@@ -1358,9 +1358,9 @@ $(".dropkickClass").dropkick();
 			$("#savingStatusDivId").html('');
 		}, 2500);
 		var flag = validateSavingDetails();
-
+		
 		if(!flag){
-	
+			
 			$("#appntCreateAjax").css("display","block");			
 			$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
 			var temp = $("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code")+"_"+$("#appointmentUserSelectBoxId").val();
