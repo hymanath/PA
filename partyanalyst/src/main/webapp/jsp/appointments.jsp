@@ -2123,7 +2123,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 										}else{
 											str+='<p>Constituency: - </p>';
 										}
-										   str+='<p>Recent Appt History: 20-feb-2016</p>';
+										  // str+='<p>Recent Appt History: 20-feb-2016</p>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
