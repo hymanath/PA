@@ -135,7 +135,7 @@
 				<div class="panel-body">
 					<div>
 					  <ul class="nav nav-tabs navTabsCustom" role="tablist">
-						<li role="presentation"  class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
+						<li role="presentation"  class="active refreshBlockDiv"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
 						<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
 						<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="MngeAppntmntCls"><img src="dist/Appointment/img/manageappointments.png">Manage APpointments</a></li>
 						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm APpointments</a></li>
@@ -1339,7 +1339,7 @@ $(".dropkickClass").dropkick();
 		$("#manageAppTypeId").append('<option value="select">Select Priority</option>');
 		$("#manageAppTypeId").append('<option value="0" selected>ALL</option>');
 		$("#createAppTypeListId  option").remove();
-		$("#createAppTypeListId").append('<option value="0">Select Appointment Type</option>');
+		$("#createAppTypeListId").append('<option value="0">Select Appointment Priority Type</option>');
 		for(var i in result){
 			$("#manageAppTypeId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			$("#createAppTypeListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -5457,6 +5457,24 @@ function getCommitteeRoles(){
 				$(".SelectPositionScroll").mCustomScrollbar();
 			   });			  
       }
+		$(document).on("click",".refreshBlockDiv",function(){
+		//getAppointmentLabelsAction						
+			setTimeout(function(){ 
+			/* balu */
+				//getAppointmentLabels();					
+				getTotalAppointmentStatus();
+				getCandidateDesignation();
+				getDistricts();
+				getAppointmentCreatedUsers();
+				getAppointmentStatusList();
+				getAppointmentPriority();
+				searchTypeRadioCls();
+				getAllCandidateTypes();
+				
+			}, 1000);
+			getAppointmentUsersDtls();
+			getAppointmentsLabelStatus("onload");
+		});
 </script>
 </body>
 </html>
