@@ -315,7 +315,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		
 	}		
 	if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
-		str.append(" and TCM.tdpCommitteeRole.tdpCommitteeRoleId in  (:roles) ");
+		str.append(" and TCM.tdpCommitteeRole.tdpRolesId in  (:roles) ");
 	}
 	
 	if(inputVo.getCommitteeId() !=null && inputVo.getCommitteeId()>0){
