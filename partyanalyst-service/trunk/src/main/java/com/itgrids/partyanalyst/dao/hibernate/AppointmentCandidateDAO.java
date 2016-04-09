@@ -157,7 +157,7 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		
 		sb.append(" select model.appointmentCandidateId,model.name,model.tdpCadreId,model.mobileNo," +
 				"          model.candidateDesignation.designation,constituency.name," +
-				"          model.membershipId,model.voterIdCardNo,model.designationId,model.appointmentCandidateTypeId " +
+				"          model.membershipId,model.voterIdCardNo,model.designationId,model.appointmentCandidateTypeId,model.imageURL " +
 				"  from AppointmentCandidate model  left join model.userAddress.constituency constituency");
 		if(searchType.equalsIgnoreCase("mobileno")){
 			
@@ -198,7 +198,7 @@ public List<Object[]>  advancedSearchAppointmentRequestedMembersForPublicReprese
 	StringBuilder str=new StringBuilder();
 	str.append("select model.appointmentCandidateId,model.name,model.tdpCadreId,model.mobileNo," +
 				" model.candidateDesignation.designation,constituency.name," +
-				" model.membershipId,model.voterIdCardNo,model.designationId " +
+				" model.membershipId,model.voterIdCardNo,model.designationId,model.appointmentCandidateTypeId,model.imageURL " +
 				"  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidate model  left join model.userAddress.constituency constituency");
 		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 		if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
@@ -266,7 +266,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	StringBuilder str=new StringBuilder();
 	str.append("select model.appointmentCandidateId,model.name,model.tdpCadre.tdpCadreId,model.mobileNo," +
 			" model.candidateDesignation.designation,constituency.name," +
-			" model.membershipId,model.voterIdCardNo,model.designationId " +
+			" model.membershipId,model.voterIdCardNo,model.designationId,model.appointmentCandidateTypeId,model.imageURL " +
 			"  from TdpCommitteeMember TCM,AppointmentCandidate model  left join model.userAddress.constituency constituency");
 	str.append(" where model.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
 	str.append(" and  model.tdpCadre.isDeleted = 'N' " +
