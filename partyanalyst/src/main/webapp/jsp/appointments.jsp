@@ -285,7 +285,7 @@
                                             	<label class="advanceNameCls">Search By Name<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 												<label class="advancePRCls">Search Designation</label>
-												 <select class="form-control advancePRCls"  id="advanceDesignationId">
+												 <select class="advancePRCls dropkickClass"  id="advanceDesignationId">
 													<option value="0">Select Designation</option>
 													<option value="1">MP</option>
 													<option value="2">MLA</option>
@@ -1358,7 +1358,9 @@ $(".dropkickClass").dropkick();
 			$("#savingStatusDivId").html('');
 		}, 2500);
 		var flag = validateSavingDetails();
+
 		if(!flag){
+	
 			$("#appntCreateAjax").css("display","block");			
 			$("#dateTypeText").val($('input[name=dateTypeRadio]:checked').val());
 			var temp = $("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code")+"_"+$("#appointmentUserSelectBoxId").val();
@@ -4147,7 +4149,7 @@ function buildTimeSlotsTable(result){
 	
 	//Required validation For Appointment Creation
 	function validateSavingDetails(){
-		
+	
 		var isErrAvailable=false;
 		var prType = $("#createAppTypeListId").val();
 		var selectDate = $(".multiDateCls").val();
@@ -4195,6 +4197,7 @@ function buildTimeSlotsTable(result){
 				}
 				
 				 var canTypeValue=$("#candidateTypeSelId"+i).val();
+				
 				 if(canTypeValue ==null || canTypeValue ==0 || canTypeValue == undefined || canTypeValue ==""){
 					  $("#cloneErrCandidateTypeId"+i).html("Please Select Candidate Type");
 					  isErrAvailable=true;	
@@ -4710,6 +4713,8 @@ function buildTimeSlotsTable(result){
 	
     function showHideBySearchType()
 	{
+		
+		//setToDefaultAdvancedSearch();
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
 			if(selectVal == 2)
@@ -4719,6 +4724,8 @@ function buildTimeSlotsTable(result){
 				$(".advanceCadreCommittee").hide();
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").show();
+				setToDefaultAdvancedSearch();
+				$("#advanceDesignationId").css("display","none");
 			}
 			else if(selectVal == 3)
 			{
@@ -4728,6 +4735,8 @@ function buildTimeSlotsTable(result){
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").hide();
 				getCommitteeRoles();
+				$(".referRolesCheck").removeAttr("checked");
+				setToDefaultAdvancedSearch();
 			}
 			else
 			{
@@ -4736,8 +4745,27 @@ function buildTimeSlotsTable(result){
 				$(".advancePRCls").hide();
 				$(".advanceCadreCommittee").hide();
 				$(".locationsFilterCls").hide();
+				$("#advanceSearchValueId").val("");
 				
 			}
+			
+	}
+	function setToDefaultAdvancedSearch()
+	{
+	
+		
+			$("#advanceDesignationId").val(0);
+			$("#advanceDesignationId").dropkick('reset');
+			$("#levelId").val(0);	
+			$("#levelId").dropkick('reset');
+			$("#referdistrictId").val(0);
+				$("#referdistrictId").dropkick('reset');
+		   $("#referconstituencyId").val(0);
+			$("#referconstituencyId").dropkick('reset');
+		   $("#refermandalNameId").val(0);
+			$("#refermandalNameId").dropkick('reset');
+		   $("#referpanchayatId").val(0);
+		$("#referpanchayatId").dropkick('reset');
 	}
 	$(document).on("click","#deleteMultipleAppointmentsId",function(){
 		$("#deleteAppointmentErrDivId").html("");
