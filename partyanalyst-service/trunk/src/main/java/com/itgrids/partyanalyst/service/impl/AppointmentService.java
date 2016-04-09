@@ -1032,13 +1032,10 @@ public class AppointmentService implements IAppointmentService{
 		 
 		 try {
 			      List<Object[]> membersList = null;
-			 
 			      membersList = appointmentCandidateDAO.searchAppointmentRequestedMember(searchType,searchValue);
-			      
 			      if(membersList != null && membersList.size()>0){
 			    	  finalList = new ArrayList<AppointmentCandidateVO>(); 
-			    	  
-			    	  for(Object[] obj:membersList){
+			    	 for(Object[] obj:membersList){
 			    		  AppointmentCandidateVO vo =new AppointmentCandidateVO();
 			    		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
 			    		  vo.setCandidateType("appointmentCandidate");
@@ -1058,7 +1055,6 @@ public class AppointmentService implements IAppointmentService{
 			      }
 			      else{
 			    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);
-			    	  
 			    	  if(membersList!=null && membersList.size()>0){
 			    		  finalList = new ArrayList<AppointmentCandidateVO>(); 
 			    		  for(Object[] obj: membersList){
@@ -1291,6 +1287,7 @@ public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidate
   		  vo.setMemberShipId(obj[6]!=null?obj[6].toString():"");
   		  vo.setVoterCardNo(obj[7]!=null?obj[7].toString():"");
   		  vo.setDesignationId(obj[8]!=null?(Long)obj[8]:0l);
+  		  vo.setImageURL(obj[10]!=null?obj[10].toString():"");
   		  finalList.add(vo);
   	  }
     }
@@ -1300,8 +1297,7 @@ public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidate
 public void setDataMembersForCadreRole(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList)
 {
 	if(membersList!=null && membersList.size()>0){
-		 
-		  for(Object[] obj: membersList){
+		 for(Object[] obj: membersList){
 			  AppointmentCandidateVO vo =new AppointmentCandidateVO();
   		  vo.setId(obj[0]!=null?(Long)obj[0]:0l);
   		  vo.setCandidateType("cadre");
@@ -1311,6 +1307,7 @@ public void setDataMembersForCadreRole(List<Object[]> membersList, List<Appointm
   		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
   		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
   		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
+  		  vo.setImageURL(obj[7]!=null?"images/cadre_images/"+obj[7].toString():null);
   		  vo.setDesignation(obj[6]!=null?obj[6].toString():"");
   		  finalList.add(vo);
 		  }
@@ -1330,6 +1327,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
   		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
   		  vo.setMemberShipId(obj[4]!=null?obj[4].toString():"");
   		  vo.setVoterCardNo(obj[5]!=null?obj[5].toString():"");
+  		  vo.setImageURL(obj[6]!=null?"images/cadre_images/"+obj[6].toString():null);
   		  finalList.add(vo);
 		  }
 	  }
