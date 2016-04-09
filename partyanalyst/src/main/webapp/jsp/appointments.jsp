@@ -2100,7 +2100,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='<div class="col-md-7">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
-											str+='<img class="media-object thumbnailSearch thumbnail" src="http://mytdp.com/'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 										str+='</div>';
 										str+='<div class="media-body">';
 										if(result[i].candidateType !=null && result[i].candidateType.length>0){
@@ -2158,9 +2158,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		 
 		 
 		 if($(this).is(':checked')){
-			 //$("#checkboxMemberAjax").css("display","block");
+			 
 			  $("#addOneBlock").trigger("click");
 			
+				// $("#checkboxMemberAjax").css("display","block");
+				
+				 
 				 var temp = cloneCount-1;
 				 
 				 $('html, body').animate({
@@ -2185,8 +2188,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 var membershipno = $(this).attr("attr_memberShipNo");
 				 var votercardno = $(this).attr("attr_voterCardNo");
 				 var closeId1 = $(this).attr("attr_id");
-				var candidateTypeId = $(this).attr("attr_candidateType_id");
-				
+				 var candidateTypeId = $(this).attr("attr_candidateType_id");
+		
+		
 		var jsObj={
 			candidateType:candidateType,
 			id:id
@@ -2207,7 +2211,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				var wardId = ''+result.wardId+'';
 				
 				var temp=parseInt(cloneCount)-1;
-			
+				
 				$('#candidateNameId'+temp).val(name);
 				$('#block'+temp).attr("attr_blk",closeId1);
 				$('#mobileNoId'+temp).val(mobile);
@@ -2231,7 +2235,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 						
 					}
 					
-			
 				$('#locationScopeSelId'+temp).val(lctscpid);
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
 				selectL.refresh();
@@ -2353,10 +2356,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					var selectW = new Dropkick('#villageId'+temp);
 					selectW.refresh();
 				}
-					
-					
 				
-					
 				
 				
 			}); 
@@ -5434,7 +5434,6 @@ function getPanchayatsForReferPopup(){
 			for(var i in result){
 				$(".cloneCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
-			
 	}
 function getCommitteeRoles(){
     	
