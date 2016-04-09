@@ -2100,7 +2100,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='<div class="col-md-7">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
-											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+											str+='<img class="media-object thumbnailSearch thumbnail" src="http://mytdp.com/'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 										str+='</div>';
 										str+='<div class="media-body">';
 										if(result[i].candidateType !=null && result[i].candidateType.length>0){
