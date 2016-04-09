@@ -239,7 +239,6 @@ function dummyfun(num){
 }
 
 $(document).on("click",".artclMdl",function(){
-	alert(2);
 	var articleId = $(this).attr("attr_artclId");
 	var articleNo = $(this).attr("attr_artclNo");
 	getClickedArticle(articleNo);
