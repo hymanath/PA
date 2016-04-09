@@ -5457,10 +5457,10 @@ function getCommitteeRoles(){
 				$(".SelectPositionScroll").mCustomScrollbar();
 			   });			  
       }
-		$(document).on("click",".refreshBlockDiv",function(){
+		/** $(document).on("click",".refreshBlockDiv",function(){
 		//getAppointmentLabelsAction						
 			setTimeout(function(){ 
-			/* balu */
+			/* balu 
 				//getAppointmentLabels();					
 				getTotalAppointmentStatus();
 				getCandidateDesignation();
@@ -5474,7 +5474,7 @@ function getCommitteeRoles(){
 			}, 1000);
 			getAppointmentUsersDtls();
 			getAppointmentsLabelStatus("onload");
-		});
+		});**/
 </script>
 </body>
 </html>
