@@ -6406,7 +6406,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str=new StringBuilder();
 			
 			str.append(" select model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
-					"   model.memberShipNo,model.voter.voterIDCardNo " +
+					"   model.memberShipNo,model.voter.voterIDCardNo,model2.publicRepresentativeType.type " +
 					"   from TdpCadre model,PublicRepresentative model2,TdpCadreCandidate model1 where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
 					+ " and model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 			
@@ -6476,7 +6476,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str=new StringBuilder();
 			
 			str.append(" select model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
-					"  model.memberShipNo,model.voter.voterIDCardNo " +
+					"  model.memberShipNo,model.voter.voterIDCardNo,TCM.tdpCommitteeRole.tdpRoles.role " +
 					"  from TdpCadre model,TdpCommitteeMember TCM where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
 					+ " and model.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
 			str.append(" and  model.isDeleted = 'N' " +
@@ -6525,7 +6525,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 		}		
 		if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
-			str.append(" and TCM.tdpCommitteeRole.tdpCommitteeRoleId in  (:roles) ");
+			str.append(" and TCM.tdpCommitteeRole.tdpRolesId in  (:roles) ");
 		}
 		
 		if(inputVo.getCommitteeId() !=null && inputVo.getCommitteeId()>0){
