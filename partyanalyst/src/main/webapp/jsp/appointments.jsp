@@ -13,7 +13,7 @@
 <link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
-<link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="dist/Appointment/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
@@ -4857,7 +4857,7 @@ function getAppointmentCreatedUsers(){
 		{
 			levelStr ="";
 			 searchType = "name";
-			 searchValue = $("#advanceSearchValueId").val();
+			 searchValue = $("#advanceSearchValueId").val().trim();
 			 if(searchValue == null || searchValue.length ==0){
 				 errorStr='Please Enter Name';
 				 $("#errorDivId").html(errorStr);
