@@ -178,10 +178,14 @@
 								<div class="col-md-12">
 									<div class="todayBlock ">
 										<div class="row m_top10">
+											<div class="col-md-12">
+												<h4 class="text-success text-capitalize">SEARCH for Scheduled appointment </h4>
+											</div>
+										
 											<div class="col-md-4">
 												<label>Search</label>
 												<div class="input-group inputSearch">
-													<input class="form-control" type="text" id="searchStrId">
+													<input class="form-control" type="text" id="searchStrId"  placeholder="Name or MobileNumber"">
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-search"></i>
 													</span>
@@ -4834,7 +4838,7 @@ function getAppointmentCreatedUsers(){
 	}
 	function buildAppointmentCreatedUsers(result){
 		$("#appointmentcreatedBy  option").remove();
-		$("#appointmentcreatedBy").append('<option value="0">appointment created by</option>');
+		$("#appointmentcreatedBy").append('<option value="0">All</option>');
 	  for(var i in result){
 			$("#appointmentcreatedBy").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		 }
