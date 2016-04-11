@@ -314,6 +314,14 @@
 														<option value="6">Village/Ward</option>
 														</select>
 													</div>
+												  <div class="col-md-2 locationsFilterCls">
+														<label>State</label>
+														<select class="dropkickClass" id="stateId">
+														<option value="0">All</option>
+														<option value="1">AP</option>
+														<option value="36">TS</option>
+														</select>
+												 </div>
 													<div class="col-md-2 locationsFilterCls">
 														<label>District</label>
 														<select class="dropkickClass" id="referdistrictId" onchange="getConstituenciesBydistrictForReferPopup();">
@@ -4855,6 +4863,7 @@ function getAppointmentCreatedUsers(){
 		var mandalId = 0;
 		var panchayatId=0;
 		var levelId=0;
+		var stateId=0;
 		var advanceSearchType = $("#advanceSearchTypeId").val();
 		 if(advanceSearchType==0){
 			 errorStr='Please Select Search Type';
@@ -5044,6 +5053,7 @@ function getAppointmentCreatedUsers(){
 			constituencyId:constituencyId,
 			mandalId:tehsilId,
 			panchayatId:panchayatId,
+			stateId:0,
 			levelStr:levelStr
 		}
 		  	$.ajax({
@@ -5458,10 +5468,10 @@ function getCommitteeRoles(){
 				$(".SelectPositionScroll").mCustomScrollbar();
 			   });			  
       }
+     
 			$(document).on("click",".refreshBlockDiv",function(e){
 				window.location.reload(true);
 			});
-			
 </script>
 </body>
 </html>
