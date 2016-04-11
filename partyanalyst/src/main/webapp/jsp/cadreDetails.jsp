@@ -539,7 +539,7 @@ var globalCadreId = '${cadreId}';
                 </div>
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					  <h4 class="panel-title"><img src="images/icon.png">REFERRAL GRIEVANCE DETAILS<span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
+					  <h4 class="panel-title"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
 					</div>
 					<div class="panel-body pad_0" id="referralGrievanceDetailsId">
 					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
@@ -3030,7 +3030,7 @@ arr.push(obj);
 
 	$.ajax({
 			type : "POST",
-			 url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
@@ -6960,7 +6960,7 @@ function getRefferelDetailsStatusWise(){
 	$("#referralGrievanceLoadingImg").show();
 	$.ajax({
 		type:'GET',
-	 url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
+		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -6970,10 +6970,15 @@ function getRefferelDetailsStatusWise(){
 		$("#referralGrievanceLoadingImg").hide();
 		var value='';
 		if(result !=null && result.length>0){
+		
+		var totalApprovetAmt = result[0].totalApprovedAmount;
+			value+='<h3 class="text-center" style="margin-top:10px;margin-bottom:0px"><img src="images/IndianRupee.png" style="display:inline-block;height:15px;margin:0px;"/>'+totalApprovetAmt+'/-</h3>';
+			value+='<h5 class="text-center">TOTAL FINANCIAL SUPPORT</h5>';
 			value+='<ul class="referralGrievanceDetails" >';		
 				for(var i in result){
-					value+='<li>'+result[i].name+'<span class="pull-right"><a onclick="getReferealComplaintDetails(\''+result[i].name+'\');" href="#">'+result[i].count+'</a></span></li>';
+					value+='<li>'+result[i].name.toUpperCase()+'<span class="pull-right"><a onclick="getReferealComplaintDetails(\''+result[i].name+'\');" href="#">'+result[i].count+'</a></span></li>';
 				}
+				
 			value+='</ul>';	
 			
 		}
@@ -6984,23 +6989,25 @@ function getRefferelDetailsStatusWise(){
 
 
 function getReferealComplaintDetails(status) {
-	
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	var obj={
 		 cadreId : globalCadreId,
-		  status :status
+		 status :status,
+		 referTypeId:0
 	}
 	
 	$.ajax({
 		type:'POST',
-		url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 			 dataType: "json",
 			 data: JSON.stringify(obj),
 			 contentType: "application/json; charset=utf-8",
 			 username: "grievance",
              password: "grievance@!tG"
 	}).done(function(result){
-		console.log(result);
-	buildPopupComplaintInfo1(result);
+		buildPopupComplaintInfo1(result);
 		
 	});
 }
@@ -7019,6 +7026,7 @@ function buildPopupComplaintInfo1(result) {
 	str+='<th >Referer Name</th>';
     str+='<th >Posted Date</th>';
 	str+='<th >Last Updated Date</th>';
+	str+='<th >Financial Support</th>';
 	str+='</thead>';
    str+='<tbody>';
 	for(var i in result){
@@ -7049,6 +7057,12 @@ function buildPopupComplaintInfo1(result) {
 		}
 		str+='<td>'+result[i].raisedDate+'</td>';
 		str+='<td>'+result[i].updatedDate+'</td>';
+		if(result[i].amount !=null){
+			str+='<td>'+result[i].amount+' /-</td>';
+		}else{
+			str+='<td>0</td>';
+		}
+		
 		str +='<td></td>';
         str+='</tr>';
 	}
@@ -7058,9 +7072,6 @@ function buildPopupComplaintInfo1(result) {
 	$("#tableId").dataTable();
 	$("#tableId").removeClass("dataTable")
 }
-
-
-
 </script>
 
 </body>
