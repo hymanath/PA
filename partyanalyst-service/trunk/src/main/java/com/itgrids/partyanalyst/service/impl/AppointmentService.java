@@ -1191,7 +1191,15 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 						    	if(locationVo.getLevelId() == 10l)
 						    	{
 						    		locationVo.setStateIdsList(new ArrayList<Long>());
-						    		locationVo.getStateIdsList().add(1l);locationVo.getStateIdsList().add(36l);
+						    		if(inputVo.getStateId() == 0l)
+						    		{
+						    			locationVo.getStateIdsList().add(1l);locationVo.getStateIdsList().add(36l);	
+						    		}
+						    		else
+						    		{
+						    			locationVo.getStateIdsList().add(inputVo.getStateId());		
+						    		}
+						    		
 						    	}
 						    	List<Object[]> memList = appointmentCandidateDAO.advancedSearchAppointmentMembersForCadreCommittee(searchType,locationVo,"",inputVo); 
 						    	
