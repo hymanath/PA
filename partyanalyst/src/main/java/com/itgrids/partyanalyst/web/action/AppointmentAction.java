@@ -550,7 +550,9 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 						Long panchayatId = jObj.getLong("panchayatId");
 						Long levelId = jObj.getLong("levelId");
 						Long committeeId = jObj.getLong("committeeId");
+						Long stateId = jObj.getLong("stateId");
 						JSONArray designations = jObj.getJSONArray("designations");
+						
 						locationVo.setCommitteeId(committeeId);
 						locationVo.setLevelStr(levelStr);
 						locationVo.setLevelId(levelId);
@@ -564,10 +566,10 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 							}
 							locationVo.setDesignationIds(designationIds);
 						}
-						
+						locationVo.setStateId(stateId);
 						if(levelStr.equalsIgnoreCase("state") && districtId == 0l)
 						{
-							states.add(1l);states.add(2l);
+							
 							locationVo.setLocalStateIds(states);
 						}
 						if(districtId > 0l)
