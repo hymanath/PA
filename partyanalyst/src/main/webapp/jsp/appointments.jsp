@@ -912,13 +912,15 @@
 <script src="dist/Appointment/DragDrop/Sortable.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* Drag and Drop */
-	
+
+ 
   Sortable.create(confirmAppointmentBlockDropId,{
       filter: '.hidelabel',
       onFilter: function (evt) {
 		 var cloningData = $(evt.item.parentNode).html();
-		 
-		 $("#dragId").html(cloningData)
+		// $("#dragId").html(cloningData);
+		 $("#dragId").append(cloningData);
+		 $("#dragId").find(".manageAppViewPanelClass").addClass("newClass");
 		// $("#dragId").find(".panel-default").addClass("newClass")
 		evt.item.parentNode.removeChild(evt.item);
 		if($("#confirmAppointmentBlockDropId").has( ".manageAppViewPanelClass" ))
@@ -943,14 +945,25 @@
         }
       },
       onAdd: function (evt){console.log('onAdd.editable:', [evt.item, evt.from]);
-		$("#confirmAppointmentBlockDropId").find(".deleteTag").remove();
-		$("#confirmAppointmentBlockDropId").css("height","");
-	//	$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
-		//$("#confirmAppointmentBlockDropId").find(".manageAppViewPanelClass").removeClass("newClass");
+		//$("#confirmAppointmentBlockDropId").find(".deleteTag").remove();
+		//$("#confirmAppointmentBlockDropId").css("height","");
+	
+	   var oldBlock = $('#confirmAppointmentBlockDropId > :not(.newClass)').html().trim();
+	   var appointmentId=$('#confirmAppointmentBlockDropId > :not(.newClass)').attr("attr_appointment_id");
+		$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
+		$("#confirmAppointmentBlockDropId").find(".manageAppViewPanelClass").removeClass("newClass");
+		
+		if(oldBlock!="DROP HERE"){
+			 var str='';
+			  str+='<div class="panel panel-default manageAppViewPanelClass newClass" attr_appointment_id="'+appointmentId+'" draggable="false" style="">';
+			  str+=oldBlock;
+			  str+='</div>';
+			  $("#dragId").append(str);
+		}
 	  },
       onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]);},
       onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
-      onStart:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
+      onStart:function(evt){console.log('onStart.editable:', [evt.item, evt.from]);},
       onSort:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
       onEnd: function(evt){ console.log('onEnd.editable:', [evt.item, evt.from]);}
   });
@@ -3799,7 +3812,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			}
 			str+='</div>'
 			str+='</div>'
-		$("#confirmAppointmentsDivId").html(str)
+		$("#confirmAppointmentsDivId").html(str);
 		Sortable.create(dragId,{
 			  filter: '.js-remove',
 			  onFilter: function (evt) {
@@ -4012,21 +4025,7 @@ var tableToExcel = (function() {
 		var date = $("#appointmentDateSlotId").val();
 		var fromTime = $("#fromTimeId").val().trim();
 		var toTime = $("#toTimeId").val().trim();
-		$("#errorDivForTimeSlotId").show();
-		var d=new Date();
-		var currentDate=(d.getMonth()+1)+ "/" + (d.getDate()) + "/" + d.getFullYear();
-        if(fromTime.length==0){
-			$("#errorDivForTimeSlotId").html("Please select From Time.");
-			return;
-		}else if(toTime.length==0){
-			$("#errorDivForTimeSlotId").html("Please select To Time.");
-			return;
-		 }else if(Date.parse(currentDate+" "+toTime) > Date.parse(currentDate+" "+fromTime)){
-			 $("#errorDivForTimeSlotId").html(" ");
-		 }else{
-			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
-			 return;
-		}
+		
 		//Saving
 		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0);
 		
@@ -4391,11 +4390,11 @@ function buildTimeSlotsTable(result){
 			str+='<td>';
 			str+='<div class="panel panel-default manageAppViewPanelClass m_top15">';
 			str+='<div class="panel-heading">';
-			str+='<i class="glyphicon glyphicon-edit settingsIconConfirm settingsIcon pull-right" title="Click here to update label time slot." style="margin-left:10px;cursor:pointer;"></i>';
+			str+='<i id="setDfltTmFrmtId" class="glyphicon glyphicon-edit settingsIconConfirm settingsIcon pull-right" title="Click here to update label time slot." style="margin-left:10px;cursor:pointer;"></i>';
 			str+='<div class="appointmentSettingsBLock arrow_box" style="display: none;">';
 			str+='<div class="row updateAppMemCls" attr_timeSlotId="'+result[i].timeSlotId+'" attr_appointmentId="'+result[i].appointmentId+'">';
 			str+='<div class="col-md-12 m_top10">';
-			str+='<label>Select Date</label>';
+			str+='<label>Select Date &nbsp <span style="color:red;" class="errorDivFrTmSltUpdtId"></span></label>';
 			str+='<div class="inputSearch input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span><input type="text"    class="form-control appntmntCnddteUpdtDtRngPckrCls"/></div>';
 			str+='</div>';
 			str+='<div class="col-md-12 m_top10">';
@@ -4530,9 +4529,20 @@ function buildTimeSlotsTable(result){
 	$(".errrLabelClearCls").click(function(){
 		$("#errLabelName").html('');
 	});
+	
 	$(".cnfrmaptsCls").click(function(){
-			$("#errorDivForTimeSlotId").html('');
+		$("#errorDivForTimeSlotId").html('');
+			
+		//setting default time format
+		$("#fromTimeId").val("00:00AM");
+		$("#toTimeId").val("00:00AM");
 	});
+	
+	 $(document).on("click","#setDfltTmFrmtId",function(){
+	    //setting default time format
+		$(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val("00:00AM");
+		$(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val("00:00AM");
+	 });
 	$(".dateRadioCls").click(function(){		
 		if($("#selectManualDateId").is(":checked")){
 			$(".disableCls").attr('disabled', false); 
@@ -5140,20 +5150,33 @@ function getAppointmentCreatedUsers(){
 	function applyPagination(){
 		$('#searchedMembersId').DataTable();
 	}
-		
 	$(document).on("click",".updateTimeSlotCls",function(){
 		
 		var appointmentId =$(this).closest("tr").find(".updateAppMemCls").attr("attr_appointmentId");
 		var timeSlotId = $(this).closest("tr").find(".updateAppMemCls").attr("attr_timeSlotId");
 		var date = $(this).closest("tr").find(".appntmntCnddteUpdtDtRngPckrCls").val();
-		var fromTime = $(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val();
-		var toTime = $(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val();
+		var fromTime = $(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val().trim();
+		var toTime = $(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val().trim();
 		
+		$(".errorDivFrTmSltUpdtId").html(' ');
+		if(fromTime ==null || fromTime.length ==0 || fromTime == undefined){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("Please Specify the From Time");
+			return;
+		}if(toTime ==null || toTime.length ==0 || toTime == undefined){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("Please Specify the To Time");
+			return;
+		}
+		var d=new Date();
+		var currentDate=(d.getMonth()+1)+ "/" + (d.getDate()) + "/" + d.getFullYear();
+		if(!(Date.parse(currentDate+" "+toTime) > Date.parse(currentDate+" "+fromTime))){
+			 $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
+			 return;
+		 }
 	    setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"update",timeSlotId)
 	});
 	
 	function setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,type,timeSlotId){
-		
+		 $("#errorDivForTimeSlotId").show();
 		//Validations For Time Slot Creation
 		if(appointmentId ==null || appointmentId <=0 || appointmentId ==undefined){
 			$("#errorDivForTimeSlotId").html("Please Specify the Appointment");
@@ -5166,7 +5189,12 @@ function getAppointmentCreatedUsers(){
 			$("#errorDivForTimeSlotId").html("Please Specify the To Time");
 			return;
 		}
-		
+		var d=new Date();
+		var currentDate=(d.getMonth()+1)+ "/" + (d.getDate()) + "/" + d.getFullYear();
+		if(!(Date.parse(currentDate+" "+toTime) > Date.parse(currentDate+" "+fromTime))){
+			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
+			 return;
+		 }
 		var jsObj={
 			appointmentId : appointmentId,
 			date : date,
@@ -5191,6 +5219,8 @@ function getAppointmentCreatedUsers(){
 				  $('html, body').animate({
 				   scrollTop: $("#errorDivForTimeSlotId").offset().top
 					}, 2000);
+					$("#confirmAppointmentBlockDropId").empty();
+					$("#confirmAppointmentBlockDropId").html("<h4 class='deleteTag'>DROP HERE</h4>");
 					}else{
 			    $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Updated Successfully</p>");
 				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
