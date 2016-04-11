@@ -2679,5 +2679,8 @@
 	<bean id="appointmentCandidateTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="smsHistoryMobileNoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsHistoryMobileNoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
