@@ -4,19 +4,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserVoterDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
+import com.itgrids.partyanalyst.dao.ISmsHistoryMobileNoDAO;
+import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.MobileAppUserVoter;
+import com.itgrids.partyanalyst.model.SmsHistory;
+import com.itgrids.partyanalyst.model.SmsHistoryMobileNo;
+import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ISmsGatewayService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
+import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -27,8 +43,73 @@ public class SmsSenderService implements ISmsSenderService{
 	private TaskExecutor taskExecutor;
 	private ICadreRegistrationService cadreRegistrationService;
 	private ISmsGatewayService smsGatewayService;
-	
+	private ISmsService smsCountrySmsService;
 	private IMobileAppUserVoterDAO mobileAppUserVoterDAO;
+	private ISmsModuleDAO smsModuleDAO;
+	private ISmsHistoryDAO smsHistoryDAO;
+	private TransactionTemplate transactionTemplate = null;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IUserDAO userDAO;
+	private ISmsHistoryMobileNoDAO smsHistoryMobileNoDAO;
+
+	
+	public ISmsHistoryMobileNoDAO getSmsHistoryMobileNoDAO() {
+		return smsHistoryMobileNoDAO;
+	}
+
+	public void setSmsHistoryMobileNoDAO(
+			ISmsHistoryMobileNoDAO smsHistoryMobileNoDAO) {
+		this.smsHistoryMobileNoDAO = smsHistoryMobileNoDAO;
+	}
+
+	public ISmsModuleDAO getSmsModuleDAO() {
+		return smsModuleDAO;
+	}
+
+	public void setSmsModuleDAO(ISmsModuleDAO smsModuleDAO) {
+		this.smsModuleDAO = smsModuleDAO;
+	}
+
+	public ISmsHistoryDAO getSmsHistoryDAO() {
+		return smsHistoryDAO;
+	}
+
+	public void setSmsHistoryDAO(ISmsHistoryDAO smsHistoryDAO) {
+		this.smsHistoryDAO = smsHistoryDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
 	public IMobileAppUserVoterDAO getMobileAppUserVoterDAO() {
 		return mobileAppUserVoterDAO;
 	}
@@ -279,6 +360,105 @@ public class SmsSenderService implements ISmsSenderService{
 			return "Failure";
 		}
 	}
+	
+	/**
+	   *  This Method will Send SMS to given Mobile Numbers From Admin
+	   *  @param String message
+	   *  @param String moduleName
+	   *  @param String[] phoneNumbers
+	   *  @author Srishailam Pittala
+	   *  @return Long ResultStatus
+	   *  
+	   */
+	
+	public String sendSMSForTrainingCampFeedBackMember(Long userId,String moduleName ,boolean isEnglish, String messageStr,String mobileNos)
+	{
+	    
+	    try {
+	     String[] mobileNosStr = mobileNos.split(",");
+	      String mobilenumber = "";
+	      if(mobileNosStr != null && mobileNosStr.length >0){
+	        for (int i = 0; i < mobileNosStr.length; i++) {
+	          if(i>0)
+	            mobilenumber = mobilenumber+","+mobileNosStr[i];
+	          else
+	            mobilenumber = mobileNosStr[i];
+	        }
+	      }
+	      
+	     saveSmsHistoryDetails(messageStr,userId,moduleName,mobilenumber);
+	      String message = messageStr;
+	  	  
+			HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+			client.getHttpConnectionManager().getParams().setConnectionTimeout(
+				Integer.parseInt("30000"));
+			
+			PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+			
+			post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+			post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+			post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+		    post.addParameter("mobilenumber", mobilenumber);
+			post.addParameter("message", message);
+			post.addParameter("mtype", isEnglish ? "N" : "OL");
+			post.addParameter("DR", "Y");
+			
+			/* PUSH the URL */
+			int statusCode = client.executeMethod(post);
+			
+			if (statusCode != HttpStatus.SC_OK) {
+				LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+			     return IConstants.FAILURE;
+			}
+			else
+				return IConstants.SUCCESS;
+	    } catch (Exception e) {
+	    	 return IConstants.FAILURE;
+	    }
+	    
+	  }
+	
+	
+	public Long  saveSmsHistoryDetails(final String message,final Long userId,final String moduleName,final String... phoneNumbers)
+	{
+		try{
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+			
+			SmsModule smsModule = null;
+			
+			List<SmsModule> list = smsModuleDAO.findByModuleName(moduleName);
+			
+			if(list != null && list.size() > 0)
+				smsModule = list.get(0);
+			
+			SmsHistory smsHistory = new SmsHistory();
+			smsHistory.setUserId(userId);
+			//smsHistory.setMobileNumber(mobileNo);
+			//smsHistory.setSmsContent(message);
+			smsHistory.setSentDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
+			smsHistory.setSmsModule(smsModule);
+			SmsHistory smsHistoryObj = smsHistoryDAO.save(smsHistory);
+			
+			for(String mobileNo : phoneNumbers)
+			{
+				SmsHistoryMobileNo smsHistoryMobileNo = new SmsHistoryMobileNo();
+				smsHistoryMobileNo.setSmsHistory(smsHistoryObj);
+				smsHistoryMobileNo.setMobileNumber(mobileNo.trim());
+				smsHistoryMobileNo.setInsertedTime(dateUtilService.getCurrentDateAndTimeInStringFormat());
+				smsHistoryMobileNoDAO.save(smsHistoryMobileNo);
+			}
+			
+				}
+			});
+			return (long)ResultCodeMapper.SUCCESS;
+		}catch (Exception e) {
+			LOG.error("Error Occured in Saving SMS Data, Exception is - "+e);
+			return (long)ResultCodeMapper.FAILURE;
+		}
+	}
+
 	
 	/*private class ConsumeMessage implements Runnable 
 	{

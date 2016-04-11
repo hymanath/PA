@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -134,6 +135,7 @@ import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsUtils;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
+import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -210,10 +212,17 @@ class TrainingCampService implements ITrainingCampService{
 	private ICadreDetailsUtils cadreDetailsUtils;
 	private IHamletDAO hamletDAO;
 	private ITdpCadreDAO tdpCadreDAO;
-
-    
+	private ISmsSenderService smsSenderService;
 	
-    public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+    public ISmsSenderService getSmsSenderService() {
+		return smsSenderService;
+	}
+
+	public void setSmsSenderService(ISmsSenderService smsSenderService) {
+		this.smsSenderService = smsSenderService;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
@@ -5451,8 +5460,7 @@ class TrainingCampService implements ITrainingCampService{
 			
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 
-			   public void doInTransactionWithoutResult(TransactionStatus arg0) {
-					  
+				   public void doInTransactionWithoutResult(TransactionStatus arg0) {
 				  
 					//feedback details saving or updating.
 					TrainingCampCadreFeedbackDetails feedBackDetails=null;
@@ -5643,6 +5651,20 @@ class TrainingCampService implements ITrainingCampService{
 						   tcgh.setUpdatedTime(tcg.getUpdatedTime());
 						   trainingCampCadreGoalHistoryDAO.save(tcgh);
                       }
+                    }
+                   
+                    if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+                    	List<Long> tdpCadreIds = new ArrayList<Long>(0);
+                    	tdpCadreIds.add(tdpCadreId);
+                    	List<Object[]> mobileNoList = tdpCadreDAO.getMobileNoByTdpCadreIdList(tdpCadreIds, 0, 10);
+                    	if(mobileNoList != null && mobileNoList.size()>0){
+                    		Object[] cadreObj = mobileNoList.get(0);
+                    		if(cadreObj != null && cadreObj.length>6){
+                    			String mobileNo = commonMethodsUtilService.getStringValueForObject(cadreObj[6]);
+                    			if(mobileNo != null && !mobileNo.isEmpty())
+                    				smsSenderService.sendSMSForTrainingCampFeedBackMember(userId,"Training Camp FeedBack",false,commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(IConstants.TRAINING_CAMP_FEEDBACK_SMS_CONTENT)),mobileNo);
+                    		}
+                    	}
                     }
 		  }
 		});
