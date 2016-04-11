@@ -947,7 +947,7 @@
 var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 var flag = false;
-function buildJSONForAppStatus(result){
+function buildJSONForAppStatus(result){	
 	for(var i in result.overAllStatusList){
 		if(result.overAllStatusList[i].totalCount>0)
 			flag = true;
@@ -1035,8 +1035,8 @@ function buildTotalAppointmentStatusForToday(result){
 		event.stopPropagation();
 	});
 function buildChartForAppStatus() {
-    // Create the chart
-    $('#LineChart').highcharts({
+	// Create the chart
+	$('#LineChart').highcharts({
         chart: {
             type: 'column',
 			backgroundColor: 'transparent' 
@@ -1098,7 +1098,7 @@ function buildChartForAppStatus() {
             colorByPoint: true,
             data: jsonObj
         }],
-    });
+  });	
 }
 var cloneCount=0;
 
@@ -2092,7 +2092,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			str+='<thead><th></th></thead>';
 			str+='<tbody>';
 			for(var i in result){
-					str+='<tr><td>';
+					str+='<tr><td style="padding:0px !important;">';
 					str+='<div class="col-md-12">';
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
@@ -2100,14 +2100,19 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='<div class="col-md-7">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
-											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
 										str+='</div>';
 										str+='<div class="media-body">';
-										if(result[i].candidateType !=null && result[i].candidateType.length>0){
-											str+='<p >'+result[i].name+' - '+result[i].candidateType+'</p>';
+										if(result[i].constituency !=null && result[i].constituency.length>0){
+												str+='<span>'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span>';
 										}else{
 											str+='<p>'+result[i].name+'</p>';
 										}
+										/* if(result[i].candidateType !=null && result[i].candidateType.length>0){
+											str+='<p >'+result[i].name+' - '+result[i].candidateType+'</p>';
+										}else{
+											str+='<p>'+result[i].name+'</p>';
+										} */
 										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
 												str+='<p >Contact Number: '+result[i].mobileNo+'</p>';
 										}else{
@@ -2118,11 +2123,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 										}else{
 											str+='<p>Designation: - </p>';
 										}
-										if(result[i].constituency !=null && result[i].constituency.length>0){
-												str+='<p>Constituency: '+result[i].constituency+'</p>';
-										}else{
-											str+='<p>Constituency: - </p>';
-										}
+										
 										  // str+='<p>Recent Appt History: 20-feb-2016</p>';
 										str+='</div>';
 									str+='</div>';
@@ -5457,24 +5458,10 @@ function getCommitteeRoles(){
 				$(".SelectPositionScroll").mCustomScrollbar();
 			   });			  
       }
-		/** $(document).on("click",".refreshBlockDiv",function(){
-		//getAppointmentLabelsAction						
-			setTimeout(function(){ 
-			/* balu 
-				//getAppointmentLabels();					
-				getTotalAppointmentStatus();
-				getCandidateDesignation();
-				getDistricts();
-				getAppointmentCreatedUsers();
-				getAppointmentStatusList();
-				getAppointmentPriority();
-				searchTypeRadioCls();
-				getAllCandidateTypes();
-				
-			}, 1000);
-			getAppointmentUsersDtls();
-			getAppointmentsLabelStatus("onload");
-		});**/
+			$(document).on("click",".refreshBlockDiv",function(e){
+				window.location.reload(true);
+			});
+			
 </script>
 </body>
 </html>
