@@ -14,4 +14,5 @@ public interface ISmsService {
 	public SmsTrackVO getUserMessageCreditDetail(Long userId);
 	
 	public ResultStatus sendSmsFromAdmin(String message, boolean isEnglish,String... phoneNumbers);
+	public ResultStatus sendSmsThroughSmsCountry(Long userId,String messageStr,boolean isEnglish,String moduleName,String... mobileNosStr);
 }

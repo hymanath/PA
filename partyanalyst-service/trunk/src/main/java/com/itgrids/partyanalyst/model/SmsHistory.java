@@ -42,7 +42,10 @@ public class SmsHistory extends BaseModel implements Serializable {
 	private Long smsResponseDetailsId;
 	private SmsResponseDetails smsResponseDetails;
 	
-		
+	
+	private Long noOfMobileNO;
+	private String SmsUserName;
+	
 	// Constructors
 
 	
@@ -158,6 +161,25 @@ public class SmsHistory extends BaseModel implements Serializable {
 	public void setSmsResponseDetails(SmsResponseDetails smsResponseDetails) {
 		this.smsResponseDetails = smsResponseDetails;
 	}
-	
 
+	
+	@Column(name = "no_of_mobile_no", length = 250)
+	public Long getNoOfMobileNO() {
+		return noOfMobileNO;
+	}
+
+	public void setNoOfMobileNO(Long noOfMobileNO) {
+		this.noOfMobileNO = noOfMobileNO;
+	}
+
+	@Column(name = "username(smscountry)", length = 250)
+	public String getSmsUserName() {
+		return SmsUserName;
+	}
+
+	public void setSmsUserName(String smsUserName) {
+		SmsUserName = smsUserName;
+	}
+	
+	
 }
