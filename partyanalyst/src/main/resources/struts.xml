@@ -11588,11 +11588,7 @@
 	    	<param name="root">idNameVOList</param>
 	    </result>
 	</action>
-	<action name="getCandidateDesignation" class="appointmentAction" method="getAppCandidateDesigList">
-		<result type="json" name="success">
-	    	<param name="root">idNameVOList</param>
-	    </result>
-	</action>
+	
 	<action name="getAppointmentStatusList" class="appointmentAction" method="getAppointmentStatus">
 		<result type="json" name="success">
 	    	<param name="root">idNameVOList</param>
