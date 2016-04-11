@@ -2837,6 +2837,7 @@
 		<property name="cadreDetailsUtils" ref="cadreDetailsUtils"/>
 		<property name="hamletDAO" ref="hamletDAO"/>
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
+		<property name="smsSenderService" ref="smsSenderService" />
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
@@ -2977,11 +2978,17 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		</bean>
 	<bean name="smsSenderService" class="com.itgrids.partyanalyst.service.impl.SmsSenderService">
-	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
-	<property name="cadreRegistrationService" ref="cadreRegistrationService" />
-	<property name="taskExecutor" ref="taskExecutor" />	
-	<property name="smsGatewayService" ref="smsGatewayService" />	
-	<property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO" />	
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		<property name="taskExecutor" ref="taskExecutor" />	
+		<property name="smsGatewayService" ref="smsGatewayService" />	
+		<property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO" />	
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />	
+		<property name="smsModuleDAO" ref="smsModuleDAO" />
+		<property name="smsHistoryDAO" ref="smsHistoryDAO" />	
+		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="userDAO" ref="userDAO" />	
+		<property name="smsHistoryMobileNoDAO" ref="smsHistoryMobileNoDAO" />		
 	</bean>
 	
 	<bean name="smsGatewayService" class="com.itgrids.partyanalyst.service.impl.SmsGatewayService">
