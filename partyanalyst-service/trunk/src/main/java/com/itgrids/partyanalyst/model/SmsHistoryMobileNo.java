@@ -32,10 +32,10 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 	private Long SMShistoryMobileId;
 	private String mobileNumber;
 	
-	private Long historyId;
 	private String insertedTime;
-
 	
+	private Long historyId;
+	private SmsHistory smsHistory;
 	
 	// Constructors
 
@@ -77,14 +77,7 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-
-	public Long getHistoryId() {
-		return historyId;
-	}
-
-	public void setHistoryId(Long historyId) {
-		this.historyId = historyId;
-	}
+	
 
 	@Column(name = "inserted_time", length = 250)
 	public String getInsertedTime() {
@@ -95,5 +88,26 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 		this.insertedTime = insertedTime;
 	}
 
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="sms_history_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public SmsHistory getSmsHistory() {
+		return smsHistory;
+	}
+
+	public void setSmsHistory(SmsHistory smsHistory) {
+		this.smsHistory = smsHistory;
+	}
+
+	@Column(name = "sms_history_id", length = 10)
+	public Long getHistoryId() {
+		return historyId;
+	}
+
+	public void setHistoryId(Long historyId) {
+		this.historyId = historyId;
+	}
+	
 	
 }
