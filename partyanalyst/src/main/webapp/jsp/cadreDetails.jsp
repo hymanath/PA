@@ -3028,9 +3028,12 @@ var obj = {
 
 arr.push(obj);
 
+var url = window.location.href;
+var wurl = url.substr(0,(url.indexOf(".com")+4));
+
 	$.ajax({
 			type : "POST",
-			url: "http://mytdp.com/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+			url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
 			  data: JSON.stringify(arr),
 			 contentType: "application/json; charset=utf-8",
