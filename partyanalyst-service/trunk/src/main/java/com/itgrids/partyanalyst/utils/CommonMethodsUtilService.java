@@ -375,4 +375,23 @@ public class CommonMethodsUtilService {
 			
 			return availableList;
 		}
+		
+		public String  getUniCodeMessage(String message){
+	        String returnMessage = "";
+			for(int i=0;i<message.length();i++){
+				String character = Integer.toHexString(message.charAt(i));
+				if(character.length() == 1){
+					returnMessage=returnMessage+"000"+character;
+				}else if(character.length() == 2){
+					returnMessage=returnMessage+"00"+character;
+				}else if(character.length() == 3){
+					returnMessage=returnMessage+"0"+character;
+				}else{
+					returnMessage=returnMessage+""+character;
+				}
+				
+			}
+		return returnMessage; 
+	}
+	
 }

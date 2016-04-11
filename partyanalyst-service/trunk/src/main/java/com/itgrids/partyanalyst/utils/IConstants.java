@@ -385,6 +385,7 @@ public interface IConstants {
     public static final String NOT_AVAILABLE = "NOT_AVAILABLE";
     
     public static final String SUCCESS = "Success";
+    public static final String FAILURE = "Failure";
     public static final String SUCCESSFULLY_SAVED = "SUCCESSFULLY_SAVED";
     public static final String BOOTH = "BOOTH";
     public static final String MP_CONSTITUENCY = "MP CONSTITUENCY";
@@ -982,4 +983,5 @@ public interface IConstants {
 	public static final Long DIVISION_LEVEL_ID = 9L; 
 	public static final Long VILLAGE_LEVEL_ID = 6L; 
 	public static final Long WARD_LEVEL_ID = 8L; 
+	public static final String TRAINING_CAMP_FEEDBACK_SMS_CONTENT = "\u0c36\u0c3f\u0c15\u0c4d\u0c37\u0c23\u0c3e \u0c36\u0c3f\u0c2d\u0c3f\u0c30\u0c02\u0c32\u0c4b \u0c2e\u0c40\u0c30\u0c41 \u0c07\u0c1a\u0c4d\u0c1a\u0c3f\u0c28 \u0c35\u0c3f\u0c28\u0c24\u0c3f/\u0c05\u0c2d\u0c3f\u0c2a\u0c4d\u0c30\u0c3e\u0c2f\u0c02 \u0c28\u0c3e \u0c26\u0c43\u0c37\u0c4d\u0c1f\u0c3f\u0c15\u0c3f \u0c35\u0c1a\u0c4d\u0c1a\u0c3f\u0c02\u0c26\u0c3f. \u0c27\u0c28\u0c4d\u0c2f\u0c35\u0c3e\u0c26\u0c2e\u0c41\u0c32\u0c41 -\u0c2e\u0c40 \u0c28\u0c3e\u0c30\u0c3e \u0c32\u0c4b\u0c15\u0c47\u0c37\u0c4d";//"Sikshana sibiramlo meeru ichina vinathi/ abhiprayam naa drustiki vachindi. Dhanyavadamulu - mee	Nara lokesh";
 }
