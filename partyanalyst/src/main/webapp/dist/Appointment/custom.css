@@ -590,3 +590,7 @@ body
     .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
         right: 0px; 
     }
+	.text-capitalize
+	{
+		text-transform:uppercase
+	}
