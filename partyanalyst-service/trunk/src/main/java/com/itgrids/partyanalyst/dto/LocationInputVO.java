@@ -28,9 +28,13 @@ public class LocationInputVO {
 	private List<Long> villageIdsList;
 	private List<Long> wardIdsList;
 	private List<Long> designationIds;
-	
-	
-	
+	private Long stateId;
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
 	public List<Long> getDesignationIds() {
 		return designationIds;
 	}
