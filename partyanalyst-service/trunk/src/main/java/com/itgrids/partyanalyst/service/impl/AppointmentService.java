@@ -547,8 +547,17 @@ public class AppointmentService implements IAppointmentService{
 		List<IdNameVO> appCndDesigList = new ArrayList<IdNameVO>(0);
 		try{
 			LOG.info("Entered into getAppCandidateDesigList() method of AppointmentService");
-			List<Object[]>  appDesigLst = candidateDesignationDAO.getAppCandidateDesigList();
-			appCndDesigList = setDataToVO(appDesigLst);
+			List<Object[]>  objList = candidateDesignationDAO.getAppCandidateDesigList();
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
+					vo.setOrderId((Long)objects[2]);
+					appCndDesigList.add(vo);
+				}
+			}
+			
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentService", e);
 		}

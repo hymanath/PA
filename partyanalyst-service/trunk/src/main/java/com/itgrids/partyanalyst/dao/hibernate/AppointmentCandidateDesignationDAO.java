@@ -14,7 +14,8 @@ public class AppointmentCandidateDesignationDAO extends GenericDaoHibernate<Appo
 		super(AppointmentCandidateDesignation.class);
 	}
 	public List<Object[]> getAppCandidateDesigList(){
-		Query query=getSession().createQuery("select model.appointmentCandidateDesignationId, model.designation from AppointmentCandidateDesignation model");
+		Query query=getSession().createQuery("select model.appointmentCandidateDesignationId, model.designation,model.appointmentCandidateTypeId from AppointmentCandidateDesignation model"
+				+ " order by model.appointmentCandidateTypeId ");
 		return query.list();
 	}
 
