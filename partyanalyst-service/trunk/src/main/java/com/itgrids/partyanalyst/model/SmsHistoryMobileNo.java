@@ -31,31 +31,13 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 	
 	private Long SMShistoryMobileId;
 	private String mobileNumber;
-	
 	private String insertedTime;
 	
-	private Long historyId;
 	private SmsHistory smsHistory;
 	
 	// Constructors
-
-	
-	
 	/** default constructor */
 	public SmsHistoryMobileNo() {
-	}
-
-	/** minimal constructor */
-	public SmsHistoryMobileNo(Long historyId) {
-		this.historyId = historyId;
-	}
-
-	/** full constructor */
-	public SmsHistoryMobileNo(Long SMShistoryMobileId,String insertedTime,String mobileNumber) {
-		this.SMShistoryMobileId = SMShistoryMobileId;
-		this.insertedTime = insertedTime;
-		this.mobileNumber = mobileNumber;
-		
 	}
 
 	@Id
@@ -69,7 +51,7 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 		SMShistoryMobileId = sMShistoryMobileId;
 	}
 
-	@Column(name = "mobile_no", length = 250)
+	@Column(name = "mobile_no")
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
@@ -77,9 +59,8 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-	
 
-	@Column(name = "inserted_time", length = 250)
+	@Column(name = "inserted_time")
 	public String getInsertedTime() {
 		return insertedTime;
 	}
@@ -89,7 +70,7 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="sms_history_id", insertable = false, updatable = false)
+	@JoinColumn(name="sms_history_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public SmsHistory getSmsHistory() {
@@ -100,14 +81,5 @@ public class SmsHistoryMobileNo extends BaseModel implements Serializable {
 		this.smsHistory = smsHistory;
 	}
 
-	@Column(name = "sms_history_id", length = 10)
-	public Long getHistoryId() {
-		return historyId;
-	}
-
-	public void setHistoryId(Long historyId) {
-		this.historyId = historyId;
-	}
-	
 	
 }
