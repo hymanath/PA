@@ -291,7 +291,7 @@
 												<label class="advancePRCls">Search Designation</label>
 												 <select class="advancePRCls dropkickClass"  id="advanceDesignationId">
 													<option value="0">Select Designation</option>
-													<option value="1">MP</option>
+													<!--<option value="1">MP</option>
 													<option value="2">MLA</option>
 													<option value="6">2014 AP STATE MINISTERS</option>
 													<option value="7">2014 CENTRAL MINISTERS</option>
@@ -301,7 +301,7 @@
 													<option value="11">2014 PARLIAMENT CONTESTED</option>
 													<option value="12">MLC</option>
 													<option value="16">MP (RAJYA SABHA)</option>
-													<option value="23">EX-STATE MINISTER</option>
+													<option value="23">EX-STATE MINISTER</option>-->
 												</select>
 												<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
 												
@@ -491,23 +491,21 @@
 												<input type="text" class="form-control cloneNameCls">
 												<div class="cloneErrCandidateNameCls validateClr"></div>
 											</div>
-											<div class="col-md-3 m_top10">
-												<label>Designation</label><span style='color:red'> &nbsp * </span>
-												<select class="cloneDesignationCls " >
-													<option value="0">Select Designation</option>
-													
-											 	</select>
-												<div class="cloneErrCandidateDesgCls validateClr"></div>
-											</div>
-											<div class="col-md-3 m_top10">
+												<div class="col-md-3 m_top10">
 												<label>Candidate Type</label><span style='color:red'> &nbsp * </span>
 												<select class="cloneCandidateTypeCls">
 													<option value="0">Select Candidate Type</option>
-													
 												</select>
 												<div class="cloneErrCandidateTypeCls validateClr"></div>
 											</div>
 											<div class="col-md-3 m_top10">
+												<label>Designation</label><span style='color:red'> &nbsp * </span>
+												<select class="cloneDesignationCls " >
+													<option value="0">Select Designation</option>
+												</select>
+												<div class="cloneErrCandidateDesgCls validateClr"></div>
+											</div>
+										 <div class="col-md-3 m_top10">
 												<label>Contact Number</label><span style='color:red'> &nbsp * </span>
 												<input type="text" class="form-control cloneMobileCls">
 												<div class="cloneErrCandidateMobileCls validateClr"></div>
@@ -1303,9 +1301,9 @@ $(".dropkickClass").dropkick();
 			$("#manageAppDesigId").append('<option value="select">Select Designation</option>');
 			$("#manageAppDesigId").append('<option value="0" selected>ALL</option>');
 			for(var i in result){
-				$("#designationListId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$("#designationListId").append('<option value='+result[i].id+' typeId='+result[i].orderId+'>'+result[i].name+'</option>');
 				$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-				$(".cloneDesignationCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$(".cloneDesignationCls").append('<option value='+result[i].id+' typeId='+result[i].orderId+'>'+result[i].name+'</option>');
 			}
 			 /* $(".designationListCls").dropkick();
 			 var select = new Dropkick("#designationListId");
@@ -2161,7 +2159,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 								str+='</div>';
 								
 								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
-									str+='<input type="checkbox" class="apptDetailsDiv"  attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
+									str+='<input type="checkbox" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
 								str+='</div>';
 								
 							str+='</div>';
@@ -2215,11 +2213,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 var votercardno = $(this).attr("attr_voterCardNo");
 				 var closeId1 = $(this).attr("attr_id");
 				 var candidateTypeId = $(this).attr("attr_candidateType_id");
+				 var designation = $(this).attr("attr_designation");
 		
 		
 		var jsObj={
 			candidateType:candidateType,
-			id:id
+			id:id,
+			designation:designation
 		  }
 		  	$.ajax({
 				type : 'POST',
@@ -2247,12 +2247,21 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
 				
-				$('#designationSelId'+temp).val(desg);
+				//$('#designationSelId'+temp).val(desg);
+				var candidateType;
+				//$("#designationSelId+temp option").each(function() {
+					$('#designationSelId'+temp+' option').each(function() {
+				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
+				$(this).prop('selected', true) ;
+				candidateType = $(this).attr("typeId");
+			
+				} 
+			  });	
 				var selectx = new Dropkick('#designationSelId'+temp);
 					selectx.refresh();
 					
-					if(candidateTypeId !=null && candidateTypeId >0){
-						$('#candidateTypeSelId'+temp).val(candidateTypeId);
+					if(candidateType !=null && candidateType >0){
+						$('#candidateTypeSelId'+temp).val(candidateType);
 						var selectcd = new Dropkick('#candidateTypeSelId'+temp);
 						selectcd.refresh();
 					}else{
@@ -4755,6 +4764,7 @@ function buildTimeSlotsTable(result){
 				$(".advanceprcls").show();
 				setToDefaultAdvancedSearch();
 				$("#advanceDesignationId").css("display","none");
+				getPublicRepresentsDetails();
 			}
 			else if(selectVal == 3)
 			{
@@ -5506,6 +5516,34 @@ function getCommitteeRoles(){
 			$(document).on("click",".refreshBlockDiv",function(e){
 				window.location.reload(true);
 			});
+			
+		function getPublicRepresentsDetails(){
+    	 $("#advanceDesignationId").html('');
+    	var jsObj={
+    			task:"publicRepresentatives"
+    		}
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getPublicRepresentativeTypes.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+		   var str ='';
+    		if(result != null && result.length > 0){
+				str +='<option value="0">All</option>';
+				for(var i in result)
+				{
+				 str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+				}
+			 $("#advanceDesignationId").html(''+str+'');
+			 $("#advanceDesignationId").dropkick();
+			 var select = new Dropkick("#advanceDesignationId");
+			 select.refresh();
+			}
+			
+    	   });	
+		  
+    	
+      }
 </script>
 </body>
 </html>
