@@ -68,4 +68,5 @@ public interface IAppointmentService {
 	 public List<IdNameVO> getDistrictsList();
 
 	public List<IdNameVO> getAllCandidateTypes();
+	public List<IdNameVO> getAppCandidateDesigListByType(Long typeId);
 }
