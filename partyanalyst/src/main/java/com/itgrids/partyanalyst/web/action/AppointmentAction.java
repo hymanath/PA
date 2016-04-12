@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
@@ -68,6 +69,18 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	
 	private InputStream inputStream;
 	
+	private List<BasicVO> basicvoList;
+	
+	
+	
+	public List<BasicVO> getBasicvoList() {
+		return basicvoList;
+	}
+
+	public void setBasicvoList(List<BasicVO> basicvoList) {
+		this.basicvoList = basicvoList;
+	}
+
 	public AppointmentSlotsVO getAppointmentSlotsVO() {
 		return appointmentSlotsVO;
 	}
@@ -932,4 +945,16 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getStatusCountForAppointment(){
+		try{
+			
+			idNameVOList = appointmentService.getAppointmentStatusOverview();
+			
+		}catch (Exception e) {
+			LOG.error("Exception occured in getAppointmentStatusOverview()",e);
+		}
+		return Action.SUCCESS;
+	}
+
 }

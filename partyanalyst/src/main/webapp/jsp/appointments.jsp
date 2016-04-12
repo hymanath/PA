@@ -635,7 +635,14 @@
 											<div id="bldCnfrmtnMdlBoxId"></div>
 											<div id="buildAppntmntLblTblId"></div>  
 											<div id="buildAppntmntStsTblId"></div>  
+											 
 											</div>
+											<div id="buildAppntmntStatusOverView">
+											<span id="waitingStatus">0</span>
+											<span id="rescheduledStatus">0</span>
+											<span id="cancelledStatus">0</span>
+											<span id="notAttendedStatus">0</span>
+											</div> 
 										</div>
                                   </div>
 								<!--Swadhin-->
@@ -1695,6 +1702,7 @@ $(".dropkickClass").dropkick();
 		$(".commonDivCls").hide();
 		$("#selectStsForLabelId").val(1);
 		getLabelDtls();
+		getAppointmentStatusOverview();
 	});
 	
 	/*Get label details based on selected user.*/
@@ -5672,9 +5680,43 @@ function getCommitteeRoles(){
 			}
 			
     	   });	
-		  
+	 }
+	 
+	   function getAppointmentStatusOverview(){
     	
-      }
+    	var jsObj={
+    			task:""
+    		}
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getAppointmentStatusOverviewAction.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+				buildAppointmentStatusOverView(result);
+    	   });	
+	  }
+	  function buildAppointmentStatusOverView(result)
+	  {
+		 for(var i in result)
+		  {
+			  if(result[i].name == "Waiting")
+			  {
+				  $("#waitingStatus").html(''+result[i].availableCount+'');
+			  }
+			  if(result[i].name == "Reschedule")
+			  {
+				  $("#rescheduledStatus").html(''+result[i].availableCount+''); 
+			  }
+			  if(result[i].name == "Cancelled")
+			  {
+				  $("#cancelledStatus").html(''+result[i].availableCount+''); 
+			  }
+			  if(result[i].name == "Not Attended")
+			  {
+				  $("#notAttendedStatus").html(''+result[i].availableCount+''); 
+			  }
+		  }
+	 }
 </script>
 </body>
 </html>
