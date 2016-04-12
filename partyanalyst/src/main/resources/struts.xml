@@ -11808,6 +11808,10 @@
 			</result>
 		</action>
 		
-	   	
+	   		<action name="getAppCandidateDesigListByTypeAction" class="appointmentAction" method="getAppCandidateDesigListByType">
+		<result type="json" name="success">
+	    	<param name="root">idNameVOList</param>
+	    </result>
+	</action>
 </package>
 </struts>      
