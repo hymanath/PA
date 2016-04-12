@@ -11813,5 +11813,11 @@
 	    	<param name="root">idNameVOList</param>
 	    </result>
 	</action>
+		<action name="getAppointmentStatusOverviewAction" class="appointmentAction" method="getStatusCountForAppointment">
+		<result type="json" name="success">
+	    	<param name="root">idNameVOList</param>
+	    </result>
+	</action>
+	
 </package>
 </struts>      
