@@ -637,11 +637,12 @@
 											<div id="buildAppntmntStsTblId"></div>  
 											 
 											</div>
-											<div id="buildAppntmntStatusOverView">
-											<span id="waitingStatus">0</span>
-											<span id="rescheduledStatus">0</span>
-											<span id="cancelledStatus">0</span>
-											<span id="notAttendedStatus">0</span>
+											<div id="buildAppntmntStatusOverView" class="row">
+											<div class="col-md-3" id="waitingStatus"><h4 class="text-success">Waiting</h4>0</div>
+											<div class="col-md-3" id="rescheduledStatus"><h4 class="text-success">Rescheduled</h4>0</div>
+											<div class="col-md-3" id="cancelledStatus"><h4 class="text-success">Cancelled</h4>0</div>
+											<div class="col-md-3" id="notAttendedStatus"><h4 class="text-success">Not Attended</h4>0</div>
+											
 											</div> 
 										</div>
                                   </div>
@@ -987,7 +988,7 @@
 
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 
-/* function buildJSONForAppStatus(result){	
+function buildJSONForAppStatus(result){	
 	for(var i in result.overAllStatusList){
 		if(result.overAllStatusList[i].totalCount>0)
 			flag = true;
@@ -995,7 +996,7 @@ var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 	}
 	if(flag==true)  
 	buildChartForAppStatus();
-} */
+}
 
 //getTotalAppointmentStatus();
 function getTotalAppointmentStatus(){
@@ -1020,7 +1021,7 @@ function getTotalAppointmentStatus(){
 	$("#totalAptLoadingId").hide();
 		if(result != null){
 			buildTotalAppointmentStatusForToday(result);
-			buildChartForAppStatus(result);
+			buildJSONForAppStatus(result);
 			buildTotalAppointmentStatus(result);
 		}
 		
@@ -1074,14 +1075,9 @@ function buildTotalAppointmentStatusForToday(result){
 	$(document).on("click",".appointmentSettingsBLock,.messageBlock,.updateAppointment",function(event){
 		event.stopPropagation();
 	});
-function buildChartForAppStatus(result) {
+function buildChartForAppStatus() {
 	var jsonObj = [];
 	var flag = false;
-	for(var i in result.overAllStatusList){
-		if(result.overAllStatusList[i].totalCount>0)
-			flag = true;
-		jsonObj.push({"name":result.overAllStatusList[i].status,"y":result.overAllStatusList[i].totalCount,"color":color[i%6]});
-	}
 	// Create the chart
 	$('#LineChart').highcharts({
         chart: {
@@ -5203,6 +5199,7 @@ function getAppointmentCreatedUsers(){
 	});
 	$( "#selectStsForLabelId" ).change(function() {
 		getLabelDtls();
+		
 	})
 	/*$(document).on('change',".cloneCandidateTypeCls",function() {
 		
@@ -5701,19 +5698,19 @@ function getCommitteeRoles(){
 		  {
 			  if(result[i].name == "Waiting")
 			  {
-				  $("#waitingStatus").html(''+result[i].availableCount+'');
+				  $("#waitingStatus").html('<h4 class="text-success">Waiting</h4>'+result[i].availableCount+'');
 			  }
 			  if(result[i].name == "Reschedule")
 			  {
-				  $("#rescheduledStatus").html(''+result[i].availableCount+''); 
+				  $("#rescheduledStatus").html('<h4 class="text-success">Waiting</h4>0'+result[i].availableCount+''); 
 			  }
 			  if(result[i].name == "Cancelled")
 			  {
-				  $("#cancelledStatus").html(''+result[i].availableCount+''); 
+				  $("#cancelledStatus").html('<h4 class="text-success">Waiting</h4>0'+result[i].availableCount+''); 
 			  }
 			  if(result[i].name == "Not Attended")
 			  {
-				  $("#notAttendedStatus").html(''+result[i].availableCount+''); 
+				  $("#notAttendedStatus").html('<h4 class="text-success">Waiting</h4>0'+result[i].availableCount+''); 
 			  }
 		  }
 	 }
