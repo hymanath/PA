@@ -2256,6 +2256,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
 				//$(this).prop('selected', true) ;
 				candidateType = $(this).attr("typeId");
+				if(designation != null)
 				getDesignationsByType(candidateType,'designationSelId'+temp);
 				} 
 			  });	
