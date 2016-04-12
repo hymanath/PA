@@ -8,5 +8,6 @@ import com.itgrids.partyanalyst.model.AppointmentCandidateDesignation;
 
 public interface IAppointmentCandidateDesignationDAO extends GenericDao<AppointmentCandidateDesignation, Long> {
 	public List<Object[]> getAppCandidateDesigList();
+	public List<Object[]> getAppCandidateDesigListByType(Long typeId);
 
 }

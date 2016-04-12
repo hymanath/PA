@@ -18,5 +18,12 @@ public class AppointmentCandidateDesignationDAO extends GenericDaoHibernate<Appo
 				+ " order by model.appointmentCandidateTypeId ");
 		return query.list();
 	}
+	public List<Object[]> getAppCandidateDesigListByType(Long typeId){
+		Query query=getSession().createQuery("select model.appointmentCandidateDesignationId, model.designation,model.appointmentCandidateTypeId from AppointmentCandidateDesignation model"
+				+ " where model.appointmentCandidateTypeId = :typeId"
+				+ " order by model.appointmentCandidateTypeId ");
+		query.setParameter("typeId", typeId);
+		return query.list();
+	}
 
 }

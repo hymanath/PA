@@ -3413,4 +3413,26 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		return fnlList;
 	}
 	
+	//get appointmentCandidateDesignationList
+		public List<IdNameVO> getAppCandidateDesigListByType(Long typeId){
+			//appCndDesigList->appointmentCandidateDesignationList
+			List<IdNameVO> appCndDesigList = new ArrayList<IdNameVO>(0);
+			try{
+				LOG.info("Entered into getAppCandidateDesigListByType() method of AppointmentService");
+				List<Object[]>  objList = candidateDesignationDAO.getAppCandidateDesigListByType(typeId);
+				if(objList != null && objList.size() > 0){
+					for (Object[] objects : objList) {
+						IdNameVO vo = new IdNameVO();
+						vo.setId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setOrderId((Long)objects[2]);
+						appCndDesigList.add(vo);
+					}
+				}
+				
+			}catch(Exception e){
+				LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentService", e);
+			}
+			return appCndDesigList;
+		}
 }
