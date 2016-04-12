@@ -299,6 +299,17 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getAppCandidateDesigListByType(){
+		try{
+			LOG.info("Entered into getAppCandidateDesigListByType() method of AppointmentAction");
+			jObj = new JSONObject(getTask());
+			idNameVOList = appointmentService.getAppCandidateDesigListByType(jObj.getLong("typeId"));
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 	public String getAppointmentPriorityList(){
 		try{
 			LOG.info("Entered into getAppointmentPriorityList() method of AppointmentAction");

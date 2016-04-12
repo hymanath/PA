@@ -1215,6 +1215,8 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneCandidateTypeCls").attr("attr_val",cloneCount);	
 	e.find(".cloneErrCandidateTypeCls").attr("id",'cloneErrCandidateTypeId'+cloneCount);
 	
+	e.find(".cloneCandidateTypeCls").attr("onChange",'getDesignationsByTypeForChange('+cloneCount+');');
+	
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
 	
@@ -2177,12 +2179,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		$("#apptmemberDetailsDiv").html(str);
 		applyPagination();
 	}
-	
+	var popDesignation ;
 	 $(document).on("click",".apptDetailsDiv",function(){
 		 
 		 
 		 if($(this).is(':checked')){
-			 
+			
 			  $("#addOneBlock").trigger("click");
 			
 				// $("#checkboxMemberAjax").css("display","block");
@@ -2214,7 +2216,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				 var closeId1 = $(this).attr("attr_id");
 				 var candidateTypeId = $(this).attr("attr_candidateType_id");
 				 var designation = $(this).attr("attr_designation");
-		
+			    popDesignation = designation;
 		
 		var jsObj={
 			candidateType:candidateType,
@@ -2252,9 +2254,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				//$("#designationSelId+temp option").each(function() {
 					$('#designationSelId'+temp+' option').each(function() {
 				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
-				$(this).prop('selected', true) ;
+				//$(this).prop('selected', true) ;
 				candidateType = $(this).attr("typeId");
-			
+				getDesignationsByType(candidateType,'designationSelId'+temp);
 				} 
 			  });	
 				var selectx = new Dropkick('#designationSelId'+temp);
@@ -2269,7 +2271,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 						$('#candidateTypeSelId'+temp).dropkick('reset');
 						
 					}
-					
+					/*$('#designationSelId'+temp+' option').each(function() {
+				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
+				$(this).prop('selected', true) ;
+				} 
+			  });	*/
 				$('#locationScopeSelId'+temp).val(lctscpid);
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
 				selectL.refresh();
@@ -5142,8 +5148,83 @@ function getAppointmentCreatedUsers(){
 	$( "#selectStsForLabelId" ).change(function() {
 		getLabelDtls();
 	})
+	/*$(document).on('change',".cloneCandidateTypeCls",function() {
+		
+		getDesignationsByType($(this).val(),$(this).attr(id));
+	})*/
+	function getDesignationsByTypeForChange(cnt)
+	{
 	
+	var typeId = $("#candidateTypeSelId"+cnt).val();	
+	var jsObj = {
+		typeId : typeId,
+		task:""
+	}
+		$.ajax({
+			type : 'GET',
+			url : 'getAppCandidateDesigListByTypeAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){
+				//app-appointment
+				buildDesignationForCreateApp1(result,"designationSelId"+cnt);
+			}
+			
+		});
+	}
 	
+	function getDesignationsByType(typeId,selectId)
+	{
+	
+	var jsObj = {
+		typeId : typeId,
+		task:""
+	}
+		$.ajax({
+			type : 'GET',
+			url : 'getAppCandidateDesigListByTypeAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			if(result != null && result.length > 0){
+				//app-appointment
+				buildDesignationForCreateApp1(result,selectId);
+			}
+			
+		});
+	}
+	
+	function buildDesignationForCreateApp1(result,selectId){
+			/*$("#designationListId  option").remove();
+			$("#designationListId").append('<option value="0">Select Designation</option>');
+			 $(".cloneDesignationCls option").remove(); 
+			$(".cloneDesignationCls").append('<option value="0">Select Designation</option>'); 
+			
+			$("#manageAppDesigId  option").remove();
+			$("#manageAppDesigId").append('<option value="select">Select Designation</option>');
+			$("#manageAppDesigId").append('<option value="0" selected>ALL</option>');
+			for(var i in result){
+				$("#designationListId").append('<option value='+result[i].id+' typeId='+result[i].orderId+'>'+result[i].name+'</option>');
+				$("#manageAppDesigId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$(".cloneDesignationCls").append('<option value='+result[i].id+' typeId='+result[i].orderId+'>'+result[i].name+'</option>');
+			}
+		
+			 $("#manageAppDesigId").dropkick();
+			var select1 = new Dropkick("#manageAppDesigId");
+			select1.refresh();  */
+			
+			$("#"+selectId+"  option").remove();
+		$('#'+selectId).append('<option value="0">Select Designation</option>');
+		for(var i in result){
+			if(popDesignation == result[i].name)
+			$('#'+selectId).append('<option value='+result[i].id+' typeId='+result[i].orderId+' selected="true">'+result[i].name+'</option>');
+		else
+			$('#'+selectId).append('<option value='+result[i].id+' typeId='+result[i].orderId+'>'+result[i].name+'</option>');
+		 }
+		var select = new Dropkick('#'+selectId);
+		select.refresh();
+	} 
 	function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
