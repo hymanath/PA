@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
@@ -3434,5 +3435,30 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentService", e);
 			}
 			return appCndDesigList;
+		}
+		public  List<IdNameVO> getAppointmentStatusOverview()
+		{
+			List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+			try{
+				
+				List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentStatusOverview();
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						IdNameVO vo = new IdNameVO();
+						vo.setId((Long)params[1]);
+						vo.setName(params[2].toString());
+						vo.setAvailableCount((Long)params[0]);
+						returnList.add(vo);
+					}
+				}
+				
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception raised at getAppointmentStatusOverview() method of AppointmentService", e);
+			}
+			return returnList;
 		}
 }
