@@ -182,7 +182,7 @@
 												<h4 class="text-success text-capitalize">SEARCH for Scheduled appointment </h4>
 											</div>
 										
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<label>Search</label>
 												<div class="input-group inputSearch">
 													<input class="form-control" type="text" id="searchStrId"  placeholder="Name or MobileNumber"">
@@ -207,6 +207,16 @@
                                                     <input type="text" class="form-control" id="dashboardSelectDateIds">                                               
 												</div>
                                             </div>
+											<div class="col-md-3">
+                                            	<label>Select Status</label>
+                                                <select class="dropkickClass" id="selectStatusId">
+                                                	<option value="0">All</option>
+													<option value="1">Upcoming</option>
+													<option value="2">InProgress</option>
+													<option value="3">Completed</option>
+													
+                                                </select>
+											</div>
 											<div  class="col-md-2 m_top25" style="float: right;">
                                             	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
                                             </div>
@@ -3095,6 +3105,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		searchJobj;
 		$(".appointmentSettings").show();
 		var createdBy =$("#appointmentcreatedBy").val();
+		var statusId =$("#selectStatusId").val();
 		var appointmentUserId =$("#appointmentUserSelectBoxId").val();
 		
 		var searchStr=$("#searchStrId").val().trim();
@@ -3107,6 +3118,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			searchStr:searchStr,
 			strDate:strDate,
 			endDate:endDate,
+			statusId:statusId,
 			task:""
 			
 		}
@@ -3117,12 +3129,38 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				buildUpcomingResult(result);
-				buildInprogressResult(result);
-				buildCompletedResult(result);
+				buildUpcomingResult(result,statusId);
+				buildInprogressResult(result,statusId);
+				buildCompletedResult(result,statusId);
+				if(statusId == 0)
+				{
+				  $(".heightAdjust").parent().parent().hide();
+				  $("#upcomingAppointMentId,#inprogreessAppointMentId,#completedAppointMentId").parent().removeClass("col-md-12")
+				  $("#upcomingAppointMentId,#inprogreessAppointMentId,#completedAppointMentId").parent().addClass("col-md-4")
+				  $("#upcomingAppointMentId,#inprogreessAppointMentId,#completedAppointMentId").parent().show();
+				}else if(statusId == 1)
+				{
+				  $(".heightAdjust").parent().parent().hide();
+				  $("#upcomingAppointMentId").parent().addClass("col-md-12")
+				  $("#upcomingAppointMentId").parent().removeClass("col-md-4")
+				  $("#upcomingAppointMentId").parent().show();
+				}else if(statusId == 2)
+				{
+				  $(".heightAdjust").parent().parent().hide();
+				  $("#inprogreessAppointMentId").parent().addClass("col-md-12")
+				  $("#inprogreessAppointMentId").parent().removeClass("col-md-4")
+				  $("#inprogreessAppointMentId").parent().removeClass("pad_0")
+				  $("#inprogreessAppointMentId").parent().show();
+				}else if(statusId == 3)
+				{
+				  $(".heightAdjust").parent().parent().hide();
+				  $("#completedAppointMentId").parent().addClass("col-md-12")
+				  $("#completedAppointMentId").parent().removeClass("col-md-4")
+				  $("#completedAppointMentId").parent().show();
+				}
 			})
 	}
-	function buildUpcomingResult(result)
+	function buildUpcomingResult(result,statusId)
 	{
 		var str = '';
 		var flag = false;
@@ -3402,7 +3440,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				$(".upcomedateCls1").hide();
 		
 	});
-	function buildInprogressResult(result)
+	function buildInprogressResult(result,statusId)
 	{
 		var str = '';
 		var flag = false;
@@ -3421,9 +3459,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		str+='<span class="msgDiv2InProgress"></span>';
 		str+='<button class="btn btn-block btn-success updateAll" value="InProgress">UPDATE APPOINTMENT</button>';
 		str+='</div>';
-		str+='<ul>';
+		
 		if(result != null)
 		{
+			str+='<ul>';
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "InProgress")
@@ -3501,7 +3540,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				str+='</div>';
 				}
 			}
-			
+			str+='</ul>';
 		}
 		else
 		{
@@ -3513,7 +3552,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		{
 			str+='No Data';	
 		}
-			str+='</ul>';
+			
 		str+='</div>';
 		$("#inprogreessAppointMentId").html(str);
 		if(!flag)
@@ -3522,7 +3561,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 	}
 	
 	
-	function buildCompletedResult(result)
+	function buildCompletedResult(result,statusId)
 	{
 		var str = '';
 		var flag = false;
@@ -3541,9 +3580,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		str+='<span class="msgDiv2Completed"></span>';
 		str+='<button class="btn btn-block btn-success updateAll" value="Completed">UPDATE APPOINTMENT</button>';
 		str+='</div>';
-		str+='<ul>';
+		
 		if(result != null)
 		{
+			str+='<ul>';
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "Completed")
@@ -3621,7 +3661,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				str+='</div>';
 				}
 			}
-			
+			str+='</ul>';
 		}
 		else
 		{
