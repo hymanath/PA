@@ -637,14 +637,22 @@
 											<div id="buildAppntmntStsTblId"></div>  
 											 
 											</div>
-											<div id="buildAppntmntStatusOverView" class="row">
-											<div class="col-md-3" id="waitingStatus"><h4 class="text-success">Waiting</h4>0</div>
-											<div class="col-md-3" id="rescheduledStatus"><h4 class="text-success">Rescheduled</h4>0</div>
-											<div class="col-md-3" id="cancelledStatus"><h4 class="text-success">Cancelled</h4>0</div>
-											<div class="col-md-3" id="notAttendedStatus"><h4 class="text-success">Not Attended</h4>0</div>
-											
-											</div> 
+										
 										</div>
+										 <div class="panel-body">
+										 <h4>OVERALL PENDING APPOINTMENT REQUESTS OVERVIEW</h4>
+										 <table>
+											<tr>
+											
+												<td style="width: 25%;background-color:#339967; text-align: center; padding: 40px 80px; "><h4 class="text-success" style="color:#fff;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
+												<td style="width: 25%; background-color:#336799; text-align: center; padding: 40px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
+												<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 40px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
+												<td style="width: 25%; background-color:#996532; text-align: center; padding: 40px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
+											</tr>
+											
+										 </table>
+											
+											</div>
                                   </div>
 								<!--Swadhin-->
 								<div class="panel panel-default m_top10 panelWhite" id="appointmentReqBlock">
@@ -5698,19 +5706,19 @@ function getCommitteeRoles(){
 		  {
 			  if(result[i].name == "Waiting")
 			  {
-				  $("#waitingStatus").html('<h4 class="text-success">Waiting</h4>'+result[i].availableCount+'');
+				  $("#waitingStatus").html(''+result[i].availableCount+'');
 			  }
 			  if(result[i].name == "Reschedule")
 			  {
-				  $("#rescheduledStatus").html('<h4 class="text-success">Waiting</h4>0'+result[i].availableCount+''); 
+				  $("#rescheduledStatus").html(''+result[i].availableCount+''); 
 			  }
 			  if(result[i].name == "Cancelled")
 			  {
-				  $("#cancelledStatus").html('<h4 class="text-success">Waiting</h4>0'+result[i].availableCount+''); 
+				  $("#cancelledStatus").html(''+result[i].availableCount+''); 
 			  }
 			  if(result[i].name == "Not Attended")
 			  {
-				  $("#notAttendedStatus").html('<h4 class="text-success">Waiting</h4>0'+result[i].availableCount+''); 
+				  $("#notAttendedStatus").html(''+result[i].availableCount+''); 
 			  }
 		  }
 	 }
