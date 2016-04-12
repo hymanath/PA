@@ -977,9 +977,9 @@
   });
   
 /* Drag and Drop END */
-var jsonObj = [];
+
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
-var flag = false;
+
 function buildJSONForAppStatus(result){	
 	for(var i in result.overAllStatusList){
 		if(result.overAllStatusList[i].totalCount>0)
@@ -1068,6 +1068,8 @@ function buildTotalAppointmentStatusForToday(result){
 		event.stopPropagation();
 	});
 function buildChartForAppStatus() {
+	var jsonObj = [];
+	var flag = false;
 	// Create the chart
 	$('#LineChart').highcharts({
         chart: {
@@ -5636,7 +5638,9 @@ function getCommitteeRoles(){
       }
      
 			$(document).on("click",".refreshBlockDiv",function(e){
-				window.location.reload(true);
+				$("#LineChart").html('');
+				getTotalAppointmentStatus();
+				getAppointmentUsersDtls();
 			});
 			
 		function getPublicRepresentsDetails(){
