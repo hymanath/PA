@@ -22,5 +22,5 @@ public interface ISchedulerService {
 	public Long updateTdpCadreAgerangeInfoDetails();
 	public Long updateTdpCadreCasteInfoDetails();
 	public Long updateTdpCadreInfoDetails();
-	public void updateTrainingCampSpeakersDetails();
+	public String updateTrainingCampSpeakersDetails();
 }
