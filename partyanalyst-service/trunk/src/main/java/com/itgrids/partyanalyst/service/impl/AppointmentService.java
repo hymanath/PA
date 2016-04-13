@@ -3128,19 +3128,15 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				return status;
 			}
 		 
-		 	public ResultStatus updateMemberAppointmentsStatus(final HashMap<Long,Long> statusMap) {
+		 	public ResultStatus updateMemberAppointmentsStatus(final Long apptId,final Long statusId) {
 			   
 				ResultStatus status=new ResultStatus();
 				try{
 
 					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-				        	if(statusMap != null && statusMap.size() > 0){
-				        		for (Entry<Long,Long> entry : statusMap.entrySet()) {
-				        			appointmentLabelDAO.updateMemberAppointmentsStatus(entry.getKey(),entry.getValue());
-				        			saveAppointmentTrackingDetails(entry.getKey(),4l,entry.getValue(),appointmentDAO.get(entry.getKey()).getAppointmentUserId(),"");
-								}
-				        	}
+				        	appointmentLabelDAO.updateMemberAppointmentsStatus(apptId,statusId);
+				        	saveAppointmentTrackingDetails(apptId,4l,statusId,appointmentDAO.get(apptId).getAppointmentUserId(),"");
 				        }
 				   });
 					
