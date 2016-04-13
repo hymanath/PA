@@ -19,7 +19,7 @@ private Long appointmentId;
 private String toTime;
 private String fromDate;
 private String toDate;
-
+private String appointmentUniqueId;
 
 
 public String getFromDate() {
@@ -123,6 +123,12 @@ public String getTime() {
 }
 public void setTime(String time) {
 	this.time = time;
+}
+public String getAppointmentUniqueId() {
+	return appointmentUniqueId;
+}
+public void setAppointmentUniqueId(String appointmentUniqueId) {
+	this.appointmentUniqueId = appointmentUniqueId;
 }
 
 
