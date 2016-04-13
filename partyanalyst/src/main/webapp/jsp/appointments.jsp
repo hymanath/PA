@@ -13,7 +13,7 @@
 <link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
-<link href="dist/Appointment/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
@@ -63,6 +63,10 @@
 	border-right:1px solid #ccc;
 	list-style:none;
 	cursor:pointer;
+}
+.daterangepicker_end_input
+{
+	padding:0px !important;
 }
 .SelectPosition li:last-child
 {
@@ -927,7 +931,7 @@
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
@@ -1885,17 +1889,18 @@ function showConfirmationBox(){
 		  $("#bldCnfrmtnMdlBoxId").html(str);
 		  $("#myModal").modal("show");
 	}
-	
-
-	
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
-$("#modalDateId").daterangepicker({singleDatePicker:false});	
+$("#modalDateId").daterangepicker({singleDatePicker:false});
+$('#modalDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
+$(".daterangepicker_end_input").find("input").addClass("form-control");
+$(".daterangepicker_start_input").find("input").addClass("form-control");
 $("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
 })
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
+$('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker:true});
 
