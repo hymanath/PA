@@ -13,7 +13,9 @@
     <META NAME="Keywords" CONTENT="<c:out value='${constituencyDetails.constituencyName}'/> Constituency, About <c:out value='${constituencyDetails.constituencyName}'/> Constituency, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections Analysis,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Elections Results, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Leaders,  <c:out value='${constituencyDetails.constituencyName}'/> Constituency Parties, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Problems, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Politics, <c:out value='${constituencyDetails.constituencyName}'/> Constituency MLA's, <c:out value='${constituencyDetails.constituencyName}'/> Constituency MP's,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Voting Trends,<c:out value='${constituencyDetails.constituencyName}'/> Constituency MPTC, <c:out value='${constituencyDetails.constituencyName}'/> Constituency ZPTC, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Municipality, <c:out value='${constituencyDetails.constituencyName}'/> Constituency Corporation,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Cross Voting,<c:out value='${constituencyDetails.constituencyName}'/> Constituency Mandals">
 
     <META NAME="Description" CONTENT=" <c:out value='${constituencyDetails.constituencyName}'/> constituency page provides the outline and basic information ,mandals information,constituency election results and latest news of the state.<c:out value='${statePage.stateName}'/> constituency page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
-
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+	
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 	
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent2.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
@@ -21,6 +23,18 @@
 	<script type="text/javascript" src="js/homePage/homePage.js"></script>
 	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+	
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+	
+	
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+	
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
+	 	
+
+		
 	
 	<!--<script type="text/javascript" src="js/jQuery/jquery-1.5.2.js"></script> --> 
 	<script
@@ -59,8 +73,13 @@
 	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<script type="text/javascript">
+	<link rel="stylesheet" type="text/css" href="NewBootstrap/bootstrap.css">
+	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="NewBootstrap/bootstrap.js"></script>
 	
+	 
+	<script type="text/javascript">
+	$.noConflict();
 	$(document).ready(function(){
 		var host = "<%=IConstants.DEPLOYED_HOST%>";
 		if(host != "tdpserver"){
@@ -147,7 +166,32 @@
 	}
 	</script>
 	<style>
-     
+    .surveyBasicIcon , .surveyBasicIcon:active ,.surveyBasicIcon:hover
+	{
+	  color:#666 !important
+	}
+	.surveyBasicIcon:before {
+		/* symbol for "opening" panels */
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+	  font-size:16px;
+	  margin-top:2px;
+	  font-weight:400 !important;
+	  margin-left:-4px;
+	  color:#999;
+	  font-weight: bold;
+	  background:#330099; margin-left:10px; margin-top:-2px; padding:2px 5px;
+	}
+	.surveyBasicIcon.collapsed:before {
+		/* symbol for "collapsed" panels */
+		content:"\002b";
+	}
+	.pad_0
+	{
+		padding:0px !important;
+	}
+	.panel-title{color:#330099 !important;}
 	#mandalsVotersInfoDiv_Head{display:none;}
 	#mandalsVotersInfoDiv_Body{width:auto;margin-left:auto;margin-right:auto;float:none;display:table;}
 
@@ -1220,7 +1264,7 @@ var queryString='';
 				<div id="labelRadioDiv"></div>			
 				<div id="resultsDataTableDiv"></div>
 				<div id="missingDataInfoDiv"></div>
-				
+				<div id="surveysListDiv"></div>
 				</div>
 						
 			</div>
@@ -4758,8 +4802,176 @@ function buildRegistrationTable(divId,divName,result){
 		   }
 		   $(divId).html(str);
 }
-</script>
+getSurveysListByConstituency();
+function getSurveysListByConstituency(){
+var constituencyId	 = '${param.constituencyId}';
+	$.ajax({
+			type:'GET',
+			 url:"http://localhost:8080/Survey/WebService/getSurveysListByConstituency/"+constituencyId+"",
+			 data : {},
+			 success: function(result){  
+					buildSurveyList(result);
+			}
+		});
+}
+function buildSurveyList(results){
+	if(results != null){
+		totalSurveys = results.surveySetsList.length;
+		var str='';
+		str+='<div class="panel panel-default">';
+		str+='<div class="panel-heading">';
+		str+='<h4 class="panel-title">SURVEY DETAILS <span class="pull-right" style="text-transform:uppercase;"> Total : '+results.surveySetsList.length+'</span></h4>';
+		str+='</div>';
+		str+='<div class="panel-body">';
+		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+		for(var i in results.surveySetsList){
+			str+='<div class="panel panel-default">';
+				str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+					str+='<a role="button" class="surveyDtlsCls collapsed surveyBasicIcon" attr_surveyId="'+results.surveySetsList[i].id+'" attr_divId="questionOptionDetailsId'+i+'" attr_questionId="questionId'+i+'" attr_selectDiv="questionSelect'+i+'" attr_loadingImg="loadingAjaxImg'+i+'" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+					str+='<h4 class="panel-title" style="text-transform:uppercase; font-size:14px">'+results.surveySetsList[i].name+'<span class="pull-right" style="color:#999999;"> Total Samples : '+results.surveySetsList[i].count+ '&nbsp;&nbsp;</span></h4></a>';
+				str+='</div>';
+				str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+				  str+='<div class="panel-body">';
+					str+='<div id="questionSelect'+i+'"></div>';
+					str+='<center><img src="images/search.gif" id="loadingAjaxImg'+i+'"  style="display:none;"/></center>';
+					str+='<div id="questionOptionDetailsId'+i+'" style="margin-top: 20px;"></div>'
+					str+='</div>';
+				str+='</div>';
+			 str+='</div>';
+		}
+		str+='</div>';
+		str+='</div>';
+	  str+='</div>';
+	  $("#surveysListDiv").html(str);
+}
+	$(".surveyDtlsCls").click(function(){
+		$(".panel-collapse").css("height","0");
+		var surveyId = $(this).attr("attr_surveyId");
+		var constituencyId = '${param.constituencyId}';
+		var divId = $(this).attr("attr_divId");
+		var selectDiv = $(this).attr("attr_selectDiv");
+		var loadingImgId = $(this).attr("attr_loadingImg");
+		var questionId = $(this).attr("attr_questionId");
+		$("#"+loadingImgId).show();
+		var jobj = 
+		{
+			surveyId : surveyId,
+			constituencyId : constituencyId
+		};
+		 $.ajax({
+		 type:'GET',
+		 url:"http://localhost:8080/Survey/WebService/getSurveyQuestionsInfoBySurvey/"+surveyId+"/"+constituencyId+"",
+		 data : {},
+		 success: function(results){  
+					buildQuestions(results,divId,selectDiv,surveyId,loadingImgId,questionId);
+			}
+		});
+	});
+}
+function buildQuestions(result,divId,selectDiv,surveyId,loadingImgId,questionId){
+	$("#"+selectDiv).html('');
+	if(result.statusList != null){
+		var str='';
+	
+		//str+='<label>Select Question :</label>';
+		str+='<select id="'+questionId+'" class="span8" multiple="true">';
+		//str+='<option value="0"> Select Question </option>';
 
- 
-  </body>
+		for(var i in result.statusList){
+			str+='<option value="'+result.statusList[i].id+'">'+result.statusList[i].name+'</option>';
+		}
+		str+=' </select>';
+		str+='<button style="margin-left:4px" class="btn btn-small btn-success" onclick="getQuestionsReport(\''+divId+'\',\''+surveyId+'\',\''+loadingImgId+'\',\''+questionId+'\')">Get Details</button>';
+		str+='<div class="errorQuestionDivCls" style="color:red;"></div>';
+		$("#"+selectDiv).html(str);
+		if(result.questionsList != null){
+			buildQuestionOptionsInfo(result,divId,loadingImgId);
+		}
+		$("#"+loadingImgId).hide();
+		$("#"+questionId).multiselect({	
+			multiple: true
+			
+		});
+		$("#"+selectDiv).click(function(){
+			$("#"+questionId).multiselect({
+			open: function(event, ui){
+					// event handler here
+				}
+			});
+		});
+		$(document).click(function(){
+			$("#"+questionId).multiselect({
+			close: function(event, ui){
+				}
+			});
+		});
+}
+	
+}
+
+var surveyAnalyseDetails={
+};
+function getQuestionsReport(divId,surveyId,loadingImgId,questionId){
+	$(".errorQuestionDivCls").html("");
+	$("#"+loadingImgId).show();
+	var questionIds = $("#"+questionId).val();
+	if(questionIds===null || questionIds.length==0){
+		$(".errorQuestionDivCls").html("please select one or more question.");
+		$("#"+loadingImgId).hide();
+		return;
+	}
+	var jobj = 
+	{
+		surveyId : surveyId,
+		constituencyId : '${param.constituencyId}',
+		questionIds : questionIds
+	};
+	 $.ajax({
+		type:'POST',
+		contentType: 'application/json',
+		url:"http://localhost:8080/Survey/WebService/getSurveyQuestionAnswerInfoBySurveyAndConstituency",
+		dataType: "json",
+		data: JSON.stringify(jobj),
+		success: function(results){  
+					buildQuestionOptionsInfo(results,divId,loadingImgId);
+		}
+    });
+}
+function buildQuestionOptionsInfo(result,divId,loadingImgId){
+	$("#"+divId).html('');
+	var str='';
+	if(result.questionsList != null && result.questionsList.length > 0){
+		str+='<div class="panel panel-default">';
+		for(var i in result.questionsList){
+			str+='<div class="panel-heading"><h4 class="panel-title">'+result.questionsList[i].name+' <span> ('+result.questionsList[i].questionCode+')</span>';
+			if(result.questionsList[i].multiSurveyQues == "true" && totalSurveys > 1)
+				str+='<span class="pull-right chartImagCls" attr_divId="chartDivId'+i+'" attr_questionId="'+result.questionsList[i].id+'"><img class="pull-right" src="images/078461.png"  style="cursor: pointer; height: 30px; width: 30px; margin-top: -5px; margin-left: 10px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border-radius: 4px;"/></span>';
+			str+='<i class="pull-right" style="color:#999; "> Total Respondents : '+result.questionsList[i].totalCount+'</i></h4></div>';
+			//str+='<div class="panel-heading"><h4 class="panel-title">'+result.questionsList[i].name+' <span> ('+result.questionsList[i].questionCode+')</span><span class="pull-right chartImagCls" attr_divId="chartDivId'+i+'" attr_questionId="'+result.questionsList[i].id+'"><img class="pull-right" src="images/078461.png" style="width: 45px; height: 35px;margin-top: -8px;cursor:pointer;"/></span> <span class="pull-right" style="margin-right: 100px;"> Total Respondents : '+result.questionsList[i].totalCount+'</span></h4></div>';
+			str+='<div class="panel-body pad_0">';
+			str+='<div id="chartDivId'+i+'" style="display:none;"></div>'
+			if(result.questionsList[i].verifierVOList != null && result.questionsList[i].verifierVOList.length > 0){
+				str+='<table class="table table-condenced">';
+					str+='<thead>'
+						str+='<th> OPTION </th>';
+						str+='<th><span class="pull-right"> COUNT </span></th>';
+					str+='</thead>'
+					for(var j in result.questionsList[i].verifierVOList){
+						str+='<tr>';
+							str+='<td>'+result.questionsList[i].verifierVOList[j].name+'</td>';
+							str+='<td><span class="pull-right">'+result.questionsList[i].verifierVOList[j].count+'('+result.questionsList[i].verifierVOList[j].percentage+' %)</span></td>';
+						str+='</tr>';
+					}
+				str+='</table>';
+			}
+				
+			str+='</div>';
+		}
+		str+='</div>';
+	}
+	$("#"+loadingImgId).hide();
+	$("#"+divId).html(str);
+}
+</script>
+</body>
 </html>
