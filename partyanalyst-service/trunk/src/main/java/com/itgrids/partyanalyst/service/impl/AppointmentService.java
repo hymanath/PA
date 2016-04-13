@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -57,7 +58,6 @@ import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
-import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
@@ -71,6 +71,7 @@ import com.itgrids.partyanalyst.model.AppointmentLabel;
 import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
 import com.itgrids.partyanalyst.model.AppointmentStatus;
 import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
+import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LabelAppointment;
 import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
@@ -78,6 +79,7 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.LocationService;
 
 
@@ -119,8 +121,15 @@ public class AppointmentService implements IAppointmentService{
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private LocationService locationService;
 	private IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO;
+	private IAppointmentTrackingDAO appointmentTrackingDAO;
 	
-	
+	public IAppointmentTrackingDAO getAppointmentTrackingDAO() {
+		return appointmentTrackingDAO;
+	}
+	public void setAppointmentTrackingDAO(
+			IAppointmentTrackingDAO appointmentTrackingDAO) {
+		this.appointmentTrackingDAO = appointmentTrackingDAO;
+	}
 	public LocationService getLocationService() {
 		return locationService;
 	}
@@ -520,6 +529,7 @@ public class AppointmentService implements IAppointmentService{
 		        			}
 		        		}
 		        	}
+		            saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,1l,loggerUserId,"");
 		        }
 		    });
 			rs.setExceptionMsg("success");
@@ -1876,8 +1886,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				        			}
 			        			}
 			        			
-			        			
-			        			
+			        		
 			        			//saving.
 			        			if(savingAppointmentIds!=null && savingAppointmentIds.size()>0){
 			        				for(Long appointmentId : savingAppointmentIds){
@@ -2856,11 +2865,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 				        	if(statusMap != null && statusMap.size() > 0){
 				        		for (Entry<Long,Long> entry : statusMap.entrySet()) {
-				        			appointmentLabelDAO.updateMemberAppointmentsStatus(entry.getKey(),entry.getValue());	
+				        			appointmentLabelDAO.updateMemberAppointmentsStatus(entry.getKey(),entry.getValue());
+				        			saveAppointmentTrackingDetails(entry.getKey(),4l,entry.getValue(),appointmentDAO.get(entry.getKey()).getAppointmentUserId(),"");
 								}
 				        	}
 				        }
-					});
+				   });
 					
 					status.setMessage("success");
 					status.setResultCode(0);
@@ -2921,8 +2931,13 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				       timeSlot.setIsDeleted("N");
 			      
-			          appointmentTimeSlotDAO.save(timeSlot);
-			      
+				       timeSlot=appointmentTimeSlotDAO.save(timeSlot);
+				       
+			         if(type !=null && type.equalsIgnoreCase("update")){
+			        	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
+			         }else{
+			          	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
+			         }
 			      rs.setExceptionMsg("success");
 			      rs.setResultCode(0);
 			      
@@ -3236,6 +3251,10 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						
 						labelAppointmentDAO.updateIsDeletedStatus(ids,labelId,registrationId,dateUtilService.getCurrentDateAndTime());
 						
+						for (Long long1 : ids) {
+							saveAppointmentTrackingDetails(long1,3l,appointmentDAO.get(long1).getAppointmentStatusId(),registrationId,"");
+						}
+						
 					}
 		        }
 			});
@@ -3413,52 +3432,77 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		}
 		return fnlList;
 	}
-	
 	//get appointmentCandidateDesignationList
-		public List<IdNameVO> getAppCandidateDesigListByType(Long typeId){
-			//appCndDesigList->appointmentCandidateDesignationList
-			List<IdNameVO> appCndDesigList = new ArrayList<IdNameVO>(0);
-			try{
-				LOG.info("Entered into getAppCandidateDesigListByType() method of AppointmentService");
-				List<Object[]>  objList = candidateDesignationDAO.getAppCandidateDesigListByType(typeId);
-				if(objList != null && objList.size() > 0){
-					for (Object[] objects : objList) {
-						IdNameVO vo = new IdNameVO();
-						vo.setId((Long)objects[0]);
-						vo.setName(objects[1].toString());
-						vo.setOrderId((Long)objects[2]);
-						appCndDesigList.add(vo);
-					}
+	public List<IdNameVO> getAppCandidateDesigListByType(Long typeId){
+		//appCndDesigList->appointmentCandidateDesignationList
+		List<IdNameVO> appCndDesigList = new ArrayList<IdNameVO>(0);
+		try{
+			LOG.info("Entered into getAppCandidateDesigListByType() method of AppointmentService");
+			List<Object[]>  objList = candidateDesignationDAO.getAppCandidateDesigListByType(typeId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)objects[0]);
+					vo.setName(objects[1].toString());
+					vo.setOrderId((Long)objects[2]);
+					appCndDesigList.add(vo);
 				}
-				
-			}catch(Exception e){
-				LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentService", e);
 			}
-			return appCndDesigList;
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getAppCandidateDesigList() method of AppointmentService", e);
 		}
-		public  List<IdNameVO> getAppointmentStatusOverview()
-		{
-			List<IdNameVO> returnList = new ArrayList<IdNameVO>();
-			try{
-				
-				List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentStatusOverview();
-				if(list != null && list.size() > 0)
-				{
-					for(Object[] params : list)
-					{
-						IdNameVO vo = new IdNameVO();
-						vo.setId((Long)params[1]);
-						vo.setName(params[2].toString());
-						vo.setAvailableCount((Long)params[0]);
-						returnList.add(vo);
-					}
-				}
-				
-			}
-			catch(Exception e)
+		return appCndDesigList;
+	}
+	public  List<IdNameVO> getAppointmentStatusOverview()
+	{
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentStatusOverview();
+			if(list != null && list.size() > 0)
 			{
-				LOG.error("Exception raised at getAppointmentStatusOverview() method of AppointmentService", e);
+				for(Object[] params : list)
+				{
+					IdNameVO vo = new IdNameVO();
+					vo.setId((Long)params[1]);
+					vo.setName(params[2].toString());
+					vo.setAvailableCount((Long)params[0]);
+					returnList.add(vo);
+				}
 			}
-			return returnList;
+			
 		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised at getAppointmentStatusOverview() method of AppointmentService", e);
+		}
+		return returnList;
+	}
+	public String saveAppointmentTrackingDetails(Long appointmentId,Long appointmentActionId,Long appointmentStatusId,Long userId,String remarks){
+		
+		AppointmentTracking appointmentTracking=new AppointmentTracking();
+		try{
+			if(appointmentId!=null && appointmentId>0l){
+				appointmentTracking.setAppointmentId(appointmentId);
+			}
+			if(appointmentStatusId!=null && appointmentActionId>0l){
+				appointmentTracking.setAppointmentStatusId(appointmentStatusId);
+			}
+			if(userId!=null && userId>0l){
+				appointmentTracking.setUserId(userId);
+			}
+			 appointmentTracking.setActionTime(dateUtilService.getCurrentDateAndTime());
+			 appointmentTracking.setAppointmentActionId(appointmentActionId);
+			if(remarks!=null && !remarks.isEmpty()){
+				appointmentTracking.setRemarks(remarks);
+			}
+			 appointmentTrackingDAO.save(appointmentTracking);
+		}catch(Exception e){
+			LOG.error("Error occured  in saveAppointmentTrackingDetails()",e);	
+			return null;
+		}
+		return "success";
+	}
+	
 }
