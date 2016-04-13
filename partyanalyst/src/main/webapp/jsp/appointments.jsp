@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Appointment</title>
-<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">  
 <link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
