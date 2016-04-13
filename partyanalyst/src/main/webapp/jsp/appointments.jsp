@@ -279,9 +279,9 @@
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="searchTypeId">
 													<option value="0">Select Search Type</option>
-													<option value="mobileno">MobileNo</option>
-													<option value="mebershipno">MembershipNo</option>
-													<option value="votercardno">VoterIdCardNo</option>
+													<option value="mobileno">Mobile No</option>
+													<option value="mebershipno">Membership No</option>
+													<option value="votercardno">Voter Id Card No</option>
 												</select>
 											</div>
                                             <div class="col-md-4 pad_0 searchCls">
@@ -397,7 +397,7 @@
 											<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
 											<div class="col-md-2">
 											
-												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Submit</button>
+												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Search Member</button>
 											</div>
                                             
 											
@@ -478,7 +478,7 @@
 												<div class="row m_top10">
 													<div class="col-md-4 col-md-offset-8">
 														<p style="cursor:pointer;float:right" id="addOneBlock">
-															Add One More Candidate
+															Add Candidate
 															<i class="glyphicon glyphicon-plus-sign text-success"></i>
 														</p>
 													</div>
