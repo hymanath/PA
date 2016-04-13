@@ -1834,7 +1834,7 @@ $(".dropkickClass").dropkick();
 	   var str='';
 	  str+='<table class="table table-condensed bg_ff">';
 		   str+='<thead>';
-				 str+='<th>APPOINTMENT LABEL NAME</th>';
+				 str+='<th>LABEL NAME</th>';
 				 str+='<th>TOTAL</th>';
 				 if(result[0].staticStatusList != null && result[0].staticStatusList.length > 0){
 					 for(var i in result[0].staticStatusList){
@@ -2929,7 +2929,7 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 		$("#allAppointmentsHideBlock").show();
 	});
 	
-	$(document).on("click",".updateLableAppointmentsCls",function(){		
+	$(document).on("click",".updateLableAppointmentsCls",function(){
 		$("#updateLabelNameSpanId").text($(this).attr("attr_label_name"));
 		var jsObj={
 			labelId : $(this).attr("attr_label_id")
@@ -2947,7 +2947,7 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 							str+='<div class="panel-heading">';
 								str+='<div class="row">';
 									str+='<div class="col-md-12">';
-										str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
+										str+='<span class="requestedCheckboxPanel text-danger" id="apptStatus'+result[i].appointmentId+'">'+result[i].status+'</span>';
 									str+='<div class="col-xs-5">';
 										str+='<p>Subject : '+result[i].reason+'</p>';
 										str+='<p>Priority Type : '+result[i].priority+'</p>';
@@ -4159,26 +4159,16 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 		});
 	}
 	
-	var statusList=[];
 	$(document).on("change",".upadteAppntStatusCls",function(){
-		var memberAppntId = $(this).attr("attr_appnt_id");
-		var updateAppntStatusId = $(this).val();
-		var obj={"appntId":parseInt(memberAppntId),"statusId":parseInt(updateAppntStatusId)};
-		statusList.push(obj);
-	});	
-	
-	$(document).on("click","#upStatusBtnId",function(){
-		if(statusList == null || statusList.length == 0){
-			$("#updateStatusErrDivId").html("<span style='color:red;'>Please Change Atleast On Appointment Status TO Update</span>");
-		}else{
-			updateMemberAppointmentsStatus(statusList);
-			statusList=[];
-		}
+		updateMemberAppointmentsStatus($(this).attr("attr_appnt_id"),$(this).val(),$(this).find("option:selected").text());
 	});
-	function updateMemberAppointmentsStatus(statusList){
-		$("#updateStatusErrDivId").html("");
+	
+	
+	function updateMemberAppointmentsStatus(apptId,statusId,status){
+		$("#appointmentStatusMsg"+apptId).html("");
 		var jsObj={
-				statusList:statusList
+				apptId:apptId,
+				statusId:statusId
 		}
 		$.ajax({
 			type : 'POST',
@@ -4187,10 +4177,11 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result!=null && result.message=="success"){
-				$("#updateStatusErrDivId").html("<span style='color:green;'>Status Updated Successfully.</span>");
+				$("#appointmentStatusMsg"+apptId).html("<span style='color:green;'>Status Updated Successfully.</span>");
+				$("#apptStatus"+apptId).text(status);
 				getLabelDtls();	
 			}else{
-				$("#updateStatusErrDivId").html("<span style='color:red;'>Updation Failed..Try Later</span>");
+				$("#appointmentStatusMsg"+apptId).html("<span style='color:red;'>Updation Failed..Try Later</span>");
 			}
 			
 		});
