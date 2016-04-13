@@ -11696,6 +11696,11 @@
 			<param name="root">labelStatusVO</param>
 		</result>
 	</action>
+	<action name="getAppointmentStatusCountsAction" class="appointmentAction" method="getAppointmentStatusCounts">
+		<result type="json" name="success">
+			<param name="root">appointmentStatusVOList</param>
+		</result>
+	</action>
 	<action name="getAppointmentSearchDetailsAction" class="appointmentAction" method="getAppointmentSearchDetails">
 		<result type="json" name="success">
 			<param name="root">searchList</param>
