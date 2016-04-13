@@ -993,7 +993,7 @@
   });
   
 /* Drag and Drop END */
-
+var jsonObj = [];
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 
 function buildJSONForAppStatus(result){	
@@ -1084,7 +1084,7 @@ function buildTotalAppointmentStatusForToday(result){
 		event.stopPropagation();
 	});
 function buildChartForAppStatus() {
-	var jsonObj = [];
+	//var jsonObj = [];
 	var flag = false;
 	// Create the chart
 	$('#LineChart').highcharts({
