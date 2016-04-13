@@ -379,7 +379,7 @@ public class TrainingCampBatchDAO extends GenericDaoHibernate<TrainingCampBatch,
 		 " from   training_camp_batch TCB left join training_camp_batch_attendee TCBA  on TCBA.training_camp_batch_id=TCB.training_camp_batch_id and TCBA.is_deleted = 'false' " +
 		 "        join training_camp_schedule TCS on TCB.training_camp_schedule_id = TCS.training_camp_schedule_id " +
 		 "        join training_camp TC on TCS.training_camp_id = TC.training_camp_id  " +
-		 " where   TCB.training_camp_batch_id in (:batchIds) and TCB.is_cancelled = 'false'  and TCB.attendee_type_id = 1 " +
+		 " where   TCB.training_camp_batch_id in (:batchIds) and TCB.is_cancelled = 'false'  and TCB.attendee_type_id = 1 and TCBA.is_deleted='false'  " +
 		 " order by TCB.training_camp_batch_id asc")
 		 .addScalar("campname",Hibernate.STRING)
 		 .addScalar("batchId",Hibernate.LONG)
