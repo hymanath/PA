@@ -2932,7 +2932,17 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				       timeSlot.setIsDeleted("N");
 			      
-				       timeSlot=appointmentTimeSlotDAO.save(timeSlot);
+				       //timeSlot=appointmentTimeSlotDAO.save(timeSlot);
+				       
+				       AppointmentTimeSlot appointmentTimeSlot = appointmentTimeSlotDAO.save(timeSlot);
+				       
+				       List<String>  mobilenos = appointmentCandidateRelationDAO.getAppointmentIdsforSendSms(appointmentTimeSlot.getAppointmentId());
+				       if(mobilenos !=null && mobilenos.size()>0){
+				    	   for(String obj : mobilenos){
+				    		   	 cadreRegistrationService.sendSMS(obj,"Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
+				    		  	
+				    	   }
+				       }
 				       
 			         if(type !=null && type.equalsIgnoreCase("update")){
 			        	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
