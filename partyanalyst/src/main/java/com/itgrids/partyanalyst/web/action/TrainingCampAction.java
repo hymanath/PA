@@ -13,13 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts2.dispatcher.multipart.MultiPartRequest;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.gson.JsonArray;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreFeedbackVO;
@@ -44,7 +42,7 @@ import com.itgrids.partyanalyst.dto.TrainingCampScheduleVO;
 import com.itgrids.partyanalyst.dto.TrainingCampVO;
 import com.itgrids.partyanalyst.dto.TrainingMemberVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.model.Job;
+import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
@@ -62,10 +60,11 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private JSONObject	jObj;
 	private String 		task;
 	private ITrainingCampService trainingCampService;
-	//private List<TrainingCampScheduleVO> trainingCampScheduleVOs;
+	//private List<TrainingCampScheduleVO> trainingCampScheduleVOs;ISchedulerService
 	private List<TraingCampCallerVO> statusCountList;
 	private TrainingCampScheduleVO trainingCampScheduleVO;
 	private EntitlementsHelper entitlementsHelper;
+	private ISchedulerService schedulerService;
 	
 	private String status;
 	private Long purposeId;
@@ -124,11 +123,14 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 	private Long cadreId;
 	private String dates;
 	
+	public ISchedulerService getSchedulerService() {
+		return schedulerService;
+	}
 
-	
-	
+	public void setSchedulerService(ISchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
 
-	
 	public String getDates() {
 		return dates;
 	}
@@ -2770,6 +2772,15 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
     		simpleVOList=trainingCampService.getDaysAttendedCadreDetails(batchId,dataType,type);
     	}catch (Exception e) {
     		LOG.error("Exception raised at getDaysAttendedCadreDetails", e);
+		}
+    	return Action.SUCCESS;
+    }
+public String getUpdateTrainingCampSpeakersDetails(){
+    	try{
+    		
+    		partyMeetingType =schedulerService.updateTrainingCampSpeakersDetails();
+    	}catch (Exception e) {
+    		LOG.error("Exception raised at getUpdateTrainingCampSpeakersDetails", e);
 		}
     	return Action.SUCCESS;
     }

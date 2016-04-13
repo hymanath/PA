@@ -11808,6 +11808,7 @@
 			</result>
 		</action>
 		
+				
 	   		<action name="getAppCandidateDesigListByTypeAction" class="appointmentAction" method="getAppCandidateDesigListByType">
 		<result type="json" name="success">
 	    	<param name="root">idNameVOList</param>
@@ -11818,6 +11819,11 @@
 	    	<param name="root">idNameVOList</param>
 	    </result>
 	</action>
-	
+
+<action name="getUpdateTrainingCampSpeakersDetails" class="trainingCampAction" method="getUpdateTrainingCampSpeakersDetails">
+			<result type="json" name="success">
+				<param name="root">partyMeetingType</param>
+			</result>
+</action>
 </package>
 </struts>      
