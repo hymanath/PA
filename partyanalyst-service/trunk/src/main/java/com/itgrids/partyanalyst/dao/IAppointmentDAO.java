@@ -12,4 +12,5 @@ public interface IAppointmentDAO extends GenericDao<Appointment, Long>{
 	public List<Object[]> getTotalAppointmentStatusForToday(Date today);
 	public Integer updateUniquesIdForAppointment(String uniqueCode,Long appointmentId);
 	public List<Object[]> getAppointmentCreatedUsers();
+	public Integer updateAppntmntStatusById(Long appointmentId, Date updatedTime);
 }

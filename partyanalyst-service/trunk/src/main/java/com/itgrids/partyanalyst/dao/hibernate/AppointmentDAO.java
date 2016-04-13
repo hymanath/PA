@@ -50,5 +50,15 @@ public class AppointmentDAO extends GenericDaoHibernate<Appointment, Long>
 		query.setParameter("uniqueCode", uniqueCode);
 		return query.executeUpdate();
 	}
+	
+	public Integer updateAppntmntStatusById(Long appointmentId, Date updatedTime) {
+		Query query = getSession()
+				.createQuery(
+						" update Appointment model set model.appointmentStatusId= 2, model.updatedTime = :updatedTime  where model.appointmentId=:appointmentId ");
+		query.setParameter("appointmentId", appointmentId);
+		query.setTimestamp("updatedTime", updatedTime);
+		return query.executeUpdate();
+	}
+	
 
 }
