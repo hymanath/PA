@@ -2445,6 +2445,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								vo.setToTime(convertDate1);
 								vo.setFromDate(params[8].toString());
 								vo.setToDate(params[12].toString());
+								vo.setAppointmentUniqueId(params[13]!=null?params[13].toString():"");
 								
 							}
 							resultList.add(vo);
