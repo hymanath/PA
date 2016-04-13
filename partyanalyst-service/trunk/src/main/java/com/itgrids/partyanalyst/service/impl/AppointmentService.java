@@ -1815,11 +1815,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 													
 													List<Long> aptmnts = new ArrayList<Long>();
 													aptmnts.add(apptvo.getAppointmentId());
-													
-												//	List<AppointmentDetailsVO> prferList = new ArrayList<AppointmentDetailsVO>();
-													
+												
 													//Prefer Dates Scenario For History start
-													List<Object[]>  apptDates = appointmentPreferableDateDAO.getMultipleDatesforAppointments(aptmnts);
+													
+													apptvo = setPreferebleDatesToAppointment(aptmnts,apptvo);
+													
+													/*List<Object[]>  apptDates = appointmentPreferableDateDAO.getMultipleDatesforAppointments(aptmnts);
 													if(apptDates!=null && apptDates.size()>0){
 														for(Object[] object : apptDates){
 															//AppointmentDetailsVO   appointmentVO1 = new AppointmentDetailsVO();
@@ -1858,9 +1859,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 																
 															}
 															
-															//prferList.add(appointmentVO1);
 														}
-													}
+													}*/
 													
 													
 													//Prefer Dates Scenario For History End
@@ -3703,6 +3703,61 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			return null;
 		}
 		return "success";
+	}
+	
+	public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,AppointmentDetailsVO apptvo){
+		
+		try{
+			
+			SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
+			
+			List<Object[]>  apptDates = appointmentPreferableDateDAO.getMultipleDatesforAppointments(aptmnts);
+			if(apptDates!=null && apptDates.size()>0){
+				for(Object[] object : apptDates){
+					//AppointmentDetailsVO   appointmentVO1 = new AppointmentDetailsVO();
+					apptvo.setDateTypeId((Long)object[2]);
+					apptvo.setDateType(object[3].toString());
+					if((Long)object[2]==1l){
+						if(apptvo.getApptpreferableDates()==null){
+							
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							if(preferDate !=null){
+								apptvo.setApptpreferableDates(prefer.format(preferDate));
+							}
+							
+						}else{
+							
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							if(preferDate !=null){
+								apptvo.setApptpreferableDates(apptvo.getApptpreferableDates() + " , " + (prefer.format(preferDate)) );
+							}
+							
+						}
+						
+					}else{
+						
+						if(apptvo.getMinDateCheck() == 0l){	
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							if(preferDate !=null){
+								apptvo.setMinDate(prefer.format(preferDate));
+								apptvo.setMaxDate(prefer.format(preferDate));
+							}
+						}else{
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							apptvo.setMaxDate(prefer.format(preferDate));
+						}
+						apptvo.setMinDateCheck(apptvo.getMinDateCheck()+1l);
+						
+					}
+					
+					//prferList.add(appointmentVO1);
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return apptvo;
 	}
 	
 }
