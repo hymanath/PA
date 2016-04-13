@@ -272,7 +272,8 @@ public class AttendanceService implements IAttendanceService{
 							trainingCampBatch.getTrainingCampSchedule().getTrainingCampProgram().getTrainingCampProgramId() : null);
 				}
 				
-				trainingCampAttendance.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				trainingCampAttendance.setInsertedTime(attendance.getAttendedTime());
+				trainingCampAttendance.setInsertionTime(dateUtilService.getCurrentDateAndTime());
 				trainingCampAttendance = trainingCampAttendanceDAO.save(trainingCampAttendance);
 			}
 			result.setStatus("Success");
