@@ -32,6 +32,7 @@ public class TrainingCampAttendance extends BaseModel implements Serializable{
 	private TrainingCampBatch trainingCampBatch;
 	private TrainingCampProgram trainingCampProgram;
 	private Date insertedTime;
+	private Date insertionTime;
 	private Long trainingCampScheduleId;
 	private Long trainingCampBatchId;
 	private Long trainingCampProgramId;
@@ -85,7 +86,8 @@ public class TrainingCampAttendance extends BaseModel implements Serializable{
 		this.trainingCampBatch = trainingCampBatch;
 	}
 
-	@Column(name="inserted_time")
+	//@Column(name="inserted_time")
+	@Column(name="attended_time")
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
@@ -94,6 +96,15 @@ public class TrainingCampAttendance extends BaseModel implements Serializable{
 		this.insertedTime = insertedTime;
 	}
 
+	@Column(name="insertion_time")
+	public Date getInsertionTime() {
+		return insertionTime;
+	}
+
+	public void setInsertionTime(Date insertionTime) {
+		this.insertionTime = insertionTime;
+	}
+	
 	@Column(name="training_camp_schedule_id")
 	public Long getTrainingCampScheduleId() {
 		return trainingCampScheduleId;
@@ -132,4 +143,5 @@ public class TrainingCampAttendance extends BaseModel implements Serializable{
 	public void setTrainingCampProgramId(Long trainingCampProgramId) {
 		this.trainingCampProgramId = trainingCampProgramId;
 	}
+
 }
