@@ -756,7 +756,7 @@ public class SchedulerService implements ISchedulerService{
 		return effectedCount;
 	}
 	
-	public void updateTrainingCampSpeakersDetails()
+	public  String updateTrainingCampSpeakersDetails()
 	  {
 	    try {
 	      transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -811,8 +811,10 @@ public class SchedulerService implements ISchedulerService{
 	          }
 	        }
 	      });
+	      return "success";
 	    } catch (Exception e) {
 	      LOG.error("Exception Raised in updateTrainingCampSpeakersDetails()",e); 
+	      return "failure";
 	    }
 	  }
 }
