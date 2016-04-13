@@ -3128,7 +3128,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		var createdBy =$("#appointmentcreatedBy").val();
 		var statusId =$("#selectStatusId").val();
 		var appointmentUserId =$("#appointmentUserSelectBoxId").val();
-		
 		var searchStr=$("#searchStrId").val().trim();
 		var date = $("#dashboardSelectDateIds").val().split("-"); 
 		var strDate =date[0];
@@ -3212,6 +3211,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
@@ -3493,7 +3493,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
-							str+='<div class="appointmentSettingsBLock arrow_box">';
+							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
+						    str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
 							str+='</label>';
@@ -3616,6 +3617,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<i class="glyphicon glyphicon-cog settingsIcon"></i>';
 							str+='</span></p>';
 							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
