@@ -29,7 +29,8 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		return query.list();
 	}
     
-	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId){
+	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId,
+			Long candidateTypeId,Long dateTypeValue){
 		
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select  distinct acr.appointment_id as appid, a.reason as reason, ap.priority as priority, ass.status as status," +
@@ -64,12 +65,30 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		if(constituencyId!=null && constituencyId >0l){
 			  sb.append(" and ua.constituency_id = :constituencyId");	
 		}
-        if(fromDate!=null){
-			sb.append(" and apd.appointment_date >= :fromDate");
+		
+		if(dateTypeValue !=null && dateTypeValue >0){
+			if(dateTypeValue == 1l){
+				if(fromDate!=null){
+					sb.append(" and date(apd.appointment_date) >= :fromDate");
+				}
+		        if(toDate!=null){
+		        	sb.append(" and date(apd.appointment_date) <= :toDate");
+		        }
+			}else{
+				if(fromDate!=null){ 
+					sb.append(" and date(a.updated_time) >= :fromDate");
+				}
+		        if(toDate!=null){
+		        	sb.append(" and date(a.updated_time) <= :toDate");
+		        }
+			}
+			 
 		}
-        if(toDate!=null){
-        	sb.append(" and apd.appointment_date <= :toDate");
-        }
+		
+		if(candidateTypeId !=null && candidateTypeId>0){
+			sb.append(" and ac.appointment_candidate_type_id = :candidateTypeId ");
+		}
+		
 		sb.append(" order by a.inserted_time desc ");
 		
 		Query query = getSession().createSQLQuery(sb.toString())
@@ -100,12 +119,19 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		if(constituencyId!=null && constituencyId >0l){
 			query.setParameter("constituencyId",constituencyId);	
 		}
+	if(dateTypeValue !=null && dateTypeValue >0){
 		if(fromDate!=null){
 			query.setDate("fromDate",fromDate);	
 		}
         if(toDate!=null){
         	query.setDate("toDate",toDate);	
         }
+	}
+	
+	if(candidateTypeId !=null && candidateTypeId>0){
+		query.setParameter("candidateTypeId",candidateTypeId);
+	}
+	
 		return query.list();
 	}
 	
