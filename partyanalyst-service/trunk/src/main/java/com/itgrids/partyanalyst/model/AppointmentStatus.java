@@ -14,8 +14,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "appointment_status")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AppointmentStatus extends BaseModel {
+	
 	private Long appointmentStatusId;
 	private String status;
+	private Long   orderNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +34,13 @@ public class AppointmentStatus extends BaseModel {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	@Column(name = "order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 	
