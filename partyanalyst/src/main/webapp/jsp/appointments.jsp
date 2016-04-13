@@ -13,7 +13,7 @@
 <link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
-<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
+<link href="dist/Appointment/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
@@ -63,10 +63,6 @@
 	border-right:1px solid #ccc;
 	list-style:none;
 	cursor:pointer;
-}
-.daterangepicker_end_input
-{
-	padding:0px !important;
 }
 .SelectPosition li:last-child
 {
@@ -228,7 +224,11 @@
 									</div>
 									</div>
 							</div>
+							
                             <div class="row">
+								<div class="col-md-12 m_top20">
+									<h4>TOTAL APPOINTMENTS</h4>
+								</div>
                             	<div class="col-md-4">
                                 	<div id="upcomingAppointMentId" >
                                     
@@ -277,9 +277,9 @@
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="searchTypeId">
 													<option value="0">Select Search Type</option>
-													<option value="mobileno">Mobile No</option>
-													<option value="mebershipno">Membership No</option>
-													<option value="votercardno">Voter Id Card No</option>
+													<option value="mobileno">MobileNo</option>
+													<option value="mebershipno">MembershipNo</option>
+													<option value="votercardno">VoterIdCardNo</option>
 												</select>
 											</div>
                                             <div class="col-md-4 pad_0 searchCls">
@@ -395,7 +395,7 @@
 											<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
 											<div class="col-md-2">
 											
-												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Search Member</button>
+												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Submit</button>
 											</div>
                                             
 											
@@ -476,7 +476,7 @@
 												<div class="row m_top10">
 													<div class="col-md-4 col-md-offset-8">
 														<p style="cursor:pointer;float:right" id="addOneBlock">
-															Add Candidate
+															Add One More Candidate
 															<i class="glyphicon glyphicon-plus-sign text-success"></i>
 														</p>
 													</div>
@@ -929,7 +929,7 @@
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
@@ -1782,25 +1782,25 @@ $(".dropkickClass").dropkick();
 					str+='<td>';
 					
 					if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs viewMembersClass"  attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="View Appointments Of '+result[i].labelName+'" style="margin-right: 5px;">View</button>';
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="View Appointments Of '+result[i].labelName+'">View</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>View</button>';
 						}
 						
-						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'" style="margin-right: 5px;">Add Appts</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'">Add Appointments</button>';
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments" style="margin-right: 5px;">Update</button>';
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments">Update</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Update</button>';
 						}
 						
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label" style="margin-right: 5px;">Status</button>';
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label">Status</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled>Status</button>';
 						}
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'" style="margin-right: 5px;">Del Appts</button>';
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'">Delete Appointments</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Delete Appointments</button>';
 						}
@@ -1887,18 +1887,17 @@ function showConfirmationBox(){
 		  $("#bldCnfrmtnMdlBoxId").html(str);
 		  $("#myModal").modal("show");
 	}
+	
+
+	
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
-$("#modalDateId").daterangepicker({singleDatePicker:false});
-$('#modalDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));	
+$("#modalDateId").daterangepicker({singleDatePicker:false});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
-$(".daterangepicker_end_input").find("input").addClass("form-control");
-$(".daterangepicker_start_input").find("input").addClass("form-control");
 $("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
 })
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
-$('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker:true});
 
@@ -2866,7 +2865,9 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									
 									str+='</div>';
 								str+='</div>';
-							str+='</div>';
+								
+									
+							   str+='</div>';
 							
 							str+='<div class="panel-body">';
 								
@@ -2906,12 +2907,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									}
 									
 								str+='</ul>';
-									str+='<p class="font12 m_top10">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="messageIcon"></p>';
-									str+='<div class="messageBlock arrow_box">';
-					                str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
-					                str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
-					                str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
-					               str+='</div>';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+									  str+='<p class="pull-right">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="message"></p>';
+									str+='</div>';
+								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 						
@@ -3187,15 +3187,15 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
 		str+='<h4 class="text-success">UPCOMING APPOINTMENTS ';
-		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings upcomingSetting">';
+		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings upcomingSetting"/>';
 		str+='</h4>';
 		
 		str+='<div class="updateAppointment arrow_box">';
 		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="5" name="upcomeRadio1" class="statusAllupcome" checked>Reschedule';
+		str+='<input type="radio" value="5" name="upcomeRadio1" class="statusAllupcome" checked/>Reschedule';
 		str+='</label>';
 		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="3" name="upcomeRadio1" class="statusAllupcome">Cancel';
+		str+='<input type="radio" value="3" name="upcomeRadio1" class="statusAllupcome"/>Cancel';
 		str+='</label>';
 		str+='<textarea class="form-control m_top10 upcomeSmsText" ></textarea>';
 		str+='<span class="msgDiv2upcome"></span>';
@@ -3207,11 +3207,11 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			{
 				if(result[i].scheduleType == "UpCome")
 				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top10 m_bottom0">';
+						str+='<div class="panel-heading pad_5">';
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							str+='<p class="m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
@@ -3223,7 +3223,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
 							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
-							str+='<div class="input-group inputSearch upcomedateCls1">';
+							/*str+='<div class="input-group inputSearch upcomedateCls1">';
 							str+='<span class="input-group-addon">';
 							str+='<i class="glyphicon glyphicon-calendar"></i>';
 							str+='<span class="caret"></span>';
@@ -3237,7 +3237,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<span class="caret"></span>';
 							str+='</span>';
 							str+='<input type="text" class="form-control upcometimeCls">';
-							str+='</div>';
+							str+='</div>';*/
 							str+='<label class="checkbox-inline">';
 							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
 							str+='</label>';
@@ -3270,7 +3270,6 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					
 					str+='<p class="font12 m_top10">';
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
-					
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
 					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
@@ -3484,16 +3483,16 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		
 		if(result != null)
 		{
-			str+='<ul>';
+			str+='<ul class="m_0">';
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "InProgress")
 				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top10 m_bottom0">';
+						str+='<div class="panel-heading pad_5">';
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							str+='<p class="m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
@@ -3504,7 +3503,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
-							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
+							/*str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
 							str+='<div class="input-group inputSearch upcomedateCls1">';
 							str+='<span class="input-group-addon">';
 							str+='<i class="glyphicon glyphicon-calendar"></i>';
@@ -3519,7 +3518,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<span class="caret"></span>';
 							str+='</span>';
 							str+='<input type="text" class="form-control upcometimeCls">';
-							str+='</div>';
+							str+='</div>';*/
 							str+='<label class="checkbox-inline">';
 							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
 							str+='</label>';
@@ -3610,11 +3609,13 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 			{
 				if(result[i].scheduleType == "Completed")
 				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top10 m_bottom0">';
+						str+='<div class="panel-heading pad_5">';
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
-							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							str+='<p class="m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;';
+							str+='<i class="glyphicon glyphicon-cog settingsIcon"></i>';
+							str+='</span></p>';
+							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
@@ -3625,7 +3626,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
-							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
+							/*str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
 							str+='<div class="input-group inputSearch upcomedateCls1">';
 							str+='<span class="input-group-addon">';
 							str+='<i class="glyphicon glyphicon-calendar"></i>';
@@ -3640,7 +3641,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 							str+='<span class="caret"></span>';
 							str+='</span>';
 							str+='<input type="text" class="form-control upcometimeCls">';
-							str+='</div>';
+							str+='</div>';*/
 							str+='<label class="checkbox-inline">';
 							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
 							str+='</label>';
