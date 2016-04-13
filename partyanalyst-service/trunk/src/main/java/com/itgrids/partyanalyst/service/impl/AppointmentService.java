@@ -2936,6 +2936,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       
 				       AppointmentTimeSlot appointmentTimeSlot = appointmentTimeSlotDAO.save(timeSlot);
 				       
+				       Integer updtdSts = appointmentDAO.updateAppntmntStatusById(appointmentTimeSlot.getAppointmentId(), dateUtilService.getCurrentDateAndTime() );
+				       
 				       List<String>  mobilenos = appointmentCandidateRelationDAO.getAppointmentIdsforSendSms(appointmentTimeSlot.getAppointmentId());
 				       if(mobilenos !=null && mobilenos.size()>0){
 				    	   for(String obj : mobilenos){
