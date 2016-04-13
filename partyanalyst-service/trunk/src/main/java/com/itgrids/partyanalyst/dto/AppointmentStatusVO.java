@@ -6,6 +6,7 @@ public class AppointmentStatusVO {
 	private String status;
 	private Long statusCount;
 	private String updatedTime;
+	private Long   membersCount;
 	
 	public Long getAppointmentStatusId() {
 		return appointmentStatusId;
@@ -31,4 +32,11 @@ public class AppointmentStatusVO {
 	public void setUpdatedTime(String updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	public Long getMembersCount() {
+		return membersCount;
+	}
+	public void setMembersCount(Long membersCount) {
+		this.membersCount = membersCount;
+	}
+	
 }

@@ -42,6 +42,7 @@ public class Appointment extends BaseModel{
 	private User createdUser;
 	private User updateUser;
 	private String appointmentUniqueId;
+	private String isLabelled;
 	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -192,6 +193,12 @@ public class Appointment extends BaseModel{
 	public void setAppointmentUniqueId(String appointmentUniqueId) {
 		this.appointmentUniqueId = appointmentUniqueId;
 	}
-	
+	@Column(name = "is_labelled")
+	  public String getIsLabelled() {
+	    return isLabelled;
+	  }
+	  public void setIsLabelled(String isLabelled) {
+	    this.isLabelled = isLabelled;
+	  }
 	
 }
