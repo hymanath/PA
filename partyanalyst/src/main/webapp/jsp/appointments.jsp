@@ -2191,8 +2191,10 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									//str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
 								str+='</div>';
 								
-								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
+								str+='<div class="col-md-2 m_top10 pull-right" attr_id="'+result[i].id+'" >';
+								str+='<a target="_blank" title="Click here to View '+result[i].name+' Cadre Details " href="cadreDetailsAction.action?cadreId='+result[i].id+'">View Profile</a>&nbsp;&nbsp;';
 									str+='<input type="checkbox" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
+									
 								str+='</div>';
 								
 							str+='</div>';
@@ -2939,6 +2941,34 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		
 		var jsObj={
 			labelId : $(this).attr("attr_label_id"),
+			callFrom : "print"
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'viewAppointmentsOfALableAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$(".appointmentsViewDivCls").show();
+			if(result!=null && result!=0){
+			  buildViewResult(result,labelName,jsObj.labelId);
+			}else{
+			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
+			}
+		});		
+	});
+	
+	
+	function printMembersForView(labelId,labelName)
+	{
+		
+		$(".commonDivCls").hide();
+		
+		var labelName =labelName;
+		
+		var jsObj={
+			labelId :labelId,
 			callFrom : ""
 		}
 		
@@ -2950,14 +2980,15 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		}).done(function(result){
 			$(".appointmentsViewDivCls").show();
 			if(result!=null && result!=0){
-			  buildViewResult(result,labelName);
+			  buildViewResult(result,labelName,labelId);
 			}else{
 			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
 			}
 		});		
-	});
+	}
 	
-	function buildViewResult(result,labelName){
+	function buildViewResult(result,labelName,labelId){
+	
 		var i = 0;
 		var str='';
 			str+='<div class="col-md-12">';
@@ -2968,7 +2999,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 				str+='<div class="panel panel-default manageAppViewPanelClass">';
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
-						str+='<div class="col-md-12">';
+					str+='<div class="col-md-12">';
+						//str+='<input type="button" class="text-danger" value="Print" onClick="printMembersForView(\''+labelId+'\',\''+labelName+'\');"></input>';
 						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
 						str+='</div>';
 					str+='</div>';
