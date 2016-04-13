@@ -7637,13 +7637,23 @@ class TrainingCampService implements ITrainingCampService{
 									if(batchVO.getInviteeList().contains(cadreId)){//invitee cadre attended.
 										dateVO.setInviteeAttendedCount(dateVO.getInviteeAttendedCount()+1l);
 										if(!batchVO.getInviteeAttendedList().contains(cadreId)){
-											batchVO.getInviteeAttendedList().add(cadreId);
+											if(batchVO.getInviteeAttendedList() != null && batchVO.getInviteeAttendedList().size()>0){
+												if(!batchVO.getInviteeAttendedList().contains(cadreId))
+													batchVO.getInviteeAttendedList().add(cadreId);
+											}
+											else
+												batchVO.getInviteeAttendedList().add(cadreId);
 										}
 										dateVO.getInviteeAttendedList().add(cadreId);
 									}else{//non invitee cadre attended.
 										dateVO.setNonInviteeAttendedCount(dateVO.getNonInviteeAttendedCount()+1);
 										if(!batchVO.getNonInviteeAttendedlist().contains(cadreId)){
-											batchVO.getNonInviteeAttendedlist().add(cadreId);
+											if(batchVO.getNonInviteeAttendedlist() != null && batchVO.getNonInviteeAttendedlist().size()>0){
+												if(!batchVO.getNonInviteeAttendedlist().contains(cadreId))
+													batchVO.getNonInviteeAttendedlist().add(cadreId);
+											}
+											else
+												batchVO.getNonInviteeAttendedlist().add(cadreId);
 										}
 										dateVO.getNonInviteeAttendedlist().add(cadreId);
 									}
@@ -7794,7 +7804,9 @@ class TrainingCampService implements ITrainingCampService{
 							
 							List<Long> list1=batchVO.getSimpleVOList1().get(0).getNonInviteeAttendedlist();
 							List<Long> list2=batchVO.getSimpleVOList1().get(1).getNonInviteeAttendedlist();
-							List<Long> list3=batchVO.getSimpleVOList1().get(2).getNonInviteeAttendedlist();
+							List<Long> list3= null;
+							if(batchVO.getSimpleVOList1().size()>2)
+								list3 = batchVO.getSimpleVOList1().get(2).getNonInviteeAttendedlist();
 							
 							if( (list1!=null && list1.contains(nonInvitedCadreId)) && (list2!=null && list2.contains(nonInvitedCadreId))  && (list3!=null && list3.contains(nonInvitedCadreId))){
 								batchVO.setThreeDaysNonInvitedAttendedCount(batchVO.getThreeDaysNonInvitedAttendedCount()+1l);	
