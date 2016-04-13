@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -72,4 +73,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAllCandidateTypes();
 	public List<IdNameVO> getAppCandidateDesigListByType(Long typeId);
 	public  List<IdNameVO> getAppointmentStatusOverview();
+	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long aptUserId);
 }

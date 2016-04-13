@@ -1815,12 +1815,11 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 													
 													List<Long> aptmnts = new ArrayList<Long>();
 													aptmnts.add(apptvo.getAppointmentId());
-												
+													
+												//	List<AppointmentDetailsVO> prferList = new ArrayList<AppointmentDetailsVO>();
+													
 													//Prefer Dates Scenario For History start
-													
-													apptvo = setPreferebleDatesToAppointment(aptmnts,apptvo);
-													
-													/*List<Object[]>  apptDates = appointmentPreferableDateDAO.getMultipleDatesforAppointments(aptmnts);
+													List<Object[]>  apptDates = appointmentPreferableDateDAO.getMultipleDatesforAppointments(aptmnts);
 													if(apptDates!=null && apptDates.size()>0){
 														for(Object[] object : apptDates){
 															//AppointmentDetailsVO   appointmentVO1 = new AppointmentDetailsVO();
@@ -1859,8 +1858,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 																
 															}
 															
+															//prferList.add(appointmentVO1);
 														}
-													}*/
+													}
 													
 													
 													//Prefer Dates Scenario For History End
@@ -2384,7 +2384,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							finalVo.setStatusList(statusList);
 						}
 				
-			//OverAll Scenario
+			/*//OverAll Scenario
 						List<Object[]> inProgreeOverAllList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","overall",aptUserId);
 						List<Object[]> upcomingOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","overall",aptUserId);
 						List<Object[]> completedOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","overall",aptUserId);
@@ -2419,7 +2419,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				
 						if(overAllstatusList !=null && overAllstatusList.size()>0){
 							finalVo.setOverAllStatusList(overAllstatusList);
-						}
+						}*/
 						
 			
 		}catch(Exception e){
@@ -2427,6 +2427,90 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		}
 		return finalVo;
 	}
+	
+	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long apptUserId){
+	    
+	    List<AppointmentStatusVO> finalList = new ArrayList<AppointmentStatusVO>(0);
+	    try{
+	       
+	       List<String> statusList = appointmentStatusDAO.getAllStatus();
+	       if(statusList!=null && statusList.size()>0){
+	         statusList.add(1,"Labelled");
+	       }
+	       
+	       if(statusList!=null && statusList.size()>0){
+	        for (String status : statusList) {
+	          
+	          AppointmentStatusVO VO = new AppointmentStatusVO();
+	          VO.setStatus(status);
+	          VO.setStatusCount(0l);
+	          VO.setMembersCount(0l);
+	          finalList.add(VO);
+	        }
+	       }
+	        
+	       List<Object[]> countList = appointmentCandidateRelationDAO.getApptAndMembersCountsByStatus(apptUserId);
+	       if(countList!=null && countList.size()>0){
+	         for(Object[] obj:countList){
+	           
+	           String status = obj[1]!=null?obj[1].toString():"";
+	           AppointmentStatusVO statusvo = getMatchedStatus(finalList,status);
+	           if(statusvo!=null && !statusvo.getStatus().equalsIgnoreCase("Waiting") && !statusvo.getStatus().equalsIgnoreCase("Fixed") && !statusvo.getStatus().equalsIgnoreCase("Attended")){
+	            
+	             statusvo.setStatusCount(obj[2]!=null?(Long)obj[2]:0l);
+	             statusvo.setMembersCount(obj[3]!=null?(Long)obj[3]:0l);
+	           }
+	         }
+	       }
+	       
+	       List<Object[]> waitingCounts = appointmentCandidateRelationDAO.getLabelledAndNonLabelledApptIdsForWaitingStatus(apptUserId,"N",IConstants.WAITING_APPOINTMENT_STATUS_ID);
+	       List<Object[]> labelledWithWaitingCounts = appointmentCandidateRelationDAO.getLabelledAndNonLabelledApptIdsForWaitingStatus(apptUserId,"Y",IConstants.WAITING_APPOINTMENT_STATUS_ID);
+	       setData(finalList,waitingCounts,"Waiting");
+	       setData(finalList,labelledWithWaitingCounts,"Labelled");
+	      
+	       DateUtilService dts = new DateUtilService();
+	       
+	       List<Object[]> fixedCounts= appointmentCandidateRelationDAO.getOnlyFixedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.FIXED_APPOINTMENT_STATUS_ID);
+	       List<Object[]> attendedCounts= appointmentCandidateRelationDAO.getAttendedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.ATTENDED_APPOINTMENT_STATUS_ID,IConstants.FIXED_APPOINTMENT_STATUS_ID);
+	       setData(finalList,fixedCounts,"Fixed");
+	       setData(finalList,attendedCounts,"Attended");
+	    
+	    }catch(Exception e){
+	    	LOG.error("Exception raised at getAppointmentStatusCounts", e);
+	    }
+	    return finalList;
+	  }
+	  public void setData(List<AppointmentStatusVO> finalList,List<Object[]> countsList,String status){
+	    
+	    if(countsList!=null && countsList.size()>0){
+	       Object[] obj = countsList.get(0);
+	       AppointmentStatusVO statusvo = getMatchedStatus(finalList,status);
+	       if(statusvo!=null){
+	         statusvo.setStatusCount(obj[0]!=null?(Long)obj[0]:0l);
+	         statusvo.setMembersCount(obj[1]!=null?(Long)obj[1]:0l); 
+	       }
+	     }
+	  }
+	  
+	  
+	  public AppointmentStatusVO getMatchedStatus(List<AppointmentStatusVO> finalList, String status){
+	    
+	    try{
+	      
+	      if(finalList !=null && finalList.size()>0){        
+	        for (AppointmentStatusVO statusVO : finalList) {          
+	          String stts = status.trim();        
+	          if(statusVO.getStatus().trim().equalsIgnoreCase(stts)){
+	            return statusVO;
+	          }          
+	        }
+	      }
+	      
+	    }catch(Exception e){
+	    	LOG.error("Exception raised at getMatchedStatus", e);
+	    }
+	    return null;
+	  }
 	
 	public List<Object[]> setStatusOfObjectList1(List<Object[]> fixedList,String type){
 		try{
@@ -3703,61 +3787,6 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			return null;
 		}
 		return "success";
-	}
-	
-	public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,AppointmentDetailsVO apptvo){
-		
-		try{
-			
-			SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
-			
-			List<Object[]>  apptDates = appointmentPreferableDateDAO.getMultipleDatesforAppointments(aptmnts);
-			if(apptDates!=null && apptDates.size()>0){
-				for(Object[] object : apptDates){
-					//AppointmentDetailsVO   appointmentVO1 = new AppointmentDetailsVO();
-					apptvo.setDateTypeId((Long)object[2]);
-					apptvo.setDateType(object[3].toString());
-					if((Long)object[2]==1l){
-						if(apptvo.getApptpreferableDates()==null){
-							
-							Date preferDate = object[1]!=null?(Date)object[1]:null;
-							if(preferDate !=null){
-								apptvo.setApptpreferableDates(prefer.format(preferDate));
-							}
-							
-						}else{
-							
-							Date preferDate = object[1]!=null?(Date)object[1]:null;
-							if(preferDate !=null){
-								apptvo.setApptpreferableDates(apptvo.getApptpreferableDates() + " , " + (prefer.format(preferDate)) );
-							}
-							
-						}
-						
-					}else{
-						
-						if(apptvo.getMinDateCheck() == 0l){	
-							Date preferDate = object[1]!=null?(Date)object[1]:null;
-							if(preferDate !=null){
-								apptvo.setMinDate(prefer.format(preferDate));
-								apptvo.setMaxDate(prefer.format(preferDate));
-							}
-						}else{
-							Date preferDate = object[1]!=null?(Date)object[1]:null;
-							apptvo.setMaxDate(prefer.format(preferDate));
-						}
-						apptvo.setMinDateCheck(apptvo.getMinDateCheck()+1l);
-						
-					}
-					
-					//prferList.add(appointmentVO1);
-				}
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return apptvo;
 	}
 	
 }

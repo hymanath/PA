@@ -285,4 +285,62 @@ public List<String> getAppointmentIdsforSendSms(Long appointmentId){
 		query.setParameter("appointmentId",appointmentId);
 		return query.list();
 	}
+
+
+public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
+  
+    Query query = getSession().createQuery("" +
+     " select   model.appointment.appointmentStatusId,model.appointment.appointmentStatus.status," +
+     "          count(distinct model.appointment.appointmentId),count(distinct model.appointmentCandidate.appointmentCandidateId)" +
+     " from     AppointmentCandidateRelation model  " +
+     " where    model.appointment.isDeleted='N' and model.appointment.appointmentUserId = :apptUserId " +
+     " group by model.appointment.appointmentStatusId ");
+    query.setParameter("apptUserId", apptUserId);
+    return query.list();
+    
+  }
+  public List<Object[]> getLabelledAndNonLabelledApptIdsForWaitingStatus(Long apptUserId,String labelStatus,Long waitingAppointmentStatusId){
+    
+    Query query = getSession().createQuery("" +
+    "select count(distinct model.appointment.appointmentId),count(distinct model.appointmentCandidate.appointmentCandidateId) " +
+    "from AppointmentCandidateRelation model " +
+    "where model.appointment.isDeleted='N' and model.appointment.appointmentUserId = :apptUserId and model.appointment.appointmentStatusId =:waitingAppointmentStatusId and model.appointment.isLabelled =:labelStatus ");
+    query.setParameter("apptUserId", apptUserId);
+    query.setParameter("labelStatus", labelStatus);
+    query.setParameter("waitingAppointmentStatusId", waitingAppointmentStatusId);
+    return query.list();
+  }
+  public List<Object[]> getOnlyFixedStatusCounts(Long apptUserId,Date currentDateAndTime,Long fixedAppointmentStatusId){
+    
+    Query query = getSession().createQuery("" +
+    " select  count(distinct ats.appointment.appointmentId),count(distinct acr.appointmentCandidate.appointmentCandidateId)" +
+    " from   AppointmentTimeSlot ats,AppointmentCandidateRelation acr" +
+    " where  ats.appointment.appointmentId = acr.appointment.appointmentId " +
+    "        and acr.appointment.appointmentStatusId = :fixedAppointmentStatusId and ats.toDate > :date" +
+    "        and ats.isDeleted='N' and ats.appointment.isDeleted='N' and ats.appointment.appointmentUserId =:apptUserId ");
+             
+    
+    query.setParameter("apptUserId", apptUserId);
+    query.setTimestamp("date",currentDateAndTime);
+    query.setParameter("fixedAppointmentStatusId",fixedAppointmentStatusId);
+    return query.list();
+  }
+  
+  public List<Object[]> getAttendedStatusCounts(Long apptUserId,Date currentDateAndTime,Long attendedAppointmentStatusId,Long fixedAppointmentStatusId){
+    
+    Query query = getSession().createQuery("" +
+    " select  count(distinct ats.appointment.appointmentId),count(distinct acr.appointmentCandidate.appointmentCandidateId)" +
+    " from   AppointmentTimeSlot ats,AppointmentCandidateRelation acr" +
+    " where  ats.appointment.appointmentId = acr.appointment.appointmentId " +
+    "        and ats.isDeleted='N' and ats.appointment.isDeleted='N'  and ats.appointment.appointmentUserId =:apptUserId " +
+    "        and (acr.appointment.appointmentStatusId = :attendedAppointmentStatusId OR (acr.appointment.appointmentStatusId =:fixedAppointmentStatusId " +
+    "        and ats.toDate < :date ))  " +
+    "         ");
+    
+    query.setParameter("apptUserId", apptUserId);
+    query.setTimestamp("date",currentDateAndTime);
+    query.setParameter("fixedAppointmentStatusId",fixedAppointmentStatusId);
+    query.setParameter("attendedAppointmentStatusId",attendedAppointmentStatusId);
+    return query.list();
+  }
 }
