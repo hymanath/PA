@@ -1784,25 +1784,25 @@ $(".dropkickClass").dropkick();
 					str+='<td>';
 					
 					if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="View Appointments Of '+result[i].labelName+'">View</button>';
+							str+='<button class="btn btn-success btn-xs viewMembersClass"  attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="View Appointments Of '+result[i].labelName+'" style="margin-right: 5px;">View</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>View</button>';
 						}
 						
-						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'">Add Appointments</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'" style="margin-right: 5px;">Add Appts</button>';
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments">Update</button>';
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments" style="margin-right: 5px;">Update</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Update</button>';
 						}
 						
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label">Status</button>';
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label" style="margin-right: 5px;">Status</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled>Status</button>';
 						}
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'">Delete Appointments</button>';
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'" style="margin-right: 5px;">Del Appts</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Delete Appointments</button>';
 						}
@@ -2868,9 +2868,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									
 									str+='</div>';
 								str+='</div>';
-								
-									
-							   str+='</div>';
+							str+='</div>';
 							
 							str+='<div class="panel-body">';
 								
@@ -2910,11 +2908,12 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 									}
 									
 								str+='</ul>';
-								str+='<div class="row">';
-									str+='<div class="col-md-12">';
-									  str+='<p class="pull-right">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="message"></p>';
-									str+='</div>';
-								str+='</div>';
+									str+='<p class="font12 m_top10">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="messageIcon"></p>';
+									str+='<div class="messageBlock arrow_box">';
+					                str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
+					                str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
+					                str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
+					               str+='</div>';
 							str+='</div>';
 						str+='</div>';
 						
@@ -3273,6 +3272,7 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 					
 					str+='<p class="font12 m_top10">';
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
+					
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
 					str+='<div class="messageBlock arrow_box">';
 					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
@@ -3298,8 +3298,8 @@ $("#addMembersFromDateId,#addMembersToDateId").daterangepicker({singleDatePicker
 		$("#upcomingAppointMentId").html(str);
 		if(!flag)
 		$(".upcomingSetting").hide();
-	$(".upcomedateCls").daterangepicker({singleDatePicker:true});
-	$(".upcometimeCls").datetimepicker({format: "LT"});
+		$(".upcomedateCls").daterangepicker({singleDatePicker:true});
+		$(".upcometimeCls").datetimepicker({format: "LT"});
 	
 	}
 	
