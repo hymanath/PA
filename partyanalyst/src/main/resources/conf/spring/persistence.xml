@@ -808,7 +808,10 @@
 				 <!-- appointment related Models -->
 				 
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value>
-				  <value>com.itgrids.partyanalyst.model.SmsHistoryMobileNo</value>
+				 <value>com.itgrids.partyanalyst.model.SmsHistoryMobileNo</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentTracking</value>
+			     <value>com.itgrids.partyanalyst.model.AppointmentAction</value>
+			    
 			     </list>
 			
 		</property>

@@ -2682,5 +2682,11 @@
 	<bean id="smsHistoryMobileNoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsHistoryMobileNoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="appointmentActionDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentActionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentTrackingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
