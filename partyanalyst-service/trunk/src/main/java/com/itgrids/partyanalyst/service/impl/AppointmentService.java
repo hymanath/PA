@@ -2041,13 +2041,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			        			
 			        			if(updatingAppointmentIds!=null && updatingAppointmentIds.size()>0){
 			        				int updatedCount = labelAppointmentDAO.updateLabeledAppointments(apptLabelId,updatingAppointmentIds,loggerUserId,dateUtilService.getCurrentDateAndTime());
-			        				
 			        				updateAndDeletedAppointmentIds.addAll(updatingAppointmentIds);
 			        			}
 			        			
 			        			if(deletedAppointmentIds!=null && deletedAppointmentIds.size()>0){
 			        				int deletedCount = labelAppointmentDAO.deleteLabeledAppointments(apptLabelId,deletedAppointmentIds);
-			        				
+			        				int apptsLabeligStausCount  = appointmentDAO.updateLabelingStatusToAppts(deletedAppointmentIds,"N");
 			        				updateAndDeletedAppointmentIds.addAll(deletedAppointmentIds);
 			        			}
 			        			
@@ -2105,6 +2104,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					        			labelAppointmentHistoryDAO.save(history);
 					        			
 				        			}
+			        				int apptsLabeligStausCount  = appointmentDAO.updateLabelingStatusToAppts(savingAppointmentIds,"Y");
 			        			}
 			        			
 			        			
