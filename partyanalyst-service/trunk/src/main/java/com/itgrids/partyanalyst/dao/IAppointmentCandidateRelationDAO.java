@@ -11,7 +11,7 @@ import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 public interface IAppointmentCandidateRelationDAO extends GenericDao<AppointmentCandidateRelation, Long> {
 	public List<Object[]> getAllAppointmentDetails(int startIndex,int maxIndex,Long aptUserId);
 	public List<Object[]> countAppointmentDetails();
-	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId);
+	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId,Long cndTypeId,Long dateType);
 	public List<Object[]> getAppointmentRelatedCandidates(List<Long> appointmentIds);
 	public List<Object[]> getCandidatePreviousApptDetails(List<Long> candidateIds);
 	public List<Object[]> getAppointmentCandidateDetails(List<Long> appointmentIds);

@@ -41,6 +41,9 @@ public class AppointmentDetailsVO implements Serializable{
 	private Long   minDateCheck=0l;
 	
 	private Long timeSlotId;
+	
+	private Long prefferableTimeId;
+	private List<AppointmentDetailsVO> preferList;
     
 	public String getName() {
 		return name;
@@ -209,6 +212,18 @@ public class AppointmentDetailsVO implements Serializable{
 	}
 	public void setTimeSlotId(Long timeSlotId) {
 		this.timeSlotId = timeSlotId;
+	}
+	public Long getPrefferableTimeId() {
+		return prefferableTimeId;
+	}
+	public void setPrefferableTimeId(Long prefferableTimeId) {
+		this.prefferableTimeId = prefferableTimeId;
+	}
+	public List<AppointmentDetailsVO> getPreferList() {
+		return preferList;
+	}
+	public void setPreferList(List<AppointmentDetailsVO> preferList) {
+		this.preferList = preferList;
 	}
     
 	
