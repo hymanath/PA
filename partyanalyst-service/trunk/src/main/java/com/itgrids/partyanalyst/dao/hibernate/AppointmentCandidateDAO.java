@@ -389,6 +389,16 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 	return query.list();
 }
+
+	public List<Object[]> getAppointmentCandidateIdForCadreIds(List<Long> cadreIds)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.tdpCadreId,model.appointmentCandidateId from AppointmentCandidate model "
+				+ " where model.tdpCadreId in(:cadreIds)");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("cadreIds", cadreIds);
+		return query.list();
+	}
 	
 
 }

@@ -16,7 +16,15 @@ public class AppointmentCandidateVO implements Serializable{
     private Long designationId=0l;
     private String imageURL;
     private Long candidateTypeId;
+    private Long appointmentCandidateId;
     
+    
+	public Long getAppointmentCandidateId() {
+		return appointmentCandidateId;
+	}
+	public void setAppointmentCandidateId(Long appointmentCandidateId) {
+		this.appointmentCandidateId = appointmentCandidateId;
+	}
 	public String getName() {
 		return name;
 	}
