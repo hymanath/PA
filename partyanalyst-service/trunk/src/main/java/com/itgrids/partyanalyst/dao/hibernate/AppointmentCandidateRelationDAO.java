@@ -249,4 +249,14 @@ public List<Object[]> getLastVisitsByCandidates(List<Long> candidateIds){
 		
 	}
 	
+public List<String> getAppointmentIdsforSendSms(Long appointmentId){
+		
+		Query query = getSession().createQuery("" +
+		 " select   distinct model.appointmentCandidate.mobileNo " +
+		 " from    AppointmentCandidateRelation model " +
+		 " where   model.appointmentId =:appointmentId and model.appointment.isDeleted='N'");
+		
+		query.setParameter("appointmentId",appointmentId);
+		return query.list();
+	}
 }
