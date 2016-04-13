@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -70,7 +71,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private InputStream inputStream;
 	
 	private List<BasicVO> basicvoList;
-	
+	private List<AppointmentStatusVO> appointmentStatusVOList;
 	
 	
 	public List<BasicVO> getBasicvoList() {
@@ -270,6 +271,15 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		this.inputStream = inputStream;
 	}
 	
+	public List<AppointmentStatusVO> getAppointmentStatusVOList() {
+		return appointmentStatusVOList;
+	}
+
+	public void setAppointmentStatusVOList(
+			List<AppointmentStatusVO> appointmentStatusVOList) {
+		this.appointmentStatusVOList = appointmentStatusVOList;
+	}
+
 	public String saveAppointment(){
 		try {
 			final HttpSession session = request.getSession();
@@ -662,6 +672,18 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getAppointmentStatusCounts(){
+		try{			
+			jObj = new JSONObject(getTask());			
+			appointmentStatusVOList = appointmentService.getAppointmentStatusCounts(jObj.getLong("aptUserId"));
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String  getAppointmentCreatedUsers(){
 		try{
 			

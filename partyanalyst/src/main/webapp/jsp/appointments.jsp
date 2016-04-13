@@ -119,6 +119,15 @@
 }
 .prev,.next{width:60px !important;}
 #upcomingAppointments,#inprogreessAppointMentId,#completedAppointMentId {height:36px;}
+.tableAppointment thead th  {
+    background: #f2f2f2 none repeat scroll 0 0;
+    border: 1px solid #fff !important;
+    padding-left: 8px !important;
+	font-weight: normal;
+}
+.removetopborder td{
+	border-top: none !important;
+}
 </style>
 </head>
 <body>
@@ -152,23 +161,24 @@
 									<table class="table table-bordered bg_ff m_top10">
 										<tr>
 											<td>
-												<h4 class="panel-title">TODAY APPOINTMENTS</h4>
+												<h4 class="panel-title m_top10">TODAY APPOINTMENTS</h4>
 												<table class="table table-condensed tableAppointment" id="todayAppointmentsId">
 													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
 											</td>
 											<td>
-												<table class="table">
+												<table class="table removetopborder">
 													<tr>
 														<td>
-															<h4>TOTAL APPOINTMENTS</h4>
+															<h4 class="panel-title">TOTAL APPOINTMENTS REQUESTED</h4>
 																<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="totalAptLoadingId"></center></div>
-															<ul class="columnChartUl" id="totalAppointmentsId">
-																
-															</ul>
+															<!--<ul class="columnChartUl" id="totalAppointmentsId"></ul>-->
+															<table class="table table-condensed tableAppointment" id="totalAppointmentsId">
+															</table>	
+															
 														</td>
 														<td>
-															<div id="LineChart" style="width:500px;height:200px;"></div>
+															<div id="LineChart" style="width:500px;height:300px;"></div>
 														</td>
 													</tr>
 												</table>
@@ -178,6 +188,7 @@
 									</table>
 								</div>
 							</div>
+							<div id="containerpie" ></div>
 							<div class="row m_top10">
 								<div class="col-md-12">
 									<div class="todayBlock ">
@@ -1025,28 +1036,12 @@
   });
   
 /* Drag and Drop END */
-
-var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
-
-function buildJSONForAppStatus(result){	
-    var jsonObj = [];
-	for(var i in result.overAllStatusList){
-		if(result.overAllStatusList[i].totalCount>0)
-			flag = true;
-		jsonObj.push({"name":result.overAllStatusList[i].status,"y":result.overAllStatusList[i].totalCount,"color":color[i%6]});
-	}
-	if(flag==true)  
-	buildChartForAppStatus(jsonObj);
-}
-
 //getTotalAppointmentStatus();
 function getTotalAppointmentStatus(){
 	
-	$("#totalAppointmentsId").html('');
 	$("#todayAppointmentsId").html('');
 	
 	$("#todayAptLoadingId").show();
-	$("#totalAptLoadingId").show();
 	
 	var aptUserId = $("#appointmentUserSelectBoxId").val();
 		var jsObj = {
@@ -1059,34 +1054,151 @@ function getTotalAppointmentStatus(){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
 	$("#todayAptLoadingId").hide();
-	$("#totalAptLoadingId").hide();
 		if(result != null){
 			buildTotalAppointmentStatusForToday(result);
+			//buildJSONForAppStatus(result);
+			//buildTotalAppointmentStatus(result);
+		}
+		
+	});     
+}
+function getAppointmentStatusCounts(){
+	
+	$("#totalAppointmentsId").html('');
+	
+	$("#totalAptLoadingId").show();
+	
+	var aptUserId = $("#appointmentUserSelectBoxId").val();
+		var jsObj = {
+			aptUserId:aptUserId
+		}
+	$.ajax({
+		type : 'GET',
+		url : 'getAppointmentStatusCountsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+	$("#totalAptLoadingId").hide();
+		if(result != null){
 			buildJSONForAppStatus(result);
 			buildTotalAppointmentStatus(result);
 		}
 		
 	});     
 }
-function buildTotalAppointmentStatus(result){
-	var str='';
-	for(var i in result.overAllStatusList){	
+
+var color = ["#2095F4","#98CCCA","#673301","#650199","#4EAF50","#FF9800","#CC0001","#9800CD","#656533"];
+
+function buildJSONForAppStatus(result){	
+
+    var jsonObj = [];
 	
-		str+='<li style="color:'+color[i%6]+'"><span class="columnChart" style="background:'+color[i%6]+'"></span>'+result.overAllStatusList[i].status+' - '+result.overAllStatusList[i].totalCount+'</li>'		
+	for(var i in result){
+		if(result[i].statusCount>0)
+			flag = true;
+		jsonObj.push({"name":result[i].status,"y":result[i].statusCount,"color":color[i%9]});
 	}
+	if(flag==true)  
+	buildChartForAppStatus(jsonObj);
+}
+
+function buildChartForAppStatus(jsonObj) {
+	var flag = false;
+	
+    $('#LineChart').highcharts({
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: ''
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+
+        tooltip: {
+			 pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>',
+             headerFormat: '<span style="font-size:11px"></span>'
+           
+        },
+        series: [{
+            name: 'count',
+            colorByPoint: true,
+            data: jsonObj
+        }],
+      
+    });
+
+}
+
+function buildTotalAppointmentStatus(result){
+	
+	var totalApptCount =0;
+	var totalUniqueMembersCount=0;
+	
+	if(result!=null && result.length>0){
+		for(var i in result){
+			totalApptCount = totalApptCount + result[i].statusCount;
+			totalUniqueMembersCount=totalUniqueMembersCount+result[i].membersCount;
+		}
+	}
+	
+	var str='';
+		str+='<thead>';
+		str+='<th>TOTAL APPOINTMENTS</th>';
+		if(totalApptCount!=0){
+			
+			str+='<th>'+totalApptCount+'</th>';
+		}else{
+			str+='<th> - </th>';
+		}
+		if(totalUniqueMembersCount!=0){
+			str+='<th>'+totalUniqueMembersCount+' (UNIQUE MEMBERS)</th>';
+		}else{
+			str+='<th> - UNIQUE MEMBERS</th>';
+		}
+		
+		str+='</thead>';
+		str+='<tbody>';
+	for(var i in result){
+		
+		
+		str+='<tr style="color:'+color[i%9]+'">';
+			str+='<td>'+result[i].status+'</td>';
+			if(result[i].statusCount == 0){
+				str+='<td style="text-align:center;"> - </td>';
+			}else{
+				str+='<td style="text-align:center;">'+result[i].statusCount+'</td>';
+			}
+			
+			if(result[i].membersCount == 0){
+				str+='<td style="text-align:center;"> - </td>';
+			}else{
+				str+='<td style="text-align:center;">'+result[i].membersCount+'</td>';
+			}
+			
+		str+='</tr>';
+	}
+	str+='</tbody>';
 	$("#totalAppointmentsId").html(str);
 }
 
 function buildTotalAppointmentStatusForToday(result){
 	var str='';
 	$.each(result.statusList,function(index,value){		
-		str+='<tr style="color:'+color[index%6]+'">';
+		str+='<tr style="color:'+color[index%9]+'">';
 			str+='<td>'+value.status+'</td>';
 			str+='<td>'+value.totalCount+'</td>';
 		str+='</tr>';	
 	});
 	$("#todayAppointmentsId").html(str);
 }
+
 	$(document).on("click",".appointmentSettings",function(e){
 		$(".updateAppointment").hide()
 		$(".messageBlock").hide()
@@ -1116,73 +1228,7 @@ function buildTotalAppointmentStatusForToday(result){
 	$(document).on("click",".appointmentSettingsBLock,.messageBlock,.updateAppointment",function(event){
 		event.stopPropagation();
 	});
-function buildChartForAppStatus(jsonObj) {
-	var flag = false;
-	// Create the chart
-	$('#LineChart').highcharts({
-        chart: {
-            type: 'column',
-			backgroundColor: 'transparent' 
-        },
-        title: {
-            text: ''
-        },
-        subtitle: {
-            text: ' '
-        },
-        xAxis: {
-			title: {
-                text: ' ',
-            },
-            type: 'category',
-			lineWidth: 1,
-		   minorGridLineWidth: 0,
-		   lineColor: '#ddd',
-					
-		   labels: {
-			   enabled: true
-		   },
-		   minorTickLength: 0,
-		   tickLength: 0
-        },
-        yAxis: {
-            title: {
-                text: ' ',
-            },
-			
-			lineWidth: 0,
-		   minorGridLineWidth: 0,
-		   lineColor: 'transparent',
-					
-		   labels: {
-			   enabled: true
-		   },
-		   minorTickLength: 0,
-		   tickLength: 0
 
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: false,
-                    format: '{point.y:.1f}%'
-                }
-            },
-			
-        },
-		legend: {
-			enabled:false
-		},
-        series: [{
-            colorByPoint: true,
-            data: jsonObj
-        }],
-  });	
-}
 var cloneCount=0;
 
 $(document).on("click","#addOneBlock",function(){
@@ -1325,6 +1371,7 @@ $(".dropkickClass").dropkick();
 			/* balu */
 				//getAppointmentLabels();					
 				getTotalAppointmentStatus();
+				getAppointmentStatusCounts();
 				getCandidateDesignation();
 				getDistricts();
 				getAppointmentCreatedUsers();
@@ -1335,6 +1382,7 @@ $(".dropkickClass").dropkick();
 				
 			}, 1000);
 			getAppointmentsLabelStatus("onload");
+	
 			
 	});
 	getAppointmentUsersDtls();
@@ -5296,6 +5344,7 @@ function getAppointmentCreatedUsers(){
 	$( "#appointmentUserSelectBoxId" ).change(function() {
 		getAppointmentLabels();					
 		getTotalAppointmentStatus();
+		getAppointmentStatusCounts();
 	});
 	$( "#selectStsForLabelId" ).change(function() {
 		getLabelDtls();
@@ -5754,6 +5803,7 @@ function getCommitteeRoles(){
 				$("#LineChart").html('');
 				getTotalAppointmentStatus();
 				getAppointmentUsersDtls();
+				getAppointmentStatusCounts();
 			});
 			
 		function getPublicRepresentsDetails(){
