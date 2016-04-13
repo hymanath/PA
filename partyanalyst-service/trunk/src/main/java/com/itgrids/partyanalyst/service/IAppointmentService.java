@@ -52,7 +52,7 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentLabels(Long aptUserId);
 	public List<IdNameVO> getAppointmentsLabelStatus();
 	public ResultStatus updateAppointmentsLabelStatus(Long labelId,Long labelstatusId);
-	public ResultStatus updateMemberAppointmentsStatus(HashMap<Long,Long> statusMap);
+	public ResultStatus updateMemberAppointmentsStatus(Long apptId,Long statusId);
 	 public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long registrationId,String type,Long timeSlotId);
 	public List<AppointmentDetailsVO> getViewAppointmentsOfALable(Long labelId);
 	public ResultStatus updateAppointmentStatus(AppointmentUpdateStatusVO inputVO,Long userId);
