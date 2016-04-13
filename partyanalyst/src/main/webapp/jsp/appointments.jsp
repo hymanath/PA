@@ -993,17 +993,18 @@
   });
   
 /* Drag and Drop END */
-var jsonObj = [];
+
 var color = ["#2095F1","#4BAF4F","#3F51B5","#00BBD4","#A86FC5","#FE9601"];
 
 function buildJSONForAppStatus(result){	
+    var jsonObj = [];
 	for(var i in result.overAllStatusList){
 		if(result.overAllStatusList[i].totalCount>0)
 			flag = true;
 		jsonObj.push({"name":result.overAllStatusList[i].status,"y":result.overAllStatusList[i].totalCount,"color":color[i%6]});
 	}
 	if(flag==true)  
-	buildChartForAppStatus();
+	buildChartForAppStatus(jsonObj);
 }
 
 //getTotalAppointmentStatus();
@@ -1083,8 +1084,7 @@ function buildTotalAppointmentStatusForToday(result){
 	$(document).on("click",".appointmentSettingsBLock,.messageBlock,.updateAppointment",function(event){
 		event.stopPropagation();
 	});
-function buildChartForAppStatus() {
-	//var jsonObj = [];
+function buildChartForAppStatus(jsonObj) {
 	var flag = false;
 	// Create the chart
 	$('#LineChart').highcharts({
