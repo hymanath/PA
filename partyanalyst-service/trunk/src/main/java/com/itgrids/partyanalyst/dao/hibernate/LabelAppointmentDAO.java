@@ -95,8 +95,9 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 	     return query.list();
 	 }
 	
-	public List<Object[]> getAppointmentsOfALableForUpdate(Long lableId){
-		Query query = getSession().createQuery(" select model.appointment.appointmentId," +
+	public List<Object[]> getAppointmentsOfALableForUpdate(Long lableId,String callFrom){
+		StringBuilder str = new StringBuilder(); 
+		str.append(" select model.appointment.appointmentId," +
 				"model.appointment.appointmentPriority.appointmentPriorityId,model.appointment.appointmentPriority.priority," +
 				"model.appointment.reason," +
 				"model.appointment.appointmentStatus.appointmentStatusId,model.appointment.appointmentStatus.status,model1.userId,model1.firstName," +
@@ -104,6 +105,9 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 				" from LabelAppointment model,User model1 " +
 				" where model.appointmentLabel.appointmentLabelId=:lableId and model.isDeleted='N' and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
 				" and model.createdBy=model1.userId ");
+		if(callFrom != null && callFrom.equalsIgnoreCase("print"))
+			str.append(" and model.appointment.appointmentStatus.appointmentStatusId !=2");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("lableId", lableId);
 		return query.list();
 	}
