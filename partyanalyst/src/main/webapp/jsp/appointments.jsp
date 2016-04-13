@@ -8,12 +8,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Appointment</title>
-<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">  
+<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
-<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
+<link href="dist/Appointment/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
@@ -63,10 +63,6 @@
 	border-right:1px solid #ccc;
 	list-style:none;
 	cursor:pointer;
-}
-.daterangepicker_end_input
-{
-	padding:0px !important;
 }
 .SelectPosition li:last-child
 {
@@ -292,9 +288,9 @@
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="searchTypeId">
 													<option value="0">Select Search Type</option>
-													<option value="mobileno">Mobile No</option>
-													<option value="mebershipno">Membership No</option>
-													<option value="votercardno">Voter Id Card No</option>
+													<option value="mobileno">MobileNo</option>
+													<option value="mebershipno">MembershipNo</option>
+													<option value="votercardno">VoterIdCardNo</option>
 												</select>
 											</div>
                                             <div class="col-md-4 pad_0 searchCls">
@@ -410,7 +406,7 @@
 											<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
 											<div class="col-md-2">
 											
-												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Search Member</button>
+												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Submit</button>
 											</div>
                                             
 											
@@ -491,7 +487,7 @@
 												<div class="row m_top10">
 													<div class="col-md-4 col-md-offset-8">
 														<p style="cursor:pointer;float:right" id="addOneBlock">
-															Add Candidate
+															Add One More Candidate
 															<i class="glyphicon glyphicon-plus-sign text-success"></i>
 														</p>
 													</div>
@@ -702,6 +698,14 @@
 							</div>
                             <div class="row searchDivCls commonDivCls" style="display:none">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="block">
+												<!-- style="color:#5cb85c"-->
+												<h4 class="text-success">ADD APPOINTMENT REQUESTES TO LABEL</h4>
+											</div>
+										</div>
+									</div>
                                 	<div class="block">
 									
 										<div class="row">
@@ -970,7 +974,7 @@
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui-1.11.1.js" type="text/javascript"></script>
 <script src="dist/Appointment/MultiDatePicker/js/jquery-ui.multidatespicker.js" type="text/javascript"></script>
@@ -1232,7 +1236,7 @@ function buildTotalAppointmentStatusForToday(result){
 var cloneCount=0;
 
 $(document).on("click","#addOneBlock",function(){
-	
+
 	var e = $(".cloneBlock").clone();
 	
 	
@@ -1860,27 +1864,27 @@ $(".dropkickClass").dropkick();
 					str+='<td>';
 					
 					if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="View Appointments Of '+result[i].labelName+'" style="margin-right: 5px;">View</button>';
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="View Appointments Of '+result[i].labelName+'">View</button>';
 						}else{
-							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled style="margin-right: 5px;">View</button>';
+							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>View</button>';
 						}
 						
-						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'" style="margin-right: 5px;">Add Appts</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'">Add Appointments</button>';
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments" style="margin-right: 5px;">Update</button>';
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments">Update</button>';
 						}else{
-							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled style="margin-right: 5px;">Update</button>';
+							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Update</button>';
 						}
 						
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label" style="margin-right: 5px;">Status</button>';
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label">Status</button>';
 						}else{
-							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled style="margin-right: 5px;">Status</button>';
+							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled>Status</button>';
 						}
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'" style="margin-right: 5px;">Delete Appts</button>';
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'">Delete Appointments</button>';
 						}else{
-							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled style="margin-right: 5px;">Delete Appts</button>';
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled>Delete Appointments</button>';
 						}
 						
 						
@@ -1965,19 +1969,17 @@ function showConfirmationBox(){
 		  $("#bldCnfrmtnMdlBoxId").html(str);
 		  $("#myModal").modal("show");
 	}
+	
 
+	
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
-$("#modalDateId").daterangepicker({singleDatePicker:false});
-$('#modalDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));	
+$("#modalDateId").daterangepicker({singleDatePicker:false});	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true})
-$(".daterangepicker_end_input").find("input").addClass("form-control");
-$(".daterangepicker_start_input").find("input").addClass("form-control");
 $("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
 })
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
-$('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 
@@ -2271,10 +2273,8 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 									//str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
 								str+='</div>';
 								
-								str+='<div class="col-md-2 m_top10 pull-right" attr_id="'+result[i].id+'" >';
-								str+='<a target="_blank" title="Click here to View '+result[i].name+' Cadre Details " href="cadreDetailsAction.action?cadreId='+result[i].id+'">View Profile</a>&nbsp;&nbsp;';
+								str+='<div class="col-md-1 m_top10" attr_id="'+result[i].id+'" >';
 									str+='<input type="checkbox" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
-									
 								str+='</div>';
 								
 							str+='</div>';
@@ -2302,9 +2302,7 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 			
 				// $("#checkboxMemberAjax").css("display","block");
 				
-				 
 				 var temp = cloneCount-1;
-				 
 				 $('html, body').animate({
                     scrollTop: $('#block'+temp).offset().top
                 }, 2000);
@@ -2350,7 +2348,6 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 				var tehsilId = ''+result.tehsilId+'';
 				var villageId = ''+result.villageId+'';
 				var wardId = ''+result.wardId+'';
-				
 				var temp=parseInt(cloneCount)-1;
 				
 				$('#candidateNameId'+temp).val(name);
@@ -2361,7 +2358,6 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 				
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
-				
 				//$('#designationSelId'+temp).val(desg);
 				var candidateType;
 				//$("#designationSelId+temp option").each(function() {
@@ -2394,7 +2390,6 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
 				selectL.refresh();
 				 showhideLocationBoxes(temp);
-					 
 				
 				$('#districtId'+temp).val(distId);
 				var selectD = new Dropkick('#districtId'+temp);
@@ -2412,7 +2407,8 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 					}
 					$('#constituencyId'+temp).val(consId);
 					var selectC = new Dropkick('#constituencyId'+temp);
-					selectC.refresh();
+					 selectC.refresh();
+					 
 					if(lctscpid == 5 ){	
 				
 					if(result.tehLebDivList != null && result.tehLebDivList.length > 0){
@@ -2970,7 +2966,9 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 									
 									str+='</div>';
 								str+='</div>';
-							  str+='</div>';
+								
+									
+							   str+='</div>';
 							
 							str+='<div class="panel-body">';
 								
@@ -3010,12 +3008,11 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 									}
 									
 								str+='</ul>';
-								str+='<p class="font12 m_top10">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="messageIcon"></p>';
-								str+='<div class="messageBlock arrow_box">';
-				                str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
-				                str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
-				                str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
-				               str+='</div>';
+								str+='<div class="row">';
+									str+='<div class="col-md-12">';
+									  str+='<p class="pull-right">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="message"></p>';
+									str+='</div>';
+								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 						
@@ -3043,34 +3040,6 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 		
 		var jsObj={
 			labelId : $(this).attr("attr_label_id"),
-			callFrom : "print"
-		}
-		
-		$.ajax({
-			type : 'POST',
-			url : 'viewAppointmentsOfALableAction.action',
-			dataType : 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$(".appointmentsViewDivCls").show();
-			if(result!=null && result!=0){
-			  buildViewResult(result,labelName,jsObj.labelId);
-			}else{
-			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
-			}
-		});		
-	});
-	
-	
-	function printMembersForView(labelId,labelName)
-	{
-		
-		$(".commonDivCls").hide();
-		
-		var labelName =labelName;
-		
-		var jsObj={
-			labelId :labelId,
 			callFrom : ""
 		}
 		
@@ -3082,15 +3051,14 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 		}).done(function(result){
 			$(".appointmentsViewDivCls").show();
 			if(result!=null && result!=0){
-			  buildViewResult(result,labelName,labelId);
+			  buildViewResult(result,labelName);
 			}else{
 			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
 			}
 		});		
-	}
+	});
 	
-	function buildViewResult(result,labelName,labelId){
-	
+	function buildViewResult(result,labelName){
 		var i = 0;
 		var str='';
 			str+='<div class="col-md-12">';
@@ -3101,8 +3069,7 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 				str+='<div class="panel panel-default manageAppViewPanelClass">';
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
-					str+='<div class="col-md-12">';
-						//str+='<input type="button" class="text-danger" value="Print" onClick="printMembersForView(\''+labelId+'\',\''+labelName+'\');"></input>';
+						str+='<div class="col-md-12">';
 						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
 						str+='</div>';
 					str+='</div>';
@@ -3340,11 +3307,15 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 			{
 				if(result[i].scheduleType == "UpCome")
 				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top10 m_bottom0">';
+						str+='<div class="panel-heading pad_5">';
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
+							if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							   str+='<p class="m_top20">Sub:'+result[i].subject+' </p>';
+							}
 							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
@@ -3427,6 +3398,7 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 			str+='No Data';	
 		}
 		$("#upcomingAppointMentId").html(str);
+		$('[data-toggle="tooltip"]').tooltip();
 		if(!flag)
 		$(".upcomingSetting").hide();
 		$(".upcomedateCls").daterangepicker({singleDatePicker:true});
@@ -3622,11 +3594,15 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 			{
 				if(result[i].scheduleType == "InProgress")
 				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top10 m_bottom0">';
+						str+='<div class="panel-heading pad_5">';
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
+							if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							   str+='<p class="m_top20">Sub:'+result[i].subject+' </p>';
+							}
 							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 						    str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
@@ -3711,6 +3687,7 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 			
 		str+='</div>';
 		$("#inprogreessAppointMentId").html(str);
+		 $('[data-toggle="tooltip"]').tooltip()
 		if(!flag)
 			$(".inprogressSetting").hide();	
 		
@@ -3741,16 +3718,18 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 		{
 			str+='<ul>';
 			for(var i in result)
-			{
+			{ 
 				if(result[i].scheduleType == "Completed")
 				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top10 m_bottom0">';
+						str+='<div class="panel-heading pad_5">';
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
-							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;';
-							str+='<i class="glyphicon glyphicon-cog settingsIcon"></i>';
-							str+='</span></p>';
-							str+='<p class="font12 m_top20">Sub: '+result[i].subject+'</p>';
+							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							  str+='<p class="m_top20">Sub:'+result[i].subject+' </p>';
+							}
 							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
@@ -3834,6 +3813,7 @@ $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 			str+='No Data';	
 		}
 		$("#completedAppointMentId").html(str);
+		$('[data-toggle="tooltip"]').tooltip();
 		if(flag == false)
 		$(".completedSetting").hide();
 	}
@@ -4330,7 +4310,7 @@ function buildTimeSlotsTable(result){
 				var startIdForHour=start.substr(11,2);
 				var startIdForMin=start.substr(14,2);
 				var startId=(startIdForHour-8)*4;
-				if(startIdForMin=="00"){
+				 if(startIdForMin=="00"){
 					startId=startId+0;
 				}
 				if(startIdForMin=="15"){
@@ -4341,11 +4321,11 @@ function buildTimeSlotsTable(result){
 				}
 				if(startIdForMin=="45"){
 					startId=startId+3;
-				}
+				} 
 				var endIdForHour=end.substr(11,2);
 				var endIdForMin=end.substr(14,2);
 				var endId=(endIdForHour-8)*4;
-				if(endIdForMin=="00"){
+				 if(endIdForMin=="00"){
 					endId=endId+0;
 				}
 				if(endIdForMin=="15"){
@@ -4357,7 +4337,7 @@ function buildTimeSlotsTable(result){
 				if(endIdForMin=="45"){
 					endId=endId+3;
 				}
-				endId=endId-1;
+				endId=endId-1; 
 				for(var start=startId;start<=endId;start++){
 					$("#"+i+""+start).addClass("bookedSlots");
 				}
@@ -4377,6 +4357,8 @@ function buildTimeSlotsTable(result){
 		$(".cloneErrCandidateConstCls").html('');
 		$(".cloneErrCandidateMandalCls").html('');
 		$(".cloneErrCandidateVillageCls").html('');
+		$(".cloneErrCandidateTypeCls").html('');
+		$(".cloneErrCandidateMemShipCls").html('');
 		
 	}
 	
@@ -4409,10 +4391,9 @@ function buildTimeSlotsTable(result){
 			$(".validateCls").each(function(i){
 				var nameValue=$("#candidateNameId"+i).val();
 				 if(nameValue ==null || nameValue.length<=0 || nameValue == undefined || typeof nameValue === "undefined" || nameValue.trim() == ""){
-					 isErrAvailable=true;
+					  isErrAvailable=true;
 					  $("#cloneErrCandidateNameId"+i+"").html("Please enter Name");
 				 }
-				 
 				 var desgValue=$("#designationSelId"+i).val();
 				 if(desgValue ==null || desgValue ==0 || desgValue == undefined || desgValue ==""){
 					  $("#cloneErrCandidateDesgId"+i).html("Please Select Designation");
@@ -4430,12 +4411,18 @@ function buildTimeSlotsTable(result){
 				}
 				
 				 var canTypeValue=$("#candidateTypeSelId"+i).val();
-				
 				 if(canTypeValue ==null || canTypeValue ==0 || canTypeValue == undefined || canTypeValue ==""){
 					  $("#cloneErrCandidateTypeId"+i).html("Please Select Candidate Type");
 					  isErrAvailable=true;	
 				 }
-				
+				 
+				if(canTypeValue==1 || canTypeValue==2 || canTypeValue==3){
+					var membershpNmbr=$("#membershipNumId"+i).val();
+					  if(membershpNmbr ==null || membershpNmbr.length<=0 || membershpNmbr == undefined || typeof membershpNmbr === "undefined" || membershpNmbr.trim() == ""){
+						 $("#cloneErrCandidateMemShipId"+i).html("Please Enter Membership Number");
+						 isErrAvailable=true;
+				   }
+				}
 							 
 			 var locationScopeValue=$("#locationScopeSelId"+i).val();
 				 if(locationScopeValue ==null || locationScopeValue ==0 || locationScopeValue == undefined || locationScopeValue == ""){
@@ -4747,7 +4734,6 @@ function buildTimeSlotsTable(result){
 	
 	$(".cnfrmaptsCls").click(function(){
 		$("#errorDivForTimeSlotId").html('');
-			
 		//setting default time format
 		$("#fromTimeId").val("00:00AM");
 		$("#toTimeId").val("00:00AM");
@@ -5108,6 +5094,10 @@ function getAppointmentCreatedUsers(){
 				 errorStr='Please Enter Name';
 				 $("#errorDivId").html(errorStr);
 				 return;
+			 }else if(searchValue.length<3){
+				 errorStr='Name should be minimum three characters.';
+				 $("#errorDivId").html(errorStr);
+				 return; 
 			 }
 		}
 		else if(advanceSearchType == 2)
@@ -5458,9 +5448,7 @@ function getAppointmentCreatedUsers(){
 			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("Please Specify the To Time");
 			return;
 		}
-		var d=new Date();
-		var currentDate=(d.getMonth()+1)+ "/" + (d.getDate()) + "/" + d.getFullYear();
-		if(!(Date.parse(currentDate+" "+toTime) > Date.parse(currentDate+" "+fromTime))){
+		if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
 			 $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
 			 return;
 		 }
@@ -5481,9 +5469,7 @@ function getAppointmentCreatedUsers(){
 			$("#errorDivForTimeSlotId").html("Please Specify the To Time");
 			return;
 		}
-		var d=new Date();
-		var currentDate=(d.getMonth()+1)+ "/" + (d.getDate()) + "/" + d.getFullYear();
-		if(!(Date.parse(currentDate+" "+toTime) > Date.parse(currentDate+" "+fromTime))){
+		if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
 			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
 			 return;
 		 }
@@ -5513,6 +5499,9 @@ function getAppointmentCreatedUsers(){
 					}, 2000);
 					$("#confirmAppointmentBlockDropId").empty();
 					$("#confirmAppointmentBlockDropId").html("<h4 class='deleteTag'>DROP HERE</h4>");
+					//setting default time format
+					   $("#fromTimeId").val("00:00AM");
+		               $("#toTimeId").val("00:00AM");
 					}else{
 			    $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Updated Successfully</p>");
 				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
