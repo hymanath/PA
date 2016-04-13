@@ -144,7 +144,8 @@ body
 .messageIcon , .message
 {
 	height:16px;
-	float:right
+	float:right;
+	cursor:pointer;
 }
 .font12
 {
