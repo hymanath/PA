@@ -181,38 +181,12 @@
 							<div class="row m_top10">
 								<div class="col-md-12">
 									<div class="todayBlock ">
-										<div class="row m_top10">
-											<div class="col-md-12">
+										<div class="row">
+											<!--<div class="col-md-12">
 												<h4 class="text-success text-capitalize">SEARCH for Scheduled appointment </h4>
-											</div>
-										
+											</div>-->
 											<div class="col-md-3">
-												<label>Search</label>
-												<div class="input-group inputSearch">
-													<input class="form-control" type="text" id="searchStrId"  placeholder="Name or MobileNumber"">
-													<span class="input-group-addon">
-														<i class="glyphicon glyphicon-search"></i>
-													</span>
-												</div>
-											</div>
-											<div class="col-md-3">
-                                            	<label>Appointment Created By</label>
-                                                <select class="dropkickClass" id="appointmentcreatedBy">
-                                                	<option value="0">All</option>
-                                                </select>
-                                            </div>
-											<div class="col-md-3">
-                                            	<label>Select Date</label>
-                                                <div class="input-group inputSearch">
-                                                	<span class="input-group-addon">
-                                                    	<i class="glyphicon glyphicon-calendar"></i>
-                                                        <span class="caret"></span>
-                                                    </span>
-                                                    <input type="text" class="form-control" id="dashboardSelectDateIds">                                               
-												</div>
-                                            </div>
-											<div class="col-md-3">
-                                            	<label>Select Status</label>
+                                            	<label>Appointment Status</label>
                                                 <select class="dropkickClass" id="selectStatusId">
                                                 	<option value="0">All</option>
 													<option value="1">Upcoming</option>
@@ -221,14 +195,38 @@
 													
                                                 </select>
 											</div>
-											<div  class="col-md-2 m_top25" style="float: right;">
+											<div class="col-md-2">
+                                            	<label>Appointment Created By</label>
+                                                <select class="dropkickClass" id="appointmentcreatedBy">
+                                                	<option value="0">All</option>
+                                                </select>
+                                            </div>
+											<div class="col-md-3">
+                                            	<label>Select Appointment Created Date</label>
+                                                <div class="input-group inputSearch">
+                                                	<span class="input-group-addon">
+                                                    	<i class="glyphicon glyphicon-calendar"></i>
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="dashboardSelectDateIds">                                               
+												</div>
+                                            </div>
+											<div  class="col-md-1 m_top25">
                                             	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
                                             </div>
+											<div class="col-md-3" style="border-left:1px solid #ddd;">
+												<label>Search</label>
+												<div class="input-group inputSearch">
+													<input class="form-control" type="text" id="searchStrId"  placeholder="Name or MobileNumber"">
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-search"></i>
+													</span>
+												</div>
+											</div>
+											
 										</div>
 									</div>
-									
-										
-								</div>
+									</div>
 							</div>
                             <div class="row">
                             	<div class="col-md-4">
