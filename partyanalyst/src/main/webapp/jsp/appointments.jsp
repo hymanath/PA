@@ -6018,6 +6018,7 @@ function getCommitteeRoles(){
 		  }
 		  function buildAppointmentStatusOverView(result)
 		  {
+			  
 			var str = '';
 			var total = 0;
 			for(var i in result)
@@ -6042,7 +6043,7 @@ function getCommitteeRoles(){
 		  }
 		  
 		  function getAppointmentHistoryForCandidate(id){
-			   
+			$("#aptCandidateHistoryDiv").html('<img src="images/search.gif" />');
 	    	var jsObj={
 	    			appointmentCandidateId:id,
 					task:""
