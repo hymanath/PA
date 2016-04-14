@@ -723,7 +723,7 @@
                                     	<div class="row m_top10">
 										
 											<div class="col-md-3">
-												<label>From Date</label>
+												<label>Date Range</label>
 												<div class="input-group inputSearch">
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
@@ -2799,12 +2799,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</li>';
 						str+='</ul>';
 						}
-						str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+						/* str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 						if(result[i].apptpreferableDates != null && result[i].dateTypeId == 1){
 							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{ 
 							str+='<p><span>'+result[i].dateType.toUpperCase()+' : '+ result[i].minDate +' - '+result[i].maxDate+'</span></p>';
-						}						
+						} */						
 				  str+='</div>';
 				str+='</div>';
 			
@@ -4725,7 +4725,8 @@ function buildTimeSlotsTable(result){
 		}
 		str+='</table>';
 		$("#appointmentMembersId").html(str);
-        $(".appntmntCnddteUpdtDtRngPckrCls").daterangepicker({singleDatePicker:true});
+        $(".appntmntCnddteUpdtDtRngPckrCls").daterangepicker({singleDatePicker:true});		
+		$('.appntmntCnddteUpdtDtRngPckrCls').val(moment().format('MM/DD/YYYY'));		
 		$(".appntmntCnddteUpdtFrmTmCls").datetimepicker({format:"LT"});
 	 	$(".appntmntCnddteUpdtTotmCls").datetimepicker({format:"LT"});
 	    $('#appntmntMmbrsTblId').dataTable({
