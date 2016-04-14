@@ -74,7 +74,6 @@ import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
 import com.itgrids.partyanalyst.model.AppointmentStatus;
 import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
 import com.itgrids.partyanalyst.model.AppointmentTracking;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LabelAppointment;
 import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -449,7 +448,7 @@ public class AppointmentService implements IAppointmentService{
 		        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreIdForMemberShipNums(membershipNoList);
 		        			if(cadreIdsObjList != null && cadreIdsObjList.size() > 0){
 		        				for (Object[] objects : cadreIdsObjList) {
-		        					cadreIdsMap.put(objects[0].toString(),Long.valueOf(objects[1].toString()));
+		        					cadreIdsMap.put(objects[1].toString(),Long.valueOf(objects[0].toString()));
 								}
 		        			}
 		        		}
