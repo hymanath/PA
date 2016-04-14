@@ -74,8 +74,11 @@
 		    <result>/jsp/newhomePage.jsp</result>
 		    <result name="cadreOnlineReg" type="redirect" >cadreOnlineRegisterPageAction.action?cadreId=0&amp;windowTask=new&amp;onlineRegId=${onlineRegId}</result>
 		</action>
-	
-		<action name="loginInputAction" class="loginInputAction">
+		<action name="getAppointmentHistoryForCandidateAction" class="appointmentAction" method="getAppointmentHistoryForCandidate">
+		<result name="success">/jsp/appointments.jsp</result>
+			<param name="root">historyList</param>
+		</action>
+	    <action name="loginInputAction" class="loginInputAction">
 		<result name="success">/jsp/loginForm.jsp</result>
 		<result name="dashBoard" type="redirect" >connectPeopleAction.action</result>
 		</action>
