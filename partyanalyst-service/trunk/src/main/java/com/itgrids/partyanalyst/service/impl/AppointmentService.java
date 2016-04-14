@@ -1645,7 +1645,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
  					appointmentBasicInfoVO = new AppointmentBasicInfoVO();
  					appointmentBasicInfoVO.setName(obj[0]!=null?obj[0].toString():"");
  					appointmentBasicInfoVO.setMembershipNum(obj[1]!=null?obj[1].toString():"");
- 					appointmentBasicInfoVO.setDate(obj[2]!=null?obj[2].toString():"");
+ 					appointmentBasicInfoVO.setDate(obj[2]!=null?obj[2].toString().substring(0,19):"");
  					appointmentBasicInfoVO.setUniqueId(obj[3]!=null?obj[3].toString():"");
  					appointmentBasicInfoVO.setDesignation(obj[4]!=null?obj[4].toString():"");
  					appointmentBasicInfoVOs.add(appointmentBasicInfoVO);
