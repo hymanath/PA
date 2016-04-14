@@ -1718,6 +1718,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						appointment.setPriority(obj[2]!=null?obj[2].toString():"");
 						appointment.setStatus(obj[3]!=null?obj[3].toString():"");
 						appointment.setDateString(obj[4]!=null?obj[4].toString():"");
+						appointment.setAptUniqueCode(obj[6]!=null?obj[6].toString():"");
 						appointmentsMap.put(appointment.getAppointmentId(),appointment);
 						
 						//appointmentIds
@@ -2812,6 +2813,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
+		   SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
 		try {
 			
 			Set<Long> appointmentIds = new HashSet<Long>(0);
@@ -2834,6 +2836,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					appointment.setPriority(obj[2]!=null?obj[2].toString():"");
 					appointment.setStatus(obj[5]!=null?obj[5].toString():"");
 					appointment.setDateString(obj[8]!=null?obj[8].toString():"");
+					appointment.setAptUniqueCode(obj[9]!=null?obj[9].toString():"");
 					appointmentsMap.put(appointment.getAppointmentId(),appointment);
 					
 					//appointmentIds
@@ -2946,8 +2949,21 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 												    }
 													AppointmentDetailsVO apptvo = new AppointmentDetailsVO();
 													apptvo.setAppointmentId(appointmentId);
-													apptvo.setDateString(obj[2]!=null?obj[2].toString():"");
+													Date dateStr = obj[2]!=null?(Date)obj[2]:null;
+														if(dateStr !=null){
+															apptvo.setDateString(prefer.format(dateStr));
+														}		
 													apptvo.setStatus(obj[4]!=null?obj[4].toString():"");
+													
+													
+													List<Long> aptmnts = new ArrayList<Long>();
+													aptmnts.add(apptvo.getAppointmentId());
+													
+													//Prefer Dates Scenario For History start
+													
+														apptvo = setPreferebleDatesToAppointment(aptmnts,apptvo);
+													
+													//Prefer Dates Scenario For History End
 													
 													if(obj[7]!=null){
 														
