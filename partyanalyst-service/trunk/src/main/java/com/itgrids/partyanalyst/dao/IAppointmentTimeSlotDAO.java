@@ -7,10 +7,13 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
 
 
 public interface IAppointmentTimeSlotDAO extends GenericDao<AppointmentTimeSlot, Long>{
+	public List<Object[]> getAppointmentConfirmDates(List<Long> appointmentIds);
 }

@@ -359,4 +359,36 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
     query.setParameter("attendedAppointmentStatusId",attendedAppointmentStatusId);
     return query.list();
   }
+  
+	public List<Object[]> getFixedAttendedCount(Long apointmntcandidteId)
+	{
+		StringBuffer str = new StringBuffer();
+	    str.append("select count(distinct model.appointment.appointmentId)," +
+	        " model.appointment.appointmentStatus.appointmentStatusId," +
+	        " model.appointment.appointmentStatus.status" +
+	        " from AppointmentCandidateRelation model,AppointmentTimeSlot model1 " +
+	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId"
+	        + " and model.appointment.appointmentId = model1.appointment.appointmentId "
+	        + " and model.appointment.appointmentStatus.appointmentStatusId =2 and "
+	        + " model1.toDate <= :date");
+	    Query query = getSession().createQuery(str.toString());
+	    query.setParameter("apointmntcandidteId", apointmntcandidteId);
+	    query.setTimestamp("date", new Date());
+	    return query.list();
+	}
+	
+	public List<Object[]> getAppointmentHistoryDetailsByCandidateId(Long apointmntcandidteId)
+	{
+		StringBuffer str = new StringBuffer();
+	    str.append("select model.appointment.appointmentUniqueId,model.appointment.reason,"
+	    		+ "date(model.appointment.insertedTime),"
+	    		+ "model.appointment.appointmentStatus.appointmentStatusId," +
+	        " model.appointment.appointmentStatus.status,model.appointment.appointmentId" +
+	        " from AppointmentCandidateRelation model " +
+	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId");
+	    Query query = getSession().createQuery(str.toString());
+	    query.setParameter("apointmntcandidteId", apointmntcandidteId);
+	   return query.list();
+	}
+
 }

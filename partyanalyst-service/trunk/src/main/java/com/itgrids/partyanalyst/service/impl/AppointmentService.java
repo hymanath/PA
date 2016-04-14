@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -3864,11 +3865,71 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return apptvo;
 	}
-public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId){
-	List<AppHistoryVO> historyVoList = new ArrayList<AppHistoryVO>();
-	
-	return historyVoList;
-}
+	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId){
+		List<AppHistoryVO> historyVoList = new ArrayList<AppHistoryVO>();
+		List<Long> appointmentIds = new ArrayList<Long>();
+		 List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentHistoryDetailsByCandidateId(appointmentCandidateId);
+		 if(list != null && list.size() > 0)
+		 {
+			 for(Object[] params : list)
+			 {
+				 AppHistoryVO vo = new AppHistoryVO();
+				 vo.setUniqueCode(params[0] != null ? params[0].toString() : "");
+				 vo.setPurpose(params[1] != null ? params[1].toString() : "");
+				 vo.setCreatedOn(params[2] != null ? params[2].toString() : "");
+				 vo.setStatusId(params[3] != null ? (Long)params[3] :0l);
+				 vo.setStatus(params[4] != null ? params[4].toString() : "");
+				 vo.setId(params[5] != null ? (Long)params[5] : 0l);
+				 vo.setConfirmedDate("");
+				 vo.setPreferredDate("");
+				 if(!appointmentIds.contains(vo.getId()));
+				 appointmentIds.add(vo.getId());
+				 historyVoList.add(vo);
+			 }
+			 if(appointmentIds != null && appointmentIds.size() > 0)
+			 {
+					 List<Object[]> list1 = appointmentTimeSlotDAO.getAppointmentConfirmDates(appointmentIds);
+					 if(list1 != null && list1.size()> 0)
+					 {
+						 for(Object[] params1 : list1)
+						 {
+							 AppHistoryVO vo = getMathedAppointmentVO(historyVoList,(Long)params1[0]);
+							 if(vo != null)
+							 {
+								 vo.setConfirmedDate(params1[1] != null ? params1[1].toString() : "");
+							 }
+							 
+						 }
+						 
+					 }
+			 		 
+			  List<Object[]> list2 = appointmentPreferableDateDAO.getPreferableDatesforAppointments(appointmentIds);
+			  if(list2 != null && list2.size() > 0)
+			  {
+				  for(Object[] params2 : list2)
+					 {
+						 AppHistoryVO vo = getMathedAppointmentVO(historyVoList,(Long)params2[0]);
+						 if(vo != null)
+						 {
+							 String minDate = "";
+							 String maxDate = "";
+							 if(params2[1]  != null)
+								  minDate = params2[1].toString();
+							 if(params2[2]  != null)
+								 maxDate = params2[2].toString();
+							 if(minDate.equalsIgnoreCase(maxDate))
+							 vo.setPreferredDate(minDate);
+							 else
+								 vo.setPreferredDate(minDate +"to"+ maxDate);	 
+						 }
+						 
+					 }
+			  }
+			} 
+			 
+		 }
+		return historyVoList;
+	}
 	
 	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId){
 		List<IdNameVO> candidteStusLst=null;
@@ -3881,6 +3942,7 @@ public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCand
 					IdNameVO appointVO=new IdNameVO();
 					appointVO.setId(appintstts.getAppointmentStatusId());
 					appointVO.setName(appintstts.getStatus());
+					appointVO.setAvailableCount(0l);
 					candidteStusLst.add(appointVO);
 				}
 			}
@@ -3897,6 +3959,30 @@ public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCand
 				}
 				
 			}
+			 List<Object[]> list1 = appointmentCandidateRelationDAO.getFixedAttendedCount(apointmntcandidteId);
+			 Long fixedAttendedCnt =0l;
+			 if(list1 != null && list1.size() > 0)
+			 {
+				 for(Object[] params : list1)
+					{
+					 fixedAttendedCnt = fixedAttendedCnt + (Long)params[0];
+					} 
+			 }
+			 if(fixedAttendedCnt != null && fixedAttendedCnt > 0)
+			 {
+				 for(IdNameVO vo : candidteStusLst)
+				 {
+					 if(vo.getId().longValue() == 2l) //Fixed
+					 {
+						 vo.setAvailableCount(vo.getAvailableCount() - fixedAttendedCnt);
+					 }
+					 if(vo.getId().longValue() == 3l) //Attended 
+					 {
+						 vo.setAvailableCount(vo.getAvailableCount() + fixedAttendedCnt);
+					 }
+				 }
+			 }
+			
 		}catch(Exception e){
 			LOG.error("Error occured  in getApointmentStatusOvrviwforCandidte() method of AppointmentService",e);
 		}
@@ -3907,7 +3993,7 @@ public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCand
 
 		if(candidteStusLst!=null && candidteStusLst.size()>0) {
 			for(IdNameVO vo:candidteStusLst){
-				if(vo.getId().equals(id)){
+				if(vo.getId().longValue() == id.longValue()){
 					return vo;
 				}
 				
@@ -3986,5 +4072,16 @@ public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCand
 		return appCandi;
 	}
 
-	
+	public AppHistoryVO getMathedAppointmentVO(List<AppHistoryVO> resultList,Long id){
+
+		if(resultList!=null && resultList.size()>0) {
+			for(AppHistoryVO vo:resultList){
+				if(vo.getId().longValue() == id.longValue()){
+					return vo;
+				}
+				
+			}
+		}
+		return null;
+	}
 }

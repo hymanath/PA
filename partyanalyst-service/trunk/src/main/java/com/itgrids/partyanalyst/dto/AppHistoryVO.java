@@ -7,6 +7,23 @@ public class AppHistoryVO {
 	private String preferredDate;
 	private String ConfirmedDate;
 	private String status;
+	private String uniqueCode;
+	private Long statusId;
+
+	
+	
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getUniqueCode() {
+		return uniqueCode;
+	}
+	public void setUniqueCode(String uniqueCode) {
+		this.uniqueCode = uniqueCode;
+	}
 	public Long getId() {
 		return id;
 	}
