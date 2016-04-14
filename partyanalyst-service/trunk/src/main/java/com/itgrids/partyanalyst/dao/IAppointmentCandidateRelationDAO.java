@@ -20,13 +20,12 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> getCandidatePreviousApptDetails1(List<Long> candidateIds);
 	public List<Object[]> getAppointmentCandidateMobileNos(Long appointmentId);
 	public List<Object[]> getAppointmentStatusOverview();
-	public List<String> getAppointmentIdsforSendSms(Long appointmentId);
+	public List<Object[]> getAppointStatusOverviewforCandidate(Long apointmntcandidteId);
+   public List<String> getAppointmentIdsforSendSms(Long appointmentId);
 	
 	public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId);
 	public List<Object[]> getLabelledAndNonLabelledApptIdsForWaitingStatus(Long apptUserId,String labelStatus,Long waitingAppointmentStatusId);
 	public List<Object[]> getOnlyFixedStatusCounts(Long apptUserId,Date currentDateAndTime,Long fixedAppointmentStatusId);
 	public List<Object[]> getAttendedStatusCounts(Long apptUserId,Date currentDateAndTime,Long attendedAppointmentStatusId,Long fixedAppointmentStatusId);
-	
-	
 	
 }
