@@ -5923,6 +5923,21 @@ function getCommitteeRoles(){
 		var select = new Dropkick('#manageAppDesigId');
 		select.refresh();
 	}
+	
+	getAppointStatusOverviewforCandidate();
+	  function getAppointStatusOverviewforCandidate(){
+			 
+	    	var jsObj={
+	    			appointmentCandidateId:appointmentCandidateId
+	    		}
+	    		$.ajax({
+	    			  type:'GET',
+	    			  url: 'getAppointStatusOverviewforCandidateAction.action',
+	    			  data: {task:JSON.stringify(jsObj)}
+	    	   }).done(function(result){
+					
+	    	   });	
+		  }
 	 
 </script>
 </body>

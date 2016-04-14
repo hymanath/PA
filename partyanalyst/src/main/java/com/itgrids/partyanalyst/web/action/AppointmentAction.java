@@ -978,4 +978,17 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 	}
 
+	
+	public String getAppointStatusOverviewforCandidate(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long apointmntcandidteId=jObj.getLong("appointmentCandidateId");
+			idNameVOList = appointmentService.getApointmentStatusOvrviwforCandidte(apointmntcandidteId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAppointStatusOverviewforCandidate() of AppointmentAction",e);
+	}
+		return Action.SUCCESS;
+}
+	
 }
