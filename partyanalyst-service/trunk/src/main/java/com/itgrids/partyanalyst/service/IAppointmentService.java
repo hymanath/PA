@@ -76,5 +76,5 @@ public interface IAppointmentService {
 	public  List<IdNameVO> getAppointmentStatusOverview();
 	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId);
 	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long aptUserId);
-	public List<AppHistoryVO> getAppointmentHistoryForCandidate();
+	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId);
 }
