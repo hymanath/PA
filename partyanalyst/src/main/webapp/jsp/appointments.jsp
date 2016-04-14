@@ -651,21 +651,24 @@
 											</div>
 										
 										</div>
-										 <div class="panel-body">
-										 <h4>OVERALL PENDING APPOINTMENT REQUESTS OVERVIEW</h4>
-										 <table>
-											<tr>
-											
-												<td style="width: 25%;background-color:#339967; text-align: center; padding: 40px 80px; "><h4 class="text-success" style="color:#fff;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
-												<td style="width: 25%; background-color:#336799; text-align: center; padding: 40px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
-												<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 40px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
-												<td style="width: 25%; background-color:#996532; text-align: center; padding: 40px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
-											</tr>
-											
-										 </table>
-											
-											</div>
+										 
                                   </div>
+									<div class="panel panel-default m_top10 panelWhite">
+										<div class="panel-heading">
+											<h4 class="panel-title">OVERALL PENDING APPOINTMENT REQUESTS OVERVIEW</h4>
+										</div>
+										<div class="panel-body">
+											<table>
+												<tr>
+													<td style="width: 25%;background-color:#339967; text-align: center; padding: 20px 80px; "><h4 class="text-success" style="color:#fff;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
+													<td style="width: 25%; background-color:#336799; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
+													<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
+													<td style="width: 25%; background-color:#996532; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
+												</tr>
+											</table>
+										</div>
+									</div>
+										
 								<!--Swadhin-->
 								<div class="panel panel-default m_top10 panelWhite" id="appointmentReqBlock">
 									<div class="panel-heading b_bottom0">
