@@ -3839,5 +3839,10 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return apptvo;
 	}
+public List<AppHistoryVO> getAppointmentHistoryForCandidate(){
+	List<AppHistoryVO> historyVoList = new ArrayList<AppHistoryVO>();
+	
+	return historyVoList;
+}
 	
 }
