@@ -7,6 +7,13 @@ import java.util.List;
 public class AppointmentSlotsVO implements Serializable {
 	private List<String> dateList;
 	private Collection<List<List<String>>> listOfTimePairPerDate;
+	private String labelDate;
+	public String getLabelDate() {
+		return labelDate;
+	}
+	public void setLabelDate(String labelDate) {
+		this.labelDate = labelDate;
+	}
 	public List<String> getDateList() {
 		return dateList;
 	}
