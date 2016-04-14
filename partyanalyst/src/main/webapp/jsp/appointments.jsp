@@ -179,6 +179,7 @@
 														</td>
 														<td>
 															<div id="LineChart" style="width:500px;height:300px;"></div>
+															<div  style="text-align: center;">Total Appointments - <span id="totalApptStatusCounts"></span></div>
 														</td>
 													</tr>
 												</table>
@@ -1106,10 +1107,13 @@ function buildJSONForAppStatus(result){
 			flag = true;
 		jsonObj.push({"name":result[i].status,"y":result[i].statusCount,"color":color[i%9]});
 	}
-	if(flag==true)  
+	if(flag==true){
 		buildChartForAppStatus(jsonObj);
-	else
-		$('#LineChart').html("<h5>No Data Availabel.</h5>");
+	}
+	else{
+		$('#LineChart').html("<div class='col-xs-12 m_top30' style='text-align:center;'><h4>NO DATA AVAILABLE</h4></div>");
+	}
+		
 }
 
 function buildChartForAppStatus(jsonObj) {
@@ -1179,7 +1183,7 @@ function buildTotalAppointmentStatus(result){
 		
 		
 		str+='<tr style="color:'+color[i%9]+'">';
-			str+='<td>'+result[i].status+'</td>';
+			str+='<td><span class="columnChart" style="background-color:'+color[i%9]+'"></span>'+result[i].status+'</td>';
 			if(result[i].statusCount == 0){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
@@ -1195,6 +1199,7 @@ function buildTotalAppointmentStatus(result){
 		str+='</tr>';
 	}
 	str+='</tbody>';
+	$("#totalApptStatusCounts").html(totalApptCount);
 	$("#totalAppointmentsId").html(str);
 }
 
@@ -2311,7 +2316,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		 
 		 
 		 if($(this).is(':checked')){
-			
+			  var searchType = $("#searchTypeId").val();
 			  $("#addOneBlock").trigger("click");
 			
 				// $("#checkboxMemberAjax").css("display","block");
@@ -2373,33 +2378,33 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
 				//$('#designationSelId'+temp).val(desg);
-				var candidateType;
+				var candidateType1;
 				//$("#designationSelId+temp option").each(function() {
 					$('#designationSelId'+temp+' option').each(function() {
 				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
 				//$(this).prop('selected', true) ;
-				candidateType = $(this).attr("typeId");
+				candidateType1 = $(this).attr("typeId");
 				if(designation != null)
-				getDesignationsByType(candidateType,'designationSelId'+temp);
+				getDesignationsByType(candidateType1,'designationSelId'+temp);
 				} 
 			  });	
 				var selectx = new Dropkick('#designationSelId'+temp);
 					selectx.refresh();
 					
-					if(candidateType !=null && candidateType >0){
-						$('#candidateTypeSelId'+temp).val(candidateType);
-						var selectcd = new Dropkick('#candidateTypeSelId'+temp);
+			  if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){	
+			 
+				$('#candidateTypeSelId'+temp).val(3);
+			 	 var selectcc = new Dropkick('#candidateTypeSelId'+temp);
+				selectcc.refresh();
+				
+				getDesignationsByType(3,'designationSelId'+temp);
+				 setTimeout(function () {
+					$('#designationSelId'+temp).val(63);
+						var selectcd = new Dropkick('#designationSelId'+temp);
 						selectcd.refresh();
-					}else{
-						$('#candidateTypeSelId'+temp).val(0);
-						$('#candidateTypeSelId'+temp).dropkick('reset');
-						
-					}
-					/*$('#designationSelId'+temp+' option').each(function() {
-				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
-				$(this).prop('selected', true) ;
-				} 
-			  });	*/
+					}, 500);	
+				}
+			 
 				$('#locationScopeSelId'+temp).val(lctscpid);
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
 				selectL.refresh();
