@@ -1100,14 +1100,16 @@ var color = ["#2095F4","#98CCCA","#673301","#650199","#4EAF50","#FF9800","#CC000
 function buildJSONForAppStatus(result){	
 
     var jsonObj = [];
-	
+	var flag=false;
 	for(var i in result){
 		if(result[i].statusCount>0)
 			flag = true;
 		jsonObj.push({"name":result[i].status,"y":result[i].statusCount,"color":color[i%9]});
 	}
 	if(flag==true)  
-	buildChartForAppStatus(jsonObj);
+		buildChartForAppStatus(jsonObj);
+	else
+		$('#LineChart').html("<h5>No Data Availabel.</h5>");
 }
 
 function buildChartForAppStatus(jsonObj) {
