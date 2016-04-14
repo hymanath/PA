@@ -3,9 +3,9 @@ package com.itgrids.partyanalyst.dto;
 public class AppHistoryVO {
 	private Long id;
 	private String purpose;
-	private Long createdOn;
-	private Long preferredDate;
-	private Long ConfirmedDate;
+	private String createdOn;
+	private String preferredDate;
+	private String ConfirmedDate;
 	private String status;
 	public Long getId() {
 		return id;
@@ -13,30 +13,31 @@ public class AppHistoryVO {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	public String getCreatedOn() {
+		return createdOn;
+	}
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+	public String getPreferredDate() {
+		return preferredDate;
+	}
+	public void setPreferredDate(String preferredDate) {
+		this.preferredDate = preferredDate;
+	}
+	public String getConfirmedDate() {
+		return ConfirmedDate;
+	}
+	public void setConfirmedDate(String confirmedDate) {
+		ConfirmedDate = confirmedDate;
+	}
 	public String getPurpose() {
 		return purpose;
 	}
 	public void setPurpose(String purpose) {
 		this.purpose = purpose;
 	}
-	public Long getCreatedOn() {
-		return createdOn;
-	}
-	public void setCreatedOn(Long createdOn) {
-		this.createdOn = createdOn;
-	}
-	public Long getPreferredDate() {
-		return preferredDate;
-	}
-	public void setPreferredDate(Long preferredDate) {
-		this.preferredDate = preferredDate;
-	}
-	public Long getConfirmedDate() {
-		return ConfirmedDate;
-	}
-	public void setConfirmedDate(Long confirmedDate) {
-		ConfirmedDate = confirmedDate;
-	}
+	
 	public String getStatus() {
 		return status;
 	}
