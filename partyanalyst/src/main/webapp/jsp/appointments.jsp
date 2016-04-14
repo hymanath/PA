@@ -924,6 +924,7 @@
 																</div>
 																<div class="col-md-2">
 																	<button class="btn btn-success m_top25" id="setTimeSlotBtnId">SET</button>
+																	<img src="images/search.gif" style="display:none;" id="ajaxImgForTimeSlotId"/>
 																</div>
 																<div id="errorDivForTimeSlotId" class="validateClr m_left16"  ></div>
 															</div>
@@ -1872,7 +1873,7 @@ $(".dropkickClass").dropkick();
 							str+='<button class="btn btn-success btn-xs viewMembersClass" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled style="margin-right: 5px;">View</button>';
 						}
 						
-						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'" style="margin-right: 5px;">Add Appts</button>';
+						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'" id="addApptsId" style="margin-right: 5px;">Add Appts</button>';
 						if(totalCount !=null && totalCount >0 ){
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments" style="margin-right: 5px;">Update</button>';
 						}else{
@@ -5513,6 +5514,7 @@ function getAppointmentCreatedUsers(){
 			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
 			 return;
 		 }
+		 $("#ajaxImgForTimeSlotId").css("display","inline-block");
 		var jsObj={
 			appointmentId : appointmentId,
 			date : date,
@@ -5529,6 +5531,7 @@ function getAppointmentCreatedUsers(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$("#errorDivForTimeSlotId").show();
+			$("#ajaxImgForTimeSlotId").css("display","none");
 			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
 				getViewAppointmentsOfALable();
 				if(type=="save"){
@@ -5558,6 +5561,10 @@ function getAppointmentCreatedUsers(){
 		});
 		
 	}
+	
+	 $(document).on("click","#addApptsId",function(){
+		 setTimeout(function() {$('html, body').animate({scrollTop:2000}, 3000); },0);
+	});
 	
 </script>
 
