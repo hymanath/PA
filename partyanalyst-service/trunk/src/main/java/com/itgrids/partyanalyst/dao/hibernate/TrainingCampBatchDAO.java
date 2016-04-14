@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.codehaus.jackson.map.ser.StdSerializers.UtilDateSerializer;
+
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
