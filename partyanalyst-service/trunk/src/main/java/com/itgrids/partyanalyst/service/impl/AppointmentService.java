@@ -3936,7 +3936,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 							 if(minDate.equalsIgnoreCase(maxDate))
 							 vo.setPreferredDate(minDate);
 							 else
-								 vo.setPreferredDate(minDate +"to"+ maxDate);	 
+								 vo.setPreferredDate(minDate +" to "+ maxDate);	 
 						 }
 						 
 					 }
