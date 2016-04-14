@@ -2916,7 +2916,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='<th>NAME</th>';
 		str+='<th>CONTACT NUMBER</th>';
 		str+='<th>DESIGNATION</th>';
-		str+='<th>LAST APPOINTMENT DATE</th>';
+		str+='<th>APPOINTMENT REQUESTED TIME</th>';
 		str+='</thead>';
 		for(var i in result){
 		str+='<tr>';
