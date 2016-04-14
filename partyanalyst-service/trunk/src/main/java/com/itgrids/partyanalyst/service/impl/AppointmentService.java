@@ -3846,4 +3846,51 @@ public List<AppHistoryVO> getAppointmentHistoryForCandidate(){
 	return historyVoList;
 }
 	
+	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId){
+		List<IdNameVO> candidteStusLst=null;
+		Long totalCount=0l;
+		try {
+			List<AppointmentStatus> statusList=appointmentStatusDAO.getAll();
+			if(statusList!=null && statusList.size()>0){
+				candidteStusLst=new ArrayList<IdNameVO>();
+				for(AppointmentStatus appintstts:statusList){
+					IdNameVO appointVO=new IdNameVO();
+					appointVO.setId(appintstts.getAppointmentStatusId());
+					appointVO.setName(appintstts.getStatus());
+					candidteStusLst.add(appointVO);
+				}
+			}
+			
+			
+			List<Object[]> candidteStusCnt=appointmentCandidateRelationDAO.getAppointStatusOverviewforCandidate(apointmntcandidteId);
+			if(candidteStusCnt != null && candidteStusCnt.size() > 0)
+			{
+				for(Object[] params : candidteStusCnt)
+				{
+					IdNameVO vo = getMathedStatsVO(candidteStusLst,(Long)params[1]);
+					if(vo != null)
+						vo.setAvailableCount((Long)params[0]);
+				}
+				
+			}
+		}catch(Exception e){
+			LOG.error("Error occured  in getApointmentStatusOvrviwforCandidte() method of AppointmentService",e);
+		}
+		return candidteStusLst;
+	}
+
+	public IdNameVO getMathedStatsVO(List<IdNameVO> candidteStusLst,Long id){
+
+		if(candidteStusLst!=null && candidteStusLst.size()>0) {
+			for(IdNameVO vo:candidteStusLst){
+				if(vo.getId().equals(id)){
+					return vo;
+				}
+				
+			}
+		}
+		return null;
+	}
+
+	
 }
