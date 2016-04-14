@@ -346,7 +346,7 @@
 														<option value="6">Village/Ward</option>
 														</select>
 													</div>
-												  <div class="col-md-2 locationsFilterCls">
+												  <div class="col-md-2 locationsFilterCls stateCls">
 														<label>State</label>
 														<select class="dropkickClass" id="stateId">
 														<option value="0">All</option>
@@ -354,24 +354,24 @@
 														<option value="36">TS</option>
 														</select>
 												 </div>
-													<div class="col-md-2 locationsFilterCls">
+													<div class="col-md-2 locationsFilterCls distCls">
 														<label>District</label>
 														<select class="dropkickClass" id="referdistrictId" onchange="getConstituenciesBydistrictForReferPopup();">
 														<option value="0">All</option></select>
 													</div>
-													<div class="col-md-2 locationsFilterCls">
+													<div class="col-md-2 locationsFilterCls constiCls">
 														<label>Assembly</label>
 														<select class="dropkickClass" id="referconstituencyId" onchange="getMandalsByConstituencyForReferPopup();">
 															<option value="0">All</option>
 														</select>
 													</div>
-													<div class="col-md-3 locationsFilterCls">
+													<div class="col-md-3 locationsFilterCls mandalCls">
 														<label>Mandal/ Municipality</label>
 														<select class="dropkickClass" id="refermandalNameId" onchange="getPanchayatsForReferPopup();">
 															<option value="0">All</option>
 														</select>
 													</div>
-													<div class="col-md-3 locationsFilterCls">
+													<div class="col-md-3 locationsFilterCls panchayatCls">
 														<label>Panchayat</label>
 														<select class="dropkickClass" id="referpanchayatId">
 															<option value="0">All</option>
@@ -5017,6 +5017,7 @@ function buildTimeSlotsTable(result){
 		//setToDefaultAdvancedSearch();
 			$('#errorDivId').html('');
 			var selectVal = $("#advanceSearchTypeId").val();
+			
 			if(selectVal == 2)
 			{
 				$(".advancePRCls").show();
@@ -5027,6 +5028,8 @@ function buildTimeSlotsTable(result){
 				setToDefaultAdvancedSearch();
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
+				disableByLevel();
+				
 			}
 			else if(selectVal == 3)
 			{
@@ -5038,6 +5041,7 @@ function buildTimeSlotsTable(result){
 				getCommitteeRoles();
 				$(".referRolesCheck").removeAttr("checked");
 				setToDefaultAdvancedSearch();
+				disableByLevel();
 			}
 			else
 			{
@@ -5758,6 +5762,7 @@ function getPanchayatsForReferPopup(){
 	  var mandalId = $("#refermandalNameId").val();
 	  var select = new Dropkick("#referdistrictId");
 		select.refresh();
+		
 		if(levelId != 10 && levelId != 0)
 		{
 			getDistrictsForReferPopup();
@@ -5777,6 +5782,12 @@ function getPanchayatsForReferPopup(){
 				select.refresh();
 				var select = new Dropkick("#referpanchayatId");
 				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").hide();
+				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+				
 		}
 		else if(levelId == 11)
 		{
@@ -5789,12 +5800,33 @@ function getPanchayatsForReferPopup(){
 				select.refresh();
 				var select = new Dropkick("#referpanchayatId");
 				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
 		}
 		else if(levelId == 5)
 		{
 			$("#referpanchayatId").find('option').not(':first').remove();
 			var select = new Dropkick("#referpanchayatId");
 				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").show();
+				$(".mandalCls").show();
+				$(".panchayatCls").hide();
+		}
+		else if(levelId == 6)
+		{
+			$("#referpanchayatId").find('option').not(':first').remove();
+			var select = new Dropkick("#referpanchayatId");
+				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").show();
+				$(".mandalCls").show();
+				$(".panchayatCls").show();
 		}
 		
   }
