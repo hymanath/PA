@@ -1783,6 +1783,7 @@ $(".dropkickClass").dropkick();
 		});
 	}
 	function buildAppntmntUsrSlctBx(result){
+		$("#appointmentUserSelectBoxId  option").remove();
 		for(var i in result){
 			$("#appointmentUserSelectBoxId").append('<option attr_unique_code="'+result[i].date+'" value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
 		}
@@ -1991,7 +1992,9 @@ $("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
 $("#dashboardSelectDateIds").daterangepicker({opens:"left"});
 $('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
+$('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
 $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
+$('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 
 
 
@@ -5824,7 +5827,7 @@ function getCommitteeRoles(){
 			$(document).on("click",".refreshBlockDiv",function(e){
 				$("#LineChart").html('');
 				getTotalAppointmentStatus();
-				getAppointmentUsersDtls();
+				//getAppointmentUsersDtls();
 				getAppointmentStatusCounts();
 			});
 			
@@ -5928,7 +5931,7 @@ function getCommitteeRoles(){
 	
 	getAppointStatusOverviewforCandidate();
 	  function getAppointStatusOverviewforCandidate(){
-			 
+			 var appointmentCandidateId=0;
 	    	var jsObj={
 	    			appointmentCandidateId:appointmentCandidateId
 	    		}
