@@ -2674,7 +2674,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<span class="requestedCheckbox text-success"><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" checked></span>';
 							str+='<span class="pull-right">Current Status : '+result[i].status+'</span>';
 						}else{
+							str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
 							str+='<span class="requestedCheckbox text-success"><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
+							str+='<span class="pull-right">Current Status : '+result[i].status+'</span>';
 						}
 						if(result[i].subject !=null && result[i].subject.length>0){
 							str+='<p>Purpose : '+result[i].subject+'</p>';
@@ -2702,14 +2704,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='</div>';
 				  str+='<div class="panel-body pad_5">';
 					for(var j in result[i].subList){
-						str+='<ul class="viewAppointmentRequestedMembers">';
+						str+='<ul class="viewAppointmentRequestedMembers font12">';
 							str+='<li>';
 								str+='<div class="row">';
 									//str+='<div class="col-md-12">';
 										//str+='<span class="requestedCheckbox text-success"></span>';
 									//str+='</div>';
 									str+='<div class="col-md-4">';
-										str+='<div class="media">';
+										str+='<div class="media font12">';
 											str+='<div class="media-left">';
 												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
 											//	str+='<span class="colorStatus green"></span>';
@@ -2733,11 +2735,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												str+='<p>Constituency : - </p>';
 											}
                                             
-                                            if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
+                                            /* if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
 												str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
 											}else{
 												str+='<p>Last Visit: - </p>';
-											}
+											} */
 												
 											str+='</div>';
 										str+='</div>';
@@ -3128,38 +3130,40 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			for(var i in result){
 			
 				str+='<div class="panel panel-default manageAppViewPanelClass">';
-				str+='<div class="panel-heading">';
+				str+='<div class="panel-heading font12">';
 				    str+='<div class="row">';
 				    str+='<div class="col-md-12">';
 					//str+='<input type="button" class="text-danger" value="Print" onClick="printMembersForView(\''+labelId+'\',\''+labelName+'\');"></input>';
 						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
 						str+='</div>';
 					str+='</div>';
-					if(result[i].subject !=null && result[i].subject.length>0){
-						str+='<p>Subject : '+result[i].subject+'</p>';
+					str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
+					if(result[i].priority !=null && result[i].priority.length>0){
+						str+='<p>Priority : '+result[i].priority+'</p>';
 					}else{
-						str+='<p>Subject : - </p>';
-					}if(result[i].priority !=null && result[i].priority.length>0){
-						str+='<p>Priority Type : '+result[i].priority+'</p>';
-					}else{
-						str+='<p>Priority Type : - </p>';
+						str+='<p>Priority : - </p>';
 					}if(result[i].dateString !=null && result[i].dateString.length>0){
-						str+='<p>Requested Date : '+result[i].dateString+'</p>';
+						str+='<p>Requested Date : '+result[i].dateString.split(" ")[0]+'</p>';
 					}else{
 						str+='<p>Requested Date : - </p>';
+					}
+					if(result[i].subject !=null && result[i].subject.length>0){
+						str+='<p>Purpose : '+result[i].subject+'</p>';
+					}else{
+						str+='<p>Purpose : - </p>';
 					}	
 					
 				str+='</div>';
-				str+='<div class="panel-body">';
+				str+='<div class="panel-body pad_5">';
 					for(var j in result[i].subList){
-						str+='<ul class="viewAppointmentRequestedMembers">';
+						str+='<ul class="viewAppointmentRequestedMembers font12">';
 							str+='<li>';
 								str+='<div class="row">';
-									str+='<div class="col-md-12">';
-										str+='<span class="requestedCheckbox text-success"></span>';
-									str+='</div>';
-									str+='<div class="col-md-6">';
-										str+='<div class="media">';
+									//str+='<div class="col-md-12">';
+										//str+='<span class="requestedCheckbox text-success"></span>';
+									//str+='</div>';
+									str+='<div class="col-md-4">';
+										str+='<div class="media font12">';
 											str+='<div class="media-left">';
 												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
 											//	str+='<span class="colorStatus green"></span>';
@@ -3183,16 +3187,16 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												str+='<p>Constituency : - </p>';
 											}
 											
-											if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
+											/* if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
 												str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
 											}else{
 												str+='<p>Last Visit: - </p>';
-											}
+											} */
 												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
 											str+='</div>';
 										str+='</div>';
-										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
-										str+='<table class="table table-bordered">';
+										/* str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
+										str+='<table class="table table-bordered font12">';
 											str+='<tr>';
 												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
 												
@@ -3215,41 +3219,48 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												}
 												
 											str+='</tr>';
-										str+='</table>';
+										str+='</table>'; */
 										
 											
 									str+='</div>';
-									str+='<div class="col-md-6">';
-										str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
-										str+='<table class="table table-bordered m_top10">';
+									str+='<div class="col-md-8 font12">';
+										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';balu1
+										str+='<table class="table table-bordered table-condensed m_top10 font12">';
 										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 											str+='<thead>';
-										  	str+='<th>Appt Last Requested Date</th>';
-												str+='<th colspan="2">Appt Status</th>';
-												
+												str+='<th>CREATED DATE</th>';
+												str+='<th>APPOINTMENT PREFERABLE DATES</th>';
+												str+='<th>STATUS</th>';												
 											str+='</thead>';
 											str+='<tbody>';
 											
 												for(var l in result[i].subList[j].subList){
 													str+='<tr>';
 													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
-													str+='<td>'+result[i].subList[j].subList[l].status+'</td>';
-													if(result[i].subList[j].subList[l].apptStatus!=null && result[i].subList[j].subList[l].apptStatus.trim().length>0){
-														str+='<td> '+result[i].subList[j].subList[l].apptStatus+'</td>';
+													
+													if(result[i].subList[j].subList[l].dateTypeId !=null && result[i].subList[j].subList[l].dateTypeId >1){
+														str+='<td>'+result[i].subList[j].subList[l].dateType+' : <span>'+result[i].subList[j].subList[l].minDate+' - '+result[i].subList[j].subList[l].maxDate+'</span></td>';
+													}else if(result[i].subList[j].subList[l].dateTypeId !=null && result[i].subList[j].subList[l].dateTypeId ==1){
+														str+='<td>'+result[i].subList[j].subList[l].apptpreferableDates+'</td>';
 													}else{
-														str+='<td> - </td>';
+														str+='<td>-</td>';
 													}
 													
+													if(result[i].subList[j].subList[l].status !=null){
+														str+='<td>'+result[i].subList[j].subList[l].status+'</td>';
+													}else{
+														str+='<td>-</td>';
+													}													
 													str+='</tr>';
 												}
 											}else{
 													str+='<thead>';
-													str+='<th>Appt Last Requested Date</th>';
-													str+='<th colspan="3">Appt Status</th>';
-													str+='</thead>';
+													str+='<th>CREATED DATE</th>';
+													str+='<th>APPOINTMENT PREFERABLE DATES</th>';
+													str+='<th>STATUS</th>';
 												
 													str+='<tr>';
-													str+='<td  colspan="2"><center>No Data Available</center></td>';
+													str+='<td colspan="3"><center>No Data Available</center></td>';
 													str+='</tr>';
 											}
 											
@@ -3267,16 +3278,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span> - </span></p>';
 						} */	
-						str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+						str+='<h4 class="m_top10 font12"><b>NEW REQUESTED DATES :</b></h4>';
 						if(result[i].apptpreferableDates != null && result[i].dateTypeId == 1){
-							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
+							str+='<p class="font12"><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{ 
-							str+='<p><span>'+result[i].dateType.toUpperCase()+' : '+ result[i].minDate +' - '+result[i].maxDate+'</span></p>';
+							str+='<p class="font12"><span>'+result[i].dateType.toUpperCase()+' : '+ result[i].minDate +' - '+result[i].maxDate+'</span></p>';
 						}
 				  str+='</div>';
 				str+='</div>';
 			}
-		
 			str+='</div>';
 			str+='</div>';
 		
