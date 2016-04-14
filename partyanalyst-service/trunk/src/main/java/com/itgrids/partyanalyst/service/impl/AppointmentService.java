@@ -3840,7 +3840,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return apptvo;
 	}
-public List<AppHistoryVO> getAppointmentHistoryForCandidate(){
+public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId){
 	List<AppHistoryVO> historyVoList = new ArrayList<AppHistoryVO>();
 	
 	return historyVoList;
