@@ -5883,6 +5883,17 @@ function getCommitteeRoles(){
 		var select = new Dropkick('#manageAppDesigId');
 		select.refresh();
 	}
+	
+	function getAppointmentHistoryForCandidate(){
+		$.ajax({
+			type : 'GET',
+			url : 'getAppointmentHistoryForCandidateAction.action',
+			dataType : 'json',
+			data : {}
+		}).done(function(result){ 
+			buildAppointmentHistoryForCandidate(result);
+			});
+	}
 	 
 </script>
 </body>
