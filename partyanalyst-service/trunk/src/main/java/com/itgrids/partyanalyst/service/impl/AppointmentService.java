@@ -112,8 +112,6 @@ public class AppointmentService implements IAppointmentService{
 	private IBoothPublicationVoterDAO     		boothPublicationVoterDAO;
 	private RtcUnionService               		rtcUnionService;  
 	private IAppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
-	
-
 	private ILabelAppointmentDAO labelAppointmentDAO;
 	private ILabelAppointmentHistoryDAO labelAppointmentHistoryDAO;
 	private IAppointmentTimeSlotDAO appointmentTimeSlotDAO;
