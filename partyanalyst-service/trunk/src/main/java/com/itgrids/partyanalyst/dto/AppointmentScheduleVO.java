@@ -20,11 +20,20 @@ private String toTime;
 private String fromDate;
 private String toDate;
 private String appointmentUniqueId;
+private String date;
 
 
+
+public String getDate() {
+	return date;
+}
+public void setDate(String date) {
+	this.date = date;
+}
 public String getFromDate() {
 	return fromDate;
 }
+
 public void setFromDate(String fromDate) {
 	this.fromDate = fromDate;
 }

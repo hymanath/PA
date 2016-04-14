@@ -204,7 +204,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 				"model.appointment.reason,model.appointment.createdUser.userId,model.appointment.createdUser.firstName," +
 				" model.appointment.createdUser.lastName,model1.fromDate,model.appointment.appointmentStatus.appointmentStatusId," +
 				" model.appointment.appointmentStatus.status,model.appointment.appointmentId,model1.toDate," +
-				" model.appointment.appointmentUniqueId " +
+				" model.appointment.appointmentUniqueId,model1.date " +
 				" from AppointmentCandidateRelation model,AppointmentTimeSlot model1 " +
 				" where model.appointment.isDeleted='N'" +
 				" and model.appointment.appointmentId = model1.appointment.appointmentId");

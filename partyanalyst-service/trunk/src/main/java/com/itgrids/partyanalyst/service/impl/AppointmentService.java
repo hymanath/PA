@@ -375,6 +375,7 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		        	appointment.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		        	appointment.setIsDeleted("N");
+		        	appointment.setIsLabelled("N");
 		        	appointment = appointmentDAO.save(appointment);
 		        	
 		        	if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("") && appointment != null && appointment.getAppointmentId() != null && appointment.getAppointmentId()>0l){
@@ -2743,6 +2744,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								vo.setToTime(convertDate1);
 								vo.setFromDate(params[8].toString());
 								vo.setToDate(params[12].toString());
+								vo.setDate(params[14].toString().split(" ")[0]);
 								vo.setAppointmentUniqueId(params[13]!=null?params[13].toString():"");
 								
 							}
