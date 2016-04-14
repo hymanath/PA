@@ -34,7 +34,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select  distinct acr.appointment_id as appid, a.reason as reason, ap.priority as priority, ass.status as status," +
-				"            a.inserted_time as insertedTime,la.appointment_label_id as applabelId" +
+				"            a.inserted_time as insertedTime,la.appointment_label_id as applabelId,a.appointment_unique_id as uniqueId" +
 				"   from    appointment_candidate_relation acr " +
 				"           join appointment                  a    on  acr.appointment_id=a.appointment_id " +
 				"           join appointment_priority         ap   on  a.appointment_priority_id=ap.appointment_priority_id " +
@@ -97,7 +97,8 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 				 .addScalar("priority",Hibernate.STRING)
 				 .addScalar("status",Hibernate.STRING)
 				 .addScalar("insertedTime",Hibernate.TIMESTAMP)
-				 .addScalar("applabelId",Hibernate.LONG);
+				 .addScalar("applabelId",Hibernate.LONG)
+				 .addScalar("uniqueId",Hibernate.STRING);
 		        
 		if(selUserId != null && selUserId > 0l){
 			query.setParameter("selUserId",selUserId);
