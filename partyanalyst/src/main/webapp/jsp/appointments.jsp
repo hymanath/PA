@@ -310,7 +310,7 @@
 													<option value="0">Select Search Type</option>
 													<option value="1">Name</option>
 													<option value="2">Public Representative</option>
-													<option value="3">Cadre Committee</option>
+													<option value="3">Party Committee</option>
 												</select>
 											</div>
                                             <div class="col-md-4 pad_0 advanceSearchCls advanceprcls">
@@ -419,18 +419,12 @@
 												<img src="images/search.gif" style="display:none;" id="ajaxImgForAppintId"/>
 											</div>
 												<div style="margin-top: 50px;"><img id="searchMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
-												
-												
-										
 									</div>
-										
-										
-                                        <div class="row m_top25">
-											<div class="col-md-12">
+										<div class="row m_top25">
+											<div class="col-md-12" id="clearSerchDivId">
 												<div id="apptmemberDetailsDiv"></div>
 											</div>
                                         </div>
-                                        
                                     </div>
 									<div class="block">
 										<div class="row">
@@ -467,7 +461,7 @@
 															<i class="glyphicon glyphicon-calendar"></i>
 															<span class="caret"></span>
 														</span>
-														<input type="text" class="form-control multiDateCls disableCls" id="multiDate" name="appointmentVO.appointmentDates">
+														<input type="text" class="form-control multiDateCls disableCls" id="multiDate" name="appointmentVO.appointmentDates" readOnly>
 													</div>
 													<div class="errorSpdCls validateClr"></div>
 												</div>
@@ -1526,7 +1520,6 @@ $(".dropkickClass").dropkick();
 			YAHOO.util.Connect.setForm('saveAppointment',true);
 			YAHOO.util.Connect.asyncRequest('POST','appointmentSavingAction.action',uploadHandler);
 		}
-		
 	}
 	
 	function showStatus(myResult,num){
@@ -1545,20 +1538,18 @@ $(".dropkickClass").dropkick();
 			setTimeout(function(){
 			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>").delay( 2500 );
 			}, 1000);
-			
 		}
-			
 	}
-	
 	function saveFieldsEmpty(){
-		
-		
 		$("#createAppTypeListId").val(0);
 		$("#createAppTypeListId").dropkick('reset');
 		$("#selectManualDateId").trigger('click');
-		$("#appointmentReasonId").val("");	
+		$("#appointmentReasonId").val("");
+		//$("#searchTypeId").val(0);
+		$("#searchTypeId").dropkick('reset');
+		$("#clearSerchDivId").html("");
+		$("#searchValueId").val("");
 	}
-	
 	function showhideLocationBoxes(num){
 		$(".locationCls"+num).css("display","none");
 		var id = $("#locationScopeSelId"+num).attr("attr_val");
