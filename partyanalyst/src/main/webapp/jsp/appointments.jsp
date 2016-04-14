@@ -3378,20 +3378,49 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='</div>';
 		if(result != null)
 		{
+			str+='<ul>';
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "UpCome")
 				{
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
-							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
-							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose : '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
-							   str+='<p class="font12 m_top20">Purpose : '+result[i].subject+' </p>';
+						str+='<div class="panel-heading bg_ff pad_5">';
+							str+='<div class="panel-heading bg_ff pad_5">';
+							str+='<p class="font12">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							if(result[i].appointmentStatus == "Waiting")
+							{
+								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
 							}
-							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
+							else if(result[i].appointmentStatus == "Fixed")
+							{
+								str+='<span style="font-weight:bold;color:#650199">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Attended")
+							{
+								str+='<span style="font-weight:bold;color:#4EAF50">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Not Attended")
+							{
+								str+='<span style="font-weight:bold;color:#FF9800">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Rescheduled")
+							{
+								str+='<span style="font-weight:bold;color:#9800CD">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Cancelled")
+							{
+								str+='<span style="font-weight:bold;color:#CC0001">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Tentative")
+							{
+								str+='<span style="font-weight:bold;color:#673301">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Void")
+							{
+								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
+							}
+							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
@@ -3436,9 +3465,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<li>';
 						str+='<div class="media m_0">';
 						str+='<div class="media-left">';
-						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='<img class="media-object thumbnail " src="dist/Appointment/img/thumb.jpg" alt="...">';
 						str+='</div>';
-						str+='<div class="media-body">';
+						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
 						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
 						str+='<p></p>';
@@ -3446,6 +3475,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='</div>';
 						str+='</li>';
 						}
+						if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							   str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
+							}
 						str+='</ul>';
 					
 					str+='<p class="font12 m_top10">';
@@ -3460,7 +3494,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='</div>';
 				}
 			}
-			
+			str+='</ul>';
 		}
 		else
 		{
@@ -3664,21 +3698,48 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		if(result != null)
 		{
-			str+='<ul class="m_0">';
+			str+='<ul class="">';
 			for(var i in result)
 			{
 				if(result[i].scheduleType == "InProgress")
 				{
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading pad_5">';
-							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
-							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose : '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
-							   str+='<p class="font12 m_top20">Purpose : '+result[i].subject+' </p>';
+						str+='<div class="panel-heading bg_ff pad_5">';
+							str+='<p class="font12">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							if(result[i].appointmentStatus == "Waiting")
+							{
+								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
 							}
-							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
+							else if(result[i].appointmentStatus == "Fixed")
+							{
+								str+='<span style="font-weight:bold;color:#650199">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Attended")
+							{
+								str+='<span style="font-weight:bold;color:#4EAF50">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Not Attended")
+							{
+								str+='<span style="font-weight:bold;color:#FF9800">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Rescheduled")
+							{
+								str+='<span style="font-weight:bold;color:#9800CD">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Cancelled")
+							{
+								str+='<span style="font-weight:bold;color:#CC0001">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Tentative")
+							{
+								str+='<span style="font-weight:bold;color:#673301">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Void")
+							{
+								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
+							}
+							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							
 						    str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
@@ -3725,7 +3786,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<div class="media-left">';
 						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
 						str+='</div>';
-						str+='<div class="media-body">';
+						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
 						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
 						str+='<p></p>';
@@ -3733,6 +3794,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='</div>';
 						str+='</li>';
 						}
+						if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p <p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							   str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
+							}
 						str+='</ul>';
 					
 					str+='<p class="font12 m_top10">';
@@ -3797,17 +3863,42 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				if(result[i].scheduleType == "Completed")
 				{
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading">';
-							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
-							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;';
-							str+='<i class="glyphicon glyphicon-cog settingsIcon"></i>';
-							str+='</span></p>';
-							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose : '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
-							  str+='<p class="font12 m_top20">Purpose : '+result[i].subject+' </p>';
+						str+='<div class="panel-heading bg_ff pad_5">';
+							str+='<p class="font12">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							if(result[i].appointmentStatus == "Waiting")
+							{
+								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
 							}
-							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
+							else if(result[i].appointmentStatus == "Fixed")
+							{
+								str+='<span style="font-weight:bold;color:#650199">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Attended")
+							{
+								str+='<span style="font-weight:bold;color:#4EAF50">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Not Attended")
+							{
+								str+='<span style="font-weight:bold;color:#FF9800">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Rescheduled")
+							{
+								str+='<span style="font-weight:bold;color:#9800CD">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Cancelled")
+							{
+								str+='<span style="font-weight:bold;color:#CC0001">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Tentative")
+							{
+								str+='<span style="font-weight:bold;color:#673301">'+result[i].appointmentStatus+'</span>';
+							}
+							else if(result[i].appointmentStatus == "Void")
+							{
+								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
+							}
+							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
@@ -3854,15 +3945,23 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<div class="media-left">';
 						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
 						str+='</div>';
-						str+='<div class="media-body">';
+						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
 						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
-						str+='<p></p>';
+
+						
 						str+='</div>';
 						str+='</div>';
+						//multiple
 						str+='</li>';
 						}
 						str+='</ul>';
+						if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							  str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
+							}
+						
 					
 					str+='<p class="font12 m_top10">';
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
