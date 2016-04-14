@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
