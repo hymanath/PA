@@ -15,7 +15,6 @@
     <META NAME="Description" CONTENT=" <c:out value='${constituencyDetails.constituencyName}'/> constituency page provides the outline and basic information ,mandals information,constituency election results and latest news of the state.<c:out value='${statePage.stateName}'/> constituency page provides Assembly election results, Parliament election results, MPTC election results, ZPTC election results, Municipal election results, Corporation election results of all election years.">
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
-	
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage2.js"></script> 	
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent2.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
@@ -23,6 +22,8 @@
 	<script type="text/javascript" src="js/homePage/homePage.js"></script>
 	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script>
 	<script type="text/javascript" src="js/connectPeople/connectPeopleContent.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 	
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 	
@@ -58,12 +59,11 @@
 	
 	<!-- Combo-handled YUI CSS files: --> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css"> 
-
 	<!-- Combo-handled YUI JS files: --> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
- 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage2.css">	</link>
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 	<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
@@ -546,7 +546,7 @@ var queryString='';
 
 
 </script>
-          
+          <input type="hidden" class="surveyDtlsCls"/>
           <div class="cl-sub-fields-sec" style="margin-top:12px;">
             <h1 class="topone"></h1><h1 class="org-title"><span>Elected Candidate Info</span></h1>
 			<c:if test="${constituencyDetails.deformDate !=null}">
@@ -4705,7 +4705,6 @@ function savefavouriteLink(){
 	var rparam = "task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "saveUserFavouriteLink.action?"+rparam;
 	callAjaxTosaveUserFavouriteLink(jObj,url);
-
 }
 
 function callAjaxTosaveUserFavouriteLink(jObj,url){
@@ -4803,69 +4802,79 @@ function buildRegistrationTable(divId,divName,result){
 		   $(divId).html(str);
 }
 getSurveysListByConstituency();
-function getSurveysListByConstituency(){
-var constituencyId	 = '${param.constituencyId}';
-	$.ajax({
-			type:'GET',
-			 url:"http://localhost:8080/Survey/WebService/getSurveysListByConstituency/"+constituencyId+"",
-			 data : {},
-			 success: function(result){  
-					buildSurveyList(result);
-			}
+	function getSurveysListByConstituency(){
+		var constituencyId	 = '${param.constituencyId}';
+		$.ajax({
+				type:'GET',
+				 url:"http://localhost:8080/Survey/WebService/getSurveysListByConstituency/"+constituencyId+"",
+				 data : {},
+				 success: function(result){  
+						buildSurveyList(result);
+				}
 		});
-}
-function buildSurveyList(results){
-	if(results != null){
-		totalSurveys = results.surveySetsList.length;
-		var str='';
-		str+='<div class="panel panel-default">';
-		str+='<div class="panel-heading">';
-		str+='<h4 class="panel-title">SURVEY DETAILS <span class="pull-right" style="text-transform:uppercase;"> Total : '+results.surveySetsList.length+'</span></h4>';
-		str+='</div>';
-		str+='<div class="panel-body">';
-		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
-		for(var i in results.surveySetsList){
+	}
+
+	function buildSurveyList(results){
+		if(results != null){
+			totalSurveys = results.surveySetsList.length;
+			var str='';
 			str+='<div class="panel panel-default">';
-				str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
-					str+='<a role="button" class="surveyDtlsCls collapsed surveyBasicIcon" attr_surveyId="'+results.surveySetsList[i].id+'" attr_divId="questionOptionDetailsId'+i+'" attr_questionId="questionId'+i+'" attr_selectDiv="questionSelect'+i+'" attr_loadingImg="loadingAjaxImg'+i+'" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
-					str+='<h4 class="panel-title" style="text-transform:uppercase; font-size:14px">'+results.surveySetsList[i].name+'<span class="pull-right" style="color:#999999;"> Total Samples : '+results.surveySetsList[i].count+ '&nbsp;&nbsp;</span></h4></a>';
-				str+='</div>';
-				str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
-				  str+='<div class="panel-body">';
-					str+='<div id="questionSelect'+i+'"></div>';
-					str+='<center><img src="images/search.gif" id="loadingAjaxImg'+i+'"  style="display:none;"/></center>';
-					str+='<div id="questionOptionDetailsId'+i+'" style="margin-top: 20px;"></div>'
+			str+='<div class="panel-heading">';
+			str+='<h4 class="panel-title">SURVEY DETAILS <span class="pull-right" style="text-transform:uppercase;"> Total : '+results.surveySetsList.length+'</span></h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+			str+='<table id="listOfSurveyId">';
+			str+='<thead><th></th></thead>';
+			str+='<tbody>';
+			for(var i in results.surveySetsList){
+				str+='<tr><td>';
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+						str+='<a role="button" class="collapsed surveyBasicIcon" attr_surveyId="'+results.surveySetsList[i].id+'" attr_divId="questionOptionDetailsId'+i+'" attr_questionId="questionId'+i+'" attr_selectDiv="questionSelect'+i+'" attr_loadingImg="loadingAjaxImg'+i+'" data-toggle="collapse" data-parent="#accordion" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'" onclick="getSurveyQuestionDetails('+results.surveySetsList[i].id+',\'questionOptionDetailsId'+i+'\',\'questionSelect'+i+'\',\'loadingAjaxImg'+i+'\',\'questionId'+i+'\')">';
+						str+='<h4 class="panel-title" style="text-transform:uppercase; font-size:14px">'+results.surveySetsList[i].name+'<span class="pull-right" style="color:#999999;"> Total Samples : '+results.surveySetsList[i].count+ '&nbsp;&nbsp;</span></h4></a>';
 					str+='</div>';
-				str+='</div>';
-			 str+='</div>';
-		}
-		str+='</div>';
-		str+='</div>';
-	  str+='</div>';
-	  $("#surveysListDiv").html(str);
-}
-	$(".surveyDtlsCls").click(function(){
-		$(".panel-collapse").css("height","0");
-		var surveyId = $(this).attr("attr_surveyId");
-		var constituencyId = '${param.constituencyId}';
-		var divId = $(this).attr("attr_divId");
-		var selectDiv = $(this).attr("attr_selectDiv");
-		var loadingImgId = $(this).attr("attr_loadingImg");
-		var questionId = $(this).attr("attr_questionId");
-		$("#"+loadingImgId).show();
-		var jobj = 
-		{
-			surveyId : surveyId,
-			constituencyId : constituencyId
-		};
-		 $.ajax({
-		 type:'GET',
-		 url:"http://localhost:8080/Survey/WebService/getSurveyQuestionsInfoBySurvey/"+surveyId+"/"+constituencyId+"",
-		 data : {},
-		 success: function(results){  
-					buildQuestions(results,divId,selectDiv,surveyId,loadingImgId,questionId);
+					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					  str+='<div class="panel-body">';
+						str+='<div id="questionSelect'+i+'"></div>';
+						str+='<center><img src="images/search.gif" id="loadingAjaxImg'+i+'"  style="display:none;"/></center>';
+						str+='<div id="questionOptionDetailsId'+i+'" style="margin-top: 20px;"></div>'
+						str+='</div>';
+					str+='</div>';
+				 str+='</div>';
+				 str+='</td></tr>';
 			}
-		});
+			str+='</tbody>';
+			str+='</table>';
+			str+='</div>';
+			str+='</div>';
+		  str+='</div>';
+		  $("#surveysListDiv").html(str);
+		  $("#listOfSurveyId").dataTable({
+			   "iDisplayLength":  15,
+			  "aLengthMenu": [[ 15, 50, 100, -1], [ 15, 50, 100, "All"]]
+		  });
+	}
+
+}
+
+function getSurveyQuestionDetails(surveyId,divId,selectDiv,loadingImgId,questionId)
+{
+	$(".panel-collapse").css("height","0");
+	var constituencyId = '${param.constituencyId}';
+	$("#"+loadingImgId).show();
+	var jobj = 
+	{
+		surveyId : surveyId,
+		constituencyId : constituencyId
+	};
+	 $.ajax({
+	 type:'GET',
+	 url:"http://localhost:8080/Survey/WebService/getSurveyQuestionsInfoBySurvey/"+surveyId+"/"+constituencyId+"",
+	 data : {},
+	 success: function(results){  
+				buildQuestions(results,divId,selectDiv,surveyId,loadingImgId,questionId);
+		}
 	});
 }
 function buildQuestions(result,divId,selectDiv,surveyId,loadingImgId,questionId){
@@ -4947,7 +4956,6 @@ function buildQuestionOptionsInfo(result,divId,loadingImgId){
 			if(result.questionsList[i].multiSurveyQues == "true" && totalSurveys > 1)
 				str+='<span class="pull-right chartImagCls" attr_divId="chartDivId'+i+'" attr_questionId="'+result.questionsList[i].id+'"><img class="pull-right" src="images/078461.png"  style="cursor: pointer; height: 30px; width: 30px; margin-top: -5px; margin-left: 10px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border-radius: 4px;"/></span>';
 			str+='<i class="pull-right" style="color:#999; "> Total Respondents : '+result.questionsList[i].totalCount+'</i></h4></div>';
-			//str+='<div class="panel-heading"><h4 class="panel-title">'+result.questionsList[i].name+' <span> ('+result.questionsList[i].questionCode+')</span><span class="pull-right chartImagCls" attr_divId="chartDivId'+i+'" attr_questionId="'+result.questionsList[i].id+'"><img class="pull-right" src="images/078461.png" style="width: 45px; height: 35px;margin-top: -8px;cursor:pointer;"/></span> <span class="pull-right" style="margin-right: 100px;"> Total Respondents : '+result.questionsList[i].totalCount+'</span></h4></div>';
 			str+='<div class="panel-body pad_0">';
 			str+='<div id="chartDivId'+i+'" style="display:none;"></div>'
 			if(result.questionsList[i].verifierVOList != null && result.questionsList[i].verifierVOList.length > 0){
