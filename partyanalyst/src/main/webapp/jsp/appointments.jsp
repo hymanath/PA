@@ -2652,11 +2652,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		 for(var i in result){
 			
 			  str+='<div class="panel panel-default manageAppViewPanelClass">';
-				str+='<div class="panel-heading">';
+				str+='<div class="panel-heading font12">';
 				        if(result[i].labeled){
-							str+='<span><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" checked></span>';
+							str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
+							str+='<span class="requestedCheckbox text-success"><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" checked></span>';
+							str+='<span class="pull-right">Current Status : '+result[i].status+'</span>';
 						}else{
-							str+='<span><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
+							str+='<span class="requestedCheckbox text-success"><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
 						}
 						if(result[i].subject !=null && result[i].subject.length>0){
 							str+='<p>Purpose : '+result[i].subject+'</p>';
@@ -2670,11 +2672,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p>Requested Date : '+result[i].dateString+'</p>';
 						}else{
 							str+='<p>Requested Date : - </p>';
-						}if(result[i].status !=null && result[i].status.length>0){
+						}/* if(result[i].status !=null && result[i].status.length>0){
 							str+='<p>Status : '+result[i].status+'</p>';
 						}else{
 							str+='<p>Status : - </p>';
-						}
+						} */
 						/* if(result[i].apptpreferableDates !=null && result[i].apptpreferableDates.length>0){
 							str+='<p>Requested Dates : '+result[i].apptpreferableDates+'</p>';
 						}else{
@@ -2682,15 +2684,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						} */
 					
 				str+='</div>';
-				  str+='<div class="panel-body">';
+				  str+='<div class="panel-body pad_5">';
 					for(var j in result[i].subList){
 						str+='<ul class="viewAppointmentRequestedMembers">';
 							str+='<li>';
 								str+='<div class="row">';
-									str+='<div class="col-md-12">';
-										str+='<span class="requestedCheckbox text-success"></span>';
-									str+='</div>';
-									str+='<div class="col-md-6">';
+									//str+='<div class="col-md-12">';
+										//str+='<span class="requestedCheckbox text-success"></span>';
+									//str+='</div>';
+									str+='<div class="col-md-4">';
 										str+='<div class="media">';
 											str+='<div class="media-left">';
 												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
@@ -2750,9 +2752,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										str+='</table>'; */
 										
 									str+='</div>';
-									str+='<div class="col-md-6">';
-										str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
-										str+='<table class="table table-bordered m_top10">';
+									str+='<div class="col-md-8">';
+										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
+										str+='<table class="table table-bordered table-condensed m_top10 font12">';
 										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 											str+='<thead>';
 											str+='<th>CREATED DATE</th>';
@@ -2809,7 +2811,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='</div>';
 			
 		 }
-		  str+='<button class="btn btn-success" id="updateLabelId" >ASSIGN TO LABEL</button>';
+		  str+='<button class="btn btn-success" id="updateLabelId" >UPDATE LABEL</button>';
 		  str+=' <span id="statusMsgAppntReqt"></span>';
 		 str+='<div ><center ><img style="display: none;margin-top: -30px;" src="images/icons/loading.gif" id="updateMemberAjax"></center></div>';
 		 str+='</div>';
