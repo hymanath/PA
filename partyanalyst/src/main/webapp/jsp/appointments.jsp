@@ -470,7 +470,7 @@
 													
 												</div>
 												<div class="col-md-12 m_top10">
-													<label>Appointment Reason</label><span style='color:red'> &nbsp * </span>
+													<label>Appointment Purpose</label><span style='color:red'> &nbsp * </span>
 													<textarea class="form-control" id="appointmentReasonId" name="appointmentVO.reason"></textarea>
 													<div class="errorArCls validateClr"></div>
 												</div>
@@ -2103,7 +2103,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<p>Constituency  :'+result[i].constituencyName+'</p>';
 						str+='<p>Last Visit    :'+result[i].date+'</p>';
 						str+='<p>Appt Type     :'+result[i].priority+'</p>';
-						str+='<p>Subject       :'+result[i].reason+'</p>';
+						str+='<p>Purpose       :'+result[i].reason+'</p>';
 					str+='</div>';
 				str+='</div>';
 				str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
@@ -2983,7 +2983,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='<div class="col-md-12">';
 										str+='<span class="requestedCheckboxPanel text-danger" id="apptStatus'+result[i].appointmentId+'">'+result[i].status+'</span>';
 									str+='<div class="col-xs-5">';
-										str+='<p>Subject : '+result[i].reason+'</p>';
+										str+='<p>Purpose : '+result[i].reason+'</p>';
 										str+='<p>Priority Type : '+result[i].priority+'</p>';
 									str+='</div>';
 									str+='<div class="col-xs-7">';
@@ -3384,9 +3384,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
+							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose : '+result[i].subject.substring(0,35)+'...</p>';
 							}else{
-							   str+='<p class="font12 m_top20">Sub:'+result[i].subject+' </p>';
+							   str+='<p class="font12 m_top20">Purpose : '+result[i].subject+' </p>';
 							}
 							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
@@ -3671,9 +3671,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="font12"><span class="pull-left text-danger">'+result[i].appointmentStatus+'</span><span class="pull-right text-success">';
 							str+='<i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].time+' &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
+							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose : '+result[i].subject.substring(0,35)+'...</p>';
 							}else{
-							   str+='<p class="font12 m_top20">Sub:'+result[i].subject+' </p>';
+							   str+='<p class="font12 m_top20">Purpose : '+result[i].subject+' </p>';
 							}
 							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 						    str+='<div class="appointmentSettingsBLock arrow_box">';
@@ -3800,9 +3800,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<i class="glyphicon glyphicon-cog settingsIcon"></i>';
 							str+='</span></p>';
 							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
+							  str+='<p class="font12 m_top20" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose : '+result[i].subject.substring(0,35)+'...</p>';
 							}else{
-							  str+='<p class="font12 m_top20">Sub:'+result[i].subject+' </p>';
+							  str+='<p class="font12 m_top20">Purpose : '+result[i].subject+' </p>';
 							}
 							str+='<p class="font12 m_top20">ID: '+result[i].appointmentUniqueId+'</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
@@ -4011,7 +4011,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='</div>';
 					str+='</div>';
 						
-					str+='<p>Subject : '+result[i].subject+'</p>';
+					str+='<p>Purpose : '+result[i].subject+'</p>';
 					str+='<p>Priority Type : '+result[i].priority+'</p>';
 					str+='<p>Requested Date : '+result[i].dateString+'</p>';
 					
@@ -4702,7 +4702,7 @@ function buildTimeSlotsTable(result){
 			str+='<span class="pull-right" style="margin-left:8px;" id="dateSpnCls">';
 			str+='<i class="glyphicon glyphicon-calendar"></i> '+result[i].fromDateStr.substr(0,10)+'</span>&nbsp;';
 			
-			str+='<p>Subject: '+result[i].subject+'</p>';
+			str+='<p>Purpose : '+result[i].subject+'</p>';
 			str+='<p>Priority Type: '+result[i].priority+'</p>';
 			str+='</div>';
 			str+='<div class="panel-body pad_5">';
@@ -4864,9 +4864,9 @@ function buildTimeSlotsTable(result){
 						str+='</div>';
 					str+='</div>';
 					if(result[i].subject !=null && result[i].subject.length>0){
-						str+='<p>Subject : '+result[i].subject+'</p>';
+						str+='<p>Purpose : '+result[i].subject+'</p>';
 					}else{
-						str+='<p>Subject : - </p>';
+						str+='<p>Purpose : - </p>';
 					}if(result[i].priority !=null && result[i].priority.length>0){
 						str+='<p>Priority Type : '+result[i].priority+'</p>';
 					}else{
