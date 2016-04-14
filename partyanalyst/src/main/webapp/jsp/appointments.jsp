@@ -4063,7 +4063,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){
 		$("#apptRqstMemberAjax").hide();
-		if(result.listOfTimePairPerDate != null && result.listOfTimePairPerDate.length!=0 ){
+		if(result!= null && result.length!=0 ){
 			$("#pluginTableId").show();
 			buildTimeSlotsTable(result);
 			$(".changeClass").removeClass("col-md-12")
@@ -4431,16 +4431,23 @@ var tableToExcel = (function() {
 		});*/
 	});
 function buildTimeSlotsTable(result){
+	
 		var str='';
 		str+='<tr>';
 		str+='<td class="text-center" style="height:29px;">';
 		str+='<i class="glyphicon glyphicon-triangle-top"></i>';
 		str+='</td>';
 		str+='</tr>';
-		for(var i in result.listOfTimePairPerDate){
-			str+='<tr>';
-			str+='<td class="text-center" style="height:29px;">'+(((result.listOfTimePairPerDate[i])[0])[0]).substr(0,10)+'</td>';
-			str+='</tr>';
+		if(result.listOfTimePairPerDate!=null && result.listOfTimePairPerDate.length>0){
+			for(var i in result.listOfTimePairPerDate){
+				str+='<tr>';
+				str+='<td class="text-center" style="height:29px;">'+(((result.listOfTimePairPerDate[i])[0])[0]).substr(0,10)+'</td>';
+				str+='</tr>';
+			}	
+		}else if(result.labelDate!=null && result.labelDate.length>0){
+			    str+='<tr>';
+				str+='<td class="text-center" style="height:29px;">'+result.labelDate.substr(0,10)+'</td>';
+				str+='</tr>';
 		}
 		str+='<tr>';
 		str+='<td class="text-center" style="height:29px;">';
@@ -4464,56 +4471,54 @@ function buildTimeSlotsTable(result){
 		str1+='<th colspan="4">7</th>';
 		str1+='<th colspan="4">8</th>';
 		str1+='</thead>';
-		for(var i in result.listOfTimePairPerDate){
+		if(result.listOfTimePairPerDate!=null && result.listOfTimePairPerDate.length>0){
+			for(var i in result.listOfTimePairPerDate){
 			str1+='<tr id="'+i+'"class="borderSlot">';
 			for(var unique=0;unique<=47;unique++){
 				str1+='<td id="'+i+''+unique+'"></td>';
 			}
 			str1+='</tr>';
-			
 			}
 			$("#tablePluginId").html(str1);
-		for(var i in result.listOfTimePairPerDate){
-			for(var j in result.listOfTimePairPerDate[i]){
-				//alert((result.listOfTimePairPerDate[i])[j]);
-				var start=((result.listOfTimePairPerDate[i])[j])[0];
-				var end = ((result.listOfTimePairPerDate[i])[j])[1];
-				var startIdForHour=start.substr(11,2);
-				var startIdForMin=start.substr(14,2);
-				var startId=(startIdForHour-8)*4;
-				 if(startIdForMin=="00"){
-					startId=startId+0;
-				}
-				if(startIdForMin=="15"){
-					startId=startId+1;
-				}
-				if(startIdForMin=="30"){
-					startId=startId+2;
-				}
-				if(startIdForMin=="45"){
-					startId=startId+3;
-				} 
-				var endIdForHour=end.substr(11,2);
-				var endIdForMin=end.substr(14,2);
-				var endId=(endIdForHour-8)*4;
-				 if(endIdForMin=="00"){
-					endId=endId+0;
-				}
-				if(endIdForMin=="15"){
-					endId=endId+1;
-				}
-				if(endIdForMin=="30"){
-					endId=endId+2;
-				}
-				if(endIdForMin=="45"){
-					endId=endId+3;
-				}
-				endId=endId-1; 
-				for(var start=startId;start<=endId;start++){
-					$("#"+i+""+start).addClass("bookedSlots");
+			for(var i in result.listOfTimePairPerDate){
+				for(var j in result.listOfTimePairPerDate[i]){
+					//alert(((result.listOfTimePairPerDate[i])[j])[0]);
+					var start=((result.listOfTimePairPerDate[i])[j])[0];
+					var end = ((result.listOfTimePairPerDate[i])[j])[1];
+					var startIdForHour=start.substr(11,2);
+					var startIdForMin=start.substr(14,2);
+					var startId=(startIdForHour-8)*4;
+				
+					startId= startId+(startIdForMin/15);
+					var strtDividedVleForMnte=startIdForMin%15;
+					   if(strtDividedVleForMnte>=8){
+						   startId=startId+1;
+					   }
+					var endIdForHour=end.substr(11,2);
+					var endIdForMin=end.substr(14,2);
+					var endId=(endIdForHour-8)*4;
+					
+					endId= endId+(endIdForMin/15);
+					var endDividedVleForMnte=endIdForMin%15;
+					   if(endDividedVleForMnte>=8){
+						   endId=endId+1;
+					   }
+					endId=endId-1;  
+					for(var start=startId;start<=endId;start++){
+						$("#"+i+""+start).addClass("bookedSlots");
+					}
 				}
 			}
+			
+		}else{
+			str1+='<tr class="borderSlot">';
+			for(var unique=0;unique<=47;unique++){
+				str1+='<td></td>';
+			}
+			str1+='</tr>';
+			$("#tablePluginId").html(str1);
 		}
+		
 	}
 	function clearAllValidationCls(){
 		$(".errorAptCls").html('');
@@ -4906,19 +4911,21 @@ function buildTimeSlotsTable(result){
 	$(".cnfrmaptsCls").click(function(){
 		$("#errorDivForTimeSlotId").html('');
 		//setting default time format
-		$("#fromTimeId").val("00:00AM");
-		$("#toTimeId").val("00:00AM");
+		$("#fromTimeId").val("8:00AM");
+		$("#toTimeId").val("8:00AM");
 	});
 	
 	 $(document).on("click","#setDfltTmFrmtId",function(){
 	    //setting default time format
-		var timeArr=[];
+	    var timeArr=[];
 		timeArr = $(this).closest("tr").find("#timeSpnCls").text().split("to");
 		var date = $(this).closest("tr").find("#dateSpnCls").text();
 		
 		$(this).closest("tr").find(".appntmntCnddteUpdtDtRngPckrCls").val(date);
 		$(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val(timeArr[0]);
 		$(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val(timeArr[1]);
+		//$(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val("8:00AM");
+		//$(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val("8:00AM");
 	 });
 	$(".dateRadioCls").click(function(){		
 		if($("#selectManualDateId").is(":checked")){
@@ -5628,10 +5635,39 @@ function getAppointmentCreatedUsers(){
 			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("Please Specify the To Time");
 			return;
 		}
+		var fromTimeArr=fromTime.split(":");
+		var toTimeArr=toTime.split(":");
+		
+		
+	     if(fromTimeArr[0]<=7 && fromTimeArr[1].substr(2,3).trim()=="AM"){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("From time must be greater than or equal to 8:00AM");
+		         return;
+		 }	
+         if(fromTimeArr[0]>=9 &&  fromTimeArr[1].substr(2,3).trim()=="PM"){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("From time must be greater than or equal to 8:00AM");
+		        return;
+		 }
+	 	if(fromTimeArr[0]==8 && fromTimeArr[1].substr(0,2)>0 && fromTimeArr[1].substr(2,3).trim()=="PM"){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("From time must be greater than or equal to 8:00AM");
+		        return;
+		}  
+		 if(toTimeArr[0]<=7 && toTimeArr[1].substr(2,3).trim()=="AM"){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To time must be less than or equal to 8:00PM");
+		    return;
+		 }	
+         if(toTimeArr[0]>=9 && toTimeArr[1].substr(0,2)>=0 &&  toTimeArr[1].substr(2,3).trim()=="PM"){
+		  $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To time must be less than or equal to 8:00PM");
+		  return;
+		 }		
+		 if(toTimeArr[0]==8 && toTimeArr[1].substr(0,2)>0 && toTimeArr[1].substr(2,3).trim()=="PM"){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To time must be less than or equal to 8:00PM");
+		        return;
+		}  
 		if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
 			 $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
 			 return;
 		 }
+		
 	    setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"update",timeSlotId)
 	});
 	
@@ -5649,6 +5685,34 @@ function getAppointmentCreatedUsers(){
 			$("#errorDivForTimeSlotId").html("Please Specify the To Time");
 			return;
 		}
+		var fromTimeArr=fromTime.split(":");
+		var toTimeArr=toTime.split(":");
+		
+		//debugger;
+	     if(fromTimeArr[0]<=7 && fromTimeArr[1].substr(2,3).trim()=="AM"){
+			$("#errorDivForTimeSlotId").html("From time must be greater than or equal to 8:00AM");
+		         return;
+		 }	
+         if(fromTimeArr[0]>=9 &&  fromTimeArr[1].substr(2,3).trim()=="PM"){
+			$("#errorDivForTimeSlotId").html("From time must be greater than or equal to 8:00AM");
+		        return;
+		 }
+	 	if(fromTimeArr[0]==8 && fromTimeArr[1].substr(0,2)>0 && fromTimeArr[1].substr(2,3).trim()=="PM"){
+			$("#errorDivForTimeSlotId").html("From time must be greater than or equal to 8:00AM");
+		        return;
+		}  
+		 if(toTimeArr[0]<=7 && toTimeArr[1].substr(2,3).trim()=="AM"){
+			$("#errorDivForTimeSlotId").html("To time must be less than or equal to 8:00PM");
+		    return;
+		 }	
+         if(toTimeArr[0]>=9 && toTimeArr[1].substr(0,2)>=0 &&  toTimeArr[1].substr(2,3).trim()=="PM"){
+		  $("#errorDivForTimeSlotId").html("To time must be less than or equal to 8:00PM");
+		  return;
+		 }		
+		 if(toTimeArr[0]==8 && toTimeArr[1].substr(0,2)>0 && toTimeArr[1].substr(2,3).trim()=="PM"){
+			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To time must be less than or equal to 8:00PM");
+		        return;
+		}  
 		if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
 			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
 			 return;
@@ -5682,8 +5746,8 @@ function getAppointmentCreatedUsers(){
 					$("#confirmAppointmentBlockDropId").empty();
 					$("#confirmAppointmentBlockDropId").html("<h4 class='deleteTag'>DROP HERE</h4>");
 					//setting default time format
-					   $("#fromTimeId").val("00:00AM");
-		               $("#toTimeId").val("00:00AM");
+					   $("#fromTimeId").val("8:00AM");
+		               $("#toTimeId").val("8:00AM");
 					}else{
 			    $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Updated Successfully</p>");
 				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
