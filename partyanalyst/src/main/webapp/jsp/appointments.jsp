@@ -1553,7 +1553,7 @@ $(".dropkickClass").dropkick();
 		$("#appointmentReasonId").val("");
 		//$("#searchTypeId").val(0);
 		$("#searchTypeId").dropkick('reset');
-		$("#clearSerchDivId").html("");
+		$("#apptmemberDetailsDiv").html("");
 		$("#searchValueId").val("");
 	}
 	function showhideLocationBoxes(num){
@@ -2274,7 +2274,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										if(result[i].designation !=null && result[i].designation.length>0){
 												str+='<p >Designation: '+result[i].designation+'</p>';
 										}else{
-											str+='<p>Designation: - </p>';
+											if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
+												str+='<p>Designation: - Cadre</p>';
+											}else{
+												str+='<p>Designation: - </p>';
+											}
 										}
 										
 										  // str+='<p>Recent Appt History: 20-feb-2016</p>';
@@ -2289,7 +2293,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='</div>';
 								if(result[i].designation==null)
 									result[i].designation = "";
-								str+='<div class="col-md-4 m_top10 pull-right" attr_id="'+result[i].id+'" >';
+								str+='<div class="col-md-2 m_top10 pull-right" attr_id="'+result[i].id+'" >';
 								if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0)
 								str+='<a  title="Click here to View '+result[i].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'">View History</a>&nbsp;&nbsp;';
 								str+='<a target="_blank" title="Click here to View '+result[i].name+' Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'">View Profile</a>&nbsp;&nbsp;';
@@ -2323,7 +2327,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			$("#appCandidateNameId").html(''+name+' - '+mobile+'');
 			getAppointStatusOverviewforCandidate(id);
 			getAppointmentHistoryForCandidate(id);
-		})
+		});
 		applyPagination();
 	}
 	var popDesignation ;
