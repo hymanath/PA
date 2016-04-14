@@ -310,12 +310,12 @@ body
 	margin-top:8px;
 	position:relative
 }
-.appointmentRequestedMembers li .requestedCheckbox
+.requestedCheckbox
 {
-	padding:2px 4px;
+	padding:4px 6px;
 	background-color:#ccc;
 	float:right;
-	margin:-8px -8px 0px;
+	margin:-11px -15px 0px 8px;
 }
 .requestedCheckboxPanel
 {
