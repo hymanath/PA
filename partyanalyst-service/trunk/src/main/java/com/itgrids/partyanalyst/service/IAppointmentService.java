@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AppHistoryVO;
 //import com.itgrids.grievance.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
@@ -74,4 +75,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppCandidateDesigListByType(Long typeId);
 	public  List<IdNameVO> getAppointmentStatusOverview();
 	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long aptUserId);
+	public List<AppHistoryVO> getAppointmentHistoryForCandidate();
 }
