@@ -13,6 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -70,8 +71,18 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	
 	private List<BasicVO> basicvoList;
 	private List<AppointmentStatusVO> appointmentStatusVOList;
+	private List<AppHistoryVO> historyList;
 	
 	
+	
+	public List<AppHistoryVO> getHistoryList() {
+		return historyList;
+	}
+
+	public void setHistoryList(List<AppHistoryVO> historyList) {
+		this.historyList = historyList;
+	}
+
 	public List<BasicVO> getBasicvoList() {
 		return basicvoList;
 	}
@@ -692,7 +703,7 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
-	/*public String getAppointmentHistoryForCandidate(){
+	public String getAppointmentHistoryForCandidate(){
 		try{
 			jObj = new JSONObject(getTask());
 			historyList = appointmentService.getAppointmentHistoryForCandidate(jObj.getLong("appointmentCandidateId"));
@@ -701,7 +712,7 @@ public String getCandidateWiseDetails(){
 			LOG.error("Exception raised at getAppointmentHistoryForCandidate", e);
 		}
 		return Action.SUCCESS;
-	}*/
+	}
 	
 	public String getAppointmentSearchDetails()
 	{

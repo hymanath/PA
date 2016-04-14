@@ -399,7 +399,7 @@
 														  </div>
 														</div> 
 														<div >
-															<div class="col-md-12">
+															<div class="col-md-6">
 																<div id="cadreCommitteeDiv" class="advanceCadreCommittee"></div>
 																<div id="representativesDiv"></div>
 																<div id="referRoleErrorDiv"></div>
@@ -969,6 +969,8 @@
     </div>
   </div>
 </div>
+<jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
+
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/js/AppointmentScreenBootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
@@ -2282,10 +2284,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='<div class="col-md-2">';
 									//str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
 								str+='</div>';
-								
-								str+='<div class="col-md-2 m_top10 pull-right" attr_id="'+result[i].id+'" >';
-								str+='<a target="_blank" title="Click here to View '+result[i].name+' Cadre Details " href="cadreDetailsAction.action?cadreId='+result[i].id+'">View Profile</a>&nbsp;&nbsp;';
-									str+='<input type="checkbox" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
+								if(result[i].designation==null)
+									result[i].designation = "";
+								str+='<div class="col-md-4 m_top10 pull-right" attr_id="'+result[i].id+'" >';
+								if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0)
+								str+='<a  title="Click here to View '+result[i].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'">View History</a>&nbsp;&nbsp;';
+								str+='<a target="_blank" title="Click here to View '+result[i].name+' Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'">View Profile</a>&nbsp;&nbsp;';
+								str+='<input type="checkbox" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
 								str+='</div>';
 								
 							str+='</div>';
@@ -2301,6 +2306,21 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}
 		
 		$("#apptmemberDetailsDiv").html(str);
+		$(document).on("click",".historyShowModalBtn",function(){
+			$("#appCandidateNameId").html('');
+			$(".historyShowModal").modal("show");
+			//alert($(this).attr("attr-id"))
+			var id = $(this).attr("attr-id");
+			var name = $(this).attr("attr-name");
+			var designation = $(this).attr("attr-designation");
+			var mobile = $(this).attr("attr-mobile");
+			if(designation != null && designation.length > 0)
+			$("#appCandidateNameId").html(''+name+' ('+designation+') - '+mobile+'');
+		else
+			$("#appCandidateNameId").html(''+name+' - '+mobile+'');
+			getAppointStatusOverviewforCandidate(id);
+			getAppointmentHistoryForCandidate(id);
+		})
 		applyPagination();
 	}
 	var popDesignation ;
@@ -2369,7 +2389,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
-				//$('#designationSelId'+temp).val(desg);
+			    //$('#designationSelId'+temp).val(desg);
 				var candidateType1;
 				//$("#designationSelId+temp option").each(function() {
 					$('#designationSelId'+temp+' option').each(function() {
@@ -2396,7 +2416,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						selectcd.refresh();
 					}, 500);	
 				}
-			 
 				$('#locationScopeSelId'+temp).val(lctscpid);
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
 				selectL.refresh();
@@ -5561,11 +5580,9 @@ function getAppointmentCreatedUsers(){
 		});
 		
 	}
-	
 	 $(document).on("click","#addApptsId",function(){
 		 setTimeout(function() {$('html, body').animate({scrollTop:2000}, 3000); },0);
 	});
-	
 </script>
 
 <script>
@@ -5940,11 +5957,12 @@ function getCommitteeRoles(){
 		select.refresh();
 	}
 	
-	getAppointStatusOverviewforCandidate();
-	  function getAppointStatusOverviewforCandidate(){
-			 var appointmentCandidateId=0;
+	
+	  function getAppointStatusOverviewforCandidate(id){
+			
 	    	var jsObj={
-	    			appointmentCandidateId:appointmentCandidateId
+	    			appointmentCandidateId:id,
+					task:""
 	    		}
 	    		$.ajax({
 	    			  type:'GET',
@@ -5952,8 +5970,79 @@ function getCommitteeRoles(){
 	    			  data: {task:JSON.stringify(jsObj)}
 	    	   }).done(function(result){
 					
+					buildAppointmentStatusOverView(result);
+					
 	    	   });	
 		  }
+		  function buildAppointmentStatusOverView(result)
+		  {
+			var str = '';
+			var total = 0;
+			for(var i in result)
+			{
+				total = total + result[i].availableCount;
+			}
+			str+='<p>Total - '+total+'</p>';
+			str+='<table class="table table-bordered">';
+			str+='<tr class="text-center">';
+			for(var i in result)
+			{
+			
+			str+='<td>';
+			str+='<h4>'+result[i].availableCount+'</h4>';
+			str+='<h5>'+result[i].name+'</h5>';
+			str+='</td>';
+			
+			}
+			str+='</tr>';
+			str+='</table>';
+		   $("#aptCandidateHistorystatusOverViewDiv").html(str);			
+		  }
+		  
+		  function getAppointmentHistoryForCandidate(id){
+			   
+	    	var jsObj={
+	    			appointmentCandidateId:id,
+					task:""
+	    		}
+		$.ajax({
+		  type : 'GET',
+		  url : 'getAppointmentHistoryForCandidateAction.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+		  buildAppointmentHistoryForCandidate(result);
+		  });
+	  }
+	  
+	function buildAppointmentHistoryForCandidate(result)
+	{
+		var str='';
+		str+='<table class="table table-condensed" style="border:1px solid #ddd">';
+		str+='<thead>';
+		str+='<th>ID</th>';
+		str+='<th>PURPOSE</th>';
+		str+='<th>CREATED ON</th>';
+		str+='<th>PREFERED DATE</th>';
+		str+='<th>CONFIRMED DATE</th>';
+		str+='<th>STATUS</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result)
+		{
+		str+='<tr>';
+		str+='<td>'+result[i].uniqueCode+'</td>';
+		str+='<td>'+result[i].purpose+'</td>';
+		str+='<td>'+result[i].createdOn+'</td>';
+		str+='<td>'+result[i].preferredDate+'</td>';
+		str+='<td>'+result[i].confirmedDate+'</td>';
+		str+='<td>'+result[i].status+'</td>';
+		str+='</tr>';	
+		}
+		str+='</tbody>';
+		str+='</table>';
+		$("#aptCandidateHistoryDiv").html(str);	
+	}
 	 
 </script>
 </body>
