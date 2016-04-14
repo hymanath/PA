@@ -400,5 +400,19 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		return query.list();
 	}
 	
+	public List<AppointmentCandidate> getAppointmentCandidateObjByMemship(String membershipId){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model from  AppointmentCandidate model " +
+				" where " +
+				" model.membershipId = :membershipId  ");
+		
+		Query query = getSession().createQuery(str.toString());		
+		query.setParameter("membershipId", membershipId);	
+		
+		return query.list();
+		
+	}
+	
 
 }
