@@ -4646,7 +4646,7 @@ function buildTimeSlotsTable(result){
 			str+='</div>';
 			str+='</div>';
 			str+='</div>';
-			str+='<span class="text-success pull-right" style="margin-left:8px;">';
+			str+='<span class="text-success pull-right" style="margin-left:8px;" id="timeSpnCls">';
 			str+='<i class="glyphicon glyphicon-time"></i>';
 			fromTime = result[i].fromDateStr.substr(11,5);
 			firstHour = fromTime.substr(0,2);
@@ -4669,7 +4669,7 @@ function buildTimeSlotsTable(result){
 			}
 			str+=''+firstHour+' : '+firstMin+' '+firstMean +' to '+secondHour+' : '+secondMin+' '+secondMean +'';
 			str+='</span>&nbsp;';
-			str+='<span class="pull-right" style="margin-left:8px;">';
+			str+='<span class="pull-right" style="margin-left:8px;" id="dateSpnCls">';
 			str+='<i class="glyphicon glyphicon-calendar"></i> '+result[i].fromDateStr.substr(0,10)+'</span>&nbsp;';
 			
 			str+='<p>Subject: '+result[i].subject+'</p>';
@@ -4724,9 +4724,9 @@ function buildTimeSlotsTable(result){
 		str+='</table>';
 		$("#appointmentMembersId").html(str);
         $(".appntmntCnddteUpdtDtRngPckrCls").daterangepicker({singleDatePicker:true});		
-		$('.appntmntCnddteUpdtDtRngPckrCls').val(moment().format('MM/DD/YYYY'));		
-		$(".appntmntCnddteUpdtFrmTmCls").datetimepicker({format:"LT"});
-	 	$(".appntmntCnddteUpdtTotmCls").datetimepicker({format:"LT"});
+		//$('.appntmntCnddteUpdtDtRngPckrCls').val(moment().format('MM/DD/YYYY'));		
+		//$(".appntmntCnddteUpdtFrmTmCls").datetimepicker({format:"LT"});
+	 	//$(".appntmntCnddteUpdtTotmCls").datetimepicker({format:"LT"});
 	    $('#appntmntMmbrsTblId').dataTable({
 		   // "bPaginate" : $('#appntmntMmbrsTblBdyId tr').length>10,
 			"iDisplayLength": 2,
@@ -4776,8 +4776,13 @@ function buildTimeSlotsTable(result){
 	
 	 $(document).on("click","#setDfltTmFrmtId",function(){
 	    //setting default time format
-		$(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val("00:00AM");
-		$(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val("00:00AM");
+		var timeArr=[];
+		timeArr = $(this).closest("tr").find("#timeSpnCls").text().split("to");
+		var date = $(this).closest("tr").find("#dateSpnCls").text();
+		
+		$(this).closest("tr").find(".appntmntCnddteUpdtDtRngPckrCls").val(date);
+		$(this).closest("tr").find(".appntmntCnddteUpdtFrmTmCls").val(timeArr[0]);
+		$(this).closest("tr").find(".appntmntCnddteUpdtTotmCls").val(timeArr[1]);
 	 });
 	$(".dateRadioCls").click(function(){		
 		if($("#selectManualDateId").is(":checked")){
