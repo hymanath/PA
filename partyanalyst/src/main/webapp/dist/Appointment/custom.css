@@ -153,7 +153,7 @@ body
 }
 .thumbnail
 {
-	height:60px;
+	height:40px;
 }
 .thumbnailSearch
 {
@@ -310,12 +310,12 @@ body
 	margin-top:8px;
 	position:relative
 }
-.requestedCheckbox
+.appointmentRequestedMembers li .requestedCheckbox
 {
-	padding:4px 6px;
+	padding:2px 4px;
 	background-color:#ccc;
 	float:right;
-	margin:-11px -15px 0px 8px;
+	margin:-8px -8px 0px;
 }
 .requestedCheckboxPanel
 {
@@ -409,20 +409,30 @@ body
 }
 .manageAppViewPanelClass .panel-heading
 {
-	background:#f4f4f4 !important;
-	border-bottom:1px solid #ddd !important;
+	background:#fff !important;
+	border-bottom:0px !important
 }
 .manageAppViewPanelClass .panel-body
 {
 	background:#fff;
 }
+.manageAppViewPanelClass .panel-body ul
+{
+	margin:0px;
+}
 .manageAppViewPanelClass .panel-body ul li
 {
 	box-shadow:none;
-	border:1px solid #ddd;
+	padding:3px 0px !important;
+	margin-top:0px !important;
+	border-top:1px solid #ddd;
+}
+.manageAppViewPanelClass .panel-body ul li:first-child
+{
+	border-top:0px;
 }
 .pad_5{padding:5px}
-.m_0{margin:0px;}
+.m_0{margin:0px !important;}
 .pluginTable
 {
 	margin-top:20px;
@@ -594,4 +604,8 @@ body
 	.text-capitalize
 	{
 		text-transform:uppercase
+	}
+	.text-success
+	{
+		color:#4CB050 !important
 	}
