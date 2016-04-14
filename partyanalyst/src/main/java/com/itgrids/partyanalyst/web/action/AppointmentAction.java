@@ -692,7 +692,7 @@ public String getCandidateWiseDetails(){
 		}
 		return Action.SUCCESS;
 	}
-	public String getAppointmentHistoryForCandidate(){
+	/*public String getAppointmentHistoryForCandidate(){
 		try{
 			jObj = new JSONObject(getTask());
 			historyList = appointmentService.getAppointmentHistoryForCandidate(jObj.getLong("appointmentCandidateId"));
@@ -701,7 +701,7 @@ public String getCandidateWiseDetails(){
 			LOG.error("Exception raised at getAppointmentHistoryForCandidate", e);
 		}
 		return Action.SUCCESS;
-	}
+	}*/
 	
 	public String getAppointmentSearchDetails()
 	{
