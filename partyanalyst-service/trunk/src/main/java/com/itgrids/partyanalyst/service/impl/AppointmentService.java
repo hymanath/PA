@@ -2056,11 +2056,11 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			        			List<Long> deletedAppointmentIds  =  null;
 			        			
 			        			if(labeledAppointmentIds!=null && labeledAppointmentIds.size()>0){
-			        				updatingAppointmentIds = new ArrayList<Long>(labeledAppointmentIds);
+			        				/*updatingAppointmentIds = new ArrayList<Long>(labeledAppointmentIds);
 			        				deletedAppointmentIds  = new ArrayList<Long>(labeledAppointmentIds);
 			        				
 			        				updatingAppointmentIds.retainAll(appointmentIds);
-			        				deletedAppointmentIds.removeAll(appointmentIds);
+			        				deletedAppointmentIds.removeAll(appointmentIds); */
 			        				savingAppointmentIds.removeAll(labeledAppointmentIds);
 			        			}
 			        			
