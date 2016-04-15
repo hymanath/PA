@@ -1546,6 +1546,9 @@ $(".dropkickClass").dropkick();
 	$(document).on("click",".advanceSearchCls",function(){
 			$("#savingStatusDivId").html('');
 	});
+	$(document).on("click",".advancedSearchBtn",function(){
+		$("#savingStatusDivId").html('');
+	});
 
 	function showStatus(myResult,num){
 		var result = myResult.split("<pre>");
