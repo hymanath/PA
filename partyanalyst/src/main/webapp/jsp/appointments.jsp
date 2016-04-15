@@ -17,6 +17,7 @@
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
+<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -127,6 +128,9 @@
 }
 .removetopborder td{
 	border-top: none !important;
+}
+.addwidth{
+	width:250px !important;
 }
 </style>
 </head>
@@ -383,7 +387,7 @@
 														
 								
 														<div class="advanceCadreCommittee" style="margin-top:5px;" id="referCommitteeDiv">
-														 <div class="col-md-5">
+														 <div class="col-md-3">
 															<label>Select Committee</label>
 															<select id="referCommitteeId" class="dropkickClass" >
 																<option value="0">All</option>
@@ -400,7 +404,7 @@
 														</div> 
 														<div >
 															<div class="col-md-6">
-																<div id="cadreCommitteeDiv" class="advanceCadreCommittee"></div>
+																<select id="cadreCommitteeDiv" multiple class="advanceCadreCommittee" style="width:250px !important;"></select>
 																<div id="representativesDiv"></div>
 																<div id="referRoleErrorDiv"></div>
 															</div>
@@ -986,6 +990,7 @@
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script src="dist/Appointment/DragDrop/Sortable.js" type="text/javascript"></script>
+<script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* Drag and Drop */
 
@@ -1164,19 +1169,9 @@ function buildTotalAppointmentStatus(result){
 	
 	var str='';
 		str+='<thead>';
-		str+='<th>TOTAL APPOINTMENTS</th>';
-		if(totalApptCount!=0){
-			
-			str+='<th>'+totalApptCount+'</th>';
-		}else{
-			str+='<th> - </th>';
-		}
-		if(totalUniqueMembersCount!=0){
-			str+='<th>'+totalUniqueMembersCount+' (UNIQUE MEMBERS)</th>';
-		}else{
-			str+='<th> - UNIQUE MEMBERS</th>';
-		}
-		
+		str+='<th> APPOINTMENTS</th>';
+		str+='<th> TOTAL</th>';
+		str+='<th> UNIQUE</th>';
 		str+='</thead>';
 		str+='<tbody>';
 	for(var i in result){
@@ -1197,7 +1192,21 @@ function buildTotalAppointmentStatus(result){
 			}
 			
 		str+='</tr>';
+		
 	}
+		str+='<tr>';
+		str+='<td>TOTAL</td>';
+		if(totalApptCount!=0){
+			str+='<td style="text-align:center;"><h4>'+totalApptCount+'</h4></td>';
+		}else{
+			str+='<td> - </td>';
+		}
+		if(totalUniqueMembersCount!=0){
+			str+='<td style="text-align:center;"><h4>'+totalUniqueMembersCount+'</h4></td>';
+		}else{
+			str+='<td> - </td>';
+		}
+		str+='</tr>';
 	str+='</tbody>';
 	$("#totalApptStatusCounts").html(totalApptCount);
 	$("#totalAppointmentsId").html(str);
@@ -2836,7 +2845,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='</div>';
 			
 		 }
-		  str+='<button class="btn btn-success" id="updateLabelId" >UPDATE LABEL</button>';
+		  str+='<button class="btn btn-success" id="updateLabelId" >ACTIVE TO LABEL</button>';
 		  str+=' <span id="statusMsgAppntReqt"></span>';
 		 str+='<div ><center ><img style="display: none;margin-top: -30px;" src="images/icons/loading.gif" id="updateMemberAjax"></center></div>';
 		 str+='</div>';
@@ -5302,7 +5311,7 @@ function getAppointmentCreatedUsers(){
 		else if(advanceSearchType == 3)
 		{
 			 searchType = "CadreCommittee";
-				$("input[name='designationName']:checked").each(function ()
+				$("#cadreCommitteeDiv option:selected").each(function ()
 			{		
 				var desgnaValue = $(this).attr("value");
 				if(desgnaValue ==null || desgnaValue =="" || desgnaValue == undefined){
@@ -5411,7 +5420,7 @@ function getAppointmentCreatedUsers(){
 	   
 	//Party Commitee Members	
 	if(advanceSearchType !=null && advanceSearchType == 3){
-		$("input[name='designationName']:checked").each(function ()
+		$("#cadreCommitteeDiv option:selected").each(function ()
 		{		
 			var desgnaValue = $(this).attr("value");
 			if(desgnaValue ==null || desgnaValue =="" || desgnaValue == undefined){
@@ -6053,16 +6062,26 @@ function getCommitteeRoles(){
     			  data: {task:JSON.stringify(jsObj)}
     	   }).done(function(result){
 			var str ='';
-				str+='<ul class="SelectPosition SelectPositionScroll">';
+				 /* str+='<ul class="SelectPosition SelectPositionScroll">';
 				str+=' <li  id="0">All<input type="checkbox" name="" value="0" class="pull-right" attr_value="All" id="allDesignationId"></input></li>';
 			   for(var i in result){
 				   str+=' <li  id="'+result[i].id+'">'+result[i].name+'   <input type="checkbox" name="designationName" value="'+result[i].id+'" class="referRolesCheck pull-right" attr_value="'+result[i].name+'"></input></li>';
 				}
 				
-				str+='</ul>';
+				str+='</ul>';  */
+				
+				var str ='';
+				str +='<option id="0" attr_value="All"  >All</option>';
+					for(var i in result){
+						str +='<option value="'+result[i].id+'" attr_value="'+result[i].name+'"  >'+result[i].name+'</option>';
+					}
+				
 				$("#cadreCommitteeDiv").html(str);
-				$(".SelectPositionScroll").mCustomScrollbar();
-			   });			  
+				$("#cadreCommitteeDiv").chosen();
+				$("#cadreCommitteeDiv").trigger("chosen:updated");
+				$("#cadreCommitteeDiv_chosen").addClass("m_top20");
+				$("#cadreCommitteeDiv_chosen").addClass("addwidth");
+				});			  
       }
      
 			$(document).on("click",".refreshBlockDiv",function(e){
