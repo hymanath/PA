@@ -664,11 +664,11 @@
 										<div class="panel-body">
 											<table>
 												<tr>
-													<td style="width: 25%;background-color:#339967; text-align: center; padding: 20px 80px; "><h4 style="color:#fff;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
-													<td style="width: 25%; background-color:#336799; text-align: center; padding: 20px 80px;color:#fff;"> <h4 style="color:#fff;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
-													<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 20px 80px;color:#fff;"> <h4 style="color:#fff;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
-													<td style="width: 25%; background-color:#996532; text-align: center; padding: 20px 80px;color:#fff;"> <h4 style="color:#fff;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
-												</tr>
+ 													<td style="width: 25%;background-color:#339967; text-align: center; padding: 20px 80px; "><h4 class="text-success" style="color:#fff !important;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
+													<td style="width: 25%; background-color:#336799; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
+													<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
+													<td style="width: 25%; background-color:#996532; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
+											  </tr>
 											</table>
 										</div>
 									</div>
@@ -5193,7 +5193,7 @@ function buildTimeSlotsTable(result){
 				setToDefaultAdvancedSearch();
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
-				disableByLevel();
+				//disableByLevel();
 				
 			}
 			else if(selectVal == 3)
@@ -5206,7 +5206,7 @@ function buildTimeSlotsTable(result){
 				getCommitteeRoles();
 				$(".referRolesCheck").removeAttr("checked");
 				setToDefaultAdvancedSearch();
-				disableByLevel();
+				//disableByLevel();
 			}
 			else
 			{
@@ -5214,10 +5214,12 @@ function buildTimeSlotsTable(result){
 				$(".advanceNameCls").show();
 				$(".advancePRCls").hide();
 				$(".advanceCadreCommittee").hide();
-				$(".locationsFilterCls").hide();
+				$(".locationsFilterCls").show();
 				$("#advanceSearchValueId").val("");
 				
 			}
+			disableByLevel();
+				
 			
 	}
 	function setToDefaultAdvancedSearch()
@@ -5367,8 +5369,7 @@ function getAppointmentCreatedUsers(){
 			 referCommitteeId = $("#referCommitteeId").val();
 			 
 		}
-		if(advanceSearchType > 1)
-		{
+		
 		 districtId = $("#referdistrictId").val();
 		 constituencyId = $("#referconstituencyId").val();
 		var tehsilName =  $("#refermandalNameId selected:option").text();
@@ -5453,7 +5454,7 @@ function getAppointmentCreatedUsers(){
 			}
 		}
 		
-		}
+	
 	
 		if(errorStr.length >0)
        {
