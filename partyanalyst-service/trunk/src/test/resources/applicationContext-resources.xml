@@ -789,6 +789,7 @@
 				 <value>com.itgrids.partyanalyst.model.AppointmentCandidateRelation</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlot</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlotHistory</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentComment</value>
 				 <!-- appointment related Models -->
 			</list>
 		</property>
