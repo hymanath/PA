@@ -6181,26 +6181,28 @@ function getCommitteeRoles(){
     			  url: 'getAppointmentStatusOverviewAction.action',
     			  data: {task:JSON.stringify(jsObj)}
     	   }).done(function(result){
-				buildAppointmentStatusOverView(result);
+				buildAppointmentStatusOverAllView(result);
     	   });	
 	  }
-	  function buildAppointmentStatusOverView(result)
+	  function buildAppointmentStatusOverAllView(result)
 	  {
+		  
 		 for(var i in result)
 		  {
-			  if(result[i].name == "Waiting")
+			  if(result[i].id == 1)
 			  {
+			
 				  $("#waitingStatus").html(''+result[i].availableCount+'');
 			  }
-			  if(result[i].name == "Reschedule")
+			  if(result[i].id == 5)
 			  {
 				  $("#rescheduledStatus").html(''+result[i].availableCount+''); 
 			  }
-			  if(result[i].name == "Cancelled")
+			 if(result[i].id == 6)
 			  {
 				  $("#cancelledStatus").html(''+result[i].availableCount+''); 
 			  }
-			  if(result[i].name == "Not Attended")
+			  if(result[i].id == 4)
 			  {
 				  $("#notAttendedStatus").html(''+result[i].availableCount+''); 
 			  }
