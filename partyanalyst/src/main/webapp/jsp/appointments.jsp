@@ -2164,11 +2164,16 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	  {
 		  $(".searchCls").show();
 		  $(".advanceSearchCls").hide();
+		  $("#cadreCommitteeDiv_chosen").hide();
 	  }
 	  else
 	  {
 		 $(".advanceSearchCls").show();  
 		  $(".searchCls").hide();
+		  $("#advanceSearchTypeId").val(0);
+		   $("#advanceSearchTypeId").dropkick('reset');
+		  $(".chosen-choices").css("display","none");
+		    $("#cadreCommitteeDiv_chosen").show();
 	  }
 		 
 	  
@@ -4940,6 +4945,7 @@ function buildTimeSlotsTable(result){
 		 $("#advanceSearchValueId").val('');
 		$("#createAppTypeListId").val(0);
 		$("#errorDivId").html('');
+		$("#cadreCommitteeDiv_chosen").hide();
 		
 		var searchTypeSelect = new Dropkick("#searchTypeId");
 		searchTypeSelect.refresh();
@@ -5190,6 +5196,7 @@ function buildTimeSlotsTable(result){
 				$(".advanceCadreCommittee").hide();
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").show();
+				$("#cadreCommitteeDiv_chosen").show();
 				setToDefaultAdvancedSearch();
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
@@ -5203,6 +5210,8 @@ function buildTimeSlotsTable(result){
 				$(".advanceCadreCommittee").show();
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").hide();
+				$("#cadreCommitteeDiv").css("display","none");
+				$(".chosen-choices").css("display","block");
 				getCommitteeRoles();
 				$(".referRolesCheck").removeAttr("checked");
 				setToDefaultAdvancedSearch();
