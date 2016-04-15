@@ -15,6 +15,7 @@ body
 {
 	font-family: 'Roboto', sans-serif;
 	color:#666;
+	font-size:13px;
 }
 .navTabsCustom
 {
@@ -306,16 +307,17 @@ body
 {
 	list-style:none;
 	box-shadow:0px 0px 5px rgba(0,0,0,0.4);
-	padding:8px;
+	padding:5px;
 	margin-top:8px;
-	position:relative
+	position:relative;
+	border:1px solid #ddd;
 }
-.appointmentRequestedMembers li .requestedCheckbox
+.requestedCheckbox
 {
 	padding:2px 4px;
 	background-color:#ccc;
 	float:right;
-	margin:-8px -8px 0px;
+	margin:-5px -6px 0px 8px;
 }
 .requestedCheckboxPanel
 {
@@ -323,8 +325,8 @@ body
 	background-color:#ccc;
 	float:right !important;
 	position:absolute;
-	right:0px;
-	top:-10px;
+	right:10px;
+	top:-6px;
 }
 .colorStatus
 {
@@ -423,13 +425,9 @@ body
 .manageAppViewPanelClass .panel-body ul li
 {
 	box-shadow:none;
-	padding:3px 0px !important;
+	padding:3px 3px !important;
 	margin-top:0px !important;
 	border-top:1px solid #ddd;
-}
-.manageAppViewPanelClass .panel-body ul li:first-child
-{
-	border-top:0px;
 }
 .pad_5{padding:5px}
 .m_0{margin:0px !important;}
@@ -608,4 +606,12 @@ body
 	.text-success
 	{
 		color:#4CB050 !important
+	}
+	.bg_cc
+	{
+		background:#ccc !important;
+	}
+	.bg_DD
+	{
+		background:#DDD !important;
 	}
