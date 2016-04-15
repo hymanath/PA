@@ -319,7 +319,7 @@
 													<option value="3">Party Committee</option>
 												</select>
 											</div>
-                                            <div class="col-md-4 pad_0 advanceSearchCls advanceprcls">
+                                            <div class="col-md-4 pad_0 advanceSearchCls advanceprclsDiv">
                                             	<label class="advanceNameCls">Search By Name<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 												<label class="advancePRCls">Search Designation</label>
@@ -342,7 +342,7 @@
                                             </div>
 											<div id="OtherSelectlocationsDiv">
 												<div>
-													<div class="col-md-2 locationsFilterCls">
+													<div class="col-md-2 levelShowCls" style="display:none;">
 														<label>Level</label>
 														<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
 														<!--<option value="0">ALL</option>-->
@@ -352,7 +352,7 @@
 														<option value="6">Village/Ward</option>
 														</select>
 													</div>
-												  <div class="col-md-2 locationsFilterCls stateCls">
+												  <div class="col-md-2 stateShowCls" style="display:none;">
 														<label>State</label>
 														<select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup();">
 														<option value="0">All</option>
@@ -1516,9 +1516,7 @@ $(".dropkickClass").dropkick();
 	
 	function savingAppointment(){
 		clearAllValidationCls();
-		setTimeout(function () {
-			$("#savingStatusDivId").html('');
-		}, 2500);
+		
 		var flag = validateSavingDetails();
 		
 		if(!flag){
@@ -1542,22 +1540,29 @@ $(".dropkickClass").dropkick();
 		}
 	}
 	
+	$(document).on("click",".searchCls",function(){
+			$("#savingStatusDivId").html('');
+	});
+	$(document).on("click",".advanceSearchCls",function(){
+			$("#savingStatusDivId").html('');
+	});
+
 	function showStatus(myResult,num){
 		var result = myResult.split("<pre>");
 		var result1 = result[1].split("</pre>");
 		if(result1[0] == "success"){
-			setTimeout(function(){
-			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Created Successfully.</span>").delay( 2500 );
-			}, 1000);
+			//setTimeout(function(){
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Created Successfully.</span>");
+			//}, 1000);
 			//$( ".closeIcon" ).trigger( "click" );
 			$("#moreCandidatesDivId").html('');
 			$( "#multiDate" ).multiDatesPicker("resetDates");
 			cloneCount = 0;
 			saveFieldsEmpty();
 		}else{
-			setTimeout(function(){
-			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>").delay( 2500 );
-			}, 1000);
+			//setTimeout(function(){
+			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>");
+			//}, 1000);
 		}
 	}
 	function saveFieldsEmpty(){
@@ -2170,6 +2175,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		  $(".searchCls").show();
 		  $(".advanceSearchCls").hide();
 		  $("#cadreCommitteeDiv_chosen").hide();
+		  $(".levelShowCls").hide();
+		  $(".stateShowCls").hide();
+		  
 	  }
 	  else
 	  {
@@ -2179,6 +2187,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		   $("#advanceSearchTypeId").dropkick('reset');
 		  $(".chosen-choices").css("display","none");
 		    $("#cadreCommitteeDiv_chosen").show();
+		    
 	  }
 		 
 	  
@@ -5325,11 +5334,14 @@ function buildTimeSlotsTable(result){
 			if(selectVal == 2)
 			{
 				$(".advancePRCls").show();
+				$(".advanceprclsDiv").show();
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee").hide();
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").show();
-				$("#cadreCommitteeDiv_chosen").show();
+				$("#cadreCommitteeDiv_chosen").hide();
+				$(".stateShowCls").show();
+				$(".levelShowCls").show();
 				setToDefaultAdvancedSearch();
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
@@ -5343,6 +5355,10 @@ function buildTimeSlotsTable(result){
 				$(".advanceCadreCommittee").show();
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").hide();
+				$(".stateShowCls").show();
+				$(".levelShowCls").show();
+				$(".advanceprclsDiv").hide();
+				$("#cadreCommitteeDiv_chosen").show();
 				$("#cadreCommitteeDiv").css("display","none");
 				$(".chosen-choices").css("display","block");
 				getCommitteeRoles();
@@ -5350,14 +5366,30 @@ function buildTimeSlotsTable(result){
 				setToDefaultAdvancedSearch();
 				//disableByLevel();
 			}
+			else if(selectVal == 1)
+			{
+				$(".stateShowCls").show();
+				$(".advanceprclsDiv").show();
+				$(".advanceNameCls").show();
+				$(".levelShowCls").show();
+				$(".advancePRCls").hide();
+				$("#cadreCommitteeDiv_chosen").hide();
+				$("#referCommitteeDiv").hide();
+				
+				
+			}
 			else
 			{
+				$(".levelShowCls").hide();
+				$(".stateShowCls").hide();
 				$(".advanceprcls").show();
 				$(".advanceNameCls").show();
 				$(".advancePRCls").hide();
 				$(".advanceCadreCommittee").hide();
 				$(".locationsFilterCls").show();
 				$("#advanceSearchValueId").val("");
+				$(".advanceprclsDiv").hide();
+				
 				
 			}
 			disableByLevel();
