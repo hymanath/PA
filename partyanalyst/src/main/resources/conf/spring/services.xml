@@ -3045,6 +3045,7 @@
 		<property name="appointmentCandidateTypeDAO" ref="appointmentCandidateTypeDAO" />
 		<property name="appointmentTrackingDAO" ref="appointmentTrackingDAO" />
 		<property name="locationService" ref="locationService"/>
+		<property name="appointmentCommentDAO" ref="appointmentCommentDAO"/>
 		<property name="appointmentSmsSettingDAO" ref="appointmentSmsSettingDAO" />
 		<property name="appointmentSmsHistoryDAO" ref="appointmentSmsHistoryDAO" />
 		<property name="smsSenderService" ref="smsSenderService" />

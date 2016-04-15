@@ -811,9 +811,9 @@
 				 <value>com.itgrids.partyanalyst.model.SmsHistoryMobileNo</value>
 				 <value>com.itgrids.partyanalyst.model.AppointmentTracking</value>
 			     <value>com.itgrids.partyanalyst.model.AppointmentAction</value>
-				 <value>com.itgrids.partyanalyst.model.AppointmentSmsSetting</value>
-				 <value>com.itgrids.partyanalyst.model.AppointmentSmsHistory</value>
-			    
+			     <value>com.itgrids.partyanalyst.model.AppointmentComment</value>
+			     <value>com.itgrids.partyanalyst.model.AppointmentSmsSetting</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentSmsHistory</value>
 			     </list>
 			
 		</property>
