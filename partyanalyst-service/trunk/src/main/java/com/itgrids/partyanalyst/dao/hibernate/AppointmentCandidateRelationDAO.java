@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<AppointmentCandidateRelation, Long> implements	IAppointmentCandidateRelationDAO {
 
@@ -166,11 +167,11 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
     	Query query = getSession().createSQLQuery("" +
     	 " select distinct acr.appointment_candidate_id as candidId,acr.appointment_id as appId,date(a.inserted_time) as date, " +
     	 "        a.appointment_status_id as statusId,ass.status as status," +
-    	 "        a.inserted_time as insertedtime,a.updated_time updatedtime,ats.from_date as fromDate,ats.to_date as toDate" +
+    	 "        a.inserted_time as insertedtime,a.updated_time updatedtime,ats.from_date as fromDate,ats.to_date as toDate,a.appointment_unique_id as uniqueId" +
     	 " from   appointment_candidate_relation acr left join appointment_time_slot ats on acr.appointment_id=ats.appointment_id and ats.is_deleted='N' " +
     	 "        join appointment a on a.appointment_id = acr.appointment_id " +
     	 "        join appointment_status ass on ass.appointment_status_id = a.appointment_status_id " +
-    	 " where  a.is_deleted='N' and acr.appointment_candidate_id in (:candidateIds)" )
+    	 " where  a.is_deleted='N' and acr.appointment_candidate_id in (:candidateIds) order by a.inserted_time " )
     	 .addScalar("candidId",Hibernate.LONG)
 		 .addScalar("appId",Hibernate.LONG)
 		 .addScalar("date",Hibernate.DATE)
@@ -179,9 +180,11 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		 .addScalar("insertedTime",Hibernate.TIMESTAMP)
 		 .addScalar("updatedtime",Hibernate.TIMESTAMP)
 		 .addScalar("fromDate",Hibernate.TIMESTAMP)
-		 .addScalar("toDate",Hibernate.TIMESTAMP);
+		 .addScalar("toDate",Hibernate.TIMESTAMP)
+		 .addScalar("uniqueId",Hibernate.STRING);
 		
 		query.setParameterList("candidateIds",candidateIds);
+		query.setMaxResults(IConstants.APPOINTMENT_HISTORY_MAX_RESULT);
 		return query.list();
 	}
 	public List<Object[]> getAppointmentCandidateDetails(List<Long> appointmentIds){

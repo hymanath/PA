@@ -1871,6 +1871,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 														apptvo.setDateString(prefer.format(dateStr));
 													}													
 													apptvo.setStatus(obj[4]!=null?obj[4].toString():"");
+													apptvo.setAptUniqueCode(obj[9]!=null?obj[9].toString():"");
 													
 													List<Long> aptmnts = new ArrayList<Long>();
 													aptmnts.add(apptvo.getAppointmentId());
@@ -2992,7 +2993,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 															apptvo.setDateString(prefer.format(dateStr));
 														}		
 													apptvo.setStatus(obj[4]!=null?obj[4].toString():"");
-													
+													apptvo.setAptUniqueCode(obj[9]!=null?obj[9].toString():"");
 													
 													List<Long> aptmnts = new ArrayList<Long>();
 													aptmnts.add(apptvo.getAppointmentId());
