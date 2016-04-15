@@ -2342,7 +2342,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			if(designation != null && designation.length > 0)
 			$("#appCandidateNameId").html(''+name+' ('+designation+') - '+mobile+'');
 		else
-			$("#appCandidateNameId").html(''+name+' - '+mobile+'');
+			$("#appCandidateNameId").html(''+name+' ('+mobile+')');
 			getAppointStatusOverviewforCandidate(id);
 			getAppointmentHistoryForCandidate(id);
 		});
@@ -2600,6 +2600,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
   function clearAppointmentsSearchFields(){
 	  $("#appDesigErrId,#appPrrtyErrTypId,#appStatusErrId,#appDistErrId,#appConstErrId").html('');  
   }
+  </script>
+  <script>
   function getAppointmentsBySearchCriteria(labelName){
 		  
 		  clearAppointmentsSearchFields();
@@ -2828,11 +2830,20 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										str+='</table>'; */
 										
 									str+='</div>';
+									
 									str+='<div class="col-md-8">';
+									
+									//history modal start
+									/* if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
+											str+='<a  title="Click here to View '+result[i].subList[j].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'">View History</a>&nbsp;&nbsp;';
+									} */			
+									//history modal end
+									
 										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
 										str+='<table class="table table-bordered table-condensed m_top10 font12">';
 										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 											str+='<thead>';
+											str+='<th>APPOINTMENT ID</th>';
 											str+='<th>CREATED DATE</th>';
 										    str+='<th>APPOINTMENT PREFERABLE DATES</th>';
 											str+='<th>STATUS</th>';
@@ -2842,6 +2853,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											
 												for(var l in result[i].subList[j].subList){
 													str+='<tr>';
+													
+													str+='<td>'+result[i].subList[j].subList[l].aptUniqueCode+'</td>';
+													
+													
 													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
 													
 													if(result[i].subList[j].subList[l].dateTypeId !=null && result[i].subList[j].subList[l].dateTypeId >1){
@@ -2861,6 +2876,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												}
 											}else{
 													str+='<thead>';
+													str+='<th>APPOINTMENT ID</th>';
 													str+='<th>CREATED DATE</th>';
 													str+='<th>APPOINTMENT PREFERABLE DATES</th>';
 													str+='<th>STATUS</th>';
@@ -3295,11 +3311,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										
 											
 									str+='</div>';
-									str+='<div class="col-md-8 font12">';
+									str+='<div class="col-md-8 font12">';									
+									//history modal start
+									/* if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
+											str+='<a  title="Click here to View '+result[i].subList[j].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'">View History</a>&nbsp;&nbsp;';
+									} */			
+									//history modal end
+									
 										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
 										str+='<table class="table table-bordered table-condensed m_top10 font12">';
 										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 											str+='<thead>';
+												str+='<th>APPOINTMENT ID</th>';
 												str+='<th>CREATED DATE</th>';
 												str+='<th>APPOINTMENT PREFERABLE DATES</th>';
 												str+='<th>STATUS</th>';												
@@ -3308,6 +3331,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											
 												for(var l in result[i].subList[j].subList){
 													str+='<tr>';
+													
+													str+='<td>'+result[i].subList[j].subList[l].aptUniqueCode+'</td>';
+													
 													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
 													
 													if(result[i].subList[j].subList[l].dateTypeId !=null && result[i].subList[j].subList[l].dateTypeId >1){
@@ -3327,6 +3353,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												}
 											}else{
 													str+='<thead>';
+													str+='<th>APPOINTMENT ID</th>';
 													str+='<th>CREATED DATE</th>';
 													str+='<th>APPOINTMENT PREFERABLE DATES</th>';
 													str+='<th>STATUS</th>';
@@ -5171,10 +5198,18 @@ function buildTimeSlotsTable(result){
 										str+='</table>';*/
 									str+='</div>';
 									str+='<div class="col-md-6">';
+									
+									//history modal start
+									/* if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
+											str+='<a  title="Click here to View '+result[i].subList[j].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'">View History</a>&nbsp;&nbsp;';
+									} */			
+									//history modal end
+									
 										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
 										str+='<table class="table table-bordered m_top10 table-condensed">';
 										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
-											str+='<thead>';balu1
+											str+='<thead>';
+												str+='<th>APPOINTMENT ID</th>';
 												str+='<th>CREATED DATE</th>';
 												str+='<th>APPOINTMENT PREFERABLE DATES</th>';
 												str+='<th>STATUS</th>';
@@ -5182,6 +5217,9 @@ function buildTimeSlotsTable(result){
 											str+='<tbody>';
 												for(var l in result[i].subList[j].subList){
 													str+='<tr>';
+													
+													str+='<td>'+result[i].subList[j].subList[l].aptUniqueCode+'</td>';
+													
 													str+='<td>'+result[i].subList[j].subList[l].dateString+'</td>';
 													
 													if(result[i].subList[j].subList[l].dateTypeId !=null && result[i].subList[j].subList[l].dateTypeId >1){
@@ -5201,6 +5239,7 @@ function buildTimeSlotsTable(result){
 												}
 											}else{
 													str+='<thead>';
+													str+='<th>APPOINTMENT ID</th>';
 													str+='<th>CREATED DATE</th>';
 													str+='<th>APPOINTMENT PREFERABLE DATES</th>';
 													str+='<th>STATUS</th>';
