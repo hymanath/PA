@@ -3374,7 +3374,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	}
 	function buildUpcomingResult(result,statusId)
 	{
-		
+
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
@@ -6198,7 +6198,7 @@ function getCommitteeRoles(){
 	
 	
 	  function getAppointStatusOverviewforCandidate(id){
-			
+		  $("#aptCandidateHistorystatusOverViewDiv").html('<img src="images/search.gif" />');
 	    	var jsObj={
 	    			appointmentCandidateId:id,
 					task:""
