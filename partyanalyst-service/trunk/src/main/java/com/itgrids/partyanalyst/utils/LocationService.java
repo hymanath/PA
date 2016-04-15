@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.utils;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -56,15 +57,19 @@ public class LocationService {
 				String levelStr = mainVo.getLevelStr();
 				
 				if(levelId !=null && levelId>0){	
-					
 					if(levelId ==10l){//state
 						
 						if(levelStr !=null && !levelStr.isEmpty() && levelStr.equalsIgnoreCase("state") ){					
 							if(districtIds == null || districtIds.size()<=0){							
 								levelValues.addAll(stateIds);					
 							}
-							
 							//Setting to VO
+							if(mainVo.getStateId() == 0)
+							{
+							levelValues.add(1l);levelValues.add(36l);
+							}
+							else
+							levelValues.add(locationVO.getStateId());
 							locationVO.setStateIdsList(levelValues);//stateIds List						
 							locationVO.setLevelId(levelId);
 							
@@ -113,7 +118,7 @@ public class LocationService {
 						//List<Long> districtIdsLst = new ArrayList<Long>(0);
 						if(levelStr !=null && !levelStr.isEmpty() && levelStr.equalsIgnoreCase("state") ){
 							
-								List<Object[]> districts = districtDAO.getDistrictsList();
+								List<Object[]> districts = districtDAO.getDistrictsForState(mainVo.getStateId());
 								if(districts !=null && districts.size()>0){
 									for (Object[] objects : districts) {									
 										levelValues.add(objects[0] !=null ? (Long)objects[0]:0l);									
