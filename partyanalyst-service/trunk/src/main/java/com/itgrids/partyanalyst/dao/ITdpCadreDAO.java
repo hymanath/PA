@@ -419,10 +419,11 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type,Long memberTypeId);
 	  public List<Object[]>  getmemberShipIdsByVoterIds(Long cadreEnrollmentYear,List<Long> voterIds);
 	  public List<Object[]> getTdpCadreIdForMemberShipNums(List<String> membershipNums);
-	  public List<Object[]>  searchMemberByCriteria(String searchType,String searchValue);
+	  public List<Object[]>  searchMemberByCriteria(String searchType,String searchValue,LocationInputVO locationVo);
 	  public List<UserAddress> getUserAddress(Long tdpCadreId);
 	//  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,Long searchValue);
 	  public List<Object[]> advancedSearchMemberForCadreCommittee(String searchType,LocationInputVO locationVo,String locationType,LocationInputVO inputVo);
 	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,LocationInputVO locationVo,LocationInputVO inputVo);
+	 
 	  
 }

@@ -1100,7 +1100,7 @@ public class AppointmentService implements IAppointmentService{
 			    	  }
 			      }
 			      else{*/
-			    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);
+			    	  membersList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,null);
 			    	  if(membersList!=null && membersList.size()>0){
 			    		  finalList = new ArrayList<AppointmentCandidateVO>(); 
 			    		  for(Object[] obj: membersList){
@@ -1339,8 +1339,14 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 			    		  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);  
 			    		  setDataMembersForCadre(nameList,finalList);
 			    	  }*/
-			    	
-			    	  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue);  
+			    	  if(inputVo.getLevelId() == 0l) //All
+			    		{
+			    	  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,null);  
+			    		}
+			    	  else
+			    	  {
+			    		  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);   
+			    	  }
 			    	  if(nameList != null && nameList.size()>0){
 		    		  setDataMembersForCadre(nameList,finalList);
 			    	  }
