@@ -354,7 +354,7 @@
 													</div>
 												  <div class="col-md-2 locationsFilterCls stateCls">
 														<label>State</label>
-														<select class="dropkickClass" id="stateId">
+														<select class="dropkickClass" id="stateId" onChange="getDistrictsForReferPopup();">
 														<option value="0">All</option>
 														<option value="1">AP</option>
 														<option value="36">TS</option>
@@ -5393,6 +5393,7 @@ function getAppointmentCreatedUsers(){
 		var levelId=0;
 		var stateId=0;
 		var advanceSearchType = $("#advanceSearchTypeId").val();
+		stateId = $("#stateId").val();
 		 if(advanceSearchType==0){
 			 errorStr='Please Select Search Type';
 			 $("#errorDivId").html(errorStr);
@@ -5584,7 +5585,7 @@ function getAppointmentCreatedUsers(){
 			constituencyId:constituencyId,
 			mandalId:tehsilId,
 			panchayatId:panchayatId,
-			stateId:0,
+			stateId:stateId,
 			levelStr:levelStr
 		}
 		  	$.ajax({
@@ -5898,11 +5899,15 @@ function getAppointmentCreatedUsers(){
 
 function getDistrictsForReferPopup()
 {
+	var stateId = $("#stateId").val();
+	var jobj = {
+		stateId : stateId
+	}
 	$.ajax({
 		type : 'GET',
-		url : 'getDistrictsListAction.action',
+		url : 'getDistrictsForStateAction.action',
 		dataType : 'json',
-		data : {}
+		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
 		var str='';
 		//str+='<option value="select">Select District</option>';
