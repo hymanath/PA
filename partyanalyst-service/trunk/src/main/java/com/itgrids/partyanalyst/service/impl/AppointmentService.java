@@ -1343,14 +1343,38 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 			    		{
 			    	  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,null);  
 			    		}
-			    	  else
-			    	  {
-			    		  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);   
-			    	  }
-			    	  if(nameList != null && nameList.size()>0){
-		    		  setDataMembersForCadre(nameList,finalList);
-			    	  }
-			      }
+			    	  else if(inputVo.getLevelId() == 10l || inputVo.getLevelId() == 11l)//State ,District Levels 
+					    {
+					    	if(locationVo.getStateIdsList() == null) 
+					    	{
+					    		locationVo.setStateIdsList(new ArrayList<Long>());
+					    	}
+					    	if(locationVo.getLevelId() == 10l)
+					    	{
+					    		locationVo.setStateIdsList(new ArrayList<Long>());
+					    		if(inputVo.getStateId() == 0l)
+					    		{
+					    			locationVo.getStateIdsList().add(1l);locationVo.getStateIdsList().add(36l);	
+					    		}
+					    		else
+					    		{
+					    			locationVo.getStateIdsList().add(inputVo.getStateId());		
+					    		}
+					    		
+					    	}
+					    	 nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);   
+					    	 if(nameList != null && nameList.size()>0){
+					    		  setDataMembersForCadre(nameList,finalList);
+						    	  }
+					    	}
+				    	  else
+				    	  {
+				    		  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);  
+				    		  if(nameList != null && nameList.size()>0){
+					    		  setDataMembersForCadre(nameList,finalList);
+						    	  }
+				    	  }
+			     }
 			      else if(searchType.equalsIgnoreCase("publicRepresentative"))
 			      {
 			    	  List<Object[]> prList = null;
