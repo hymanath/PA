@@ -1879,11 +1879,11 @@ $(".dropkickClass").dropkick();
 						}
 						
 						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'" id="addApptsId" style="margin-right: 5px;">Add Appts</button>';
-						if(totalCount !=null && totalCount >0 ){
+						/*if(totalCount !=null && totalCount >0 ){
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments" style="margin-right: 5px;">Update</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled style="margin-right: 5px;">Update</button>';
-						}
+						}*/
 						
 						if(totalCount !=null && totalCount >0 ){
 							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label" style="margin-right: 5px;">Status</button>';
@@ -2293,11 +2293,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='</div>';
 								if(result[i].designation==null)
 									result[i].designation = "";
-								str+='<div class="col-md-2 m_top10 pull-right" attr_id="'+result[i].id+'" >';
+								str+='<div class="col-md-3 m_top10 pull-right" attr_id="'+result[i].id+'" >';
 								if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0)
 								str+='<a  title="Click here to View '+result[i].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'">View History</a>&nbsp;&nbsp;';
-								str+='<a target="_blank" title="Click here to View '+result[i].name+' Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'">View Profile</a>&nbsp;&nbsp;';
-								str+='<input type="checkbox" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+'>';
+								str+='<a style="margin-left:5px;" target="_blank" title="Click here to View '+result[i].name+' Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'">View Profile</a>&nbsp;&nbsp;';
+								str+='<input style="margin-left:10px;" type="checkbox" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Check this to Create Appointment Request">';
 								str+='</div>';
 								
 							str+='</div>';
@@ -3082,7 +3082,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		var jsObj={
 			labelId : $(this).attr("attr_label_id"),
-			callFrom : "print"
+			callFrom : ""
 		}
 		
 		$.ajax({
@@ -3110,7 +3110,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		var jsObj={
 			labelId :labelId,
-			callFrom : ""
+			callFrom : "print"
 		}
 		
 		$.ajax({
@@ -5213,6 +5213,7 @@ function buildTimeSlotsTable(result){
 			if(result != null){
 				if(result.exceptionMsg != null && result.exceptionMsg == "success" && result.resultCode != null && result.resultCode == 0){
 					$("#deleteAppointmentErrDivId").html("<span style='color:green;'>Appointments Deleted</span>");
+					getLabelDtls();
 					setTimeout(function(){	$("#deleteAppointmentErrDivId").hide(); },2000);
 				}else{
 					$("#deleteAppointmentErrDivId").html("<span style='color:red;'>Appointments Not Deleted, Please Try Again.</span>");
