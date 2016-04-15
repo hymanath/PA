@@ -1002,4 +1002,25 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 }
 	
+	public String sendSms(){
+		try {
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
+			inputVO.setAppointmentId(jObj.getLong("appointmentId"));
+			inputVO.setSmsText(jObj.getString("smsText"));
+			inputVO.setUserId(user.getRegistrationID());
+		    resultStatus = appointmentService.sendSms(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at sendSmsForAppointment", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

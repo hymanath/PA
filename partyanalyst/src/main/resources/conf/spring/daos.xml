@@ -2688,7 +2688,13 @@
 	<bean id="appointmentTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentTrackingDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="appointmentCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO" >
+		<bean id="appointmentCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentSmsSettingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsSettingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentSmsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!--  end -->

@@ -3045,6 +3045,9 @@
 		<property name="appointmentCandidateTypeDAO" ref="appointmentCandidateTypeDAO" />
 		<property name="appointmentTrackingDAO" ref="appointmentTrackingDAO" />
 		<property name="locationService" ref="locationService"/>
+		<property name="appointmentSmsSettingDAO" ref="appointmentSmsSettingDAO" />
+		<property name="appointmentSmsHistoryDAO" ref="appointmentSmsHistoryDAO" />
+		<property name="smsSenderService" ref="smsSenderService" />
 	</bean>
 	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
 		<property name="constituencyDAO" ref="constituencyDAO"/>

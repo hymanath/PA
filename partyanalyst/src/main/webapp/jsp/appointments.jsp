@@ -3613,7 +3613,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		$(".errorCls").html("");
 	})
-	$(document).on("click",".sendsms",function() {
+	/* $(document).on("click",".sendsms",function() {
 		
 		var flag = false;
 		var appointmentId = $(this).attr("value");
@@ -3645,7 +3645,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			},2000);
 			$(".sendSms"+appointmentId).val('');
 		});
-	})
+	}) */
 	
 	$(document).on("click",".appointmentStatus",function() {
 	
@@ -6398,7 +6398,38 @@ function getCommitteeRoles(){
 		str+='</table>';
 		$("#aptCandidateHistoryDiv").html(str);	
 	}
-	 
+	$(document).on("click",".sendsms",function() {
+		var flag = false;
+		var appointmentId = $(this).attr("value");
+		$(".msgDiv1"+appointmentId).html("").css("color","");;
+		var smsText = $(".sendSms"+appointmentId).val().trim();
+		if(smsText == "" || smsText.length == 0)
+		{
+		  $(".msgDiv1"+appointmentId).html("Sms Text is Required..").css("color","red");
+		  flag = true;
+		}
+
+		if(flag == true)
+		{
+			return;
+		}
+		var jsObj={
+			appointmentId : appointmentId,
+			smsText:smsText
+			}
+			$.ajax({
+			type : 'POST',
+			url : 'sendSMSForAppointmtAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$(".msgDiv1"+appointmentId).html("Sms Sent Successfully").css("color","green");
+			setTimeout(function(){
+			 $(".msgDiv1"+appointmentId).html("");
+			},2000);
+			$(".sendSms"+appointmentId).val('');
+		});
+	}); 
 </script>
 </body>
 </html>
