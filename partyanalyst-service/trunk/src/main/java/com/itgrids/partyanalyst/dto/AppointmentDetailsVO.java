@@ -45,6 +45,7 @@ public class AppointmentDetailsVO implements Serializable{
 	private Long prefferableTimeId;
 	private List<AppointmentDetailsVO> preferList;
 	private String aptUniqueCode;
+	private String imageUrl;
     
 	public String getName() {
 		return name;
@@ -231,6 +232,12 @@ public class AppointmentDetailsVO implements Serializable{
 	}
 	public void setAptUniqueCode(String aptUniqueCode) {
 		this.aptUniqueCode = aptUniqueCode;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
     
 	

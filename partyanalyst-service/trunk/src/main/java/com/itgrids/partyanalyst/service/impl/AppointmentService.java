@@ -1789,6 +1789,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							candidateVO.setMobileNo(obj[4]!=null?obj[4].toString():"");
 							candidateVO.setDesignation(obj[5]!=null?obj[5].toString():"");
 							candidateVO.setConstituency(obj[6]!=null?obj[6].toString():"");
+							candidateVO.setImageUrl(obj[7]!=null?obj[7].toString():"");
+							
 							candidateVO.setStatusList(setStatusList(statList));
 							appointmentVO.getSubMap().put(candidateVO.getCandidateId(),candidateVO);
 							
@@ -2912,6 +2914,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							candidateVO.setConstituency(obj[6]!=null?obj[6].toString():"");
 							candidateVO.setStatusList(setStatusList(statList));
 							appointmentVO.getSubMap().put(candidateVO.getCandidateId(),candidateVO);
+							candidateVO.setImageUrl(obj[7]!=null?obj[7].toString():"");
 							
 							//candidateIds
 							candidateIds.add(candidateVO.getCandidateId());
@@ -3359,6 +3362,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								candidateVO.setConstituency(obj[6]!=null?obj[6].toString():"");
 								candidateVO.setStatusList(setStatusList(statList));
 								appointmentVO.getSubMap().put(candidateVO.getCandidateId(),candidateVO);
+								candidateVO.setImageUrl(obj[7]!=null?obj[7].toString():"");
 								
 								//candidateIds
 								candidateIds.add(candidateVO.getCandidateId());
