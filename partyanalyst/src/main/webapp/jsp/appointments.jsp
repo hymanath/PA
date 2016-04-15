@@ -935,6 +935,9 @@
 																	<button class="btn btn-success m_top25" id="setTimeSlotBtnId">SET</button>
 																	<img src="images/search.gif" style="display:none;" id="ajaxImgForTimeSlotId"/>
 																</div>
+																<div class="col-md-2 m_top10">
+																<textarea  placeholder="Please Enter Comment..." cols="40" rows="2" id="commentTxt"></textarea>
+																</div>
 																<div id="errorDivForTimeSlotId" class="validateClr m_left16"  ></div>
 															</div>
 														</div>
@@ -3552,6 +3555,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
+							str+='</label>';
 							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
 							/*str+='<div class="input-group inputSearch upcomedateCls1">';
 							str+='<span class="input-group-addon">';
@@ -3571,7 +3577,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<label class="checkbox-inline">';
 							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
 							str+='</label>';
-							str+='<textarea class="form-control smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="32" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="upCommingcommentTxt" style="display:none;"></textarea>';
+							str+='<textarea class="form-control m_top10 smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
@@ -3688,19 +3695,21 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				statusId = $(this).val();
 			}
 		})
+		
 		if($(".smsCheckedCls"+appointmentId).is(':checked'))
 		{
 			smsCheck = true;
 			smsText = $(".smsTextCls"+appointmentId).val().trim();
 		}
-		
+		var commentTxt = $(".commentTextCls"+appointmentId).val().trim();
 		var jsObj={
 			appointmentId : appointmentId,
 			date : '',
 			time : '',
 			smsCheck : smsCheck,
 			smsText:smsText,
-			statusId:statusId
+			statusId:statusId,
+			commentTxt:commentTxt
 		}
 			$.ajax({
 			type : 'POST',
@@ -3872,6 +3881,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
+							str+='</label>';
 							/*str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
 							str+='<div class="input-group inputSearch upcomedateCls1">';
 							str+='<span class="input-group-addon">';
@@ -3891,7 +3903,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<label class="checkbox-inline">';
 							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
 							str+='</label>';
-							str+='<textarea class="form-control smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="32" class="commentTextCls'+result[i].appointmentId+'"" rows="2" id="InProgresscommentTxt" style="display:none;"></textarea>';
+							str+='<textarea class="form-control m_top10 smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
@@ -4024,13 +4037,16 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
+							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status " checked>Reschedule';
 							str+='</label>';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="3"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
 							str+='</label>';
 							str+='<label class="radio-inline">';
 							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
+							str+='</label>';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
 							/*str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
 							str+='<div class="input-group inputSearch upcomedateCls1">';
@@ -4051,7 +4067,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<label class="checkbox-inline">';
 							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
 							str+='</label>';
-							str+='<textarea class="form-control smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="32" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="completecommentTxt" style="display:none;"></textarea>';
+							str+='<textarea class="form-control m_top10 smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
@@ -4116,6 +4133,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		if(flag == false)
 		$(".completedSetting").hide();
 	}
+		$(document).on("click",".showCmmtBox",function(){
+			
+			$("#completecommentTxt").show();
+			$("#InProgresscommentTxt").show();
+			$("#upCommingcommentTxt").show();
+			if($(this).prop("checked") == false){
+				 $("#completecommentTxt").hide();
+				$("#InProgresscommentTxt").hide();
+				$("#upCommingcommentTxt").hide(); 
+			}
+		});
 </script>
 <script>
 	
@@ -4518,7 +4546,7 @@ var tableToExcel = (function() {
 		var toTime = $("#toTimeId").val().trim();
 		
 		//Saving
-		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0);
+		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0,commentTxt);
 		
 		
 		//Validations For Time Slot Creation
@@ -5859,10 +5887,10 @@ function getAppointmentCreatedUsers(){
 			 return;
 		 } */
 		
-	    setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"update",timeSlotId)
+	    setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"update",timeSlotId,commentTxt)
 	});
 	
-	function setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,type,timeSlotId){
+	function setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,type,timeSlotId,commentTxt){
 		 $("#errorDivForTimeSlotId").show();
 		 $("#errorDivForTimeSlotId").html(" ");
 		//Validations For Time Slot Creation
@@ -5880,7 +5908,7 @@ function getAppointmentCreatedUsers(){
 		}
 		var fromTimeArr=fromTime.split(":");
 		var toTimeArr=toTime.split(":");
-	
+		var commentTxt = $("#commentTxt").val().trim();
 		
 		 
 	     if(fromTimeArr[0]<=5 && fromTimeArr[1].substr(3,4).trim()=="AM"){
@@ -5935,7 +5963,8 @@ function getAppointmentCreatedUsers(){
 			fromTime : fromTime,
 			toTime : toTime,
 			type :type,
-			timeSlotId:timeSlotId
+			timeSlotId:timeSlotId,
+			commentTxt:commentTxt
 		}
 		
 		$.ajax({
