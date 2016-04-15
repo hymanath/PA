@@ -8,7 +8,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.model.Appointment;
-import com.itgrids.partyanalyst.model.Cadre;
 
 public class AppointmentDAO extends GenericDaoHibernate<Appointment, Long>
 		implements IAppointmentDAO {
@@ -69,6 +68,12 @@ public class AppointmentDAO extends GenericDaoHibernate<Appointment, Long>
 		query.setParameter("labelStatus",labelStatus);
 		return query.executeUpdate();
 	}
-	
+public Long getAppointmentStatusId(Long appointmentId){
+		
+		Query query=getSession().createQuery("select model.appointmentStatus.appointmentStatusId from Appointment model where model.appointmentId = :appointmentId and model.isDeleted = 'N' ");
+		
+		query.setParameter("appointmentId",appointmentId);
+		return (Long)query.uniqueResult();
+	}
 
 }
