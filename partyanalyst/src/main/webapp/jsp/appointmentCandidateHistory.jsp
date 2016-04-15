@@ -3,8 +3,7 @@
 	<div class="modal-content">
 	  <div class="modal-header bg_cc">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<p class="font12" id="appCandidateNameId"></p>
-		<h4>View Appointment History</h4>
+		<p><span  id="appCandidateNameId"></span> APPOINTMENT HISTORY</p>
 	  </div>
       <div class="modal-body">
 		<div class="row">
