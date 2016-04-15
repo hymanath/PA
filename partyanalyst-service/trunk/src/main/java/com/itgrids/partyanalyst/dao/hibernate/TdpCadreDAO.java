@@ -6392,7 +6392,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					{
 							if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)//State
 							{
-								sb.append("and model.userAddress.state.stateId in (:locationStateIds) ");
+								if(locationVo.getStateId() == 1)
+								sb.append("and model.userAddress.district.districtId > 10  and model.userAddress.district.districtId <=23");
+								if(locationVo.getStateId() == 36)
+									sb.append("and model.userAddress.district.districtId >= 1  and model.userAddress.district.districtId <=11");	
+								//sb.append("and model.userAddress.state.stateId in (:locationStateIds) ");
 							}
 							if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)//District
 							{
@@ -6432,8 +6436,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				 query.setMaxResults(100);
 				 if(locationVo != null)
 					{
-						if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)
-							query.setParameterList("locationStateIds", locationVo.getStateIdsList());
+						/*if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)
+							query.setParameterList("locationStateIds", locationVo.getStateIdsList());*/
 						if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)
 							query.setParameterList("districtIds", locationVo.getDistrictIdsList());
 						if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
@@ -6469,7 +6473,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			{
 					if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)//State
 					{
-						str.append("and model2.userAddress.state.stateId in (:locationStateIds) ");
+						if(locationVo.getStateId() == 1)
+							str.append("and model2.userAddress.district.districtId > 10  and model2.userAddress.district.districtId <=23");
+							if(locationVo.getStateId() == 36)
+								str.append("and model2.userAddress.district.districtId >= 1  and model2.userAddress.district.districtId <=11");
 					}
 					if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)//District
 					{
@@ -6503,8 +6510,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			if(locationVo != null)
 			{
-				if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)
-					query.setParameterList("locationStateIds", locationVo.getStateIdsList());
+				/*if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)
+					query.setParameterList("locationStateIds", locationVo.getStateIdsList());*/
 				if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)
 					query.setParameterList("districtIds", locationVo.getDistrictIdsList());
 				if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
@@ -6571,6 +6578,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 						
 					}else//State,District Level
 					{
+						
 						str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId ");
 						str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues) ");
 					}

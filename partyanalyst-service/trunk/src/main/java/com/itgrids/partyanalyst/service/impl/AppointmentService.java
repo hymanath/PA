@@ -1165,6 +1165,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 		 List<AppointmentCandidateVO>  finalList = new ArrayList<AppointmentCandidateVO>(); 
 		 try {
 			     LocationInputVO locationVo = locationService.getCandidateLocationDetails(inputVo);
+			     locationVo.setStateId(inputVo.getStateId());
 			 	 if(searchType.equalsIgnoreCase("CadreCommittee"))
 				    {
 				    if(inputVo.getLevelId() == 5l)//Mandal,Town,Div Levels 
