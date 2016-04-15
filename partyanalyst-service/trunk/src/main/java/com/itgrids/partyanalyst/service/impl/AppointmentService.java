@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
@@ -70,6 +71,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
+import com.itgrids.partyanalyst.model.AppointmentComment;
 import com.itgrids.partyanalyst.model.AppointmentLabel;
 import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
 import com.itgrids.partyanalyst.model.AppointmentSmsHistory;
@@ -125,12 +127,10 @@ public class AppointmentService implements IAppointmentService{
 	private LocationService locationService;
 	private IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO;
 	private IAppointmentTrackingDAO appointmentTrackingDAO;
+	private AppointmentCommentDAO appointmentCommentDAO;
 	private IAppointmentSmsSettingDAO appointmentSmsSettingDAO;
 	private IAppointmentSmsHistoryDAO appointmentSmsHistoryDAO;
 	private ISmsSenderService smsSenderService;
-	
-	
-	
 	
 	public IAppointmentSmsSettingDAO getAppointmentSmsSettingDAO() {
 		return appointmentSmsSettingDAO;
@@ -151,6 +151,13 @@ public class AppointmentService implements IAppointmentService{
 	}
 	public void setSmsSenderService(ISmsSenderService smsSenderService) {
 		this.smsSenderService = smsSenderService;
+	}
+	
+	public AppointmentCommentDAO getAppointmentCommentDAO() {
+		return appointmentCommentDAO;
+	}
+	public void setAppointmentCommentDAO(AppointmentCommentDAO appointmentCommentDAO) {
+		this.appointmentCommentDAO = appointmentCommentDAO;
 	}
 	public IAppointmentTrackingDAO getAppointmentTrackingDAO() {
 		return appointmentTrackingDAO;
@@ -3262,7 +3269,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				return status;
 			}
 			@SuppressWarnings("unused")
-			  public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId,String type,Long timeSlotId){
+			  public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId,String type,Long timeSlotId,String commentTxt){
 			    ResultStatus rs = new ResultStatus();
 			    try {
 			      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -3315,6 +3322,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       
 				       AppointmentTimeSlot appointmentTimeSlot = appointmentTimeSlotDAO.save(timeSlot);
 				       
+				       getappointmentComments(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,commentTxt,userId);
+				       
 				       Integer updtdSts = appointmentDAO.updateAppntmntStatusById(appointmentTimeSlot.getAppointmentId(), dateUtilService.getCurrentDateAndTime() );
 				       
 				       List<String>  mobilenos = appointmentCandidateRelationDAO.getAppointmentIdsforSendSms(appointmentTimeSlot.getAppointmentId());
@@ -3325,7 +3334,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				    	   }
 				       }
 				       
-			         if(type !=null && type.equalsIgnoreCase("update")){
+				      if(type !=null && type.equalsIgnoreCase("update")){
 			        	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
 			         }else{
 			          	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
@@ -3554,6 +3563,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				 }
 				
 			}
+			
+			getappointmentComments(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,inputVO.getCommented(),userId);
+			
 			result.setMessage("success");
 		}
 		catch (Exception e) {
@@ -4170,7 +4182,6 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return null;
 	}
-	
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO)
 	{
 		ResultStatus result = new ResultStatus();
@@ -4222,4 +4233,27 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return result;
 	}
+	
+	
+	public void getappointmentComments(Long appointmentId,Long statusId,String commentTxt,Long userId){
+		
+		try{
+			 if(commentTxt !=null && commentTxt.length()>0 && commentTxt.trim() != ""){
+		    	   AppointmentComment ac = new AppointmentComment();
+		    	      ac.setAppointmentId(appointmentId);
+		    	      ac.setAppointmentStatusId(statusId);
+		    	      ac.setComment(commentTxt);
+		    	      ac.setInsertedBy(userId);
+		    	      ac.setUpdatedBy(userId);
+		    	      ac.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		    	      ac.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		    	      appointmentCommentDAO.save(ac);
+		    	    
+		    	    }
+			
+		}catch (Exception e) {
+			LOG.error("Error occured  in getappointmentComments() method of AppointmentService",e);
+		}
+	}
+	
 }
