@@ -664,10 +664,10 @@
 										<div class="panel-body">
 											<table>
 												<tr>
-													<td style="width: 25%;background-color:#339967; text-align: center; padding: 20px 80px; "><h4 class="text-success" style="color:#fff;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
-													<td style="width: 25%; background-color:#336799; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
-													<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
-													<td style="width: 25%; background-color:#996532; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
+													<td style="width: 25%;background-color:#339967; text-align: center; padding: 20px 80px; "><h4 style="color:#fff;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
+													<td style="width: 25%; background-color:#336799; text-align: center; padding: 20px 80px;color:#fff;"> <h4 style="color:#fff;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
+													<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 20px 80px;color:#fff;"> <h4 style="color:#fff;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
+													<td style="width: 25%; background-color:#996532; text-align: center; padding: 20px 80px;color:#fff;"> <h4 style="color:#fff;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
 												</tr>
 											</table>
 										</div>
@@ -2128,8 +2128,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					  str+='</tr>';
 				  }
 				  str+='</table>'
-				str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
-				str+='<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>';
+				/* str+='<h4 class="m_top10"><b>REQUESTED DATES</b></h4>';
+				str+='<p><span>28-feb-2016,05-mar-2016,10-mar-2016</span></p>'; */
 			str+='</div>';
 			str+='<div class="col-md-6">';
 				str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
@@ -2164,17 +2164,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	  {
 		  $(".searchCls").show();
 		  $(".advanceSearchCls").hide();
-		  $("#cadreCommitteeDiv_chosen").hide();
-		 
 	  }
 	  else
 	  {
 		 $(".advanceSearchCls").show();  
 		  $(".searchCls").hide();
-		  $("#advanceSearchTypeId").val(0);
-		   $("#advanceSearchTypeId").dropkick('reset');
-		  $(".chosen-choices").css("display","none");
-		    $("#cadreCommitteeDiv_chosen").show();
 	  }
 		 
 	  
@@ -2690,28 +2684,61 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		 for(var i in result){
 			
 			  str+='<div class="panel panel-default manageAppViewPanelClass">';
-				str+='<div class="panel-heading font12">';
+				str+='<div class="panel-heading pad_5 font12">';
 				        if(result[i].labeled){
-							str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
-							str+='<span class="requestedCheckbox text-success"><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" checked></span>';
-							str+='<span class="pull-right">Current Status : '+result[i].status+'</span>';
+							str+='<div class="row">';
+								str+='<div class="col-md-2">';
+									str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
+								str+='</div>';
+								str+='<div class="col-md-2">';
+									if(result[i].priority !=null && result[i].priority.length>0){
+										str+='<span>Priority : '+result[i].priority+'</span>';
+									}else{
+										str+='<span>Priority : - </span>';
+									}
+								str+='</div>';
+								str+='<div class="col-md-3">';
+									if(result[i].dateString !=null && result[i].dateString.length>0){
+										str+='<span>Requested Date : '+result[i].dateString.split(" ")[0]+'</span>';
+									}else{
+										str+='<span>Requested Date : - </span>';
+									}
+								str+='</div>';
+								str+='<div class="col-md-2 col-md-offset-3">';
+									str+='<span>Current Status : '+result[i].status+'</span>';
+									str+='<span class="requestedCheckbox"><input class="appointmentcheckBoxClass" type="checkbox" value="'+result[i].appointmentId+'" checked></span>';
+								str+='</div>';
+							str+='</div>';
 						}else{
-							str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
-							str+='<span class="requestedCheckbox text-success"><input class="appointmentcheckBoxClass pull-right" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
-							str+='<span class="pull-right">Current Status : '+result[i].status+'</span>';
+							str+='<div class="row">';
+								str+='<div class="col-md-2">';
+									str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
+								str+='</div>';
+								str+='<div class="col-md-2">';
+									if(result[i].priority !=null && result[i].priority.length>0){
+										str+='<span>Priority : '+result[i].priority+'</span>';
+									}else{
+										str+='<span>Priority : - </span>';
+									}
+								str+='</div>';
+								str+='<div class="col-md-3">';
+									if(result[i].dateString !=null && result[i].dateString.length>0){
+										str+='<span>Requested Date : '+result[i].dateString.split(" ")[0]+'</span>';
+									}else{
+										str+='<span>Requested Date : - </span>';
+									}
+								str+='</div>';
+								str+='<div class="col-md-2 col-md-offset-3">';
+									str+='<span>Current Status : '+result[i].status+'</span>';
+									str+='<span class="requestedCheckbox"><input class="appointmentcheckBoxClass" type="checkbox" value="'+result[i].appointmentId+'" ></span>';
+								str+='</div>';
+							str+='</div>';
 						}
+						
 						if(result[i].subject !=null && result[i].subject.length>0){
 							str+='<p>Purpose : '+result[i].subject+'</p>';
 						}else{
 							str+='<p>Purpose : - </p>';
-						}if(result[i].priority !=null && result[i].priority.length>0){
-							str+='<p>Priority Type : '+result[i].priority+'</p>';
-						}else{
-							str+='<p>Priority Type : - </p>';
-						}if(result[i].dateString !=null && result[i].dateString.length>0){
-							str+='<p>Requested Date : '+result[i].dateString+'</p>';
-						}else{
-							str+='<p>Requested Date : - </p>';
 						}/* if(result[i].status !=null && result[i].status.length>0){
 							str+='<p>Status : '+result[i].status+'</p>';
 						}else{
@@ -2735,7 +2762,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='<div class="col-md-4">';
 										str+='<div class="media font12">';
 											str+='<div class="media-left">';
-												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+											str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
@@ -2841,17 +2868,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</li>';
 						str+='</ul>';
 						}
-						/* str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+						str+='<h4 class="m_top10"><b>REQUESTED DATES :</b></h4>';
 						if(result[i].apptpreferableDates != null && result[i].dateTypeId == 1){
 							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{ 
 							str+='<p><span>'+result[i].dateType.toUpperCase()+' : '+ result[i].minDate +' - '+result[i].maxDate+'</span></p>';
-						} */						
+						}					
 				  str+='</div>';
 				str+='</div>';
 			
 		 }
-		  str+='<button class="btn btn-success" id="updateLabelId" >ACTIVE TO LABEL</button>';
+		  str+='<button class="btn btn-success" id="updateLabelId" >Assign To Label</button>';
 		  str+=' <span id="statusMsgAppntReqt"></span>';
 		 str+='<div ><center ><img style="display: none;margin-top: -30px;" src="images/icons/loading.gif" id="updateMemberAjax"></center></div>';
 		 str+='</div>';
@@ -3152,23 +3179,30 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			for(var i in result){
 			
 				str+='<div class="panel panel-default manageAppViewPanelClass">';
-				str+='<div class="panel-heading font12">';
+				str+='<div class="panel-heading pad_5 font12">';
 				    str+='<div class="row">';
-				    str+='<div class="col-md-12">';
-					//str+='<input type="button" class="text-danger" value="Print" onClick="printMembersForView(\''+labelId+'\',\''+labelName+'\');"></input>';
-						str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
+						str+='<div class="col-md-2">';
+							str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
+						str+='</div>';
+						str+='<div class="col-md-2">';
+							if(result[i].priority !=null && result[i].priority.length>0){
+								str+='<p>Priority : '+result[i].priority+'</p>';
+							}else{
+								str+='<p>Priority : - </p>';
+							}
+						str+='</div>';
+						str+='<div class="col-md-3">';
+							if(result[i].dateString !=null && result[i].dateString.length>0){
+								str+='<p>Requested Date : '+result[i].dateString.split(" ")[0]+'</p>';
+							}else{
+								str+='<p>Requested Date : - </p>';
+							}
+						str+='</div>';
+						str+='<div class="col-md-2 col-md-offset-3">';
+							//str+='<input type="button" class="text-danger" value="Print" onClick="printMembersForView(\''+labelId+'\',\''+labelName+'\');"></input>';
+							str+='<span class="requestedCheckboxPanel text-danger">'+result[i].status+'</span>';
 						str+='</div>';
 					str+='</div>';
-					str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
-					if(result[i].priority !=null && result[i].priority.length>0){
-						str+='<p>Priority : '+result[i].priority+'</p>';
-					}else{
-						str+='<p>Priority : - </p>';
-					}if(result[i].dateString !=null && result[i].dateString.length>0){
-						str+='<p>Requested Date : '+result[i].dateString.split(" ")[0]+'</p>';
-					}else{
-						str+='<p>Requested Date : - </p>';
-					}
 					if(result[i].subject !=null && result[i].subject.length>0){
 						str+='<p>Purpose : '+result[i].subject+'</p>';
 					}else{
@@ -3187,7 +3221,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='<div class="col-md-4">';
 										str+='<div class="media font12">';
 											str+='<div class="media-left">';
-												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+												str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
@@ -3293,14 +3327,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</li>';
 						str+='</ul>';
 						}
+						str+='<h4 class="m_top10 font12"><b>REQUESTED DATES :</b></h4>';
 						/* if(result[i].apptpreferableDates != null){
-							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{
-							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span> - </span></p>';
-						} */	
-						str+='<h4 class="m_top10 font12"><b>NEW REQUESTED DATES :</b></h4>';
+						}  */
 						if(result[i].apptpreferableDates != null && result[i].dateTypeId == 1){
 							str+='<p class="font12"><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{ 
@@ -3311,7 +3343,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			}
 			str+='</div>';
 			str+='</div>';
-		
 		$(".appointmentsViewDivCls").html(str)  
 	}
 	 
@@ -4194,7 +4225,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											str+='</tr>';
 										str+='</table>';
 										if(result[i].apptpreferableDates != null){
-											str+='<h4 class="m_top10"><b>NEW REQUESTED DATES</b></h4>';
+											str+='<h4 class="m_top10"><b>REQUESTED DATES</b></h4>';
 											str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
 										}
 											
@@ -4834,8 +4865,9 @@ function buildTimeSlotsTable(result){
 			str+='<span class="pull-right" style="margin-left:8px;" id="dateSpnCls">';
 			str+='<i class="glyphicon glyphicon-calendar"></i> '+result[i].fromDateStr.substr(0,10)+'</span>&nbsp;';
 			
+			str+='<p>Priority : '+result[i].priority+'</p>';
 			str+='<p>Purpose : '+result[i].subject+'</p>';
-			str+='<p>Priority Type: '+result[i].priority+'</p>';
+			
 			str+='</div>';
 			str+='<div class="panel-body pad_5">';
 			str+='<ul class="confirmSearchUl" style="list-style: none;padding:0px">';
@@ -4908,9 +4940,6 @@ function buildTimeSlotsTable(result){
 		 $("#advanceSearchValueId").val('');
 		$("#createAppTypeListId").val(0);
 		$("#errorDivId").html('');
-		$("#cadreCommitteeDiv_chosen").hide();
-		
-		
 		
 		var searchTypeSelect = new Dropkick("#searchTypeId");
 		searchTypeSelect.refresh();
@@ -5130,11 +5159,10 @@ function buildTimeSlotsTable(result){
 							str+='</li>';
 						str+='</ul>';
 						}
-						if(result[i].apptpreferableDates != null){
-							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
+						str+='<h4 class="m_top10"><b>REQUESTED DATES :</b></h4>';
+						if(result[i].apptpreferableDates != null){							
 							str+='<p><span>'+result[i].apptpreferableDates+'</span></p>';
 						}else{
-							str+='<h4 class="m_top10"><b>NEW REQUESTED DATES :</b></h4>';
 							str+='<p><span> - </span></p>';
 						}	
 				  str+='</div>';
@@ -5162,7 +5190,6 @@ function buildTimeSlotsTable(result){
 				$(".advanceCadreCommittee").hide();
 				$(".locationsFilterCls").show();
 				$(".advanceprcls").show();
-				$("#cadreCommitteeDiv_chosen").show();
 				setToDefaultAdvancedSearch();
 				$("#advanceDesignationId").css("display","none");
 				getPublicRepresentsDetails();
@@ -5175,8 +5202,6 @@ function buildTimeSlotsTable(result){
 				$(".advanceNameCls").hide();
 				$(".advanceCadreCommittee").show();
 				$(".locationsFilterCls").show();
-				$("#cadreCommitteeDiv").css("display","none");
-				$(".chosen-choices").css("display","block");
 				$(".advanceprcls").hide();
 				getCommitteeRoles();
 				$(".referRolesCheck").removeAttr("checked");
@@ -5644,7 +5669,6 @@ function getAppointmentCreatedUsers(){
 	});
 	$(document).on("click","#myonoffswitch",function(){
 		$("#apptmemberDetailsDiv").html('');
-		
 	});
 	function applyPagination(){
 		$('#searchedMembersId').DataTable();
