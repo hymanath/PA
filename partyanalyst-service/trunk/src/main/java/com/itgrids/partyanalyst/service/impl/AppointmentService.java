@@ -3988,7 +3988,6 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 	
 	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId){
 		List<IdNameVO> candidteStusLst=null;
-		Long totalCount=0l;
 		try {
 			List<AppointmentStatus> statusList=appointmentStatusDAO.getAll();
 			if(statusList!=null && statusList.size()>0){
