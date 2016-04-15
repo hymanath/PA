@@ -1,11 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.HashMap;
-
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
-//import com.itgrids.grievance.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
@@ -15,7 +12,6 @@ import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
-import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
@@ -77,4 +73,5 @@ public interface IAppointmentService {
 	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId);
 	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long aptUserId);
 	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId);
+	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO);
 }

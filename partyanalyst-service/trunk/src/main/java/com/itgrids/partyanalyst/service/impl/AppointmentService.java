@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.text.ParseException;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +32,8 @@ import com.itgrids.partyanalyst.dao.IAppointmentLabelStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentManageUserDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPreferableDateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentSmsHistoryDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentSmsSettingDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTrackingDAO;
@@ -71,14 +72,17 @@ import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 import com.itgrids.partyanalyst.model.AppointmentLabel;
 import com.itgrids.partyanalyst.model.AppointmentPreferableDate;
+import com.itgrids.partyanalyst.model.AppointmentSmsHistory;
 import com.itgrids.partyanalyst.model.AppointmentStatus;
 import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
 import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.LabelAppointment;
 import com.itgrids.partyanalyst.model.LabelAppointmentHistory;
+import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.LocationService;
@@ -121,7 +125,33 @@ public class AppointmentService implements IAppointmentService{
 	private LocationService locationService;
 	private IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO;
 	private IAppointmentTrackingDAO appointmentTrackingDAO;
+	private IAppointmentSmsSettingDAO appointmentSmsSettingDAO;
+	private IAppointmentSmsHistoryDAO appointmentSmsHistoryDAO;
+	private ISmsSenderService smsSenderService;
 	
+	
+	
+	
+	public IAppointmentSmsSettingDAO getAppointmentSmsSettingDAO() {
+		return appointmentSmsSettingDAO;
+	}
+	public void setAppointmentSmsSettingDAO(
+			IAppointmentSmsSettingDAO appointmentSmsSettingDAO) {
+		this.appointmentSmsSettingDAO = appointmentSmsSettingDAO;
+	}
+	public IAppointmentSmsHistoryDAO getAppointmentSmsHistoryDAO() {
+		return appointmentSmsHistoryDAO;
+	}
+	public void setAppointmentSmsHistoryDAO(
+			IAppointmentSmsHistoryDAO appointmentSmsHistoryDAO) {
+		this.appointmentSmsHistoryDAO = appointmentSmsHistoryDAO;
+	}
+	public ISmsSenderService getSmsSenderService() {
+		return smsSenderService;
+	}
+	public void setSmsSenderService(ISmsSenderService smsSenderService) {
+		this.smsSenderService = smsSenderService;
+	}
 	public IAppointmentTrackingDAO getAppointmentTrackingDAO() {
 		return appointmentTrackingDAO;
 	}
@@ -4139,5 +4169,57 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			}
 		}
 		return null;
+	}
+	
+	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO)
+	{
+		ResultStatus result = new ResultStatus();
+		try{
+			StringBuffer mobileNos = new StringBuffer();
+			boolean isEnglish = false;
+			     List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
+			     int lastEle = list.size() - 1;
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params : list)
+					 {
+						 if(params[2] != null && !params[2].toString().isEmpty())
+						 {
+							 mobileNos.append(params[2].toString());
+							 if(lastEle!=list.size()-1)
+							 mobileNos.append(",");
+						 } 
+					 }
+				 }
+				 
+				 Long statusId = appointmentDAO.getAppointmentStatusId(inputVO.getAppointmentId());
+				List<Object[]> objs = appointmentSmsSettingDAO.getContentTypeAndSmsContent(statusId);
+				SmsHistory smsHistory = null;
+				if(objs != null && objs.size() > 0){
+					for(Object[] obj : objs){
+						if(obj[0].toString().equalsIgnoreCase("STATIC")){
+							smsHistory =	smsSenderService.sendSMS(inputVO.getUserId(), "Appointment", isEnglish, obj[0].toString(), mobileNos.toString());
+						}else{
+						    smsHistory =	smsSenderService.sendSMS(inputVO.getUserId(), "Appointment", isEnglish,inputVO.getSmsText(), mobileNos.toString());
+						}
+					}
+				}
+				
+				AppointmentSmsHistory appointmentSmsHistory = new AppointmentSmsHistory();
+				appointmentSmsHistory.setAppointmentId(inputVO.getAppointmentId());
+				appointmentSmsHistory.setSmsHistory(smsHistory);
+				appointmentSmsHistory.setAppointmentStatusId(statusId);
+				appointmentSmsHistory.setSentBy(inputVO.getUserId());
+				appointmentSmsHistory.setSentTime(dateUtilService.getCurrentDateAndTime());
+				appointmentSmsHistoryDAO.save(appointmentSmsHistory);
+			
+			result.setMessage("success");
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in sendSmsForAppointment", e);
+			result.setMessage("fail");
+			
+		}
+		return result;
 	}
 }
