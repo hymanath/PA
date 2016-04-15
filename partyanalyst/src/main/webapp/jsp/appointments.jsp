@@ -3313,6 +3313,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	function getSearchDetails()
 	{
 		searchJobj;
+		$("#upcomingAppointMentId").html("");
+		$("#inprogreessAppointMentId").html("");
+		$("#completedAppointMentId").html("");
 		$(".appointmentSettings").show();
 		var createdBy =$("#appointmentcreatedBy").val();
 		var statusId =$("#selectStatusId").val();
@@ -3371,6 +3374,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	}
 	function buildUpcomingResult(result,statusId)
 	{
+		
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
@@ -3691,6 +3695,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	});
 	function buildInprogressResult(result,statusId)
 	{
+		
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
@@ -3850,6 +3855,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	
 	function buildCompletedResult(result,statusId)
 	{
+		
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
@@ -5532,6 +5538,7 @@ function getAppointmentCreatedUsers(){
 		getAppointmentLabels();					
 		getTotalAppointmentStatus();
 		getAppointmentStatusCounts();
+		getSearchDetails();
 	});
 	$( "#selectStsForLabelId" ).change(function() {
 		getLabelDtls();
