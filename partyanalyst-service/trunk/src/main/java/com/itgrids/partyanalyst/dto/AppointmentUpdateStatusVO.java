@@ -8,8 +8,8 @@ public class AppointmentUpdateStatusVO {
 	private String smsText;
 	private Long statusId;
 	private String appointmentType;
+	private String commented;
 	private Long userId;
-	
 	
 	
 	public Long getUserId() {
@@ -17,6 +17,13 @@ public class AppointmentUpdateStatusVO {
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	
+	public String getCommented() {
+		return commented;
+	}
+	public void setCommented(String commented) {
+		this.commented = commented;
 	}
 	public String getAppointmentType() {
 		return appointmentType;
