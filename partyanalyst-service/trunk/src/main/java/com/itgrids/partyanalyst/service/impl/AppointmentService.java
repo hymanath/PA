@@ -352,7 +352,7 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setAppointmentUserId(appointmentVO.getAppointmentUserId());
 		        	appointment.setAppointmentPriorityId(appointmentVO.getAppointmentPriorityId());
 		        	appointment.setReason(appointmentVO.getReason());
-		        	appointment.setAppointmentStatusId(1l);
+		        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
 		        	
 		        	if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("")){
 		        		String temp[] = appointmentVO.getUniqueCode().split("_");
