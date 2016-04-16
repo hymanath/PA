@@ -2697,5 +2697,8 @@
 	<bean id="appointmentSmsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="smsOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsOtpDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
