@@ -2544,9 +2544,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	    try{
 	       
 	       List<String> statusList = appointmentStatusDAO.getAllStatus();
-	       if(statusList!=null && statusList.size()>0){
+	      /* if(statusList!=null && statusList.size()>0){
 	         statusList.add(1,"Labelled");
-	       }
+	       }*/
 	       
 	       if(statusList!=null && statusList.size()>0){
 	        for (String status : statusList) {
@@ -2565,7 +2565,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	           
 	           String status = obj[1]!=null?obj[1].toString():"";
 	           AppointmentStatusVO statusvo = getMatchedStatus(finalList,status);
-	           if(statusvo!=null && !statusvo.getStatus().equalsIgnoreCase("Waiting") && !statusvo.getStatus().equalsIgnoreCase("Fixed") && !statusvo.getStatus().equalsIgnoreCase("Attended")){
+	           if(statusvo!=null  && !statusvo.getStatus().equalsIgnoreCase("Fixed") && !statusvo.getStatus().equalsIgnoreCase("Attended")){
 	            
 	             statusvo.setStatusCount(obj[2]!=null?(Long)obj[2]:0l);
 	             statusvo.setMembersCount(obj[3]!=null?(Long)obj[3]:0l);
@@ -2573,15 +2573,15 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	         }
 	       }
 	       
-	       List<Object[]> waitingCounts = appointmentCandidateRelationDAO.getLabelledAndNonLabelledApptIdsForWaitingStatus(apptUserId,"N",IConstants.WAITING_APPOINTMENT_STATUS_ID);
+	      /* List<Object[]> waitingCounts = appointmentCandidateRelationDAO.getLabelledAndNonLabelledApptIdsForWaitingStatus(apptUserId,"N",IConstants.WAITING_APPOINTMENT_STATUS_ID);
 	       List<Object[]> labelledWithWaitingCounts = appointmentCandidateRelationDAO.getLabelledAndNonLabelledApptIdsForWaitingStatus(apptUserId,"Y",IConstants.WAITING_APPOINTMENT_STATUS_ID);
 	       setData(finalList,waitingCounts,"Waiting");
-	       setData(finalList,labelledWithWaitingCounts,"Labelled");
+	       setData(finalList,labelledWithWaitingCounts,"Labelled");*/
 	      
 	       DateUtilService dts = new DateUtilService();
 	       
-	       List<Object[]> fixedCounts= appointmentCandidateRelationDAO.getOnlyFixedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.FIXED_APPOINTMENT_STATUS_ID);
-	       List<Object[]> attendedCounts= appointmentCandidateRelationDAO.getAttendedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.ATTENDED_APPOINTMENT_STATUS_ID,IConstants.FIXED_APPOINTMENT_STATUS_ID);
+	       List<Object[]> fixedCounts= appointmentCandidateRelationDAO.getOnlyFixedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_FIXED);
+	       List<Object[]> attendedCounts= appointmentCandidateRelationDAO.getAttendedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_ATTENDED,IConstants.APPOINTMENT_STATUS_FIXED);
 	       setData(finalList,fixedCounts,"Fixed");
 	       setData(finalList,attendedCounts,"Attended");
 	    
