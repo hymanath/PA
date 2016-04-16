@@ -75,6 +75,8 @@
 .advanceNameCls{
 	heigth:30px;
 }
+
+
 </style>
 </head>
 <body>
@@ -925,6 +927,7 @@
 	  </div>
     </div>
   </div>
+
 </div>
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
@@ -6461,7 +6464,7 @@ function getCommitteeRoles(){
 			{
 				total = total + result[i].availableCount;
 			}
-			str+='<p>Total - '+total+'</p>';
+			str+='<p>Total Appointment Requested - '+total+'</p>';
 			str+='<table class="table table-bordered">';
 			str+='<tr class="text-center">';
 			for(var i in result)
@@ -6480,6 +6483,7 @@ function getCommitteeRoles(){
 		  
 		  function getAppointmentHistoryForCandidate(id){
 			$("#aptCandidateHistoryDiv").html('<img src="images/search.gif" />');
+			$("#buildCommentsForHistoryView").html('<img src="images/search.gif" />');
 	    	var jsObj={
 	    			appointmentCandidateId:id,
 					task:""
@@ -6491,13 +6495,14 @@ function getCommitteeRoles(){
 		  data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){ 
 		  buildAppointmentHistoryForCandidate(result);
+		  buildAppointmentCommentsForViewHistory(result);
 		  });
 	  }
 	  
 	function buildAppointmentHistoryForCandidate(result)
 	{
 		var str='';
-		str+='<table class="table table-condensed" style="border:1px solid #ddd">';
+		str+='<table class="table table-condensed" style="border:1px solid #ddd" id="aptCandidateHistorydatatable">';
 		str+='<thead>';
 		str+='<th>ID</th>';
 		str+='<th>PURPOSE</th>';
@@ -6521,6 +6526,51 @@ function getCommitteeRoles(){
 		str+='</tbody>';
 		str+='</table>';
 		$("#aptCandidateHistoryDiv").html(str);	
+		 $('#aptCandidateHistorydatatable').DataTable();
+	}
+	
+	function buildAppointmentCommentsForViewHistory(result){
+		
+		var str ='';
+		str+='<div class="row">';
+		str+='<div class="col-xs-12">';
+		str+='<div class="row">';
+		str+='<div class="col-md-3" style="font-size: 18px;font-weight:bold;"><span style="font-weight: bold;"><i class="glyphicon glyphicon-comment"></i> &nbsp;&nbsp;</span>Comments</div>';
+		str+='</div>';
+		str+='<table class="table table-bordered table-condensed" id="commentsdatatable">';
+		str+='<thead>';
+		str+='<th style="padding:0px"></th>';
+		str+='</thead>';
+		str+='<tbody>';
+		
+		if(result != null && result.length > 0){
+			for(var i in result){
+				if(result[i].commentlist != null && result[i].commentlist.length>0){
+					for(var j in result[i].commentlist){
+						str+='<tr>';
+						str+='<td>';
+						str+='<div class="row">';
+						str+='<div class="col-md-3" style="font-size: 11px;"><span style="font-weight: bold;">Appointment ID :&nbsp;&nbsp;</span>'+result[i].commentlist[j].id+'</div>';
+						str+='<div class="col-md-3" style="font-size: 11px;"><span style="font-weight: bold;">Status :&nbsp;&nbsp;</span>'+result[i].commentlist[j].status+'</div>';
+						str+='<div class="col-md-3" style="font-size: 11px;"><span style="font-weight: bold;">Date :&nbsp;&nbsp;</span>'+result[i].commentlist[j].createdOn+'</div>';
+						str+='</div>';
+						str+='<p style="margin-top: 10px;">'+result[i].commentlist[j].comment+'</p>';
+						str+='<p class="text-bold" style="margin-top: 10px;">Comment By - '+result[i].commentlist[j].user+'</p>';
+						str+='</td>';
+						str+='</tr>';
+					}
+				}
+				
+			}
+		}
+		
+		
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		$("#buildCommentsForHistoryView").html(str);
+		  $('#commentsdatatable').DataTable();
 	}
 	
 	$(document).on("click",".sendsms",function() {
