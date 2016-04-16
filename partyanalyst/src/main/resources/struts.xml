@@ -11857,5 +11857,20 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	<action name="getVoterDetailsByVoterCardNumberAction" class="cadreVoterSearchAction" method="getVoterDetailsByVoterCardNumber">
+		<result type="json" name="success">
+			<param name="root">voterDetailsvo</param> 
+		</result>
+	</action>
+	<action name="generateOTPForMobileNumberAction" class="cadreVoterSearchAction" method="generateOTPForMobileNumber">
+		<result type="json" name="success">
+			<param name="root">status</param> 
+		</result>
+	</action>
+	<action name="validateOTPAction" class="cadreVoterSearchAction" method="validateOTP">
+		<result type="json" name="success">
+			<param name="root">status</param> 
+		</result>
+	</action>
 </package>
 </struts>      

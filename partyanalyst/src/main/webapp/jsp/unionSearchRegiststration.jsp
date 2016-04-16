@@ -64,10 +64,10 @@ label
                         	<div class="form-group">
                             	<label>Are you registered as TDP Cadre in 2014-2016 &nbsp;</label>
 								<label class="radio-inline">
-									<input type="radio" name="tdpCadre" value="yes" class="searchCls" checked />Yes
+									<input type="radio" name="tdpCadreRadio" value="yes" class="searchCls" checked />Yes
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="tdpCadre" value="no" class="searchCls"/>No
+									<input type="radio" name="tdpCadreRadio" value="no" class="searchCls"/>No
 								</label>
                             </div>
                         </div>
@@ -91,7 +91,7 @@ label
 						
                         <div class="col-md-6 m_top20">
                         	<label class="memberCls">Search By Membership Id/Mobile No/Voter Id</label>
-							<label class="nonMemberCls" style="display:none;">Search By Membership Voter Id</label>
+							<label class="nonMemberCls" style="display:none;">Search By VoterCard Number</label>
                             <input type="text" id="searchBy" class="form-control"/>
 							<div class="errCls" style="color:red;"></div>
 							<div id="searchErrDiv"></div>
@@ -133,10 +133,15 @@ label
 						
 						
                         <div class="col-md-2">
-                        	<button class="btn btn-success m_top20">GET OTP</button>
+							<div class="success" id="otpSuccessDiv"></div>
+                        	<button class="btn btn-success m_top20" onclick="generateOTPForMobileNo();">GET OTP</button>
                         </div>
                         <div class="col-md-2">
-                        	<input type="text" class="form-control m_top20"/>
+                        	<input type="text" class="form-control m_top20" id="otpId"/>
+                        </div>
+						<input type="hidden" id="randomRefNo"></input>
+						<div class="col-md-2">
+                        	<button class="btn btn-success m_top20" onclick="validateOTP();">VALIDATE OTP</button>
                         </div>
                     </div>
                 </div>

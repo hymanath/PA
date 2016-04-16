@@ -317,11 +317,11 @@ footer
 						<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' ) || 
 						fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_DASHBOARD_ENTITLEMENT' )}">
 						<li>
-							<a href="#"><img class=" ico-white pull-left" src="images/events.jpg"></img><span>&nbsp;&nbsp;Affiliated Cadre </span></a>
+							<a href="#"><img class=" ico-white pull-left" src="images/events.jpg"></img><span>&nbsp;&nbsp;Affiliated Union Enrollment </span></a>
 										 <h2><img class=" ico-white line_heightDiv  pull-left" src="images/events.jpg"></img> Affiliated Cadre  </h2>
 							<ul>	
 							
-								<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' )}">
+								<c:if test="${sessionScope.USER.isAdmin == 'true' ||fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' )}">
 								 <li>
 									<a href="affiliatedCadreSearchAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Registration</span></a>
 								 </li>
