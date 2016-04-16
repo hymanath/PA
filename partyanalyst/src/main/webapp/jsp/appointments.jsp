@@ -9,7 +9,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Appointment</title>
-
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
@@ -40,7 +39,6 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
@@ -57,83 +55,23 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
-.SelectPosition li
-{
-	padding:5px;
-	width:100%;
-	border-top:1px solid #ccc;
-	border-left:1px solid #ccc;
-	border-right:1px solid #ccc;
-	list-style:none;
-	cursor:pointer;
-}
-.daterangepicker_end_input
-{
-	padding:0px !important;
-}
-.SelectPosition li:last-child
-{
-	border-bottom:1px solid #ccc;
-}
-.SelectPositionScroll 
-{
-	width: 100%;
-	height: 140px;
-	overflow: auto;
-}
-.SelectPosition
-{
-	padding:0px;
-	margin-top:10px;
-}
-.m_left16{
-	 margin-left: 16px !important;
-}
-.validateClr{
-	color:red;
-}
-.ui-widget-header
-{
-	background:#fff !important;
-	border:1px solid #fff !important;
-	color:#333;
-	font-weight:400;
-}
-.m_top5
-{
-	margin-top:5px;
-}
-.closeIcon
-{
-	background:#ccc;
-	color:#666;
-	padding:5px;
-	position:absolute;
-	right:0px;
-	top:0px;
-	cursor:pointer;
-}
-.block{
-	position:relative;
-}
-.m_top10
-{
-	margin-top:10px;
-}
+.SelectPosition li{padding:5px;width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;list-style:none;cursor:pointer;}
+.daterangepicker_end_input{padding:0px !important;}
+.SelectPosition li:last-child{border-bottom:1px solid #ccc;}
+.SelectPositionScroll{width: 100%;height: 140px;overflow: auto;}
+.SelectPosition{padding:0px;margin-top:10px;}
+.m_left16{margin-left: 16px !important;}
+.validateClr{color:red;}
+.ui-widget-header{background:#fff !important;border:1px solid #fff !important;color:#333;font-weight:400;}
+.m_top5{margin-top:5px;}
+.closeIcon{background:#ccc;color:#666;padding:5px;position:absolute;right:0px;top:0px;cursor:pointer;}
+.block{position:relative;}
+.m_top10{margin-top:10px;}
 .prev,.next{width:60px !important;}
 #upcomingAppointments,#inprogreessAppointMentId,#completedAppointMentId {height:36px;}
-.tableAppointment thead th  {
-    background: #f2f2f2 none repeat scroll 0 0;
-    border: 1px solid #fff !important;
-    padding-left: 8px !important;
-	font-weight: normal;
-}
-.removetopborder td{
-	border-top: none !important;
-}
-.addwidth{
-	width:250px !important;
-}
+.tableAppointment thead th{background: #f2f2f2 none repeat scroll 0 0;border: 1px solid #fff !important;padding-left: 8px !important;font-weight: normal;}
+.removetopborder td{border-top: none !important;}
+.addwidth{width:250px !important;}
 </style>
 </head>
 <body>
@@ -3515,10 +3453,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		str+='<div class="updateAppointment arrow_box">';
 		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="5" name="upcomeRadio1" class="statusAllupcome" checked/>Reschedule';
+		str+='<input type="radio" value="6" name="upcomeRadio1" class="statusAllupcome" checked/>Reschedule';
 		str+='</label>';
 		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="3" name="upcomeRadio1" class="statusAllupcome"/>Cancel';
+		str+='<input type="radio" value="7" name="upcomeRadio1" class="statusAllupcome"/>Cancel';
 		str+='</label>';
 		str+='<textarea class="form-control m_top10 upcomeSmsText" ></textarea>';
 		str+='<span class="msgDiv2upcome"></span>';
@@ -3571,13 +3509,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
+							str+='<input type="radio" value="6" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="3"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
+							str+='<input type="radio" value="7"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
+							str+='<input type="radio" value="5"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
@@ -3841,10 +3779,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='</h4>';
 		str+='<div class="updateAppointment arrow_box">';
 			str+='<label class="radio-inline">';
-		str+='<input type="radio" value="5" name="InProgressRadio1" class="statusAllInProgress" checked>Reschedule';
+		str+='<input type="radio" value="6" name="InProgressRadio1" class="statusAllInProgress" checked>Reschedule';
 		str+='</label>';
 		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="3" name="InProgressRadio1" class="statusAllInProgress">Cancel';
+		str+='<input type="radio" value="7" name="InProgressRadio1" class="statusAllInProgress">Cancel';
 		str+='</label>';
 		str+='<textarea class="form-control m_top10 InProgressSmsText" ></textarea>';
 		str+='<span class="msgDiv2InProgress"></span>';
@@ -3897,13 +3835,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							
 						    str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
+							str+='<input type="radio" value="6" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="3"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
+							str+='<input type="radio" value="7"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
+							str+='<input type="radio" value="5"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
@@ -4005,10 +3943,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='</h4>';
 		str+='<div class="updateAppointment arrow_box">';
 			str+='<label class="radio-inline">';
-		str+='<input type="radio" value="5" name="CompletedRadio1" class="statusAllCompleted" checked>Reschedule';
+		str+='<input type="radio" value="6" name="CompletedRadio1" class="statusAllCompleted" checked>Reschedule';
 		str+='</label>';
 		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="3" name="CompletedRadio1" class="statusAllCompleted">Cancel';
+		str+='<input type="radio" value="7" name="CompletedRadio1" class="statusAllCompleted">Cancel';
 		str+='</label>';
 		str+='<textarea class="form-control m_top10 CompletedSmsText" ></textarea>';
 		str+='<span class="msgDiv2Completed"></span>';
@@ -4061,13 +3999,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="5" name="upcomeRadio" class="status'+result[i].appointmentId+' status " checked>Reschedule';
+							str+='<input type="radio" value="6" name="upcomeRadio" class="status'+result[i].appointmentId+' status " checked>Reschedule';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="3"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
+							str+='<input type="radio" value="7"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
 							str+='</label>';
 							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="4"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
+							str+='<input type="radio" value="5"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
 							str+='</label>';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
