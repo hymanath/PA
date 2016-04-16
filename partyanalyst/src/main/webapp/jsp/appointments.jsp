@@ -901,6 +901,7 @@
 													<div class="row m_top20">
 														<div class="col-md-12">
 															<div style="background:#F3f3f3;margin:0px -10px;padding:12px 0px;" class="row">
+																<div id="errorDivForTimeSlotId" class="validateClr m_left16"></div>
 																<div class="col-md-4">
 																	<label>Select Date</label>
 																	<div class="input-group inputSearch">
@@ -938,7 +939,6 @@
 																<div class="col-md-2 m_top10">
 																<textarea  placeholder="Please Enter Comment..." cols="40" rows="2" id="commentTxt"></textarea>
 																</div>
-																<div id="errorDivForTimeSlotId" class="validateClr m_left16"  ></div>
 															</div>
 														</div>
 														
@@ -5892,15 +5892,13 @@ function getAppointmentCreatedUsers(){
 			 $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
 			    return;
 		} 
-		if(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM"){
-		}else{
+		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
 			 if(parseInt(toTimeArr[0].trim())<parseInt(fromTimeArr[0].trim())){
 				$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
 				   return;
 		      }
 		}
-		if(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM"){
-		}else{
+		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
 		  if(parseInt(toTimeArr[0].trim())==parseInt(fromTimeArr[0].trim())){
 		 		if(!(toTimeArr[1].substr(0,2)>fromTimeArr[1].substr(0,2))){
 				   $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
@@ -5966,22 +5964,20 @@ function getAppointmentCreatedUsers(){
 			$("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
 			    return;
 		} 
-		if(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM"){
-		}else{
+		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
 			 if(parseInt(toTimeArr[0].trim())<parseInt(fromTimeArr[0].trim())){
 				  $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
 				   return;
 		      }
 		}
-		if(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM"){
-		}else{
+		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
 			if(parseInt(toTimeArr[0].trim())==parseInt(fromTimeArr[0].trim())){
 				if(!(toTimeArr[1].substr(0,2)>fromTimeArr[1].substr(0,2))){
 					 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
 					 return;
-			}
-		 } 
-		}
+			 }
+		 }
+	    }
 	
 		 $("#ajaxImgForTimeSlotId").css("display","inline-block");
 		var jsObj={
