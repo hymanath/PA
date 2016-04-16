@@ -14,6 +14,9 @@
 				<div class="m_top20" id="aptCandidateHistoryDiv">
 					
 				</div>
+				<div class="m_top20" id="buildCommentsForHistoryView">
+					
+				</div>
 			</div>
 		</div>
 	  </div>
