@@ -5154,7 +5154,7 @@ function buildTimeSlotsTable(result){
 							}
 						str+='</div>';
 						str+='<div class="col-md-2 col-md-offset-3">';
-							str+='<span class="requestedCheckbox" data-toggle="tooltip" data-placement="top" title="Check this to delete appointments"><input type="checkbox" value="'+result[i].aptUniqueCode+'" class="deleteAppointmentChckCls"></input></span>';
+							str+='<span class="requestedCheckbox" data-toggle="tooltip" data-placement="top" title="Check this to delete appointments"><input type="checkbox" value="'+result[i].appointmentId+'" class="deleteAppointmentChckCls"></input></span>';
 							if(result[i].status != null){
 								str+='<span>Current Status : '+result[i].status+'</span>';
 							}else{
