@@ -463,7 +463,9 @@ public class AppointmentService implements IAppointmentService{
 		        		List<String> voterCardNumList = new ArrayList<String>(0);
 		        		Map<String,Long> voterCardIdsMap = new HashMap<String, Long>(0);
 		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
-		        			voterCardNumList.add(basicInfo.getVoterCardNo());
+		        			if(basicInfo.getVoterCardNo() != null && !basicInfo.getVoterCardNo().isEmpty()){
+		        				voterCardNumList.add(basicInfo.getVoterCardNo());
+		        			}	
 		        		}
 		        		if(voterCardNumList != null && voterCardNumList.size() > 0){
 		        			List<Object[]> voterIdsObjList = voterDAO.getVoterIdsByCardNos(voterCardNumList);
@@ -479,7 +481,9 @@ public class AppointmentService implements IAppointmentService{
 		        		List<String> membershipNoList = new ArrayList<String>(0);
 		        		Map<String,Long> cadreIdsMap = new HashMap<String, Long>(0);
 		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
-		        			membershipNoList.add(basicInfo.getMembershipNum());
+		        			if(basicInfo.getMembershipNum() != null && !basicInfo.getMembershipNum().isEmpty()){
+		        				membershipNoList.add(basicInfo.getMembershipNum());
+		        			}
 		        		}
 		        		if(membershipNoList != null && membershipNoList.size() > 0){
 		        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreIdForMemberShipNums(membershipNoList);
@@ -2209,7 +2213,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					        			labelAppointmentHistoryDAO.save(history);
 					        			
 				        			}
-			        				int apptsLabeligStausCount  = appointmentDAO.updateLabelingStatusToAppts(savingAppointmentIds,"Y");
+			        				//int apptsLabeligStausCount  = appointmentDAO.updateLabelingStatusToAppts(savingAppointmentIds,"Y");
+			        				changeAppointmentStatus(savingAppointmentIds, IConstants.APPOINTMENT_STATUS_LABELED);
 			        			}
 			        			
 			        			
@@ -3339,11 +3344,11 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				    	   }
 				       }
 				       
-				      if(type !=null && type.equalsIgnoreCase("update")){
-			        	  //saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
+				      /*if(type !=null && type.equalsIgnoreCase("update")){
+			        	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
 			         }else{
-			          	  //saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
-			         }
+			          	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
+			         }*/
 				      
 				      
 				      //tentative appt status
