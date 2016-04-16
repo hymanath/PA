@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -15,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
+import com.itgrids.partyanalyst.dao.ISmsOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
@@ -24,10 +26,15 @@ import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.SmsHistory;
+import com.itgrids.partyanalyst.model.SmsOtpDetails;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
+import com.itgrids.partyanalyst.service.ISmsSenderService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -49,8 +56,35 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	private IVoterCastInfoDAO voterCastInfoDAO;
 	private IMobileNumbersDAO mobileNumbersDAO;
 	private IBoothDAO boothDAO;
+	private ISmsSenderService smsSenderService;
+	private ISmsOtpDetailsDAO smsOtpDetailsDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
+	public ISmsOtpDetailsDAO getSmsOtpDetailsDAO() {
+		return smsOtpDetailsDAO;
+	}
+
+	public void setSmsOtpDetailsDAO(ISmsOtpDetailsDAO smsOtpDetailsDAO) {
+		this.smsOtpDetailsDAO = smsOtpDetailsDAO;
+	}
+
+	public ISmsSenderService getSmsSenderService() {
+		return smsSenderService;
+	}
+
+	public void setSmsSenderService(ISmsSenderService smsSenderService) {
+		this.smsSenderService = smsSenderService;
+	}
+
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
 	}
@@ -959,5 +993,100 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		}
 		
 		return returnList;
+	}
+	
+	public VoterDetailsVO getVoterDetailsByVoterCardNumber(String voterIDCardNo){
+		VoterDetailsVO voterDetailsvo = new VoterDetailsVO();
+		
+		try {
+			List<VoterDetailsVO> voterDetailsList = new ArrayList<VoterDetailsVO>();
+			
+			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsByVoterCardNumber(voterIDCardNo);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					VoterDetailsVO vo = new VoterDetailsVO();
+					
+					vo.setVoterId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setVoterName(obj[1] != null ? obj[1].toString():"");
+					vo.setRelativeName(obj[2] != null ? obj[2].toString():"");
+					vo.setVoterIDCardNo(obj[3] != null ? obj[3].toString():"");
+					vo.setGender(obj[4] != null ? obj[4].toString():"");
+					vo.setAge(obj[5] != null ? obj[5].toString():"");
+					vo.setDateOfBirth(obj[6] != null ? obj[6].toString():"");
+					vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
+					vo.setHouseNo(obj[8] != null ? obj[8].toString():"");
+					vo.setBoothId(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					vo.setPartNo(obj[10] != null ? obj[10].toString():"");
+					vo.setDistrictId(Long.valueOf(obj[11] != null ? obj[11].toString():"0"));
+					vo.setDistrictName(obj[12] != null ? obj[12].toString():"");
+					vo.setConstituencyId(Long.valueOf(obj[13] != null ? obj[13].toString():"0"));
+					vo.setConstituencyName(obj[14] != null ? obj[14].toString():"");
+					vo.setTehsilId(Long.valueOf(obj[15] != null ? obj[15].toString():"0"));
+					vo.setTehsil(obj[16] != null ? obj[16].toString():"");
+					vo.setLocalElectionBodyId(Long.valueOf(obj[17] != null ? obj[17].toString():"0"));
+					vo.setLeb(obj[18] != null ? obj[18].toString():"");
+					
+					voterDetailsList.add(vo);
+				}
+			}
+			
+			voterDetailsvo.setSubList(voterDetailsList);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getVoterDetailsByVoterCardNumber() in CadreVoterSearchService ",e);
+		}
+		return voterDetailsvo;
+	}
+	
+	public String generateOTPForMobileNumber(Long userId,String mobileNo,String refNo){
+		String status = null;
+		try {
+			
+			Random random=new Random();
+		      int number= 0;
+		      String otp = "";
+		      do{
+		        number = Math.abs(random.nextInt());
+		        otp = String.valueOf(number);
+		      }while(otp.trim().length()<=6);
+		      
+		      otp = String.valueOf(number).substring(0,6);
+		      
+		      String messageStr = "Verification code: "+otp+" for ref no: "+refNo;
+		      
+		      SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
+		      
+		      smsOtpDetails.setOtpReferenceId(refNo);
+		      smsOtpDetails.setOtpNo(otp);
+		      smsOtpDetails.setIsDeleted("N");
+		      smsOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		      smsOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		      smsOtpDetails.setMobileNo(mobileNo);
+		      smsOtpDetails.setUserId(userId);
+		      smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
+		      
+		      SmsHistory smsHistory = smsSenderService.sendSMS(userId, "Appointment", true, messageStr, mobileNo);
+		      
+		      status = IConstants.SUCCESS;
+		      
+		} catch (Exception e) {
+			status = IConstants.FAILURE;
+			LOG.error("Exception occured in generateOTPForMobileNumber() in CadreVoterSearchService ",e);
+		}
+		return status;
+	}
+	
+	public String validateOTP(String mobileNo,String refNo,String otp){
+		String status = null;
+		try {
+			
+			Long smsOTPDetailsId = smsOtpDetailsDAO.validateOTP(mobileNo, refNo, otp);
+			if(smsOTPDetailsId != null && smsOTPDetailsId.longValue() > 0l)
+				status = IConstants.SUCCESS;
+		      
+		} catch (Exception e) {
+			status = IConstants.FAILURE;
+			LOG.error("Exception occured in generateOTPForMobileNumber() in CadreVoterSearchService ",e);
+		}
+		return status;
 	}
 }
