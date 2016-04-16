@@ -2862,21 +2862,19 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		 try {
 			Date fromDate1 = format.parse(fromDate);
 			Date toDate1 = format.parse(toDate);
-			Date date2 = new Date();
+			Date date2 = new DateUtilService().getCurrentDateAndTime();
+			
 			if (toDate1.compareTo(date2) < 0)
 			{
 					scheduleType = "Completed";
-			       // System.out.println("date1 is before date2");
 			}
 			else if (fromDate1.compareTo(date2) > 0)
 			{
 				scheduleType = "UpCome";
-			   // System.out.println("fromDate1 is after date2");
 			}
 			else
 			{
 				scheduleType = "InProgress";
-			   // System.out.println("date1 is equal to date2");
 			}
 		 } catch (ParseException e) {
 				
