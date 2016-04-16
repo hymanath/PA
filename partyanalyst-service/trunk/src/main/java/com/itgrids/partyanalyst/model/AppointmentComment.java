@@ -35,6 +35,8 @@ public class AppointmentComment extends BaseModel implements Serializable{
 	
 	private Appointment appointment;
 	private AppointmentStatus appointmentStatus;
+	private User insertedUser;
+	private User UpdatedUser;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -115,5 +117,28 @@ public class AppointmentComment extends BaseModel implements Serializable{
 	public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
 		this.appointmentStatus = appointmentStatus;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="inserted_by",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="updated_by",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdatedUser() {
+		return UpdatedUser;
+	}
+	public void setUpdatedUser(User updatedUser) {
+		UpdatedUser = updatedUser;
+	}
+	
+	
 	
 }
