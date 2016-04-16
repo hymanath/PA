@@ -9979,6 +9979,8 @@
 		</action>
 		<action name="newCadreSearchPageAction" class="cadreCommitteeAction" method="newCadreSearchExe">
 			<result name="success">/jsp/unionSearchRegiststration.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreSearchPageAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		<action name="eventInvitees" class="committeeDashBoardAction" method = "committeeMemberDetailExe">
 			<result name="success">/jsp/committeeMemberDetails.jsp</result>
@@ -11413,6 +11415,11 @@
 	</action>
 	
 	<action name="affiliatedCadreRegistrationAction" class="rtcUnionAction" method="rtcUnionRegistrationPage">
+			<result name="success">/jsp/rtcUnionRegistration.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=affiliatedCadreSearchAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	<action name="affiliatedGradiatesRegistrationAction" class="rtcUnionAction" method="rtcUnionRegistrationPage">
 			<result name="success">/jsp/rtcUnionRegistration.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=affiliatedCadreSearchAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
