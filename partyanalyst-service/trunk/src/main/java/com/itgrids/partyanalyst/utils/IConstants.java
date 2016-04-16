@@ -1000,4 +1000,6 @@ public interface IConstants {
 	public static final Long APPOINTMENT_STATUS_VOID=9L;
 	public static final Integer APPOINTMENT_HISTORY_MAX_RESULT =5;
 	
+	public static final Long[] APPOINTMENT_STATUS_LABELED_LIST={2L,3L,9L};
+	
 }
