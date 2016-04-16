@@ -151,8 +151,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		});
 }
 
-//corect
-/* function buildCadreDetails(result,jsObj){
+function buildCadreDetails(result,jsObj){
 		$(".paginationDivId").show();
 		var str ='';
 		var elegRolCnt=0;
@@ -172,8 +171,8 @@ function getCadreDetailsBySearchCriteria(startIndex){
 				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
-				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+' ; ';				
-				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
+				str+='<h5 class="media-heading"><div id="nameId" attr_cadreId="'+result[i].tdpCadreId+'" style="cursor:pointer;"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+' ;</div> ';				
+				str+='<span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
 				str+='<li>Age:'+result[i].age+';</li>';
 				str+='<li>Gender: '+result[i].gender+'</li>';
@@ -192,20 +191,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 				str+='</ul>';
 				
 				str+='<div>';
-				if(result[i].deletedStatus != "MD"){
-					
-					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
-					
-						str+='<div id="rc'+result[i].tdpCadreId+'" class="pull-right cadreRemoveCls" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-remove remove-icon" data-toggle="tooltip" data-placement="bottom" title="Remove Cadre"></i></div>';
-						
-						str+='<div id="uc'+result[i].tdpCadreId+'" class="pull-right updateCadreClass" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
-						
-					</c:if> 
-				}
 				
-				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
-				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
-				</c:if> 
 				str+='</div>';
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
@@ -221,7 +207,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 					str+='</ul>';	
 					str+='</div>';
 					str+='</div>';
-			}
+				}
 			
 				else{
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
@@ -260,7 +246,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		}
 		$('#cadreDetailsDiv').html(str);
 		$('[data-toggle="tooltip"]').tooltip();
-} */
+}
 
 
 $(document).on("click",".cadreDetailsCls",function(){
@@ -491,6 +477,11 @@ function confirmDelete(msg){
 		  return true;
 	  else
 		return false;
-  }
+}
+
+$(document).on('click','#nameId',function(){
+	var caderId=$(this).attr("attr_cadreId");
+	window.location.href="affiliatedCadreRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5";
+});
   
  
