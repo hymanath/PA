@@ -3167,18 +3167,20 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}).done(function(result){
 			$(".appointmentsViewDivCls").show();
 			if(result!=null && result!=0){
-				buildViewResult(result,labelName,labelId);
+				buildViewResult(result,labelName,labelId,jsObj);
 			}else{
 			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
 			}
 		});		
 	}
-	
-	function buildViewResult(result,labelName,labelId){
+
+	function buildViewResult(result,labelName,labelId,jsObj){
 		var i = 0;
 		var str='';
 			str+='<div class="col-md-12">';
 			str+='<div class="block">';
+			if(result[0].pdfPath != null && jsObj.callFrom == "print")
+			str+='<a  id="pdffBtn" class="text-success" style="margin-bottom:10px;float:right;color:#fff;" value="Download" href="appointmentPdf/'+result[0].pdfPath+'" download  target_blank>Download</a>';
 			str+='<input type="button" class="text-success" style="margin-bottom:10px;float:right;color:#fff;" value="Print" onClick="printMembersForView(\''+labelId+'\',\''+labelName+'\');"></input>';
 			str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
 			str+='<table id="viewAllMembersId">';
