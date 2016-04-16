@@ -1859,13 +1859,14 @@ $(".dropkickClass").dropkick();
 							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" disabled style="margin-right: 5px;">Status</button>';
 						}
 						if(totalCount !=null && totalCount >0 ){
-							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'" style="margin-right: 5px;">Del Appts</button>';
+							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Delete Appointments Of '+result[i].labelName+'" style="margin-right: 5px;" id="delApptsScrollBarId">Del Appts</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs deleteAppointments" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled style="margin-right: 5px;">Del Appts</button>';
 						}
 						
 						
 						str+='<i class="glyphicon glyphicon-remove lblDltCls" title="Delete Label '+result[i].labelName+'" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" style="color:red;cursor:pointer;"></i>';
+						str+='<img src="images/search.gif" style="display:none;" id="ajaxImgForViewId'+i+'"></img>';
 					str+='</td>';
 			  str+='</tr>';
 	  }
@@ -3120,7 +3121,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	});
 	
 	$(document).on("click",".viewMembersClass",function(){
+		var dynamicViewAjaxId=$(this).parent().find("img").attr("id");
 		
+		$("#"+dynamicViewAjaxId).show();
 		$(".commonDivCls").hide();
 		
 		var labelName = $(this).attr("attr_label_name");
@@ -3136,6 +3139,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#"+dynamicViewAjaxId).hide();
 			$(".appointmentsViewDivCls").show();
 			if(result!=null && result!=0){
 			  buildViewResult(result,labelName,jsObj.labelId,jsObj);
@@ -6017,6 +6021,13 @@ function getAppointmentCreatedUsers(){
 		
 	}
 	 $(document).on("click","#addApptsId",function(){
+		 setTimeout(function() {$('html, body').animate({scrollTop:2000}, 3000); },0);
+	});
+	
+	$(document).on("click",".viewMembersClass",function(){
+		 setTimeout(function() {$('html, body').animate({scrollTop:2000}, 3000); },0);
+	});
+	$(document).on("click","#delApptsScrollBarId",function(){
 		 setTimeout(function() {$('html, body').animate({scrollTop:2000}, 3000); },0);
 	});
 </script>
