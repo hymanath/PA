@@ -4247,7 +4247,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				if(objs != null && objs.size() > 0){
 					for(Object[] obj : objs){
 						if(obj[0].toString().equalsIgnoreCase("STATIC")){
-							smsHistory =	smsSenderService.sendSMS(inputVO.getUserId(), "Appointment", isEnglish, obj[0].toString(), mobileNos.toString());
+							smsHistory =	smsSenderService.sendSMS(inputVO.getUserId(), "Appointment", isEnglish, obj[1].toString(), mobileNos.toString());
 						}else{
 						    smsHistory =	smsSenderService.sendSMS(inputVO.getUserId(), "Appointment", isEnglish,inputVO.getSmsText(), mobileNos.toString());
 						}
