@@ -72,6 +72,9 @@
 .tableAppointment thead th{background: #f2f2f2 none repeat scroll 0 0;border: 1px solid #fff !important;padding-left: 8px !important;font-weight: normal;}
 .removetopborder td{border-top: none !important;}
 .addwidth{width:250px !important;}
+.advanceNameCls{
+	heigth:30px;
+}
 </style>
 </head>
 <body>
@@ -3149,12 +3152,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		$(".commonDivCls").hide();
 		
 		var labelName =labelName;
-		
 		var jsObj={
 			labelId :labelId,
 			callFrom : "print"
 		}
-		
 		$.ajax({
 			type : 'POST',
 			url : 'viewAppointmentsOfALableAction.action',
@@ -3175,6 +3176,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		var str='';
 			str+='<div class="col-md-12">';
 			str+='<div class="block">';
+			str+='<input type="button" class="text-success" style="margin-bottom:10px;float:right;color:#fff;" value="Print" onClick="printMembersForView(\''+labelId+'\',\''+labelName+'\');"></input>';
 			str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
 			str+='<table id="viewAllMembersId">';
 			str+='<thead><tr><td></td></tr></thead>';
