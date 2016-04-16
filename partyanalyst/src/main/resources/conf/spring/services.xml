@@ -2743,8 +2743,8 @@
 	<property name="voterCastInfoDAO" ref="voterCastInfoDAO" />	
 	<property name="boothDAO" ref="boothDAO" />	
 	<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />	
-
-	
+	<property name="smsSenderService" ref="smsSenderService" />	
+	<property name="smsOtpDetailsDAO" ref="smsOtpDetailsDAO" />
 	</bean>
 	
 	<bean name="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

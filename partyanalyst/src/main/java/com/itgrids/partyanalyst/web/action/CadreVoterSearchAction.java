@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -34,8 +35,26 @@ public class CadreVoterSearchAction extends ActionSupport implements ServletRequ
 	private ICadreVoterSearchService cadreVoterSearchService;
 	private List<TdpCadreVO> tdpCadreVOList = new ArrayList<TdpCadreVO>();
 	private ICadreCommitteeService cadreCommitteeService;
+	private VoterDetailsVO voterDetailsvo;
+	private String status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public VoterDetailsVO getVoterDetailsvo() {
+		return voterDetailsvo;
+	}
+
+	public void setVoterDetailsvo(VoterDetailsVO voterDetailsvo) {
+		this.voterDetailsvo = voterDetailsvo;
+	}
+
 	public ICadreCommitteeService getCadreCommitteeService() {
 		return cadreCommitteeService;
 	}
@@ -166,5 +185,56 @@ public String execute(){
 		
 	}
 	
-
+	public String getVoterDetailsByVoterCardNumber(){
+		LOG.info("Entered into getVoterDetailsByVoterCardNumber method");
+		try {
+			jobj = new JSONObject(getTask());
+			
+			String voterIDCardNo 	= jobj.getString("voterIDCardNo");
+			
+			voterDetailsvo = cadreVoterSearchService.getVoterDetailsByVoterCardNumber(voterIDCardNo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVoterDetailsByVoterCardNumber method in CadreVoterSearchAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String generateOTPForMobileNumber(){
+		LOG.info("Entered into generateOTPForMobileNumber method");
+		try {
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			Long userId = user.getRegistrationID();
+			
+			jobj = new JSONObject(getTask());
+			
+			String mobileNo	= jobj.getString("mobileNo");
+			String refNo = jobj.getString("refNo");
+			
+			status = cadreVoterSearchService.generateOTPForMobileNumber(userId,mobileNo,refNo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in generateOTPForMobileNumber method in CadreVoterSearchAction action", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String validateOTP(){
+		LOG.info("Entered into validateOTP method");
+		try {
+			
+			jobj = new JSONObject(getTask());
+			
+			String mobileNo	= jobj.getString("mobileNo");
+			String refNo = jobj.getString("refNo");
+			String otp = jobj.getString("otp");
+			
+			status = cadreVoterSearchService.validateOTP(mobileNo,refNo,otp);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in validateOTP method in CadreVoterSearchAction action", e);
+		}
+		return Action.SUCCESS;
+	}
 }
