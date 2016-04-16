@@ -2424,9 +2424,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				$('#candidateNameId'+temp).val(name);
 				$('#block'+temp).attr("attr_blk",closeId1);
 				$('#mobileNoId'+temp).val(mobile);
-				
-				
-				
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
 			    //$('#designationSelId'+temp).val(desg);
@@ -2434,10 +2431,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				//$("#designationSelId+temp option").each(function() {
 					$('#designationSelId'+temp+' option').each(function() {
 				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
-				//$(this).prop('selected', true) ;
 				candidateType1 = $(this).attr("typeId");
 				if(designation != null)
-				getDesignationsByType(candidateType1,'designationSelId'+temp);
+				{
+					getDesignationsByType(candidateType1,'designationSelId'+temp);
+					$('#candidateTypeSelId'+temp).val(candidateType1);
+					var selectcc = new Dropkick('#candidateTypeSelId'+temp);
+					selectcc.refresh();
+				}
+				
 				} 
 			  });	
 				var selectx = new Dropkick('#designationSelId'+temp);
@@ -2448,13 +2450,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				$('#candidateTypeSelId'+temp).val(3);
 			 	 var selectcc = new Dropkick('#candidateTypeSelId'+temp);
 				selectcc.refresh();
-				
+				popDesignation = "Cadre";
 				getDesignationsByType(3,'designationSelId'+temp);
-				 setTimeout(function () {
-					$('#designationSelId'+temp).val(63);
-						var selectcd = new Dropkick('#designationSelId'+temp);
-						selectcd.refresh();
-					}, 500);	
 				}
 				$('#locationScopeSelId'+temp).val(lctscpid);
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
