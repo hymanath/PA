@@ -990,13 +990,14 @@ public interface IConstants {
 	public static final Long WAITING_APPOINTMENT_STATUS_ID=1l;
 
 	public static final Long APPOINTMENT_STATUS_WAITING=1L;
-	public static final Long APPOINTMENT_STATUS_FIXED=2L;
-	public static final Long APPOINTMENT_STATUS_ATTENDED=3L;
-	public static final Long APPOINTMENT_STATUS_NOTATTENDED=4L;
-	public static final Long APPOINTMENT_STATUS_RESCHEDULED=5L;
-	public static final Long APPOINTMENT_STATUS_CANCELLED=6L;
-	public static final Long APPOINTMENT_STATUS_TENTATIVE=7L;
-	public static final Long APPOINTMENT_STATUS_VOID=8L;
+	public static final Long APPOINTMENT_STATUS_LABELED=2L;
+	public static final Long APPOINTMENT_STATUS_FIXED=3L;
+	public static final Long APPOINTMENT_STATUS_ATTENDED=4L;
+	public static final Long APPOINTMENT_STATUS_NOTATTENDED=5L;
+	public static final Long APPOINTMENT_STATUS_RESCHEDULED=6L;
+	public static final Long APPOINTMENT_STATUS_CANCELLED=7L;
+	public static final Long APPOINTMENT_STATUS_TENTATIVE=8L;
+	public static final Long APPOINTMENT_STATUS_VOID=9L;
 	public static final Integer APPOINTMENT_HISTORY_MAX_RESULT =5;
 	
 }
