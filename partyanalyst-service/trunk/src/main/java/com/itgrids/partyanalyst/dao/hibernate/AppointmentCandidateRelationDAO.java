@@ -374,11 +374,12 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	        " from AppointmentCandidateRelation model,AppointmentTimeSlot model1 " +
 	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId"
 	        + " and model.appointment.appointmentId = model1.appointment.appointmentId "
-	        + " and model.appointment.appointmentStatus.appointmentStatusId =2 and "
+	        + " and model.appointment.appointmentStatus.appointmentStatusId =:statusId and "
 	        + " model1.toDate <= :date");
 	    Query query = getSession().createQuery(str.toString());
 	    query.setParameter("apointmntcandidteId", apointmntcandidteId);
 	    query.setTimestamp("date", new Date());
+	    query.setParameter("statusId", IConstants.APPOINTMENT_STATUS_FIXED);
 	    return query.list();
 	}
 	
