@@ -1554,9 +1554,10 @@ $(".dropkickClass").dropkick();
 		var result = myResult.split("<pre>");
 		var result1 = result[1].split("</pre>");
 		if(result1[0] == "success"){
-			//setTimeout(function(){
 			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Created Successfully.</span>");
-			//}, 1000);
+			setTimeout(function(){
+			$("#savingStatusDivId").html("");
+			}, 5000);
 			//$( ".closeIcon" ).trigger( "click" );
 			$("#moreCandidatesDivId").html('');
 			$( "#multiDate" ).multiDatesPicker("resetDates");
@@ -4300,7 +4301,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
 											str+='</div>';
 										str+='</div>';
-										str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
+										/* str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
 										str+='<table class="table table-bordered" style="font-size:10px;">';
 											str+='<tr>';
 												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
@@ -4322,7 +4323,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 													}
 												}
 											str+='</tr>';
-										str+='</table>';
+										str+='</table>'; */
 										str+='<div class="m_top10">';
 											str+='<span style="font-size: 16px;"><b>REQUESTED DATES :</b></span>';
 											
@@ -5042,6 +5043,7 @@ function buildTimeSlotsTable(result){
 	
 	$(document).on("click",".createAppReqCls",function(){
 		clearAllValidationCls();
+		clearFields();
 		$("#errDigitsId").html('');
 		$("#searchValueId").val('');
 		$("#searchTypeId").val(0);
@@ -5050,7 +5052,6 @@ function buildTimeSlotsTable(result){
 		$("#createAppTypeListId").val(0);
 		$("#errorDivId").html('');
 		$("#cadreCommitteeDiv_chosen").hide();
-		
 		var searchTypeSelect = new Dropkick("#searchTypeId");
 		searchTypeSelect.refresh();
 		var createAppTypeSelect = new Dropkick("#createAppTypeListId");
@@ -6011,6 +6012,7 @@ function getAppointmentCreatedUsers(){
 					//setting default time format
 					   $("#fromTimeId").val("06:00 AM");
 		               $("#toTimeId").val("10:00 PM");
+					   $("#commentTxt").val("");
 					}else{
 			    $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Updated Successfully</p>");
 				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
@@ -6568,7 +6570,21 @@ function getCommitteeRoles(){
 			$(".sendSms"+appointmentId).val('');
 		});
 	});
-	 
+	 function clearFields(){
+		$("#multiDate").val("");
+		$("#appointmentReasonId").val(""); 
+		$("#candidateNameId0").val(""); 
+		/* $(".cloneCandidateTypeCls").val(0); 
+		$(".cloneDesignationCls ").val(0); */
+		$("#mobileNoId0").val(""); 	
+		$("#voterCardNoID0").val(""); 
+		$("#membershipNumId0").val(""); 
+		/* $(".cloneLocationScopeCls").val(0); 
+		$(".cloneDistrictCls").val(0); 
+		$(".cloneConstituencyCls").val(0);  
+		$(".cloneMandalCls").val(0);
+		$(".cloneVillageCls").val(0);  */ 		
+	 }
 </script>
 </body>
 </html>
