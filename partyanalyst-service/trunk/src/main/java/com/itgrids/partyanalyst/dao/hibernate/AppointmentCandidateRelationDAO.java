@@ -45,7 +45,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 				"           join user_address                 ua   on  ac.address_id=ua.user_address_id " +
 				"           left join label_appointment       la   on  la.appointment_id=a.appointment_id and la.is_deleted='N' " +
 				//" where     a.is_deleted='N' and a.is_labelled = 'N' ");
-				" where a.is_deleted='N' and a.appointment_status_id != :labelStatus ");
+				" where a.is_deleted='N' and a.appointment_status_id not in (:labelStatus) ");
 		
 		if(selUserId != null && selUserId > 0l){
 			sb.append(" and a.appointment_user_id = :selUserId ");
@@ -135,7 +135,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		query.setParameter("candidateTypeId",candidateTypeId);
 	}
 	
-	query.setParameter("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED);
+	query.setParameter("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED_LIST);
 		return query.list();
 	}
 	
