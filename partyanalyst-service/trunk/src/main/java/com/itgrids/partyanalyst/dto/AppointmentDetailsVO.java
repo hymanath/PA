@@ -46,7 +46,15 @@ public class AppointmentDetailsVO implements Serializable{
 	private List<AppointmentDetailsVO> preferList;
 	private String aptUniqueCode;
 	private String imageUrl;
+	private String pdfPath;
+	
     
+	public String getPdfPath() {
+		return pdfPath;
+	}
+	public void setPdfPath(String pdfPath) {
+		this.pdfPath = pdfPath;
+	}
 	public String getName() {
 		return name;
 	}
