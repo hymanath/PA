@@ -413,7 +413,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		query.setParameter("appointmentId", appointmentId);
 		return query.list();
 	}
-	public List<Long> LischeckApptsAsTentative(Date insertedTime,Long apptStatusId,List<Long> apptCandiIds,int apptCandicount){
+	public List<Long> checkApptsAsVoid(Date insertedTime,Long apptStatusId,List<Long> apptCandiIds,int apptCandicount){
 		
 		Query query = getSession().createSQLQuery(" " +
 		" select app.appointment_id as apptId from   appointment app join appointment_candidate_relation acr on app.appointment_id = acr.appointment_id" +

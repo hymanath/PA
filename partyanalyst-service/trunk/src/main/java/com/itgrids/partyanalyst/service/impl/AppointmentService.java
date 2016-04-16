@@ -3351,7 +3351,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			         }*/
 				      
 				      
-				      //tentative appt status
+				      //void appt status
 				      List<Object[]> candiList=appointmentCandidateRelationDAO.getApptCandidIdsAndInsertedTime(appointmentId);
 				      
 				      List<Long> apptCandiIds = null;
@@ -3366,9 +3366,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				      
 					 if(apptCandiIds!=null && apptCandiIds.size()>0){
 						int apptCandicount = apptCandiIds.size();
-						List<Long> apptIds = appointmentCandidateRelationDAO.LischeckApptsAsTentative(insertedDate,IConstants.APPOINTMENT_STATUS_WAITING,apptCandiIds,apptCandicount);
+						List<Long> apptIds = appointmentCandidateRelationDAO.checkApptsAsVoid(insertedDate,IConstants.APPOINTMENT_STATUS_WAITING,apptCandiIds,apptCandicount);
 						if(apptIds!=null && apptIds.size()>0){
-							int updatedAppts = appointmentDAO.updateApptStatusbyApptIds(apptIds,new DateUtilService().getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_TENTATIVE);
+							int updatedAppts = appointmentDAO.updateApptStatusbyApptIds(apptIds,new DateUtilService().getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID);
 						}
 					 }
 				      
