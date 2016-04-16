@@ -2703,9 +2703,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		  str+='<div class="block">';
 			 str+='<h4 class="text-success">Assign Appointments To '+labelName+'</h4>';
 			  //str+='<center><img id="apptRqstMemberAjax" src="images/icons/loading.gif" style="display:none;"/></center>';
-			 
-		 for(var i in result){
 			
+		 for(var i in result){
 			  str+='<div class="panel panel-default manageAppViewPanelClass m_top10">';
 				str+='<div class="panel-heading pad_5 font12">';
 				        if(result[i].labeled){
@@ -2919,7 +2918,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						
 				  str+='</div>';
 				str+='</div>';
-			
 		 }
 		  str+='<button class="btn btn-success" id="updateLabelId" >Assign To Label</button>';
 		  str+=' <span id="statusMsgAppntReqt"></span>';
@@ -3220,8 +3218,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='<div class="col-md-12">';
 			str+='<div class="block">';
 			str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
+			str+='<table id="viewAllMembersId">';
+			str+='<thead><tr><td></td></tr></thead>';
+			str+='<tbody>';
 			for(var i in result){
-			
+				str+='<tr><td>';
 				str+='<div class="panel panel-default manageAppViewPanelClass">';
 				str+='<div class="panel-heading pad_5 font12">';
 				    str+='<div class="row">';
@@ -3408,21 +3409,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}
 							
 						str+='</div>';
-						
-						
-						
-						
-						
-						
-						
-						
-						
 				  str+='</div>';
 				str+='</div>';
+				str+='</td></tr>';
 			}
+			str+='</tbody></table>';
 			str+='</div>';
 			str+='</div>';
-		$(".appointmentsViewDivCls").html(str)  
+		$(".appointmentsViewDivCls").html(str) 
+		$("#viewAllMembersId").dataTable();
 	}
 	 
 	 var searchJobj;
