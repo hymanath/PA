@@ -393,5 +393,39 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	    query.setParameter("apointmntcandidteId", apointmntcandidteId);
 	   return query.list();
 	}
-
+    
+	
+	public List<Long> getApptCandidIds(Long appointmentId){
+		Query query = getSession().createQuery(" select model.appointmentCandidate.appointmentCandidateId" +
+				" from AppointmentCandidateRelation model " +
+				" where model.appointment.isDeleted='N' and model.appointment.appointmentId =:appointmentId ");
+		query.setParameter("appointmentId", appointmentId);
+		return query.list();
+	}
+	
+	public List<Object[]> getApptCandidIdsAndInsertedTime(Long appointmentId){
+		Query query = getSession().createQuery(" select model.appointmentCandidate.appointmentCandidateId,model.appointment.insertedTime" +
+				" from AppointmentCandidateRelation model " +
+				" where model.appointment.isDeleted='N' and model.appointment.appointmentId =:appointmentId ");
+		query.setParameter("appointmentId", appointmentId);
+		return query.list();
+	}
+	public List<Long> LischeckApptsAsTentative(Date insertedTime,Long apptStatusId,List<Long> apptCandiIds,int apptCandicount){
+		
+		Query query = getSession().createSQLQuery(" " +
+		" select app.appointment_id as apptId from   appointment app join appointment_candidate_relation acr on app.appointment_id = acr.appointment_id" +
+		" where  app.appointment_id in " +
+		"       ( " +
+		"         select distinct a.appointment_id from   appointment a join appointment_candidate_relation acr on a.appointment_id = acr.appointment_id " +
+		"         where  a.inserted_time < :insertedTime and a.appointment_status_id= :apptStatusId and acr.appointment_candidate_id in (:apptCandiIds) " +
+		"        )" +
+		" group by app.appointment_id " +
+		" having count(distinct acr.appointment_candidate_id) = :apptCandicount ").addScalar("apptId",Hibernate.LONG);
+		
+		query.setParameter("apptStatusId", apptStatusId);
+		query.setParameterList("apptCandiIds",apptCandiIds);
+		query.setParameter("apptCandicount", apptCandicount);
+		query.setTimestamp("insertedTime",insertedTime);
+		return query.list();
+	}
 }

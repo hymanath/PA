@@ -3344,6 +3344,30 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			         }else{
 			          	  //saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
 			         }
+				      
+				      
+				      //tentative appt status
+				      List<Object[]> candiList=appointmentCandidateRelationDAO.getApptCandidIdsAndInsertedTime(appointmentId);
+				      
+				      List<Long> apptCandiIds = null;
+				      Date insertedDate = null;
+				      if(candiList!=null && candiList.size()>0){
+				    	  insertedDate = candiList.get(0)[1]!=null?(Date)candiList.get(0)[1]:null;
+				    	  apptCandiIds = new ArrayList<Long>();
+				    	  for(Object[] obj : candiList) {
+				    		  apptCandiIds.add(obj[0]!=null ?(Long)obj[0]:0l);
+				    	  }
+				      }
+				      
+					 if(apptCandiIds!=null && apptCandiIds.size()>0){
+						int apptCandicount = apptCandiIds.size();
+						List<Long> apptIds = appointmentCandidateRelationDAO.LischeckApptsAsTentative(insertedDate,IConstants.APPOINTMENT_STATUS_WAITING,apptCandiIds,apptCandicount);
+						if(apptIds!=null && apptIds.size()>0){
+							int updatedAppts = appointmentDAO.updateApptStatusbyApptIds(apptIds,new DateUtilService().getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_TENTATIVE);
+						}
+					 }
+				      
+				      
 			      rs.setExceptionMsg("success");
 			      rs.setResultCode(0);
 			      

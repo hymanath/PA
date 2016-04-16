@@ -30,4 +30,8 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> getFixedAttendedCount(Long apointmntcandidteId);
 	public List<Object[]> getAppointmentHistoryDetailsByCandidateId(Long apointmntcandidteId);
 	
+	public List<Long> getApptCandidIds(Long appointmentId);
+	public List<Long> LischeckApptsAsTentative(Date insertedTime,Long apptStatusId,List<Long> apptCandiIds,int apptCandicount);
+	public List<Object[]> getApptCandidIdsAndInsertedTime(Long appointmentId);
+	
 }

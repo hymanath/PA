@@ -77,6 +77,15 @@ public Long getAppointmentStatusId(Long appointmentId){
 		return (Long)query.uniqueResult();
 	}
 
+	public Integer updateApptStatusbyApptIds(List<Long> appointmemtIds, Date updatedTime,Long statusId) {
+		
+		Query query = getSession().createQuery(
+		 " update Appointment model set model.appointmentStatusId= :statusId, model.updatedTime = :updatedTime  where model.appointmentId in (:appointmemtIds) ");
+		query.setParameterList("appointmemtIds", appointmemtIds);
+		query.setTimestamp("updatedTime", updatedTime);
+		query.setParameter("statusId",statusId);
+		return query.executeUpdate();
+	}
 public Integer updatedAppointmentStatus(List<Long> appointmentIds){
 	Query query=getSession().createQuery("update Appointment model set model.appointmentStatusId=:appointmentStatusId" +
 			" where " +
