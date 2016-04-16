@@ -75,8 +75,6 @@
 .advanceNameCls{
 	heigth:30px;
 }
-
-
 </style>
 </head>
 <body>
@@ -927,7 +925,6 @@
 	  </div>
     </div>
   </div>
-
 </div>
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
@@ -3141,7 +3138,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}).done(function(result){
 			$(".appointmentsViewDivCls").show();
 			if(result!=null && result!=0){
-			  buildViewResult(result,labelName,jsObj.labelId);
+			  buildViewResult(result,labelName,jsObj.labelId,jsObj);
 			}else{
 			  $(".appointmentsViewDivCls").html("<div class='col-md-12'><div class='block'><h4 class='text-success' style='margin-bottom:10px;'>"+labelName +" MEMBERS</h4><center><p style='color:green;font-size:20px'>No Data available.</p></center></div></div>");	
 			}
@@ -6528,7 +6525,7 @@ function getCommitteeRoles(){
 		str+='</tbody>';
 		str+='</table>';
 		$("#aptCandidateHistoryDiv").html(str);	
-		 $('#aptCandidateHistorydatatable').DataTable();
+	     $('#aptCandidateHistorydatatable').DataTable();
 	}
 	
 	function buildAppointmentCommentsForViewHistory(result){
@@ -6574,7 +6571,6 @@ function getCommitteeRoles(){
 		$("#buildCommentsForHistoryView").html(str);
 		  $('#commentsdatatable').DataTable();
 	}
-	
 	$(document).on("click",".sendsms",function() {
 		var flag = false;
 		var appointmentId = $(this).attr("value");
