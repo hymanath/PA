@@ -4218,7 +4218,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						 
 					 }
 			 		 
-			  List<Object[]> list2 = appointmentPreferableDateDAO.getPreferableDatesforAppointments(appointmentIds);
+			  List<Object[]> list2 =  appointmentPreferableDateDAO.getPreferableDatesforAppointments(appointmentIds);
 			  if(list2 != null && list2.size() > 0)
 			  {
 				  for(Object[] params2 : list2)
@@ -4243,6 +4243,30 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			} 
 			 
 		 }
+		 
+		 List<AppHistoryVO> commentlist = new ArrayList<AppHistoryVO>(0);
+		
+		 if(appointmentIds !=null && appointmentIds.size()>0){
+			 
+			List<Object[]> appCommentsList =appointmentCommentDAO.getAppointmentCommentsForViewHistory(appointmentIds);
+			for(Object[] obj:appCommentsList){
+				 AppHistoryVO vo = new AppHistoryVO();
+				 vo.setId(obj[0] != null ? (Long)obj[0] : 0l);
+				 vo.setPurpose(obj[1] != null ? obj[1].toString() : "");
+				 vo.setUniqueCode(obj[2] != null ? obj[2].toString() : "");
+				 vo.setStatusId(obj[3] != null ? (Long)obj[3] : 0l);
+				 vo.setStatus(obj[4] != null ? obj[4].toString() : "");
+				 vo.setComment(obj[5] != null ? obj[5].toString() : "");
+				 vo.setCreatedOn(obj[6] != null ? obj[6].toString() : "");
+				 vo.setUser(obj[7] != null ? obj[7].toString() : "");
+				 commentlist.add(vo);
+				 
+			}
+		 }
+		if(historyVoList!=null && historyVoList.size()>0 && commentlist!=null && commentlist.size()>0){
+			historyVoList.get(0).setCommentlist(commentlist);
+		}
+		 
 		return historyVoList;
 	}
 	

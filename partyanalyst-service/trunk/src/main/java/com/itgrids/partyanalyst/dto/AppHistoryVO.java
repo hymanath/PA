@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppHistoryVO {
 	private Long id;
 	private String purpose;
@@ -9,7 +12,11 @@ public class AppHistoryVO {
 	private String status;
 	private String uniqueCode;
 	private Long statusId;
-
+	private String comment;
+	private String User;
+	
+	
+	private List<AppHistoryVO> commentlist = new ArrayList<AppHistoryVO>();
 	
 	
 	public Long getStatusId() {
@@ -61,6 +68,24 @@ public class AppHistoryVO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public List<AppHistoryVO> getCommentlist() {
+		return commentlist;
+	}
+	public void setCommentlist(List<AppHistoryVO> commentlist) {
+		this.commentlist = commentlist;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getUser() {
+		return User;
+	}
+	public void setUser(String user) {
+		User = user;
+	}
 	
-
+	
 }
