@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.model.Appointment;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AppointmentDAO extends GenericDaoHibernate<Appointment, Long>
 		implements IAppointmentDAO {
@@ -76,4 +77,16 @@ public Long getAppointmentStatusId(Long appointmentId){
 		return (Long)query.uniqueResult();
 	}
 
+public Integer updatedAppointmentStatus(List<Long> appointmentIds){
+	Query query=getSession().createQuery("update Appointment model set model.appointmentStatusId=:appointmentStatusId" +
+			" where " +
+			" model.appointmentId  in (:appointmentIds) ");
+	query.setParameterList("appointmentIds",appointmentIds);
+	query.setParameter("appointmentStatusId", IConstants.APPOINTMENT_STATUS_WAITING);
+	return query.executeUpdate();
 }
+	
+}
+	
+
+
