@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VoterDetailsVO {
@@ -37,9 +38,64 @@ public class VoterDetailsVO {
 	private List<SelectOptionVO> boothList;
 	
 	private Long leaderBookNo;
+	private String voterIDCardNo;
+	private String dateOfBirth;
+	private String partNo;
+	private String districtName;
+	private String constituencyName;
+	private String tehsil;
+	private String leb;
+	private List<VoterDetailsVO> subList = new ArrayList<VoterDetailsVO>(0);
 	
 	
-	
+	public List<VoterDetailsVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<VoterDetailsVO> subList) {
+		this.subList = subList;
+	}
+	public String getTehsil() {
+		return tehsil;
+	}
+	public void setTehsil(String tehsil) {
+		this.tehsil = tehsil;
+	}
+	public String getLeb() {
+		return leb;
+	}
+	public void setLeb(String leb) {
+		this.leb = leb;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getPartNo() {
+		return partNo;
+	}
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	public String getVoterIDCardNo() {
+		return voterIDCardNo;
+	}
+	public void setVoterIDCardNo(String voterIDCardNo) {
+		this.voterIDCardNo = voterIDCardNo;
+	}
 	public Long getLeaderBookNo() {
 		return leaderBookNo;
 	}

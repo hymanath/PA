@@ -8316,4 +8316,36 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("voterId",voterId);
 		return query.list();
 	}
+	
+	public List<Object[]> getVoterDetailsByVoterCardNumber(String voterIDCardNo){
+		
+		Query query = getSession().createQuery("select model.voter.voterId," +
+														" model.voter.name," +
+														" model.voter.relativeName," +
+														" model.voter.voterIDCardNo," +
+														" model.voter.gender," +
+														" model.voter.age," +
+														" model.voter.dateOfBirth," +
+														" model.voter.mobileNo," +
+														" model.voter.houseNo," +
+														" model.booth.boothId," +
+														" model.booth.partNo," +
+														" model.booth.constituency.district.districtId," +
+														" model.booth.constituency.district.districtName," +
+														" model.booth.constituency.constituencyId," +
+														" model.booth.constituency.name," +
+														" tehsil.tehsilId," +
+														" tehsil.tehsilName," +
+														" leb.localElectionBodyId," +
+														" leb.name" +
+												" from BoothPublicationVoter model" +
+														" left join model.booth.tehsil tehsil" +
+														" left join model.booth.localBody leb" +
+												" where model.voter.voterIDCardNo = :voterIDCardNo" +
+														" and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		query.setParameter("voterIDCardNo", voterIDCardNo);
+		query.setParameter("publicationDateId", IConstants.LATEST_PUBLICATION_DATE_ID);
+		
+		return query.list();
+	}
 }
