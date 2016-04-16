@@ -2347,7 +2347,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}
 		
 		$("#apptmemberDetailsDiv").html(str);
-		$(document).on("click",".historyShowModalBtn",function(){
+		 $(document).on("click",".historyShowModalBtn",function(){
 			$("#appCandidateNameId").html('');
 			$(".historyShowModal").modal("show");
 			//alert($(this).attr("attr-id"))
@@ -2355,7 +2355,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			var name = $(this).attr("attr-name");
 			var designation = $(this).attr("attr-designation");
 			var mobile = $(this).attr("attr-mobile");
-			if(designation != null && designation.length > 0)
+		if(designation != null && designation.length > 0)
 			$("#appCandidateNameId").html(''+name+' ('+designation+') - '+mobile+'');
 		else
 			$("#appCandidateNameId").html(''+name+' ('+mobile+')');
@@ -2846,9 +2846,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='<div class="col-md-8">';
 									
 									//history modal start
-									/* if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
+									 if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
 											str+='<a  title="Click here to View '+result[i].subList[j].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'">View History</a>&nbsp;&nbsp;';
-									} */			
+									} 			
 									//history modal end
 									
 										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
@@ -3327,9 +3327,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='</div>';
 									str+='<div class="col-md-8 font12">';									
 									//history modal start
-									/* if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
+									 if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
 											str+='<a  title="Click here to View '+result[i].subList[j].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'">View History</a>&nbsp;&nbsp;';
-									} */			
+									} 			
 									//history modal end
 									
 										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
@@ -4269,9 +4269,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='</div>';
 					str+='</div>';
 						
-					str+='<p>Purpose : '+result[i].subject+'</p>';
-					str+='<p>Priority Type : '+result[i].priority+'</p>';
+					
+					str+='<p>Priority : '+result[i].priority+'</p>';
 					str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					str+='<p>Purpose : '+result[i].subject+'</p>';
+					
 					
 				str+='</div>';
 				str+='<div class="panel-body pad_5">';
@@ -4293,14 +4295,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
 												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
-												if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
+												/* if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
 													str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
 												}else{
 													str+='<p>Last Visit: - </p>';
-												}
+												} */
 												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
 											str+='</div>';
 										str+='</div>';
+										//history modal start
+										if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
+											str+='<a  title="click here to view '+result[i].subList[j].name+' history" class="historyshowmodalbtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'">View History</a>&nbsp;&nbsp;';
+									} 
 										/* str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
 										str+='<table class="table table-bordered" style="font-size:10px;">';
 											str+='<tr>';
@@ -4346,6 +4352,21 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='</div>'
 			str+='</div>'
 		$("#confirmAppointmentsDivId").html(str);
+		$(document).on("click",".historyshowmodalbtn",function(){
+			$("#appCandidateNameId").html('');
+			$(".historyShowModal").modal("show");
+			//alert($(this).attr("attr-id"))
+			var id = $(this).attr("attr-id");
+			var name = $(this).attr("attr-name");
+			var designation = $(this).attr("attr-designation");
+			var mobile = $(this).attr("attr-mobile");
+		if(designation != null && designation.length > 0)
+			$("#appCandidateNameId").html(''+name+' ('+designation+') - '+mobile+'');
+		else
+			$("#appCandidateNameId").html(''+name+' ('+mobile+')');
+			getAppointStatusOverviewforCandidate(id);
+			getAppointmentHistoryForCandidate(id);
+		});
 		Sortable.create(dragId,{
 			  filter: '.js-remove',
 			  onFilter: function (evt) {
@@ -5074,6 +5095,11 @@ function buildTimeSlotsTable(result){
 	
 	$(".cnfrmaptsCls").click(function(){
 		$("#errorDivForTimeSlotId").html('');
+		$("#confirmAppointmentsDivId").html("");
+		$("#tablePluginId").html("");
+		$("#tablePluginDateId").html("");
+		$("#pluginTableId").html("");
+		$("#timeSlotsWarnId").html("");
 		//setting default time format
 		 $("#fromTimeId").val("06:00 AM");
 		 $("#toTimeId").val("10:00 PM");
@@ -5238,9 +5264,9 @@ function buildTimeSlotsTable(result){
 									str+='<div class="col-md-6">';
 									
 									//history modal start
-									/* if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
+									 if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
 											str+='<a  title="Click here to View '+result[i].subList[j].name+' History" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'">View History</a>&nbsp;&nbsp;';
-									} */			
+									} 			
 									//history modal end
 									
 										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
