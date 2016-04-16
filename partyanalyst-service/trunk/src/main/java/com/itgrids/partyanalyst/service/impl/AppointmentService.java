@@ -2921,7 +2921,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					appointment.setSubject(obj[3]!=null?obj[3].toString():"");
 					appointment.setPriority(obj[2]!=null?obj[2].toString():"");
 					appointment.setStatus(obj[5]!=null?obj[5].toString():"");
-					appointment.setDateString(obj[8]!=null?obj[8].toString():"");
+					appointment.setDateString(obj[8]!=null?obj[8].toString().substring(0,10):"");
 					appointment.setAptUniqueCode(obj[9]!=null?obj[9].toString():"");
 					appointmentsMap.put(appointment.getAppointmentId(),appointment);
 					
