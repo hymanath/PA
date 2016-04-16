@@ -3514,7 +3514,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
 						str+='<div class="panel-heading bg_ff pad_5">';
 							str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<p class="font12">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
 								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
@@ -3547,7 +3547,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							{
 								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
 							}
-							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
@@ -3840,7 +3840,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				{
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
 						str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<p class="font12">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
 								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
@@ -3873,7 +3873,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							{
 								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
 							}
-							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 						    str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
@@ -4004,7 +4004,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				{
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
 						str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<p class="font12">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
 								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
@@ -4037,7 +4037,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							{
 								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
 							}
-							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
+							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label class="radio-inline">';
