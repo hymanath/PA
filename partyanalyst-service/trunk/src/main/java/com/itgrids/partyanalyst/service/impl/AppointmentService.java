@@ -4236,7 +4236,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			result.setMessage("success");
 		}
 		catch (Exception e) {
-			LOG.error("Exception raised in sendSmsForAppointment", e);
+			LOG.error("Exception raised in sendSms", e);
 			result.setMessage("fail");
 			
 		}
