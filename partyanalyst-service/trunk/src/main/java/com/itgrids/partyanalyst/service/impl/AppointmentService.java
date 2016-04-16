@@ -591,7 +591,7 @@ public class AppointmentService implements IAppointmentService{
 		        			}
 		        		}
 		        	}
-		            saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,1l,loggerUserId,"");
+		            //saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,1l,loggerUserId,"");
 		        }
 		    });
 			rs.setExceptionMsg("success");
@@ -921,6 +921,13 @@ public class AppointmentService implements IAppointmentService{
 			LOG.info("Entered into deleteAppointmentLabel() method of AppointmentService");
 			if(appointmentLabelId!=null && appointmentLabelId>0l){
 			 Integer deletedCount=appointmentLabelDAO.deleteAppointmentLabel(appointmentLabelId,remarks);	
+			 
+			 //update status of appts to waiting
+			 List<Long> apptIDs = labelAppointmentDAO.getAppointmentsForALabel(appointmentLabelId);
+			 if(apptIDs != null && apptIDs.size() > 0){
+				 changeAppointmentStatus(apptIDs,IConstants.APPOINTMENT_STATUS_WAITING);
+			 }
+			 
 			 if(deletedCount!=null && deletedCount>0){
 				 status.setMessage("success");
 			 }else{
@@ -3253,7 +3260,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
 				        	appointmentLabelDAO.updateMemberAppointmentsStatus(apptId,statusId);
-				        	saveAppointmentTrackingDetails(apptId,4l,statusId,appointmentDAO.get(apptId).getAppointmentUserId(),"");
+				        	//saveAppointmentTrackingDetails(apptId,4l,statusId,appointmentDAO.get(apptId).getAppointmentUserId(),"");
 				        }
 				   });
 					
@@ -3333,9 +3340,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       }
 				       
 				      if(type !=null && type.equalsIgnoreCase("update")){
-			        	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
+			        	  //saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
 			         }else{
-			          	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
+			          	  //saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
 			         }
 			      rs.setExceptionMsg("success");
 			      rs.setResultCode(0);
@@ -3655,9 +3662,13 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						labelAppointmentDAO.updateIsDeletedStatus(ids,labelId,registrationId,dateUtilService.getCurrentDateAndTime());
 						
 						for (Long long1 : ids) {
-							saveAppointmentTrackingDetails(long1,3l,appointmentDAO.get(long1).getAppointmentStatusId(),registrationId,"");
+							
+							//saveAppointmentTrackingDetails(long1,3l,appointmentDAO.get(long1).getAppointmentStatusId(),registrationId,"");
 						}
 						
+						//changing appt status to waiting
+						changeAppointmentStatus(ids,IConstants.APPOINTMENT_STATUS_WAITING);
+				        
 					}
 		        }
 			});
@@ -4254,4 +4265,10 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 	}
 	
+	public void changeAppointmentStatus(List<Long> ids,Long statusId){
+		if(ids != null && ids.size() > 0 && statusId != null && statusId > 0l){
+			appointmentDAO.updatedAppointmentStatus(ids);
+			
+		}
+	}
 }
