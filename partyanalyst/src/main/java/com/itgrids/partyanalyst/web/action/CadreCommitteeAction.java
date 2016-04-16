@@ -628,6 +628,42 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	}
+	public String newCadreSearchExe(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),IConstants.TDP_CADRE_SEARCH)
+				|| entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT")
+				|| entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_SEARCH_ENT"))){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
+		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
+		cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
+		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+		castes=cadreCommitteeService.getAllCastes();
+		List<BasicVO> accLoc = getUserAccessConstituencies();
+		if(accLoc!=null && accLoc.size()>0){
+			finalStatus = accLoc.get(0).getName();
+		}
+		if(panchayatId == null) //default values for prepopulate fields
+		{
+			panchayatId = "0";
+			committeeTypeId = 0L;
+			committeeId = 0L;
+			result3 = "0";
+		}
+		
+		return Action.SUCCESS;
+	}
 	
 	public List<BasicVO> getUserAccessConstituencies(){
 		HttpSession session = request.getSession();
@@ -726,6 +762,47 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
 							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getCadreDetails()
+	{
+		try {
+			
+			int startIndex = 0;
+			int maxIndex = 0;
+			jObj = new JSONObject(getTask());
+			Long locationLevel = jObj.getLong("locationLevel");
+			Long locationValue = jObj.getLong("locationValue");
+			//String searchName = jObj.getString("searchName");
+			String mobileNo = jObj.getString("mobileNo");
+			
+			//Long casteStateId = jObj.getLong("casteStateId");
+			//String casteCategory = jObj.getString("casteCategory");
+			//Long fromAge = jObj.getLong("fromAge");
+			//Long toAge = jObj.getLong("toAge");
+			//String houseNo = jObj.getString("houseNo");
+			String memberShipCardNo = jObj.getString("memberShipCardNo");
+			//String trNumber = jObj.getString("trNumber");
+			String voterCardNo = jObj.getString("voterCardNo");
+			//String gender = jObj.getString("gender");
+			boolean isRemoved = jObj.getBoolean("removedStatus");
+			if(jObj.getString("task").equalsIgnoreCase("tdpCadreSearch"))
+			{
+				
+				startIndex = jObj.getInt("startIndex");
+				maxIndex = jObj.getInt("maxIndex");
+				
+			}
+		//	tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
+			//		voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
+			
+			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, "",memberShipCardNo, 
+							voterCardNo, "", mobileNo,0l,"",0l,0l,"","",startIndex,maxIndex,isRemoved);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
