@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,12 +18,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateDesignationDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
@@ -88,6 +102,7 @@ import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.LocationService;
+import com.itgrids.partyanalyst.utils.ParagraphBorder;
 
 
 
@@ -3163,12 +3178,175 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				removeTimeSlotExistedAppointments(labelId,finalList,appointmentsMap);
 			}
 			
+			if(callFrom.equalsIgnoreCase("print"))
+			{
+				String pdfPath = pdfViewForAppointment(finalList);
+				finalList.get(0).setPdfPath(pdfPath);
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at viewAppointmentsOfALable",e);
 		}
 		return finalList;
 	}
 	 
+	 public String pdfViewForAppointment(List<AppointmentDetailsVO> resultList)
+	 {
+		 try{
+			 if(resultList != null && resultList.size() > 0)
+			 {
+				 String randomNum =  UUID.randomUUID().toString();
+				 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				 String PdfReports = "appointmentPdf";
+				 String destPath = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator + PdfReports + pathSeperator + randomNum+".pdf";
+				 File destFile = new File(destPath);
+					 if (!destFile.exists()) 
+						 destFile.createNewFile();
+					FileOutputStream out = new FileOutputStream(destPath);
+					Document document = new Document();
+					PdfWriter writer = PdfWriter.getInstance(document, out);
+					
+					document.open();
+					
+					 Paragraph titleParagraph = new Paragraph();
+					 Font font = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+					 titleParagraph.add(new Chunk("Appointment Members"));
+					 titleParagraph.setAlignment(Element.ALIGN_CENTER);
+					 titleParagraph.setFont(font);
+					 titleParagraph.setSpacingAfter(10);
+					 titleParagraph.setFont(font);
+					 document.add(titleParagraph);
+					 int tableWidth = 5;
+					 float[] columnWidths = new float[tableWidth];
+					 
+					 int rowspan = 0;
+					 int colSpan = 0;
+					 columnWidths = new float[]{4f, 3f, 3f, 3f,3f};
+					
+					 for(AppointmentDetailsVO vo : resultList)
+					 {
+						
+						 
+						   Phrase p = new Phrase();
+						   Font f = new Font(FontFamily.TIMES_ROMAN, 1, Font.NORMAL, new BaseColor(0, 0, 0));
+						   p.add("Appointment ID : "+vo.getAptUniqueCode()  + " ");
+						   p.add(new Chunk("  "));p.add(new Chunk("  "));
+						   if(vo.getPriority() != null && vo.getPriority().length() > 0)
+							   p.add(new Chunk("Priority : "+vo.getPriority() + " "));
+						   else
+							   p.add(new Chunk("Priority : -") + " ");  
+						   p.add(new Chunk("  "));p.add(new Chunk("  "));
+						   if(vo.getDateString() != null && vo.getDateString().length() > 0)
+							   p.add(new Chunk("Requested Date : "+vo.getDateString()+ " "));
+						   else
+							   p.add(new Chunk("Requested Date : - ")+ " ");  
+						   
+						   if(vo.getStatus() != null && vo.getStatus().length() > 0)
+							   p.add(new Chunk("Status : "+vo.getStatus()+ " "));
+						   else
+							   p.add(new Chunk("Status : - ")+ " ");  
+						   p.add(Chunk.NEWLINE);
+						  
+						   if(vo.getSubject() != null && vo.getSubject().length() > 0)
+							   p.add(new Chunk("Purpose : "+vo.getSubject()));
+						   else
+							   p.add(new Chunk("Purpose : -")); 
+						   p.setFont(f);
+						   document.add(p);
+						  
+						   
+						   PdfPTable table = new PdfPTable(columnWidths);
+							 //special font sizes
+							   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+							   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
+							   document.add(Chunk.NEWLINE );
+						 //insert column headings
+						   
+						   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+						   insertCell(table, "APPOINTMENT ID", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+						   insertCell(table, "CREATED DATE", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+						   insertCell(table, "APPOINTMENT PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+						   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+						   for(AppointmentDetailsVO subVo : vo.getSubList())
+						 {
+							 StringBuffer sb = new StringBuffer();
+							 if(subVo.isCadre() == true)
+							 sb.append(subVo.getName() +"- Cadre  "+"\n");
+							 else
+							  sb.append(subVo.getName()+"\n");
+							 if(subVo.getMobileNo() != null && subVo.getMobileNo().length() > 0)
+							 sb.append("Contact Number: " +subVo.getMobileNo()+"\n"); 
+							 else
+								 sb.append("Contact Number: - "+"\n" );  
+							 if(subVo.getDesignation() != null && subVo.getDesignation().length() > 0)
+								 sb.append("Designation: " +subVo.getDesignation()+"\n"); 
+								 else
+									 sb.append("Designation: - "+"\n" );  
+							 if(subVo.getDesignation() != null && subVo.getConstituency().length() > 0)
+								 sb.append("Constituency : " +subVo.getConstituency()+"\n"); 
+								 else
+							 sb.append("Constituency : - "+"\n" ); 
+							 sb.append(subVo.getName()+"\n");
+							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
+								 insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,subVo.getSubList().size());
+							   else
+								   insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,0); 
+							 for(AppointmentDetailsVO aptVo : subVo.getSubList())
+							 {
+								 // add a couple of blank lines
+							   
+							  
+								 insertCell(table, aptVo.getAptUniqueCode(), Element.ALIGN_CENTER, colSpan, bf12,0);
+								 insertCell(table, aptVo.getDateString(), Element.ALIGN_CENTER, colSpan, bf12,0);
+								 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() > 1)
+									 insertCell(table, aptVo.getDateType() +":" + aptVo.getMinDate() +"-"+aptVo.getMaxDate(), Element.ALIGN_CENTER, colSpan, bf12,0);
+								 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() == 1)
+									 insertCell(table, aptVo.getApptpreferableDates(), Element.ALIGN_CENTER, colSpan, bf12,0);
+								 else
+								 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+								 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
+								 
+							 }
+						 }
+						 //document.add(headTab); 
+						   //border.setActive(false);
+						 document.add(table); 
+						
+					 }
+					 
+					
+					 document.close();
+					  return randomNum+".pdf"; 
+					 
+				 
+			 }
+		 }
+		 catch(Exception e)
+		 {
+			 LOG.error("Exception raised at pdfViewForAppointment",e); 
+		 }
+		return null;
+	 }
+	 
+	 private void insertCell(PdfPTable table, String text, int align, int colspan, Font font,int rowspan){
+		  
+		  //create a new cell with the specified Text and Font
+		  PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+		  
+		  if(rowspan > 0)
+		   cell.setRowspan(rowspan);
+		  //set the cell alignment
+		  cell.setHorizontalAlignment(align);
+		  //set the cell column span in case you want to merge two or more cells
+		  if(colspan > 0)
+		   cell.setColspan(colspan);
+		  //in case there is no text and you wan to create an empty row
+		  if(text.trim().equalsIgnoreCase("")){
+		   cell.setMinimumHeight(10f);
+		  }
+		  //add the call to the table
+		  table.addCell(cell);
+		  
+		 }
 		public void removeTimeSlotExistedAppointments(Long labelId,List<AppointmentDetailsVO> finalList,Map<Long, AppointmentDetailsVO> appointmentsMap){
 			//Getting appointments which are allocating to the TimeSlot 
 			List<Object[]> timeSlotAptList = labelAppointmentDAO.getViewAppointmentsOfALable(labelId);
