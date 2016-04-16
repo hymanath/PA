@@ -9422,7 +9422,11 @@
 				<param name="root">cadreCommitteeVO</param>
 			</result>
 		</action>
-		
+		<action name="getCadreDetailsAction" class="cadreCommitteeAction" method="getCadreDetails">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeVO</param>
+			</result>
+		</action>
 		<action name="checkIsVacancyForDesignation" class="cadreCommitteeAction" method="checkIsVacancyForDesignation">
 			<result type="json" name="success">
 				<param name="root">task</param>
@@ -9973,7 +9977,9 @@
 			<result name="input">/jsp/loginForm.jsp?src=cadreSearchPageAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
-
+		<action name="newCadreSearchPageAction" class="cadreCommitteeAction" method="newCadreSearchExe">
+			<result name="success">/jsp/unionSearchRegiststration.jsp</result>
+		</action>
 		<action name="eventInvitees" class="committeeDashBoardAction" method = "committeeMemberDetailExe">
 			<result name="success">/jsp/committeeMemberDetails.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
