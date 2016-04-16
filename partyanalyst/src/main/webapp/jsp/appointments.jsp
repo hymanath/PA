@@ -2347,7 +2347,24 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}
 		
 		$("#apptmemberDetailsDiv").html(str);
-		 $(document).on("click",".historyShowModalBtn",function(){
+		/* $(document).on("click",".historyShowModalBtn",function(){
+			$("#appCandidateNameId").html('');
+			$(".historyShowModal").modal("show");
+			//alert($(this).attr("attr-id"))
+			var id = $(this).attr("attr-id");
+			var name = $(this).attr("attr-name");
+			var designation = $(this).attr("attr-designation");
+			var mobile = $(this).attr("attr-mobile");
+		if(designation != null && designation.length > 0)
+			$("#appCandidateNameId").html(''+name+' ('+designation+') - '+mobile+'');
+		else
+			$("#appCandidateNameId").html(''+name+' ('+mobile+')');
+			getAppointStatusOverviewforCandidate(id);
+			getAppointmentHistoryForCandidate(id);
+		}); */
+		applyPagination();
+	}
+	 $(document).on("click",".historyShowModalBtn",function(){
 			$("#appCandidateNameId").html('');
 			$(".historyShowModal").modal("show");
 			//alert($(this).attr("attr-id"))
@@ -2362,8 +2379,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			getAppointStatusOverviewforCandidate(id);
 			getAppointmentHistoryForCandidate(id);
 		});
-		applyPagination();
-	}
 	var popDesignation ;
 	 $(document).on("click",".apptDetailsDiv",function(){
 		 
