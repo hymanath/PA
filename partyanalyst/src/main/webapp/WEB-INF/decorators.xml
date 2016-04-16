@@ -462,6 +462,7 @@
 	 <!-- Training module ends-->
 	  <!-- Cadre module starts-->
 	 <pattern>/cadreSearchPageAction*</pattern>
+	 <pattern>/newCadreSearchPageAction*</pattern>
 	 <pattern>/cadreVoterSearchAction*</pattern>
 	 <pattern>/cadreRegistrationAmountReportAction*</pattern>
 	 <pattern>/cadreRegAmountUpload*</pattern>
