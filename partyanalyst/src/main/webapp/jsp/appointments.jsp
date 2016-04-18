@@ -1829,6 +1829,7 @@ $(".dropkickClass").dropkick();
 	
 	$('#appointmentUserSelectBoxId').change(function(){
 		getLabelDtls();
+		getAppointmentStatusOverview();
 	});
 	
 	function getLabelDtls(){
@@ -6376,8 +6377,9 @@ function getCommitteeRoles(){
 	 }
 	 
 	   function getAppointmentStatusOverview(){
-    	
+    	var aptUserId = $("#appointmentUserSelectBoxId").val();
     	var jsObj={
+				appointmentUserId : aptUserId,
     			task:""
     		}
     		$.ajax({
