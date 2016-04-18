@@ -5391,7 +5391,13 @@ function buildTimeSlotsTable(result){
 				
 				
 			}
-			disableByLevel();
+				disableByLevel();
+				$(".stateCls").show();
+				$(".distCls").hide();
+				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+				
 				
 			
 	}
