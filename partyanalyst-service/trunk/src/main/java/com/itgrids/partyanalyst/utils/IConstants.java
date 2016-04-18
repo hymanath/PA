@@ -1002,4 +1002,6 @@ public interface IConstants {
 	
 	public static final Long[] APPOINTMENT_STATUS_LABELED_LIST={2L,3L,9L};
 	
+	public static final Long[] APPOINTMENT_STATUS_SCHEDULED_LIST={3L,4L,5L};
+	public static final Long[] APPOINTMENT_STATUS_WAITING_LIST={1L,2L,6L,7L,8L};
 }

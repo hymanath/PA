@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -70,6 +71,7 @@ import com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
@@ -4574,6 +4576,125 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		if(ids != null && ids.size() > 0 && statusId != null && statusId > 0l){
 			appointmentDAO.updatedAppointmentStatus(ids,statusId);
 			
+		}
+	}
+	
+	public AppointmentCountsVO getCandidCountsByStates(String startDateString,String endDateString,Long appointmentUserId){
+		
+		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+		AppointmentCountsVO finalVO = new AppointmentCountsVO();
+		
+		try{
+			 Date startDate = null;
+			 Date endDate   = null;
+			 
+			 if(startDateString != null && startDateString.trim().length() > 0){
+				 startDate = sdf.parse(startDateString);
+			 }
+			 if(endDateString != null && endDateString.trim().length() > 0){
+				 endDate = sdf.parse(endDateString);
+			 }
+			 
+			 List<Object[]> candidTypes = appointmentCandidateTypeDAO.getAllCandidateTypes();
+			 if(candidTypes!=null && candidTypes.size()>0){
+				 setCandidateTypes(candidTypes,"total",finalVO);
+				 setCandidateTypes(candidTypes,"scheduled",finalVO);
+				 setCandidateTypes(candidTypes,"waiting",finalVO);
+			 }
+			 
+			 List<Object[]>  list= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,null,startDate,endDate);
+			 setDataToList(list,"total",finalVO);
+			 
+			 List<Long>      scheduledList =Arrays.asList(IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST);
+			 List<Object[]>  scheduledCounts= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,scheduledList,startDate,endDate);
+			 setDataToList(scheduledCounts,"scheduled",finalVO);
+			 
+			 List<Long>     waitingList =Arrays.asList(IConstants.APPOINTMENT_STATUS_WAITING_LIST);
+			 List<Object[]> waitingCounts= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,waitingList,startDate,endDate);
+			 setDataToList(waitingCounts,"waiting",finalVO);
+			 
+			 finalVO.setResultMsg("success");
+			
+		}catch(Exception e){
+			finalVO.setResultMsg("error");
+			e.printStackTrace();
+		}
+		return finalVO;
+	}
+	
+	public void setDataToList(List<Object[]> list,String type,AppointmentCountsVO finalVO){
+		
+		List<AppointmentCountsVO> subList = null;
+		if(type.equalsIgnoreCase("total")){
+			subList = finalVO.getTotalCountsVOList();
+		}else if(type.equalsIgnoreCase("scheduled")){
+			subList = finalVO.getScheduledCountsVOList();
+		}else if(type.equalsIgnoreCase("waiting")){
+			subList = finalVO.getWaitingCountsVOList();
+		}
+		
+		
+		if(list!=null && list.size()>0){
+			
+			for(Object[] obj : list){
+				
+				 
+				 Long candiType =  obj[0]!=null?(Long)obj[0]:0l;
+				 
+				 AppointmentCountsVO matchedVO = getMatchedCandiType(subList,candiType);
+				 if(matchedVO != null){
+					 
+					 Long districtId = obj[1]!=null?((Long)obj[1]).longValue():0l;
+					 if( districtId>10l && districtId <=23l){
+						 
+						 matchedVO.setApCount(  matchedVO.getApCount()+ (obj[3]!=null?(Long)obj[3]:0l));
+						 matchedVO.setUniqueApCount(matchedVO.getUniqueApCount()+ (obj[4]!=null?(Long)obj[4]:0l));
+						 
+					 }else if( districtId >= 1l && districtId<=10l){
+						 
+						 matchedVO.setTsCount(  matchedVO.getTsCount()+ (obj[3]!=null?(Long)obj[3]:0l));
+						 matchedVO.setUniqueTsCount(matchedVO.getUniqueTsCount()+ (obj[4]!=null?(Long)obj[4]:0l));
+					 }
+					 
+					 matchedVO.setCount( matchedVO.getCount() + (obj[3]!=null?(Long)obj[3]:0l));
+					 matchedVO.setUniqueCount( matchedVO.getUniqueCount() + (obj[4]!=null?(Long)obj[4]:0l));
+				 }
+				 
+				
+			 }
+		}
+		
+	}
+	public AppointmentCountsVO getMatchedCandiType(List<AppointmentCountsVO> finalList,Long id)
+	{
+		if(finalList == null || finalList.size() == 0)
+			return null;
+		for(AppointmentCountsVO vo : finalList)
+		{
+			if(vo.getId().longValue() == id.longValue())
+				return vo;
+		}
+		return null;
+	}
+	public void setCandidateTypes(List<Object[]> candiList,String type,AppointmentCountsVO finalVO){
+		
+		List<AppointmentCountsVO> list = new ArrayList<AppointmentCountsVO>(0);
+		
+		for(Object[] obj : candiList){
+			
+			AppointmentCountsVO vo = new AppointmentCountsVO();
+			vo.setId(obj[0]!=null?(Long)obj[0]:0l);
+			vo.setName(obj[1]!=null?obj[1].toString():"");
+			
+			list.add(vo);
+		}
+		
+		if(type.equalsIgnoreCase("total")){
+			finalVO.setTotalCountsVOList(list);
+		}else if(type.equalsIgnoreCase("scheduled")){
+			finalVO.setScheduledCountsVOList(list);
+		}else if(type.equalsIgnoreCase("waiting")){
+			finalVO.setWaitingCountsVOList(list);
 		}
 	}
 }

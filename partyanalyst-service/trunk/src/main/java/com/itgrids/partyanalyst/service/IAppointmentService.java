@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
@@ -74,4 +75,5 @@ public interface IAppointmentService {
 	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long aptUserId);
 	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId,Long apptUserID);
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO);
+	public AppointmentCountsVO getCandidCountsByStates(String startDateString,String endDateString,Long appointmentUserId);
 }
