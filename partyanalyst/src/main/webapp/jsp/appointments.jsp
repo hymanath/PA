@@ -1060,9 +1060,10 @@ function buildJSONForAppStatus(result){
     var jsonObj = [];
 	var flag=false;
 	for(var i in result){
-		if(result[i].statusCount>0)
-			flag = true;
-		jsonObj.push({"name":result[i].status,"y":result[i].statusCount,"color":color[i%9]});
+		if(result[i].statusCount>0 && result[i].membersCount > 0)
+		{	flag = true;
+			jsonObj.push({"name":result[i].status,"y":result[i].statusCount,"color":color[i%9]});
+		}
 	}
 	if(flag==true){
 		buildChartForAppStatus(jsonObj);
