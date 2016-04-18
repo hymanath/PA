@@ -4151,12 +4151,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		}
 		return appCndDesigList;
 	}
-	public  List<IdNameVO> getAppointmentStatusOverview()
+	public  List<IdNameVO> getAppointmentStatusOverview(Long appointmentUserId)
 	{
 		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
 		try{
 			
-			List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentStatusOverview();
+			List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentStatusOverview(appointmentUserId);
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
