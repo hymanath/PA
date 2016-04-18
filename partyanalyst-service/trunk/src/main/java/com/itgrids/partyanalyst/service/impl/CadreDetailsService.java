@@ -772,9 +772,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 			{							
 				queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
 			}
+			
+			
+			
 			if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo.trim()+"%' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '%"+voterCardNo.trim()+"%'))  ");
+				if(voterCardNo.endsWith("HIDE")){
+					String[] voterStrArr = voterCardNo.split("-");
+					String voterId = voterStrArr[0].trim();
+					queryStr.append(" and model.voter.voterIDCardNo like '%"+voterId+"%' ");
+				}else{
+					queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo.trim()+"%' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '%"+voterCardNo.trim()+"%'))  ");
+				}
 			}
 			if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
 			{

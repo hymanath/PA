@@ -13,6 +13,7 @@ public class SmsOtpDetailsDAO extends GenericDaoHibernate<SmsOtpDetails, Long>
 		super(SmsOtpDetails.class);
 	}
 	
+	
 	public Long validateOTP(String mobileNo,String refNo,String otp){
 		
 		Query query = getSession().createQuery("select model.smsOtpDetailsId" +
