@@ -2638,7 +2638,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			toDate:toDate,
 			selUserId:$("#appointmentUserSelectBoxId").val(),
 			candidateTypeId:candidateTypeId,
-			dateType:radioValue
+			dateType:radioValue,
+			apptUserId:$("#appointmentUserSelectBoxId").val()
 		  }
 		  	$.ajax({
 				type : 'POST',
@@ -3131,7 +3132,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		var jsObj={
 			labelId : $(this).attr("attr_label_id"),
-			callFrom : ""
+			callFrom : "",
+			apptuserId:$("#appointmentUserSelectBoxId").val()
 		}
 		
 		$.ajax({
@@ -3159,7 +3161,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		var labelName =labelName;
 		var jsObj={
 			labelId :labelId,
-			callFrom : "print"
+			callFrom : "print",
+			apptuserId:$("#appointmentUserSelectBoxId").val()
 		}
 		$.ajax({
 			type : 'POST',
@@ -4200,7 +4203,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	function getAppointmentsOfALabel(){
 		var jsObj={
 			labelId : $("#appointmentLabelToGetSlotsId").val(),
-			callFrom : "timeSlot"
+			callFrom : "timeSlot",
+			apptuserId:$("#appointmentUserSelectBoxId").val()
 		}
 		
 		$.ajax({
@@ -5100,7 +5104,8 @@ function buildTimeSlotsTable(result){
 		var labelId = $(this).attr("attr_label_id");
 		var jsObj={
 			labelId : labelId,
-			callFrom : ""
+			callFrom : "",
+			apptuserId:$("#appointmentUserSelectBoxId").val()
 		}
 		
 		$.ajax({
@@ -6465,6 +6470,7 @@ function getCommitteeRoles(){
 		  $("#aptCandidateHistorystatusOverViewDiv").html('<img src="images/search.gif" />');
 	    	var jsObj={
 	    			appointmentCandidateId:id,
+					apptUserId:$("#appointmentUserSelectBoxId").val(),
 					task:""
 	    		}
 	    		$.ajax({
@@ -6508,6 +6514,7 @@ function getCommitteeRoles(){
 			$("#buildCommentsForHistoryView").html('<img src="images/search.gif" />');
 	    	var jsObj={
 	    			appointmentCandidateId:id,
+					apptUserId:$("#appointmentUserSelectBoxId").val(),
 					task:""
 	    		}
 		$.ajax({
