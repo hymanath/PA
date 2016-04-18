@@ -4571,7 +4571,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 	
 	public void changeAppointmentStatus(List<Long> ids,Long statusId){
 		if(ids != null && ids.size() > 0 && statusId != null && statusId > 0l){
-			appointmentDAO.updatedAppointmentStatus(ids);
+			appointmentDAO.updatedAppointmentStatus(ids,statusId);
 			
 		}
 	}

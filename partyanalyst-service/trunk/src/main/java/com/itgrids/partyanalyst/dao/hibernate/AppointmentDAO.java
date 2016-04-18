@@ -87,15 +87,17 @@ public Long getAppointmentStatusId(Long appointmentId){
 		query.setParameter("statusId",statusId);
 		return query.executeUpdate();
 	}
-public Integer updatedAppointmentStatus(List<Long> appointmentIds){
-	Query query=getSession().createQuery("update Appointment model set model.appointmentStatusId=:appointmentStatusId" +
-			" where " +
-			" model.appointmentId  in (:appointmentIds) ");
-	query.setParameterList("appointmentIds",appointmentIds);
-	query.setParameter("appointmentStatusId", IConstants.APPOINTMENT_STATUS_WAITING);
-	return query.executeUpdate();
-}
 	
+	public Integer updatedAppointmentStatus(List<Long> appointmentIds,Long apptStatusId){
+		Query query=getSession().createQuery("update Appointment model set model.appointmentStatusId=:appointmentStatusId" +
+				" where " +
+				" model.appointmentId  in (:appointmentIds) ");
+		query.setParameterList("appointmentIds",appointmentIds);
+		query.setParameter("appointmentStatusId", apptStatusId);
+		return query.executeUpdate();
+	}
+	
+
 }
 	
 
