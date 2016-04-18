@@ -1214,6 +1214,7 @@ $(document).on("click","#addOneBlock",function(){
 	e.css("display","block");
 	e.attr("id",'block'+cloneCount);
 	e.addClass("validateCls");
+	e.attr("attr_count",cloneCount);
 	e.find(".cloneNameCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].name');
 	e.find(".cloneNameCls").attr("id",'candidateNameId'+cloneCount);	
 	e.find(".cloneErrCandidateNameCls").attr("id",'cloneErrCandidateNameId'+cloneCount);	
@@ -4717,6 +4718,7 @@ function buildTimeSlotsTable(result){
 			isErrAvailable=true;				
 		}else{
 			$(".validateCls").each(function(i){
+				i = $(this).attr("attr_count");
 				var nameValue=$("#candidateNameId"+i).val();
 				 if(nameValue ==null || nameValue.length<=0 || nameValue == undefined || typeof nameValue === "undefined" || nameValue.trim() == ""){
 					  isErrAvailable=true;
