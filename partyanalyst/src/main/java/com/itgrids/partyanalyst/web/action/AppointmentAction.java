@@ -991,8 +991,9 @@ public String getPanchayatiesByMandalOrMuncipality(){
 	
 	public String getStatusCountForAppointment(){
 		try{
-			
-			idNameVOList = appointmentService.getAppointmentStatusOverview();
+			jObj = new JSONObject(getTask());
+			Long appointmentUserId = jObj.getLong("appointmentUserId");
+			idNameVOList = appointmentService.getAppointmentStatusOverview(appointmentUserId);
 			
 		}catch (Exception e) {
 			LOG.error("Exception occured in getAppointmentStatusOverview()",e);
