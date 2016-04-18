@@ -3252,22 +3252,22 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   p.add(new Chunk("Purpose : -")); 
 						   p.setFont(f);
 						   document.add(p);
-						  
-						   
-						   PdfPTable table = new PdfPTable(columnWidths);
-							 //special font sizes
-							   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
-							   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
-							   document.add(Chunk.NEWLINE );
-						 //insert column headings
-						   
-						   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
-						   insertCell(table, "APPOINTMENT ID", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
-						   insertCell(table, "CREATED DATE", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
-						   insertCell(table, "APPOINTMENT PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
-						   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
-						   for(AppointmentDetailsVO subVo : vo.getSubList())
+						  if(vo.getSubList() != null && vo.getSubList().size() > 0)
+						  {
+						  for(AppointmentDetailsVO subVo : vo.getSubList())
 						 {
+							   PdfPTable table = new PdfPTable(columnWidths);
+								 //special font sizes
+								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
+								   document.add(Chunk.NEWLINE );
+							 //insert column headings
+							   
+							   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							   insertCell(table, "APPOINTMENT ID", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+							   insertCell(table, "CREATED DATE", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+							   insertCell(table, "APPOINTMENT PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
 							 StringBuffer sb = new StringBuffer();
 							 if(subVo.isCadre() == true)
 							 sb.append(subVo.getName() +"- Cadre  "+"\n");
@@ -3289,27 +3289,55 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
 								 insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,subVo.getSubList().size());
 							   else
+							   {
 								   insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,0); 
-							 for(AppointmentDetailsVO aptVo : subVo.getSubList())
+								   // add a couple of blank lines
+									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+									
+							   }
+							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
 							 {
-								 // add a couple of blank lines
-							   
-							  
-								 insertCell(table, aptVo.getAptUniqueCode(), Element.ALIGN_CENTER, colSpan, bf12,0);
-								 insertCell(table, aptVo.getDateString(), Element.ALIGN_CENTER, colSpan, bf12,0);
-								 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() > 1)
-									 insertCell(table, aptVo.getDateType() +":" + aptVo.getMinDate() +"-"+aptVo.getMaxDate(), Element.ALIGN_CENTER, colSpan, bf12,0);
-								 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() == 1)
-									 insertCell(table, aptVo.getApptpreferableDates(), Element.ALIGN_CENTER, colSpan, bf12,0);
-								 else
-								 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
-								 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
-								 
+								 for(AppointmentDetailsVO aptVo : subVo.getSubList())
+								 {
+									 // add a couple of blank lines
+									 insertCell(table, aptVo.getAptUniqueCode(), Element.ALIGN_CENTER, colSpan, bf12,0);
+									 insertCell(table, aptVo.getDateString(), Element.ALIGN_CENTER, colSpan, bf12,0);
+									 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() > 1)
+										 insertCell(table, aptVo.getDateType() +":" + aptVo.getMinDate() +"-"+aptVo.getMaxDate(), Element.ALIGN_CENTER, colSpan, bf12,0);
+									 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() == 1)
+										 insertCell(table, aptVo.getApptpreferableDates(), Element.ALIGN_CENTER, colSpan, bf12,0);
+									 else
+									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+									 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
+									 
+								 }
 							 }
+							 document.add(table); 
 						 }
+						  }
+						  else
+						  {
+							  PdfPTable table = new PdfPTable(columnWidths);
+								 //special font sizes
+								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
+								   document.add(Chunk.NEWLINE );
+							 //insert column headings
+							   
+							   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							   insertCell(table, "APPOINTMENT ID", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+							   insertCell(table, "CREATED DATE", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+							   insertCell(table, "APPOINTMENT PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							   insertCell(table, "No Data Available ", Element.ALIGN_CENTER, 3, bf12,0);
+							   document.add(table); 
+						  }
 						 //document.add(headTab); 
 						   //border.setActive(false);
-						 document.add(table); 
+						
 						
 					 }
 					 
