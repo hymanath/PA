@@ -29,6 +29,15 @@ public class LocationInputVO {
 	private List<Long> wardIdsList;
 	private List<Long> designationIds;
 	private Long stateId;
+	private Long aptUserId;
+	
+	
+	public Long getAptUserId() {
+		return aptUserId;
+	}
+	public void setAptUserId(Long aptUserId) {
+		this.aptUserId = aptUserId;
+	}
 	public Long getStateId() {
 		return stateId;
 	}

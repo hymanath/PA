@@ -34,7 +34,7 @@ public interface IAppointmentService {
 	public List<AppointmentBasicInfoVO> getAppointmentsCandidateDetails(Long candidateDsgntnId,Long appntmntPrrtyId,Long appntmntSttsId,String currentMonth,String anyDate);
 	public List<IdNameVO> getTotalAppointmentStatus();
 	public List<IdNameVO> getTotalAppointmentStatusForToday();
-	public List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue);
+	public List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue,Long aptUserId);
 	public VoterAddressVO getMemberDetails(String candidateType,Long id);
 	public List<AppointmentBasicInfoVO> getAllAppointmentDetails(int startIndex,int maxIndex,Long aptUserId);
 	public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr,Long selUserID,
