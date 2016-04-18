@@ -133,24 +133,24 @@ function getCadreDetailsBySearchCriteria(startIndex){
 	{
 	$(".paginationDivId").html('');
 	}
-	$(".paginationDivId").hide();	
+	$(".paginationDivId").hide();	   
 	
 
 	var searchBy = $('#searchBy').val().trim();
 	var searchRadioType =$('#cadreSearchType').val();
 	
 	
-	if(searchRadioType == 'membershipId')
+	if(searchRadioType == 'membershipId')   
 	{
 		memberShipCardNo = $('#searchBy').val().trim();
 		
 		if(searchBy.trim().length == 0 )
 		{
 			$('#searchErrDiv').html('Please enter Membership Card No.');
-			return;
+			return;       
 		}
 	}			
-	if(searchRadioType == 'voterId')
+	if(searchRadioType == 'voterId')  
 	{
 		voterCardNo = $('#searchBy').val().trim();
 		
@@ -159,6 +159,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			$('#searchErrDiv').html('Please enter Voter Card No.');
 			return;
 		}
+		voterCardNo = voterCardNo +"-HIDE";
 	}
 	if(searchRadioType == 'mobileNo')
 	{	
@@ -198,7 +199,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		startIndex:startIndex,
 		maxIndex : 50,
 		removedStatus:false,  
-		task:"tdpCadreSearch"  
+		task:"tdpCadreSearch"     
 	}
 	
 	$.ajax({    
@@ -596,8 +597,8 @@ function confirmDelete(msg){
 	var deleteCadre = confirm(msg);
 	  if (deleteCadre)
 		  return true;
-	  else
-		return false;
+	  else    
+		return false;   
 }
 
 $(document).on('click','#nameId',function(){
