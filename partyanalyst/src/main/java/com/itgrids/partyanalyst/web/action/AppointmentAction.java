@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
@@ -72,7 +73,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<BasicVO> basicvoList;
 	private List<AppointmentStatusVO> appointmentStatusVOList;
 	private List<AppHistoryVO> historyList;
-	
+	private AppointmentCountsVO appointmentCountsVO;
 	
 	
 	public List<AppHistoryVO> getHistoryList() {
@@ -268,6 +269,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	}
 
 	
+	public AppointmentCountsVO getAppointmentCountsVO() {
+		return appointmentCountsVO;
+	}
+
+	public void setAppointmentCountsVO(AppointmentCountsVO appointmentCountsVO) {
+		this.appointmentCountsVO = appointmentCountsVO;
+	}
+
 	public String execute(){
 		return Action.SUCCESS;
 	}
@@ -1021,6 +1030,22 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		    resultStatus = appointmentService.sendSms(inputVO);
 		} catch (Exception e) {
 			LOG.error("Exception raised at sendSmsForAppointment", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCandidCountsByStates(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			String startDateString = jObj.getString("startDateString");
+			String endDateString   = jObj.getString("endDateString");
+			Long   appointmentUserId = jObj.getLong("appointmentUserId"); 
+			
+			appointmentCountsVO = appointmentService.getCandidCountsByStates(startDateString,endDateString,appointmentUserId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getCandidCountsByStates() of AppointmentAction",e);
 		}
 		return Action.SUCCESS;
 	}
