@@ -164,7 +164,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		query.setParameterList("candidateIds",candidateIds);
 		return query.list();
 	}
-    public List<Object[]> getCandidatePreviousApptDetails1(List<Long> candidateIds){
+    public List<Object[]> getCandidatePreviousApptDetails1(List<Long> candidateIds,Long apptUserID){
     	
     	Query query = getSession().createSQLQuery("" +
     	 " select distinct acr.appointment_candidate_id as candidId,acr.appointment_id as appId,date(a.inserted_time) as date, " +
@@ -173,7 +173,8 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
     	 " from   appointment_candidate_relation acr left join appointment_time_slot ats on acr.appointment_id=ats.appointment_id and ats.is_deleted='N' " +
     	 "        join appointment a on a.appointment_id = acr.appointment_id " +
     	 "        join appointment_status ass on ass.appointment_status_id = a.appointment_status_id " +
-    	 " where  a.is_deleted='N' and acr.appointment_candidate_id in (:candidateIds) order by a.inserted_time " )
+    	 " where  a.is_deleted='N' and acr.appointment_candidate_id in (:candidateIds) and a.appointment_user_id=:apptUserID " +
+    	 " order by a.inserted_time " )
     	 .addScalar("candidId",Hibernate.LONG)
 		 .addScalar("appId",Hibernate.LONG)
 		 .addScalar("date",Hibernate.DATE)
@@ -187,6 +188,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		
 		query.setParameterList("candidateIds",candidateIds);
 		query.setMaxResults(IConstants.APPOINTMENT_HISTORY_MAX_RESULT);
+		query.setParameter("apptUserID", apptUserID);
 		return query.list();
 	}
 	public List<Object[]> getAppointmentCandidateDetails(List<Long> appointmentIds){
@@ -244,15 +246,17 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		return query.list();
 		
 	}
-public List<Object[]> getLastVisitsByCandidates(List<Long> candidateIds){
+public List<Object[]> getLastVisitsByCandidates(List<Long> candidateIds,Long apptUserId){
 		
 		Query query = getSession().createQuery("" +
 				" select    model.appointmentCandidateId,max(model1.fromDate),max(model1.toDate)" +
 				" from      AppointmentCandidateRelation model,AppointmentTimeSlot model1 " +
 				" where     model.appointment.appointmentId = model1.appointment.appointmentId   and model.appointment.isDeleted='N' " +
 				"           and model.appointmentCandidateId in (:candidateIds) and model1.isDeleted='N' " +
+				"			and model.appointment.appointmentUserId=:apptUserId " +
 				" group by  model.appointmentCandidateId ");
 		query.setParameterList("candidateIds",candidateIds);
+		query.setParameter("apptUserId", apptUserId);
 		return query.list();
 	}
 	
@@ -281,18 +285,20 @@ public List<Object[]> getLastVisitsByCandidates(List<Long> candidateIds){
 		
 	}
 	
-	public List<Object[]> getAppointStatusOverviewforCandidate(Long apointmntcandidteId)
+	public List<Object[]> getAppointStatusOverviewforCandidate(Long apointmntcandidteId,Long apptUserId)
 	{
 		StringBuffer str = new StringBuffer();
 	    str.append("select count(distinct model.appointment.appointmentId)," +
 	        " model.appointment.appointmentStatus.appointmentStatusId," +
 	        " model.appointment.appointmentStatus.status" +
 	        " from AppointmentCandidateRelation model" +
-	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId");
+	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId " +
+	        "and model.appointment.appointmentUserId=:apptUserId ");
 	    																									  
 	    str.append(" group by model.appointment.appointmentStatus.appointmentStatusId ");
 	    Query query = getSession().createQuery(str.toString());
 	    query.setParameter("apointmntcandidteId", apointmntcandidteId);
+	    query.setParameter("apptUserId", apptUserId);
 	    return query.list();
 	}
 	
@@ -365,7 +371,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
     return query.list();
   }
   
-	public List<Object[]> getFixedAttendedCount(Long apointmntcandidteId)
+	public List<Object[]> getFixedAttendedCount(Long apointmntcandidteId,Date curDateAndTime,Long apptUserId)
 	{
 		StringBuffer str = new StringBuffer();
 	    str.append("select count(distinct model.appointment.appointmentId)," +
@@ -375,15 +381,16 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId"
 	        + " and model.appointment.appointmentId = model1.appointment.appointmentId "
 	        + " and model.appointment.appointmentStatus.appointmentStatusId =:statusId and "
-	        + " model1.toDate <= :date");
+	        + " model1.toDate <= :date and model.appointment.appointmentUserId=:apptUserId ");
 	    Query query = getSession().createQuery(str.toString());
 	    query.setParameter("apointmntcandidteId", apointmntcandidteId);
-	    query.setTimestamp("date", new Date());
+	    query.setTimestamp("date", curDateAndTime);
 	    query.setParameter("statusId", IConstants.APPOINTMENT_STATUS_FIXED);
+	    query.setParameter("apptUserId", apptUserId);
 	    return query.list();
 	}
 	
-	public List<Object[]> getAppointmentHistoryDetailsByCandidateId(Long apointmntcandidteId)
+	public List<Object[]> getAppointmentHistoryDetailsByCandidateId(Long apointmntcandidteId,Long apptUserId)
 	{
 		StringBuffer str = new StringBuffer();
 	    str.append("select model.appointment.appointmentUniqueId,model.appointment.reason,"
@@ -391,9 +398,11 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	    		+ "model.appointment.appointmentStatus.appointmentStatusId," +
 	        " model.appointment.appointmentStatus.status,model.appointment.appointmentId" +
 	        " from AppointmentCandidateRelation model " +
-	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId");
+	        " where model.appointment.isDeleted='N' and  model.appointmentCandidate.appointmentCandidateId = :apointmntcandidteId " +
+	        " and model.appointment.appointmentUserId=:apptUserId ");
 	    Query query = getSession().createQuery(str.toString());
 	    query.setParameter("apointmntcandidteId", apointmntcandidteId);
+	    query.setParameter("apptUserId", apptUserId);
 	   return query.list();
 	}
     
