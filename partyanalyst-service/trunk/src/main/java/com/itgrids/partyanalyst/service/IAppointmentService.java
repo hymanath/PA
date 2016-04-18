@@ -38,13 +38,13 @@ public interface IAppointmentService {
 	public VoterAddressVO getMemberDetails(String candidateType,Long id);
 	public List<AppointmentBasicInfoVO> getAllAppointmentDetails(int startIndex,int maxIndex,Long aptUserId);
 	public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr,Long selUserID,
-			Long cndTypeId,Long dateTypeValue);
+			Long cndTypeId,Long dateTypeValue,Long apptUserID);
 	public ResultStatus addAppointmentstoLabel(final Long apptLabelId,final List<Long> appointmentIds,final Long loggerUserId);	
 	public List<AppointmentVO> getAppointmentsOfALableForUpdate(Long lableId);
 	public LabelStatusVO getLabelAndStatuswiseCountsOfAppointments();
 	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId);
 	public List<AppointmentScheduleVO>  getAppointmentSearchDetails(AppointmentInputVO inputVo);
-	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom);
+	public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom,Long apptUserId);
 	public AppointmentSlotsVO getTimeSlotsDetails(long appointmentLabelId);
 	public List<IdNameVO> getAppointmentLabels(Long aptUserId);
 	public List<IdNameVO> getAppointmentsLabelStatus();
@@ -70,8 +70,8 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAllCandidateTypes();
 	public List<IdNameVO> getAppCandidateDesigListByType(Long typeId);
 	public  List<IdNameVO> getAppointmentStatusOverview();
-	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId);
+	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId,Long apptUserID);
 	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long aptUserId);
-	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId);
+	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId,Long apptUserID);
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO);
 }
