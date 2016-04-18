@@ -3281,7 +3281,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								 sb.append("Designation: " +subVo.getDesignation()+"\n"); 
 								 else
 									 sb.append("Designation: - "+"\n" );  
-							 if(subVo.getDesignation() != null && subVo.getConstituency().length() > 0)
+							 if(subVo.getConstituency() != null && subVo.getConstituency().length() > 0)
 								 sb.append("Constituency : " +subVo.getConstituency()+"\n"); 
 								 else
 							 sb.append("Constituency : - "+"\n" ); 
