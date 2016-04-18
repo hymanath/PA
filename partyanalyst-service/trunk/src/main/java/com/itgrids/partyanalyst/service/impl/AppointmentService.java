@@ -3534,6 +3534,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			             timeSlot = appointmentTimeSlotDAO.get(timeSlotId);
 			           }else{
 			             timeSlot = new AppointmentTimeSlot();
+			             timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			           }
 			           
 				       timeSlot.setAppointmentId(appointmentId);
@@ -3542,7 +3543,6 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       timeSlot.setToDate(appointmentToTime);
 				       timeSlot.setInsertedBy(userId);
 				       timeSlot.setUpdatedBy(userId);
-				       timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				       timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				       timeSlot.setIsDeleted("N");
 			      
@@ -3569,7 +3569,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			         }*/
 				      
 				      
-				      //void appt status
+				     //void appt status
 				       List<Object[]> candiList=appointmentCandidateRelationDAO.getApptCandidIdsAndInsertedTime(appointmentId);
 					      
 					      List<Long> apptCandiIds = null;
