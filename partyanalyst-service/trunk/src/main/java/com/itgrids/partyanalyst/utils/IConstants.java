@@ -962,7 +962,7 @@ public interface IConstants {
     public static final String ACTIVITY_DOCUMENT_UPLOAD = "activity_documents_upload";
     public static final Long	ACTIVITY_MAX_FILES_COUNT = 50L;
     public static final Long ACTIVITY_REQUIRED_ATTRIBUTE_IDS = 2l;
-    public static final Long LATEST_PUBLICATION_DATE_ID = 17L;//12L //10L;
+    public static final Long LATEST_PUBLICATION_DATE_ID = 17L;//17L;//12L //10L;
     public static final String ITGRIDS_USERNAME_FOR_SMS = "ITGridsapi";
     public static final String ITGRIDS_PASSWORD_FOR_SMS = "03274254";
     
