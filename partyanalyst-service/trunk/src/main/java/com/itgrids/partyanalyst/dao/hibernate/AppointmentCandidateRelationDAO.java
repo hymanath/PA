@@ -269,18 +269,18 @@ public List<Object[]> getLastVisitsByCandidates(List<Long> candidateIds,Long app
 		return query.list();
 	}
 	
-	public List<Object[]> getAppointmentStatusOverview()
+	public List<Object[]> getAppointmentStatusOverview(Long appointmentUserId)
 	{
 		StringBuffer str = new StringBuffer();
 		str.append("select count(distinct model.appointment.appointmentId)," +
 				" model.appointment.appointmentStatus.appointmentStatusId," +
 				" model.appointment.appointmentStatus.status" +
 				" from AppointmentCandidateRelation model" +
-				" where model.appointment.isDeleted='N'");
+				" where model.appointment.isDeleted='N' and model.appointment.appointmentUser.appointmenUserId = :appointmentUserId");
 		
 		str.append(" group by model.appointment.appointmentStatus.appointmentStatusId ");
 		Query query = getSession().createQuery(str.toString());
-		
+		query.setParameter("appointmentUserId",appointmentUserId);
 		return query.list();
 		
 	}
