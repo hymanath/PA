@@ -1136,7 +1136,7 @@ public class AppointmentService implements IAppointmentService{
 	}
 	
 	//search
-	public  List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue){
+	public  List<AppointmentCandidateVO> searchApptRequestedMembers(String searchType,String searchValue,Long aptUserId){
 		 List<AppointmentCandidateVO>  finalList = null;
 		 
 		 try {
@@ -1205,7 +1205,7 @@ public class AppointmentService implements IAppointmentService{
 			    	  }
 			    	  
 			      }
-			  	List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds);
+			  	List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
 				 if(list != null && list.size() > 0)
 				 {
 					 for(Object[] params : list)
@@ -1250,7 +1250,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 							    	  }*/
 						    		mandalMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"mandal",inputVo);
 						    		if(mandalMemList != null && mandalMemList.size()>0)
-						    		  setDataMembersForCadreRole(mandalMemList,finalList);
+						    		  setDataMembersForCadreRole(mandalMemList,finalList,inputVo.getAptUserId());
 						    		
 						    	}
 						    	if(locationVo.getTownIdsList() != null && locationVo.getTownIdsList().size() > 0)
@@ -1268,7 +1268,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 						    		
 						    		 townMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"town",inputVo);
 						    		 if(townMemList != null && townMemList.size()>0)
-						    		  setDataMembersForCadreRole(townMemList,finalList);
+						    		  setDataMembersForCadreRole(townMemList,finalList,inputVo.getAptUserId());
 						    		
 						    	}
 						    	if(locationVo.getDivisionIdsList() != null && locationVo.getDivisionIdsList().size() > 0){
@@ -1285,7 +1285,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 						    	 	
 						    	 	divisonMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"division",inputVo);
 						    	 	if(divisonMemList != null && divisonMemList.size()>0)
-					    		 	setDataMembersForCadreRole(divisonMemList,finalList);
+					    		 	setDataMembersForCadreRole(divisonMemList,finalList,inputVo.getAptUserId());
 						    	}
 						    	
 						   }
@@ -1308,7 +1308,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 						    			
 						    		  panchayatMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"panchayat",inputVo);
 						    		  if(panchayatMemList != null && panchayatMemList.size()>0)
-						    		  setDataMembersForCadreRole(panchayatMemList,finalList);
+						    		  setDataMembersForCadreRole(panchayatMemList,finalList,inputVo.getAptUserId());
 						    		
 						    	}
 						    	if(locationVo.getWardIdsList() != null && locationVo.getWardIdsList().size() > 0){
@@ -1326,7 +1326,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 						    		
 						    		  wardMemList = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"ward",inputVo);
 						    		  if(wardMemList != null && wardMemList.size()>0)
-						    		  setDataMembersForCadreRole(wardMemList,finalList);
+						    		  setDataMembersForCadreRole(wardMemList,finalList,inputVo.getAptUserId());
 						    		
 						    	}
 						   }
@@ -1364,7 +1364,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 						    	
 						    	   List<Object[]> memList  = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,locationVo,"",inputVo);
 						    	   if(memList != null && memList.size()>0){
-					    		   setDataMembersForCadreRole(memList,finalList);
+					    		   setDataMembersForCadreRole(memList,finalList,inputVo.getAptUserId());
 						    	   }
 						    	
 						    }
@@ -1385,7 +1385,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 						    	
 						    	 memList1  = tdpCadreDAO.advancedSearchMemberForCadreCommittee(searchType,null,"",inputVo);
 						    	 if(memList1 != null && memList1.size()>0){
-					    		 setDataMembersForCadreRole(memList1,finalList);
+					    		 setDataMembersForCadreRole(memList1,finalList,inputVo.getAptUserId());
 						    	 }
 						    	
 						    }
@@ -1429,14 +1429,14 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 					    	}
 					    	 nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);   
 					    	 if(nameList != null && nameList.size()>0){
-					    		  setDataMembersForCadre(nameList,finalList);
+					    		  setDataMembersForCadre(nameList,finalList,inputVo.getAptUserId());
 						    	  }
 					    	}
 				    	  else
 				    	  {
 				    		  nameList = tdpCadreDAO.searchMemberByCriteria(searchType,searchValue,locationVo);  
 				    		  if(nameList != null && nameList.size()>0){
-					    		  setDataMembersForCadre(nameList,finalList);
+					    		  setDataMembersForCadre(nameList,finalList,inputVo.getAptUserId());
 						    	  }
 				    	  }
 			     }
@@ -1460,7 +1460,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 			    		  prList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,null,inputVo);
 			    		  if(prList != null && prList.size()>0)
 			    		  {
-			    		  setDataMembersForCadreRole(prList,finalList);
+			    		  setDataMembersForCadreRole(prList,finalList,inputVo.getAptUserId());
 			    		  }
 			    		}
 			    		else
@@ -1477,7 +1477,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 			    			
 			    			  prList = tdpCadreDAO.advancedSearchMemberForPublicRepresentative(searchType,locationVo,inputVo);
 			    			  if(prList != null && prList.size()>0){
-				    		  setDataMembersForCadreRole(prList,finalList);
+				    		  setDataMembersForCadreRole(prList,finalList,inputVo.getAptUserId());
 			    			}
 			    		}
 			      }
@@ -1489,7 +1489,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 		 
 	 return finalList;
  }
-public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList)
+public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList,Long aptUserId)
 {
   if(membersList != null && membersList.size()>0){
 	  List<Long> tdpCadreIds = new ArrayList<Long>();
@@ -1512,7 +1512,7 @@ public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidate
   		 if(!tdpCadreIds.contains(vo.getId()))
   	  		  tdpCadreIds.add(vo.getId());
   	  }
-  	List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds);
+  	List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
 	 if(list != null && list.size() > 0)
 	 {
 		 for(Object[] params : list)
@@ -1528,7 +1528,7 @@ public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidate
 }
 
 
-public void setDataMembersForCadreRole(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList)
+public void setDataMembersForCadreRole(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList,Long aptUserId)
 {
 	List<Long> tdpCadreIds = new ArrayList<Long>();
 	if(membersList!=null && membersList.size()>0){
@@ -1548,7 +1548,7 @@ public void setDataMembersForCadreRole(List<Object[]> membersList, List<Appointm
   		  if(!tdpCadreIds.contains(vo.getId()))
   		  tdpCadreIds.add(vo.getId());
 		  }
-		 List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds);
+		 List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
 		 if(list != null && list.size() > 0)
 		 {
 			 for(Object[] params : list)
@@ -1574,7 +1574,7 @@ public AppointmentCandidateVO getMatchedVO(List<AppointmentCandidateVO>  finalLi
 	}
 	return null;
 }
-public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList)
+public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList,Long aptUserId)
 {
 	List<Long> tdpCadreIds = new ArrayList<Long>();
 	if(membersList!=null && membersList.size()>0){
@@ -1594,7 +1594,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
   		 if(!tdpCadreIds.contains(vo.getId()))
   	  		  tdpCadreIds.add(vo.getId());
 		  }
-		  List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds);
+		  List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
 			 if(list != null && list.size() > 0)
 			 {
 				 for(Object[] params : list)

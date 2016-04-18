@@ -390,13 +390,19 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	return query.list();
 }
 
-	public List<Object[]> getAppointmentCandidateIdForCadreIds(List<Long> cadreIds)
+	public List<Object[]> getAppointmentCandidateIdForCadreIds(List<Long> cadreIds,Long aptUserID)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCadreId,model.appointmentCandidateId from AppointmentCandidate model "
-				+ " where model.tdpCadreId in(:cadreIds)");
+				+ " where model.tdpCadreId in(:cadreIds) ");
+		if(aptUserID != null && aptUserID > 0)
+		{
+			str.append(" and model.createdUser.userId = :aptUserID");
+		}
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("cadreIds", cadreIds);
+		if(aptUserID != null && aptUserID > 0)
+			query.setParameter("aptUserID", aptUserID);
 		return query.list();
 	}
 	
