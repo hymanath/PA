@@ -628,7 +628,7 @@ footer
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true' ||							fn:contains(sessionScope.USER.entitlements, 'APPOINTMENTS_MANAGE_ENTITLEMENT' )}">
 						<li>
-							<a href="appointmentsAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Appointments</span></a>
+							<a href="appointmentsAction.action"><i class="fa fa-calendar-plus-o"></i><span>&nbsp;&nbsp;Appointments</span></a>
 						</li>	
 					</c:if>
 
