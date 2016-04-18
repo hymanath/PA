@@ -571,7 +571,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		
 		try {
 			jObj = new JSONObject(getTask());
-			candidatesList =appointmentService.searchApptRequestedMembers(jObj.getString("searchType"),jObj.getString("searchValue"));
+			candidatesList =appointmentService.searchApptRequestedMembers(jObj.getString("searchType"),jObj.getString("searchValue"),jObj.getLong("aptUserId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAppntmntSearchDetails() method of AppointmentAction", e);
 		}
@@ -597,8 +597,9 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 						Long levelId = jObj.getLong("levelId");
 						Long committeeId = jObj.getLong("committeeId");
 						Long stateId = jObj.getLong("stateId");
-						JSONArray designations = jObj.getJSONArray("designations");
 						
+						JSONArray designations = jObj.getJSONArray("designations");
+						locationVo.setAptUserId(jObj.getLong("aptUserId"));
 						locationVo.setCommitteeId(committeeId);
 						locationVo.setLevelStr(levelStr);
 						locationVo.setLevelId(levelId);
