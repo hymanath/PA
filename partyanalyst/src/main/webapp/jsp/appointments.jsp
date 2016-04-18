@@ -609,10 +609,11 @@
 										<div class="panel-body">
 											<table>
 												<tr>
- 													<td style="width: 25%;background-color:#339967; text-align: center; padding: 20px 80px; "><h4 class="text-success" style="color:#fff !important;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
-													<td style="width: 25%; background-color:#336799; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
-													<td style="width: 25%;background-color:#6A0208; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
-													<td style="width: 25%; background-color:#996532; text-align: center; padding: 20px 80px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>												
+ 													<td style="width: 20%;background-color:#339967; text-align: center; padding: 20px 60px; "><h4 class="text-success" style="color:#fff !important;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
+													<td style="width: 20%; background-color:#336799; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
+													<td style="width: 20%;background-color:#6A0208; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
+													<td style="width: 20%; background-color:#996532; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>
+													<td style="width: 20%; background-color:#234794; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Tentative  <br> <span  id="tentativeStatus">0</span></h4></td>												
 											  </tr>
 											</table>
 										</div>
@@ -6427,6 +6428,10 @@ function getCommitteeRoles(){
 			  if(result[i].id == 4)
 			  {
 				  $("#notAttendedStatus").html(''+result[i].availableCount+''); 
+			  }
+			   if(result[i].id == 8)
+			  {
+				  $("#tentativeStatus").html(''+result[i].availableCount+''); 
 			  }
 		  }
 	 }
