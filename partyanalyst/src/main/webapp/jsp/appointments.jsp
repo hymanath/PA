@@ -3075,7 +3075,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 													str+='<div class="col-md-5">';
 														str+='<div class="media">';
 															str+='<div class="media-left">';
-																str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+																str+='<img class="media-object thumbnail" src="'+result[i].basicInfoList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 															str+='</div>';
 															str+='<div class="media-body">';
 																str+='<p>'+result[i].basicInfoList[j].name+'';
@@ -3572,7 +3572,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<li>';
 						str+='<div class="media m_0">';
 						str+='<div class="media-left">';
-						str+='<img class="media-object thumbnail " src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='<img class="media-object thumbnail " src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 						str+='</div>';
 						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
@@ -3898,7 +3898,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<li>';
 						str+='<div class="media m_0">';
 						str+='<div class="media-left">';
-						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 						str+='</div>';
 						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
@@ -4062,7 +4062,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<li>';
 						str+='<div class="media m_0">';
 						str+='<div class="media-left">';
-						str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+						str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 						str+='</div>';
 						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
@@ -4262,7 +4262,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='<div class="col-md-12">';
 										str+='<div class="media">';
 											str+='<div class="media-left">';
-												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+												str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
@@ -4984,7 +4984,7 @@ function buildTimeSlotsTable(result){
 							str+='<div class="col-md-7">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-										str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+										str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].subList[j].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 									str+='</div>';
 									str+='<div class="media-body">';
 									if(result[i].subList[j].name !=null){
@@ -5182,7 +5182,7 @@ function buildTimeSlotsTable(result){
 									str+='<div class="col-md-6">';
 										str+='<div class="media">';
 											str+='<div class="media-left">';
-												str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" alt="...">';
+												str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
