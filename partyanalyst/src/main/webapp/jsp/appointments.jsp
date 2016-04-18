@@ -302,6 +302,7 @@
 														<option value="36">TS</option>
 														</select>
 												 </div>
+												 <div class="row col-md-12">
 													<div class="col-md-2 locationsFilterCls distCls">
 														<label>District</label>
 														<select class="dropkickClass" id="referdistrictId" onchange="getConstituenciesBydistrictForReferPopup();">
@@ -325,7 +326,7 @@
 															<option value="0">All</option>
 														</select>
 													</div>
-													
+													</div>
 													
 													<div>
 														
@@ -6629,6 +6630,7 @@ function getCommitteeRoles(){
 		$(".cloneMandalCls").val(0);
 		$(".cloneVillageCls").val(0);  */ 		
 	 }
+	
 </script>
 </body>
 </html>
