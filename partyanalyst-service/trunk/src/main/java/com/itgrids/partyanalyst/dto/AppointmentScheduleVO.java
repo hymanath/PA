@@ -21,6 +21,8 @@ private String fromDate;
 private String toDate;
 private String appointmentUniqueId;
 private String date;
+private String imageUrl;
+
 
 
 
@@ -138,6 +140,12 @@ public String getAppointmentUniqueId() {
 }
 public void setAppointmentUniqueId(String appointmentUniqueId) {
 	this.appointmentUniqueId = appointmentUniqueId;
+}
+public String getImageUrl() {
+	return imageUrl;
+}
+public void setImageUrl(String imageUrl) {
+	this.imageUrl = imageUrl;
 }
 
 

@@ -2848,6 +2848,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								vo.setToDate(params[12].toString());
 								vo.setDate(params[14].toString().split(" ")[0]);
 								vo.setAppointmentUniqueId(params[13]!=null?params[13].toString():"");
+								vo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
 								
 							}
 							resultList.add(vo);
