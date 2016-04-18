@@ -33,6 +33,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -3204,8 +3205,10 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					FileOutputStream out = new FileOutputStream(destPath);
 					Document document = new Document();
 					PdfWriter writer = PdfWriter.getInstance(document, out);
-					
+					ParagraphBorder border = new ParagraphBorder();
+				    writer.setPageEvent(border);
 					document.open();
+					
 					
 					 Paragraph titleParagraph = new Paragraph();
 					 Font font = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
@@ -3224,17 +3227,24 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					
 					 for(AppointmentDetailsVO vo : resultList)
 					 {
-						
+						 
+						 	
+						 	border.setActive(true);
 						 
 						   Phrase p = new Phrase();
+						   document.add(new Paragraph(p));
 						   Font f = new Font(FontFamily.TIMES_ROMAN, 1, Font.NORMAL, new BaseColor(0, 0, 0));
 						   p.add("Appointment ID : "+vo.getAptUniqueCode()  + " ");
-						   p.add(new Chunk("  "));p.add(new Chunk("  "));
+						   p.add(new Chunk("  "));
+						   p.add(new Chunk("  "));
+						   
 						   if(vo.getPriority() != null && vo.getPriority().length() > 0)
 							   p.add(new Chunk("Priority : "+vo.getPriority() + " "));
 						   else
 							   p.add(new Chunk("Priority : -") + " ");  
+						   
 						   p.add(new Chunk("  "));p.add(new Chunk("  "));
+						   
 						   if(vo.getDateString() != null && vo.getDateString().length() > 0)
 							   p.add(new Chunk("Requested Date : "+vo.getDateString()+ " "));
 						   else
@@ -3251,7 +3261,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						   else
 							   p.add(new Chunk("Purpose : -")); 
 						   p.setFont(f);
+						  
 						   document.add(p);
+						   
 						  if(vo.getSubList() != null && vo.getSubList().size() > 0)
 						  {
 						  for(AppointmentDetailsVO subVo : vo.getSubList())
@@ -3335,9 +3347,6 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   insertCell(table, "No Data Available ", Element.ALIGN_CENTER, 3, bf12,0);
 							   document.add(table); 
 						  }
-						 //document.add(headTab); 
-						   //border.setActive(false);
-						
 						
 					 }
 					 
