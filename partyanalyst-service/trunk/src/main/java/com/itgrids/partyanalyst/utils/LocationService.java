@@ -45,7 +45,7 @@ public class LocationService {
 				List<Long> districtIds=mainVo.getLocalDistrictIds();//inputs from UI
 				List<Long> constituencyIds=mainVo.getLocalConstituencyIds();//inputs from UI	
 				List<Long> mandalIdsList=mainVo.getLocalMandalIds();////inputs from UI	
-				List<Long> panchayatIdsList=mainVo.getVillageIdsList();////inputs from UI	
+				List<Long> panchayatIdsList=mainVo.getLocalPanchayatIds();////inputs from UI	
 				
 				
 				
