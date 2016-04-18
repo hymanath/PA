@@ -72,16 +72,9 @@
 .tableAppointment thead th{background: #f2f2f2 none repeat scroll 0 0;border: 1px solid #fff !important;padding-left: 8px !important;font-weight: normal;}
 .removetopborder td{border-top: none !important;}
 .addwidth{width:250px !important;}
-.advanceNameCls{
-	heigth:30px;
-}
-.displayrow ul li{display: inline;padding:7px !important;
-}
-.alignmentprefrabledates{
-	border: 1px solid rgb(221, 221, 221) !important; 
-	padding: 8px !important;
-	margin-right: -3px !important;
-}
+.advanceNameCls{heigth:30px;}
+.displayrow ul li{display: inline;padding:7px !important;}
+.alignmentprefrabledates{border: 1px solid rgb(221, 221, 221) !important;padding: 8px !important;margin-right: -3px !important;}
 
 </style>
 </head>
@@ -4602,7 +4595,7 @@ var tableToExcel = (function() {
 		var toTime = $("#toTimeId").val().trim();
 		
 		//Saving
-		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0,commentTxt);
+		setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"save",0,$("#commentTxt").val().trim());
 		
 		
 		//Validations For Time Slot Creation
@@ -5939,59 +5932,15 @@ function getAppointmentCreatedUsers(){
 			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("Please Specify the To Time");
 			return;
 		}
-		
-		var fromTimeArr=fromTime.split(":");
-		var toTimeArr=toTime.split(":");
-	
-	     if(fromTimeArr[0]<=5 && fromTimeArr[1].substr(3,4).trim()=="AM"){
-			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("From time must be greater than or equal to  06:00 AM");
-		         return;
-		 }	
-         if(fromTimeArr[0]>=11 &&  fromTimeArr[1].substr(3,4).trim()=="PM"){
-			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("From time must be greater than or equal to  06:00 AM");
-		        return;
-		 }
-	 	if(fromTimeArr[0]==10 && fromTimeArr[1].substr(0,2)>0 && fromTimeArr[1].substr(3,4).trim()=="PM"){
-			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("From time must be greater than or equal to  06:00 AM");
-		        return;
-		}  
-		if(toTimeArr[0]<=5 && toTimeArr[1].substr(3,4).trim()=="AM"){
-			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To time must be less than or equal to 10:00 PM");
-		    return;
-		 }	
-        if(toTimeArr[0]>=11 && toTimeArr[1].substr(3,4).trim()=="PM"){
-		   $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To time must be less than or equal to 10:00 PM");
-		   return;
-		 }		
-		 if(toTimeArr[0]==10 && toTimeArr[1].substr(0,2)>0 && toTimeArr[1].substr(3,4).trim()=="PM"){
-			$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To time must be less than or equal to 10:00 PM ");
-		        return;
-		}  
-		 if(fromTimeArr[1].substr(3,4).trim()=="PM" && toTimeArr[1].substr(3,4).trim()=="AM"){
-			 $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
-			    return;
-		} 
-		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
-			 if(parseInt(toTimeArr[0].trim())<parseInt(fromTimeArr[0].trim())){
-				$(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
-				   return;
-		      }
-		}
-		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
-		  if(parseInt(toTimeArr[0].trim())==parseInt(fromTimeArr[0].trim())){
-		 		if(!(toTimeArr[1].substr(0,2)>fromTimeArr[1].substr(0,2))){
-				   $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
-			       return;
-		         }
-		  }
-		}
-
-		/* if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
+		if(!((Date.parse(date+" "+fromTime)>=Date.parse(date+" "+"6:00 AM")) && (   	Date.parse(date+" "+toTime)<=Date.parse(date+" "+"10:00 PM")))){	
+			 $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("From time and to time should be between 6:00 AM to 10:00 PM.");
+			 return;
+		 } 
+		if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
 			 $(this).closest("tr").find(".errorDivFrTmSltUpdtId").html("To Time should be greater than From Time.");
 			 return;
-		 } */
-		
-	    setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"update",timeSlotId,commentTxt)
+		 } 
+	    setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,"update",timeSlotId,"");
 	});
 	
 	function setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,type,timeSlotId,commentTxt){
@@ -6010,53 +5959,18 @@ function getAppointmentCreatedUsers(){
 			$("#errorDivForTimeSlotId").html("Please Specify the To Time");
 			return;
 		}
-		var fromTimeArr=fromTime.split(":");
-		var toTimeArr=toTime.split(":");
-		var commentTxt = $("#commentTxt").val().trim();
+
+		//var commentTxt = $("#commentTxt").val().trim();
 		
 		 
-	     if(fromTimeArr[0]<=5 && fromTimeArr[1].substr(3,4).trim()=="AM"){
-			$("#errorDivForTimeSlotId").html("From time must be greater than or equal to  06:00 AM");
-		         return;
-		 }	
-         if(fromTimeArr[0]>=11 &&  fromTimeArr[1].substr(3,4).trim()=="PM"){
-			$("#errorDivForTimeSlotId").html("From time must be greater than or equal to  06:00 AM");
-		        return;
+		if(!((Date.parse(date+" "+fromTime)>=Date.parse(date+" "+"6:00 AM")) && (   	Date.parse(date+" "+toTime)<=Date.parse(date+" "+"10:00 PM")))){	
+			 $("#errorDivForTimeSlotId").html("From time and to time should be between 6:00 AM to 10:00 PM.");
+			 return;
+		 } 
+		if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
+			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
+			 return;
 		 }
-	 	if(fromTimeArr[0]==10 && fromTimeArr[1].substr(0,2)>0 && fromTimeArr[1].substr(3,4).trim()=="PM"){
-			$("#errorDivForTimeSlotId").html("From time must be greater than or equal to  06:00 AM");
-		        return;
-		}  
-		if(toTimeArr[0]<=5 && toTimeArr[1].substr(3,4).trim()=="AM"){
-			$("#errorDivForTimeSlotId").html("To time must be less than or equal to 10:00 PM");
-		    return;
-		 }	
-        if(toTimeArr[0]>=11 && toTimeArr[1].substr(3,4).trim()=="PM"){
-		   $("#errorDivForTimeSlotId").html("To time must be less than or equal to 10:00 PM");
-		   return;
-		 }		
-		 if(toTimeArr[0]==10 && toTimeArr[1].substr(0,2)>0 && toTimeArr[1].substr(3,4).trim()=="PM"){
-			$("#errorDivForTimeSlotId").html("To time must be less than or equal to 10:00 PM ");
-		        return;
-		}  
-		 if(fromTimeArr[1].substr(3,4).trim()=="PM" && toTimeArr[1].substr(3,4).trim()=="AM"){
-			$("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
-			    return;
-		} 
-		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
-			 if(parseInt(toTimeArr[0].trim())<parseInt(fromTimeArr[0].trim())){
-				  $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
-				   return;
-		      }
-		}
-		if(!(fromTimeArr[1].substr(3,4).trim()=="AM" && toTimeArr[1].substr(3,4).trim()=="PM")){
-			if(parseInt(toTimeArr[0].trim())==parseInt(fromTimeArr[0].trim())){
-				if(!(toTimeArr[1].substr(0,2)>fromTimeArr[1].substr(0,2))){
-					 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
-					 return;
-			 }
-		 }
-	    }
 	
 		 $("#ajaxImgForTimeSlotId").css("display","inline-block");
 		var jsObj={
