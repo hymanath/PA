@@ -525,7 +525,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			
 			
 			apptDetailsList =appointmentService.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid,appointmentlabelId,fromDateStr,toDateStr,selUserId,
-					cndTypId,dateType);
+					cndTypId,dateType,jObj.getLong("apptUserId"));
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentsBySearchCriteria() method of AppointmentAction", e);
 		}
@@ -706,7 +706,7 @@ public String getCandidateWiseDetails(){
 	public String getAppointmentHistoryForCandidate(){
 		try{
 			jObj = new JSONObject(getTask());
-			historyList = appointmentService.getAppointmentHistoryForCandidate(jObj.getLong("appointmentCandidateId"));
+			historyList = appointmentService.getAppointmentHistoryForCandidate(jObj.getLong("appointmentCandidateId"),jObj.getLong("apptUserId"));
 			
 		}catch (Exception e) {
 			LOG.error("Exception raised at getAppointmentHistoryForCandidate", e);
@@ -736,7 +736,7 @@ public String getCandidateWiseDetails(){
 	public String viewAppointmentsOfALable(){
 		try {
 			jObj = new JSONObject(getTask());
-			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"),jObj.getString("callFrom"));
+			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"),jObj.getString("callFrom"),jObj.getLong("apptuserId"));
 		} catch (Exception e) {
 			LOG.error("Exception riased at viewAppointmentsOfALable", e);
 		}
@@ -995,7 +995,7 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		try{
 			jObj = new JSONObject(getTask());
 			Long apointmntcandidteId=jObj.getLong("appointmentCandidateId");
-			idNameVOList = appointmentService.getApointmentStatusOvrviwforCandidte(apointmntcandidteId);
+			idNameVOList = appointmentService.getApointmentStatusOvrviwforCandidte(apointmntcandidteId,jObj.getLong("apptUserId"));
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getAppointStatusOverviewforCandidate() of AppointmentAction",e);
