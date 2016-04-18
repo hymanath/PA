@@ -5542,9 +5542,20 @@ function getAppointmentCreatedUsers(){
 		else
 		tehsilId = "1"+$("#refermandalNameId").val();
 		}
+		
+		
+		
 		if($("#refermandalNameId").val() == 0)
 		tehsilId = $("#refermandalNameId").val();
 	     panchayatId = $("#referpanchayatId").val();
+		 
+		 var panchayatName =  $("#referpanchayatId selected:option").text();
+		 if($("#referpanchayatId").val() > 0){
+			if(panchayatName.indexOf('WARD') == -1)
+		panchayatId = "1"+$("#referpanchayatId").val();
+		
+		}
+		
 		 levelId  = $("#levelId").val();
 		if(levelId == 10)
 			level = "state";
