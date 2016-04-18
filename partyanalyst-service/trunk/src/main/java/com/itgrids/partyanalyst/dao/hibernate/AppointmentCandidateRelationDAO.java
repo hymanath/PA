@@ -441,4 +441,40 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		query.setTimestamp("insertedTime",insertedTime);
 		return query.list();
 	}
+	public List<Object[]> getCandidCountsByStatesAndStatus(Long appointmentUserId,List<Long> apptStatusIds,Date startDate,Date endDate){
+	
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.appointmentCandidate.appointmentCandidateType.appointmentCandidateTypeId," +
+				"          model.appointmentCandidate.userAddress.district.districtId,model.appointmentCandidate.userAddress.district.districtName," +
+				"          count(model.appointmentCandidate.appointmentCandidateId),count(distinct model.appointmentCandidate.appointmentCandidateId) " +
+				"   from   AppointmentCandidateRelation model" +
+				"   where  model.appointment.isDeleted='N' and model.appointment.appointmentUser.appointmenUserId =:appointmentUserId "); 
+		if(apptStatusIds!=null && apptStatusIds.size()>0){
+			sb.append(" and model.appointment.appointmentStatusId in (:apptStatusIds)");
+		}
+		if(startDate!=null){
+			sb.append(" and date(model.appointment.updatedTime) >= : startDate");
+		}
+		if(endDate!=null){
+			sb.append(" and date(model.appointment.updatedTime) <= : endDate");
+		}
+		sb.append(" group by model.appointmentCandidate.appointmentCandidateType.appointmentCandidateTypeId,model.appointmentCandidate.userAddress.district.districtId " +
+				  " order by model.appointmentCandidate.userAddress.district.districtId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(startDate!=null){
+			query.setDate("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setDate("endDate",endDate);
+		}
+		if(apptStatusIds!=null && apptStatusIds.size()>0){
+			query.setParameterList("apptStatusIds", apptStatusIds);
+		}
+		query.setParameter("appointmentUserId",appointmentUserId);
+		
+		return query.list();
+	}
+	
 }
