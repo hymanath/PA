@@ -1759,7 +1759,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
  	
      // Appointments search criteria.
      public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr,Long selUserID,
-    		 Long cndTypeId,Long dateTypeValue){
+    		 Long cndTypeId,Long dateTypeValue,Long apptUserId){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf =  new SimpleDateFormat("MM/dd/yyyy");
 		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
@@ -1903,7 +1903,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			}
 			
 			if(candidates!=null && candidates.size()>0){
-				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails1(candidates);
+				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails1(candidates,apptUserId);
 				if(candidPreviousDetails !=null && candidPreviousDetails.size()>0){
 					
 					for(Object[] obj : candidPreviousDetails){
@@ -2061,7 +2061,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 			//get last visits by candidates.
 			if(candidates!=null && candidates.size()>0){
-				List<Object[]> lastVisitList = appointmentCandidateRelationDAO.getLastVisitsByCandidates(candidates);
+				List<Object[]> lastVisitList = appointmentCandidateRelationDAO.getLastVisitsByCandidates(candidates,apptUserId);
 				if(lastVisitList!=null && lastVisitList.size()>0){
 					for(Object[] obj : lastVisitList){
 						Long candidateId  = obj[0]!=null?(Long)obj[0]:0l;
@@ -2912,7 +2912,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	}
 	
 	//view apointments for label
-	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom){
+	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom,Long apptUserId){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
 		   SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
@@ -3025,7 +3025,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			}
 			
 			if(candidates!=null && candidates.size()>0){
-				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails1(candidates);
+				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails1(candidates,apptUserId);
 				if(candidPreviousDetails !=null && candidPreviousDetails.size()>0){
 					
 					for(Object[] obj : candidPreviousDetails){
@@ -3138,7 +3138,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 			//get last visits by candidates.
 			if(candidates!=null && candidates.size()>0){
-				List<Object[]> lastVisitList = appointmentCandidateRelationDAO.getLastVisitsByCandidates(candidates);
+				List<Object[]> lastVisitList = appointmentCandidateRelationDAO.getLastVisitsByCandidates(candidates,apptUserId);
 				if(lastVisitList!=null && lastVisitList.size()>0){
 					for(Object[] obj : lastVisitList){
 						Long candidateId  = obj[0]!=null?(Long)obj[0]:0l;
@@ -4253,10 +4253,10 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return apptvo;
 	}
-	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId){
+	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId,Long apptUserId){
 		List<AppHistoryVO> historyVoList = new ArrayList<AppHistoryVO>();
 		List<Long> appointmentIds = new ArrayList<Long>();
-		 List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentHistoryDetailsByCandidateId(appointmentCandidateId);
+		 List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentHistoryDetailsByCandidateId(appointmentCandidateId,apptUserId);
 		 if(list != null && list.size() > 0)
 		 {
 			 for(Object[] params : list)
@@ -4343,7 +4343,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		return historyVoList;
 	}
 	
-	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId){
+	public List<IdNameVO> getApointmentStatusOvrviwforCandidte(Long apointmntcandidteId,Long apptUserId){
 		List<IdNameVO> candidteStusLst=null;
 		try {
 			List<AppointmentStatus> statusList=appointmentStatusDAO.getAll();
@@ -4359,7 +4359,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			}
 			
 			
-			List<Object[]> candidteStusCnt=appointmentCandidateRelationDAO.getAppointStatusOverviewforCandidate(apointmntcandidteId);
+			List<Object[]> candidteStusCnt=appointmentCandidateRelationDAO.getAppointStatusOverviewforCandidate(apointmntcandidteId,apptUserId);
 			if(candidteStusCnt != null && candidteStusCnt.size() > 0)
 			{
 				for(Object[] params : candidteStusCnt)
@@ -4370,7 +4370,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				}
 				
 			}
-			 List<Object[]> list1 = appointmentCandidateRelationDAO.getFixedAttendedCount(apointmntcandidteId);
+			 List<Object[]> list1 = appointmentCandidateRelationDAO.getFixedAttendedCount(apointmntcandidteId,dateUtilService.getCurrentDateAndTime(),apptUserId);
 			 Long fixedAttendedCnt =0l;
 			 if(list1 != null && list1.size() > 0)
 			 {
@@ -4383,11 +4383,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			 {
 				 for(IdNameVO vo : candidteStusLst)
 				 {
-					 if(vo.getId().longValue() == 2l) //Fixed
+					 if(vo.getId().longValue() == IConstants.APPOINTMENT_STATUS_FIXED) //Fixed
 					 {
 						 vo.setAvailableCount(vo.getAvailableCount() - fixedAttendedCnt);
 					 }
-					 if(vo.getId().longValue() == 3l) //Attended 
+					 if(vo.getId().longValue() == IConstants.APPOINTMENT_STATUS_ATTENDED) //Attended 
 					 {
 						 vo.setAvailableCount(vo.getAvailableCount() + fixedAttendedCnt);
 					 }
