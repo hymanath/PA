@@ -3530,25 +3530,61 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				      
 				      
 				      //void appt status
-				      List<Object[]> candiList=appointmentCandidateRelationDAO.getApptCandidIdsAndInsertedTime(appointmentId);
-				      
-				      List<Long> apptCandiIds = null;
-				      Date insertedDate = null;
-				      if(candiList!=null && candiList.size()>0){
-				    	  insertedDate = candiList.get(0)[1]!=null?(Date)candiList.get(0)[1]:null;
-				    	  apptCandiIds = new ArrayList<Long>();
-				    	  for(Object[] obj : candiList) {
-				    		  apptCandiIds.add(obj[0]!=null ?(Long)obj[0]:0l);
-				    	  }
-				      }
-				      
-					 if(apptCandiIds!=null && apptCandiIds.size()>0){
-						int apptCandicount = apptCandiIds.size();
-						List<Long> apptIds = appointmentCandidateRelationDAO.checkApptsAsVoid(insertedDate,IConstants.APPOINTMENT_STATUS_WAITING,apptCandiIds,apptCandicount);
-						if(apptIds!=null && apptIds.size()>0){
-							int updatedAppts = appointmentDAO.updateApptStatusbyApptIds(apptIds,new DateUtilService().getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID);
-						}
-					 }
+				       List<Object[]> candiList=appointmentCandidateRelationDAO.getApptCandidIdsAndInsertedTime(appointmentId);
+					      
+					      List<Long> apptCandiIds = null;
+					      Date insertedDate = null;
+					      if(candiList!=null && candiList.size()>0){
+					    	  insertedDate = candiList.get(0)[1]!=null?(Date)candiList.get(0)[1]:null;
+					    	  apptCandiIds = new ArrayList<Long>();
+					    	  for(Object[] obj : candiList) {
+					    		  apptCandiIds.add(obj[0]!=null ?(Long)obj[0]:0l);
+					    	  }
+					      }
+					      
+					      Map<Long,List<Long>> apptIdsMap = new HashMap<Long,List<Long>>();
+					      
+						 if(apptCandiIds!=null && apptCandiIds.size()>0){
+							 
+							int apptCandicount = apptCandiIds.size();
+							
+							List<Object[]> apptWithCandiIdsList = appointmentCandidateRelationDAO.checkApptsAsVoid(insertedDate,IConstants.APPOINTMENT_STATUS_WAITING,apptCandiIds);
+							if(apptWithCandiIdsList!=null && apptWithCandiIdsList.size()>0){
+								
+								for(Object[] obj : apptWithCandiIdsList){
+									
+									List<Long> candiIds= apptIdsMap.get((Long)obj[0]);
+									
+									if(candiIds==null){
+										candiIds = new ArrayList<Long>();
+										candiIds.add((Long)obj[1]);
+										apptIdsMap.put((Long)obj[0], candiIds);
+									}else{
+										candiIds.add((Long)obj[1]);
+									}
+								}
+							}
+							
+							List<Long> apptIds = new ArrayList<Long>();
+							if(apptIdsMap!=null && apptIdsMap.size()>0){
+								
+								for (Map.Entry<Long,List<Long>> entry : apptIdsMap.entrySet())
+								{
+									List<Long>  candiIds = entry.getValue();
+									if(candiIds!=null && candiIds.size()>0 ){
+										
+										if( apptCandiIds.containsAll(candiIds) && apptCandicount==candiIds.size()){
+											apptIds.add(entry.getKey());
+										}
+										
+									}
+								}
+							}
+							
+							if(apptIds!=null && apptIds.size()>0){
+								appointmentDAO.updateApptStatusbyApptIds(apptIds,new DateUtilService().getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID);
+							}
+						 }
 				      
 				      
 			      rs.setExceptionMsg("success");

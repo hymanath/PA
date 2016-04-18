@@ -413,22 +413,22 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		query.setParameter("appointmentId", appointmentId);
 		return query.list();
 	}
-	public List<Long> checkApptsAsVoid(Date insertedTime,Long apptStatusId,List<Long> apptCandiIds,int apptCandicount){
+	public List<Object[]> checkApptsAsVoid(Date insertedTime,Long apptStatusId,List<Long> apptCandiIds){
 		
 		Query query = getSession().createSQLQuery(" " +
-		" select app.appointment_id as apptId from   appointment app join appointment_candidate_relation acr on app.appointment_id = acr.appointment_id" +
+		" select distinct app.appointment_id as apptId,acr.appointment_candidate_id as apptCandiId" +
+		" from   appointment app join appointment_candidate_relation acr on app.appointment_id = acr.appointment_id" +
 		" where  app.appointment_id in " +
 		"       ( " +
 		"         select distinct a.appointment_id from   appointment a join appointment_candidate_relation acr on a.appointment_id = acr.appointment_id " +
 		"         where  a.inserted_time < :insertedTime and a.appointment_status_id= :apptStatusId and acr.appointment_candidate_id in (:apptCandiIds) " +
 		"                and a.is_deleted = 'N' " +
 		"        )" +
-		" group by app.appointment_id " +
-		" having count(distinct acr.appointment_candidate_id) = :apptCandicount ").addScalar("apptId",Hibernate.LONG);
+		
+		"  ").addScalar("apptId",Hibernate.LONG).addScalar("apptCandiId",Hibernate.LONG);
 		
 		query.setParameter("apptStatusId", apptStatusId);
 		query.setParameterList("apptCandiIds",apptCandiIds);
-		query.setParameter("apptCandicount", apptCandicount);
 		query.setTimestamp("insertedTime",insertedTime);
 		return query.list();
 	}
