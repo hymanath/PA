@@ -2199,9 +2199,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	  $("#searchMemberAjax").css("display","block");
 	  var searchType = $("#searchTypeId").val();
 	  var searchValue = $("#searchValueId").val();
+	  var aptUserId = 0;
+		  aptUserId = $("#appointmentUserSelectBoxId").val();
 		var jsObj={
 			searchType:searchType,
-			searchValue:searchValue
+			searchValue:searchValue,
+			aptUserId:aptUserId
 		  }
 		  	$.ajax({
 				type : 'POST',
@@ -5498,6 +5501,8 @@ function getAppointmentCreatedUsers(){
 			 errorStr='Please Select Search Type';
 			 $("#errorDivId").html(errorStr);
 		 }
+		  var aptUserId = 0;
+		  aptUserId = $("#appointmentUserSelectBoxId").val();
 		if(advanceSearchType == 1)
 		{
 			levelStr ="";
@@ -5697,7 +5702,8 @@ function getAppointmentCreatedUsers(){
 			mandalId:tehsilId,
 			panchayatId:panchayatId,
 			stateId:stateId,
-			levelStr:levelStr
+			levelStr:levelStr,
+			aptUserId:aptUserId
 		}
 		  	$.ajax({
 				type : 'POST',
