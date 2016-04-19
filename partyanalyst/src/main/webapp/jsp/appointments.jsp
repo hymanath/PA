@@ -6671,6 +6671,7 @@ function getCommitteeRoles(){
 	}
 	$(document).on("click",".sendsms",function() {
 		var flag = false;
+		var statusIdForsms = null;
 		var appointmentId = $(this).attr("value");
 		$(".msgDiv1"+appointmentId).html("").css("color","");;
 		var smsText = $(".sendSms"+appointmentId).val().trim();
@@ -6686,7 +6687,8 @@ function getCommitteeRoles(){
 		}
 		var jsObj={
 			appointmentId : appointmentId,
-			smsText:smsText
+			smsText:smsText,
+			statusId:statusIdForsms
 			}
 			$.ajax({
 			type : 'POST',
