@@ -746,7 +746,10 @@ public String getCandidateWiseDetails(){
 	public String viewAppointmentsOfALable(){
 		try {
 			jObj = new JSONObject(getTask());
-			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"),jObj.getString("callFrom"),jObj.getLong("apptuserId"));
+			String labelName = "";
+			if(jObj.getString("labelName") != null && jObj.getString("labelName").equalsIgnoreCase("print"))
+				labelName = jObj.getString("labelName");
+			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"),jObj.getString("callFrom"),jObj.getLong("apptuserId"),labelName);
 		} catch (Exception e) {
 			LOG.error("Exception riased at viewAppointmentsOfALable", e);
 		}
