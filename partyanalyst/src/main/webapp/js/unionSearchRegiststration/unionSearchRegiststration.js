@@ -5,6 +5,7 @@ $(".searchCls").click(function(){
 	$("#nextStepId").hide();
 	$("#success").hide();
 	$("#fail").hide();
+	$(".cadreMemberListCls").hide();
 	$("#cadreDetailsDiv").hide();
 	$("#cadreDetailsDiv").html("");
 	$(".paginationDivId").html('');
@@ -17,7 +18,7 @@ $(".searchCls").click(function(){
 		$("#searchBy").attr("placeholder","Search By VoterCard Number");
 		$(".inputChoice").hide();
 		$("#searchBy").val("");
-		$('#cadreDetailsDiv').html();
+		$('#cadreDetailsDiv').html("");
 	}else{
 		$("#searchBy").attr("placeholder","Search By Membership Id/Mobile No/Voter Id");
 		$(".inputChoice").show();
@@ -29,6 +30,7 @@ $(".searchTypeCls").click(function(){
 	$("#errChkDivId").html("");
 	$("#success").hide();
 	$("#fail").hide();
+	$(".cadreMemberListCls").hide();
 	$("#cadreDetailsDiv").html("");
 	$("#generateOtpId").hide();
 	$("#otpId").hide();
@@ -61,6 +63,8 @@ $(".searchTypeCls").click(function(){
 	
 $("#searchId").click(function(){
 	//debugger;
+	$(".cadreMemberListCls").hide();
+	$("#cadreDetailsDiv").hide();
 	$("#generateOtpId").hide();
 	$("#nextStepId").hide();
 	$("#success").hide();
@@ -78,6 +82,7 @@ $("#searchId").click(function(){
 });
 
 function getVoterDetailsBySearch(){
+	$(".cadreMemberListCls").hide();
 	$('#searchErrDiv').html('');
 	$('#cadreDetailsDiv').html('');
 	var voterCardNo = $("#searchBy").val();
@@ -136,6 +141,7 @@ function buildVoterDetails(result){
 				str+='</div>';
 			}
 		}
+		$(".cadreMemberListCls").show();
 		$('#cadreDetailsDiv').html(str);
 }
 
@@ -354,6 +360,7 @@ function buildCadreDetails(result,jsObj){
 		
 		}
 		}
+		$(".cadreMemberListCls").show();
 		$('#cadreDetailsDiv').html(str);
 		$('[data-toggle="tooltip"]').tooltip();
 }
@@ -368,7 +375,7 @@ function generateOTPForMobileNo(){
 		var refNo = Math.floor((Math.random() * 1000000) + 1);
 		$("#randomRefNo").val(refNo);
 		if(refNo >0)
-			$("#getOtpId").html("OTP Reference No: "+refNo+  "(Note: If you not get OTP.click Generate OTP once again.)");
+			$("#getOtpId").html("OTP Reference No: "+refNo+"(Note: If you not get OTP.click Generate OTP once again.)");
 		var jsObj =
 		{    
 			mobileNo : mobileNo,
@@ -410,7 +417,7 @@ function validateOTP(otp){
 	}
 	
 	$.ajax({    
-		type : "POST",
+		type : "POST",  
 		url : "validateOTPAction.action",
 		data : {task:JSON.stringify(jsObj)} ,   
 	}).done(function(result){
@@ -419,6 +426,7 @@ function validateOTP(otp){
 			$("#success").show();
 			$("#nextStepId").show();
 			$(".otpCheckboxCls").prop("disabled", true);
+			
 		}else{
 			$("#fail").show();
 		}
@@ -681,10 +689,3 @@ function confirmDelete(msg){
 	  else    
 		return false;   
 }
-
-/* $(document).on('click','#nameId',function(){
-	var caderId=$(this).attr("attr_cadreId");//target="_blank"
-	window.open("affiliatedGradiatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
-});
-   */
- 
