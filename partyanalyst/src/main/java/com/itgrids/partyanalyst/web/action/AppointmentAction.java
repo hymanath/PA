@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
-
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +76,6 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<AppHistoryVO> historyList;
 	private AppointmentCountsVO appointmentCountsVO;
 	private  List<AppointmentCountVO> appointmentCountVOList;
-	
-
 
 	public List<AppointmentCountVO> getAppointmentCountVOList() {
 		return appointmentCountVOList;
@@ -1073,6 +1070,16 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getPublicRepresentativeWiseAppointmentCnt() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCommitteeLevelAppointments(){
+		try{
+			
+			appointmentCountVOList = appointmentService.getCommitteeLevelAppointments();
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getCommitteeLevelAppointments() of AppointmentAction",e);
 		}
 		return Action.SUCCESS;
 	}
