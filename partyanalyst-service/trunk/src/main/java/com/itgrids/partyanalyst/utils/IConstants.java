@@ -1004,4 +1004,19 @@ public interface IConstants {
 	
 	public static final Long[] APPOINTMENT_STATUS_SCHEDULED_LIST={3L,4L,5L};
 	public static final Long[] APPOINTMENT_STATUS_WAITING_LIST={1L,2L,6L,7L,8L};
+	
+	//SMS Module Constants
+	
+	public static final String SMS_MODULE_USER_GROUPS = "User Groups";
+	public static final String SMS_MODULE_CADRE_MANAGEMENT = "Cadre Management";
+	public static final String SMS_MODULE_INFLUENCING_PEOPLE = "Influencing People";
+	public static final String SMS_MODULE_PROBLEM_MANAGEMENT = "Problem Managemet";
+	public static final String SMS_MODULE_VOTER = "Voter";
+	public static final String SMS_MODULE_GRIEVANCE = "Grievance";
+	public static final String SMS_MODULE_TRAINING_CAMP_FEEDBACK = "Training Camp Feedback";
+	public static final String SMS_MODULE_APPOINTMENT = "Appointment";
+	
+	public static final String STATIC_STR = "Static";
+	public static final String DYNAMIC_STR = "Dynamic";
+	
 }
