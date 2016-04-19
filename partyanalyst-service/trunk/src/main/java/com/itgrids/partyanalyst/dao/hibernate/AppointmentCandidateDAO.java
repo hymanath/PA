@@ -422,8 +422,8 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	
 	public List<Object[]>  getPublicRepresentativeWiseAppointmentCnt(String type){
 		StringBuilder str=new StringBuilder();
-		str.append("select count(model.tdpCadreId),model2.publicRepresentativeType.publicRepresentativeTypeId,"
-				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidate model,AppointmentTimeSlot model3 ");
+		str.append("select count(model.appointmentCandidate.tdpCadreId),model2.publicRepresentativeType.publicRepresentativeTypeId,"
+				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model,AppointmentTimeSlot model3 ");
 		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 		if(type.equalsIgnoreCase("Req"))
 		{
@@ -439,8 +439,8 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 
 	public List<Object[]>  getUniquePublicRepresentativeWiseAppointmentCnt(String type){
 		StringBuilder str=new StringBuilder();
-		str.append("select count(distinct model.tdpCadreId),model2.publicRepresentativeType.publicRepresentativeTypeId,"
-				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidate model,AppointmentTimeSlot model3 ");
+		str.append("select count(distinct model.appointmentCandidate.tdpCadreId),model2.publicRepresentativeType.publicRepresentativeTypeId,"
+				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model,AppointmentTimeSlot model3 ");
 		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 		if(type.equalsIgnoreCase("Req"))
 		{

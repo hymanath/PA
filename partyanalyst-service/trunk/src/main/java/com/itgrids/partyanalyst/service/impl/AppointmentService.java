@@ -4740,7 +4740,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					vo.setTotal(vo.getTotal() + vo.getScheduledCnt());
 				}
 			 
-			 List<Object[]> list2 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Schedule");
+			 List<Object[]> list2 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Req");
 			 if(list != null && list.size() > 0)
 				for(Object[] params : list2)
 				{
