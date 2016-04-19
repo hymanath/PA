@@ -18,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class AppointmentPreferableTime extends BaseModel {
 	private Long appointmentPreferableTimeId;
 	private String preferableTime;
+	private String preferabelTimeTxt;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "appointment_preferable_time_id", unique = true, nullable = false)
@@ -34,6 +35,14 @@ public class AppointmentPreferableTime extends BaseModel {
 	}
 	public void setPreferableTime(String preferableTime) {
 		this.preferableTime = preferableTime;
+	}
+	
+	@Column(name = "preferable_time_txt")
+	public String getPreferabelTimeTxt() {
+		return preferabelTimeTxt;
+	}
+	public void setPreferabelTimeTxt(String preferabelTimeTxt) {
+		this.preferabelTimeTxt = preferabelTimeTxt;
 	}
 	
 }

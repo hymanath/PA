@@ -940,7 +940,7 @@ public class AppointmentService implements IAppointmentService{
 		return voList;
 	}
 	@Override
-	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId,String remarks) {
+	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId,String remarks,Long userId) {
 	   
 		ResultStatus status=new ResultStatus();
 		try{
@@ -951,7 +951,8 @@ public class AppointmentService implements IAppointmentService{
 			 //update status of appts to waiting
 			 List<Long> apptIDs = labelAppointmentDAO.getAppointmentsForALabel(appointmentLabelId);
 			 if(apptIDs != null && apptIDs.size() > 0){
-				 changeAppointmentStatus(apptIDs,IConstants.APPOINTMENT_STATUS_WAITING);
+				 changeAppointmentStatus(apptIDs,IConstants.APPOINTMENT_STATUS_WAITING,userId,dateUtilService.getCurrentDateAndTime());
+				 labelAppointmentDAO.updateIsDeletedStatus(apptIDs,appointmentLabelId,userId,dateUtilService.getCurrentDateAndTime());
 			 }
 			 
 			 if(deletedCount!=null && deletedCount>0){
@@ -2236,7 +2237,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					        			
 				        			}
 			        				//int apptsLabeligStausCount  = appointmentDAO.updateLabelingStatusToAppts(savingAppointmentIds,"Y");
-			        				changeAppointmentStatus(savingAppointmentIds, IConstants.APPOINTMENT_STATUS_LABELED);
+			        				changeAppointmentStatus(savingAppointmentIds, IConstants.APPOINTMENT_STATUS_LABELED,loggerUserId,dateUtilService.getCurrentDateAndTime());
 			        			}
 			        			
 			        			
@@ -3634,7 +3635,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							}
 							
 							if(apptIds!=null && apptIds.size()>0){
-								appointmentDAO.updateApptStatusbyApptIds(apptIds,new DateUtilService().getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID);
+								appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID,userId);
 							}
 						 }
 				      
@@ -3962,7 +3963,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						}
 						
 						//changing appt status to waiting
-						changeAppointmentStatus(ids,IConstants.APPOINTMENT_STATUS_WAITING);
+						changeAppointmentStatus(ids,IConstants.APPOINTMENT_STATUS_WAITING,registrationId,dateUtilService.getCurrentDateAndTime());
 				        
 					}
 		        }
@@ -4584,9 +4585,9 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 	}
 	
-	public void changeAppointmentStatus(List<Long> ids,Long statusId){
+	public void changeAppointmentStatus(List<Long> ids,Long statusId,Long userId,Date date){
 		if(ids != null && ids.size() > 0 && statusId != null && statusId > 0l){
-			appointmentDAO.updatedAppointmentStatus(ids,statusId);
+			appointmentDAO.updateApptStatusbyApptIds(ids, date,statusId,userId);
 			
 		}
 	}
