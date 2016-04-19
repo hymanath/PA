@@ -476,7 +476,44 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 		return query.list();
 	}
-	
+	public List<Object[]> getTotalCountCandiByLocation(String queryString,Long appointmentUserId,List<Long> apptStatusIds,Date startDate,Date endDate){
+		
+		
+		Query query = getSession().createQuery(queryString);
+		
+		if(startDate!=null){
+			query.setDate("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setDate("endDate",endDate);
+		}
+		if(apptStatusIds!=null && apptStatusIds.size()>0){
+			query.setParameterList("apptStatusIds", apptStatusIds);
+		}
+		query.setParameter("appointmentUserId",appointmentUserId);
+		
+		return query.list();
+	}
+	public List<Object[]> getCountsOfCandiByLocation(String queryString,Long appointmentUserId,List<Long> apptStatusIds,Date startDate,Date endDate,List<Long> candiTypeIds){
+		
+		
+		Query query = getSession().createQuery(queryString);
+		
+		if(startDate!=null){
+			query.setDate("startDate",startDate);
+		}
+		if(endDate!=null){
+			query.setDate("endDate",endDate);
+		}
+		if(apptStatusIds!=null && apptStatusIds.size()>0){
+			query.setParameterList("apptStatusIds", apptStatusIds);
+		}
+		query.setParameter("appointmentUserId",appointmentUserId);
+		if(candiTypeIds!=null && candiTypeIds.size()>0 && !candiTypeIds.contains(0l)){
+			query.setParameterList("candiTypeIds", candiTypeIds);
+		}
+		return query.list();
+	}
 	public List<Object[]>  getCommitteeLevelAppointments(List<Long> statusIds,String type){
 		StringBuilder str=new StringBuilder();
 		str.append("select ");
