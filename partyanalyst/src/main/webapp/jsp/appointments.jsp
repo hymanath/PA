@@ -3655,12 +3655,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		else
 		{
 			flag = false;
-			str+='No Data';	
+			//str+='No Data';	
 		}
 		
 		if(flag == false)
 		{
-			str+='No Data';	
+			str+='No Data Available';	
 		}
 		$("#upcomingAppointMentId").html(str);
 		$('[data-toggle="tooltip"]').tooltip();
@@ -3981,12 +3981,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		else
 		{
 			flag = false;
-			str+='No Data';	
+			//str+='No Data';	
 		}
 		
 		if(flag == false)
 		{
-			str+='No Data';	
+			str+='No Data Available';	
 		}
 			
 		str+='</div>';
@@ -4148,13 +4148,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		else
 		{
 			flag = false;
-			str+='No Data';	
+			//str+='No Data';	
 		}
 		
 		if(flag == false)
 		{
 			$(".completedSetting").hide();
-			str+='No Data';	
+			str+='No Data Available';	
 		}
 		$("#completedAppointMentId").html(str);
 		$('[data-toggle="tooltip"]').tooltip();
