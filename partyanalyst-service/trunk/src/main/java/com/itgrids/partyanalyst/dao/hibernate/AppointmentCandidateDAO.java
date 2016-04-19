@@ -420,38 +420,26 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		
 	}
 	
-	public List<Object[]>  getPublicRepresentativeWiseAppointmentCnt(String type){
+	public List<Object[]>  getPublicRepresentativeWiseAppointmentCnt(List<Long> statusIds,String type){
 		StringBuilder str=new StringBuilder();
-		str.append("select count(model.appointmentCandidate.tdpCadreId),model2.publicRepresentativeType.publicRepresentativeTypeId,"
-				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model,AppointmentTimeSlot model3 ");
-		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
-		if(type.equalsIgnoreCase("Req"))
-		{
-			str.append(" and model3.appointment.appointmentId != model.appointment.appointmentId");
-		}
+		str.append("select ");
+		if(type.equalsIgnoreCase("unique"))
+		str.append("count(distinct model.appointmentCandidate.tdpCadreId),");
 		else
-		{
-			str.append(" and model3.appointment.appointmentId = model.appointment.appointmentId");
-		}
+			str.append("count(model.appointmentCandidate.tdpCadreId),");	
+		str.append("model2.publicRepresentativeType.publicRepresentativeTypeId,"
+				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model ");
+		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.appointmentCandidate.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
+		if(statusIds != null && statusIds.size() > 0)
+			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
+		
+		str.append(" group by model2.publicRepresentativeType.type ");
+		
 		 Query query = getSession().createQuery(str.toString());
+		 if(statusIds != null && statusIds.size() > 0)
+			 query.setParameterList("statusIds", statusIds);
 		 return query.list();
 		}
 
-	public List<Object[]>  getUniquePublicRepresentativeWiseAppointmentCnt(String type){
-		StringBuilder str=new StringBuilder();
-		str.append("select count(distinct model.appointmentCandidate.tdpCadreId),model2.publicRepresentativeType.publicRepresentativeTypeId,"
-				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model,AppointmentTimeSlot model3 ");
-		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
-		if(type.equalsIgnoreCase("Req"))
-		{
-			str.append(" and model3.appointment.appointmentId != model.appointment.appointmentId");
-		}
-		else
-		{
-			str.append(" and model3.appointment.appointmentId = model.appointment.appointmentId");
-		}
-		 Query query = getSession().createQuery(str.toString());
-		 return query.list();
-		}
-
+	
 }
