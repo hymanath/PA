@@ -141,10 +141,10 @@ label
 							<button class="btn btn-success m_top25" id="nextStepId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;display:none;">NEXT</button>
 							</div>
 							<div id="success" class="col-md-2 m_top25" style="display:none;">
-							<i class="glyphicon glyphicon-ok" style="color:green;margin-left: -138px;"></i>
+							<i class="glyphicon glyphicon-ok" style="color:green;margin-left: -145px;"></i>
 							</div>
 							<div id="fail" class="col-md-2 m_top25" style="display:none;">
-							<i class="glyphicon glyphicon-remove" style="color:red;margin-left: -22px;"></i>
+							<i class="glyphicon glyphicon-remove" style="color:red;margin-left: -145px;"></i>
 							</div>
 						</div>
 						<input type="hidden" id="randomRefNo"></input>
