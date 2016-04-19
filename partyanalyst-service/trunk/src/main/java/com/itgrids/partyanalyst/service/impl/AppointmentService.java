@@ -481,7 +481,7 @@ public class AppointmentService implements IAppointmentService{
 		        		List<String> voterCardNumList = new ArrayList<String>(0);
 		        		Map<String,Long> voterCardIdsMap = new HashMap<String, Long>(0);
 		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
-		        			if(basicInfo.getVoterCardNo() != null && !basicInfo.getVoterCardNo().isEmpty()){
+		        			if(basicInfo != null && basicInfo.getVoterCardNo() != null && !basicInfo.getVoterCardNo().isEmpty()){
 		        				voterCardNumList.add(basicInfo.getVoterCardNo());
 		        			}	
 		        		}
@@ -499,7 +499,7 @@ public class AppointmentService implements IAppointmentService{
 		        		List<String> membershipNoList = new ArrayList<String>(0);
 		        		Map<String,Long> cadreIdsMap = new HashMap<String, Long>(0);
 		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
-		        			if(basicInfo.getMembershipNum() != null && !basicInfo.getMembershipNum().isEmpty()){
+		        			if(basicInfo != null && basicInfo.getMembershipNum() != null && !basicInfo.getMembershipNum().isEmpty()){
 		        				membershipNoList.add(basicInfo.getMembershipNum());
 		        			}
 		        		}
@@ -514,103 +514,106 @@ public class AppointmentService implements IAppointmentService{
 		        		
 		        		
 		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
-		        			if(basicInfo.getAppointCandidateId() == null){
-		        				//AppointmentCandidate appCandi = new AppointmentCandidate();
-			        			//appCandi.setAppointmentId(appointment.getAppointmentId());
-		        				
-		        				
-		        				String memberShipId = basicInfo.getMembershipNum();
-		        				
-		        				AppointmentCandidate appCandi =null;
-		        				if(memberShipId !=null && !memberShipId.isEmpty()){		        					
-		        					List<AppointmentCandidate> aptModelList = appointmentCandidateDAO.getAppointmentCandidateObjByMemship(memberShipId);	
-		        					
-		        					if(aptModelList !=null && aptModelList.size()>0){
-		        						appCandi = aptModelList.get(0);
-		        					}	
-		        					
-		        					if(appCandi ==null){//Saving
-		        						appCandi = new AppointmentCandidate();
-		        					}
-		        					
-		        					//saving && Updation
-		        					appCandi = candidateDetailsSaving(appCandi,basicInfo,voterCardIdsMap,cadreIdsMap,loggerUserId);
-		        					
-		        				}else{//Other Scenario
-		        					appCandi = new AppointmentCandidate();		        					
-		        					appCandi = candidateDetailsSaving(appCandi,basicInfo,voterCardIdsMap,cadreIdsMap,loggerUserId);
-		        				}
-		        				
-			        			/*appCandi.setName(basicInfo.getName());
-			        			appCandi.setDesignationId(basicInfo.getDesignationId());
-			        			appCandi.setMobileNo(basicInfo.getMobileNo());
-			        			appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
-			        			if(basicInfo.getLocationScopeId().longValue() == 3l){			 		//dist
-			        				appCandi.setLocationValue(basicInfo.getDistrictId());
+		        			if(basicInfo != null){
+		        				if(basicInfo.getAppointCandidateId() == null){
+			        				//AppointmentCandidate appCandi = new AppointmentCandidate();
+				        			//appCandi.setAppointmentId(appointment.getAppointmentId());
+			        				
+			        				
+			        				String memberShipId = basicInfo.getMembershipNum();
+			        				
+			        				AppointmentCandidate appCandi =null;
+			        				if(memberShipId !=null && !memberShipId.isEmpty()){		        					
+			        					List<AppointmentCandidate> aptModelList = appointmentCandidateDAO.getAppointmentCandidateObjByMemship(memberShipId);	
+			        					
+			        					if(aptModelList !=null && aptModelList.size()>0){
+			        						appCandi = aptModelList.get(0);
+			        					}	
+			        					
+			        					if(appCandi ==null){//Saving
+			        						appCandi = new AppointmentCandidate();
+			        					}
+			        					
+			        					//saving && Updation
+			        					appCandi = candidateDetailsSaving(appCandi,basicInfo,voterCardIdsMap,cadreIdsMap,loggerUserId);
+			        					
+			        				}else{//Other Scenario
+			        					appCandi = new AppointmentCandidate();		        					
+			        					appCandi = candidateDetailsSaving(appCandi,basicInfo,voterCardIdsMap,cadreIdsMap,loggerUserId);
+			        				}
+			        				
+				        			/*appCandi.setName(basicInfo.getName());
+				        			appCandi.setDesignationId(basicInfo.getDesignationId());
+				        			appCandi.setMobileNo(basicInfo.getMobileNo());
+				        			appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
+				        			if(basicInfo.getLocationScopeId().longValue() == 3l){			 		//dist
+				        				appCandi.setLocationValue(basicInfo.getDistrictId());
+				        			}
+				        			else if(basicInfo.getLocationScopeId().longValue() == 4l){				//const
+				        				appCandi.setLocationValue(basicInfo.getConstituencyId());
+				        			}
+				        			else if(basicInfo.getLocationScopeId().longValue() == 5l || basicInfo.getLocationScopeId().longValue() == 7l){		//tehsil || Muncipality
+				        				Long id = Long.valueOf(basicInfo.getTehsilId().toString().substring(1));
+				        				appCandi.setLocationValue(id);
+				        			}
+				        			else if(basicInfo.getLocationScopeId().longValue() == 6l || basicInfo.getLocationScopeId().longValue() == 8l){		//Village || Ward
+				        				//Long id = Long.valueOf(basicInfo.getVillageId().toString().substring(1));
+				        				appCandi.setLocationValue(basicInfo.getVillageId());
+				        			}
+				        			
+				        			//user addres saving logic
+				        			UserAddress userAddress = new UserAddress();
+				        			if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()>10){
+				        				userAddress.setState(stateDAO.get(1l));
+				        			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()<=10){
+				        				userAddress.setState(stateDAO.get(36l));
+				        			}
+				        			
+				        			if(basicInfo.getDistrictId() > 0l)
+				        			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
+				        			if(basicInfo.getConstituencyId() > 0l)
+				        			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
+				        			
+				        			if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
+				        				userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
+				        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
+				        					userAddress.setPanchayatId(basicInfo.getVillageId());
+				        			}
+				        			else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
+				        				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
+				        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
+				        					//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
+				        					userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
+				        			}
+				        			
+				        			userAddress = userAddressDAO.save(userAddress);
+				        			
+				        			appCandi.setAddressId(userAddress.getUserAddressId());
+				        			appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
+				        			appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
+				        			appCandi.setMembershipId(basicInfo.getMembershipNum());
+				        			appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum()));
+				        			appCandi.setCreatedBy(loggerUserId);
+				        			appCandi.setUpdatedBy(loggerUserId);
+				        			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				        			appCandi.setImageURL(basicInfo.getCandiImageUrl());
+				        			appCandi.setAppointmentCandidateTypeId(basicInfo.getCandidateTypeId());
+				        			appCandi = appointmentCandidateDAO.save(appCandi);
+				        			*/
+				        			
+				        			AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
+				        			acr.setAppointmentId(appointment.getAppointmentId());
+				        			acr.setAppointmentCandidateId(appCandi.getAppointmentCandidateId());
+				        			appointmentCandidateRelationDAO.save(acr);
+			        			}else{
+			        				AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
+				        			acr.setAppointmentId(appointment.getAppointmentId());
+				        			acr.setAppointmentCandidateId(basicInfo.getAppointCandidateId());
+				        			appointmentCandidateRelationDAO.save(acr);
 			        			}
-			        			else if(basicInfo.getLocationScopeId().longValue() == 4l){				//const
-			        				appCandi.setLocationValue(basicInfo.getConstituencyId());
-			        			}
-			        			else if(basicInfo.getLocationScopeId().longValue() == 5l || basicInfo.getLocationScopeId().longValue() == 7l){		//tehsil || Muncipality
-			        				Long id = Long.valueOf(basicInfo.getTehsilId().toString().substring(1));
-			        				appCandi.setLocationValue(id);
-			        			}
-			        			else if(basicInfo.getLocationScopeId().longValue() == 6l || basicInfo.getLocationScopeId().longValue() == 8l){		//Village || Ward
-			        				//Long id = Long.valueOf(basicInfo.getVillageId().toString().substring(1));
-			        				appCandi.setLocationValue(basicInfo.getVillageId());
-			        			}
-			        			
-			        			//user addres saving logic
-			        			UserAddress userAddress = new UserAddress();
-			        			if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()>10){
-			        				userAddress.setState(stateDAO.get(1l));
-			        			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()<=10){
-			        				userAddress.setState(stateDAO.get(36l));
-			        			}
-			        			
-			        			if(basicInfo.getDistrictId() > 0l)
-			        			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
-			        			if(basicInfo.getConstituencyId() > 0l)
-			        			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
-			        			
-			        			if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
-			        				userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-			        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-			        					userAddress.setPanchayatId(basicInfo.getVillageId());
-			        			}
-			        			else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
-			        				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-			        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-			        					//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
-			        					userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
-			        			}
-			        			
-			        			userAddress = userAddressDAO.save(userAddress);
-			        			
-			        			appCandi.setAddressId(userAddress.getUserAddressId());
-			        			appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
-			        			appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
-			        			appCandi.setMembershipId(basicInfo.getMembershipNum());
-			        			appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum()));
-			        			appCandi.setCreatedBy(loggerUserId);
-			        			appCandi.setUpdatedBy(loggerUserId);
-			        			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-			        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-			        			appCandi.setImageURL(basicInfo.getCandiImageUrl());
-			        			appCandi.setAppointmentCandidateTypeId(basicInfo.getCandidateTypeId());
-			        			appCandi = appointmentCandidateDAO.save(appCandi);
-			        			*/
-			        			
-			        			AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
-			        			acr.setAppointmentId(appointment.getAppointmentId());
-			        			acr.setAppointmentCandidateId(appCandi.getAppointmentCandidateId());
-			        			appointmentCandidateRelationDAO.save(acr);
-		        			}else{
-		        				AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
-			        			acr.setAppointmentId(appointment.getAppointmentId());
-			        			acr.setAppointmentCandidateId(basicInfo.getAppointCandidateId());
-			        			appointmentCandidateRelationDAO.save(acr);
 		        			}
+		        			
 		        		}
 		        	}
 		            //saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,1l,loggerUserId,"");
