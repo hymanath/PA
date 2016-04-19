@@ -418,6 +418,7 @@ function validateOTP(otp){
 			//$("#otpSuccessDiv").html("success");
 			$("#success").show();
 			$("#nextStepId").show();
+			$(".otpCheckboxCls").prop("disabled", true);
 		}else{
 			$("#fail").show();
 		}
