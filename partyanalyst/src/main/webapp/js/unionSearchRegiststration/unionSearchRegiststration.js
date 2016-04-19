@@ -258,6 +258,8 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			}
 			else
 			{
+				$(".cadreMemberListCls").show();
+				$('#cadreDetailsDiv').show();
 				$("#generateOtpId").hide();
 				$("#otpId").hide();
 				$("#otpId").val("");
