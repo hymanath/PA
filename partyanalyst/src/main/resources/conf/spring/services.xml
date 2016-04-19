@@ -3055,5 +3055,11 @@
 		<property name="districtDAO" ref="districtDAO"/>
 		<property name="tehsilDAO" ref="tehsilDAO"/>		
 	</bean>
+	
+	<bean id="appointmentReportDashBoardService" class="com.itgrids.partyanalyst.service.impl.AppointmentReportDashBoardService">
+		<property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO"/>
+		<property name="appointmentCandidateTypeDAO" ref="appointmentCandidateTypeDAO"/>
+	</bean>
+	
 </beans>		
 	
