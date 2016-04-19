@@ -477,4 +477,23 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		return query.list();
 	}
 	
+	public List<Object[]>  getCommitteeLevelAppointments(List<Long> statusIds,String type){
+		StringBuilder str=new StringBuilder();
+		str.append("select ");
+		if(type.equalsIgnoreCase("unique"))
+		str.append("count(distinct model.appointmentCandidate.tdpCadreId),");
+		else
+			str.append("count(model.appointmentCandidate.tdpCadreId),");
+		str.append(" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId, TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel " + 
+		"from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
+		" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
+		if(statusIds != null && statusIds.size() > 0)
+			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
+		str.append(" group by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+		
+		 Query query = getSession().createQuery(str.toString());
+		 if(statusIds != null && statusIds.size() > 0)
+			 query.setParameterList("statusIds", statusIds);
+		 return query.list();
+		}
 }

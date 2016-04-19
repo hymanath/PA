@@ -80,4 +80,5 @@ public interface IAppointmentService {
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO);
 	public AppointmentCountsVO getCandidCountsByStates(String startDateString,String endDateString,Long appointmentUserId);
 	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt();
+	public List<AppointmentCountVO> getCommitteeLevelAppointments();
 }
