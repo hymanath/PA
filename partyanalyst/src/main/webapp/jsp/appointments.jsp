@@ -6634,7 +6634,27 @@ function getCommitteeRoles(){
 	$(document).on("click",".advnceDashboardCls",function(){
 		getTotalAppointmentStatus();
 		getAppointmentStatusCounts();
+		getPublicRepresentativeWiseAppointmentCnt();
 	});
+	function getPublicRepresentativeWiseAppointmentCnt(){
+		
+		var jsObj = {
+			task:""
+		}
+	$.ajax({
+		type : 'GET',
+		url : 'getPublicRepresentativeWiseAppointmentCntAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+
+		if(result != null){
+			
+		}
+		
+	});     
+}
+
 </script>
 </body>
 </html>
