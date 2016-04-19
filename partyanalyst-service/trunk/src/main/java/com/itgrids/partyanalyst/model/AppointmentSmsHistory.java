@@ -102,7 +102,7 @@ public class AppointmentSmsHistory extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "sms_history_id")
+	@JoinColumn(name = "sms_history_id" ,insertable = false ,updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public SmsHistory getSmsHistory() {
