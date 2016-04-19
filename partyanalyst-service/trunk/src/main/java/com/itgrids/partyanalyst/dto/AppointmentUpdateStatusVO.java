@@ -10,8 +10,14 @@ public class AppointmentUpdateStatusVO {
 	private String appointmentType;
 	private String commented;
 	private Long userId;
+	private Long appointmentStatusId;
 	
-	
+	public Long getAppointmentStatusId() {
+		return appointmentStatusId;
+	}
+	public void setAppointmentStatusId(Long appointmentStatusId) {
+		this.appointmentStatusId = appointmentStatusId;
+	}
 	public Long getUserId() {
 		return userId;
 	}
