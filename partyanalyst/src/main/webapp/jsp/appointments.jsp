@@ -6637,24 +6637,66 @@ function getCommitteeRoles(){
 		getPublicRepresentativeWiseAppointmentCnt();
 		getCommitteeLevelCount();
 	});
-	function getPublicRepresentativeWiseAppointmentCnt(){
-		
-		var jsObj = {
-			task:""
-		}
+	
+function getPublicRepresentativeWiseAppointmentCnt(){
+	var jsObj = {
+		task:""
+	}
 	$.ajax({
 		type : 'GET',
 		url : 'getPublicRepresentativeWiseAppointmentCntAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
-
-		if(result != null){
-			
-		}
-		
+		buildPublicRepresentativeWiseAppointmentCnt(result);
 	});     
 }
+
+function buildPublicRepresentativeWiseAppointmentCnt(result)
+{
+	 var str='';
+		str+='<div class="block">';
+			str+='<div class="row">';
+				str+='<div class="col-md-12">';
+					str+='<h4 class="text-capitalize">public representative wise appointments</h4>';
+					str+='<table class="table table-bordered">';
+						str+='<thead>';
+							str+='<tr>';
+								str+='<th></th>';
+								str+='<th class="text-capitalize text-center" colspan="2">total</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<th class="text-capitalize">role</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td>'+result[i].role+'</td>';
+								str+='<td>'+result[i].total+'</td>';
+								str+='<td>'+result[i].uniquecnt+'</td>';
+								str+='<td>'+result[i].scheduledCnt+'</td>';
+								str+='<td>'+result[i].uniqueScheduledCnt+'</td>';
+								str+='<td>'+result[i].requestedCnt+'</td>';
+								str+='<td>'+result[i].uniqueRequestedCnt+'</td>';
+							str+='</tr>';
+						}
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#advanceDshAppointmentPrWiseDiv").html(str);
+}
+	
 
 </script>
 </body>
