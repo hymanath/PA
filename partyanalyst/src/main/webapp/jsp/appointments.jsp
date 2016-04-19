@@ -1586,6 +1586,7 @@ $(".dropkickClass").dropkick();
 		$("#createAppTypeListId").val(0);
 		$("#createAppTypeListId").dropkick('reset');
 		$("#selectManualDateId").trigger('click');
+		$(".disableCls").attr('disabled',false); 
 		$("#appointmentReasonId").val("");
 		//$("#searchTypeId").val(0);
 		$("#searchTypeId").dropkick('reset');
@@ -6646,7 +6647,7 @@ function getCommitteeRoles(){
 						str+='<tr>';
 						str+='<td>';
 						str+='<div class="row">';
-						str+='<div class="col-md-3" style="font-size: 11px;"><span style="font-weight: bold;">Appointment ID :&nbsp;&nbsp;</span>'+result[i].commentlist[j].id+'</div>';
+						str+='<div class="col-md-3" style="font-size: 11px;"><span style="font-weight: bold;">Appointment ID :&nbsp;&nbsp;</span>'+result[i].commentlist[j].uniqueCode+'</div>';
 						str+='<div class="col-md-3" style="font-size: 11px;"><span style="font-weight: bold;">Status :&nbsp;&nbsp;</span>'+result[i].commentlist[j].status+'</div>';
 						str+='<div class="col-md-3" style="font-size: 11px;"><span style="font-weight: bold;">Date :&nbsp;&nbsp;</span>'+result[i].commentlist[j].createdOn+'</div>';
 						str+='</div>';
