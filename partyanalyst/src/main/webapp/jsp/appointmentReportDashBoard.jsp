@@ -35,7 +35,7 @@
 	<div class="col-md-12" id="advanceDshAppointmentPrWiseDiv">
 		
 	</div>
-</div
+</div>
 <div class="row">
   <div class="col-md-12" >
     <div class="block">
