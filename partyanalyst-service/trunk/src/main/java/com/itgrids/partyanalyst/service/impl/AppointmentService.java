@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.io.File;
+
 import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,6 +72,7 @@ import com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
@@ -106,6 +108,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.LocationService;
 import com.itgrids.partyanalyst.utils.ParagraphBorder;
+
 
 
 
@@ -4699,5 +4702,94 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}else if(type.equalsIgnoreCase("waiting")){
 			finalVO.setWaitingCountsVOList(list);
 		}
+	}
+	
+	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt()
+	{
+		List<AppointmentCountVO> returnList = new ArrayList<AppointmentCountVO>();
+		try{
+			 List<Object[]> list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt("Req");
+			 if(list != null && list.size() > 0)
+				for(Object[] params : list)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setRequestedCnt((Long)params[0] + vo.getRequestedCnt());
+					vo.setTotal(vo.getTotal() + vo.getRequestedCnt());
+				}
+			 
+			 List<Object[]> list1 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt("Schedule");
+			 if(list != null && list.size() > 0)
+				for(Object[] params : list1)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setScheduledCnt((Long)params[0] + vo.getScheduledCnt());
+					vo.setTotal(vo.getTotal() + vo.getScheduledCnt());
+				}
+			 
+			 List<Object[]> list2 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Schedule");
+			 if(list != null && list.size() > 0)
+				for(Object[] params : list2)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setUniqueRequestedCnt((Long)params[0] + vo.getUniqueRequestedCnt());
+					vo.setUniquecnt(vo.getUniquecnt() + vo.getUniqueRequestedCnt());
+				}
+			 
+			 List<Object[]> list3 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Schedule");
+			 if(list != null && list.size() > 0)
+				for(Object[] params : list3)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setUniqueScheduledCnt((Long)params[0] + vo.getUniqueScheduledCnt());
+					vo.setUniquecnt(vo.getUniquecnt() + vo.getUniqueScheduledCnt());
+				}
+			 
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
+	public AppointmentCountVO getMatchedRole(List<AppointmentCountVO> returnList,Long roleId)
+	{
+		if(returnList == null || returnList.size() == 0)
+			return null;
+		for(com.itgrids.partyanalyst.dto.AppointmentCountVO  vo : returnList)
+		{
+			if(vo.getRoleId().longValue() == roleId.longValue())
+				return vo;
+		}
+		return null;
 	}
 }

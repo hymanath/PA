@@ -2,9 +2,11 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
@@ -18,6 +20,7 @@ import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+
 import com.itgrids.partyanalyst.service.impl.VoterAddressVO;
 
 public interface IAppointmentService {
@@ -76,4 +79,5 @@ public interface IAppointmentService {
 	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId,Long apptUserID);
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO);
 	public AppointmentCountsVO getCandidCountsByStates(String startDateString,String endDateString,Long appointmentUserId);
+	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt();
 }
