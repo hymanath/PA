@@ -1112,7 +1112,7 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			  if(candidateTypeArray != null && candidateTypeArray.length() > 0){
 				    candiTypeIds = new ArrayList<Long>(); 
 					for (int i = 0; i < candidateTypeArray.length(); i++) {
-						candiTypeIds.add((Long)candidateTypeArray.get(i));
+						candiTypeIds.add(Long.parseLong(candidateTypeArray.get(i).toString()));
 					}
 			   }
 			  
