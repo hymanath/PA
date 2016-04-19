@@ -4708,11 +4708,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 	{
 		List<AppointmentCountVO> returnList = new ArrayList<AppointmentCountVO>();
 		try{
-			 List<Object[]> list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt("Req");
+			 List<Object[]> list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(null,"total"); //Total
 			 if(list != null && list.size() > 0)
 				for(Object[] params : list)
 				{
-					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
 					if(vo == null)
 					{
 						vo = new AppointmentCountVO();
@@ -4720,15 +4720,14 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setRole(params[2] != null ? params[2].toString() : "");
 						returnList.add(vo);
 					}
-					vo.setRequestedCnt((Long)params[0] + vo.getRequestedCnt());
-					vo.setTotal(vo.getTotal() + vo.getRequestedCnt());
+						vo.setTotal(vo.getTotal() +(Long)params[0]);
 				}
 			 
-			 List<Object[]> list1 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt("Schedule");
+			 List<Object[]> list1 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(null,"unique"); //Total
 			 if(list1 != null && list1.size() > 0)
 				for(Object[] params : list1)
 				{
-					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
 					if(vo == null)
 					{
 						vo = new AppointmentCountVO();
@@ -4736,11 +4735,10 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setRole(params[2] != null ? params[2].toString() : "");
 						returnList.add(vo);
 					}
-					vo.setScheduledCnt((Long)params[0] + vo.getScheduledCnt());
-					vo.setTotal(vo.getTotal() + vo.getScheduledCnt());
+						vo.setUniquecnt(vo.getUniquecnt() +(Long)params[0]);
 				}
-			 
-			 List<Object[]> list2 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Req");
+			 Long[] schedul =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
+			 List<Object[]> list2 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(schedul),"Schedule");
 			 if(list2 != null && list2.size() > 0)
 				for(Object[] params : list2)
 				{
@@ -4752,11 +4750,12 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setRole(params[2] != null ? params[2].toString() : "");
 						returnList.add(vo);
 					}
-					vo.setUniqueRequestedCnt((Long)params[0] + vo.getUniqueRequestedCnt());
-					vo.setUniquecnt(vo.getUniquecnt() + vo.getUniqueRequestedCnt());
+					vo.setScheduledCnt((Long)params[0] + vo.getScheduledCnt());
+				
 				}
 			 
-			 List<Object[]> list3 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Schedule");
+			
+			 List<Object[]> list3 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(schedul),"unique");
 			 if(list3 != null && list3.size() > 0)
 				for(Object[] params : list3)
 				{
@@ -4769,7 +4768,39 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						returnList.add(vo);
 					}
 					vo.setUniqueScheduledCnt((Long)params[0] + vo.getUniqueScheduledCnt());
-					vo.setUniquecnt(vo.getUniquecnt() + vo.getUniqueScheduledCnt());
+				
+				}
+			 Long[] req =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
+			 List<Object[]> list4 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(req),"Request");
+			 if(list4 != null && list4.size() > 0)
+				for(Object[] params : list4)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setRequestedCnt((Long)params[0] + vo.getRequestedCnt());
+					
+				}
+			 
+			 List<Object[]> list5 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(req),"unique");
+			 if(list5 != null && list5.size() > 0)
+				for(Object[] params : list5)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setUniqueRequestedCnt((Long)params[0] + vo.getUniqueRequestedCnt());
+					
 				}
 			 
 			
