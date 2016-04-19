@@ -3574,39 +3574,32 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="6" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
-							str+='</label>';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="7"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
-							str+='</label>';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="5"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
-							str+='</label>';
+							str+='<label>Select Appointment Status</label>';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="upAppointmentStatus" style="box-shadow:none;margin-top:0px;padding:0px;">';
+									str+='<option value="4">Attended</option>';
+									str+='<option value="5">Not Attended</option>';
+									str+='<option value="6" >Reschedule</option>';
+									str+='<option value="7">Cancel</option>';
+									
+								str+='</select>';
+							str+='<div class="row m_top10">';
+							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
-							str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
-							/*str+='<div class="input-group inputSearch upcomedateCls1">';
-							str+='<span class="input-group-addon">';
-							str+='<i class="glyphicon glyphicon-calendar"></i>';
-							str+='<span class="caret"></span>';
-							str+='</span>';
-							str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
 							str+='</div>';
-							str+='<label class="upcomedateCls1 m_top10">Select Time</label>';
-							str+='<div class="input-group inputSearch upcomedateCls1">';
-							str+='<span class="input-group-addon">';
-							str+='<i class="glyphicon glyphicon-time"></i>';
-							str+='<span class="caret"></span>';
-							str+='</span>';
-							str+='<input type="text" class="form-control upcometimeCls">';
-							str+='</div>';*/
-							str+='<label class="checkbox-inline">';
-							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
+							str+='<div class="col-xs-5">';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" value="3"  name="upcomeRadio" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
 							str+='</label>';
-							str+='<textarea  placeholder="Please Enter Comment..." cols="32" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="upCommingcommentTxt" style="display:none;"></textarea>';
-							str+='<textarea class="form-control m_top10 smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='</div>';
+							str+='</div>';
+							
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="upCommingcommentTxt" style="display:none;padding:8px;"></textarea>';
+							
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="upsmsTextId" style="display:none;"></textarea>';
+							
+							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
@@ -3664,6 +3657,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}
 		$("#upcomingAppointMentId").html(str);
 		$('[data-toggle="tooltip"]').tooltip();
+		$("#upAppointmentStatus").dropkick();
 		if(!flag)
 		$(".upcomingSetting").hide();
 		$(".upcomedateCls").daterangepicker({singleDatePicker:true});
@@ -3718,10 +3712,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		var smsCheck = false;
 		var smsText = '';
 		$(".status"+appointmentId).each(function(){
-			if($(this).is(':checked'))
-			{
+			
 				statusId = $(this).val();
-			}
+			
 		})
 		
 		if($(".smsCheckedCls"+appointmentId).is(':checked'))
@@ -3898,41 +3891,33 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							
-						    str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="6" name="upcomeRadio" class="status'+result[i].appointmentId+' status" checked>Reschedule';
-							str+='</label>';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="7"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
-							str+='</label>';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="5"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
-							str+='</label>';
+							str+='<div class="appointmentSettingsBLock arrow_box">';
+							str+='<label>Select Appointment Status</label>';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="InAppointmentStatus" style="box-shadow:none;margin-top:0px;padding:0px;">';
+									str+='<option value="4">Attended</option>';
+									str+='<option value="5">Not Attended</option>';
+									str+='<option value="6" >Reschedule</option>';
+									str+='<option value="7">Cancel</option>';
+									
+								str+='</select>';
+							str+='<div class="row m_top10">';
+							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
-							/*str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
-							str+='<div class="input-group inputSearch upcomedateCls1">';
-							str+='<span class="input-group-addon">';
-							str+='<i class="glyphicon glyphicon-calendar"></i>';
-							str+='<span class="caret"></span>';
-							str+='</span>';
-							str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
 							str+='</div>';
-							str+='<label class="upcomedateCls1 m_top10">Select Time</label>';
-							str+='<div class="input-group inputSearch upcomedateCls1">';
-							str+='<span class="input-group-addon">';
-							str+='<i class="glyphicon glyphicon-time"></i>';
-							str+='<span class="caret"></span>';
-							str+='</span>';
-							str+='<input type="text" class="form-control upcometimeCls">';
-							str+='</div>';*/
-							str+='<label class="checkbox-inline">';
-							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
+							str+='<div class="col-xs-5">';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" value="3"  name="upcomeRadio" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
 							str+='</label>';
-							str+='<textarea  placeholder="Please Enter Comment..." cols="32" class="commentTextCls'+result[i].appointmentId+'"" rows="2" id="InProgresscommentTxt" style="display:none;"></textarea>';
-							str+='<textarea class="form-control m_top10 smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='</div>';
+							str+='</div>';
+							
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="InProgresscommentTxt" style="display:none;padding:8px;"></textarea>';
+							
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="InsmsTextId" style="display:none;"></textarea>';
+							
+							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
@@ -3991,6 +3976,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			
 		str+='</div>';
 		$("#inprogreessAppointMentId").html(str);
+		$("#InAppointmentStatus").dropkick();
 		 $('[data-toggle="tooltip"]').tooltip();
 		if(!flag)
 			$(".inprogressSetting").hide();	
@@ -4063,40 +4049,33 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
-							str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="6" name="upcomeRadio" class="status'+result[i].appointmentId+' status " checked>Reschedule';
-							str+='</label>';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="7"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Cancel';
-							str+='</label>';
-							str+='<label class="radio-inline">';
-							str+='<input type="radio" value="5"  name="upcomeRadio" class="status'+result[i].appointmentId+' status">Not Attended';
-							str+='</label>';
+								str+='<div class="appointmentSettingsBLock arrow_box">';
+							str+='<label>Select Appointment Status</label>';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="completeAppointmentStatus" style="box-shadow:none;margin-top:0px;padding:0px;">';
+									str+='<option value="4">Attended</option>';
+									str+='<option value="5">Not Attended</option>';
+									str+='<option value="6" >Reschedule</option>';
+									str+='<option value="7">Cancel</option>';
+									
+								str+='</select>';
+							str+='<div class="row m_top10">';
+							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
-							/*str+='<label class="upcomedateCls1 m_top10">Select Date</label>';
-							str+='<div class="input-group inputSearch upcomedateCls1">';
-							str+='<span class="input-group-addon">';
-							str+='<i class="glyphicon glyphicon-calendar"></i>';
-							str+='<span class="caret"></span>';
-							str+='</span>';
-							str+='<input type="text" class="form-control upcomedateCls " id="upcomeDate">';
 							str+='</div>';
-							str+='<label class="upcomedateCls1 m_top10">Select Time</label>';
-							str+='<div class="input-group inputSearch upcomedateCls1">';
-							str+='<span class="input-group-addon">';
-							str+='<i class="glyphicon glyphicon-time"></i>';
-							str+='<span class="caret"></span>';
-							str+='</span>';
-							str+='<input type="text" class="form-control upcometimeCls">';
-							str+='</div>';*/
-							str+='<label class="checkbox-inline">';
-							str+='<input type="checkbox" class="smsCheckedCls'+result[i].appointmentId+'">Send SMS';
+							str+='<div class="col-xs-5">';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" value="3"  name="upcomeRadio" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
 							str+='</label>';
-							str+='<textarea  placeholder="Please Enter Comment..." cols="32" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="completecommentTxt" style="display:none;"></textarea>';
-							str+='<textarea class="form-control m_top10 smsTextCls'+result[i].appointmentId+'" id="smsTextId"></textarea>';
+							str+='</div>';
+							str+='</div>';
+							
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="completecommentTxt" style="display:none;padding:8px;"></textarea>';
+							
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="completesmsTextId" style="display:none;"></textarea>';
+							
+							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
@@ -4157,6 +4136,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='No Data Available';	
 		}
 		$("#completedAppointMentId").html(str);
+		$("#completeAppointmentStatus").dropkick();
 		$('[data-toggle="tooltip"]').tooltip();
 		if(flag == false)
 		$(".completedSetting").hide();
@@ -4170,6 +4150,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				 $("#completecommentTxt").hide();
 				$("#InProgresscommentTxt").hide();
 				$("#upCommingcommentTxt").hide(); 
+			}
+		});
+		$(document).on("click",".showSmsBox",function(){
+			
+			$("#upsmsTextId").show();
+			$("#InsmsTextId").show();
+			$("#completesmsTextId").show();
+			if($(this).prop("checked") == false){
+				 $("#upsmsTextId").hide();
+				 $("#InsmsTextId").hide();
+				 $("#completesmsTextId").hide();
+				
 			}
 		});
 </script>
