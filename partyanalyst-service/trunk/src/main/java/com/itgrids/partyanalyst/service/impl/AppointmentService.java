@@ -2921,7 +2921,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	}
 	
 	//view apointments for label
-	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom,Long apptUserId){
+	 public List<AppointmentDetailsVO> viewAppointmentsOfALable(Long labelId,String callFrom,Long apptUserId,String labelName){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
 		   SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
@@ -3190,7 +3190,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 			if(callFrom.equalsIgnoreCase("print"))
 			{
-				String pdfPath = pdfViewForAppointment(finalList);
+				String pdfPath = pdfViewForAppointment(finalList,labelName);
 				finalList.get(0).setPdfPath(pdfPath);
 			}
 		} catch (Exception e) {
@@ -3199,7 +3199,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		return finalList;
 	}
 	 
-	 public String pdfViewForAppointment(List<AppointmentDetailsVO> resultList)
+	 public String pdfViewForAppointment(List<AppointmentDetailsVO> resultList,String labelName)
 	 {
 		 try{
 			 if(resultList != null && resultList.size() > 0)
@@ -3221,7 +3221,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					
 					 Paragraph titleParagraph = new Paragraph();
 					 Font font = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
-					 titleParagraph.add(new Chunk("Appointment Members"));
+					 titleParagraph.add(new Chunk(labelName +" Appointment Members"));
 					 titleParagraph.setAlignment(Element.ALIGN_CENTER);
 					 titleParagraph.setFont(font);
 					 titleParagraph.setSpacingAfter(10);
