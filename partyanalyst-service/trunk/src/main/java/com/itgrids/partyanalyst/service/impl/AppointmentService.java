@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +34,6 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -4822,5 +4820,107 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				return vo;
 		}
 		return null;
+	}
+	public List<AppointmentCountVO> getCommitteeLevelAppointments()
+	{
+		List<AppointmentCountVO> returnList = new ArrayList<AppointmentCountVO>();
+		try{
+			 List<Object[]> list =  appointmentCandidateRelationDAO.getCommitteeLevelAppointments(null,"total"); //Total
+			 if(list != null && list.size() > 0)
+				for(Object[] params : list)
+				{
+					AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+						vo.setTotal(vo.getTotal() +(Long)params[0]);
+				}
+			 
+			 List<Object[]> list1 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(null,"unique"); //Total
+			 if(list1 != null && list1.size() > 0)
+				for(Object[] params : list1)
+				{
+					AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+						vo.setUniquecnt(vo.getUniquecnt() +(Long)params[0]);
+				}
+			 Long[] schedul =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
+			 List<Object[]> list2 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(schedul),"Schedule");
+			 if(list2 != null && list2.size() > 0)
+				for(Object[] params : list2)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setScheduledCnt((Long)params[0] + vo.getScheduledCnt());
+				}
+			 
+			List<Object[]> list3 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(schedul),"unique");
+			 if(list3 != null && list3.size() > 0)
+				for(Object[] params : list3)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setUniqueScheduledCnt((Long)params[0] + vo.getUniqueScheduledCnt());
+				
+				}
+			 Long[] req =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
+			 List<Object[]> list4 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(req),"Request");
+			 if(list4 != null && list4.size() > 0)
+				for(Object[] params : list4)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setRequestedCnt((Long)params[0] + vo.getRequestedCnt());
+				}
+			 
+			 List<Object[]> list5 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(req),"unique");
+			 if(list5 != null && list5.size() > 0)
+				for(Object[] params : list5)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setUniqueRequestedCnt((Long)params[0] + vo.getUniqueRequestedCnt());
+				}
+			 }
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+		
 	}
 }

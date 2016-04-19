@@ -34,5 +34,5 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> checkApptsAsVoid(Date insertedTime,Long apptStatusId,List<Long> apptCandiIds);
 	public List<Object[]> getApptCandidIdsAndInsertedTime(Long appointmentId);
 	public List<Object[]> getCandidCountsByStatesAndStatus(Long appointmentUserId,List<Long> apptStatusIds,Date startDate,Date endDate);
-	
+	public List<Object[]>  getCommitteeLevelAppointments(List<Long> statusIds,String type);
 }
