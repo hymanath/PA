@@ -158,7 +158,7 @@ function getDetailsForVoter(voterId){
 	//window.open('affiliatedCadreRegistrationAction.action?candidateId='+voterId+'&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5');
 	
 	
-	window.open("affiliatedGradiatesRegistrationAction.action?candidateId="+voterId+"&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
+	window.open("affiliatedGraduatesRegistrationAction.action?candidateId="+voterId+"&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
 }
 		  
 function getCadreDetailsBySearchCriteria(startIndex){
@@ -459,11 +459,10 @@ $(document).on("click","#nextStepId",function(){
 	if(count==0){
 		$("#errChkDivId").html("Please Select Atleast One Checkbox.");
 		return;
-	}
+	}      
 	var caderId = $('input[name="otpMobileNo"]:checked').val();//attr("attr_cadreId");
-	
 	//var caderId=$(this).attr("attr_cadreId");//target="_blank"
-	window.open("affiliatedGradiatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
+	window.open("affiliatedGraduatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
 });
 
 $(document).on("click",".cadreDetailsCls",function(){
