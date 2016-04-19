@@ -1,26 +1,42 @@
+
 $(".searchCls").click(function(){
+	$("#otpSuccessDiv").html("");
+	$("#nextStepId").hide();
+	$("#success").hide();
+	$("#fail").hide();
+	$("#cadreDetailsDiv").hide();
+	$("#cadreDetailsDiv").html("");
+	$(".paginationDivId").html('');
+	$("#generateOtpId").hide();
+	$("#otpId").hide();
+	$("#getOtpId").html("");
+	$('#searchErrDiv').html('');
 	var choice = $(this).val();
-	if(choice=="no"){
+	if(choice=="no"){searchBy
+		$("#searchBy").attr("placeholder","Search By VoterCard Number");
 		$(".inputChoice").hide();
-		$(".memberCls").hide();
-		$(".nonMemberCls").show();
 		$("#searchBy").val("");
-		$(".errCls").html("");
+		$('#cadreDetailsDiv').html();
 	}else{
+		$("#searchBy").attr("placeholder","Search By Membership Id/Mobile No/Voter Id");
 		$(".inputChoice").show();
-		$(".memberCls").show();
-		$(".nonMemberCls").hide();
 		$("#searchBy").val("");
-		$(".errCls").html("");
 	}
 });
 $(".searchTypeCls").click(function(){
+	$("#otpSuccessDiv").html("");
+	$("#success").hide();
+	$("#fail").hide();
+	$("#cadreDetailsDiv").html("");
+	$("#generateOtpId").hide();
+	$("#otpId").hide();
+	$("#getOtpId").html("");
 	$("#searchBy").val("");
 	$("#cadreDetailsDiv").html("");
 	$(".paginationDivId").html('');
 	$("#cadreDetailsDiv").hide();
 	$("#searchErrDiv").html("");
-	
+	$("#nextStepId").hide();
 	var id = $(this).attr('id');		
 	$('#basicSearchDiv').show();
 
@@ -42,13 +58,9 @@ $(".searchTypeCls").click(function(){
 	
 	
 $("#searchId").click(function(){
-	$(".errCls").html("");
+	//debugger;
+	$("#searchErrDiv").html("");
 	var searchText = $("#searchBy").val().trim();
-	if(searchText.length==0){
-		$(".errCls").html("Please Enter Some Data.");
-		return;
-	}
-	
 	var registeredChk = $('input[name="tdpCadreRadio"]:checked').val();
 	if(registeredChk == "yes"){
 		getCadreDetailsBySearchCriteria(0);
@@ -59,7 +71,12 @@ $("#searchId").click(function(){
 });
 
 function getVoterDetailsBySearch(){
+	$('#searchErrDiv').html('');
 	var voterCardNo = $("#searchBy").val();
+	if($("#searchBy").val().length==0){
+		$('#searchErrDiv').html('Please enter voterCard No.');
+		return;
+	}
 	var jsObj =
 	{    
 		voterIDCardNo : voterCardNo
@@ -109,9 +126,7 @@ function buildVoterDetails(result){
 				
 				str+='</div>';
 				str+='</div>';
-				
 			}
-		
 		}
 		$('#cadreDetailsDiv').html(str);
 }
@@ -121,11 +136,16 @@ $(document).on("click",".detailsCls",function(){
 	getDetailsForVoter(voterId);
 });
 
-function getDetailsForVoter(voterId){
-	window.open('affiliatedCadreRegistrationAction.action?candidateId='+voterId+'&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5');
+function getDetailsForVoter(voterId){ 
+	//window.open('affiliatedCadreRegistrationAction.action?candidateId='+voterId+'&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5');
+	
+	
+	window.open("affiliatedGradiatesRegistrationAction.action?candidateId="+voterId+"&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
 }
 		  
 function getCadreDetailsBySearchCriteria(startIndex){
+	//debugger;
+	$("#cadreDetailsDiv").html("");
 	var mobileNo = '';
 	var memberShipCardNo = '';
 	var voterCardNo = '';
@@ -165,6 +185,12 @@ function getCadreDetailsBySearchCriteria(startIndex){
 	{	
 		mobileNo = $('#searchBy').val().trim();
 		
+		if(searchBy.trim().length == 0 )
+		{
+			$('#searchErrDiv').html('Please enter Mobile No.');
+			return;
+		}
+		
 		if(searchRadioType=="mobileNo"){
 				
 				var numericExpression = /^[0-9]+$/;
@@ -172,12 +198,6 @@ function getCadreDetailsBySearchCriteria(startIndex){
 					$('#searchErrDiv').html('Enter Numerics Only.');
 					return;
 				}
-		}	
-		
-		if(searchBy.trim().length == 0 )
-		{
-			$('#searchErrDiv').html('Please enter Mobile No.');
-			return;
 		}
 		
 		else if(mobileNo.trim().length != 10)
@@ -217,11 +237,14 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			$('#cadreDetailsDiv').show();
 			if(result != null && result.previousRoles != null && result.previousRoles.length>0)
 			{
-			buildCadreDetails(result.previousRoles,jsObj);
+				$("#generateOtpId").show();
+				$("#otpId").show();
+				buildCadreDetails(result.previousRoles,jsObj);
 			}
 			else
 			{
-				
+				$("#generateOtpId").hide();
+				$("#otpId").hide();
 				$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 			}
 		});
@@ -247,8 +270,8 @@ function buildCadreDetails(result,jsObj){
 				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
-				str+='<span class="pull-right"><input type="checkbox" name="otpMobileNo" value="'+result[i].mobileNo+'" class="otpCheckboxCls"/></span>'
-				str+='<h5 class="media-heading"><div id="nameId" attr_cadreId="'+result[i].tdpCadreId+'" style="cursor:pointer;"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
+				str+='<span class="pull-right"><input type="radio" name="otpMobileNo" value="'+result[i].mobileNo+'" class="otpCheckboxCls"/></span>'
+				str+='<h5 class="media-heading"><div class="col-md-6" id="nameId" attr_cadreId="'+result[i].tdpCadreId+'" style="cursor:pointer;"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
 				str+='<span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
 				str+='<li>Age:'+result[i].age+';</li>';
@@ -326,10 +349,16 @@ function buildCadreDetails(result,jsObj){
 }
 
 function generateOTPForMobileNo(){
+	$("#success").hide();
+	$("#fail").hide();
 	var mobileNo = $('input[name="otpMobileNo"]:checked').val();
+	$("#getOtpId").html("");
 	if (typeof(mobileNo) != "undefined"){
+		$("#getOtpId").html("");
 		var refNo = Math.floor((Math.random() * 1000000) + 1);
 		$("#randomRefNo").val(refNo);
+		if(refNo >0)
+			$("#getOtpId").html("OTP Reference No: "+refNo+"(Note: If you not get OTP.click Generate OTP once again.)");
 		var jsObj =
 		{    
 			mobileNo : mobileNo,
@@ -341,18 +370,28 @@ function generateOTPForMobileNo(){
 			url : "generateOTPForMobileNumberAction.action",
 			data : {task:JSON.stringify(jsObj)} ,   
 		}).done(function(result){
-			if(result != null && result == "success"){
+			if(result != null && result == "Success"){
 				$("#otpSuccessDiv").html("OTP sent to given number...");
+				//$("#success").show();
+			}else{
+				//$("#fail").show();
 			}
 		});
+		
+	}else{
+		$("#getOtpId").html("Please select atleast one member.");
 	}
 }
-
-function validateOTP(){
+$("#otpId").keyup(function(){
+	var otp=$("#otpId").val().trim();
+	if(otp.length==6){
+		validateOTP(otp);
+	}
+});
+function validateOTP(otp){
 	var mobileNo = $('input[name="otpMobileNo"]:checked').val();
 	var refNo = $("#randomRefNo").val();
-	var otp = $("#otpId").val();
-	
+	//alert(mobileNo+"::"+refNo+"::"+otp);
 	var jsObj =
 	{    
 		mobileNo : mobileNo,
@@ -365,11 +404,19 @@ function validateOTP(){
 		url : "validateOTPAction.action",
 		data : {task:JSON.stringify(jsObj)} ,   
 	}).done(function(result){
-		if(result != null && result == "success"){
+		if(result != null && result=="Success"){
 			$("#otpSuccessDiv").html("success");
+			$("#success").show();
+			$("#nextStepId").show();
+		}else{
+			$("#fail").show();
 		}
 	});
 }
+$(document).on("click","#nextStepId",function(){
+	var caderId=$(this).attr("attr_cadreId");//target="_blank"
+	window.open("affiliatedGradiatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
+});
 
 $(document).on("click",".cadreDetailsCls",function(){
 		var cadreId=$(this).attr("attr_cadre_id");
@@ -601,9 +648,9 @@ function confirmDelete(msg){
 		return false;   
 }
 
-$(document).on('click','#nameId',function(){
-	var caderId=$(this).attr("attr_cadreId");
-	window.location.href="affiliatedCadreRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5";
+/* $(document).on('click','#nameId',function(){
+	var caderId=$(this).attr("attr_cadreId");//target="_blank"
+	window.open("affiliatedGradiatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
 });
-  
+   */
  

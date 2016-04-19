@@ -12,6 +12,7 @@
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <style type="text/css">
+
 h1,h2,h3,h4,h5,h6,p,ul
 {
 	margin:0px;
@@ -60,6 +61,7 @@ label
                 </div>
                 <div class="panel-body">
                 	<div class="row">
+				
                     	<div class="col-md-12">
                         	<div class="form-group">
                             	<label>Are you registered as TDP Cadre in 2014-2016 &nbsp;</label>
@@ -71,8 +73,6 @@ label
 								</label>
                             </div>
                         </div>
-						
-						
 						<div class="inputChoice col-md-8 col-sm-12 col-xs-12">
 							<div class="form-inline btn btn-default">
 								<div class="radio">
@@ -81,8 +81,6 @@ label
 									<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  value="2" >  VOTER ID    &nbsp;&nbsp;</label>
 								
 									<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"    value="3"> MOBILE NO &nbsp;&nbsp;</label><br>
-									
-									
 									<input type="hidden" id="cadreSearchType" value="membershipId" />
 								</div>				  
 							</div>
@@ -90,14 +88,13 @@ label
 						
 						
                         <div class="col-md-6 m_top20">
-                        	<label class="memberCls">Search By Membership Id/Mobile No/Voter Id</label>
-							<label class="nonMemberCls" style="display:none;">Search By VoterCard Number</label>
-                            <input type="text" id="searchBy" class="form-control"/>
-							<div class="errCls" style="color:red;"></div>
-							<div id="searchErrDiv"></div>
+                        	<!--<label class="memberCls">Search By Membership Id/Mobile No/Voter Id</label>
+							<label class="nonMemberCls" style="display:none;">Search By VoterCard Number</label>-->
+                            <input type="text" id="searchBy" class="form-control" placeholder="Search By Membership Id/Mobile No/Voter Id"/>
+							<div id="searchErrDiv" style="color:red;"></div>
                         </div>
-						<div class="col-md-2 m_top20">
-							<button class="btn btn-success m_top25" id="searchId">SEARCH</button>
+						<div class="col-md-2">
+							<button class="btn btn-success m_top25" id="searchId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;">SEARCH</button>
 						</div>
 						<!--
                         <div class="col-md-12">
@@ -131,18 +128,26 @@ label
 							</div>
 						</div>	
 						
-						
-                        <div class="col-md-2">
-							<div class="success" id="otpSuccessDiv"></div>
-                        	<button class="btn btn-success m_top20" onclick="generateOTPForMobileNo();">GET OTP</button>
-                        </div>
-                        <div class="col-md-2">
-                        	<input type="text" class="form-control m_top20" id="otpId"/>
-                        </div>
+						<div class="col-md-12">
+						<div id="getOtpId" style="color:red;"></div>
+							<div class="col-md-4">
+								<div class="success" id="otpSuccessDiv"></div>
+								<button id="generateOtpId" class="btn btn-success m_top20" style="display:none;" onclick="generateOTPForMobileNo();">GENERATE OTP</button>
+							</div>
+							<div class="col-md-2">
+								<input type="text" class="form-control m_top20" id="otpId" style="display:none;"/>
+							</div>
+							<div class="col-md-2">
+							<button class="btn btn-success m_top25" id="nextStepId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;display:none;">NEXT</button>
+							</div>
+							<div id="success" class="col-md-2 m_top25" style="display:none;">
+							<i class="glyphicon glyphicon-ok" style="color:green;margin-left: -138px;"></i>
+							</div>
+							<div id="fail" class="col-md-2 m_top25" style="display:none;">
+							<i class="glyphicon glyphicon-remove" style="color:red;margin-left: -22px;"></i>
+							</div>
+						</div>
 						<input type="hidden" id="randomRefNo"></input>
-						<div class="col-md-2">
-                        	<button class="btn btn-success m_top20" onclick="validateOTP();">VALIDATE OTP</button>
-                        </div>
                     </div>
                 </div>
             </div>
