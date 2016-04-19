@@ -666,7 +666,7 @@
 												<label class="radio-inline"><input type="radio" name="aptRequestedName"   id="aptPrefferRadioId" value="1" checked/>Appointment Prefferable Dates</label>
 											</div>
 											<div class="col-md-3">
-												<label class="radio-inline"><input type="radio" name="aptRequestedName"   id="aptRequestedRadioId" value="2"/>Appointment Requested Dates</label>
+												<label class="radio-inline"><input type="radio" name="aptRequestedName"   id="aptRequestedRadioId" value="2"/>Appointment Request Created Dates</label>
 											</div>
 										</div>
                                     	<div class="row m_top10">
@@ -2744,9 +2744,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='</div>';
 								str+='<div class="col-md-3">';
 									if(result[i].dateString !=null && result[i].dateString.length>0){
-										str+='<span>Requested Created Date : '+result[i].dateString.split(" ")[0]+'</span>';
+										str+='<span>Request Created Date : '+result[i].dateString.split(" ")[0]+'</span>';
 									}else{
-										str+='<span>Requested Created Date : - </span>';
+										str+='<span>Request Created Date : - </span>';
 									}
 								str+='</div>';
 								str+='<div class="col-md-2 col-md-offset-3">';
@@ -2768,9 +2768,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='</div>';
 								str+='<div class="col-md-3">';
 									if(result[i].dateString !=null && result[i].dateString.length>0){
-										str+='<span>Requested Created Date : '+result[i].dateString.split(" ")[0]+'</span>';
+										str+='<span>Request Created Date : '+result[i].dateString.split(" ")[0]+'</span>';
 									}else{
-										str+='<span>Requested Created Date : - </span>';
+										str+='<span>Request Created Date : - </span>';
 									}
 								str+='</div>';
 								str+='<div class="col-md-2 col-md-offset-3">';
@@ -3269,9 +3269,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='</div>';
 						str+='<div class="col-md-3">';
 							if(result[i].dateString !=null && result[i].dateString.length>0){
-								str+='<p>Requested Created Date : '+result[i].dateString.split(" ")[0]+'</p>';
+								str+='<p>Request Created Date : '+result[i].dateString.split(" ")[0]+'</p>';
 							}else{
-								str+='<p>Requested Date : - </p>';
+								str+='<p>Request Date : - </p>';
 							}
 						str+='</div>';
 						str+='<div class="col-md-2 col-md-offset-3">';
@@ -5194,9 +5194,9 @@ function buildTimeSlotsTable(result){
 						str+='</div>';
 						str+='<div class="col-md-3">';
 							if(result[i].dateString !=null && result[i].dateString.length>0){
-								str+='<p>Requested Created Date : '+result[i].dateString.split(" ")[0]+'</p>';
+								str+='<p>Request Created Date : '+result[i].dateString.split(" ")[0]+'</p>';
 							}else{
-								str+='<p>Requested Created Date : - </p>';
+								str+='<p>Request Created Date : - </p>';
 							}
 						str+='</div>';
 						str+='<div class="col-md-3 pull-right">';
