@@ -24,7 +24,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CadreVoterSearchAction extends ActionSupport implements ServletRequestAware{
 
-	private static final Logger LOG = Logger.getLogger(TdpCadreReportAction.class);
+	private static final Logger LOG = Logger.getLogger(CadreVoterSearchAction.class);
 	
 	private HttpServletRequest request;	
 	private String task;
