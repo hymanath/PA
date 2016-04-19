@@ -4725,7 +4725,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				}
 			 
 			 List<Object[]> list1 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt("Schedule");
-			 if(list != null && list.size() > 0)
+			 if(list1 != null && list1.size() > 0)
 				for(Object[] params : list1)
 				{
 					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
@@ -4741,7 +4741,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				}
 			 
 			 List<Object[]> list2 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Req");
-			 if(list != null && list.size() > 0)
+			 if(list2 != null && list2.size() > 0)
 				for(Object[] params : list2)
 				{
 					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
@@ -4757,7 +4757,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				}
 			 
 			 List<Object[]> list3 = appointmentCandidateDAO.getUniquePublicRepresentativeWiseAppointmentCnt("Schedule");
-			 if(list != null && list.size() > 0)
+			 if(list3 != null && list3.size() > 0)
 				for(Object[] params : list3)
 				{
 					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
