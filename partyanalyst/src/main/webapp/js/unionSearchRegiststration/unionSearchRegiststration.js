@@ -368,7 +368,7 @@ function generateOTPForMobileNo(){
 		var refNo = Math.floor((Math.random() * 1000000) + 1);
 		$("#randomRefNo").val(refNo);
 		if(refNo >0)
-			$("#getOtpId").html("OTP Reference No: "+refNo+"(Note: If you not get OTP.click Generate OTP once again.)");
+			$("#getOtpId").html("OTP Reference No: "+refNo+  "(Note: If you not get OTP.click Generate OTP once again.)");
 		var jsObj =
 		{    
 			mobileNo : mobileNo,
