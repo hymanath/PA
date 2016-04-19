@@ -131,7 +131,7 @@ label
 						<div class="col-md-12">
 						<div id="getOtpId" style="color:red;"></div>
 							<div class="col-md-4">
-								<div class="success" id="otpSuccessDiv"></div>
+							<!--	<div class="success" id="otpSuccessDiv"></div>-->
 								<button id="generateOtpId" class="btn btn-success m_top20" style="display:none;" onclick="generateOTPForMobileNo();">GENERATE OTP</button>
 							</div>
 							<div class="col-md-2">
@@ -140,6 +140,7 @@ label
 							<div class="col-md-2">
 							<button class="btn btn-success m_top25" id="nextStepId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;display:none;">NEXT</button>
 							</div>
+							<div id="errChkDivId" style="color:red;"></div>
 							<div id="success" class="col-md-2 m_top25" style="display:none;">
 							<i class="glyphicon glyphicon-ok" style="color:green;margin-left: -145px;"></i>
 							</div>
