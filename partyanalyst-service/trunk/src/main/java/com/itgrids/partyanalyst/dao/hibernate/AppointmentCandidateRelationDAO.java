@@ -135,7 +135,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		query.setParameter("candidateTypeId",candidateTypeId);
 	}
 	
-	query.setParameter("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED_LIST);
+	query.setParameterList("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED_LIST);
 		return query.list();
 	}
 	
