@@ -463,7 +463,7 @@
 	  <!-- Cadre module starts-->
 	 <pattern>/cadreSearchPageAction*</pattern>
 	 <pattern>/unionSearchRegiststrationAction*</pattern>
-	 <pattern>/affiliatedGradiatesRegistrationAction*</pattern>
+	 <pattern>/affiliatedGraduatesRegistrationAction*</pattern>
 	 <pattern>/cadreVoterSearchAction*</pattern>
 	 <pattern>/cadreRegistrationAmountReportAction*</pattern>
 	 <pattern>/cadreRegAmountUpload*</pattern>
