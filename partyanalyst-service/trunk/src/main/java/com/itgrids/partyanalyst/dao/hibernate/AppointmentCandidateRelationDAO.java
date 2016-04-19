@@ -78,10 +78,10 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		        }
 			}else{
 				if(fromDate!=null){ 
-					sb.append(" and date(a.updated_time) >= :fromDate");
+					sb.append(" and date(a.inserted_time) >= :fromDate");
 				}
 		        if(toDate!=null){
-		        	sb.append(" and date(a.updated_time) <= :toDate");
+		        	sb.append(" and date(a.inserted_time) <= :toDate");
 		        }
 			}
 			 
