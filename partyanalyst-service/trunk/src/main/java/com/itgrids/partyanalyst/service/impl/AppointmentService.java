@@ -4337,8 +4337,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		
 		 if(appointmentIds !=null && appointmentIds.size()>0){
 			 
-			List<Object[]> appCommentsList =appointmentCommentDAO.getAppointmentCommentsForViewHistory(appointmentIds);
-			for(Object[] obj:appCommentsList){
+			List<Object[]> appCommentsList = appointmentCommentDAO.getAppointmentCommentsForViewHistory(appointmentIds);
+			
+			if(appCommentsList != null && appCommentsList.size() > 0)
+			for(Object[] obj : appCommentsList)
+			{
 				 AppHistoryVO vo = new AppHistoryVO();
 				 vo.setId(obj[0] != null ? (Long)obj[0] : 0l);
 				 vo.setPurpose(obj[1] != null ? obj[1].toString() : "");
@@ -4346,10 +4349,9 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				 vo.setStatusId(obj[3] != null ? (Long)obj[3] : 0l);
 				 vo.setStatus(obj[4] != null ? obj[4].toString() : "");
 				 vo.setComment(obj[5] != null ? obj[5].toString() : "");
-				 vo.setCreatedOn(obj[6] != null ? obj[6].toString() : "");
-				 vo.setUser(obj[7] != null ? obj[7].toString() : "");
+				 vo.setCreatedOn(obj[6] != null ? obj[6].toString().substring(0,19) : "");
+				 vo.setUser(((obj[7] != null ? obj[7].toString() : "") + " "+ (obj[8] != null ? obj[8].toString() : "")).trim());
 				 commentlist.add(vo);
-				 
 			}
 		 }
 		if(historyVoList!=null && historyVoList.size()>0 && commentlist!=null && commentlist.size()>0){
@@ -4511,58 +4513,63 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return null;
 	}
+	
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO)
 	{
 		ResultStatus result = new ResultStatus();
 		try{
 			StringBuffer mobileNos = new StringBuffer();
 			boolean isEnglish = false;
-			     List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
-			     int lastEle = list.size() - 1;
-				 if(list != null && list.size() > 0)
-				 {
-					 for(Object[] params : list)
-					 {
-						 if(params[2] != null && !params[2].toString().isEmpty())
-						 {
-							 mobileNos.append(params[2].toString());
-							 if(lastEle!=list.size()-1)
-							 mobileNos.append(",");
-						 } 
-					 }
-				 }
-				 
-				 Long statusId = appointmentDAO.getAppointmentStatusId(inputVO.getAppointmentId());
-				List<Object[]> objs = appointmentSmsSettingDAO.getContentTypeAndSmsContent(statusId);
-				SmsHistory smsHistory = null;
-				if(objs != null && objs.size() > 0){
-					for(Object[] obj : objs){
-						if(obj[0].toString().equalsIgnoreCase("STATIC")){
-							smsHistory =	smsSenderService.sendSMS(inputVO.getUserId(), "Appointment", isEnglish, obj[1].toString(), mobileNos.toString());
-						}else{
-						    smsHistory =	smsSenderService.sendSMS(inputVO.getUserId(), "Appointment", isEnglish,inputVO.getSmsText(), mobileNos.toString());
-						}
-					}
+			List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
+
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					 if(params[2] != null && !params[2].toString().isEmpty() && params[2].toString().trim().length() == 10)
+						 mobileNos.append(params[2].toString()+",");
 				}
 				
-				AppointmentSmsHistory appointmentSmsHistory = new AppointmentSmsHistory();
-				appointmentSmsHistory.setAppointmentId(inputVO.getAppointmentId());
-				appointmentSmsHistory.setSmsHistory(smsHistory);
-				appointmentSmsHistory.setAppointmentStatusId(statusId);
-				appointmentSmsHistory.setSentBy(inputVO.getUserId());
-				appointmentSmsHistory.setSentTime(dateUtilService.getCurrentDateAndTime());
-				appointmentSmsHistoryDAO.save(appointmentSmsHistory);
-			
+				if(mobileNos.length() > 0)
+				{
+					String mobileNoStr = mobileNos.substring(0,mobileNos.length()-1);
+					SmsHistory smsHistory = null;
+					Long statusId = inputVO.getAppointmentStatusId();
+					
+					if(inputVO.getSmsText().trim().length() > 0)
+						smsHistory = smsSenderService.sendSMS(inputVO.getUserId(),IConstants.SMS_MODULE_APPOINTMENT, isEnglish,inputVO.getSmsText(), mobileNoStr);
+					else
+					{
+						if(statusId == null)
+							statusId = appointmentDAO.getAppointmentStatusId(inputVO.getAppointmentId());
+						List<Object[]> contentList = appointmentSmsSettingDAO.getContentTypeAndSmsContent(statusId);
+						if(contentList != null && contentList.size() > 0 && 
+								contentList.get(0)[0].toString().trim().equalsIgnoreCase(IConstants.STATIC_STR) && contentList.get(0)[1].toString().trim().length() > 0)
+						{
+							smsHistory = smsSenderService.sendSMS(inputVO.getUserId(),IConstants.SMS_MODULE_APPOINTMENT,isEnglish,contentList.get(0)[1].toString().trim(),mobileNoStr);
+						}
+					}
+					
+					if(smsHistory != null)
+					{
+						AppointmentSmsHistory appointmentSmsHistory = new AppointmentSmsHistory();
+						appointmentSmsHistory.setAppointmentId(inputVO.getAppointmentId());
+						appointmentSmsHistory.setSmsHistory(smsHistory);
+						appointmentSmsHistory.setAppointmentStatusId(statusId);
+						appointmentSmsHistory.setSentBy(inputVO.getUserId());
+						appointmentSmsHistory.setSentTime(dateUtilService.getCurrentDateAndTime());
+						appointmentSmsHistoryDAO.save(appointmentSmsHistory);
+					}
+				}
+			}
 			result.setMessage("success");
 		}
 		catch (Exception e) {
 			LOG.error("Exception raised in sendSms", e);
 			result.setMessage("fail");
-			
 		}
 		return result;
 	}
-	
 	
 	public void getappointmentComments(Long appointmentId,Long statusId,String commentTxt,Long userId){
 		
