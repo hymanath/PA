@@ -759,7 +759,7 @@ public String getCandidateWiseDetails(){
 		try {
 			jObj = new JSONObject(getTask());
 			String labelName = "";
-			if(jObj.getString("labelName") != null && jObj.getString("labelName").equalsIgnoreCase("print"))
+			if(jObj.getString("callFrom") != null && jObj.getString("callFrom").equalsIgnoreCase("print"))
 				labelName = jObj.getString("labelName");
 			apptDetailsList = appointmentService.viewAppointmentsOfALable(jObj.getLong("labelId"),jObj.getString("callFrom"),jObj.getLong("apptuserId"),labelName);
 		} catch (Exception e) {
