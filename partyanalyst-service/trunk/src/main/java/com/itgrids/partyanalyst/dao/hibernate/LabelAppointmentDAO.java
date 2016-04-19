@@ -106,7 +106,7 @@ public class LabelAppointmentDAO extends GenericDaoHibernate<LabelAppointment, L
 				" where model.appointmentLabel.appointmentLabelId=:lableId and model.isDeleted='N' and model.appointmentLabel.isDeleted='N' and model.appointment.isDeleted='N' " +
 				" and model.createdBy=model1.userId ");
 		if(callFrom != null && callFrom.equalsIgnoreCase("print"))
-			str.append(" and model.appointment.appointmentStatus.appointmentStatusId !=2");
+			str.append(" and model.appointment.appointmentStatus.appointmentStatusId !="+IConstants.APPOINTMENT_STATUS_FIXED+"");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("lableId", lableId);
 		return query.list();
