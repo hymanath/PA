@@ -1070,6 +1070,7 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
 			inputVO.setAppointmentId(jObj.getLong("appointmentId"));
 			inputVO.setSmsText(jObj.getString("smsText"));
+			inputVO.setappointmentStatusId(jObj.getLong("statusId"));
 			inputVO.setUserId(user.getRegistrationID());
 		    resultStatus = appointmentService.sendSms(inputVO);
 		} catch (Exception e) {
