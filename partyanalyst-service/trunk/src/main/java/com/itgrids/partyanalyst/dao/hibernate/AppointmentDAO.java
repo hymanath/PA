@@ -78,22 +78,27 @@ public Long getAppointmentStatusId(Long appointmentId){
 		return (Long)query.uniqueResult();
 	}
 
-	public Integer updateApptStatusbyApptIds(List<Long> appointmemtIds, Date updatedTime,Long statusId) {
+	public Integer updateApptStatusbyApptIds(List<Long> appointmemtIds, Date updatedTime,Long statusId,Long userID) {
 		
 		Query query = getSession().createQuery(
-		 " update Appointment model set model.appointmentStatusId= :statusId, model.updatedTime = :updatedTime  where model.appointmentId in (:appointmemtIds) ");
+		 " update Appointment model set model.appointmentStatusId= :statusId, model.updatedTime = :updatedTime,model.updatedBy=:userID " +
+		 " where model.appointmentId in (:appointmemtIds) ");
 		query.setParameterList("appointmemtIds", appointmemtIds);
 		query.setTimestamp("updatedTime", updatedTime);
 		query.setParameter("statusId",statusId);
+		query.setParameter("userID", userID);
 		return query.executeUpdate();
 	}
 	
-	public Integer updatedAppointmentStatus(List<Long> appointmentIds,Long apptStatusId){
-		Query query=getSession().createQuery("update Appointment model set model.appointmentStatusId=:appointmentStatusId" +
+	public Integer updatedAppointmentStatus(List<Long> appointmentIds,Long apptStatusId,Long userId,Date date){
+		Query query=getSession().createQuery("update Appointment model set model.appointmentStatusId=:appointmentStatusId," +
+				" model.updatedTime=:date, model.updatedBy=:userId " +
 				" where " +
 				" model.appointmentId  in (:appointmentIds) ");
 		query.setParameterList("appointmentIds",appointmentIds);
 		query.setParameter("appointmentStatusId", apptStatusId);
+		query.setParameter("userId", userId);
+		query.setTimestamp("date", date);
 		return query.executeUpdate();
 	}
 	
