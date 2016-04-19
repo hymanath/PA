@@ -15,12 +15,14 @@ import com.itgrids.partyanalyst.model.AppointmentComment;
 		super(AppointmentComment.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getAppointmentCommentsForViewHistory(List<Long> appointmentIds)
 	{
 		
 		Query query = getSession().createQuery(" " +
 				"select model.appointment.appointmentId, model.appointment.reason, model.appointment.appointmentUniqueId," +
-	    		          "model.appointmentStatusId, model.appointmentStatus.status, model.comment, model.insertedTime,model.insertedUser.userName "+
+	    		          " model.appointmentStatusId, model.appointmentStatus.status, model.comment, model.insertedTime,model.insertedUser.firstName, " +
+	    		          " model.insertedUser.lastName "+
 			        " from AppointmentComment model " +
 			        " where model.appointment.isDeleted='N' and model.appointment.appointmentId in(:appointmentIds) order by model.insertedTime desc");
 	  
