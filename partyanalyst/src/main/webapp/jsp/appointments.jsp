@@ -613,7 +613,7 @@
  													<td style="width: 20%;background-color:#339967; text-align: center; padding: 20px 60px; "><h4 class="text-success" style="color:#fff !important;">Waiting <br> <span  id="waitingStatus">0</span></h4></td>
 													<td style="width: 20%; background-color:#336799; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Rescheduled  <br> <span  id="rescheduledStatus">0</span></h4></td>
 													<td style="width: 20%;background-color:#6A0208; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Cancelled  <br> <span  id="cancelledStatus">0</span></h4></td>
-													<td style="width: 20%; background-color:#996532; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>
+													<td style="width: 20%; background-color:#996532; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="width:110px;color:#fff !important;">Not Attended  <br> <span  id="notAttendedStatus">0</span></h4></td>
 													<td style="width: 20%; background-color:#234794; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Tentative  <br> <span  id="tentativeStatus">0</span></h4></td>												
 											  </tr>
 											</table>
@@ -1896,11 +1896,11 @@ $(".dropkickClass").dropkick();
 						}
 						
 						str+='<button class="btn btn-success btn-xs addMembersClass" attr_label_name="'+result[i].labelName+'" title="Add Appointments To '+result[i].labelName+'" id="addApptsId" style="margin-right: 5px;">Add Appts</button>';
-						/*if(totalCount !=null && totalCount >0 ){
+						if(totalCount !=null && totalCount >0 ){
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" title="Update Status Of Appointments" style="margin-right: 5px;">Update</button>';
 						}else{
 							str+='<button class="btn btn-success btn-xs updateLableAppointmentsCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" disabled style="margin-right: 5px;">Update</button>';
-						}*/
+						}
 						
 						if(totalCount !=null && totalCount >0 ){
 							str+='<button class="btn btn-success btn-xs labelStatusCls" attr_label_name="'+result[i].labelName+'" attr_label_id="'+result[i].labelId+'" attr_status="'+result[i].status+'" attr_status_id="'+result[i].statusId+'" title="Change The Status Of '+result[i].labelName+' Label" style="margin-right: 5px;">Status</button>';
