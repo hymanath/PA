@@ -29,6 +29,7 @@
 	<script src="js/yahoo/resize-min.js"></script> 
 	<script src="js/yahoo/layout-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	
 	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 	<script type="text/javascript" src="js/json/json-min.js"></script>
@@ -55,6 +56,10 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
+.tableC thead th , .tableC tr td
+{
+	font-size:12px;
+}
 .SelectPosition li{padding:5px;width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;list-style:none;cursor:pointer;}
 .daterangepicker_end_input{padding:0px !important;}
 .SelectPosition li:last-child{border-bottom:1px solid #ccc;}
@@ -75,6 +80,21 @@
 .advanceNameCls{heigth:30px;}
 .displayrow ul li{display: inline;padding:7px !important;}
 .alignmentprefrabledates{border: 1px solid rgb(221, 221, 221) !important;padding: 8px !important;margin-right: -3px !important;}
+
+.tableCol tr td
+{
+	border-right:5px solid #fff !important;
+	background:#ddd
+}
+.tableCol tr:nth-child(3) td
+{
+	border-bottom:5px solid #fff !important;
+}
+.bg_f2{background:#f2f2f2}
+.bg_e6{background:#e6e6e6}
+.pad_5{padding:2px 5px;}
+.pad_10{padding:8px !important;}
+.font10{font-size:10px;}
 
 </style>
 </head>
@@ -97,7 +117,7 @@
 					<div>
 					  <ul class="nav nav-tabs navTabsCustom" role="tablist">
 						<li role="presentation"  class="active refreshBlockDiv"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
-						<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
+						<li role="presentation"><a style="padding-left:0px;padding-right:0px" href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
 						<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="MngeAppntmntCls"><img src="dist/Appointment/img/manageappointments.png">Manage Appointments</a></li>
 						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm Appointments</a></li>
 						<li role="presentation"><a href="#advncdDashboard" aria-controls="advnceDashboard" role="tab" data-toggle="tab" class="advnceDashboardCls"><img src="dist/Appointment/img/confirmappointments.png">Advance Dashboard</a></li>
@@ -946,6 +966,7 @@
 <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 <script src="dist/Appointment/DragDrop/Sortable.js" type="text/javascript"></script>
 <script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
+<script src="dist/Appointment/AdvancedDashboard/advanceddashboard.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* Drag and Drop */
 
@@ -6301,13 +6322,18 @@ function getPanchayatsForReferPopup(){
 	function buildAllCandidateTypes(result){
 		$(".cloneCandidateTypeCls option").remove(); 
 		$(".addCandidateTypeCls option").remove(); 
+		$("#candidateType option").remove(); 
 			$(".cloneCandidateTypeCls").append('<option value="0">Select Candidate Type</option>'); 
 			$(".addCandidateTypeCls").append('<option value="select">Select Candidate Type</option>');
 			$(".addCandidateTypeCls").append('<option value="0" selected>All</option>');
+			$("#candidateType").append('<option value="select">Select Candidate Type</option>');
+			$("#candidateType").append('<option value="0" selected>All</option>');
 			for(var i in result){
 				$(".cloneCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				$(".addCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$("#candidateType").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
+			$("#candidateType").chosen();
 	}
 function getCommitteeRoles(){
     	
@@ -6637,72 +6663,25 @@ function getCommitteeRoles(){
 		$(".cloneMandalCls").val(0);
 		$(".cloneVillageCls").val(0);  */ 		
 	 }
-	$(document).on("click",".advnceDashboardCls",function(){
-		getTotalAppointmentStatus();
-		getAppointmentStatusCounts();
-		getPublicRepresentativeWiseAppointmentCnt();
-		getCommitteeLevelCount();
-	});
 	
-function getPublicRepresentativeWiseAppointmentCnt(){
-	var jsObj = {
-		task:""
-	}
+	function getPublicRepresentativeWiseAppointmentCnt(){
+		
+		var jsObj = {
+			task:""
+		}
 	$.ajax({
 		type : 'GET',
 		url : 'getPublicRepresentativeWiseAppointmentCntAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
-		buildPublicRepresentativeWiseAppointmentCnt(result);
+
+		if(result != null){
+			
+		}
+		
 	});     
 }
-
-function buildPublicRepresentativeWiseAppointmentCnt(result)
-{
-	 var str='';
-		str+='<div class="block">';
-			str+='<div class="row">';
-				str+='<div class="col-md-12">';
-					str+='<h4 class="text-capitalize">public representative wise appointments</h4>';
-					str+='<table class="table table-bordered">';
-						str+='<thead>';
-							str+='<tr>';
-								str+='<th></th>';
-								str+='<th class="text-capitalize text-center" colspan="2">total</th>';
-								str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
-								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
-							str+='</tr>';
-							str+='<tr>';
-								str+='<th class="text-capitalize">role</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-							str+='</tr>';
-						str+='</thead>';
-						str+='<tbody>';
-						for(var i in result){
-							str+='<tr>';
-								str+='<td>'+result[i].role+'</td>';
-								str+='<td>'+result[i].total+'</td>';
-								str+='<td>'+result[i].uniquecnt+'</td>';
-								str+='<td>'+result[i].scheduledCnt+'</td>';
-								str+='<td>'+result[i].uniqueScheduledCnt+'</td>';
-								str+='<td>'+result[i].requestedCnt+'</td>';
-								str+='<td>'+result[i].uniqueRequestedCnt+'</td>';
-							str+='</tr>';
-						}
-						str+='</tbody>';
-					str+='</table>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-		$("#advanceDshAppointmentPrWiseDiv").html(str);
-}
-	
 
 </script>
 </body>
