@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentLocVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
@@ -33,6 +34,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IAppointmentReportDashBoardService;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IMobileService;
@@ -75,6 +77,9 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<AppointmentStatusVO> appointmentStatusVOList;
 	private List<AppHistoryVO> historyList;
 	private AppointmentCountsVO appointmentCountsVO;
+	private IAppointmentReportDashBoardService appointmentReportDashBoardService;
+	private List<AppointmentLocVO> appointmentLocVOList;
+	
 	private  List<AppointmentCountVO> appointmentCountVOList;
 
 	public List<AppointmentCountVO> getAppointmentCountVOList() {
@@ -305,6 +310,23 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public void setAppointmentStatusVOList(
 			List<AppointmentStatusVO> appointmentStatusVOList) {
 		this.appointmentStatusVOList = appointmentStatusVOList;
+	}
+    
+	public IAppointmentReportDashBoardService getAppointmentReportDashBoardService() {
+		return appointmentReportDashBoardService;
+	}
+
+	public void setAppointmentReportDashBoardService(
+			IAppointmentReportDashBoardService appointmentReportDashBoardService) {
+		this.appointmentReportDashBoardService = appointmentReportDashBoardService;
+	}
+    
+	public List<AppointmentLocVO> getAppointmentLocVOList() {
+		return appointmentLocVOList;
+	}
+
+	public void setAppointmentLocVOList(List<AppointmentLocVO> appointmentLocVOList) {
+		this.appointmentLocVOList = appointmentLocVOList;
 	}
 
 	public String saveAppointment(){
@@ -1063,6 +1085,43 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 	}
 	
+	public String getCandiCountsByLocations(){
+		
+		try {
+			  jObj = new JSONObject(getTask());
+			  
+			  String startDateString   = jObj.getString("startDateString");
+			  String endDateString     = jObj.getString("endDateString");
+			  Long   appointmentUserId = jObj.getLong("appointmentUserId"); 
+			  String locationType      = jObj.getString("locationType");
+			  Long   stateId           = jObj.getLong("stateId");
+			  
+			  List<Long> candiTypeIds   = null;
+			  List<String> requestedTypes =null;
+			  
+			  JSONArray candidateTypeArray = jObj.getJSONArray("candidateTypeArray");
+			  if(candidateTypeArray != null && candidateTypeArray.length() > 0){
+				    candiTypeIds = new ArrayList<Long>(); 
+					for (int i = 0; i < candidateTypeArray.length(); i++) {
+						candiTypeIds.add((Long)candidateTypeArray.get(i));
+					}
+			   }
+			  
+			  JSONArray requestedTypeArray = jObj.getJSONArray("requestedTypeArray");
+			  if(requestedTypeArray != null && requestedTypeArray.length() > 0){
+				  requestedTypes = new ArrayList<String>(); 
+					for (int i = 0; i < requestedTypeArray.length(); i++) {
+						requestedTypes.add(requestedTypeArray.get(i).toString());
+					}
+			   }
+
+			appointmentLocVOList=appointmentReportDashBoardService.getCandiCountsByLocations(startDateString,endDateString,appointmentUserId,locationType,stateId,candiTypeIds,requestedTypes);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCandiCountsByLocations() method of AppointmentAction", e);
+		}
+	
+	return Action.SUCCESS;
+	}
 	public String getPublicRepresentativeWiseAppointmentCnt(){
 		try{
 			jObj = new JSONObject(getTask());
