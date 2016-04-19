@@ -271,7 +271,7 @@ function buildCadreDetails(result,jsObj){
 				str+='</span>';
 				str+='<div class="media-body">';
 				str+='<span class="pull-right"><input type="radio" name="otpMobileNo" value="'+result[i].mobileNo+'" class="otpCheckboxCls"/></span>'
-				str+='<h5 class="media-heading"><div class="col-md-6" id="nameId" attr_cadreId="'+result[i].tdpCadreId+'" style="cursor:pointer;"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
+				str+='<h5 class="media-heading"><div class="col-md-6" id="nameId" attr_cadreId="'+result[i].tdpCadreId+'"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
 				str+='<span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
 				str+='<li>Age:'+result[i].age+';</li>';
