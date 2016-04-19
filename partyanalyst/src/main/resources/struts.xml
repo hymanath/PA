@@ -11877,12 +11877,15 @@
 			<param name="root">appointmentCountsVO</param>
 		</result>
 	</action>
-	
-		<action name="getPublicRepresentativeWiseAppointmentCntAction" class="appointmentAction" method="getPublicRepresentativeWiseAppointmentCnt">
+	<action name="getPublicRepresentativeWiseAppointmentCntAction" class="appointmentAction" method="getPublicRepresentativeWiseAppointmentCnt">
 		<result type="json" name="success">
 			<param name="root">appointmentCountVOList</param>
 		</result>
 	</action>
-	
+	<action name="getCommitteeLevelAppmentsAction" class="appointmentAction" method="getCommitteeLevelAppointments">
+		<result type="json" name="success">
+			<param name="root">appointmentCountVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      

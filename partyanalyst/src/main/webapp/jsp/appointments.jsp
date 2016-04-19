@@ -6635,6 +6635,7 @@ function getCommitteeRoles(){
 		getTotalAppointmentStatus();
 		getAppointmentStatusCounts();
 		getPublicRepresentativeWiseAppointmentCnt();
+		getCommitteeLevelCount();
 	});
 	function getPublicRepresentativeWiseAppointmentCnt(){
 		
