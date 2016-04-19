@@ -1256,8 +1256,10 @@ function buildTotalAppointmentStatusForToday(result){
 		$(".messageBlock").hide()
 		$(".appointmentSettingsBLock").hide()
 		$(this).parent().parent().parent().find(".appointmentSettingsBLock ").show()
+		var cmpltAppSttsDrpKckId=$(this).parent().parent().parent().find(".appointmentSettingsBLock ").find("Select").attr("id");
+		$("#"+cmpltAppSttsDrpKckId).dropkick();
 	})
-	$(document).on("click",".messageIcon",function(e){
+    $(document).on("click",".messageIcon",function(e){
 		e.stopPropagation();
 		$(".updateAppointment").hide()
 		$(".messageBlock").hide()
@@ -3595,13 +3597,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label>Select Appointment Status</label>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="upAppointmentStatus" style="box-shadow:none;margin-top:0px;padding:0px;">';
+							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls"></span>';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="upAppointmentStatus'+i+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+									str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
 									str+='<option value="5">Not Attended</option>';
 									str+='<option value="6" >Reschedule</option>';
 									str+='<option value="7">Cancel</option>';
-									
 								str+='</select>';
 							str+='<div class="row m_top10">';
 							str+='<div class="col-xs-5">';
@@ -3616,13 +3618,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</div>';
 							str+='</div>';
 							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="upCommingcommentTxt" style="display:none;padding:8px;"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' upCommingcommentTxtCls commentCls" id="upCommingcommentTxt" style="display:none;padding:8px;"></textarea>';
 							
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="upsmsTextId" style="display:none;"></textarea>';
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' upCommingSmsTextCls smsCls" id="upsmsTextId" style="display:none;"></textarea>';
 							
 							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
-							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
 							
 						str+='</div>';
@@ -3678,7 +3680,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}
 		$("#upcomingAppointMentId").html(str);
 		$('[data-toggle="tooltip"]').tooltip();
-		$("#upAppointmentStatus").dropkick();
+		//$("#upAppointmentStatus").dropkick();
 		if(!flag)
 		$(".upcomingSetting").hide();
 		$(".upcomedateCls").daterangepicker({singleDatePicker:true});
@@ -3726,8 +3728,33 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	
 	$(document).on("click",".appointmentStatus",function() {
 	
-		
-		var appointmentId = $(this).attr("appointmentId");
+	   var apptId = $(this).attr("appointmentid");
+	   
+	  
+	   var commentVal = $('#completecommentTxt'+apptId).val();
+	  
+	
+	  
+	
+	
+	     $(this).parents().parents().find("span.updtAppntmntSmsCmmntErrCls").html(" ");
+		 var isVldtCmmntClsExist=$(this).parent().find(".commentCls").hasClass("vldtCmmntCls");
+		 var isvldtSmsClsExist=$(this).parent().find(".smsCls").hasClass("vldtSmsCls");
+		  if(isVldtCmmntClsExist){
+			   var commentText=$(this).parent().find(".vldtCmmntCls").val();
+			   if(commentText==" " || commentText==undefined || commentText.trim().length==0){
+				   $(this).parents().parents().find("span.updtAppntmntSmsCmmntErrCls").html("Please enter comment.");
+			       return;
+		       } 
+		   }
+		   if(isvldtSmsClsExist){
+			   var smsText=$(this).parent().find(".vldtSmsCls").val();
+			   if(smsText==" " || smsText==undefined || smsText.trim().length==0){
+			   	 $(this).parents().parents().find("span.updtAppntmntSmsCmmntErrCls").html("Please enter sms.");
+			     return;
+		       }  
+		   }
+		 var appointmentId = $(this).attr("appointmentId");
 		$(".msgDiv"+appointmentId).html("").css("color","");;
 		var statusId;
 		var smsCheck = false;
@@ -3760,12 +3787,20 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			$(".msgDiv"+appointmentId).html("Updated Successfully..").css("color","green");
-			setTimeout(function(){
- $(".msgDiv"+appointmentId).html("");
-},2000);
+			setTimeout(function(){$(".msgDiv"+appointmentId).html("");},2000);   
+           /*   $(".commentCls").attr("placeholder", "Please Enter Comment...").val("");
+			$(".smsCls").attr("placeholder", "Please Enter Sms...").val("");
+			$(".commentCls").hide();
+			$(".smsCls").hide();
+			$('.showCmmtBox').attr('checked', false);
+			$('.showSmsBox').attr('checked', false);
+			$(".appointmentSettingsBLock").hide();   */
 		});
 	})
 	
+	function clearAppFields(){
+		alert("you called me");
+	}
 	
 	$(document).on("click",".updateAll",function() {
 		console.log(searchJobj)
@@ -3913,8 +3948,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label>Select Appointment Status</label>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="InAppointmentStatus" style="box-shadow:none;margin-top:0px;padding:0px;">';
+							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'"></span>';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="InAppointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+								   str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
 									str+='<option value="5">Not Attended</option>';
 									str+='<option value="6" >Reschedule</option>';
@@ -3934,13 +3970,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</div>';
 							str+='</div>';
 							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="InProgresscommentTxt" style="display:none;padding:8px;"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' inProgresscommentTxtCls commentCls" id="InProgresscommentTxt'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="InsmsTextId" style="display:none;"></textarea>';
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' inProgressSmsTextCls smsCls" id="InsmsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
 							
 							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
-							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
 							
 						str+='</div>';
@@ -3997,7 +4033,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			
 		str+='</div>';
 		$("#inprogreessAppointMentId").html(str);
-		$("#InAppointmentStatus").dropkick();
+	//	$("#InAppointmentStatus").dropkick();
 		 $('[data-toggle="tooltip"]').tooltip();
 		if(!flag)
 			$(".inprogressSetting").hide();	
@@ -4070,9 +4106,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
-								str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label>Select Appointment Status</label>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="completeAppointmentStatus" style="box-shadow:none;margin-top:0px;padding:0px;">';
+							str+='<div class="appointmentSettingsBLock arrow_box">';
+							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'"></span>';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="completeAppointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+									str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
 									str+='<option value="5">Not Attended</option>';
 									str+='<option value="6" >Reschedule</option>';
@@ -4092,13 +4129,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</div>';
 							str+='</div>';
 							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'"" id="completecommentTxt" style="display:none;padding:8px;"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' completecommentTxtCls commentCls" id="completecommentTxt'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="completesmsTextId" style="display:none;"></textarea>';
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' completesmsTextCls smsCls" id="completesmsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
 							
 							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
-							str+='<button class="btn btn-block btn-success appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
 							
 						str+='</div>';
@@ -4157,32 +4194,50 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='No Data Available';	
 		}
 		$("#completedAppointMentId").html(str);
-		$("#completeAppointmentStatus").dropkick();
+		//$("#completeAppointmentStatus").dropkick();
 		$('[data-toggle="tooltip"]').tooltip();
 		if(flag == false)
 		$(".completedSetting").hide();
 	}
+	
 		$(document).on("click",".showCmmtBox",function(){
-			
-			$("#completecommentTxt").show();
-			$("#InProgresscommentTxt").show();
-			$("#upCommingcommentTxt").show();
+			//$("#completecommentTxt").show();
+		    //$("#InProgresscommentTxt").show();
+			//$("#upCommingcommentTxt").show();
+				$(this).parents().find(".completecommentTxtCls").show();
+				$(this).parents().find(".inProgresscommentTxtCls").show();
+				$(this).parents().find(".upCommingcommentTxtCls").show();
+				$(this).parents().find(".commentCls").addClass("vldtCmmntCls");
 			if($(this).prop("checked") == false){
-				 $("#completecommentTxt").hide();
-				$("#InProgresscommentTxt").hide();
-				$("#upCommingcommentTxt").hide(); 
+				 $(this).parents().find(".completecommentTxtCls").hide();
+				 $(this).parents().find(".inProgresscommentTxtCls").hide();
+				 $(this).parents().find(".upCommingcommentTxtCls").hide();
+				 $(this).parents().find(".commentCls").removeClass("vldtCmmntCls");
+				 $(this).parents().find(".commentCls").attr("placeholder", "Please Enter Comment...").val("");
+				  $(".updtAppntmntSmsCmmntErrCls").html(" ");
+				//$("#InProgresscommentTxt").hide();
+				//$("#upCommingcommentTxt").hide();
+				//$("#completecommentTxt").hide();
 			}
 		});
 		$(document).on("click",".showSmsBox",function(){
-			
-			$("#upsmsTextId").show();
-			$("#InsmsTextId").show();
-			$("#completesmsTextId").show();
+			//$("#upsmsTextId").show();
+			//$("#InsmsTextId").show();
+			//$("#completesmsTextId").show();
+				$(this).parents().find(".completesmsTextCls").show();
+				$(this).parents().find(".inProgressSmsTextCls").show();
+				$(this).parents().find(".upCommingSmsTextCls").show();
+				$(this).parents().find(".smsCls").addClass("vldtSmsCls");
 			if($(this).prop("checked") == false){
-				 $("#upsmsTextId").hide();
-				 $("#InsmsTextId").hide();
-				 $("#completesmsTextId").hide();
-				
+				 $(this).parents().find(".completesmsTextCls").hide();
+				 $(this).parents().find(".inProgressSmsTextCls").hide();
+				 $(this).parents().find(".upCommingSmsTextCls").hide();
+				 $(this).parents().find(".smsCls").removeClass("vldtSmsCls");
+				 $(this).parents().find(".smsCls").attr("placeholder", "Please Enter Sms...").val("");
+				 $(".updtAppntmntSmsCmmntErrCls").html(" ");
+		        // $("#upsmsTextId").hide();
+				// $("#InsmsTextId").hide();
+				 //$("#completesmsTextId").hide();
 			}
 		});
 </script>
