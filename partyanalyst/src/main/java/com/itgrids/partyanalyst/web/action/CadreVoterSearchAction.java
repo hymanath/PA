@@ -231,7 +231,7 @@ public String execute(){
 			String otp = jobj.getString("otp");
 			
 			status = cadreVoterSearchService.validateOTP(mobileNo,refNo,otp);
-			
+			//status = "Success";
 		} catch (Exception e) {
 			LOG.error("Exception raised in validateOTP method in CadreVoterSearchAction action", e);
 		}
