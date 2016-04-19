@@ -3221,6 +3221,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		var jsObj={
 			labelId :labelId,
 			callFrom : "print",
+			labelName:labelName,
 			apptuserId:$("#appointmentUserSelectBoxId").val()
 		}
 		$.ajax({
