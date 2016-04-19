@@ -37,7 +37,7 @@
 	</div>
 </div
 <div class="row">
-  <div class="col-md-12" id="advanceDshAppointmentPrWiseDiv">
+  <div class="col-md-12" >
     <div class="block">
       <div class="row">
         <div class="col-md-12">
