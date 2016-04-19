@@ -418,53 +418,46 @@ public class SmsSenderService implements ISmsSenderService{
 	    
 	  }
 	
-	public SmsHistory sendSMS(Long userId,String moduleName ,boolean isEnglish, String messageStr,String mobileNos)
+	public SmsHistory sendSMS(Long userId,String moduleName ,boolean isEnglish, String message,String mobilenumber)
 	{
 	    
 	    try {
-	     String[] mobileNosStr = mobileNos.split(",");
-	      String mobilenumber = "";
-	      
-	      if(mobileNosStr != null && mobileNosStr.length >0)
-	      {
-	        for (int i = 0; i < mobileNosStr.length; i++) {
-	          if(i>0)
-	            mobilenumber = mobilenumber+","+mobileNosStr[i];
-	          else
-	            mobilenumber = mobileNosStr[i];
-	        }
-	      }
-	      
-	      SmsHistory smsHistory = saveInSmsHistoryDetails(messageStr,userId,moduleName,mobilenumber);
-	      String message = messageStr;
-	  	  
-			HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
-			client.getHttpConnectionManager().getParams().setConnectionTimeout(
-				Integer.parseInt("30000"));
-			
-			PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
-			
-			post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
-			post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
-			post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
-		    post.addParameter("mobilenumber", mobilenumber);
-			post.addParameter("message", message);
-			post.addParameter("mtype", isEnglish ? "N" : "OL");
-			post.addParameter("DR", "Y");
-			
-			/* PUSH the URL */
-			int statusCode = client.executeMethod(post);
-			
-			if (statusCode != HttpStatus.SC_OK) {
-				LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
-			     return null;
-			}
-			else
-				return smsHistory;
+	    	 if(mobilenumber.trim().length() > 0)
+	    	 {
+	    		 if(mobilenumber.endsWith(","))
+	    			 mobilenumber = mobilenumber.substring(0,mobilenumber.length()-1);
+	    		 
+	    		 SmsHistory smsHistory = saveInSmsHistoryDetails(message,userId,moduleName,mobilenumber);
+	    		 
+	    		 HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+	    		 client.getHttpConnectionManager().getParams().setConnectionTimeout(
+	    				 Integer.parseInt("30000"));
+				
+	    		 PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+	    		 
+	    		 post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+	    		 post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+	    		 post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+	    		 post.addParameter("mobilenumber", mobilenumber);
+	    		 post.addParameter("message", message);
+	    		 post.addParameter("mtype", isEnglish ? "N" : "OL");
+	    		 post.addParameter("DR", "Y");
+				
+				/* PUSH the URL */
+				int statusCode = client.executeMethod(post);
+				
+				if (statusCode != HttpStatus.SC_OK) {
+					LOG.error("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+				     return null;
+				}
+				else
+					return smsHistory;
+	    	}
+	    	 else
+	    		 return null;
 	    } catch (Exception e) {
 	    	 return null;
 	    }
-	    
 	  }
 	
 	public SmsHistory saveInSmsHistoryDetails(final String message,final Long userId,final String moduleName,final String... phoneNumbers)
@@ -482,6 +475,7 @@ public class SmsSenderService implements ISmsSenderService{
 			smsHistory.setUserId(userId);
 			smsHistory.setSentDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
 			smsHistory.setSmsModule(smsModule);
+			smsHistory.setSmsContent(message);
 			smsHistory = smsHistoryDAO.save(smsHistory);
 			
 			for(String mobileNo : phoneNumbers)
@@ -490,9 +484,9 @@ public class SmsSenderService implements ISmsSenderService{
 				smsHistoryMobileNo.setSmsHistory(smsHistory);
 				smsHistoryMobileNo.setMobileNumber(mobileNo.trim());
 				smsHistoryMobileNo.setInsertedTime(dateUtilService.getCurrentDateAndTimeInStringFormat());
-				smsHistoryMobileNoDAO.save(smsHistoryMobileNo);
+				smsHistoryMobileNo = smsHistoryMobileNoDAO.save(smsHistoryMobileNo);
+				smsHistory = smsHistoryMobileNo.getSmsHistory();
 			}
-			
 			return smsHistory;
 			
 		}catch (Exception e) {
