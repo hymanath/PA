@@ -1051,7 +1051,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		      
 		      otp = String.valueOf(number).substring(0,6);
 		      
-		      String messageStr = "Verification code: "+otp+" for ref no: "+refNo;
+		      String messageStr = "OTP number: "+otp+" for ref no: "+refNo;
 		      
 		      SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
 		      
