@@ -501,7 +501,16 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		
 		try{
 			jObj = new JSONObject(getTask());
-			 resultStatus=appointmentService.deleteAppointmentLabel(jObj.getLong("labelId"),jObj.getString("remarks"));
+			session = request.getSession();
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if(registrationVO == null || registrationVO.getRegistrationID() == null){
+				return ERROR;
+			}
+		
+			if(registrationVO!=null){
+				resultStatus=appointmentService.deleteAppointmentLabel(jObj.getLong("labelId"),jObj.getString("remarks"),registrationVO.getRegistrationID());
+			}
+			 
 		}catch(Exception e){
 			LOG.error("Exception raised at deleteAppointmentLabel() method of AppointmentAction", e);
 		}
