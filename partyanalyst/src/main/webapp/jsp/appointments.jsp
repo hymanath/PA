@@ -2933,6 +2933,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							
 							if(result[i].apptpreferableDates != null){							
 								str+='<span>'+result[i].apptpreferableDates+'</span>';
+							}else if(result[i].dateType != null && result[i].dateType.trim()!="" && result[i].maxDate != null && result[i].minDate != null){
+								str+='<span>'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+') </span>';
 							}else{
 								str+='<span> - </span>';
 							}							
@@ -3421,8 +3423,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<span style="font-size: 16px;"><b>REQUESTED DATES :</b></span>';
 							if(result[i].apptpreferableDates != null && result[i].dateTypeId == 1){
 								str+='<span>'+result[i].apptpreferableDates+'</span>';
-							}else if(result[i].apptpreferableDates != null && result[i].dateTypeId > 1){ 
-								str+='<span>'+result[i].dateType.toUpperCase()+' : '+ result[i].minDate +' - '+result[i].maxDate+'</span>';
+							}else if(result[i].apptpreferableDates == null && result[i].dateTypeId > 1){ 
+								str+='<span>'+result[i].dateType+' ( '+ result[i].minDate +' to '+result[i].maxDate+')</span>';
 							}else{
 								str+='<span> - </span>';
 							}
@@ -4352,6 +4354,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											
 											if(result[i].apptpreferableDates != null){							
 												str+='<span>'+result[i].apptpreferableDates+'</span>';
+											}else if(result[i].dateType != null && result[i].dateType.trim() != "" && result[i].minDate != null && result[i].maxDate != null){
+												str+='<span>'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+')</span>';
 											}else{
 												str+='<span> - </span>';
 											}							
@@ -5347,9 +5351,11 @@ function buildTimeSlotsTable(result){
 							
 							if(result[i].apptpreferableDates != null){							
 								str+='<span>'+result[i].apptpreferableDates+'</span>';
+							}else if(result[i].apptpreferableDates == null && result[i].maxDate != null && result[i].minDate != null && result[i].dateType != null && result[i].dateType.trim() != ""){
+								str+='<span>'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+')</span>';
 							}else{
 								str+='<span> - </span>';
-							}							
+							}						
 							//str+='<span>2016-04-15</span>';
 						str+='</div>';
 							
