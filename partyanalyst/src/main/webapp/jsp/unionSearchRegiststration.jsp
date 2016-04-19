@@ -119,8 +119,8 @@ label
 						-->
 						<input type="hidden" value="" id="hiddenCadreId"/>
 						<div class="">
-							<img src='images/icons/cadreSearch.gif' class="offset7"  id="searchDataImg" class="col-md-4 col-md-offset-2" style="display:none"/>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<img src='images/icons/cadreSearch.gif' class="offset7"  id="searchDataImg" class="col-md-4 col-md-offset-2" style="height: 250px; padding-bottom: 26px; margin-top: -38px;display:none;"/>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreMemberListCls">
 								<div id="topPaginationDivId" class="paginationDivId"></div>
 								<div class="well well-sm" style="border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
 								<div id="paginationDivId"  class="paginationDivId"></div>
