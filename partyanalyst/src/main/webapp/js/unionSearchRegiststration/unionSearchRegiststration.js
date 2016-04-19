@@ -102,6 +102,10 @@ function getVoterDetailsBySearch(){
 	}).done(function(result){
 		if(result.subList != null && result.subList.length > 0){
 			buildVoterDetails(result.subList);
+		}else{
+			$(".cadreMemberListCls").show();
+			$('#cadreDetailsDiv').show();
+			$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 		}
 	});
 }
