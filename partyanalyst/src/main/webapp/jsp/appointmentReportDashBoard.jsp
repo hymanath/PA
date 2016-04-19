@@ -32,47 +32,10 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-12" id="advanceDshAppointmentPrWiseDiv">
-    <div class="block">
-      <div class="row">
-        <div class="col-md-12">
-          <h4 class="text-capitalize">public representative wise appointments</h4>
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th></th>
-                <th class="text-capitalize text-center" colspan="2">total</th>
-                <th class="text-capitalize text-center" colspan="2">requested</th>
-                <th class="text-capitalize text-center" colspan="2">appointment scheduled</th>
-              </tr>
-              <tr>
-                <th></th>
-                <th class="text-capitalize">total</th>
-                <th class="text-capitalize">unique</th>
-                <th class="text-capitalize">total</th>
-                <th class="text-capitalize">unique</th>
-                <th class="text-capitalize">total</th>
-                <th class="text-capitalize">unique</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>MP</td>
-                <td>40</td>
-                <td>40</td>
-                <td>40</td>
-                <td>40</td>
-                <td>40</td>
-                <td>40</td>
-              </tr>
-              
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="col-md-12" id="advanceDshAppointmentPrWiseDiv">
+		
+	</div>
+</div
 <div class="row">
   <div class="col-md-12" id="advanceDshAppointmentPrWiseDiv">
     <div class="block">
