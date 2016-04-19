@@ -56,10 +56,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
-.tableC thead th , .tableC tr td
-{
-	font-size:12px;
-}
+.tableC thead th , .tableC tr td{font-size:11px;}
 .SelectPosition li{padding:5px;width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;list-style:none;cursor:pointer;}
 .daterangepicker_end_input{padding:0px !important;}
 .SelectPosition li:last-child{border-bottom:1px solid #ccc;}
@@ -6677,11 +6674,56 @@ function getCommitteeRoles(){
 	}).done(function(result){ 
 
 		if(result != null){
-			
+			buildPublicRepresentativeWiseAppointmentCnt(result);
 		}
 		
 	});     
 }
+function buildPublicRepresentativeWiseAppointmentCnt(result)
+{
+	 var str='';
+		str+='<div class="block">';
+			str+='<div class="row">';
+				str+='<div class="col-md-12">';
+					str+='<h4 class="text-capitalize">public representative wise appointments</h4>';
+					str+='<table class="table table-bordered">';
+						str+='<thead>';
+							str+='<tr>';
+								str+='<th></th>';
+								str+='<th class="text-capitalize text-center" colspan="2">total</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
+							str+='</tr>';
+							str+='<tr>';
+								str+='<th class="text-capitalize">role</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								str+='<td>'+result[i].role+'</td>';
+								str+='<td>'+result[i].total+'</td>';
+								str+='<td>'+result[i].uniquecnt+'</td>';
+								str+='<td>'+result[i].scheduledCnt+'</td>';
+								str+='<td>'+result[i].uniqueScheduledCnt+'</td>';
+								str+='<td>'+result[i].requestedCnt+'</td>';
+								str+='<td>'+result[i].uniqueRequestedCnt+'</td>';
+							str+='</tr>';
+						}
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#advanceDshAppointmentPrWiseDiv").html(str);
+}
+	
 
 </script>
 </body>
