@@ -1,6 +1,7 @@
 
 $(".searchCls").click(function(){
-	$("#otpSuccessDiv").html("");
+	//$("#otpSuccessDiv").html("");
+	$("#errChkDivId").html("");
 	$("#nextStepId").hide();
 	$("#success").hide();
 	$("#fail").hide();
@@ -24,7 +25,8 @@ $(".searchCls").click(function(){
 	}
 });
 $(".searchTypeCls").click(function(){
-	$("#otpSuccessDiv").html("");
+	//$("#otpSuccessDiv").html("");
+	$("#errChkDivId").html("");
 	$("#success").hide();
 	$("#fail").hide();
 	$("#cadreDetailsDiv").html("");
@@ -59,6 +61,11 @@ $(".searchTypeCls").click(function(){
 	
 $("#searchId").click(function(){
 	//debugger;
+	$("#generateOtpId").hide();
+	$("#nextStepId").hide();
+	$("#success").hide();
+	$("#otpId").hide();
+	$("#otpId").val("");
 	$("#searchErrDiv").html("");
 	var searchText = $("#searchBy").val().trim();
 	var registeredChk = $('input[name="tdpCadreRadio"]:checked').val();
@@ -72,6 +79,7 @@ $("#searchId").click(function(){
 
 function getVoterDetailsBySearch(){
 	$('#searchErrDiv').html('');
+	$('#cadreDetailsDiv').html('');
 	var voterCardNo = $("#searchBy").val();
 	if($("#searchBy").val().length==0){
 		$('#searchErrDiv').html('Please enter voterCard No.');
@@ -101,9 +109,9 @@ function buildVoterDetails(result){
 		for(var i in result){
 			str+='<div class="media detailsCls" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border-bottom: 1px solid rgb(51, 51, 51);cursor:pointer;">';
 				
-				str+='<span href="#" class="media-left">';
-				str+='<img style="width: 64px; height: 64px;" src="images/Member_thamb_image.png" />';
-				str+='</span>';
+				//str+='<span href="#" class="media-left">';
+				//str+='<img style="width: 64px; height: 64px;" src="images/Member_thamb_image.png" />';
+				//str+='</span>';
 				str+='<div class="media-body">';
 				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].voterName+'';				
 				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
@@ -239,12 +247,14 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			{
 				$("#generateOtpId").show();
 				$("#otpId").show();
+				$("#otpId").val("");
 				buildCadreDetails(result.previousRoles,jsObj);
 			}
 			else
 			{
 				$("#generateOtpId").hide();
 				$("#otpId").hide();
+				$("#otpId").val("");
 				$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 			}
 		});
@@ -258,7 +268,7 @@ function buildCadreDetails(result,jsObj){
 		if(result != null)
 		{
 			for(var i in result)
-			{
+			{  
 				
 				if(result[i].deletedStatus == "MD"){
 					str+='<div class="media eachCadreMainDivCls" style="background: rgba(255, 0, 0, 0.1) none repeat scroll 0 0;padding: 5px;border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
@@ -270,17 +280,17 @@ function buildCadreDetails(result,jsObj){
 				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
-				str+='<span class="pull-right"><input type="radio" name="otpMobileNo" value="'+result[i].mobileNo+'" class="otpCheckboxCls"/></span>'
-				str+='<h5 class="media-heading"><div class="col-md-6" id="nameId" attr_cadreId="'+result[i].tdpCadreId+'"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
+				str+='<span class="pull-right"><input type="checkbox" name="otpMobileNo"  attr_cadreId="'+result[i].tdpCadreId+'" value="'+result[i].tdpCadreId+'" id="cadreCheckId'+i+'" class="otpCheckboxCls"/></span>'
+				str+='<h5 class="media-heading"><div id="nameId" attr_cadreId="'+result[i].tdpCadreId+'"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
 				str+='<span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
-				str+='<li>Age:'+result[i].age+';</li>';
-				str+='<li>Gender: '+result[i].gender+'</li>';
-				str+='<li>Mobile No: <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span></li>';
-				str+='<li>Caste: <span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
-				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
-				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</li>';
-				str+='<li>Registered Through: '+result[i].dataSourceType+'</li>';
+				str+='<li><span style="font-weight:bold;">Age:</span>'+result[i].age+';</li>';
+				str+='<li><span style="font-weight:bold;">Gender: </span>'+result[i].gender+'</span></li>';
+				str+='<li><span style="font-weight:bold;">Mobile No:</span> <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span></li><br>';
+				str+='<li><span style="font-weight:bold;">Caste: </span><span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
+				str+='<li><span style="font-weight:bold;">Voter ID:</span> '+result[i].voterCardNo+'</li><br>';
+				str+='<li><span style="font-weight:bold;">MemberShipNo:</span> '+result[i].memberShipCardId+'</li>';
+				str+='<li><span style="font-weight:bold;">Registered Through:</span> '+result[i].dataSourceType+'</li>';
 				if(result[i].deletedStatus == "MD"){
 					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
 				}
@@ -371,7 +381,7 @@ function generateOTPForMobileNo(){
 			data : {task:JSON.stringify(jsObj)} ,   
 		}).done(function(result){
 			if(result != null && result == "Success"){
-				$("#otpSuccessDiv").html("OTP sent to given number...");
+				//$("#otpSuccessDiv").html("OTP sent to given number...");
 				//$("#success").show();
 			}else{
 				//$("#fail").show();
@@ -405,7 +415,7 @@ function validateOTP(otp){
 		data : {task:JSON.stringify(jsObj)} ,   
 	}).done(function(result){
 		if(result != null && result=="Success"){
-			$("#otpSuccessDiv").html("success");
+			//$("#otpSuccessDiv").html("success");
 			$("#success").show();
 			$("#nextStepId").show();
 		}else{
@@ -413,8 +423,31 @@ function validateOTP(otp){
 		}
 	});
 }
+
+$(document).on("click",".otpCheckboxCls",function(){
+	$("#getOtpId").html("");
+	$("#errChkDivId").html("");
+	$this=$(this);
+	var count = $("input.otpCheckboxCls:checked").length;
+	if(count>1){
+		$('.otpCheckboxCls').each(function() { 
+                this.checked = false;                 
+        }); 
+		$(this).prop( "checked", true );
+	}
+	
+	
+});
+
 $(document).on("click","#nextStepId",function(){
-	var caderId=$(this).attr("attr_cadreId");//target="_blank"
+	var count = $("input.otpCheckboxCls:checked").length;
+	if(count==0){
+		$("#errChkDivId").html("Please Select Atleast One Checkbox.");
+		return;
+	}
+	var caderId = $('input[name="otpMobileNo"]:checked').val();//attr("attr_cadreId");
+	
+	//var caderId=$(this).attr("attr_cadreId");//target="_blank"
 	window.open("affiliatedGradiatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
 });
 
