@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
+
 import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
 import com.itgrids.partyanalyst.dto.AppointmentBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
+import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
@@ -74,8 +76,18 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<AppointmentStatusVO> appointmentStatusVOList;
 	private List<AppHistoryVO> historyList;
 	private AppointmentCountsVO appointmentCountsVO;
+	private  List<AppointmentCountVO> appointmentCountVOList;
 	
-	
+
+
+	public List<AppointmentCountVO> getAppointmentCountVOList() {
+		return appointmentCountVOList;
+	}
+
+	public void setAppointmentCountVOList(List<AppointmentCountVO> appointmentCountVOList) {
+		this.appointmentCountVOList = appointmentCountVOList;
+	}
+
 	public List<AppHistoryVO> getHistoryList() {
 		return historyList;
 	}
@@ -1050,6 +1062,17 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getCandidCountsByStates() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPublicRepresentativeWiseAppointmentCnt(){
+		try{
+			jObj = new JSONObject(getTask());
+			appointmentCountVOList = appointmentService.getPublicRepresentativeWiseAppointmentCnt();
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getPublicRepresentativeWiseAppointmentCnt() of AppointmentAction",e);
 		}
 		return Action.SUCCESS;
 	}
