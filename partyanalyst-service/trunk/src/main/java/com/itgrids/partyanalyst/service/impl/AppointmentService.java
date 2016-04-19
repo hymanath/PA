@@ -3186,7 +3186,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				removeTimeSlotExistedAppointments(labelId,finalList,appointmentsMap);
 			}
 			
-			if(callFrom.equalsIgnoreCase("print"))
+			if(callFrom.equalsIgnoreCase("print") && finalList != null && finalList.size() > 0)
 			{
 				String pdfPath = pdfViewForAppointment(finalList,labelName);
 				finalList.get(0).setPdfPath(pdfPath);
@@ -3231,15 +3231,16 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					 int rowspan = 0;
 					 int colSpan = 0;
 					 columnWidths = new float[]{4f, 3f, 3f, 3f,3f};
-					
+					 
 					 for(AppointmentDetailsVO vo : resultList)
 					 {
-						 
+						 	
 						 	
 						 	border.setActive(true);
-						 
-						   Phrase p = new Phrase();
-						   document.add(new Paragraph(p));
+						 	Paragraph p = new Paragraph();
+						  
+						   //document.add(new Paragraph(p));
+						  
 						   Font f = new Font(FontFamily.TIMES_ROMAN, 1, Font.NORMAL, new BaseColor(0, 0, 0));
 						   p.add("Appointment ID : "+vo.getAptUniqueCode()  + " ");
 						   p.add(new Chunk("  "));
@@ -3269,13 +3270,14 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   p.add(new Chunk("Purpose : -")); 
 						   p.setFont(f);
 						  
-						   document.add(p);
-						   
+						  // document.add(p);
+						  // border.setActive(false);
 						  if(vo.getSubList() != null && vo.getSubList().size() > 0)
 						  {
 						  for(AppointmentDetailsVO subVo : vo.getSubList())
 						 {
 							   PdfPTable table = new PdfPTable(columnWidths);
+							
 								 //special font sizes
 								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
@@ -3334,12 +3336,16 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									 
 								 }
 							 }
-							 document.add(table); 
+							 p.add(table);
+							 document.add(p); 
+							// document.add(table); 
+							
 						 }
 						  }
 						  else
 						  {
 							  PdfPTable table = new PdfPTable(columnWidths);
+							//  border.setActive(true);
 								 //special font sizes
 								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
@@ -3352,12 +3358,14 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   insertCell(table, "APPOINTMENT PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
 							   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
 							   insertCell(table, "No Data Available ", Element.ALIGN_CENTER, 3, bf12,0);
-							   document.add(table); 
+							   //document.add(table); 
+							   p.add(table);
+							   document.add(p); 
 						  }
-						
+						  //border.setActive(false);
 					 }
 					 
-					
+						border.setActive(false);
 					 document.close();
 					  return randomNum+".pdf"; 
 					 
