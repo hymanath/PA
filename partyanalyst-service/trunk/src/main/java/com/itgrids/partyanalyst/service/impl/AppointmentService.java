@@ -3233,7 +3233,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					 
 					 int rowspan = 0;
 					 int colSpan = 0;
-					 columnWidths = new float[]{4f, 3f, 3f, 4f,3f};
+					 columnWidths = new float[]{5f, 3f, 3f, 5f,3f};
 					 
 					 for(AppointmentDetailsVO vo : resultList)
 					 {
@@ -3384,9 +3384,25 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								  }
 						  else
 							  p2.add(new Chunk(""));
+						/*  border.setActive(true);
+						  Paragraph p3 = new Paragraph();*/
+						  float[] columnWidths2 = new float[]{6f,3f,3f};
+						  PdfPTable table3 = new PdfPTable(columnWidths2);
+						  //special font sizes
+						   Font bfBold12 = new Font(FontFamily.HELVETICA, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+						  
+						  insertCell(table3, "APPOINTMENT COMMENTS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+						  insertCell(table3, "APPOINTMENT DATE", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+						  insertCell(table3, "TIME", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+						  
+						  insertCell(table3, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+						  insertCell(table3, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+						  insertCell(table3, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+						  p2.add(table3);
 						 document.add(p); 
 						 document.add(p1);
 						 document.add(p2);
+						
 						 document.add(Chunk.NEWLINE);
 					 }
 					 
