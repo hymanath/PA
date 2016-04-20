@@ -3232,7 +3232,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					 
 					 int rowspan = 0;
 					 int colSpan = 0;
-					 columnWidths = new float[]{4f, 3f, 3f, 3f,3f};
+					 columnWidths = new float[]{4f, 3f, 3f, 4f,3f};
 					 
 					 for(AppointmentDetailsVO vo : resultList)
 					 {
@@ -3258,7 +3258,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   p.add(new Chunk("Requested Date : "+vo.getDateString(),f));
 						   else
 							   p.add(new Chunk("Requested Date : - ")+ " ");  
-						   
+						   p.add(new Chunk("  "));
 						   if(vo.getStatus() != null && vo.getStatus().length() > 0)
 							   p.add(new Chunk("Status : "+vo.getStatus(),f));
 						   else
@@ -3270,14 +3270,14 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						   else
 							   p.add(new Chunk("Purpose : -")); 
 						 
-						   Paragraph p1 = null;
+						   Paragraph p1 = new Paragraph();
 						  if(vo.getSubList() != null && vo.getSubList().size() > 0)
 						  {
 						  for(AppointmentDetailsVO subVo : vo.getSubList())
 						 {
 							  border.setActive(true);
-							    p1 = new Paragraph();
-							   p1.add(new Chunk("")); 
+							  p1.add(new Chunk(""));  
+							 // 
 							 
 							   PdfPTable table = new PdfPTable(columnWidths);
 							  
@@ -3311,12 +3311,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								  sb.append("Constituency : " +subVo.getConstituency()+"\n"); 
 							  else
 								  sb.append("Constituency : - "+"\n" ); 
-							
+							 
 							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
-								 insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,subVo.getSubList().size());
+								 insertCell(table, sb.toString(), Element.ALIGN_LEFT, colSpan, bf12,subVo.getSubList().size());
 							 else
 							 {
-								   insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,0); 
+								   insertCell(table, sb.toString(), Element.ALIGN_LEFT, colSpan, bf12,0); 
 								   // add a couple of blank lines
 									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
 									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
@@ -3333,25 +3333,27 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									 insertCell(table, aptVo.getAptUniqueCode(), Element.ALIGN_CENTER, colSpan, bf12,0);
 									 insertCell(table, aptVo.getDateString(), Element.ALIGN_CENTER, colSpan, bf12,0);
 									 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() > 1)
-										 insertCell(table, aptVo.getDateType() +":" + aptVo.getMinDate() +"-"+aptVo.getMaxDate(), Element.ALIGN_CENTER, colSpan, bf12,0);
+										 insertCell(table, aptVo.getDateType() +":" + aptVo.getMinDate() +"-"+aptVo.getMaxDate(), Element.ALIGN_LEFT, colSpan, bf12,0);
 									 else if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() == 1)
-										 insertCell(table, aptVo.getApptpreferableDates(), Element.ALIGN_CENTER, colSpan, bf12,0);
+										 insertCell(table, aptVo.getApptpreferableDates(), Element.ALIGN_LEFT, colSpan, bf12,0);
 									 else
-									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+									 insertCell(table, "", Element.ALIGN_LEFT, colSpan, bf12,0);
 									 
 									 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
 								 }
 							 }
 							 p1.add(table);
-							 
-							
+							// p1.add(new Chunk(""));
+							  p1.add("\n");
+							// p1.add(new Chunk("")); 
+							// p1.add(Chunk.NEWLINE);
 						 }
 						  }
 						  else
 						  {
 							  border.setActive(true);
-							    p1 = new Paragraph();
-							   p1.add(new Chunk("")); 
+							 p1.add(new Chunk(""));
+							  
 							  PdfPTable table = new PdfPTable(columnWidths);
 						
 								 //special font sizes
@@ -3368,6 +3370,10 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   insertCell(table, "No Data Available ", Element.ALIGN_CENTER, 3, bf12,0);
 							   //document.add(table); 
 							   p1.add(table);
+							   p1.add("\n");
+							  // p1.add(new Chunk(""));
+							  // p1.add(Chunk.NEWLINE);
+							   //p1.add(Chunk.NEWLINE);
 						  }
 						  Paragraph p2 = new Paragraph();
 						  Font bf12 = new Font(FontFamily.TIMES_ROMAN, 8); 
@@ -3382,11 +3388,14 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								  }
 						  else
 							  p2.add(new Chunk(""));
+						 
+						 // p2.add(Chunk.NEWLINE);
 						
 						  document.add(p); 
-						  document.add(p1); 
+						  document.add(p1);
+						 
 						  document.add(p2);
-						
+						  document.add(Chunk.NEWLINE);
 					 }
 					 
 						border.setActive(false);
