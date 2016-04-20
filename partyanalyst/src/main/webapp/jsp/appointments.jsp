@@ -3598,7 +3598,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls"></span>';
+							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls" id="errSpanId'+result[i].appointmentId+'"></span>';
 								 str+='<select class="status'+result[i].appointmentId+' status" id="upAppointmentStatus'+i+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
 									str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
@@ -3609,12 +3609,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<div class="row m_top10">';
 							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
+							str+='<input type="checkbox" value="2"  name="upcomeRadio" id="comentChkId'+result[i].appointmentId+'" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
 							str+='</div>';
 							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" value="3"  name="upcomeRadio" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
+							str+='<input type="checkbox" value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
 							str+='</label>';
 							str+='</div>';
 							str+='</div>';
@@ -3729,13 +3729,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	
 	$(document).on("click",".appointmentStatus",function() {
 	
-	   var apptId = $(this).attr("appointmentid");
+		var apptId = $(this).attr("appointmentid");
+		$("#completeAppointmentStatus"+apptId)
 	   
-	  
-	   var commentVal = $('#completecommentTxt'+apptId).val();
-	  
 	
-	  
+		
 	
 	
 	     $(this).parents().parents().find("span.updtAppntmntSmsCmmntErrCls").html(" ");
@@ -3772,6 +3770,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			smsText = $(".smsTextCls"+appointmentId).val().trim();
 		}
 		var commentTxt = $(".commentTextCls"+appointmentId).val().trim();
+		
+		
+		
+		
 		var jsObj={
 			appointmentId : appointmentId,
 			date : '',
@@ -3949,7 +3951,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'"></span>';
+							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'" id="errSpanId'+result[i].appointmentId+'"></span>';
 								 str+='<select class="status'+result[i].appointmentId+' status" id="InAppointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
 								   str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
@@ -3961,12 +3963,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<div class="row m_top10">';
 							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
+							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' id="comentChkId'+result[i].appointmentId+'" status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
 							str+='</div>';
 							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" value="3"  name="upcomeRadio" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
+							str+='<input type="checkbox" value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
 							str+='</label>';
 							str+='</div>';
 							str+='</div>';
@@ -4108,7 +4110,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
-							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'"></span>';
+							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'" id="errSpanId'+result[i].appointmentId+'"></span>';
 								 str+='<select class="status'+result[i].appointmentId+' status" id="completeAppointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
 									str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
@@ -4120,12 +4122,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<div class="row m_top10">';
 							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" value="2"  name="upcomeRadio" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
+							str+='<input type="checkbox" value="2"  name="upcomeRadio" id="comentChkId'+result[i].appointmentId+'" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
 							str+='</div>';
 							str+='<div class="col-xs-5">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" value="3"  name="upcomeRadio" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
+							str+='<input type="checkbox" value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
 							str+='</label>';
 							str+='</div>';
 							str+='</div>';
