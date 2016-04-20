@@ -23,4 +23,6 @@ public interface ISchedulerService {
 	public Long updateTdpCadreCasteInfoDetails();
 	public Long updateTdpCadreInfoDetails();
 	public String updateTrainingCampSpeakersDetails();
+	
+	public void changeApptStatusToAttended(Date fromDate,Long attendedStatusId,Long fixedStatusId);
 }

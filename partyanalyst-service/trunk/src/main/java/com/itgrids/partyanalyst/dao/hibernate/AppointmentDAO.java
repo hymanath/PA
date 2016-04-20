@@ -102,6 +102,16 @@ public Long getAppointmentStatusId(Long appointmentId){
 		return query.executeUpdate();
 	}
 	
+	public List<Long> getAppointmentIdsByDateByStatus(Date date,Long apptStatusId) {
+		
+		Query query = getSession().createQuery("select  distinct model.appointmentId " +
+			"from    Appointment model "+
+		    "where   model.isDeleted='N' and  date(model.updatedTime) =:date and model.appointmentStatusId = :apptStatusId");
+					
+		query.setDate("date", date);
+		query.setParameter("apptStatusId", apptStatusId);
+		return query.list();
+	}
 
 }
 	
