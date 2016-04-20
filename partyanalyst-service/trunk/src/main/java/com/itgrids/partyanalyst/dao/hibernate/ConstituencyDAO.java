@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -1732,4 +1733,19 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		
 	}
 
+	
+	/* Temporarily message sending query 
+	 * @Autor 	: srishailam Pittala
+	 * @mailId 	: srishailam.itgrids.hyd@gmail.com
+	 * @Date 	: 20th April,2016
+	 * @return 	: Object[]	
+	 * @input 	: date
+	 * */
+	
+	public List<Object[]> getTemaporarilyMobileNoByDate(Date date){
+		Query query = getSession().createSQLQuery(" select DISTINCT C.constituency_id,TSD.designation,TSD.mobile_no,TSD.invited_count,TSD.attended_count,TSD.percentage," +
+				" TSD.ramark from temp_sms_details TSD,constituency C where TSD.constituency_id = C.constituency_id and date(TSD.inserted_time) =:date ");
+		query.setDate("date", date);
+		return query.list();
+	}
 }
