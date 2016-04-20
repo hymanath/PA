@@ -14,7 +14,7 @@ $(".searchCls").click(function(){
 	$("#getOtpId").html("");
 	$('#searchErrDiv').html('');
 	var choice = $(this).val();
-	if(choice=="no"){searchBy
+	if(choice=="no"){
 		$("#searchBy").attr("placeholder","Search By VoterCard Number");
 		$(".inputChoice").hide();
 		$("#searchBy").val("");
@@ -116,14 +116,14 @@ function buildVoterDetails(result){
 	
 	if(result != null){
 		for(var i in result){
-			str+='<div class="media detailsCls" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border-bottom: 1px solid rgb(51, 51, 51);cursor:pointer;">';
+			str+='<div class="media " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border-bottom: 1px solid rgb(51, 51, 51);cursor:pointer;">';
 				
 				//str+='<span href="#" class="media-left">';
 				//str+='<img style="width: 64px; height: 64px;" src="images/Member_thamb_image.png" />';
 				//str+='</span>';
 				str+='<div class="media-body">';
 				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].voterName+'';				
-				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+'  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button> </h5>';
 				str+='<ul class="list-inline">';
 				str+='<li>Age:'+result[i].age+'</li>';
 				str+='<li>Gender: '+result[i].gender+'</li>';
@@ -298,11 +298,11 @@ function buildCadreDetails(result,jsObj){
 				str+='<ul class="list-inline">';
 				str+='<li><span style="font-weight:bold;">Age:</span>'+result[i].age+';</li>';
 				str+='<li><span style="font-weight:bold;">Gender: </span>'+result[i].gender+'</span></li>';
-				str+='<li><span style="font-weight:bold;">Mobile No:</span> <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span></li><br>';
+				str+='<li><span style="font-weight:bold;">Mobile No:</span> <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span><input type="hidden" id="mobileNo'+result[i].tdpCadreId+'" value="'+result[i].mobileNo+'"/></li><br>';
 				str+='<li><span style="font-weight:bold;">Caste: </span><span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
 				str+='<li><span style="font-weight:bold;">Voter ID:</span> '+result[i].voterCardNo+'</li><br>';
 				str+='<li><span style="font-weight:bold;">MemberShipNo:</span> '+result[i].memberShipCardId+'</li>';
-				str+='<li><span style="font-weight:bold;">Registered Through:</span> '+result[i].dataSourceType+'</li>';
+				//str+='<li><span style="font-weight:bold;">Registered Through:</span> '+result[i].dataSourceType+'</li>';
 				if(result[i].deletedStatus == "MD"){
 					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
 				}
@@ -374,19 +374,21 @@ function buildCadreDetails(result,jsObj){
 function generateOTPForMobileNo(){
 	$("#success").hide();
 	$("#fail").hide();
-	var mobileNo = $('input[name="otpMobileNo"]:checked').val();
+	var memberShipNo = $('input[name="otpMobileNo"]:checked').val();
+	var mobileNo = $('#mobileNo'+memberShipNo+'').val();
 	$("#getOtpId").html("");
 	if (typeof(mobileNo) != "undefined"){
 		$("#getOtpId").html("");
 		var refNo = Math.floor((Math.random() * 1000000) + 1);
 		$("#randomRefNo").val(refNo);
 		if(refNo >0)
-			$("#getOtpId").html("OTP Reference No: "+refNo+"(Note: If you not get OTP.click Generate OTP once again.)");
+			$("#getOtpId").html(" OTP Reference No: "+refNo+" (Note: If you not get OTP, click Generate OTP once again.)");
 		var jsObj =
 		{    
 			mobileNo : mobileNo,
 			refNo : refNo
 		}
+		//console.log(mobileNo);
 		
 		$.ajax({    
 			type : "POST",
@@ -412,8 +414,11 @@ $("#otpId").keyup(function(){
 	}
 });
 function validateOTP(otp){
-	var mobileNo = $('input[name="otpMobileNo"]:checked').val();
+
+	var memberShipNo = $('input[name="otpMobileNo"]:checked').val();
+	var mobileNo = $('#mobileNo'+memberShipNo+'').val();
 	var refNo = $("#randomRefNo").val();
+	$("#fail,#success").hide();
 	//alert(mobileNo+"::"+refNo+"::"+otp);
 	var jsObj =
 	{    
