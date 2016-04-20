@@ -3565,35 +3565,35 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
-								str+='<span style="font-weight:bold;color:#2095F4" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Fixed")
 							{
-								str+='<span style="font-weight:bold;color:#650199" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Attended")
 							{
-								str+='<span style="font-weight:bold;color:#4EAF50" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Not Attended")
 							{
-								str+='<span style="font-weight:bold;color:#FF9800" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Rescheduled")
 							{
-								str+='<span style="font-weight:bold;color:#9800CD" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Cancelled")
 							{
-								str+='<span style="font-weight:bold;color:#CC0001" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Tentative")
 							{
-								str+='<span style="font-weight:bold;color:#673301" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Void")
 							{
-								str+='<span style="font-weight:bold;color:#656533" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
@@ -3903,35 +3903,35 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
-								str+='<span style="font-weight:bold;color:#2095F4" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Fixed")
 							{
-								str+='<span style="font-weight:bold;color:#650199" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Attended")
 							{
-								str+='<span style="font-weight:bold;color:#4EAF50" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Not Attended")
 							{
-								str+='<span style="font-weight:bold;color:#FF9800" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Rescheduled")
 							{
-								str+='<span style="font-weight:bold;color:#9800CD" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Cancelled")
 							{
-								str+='<span style="font-weight:bold;color:#CC0001" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Tentative")
 							{
-								str+='<span style="font-weight:bold;color:#673301" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Void")
 							{
-								str+='<span style="font-weight:bold;color:#656533" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
@@ -4061,35 +4061,35 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
-								str+='<span style="font-weight:bold;color:#2095F4" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Fixed")
 							{
-								str+='<span style="font-weight:bold;color:#650199" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Attended")
 							{
-								str+='<span style="font-weight:bold;color:#4EAF50" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Not Attended")
 							{
-								str+='<span style="font-weight:bold;color:#FF9800" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Rescheduled")
 							{
-								str+='<span style="font-weight:bold;color:#9800CD" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Cancelled")
 							{
-								str+='<span style="font-weight:bold;color:#CC0001" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Tentative")
 							{
-								str+='<span style="font-weight:bold;color:#673301" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Void")
 							{
-								str+='<span style="font-weight:bold;color:#656533" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
