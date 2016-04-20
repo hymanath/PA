@@ -3534,7 +3534,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				return status;
 			}
 			@SuppressWarnings("unused")
-			  public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId,String type,Long timeSlotId,String commentTxt){
+			  public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId,String type,Long timeSlotId,String commentTxt,Long apptUserId){
 			    ResultStatus rs = new ResultStatus();
 			    try {
 			      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -3607,62 +3607,10 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				      
 				      
 				     //void appt status
-				       List<Object[]> candiList=appointmentCandidateRelationDAO.getApptCandidIdsAndInsertedTime(appointmentId);
-					      
-					      List<Long> apptCandiIds = null;
-					      Date insertedDate = null;
-					      if(candiList!=null && candiList.size()>0){
-					    	  insertedDate = candiList.get(0)[1]!=null?(Date)candiList.get(0)[1]:null;
-					    	  apptCandiIds = new ArrayList<Long>();
-					    	  for(Object[] obj : candiList) {
-					    		  apptCandiIds.add(obj[0]!=null ?(Long)obj[0]:0l);
-					    	  }
-					      }
-					      
-					      Map<Long,List<Long>> apptIdsMap = new HashMap<Long,List<Long>>();
-					      
-						 if(apptCandiIds!=null && apptCandiIds.size()>0){
-							 
-							int apptCandicount = apptCandiIds.size();
-							
-							List<Object[]> apptWithCandiIdsList = appointmentCandidateRelationDAO.checkApptsAsVoid(insertedDate,IConstants.APPOINTMENT_STATUS_WAITING,apptCandiIds);
-							if(apptWithCandiIdsList!=null && apptWithCandiIdsList.size()>0){
-								
-								for(Object[] obj : apptWithCandiIdsList){
-									
-									List<Long> candiIds= apptIdsMap.get((Long)obj[0]);
-									
-									if(candiIds==null){
-										candiIds = new ArrayList<Long>();
-										candiIds.add((Long)obj[1]);
-										apptIdsMap.put((Long)obj[0], candiIds);
-									}else{
-										candiIds.add((Long)obj[1]);
-									}
-								}
-							}
-							
-							List<Long> apptIds = new ArrayList<Long>();
-							if(apptIdsMap!=null && apptIdsMap.size()>0){
-								
-								for (Map.Entry<Long,List<Long>> entry : apptIdsMap.entrySet())
-								{
-									List<Long>  candiIds = entry.getValue();
-									if(candiIds!=null && candiIds.size()>0 ){
-										
-										if( apptCandiIds.containsAll(candiIds) && apptCandicount==candiIds.size()){
-											apptIds.add(entry.getKey());
-										}
-										
-									}
-								}
-							}
-							
-							if(apptIds!=null && apptIds.size()>0){
-								appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID,userId);
-							}
-						 }
-				      
+				     List<Long> apptIds = getAppointmentIdsForVoid(appointmentId,IConstants.APPOINTMENT_STATUS_WAITING,apptUserId);
+				     if(apptIds!=null && apptIds.size()>0){
+				    	 appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID,userId);
+				     }
 				      
 			      rs.setExceptionMsg("success");
 			      rs.setResultCode(0);
@@ -3870,11 +3818,13 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	{
 		ResultStatus result = new ResultStatus();
 		try{
-			
+			//status updation
 			Appointment appointment = appointmentDAO.get(inputVO.getAppointmentId());
 			appointment.setAppointmentStatusId(inputVO.getStatusId());;
 			appointment.setUpdatedBy(userId);
 			appointmentDAO.save(appointment);
+			
+			//SMS sending
 			if(inputVO.isIssmsChecked())
 			{
 				 List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
@@ -3886,10 +3836,17 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						 cadreRegistrationService.sendSMS(params[2].toString(), inputVO.getSmsText()); 
 					 }
 				 }
-				
 			}
 			
+			//commnts saving
 			getappointmentComments(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,inputVO.getCommented(),userId);
+			
+			//unvoid old appointments 
+			List<Long> apptIds =getAppointmentIdsForVoid(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_VOID,inputVO.getApptUserId());
+			
+			if(apptIds!=null && apptIds.size()>0){
+		    	 appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_WAITING,userId);
+		     }
 			
 			result.setMessage("success");
 		}
@@ -4962,5 +4919,56 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return returnList;
 		
+	}
+	
+	public List<Long> getAppointmentIdsForVoid(Long appointmentId,Long statusId,Long apptUserId){
+		List<Long> apptIds = new ArrayList<Long>();
+		List<Object[]> candiList=appointmentCandidateRelationDAO.getApptCandidIdsAndInsertedTime(appointmentId);
+	      
+	      List<Long> apptCandiIds = null;
+	      Date insertedDate = null;
+	      if(candiList!=null && candiList.size()>0){
+	    	  insertedDate = candiList.get(0)[1]!=null?(Date)candiList.get(0)[1]:null;
+	    	  apptCandiIds = new ArrayList<Long>();
+	    	  for(Object[] obj : candiList) {
+	    		  apptCandiIds.add(obj[0]!=null ?(Long)obj[0]:0l);
+	    	  }
+	      }
+	      
+	      Map<Long,List<Long>> apptIdsMap = new HashMap<Long,List<Long>>();
+	      
+	      if(apptCandiIds!=null && apptCandiIds.size()>0){
+	    	  int apptCandicount = apptCandiIds.size();
+			
+	    	  List<Object[]> apptWithCandiIdsList = appointmentCandidateRelationDAO.checkApptsAsVoid(insertedDate,statusId,apptCandiIds,apptUserId);
+	    	  if(apptWithCandiIdsList!=null && apptWithCandiIdsList.size()>0){
+	    		  
+	    		  for(Object[] obj : apptWithCandiIdsList){
+	    			  List<Long> candiIds= apptIdsMap.get((Long)obj[0]);
+					
+	    			  if(candiIds==null){
+	    				  candiIds = new ArrayList<Long>();
+	    				  candiIds.add((Long)obj[1]);
+	    				  apptIdsMap.put((Long)obj[0], candiIds);
+	    			  }else{
+	    				  candiIds.add((Long)obj[1]);
+	    			  }
+	    		  }
+	    	  }
+			
+	    	  if(apptIdsMap!=null && apptIdsMap.size()>0){
+				
+	    		  for (Map.Entry<Long,List<Long>> entry : apptIdsMap.entrySet())
+	    		  {
+	    			  List<Long>  candiIds = entry.getValue();
+	    			  if(candiIds!=null && candiIds.size()>0 ){
+	    				  if( apptCandiIds.containsAll(candiIds) && apptCandicount==candiIds.size()){
+	    					  apptIds.add(entry.getKey());
+	    				  }
+	    			  }
+	    		  }
+	    	  }
+	      }
+	      return apptIds;
 	}
 }
