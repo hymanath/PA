@@ -11,6 +11,7 @@ private String subject;
 private String mobileNo;
 private String time;
 private String appointmentStatus;
+private String appointmentStatusColor;
 private String scheduleType;
 private String designation;
 private String createdBy;
@@ -98,6 +99,12 @@ public String getAppointmentStatus() {
 }
 public void setAppointmentStatus(String appointmentStatus) {
 	this.appointmentStatus = appointmentStatus;
+}
+public String getAppointmentStatusColor() {
+	return appointmentStatusColor;
+}
+public void setAppointmentStatusColor(String appointmentStatusColor) {
+	this.appointmentStatusColor = appointmentStatusColor;
 }
 public Long getUserId() {
 	return userId;
