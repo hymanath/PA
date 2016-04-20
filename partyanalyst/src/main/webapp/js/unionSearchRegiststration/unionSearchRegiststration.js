@@ -228,10 +228,18 @@ function getCadreDetailsBySearchCriteria(startIndex){
 				}
 		}
 		
-		else if(mobileNo.trim().length != 10)
+		if(!(mobileNo.trim().length == 10 || mobileNo.trim().length == 12))
 		{
 			$('#searchErrDiv').html('Invalid Mobile No.');
 			return;				
+		}
+		
+		var mobileNoLen = mobileNo.length;
+		if(mobileNoLen==12 && mobileNo.substr(0,2)=="91"){
+			mobileNo = mobileNo.substr(2,10);
+		}else if(mobileNoLen==12 && mobileNo.substr(0,2)!="91"){
+			$('#searchErrDiv').html('Invalid Mobile No.');
+			return;
 		}
 	}
 	
