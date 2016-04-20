@@ -859,7 +859,7 @@ public String getCandidateWiseDetails(){
 	        timeSlotId =0l;
 	      }
 	      resultStatus = appointmentService.setTimeSlotForAppointment(jObj.getLong("appointmentId"),jObj.getString("date"),jObj.getString("fromTime"),jObj.getString("toTime"),user.getRegistrationID()
-	          ,jObj.getString("type"),timeSlotId,jObj.getString("commentTxt"));
+	          ,jObj.getString("type"),timeSlotId,jObj.getString("commentTxt"),jObj.getLong("apptUserId"));
 	    } catch (Exception e) {
 	      LOG.error("Exception raised at setTimeSlotForAppointment", e);
 	    }
@@ -893,6 +893,7 @@ public String getCandidateWiseDetails(){
 			inputVO.setSmsText(jObj.getString("smsText"));
 			inputVO.setStatusId(jObj.getLong("statusId"));
 			inputVO.setCommented(jObj.getString("commentTxt"));
+			inputVO.setApptUserId(jObj.getLong("apptuserId"));
 			resultStatus = appointmentService.updateAppointmentStatus(inputVO,user.getRegistrationID());
 		} catch (Exception e) {
 			LOG.error("Exception raised at updateAppointmentStatus", e);
