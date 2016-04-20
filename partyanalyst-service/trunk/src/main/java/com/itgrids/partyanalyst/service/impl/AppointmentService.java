@@ -2849,6 +2849,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								vo.setSubject(params[4] != null ? params[4].toString() : "");
 								vo.setStatusId(params[9] != null ? (Long)params[9] : null);
 								vo.setAppointmentStatus(params[10] != null ? params[10].toString() : "");
+								vo.setAppointmentStatusColor(params[16]!=null ? params[16].toString():"");
 								vo.setTime(convertDate);
 								vo.setToTime(convertDate1);
 								vo.setFromDate(params[8].toString());

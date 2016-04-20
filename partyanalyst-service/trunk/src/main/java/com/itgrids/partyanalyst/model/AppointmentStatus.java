@@ -17,6 +17,7 @@ public class AppointmentStatus extends BaseModel {
 	
 	private Long appointmentStatusId;
 	private String status;
+	private String statusColor;
 	private Long   orderNo;
 	
 	@Id
@@ -34,6 +35,13 @@ public class AppointmentStatus extends BaseModel {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	@Column(name = "status_color")
+	public String getStatusColor() {
+		return statusColor;
+	}
+	public void setStatusColor(String statusColor) {
+		this.statusColor = statusColor;
 	}
 	@Column(name = "order_no")
 	public Long getOrderNo() {
