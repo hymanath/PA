@@ -1330,7 +1330,7 @@
 		<property name="trainingCampAttendanceDAO" ref="trainingCampAttendanceDAO"/>
 		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
 		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO"/>
-		
+		<property name="appointmentDAO" ref="appointmentDAO"/>
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1551,6 +1551,8 @@
 			<ref bean="mahanaduEventInfo" />
 			<ref bean="mahanaduVisitInfoTrig" />
 			<ref bean="updateTrainingCampSpeakers" />
+			<ref bean="insertTriggerForEveryDayChangeApptStatus" />
+			
 			<!--<ref bean="schForSri" /> 
 			<ref bean="schForSri1" />
 			<ref bean="schForSri2" />
@@ -3059,6 +3061,16 @@
 	<bean id="appointmentReportDashBoardService" class="com.itgrids.partyanalyst.service.impl.AppointmentReportDashBoardService">
 		<property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO"/>
 		<property name="appointmentCandidateTypeDAO" ref="appointmentCandidateTypeDAO"/>
+	</bean>
+	
+	<bean name="insertTriggerForEveryDayChangeApptStatus" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayChangeApptStatus" />
+    	<property name="cronExpression" value="0 0 18 * * ?" />
+	</bean>
+	
+	<bean name="everyDayChangeApptStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runTheBatchJobForEveryDayChangeApptStatus" />
 	</bean>
 	
 </beans>		
