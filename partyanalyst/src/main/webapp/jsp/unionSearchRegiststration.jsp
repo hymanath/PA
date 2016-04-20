@@ -96,27 +96,7 @@ label
 						<div class="col-md-2">
 							<button class="btn btn-success m_top25" id="searchId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;">SEARCH</button>
 						</div>
-						<!--
-                        <div class="col-md-12">
-                        	<ul class="registeredMem">
-                            	<li>
-                                	<div class="media">
-                                    	<div class="media-left">
-                                        	<img class="media-object thumbnail" src="" alt="Profile Image"/>
-                                        </div>
-                                        <div class="media-body">  
-	                                        <span class="pull-right">
-                                            	<input type="checkbox"/>
-                                            </span>
-                                        	<p>Name: Ashok Dakavaram</p>
-                                            <p>Mobile No: XXXXX-XX766</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
 						
-						-->
 						<input type="hidden" value="" id="hiddenCadreId"/>
 						<div class="col-md-12">
 							<img src='images/icons/cadreSearch.gif' class="offset3"  id="searchDataImg" class="col-md-4 col-md-offset-2" style="height: 250px; padding-bottom: 26px;display:none;"/>
@@ -132,7 +112,7 @@ label
 						<div id="getOtpId" style="color:red;"></div>
 							<div class="col-md-4">
 							<!--	<div class="success" id="otpSuccessDiv"></div>-->
-								<button id="generateOtpId" class="btn btn-success m_top20" style="display:none;" onclick="generateOTPForMobileNo();">GENERATE OTP</button>
+								<button id="generateOtpId" class="btn btn-success m_top20" style="display:none;" onclick="generateOTPForMobileNo(this);">GENERATE OTP</button>
 							</div>
 							<div class="col-md-2">
 								<input type="text" class="form-control m_top20" id="otpId" style="display:none;"/>
@@ -155,78 +135,13 @@ label
         </div>
     </div>
 </div>	
-	<!-- Modal for Remove cadre -->
-			<div class="modal fade" id="removeModalDivId">
-			  <div class="modal-dialog modal-sm">
-				<div class="modal-content">
-				  <div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="removeModalTitleId" style="color:red;">Removing Cadre</h4>
-				  </div>
-				  <div class="modal-body" id="ramoveModalBodyDivId">
-					<div id="errorDivId" style="color:red"></div>
-					<div id="successDivId"></div>
-					<div class="row">
-						<div class="col-md-12">
-							<div><b>Cadre Name :</b> <span id="cadreName"></span></div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12 m_top10">
-							<div><b>Reason <span style="color:red">*</span>:</b>
-								<select id="reasonSelectId" class="form-control">
-									<option value="0">Select Reason</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12 m_top10">
-							<div><b>Remark <span style="color:red">*</span>:</b> 
-							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
-						</div>
-					</div>
-					</div>
-				  <div class="modal-footer">
-					<button type="button" class="btn btn-primary btn-sm" id="saveRemovingCadreDetailsId">Remove</button>
-					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
-				  </div>
-				</div><!-- /.modal-content -->
-			  </div><!-- /.modal-dialog -->
-			</div><!-- /.modal -->
-			<div class="modal fade" id="modalDivId">
-			  <div class="modal-dialog">
-				<div class="modal-content">
-				
-				  <div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="modalTitleId" style="color:red;"><span id="modalTitleNameId"></span></h4>
-				  </div>
-				  
-				  <div class="modal-body" id="modalBodyDivId"></div>
-				  
-				  <div class="modal-footer">
-					<span class="pull-left" id="modalSuccessId"></span>
-					<span id="modalfooterNameId"></span>
-					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
-				  </div>
-				  
-				</div>
-			  </div>
-			</div>
-
+	
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="js/tdpCadreAjax/tdpCadreAjax.js" type="text/javascript"></script>
 <script src="js/unionSearchRegiststration/unionSearchRegiststration.js" type="text/javascript"></script>
+<script src="js/smsTransactions/smsTransactions.js" type="text/javascript"></script>
 <script>
-$(document).keypress(function(e) {
-	if(e.keyCode==13){
-		getCadreDetailsBySearchCriteria(0);
-	}
-});
-
-
 </script>
 </body>
 </html>
