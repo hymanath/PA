@@ -3565,41 +3565,41 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
-								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#2095F4" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Fixed")
 							{
-								str+='<span style="font-weight:bold;color:#650199">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#650199" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Attended")
 							{
-								str+='<span style="font-weight:bold;color:#4EAF50">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#4EAF50" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Not Attended")
 							{
-								str+='<span style="font-weight:bold;color:#FF9800">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#FF9800" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Rescheduled")
 							{
-								str+='<span style="font-weight:bold;color:#9800CD">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#9800CD" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Cancelled")
 							{
-								str+='<span style="font-weight:bold;color:#CC0001">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#CC0001" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Tentative")
 							{
-								str+='<span style="font-weight:bold;color:#673301">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#673301" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Void")
 							{
-								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#656533" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls" id="errSpanId'+result[i].appointmentId+'"></span>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="upAppointmentStatus'+i+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
 									str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
 									str+='<option value="5">Not Attended</option>';
@@ -3619,9 +3619,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</div>';
 							str+='</div>';
 							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' upCommingcommentTxtCls commentCls" id="upCommingcommentTxt" style="display:none;padding:8px;"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' upCommingcommentTxtCls commentCls" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' upCommingSmsTextCls smsCls" id="upsmsTextId" style="display:none;"></textarea>';
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' upCommingSmsTextCls smsCls" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
 							
 							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
@@ -3728,54 +3728,40 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	}) */
 	
 	$(document).on("click",".appointmentStatus",function() {
-	
-		var apptId = $(this).attr("appointmentid");
-		$("#completeAppointmentStatus"+apptId)
-	   
-	
 		
-	
-	
-	     $(this).parents().parents().find("span.updtAppntmntSmsCmmntErrCls").html(" ");
-		 var isVldtCmmntClsExist=$(this).parent().find(".commentCls").hasClass("vldtCmmntCls");
-		 var isvldtSmsClsExist=$(this).parent().find(".smsCls").hasClass("vldtSmsCls");
-		  if(isVldtCmmntClsExist){
-			   var commentText=$(this).parent().find(".vldtCmmntCls").val();
-			   if(commentText==" " || commentText==undefined || commentText.trim().length==0){
-				   $(this).parents().parents().find("span.updtAppntmntSmsCmmntErrCls").html("Please enter comment.");
-			       return;
-		       } 
-		   }
-		   if(isvldtSmsClsExist){
-			   var smsText=$(this).parent().find(".vldtSmsCls").val();
-			   if(smsText==" " || smsText==undefined || smsText.trim().length==0){
-			   	 $(this).parents().parents().find("span.updtAppntmntSmsCmmntErrCls").html("Please enter sms.");
-			     return;
-		       }  
-		   }
-		 var appointmentId = $(this).attr("appointmentId");
-		$(".msgDiv"+appointmentId).html("").css("color","");;
-		var statusId;
+		var apptId = $(this).attr("appointmentid");
 		var smsCheck = false;
 		var smsText = '';
-		$(".status"+appointmentId).each(function(){
-			
-				statusId = $(this).val();
-			
-		})
+		var commentTxt = '';
+		var statusId;
 		
-		if($(".smsCheckedCls"+appointmentId).is(':checked'))
-		{
-			smsCheck = true;
-			smsText = $(".smsTextCls"+appointmentId).val().trim();
+		$("#errSpanId"+apptId).html("");
+		if($("#appointmentStatus"+apptId).val()==0){
+			$("#errSpanId"+apptId).html("Please Select Status.");
+			return;
+		}else{
+			statusId = $("#appointmentStatus"+apptId).val();
 		}
-		var commentTxt = $(".commentTextCls"+appointmentId).val().trim();
-		
-		
-		
+		if($("#smsChkId"+apptId).is(':checked')){
+			if($("#smsTextId"+apptId).val().trim() == "" || $("#smsTextId"+apptId).val() == null || $("#smsTextId"+apptId).val().length == 0){
+				$("#errSpanId"+apptId).html("Please Enter SMS Text.");
+				return;	
+			}else{
+				smsCheck = true;
+				smsText = $("#smsTextId"+apptId).val().trim();
+			}
+		}
+		if($("#comentChkId"+apptId).is(':checked')){
+			if($("#commentTxtId"+apptId).val().trim() == "" || $("#commentTxtId"+apptId).val() == null || $("#commentTxtId"+apptId).val().length == 0){
+				$("#errSpanId"+apptId).html("Please Enter Comment.");
+				return;	
+			}else{
+				commentTxt = $("#commentTxtId"+apptId).val().trim();
+			}
+		}
 		
 		var jsObj={
-			appointmentId : appointmentId,
+			appointmentId : apptId,
 			date : '',
 			time : '',
 			smsCheck : smsCheck,
@@ -3789,15 +3775,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$(".msgDiv"+appointmentId).html("Updated Successfully..").css("color","green");
-			setTimeout(function(){$(".msgDiv"+appointmentId).html("");},2000);   
-           /*   $(".commentCls").attr("placeholder", "Please Enter Comment...").val("");
-			$(".smsCls").attr("placeholder", "Please Enter Sms...").val("");
-			$(".commentCls").hide();
-			$(".smsCls").hide();
-			$('.showCmmtBox').attr('checked', false);
-			$('.showSmsBox').attr('checked', false);
-			$(".appointmentSettingsBLock").hide();   */
+			if(result != null && result.message=="success"){
+				$(".msgDiv"+apptId).html("Updated Successfully.").css("color","green");
+				setTimeout(function(){$(".msgDiv"+apptId).html("");},2000);
+			}else{
+				$(".msgDiv"+apptId).html("Please try Again.").css("color","red");
+			}
+			   
 		});
 	})
 	
@@ -3919,40 +3903,40 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
-								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#2095F4" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Fixed")
 							{
-								str+='<span style="font-weight:bold;color:#650199">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#650199" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Attended")
 							{
-								str+='<span style="font-weight:bold;color:#4EAF50">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#4EAF50" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Not Attended")
 							{
-								str+='<span style="font-weight:bold;color:#FF9800">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#FF9800" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Rescheduled")
 							{
-								str+='<span style="font-weight:bold;color:#9800CD">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#9800CD" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Cancelled")
 							{
-								str+='<span style="font-weight:bold;color:#CC0001">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#CC0001" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Tentative")
 							{
-								str+='<span style="font-weight:bold;color:#673301">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#673301" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Void")
 							{
-								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#656533" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'" id="errSpanId'+result[i].appointmentId+'"></span>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="InAppointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
 								   str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
 									str+='<option value="5">Not Attended</option>';
@@ -3973,9 +3957,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</div>';
 							str+='</div>';
 							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' inProgresscommentTxtCls commentCls" id="InProgresscommentTxt'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' inProgresscommentTxtCls commentCls" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' inProgressSmsTextCls smsCls" id="InsmsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' inProgressSmsTextCls smsCls" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
 							
 							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
@@ -4077,41 +4061,41 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							if(result[i].appointmentStatus == "Waiting")
 							{
-								str+='<span style="font-weight:bold;color:#2095F4">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#2095F4" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Fixed")
 							{
-								str+='<span style="font-weight:bold;color:#650199">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#650199" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Attended")
 							{
-								str+='<span style="font-weight:bold;color:#4EAF50">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#4EAF50" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Not Attended")
 							{
-								str+='<span style="font-weight:bold;color:#FF9800">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#FF9800" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Rescheduled")
 							{
-								str+='<span style="font-weight:bold;color:#9800CD">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#9800CD" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Cancelled")
 							{
-								str+='<span style="font-weight:bold;color:#CC0001">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#CC0001" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Tentative")
 							{
-								str+='<span style="font-weight:bold;color:#673301">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#673301" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							else if(result[i].appointmentStatus == "Void")
 							{
-								str+='<span style="font-weight:bold;color:#656533">'+result[i].appointmentStatus+'</span>';
+								str+='<span style="font-weight:bold;color:#656533" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							}
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
 							
 							str+='<div class="appointmentSettingsBLock arrow_box">';
 							str+='<label>Select Appointment Status</label><span style="color:red;" class="updtAppntmntSmsCmmntErrCls'+i+'" id="errSpanId'+result[i].appointmentId+'"></span>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="completeAppointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
 									str+='<option value="0">Select Status</option>';
 									str+='<option value="4">Attended</option>';
 									str+='<option value="5">Not Attended</option>';
@@ -4132,9 +4116,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</div>';
 							str+='</div>';
 							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' completecommentTxtCls commentCls" id="completecommentTxt'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' completecommentTxtCls commentCls" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' completesmsTextCls smsCls" id="completesmsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+' completesmsTextCls smsCls" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
 							
 							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
