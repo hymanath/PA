@@ -6746,6 +6746,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
 								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
 							str+='</tr>';
 							str+='<tr>';
+							// str +='<th></th>';
 								str+='<th class="text-capitalize">role</th>';
 								str+='<th class="text-capitalize">total</th>';
 								str+='<th class="text-capitalize">unique</th>';
@@ -6761,10 +6762,11 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
 								str+='<td>'+result[i].role+'</td>';
 								str+='<td>'+result[i].total+'</td>';
 								str+='<td>'+result[i].uniquecnt+'</td>';
-								str+='<td>'+result[i].scheduledCnt+'</td>';
-								str+='<td>'+result[i].uniqueScheduledCnt+'</td>';
 								str+='<td>'+result[i].requestedCnt+'</td>';
 								str+='<td>'+result[i].uniqueRequestedCnt+'</td>';
+								str+='<td>'+result[i].scheduledCnt+'</td>';
+								str+='<td>'+result[i].uniqueScheduledCnt+'</td>';
+								
 							str+='</tr>';
 						}
 						str+='</tbody>';

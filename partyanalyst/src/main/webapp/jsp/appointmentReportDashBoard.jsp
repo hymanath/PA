@@ -156,39 +156,29 @@ function buildCommitteeLvlAppntmnts(result){
 	if(result != null){
 			str +='<table class="table table-bordered">';
             str +='<thead>';
-            str +='<tr>';
-            str +='<th></th>';
-            str +='<th class="text-capitalize text-center" colspan="2">total</th>';
-            str +='<th class="text-capitalize text-center" colspan="2">requested</th>';
-            str +='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
-            str +='</tr>';
-            str +='<tr>';
-            str +='<th></th>';
-            str +='<th class="text-capitalize">total</th>';
-            str +='<th class="text-capitalize">unique</th>';
-            str +='<th class="text-capitalize">total</th>';
-            str +='<th class="text-capitalize">unique</th>';
-            str +='<th class="text-capitalize">total</th>';
-            str +='<th class="text-capitalize">unique</th>';
-            str +='</tr>';
-            str +='</thead>';
-			str +=' <tbody>';
+           str+='<tr>';
+								str+='<th></th>';
+								str+='<th class="text-capitalize text-center" colspan="2">total</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
+							str+='</tr>';
+         	str+='<tr>';
+							// str +='<th></th>';
+								str+='<th class="text-capitalize">role</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
 		   
 		for(var i in result){
             str +='<tr>';
-			if(result[i].role == 'State'){
-				str +='<td>State Committee Members</td>';
-			}else if(result[i].role == 'District'){
-				str +='<td>District Committee Members</td>';
-			}else if(result[i].role == 'Mandal'){
-				str +='<td>Mandal Committee Members</td>';
-			}else if(result[i].role == 'Town'){
-				str +='<td>Town Committee Members</td>';
-			}else if(result[i].role == 'Ward'){
-				str +='<td>Ward Committee Members</td>';
-			}else if(result[i].role == 'Village'){
-				str +='<td>Village Committee Members</td>';
-			}
+		
+				str +='<td>'+result[i].role+'</td>';
             str +='<td style="text-align:center">'+result[i].total+'</td>';
             str +='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
             str +='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
