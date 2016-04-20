@@ -3223,7 +3223,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					 titleParagraph.add(new Chunk(labelName +" Appointment Members"));
 					 titleParagraph.setAlignment(Element.ALIGN_CENTER);
 					 titleParagraph.setFont(font);
-					 titleParagraph.setSpacingAfter(10);
+					 titleParagraph.setSpacingAfter(5);
 					 titleParagraph.setFont(font);
 					 document.add(titleParagraph);
 					 int tableWidth = 5;
@@ -3239,46 +3239,46 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						 	
 						 	border.setActive(true);
 						 	Paragraph p = new Paragraph();
-						  
+						 	p.setAlignment(Element.ALIGN_CENTER);
 						   //document.add(new Paragraph(p));
 						  
-						   Font f = new Font(FontFamily.TIMES_ROMAN, 1, Font.NORMAL, new BaseColor(0, 0, 0));
-						   p.add("Appointment ID : "+vo.getAptUniqueCode()  + " ");
-						   p.add(new Chunk("  "));
-						   p.add(new Chunk("  "));
+						   Font f = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0));
+						   p.add(new Chunk("Appointment ID : "+vo.getAptUniqueCode(),f));
+						   p.add(new Chunk("  ",f));
+						   //p.add(new Chunk("  "));
 						   
 						   if(vo.getPriority() != null && vo.getPriority().length() > 0)
-							   p.add(new Chunk("Priority : "+vo.getPriority() + " "));
+							   p.add(new Chunk("Priority : "+vo.getPriority(),f));
 						   else
 							   p.add(new Chunk("Priority : -") + " ");  
 						   
-						   p.add(new Chunk("  "));p.add(new Chunk("  "));
+						   p.add(new Chunk("  "));
+						   //p.add(new Chunk("  "));
 						   
 						   if(vo.getDateString() != null && vo.getDateString().length() > 0)
-							   p.add(new Chunk("Requested Date : "+vo.getDateString()+ " "));
+							   p.add(new Chunk("Requested Date : "+vo.getDateString(),f));
 						   else
 							   p.add(new Chunk("Requested Date : - ")+ " ");  
 						   
 						   if(vo.getStatus() != null && vo.getStatus().length() > 0)
-							   p.add(new Chunk("Status : "+vo.getStatus()+ " "));
+							   p.add(new Chunk("Status : "+vo.getStatus(),f));
 						   else
 							   p.add(new Chunk("Status : - ")+ " ");  
 						   p.add(Chunk.NEWLINE);
 						  
 						   if(vo.getSubject() != null && vo.getSubject().length() > 0)
-							   p.add(new Chunk("Purpose : "+vo.getSubject()));
+							   p.add(new Chunk("Purpose : "+vo.getSubject(),f));
 						   else
 							   p.add(new Chunk("Purpose : -")); 
-						   p.setFont(f);
-						  
-						  // document.add(p);
-						  // border.setActive(false);
+						 
 						  if(vo.getSubList() != null && vo.getSubList().size() > 0)
 						  {
 						  for(AppointmentDetailsVO subVo : vo.getSubList())
 						 {
+							  border.setActive(true);
+							 
 							   PdfPTable table = new PdfPTable(columnWidths);
-							
+							  
 								 //special font sizes
 								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
@@ -3338,15 +3338,15 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								 }
 							 }
 							 p.add(table);
-							 document.add(p); 
-							// document.add(table); 
+							 
 							
 						 }
 						  }
 						  else
 						  {
+							
 							  PdfPTable table = new PdfPTable(columnWidths);
-							//  border.setActive(true);
+						
 								 //special font sizes
 								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
@@ -3361,9 +3361,24 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   insertCell(table, "No Data Available ", Element.ALIGN_CENTER, 3, bf12,0);
 							   //document.add(table); 
 							   p.add(table);
-							   document.add(p); 
 						  }
-						  //border.setActive(false);
+						  Paragraph p1 = new Paragraph();
+						  Font bf12 = new Font(FontFamily.TIMES_ROMAN, 8); 
+						  p1.add(new Chunk(" REQUESTED DATES :",bf12));
+						  if(vo.getApptpreferableDates() != null && vo.getDateTypeId() == 1)
+						  {
+							p1.add(new Chunk(vo.getApptpreferableDates(),bf12))	;
+						  }
+						  else if(vo.getApptpreferableDates() == null && vo.getDateTypeId() > 1)
+								  {
+							  p1.add(new Chunk(vo.getDateType() + '('+vo.getMinDate()+" to " +vo.getMaxDate()+')',bf12))	;
+								  }
+						  else
+							  p1.add(new Chunk(""));
+						
+						  document.add(p); 
+						  document.add(p1);
+						
 					 }
 					 
 						border.setActive(false);
