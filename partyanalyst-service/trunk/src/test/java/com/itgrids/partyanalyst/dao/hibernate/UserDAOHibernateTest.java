@@ -4,8 +4,9 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -15,6 +16,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -28,17 +30,30 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.IRegistrationService;
+import com.itgrids.partyanalyst.service.ISmsSenderService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
 	private IUserDAO userDAO;
 	private IConstituencyDAO constituencyDAO ;
 	private IRegistrationService registrationService;
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private ISmsSenderService smsSenderService;
+	
+	
+	public ISmsSenderService getSmsSenderService() {
+		return smsSenderService;
+	}
+
+	public void setSmsSenderService(ISmsSenderService smsSenderService) {
+		this.smsSenderService = smsSenderService;
+	}
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -52,12 +67,12 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		this.constituencyDAO = constituencyDAO;
 	}
 	
-	public void test(){
+	/*public void test(){
 		//List<Object[]> list = userDAO.getUserDetails();
 		registrationService.changepassword();
 		//System.out.println(list.size());
 	}
-
+*/
 	public IRegistrationService getRegistrationService() {
 		return registrationService;
 	}
@@ -66,6 +81,473 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		this.registrationService = registrationService;
 	}
 
+	 public String escapeUnicode(String input) {
+			StringBuilder b = new StringBuilder(input.length());
+			Formatter f = new Formatter(b);
+			for (char c : input.toCharArray()) {
+				if (c < 128) {
+				  b.append(c);
+				} else {
+				  f.format("\\u%04x", (int) c);
+				}
+			}
+			return b.toString();
+		}
+	  
+	public void testSendSmsDetails(){
+		try {
+			Date today = new DateUtilService().getCurrentDateAndTime();
+			List<Object[]> smsDetailsList = constituencyDAO.getTemaporarilyMobileNoByDate(today);
+			if(smsDetailsList != null && smsDetailsList.size()>0){
+				String smsStr="";
+				Map<Long,String> nameMap = new HashMap<Long, String>(0);
+	/*			nameMap.put(100L,"భద్రాచలం");
+				nameMap.put(101L,"ఖమ్మం");
+				nameMap.put(102L,"కొత్తగూడెం");
+				nameMap.put(103L,"మధిర");
+				nameMap.put(104L,"పాలేరు");
+				nameMap.put(105L," సత్తుపల్లి");
+				nameMap.put(107L,"ఇల్లెందు");
+				nameMap.put(108L,"ఆముదాలవలస");
+				nameMap.put(109L," ఎచ్చెర్ల");
+				nameMap.put(111L,"ఇచ్చాపురం");
+				nameMap.put(112L,"నరసన్నపేట");
+				nameMap.put(113L,"పాలకొండ");
+				nameMap.put(114L,"పాతపట్నం");
+				nameMap.put(116L,"శ్రీకాకుళం");
+				nameMap.put(117L,"టెక్కలి");
+				nameMap.put(120L,"చీపురుపల్లి");
+				nameMap.put(121L," గజపతినగరం");
+				nameMap.put(122L," బొబ్బిలి");
+				nameMap.put(124L,"పార్వతిపురం");
+				nameMap.put(125L," సాలూరు");
+				nameMap.put(127L," శ్రుంగవరపుకోట");
+				nameMap.put(129L,"విజయనగరం");
+				nameMap.put(133L,"అనకాపల్లి");
+				nameMap.put(134L,"చోడవరం");
+				nameMap.put(135L," యలమంచిలి");
+				nameMap.put(136L,"మాడుగల");
+				nameMap.put(137L,"నర్సీపట్నం");
+				nameMap.put(138L,"పాడేరు");
+				nameMap.put(140L,"పాయకారావుపేట");
+				nameMap.put(141L,"పెందుర్తి");
+				nameMap.put(146L,"అమలాపురం");
+				nameMap.put(147L," అనపర్తి");
+				nameMap.put(149L,"జగ్గంపేట");
+				nameMap.put(152L,"కొత్తపేట");
+				nameMap.put(153L," ముమ్మిడివరం");
+				nameMap.put(155L," పెద్దపురం");
+				nameMap.put(156L," పిఠాపురం");
+				nameMap.put(157L,"ప్రత్తిపాడు");
+				nameMap.put(159L," రామచంద్రపురం");
+				nameMap.put(160L,"రాజోల్");
+				nameMap.put(163L,"తుని");
+				nameMap.put(167L," భీమవరం");
+				nameMap.put(168L," చింతలపుడి");
+				nameMap.put(169L," దెందులూరు");
+				nameMap.put(170L," ఏలూరు");
+				nameMap.put(171L," గోపాలపురం");
+				nameMap.put(172L,"కొవ్వూరు");
+				nameMap.put(173L," నరసాపురం");
+				nameMap.put(174L," పాలకొల్లు");
+				nameMap.put(176L," పోలవరం");
+				nameMap.put(177L," తాడేపల్లిగూడెం");
+				nameMap.put(178L," తణుకు");
+				nameMap.put(179L," ఉండి");
+				nameMap.put(180L," ఉంగుటూరు");
+				nameMap.put(181L,"ఆచంట");
+				nameMap.put(182L," అవనిగడ్డ");
+				nameMap.put(184L," గన్నవరం");
+				nameMap.put(185L," గుడివాడ");
+				nameMap.put(186L,"జగ్గయ్యపేట");
+				nameMap.put(187L," కైకలూరు");
+				nameMap.put(191L,"మైలవరం");
+				nameMap.put(192L,"నందిగామ");
+				nameMap.put(193L," నూజివీడు");
+				nameMap.put(194L," తిరువూరు");
+				nameMap.put(195L,"విజయవాడ ఈస్ట్");
+				nameMap.put(196L,"విజయవాడ వెస్ట్");
+				nameMap.put(199L," చిలకలూరిపేట");
+				nameMap.put(203L,"గురజాల");
+				nameMap.put(205L,"మాచెర్ల");
+				nameMap.put(206L,"మంగళగిరి");
+				nameMap.put(207L,"వినుకొండ");
+				nameMap.put(208L," నరసారావుపేట");
+				nameMap.put(209L," బాపట్ల");
+				nameMap.put(210L,"పెదకూరపాడు");
+				nameMap.put(211L,"పొన్నూరు");
+				nameMap.put(212L," ప్రత్తిపాడు");
+				nameMap.put(213L," రేపల్లె");
+				nameMap.put(214L," సత్తెనపల్లి ");
+				nameMap.put(215L," తాడికొండ");
+				nameMap.put(216L," తెనాలి");
+				nameMap.put(217L,"వేమూరు");
+				nameMap.put(218L,"అద్దంకి");
+				nameMap.put(219L,"చీరాల");
+				nameMap.put(221L,"దర్శి");
+				nameMap.put(222L," గిద్దలూరు");
+				nameMap.put(223L," కందుకూరు");
+				nameMap.put(224L," కనిగిరి");
+				nameMap.put(225L," కొండపి");
+				nameMap.put(226L," మార్కాపురం");
+				nameMap.put(227L," ఒంగోలు");
+				nameMap.put(228L,"పర్చూరు");
+				nameMap.put(229L,"సంతనూతలపాడు");
+				nameMap.put(231L," గూడూరు");
+				nameMap.put(232L," కావలి");
+				nameMap.put(233L,"కోవూరు");
+				nameMap.put(236L," సర్వేపల్లి");
+				nameMap.put(237L," సూళ్ళూరుపేట");
+				nameMap.put(238L," ఉదయగిరి");
+				nameMap.put(239L," వెంకటగిరి");
+				nameMap.put(241L," అత్మకూరు");
+				nameMap.put(242L," బద్వేల్");
+				nameMap.put(243L," కడప");
+				nameMap.put(244L," జమ్మలమడుగు");
+				nameMap.put(245L," కమలాపురం");
+				nameMap.put(246L," కోడూరు");
+				nameMap.put(248L," రాయచోటి");
+				nameMap.put(249L," మైదుకూరు");
+				nameMap.put(250L,"ప్రొద్దుటూరు");
+				nameMap.put(251L,"పులివెందుల");
+				nameMap.put(252L," రాజంపేట");
+				nameMap.put(253L," ఆదోని");
+				nameMap.put(254L," ఆళ్ళగడ్డ");
+				nameMap.put(255L," ఆలూరు");
+				nameMap.put(257L," డోన్");
+				nameMap.put(258L," కోడుమూరు");
+				nameMap.put(260L,"కర్నూలు");
+				nameMap.put(261L,"నందికొట్కూరు");
+				nameMap.put(262L," నంద్యాల");
+				nameMap.put(263L,"పాణ్యం");
+				nameMap.put(264L,"పత్తికొండ");
+				nameMap.put(265L,"ఎమ్మిగనూరు");
+				nameMap.put(267L,"ధర్మవరం");
+				nameMap.put(270L,"హిందూపూరం");
+				nameMap.put(271L,"కదిరి");
+				nameMap.put(272L,"కళ్యాణదుర్గం");
+				nameMap.put(273L,"మడకశిర");
+				nameMap.put(275L,"పెనుకొండ");
+				nameMap.put(276L," రాయదుర్గం");
+				nameMap.put(277L,"శింగనమల");
+				nameMap.put(278L," తాడిపత్రి");
+				nameMap.put(279L," ఉరవకొండ");
+				nameMap.put(280L,"చంద్రగిరి");
+				nameMap.put(281L,"చిత్తూరు");
+				nameMap.put(282L,"కుప్పం");
+				nameMap.put(283L,"నగరి");
+				nameMap.put(284L,"పలమనేరు");
+				nameMap.put(285L,"పీలేరు");
+				nameMap.put(286L,"పుంగనూరు");
+				nameMap.put(288L,"సత్యవేడు");
+				nameMap.put(289L,"శ్రీకాళహస్తి");
+				nameMap.put(290L,"తంబాలపల్లి");
+				nameMap.put(291L," తిరుపతి");
+				nameMap.put(294L,"మదనపల్లె");
+				nameMap.put(297L,"గుంతకల్లు");
+				nameMap.put(298L,"అనంతపూర్ అర్బన్");
+				nameMap.put(299L,"రాప్తాడు");
+				nameMap.put(300L,"పుట్టపర్తి");
+				nameMap.put(301L,"గంగాధర నెల్లూరు");
+				nameMap.put(302L,"పూతలపట్టు");
+				nameMap.put(303L,"రాజానగరం");
+				nameMap.put(304L,"రాజమండ్రి సిటి");
+				nameMap.put(305L,"రాజమండ్రి రూరల్");
+				nameMap.put(306L,"రంపచోడవరం");
+				nameMap.put(307L," కాకినాడ రూరల్");
+				nameMap.put(308L," కాకినాడ సిటి");
+				nameMap.put(309L,"మండపేట");
+				nameMap.put(310L,"గన్నవరం");
+				nameMap.put(311L," గుంటూరు ఈస్ట్");
+				nameMap.put(312L," గుంటూరు వెస్ట్");
+				nameMap.put(324L,"పినపాక");
+				nameMap.put(325L,"వైరా");
+				nameMap.put(326L,"అశ్వారావుపేట");
+				nameMap.put(327L," పెడన");
+				nameMap.put(328L," మచిలీపట్నం");
+				nameMap.put(329L," పామర్రు");
+				nameMap.put(330L," పెనమలూరు");
+				nameMap.put(331L,"విజయవాడ సెంట్రల్");
+				nameMap.put(332L,"శ్రీశైలం");
+				nameMap.put(333L," బనగానపల్లె");
+				nameMap.put(334L," మంత్రాలయం");
+				nameMap.put(340L," నెల్లూరు సిటి");
+				nameMap.put(341L," నెల్లూరు రూరల్");
+				nameMap.put(344L,"యెర్రగొండపాలెం");
+				nameMap.put(352L," పలాస");
+				nameMap.put(353L," రాజం");
+				nameMap.put(354L,"విశాఖపట్నం ఈస్ట్");
+				nameMap.put(355L,"విశాఖపట్నం సౌత్");
+				nameMap.put(356L,"విశాఖపట్నం నార్త్");
+				nameMap.put(357L,"విశాఖపట్నం వెస్ట్");
+				nameMap.put(358L,"గాజువాక");
+				nameMap.put(359L,"అరకు వ్యాలి");
+				nameMap.put(360L,"కురుపాం");
+				nameMap.put(361L,"నెల్లిమర్ల");
+				nameMap.put(366L,"నిడదవోలు");
+				nameMap.put(368L," భీమిలి");
+*/
+				Map<Long,String> codeMap = new HashMap<Long, String>(0);			
+				codeMap.put(275L,"\u0c2a\u0c46\u0c28\u0c41\u0c15\u0c4a\u0c02\u0c21");
+				codeMap.put(273L,"\u0c2e\u0c21\u0c15\u0c36\u0c3f\u0c30");
+				codeMap.put(272L,"\u0c15\u0c33\u0c4d\u0c2f\u0c3e\u0c23\u0c26\u0c41\u0c30\u0c4d\u0c17\u0c02");
+				codeMap.put(279L," \u0c09\u0c30\u0c35\u0c15\u0c4a\u0c02\u0c21");
+				codeMap.put(278L," \u0c24\u0c3e\u0c21\u0c3f\u0c2a\u0c24\u0c4d\u0c30\u0c3f");
+				codeMap.put(277L,"\u0c36\u0c3f\u0c02\u0c17\u0c28\u0c2e\u0c32");
+				codeMap.put(276L," \u0c30\u0c3e\u0c2f\u0c26\u0c41\u0c30\u0c4d\u0c17\u0c02");
+				codeMap.put(283L,"\u0c28\u0c17\u0c30\u0c3f");
+				codeMap.put(282L,"\u0c15\u0c41\u0c2a\u0c4d\u0c2a\u0c02");
+				codeMap.put(281L,"\u0c1a\u0c3f\u0c24\u0c4d\u0c24\u0c42\u0c30\u0c41");
+				codeMap.put(280L,"\u0c1a\u0c02\u0c26\u0c4d\u0c30\u0c17\u0c3f\u0c30\u0c3f");
+				codeMap.put(286L,"\u0c2a\u0c41\u0c02\u0c17\u0c28\u0c42\u0c30\u0c41");
+				codeMap.put(285L,"\u0c2a\u0c40\u0c32\u0c47\u0c30\u0c41");
+				codeMap.put(284L,"\u0c2a\u0c32\u0c2e\u0c28\u0c47\u0c30\u0c41");
+				codeMap.put(258L," \u0c15\u0c4b\u0c21\u0c41\u0c2e\u0c42\u0c30\u0c41");
+				codeMap.put(257L," \u0c21\u0c4b\u0c28\u0c4d");
+				codeMap.put(262L," \u0c28\u0c02\u0c26\u0c4d\u0c2f\u0c3e\u0c32");
+				codeMap.put(263L,"\u0c2a\u0c3e\u0c23\u0c4d\u0c2f\u0c02");
+				codeMap.put(260L,"\u0c15\u0c30\u0c4d\u0c28\u0c42\u0c32\u0c41");
+				codeMap.put(261L,"\u0c28\u0c02\u0c26\u0c3f\u0c15\u0c4a\u0c1f\u0c4d\u0c15\u0c42\u0c30\u0c41");
+				codeMap.put(267L,"\u0c27\u0c30\u0c4d\u0c2e\u0c35\u0c30\u0c02");
+				codeMap.put(264L,"\u0c2a\u0c24\u0c4d\u0c24\u0c3f\u0c15\u0c4a\u0c02\u0c21");
+				codeMap.put(265L,"\u0c0e\u0c2e\u0c4d\u0c2e\u0c3f\u0c17\u0c28\u0c42\u0c30\u0c41");
+				codeMap.put(270L,"\u0c39\u0c3f\u0c02\u0c26\u0c42\u0c2a\u0c42\u0c30\u0c02");
+				codeMap.put(271L,"\u0c15\u0c26\u0c3f\u0c30\u0c3f");
+				codeMap.put(305L,"\u0c30\u0c3e\u0c1c\u0c2e\u0c02\u0c21\u0c4d\u0c30\u0c3f \u0c30\u0c42\u0c30\u0c32\u0c4d");
+				codeMap.put(304L,"\u0c30\u0c3e\u0c1c\u0c2e\u0c02\u0c21\u0c4d\u0c30\u0c3f \u0c38\u0c3f\u0c1f\u0c3f");
+				codeMap.put(307L," \u0c15\u0c3e\u0c15\u0c3f\u0c28\u0c3e\u0c21 \u0c30\u0c42\u0c30\u0c32\u0c4d");
+				codeMap.put(306L,"\u0c30\u0c02\u0c2a\u0c1a\u0c4b\u0c21\u0c35\u0c30\u0c02");
+				codeMap.put(309L,"\u0c2e\u0c02\u0c21\u0c2a\u0c47\u0c1f");
+				codeMap.put(308L," \u0c15\u0c3e\u0c15\u0c3f\u0c28\u0c3e\u0c21 \u0c38\u0c3f\u0c1f\u0c3f");
+				codeMap.put(311L," \u0c17\u0c41\u0c02\u0c1f\u0c42\u0c30\u0c41 \u0c08\u0c38\u0c4d\u0c1f\u0c4d");
+				codeMap.put(310L,"\u0c17\u0c28\u0c4d\u0c28\u0c35\u0c30\u0c02");
+				codeMap.put(312L," \u0c17\u0c41\u0c02\u0c1f\u0c42\u0c30\u0c41 \u0c35\u0c46\u0c38\u0c4d\u0c1f\u0c4d");
+				codeMap.put(288L,"\u0c38\u0c24\u0c4d\u0c2f\u0c35\u0c47\u0c21\u0c41");
+				codeMap.put(289L,"\u0c36\u0c4d\u0c30\u0c40\u0c15\u0c3e\u0c33\u0c39\u0c38\u0c4d\u0c24\u0c3f");
+				codeMap.put(290L,"\u0c24\u0c02\u0c2c\u0c3e\u0c32\u0c2a\u0c32\u0c4d\u0c32\u0c3f");
+				codeMap.put(291L," \u0c24\u0c3f\u0c30\u0c41\u0c2a\u0c24\u0c3f");
+				codeMap.put(294L,"\u0c2e\u0c26\u0c28\u0c2a\u0c32\u0c4d\u0c32\u0c46");
+				codeMap.put(297L,"\u0c17\u0c41\u0c02\u0c24\u0c15\u0c32\u0c4d\u0c32\u0c41");
+				codeMap.put(298L,"\u0c05\u0c28\u0c02\u0c24\u0c2a\u0c42\u0c30\u0c4d \u0c05\u0c30\u0c4d\u0c2c\u0c28\u0c4d");
+				codeMap.put(299L,"\u0c30\u0c3e\u0c2a\u0c4d\u0c24\u0c3e\u0c21\u0c41");
+				codeMap.put(300L,"\u0c2a\u0c41\u0c1f\u0c4d\u0c1f\u0c2a\u0c30\u0c4d\u0c24\u0c3f");
+				codeMap.put(301L,"\u0c17\u0c02\u0c17\u0c3e\u0c27\u0c30 \u0c28\u0c46\u0c32\u0c4d\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(302L,"\u0c2a\u0c42\u0c24\u0c32\u0c2a\u0c1f\u0c4d\u0c1f\u0c41");
+				codeMap.put(303L,"\u0c30\u0c3e\u0c1c\u0c3e\u0c28\u0c17\u0c30\u0c02");
+				codeMap.put(341L," \u0c28\u0c46\u0c32\u0c4d\u0c32\u0c42\u0c30\u0c41 \u0c30\u0c42\u0c30\u0c32\u0c4d");
+				codeMap.put(340L," \u0c28\u0c46\u0c32\u0c4d\u0c32\u0c42\u0c30\u0c41 \u0c38\u0c3f\u0c1f\u0c3f");
+				codeMap.put(344L,"\u0c2f\u0c46\u0c30\u0c4d\u0c30\u0c17\u0c4a\u0c02\u0c21\u0c2a\u0c3e\u0c32\u0c46\u0c02");
+				codeMap.put(326L,"\u0c05\u0c36\u0c4d\u0c35\u0c3e\u0c30\u0c3e\u0c35\u0c41\u0c2a\u0c47\u0c1f");
+				codeMap.put(327L," \u0c2a\u0c46\u0c21\u0c28");
+				codeMap.put(324L,"\u0c2a\u0c3f\u0c28\u0c2a\u0c3e\u0c15");
+				codeMap.put(325L,"\u0c35\u0c48\u0c30\u0c3e");
+				codeMap.put(334L," \u0c2e\u0c02\u0c24\u0c4d\u0c30\u0c3e\u0c32\u0c2f\u0c02");
+				codeMap.put(332L,"\u0c36\u0c4d\u0c30\u0c40\u0c36\u0c48\u0c32\u0c02");
+				codeMap.put(333L," \u0c2c\u0c28\u0c17\u0c3e\u0c28\u0c2a\u0c32\u0c4d\u0c32\u0c46");
+				codeMap.put(330L," \u0c2a\u0c46\u0c28\u0c2e\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(331L,"\u0c35\u0c3f\u0c1c\u0c2f\u0c35\u0c3e\u0c21 \u0c38\u0c46\u0c02\u0c1f\u0c4d\u0c30\u0c32\u0c4d");
+				codeMap.put(328L," \u0c2e\u0c1a\u0c3f\u0c32\u0c40\u0c2a\u0c1f\u0c4d\u0c28\u0c02");
+				codeMap.put(329L," \u0c2a\u0c3e\u0c2e\u0c30\u0c4d\u0c30\u0c41");
+				codeMap.put(102L,"\u0c15\u0c4a\u0c24\u0c4d\u0c24\u0c17\u0c42\u0c21\u0c46\u0c02");
+				codeMap.put(103L,"\u0c2e\u0c27\u0c3f\u0c30");
+				codeMap.put(100L,"\u0c2d\u0c26\u0c4d\u0c30\u0c3e\u0c1a\u0c32\u0c02");
+				codeMap.put(101L,"\u0c16\u0c2e\u0c4d\u0c2e\u0c02");
+				codeMap.put(368L," \u0c2d\u0c40\u0c2e\u0c3f\u0c32\u0c3f");
+				codeMap.put(111L,"\u0c07\u0c1a\u0c4d\u0c1a\u0c3e\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(108L,"\u0c06\u0c2e\u0c41\u0c26\u0c3e\u0c32\u0c35\u0c32\u0c38");
+				codeMap.put(109L," \u0c0e\u0c1a\u0c4d\u0c1a\u0c46\u0c30\u0c4d\u0c32");
+				codeMap.put(107L,"\u0c07\u0c32\u0c4d\u0c32\u0c46\u0c02\u0c26\u0c41");
+				codeMap.put(104L,"\u0c2a\u0c3e\u0c32\u0c47\u0c30\u0c41");
+				codeMap.put(105L," \u0c38\u0c24\u0c4d\u0c24\u0c41\u0c2a\u0c32\u0c4d\u0c32\u0c3f");
+				codeMap.put(356L,"\u0c35\u0c3f\u0c36\u0c3e\u0c16\u0c2a\u0c1f\u0c4d\u0c28\u0c02 \u0c28\u0c3e\u0c30\u0c4d\u0c24\u0c4d");
+				codeMap.put(357L,"\u0c35\u0c3f\u0c36\u0c3e\u0c16\u0c2a\u0c1f\u0c4d\u0c28\u0c02 \u0c35\u0c46\u0c38\u0c4d\u0c1f\u0c4d");
+				codeMap.put(358L,"\u0c17\u0c3e\u0c1c\u0c41\u0c35\u0c3e\u0c15");
+				codeMap.put(117L,"\u0c1f\u0c46\u0c15\u0c4d\u0c15\u0c32\u0c3f");
+				codeMap.put(359L,"\u0c05\u0c30\u0c15\u0c41 \u0c35\u0c4d\u0c2f\u0c3e\u0c32\u0c3f");
+				codeMap.put(116L,"\u0c36\u0c4d\u0c30\u0c40\u0c15\u0c3e\u0c15\u0c41\u0c33\u0c02");
+				codeMap.put(352L," \u0c2a\u0c32\u0c3e\u0c38");
+				codeMap.put(353L," \u0c30\u0c3e\u0c1c\u0c02");
+				codeMap.put(114L,"\u0c2a\u0c3e\u0c24\u0c2a\u0c1f\u0c4d\u0c28\u0c02");
+				codeMap.put(354L,"\u0c35\u0c3f\u0c36\u0c3e\u0c16\u0c2a\u0c1f\u0c4d\u0c28\u0c02 \u0c08\u0c38\u0c4d\u0c1f\u0c4d");
+				codeMap.put(113L,"\u0c2a\u0c3e\u0c32\u0c15\u0c4a\u0c02\u0c21");
+				codeMap.put(355L,"\u0c35\u0c3f\u0c36\u0c3e\u0c16\u0c2a\u0c1f\u0c4d\u0c28\u0c02 \u0c38\u0c4c\u0c24\u0c4d");
+				codeMap.put(112L,"\u0c28\u0c30\u0c38\u0c28\u0c4d\u0c28\u0c2a\u0c47\u0c1f");
+				codeMap.put(127L," \u0c36\u0c4d\u0c30\u0c41\u0c02\u0c17\u0c35\u0c30\u0c2a\u0c41\u0c15\u0c4b\u0c1f");
+				codeMap.put(366L,"\u0c28\u0c3f\u0c21\u0c26\u0c35\u0c4b\u0c32\u0c41");
+				codeMap.put(125L," \u0c38\u0c3e\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(124L,"\u0c2a\u0c3e\u0c30\u0c4d\u0c35\u0c24\u0c3f\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(360L,"\u0c15\u0c41\u0c30\u0c41\u0c2a\u0c3e\u0c02");
+				codeMap.put(361L,"\u0c28\u0c46\u0c32\u0c4d\u0c32\u0c3f\u0c2e\u0c30\u0c4d\u0c32");
+				codeMap.put(122L," \u0c2c\u0c4a\u0c2c\u0c4d\u0c2c\u0c3f\u0c32\u0c3f");
+				codeMap.put(121L," \u0c17\u0c1c\u0c2a\u0c24\u0c3f\u0c28\u0c17\u0c30\u0c02");
+				codeMap.put(120L,"\u0c1a\u0c40\u0c2a\u0c41\u0c30\u0c41\u0c2a\u0c32\u0c4d\u0c32\u0c3f");
+				codeMap.put(137L,"\u0c28\u0c30\u0c4d\u0c38\u0c40\u0c2a\u0c1f\u0c4d\u0c28\u0c02");
+				codeMap.put(136L,"\u0c2e\u0c3e\u0c21\u0c41\u0c17\u0c32");
+				codeMap.put(138L,"\u0c2a\u0c3e\u0c21\u0c47\u0c30\u0c41");
+				codeMap.put(141L,"\u0c2a\u0c46\u0c02\u0c26\u0c41\u0c30\u0c4d\u0c24\u0c3f");
+				codeMap.put(140L,"\u0c2a\u0c3e\u0c2f\u0c15\u0c3e\u0c30\u0c3e\u0c35\u0c41\u0c2a\u0c47\u0c1f");
+				codeMap.put(129L,"\u0c35\u0c3f\u0c1c\u0c2f\u0c28\u0c17\u0c30\u0c02");
+				codeMap.put(133L,"\u0c05\u0c28\u0c15\u0c3e\u0c2a\u0c32\u0c4d\u0c32\u0c3f");
+				codeMap.put(135L," \u0c2f\u0c32\u0c2e\u0c02\u0c1a\u0c3f\u0c32\u0c3f");
+				codeMap.put(134L,"\u0c1a\u0c4b\u0c21\u0c35\u0c30\u0c02");
+				codeMap.put(152L,"\u0c15\u0c4a\u0c24\u0c4d\u0c24\u0c2a\u0c47\u0c1f");
+				codeMap.put(153L," \u0c2e\u0c41\u0c2e\u0c4d\u0c2e\u0c3f\u0c21\u0c3f\u0c35\u0c30\u0c02");
+				codeMap.put(155L," \u0c2a\u0c46\u0c26\u0c4d\u0c26\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(156L," \u0c2a\u0c3f\u0c20\u0c3e\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(157L,"\u0c2a\u0c4d\u0c30\u0c24\u0c4d\u0c24\u0c3f\u0c2a\u0c3e\u0c21\u0c41");
+				codeMap.put(159L," \u0c30\u0c3e\u0c2e\u0c1a\u0c02\u0c26\u0c4d\u0c30\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(146L,"\u0c05\u0c2e\u0c32\u0c3e\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(147L," \u0c05\u0c28\u0c2a\u0c30\u0c4d\u0c24\u0c3f");
+				codeMap.put(149L,"\u0c1c\u0c17\u0c4d\u0c17\u0c02\u0c2a\u0c47\u0c1f");
+				codeMap.put(171L," \u0c17\u0c4b\u0c2a\u0c3e\u0c32\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(170L," \u0c0f\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(169L," \u0c26\u0c46\u0c02\u0c26\u0c41\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(168L," \u0c1a\u0c3f\u0c02\u0c24\u0c32\u0c2a\u0c41\u0c21\u0c3f");
+				codeMap.put(174L," \u0c2a\u0c3e\u0c32\u0c15\u0c4a\u0c32\u0c4d\u0c32\u0c41");
+				codeMap.put(173L," \u0c28\u0c30\u0c38\u0c3e\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(172L,"\u0c15\u0c4a\u0c35\u0c4d\u0c35\u0c42\u0c30\u0c41");
+				codeMap.put(163L,"\u0c24\u0c41\u0c28\u0c3f");
+				codeMap.put(160L,"\u0c30\u0c3e\u0c1c\u0c4b\u0c32\u0c4d");
+				codeMap.put(167L," \u0c2d\u0c40\u0c2e\u0c35\u0c30\u0c02");
+				codeMap.put(186L,"\u0c1c\u0c17\u0c4d\u0c17\u0c2f\u0c4d\u0c2f\u0c2a\u0c47\u0c1f");
+				codeMap.put(187L," \u0c15\u0c48\u0c15\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(184L," \u0c17\u0c28\u0c4d\u0c28\u0c35\u0c30\u0c02");
+				codeMap.put(185L," \u0c17\u0c41\u0c21\u0c3f\u0c35\u0c3e\u0c21");
+				codeMap.put(191L,"\u0c2e\u0c48\u0c32\u0c35\u0c30\u0c02");
+				codeMap.put(178L," \u0c24\u0c23\u0c41\u0c15\u0c41");
+				codeMap.put(179L," \u0c09\u0c02\u0c21\u0c3f");
+				codeMap.put(176L," \u0c2a\u0c4b\u0c32\u0c35\u0c30\u0c02");
+				codeMap.put(177L," \u0c24\u0c3e\u0c21\u0c47\u0c2a\u0c32\u0c4d\u0c32\u0c3f\u0c17\u0c42\u0c21\u0c46\u0c02");
+				codeMap.put(182L," \u0c05\u0c35\u0c28\u0c3f\u0c17\u0c21\u0c4d\u0c21");
+				codeMap.put(180L," \u0c09\u0c02\u0c17\u0c41\u0c1f\u0c42\u0c30\u0c41");
+				codeMap.put(181L,"\u0c06\u0c1a\u0c02\u0c1f");
+				codeMap.put(205L,"\u0c2e\u0c3e\u0c1a\u0c46\u0c30\u0c4d\u0c32");
+				codeMap.put(207L,"\u0c35\u0c3f\u0c28\u0c41\u0c15\u0c4a\u0c02\u0c21");
+				codeMap.put(206L,"\u0c2e\u0c02\u0c17\u0c33\u0c17\u0c3f\u0c30\u0c3f");
+				codeMap.put(203L,"\u0c17\u0c41\u0c30\u0c1c\u0c3e\u0c32");
+				codeMap.put(196L,"\u0c35\u0c3f\u0c1c\u0c2f\u0c35\u0c3e\u0c21 \u0c35\u0c46\u0c38\u0c4d\u0c1f\u0c4d");
+				codeMap.put(199L," \u0c1a\u0c3f\u0c32\u0c15\u0c32\u0c42\u0c30\u0c3f\u0c2a\u0c47\u0c1f");
+				codeMap.put(193L," \u0c28\u0c42\u0c1c\u0c3f\u0c35\u0c40\u0c21\u0c41");
+				codeMap.put(192L,"\u0c28\u0c02\u0c26\u0c3f\u0c17\u0c3e\u0c2e");
+				codeMap.put(195L,"\u0c35\u0c3f\u0c1c\u0c2f\u0c35\u0c3e\u0c21 \u0c08\u0c38\u0c4d\u0c1f\u0c4d");
+				codeMap.put(194L," \u0c24\u0c3f\u0c30\u0c41\u0c35\u0c42\u0c30\u0c41");
+				codeMap.put(221L,"\u0c26\u0c30\u0c4d\u0c36\u0c3f");
+				codeMap.put(222L," \u0c17\u0c3f\u0c26\u0c4d\u0c26\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(223L," \u0c15\u0c02\u0c26\u0c41\u0c15\u0c42\u0c30\u0c41");
+				codeMap.put(216L," \u0c24\u0c46\u0c28\u0c3e\u0c32\u0c3f");
+				codeMap.put(217L,"\u0c35\u0c47\u0c2e\u0c42\u0c30\u0c41");
+				codeMap.put(218L,"\u0c05\u0c26\u0c4d\u0c26\u0c02\u0c15\u0c3f");
+				codeMap.put(219L,"\u0c1a\u0c40\u0c30\u0c3e\u0c32");
+				codeMap.put(212L," \u0c2a\u0c4d\u0c30\u0c24\u0c4d\u0c24\u0c3f\u0c2a\u0c3e\u0c21\u0c41");
+				codeMap.put(213L," \u0c30\u0c47\u0c2a\u0c32\u0c4d\u0c32\u0c46");
+				codeMap.put(214L," \u0c38\u0c24\u0c4d\u0c24\u0c46\u0c28\u0c2a\u0c32\u0c4d\u0c32\u0c3f ");
+				codeMap.put(215L," \u0c24\u0c3e\u0c21\u0c3f\u0c15\u0c4a\u0c02\u0c21");
+				codeMap.put(208L," \u0c28\u0c30\u0c38\u0c3e\u0c30\u0c3e\u0c35\u0c41\u0c2a\u0c47\u0c1f");
+				codeMap.put(209L," \u0c2c\u0c3e\u0c2a\u0c1f\u0c4d\u0c32");
+				codeMap.put(210L,"\u0c2a\u0c46\u0c26\u0c15\u0c42\u0c30\u0c2a\u0c3e\u0c21\u0c41");
+				codeMap.put(211L,"\u0c2a\u0c4a\u0c28\u0c4d\u0c28\u0c42\u0c30\u0c41");
+				codeMap.put(239L," \u0c35\u0c46\u0c02\u0c15\u0c1f\u0c17\u0c3f\u0c30\u0c3f");
+				codeMap.put(238L," \u0c09\u0c26\u0c2f\u0c17\u0c3f\u0c30\u0c3f");
+				codeMap.put(237L," \u0c38\u0c42\u0c33\u0c4d\u0c33\u0c42\u0c30\u0c41\u0c2a\u0c47\u0c1f");
+				codeMap.put(236L," \u0c38\u0c30\u0c4d\u0c35\u0c47\u0c2a\u0c32\u0c4d\u0c32\u0c3f");
+				codeMap.put(233L,"\u0c15\u0c4b\u0c35\u0c42\u0c30\u0c41");
+				codeMap.put(232L," \u0c15\u0c3e\u0c35\u0c32\u0c3f");
+				codeMap.put(231L," \u0c17\u0c42\u0c21\u0c42\u0c30\u0c41");
+				codeMap.put(229L,"\u0c38\u0c02\u0c24\u0c28\u0c42\u0c24\u0c32\u0c2a\u0c3e\u0c21\u0c41");
+				codeMap.put(228L,"\u0c2a\u0c30\u0c4d\u0c1a\u0c42\u0c30\u0c41");
+				codeMap.put(227L," \u0c12\u0c02\u0c17\u0c4b\u0c32\u0c41");
+				codeMap.put(226L," \u0c2e\u0c3e\u0c30\u0c4d\u0c15\u0c3e\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(225L," \u0c15\u0c4a\u0c02\u0c21\u0c2a\u0c3f");
+				codeMap.put(224L," \u0c15\u0c28\u0c3f\u0c17\u0c3f\u0c30\u0c3f");
+				codeMap.put(254L," \u0c06\u0c33\u0c4d\u0c33\u0c17\u0c21\u0c4d\u0c21");
+				codeMap.put(255L," \u0c06\u0c32\u0c42\u0c30\u0c41");
+				codeMap.put(252L," \u0c30\u0c3e\u0c1c\u0c02\u0c2a\u0c47\u0c1f");
+				codeMap.put(253L," \u0c06\u0c26\u0c4b\u0c28\u0c3f");
+				codeMap.put(250L,"\u0c2a\u0c4d\u0c30\u0c4a\u0c26\u0c4d\u0c26\u0c41\u0c1f\u0c42\u0c30\u0c41");
+				codeMap.put(251L,"\u0c2a\u0c41\u0c32\u0c3f\u0c35\u0c46\u0c02\u0c26\u0c41\u0c32");
+				codeMap.put(248L," \u0c30\u0c3e\u0c2f\u0c1a\u0c4b\u0c1f\u0c3f");
+				codeMap.put(249L," \u0c2e\u0c48\u0c26\u0c41\u0c15\u0c42\u0c30\u0c41");
+				codeMap.put(246L," \u0c15\u0c4b\u0c21\u0c42\u0c30\u0c41");
+				codeMap.put(244L," \u0c1c\u0c2e\u0c4d\u0c2e\u0c32\u0c2e\u0c21\u0c41\u0c17\u0c41");
+				codeMap.put(245L," \u0c15\u0c2e\u0c32\u0c3e\u0c2a\u0c41\u0c30\u0c02");
+				codeMap.put(242L," \u0c2c\u0c26\u0c4d\u0c35\u0c47\u0c32\u0c4d");
+				codeMap.put(243L," \u0c15\u0c21\u0c2a");
+				codeMap.put(241L," \u0c05\u0c24\u0c4d\u0c2e\u0c15\u0c42\u0c30\u0c41");
+				
+				if(smsDetailsList != null && smsDetailsList.size()>0){
+					
+					Map<Long,Map<String,String>> cosntiMap = new HashMap<Long, Map<String,String>>(0);
+					int count=0;
+					for (Object[] sms : smsDetailsList) {
+						String location = commonMethodsUtilService.getStringValueForObject(sms[0]);
+						String mobileNoStr = escapeUnicode(commonMethodsUtilService.getStringValueForObject(sms[2]));
+						String invitedCount = escapeUnicode(commonMethodsUtilService.getStringValueForObject(sms[3]));
+						String attendedCount = escapeUnicode(commonMethodsUtilService.getStringValueForObject(sms[4]));
+						String perc = escapeUnicode(commonMethodsUtilService.getStringValueForObject(sms[5]));
+						if(count == 0){
+							count = count+1;
+							smsStr=commonMethodsUtilService.getStringValueForObject(sms[6]);
+						}
+							String[] smsArr = smsStr.split(",");
+							String finalSmsStr ="";
+							if(smsArr != null && smsArr.length>0){
+								for(int i=0;i<smsArr.length;i++){
+									if(i==0){
+										String value = codeMap.get(Long.valueOf(location)).trim();
+										finalSmsStr= smsArr[i].trim()+escapeUnicode(value);
+									}
+									else if(i==1)
+										finalSmsStr= " "+finalSmsStr+smsArr[i].trim()+" "+invitedCount;
+									else if(i==2)
+										finalSmsStr= " "+finalSmsStr+smsArr[i].trim()+" "+attendedCount;
+									else if(i==3)
+										finalSmsStr= " "+finalSmsStr+smsArr[i].trim()+" "+perc+" "+escapeUnicode("%");
+									else
+										finalSmsStr= "\n "+finalSmsStr+smsArr[i].trim();
+								}
+							}
+						
+						
+						Map<String,String> smsMap = new HashMap<String, String>(0);
+						if(cosntiMap.get(Long.valueOf(location)) != null){
+							smsMap = cosntiMap.get(Long.valueOf(location));
+						}
+						String[] mobileNoArr = mobileNoStr.split(",");
+						
+						if(mobileNoArr != null && mobileNoArr.length>0){
+							for(int i=0;i<mobileNoArr.length;i++){
+								String mobile = mobileNoArr[i].trim();
+								if(mobile != null && !mobile.isEmpty())
+									smsMap.put(mobile, finalSmsStr.trim());
+							}
+						}
+						
+						cosntiMap.put(Long.valueOf(location), smsMap);
+					}
+					
+					//smsSenderService.sendSMS(1L, "Temp SMS", false, commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(smsMap.get(mobileNo.trim()))),mobileNo.trim());
+				int count1=0;
+					if(cosntiMap != null && cosntiMap.size()>0){
+						for (Long  constituencyId : cosntiMap.keySet()) {
+							Map<String,String> smsMap = cosntiMap.get(constituencyId);
+							if(smsMap != null && smsMap.size()>0){
+								for (String  mobilNo : smsMap.keySet()) {
+									if(mobilNo.trim().equalsIgnoreCase("9581434970") ){
+										count1 = count1+1;
+										System.out.println("count1: "+count1);
+										System.out.println(StringEscapeUtils.unescapeJava(smsMap.get(mobilNo)));
+										//smsSenderService.sendSMS(1L, "Temp SMS", false,  commonMethodsUtilService.getUniCodeMessage(StringEscapeUtils.unescapeJava(smsMap.get(mobilNo))), mobilNo);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public AgeRangeVO getConstituencyWiseDetails(Long constituencyId,Long publicationId,List<String> ageRanges)	
 	{
 		if(ageRanges==null||ageRanges.get(0).isEmpty())
