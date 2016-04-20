@@ -3841,12 +3841,14 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			//commnts saving
 			getappointmentComments(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,inputVO.getCommented(),userId);
 			
-			//unvoid old appointments 
-			List<Long> apptIds =getAppointmentIdsForVoid(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_VOID,inputVO.getApptUserId());
-			
-			if(apptIds!=null && apptIds.size()>0){
-		    	 appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_WAITING,userId);
-		     }
+			//unvoid old appointments
+			if(inputVO.getStatusId().equals(IConstants.APPOINTMENT_STATUS_RESCHEDULED) || inputVO.getStatusId().equals(IConstants.APPOINTMENT_STATUS_CANCELLED) || inputVO.getStatusId() == IConstants.APPOINTMENT_STATUS_RESCHEDULED || inputVO.getStatusId() == IConstants.APPOINTMENT_STATUS_CANCELLED){
+				List<Long> apptIds =getAppointmentIdsForVoid(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_VOID,inputVO.getApptUserId());
+				
+				if(apptIds!=null && apptIds.size()>0){
+			    	 appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_WAITING,userId);
+			     }
+			}
 			
 			result.setMessage("success");
 		}
