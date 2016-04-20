@@ -492,7 +492,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day" +
-				"  from ActivityInfoDocument model where model.activityLocationInfo.activityScopeId = :activityDocumentId  and model.isDeleted='N'");
+				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId  and model.isDeleted='N'");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
@@ -509,15 +509,15 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		}
 		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
 			str.append(" and model.userAddress.district.districtId = :locationValue");
-		if(inputVO.getLocationScope().equalsIgnoreCase("constituency"))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("constituency"))
 			str.append(" and model.userAddress.constituency.constituencyId = :locationValue");
-		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.tehsil.tehsilId = :locationValue");
-		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue");
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.panchayat.panchayatId = :locationValue");
-		if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("village") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.ward.constituencyId = :locationValue");
 		if(startDate != null)
 		{
