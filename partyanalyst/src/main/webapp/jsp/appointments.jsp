@@ -3767,7 +3767,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			smsCheck : smsCheck,
 			smsText:smsText,
 			statusId:statusId,
-			commentTxt:commentTxt
+			commentTxt:commentTxt,
+			apptuserId : $("#appointmentUserSelectBoxId").val()
 		}
 			$.ajax({
 			type : 'POST',
@@ -3783,11 +3784,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			}
 			   
 		});
-	})
-	
-	function clearAppFields(){
-		alert("you called me");
-	}
+	});
 	
 	$(document).on("click",".updateAll",function() {
 		console.log(searchJobj)
@@ -6040,7 +6037,8 @@ function getAppointmentCreatedUsers(){
 			toTime : toTime,
 			type :type,
 			timeSlotId:timeSlotId,
-			commentTxt:commentTxt
+			commentTxt:commentTxt,
+			apptUserId : $("#appointmentUserSelectBoxId").val()
 		}
 		
 		$.ajax({
