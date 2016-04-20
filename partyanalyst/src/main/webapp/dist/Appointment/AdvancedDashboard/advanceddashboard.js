@@ -65,15 +65,12 @@ var cb = function(start, end, label) {
 
 	$(document).on("click",".advnceDashboardCls",function(){
 		
-		
 		getTotalAppointmentStatus();
 		getAppointmentStatusCounts();
 		getAllCandidateTypes();
 		getPublicRepresentativeWiseAppointmentCnt();
 		getCommitteeLevelCount();
-		
 		getCandidCountsByStatesAction();
-		
 		getCandiCountsByLocations();
 		
 	});
@@ -89,26 +86,25 @@ $(document).on("click",".ranges li",function(){
 	}
 	
 	 if(selectedDay != 'Custom'){
-	
-    getCandidCountsByStatesAction(); 
+		getCandidCountsByStatesAction(); 
+		getCandiCountsByLocations();
 	 }
 });
 $(document).on("click",".applyBtn",function(){
-	
-	
 	getCandidCountsByStatesAction();
-	
+	getCandiCountsByLocations();
 });
-	/* $(".ranges li:nth-child(1)").addClass("active");
+	 $(".ranges li:nth-child(1)").addClass("active");
 	$(document).on("click",".activeCls",function(){
 	$(".daterangepicker").css("display","none");
 	
-	}); */
+	}); 
 
-	/* $(document).on("click",".getDate",function(){
+	 $(document).on("click",".getDate",function(){
 	$(".daterangepicker").css("display","block");	
-	//$(".opensleft").css("display","none");	
-	}); */
+	$(".show-calendar").css("display","none");	
+	
+	}); 
 
 function getCandidCountsByStatesAction(){
 		
@@ -360,9 +356,9 @@ function getCandidCountsByStatesAction(){
 								
 									str+='<th rowspan="3"></th>';
 									
-									str+='<th rowspan="2" colspan="2">Requested</th>';
-									str+='<th rowspan="2" colspan="2">Scheduled</th>';
-									str+='<th rowspan="2" colspan="2">Waiting</th>';
+									str+='<th rowspan="2" colspan="2">Total Requested</th>';
+									str+='<th rowspan="2" colspan="2">Total Scheduled</th>';
+									str+='<th rowspan="2" colspan="2">Total Waiting</th>';
 									
 									var colspanForReqType = result[0].subList[0].subList.length * 2;
 									for(var i in result[0].subList){
@@ -451,6 +447,6 @@ function getCandidCountsByStatesAction(){
 							 "bDestroy": true,
 							"aLengthMenu": [[20,50,100, 200, 500, -1], [20,50,100, 200, 500, "All"]]		
 						});
-						 $('#candidateWiseDataTable').removeClass("dataTable");
+						 //$('#candidateWiseDataTable').removeClass("dataTable");
 						
 	}

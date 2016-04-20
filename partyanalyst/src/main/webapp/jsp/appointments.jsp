@@ -56,7 +56,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
-.tableC thead th , .tableC tr td{font-size:11px;}
+.tableC thead th , .tableC tr td{font-size:11px;padding:4px !important;}
 .SelectPosition li{padding:5px;width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;list-style:none;cursor:pointer;}
 .daterangepicker_end_input{padding:0px !important;}
 .SelectPosition li:last-child{border-bottom:1px solid #ccc;}
