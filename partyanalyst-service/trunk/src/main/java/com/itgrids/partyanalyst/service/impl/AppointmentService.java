@@ -3215,6 +3215,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					PdfWriter writer = PdfWriter.getInstance(document, out);
 					ParagraphBorder border = new ParagraphBorder();
 				    writer.setPageEvent(border);
+				   
 					document.open();
 					
 					
@@ -3235,9 +3236,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					 
 					 for(AppointmentDetailsVO vo : resultList)
 					 {
-						 	
-						 	
-						 	border.setActive(true);
+							border.setActive(true);
 						 	Paragraph p = new Paragraph();
 						 	p.setAlignment(Element.ALIGN_CENTER);
 						   //document.add(new Paragraph(p));
@@ -3271,18 +3270,21 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						   else
 							   p.add(new Chunk("Purpose : -")); 
 						 
+						   Paragraph p1 = null;
 						  if(vo.getSubList() != null && vo.getSubList().size() > 0)
 						  {
 						  for(AppointmentDetailsVO subVo : vo.getSubList())
 						 {
 							  border.setActive(true);
+							    p1 = new Paragraph();
+							   p1.add(new Chunk("")); 
 							 
 							   PdfPTable table = new PdfPTable(columnWidths);
 							  
 								 //special font sizes
 								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
-								   document.add(Chunk.NEWLINE );
+								  // document.add(Chunk.NEWLINE );
 							 //insert column headings
 							   
 							   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
@@ -3337,20 +3339,22 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									 
 								 }
 							 }
-							 p.add(table);
+							 p1.add(table);
 							 
 							
 						 }
 						  }
 						  else
 						  {
-							
+							  border.setActive(true);
+							    p1 = new Paragraph();
+							   p1.add(new Chunk("")); 
 							  PdfPTable table = new PdfPTable(columnWidths);
 						
 								 //special font sizes
 								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
-								   document.add(Chunk.NEWLINE );
+								 //  document.add(Chunk.NEWLINE );
 							 //insert column headings
 							   
 							   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
@@ -3360,24 +3364,25 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
 							   insertCell(table, "No Data Available ", Element.ALIGN_CENTER, 3, bf12,0);
 							   //document.add(table); 
-							   p.add(table);
+							   p1.add(table);
 						  }
-						  Paragraph p1 = new Paragraph();
+						  Paragraph p2 = new Paragraph();
 						  Font bf12 = new Font(FontFamily.TIMES_ROMAN, 8); 
-						  p1.add(new Chunk(" REQUESTED DATES :",bf12));
+						  p2.add(new Chunk(" REQUESTED DATES :",bf12));
 						  if(vo.getApptpreferableDates() != null && vo.getDateTypeId() == 1)
 						  {
-							p1.add(new Chunk(vo.getApptpreferableDates(),bf12))	;
+							p2.add(new Chunk(vo.getApptpreferableDates(),bf12))	;
 						  }
 						  else if(vo.getApptpreferableDates() == null && vo.getDateTypeId() > 1)
 								  {
-							  p1.add(new Chunk(vo.getDateType() + '('+vo.getMinDate()+" to " +vo.getMaxDate()+')',bf12))	;
+							  p2.add(new Chunk(vo.getDateType() + '('+vo.getMinDate()+" to " +vo.getMaxDate()+')',bf12))	;
 								  }
 						  else
-							  p1.add(new Chunk(""));
+							  p2.add(new Chunk(""));
 						
 						  document.add(p); 
-						  document.add(p1);
+						  document.add(p1); 
+						  document.add(p2);
 						
 					 }
 					 
