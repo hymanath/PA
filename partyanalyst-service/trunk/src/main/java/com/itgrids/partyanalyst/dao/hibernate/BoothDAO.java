@@ -2627,7 +2627,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	 
 	 public Long getLocalElectionBodyByConstituency(Long constituencyId){
 		 
-		 Query query = getSession().createQuery(" select distinct model.localBody.localElectionBodyId from Booth model where model.constituency.constituencyId = :constituencyId ");
+		 Query query = getSession().createQuery(" select distinct model.localBody.localElectionBodyId from Booth model where model.constituency.constituencyId = :constituencyId and model.localBody.localElectionBodyId is not null ");
 		 
 		 query.setParameter("constituencyId", constituencyId);
 		 
