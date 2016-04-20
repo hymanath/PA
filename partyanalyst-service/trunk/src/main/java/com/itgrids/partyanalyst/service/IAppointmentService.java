@@ -54,7 +54,7 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentsLabelStatus();
 	public ResultStatus updateAppointmentsLabelStatus(Long labelId,Long labelstatusId);
 	public ResultStatus updateMemberAppointmentsStatus(Long apptId,Long statusId);
-	 public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long registrationId,String type,Long timeSlotId,String commentTxt);
+	 public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long registrationId,String type,Long timeSlotId,String commentTxt,Long apptUserID);
 	public List<AppointmentDetailsVO> getViewAppointmentsOfALable(Long labelId);
 	public ResultStatus updateAppointmentStatus(AppointmentUpdateStatusVO inputVO,Long userId);
 	public ResultStatus sendSmsForAppointment(AppointmentUpdateStatusVO inputVO);
