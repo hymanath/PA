@@ -311,4 +311,9 @@ public class Scheduler {
 	      log.info("\n\n Total insertMahanaduEventInfo Table effected records"); 
 	    }
 	  }
+	
+	public void runTheBatchJobForEveryDayChangeApptStatus()
+	{
+		schedulerService.changeApptStatusToAttended(dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_ATTENDED,IConstants.APPOINTMENT_STATUS_FIXED);
+	}
 }

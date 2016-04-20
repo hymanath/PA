@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAppointmentDAO;
 import com.itgrids.partyanalyst.dao.ISearchEngineIPAddressDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreAgerangeInfoDAO;
@@ -58,6 +59,8 @@ public class SchedulerService implements ISchedulerService{
 	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
 	private ITrainingCampBatchDAO trainingCampBatchDAO;
+	
+	private IAppointmentDAO appointmentDAO;
 	
 	
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
@@ -155,6 +158,14 @@ public class SchedulerService implements ISchedulerService{
 
 	public void setMailService(IMailService mailService) {
 		this.mailService = mailService;
+	}
+	
+	public IAppointmentDAO getAppointmentDAO() {
+		return appointmentDAO;
+	}
+
+	public void setAppointmentDAO(IAppointmentDAO appointmentDAO) {
+		this.appointmentDAO = appointmentDAO;
 	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
@@ -817,4 +828,23 @@ public class SchedulerService implements ISchedulerService{
 	      return "failure";
 	    }
 	  }
+	
+	public void changeApptStatusToAttended(Date fromDate,Long attendedStatusId,Long fixedStatusId)
+	{
+		try {
+			Calendar cal = Calendar.getInstance();
+	    	cal.getTime();
+	    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			LOG.info( sdf.format(cal.getTime()));
+			
+			List<Long> apptIds = appointmentDAO.getAppointmentIdsByDateByStatus(fromDate,fixedStatusId);
+			int updatedApptsCounts = appointmentDAO.updatedAppointmentStatus(apptIds,attendedStatusId,1l,fromDate);
+			
+			LOG.info(updatedApptsCounts+" No of Appts Changed to Attended Status");
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in changeApptStatus() Method, Exception is - ",e);
+		}
+	}
 }
