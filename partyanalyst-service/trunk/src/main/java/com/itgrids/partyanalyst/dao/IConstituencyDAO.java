@@ -7,11 +7,11 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.model.Constituency;
 
@@ -307,5 +307,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	 public List<Object[]> getTehsilsByConstituency(Long constituencyId);
 	 public List<Object[]> getLocalElectionBodiesByconstituency(Long constituencyId);
 	 public List<Object[]> getPanchayatsByTehsilId(Long tehsilId);
-
+	 public List<Object[]> getTemaporarilyMobileNoByDate(Date date);
 }
