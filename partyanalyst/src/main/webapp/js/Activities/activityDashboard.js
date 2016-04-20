@@ -2,8 +2,8 @@ function getActivityNames(type)
 {
 	
 	if(type=='onload'){
-		$('#activityTypeList').val(4);
-		$('#activityLevelList').val(5);
+		$('#activityTypeList').val(1);
+		$('#activityLevelList').val(1);
 	}
 	
 	$('#ActivityList').find('option').remove();
@@ -27,7 +27,7 @@ function getActivityNames(type)
 			if($("#activityTypeList").val()==4){
 				$('#ActivityList').val(11);
 			}else{
-				$('#ActivityList').val(1);
+				$('#ActivityList').val(12);
 			}
 			
 			if(type == "onload"){
