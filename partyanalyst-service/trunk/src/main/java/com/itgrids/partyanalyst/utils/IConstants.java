@@ -1018,5 +1018,5 @@ public interface IConstants {
 	
 	public static final String STATIC_STR = "Static";
 	public static final String DYNAMIC_STR = "Dynamic";
-	
+	public static final String SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE = "Affiliated Graduates Enrollment";
 }
