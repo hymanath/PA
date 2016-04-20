@@ -71,8 +71,8 @@ var cb = function(start, end, label) {
 		getAllCandidateTypes();
 		getPublicRepresentativeWiseAppointmentCnt();
 		getCommitteeLevelCount();
-		var selectedVal = $("input[name='locationTypeRadio']:checked").val();
-		getCandidCountsByStatesAction(selectedVal);
+		
+		getCandidCountsByStatesAction();
 		
 		getCandiCountsByLocations();
 		
@@ -89,14 +89,14 @@ $(document).on("click",".ranges li",function(){
 	}
 	
 	 if(selectedDay != 'Custom'){
-	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
-    getCandidCountsByStatesAction(selectedVal); 
+	
+    getCandidCountsByStatesAction(); 
 	 }
 });
 $(document).on("click",".applyBtn",function(){
 	
-	var selectedVal = $("input[name='locationTypeRadio']:checked").val();	
-	getCandidCountsByStatesAction(selectedVal);
+	
+	getCandidCountsByStatesAction();
 	
 });
 	/* $(".ranges li:nth-child(1)").addClass("active");
@@ -110,7 +110,7 @@ $(document).on("click",".applyBtn",function(){
 	//$(".opensleft").css("display","none");	
 	}); */
 
-function getCandidCountsByStatesAction(searchType){
+function getCandidCountsByStatesAction(){
 		
 		var appointmentUserId = $("#appointmentUserSelectBoxId").val();
 		var startDateString = "";
