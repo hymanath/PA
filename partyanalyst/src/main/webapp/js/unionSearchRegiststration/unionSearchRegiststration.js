@@ -61,7 +61,12 @@ $(".searchTypeCls").click(function(){
 
 $(document).keypress(function(e) {
 	if(e.keyCode==13){
-		getCadreDetailsBySearchCriteria(0);
+		var registeredChk = $('input[name="tdpCadreRadio"]:checked').val();
+		if(registeredChk=="yes"){
+			getCadreDetailsBySearchCriteria(0);
+		}else{
+			getVoterDetailsBySearch();
+		}
 	}
 });
 
