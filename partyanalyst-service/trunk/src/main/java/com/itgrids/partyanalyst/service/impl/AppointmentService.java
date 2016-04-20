@@ -3221,7 +3221,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					
 					
 					 Paragraph titleParagraph = new Paragraph();
-					 Font font = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+					 Font font = new Font(FontFamily.HELVETICA, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 					 titleParagraph.add(new Chunk(labelName +" Appointment Members"));
 					 titleParagraph.setAlignment(Element.ALIGN_CENTER);
 					 titleParagraph.setFont(font);
@@ -3240,21 +3240,18 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							border.setActive(true);
 						 	Paragraph p = new Paragraph();
 						 	p.setAlignment(Element.ALIGN_CENTER);
-						   //document.add(new Paragraph(p));
-						  
-						   Font f = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0));
+						 
+						   Font f = new Font(FontFamily.HELVETICA, 8, Font.BOLD, new BaseColor(0, 0, 0));
 						   p.add(new Chunk("Appointment ID : "+vo.getAptUniqueCode(),f));
 						   p.add(new Chunk("  ",f));
-						   //p.add(new Chunk("  "));
-						   
+						  
 						   if(vo.getPriority() != null && vo.getPriority().length() > 0)
 							   p.add(new Chunk("Priority : "+vo.getPriority(),f));
 						   else
 							   p.add(new Chunk("Priority : -") + " ");  
 						   
 						   p.add(new Chunk("  "));
-						   //p.add(new Chunk("  "));
-						   
+						
 						   if(vo.getDateString() != null && vo.getDateString().length() > 0)
 							   p.add(new Chunk("Requested Date : "+vo.getDateString(),f));
 						   else
@@ -3283,9 +3280,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   PdfPTable table = new PdfPTable(columnWidths);
 							  
 								 //special font sizes
-								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
-								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
-								  // document.add(Chunk.NEWLINE );
+								   Font bfBold12 = new Font(FontFamily.HELVETICA, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+								   Font bf12 = new Font(FontFamily.HELVETICA, 6); 
+								
 							 //insert column headings
 							   
 							   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
@@ -3343,11 +3340,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
 								 }
 							 }
+							 table.spacingBefore();    
+							 table.spacingAfter();      
+
 							 p1.add(table);
-							// p1.add(new Chunk(""));
-							  p1.add("\n");
-							// p1.add(new Chunk("")); 
-							// p1.add(Chunk.NEWLINE);
+							 p1.add(Chunk.NEWLINE);
+						 
 						 }
 						  }
 						  else
@@ -3358,9 +3356,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							  PdfPTable table = new PdfPTable(columnWidths);
 						
 								 //special font sizes
-								   Font bfBold12 = new Font(FontFamily.TIMES_ROMAN, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
-								   Font bf12 = new Font(FontFamily.TIMES_ROMAN, 6); 
-								 //  document.add(Chunk.NEWLINE );
+								   Font bfBold12 = new Font(FontFamily.HELVETICA, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+								   Font bf12 = new Font(FontFamily.HELVETICA, 6); 
+								
 							 //insert column headings
 							   
 							   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
@@ -3369,15 +3367,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   insertCell(table, "APPOINTMENT PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
 							   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
 							   insertCell(table, "No Data Available ", Element.ALIGN_CENTER, 3, bf12,0);
-							   //document.add(table); 
+							  
 							   p1.add(table);
-							   p1.add("\n");
-							  // p1.add(new Chunk(""));
-							  // p1.add(Chunk.NEWLINE);
-							   //p1.add(Chunk.NEWLINE);
+							  p1.add(Chunk.NEWLINE);
 						  }
 						  Paragraph p2 = new Paragraph();
-						  Font bf12 = new Font(FontFamily.TIMES_ROMAN, 8); 
+						  Font bf12 = new Font(FontFamily.HELVETICA, 8); 
 						  p2.add(new Chunk(" REQUESTED DATES :",bf12));
 						  if(vo.getApptpreferableDates() != null && vo.getDateTypeId() == 1)
 						  {
@@ -3389,14 +3384,10 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								  }
 						  else
 							  p2.add(new Chunk(""));
-						 
-						 // p2.add(Chunk.NEWLINE);
-						
-						  document.add(p); 
-						  document.add(p1);
-						 
-						  document.add(p2);
-						  document.add(Chunk.NEWLINE);
+						 document.add(p); 
+						 document.add(p1);
+						 document.add(p2);
+						 document.add(Chunk.NEWLINE);
 					 }
 					 
 						border.setActive(false);
