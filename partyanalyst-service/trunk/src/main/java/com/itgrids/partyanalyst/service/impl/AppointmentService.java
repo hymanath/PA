@@ -3199,7 +3199,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		return finalList;
 	}
 	 
-	 public String pdfViewForAppointment(List<AppointmentDetailsVO> resultList,String labelName)
+	 /*public String pdfViewForAppointment(List<AppointmentDetailsVO> resultList,String labelName)
 	 {
 		 try{
 			 if(resultList != null && resultList.size() > 0)
@@ -3371,7 +3371,10 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   p1.add(table);
 							  p1.add(Chunk.NEWLINE);
 						  }
+						  
 						  Paragraph p2 = new Paragraph();
+						  border.setActive(true);
+						  System.out.println("Kamal");
 						  Font bf12 = new Font(FontFamily.HELVETICA, 8); 
 						  p2.add(new Chunk(" REQUESTED DATES :",bf12));
 						  if(vo.getApptpreferableDates() != null && vo.getDateTypeId() == 1)
@@ -3379,15 +3382,17 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							p2.add(new Chunk(vo.getApptpreferableDates(),bf12))	;
 						  }
 						  else if(vo.getApptpreferableDates() == null && vo.getDateTypeId() > 1)
-								  {
+						  {
 							  p2.add(new Chunk(vo.getDateType() + '('+vo.getMinDate()+" to " +vo.getMaxDate()+')',bf12))	;
-								  }
+						  }
 						  else
 							  p2.add(new Chunk(""));
-						/*  border.setActive(true);
-						  Paragraph p3 = new Paragraph();*/
+						
+						    border.setActive(true);
+						  Paragraph p3 = new Paragraph();
 						  float[] columnWidths2 = new float[]{6f,3f,3f};
 						  PdfPTable table3 = new PdfPTable(columnWidths2);
+						  table3.setWidthPercentage(100);
 						  //special font sizes
 						   Font bfBold12 = new Font(FontFamily.HELVETICA, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
 						  
@@ -3411,6 +3416,149 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					  return randomNum+".pdf"; 
 					 
 				 
+			 }
+		 }
+		 catch(Exception e)
+		 {
+			 LOG.error("Exception raised at pdfViewForAppointment",e); 
+		 }
+		return null;
+	 }*/
+	 
+	 public String pdfViewForAppointment(List<AppointmentDetailsVO> resultList,String labelName)
+	 {
+		 try{
+			 if(resultList != null && resultList.size() > 0)
+			 {
+				 String randomNum =  UUID.randomUUID().toString();
+				 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				 String PdfReports = "appointmentPdf";
+				 String destPath = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator + PdfReports + pathSeperator + randomNum+".pdf";
+				 File destFile = new File(destPath);
+					 if (!destFile.exists()) 
+						 destFile.createNewFile();
+					FileOutputStream out = new FileOutputStream(destPath);
+					Document document = new Document();
+					PdfWriter writer = PdfWriter.getInstance(document, out);
+					ParagraphBorder border = new ParagraphBorder();
+				    writer.setPageEvent(border);
+				   
+					document.open();
+					
+					 Paragraph titleParagraph = new Paragraph();
+					 Font font = new Font(FontFamily.HELVETICA, 8, Font.BOLD, new BaseColor(0, 0, 0)); 
+					 titleParagraph.add(new Chunk(labelName +" Appointment Members"));
+					 document.add(Chunk.NEWLINE);
+					 titleParagraph.setAlignment(Element.ALIGN_CENTER);
+					 titleParagraph.setFont(font);
+					 titleParagraph.setSpacingAfter(5);
+					 titleParagraph.setFont(font);
+					 document.add(titleParagraph);
+					 
+					 int tableWidth = 5;
+					 float[] columnWidths = new float[tableWidth];
+					 
+					 int rowspan = 0;
+					 int colSpan = 0;
+					 columnWidths = new float[]{5f, 3f, 3f, 5f,3f};
+					 
+					 for(AppointmentDetailsVO vo : resultList)
+					 {
+						 PdfPTable table = new PdfPTable(columnWidths);
+						 table.setWidthPercentage(100);
+						 table.setSplitLate(false);
+						 Font bfBold12 = new Font(FontFamily.HELVETICA, 7, Font.BOLD, new BaseColor(0, 0, 0)); 
+						 Font bf12 = new Font(FontFamily.HELVETICA, 7);
+						 
+						 StringBuffer sb1 = new StringBuffer();
+						 sb1.append("Appointment ID : "+vo.getAptUniqueCode()+"                  ");
+						 sb1.append("Priority : "+vo.getPriority()+"                  ");
+						 sb1.append("Requested Date : "+vo.getDateString()+"                  ");
+						 sb1.append("Status : "+vo.getStatus()+"                  ");
+						 sb1.append("\nPurpose : "+vo.getSubject()+" ");
+						 
+						 insertCell(table,sb1.toString(), Element.ALIGN_LEFT,5, bfBold12,rowspan);
+						 int index = 0;
+						 
+						 for(AppointmentDetailsVO subVo : vo.getSubList())
+						 {
+							 if(index != 0)
+								 insertCell(table,"", Element.ALIGN_CENTER,5, bfBold12,rowspan); 
+							 index++;
+							 
+							 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							 insertCell(table, "APPOINTMENT ID", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+							 insertCell(table, "CREATED DATE", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
+							 insertCell(table, "PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							 insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
+							 
+							 StringBuffer sb = new StringBuffer();
+							   
+							 sb.append(subVo.getName()+"\nContact Number: - ");
+							  
+							 if(subVo.getMobileNo() != null && subVo.getMobileNo().length() > 0)
+								  sb.append(""+subVo.getMobileNo()+"\n"); 
+							 else
+								 sb.append("\n");
+							  
+							 if(subVo.getDesignation() != null && subVo.getDesignation().length() > 0)
+								 sb.append("Designation: " +subVo.getDesignation()+"\n"); 
+							 else
+								 sb.append("Designation: - "+"\n" );  
+							  
+							 if(subVo.getConstituency() != null && subVo.getConstituency().length() > 0)
+								 sb.append("Constituency : " +subVo.getConstituency()+"\n"); 
+							 else
+								 sb.append("Constituency : - "+"\n" ); 
+							 
+							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
+								 insertCell(table, sb.toString(), Element.ALIGN_LEFT, colSpan, bf12,subVo.getSubList().size());
+							 else
+							 {
+								   insertCell(table, sb.toString(), Element.ALIGN_LEFT, colSpan, bf12,0); 
+								   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+								   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+								   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+								   insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
+									
+							 }
+							 
+							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
+							 {
+								 for(AppointmentDetailsVO aptVo : subVo.getSubList())
+								 {
+									 insertCell(table, aptVo.getAptUniqueCode(), Element.ALIGN_CENTER, colSpan, bf12,0);
+									 insertCell(table, aptVo.getDateString(), Element.ALIGN_CENTER, colSpan, bf12,0);
+									 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() > 1)
+										 insertCell(table, aptVo.getDateType() +":" + aptVo.getMinDate() +"-"+aptVo.getMaxDate(), Element.ALIGN_LEFT, colSpan, bf12,0);
+									 else if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() == 1)
+										 insertCell(table, aptVo.getApptpreferableDates(), Element.ALIGN_LEFT, colSpan, bf12,0);
+									 else
+									 insertCell(table, "", Element.ALIGN_LEFT, colSpan, bf12,0);
+									 
+									 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
+								 }
+							 }
+							 
+						 }
+						 
+						 insertCell(table,"REQUESTED DATES :"+(vo.getApptpreferableDates() != null ? vo.getApptpreferableDates() : ""), Element.ALIGN_LEFT,5,bfBold12,rowspan);
+						 
+						 insertCell(table,"APPOINTMENT COMMENTS", Element.ALIGN_LEFT,3,bfBold12,rowspan);
+						 insertCell(table,"APPOINTMENT DATE", Element.ALIGN_CENTER,1,bfBold12,rowspan);
+						 insertCell(table,"TIME", Element.ALIGN_CENTER,1,bfBold12,rowspan);
+						 
+						 insertCell(table,"\n\n\n", Element.ALIGN_LEFT,3,bfBold12,rowspan);
+						 insertCell(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
+						 insertCell(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
+						 
+						 document.add(table);
+						 document.add(Chunk.NEWLINE);
+					 }
+					 
+					
+					document.close();
+					return randomNum+".pdf"; 
 			 }
 		 }
 		 catch(Exception e)
