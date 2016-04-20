@@ -770,7 +770,6 @@
 				 
 				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
 				 <value>com.itgrids.partyanalyst.model.UnionTabUser</value>
-				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value> 
 				 <!-- appointment related Models -->
 				 <value>com.itgrids.partyanalyst.model.AppointmentStatus</value>
 				 <value>com.itgrids.partyanalyst.model.Appointment</value>
@@ -789,7 +788,17 @@
 				 <value>com.itgrids.partyanalyst.model.AppointmentCandidateRelation</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlot</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlotHistory</value>
-				  <value>com.itgrids.partyanalyst.model.AppointmentComment</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentCandidateType</value>
+				 <!-- appointment related Models -->
+				 
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value>
+				 <value>com.itgrids.partyanalyst.model.SmsHistoryMobileNo</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentTracking</value>
+			     <value>com.itgrids.partyanalyst.model.AppointmentAction</value>
+			     <value>com.itgrids.partyanalyst.model.AppointmentComment</value>
+			     <value>com.itgrids.partyanalyst.model.AppointmentSmsSetting</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentSmsHistory</value>
+				  <value>com.itgrids.partyanalyst.model.SmsOtpDetails</value>
 				 <!-- appointment related Models -->
 			</list>
 		</property>
@@ -3429,11 +3438,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="ivrSurveyServiceDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyServiceDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-<bean id="appointmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO" >
+	<bean id="appointmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
@@ -3476,6 +3481,10 @@
 	<bean id="appointmentLabelStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentLabelStatusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	<bean id="ivrSurveyServiceDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyServiceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="appointmentTimeSlotHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentTimeSlotHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -3496,4 +3505,41 @@
 	<bean id="appointmentCandidateRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="appointmentCandidateTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="smsHistoryMobileNoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsHistoryMobileNoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentActionDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentActionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentTrackingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="appointmentCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentSmsSettingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsSettingDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentSmsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsHistoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="smsOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsOtpDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="smsSenderService" class="com.itgrids.partyanalyst.service.impl.SmsSenderService">
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+		<property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO" />	
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />	
+		<property name="smsModuleDAO" ref="smsModuleDAO" />
+		<property name="smsHistoryDAO" ref="smsHistoryDAO" />	
+		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="userDAO" ref="userDAO" />	
+		<property name="smsHistoryMobileNoDAO" ref="smsHistoryMobileNoDAO" />		
+	</bean>
+	
 </beans>
