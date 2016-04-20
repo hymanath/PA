@@ -3292,28 +3292,30 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							   insertCell(table, "CREATED DATE", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan);
 							   insertCell(table, "APPOINTMENT PREFERABLE DATES", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
 							   insertCell(table, "STATUS", Element.ALIGN_CENTER, colSpan, bfBold12,rowspan); 
-							 StringBuffer sb = new StringBuffer();
-							 if(subVo.isCadre() == true)
-							 sb.append(subVo.getName() +"- Cadre  "+"\n");
-							 else
-							  sb.append(subVo.getName()+"\n");
-							 if(subVo.getMobileNo() != null && subVo.getMobileNo().length() > 0)
-							 sb.append("Contact Number: " +subVo.getMobileNo()+"\n"); 
-							 else
-								 sb.append("Contact Number: - "+"\n" );  
-							 if(subVo.getDesignation() != null && subVo.getDesignation().length() > 0)
-								 sb.append("Designation: " +subVo.getDesignation()+"\n"); 
-								 else
-									 sb.append("Designation: - "+"\n" );  
-							 if(subVo.getConstituency() != null && subVo.getConstituency().length() > 0)
-								 sb.append("Constituency : " +subVo.getConstituency()+"\n"); 
-								 else
-							 sb.append("Constituency : - "+"\n" ); 
-							 sb.append(subVo.getName()+"\n");
+							   
+							   StringBuffer sb = new StringBuffer();
+							   
+							  sb.append(subVo.getName()+"\nContact Number: - ");
+							  
+							  if(subVo.getMobileNo() != null && subVo.getMobileNo().length() > 0)
+								  sb.append(""+subVo.getMobileNo()+"\n"); 
+							  else
+								 sb.append("\n");
+							  
+							  if(subVo.getDesignation() != null && subVo.getDesignation().length() > 0)
+								  sb.append("Designation: " +subVo.getDesignation()+"\n"); 
+							  else
+								  sb.append("Designation: - "+"\n" );  
+							  
+							  if(subVo.getConstituency() != null && subVo.getConstituency().length() > 0)
+								  sb.append("Constituency : " +subVo.getConstituency()+"\n"); 
+							  else
+								  sb.append("Constituency : - "+"\n" ); 
+							
 							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
 								 insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,subVo.getSubList().size());
-							   else
-							   {
+							 else
+							 {
 								   insertCell(table, sb.toString(), Element.ALIGN_CENTER, colSpan, bf12,0); 
 								   // add a couple of blank lines
 									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
@@ -3321,7 +3323,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
 									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
 									
-							   }
+							 }
+							 
 							 if(subVo.getSubList() != null && subVo.getSubList().size() > 0)
 							 {
 								 for(AppointmentDetailsVO aptVo : subVo.getSubList())
@@ -3331,12 +3334,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									 insertCell(table, aptVo.getDateString(), Element.ALIGN_CENTER, colSpan, bf12,0);
 									 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() > 1)
 										 insertCell(table, aptVo.getDateType() +":" + aptVo.getMinDate() +"-"+aptVo.getMaxDate(), Element.ALIGN_CENTER, colSpan, bf12,0);
-									 if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() == 1)
+									 else if(aptVo.getDateTypeId() != null && aptVo.getDateTypeId() == 1)
 										 insertCell(table, aptVo.getApptpreferableDates(), Element.ALIGN_CENTER, colSpan, bf12,0);
 									 else
 									 insertCell(table, "", Element.ALIGN_CENTER, colSpan, bf12,0);
-									 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
 									 
+									 insertCell(table, aptVo.getStatus(), Element.ALIGN_CENTER, colSpan, bf12,0);
 								 }
 							 }
 							 p1.add(table);
