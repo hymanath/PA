@@ -8344,7 +8344,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 												" where model.voter.voterIDCardNo = :voterIDCardNo" +
 														" and model.booth.publicationDate.publicationDateId = :publicationDateId");
 		query.setParameter("voterIDCardNo", voterIDCardNo);
-		query.setParameter("publicationDateId", IConstants.LATEST_PUBLICATION_DATE_ID);
+		query.setParameter("publicationDateId", IConstants.VOTER_PUBLICATION_ID);
 		
 		return query.list();
 	}
