@@ -11852,7 +11852,7 @@
 	    	<param name="root">idNameVOList</param>
 	    </result>
 </action>
-<action name="sendSMSForAppointmtAction" class="appointmentAction" method="sendSms">
+<action name="sendSMSForAppointmtAction" class="appointmentAction" method="sendSmsForAppointment">
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
