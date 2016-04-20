@@ -255,8 +255,6 @@ function getCadreDetailsBySearchCriteria(startIndex){
 function buildCadreDetails(result,jsObj){
 		$(".paginationDivId").show();
 		var str ='';
-		var elegRolCnt=0;
-		var dtCnt = 0;
 		if(result != null)
 		{
 			for(var i in result)
@@ -323,32 +321,11 @@ function buildCadreDetails(result,jsObj){
 					str+='</div>';
 				
 				}
-				elegRolCnt++;
-				dtCnt++;
 			}
-		if(result[0].mobileType > 50)	
-		{
-		var itemsCount=result[0].mobileType;
-	    var maxResults=jsObj.maxIndex;
-	   
-	     if(jsObj.startIndex==0){
-		   $(".paginationDivId").pagination({
-			items: itemsCount,
-			itemsOnPage: maxResults,
-			cssStyle: 'light-theme',
-			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*50;
-				getCadreDetailsBySearchCriteria(num);
-				
-			}
-			});
-		}
 		
-		}
 		}
 		$(".cadreMemberListCls").show();
 		$('#cadreDetailsDiv').html(str);
-		$('[data-toggle="tooltip"]').tooltip();
 }
 
 function generateOTPForMobileNo(currentButton){
