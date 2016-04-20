@@ -167,6 +167,7 @@ function getDetailsForVoter(voterId){
 		  
 function getCadreDetailsBySearchCriteria(startIndex){
 	$("#generateOtpId").hide();
+	$("#searchErrDiv").html("");
 	$("#otpId").hide();
 	$("#otpId").val("");
 	$("#cadreDetailsDiv").hide();
