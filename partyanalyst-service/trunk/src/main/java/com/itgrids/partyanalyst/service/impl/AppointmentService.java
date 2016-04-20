@@ -3607,13 +3607,11 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       
 				       Integer updtdSts = appointmentDAO.updateAppntmntStatusById(appointmentTimeSlot.getAppointmentId(), dateUtilService.getCurrentDateAndTime() );
 				       
-				       List<String>  mobilenos = appointmentCandidateRelationDAO.getAppointmentIdsforSendSms(appointmentTimeSlot.getAppointmentId());
-				       if(mobilenos !=null && mobilenos.size()>0){
-				    	   for(String obj : mobilenos){
-				    		   	 cadreRegistrationService.sendSMS(obj,"Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
-				    		  	
-				    	   }
-				       }
+				       AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
+				       inputVO.setAppointmentId(appointmentTimeSlot.getAppointmentId());
+					   inputVO.setSmsText("Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
+				       sendSmsForAppointment(inputVO);
+				       
 				       
 				      /*if(type !=null && type.equalsIgnoreCase("update")){
 			        	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
@@ -3843,7 +3841,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			//SMS sending
 			if(inputVO.isIssmsChecked())
 			{
-				 List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
+				/* List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
 				 if(list != null && list.size() > 0)
 				 {
 					 for(Object[] params : list)
@@ -3851,7 +3849,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						 if(params[2] != null && !params[2].toString().isEmpty())
 						 cadreRegistrationService.sendSMS(params[2].toString(), inputVO.getSmsText()); 
 					 }
-				 }
+				 }*/
+				AppointmentUpdateStatusVO smsVO = new AppointmentUpdateStatusVO();
+				smsVO.setAppointmentId(inputVO.getAppointmentId());
+				smsVO.setSmsText(inputVO.getSmsText());
+		        sendSmsForAppointment(smsVO);
+				
 			}
 			
 			//commnts saving
