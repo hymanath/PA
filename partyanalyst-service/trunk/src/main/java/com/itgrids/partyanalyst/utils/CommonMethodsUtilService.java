@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -394,4 +395,17 @@ public class CommonMethodsUtilService {
 		return returnMessage; 
 	}
 	
+		  public String escapeUnicode(String input) {
+				StringBuilder b = new StringBuilder(input.length());
+				Formatter f = new Formatter(b);
+				for (char c : input.toCharArray()) {
+					if (c < 128) {
+					  b.append(c);
+					} else {
+					  f.format("\\u%04x", (int) c);
+					}
+				}
+				return b.toString();
+			}
+		  
 }
