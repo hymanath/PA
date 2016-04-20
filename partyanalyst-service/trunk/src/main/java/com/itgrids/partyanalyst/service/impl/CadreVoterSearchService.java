@@ -1050,8 +1050,8 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		      }while(otp.trim().length()<=6);
 		      
 		      otp = String.valueOf(number).substring(0,6);
-		      
-		      String messageStr = "OTP number: "+otp+" for ref no: "+refNo;
+		      if(otp != null && !otp.isEmpty()){
+		      String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;
 		      
 		      SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
 		      
@@ -1064,10 +1064,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		      smsOtpDetails.setUserId(userId);
 		      smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
 		      
-		      SmsHistory smsHistory = smsSenderService.sendSMS(userId, "Appointment", true, messageStr, mobileNo);
+		      SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
 		      
 		      status = IConstants.SUCCESS;
-		      
+		      }
 		} catch (Exception e) {
 			status = IConstants.FAILURE;
 			LOG.error("Exception occured in generateOTPForMobileNumber() in CadreVoterSearchService ",e);
