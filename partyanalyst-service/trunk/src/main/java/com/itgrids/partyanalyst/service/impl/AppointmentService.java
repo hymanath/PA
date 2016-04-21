@@ -31,6 +31,7 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -3466,16 +3467,17 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					 {
 						 PdfPTable table = new PdfPTable(columnWidths);
 						 table.setWidthPercentage(100);
-						 table.setSplitLate(false);
+						 table.setKeepTogether(true);
 						 Font bfBold12 = new Font(FontFamily.HELVETICA, 7, Font.BOLD, new BaseColor(0, 0, 0)); 
 						 Font bf12 = new Font(FontFamily.HELVETICA, 7);
 						 
 						 StringBuffer sb1 = new StringBuffer();
-						 sb1.append("Appointment ID : "+vo.getAptUniqueCode()+"                  ");
-						 sb1.append("Priority : "+vo.getPriority()+"                  ");
-						 sb1.append("Requested Date : "+vo.getDateString()+"                  ");
-						 sb1.append("Status : "+vo.getStatus()+"                  ");
-						 sb1.append("\nPurpose : "+vo.getSubject()+" ");
+						 sb1.append("Appointment ID : "+vo.getAptUniqueCode()+"                                      ");
+						 sb1.append("Priority : "+vo.getPriority()+"                                      ");
+						 sb1.append("Requested Date : "+vo.getDateString()+"                                      ");
+						 sb1.append("Status : "+vo.getStatus()+"                                      ");
+						 sb1.append("\n\n");
+						 sb1.append("Purpose : "+vo.getSubject()+" ");
 						 
 						 insertCell(table,sb1.toString(), Element.ALIGN_LEFT,5, bfBold12,rowspan);
 						 int index = 0;
@@ -3494,7 +3496,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							 
 							 StringBuffer sb = new StringBuffer();
 							   
-							 sb.append(subVo.getName()+"\nContact Number: - ");
+							 sb.append(subVo.getName()+"\nContact Number : ");
 							  
 							 if(subVo.getMobileNo() != null && subVo.getMobileNo().length() > 0)
 								  sb.append(""+subVo.getMobileNo()+"\n"); 
@@ -3502,9 +3504,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								 sb.append("\n");
 							  
 							 if(subVo.getDesignation() != null && subVo.getDesignation().length() > 0)
-								 sb.append("Designation: " +subVo.getDesignation()+"\n"); 
+								 sb.append("Designation : " +subVo.getDesignation()+"\n"); 
 							 else
-								 sb.append("Designation: - "+"\n" );  
+								 sb.append("Designation : - "+"\n" );  
 							  
 							 if(subVo.getConstituency() != null && subVo.getConstituency().length() > 0)
 								 sb.append("Constituency : " +subVo.getConstituency()+"\n"); 
@@ -3548,9 +3550,17 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						 insertCell(table,"APPOINTMENT DATE", Element.ALIGN_CENTER,1,bfBold12,rowspan);
 						 insertCell(table,"TIME", Element.ALIGN_CENTER,1,bfBold12,rowspan);
 						 
-						 insertCell(table,"\n\n\n", Element.ALIGN_LEFT,3,bfBold12,rowspan);
-						 insertCell(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
-						 insertCell(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
+						 StringBuffer sb2 = new StringBuffer();
+						 sb2.append("  \n  ");
+						 sb2.append("  \n  ");
+						 
+						 insertNoBorderCell(table,"", Element.ALIGN_LEFT,3,bfBold12,rowspan);
+						 insertNoBorderCell(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
+						 insertNoBorderCell(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
+						 
+						 insertNoBorderCell2(table,"", Element.ALIGN_LEFT,3,bfBold12,rowspan);
+						 insertNoBorderCell2(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
+						 insertNoBorderCell2(table,"", Element.ALIGN_LEFT,1,bfBold12,rowspan);
 						 
 						 document.add(table);
 						 document.add(Chunk.NEWLINE);
@@ -3588,6 +3598,47 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		  table.addCell(cell);
 		  
 		 }
+	 	private void insertNoBorderCell(PdfPTable table, String text, int align, int colspan, Font font,int rowspan){
+		  
+		  //create a new cell with the specified Text and Font
+		  PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+		  
+		  if(rowspan > 0)
+		   cell.setRowspan(rowspan);
+		  //set the cell alignment
+		  cell.setHorizontalAlignment(align);
+		  //set the cell column span in case you want to merge two or more cells
+		  if(colspan > 0)
+		   cell.setColspan(colspan);
+		  //in case there is no text and you wan to create an empty row
+		  if(text.trim().equalsIgnoreCase("")){
+		   cell.setMinimumHeight(10f);
+		  }
+		  cell.setBorder(Rectangle.RIGHT | Rectangle.LEFT);
+		  //add the call to the table
+		  table.addCell(cell);
+		 }
+	 	
+	 	private void insertNoBorderCell2(PdfPTable table, String text, int align, int colspan, Font font,int rowspan){
+			  
+			  //create a new cell with the specified Text and Font
+			  PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+			  
+			  if(rowspan > 0)
+			   cell.setRowspan(rowspan);
+			  //set the cell alignment
+			  cell.setHorizontalAlignment(align);
+			  //set the cell column span in case you want to merge two or more cells
+			  if(colspan > 0)
+			   cell.setColspan(colspan);
+			  //in case there is no text and you wan to create an empty row
+			  if(text.trim().equalsIgnoreCase("")){
+			   cell.setMinimumHeight(10f);
+			  }
+			  cell.setBorder(Rectangle.RIGHT | Rectangle.LEFT | Rectangle.BOTTOM);
+			  //add the call to the table
+			  table.addCell(cell);
+			 }
 		public void removeTimeSlotExistedAppointments(Long labelId,List<AppointmentDetailsVO> finalList,Map<Long, AppointmentDetailsVO> appointmentsMap){
 			//Getting appointments which are allocating to the TimeSlot 
 			List<Object[]> timeSlotAptList = labelAppointmentDAO.getViewAppointmentsOfALable(labelId);
