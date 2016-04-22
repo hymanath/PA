@@ -30,7 +30,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		return query.list();
 	}
     
-	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId,
+	public List<Object[]> getAppointmentsBySearchCriteria1(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId,
 			Long candidateTypeId,Long dateTypeValue){
 		
 		StringBuilder sb=new StringBuilder();
@@ -737,6 +737,113 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 		return query.list();
 		
+	}
+	
+	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId,
+			Long candidateTypeId,Long dateTypeValue){
+		
+		StringBuilder sb=new StringBuilder();
+		sb.append(" select  distinct acr.appointment_id as appid, a.reason as reason, ap.priority as priority, ass.status as status," +
+				"            a.inserted_time as insertedTime,a.appointment_unique_id as uniqueId" +
+				"   from    appointment_candidate_relation acr " +
+				"           join appointment                  a    on  acr.appointment_id=a.appointment_id " +
+				"           join appointment_priority         ap   on  a.appointment_priority_id=ap.appointment_priority_id " +
+				"           join appointment_status           ass  on  a.appointment_status_id=ass.appointment_status_id " +
+				"           join appointment_preferable_date  apd  on  acr.appointment_id=apd.appointment_id " +
+				"           join appointment_candidate        ac   on  acr.appointment_candidate_id=ac.appointment_candidate_id " +
+				"           join user_address                 ua   on  ac.address_id=ua.user_address_id " +
+				
+				" where a.is_deleted='N' ");
+		
+		if(selUserId != null && selUserId > 0l){
+			sb.append(" and a.appointment_user_id = :selUserId ");
+		}
+		
+		if(designationId!=null && designationId >0l){
+		  sb.append(" and ac.designation_id = :designationId");	
+		}
+		
+		if(priorityId!=null && priorityId >0l){
+			  sb.append(" and a.appointment_priority_id = :priorityId");	
+		}
+		if(statusId!=null && statusId >0l){
+			  sb.append(" and a.appointment_status_id = :statusId");	
+		}
+		if(districtId!=null && districtId >0l){
+			  sb.append(" and ua.district_id = :districtId");	
+		}
+		if(constituencyId!=null && constituencyId >0l){
+			  sb.append(" and ua.constituency_id = :constituencyId");	
+		}
+		
+		if(dateTypeValue !=null && dateTypeValue >0){
+			if(dateTypeValue == 1l){
+				if(fromDate!=null){
+					sb.append(" and date(apd.appointment_date) >= :fromDate");
+				}
+		        if(toDate!=null){
+		        	sb.append(" and date(apd.appointment_date) <= :toDate");
+		        }
+			}else{
+				if(fromDate!=null){ 
+					sb.append(" and date(a.inserted_time) >= :fromDate");
+				}
+		        if(toDate!=null){
+		        	sb.append(" and date(a.inserted_time) <= :toDate");
+		        }
+			}
+			 
+		}
+		
+		if(candidateTypeId !=null && candidateTypeId>0){
+			sb.append(" and ac.appointment_candidate_type_id = :candidateTypeId ");
+		}
+		
+		sb.append(" order by a.inserted_time desc ");
+		
+		Query query = getSession().createSQLQuery(sb.toString())
+				 .addScalar("appid",Hibernate.LONG)
+				 .addScalar("reason",Hibernate.STRING)
+				 .addScalar("priority",Hibernate.STRING)
+				 .addScalar("status",Hibernate.STRING)
+				 .addScalar("insertedTime",Hibernate.TIMESTAMP)
+				 .addScalar("uniqueId",Hibernate.STRING);
+		        
+		if(selUserId != null && selUserId > 0l){
+			query.setParameter("selUserId",selUserId);
+		}
+		
+		if(designationId!=null && designationId >0l){
+			  query.setParameter("designationId",designationId);
+		}
+		
+		if(priorityId!=null && priorityId >0l){
+			query.setParameter("priorityId",priorityId);
+		}
+		if(statusId!=null && statusId >0l){
+			query.setParameter("statusId",statusId);	
+		}
+		if(districtId!=null && districtId >0l){
+			query.setParameter("districtId",districtId);	
+		}
+		if(constituencyId!=null && constituencyId >0l){
+			query.setParameter("constituencyId",constituencyId);	
+		}
+	if(dateTypeValue !=null && dateTypeValue >0){
+		if(fromDate!=null){
+			query.setDate("fromDate",fromDate);	
+		}
+        if(toDate!=null){
+        	query.setDate("toDate",toDate);	
+        }
+	}
+	
+	if(candidateTypeId !=null && candidateTypeId>0){
+		query.setParameter("candidateTypeId",candidateTypeId);
+	}
+	
+	//query.setParameterList("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED_LIST);
+		return query.list();
 	}
 	
 }

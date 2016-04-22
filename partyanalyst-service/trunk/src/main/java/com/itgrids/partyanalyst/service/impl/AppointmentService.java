@@ -1774,7 +1774,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
      }
  	
      // Appointments search criteria.
-     public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr,Long selUserID,
+     public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria1(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr,Long selUserID,
     		 Long cndTypeId,Long dateTypeValue,Long apptUserId){
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf =  new SimpleDateFormat("MM/dd/yyyy");
@@ -2116,7 +2116,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised at getAppointmentsBySearchCriteria",e);
+			LOG.error("Exception raised at getAppointmentsBySearchCriteria1",e);
 		}
 		return finalList;
 	}
@@ -5529,4 +5529,243 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return returnList;
 	}
+	
+	  // Appointments search criteria.
+    public List<AppointmentDetailsVO> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyid,Long appointmentlabelId,String fromDateStr,String toDateStr,Long selUserID,
+   		 Long cndTypeId,Long dateTypeValue,Long apptUserId){
+		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
+		   SimpleDateFormat sdf =  new SimpleDateFormat("MM/dd/yyyy");
+		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
+		   SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
+		try {
+			
+			 Date fromDate = null;
+			 Date toDate   = null;
+			 if(fromDateStr!=null && fromDateStr.trim().length()>0){
+				 fromDate = sdf.parse(fromDateStr);
+			 }
+			 if(toDateStr!=null && toDateStr.trim().length()>0){
+				 toDate = sdf.parse(toDateStr);
+			 }
+			 
+			Set<Long> appointmentIds = new HashSet<Long>(0);
+			Set<Long> candidateIds = new HashSet<Long>(0);
+			
+			List<Object[]> statList = appointmentStatusDAO.getAppointmentStatusList();
+			
+			Map<Long,AppointmentDetailsVO> appointmentsMap = null;
+			
+			List<Object[]>   list = appointmentCandidateRelationDAO.getAppointmentsBySearchCriteria(designationId,priorityId,statusId,districtId,constituencyid,fromDate,toDate,selUserID,cndTypeId,dateTypeValue);
+			if(list !=null && list.size()>0){
+				
+				appointmentsMap = new LinkedHashMap<Long, AppointmentDetailsVO>();
+				
+				for(Object[]  obj: list){
+											
+							AppointmentDetailsVO appointment =new AppointmentDetailsVO();
+							appointment.setAppointmentId(obj[0]!=null?(Long)obj[0]:0l);
+							appointment.setSubject(obj[1]!=null?obj[1].toString():"");
+							appointment.setPriority(obj[2]!=null?obj[2].toString():"");
+							appointment.setStatus(obj[3]!=null?obj[3].toString():"");
+							appointment.setDateString(obj[4]!=null?obj[4].toString():"");
+							appointment.setAptUniqueCode(obj[5]!=null?obj[5].toString():"");
+							appointmentsMap.put(appointment.getAppointmentId(),appointment);
+							
+							//appointmentIds
+							appointmentIds.add(appointment.getAppointmentId());
+						}
+			
+			List<Long> appointments = null;
+			if(appointmentIds!=null && appointmentIds.size()>0){
+				appointments = new ArrayList<Long>(appointmentIds);
+			}
+			
+			//get Preferable Dates For Appointments
+			if(appointments!=null && appointments.size()>0){
+				
+				List<Object[]>  apptDateslist = appointmentPreferableDateDAO.getMultipleDatesforAppointments(appointments);
+				if(apptDateslist!=null && apptDateslist.size()>0){
+					for(Object[] obj : apptDateslist){
+						AppointmentDetailsVO   appointmentVO = appointmentsMap.get((Long)obj[0]);						
+						appointmentVO = settingSomeDataForPrefferableDates(appointmentVO,obj);						
+					}
+				}
+			}
+			
+			
+			
+			//appointment related candidates.
+			
+			if(appointments!=null && appointments.size()>0){
+				List<Object[]> candiList = appointmentCandidateRelationDAO.getAppointmentRelatedCandidates(appointments);
+				
+				if(candiList !=null && candiList.size()>0){
+					for(Object[] obj : candiList){
+						AppointmentDetailsVO appointmentVO = appointmentsMap.get((Long)obj[0]);
+						
+						if(appointmentVO!=null){
+							
+							if(appointmentVO.getSubMap()==null){
+								appointmentVO.setSubMap(new HashMap<Long,AppointmentDetailsVO>(0));
+							}
+							AppointmentDetailsVO candidateVO = new AppointmentDetailsVO();
+							candidateVO.setCandidateId(obj[1]!=null?(Long)obj[1]:0l);
+							candidateVO.setName(obj[2]!=null?obj[2].toString():"");
+							if(obj[3]!=null){
+								candidateVO.setCadre(true);
+							}
+							candidateVO.setMobileNo(obj[4]!=null?obj[4].toString():"");
+							candidateVO.setDesignation(obj[5]!=null?obj[5].toString():"");
+							candidateVO.setConstituency(obj[6]!=null?obj[6].toString():"");
+							candidateVO.setImageUrl(obj[7]!=null?obj[7].toString():"");
+							
+							candidateVO.setStatusList(setStatusList(statList));
+							appointmentVO.getSubMap().put(candidateVO.getCandidateId(),candidateVO);
+							
+							//candidateIds
+							candidateIds.add(candidateVO.getCandidateId());
+						}
+					}
+				}
+			}
+			
+			//candidate prevoius info.
+			List<Long> candidates = null;
+			if(candidateIds!=null && candidateIds.size()>0){
+				candidates = new ArrayList<Long>(candidateIds);
+			}
+			
+			if(candidates!=null && candidates.size()>0){
+				List<Object[]> candidPreviousDetails =appointmentCandidateRelationDAO.getCandidatePreviousApptDetails1(candidates,apptUserId);
+				if(candidPreviousDetails !=null && candidPreviousDetails.size()>0){
+					
+					for(Object[] obj : candidPreviousDetails){
+						
+						Long candidateId  = obj[0]!=null?(Long)obj[0]:0l;
+						Long appointmentId = obj[1]!=null?(Long)obj[1]:0l;
+						Long status      = obj[3]!=null?(Long)obj[3]:0l;
+						
+						if(candidateId != 0l){
+							
+							//set the data to candidate.
+							for (Map.Entry<Long, AppointmentDetailsVO> entry : appointmentsMap.entrySet()) {
+								
+									AppointmentDetailsVO appointmentVO = entry.getValue();
+									
+									if (appointmentVO.getSubMap()!=null && appointmentVO.getSubMap().size()>0){
+											AppointmentDetailsVO candidateVO = appointmentVO.getSubMap().get(candidateId);
+											if(candidateVO !=null){
+											
+												if(!appointmentId.equals(entry.getKey().longValue())){
+													
+													if(candidateVO.getSubList() == null){
+												    	candidateVO.setSubList(new ArrayList<AppointmentDetailsVO>());
+												    }
+													AppointmentDetailsVO apptvo = new AppointmentDetailsVO();
+													apptvo.setAppointmentId(appointmentId);
+													
+													Date dateStr = obj[2]!=null?(Date)obj[2]:null;
+													if(dateStr !=null){
+														apptvo.setDateString(prefer.format(dateStr));
+													}													
+													apptvo.setStatus(obj[4]!=null?obj[4].toString():"");
+													apptvo.setAptUniqueCode(obj[9]!=null?obj[9].toString():"");
+													
+													List<Long> aptmnts = new ArrayList<Long>();
+													aptmnts.add(apptvo.getAppointmentId());
+													
+													//Prefer Dates Scenario For History of Each Candidate start
+													
+														apptvo = setPreferebleDatesToAppointment(aptmnts,apptvo);
+													
+													//Prefer Dates Scenario For History of Each Candidate End
+													
+													candidateVO.getSubList().add(apptvo);
+													
+													IdNameVO statusVO = getMatchedVo(candidateVO.getStatusList(),status);
+													if(statusVO!=null){
+														statusVO.setActualCount(statusVO.getActualCount() + 1l);
+													}
+													
+													candidateVO.setRequestCount(candidateVO.getRequestCount()+1l);
+												}
+											}
+									 }
+							  }
+						}
+						
+					}
+				}
+			}
+			
+			
+			if(appointmentsMap!=null && appointmentsMap.size()>0){
+				for (Map.Entry<Long, AppointmentDetailsVO> entry : appointmentsMap.entrySet()) {
+					
+					AppointmentDetailsVO appointmentVO = entry.getValue();
+					if(appointmentVO.getSubMap()!=null && appointmentVO.getSubMap().size()>0){
+						appointmentVO.setSubList(new ArrayList<AppointmentDetailsVO>(appointmentVO.getSubMap().values()));
+						appointmentVO.getSubMap().clear();
+					}
+				}
+				
+				finalList.addAll(appointmentsMap.values());
+				appointmentsMap.clear();
+			}
+		
+		 }
+		
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentsBySearchCriteria",e);
+		}
+		return finalList;
+	}
+    
+    public AppointmentDetailsVO settingSomeDataForPrefferableDates(AppointmentDetailsVO  apptvo,Object[] object){
+    	try{
+    		
+    		SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
+    		
+    		apptvo.setDateTypeId((Long)object[2]);
+			apptvo.setDateType(object[3].toString());
+			if((Long)object[2]==1l){
+				if(apptvo.getApptpreferableDates()==null){
+					
+					Date preferDate = object[1]!=null?(Date)object[1]:null;
+					if(preferDate !=null){
+						apptvo.setApptpreferableDates(prefer.format(preferDate));
+					}
+					
+				}else{
+					
+					Date preferDate = object[1]!=null?(Date)object[1]:null;
+					if(preferDate !=null){
+						apptvo.setApptpreferableDates(apptvo.getApptpreferableDates() + " , " + (prefer.format(preferDate)) );
+					}
+					
+				}
+				
+			}else{
+				
+				if(apptvo.getMinDateCheck() == 0l){	
+					Date preferDate = object[1]!=null?(Date)object[1]:null;
+					if(preferDate !=null){
+						apptvo.setMinDate(prefer.format(preferDate));
+						apptvo.setMaxDate(prefer.format(preferDate));
+					}
+				}else{
+					Date preferDate = object[1]!=null?(Date)object[1]:null;
+					apptvo.setMaxDate(prefer.format(preferDate));
+				}
+				apptvo.setMinDateCheck(apptvo.getMinDateCheck()+1l);
+				
+			}
+    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return apptvo;
+    }
+    
 }
