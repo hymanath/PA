@@ -2046,7 +2046,14 @@ $(".daterangepicker_start_input").find("input").addClass("form-control");
 $("#mngAppntmntsDtPckrId").val("");
 $("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
 })
-$("#dashboardSelectDateIds").daterangepicker({opens:"left"});
+$("#dashboardSelectDateIds").daterangepicker({opens:"left", "parentEl": ".todayBlock",ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }});
 $('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
@@ -6322,6 +6329,7 @@ function getCommitteeRoles(){
 			$(document).on("click",".refreshBlockDiv",function(e){
 				$("#LineChart").html('');
 				getTotalAppointmentStatus();
+				$(".daterangepicker").hide();
 				//getAppointmentUsersDtls();
 				getAppointmentStatusCounts();
 			});
