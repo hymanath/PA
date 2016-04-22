@@ -98,6 +98,7 @@
 <body>
 <div class="container">
 <div class="row">
+
   <div class="col-md-12 col-xs-12 col-sm-12">
 	<div class="panel panel-default panelCustom1">
 				<div class="panel-heading">
@@ -225,6 +226,7 @@
 								<div class="col-md-12 ">
                                 	<div id="searchApptmntDivId"></div>
                                 </div>
+								
                             </div>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="profile">
@@ -965,7 +967,22 @@
     </div>
   </div>
 </div>
-
+<div class="modal fade statusTrackingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-capitalize">Appointment Status Tracking</h4>
+      </div>
+      <div class="modal-body">
+        <div id="apptStatusTracking"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -3960,10 +3977,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<p class="font12 m_top10">';
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"/>';
-					 /* str+='<img src="dist/Appointment/img/view-Appt-History-icon.png" class="pull-right" alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/>';  */
 					 /* if(result[i].id != null && result[i].id > 0)
 								str+='<a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].id+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png" class="pull-right" alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;'; */
-					 str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right" alt="ViewReqHistory" style="height:16px;cursor:pointer;margin-right:5px;"/>'; 
+					  str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right statusTrackingModalbtn" attr-id='+result[i].appointmentId+' alt="ViewReqHistory" style="height:16px;cursor:pointer;margin-right:5px;"/>'; 
 					str+='</p>';
 					str+='<div class="messageBlock arrow_box">';
 					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
@@ -4021,6 +4037,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				$("#"+smsBoxId).hide();
 				$("#"+smsBoxId).attr("placeholder", "Please Enter Sms...").val("");
 			}
+		});
+		$(document).on("click",".statusTrackingModalbtn",function(){
+			$(".statusTrackingModal").modal('show');
+			var appontmntId = $(this).attr("attr-id");
+			getStatusTrackingDetls(appontmntId);
 		});
 </script>
 <script>
@@ -6610,6 +6631,42 @@ function getUpdatedStatusForaAppointment(){
 $(document).on("click",".confirmViewClass",function(){
 	
 });
+
+function getStatusTrackingDetls(appontmntId){
+	
+	var jsObj={
+		appntmntId : appontmntId
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getAppointmentStatusTrackingAction.action',
+		dataType : 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0){
+		console.log(result)	
+		apptTrackingStatus(result);
+		}
+	});
+}
+
+
+function apptTrackingStatus(result)
+{
+	var str='';
+	str+='<ul class="apptStatusTracking">';
+	for(var i in result){
+		str+='<li>';
+			str+='<div class="arrow_box">';
+				str+='<p>Appointment status has been changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By '+result[i].uname+' </p>';
+				str+='<p style="font-size:15px;">Comments</p>';
+				str+='<p>'+result[i].comments+'</p>';
+			str+='</div>';
+		str+='</li>';	
+	}
+	str+='</ul>';
+	$("#apptStatusTracking").html(str)
+}
 
 </script>
 </body>

@@ -11907,5 +11907,10 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="getAppointmentStatusTrackingAction" class="appointmentAction" method="getAppointmentStatusTrackingDetails">
+		<result type="json" name="success">
+			<param name="root">statusTrackingVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
