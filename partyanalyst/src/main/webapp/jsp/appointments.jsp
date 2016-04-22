@@ -6707,6 +6707,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
 		str+='</div>';
 		$("#advanceDshAppointmentPrWiseDiv").html(str);
 }
+var userTypeId = 0;
 getAppointmentStatus();
 function getAppointmentStatus(){
 		
@@ -6719,11 +6720,29 @@ function getAppointmentStatus(){
 	}).done(function(result){ 
 		if(result != null){
 			var statusObj = [];
+			userTypeId = result[0].districtid;
 			for(var i in result){
 				statusObj.push({"id":result[i].id,"name":result[i].name});
 			}
 		}
 	});     
+}
+//getUpdatedStatusForaAppointment();
+function getUpdatedStatusForaAppointment(){
+	var jsObj={
+		userTypeId : userTypeId,
+		currentStatusId : currentStatusId
+	}
+	$.ajax({
+		type : 'POST',
+		url : 'getUpdatedStatusForaAppointmentAction.action',
+		dataType : 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			
+		}
+	});
 }
 </script>
 </body>

@@ -1197,4 +1197,19 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getUpdatedStatusForaAppointment(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long userTypeId = jObj.getLong("userTypeId");
+			Long currentStatusId = jObj.getLong("currentStatusId");
+			
+			idNameVOList = appointmentService.getUpdatedStatusForaAppointment(userTypeId,currentStatusId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getUpdatedStatusForaAppointment() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }

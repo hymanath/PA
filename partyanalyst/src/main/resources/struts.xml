@@ -11902,5 +11902,10 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="getUpdatedStatusForaAppointmentAction" class="appointmentAction" method="getUpdatedStatusForaAppointment">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
