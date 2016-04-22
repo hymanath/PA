@@ -167,9 +167,9 @@
                                             	<label>Appointment Status</label>
                                                 <select class="dropkickClass" id="selectStatusId">
                                                 	<option value="0">All</option>
-													<option value="1">Upcoming</option>
+													<!--<option value="1">Upcoming</option>
 													<option value="2">InProgress</option>
-													<option value="3">Completed</option>
+													<option value="3">Completed</option>-->
 													
                                                 </select>
 											</div>
@@ -1498,6 +1498,17 @@ $(".dropkickClass").dropkick();
 			}
 			$(".manageAppStatusCls").dropkick();
 			var select = new Dropkick("#manageAppStatusId");
+			select.refresh();
+	}
+	function buildAppointmentStatusList(result){
+			//$("#selectStatusId  option").remove();
+			/* $("#manageAppStatusId").append('<option value="select">Select Appointment Status</option>');
+			$("#manageAppStatusId").append('<option value="0" selected>ALL</option>'); */
+			for(var i in result){
+				$("#selectStatusId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$(".dropkickClass").dropkick();
+			var select = new Dropkick("#selectStatusId");
 			select.refresh();
 	}
 	function getAppointmentPriority(){
