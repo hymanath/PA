@@ -112,6 +112,12 @@ public Long getAppointmentStatusId(Long appointmentId){
 		query.setParameter("apptStatusId", apptStatusId);
 		return query.list();
 	}
+	public Long getCurrentAppointmentStatus(Long appointmentId)
+	{
+		Query query = getSession().createQuery("select model.appointmentStatusId from Appointment model where model.appointmentId = :appointmentId");
+		query.setParameter("appointmentId", appointmentId);
+		return (Long) query.uniqueResult();
+	}
 
 }
 	

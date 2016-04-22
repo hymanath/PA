@@ -31,10 +31,10 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -86,6 +86,7 @@ import com.itgrids.partyanalyst.dto.LocationInputVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
@@ -5291,6 +5292,161 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			e.printStackTrace();
 		}
 		return returnList;
+		
+	}
+	// Appointment Status Tracking Details
+	
+	public List<StatusTrackingVO> getAppointmentStatusTrackingDetails(Long appointmentId)
+	{
+		LOG.info("Entered in getAppointmentStatusTrackingDetails() method");
+		List<StatusTrackingVO> resultList = null;
+		try{
+			
+			List<Object[]> list = appointmentTrackingDAO.getAppointmentTrackingDetails(appointmentId);
+				List<StatusTrackingVO> orderStatusList = getOrderStatusList();
+				 	Long currentStatus = appointmentDAO.getCurrentAppointmentStatus(appointmentId);
+					resultList = getStatusFlowList(list,orderStatusList,currentStatus);
+					setTimeDiffForTracking(orderStatusList);
+					if(resultList != null && resultList.size() > 0)
+					{
+						resultList.get(0).setFlowList(orderStatusList);
+					}
+					
+				
+			
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getAppointmentStatusTrackingDetails() method");
+		}
+		return resultList;
+	}
+	
+	public void setTimeDiffForTracking(List<StatusTrackingVO> list)
+	{
+		try{
+			SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+			for(int i=0;i<list.size();i++){
+				
+				Date d2=null;
+				Date d1=null;
+				if(list.get(i).getStatus()!=null &&list.get(i).isCurrent() == true){
+					d2=new DateUtilService().getCurrentDateAndTime();  
+					d1=  format.parse(list.get(i).getDate());
+				}else{
+					if(i!=(list.size()-1)){
+						d2=format.parse(list.get(i+1).getDate());
+						d1=format.parse(list.get(i).getDate());
+					}
+				}
+				if(d2!=null && d1!=null){
+				 /*long diff = d2.getTime() - d1.getTime();
+				 long diffDays = diff / (24 * 60 * 60 * 1000);*/
+					// Get msec from each, and subtract.
+				 	long diff = d2.getTime() - d1.getTime();
+			        long diffSeconds = diff / 1000 % 60;
+			        long diffMinutes = diff / (60 * 1000) % 60;
+			        long diffHours = diff / (60 * 60 * 1000);
+			        long diffInDays = diff / (24 * 60 * 60 * 1000);
+
+			        if (diffInDays > 1) {
+			            /*System.err.println("Difference in number of days (2) : " + diffInDays);
+			            return false;*/
+			            list.get(i).setTime(diffInDays+" days");
+			        } /*else if (diffHours > 24) {
+			        	System.err.println(">24");
+			            return false;
+			        }*/
+			        else if(diffHours>0 && diffHours < 24){
+			        	 list.get(i).setTime(diffInDays+" hour");
+			        }
+			        else if ((diffHours == 24) && (diffMinutes >= 1)) {
+			          list.get(i).setTime(diffMinutes+" minutes");
+			       }
+			        
+				 
+				// list.get(i).setTime(diffDays+" days");
+				}
+		}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Entered in setTimeDiffForTracking() method");
+		}
+		
+	}
+	
+	public List<StatusTrackingVO> getOrderStatusList()
+	{
+		List<StatusTrackingVO>  orderList = new ArrayList<StatusTrackingVO>();
+		List<AppointmentStatus> list = appointmentStatusDAO.getAll();
+		for(AppointmentStatus params : list)
+		{
+			StatusTrackingVO vo = new StatusTrackingVO();
+			vo.setId(params.getAppointmentStatusId());
+			vo.setStatus(params.getStatus());
+			orderList.add(vo);
+		}
+		return orderList;
+		
+	}
+	
+	public List<StatusTrackingVO> getStatusFlowList(List<Object[]> list,List<StatusTrackingVO> orderStatusList,Long currentStatus)
+	{
+		List<StatusTrackingVO>  resultList = new ArrayList<StatusTrackingVO>();
+		try{
+			for(Object[] params : list)
+			{
+				StatusTrackingVO vo = new StatusTrackingVO();
+				vo.setId((Long)params[0]);
+				vo.setStatus(params[1] != null ? params[1].toString() : "");
+				vo.setUserId((Long)params[2]);
+				String fname = params[3] != null ? params[3].toString() : "";
+				String lname = params[4] != null ? params[4].toString() : "";
+				vo.setUname(fname+" "+lname);
+				vo.setComments(params[5] != null ? params[5].toString() : "");
+				vo.setDate(params[6] != null ? params[6].toString() : "");
+				resultList.add(vo);
+				
+				 StatusTrackingVO orderVo = getMatchedStatusVo(orderStatusList,vo.getId());
+				 if(orderVo != null)
+				 {
+					 orderVo.setDate(params[6] != null ? params[6].toString() : "");
+					 if(currentStatus.longValue() == vo.getId().longValue())
+						 orderVo.setCurrent(true);
+						 
+				 }
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getStatusFlowList() method");
+		}
+		return resultList;
+	}
+	
+	public StatusTrackingVO getMatchedStatusVo(List<StatusTrackingVO> resultList,Long id)
+	{
+		try{
+			
+			if(resultList == null || resultList.size() == 0)
+				return null;
+			for(StatusTrackingVO vo : resultList)
+			{
+				if(vo.getId().longValue() == id.longValue())
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getStatusFlowList() method");
+		}
+		
+		return null;
 		
 	}
 	
