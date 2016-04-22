@@ -2700,5 +2700,16 @@
 	<bean id="smsOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsOtpDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="appointmentUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentUserTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="appointmentUserTypeAccessStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentUserTypeAccessStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="appointmentStatusFlowDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentStatusFlowDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
