@@ -191,8 +191,8 @@ public String execute(){
 			jobj = new JSONObject(getTask());
 			
 			String voterIDCardNo 	= jobj.getString("voterIDCardNo");
-			
-			voterDetailsvo = cadreVoterSearchService.getVoterDetailsByVoterCardNumber(voterIDCardNo);
+			Long constId = jobj.getLong("constId");
+			voterDetailsvo = cadreVoterSearchService.getVoterDetailsByVoterCardNumber(voterIDCardNo,constId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getVoterDetailsByVoterCardNumber method in CadreVoterSearchAction action", e);

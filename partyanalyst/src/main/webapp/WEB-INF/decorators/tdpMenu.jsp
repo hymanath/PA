@@ -323,7 +323,7 @@ footer
 							
 								<c:if test="${sessionScope.USER.isAdmin == 'true' ||fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' )}">
 								 <li>
-									<a href="affiliatedCadreSearchAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Registration</span></a>
+									<a href="affiliatedCadreSearchAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;All Union Registration</span></a>
 								 </li>
 								</c:if>
 								
@@ -332,15 +332,15 @@ footer
 									<a href="affiliatedCadreDashBoardAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;DashBoard</span></a>
 								 </li>
 								</c:if>
-								
-							</ul>
-						</li>
-						</c:if>
-						<c:if test="${sessionScope.USER.isAdmin == 'true' }">
+								<c:if test="${sessionScope.USER.isAdmin == 'true' }">
 							 <li>
 								<a href="unionSearchRegiststrationAction.action"><i class="fa fa-user-plus"></i><span>&nbsp;&nbsp;Union Graduates Enrollment</span></a>									
 							</li>
+							</c:if>
+							</ul>
+						</li>
 						</c:if>
+						
 						<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_ACTIVITY_UPDATE' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS')}">
 						 <li>
 								<a href="#"><i class="fa fa-group ico-white"></i><span>&nbsp;&nbsp;Committees</span></a>

@@ -5,12 +5,6 @@ function getCadreDetails(jsObj){
 			url : "getCadreDetailsAction.action",
 			data : {task:JSON.stringify(jsObj)} ,   
 		}).done(function(result){
-			$(".paginationDivId").show();
-			if(typeof result == "string"){
-				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-				  location.reload(); 
-				}
-			}
 			$("#searchDataImg").hide();
 			$('#cadreDetailsDiv').show();
 			if(result != null && result.previousRoles != null && result.previousRoles.length>0)
@@ -22,12 +16,12 @@ function getCadreDetails(jsObj){
 				$(".cadreMemberListCls").show();
 				$('#cadreDetailsDiv').show();
 				$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
-			}
+			} 
 		});
 }	
 
 //generateOTPForMobileNumberAction.action
-function generateOTPForMobileNumber(jsObj){
+function generateOTPForMobileNumber(jsObj,currentButton){ 
 	$.ajax({    
 		type : "POST",
 		url : "generateOTPForMobileNumberAction.action",
@@ -54,6 +48,8 @@ function validateOTPAction(jsObj){
 			
 		}else{
 			$("#fail").show();
+			$("#nextStepId").hide();
+			
 		}
 	});
 }	
