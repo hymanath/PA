@@ -2871,6 +2871,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							resultList.add(vo);
 						}
 						AppointmentScheduleVO candidateVo = new AppointmentScheduleVO();
+						candidateVo.setId(params[0] != null ? Long.valueOf(params[0].toString()) :0l);
 						candidateVo.setName(params[1] != null ? params[1].toString() :"");
 						candidateVo.setMobileNo(params[2] != null ? params[2].toString() : "");
 						
@@ -5318,11 +5319,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					{
 						resultList.get(0).setFlowList(orderStatusList);
 					}
-					
-				
-			
-			
-		}
+				}
 		catch(Exception e)
 		{
 			e.printStackTrace();
