@@ -114,7 +114,7 @@
 					<div>
 					  <ul class="nav nav-tabs navTabsCustom" role="tablist">
 						<li role="presentation"  class="active refreshBlockDiv"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
-						<li role="presentation"><a href="#advncdDashboard" aria-controls="advnceDashboard" role="tab" data-toggle="tab" class="advnceDashboardCls"><img src="dist/Appointment/img/confirmappointments.png">Advance Dashboard</a></li>
+						<li role="presentation"><a href="#advncdDashboard" aria-controls="advnceDashboard" role="tab" data-toggle="tab" class="advnceDashboardCls"><img src="dist/Appointment/img/AdvanceDashboard.png">Advance Dashboard</a></li>
 						<li role="presentation"><a style="padding-left:0px;padding-right:0px" href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
 						<!--<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="MngeAppntmntCls"><img src="dist/Appointment/img/manageappointments.png">Manage Appointments</a></li>-->
 						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm Appointments</a></li>
@@ -209,7 +209,7 @@
 								<div class="col-md-12 m_top20">
 									<h4>TOTAL APPOINTMENTS</h4>
 								</div>
-                            	<div class="col-md-4">
+                            	<!--<div class="col-md-4">
                                 	<div id="upcomingAppointMentId" >
                                     
                                     </div>
@@ -221,6 +221,9 @@
                                 </div>
                                 <div class="col-md-4 ">
                                 	<div id="completedAppointMentId"></div>
+                                </div>-->
+								<div class="col-md-12 ">
+                                	<div id="searchApptmntDivId"></div>
                                 </div>
                             </div>
 						</div>
@@ -2054,6 +2057,34 @@ $("#dashboardSelectDateIds").daterangepicker({opens:"left", "parentEl": ".todayB
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }});
 $('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
+	$(".ranges").find("ul").prepend('<li class="activeCls">Total</li>');
+	$(".ranges").find("ul li").removeClass("active");
+	$(".ranges li:nth-child(1)").addClass("active");
+	$(document).on("click",".activeCls",function(){
+	$(".daterangepicker").css("display","none");
+	
+	}); 
+$(document).on("click","#dashboardSelectDateIds",function(){
+	$(".todayBlock").find(".daterangepicker").css("display","block");	
+	//$(".show-calendar").css("display","none");	
+	
+	}); 
+$(".todayBlock").find(".daterangepicker .ranges").addClass("rangesDashboard")
+$(document).on("click",".rangesDashboard ul li",function(){
+
+	$(".rangesDashboard ul li").find("ul li").removeClass("active");
+	$(this).addClass("active");
+	
+	var selectedDay=$(this).html().trim();
+	if(selectedDay == 'Total'){
+		$("#dashboardSelectDateIds").val('');
+	}
+	
+	 if(selectedDay != 'Custom'){
+		getCandidCountsByStatesAction(); 
+		getCandiCountsByLocations();
+	 }
+});
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
 $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
@@ -3542,10 +3573,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj1)}
 			}).done(function(result){
-				buildUpcomingResult(result,statusId);
-				buildInprogressResult(result,statusId);
-				buildCompletedResult(result,statusId);
-				if(statusId == 0)
+				//buildUpcomingResult(result,statusId);
+				//buildInprogressResult(result,statusId);
+				//buildCompletedResult(result,statusId);
+				buildAppointmentSearchResult(result,statusId);
+				/* if(statusId == 0)
 				{
 				  $(".heightAdjust").parent().parent().hide();
 				  $("#upcomingAppointMentId,#inprogreessAppointMentId,#completedAppointMentId").parent().removeClass("col-md-12")
@@ -3570,10 +3602,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				  $("#completedAppointMentId").parent().addClass("col-md-12")
 				  $("#completedAppointMentId").parent().removeClass("col-md-4")
 				  $("#completedAppointMentId").parent().show();
-				}
+				} */
 			})
 	}
-	function buildUpcomingResult(result,statusId)
+	/* function buildUpcomingResult(result,statusId)
 	{
 
 		var str = '';
@@ -3700,7 +3732,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		$(".upcomedateCls").daterangepicker({singleDatePicker:true});
 		$(".upcometimeCls").datetimepicker({format: "LT"});
 	
-	}
+	} */
 	
 	$(document).on("click",".messageIcon",function() {
 		
@@ -3892,7 +3924,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				$(".upcomedateCls1").hide();
 		
 	});
-	function buildInprogressResult(result,statusId)
+	/* function buildInprogressResult(result,statusId)
 	{
 		
 		var str = '';
@@ -4017,18 +4049,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		if(!flag)
 			$(".inprogressSetting").hide();	
 		
-	}
+	} */
 	
 	
-	function buildCompletedResult(result,statusId)
+	function buildAppointmentSearchResult(result)
 	{
 		
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
-		str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
+		/* str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
 		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings completedSetting">';
-		str+='</h4>';
+		str+='</h4>'; */
 		str+='<div class="updateAppointment arrow_box">';
 			str+='<label class="radio-inline">';
 		str+='<input type="radio" value="6" name="CompletedRadio1" class="statusAllCompleted" checked>Reschedule';
@@ -4043,18 +4075,24 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		if(result != null)
 		{
-			str+='<ul>';
+			var xindex = 0;
+			
 			for(var i in result)
 			{ 
-				if(result[i].scheduleType == "Completed")
-				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
+			if( xindex % 3 == 0)
+			{
+				str+='<div class="row">';
+			}
+					str+='<div class="col-md-4 col-xs-6 col-sm-6 col-lg-4">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
 							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+							if(result[i].date != "" && result[i].time != null && result[i].toTime != null){
+							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;</span></p>';
+							}
 							
-							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i  attr_span_popup_id='+result[i].appointmentId+' class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							
+							str+='<i  attr_span_popup_id='+result[i].appointmentId+' class="glyphicon glyphicon-cog settingsIcon pull-right"></i>';
 							str+='<div class="appointmentSettingsBLock arrow_box" id="appointmentSettingsBLockId'+result[i].appointmentId+'">';
 							str+='<label>Select Appointment Status</label><span style="color:red;" id="errSpanId'+result[i].appointmentId+'"></span>';
 								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
@@ -4102,13 +4140,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='</div>';
 						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
-						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
-
-						
+						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'';
+						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
+								str+='<a style="display:inline-block;" title="Click here to View '+result[i].subList[j].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
+						}
+						str+='</p>';
 						str+='</div>';
 						str+='</div>';
 						//multiple
+						
 						str+='</li>';
+						
 						}
 						str+='</ul>';
 						if(result[i].subject!=null && result[i].subject.length>35){
@@ -4116,11 +4158,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}else{
 							  str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
 							}
-						
-					
 					str+='<p class="font12 m_top10">';
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
-					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
+					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"/>';
+					 /* str+='<img src="dist/Appointment/img/view-Appt-History-icon.png" class="pull-right" alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/>';  */
+					 /* if(result[i].id != null && result[i].id > 0)
+								str+='<a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].id+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png" class="pull-right" alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;'; */
+					 str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right" alt="ViewReqHistory" style="height:16px;cursor:pointer;margin-right:5px;"/>'; 
+					str+='</p>';
 					str+='<div class="messageBlock arrow_box">';
 					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
 					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
@@ -4128,9 +4173,20 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='</div>';
 					str+='</div>';
 				str+='</div>';
+				str+='</div>';
+				//}
+				if(xindex % 3 == 2)
+				{
+					str+='</div>';
 				}
+				
+				if(result.length-1 == xindex && xindex % 3 != 2)
+				{
+					str+='</div>';
+				}	
+			xindex++;
 			}
-			str+='</ul>';
+			
 		}
 		else
 		{
@@ -4143,7 +4199,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			$(".completedSetting").hide();
 			str+='No Data Available';	
 		}
-		$("#completedAppointMentId").html(str);
+		$("#searchApptmntDivId").html(str);
 		$('[data-toggle="tooltip"]').tooltip();
 		if(flag == false)
 		$(".completedSetting").hide();
@@ -5221,6 +5277,7 @@ function buildTimeSlotsTable(result){
 						str+='<ul class="viewAppointmentRequestedMembers">';
 							str+='<li>';
 								str+='<div class="row">';
+									str+='<div class="col-md-6">';
 									str+='<div class="col-md-6">';
 										str+='<div class="media">';
 											str+='<div class="media-left">';
