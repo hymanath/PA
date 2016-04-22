@@ -5191,4 +5191,107 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 	      }
 	      return apptIds;
 	}
+	public List<AppointmentCountVO> getLevelWiseCount(Long levelId)
+	{
+		List<AppointmentCountVO> returnList = new ArrayList<AppointmentCountVO>();
+		try{
+			 List<Object[]> list =  appointmentCandidateRelationDAO.getLevelWiseCount(null,"total",levelId); //Total
+			 if(list != null && list.size() > 0)
+				for(Object[] params : list)
+				{
+					AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+						vo.setTotal(vo.getTotal() +(Long)params[0]);
+				}
+			 
+			 List<Object[]> list1 = appointmentCandidateRelationDAO.getLevelWiseCount(null,"unique",levelId); //Total
+			 if(list1 != null && list1.size() > 0)
+				for(Object[] params : list1)
+				{
+					AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+						vo.setUniquecnt(vo.getUniquecnt() +(Long)params[0]);
+				}
+			 Long[] schedul =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
+			 List<Object[]> list2 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(schedul),"Schedule",levelId);
+			 if(list2 != null && list2.size() > 0)
+				for(Object[] params : list2)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setScheduledCnt((Long)params[0] + vo.getScheduledCnt());
+				}
+			 
+			List<Object[]> list3 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(schedul),"unique",levelId);
+			 if(list3 != null && list3.size() > 0)
+				for(Object[] params : list3)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setUniqueScheduledCnt((Long)params[0] + vo.getUniqueScheduledCnt());
+				
+				}
+			 Long[] req =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
+			 List<Object[]> list4 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(req),"Request",levelId);
+			 if(list4 != null && list4.size() > 0)
+				for(Object[] params : list4)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setRequestedCnt((Long)params[0] + vo.getRequestedCnt());
+				}
+			 
+			 List<Object[]> list5 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(req),"unique",levelId);
+			 if(list5 != null && list5.size() > 0)
+				for(Object[] params : list5)
+				{
+					com.itgrids.partyanalyst.dto.AppointmentCountVO vo = getMatchedRole(returnList,(Long)params[1]);
+					if(vo == null)
+					{
+						vo = new AppointmentCountVO();
+						vo.setRoleId((Long)params[1]);
+						vo.setRole(params[2] != null ? params[2].toString() : "");
+						returnList.add(vo);
+					}
+					vo.setUniqueRequestedCnt((Long)params[0] + vo.getUniqueRequestedCnt());
+				}
+			 }
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+		
+	}
+	
 }
