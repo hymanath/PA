@@ -557,6 +557,25 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		 return query.list();
 		}
 	
+	public List<Object[]> checkIsAppointmentEligible(List<String> membershipNoList,List<Long> apptStatusIds,Long appointmentUserId){
+		
+		Query query = getSession().createQuery("" +
+		" select  acr.appointment.appointmentId,acr.appointmentCandidate.appointmentCandidateId" +
+		" from    AppointmentCandidateRelation acr " +
+		" where   acr.appointment.appointmentStatusId in (:apptStatusIds) and acr.appointment.isDeleted='N' " +
+		"         and acr.appointmentCandidate.membershipId in (:membershipNoList) " +
+		"         and acr.appointment.appointmentUserId = :appointmentUserId");
+		
+		query.setParameterList("membershipNoList", membershipNoList);
+		query.setParameterList("apptStatusIds", apptStatusIds);
+		query.setParameter("appointmentUserId", appointmentUserId);
+		return query.list();
+	}
+	
+	
+	
+	
+	
 	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
 	{
 		StringBuffer str = new StringBuffer();

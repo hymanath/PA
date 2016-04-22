@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -410,11 +411,46 @@ public class AppointmentService implements IAppointmentService{
 	public void setAppointmentCandidateTypeDAO(IAppointmentCandidateTypeDAO appointmentCandidateTypeDAO) {
 		this.appointmentCandidateTypeDAO = appointmentCandidateTypeDAO;
 	}
+	
+	public boolean checkisEligibleForAppt(List<String> membershipNoList,Long appointmentUserId){
+		
+		boolean flag = false;
+		
+		List<Long>  apptCreationStatusList =Arrays.asList(IConstants.APPOINTMENT_STATUS_CREATION_LIST);
+		List<Object[]> list = appointmentCandidateRelationDAO.checkIsAppointmentEligible(membershipNoList,apptCreationStatusList,appointmentUserId);
+		if(list!=null && list.size()>0){
+			flag = true;
+		}
+		return flag;
+	}
+	
+	
+	
+	
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
-		ResultStatus rs = new ResultStatus();
+		 ResultStatus status = new ResultStatus();
 		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			
+			status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					 ResultStatus rs = new ResultStatus();
+					 
+		        	List<String> membershipNoList = new ArrayList<String>(0);
+	        		
+	        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
+	        			if(basicInfo != null && basicInfo.getMembershipNum() != null && !basicInfo.getMembershipNum().isEmpty()){
+	        				membershipNoList.add(basicInfo.getMembershipNum());
+	        			}
+	        		}
+		        	boolean apptCreationFlag = checkisEligibleForAppt(membershipNoList,appointmentVO.getAppointmentUserId());
+		        	if(apptCreationFlag){
+		        		
+		        		rs.setExceptionMsg("Not Eligible To Create Appointment.");
+		    			rs.setResultCode(2);
+		        		return rs;
+		        	}
+		        	
 		        	
 		        	Appointment appointment = new Appointment();
 		        	appointment.setAppointmentUserId(appointmentVO.getAppointmentUserId());
@@ -422,11 +458,10 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setReason(appointmentVO.getReason());
 		        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
 		        	
-		        	if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("")){
+		        	/*if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("")){
 		        		String temp[] = appointmentVO.getUniqueCode().split("_");
 		        		appointment.setAppointmentUserId(Long.parseLong(temp[1]));
-			        	//appointment.setAppointmentUniqueId(appointmentVO.getUniqueCode());
-		        	}
+		        	}*/
 		        	
 		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
 		        		appointment.setAppointmentPreferableTimeId(1l);
@@ -437,6 +472,7 @@ public class AppointmentService implements IAppointmentService{
 		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
 		        		appointment.setAppointmentPreferableTimeId(4l);
 		        	} 
+		        	
 		        	appointment.setCreatedBy(loggerUserId);
 		        	appointment.setUpdatedBy(loggerUserId);
 		        	appointment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
@@ -445,13 +481,16 @@ public class AppointmentService implements IAppointmentService{
 		        	appointment.setIsLabelled("N");
 		        	appointment = appointmentDAO.save(appointment);
 		        	
+		        	
 		        	if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("") && appointment != null && appointment.getAppointmentId() != null && appointment.getAppointmentId()>0l){
 		        		String temp[] = appointmentVO.getUniqueCode().split("_");
 		        		appointmentDAO.updateUniquesIdForAppointment(temp[0]+"_"+appointment.getAppointmentId(),appointment.getAppointmentId());
 		        	}
 		        	
+		        	//dates
 		        	List<Date> datesList = new ArrayList<Date>(0);
 		        	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		        	
 		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
 		        		if(appointmentVO.getAppointmentDates() != null && appointmentVO.getAppointmentDates().trim() != ""){
 		        			String temp[] = appointmentVO.getAppointmentDates().split(",");
@@ -489,6 +528,8 @@ public class AppointmentService implements IAppointmentService{
 						}
 		        	}
 		        	
+		        	
+		        	
 		        	if(appointmentVO.getBasicInfoList() != null && appointmentVO.getBasicInfoList().size() > 0){
 		        		//get voterIds for voter card Numbers
 		        		List<String> voterCardNumList = new ArrayList<String>(0);
@@ -509,13 +550,8 @@ public class AppointmentService implements IAppointmentService{
 		        		}
 		        		
 		        		//gettdpcadre Ids for membership nums
-		        		List<String> membershipNoList = new ArrayList<String>(0);
+		        		
 		        		Map<String,Long> cadreIdsMap = new HashMap<String, Long>(0);
-		        		for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
-		        			if(basicInfo != null && basicInfo.getMembershipNum() != null && !basicInfo.getMembershipNum().isEmpty()){
-		        				membershipNoList.add(basicInfo.getMembershipNum());
-		        			}
-		        		}
 		        		if(membershipNoList != null && membershipNoList.size() > 0){
 		        			List<Object[]> cadreIdsObjList = tdpCadreDAO.getTdpCadreIdForMemberShipNums(membershipNoList);
 		        			if(cadreIdsObjList != null && cadreIdsObjList.size() > 0){
@@ -555,65 +591,7 @@ public class AppointmentService implements IAppointmentService{
 			        					appCandi = candidateDetailsSaving(appCandi,basicInfo,voterCardIdsMap,cadreIdsMap,loggerUserId);
 			        				}
 			        				
-				        			/*appCandi.setName(basicInfo.getName());
-				        			appCandi.setDesignationId(basicInfo.getDesignationId());
-				        			appCandi.setMobileNo(basicInfo.getMobileNo());
-				        			appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
-				        			if(basicInfo.getLocationScopeId().longValue() == 3l){			 		//dist
-				        				appCandi.setLocationValue(basicInfo.getDistrictId());
-				        			}
-				        			else if(basicInfo.getLocationScopeId().longValue() == 4l){				//const
-				        				appCandi.setLocationValue(basicInfo.getConstituencyId());
-				        			}
-				        			else if(basicInfo.getLocationScopeId().longValue() == 5l || basicInfo.getLocationScopeId().longValue() == 7l){		//tehsil || Muncipality
-				        				Long id = Long.valueOf(basicInfo.getTehsilId().toString().substring(1));
-				        				appCandi.setLocationValue(id);
-				        			}
-				        			else if(basicInfo.getLocationScopeId().longValue() == 6l || basicInfo.getLocationScopeId().longValue() == 8l){		//Village || Ward
-				        				//Long id = Long.valueOf(basicInfo.getVillageId().toString().substring(1));
-				        				appCandi.setLocationValue(basicInfo.getVillageId());
-				        			}
 				        			
-				        			//user addres saving logic
-				        			UserAddress userAddress = new UserAddress();
-				        			if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()>10){
-				        				userAddress.setState(stateDAO.get(1l));
-				        			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()<=10){
-				        				userAddress.setState(stateDAO.get(36l));
-				        			}
-				        			
-				        			if(basicInfo.getDistrictId() > 0l)
-				        			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
-				        			if(basicInfo.getConstituencyId() > 0l)
-				        			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
-				        			
-				        			if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
-				        				userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-				        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-				        					userAddress.setPanchayatId(basicInfo.getVillageId());
-				        			}
-				        			else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
-				        				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-				        				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-				        					//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
-				        					userAddress.setWard(constituencyDAO.get(basicInfo.getVillageId()));
-				        			}
-				        			
-				        			userAddress = userAddressDAO.save(userAddress);
-				        			
-				        			appCandi.setAddressId(userAddress.getUserAddressId());
-				        			appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
-				        			appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
-				        			appCandi.setMembershipId(basicInfo.getMembershipNum());
-				        			appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum()));
-				        			appCandi.setCreatedBy(loggerUserId);
-				        			appCandi.setUpdatedBy(loggerUserId);
-				        			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				        			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				        			appCandi.setImageURL(basicInfo.getCandiImageUrl());
-				        			appCandi.setAppointmentCandidateTypeId(basicInfo.getCandidateTypeId());
-				        			appCandi = appointmentCandidateDAO.save(appCandi);
-				        			*/
 				        			
 				        			AppointmentCandidateRelation acr = new AppointmentCandidateRelation();
 				        			acr.setAppointmentId(appointment.getAppointmentId());
@@ -630,16 +608,18 @@ public class AppointmentService implements IAppointmentService{
 		        		}
 		        	}
 		            //saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,1l,loggerUserId,"");
+		        	rs.setExceptionMsg("success");
+					rs.setResultCode(0);
+					return rs;
 		        }
 		    });
-			rs.setExceptionMsg("success");
-			rs.setResultCode(0);
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveAppointment", e);
-			rs.setExceptionMsg("failure");
-			rs.setResultCode(1);
+			status.setExceptionMsg("failure");
+			status.setResultCode(1);
 		}
-		return rs;
+		return status;
 	}
 	public List<IdNameVO> getAppointmentStatusList(){
 		List<IdNameVO> appointmentStatusList = new ArrayList<IdNameVO>(0);
@@ -1224,18 +1204,22 @@ public class AppointmentService implements IAppointmentService{
 			    	  }
 			    	  
 			      }
-			  	List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
-				 if(list != null && list.size() > 0)
-				 {
-					 for(Object[] params : list)
-					 {
-						 AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
-						 if(vo != null)
+			      if(tdpCadreIds!=null && tdpCadreIds.size()>0){
+			    	  
+			    	  List<Object[]> list = appointmentCandidateDAO.getAppointmentCandidateIdForCadreIds(tdpCadreIds,aptUserId);
+						 if(list != null && list.size() > 0)
 						 {
-							 vo.setAppointmentCandidateId((Long)params[1]);
-						 }
-					 }
-				 } 
+							 for(Object[] params : list)
+							 {
+								 AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
+								 if(vo != null)
+								 {
+									 vo.setAppointmentCandidateId((Long)params[1]);
+								 }
+							 }
+						 } 
+			      }
+			  	
 			 	
 		} catch (Exception e) {
 			LOG.error("Exception raised at searchApptRequestedMembers() method of AppointmentService", e);
