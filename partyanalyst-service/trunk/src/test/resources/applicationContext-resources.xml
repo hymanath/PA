@@ -799,6 +799,7 @@
 			     <value>com.itgrids.partyanalyst.model.AppointmentSmsSetting</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentSmsHistory</value>
 				  <value>com.itgrids.partyanalyst.model.SmsOtpDetails</value>
+				  <value>com.itgrids.partyanalyst.model.UserAppointmentUser</value>
 				 <!-- appointment related Models -->
 			</list>
 		</property>
@@ -3528,6 +3529,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="smsOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsOtpDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userAppointmentUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAppointmentUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
