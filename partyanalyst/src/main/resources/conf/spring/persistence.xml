@@ -805,6 +805,10 @@
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlot</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentTimeSlotHistory</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentCandidateType</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentUserType</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentUserTypeAccessStatus</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentStatusFlow</value>
+				  
 				 <!-- appointment related Models -->
 				 
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyService</value>
