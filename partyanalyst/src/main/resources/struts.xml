@@ -11892,5 +11892,10 @@
 			<param name="root">appointmentLocVOList</param>
 		</result>
 	</action>
+	<action name="getLevelWiseCountAction" class="appointmentAction" method="getLevelWiseCount">
+		<result type="json" name="success">
+			<param name="root">appointmentCountVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
