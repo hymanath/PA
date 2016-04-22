@@ -1019,4 +1019,6 @@ public interface IConstants {
 	public static final String STATIC_STR = "Static";
 	public static final String DYNAMIC_STR = "Dynamic";
 	public static final String SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE = "Affiliated Graduates Enrollment";
+    
+	public static final Long[] APPOINTMENT_STATUS_CREATION_LIST={1L,2L,3L,5L,7L,8L,10L};
 }
