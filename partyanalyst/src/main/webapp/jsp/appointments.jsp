@@ -3409,41 +3409,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
 											}else{
 												str+='<p>Constituency : - </p>';
-											}
-											
-											/* if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
-												str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
-											}else{
-												str+='<p>Last Visit: - </p>';
-											} */
-												//str+='<p>Appt Type  '+result[i].subList[j].priority+'</p>';												
+											}											
 											str+='</div>';
 										str+='</div>';
-										/* str+='<h4 class="m_top10"><b>PREVIOUS APPOINTMENT SNAPSHOT</b></h4>';
-										str+='<table class="table table-bordered font12">';
-											str+='<tr>';
-												str+='<td><h4>'+result[i].subList[j].requestCount+'</h4><p>Requests</p></td>';
-												
-												var confirmedCount=0;
-												
-												for(var k in result[i].subList[j].statusList){
-													
-													if(result[i].subList[j].statusList[k].id==2 || result[i].subList[j].statusList[k].id ==3){
-														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
-														
-													}
-													else if(result[i].subList[j].statusList[k].id==4){
-														confirmedCount=confirmedCount+result[i].subList[j].statusList[k].actualCount;
-														str+='<td><h4>'+confirmedCount+'</h4><p> Confirmed </p></td>';
-														
-													}
-													else{
-														str+='<td><h4>'+result[i].subList[j].statusList[k].actualCount+'</h4><p>'+result[i].subList[j].statusList[k].name+'</p></td>';
-													}
-												}
-												
-											str+='</tr>';
-										str+='</table>'; */
 										
 											
 									str+='</div>';
@@ -3589,205 +3557,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj1)}
 			}).done(function(result){
-				//buildUpcomingResult(result,statusId);
-				//buildInprogressResult(result,statusId);
-				//buildCompletedResult(result,statusId);
-				buildAppointmentSearchResult(result,statusId);
-				/* if(statusId == 0)
-				{
-				  $(".heightAdjust").parent().parent().hide();
-				  $("#upcomingAppointMentId,#inprogreessAppointMentId,#completedAppointMentId").parent().removeClass("col-md-12")
-				  $("#upcomingAppointMentId,#inprogreessAppointMentId,#completedAppointMentId").parent().addClass("col-md-4")
-				  $("#upcomingAppointMentId,#inprogreessAppointMentId,#completedAppointMentId").parent().show();
-				}else if(statusId == 1)
-				{
-				  $(".heightAdjust").parent().parent().hide();
-				  $("#upcomingAppointMentId").parent().addClass("col-md-12")
-				  $("#upcomingAppointMentId").parent().removeClass("col-md-4")
-				  $("#upcomingAppointMentId").parent().show();
-				}else if(statusId == 2)
-				{
-				  $(".heightAdjust").parent().parent().hide();
-				  $("#inprogreessAppointMentId").parent().addClass("col-md-12")
-				  $("#inprogreessAppointMentId").parent().removeClass("col-md-4")
-				  $("#inprogreessAppointMentId").parent().removeClass("pad_0")
-				  $("#inprogreessAppointMentId").parent().show();
-				}else if(statusId == 3)
-				{
-				  $(".heightAdjust").parent().parent().hide();
-				  $("#completedAppointMentId").parent().addClass("col-md-12")
-				  $("#completedAppointMentId").parent().removeClass("col-md-4")
-				  $("#completedAppointMentId").parent().show();
-				} */
+				buildAppointmentSearchResult(result,statusId);				
 			})
 	}
-	/* function buildUpcomingResult(result,statusId)
-	{
-
-		var str = '';
-		var flag = false;
-		str+='<div class="upcomingAppointments heightAdjust">';
-		str+='<h4 class="text-success">UPCOMING APPOINTMENTS ';
-		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings upcomingSetting"/>';
-		str+='</h4>';
-		
-		str+='<div class="updateAppointment arrow_box">';
-		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="6" name="upcomeRadio1" class="statusAllupcome" checked/>Reschedule';
-		str+='</label>';
-		str+='<label class="radio-inline">';
-		str+='<input type="radio" value="7" name="upcomeRadio1" class="statusAllupcome"/>Cancel';
-		str+='</label>';
-		str+='<textarea class="form-control m_top10 upcomeSmsText" ></textarea>';
-		str+='<span class="msgDiv2upcome"></span>';
-		str+='<button class="btn btn-block btn-success updateAll" value="upcome">UPDATE APPOINTMENT</button>';
-		str+='</div>';
-		if(result != null)
-		{
-			str+='<ul>';
-			for(var i in result)
-			{
-				if(result[i].scheduleType == "UpCome")
-				{
-					str+='<div class="panel panel-default manageAppViewPanelClass m_top20">';
-						str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
-							str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
-							
-							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;<i attr_span_popup_id='+result[i].appointmentId+' class="glyphicon glyphicon-cog settingsIcon"></i></span></p>';
-							
-							str+='<div class="appointmentSettingsBLock arrow_box" id="appointmentSettingsBLockId'+result[i].appointmentId+'">';
-							str+='<label>Select Appointment Status</label><span style="color:red;" id="errSpanId'+result[i].appointmentId+'"></span>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
-									str+='<option value="0">Select Status</option>';
-									str+='<option value="4">Attended</option>';
-									str+='<option value="5">Not Attended</option>';
-									str+='<option value="6" >Reschedule</option>';
-									str+='<option value="7">Cancel</option>';
-								str+='</select>';
-							str+='<div class="row m_top10">';
-							str+='<div class="col-xs-5">';
-							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" attr_cmmnt_chckbx_id='+result[i].appointmentId+' value="2"  name="upcomeRadio" id="comentChkId'+result[i].appointmentId+'" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
-							str+='</label>';
-							str+='</div>';
-							str+='<div class="col-xs-5">';
-							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" attr_sms_chckbx_id='+result[i].appointmentId+' value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
-							str+='</label>';
-							str+='</div>';
-							str+='</div>';
-							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' " id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
-							
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
-							
-							
-							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
-							str+='<img id="prcssngImgFrUpdtId'+result[i].appointmentId+'" style="display:none;" src="images/search.gif">';
-							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
-							str+='</div>';
-							
-						str+='</div>';
-						str+='<div class="panel-body pad_5">';
-						str+='<ul>';
-						flag = true;
-						for(var j in result[i].subList)
-						{
-						
-						str+='<li>';
-						str+='<div class="media m_0">';
-						str+='<div class="media-left">';
-						str+='<img class="media-object thumbnail " src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
-						str+='</div>';
-						str+='<div class="media-body font12">';
-						str+='<p>'+result[i].subList[j].name+'</p>';
-						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
-						str+='<p></p>';
-						str+='</div>';
-						str+='</div>';
-						str+='</li>';
-						}
-						if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Sub: '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
-							   str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
-							}
-						str+='</ul>';
-					
-					str+='<p class="font12 m_top10">';
-					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
-					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"></p>';
-					str+='<div class="messageBlock arrow_box">';
-					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
-					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
-					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
-					str+='</div>';
-					str+='</div>';
-				str+='</div>';
-				}
-			}
-			str+='</ul>';
-		}
-		else
-		{
-			flag = false;
-			//str+='No Data';	
-		}
-		
-		if(flag == false)
-		{
-			str+='No Data Available';	
-		}
-		$("#upcomingAppointMentId").html(str);
-		$('[data-toggle="tooltip"]').tooltip();
-		//$("#upAppointmentStatus").dropkick();
-		if(!flag)
-		$(".upcomingSetting").hide();
-		$(".upcomedateCls").daterangepicker({singleDatePicker:true});
-		$(".upcometimeCls").datetimepicker({format: "LT"});
 	
-	} */
-	
-	$(document).on("click",".messageIcon",function() {
-		
+	$(document).on("click",".messageIcon",function() {		
 		$(".errorCls").html("");
-	})
-	/* $(document).on("click",".sendsms",function() {
-		
-		var flag = false;
-		var appointmentId = $(this).attr("value");
-		$(".msgDiv1"+appointmentId).html("").css("color","");;
-		var smsText = $(".sendSms"+appointmentId).val().trim();
-		if(smsText == "" || smsText.length == 0)
-		{
-		  $(".msgDiv1"+appointmentId).html("Sms Text is Required..").css("color","red");
-		  flag = true;
-		}
-
-		if(flag == true)
-		{
-			return;
-		}
-		var jsObj={
-			appointmentId : appointmentId,
-			smsText:smsText
-			}
-			$.ajax({
-			type : 'POST',
-			url : 'sendSmsForAppointmentAction.action',
-			dataType : 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$(".msgDiv1"+appointmentId).html("Updated Successfully..").css("color","green");
-			setTimeout(function(){
-			 $(".msgDiv1"+appointmentId).html("");
-			},2000);
-			$(".sendSms"+appointmentId).val('');
-		});
-	}) */
-	
+	});
 	$(document).on("click",".appointmentStatus",function() {
 		
 		var apptId = $(this).attr("appointmentid");
@@ -6474,19 +6250,24 @@ function getCommitteeRoles(){
 			  if(result[i].id == 2)
 			  {
 			
-				  $("#approvedStatus").html(''+result[i].availableCount+'');
+				  $("#approvedStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
 			  }
 			  if(result[i].id == 10)
 			  {
-				  $("#notAttendedStatus").html(''+result[i].availableCount+''); 
+				  $("#notAttendedStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
+				  
+				 // $("#notAttendedStatus").html(''+result[i].availableCount+''); 
 			  }
 			 if(result[i].id == 5)
 			  {
-				  $("#cancelledStatus").html(''+result[i].availableCount+''); 
+				   $("#cancelledStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
+				 // $("#cancelledStatus").html(''+result[i].availableCount+''); 
 			  }
 			  if(result[i].id == 8)
 			  {
-				  $("#reScheduledStatus").html(''+result[i].availableCount+''); 
+				  $("#reScheduledStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
+				  
+				 // $("#reScheduledStatus").html(''+result[i].availableCount+''); 
 			  }
 			/*   if(result[i].id == 8)
 			  {
@@ -6577,7 +6358,7 @@ function getCommitteeRoles(){
 		  
 		  function getAppointmentHistoryForCandidate(id){
 			$("#aptCandidateHistoryDiv").html('<img src="images/search.gif" />');
-			$("#buildCommentsForHistoryView").html('<img src="images/search.gif" />');
+			//$("#buildCommentsForHistoryView").html('<img src="images/search.gif" />');
 	    	var jsObj={
 	    			appointmentCandidateId:id,
 					apptUserId:$("#appointmentUserSelectBoxId").val(),
@@ -6641,7 +6422,7 @@ function getCommitteeRoles(){
 		if(result != null && result.length > 0){
 			for(var i in result){
 				if(result[i].commentlist != null && result[i].commentlist.length>0){
-					for(var j in result[i].commentlist){
+					/* for(var j in result[i].commentlist){
 						str+='<tr>';
 						str+='<td>';
 						str+='<div class="row">';
@@ -6653,7 +6434,7 @@ function getCommitteeRoles(){
 						str+='<p class="text-bold" style="margin-top: 10px;">Comment By - '+result[i].commentlist[j].user+'</p>';
 						str+='</td>';
 						str+='</tr>';
-					}
+					} */
 				}
 				
 			}
@@ -6664,7 +6445,7 @@ function getCommitteeRoles(){
 		str+='</table>';
 		str+='</div>';
 		str+='</div>';
-		$("#buildCommentsForHistoryView").html(str);
+		//$("#buildCommentsForHistoryView").html(str);
 		  $('#commentsdatatable').DataTable();
 	}
 	$(document).on("click",".sendsms",function() {
@@ -6818,6 +6599,11 @@ function getUpdatedStatusForaAppointment(){
 		}
 	});
 }
+
+$(document).on("click",".confirmViewClass",function(){
+	
+});
+
 </script>
 </body>
 </html>
