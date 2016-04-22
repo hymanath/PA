@@ -1306,18 +1306,32 @@ $("#hideAsmblyData").click(function(){
 	  $(".dataTableDiv").removeClass("dataTable");
 	 // $("#buildAssConsActivity").hide();
   }
+      $(document).on("change",".selectedVal",function(){
+		var serialNoTypeId=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'];  
+		var optionId=$(this).val();
+		var questionId=$(this).attr("attr_qid");
+		var subQustionDivId =$(this).attr("subQustionDivId");
+		getQuestionnaire(18839,questionId,optionId,subQustionDivId,serialNoTypeId);
+	});
   
 	
-	$(document).on("click","#updateQBtnId",function(){	
+	$(document).on("click","#updateQBtnId",function(){			
+		var locationValue = $(this).attr("attr_location_Value");		
+		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1);
+ 	});
+    function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId){
+		console.log(serialNoTypeId[0]);
+		$("#"+divId+"").html('');
 		var scopeId = $("#ActivityList").val();
-		var locationValue = $(this).attr("attr_location_Value");
 		if(scopeId==null || scopeId==0){
 			alert("Please Select Activity Name");
 			return false;
-		}else{
-			var jsObj={   
-				scopeId : 5,
+		}
+		var jsObj={   
+				scopeId : scopeId,
 				requiredAttributeId:0,
+				questionId:questionId,
+				optionId:optionId
             };
        
 			$.ajax({
@@ -1330,15 +1344,24 @@ $("#hideAsmblyData").click(function(){
 				var str='';
 				if(result!=null && result.activityVoList!=null && result.activityVoList.length>0){
 					for(var i in result.activityVoList){
-						str+='<div class="row">'
+						str+='<div class="row">';
 						str+='<div class="col-md-12 m_top10">';
+						if(divId!="questionsDivBodyId"){
+							str+='<label>'+serialNoTypeId[i]+''+result.activityVoList[i].question+' ? </label><br/>';
+						}else{
 							str+='<label>'+result.activityVoList[i].question+' ? </label><br/>';
+						}
 						str+='</div>';
 						str+='<div class="col-md-4">';
 
 						if(result.activityVoList[i].optionsList!=null && result.activityVoList[i].optionsList.length>0){
 							if(result.activityVoList[i].optionTypeId==1){
-								str+='<select class="form-control selectedVal" attr_type="selectbox" attr_qid="'+result.activityVoList[i].questionId+'">';
+								str+='<select class="form-control selectedVal" attr_type="selectbox" attr_qid="'+result.activityVoList[i].questionId+'"';
+								if(result.activityVoList[i].remarks=="true")
+									str+=' ramarkFieldId="remark'+result.activityVoList[i].questionId+'" ';
+								else
+									str+=' ramarkFieldId="0" ';
+								str+=' subQustionDivId="questionId'+result.activityVoList[i].questionId+'">';
 								str+='<option value="0">Select Option </option>';
 								for(var j in result.activityVoList[i].optionsList){
 									str+='<option value="'+result.activityVoList[i].optionsList[j].optionId+'">'+result.activityVoList[i].optionsList[j].option+'</option>';
@@ -1353,28 +1376,33 @@ $("#hideAsmblyData").click(function(){
 							else if(result.activityVoList[i].optionTypeId==3){
 									str+='&nbsp;&nbsp;<label><input type="text" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" /></label>';
 							}
-						}
+						} 
+						if(result.activityVoList[i].remarks=="true"){
+							   str+='&nbsp;&nbsp;<br><input type="text" name="result'+result.activityVoList[i].questionId+'" placeholder="Enter Remarks" class="remarksCls form-control" attr_qid="'+result.activityVoList[i].questionId+'" id="remark'+result.activityVoList[i].questionId+'" />';
+						    }
 						str+='</div>';
+							str+='<div id="questionId'+result.activityVoList[i].questionId+'"></div>';
 						str+='</div>';
 					}
 					$("#questionsDivFooterId").html('<button type="button" id="saveResult" class="btn btn-custom btn-success" attr_location_Value="'+locationValue+'">Save</button>');
 				}else{
 					str+='<h4>No Data Found.</h4>';
 				}
-				$("#questionsDivBodyId").html(str);
+				$("#"+divId+"").html(str);
 			});
-		}
-	  
-  });
-
+	}
+	
 	$(document).on("click","#saveResult",function(){
 		var resultArr=[];
 		$(".selectedVal").each(function(){
 		var value='';
-		var remarks='';
+		var remarks='0';
 		if($(this).attr("attr_type")=="selectbox" && $(this).val()>0){
 			var key=$(this).attr("attr_qid");
 			value=$(this).val();
+			var ramarkFieldKey = $(this).attr("ramarkId");
+			if(ramarkFieldKey != 0)
+				remarks = $("#remark"+key+"").val();			
 		}
 			/* if($(this).attr("attr_type")=="ckeckBox"){
 				if(this.checked)
@@ -1384,7 +1412,9 @@ $("#hideAsmblyData").click(function(){
 				remarks = $(this).val();
 				value = "3";
 			} */
-			 
+		     if(remarks==undefined || remarks==" "){
+				 remarks='0';
+			 }
 			if(value != null && value.length>0)
 			{
 				var obj={
@@ -1413,6 +1443,7 @@ $("#hideAsmblyData").click(function(){
 		}).done(function(result){
 			if(result != null && result.resultCode == 0){
 				$(".errMsgCls").html("Question Saved Successfully")
+				setTimeout(function(){$(".errMsgCls").html("");},2000);
 			}else{
 				$(".errMsgCls").html("Exception Occurred try Again")
 			}
@@ -1911,10 +1942,13 @@ function getQuestionnaireDetails(requiredAttributeId)
 			
 }
 function buildQuestionnaireDetails(result)
-{
-	var str='';
+{    
+     var str='';
 	if(result!=null && result.activityVoList!=null && result.activityVoList.length>0){
 		for(var i in result.activityVoList){
+			alert(result.activityVoList[i].question);
+			alert(result.activityVoList[i].remarks);
+			
 			str+='<div class="col-md-12">'
 			str+='<div class="row">'
 			str+='<div class="col-md-12 m_top10">';
@@ -1940,6 +1974,7 @@ function buildQuestionnaireDetails(result)
 						str+='&nbsp;&nbsp;<label><input type="text" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" /></label>';
 					}
 				}
+				
 					str+='</div>';
 					str+='</div>';
 					str+='</div>';

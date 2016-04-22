@@ -439,10 +439,12 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 					JSONObject questionObj = questionArr.getJSONObject(i);
 					vo.setQuestionId(questionObj.getLong("questionId"));
 					vo.setOptionId(questionObj.getLong("optionId"));
-					vo.setRemarks(questionObj.getString("remarks"));
 					vo.setCount(questionObj.getLong("count"));
 					vo.setOthers(questionObj.getString("others"));
 					
+					String remarksValue = questionObj.getString("remarks");
+					if(remarksValue != null && !remarksValue.isEmpty() && remarksValue.trim().length()>1)
+						vo.setRemarks(remarksValue);
 					questionList.add(vo);
 				}
 			}
@@ -465,7 +467,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			
 			jObj = new JSONObject(getTask());
 			
-			activityVO = activityService.getQuestionnaireForScope(jObj.getLong("scopeId"),jObj.getLong("requiredAttributeId"));
+			activityVO = activityService.getQuestionnaireForScope(jObj.getLong("scopeId"),jObj.getLong("requiredAttributeId"),jObj.getLong("questionId"),jObj.getLong("optionId"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getQuestionnaireForScope", e);
