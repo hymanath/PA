@@ -1,11 +1,16 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class AppointmentInputVO {
 	private Long userId;
 	private Long createdBy;
 	private String name;
 	private String strDate;
 	private String endDate;
+	
+	private List<Long> statusIds;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -35,6 +40,12 @@ public class AppointmentInputVO {
 	}
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+	public List<Long> getStatusIds() {
+		return statusIds;
+	}
+	public void setStatusIds(List<Long> statusIds) {
+		this.statusIds = statusIds;
 	}
 	
 	

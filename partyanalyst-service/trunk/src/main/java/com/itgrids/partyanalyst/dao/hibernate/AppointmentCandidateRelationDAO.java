@@ -535,7 +535,6 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 			 query.setParameterList("statusIds", statusIds);
 		 return query.list();
 		}
-	
 	public List<Object[]>  getLevelWiseCount(List<Long> statusIds,String type, Long levelId){
 		StringBuilder str=new StringBuilder();
 		str.append("select ");
@@ -557,4 +556,60 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		 query.setParameter("levelId",levelId);
 		 return query.list();
 		}
+	
+	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
+	{
+		StringBuffer str = new StringBuffer();
+		str.append("select model.appointmentCandidate.appointmentCandidateId,model.appointmentCandidate.name," +
+				"model.appointmentCandidate.mobileNo, " +
+				"model.appointmentCandidate.candidateDesignation.designation," +
+				"model.appointment.reason,model.appointment.createdUser.userId,model.appointment.createdUser.firstName," +
+				" model.appointment.createdUser.lastName,0,model.appointment.appointmentStatus.appointmentStatusId," +
+				" model.appointment.appointmentStatus.status,model.appointment.appointmentId,0," +
+				" model.appointment.appointmentUniqueId,0,model.appointmentCandidate.imageURL ," +
+				" model.appointment.appointmentStatus.statusColor "+
+				" from AppointmentCandidateRelation model" +
+				//" left join AppointmentTimeSlot model1 " +
+				" where model.appointment.isDeleted='N' " );
+		if(inputVo.getCreatedBy() != null && inputVo.getCreatedBy()  > 0)
+			str.append(" and model.appointment.createdUser.userId = :createdBy");
+		if(inputVo.getName()!= null && !inputVo.getName().isEmpty())
+		{
+			if(searchType.equalsIgnoreCase("name"))
+			str.append(" and model.appointmentCandidate.name like '%"+inputVo.getName()+"%'");
+			else
+				str.append(" and model.appointmentCandidate.mobileNo like '%"+inputVo.getName()+"%'");	
+		}
+		if(inputVo.getUserId() != null && inputVo.getUserId()  > 0)
+			str.append(" and model.appointment.appointmentUser.appointmenUserId =:appointmenUserId");		
+		
+		if(fromDate != null && toDate !=null)
+		{
+			str.append(" and date(model.appointment.insertedTime) between :fromDate and :toDate  ");
+		}
+		
+		if(inputVo.getStatusIds() !=null && inputVo.getStatusIds().size()>0){
+			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in (:statusIds) ");
+		}
+		
+		
+		str.append(" group by model.appointment.appointmentId,model.appointmentCandidate.appointmentCandidateId order by model.appointment.insertedTime");
+		Query query = getSession().createQuery(str.toString());
+		if(fromDate != null)
+		{
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(inputVo.getUserId() != null && inputVo.getUserId()  > 0)
+			query.setParameter("appointmenUserId", inputVo.getUserId());
+		if(inputVo.getCreatedBy() != null && inputVo.getCreatedBy()  > 0)
+			query.setParameter("createdBy", inputVo.getCreatedBy());
+		
+		if(inputVo.getStatusIds() !=null && inputVo.getStatusIds().size()>0){
+			query.setParameterList("statusIds", inputVo.getStatusIds());
+		}
+		
+		return query.list();
+		
+	}
 }
