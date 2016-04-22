@@ -4,16 +4,17 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8">   
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Search</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 
-h1,h2,h3,h4,h5,h6,p,ul
+h1,h2,h3,h4,h5,h6,p,ul   
 {
 	margin:0px;
 }
@@ -85,11 +86,21 @@ label
 								</div>				  
 							</div>
 						</div>
-						
-						
-                        <div class="col-md-6 m_top20">
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label>Constituency<span style="color:red;">*</span></label>
+							<select class="dropkickClass" id="constituencyId">
+								<option value="0">Select Constituency</option>
+							</select>
+							<div id="constErrId" style="color:red;"></div>
+						</div>
+					</div>
+					<div class="row">
+                        <div class="col-md-6 m_top20">  
                         	<!--<label class="memberCls">Search By Membership Id/Mobile No/Voter Id</label>
 							<label class="nonMemberCls" style="display:none;">Search By VoterCard Number</label>-->
+							
                             <input type="text" id="searchBy" class="form-control" placeholder="Search By Membership Id/Mobile No/Voter Id"/>
 							<div id="searchErrDiv" style="color:red;"></div>
                         </div>
@@ -115,8 +126,8 @@ label
 								<button id="generateOtpId" class="btn btn-success m_top20" style="display:none;" onclick="generateOTPForMobileNo(this);">GENERATE OTP</button>
 							</div>
 							<div class="col-md-2">
-								<input type="text" class="form-control m_top20" id="otpId" style="display:none;"/>
-							</div>
+								<input type="text" class="form-control m_top20" maxLength="6" id="otpId" style="display:none;"/>
+							</div> 
 							<div class="col-md-2">
 							<button class="btn btn-success m_top25" id="nextStepId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;display:none;">NEXT</button>
 							</div>
@@ -138,10 +149,14 @@ label
 	
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="js/tdpCadreAjax/tdpCadreAjax.js" type="text/javascript"></script>
 <script src="js/unionSearchRegiststration/unionSearchRegiststration.js" type="text/javascript"></script>
 <script src="js/smsTransactions/smsTransactions.js" type="text/javascript"></script>
+<script src="js/locationSearch/locationSearch.js" type="text/javascript"></script>
+<script src="js/locationSearch/locationSearchAjax.js" type="text/javascript"></script>
 <script>
+
 </script>
 </body>
 </html>
