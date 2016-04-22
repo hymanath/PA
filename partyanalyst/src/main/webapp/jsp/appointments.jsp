@@ -3495,17 +3495,26 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	function getSearchDetails()
 	{
 		searchJobj;
+		var statusArray=[];
 		$("#upcomingAppointMentId").html("");
 		$("#inprogreessAppointMentId").html("");
 		$("#completedAppointMentId").html("");
 		$(".appointmentSettings").show();
 		var createdBy =$("#appointmentcreatedBy").val();
 		var statusId =$("#selectStatusId").val();
+		if(statusId !=null && statusId>0){
+			statusArray.push(statusId);
+		}
 		var appointmentUserId =$("#appointmentUserSelectBoxId").val();
 		var searchStr=$("#searchStrId").val().trim();
-		var date = $("#dashboardSelectDateIds").val().split("-"); 
-		var strDate =date[0];
-		var endDate =date[1];
+		var strDate='';
+		var endDate=''; 
+		var datesArry = $("#dashboardSelectDateIds").val();
+		if(datesArry !=null && datesArry !=undefined && datesArry.length>0){
+			strDate=datesArry.split("-")[0];
+			endDate=datesArry.split("-")[1];		
+		}
+		
 		var jsObj={
 			createdBy : createdBy,
 			appointmentUserId:appointmentUserId,
@@ -3513,15 +3522,26 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			strDate:strDate,
 			endDate:endDate,
 			statusId:statusId,
+			task:""			
+		}
+		
+		var jsObj1={
+			createdBy : createdBy,
+			appointmentUserId:appointmentUserId,
+			searchStr:searchStr,
+			strDate:strDate,
+			endDate:endDate,
+			statusArray:statusArray,
 			task:""
 			
 		}
+		
 		searchJobj = jsObj;
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppointmentSearchDetailsAction.action',
 				dataType : 'json',
-				data: {task:JSON.stringify(jsObj)}
+				data: {task:JSON.stringify(jsObj1)}
 			}).done(function(result){
 				buildUpcomingResult(result,statusId);
 				buildInprogressResult(result,statusId);
@@ -3794,7 +3814,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	});
 	
 	$(document).on("click",".updateAll",function() {
-		console.log(searchJobj)
 		var appointmentType = $(this).attr("value");
 		$(".msgDiv2"+appointmentType).html("").css("color","");
 		var statusId;

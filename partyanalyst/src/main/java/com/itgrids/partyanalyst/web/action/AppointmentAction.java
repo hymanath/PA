@@ -774,6 +774,17 @@ public String getCandidateWiseDetails(){
 			inputVo.setName(jObj.getString("searchStr"));
 			inputVo.setStrDate(jObj.getString("strDate"));
 			inputVo.setEndDate(jObj.getString("endDate"));
+			
+			JSONArray  jsonArray = jObj.getJSONArray("statusArray");
+			
+			List<Long> ids = new ArrayList<Long>(0);
+			for (int i = 0; i < jsonArray.length(); i++) 
+			{
+				ids.add(Long.parseLong(jsonArray.get(i).toString()));
+			}
+			
+			inputVo.setStatusIds(ids);
+			
 			searchList = appointmentService.getAppointmentSearchDetails(inputVo);
 			
 		}
