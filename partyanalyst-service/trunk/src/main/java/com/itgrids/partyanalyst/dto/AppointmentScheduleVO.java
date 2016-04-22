@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppointmentScheduleVO {
+
+private Long id;
 private Long userId;
 private Long tdpCadreId;
 private String name;
@@ -153,6 +155,12 @@ public String getImageUrl() {
 }
 public void setImageUrl(String imageUrl) {
 	this.imageUrl = imageUrl;
+}
+public Long getId() {
+	return id;
+}
+public void setId(Long id) {
+	this.id = id;
 }
 
 
