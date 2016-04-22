@@ -2833,28 +2833,32 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						if(vo == null)
 						{
 							vo = new AppointmentScheduleVO();
-							vo.setAppointmentId((Long)params[11]);
-							//if(params[8] != null && !params[8].toString().isEmpty() && params[12] != null && !params[12].toString().isEmpty())
-							//{
-								//Date date= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[8].toString().substring(0, 19));
-								//String convertDate = new SimpleDateFormat("hh:mm a").format(date);
-								
-								//Date date1= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[12].toString().substring(0, 19));
-								//String convertDate1 = new SimpleDateFormat("hh:mm a").format(date1);
-								//vo.setScheduleType(getAppointmentSchedule(params[8].toString().substring(0, 19),params[12].toString().substring(0, 19)));
+							vo.setAppointmentId((Long)params[11]);							
+							Date date=null;
+							Date date1 = null;
+							String convertDate = null;
+							String convertDate1 =null;
+							if(params[8] !=null){
+								 date= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[8].toString().substring(0, 19));
+								 convertDate = new SimpleDateFormat("hh:mm a").format(date);
+							}
+							
+							if(params[12] !=null){
+								date1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(params[12].toString().substring(0, 19));
+								convertDate1 = new SimpleDateFormat("hh:mm a").format(date1);
+							}								
 								vo.setSubject(params[4] != null ? params[4].toString() : "");
 								vo.setStatusId(params[9] != null ? (Long)params[9] : null);
 								vo.setAppointmentStatus(params[10] != null ? params[10].toString() : "");
 								vo.setAppointmentStatusColor(params[16]!=null ? params[16].toString():"");
-								//vo.setTime(convertDate);
-							//	vo.setToTime(convertDate1);
-								//vo.setFromDate(params[8]!=null ? params[8].toString():"");
-								//vo.setToDate(params[12]!=null ? params[12].toString():"");
-								//vo.setDate(params[14]!=null ? params[14].toString().split(" ")[0]:"");
+								vo.setTime(convertDate);
+								vo.setToTime(convertDate1);
+								vo.setFromDate(params[8]!=null ? params[8].toString():"");
+								vo.setToDate(params[12]!=null ? params[12].toString():"");
+								vo.setDate(params[14]!=null ? params[14].toString().split(" ")[0]:"");
 								vo.setAppointmentUniqueId(params[13]!=null?params[13].toString():"");
 								vo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
 								
-							//}
 							resultList.add(vo);
 						}
 						AppointmentScheduleVO candidateVo = new AppointmentScheduleVO();
