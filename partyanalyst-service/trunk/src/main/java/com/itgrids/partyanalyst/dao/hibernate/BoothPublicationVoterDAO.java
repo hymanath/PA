@@ -8317,33 +8317,41 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
 	
-	public List<Object[]> getVoterDetailsByVoterCardNumber(String voterIDCardNo){
+	public List<Object[]> getVoterDetailsByVoterCardNumber(String voterIDCardNo,Long constId){
 		
-		Query query = getSession().createQuery("select model.voter.voterId," +
-														" model.voter.name," +
-														" model.voter.relativeName," +
-														" model.voter.voterIDCardNo," +
-														" model.voter.gender," +
-														" model.voter.age," +
-														" model.voter.dateOfBirth," +
-														" model.voter.mobileNo," +
-														" model.voter.houseNo," +
-														" model.booth.boothId," +
-														" model.booth.partNo," +
-														" model.booth.constituency.district.districtId," +
-														" model.booth.constituency.district.districtName," +
-														" model.booth.constituency.constituencyId," +
-														" model.booth.constituency.name," +
-														" tehsil.tehsilId," +
-														" tehsil.tehsilName," +
-														" leb.localElectionBodyId," +
-														" leb.name" +
-												" from BoothPublicationVoter model" +
-														" left join model.booth.tehsil tehsil" +
-														" left join model.booth.localBody leb" +
-												" where model.voter.voterIDCardNo = :voterIDCardNo" +
-														" and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		StringBuilder queryStr =new StringBuilder();
+		queryStr.append("select model.voter.voterId," +
+				" model.voter.name," +
+				" model.voter.relativeName," +
+				" model.voter.voterIDCardNo," +
+				" model.voter.gender," +
+				" model.voter.age," +
+				" model.voter.dateOfBirth," +
+				" model.voter.mobileNo," +
+				" model.voter.houseNo," +
+				" model.booth.boothId," +
+				" model.booth.partNo," +
+				" model.booth.constituency.district.districtId," +
+				" model.booth.constituency.district.districtName," +
+				" model.booth.constituency.constituencyId," +
+				" model.booth.constituency.name," +
+				" tehsil.tehsilId," +
+				" tehsil.tehsilName," +
+				" leb.localElectionBodyId," +
+				" leb.name" +
+		" from BoothPublicationVoter model" +
+				" left join model.booth.tehsil tehsil" +
+				" left join model.booth.localBody leb  where model.voter.voterIDCardNo = :voterIDCardNo ");
+		if(constId != null && constId.longValue()>0L)
+			queryStr.append("  and model.booth.constituency.constituencyId = :constId ");
+		queryStr.append("   and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("voterIDCardNo", voterIDCardNo);
+		
+		if(constId != null && constId.longValue()>0L)
+			query.setParameter("constId", constId);
+		
 		query.setParameter("publicationDateId", IConstants.VOTER_PUBLICATION_ID);
 		
 		return query.list();

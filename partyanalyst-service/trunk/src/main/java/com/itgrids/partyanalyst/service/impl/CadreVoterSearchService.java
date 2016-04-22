@@ -995,13 +995,13 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		return returnList;
 	}
 	
-	public VoterDetailsVO getVoterDetailsByVoterCardNumber(String voterIDCardNo){
+	public VoterDetailsVO getVoterDetailsByVoterCardNumber(String voterIDCardNo,Long constId){
 		VoterDetailsVO voterDetailsvo = new VoterDetailsVO();
 		
 		try {
 			List<VoterDetailsVO> voterDetailsList = new ArrayList<VoterDetailsVO>();
 			
-			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsByVoterCardNumber(voterIDCardNo);
+			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsByVoterCardNumber(voterIDCardNo,constId);
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
 					VoterDetailsVO vo = new VoterDetailsVO();

@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 public interface ICadreVoterSearchService {
 	public List<LocationWiseBoothDetailsVO> getAllDistrictsAndConstis(String type,Long id);	
 	public List<TdpCadreVO> getCadreVoterDetailsBySearchCriteria(String searchType,Long stateId, String locationType,Long locationId,Long casteStateId, String nameStr,String isFinal);
-	public VoterDetailsVO getVoterDetailsByVoterCardNumber(String voterIDCardNo);
+	public VoterDetailsVO getVoterDetailsByVoterCardNumber(String voterIDCardNo,Long constId);
 	public String generateOTPForMobileNumber(Long userId,String mobileNo,String refNo);
 	public String validateOTP(String mobileNo,String refNo,String otp);
 }
