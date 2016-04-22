@@ -189,10 +189,7 @@
                                                     <input type="text" class="form-control" id="dashboardSelectDateIds">                                               
 												</div>
                                             </div>
-											<div  class="col-md-1 m_top25">
-                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
-                                            </div>
-											<div class="col-md-3" style="border-left:1px solid #ddd;">
+											<div class="col-md-3" >
 												<label>Search</label>
 												<div class="input-group inputSearch">
 													<input class="form-control" type="text" id="searchStrId"  placeholder="Name or MobileNumber"">
@@ -201,6 +198,10 @@
 													</span>
 												</div>
 											</div>
+											<div  class="col-md-1 m_top25" style="border-left:1px solid #ddd;">
+                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
+                                            </div>
+											
 											
 										</div>
 									</div>
