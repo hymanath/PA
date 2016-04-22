@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.service.IAppointmentReportDashBoardService;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -79,8 +80,17 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private AppointmentCountsVO appointmentCountsVO;
 	private IAppointmentReportDashBoardService appointmentReportDashBoardService;
 	private List<AppointmentLocVO> appointmentLocVOList;
-	
 	private  List<AppointmentCountVO> appointmentCountVOList;
+	private  List<StatusTrackingVO> statusTrackingVOList;
+
+	
+	public List<StatusTrackingVO> getStatusTrackingVOList() {
+		return statusTrackingVOList;
+	}
+
+	public void setStatusTrackingVOList(List<StatusTrackingVO> statusTrackingVOList) {
+		this.statusTrackingVOList = statusTrackingVOList;
+	}
 
 	public List<AppointmentCountVO> getAppointmentCountVOList() {
 		return appointmentCountVOList;
@@ -1209,6 +1219,19 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getUpdatedStatusForaAppointment() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAppointmentStatusTrackingDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long appntmntId = jObj.getLong("appntmntId");
+			
+			statusTrackingVOList = appointmentService.getAppointmentStatusTrackingDetails(appntmntId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAppointmentStatusTrackingDetails() of AppointmentAction",e);
 		}
 		return Action.SUCCESS;
 	}
