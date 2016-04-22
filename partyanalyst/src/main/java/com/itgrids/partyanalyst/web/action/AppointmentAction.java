@@ -1153,5 +1153,17 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getLevelWiseCount(){
+		try{
+			jObj = new JSONObject(getTask());
+			  
+			  Long levelId   = jObj.getLong("levelId");
+			appointmentCountVOList = appointmentService.getLevelWiseCount(levelId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getLevelWiseCount() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }

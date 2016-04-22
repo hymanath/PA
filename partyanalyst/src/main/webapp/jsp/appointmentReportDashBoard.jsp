@@ -133,6 +133,18 @@
     </div>
   </div>
 </div>
+<div class="row" style="display:none;" id="mandalDivId">
+  <div class="col-md-12" >
+    <div class="block">
+      <div class="row">
+        <div class="col-md-12">
+          
+		  <div id="roleWiseApptId"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 
 
@@ -178,7 +190,7 @@ function buildCommitteeLvlAppntmnts(result){
 		for(var i in result){
             str +='<tr>';
 		
-				str +='<td>'+result[i].role+'</td>';
+				str +='<td id='+result[i].roleId+'><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getLevelWiseCount(\''+result[i].roleId+'\',\''+result[i].role+'\');">'+result[i].role+'</a></td>';
             str +='<td style="text-align:center">'+result[i].total+'</td>';
             str +='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
             str +='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
@@ -194,4 +206,69 @@ function buildCommitteeLvlAppntmnts(result){
 	}
 		  $("#committeeLvlAppntId").html(str);
 }
+
+function getLevelWiseCount(levelId,level){
+		var jsObj = {
+			levelId:levelId
+		}
+	$.ajax({
+		type : 'GET',
+		url : 'getLevelWiseCountAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+	console.log(result);
+	buildRoleWiseCount(result,level);
+	});     
+}
+function buildRoleWiseCount(result,level){
+	$("#roleWiseApptId").html("");
+	$("#mandalDivId").show();
+	 
+	var str = '';
+	if(result != "" && result.length >0){
+		str +='<h4 class="text-capitalize">'+level+' committee members appointments</h4>';
+			str +='<table class="table table-bordered">';
+            str +='<thead>';
+           str+='<tr>';
+								str+='<th></th>';
+								str+='<th class="text-capitalize text-center" colspan="2">total</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
+								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
+							str+='</tr>';
+         	str+='<tr>';
+							// str +='<th></th>';
+								str+='<th class="text-capitalize">role</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+								str+='<th class="text-capitalize">total</th>';
+								str+='<th class="text-capitalize">unique</th>';
+							str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+		   
+		for(var i in result){
+            str +='<tr>';
+		
+				str +='<td id='+result[i].roleId+'>'+result[i].role+'</td>';
+            str +='<td style="text-align:center">'+result[i].total+'</td>';
+            str +='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
+            str +='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
+            str +='<td style="text-align:center">'+result[i].uniqueRequestedCnt+'</td>';
+            str +='<td style="text-align:center">'+result[i].scheduledCnt+'</td>';
+            str +='<td style="text-align:center">'+result[i].uniqueScheduledCnt+'</td>';
+			str +=' </tr>';
+		   }
+			str +='</tbody>';
+			str +='</table>';
+	}else{
+		str +='<h4 class="text-capitalize">'+level+' committee members appointments</h4>';
+		str +='No Data Available.';
+	}
+		  $("#roleWiseApptId").html(str);
+}
+
+
 </script>
