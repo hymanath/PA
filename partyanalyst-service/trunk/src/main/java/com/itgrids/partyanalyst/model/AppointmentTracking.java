@@ -28,15 +28,21 @@ public class AppointmentTracking extends BaseModel {
 	private Long appointmentTrackingId;
 	private Long appointmentId;
 	private Long appointmentActionId;
+	private Long fromAppointmentStatusId;
 	private Long appointmentStatusId;
+	private Long appointmentCommentId;
 	private Long userId;
 	private Date actionTime;
 	private String remarks;
+
 	
 	private Appointment appointment;
 	private AppointmentAction appointmentAction;
+	private AppointmentStatus fromAppointmentStatus;
 	private AppointmentStatus appointmentStatus;
+	private AppointmentComment appointmentComment;
 	private User user;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,6 +53,7 @@ public class AppointmentTracking extends BaseModel {
 	public void setAppointmentTrackingId(Long appointmentTrackingId) {
 		this.appointmentTrackingId = appointmentTrackingId;
 	}
+	
 	@Column(name = "appointment_id")
 	public Long getAppointmentId() {
 		return appointmentId;
@@ -54,6 +61,7 @@ public class AppointmentTracking extends BaseModel {
 	public void setAppointmentId(Long appointmentId) {
 		this.appointmentId = appointmentId;
 	}
+	
 	@Column(name = "appointment_action_id")
 	public Long getAppointmentActionId() {
 		return appointmentActionId;
@@ -61,6 +69,7 @@ public class AppointmentTracking extends BaseModel {
 	public void setAppointmentActionId(Long appointmentActionId) {
 		this.appointmentActionId = appointmentActionId;
 	}
+	
 	@Column(name = "appointment_status_id")
 	public Long getAppointmentStatusId() {
 		return appointmentStatusId;
@@ -68,6 +77,7 @@ public class AppointmentTracking extends BaseModel {
 	public void setAppointmentStatusId(Long appointmentStatusId) {
 		this.appointmentStatusId = appointmentStatusId;
 	}
+	
 	@Column(name = "user_id")
 	public Long getUserId() {
 		return userId;
@@ -75,6 +85,7 @@ public class AppointmentTracking extends BaseModel {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	
 	@Column(name = "action_time")
 	public Date getActionTime() {
 		return actionTime;
@@ -130,5 +141,45 @@ public class AppointmentTracking extends BaseModel {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	
+	@Column(name = "from_appointment_status_id")
+	public Long getFromAppointmentStatusId() {
+		return fromAppointmentStatusId;
+	}
+	public void setFromAppointmentStatusId(Long fromAppointmentStatusId) {
+		this.fromAppointmentStatusId = fromAppointmentStatusId;
+	}
+	
+	@Column(name = "appointment_comment_id")
+	public Long getAppointmentCommentId() {
+		return appointmentCommentId;
+	}
+	public void setAppointmentCommentId(Long appointmentCommentId) {
+		this.appointmentCommentId = appointmentCommentId;
+	}
+	
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="from_appointment_status_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AppointmentStatus getFromAppointmentStatus() {
+		return fromAppointmentStatus;
+	}
+	public void setFromAppointmentStatus(AppointmentStatus fromAppointmentStatus) {
+		this.fromAppointmentStatus = fromAppointmentStatus;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="appointment_comment_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AppointmentComment getAppointmentComment() {
+		return appointmentComment;
+	}
+	public void setAppointmentComment(AppointmentComment appointmentComment) {
+		this.appointmentComment = appointmentComment;
+	}
+	
+	
 }
