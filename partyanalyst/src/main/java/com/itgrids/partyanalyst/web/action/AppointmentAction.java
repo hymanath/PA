@@ -1177,4 +1177,20 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 	}
 	
+	public String getAppointmentStatusByUserId(){
+		try{
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			Long userId = user.getRegistrationID();
+			idNameVOList = appointmentService.getAppointmentStatusByUserId(userId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getLevelWiseCount() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }
