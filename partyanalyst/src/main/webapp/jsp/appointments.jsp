@@ -6628,10 +6628,6 @@ function getUpdatedStatusForaAppointment(){
 	});
 }
 
-$(document).on("click",".confirmViewClass",function(){
-	
-});
-
 function getStatusTrackingDetls(appontmntId){
 	
 	var jsObj={
@@ -6668,6 +6664,79 @@ function apptTrackingStatus(result)
 	$("#apptStatusTracking").html(str)
 }
 
+$(document).on("click",".confirmViewClass",function(){
+	var statusId = $(this).attr("attr_statusId");
+	getSerchDetailsByStatus(statusId);
+});
+function getSerchDetailsByStatus(statusId){
+	//getAppointmentsBySearchCriteria();
+	
+		 var fromDate='';
+		var toDate='';
+		/*var dateStr = $("#addMembersFromDateId").val(); 
+		if(dateStr !=null && dateStr.length>0){
+			fromDate = dateStr.split("-")[0];
+			toDate = dateStr.split("-")[1];
+		}
+		 
+		 var designationId=$("#manageAppDesigId").val();
+		 var priorityId= $("#manageAppTypeId").val();
+		 var statusId=$("#manageAppStatusId").val();
+		 var districtId = $("#manageAppDistId").val();
+		 var constituencyId = $("#manageAppConstId").val();
+		 var candidateTypeId = $("#candidateTypeAddSelId").val();
+		 
+		 if(candidateTypeId ==null && candidateTypeId.length == 0){
+			  $("#addErrCandidateTypeAddCls").html("Select Candidate Type.");
+				return;	
+		 }
+		 if(designationId=="select"){
+		  $("#appDesigErrId").html("Select Designation.");
+           return;		  
+		 }		 
+		  
+		 if(priorityId=="select"){
+		  $("#appPrrtyErrTypId").html("Select Priority Type.");
+           return;		  
+		 }
+		 
+		 if(statusId=="select"){
+		  $("#appStatusErrId").html("Select Appointment Status.");
+           return;		  
+		 }
+		 if(districtId=="select"){
+		  $("#appDistErrId").html("Select District.");
+           return;		  
+		 }
+		 if(constituencyId=="select"){
+		  $("#appConstErrId").html("Select Constituency.");
+           return;		  
+		 } */
+		 
+		 var jsObj={
+			designationId:0,
+			priorityId:0,
+			statusId:statusId,
+			districtId:0,
+			constituencyid:0,
+			appointmentlabelId : 0,
+			fromDate :fromDate,
+			toDate:toDate,
+			selUserId:$("#appointmentUserSelectBoxId").val(),
+			candidateTypeId:0,
+			dateType:2,
+			apptUserId:$("#appointmentUserSelectBoxId").val()
+		  }
+		  $.ajax({
+				type : 'POST',
+				url : 'getAppointmentsBySearchCriteriaAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				
+			});
+
+}
 </script>
 </body>
 </html>
