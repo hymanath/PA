@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserAppointmentUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCommentDAO;
 import com.itgrids.partyanalyst.dto.AppHistoryVO;
@@ -152,7 +153,16 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentSmsSettingDAO appointmentSmsSettingDAO;
 	private IAppointmentSmsHistoryDAO appointmentSmsHistoryDAO;
 	private ISmsSenderService smsSenderService;
+	private IUserAppointmentUserDAO userAppointmentUserDAO;
 	
+	
+	public IUserAppointmentUserDAO getUserAppointmentUserDAO() {
+		return userAppointmentUserDAO;
+	}
+	public void setUserAppointmentUserDAO(
+			IUserAppointmentUserDAO userAppointmentUserDAO) {
+		this.userAppointmentUserDAO = userAppointmentUserDAO;
+	}
 	public IAppointmentSmsSettingDAO getAppointmentSmsSettingDAO() {
 		return appointmentSmsSettingDAO;
 	}
@@ -5450,4 +5460,23 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		
 	}
 	
+	public List<IdNameVO> getAppointmentStatusByUserId(Long userId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		
+		try {
+			
+			List<Object[]> list = userAppointmentUserDAO.getAppointmentStatusByUserId(userId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAppointmentStatusByUserId() method of AppointmentService", e);
+		}
+		return returnList;
+	}
 }

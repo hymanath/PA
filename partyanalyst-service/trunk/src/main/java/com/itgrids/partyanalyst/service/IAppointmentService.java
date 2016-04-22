@@ -81,5 +81,6 @@ public interface IAppointmentService {
 	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt();
 	public List<AppointmentCountVO> getCommitteeLevelAppointments();
 	public List<AppointmentCountVO> getLevelWiseCount(Long levelId);
+	public List<IdNameVO> getAppointmentStatusByUserId(Long userId);
 	public List<StatusTrackingVO> getAppointmentStatusTrackingDetails(Long appointmentId);
 }
