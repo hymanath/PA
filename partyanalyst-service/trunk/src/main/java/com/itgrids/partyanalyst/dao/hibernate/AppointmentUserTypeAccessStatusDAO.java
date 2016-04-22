@@ -11,4 +11,15 @@ public class AppointmentUserTypeAccessStatusDAO extends GenericDaoHibernate<Appo
 		super(AppointmentUserTypeAccessStatus.class);
 	}
 
+	/*public List<Object[]> getAppointmentStatusByUserType(Long appointmentUserTypeId){
+		
+		Query query = getSession().createQuery("select model.appointmentStatus.appointmentStatusId," +
+									" model.appointmentStatus.status" +
+									" from AppointmentUserTypeAccessStatus model" +
+									" where model.appointmentUserType.appointmentUserTypeId = :appointmentUserTypeId" +
+									" order by model.appointmentStatus.orderNo asc");
+		query.setParameter("appointmentUserTypeId", appointmentUserTypeId);
+		
+		return query.list();
+	}*/
 }
