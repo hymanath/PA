@@ -572,11 +572,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		return query.list();
 	}
 	
-	
-	
-	
-	
-	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
+	public List<Object[]> getAppointmentSearchDetailsForStatusSSS(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
 	{
 		StringBuffer str = new StringBuffer();
 		str.append("select model.appointmentCandidate.appointmentCandidateId,model.appointmentCandidate.name," +
@@ -631,4 +627,88 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("SELECT ac.appointment_candidate_id as apptCandId,ac.name as name,ac.mobile_no as mobileNo,acd.designation as designation," +
+				" a.reason as reason ,u.user_id as userId,u.firstname as firstName," +
+				" u.lastname as lastName,ats.from_date as fromDate,asts.appointment_status_id as aptStatusId,asts.status as aptStatus,a.appointment_id as aptId" +
+				" ,ats.to_date as toDate," +
+				"a.appointment_unique_id as uniqueId,ats.date as date,ac.image_url as url," +
+				" asts.status_color as colour" +
+				
+					" FROM " +
+					
+					"  appointment_candidate_relation acr " +
+					" join appointment_candidate ac on acr.appointment_candidate_id=ac.appointment_candidate_id " +
+					" join appointment a on acr.appointment_id=a.appointment_id " +
+					" join appointment_candidate_designation acd on ac.designation_id = acd.appointment_candidate_designation_id  " +
+					" join user u on a.created_by = u.user_id " +
+					" join appointment_status asts  on a.appointment_status_id = asts.appointment_status_id" +
+					" join appointment_user au on au.appointment_user_id = a.appointment_user_id" +
+					"  left join appointment_time_slot ats on a.appointment_id = ats.appointment_id ");
+		
+		
+		if(inputVo.getCreatedBy() != null && inputVo.getCreatedBy()  > 0)
+			str.append(" and a.created_by = :createdBy");
+		if(inputVo.getName()!= null && !inputVo.getName().isEmpty())
+		{
+			if(searchType.equalsIgnoreCase("name"))
+			str.append(" and ac.name like '%"+inputVo.getName()+"%'");
+			else
+				str.append(" and ac.mobile_no like '%"+inputVo.getName()+"%'");	
+		}
+		if(inputVo.getUserId() != null && inputVo.getUserId()  > 0)
+			str.append(" and au.appointment_user_id =:appointmenUserId");		
+		
+		if(fromDate != null && toDate !=null)
+		{
+			str.append(" and date(a.inserted_time) between :fromDate and :toDate  ");
+		}
+		
+		if(inputVo.getStatusIds() !=null && inputVo.getStatusIds().size()>0){
+			str.append(" and asts.appointment_status_id in (:statusIds) ");
+		}
+		
+		
+		str.append(" group by a.appointment_id,ac.appointment_candidate_id order by a.inserted_time ");
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("apptCandId",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING)
+				.addScalar("mobileNo",Hibernate.STRING)
+				.addScalar("designation",Hibernate.STRING)
+				.addScalar("reason",Hibernate.STRING)
+				.addScalar("userId",Hibernate.LONG)
+				.addScalar("firstName",Hibernate.STRING)
+				.addScalar("lastName",Hibernate.STRING)
+				.addScalar("fromDate",Hibernate.STRING)
+				.addScalar("aptStatusId",Hibernate.LONG)
+				.addScalar("aptStatus",Hibernate.STRING)
+				.addScalar("aptId",Hibernate.LONG)
+				.addScalar("toDate",Hibernate.STRING)
+				.addScalar("uniqueId",Hibernate.STRING)
+				.addScalar("date",Hibernate.STRING)
+				.addScalar("url",Hibernate.STRING)
+				.addScalar("colour",Hibernate.STRING)    
+				;
+		
+		if(fromDate != null)
+		{
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(inputVo.getUserId() != null && inputVo.getUserId()  > 0)
+			query.setParameter("appointmenUserId", inputVo.getUserId());
+		if(inputVo.getCreatedBy() != null && inputVo.getCreatedBy()  > 0)
+			query.setParameter("createdBy", inputVo.getCreatedBy());
+		
+		if(inputVo.getStatusIds() !=null && inputVo.getStatusIds().size()>0){
+			query.setParameterList("statusIds", inputVo.getStatusIds());
+		}
+		
+		return query.list();
+		
+	}
+	
 }
