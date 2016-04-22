@@ -628,6 +628,34 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 	}
 	
+	public List<Object[]> eachStatusApptCountAndUniqueMemCount(Long apptUserId,List<Long> statusIds){
+		  
+	    Query query = getSession().createQuery("" +
+	     " select   model.appointment.appointmentStatusId,model.appointment.appointmentStatus.status," +
+	     "          count(distinct model.appointment.appointmentId),count(distinct model.appointmentCandidate.appointmentCandidateId)" +
+	     " from     AppointmentCandidateRelation model  " +
+	     " where    model.appointment.isDeleted='N' and model.appointment.appointmentUserId = :apptUserId " +
+	     "          and model.appointment.appointmentStatusId in (:statusIds)" +
+	     " group by model.appointment.appointmentStatusId ");
+	    query.setParameter("apptUserId", apptUserId);
+	    query.setParameterList("statusIds", statusIds);
+	    return query.list();
+	 }
+	
+	public Object[] combinedStatusApptAndUniqueMemCount(Long apptUserId,List<Long> statusIds){
+		  
+	    Query query = getSession().createQuery("" +
+	     " select   count(distinct model.appointment.appointmentId),count(distinct model.appointmentCandidate.appointmentCandidateId)" +
+	     " from     AppointmentCandidateRelation model  " +
+	     " where    model.appointment.isDeleted='N' and model.appointment.appointmentUserId = :apptUserId " +
+	     "          and model.appointment.appointmentStatusId in (:statusIds) ");
+	    query.setParameter("apptUserId", apptUserId);
+	    query.setParameterList("statusIds", statusIds);
+	    return (Object[])query.uniqueResult();
+	 }
+	
+	
+	
 	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
 	{
 		StringBuilder str = new StringBuilder();

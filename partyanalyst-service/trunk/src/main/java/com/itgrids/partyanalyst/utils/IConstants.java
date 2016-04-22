@@ -993,8 +993,8 @@ public interface IConstants {
 	public static final Long APPOINTMENT_STATUS_LABELED=2L;
 	public static final Long APPOINTMENT_STATUS_FIXED=3L;
 	public static final Long APPOINTMENT_STATUS_ATTENDED=4L;
-	public static final Long APPOINTMENT_STATUS_NOTATTENDED=5L;
-	public static final Long APPOINTMENT_STATUS_RESCHEDULED=6L;
+	public static final Long APPOINTMENT_STATUS_NOTATTENDED=10L;
+	public static final Long APPOINTMENT_STATUS_RESCHEDULED=8L;
 	public static final Long APPOINTMENT_STATUS_CANCELLED=7L;
 	public static final Long APPOINTMENT_STATUS_TENTATIVE=8L;
 	public static final Long APPOINTMENT_STATUS_VOID=9L;
@@ -1020,5 +1020,12 @@ public interface IConstants {
 	public static final String DYNAMIC_STR = "Dynamic";
 	public static final String SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE = "Affiliated Graduates Enrollment";
     
+	//NEW
 	public static final Long[] APPOINTMENT_STATUS_CREATION_LIST={1L,2L,3L,5L,7L,8L,10L};
+	public static final Long[] REQUIRED_APPOINTMENTS_LIST={1L,2l,3L,4L,5L,6l,7L};
+	public static final Long   APPOINTMENT_STATUS_WITHDRAWN=9L;
+	public static final Long   APPOINTMENT_STATUS_APPROVED=2L;
+	public static final Long  APPOINTMENT_STATUS_SCHEDULED=3L;
+	public static final Long[] TODAY_APPOINTMENTS_STATUS_LIST={2L,3L,4L,5L,8L,10L};
+	
 }
