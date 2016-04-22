@@ -6702,6 +6702,24 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
 		str+='</div>';
 		$("#advanceDshAppointmentPrWiseDiv").html(str);
 }
+getAppointmentStatus();
+function getAppointmentStatus(){
+		
+	var jsObj = {};
+	$.ajax({
+		type : 'GET',
+		url : 'getAppointmentStatusByUserIdAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+		if(result != null){
+			var statusObj = [];
+			for(var i in result){
+				statusObj.push({"id":result[i].id,"name":result[i].name});
+			}
+		}
+	});     
+}
 </script>
 </body>
 </html>
