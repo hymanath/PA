@@ -620,7 +620,7 @@ public class AppointmentService implements IAppointmentService{
 		        			
 		        		}
 		        	}
-		            //saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,1l,loggerUserId,"");
+		            saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,null,1l,loggerUserId,appointmentVO.getReason());
 		        	rs.setExceptionMsg("success");
 					rs.setResultCode(0);
 					return rs;
@@ -4387,31 +4387,77 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 		}
 		return returnList;
 	}
-	public String saveAppointmentTrackingDetails(Long appointmentId,Long appointmentActionId,Long appointmentStatusId,Long userId,String remarks){
+	
+	public ResultStatus saveAppointmentTrackingDetails(final Long appointmentId,final Long appointmentActionId,final Long fromApptStatusId,final Long toApptStatusId,final Long userId,final String remarks){
 		
-		AppointmentTracking appointmentTracking=new AppointmentTracking();
-		try{
-			if(appointmentId!=null && appointmentId>0l){
-				appointmentTracking.setAppointmentId(appointmentId);
-			}
-			if(appointmentStatusId!=null && appointmentActionId>0l){
-				appointmentTracking.setAppointmentStatusId(appointmentStatusId);
-			}
-			if(userId!=null && userId>0l){
-				appointmentTracking.setUserId(userId);
-			}
-			 appointmentTracking.setActionTime(dateUtilService.getCurrentDateAndTime());
-			 appointmentTracking.setAppointmentActionId(appointmentActionId);
-			if(remarks!=null && !remarks.isEmpty()){
-				appointmentTracking.setRemarks(remarks);
-			}
-			 appointmentTrackingDAO.save(appointmentTracking);
-		}catch(Exception e){
-			LOG.error("Error occured  in saveAppointmentTrackingDetails()",e);	
-			return null;
+		ResultStatus rs = new ResultStatus();
+		try {
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+		        	
+		        	Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
+					
+		        	AppointmentComment appointmentComment = null;
+					if( remarks!= null && remarks.trim().length() > 0){
+						
+						appointmentComment = new AppointmentComment();
+						
+						appointmentComment.setAppointmentId(appointmentId);
+						appointmentComment.setAppointmentStatusId(toApptStatusId);
+						appointmentComment.setComment(remarks);
+						appointmentComment.setInsertedBy(userId);
+						appointmentComment.setUpdatedBy(userId);
+						appointmentComment.setInsertedTime(currentDateAndTime);
+						appointmentComment.setUpdatedTime(currentDateAndTime);
+						
+						appointmentComment = appointmentCommentDAO.save(appointmentComment);
+					}
+					
+					AppointmentTracking appointmentTracking=new AppointmentTracking();
+					
+					if(appointmentId!=null && appointmentId>0l){
+						appointmentTracking.setAppointmentId(appointmentId);
+					}
+					
+					if(appointmentActionId!=null && appointmentActionId>0l){
+						appointmentTracking.setAppointmentActionId(appointmentActionId);
+						
+					}
+					
+					if(fromApptStatusId!=null && fromApptStatusId>0l){
+						appointmentTracking.setFromAppointmentStatusId(fromApptStatusId);
+					}
+					if(toApptStatusId!=null && toApptStatusId>0l){
+						appointmentTracking.setAppointmentStatusId(toApptStatusId);
+					}
+					
+					if(appointmentComment!=null){
+						appointmentTracking.setAppointmentCommentId(appointmentComment.getAppointmentCommentId());
+					}
+					
+					if(userId!=null && userId>0l){
+						appointmentTracking.setUserId(userId);
+					}
+					appointmentTracking.setActionTime(currentDateAndTime);
+					
+					appointmentTrackingDAO.save(appointmentTracking);
+		        }
+			});
+			
+			rs.setExceptionMsg("success");
+			rs.setResultCode(0);
+			
+		} catch (Exception e) {
+			
+			rs.setExceptionMsg("failure");
+			rs.setResultCode(1);
+			LOG.error("Exception raised at saveAppointmentTrackingDetails() in AppointmentService class ", e);
 		}
-		return "success";
+		
+		return rs;
 	}
+	
 	
 public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,AppointmentDetailsVO apptvo){
 		
