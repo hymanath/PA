@@ -3270,6 +3270,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							activityQuestionAnswer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							activityQuestionAnswer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							
+							
 							activityQuestionAnswerDAO.save(activityQuestionAnswer);
 						}
 					}
@@ -3329,13 +3330,13 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			constituencyId = constituencyIds.get(0);
 		return constituencyId;
 	}
-	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId){
+	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId){
 		ActivityVO finalVO = new ActivityVO(); 
 		try {
 			LOG.info("Entered into getQuestionnaireForScope");
 			List<Object[]> objList = null;
 			if(requiredAttributeId == null || requiredAttributeId == 0l){
-				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId);	
+				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId,questionId,optionId);	
 			}else{
 				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId);
 			}
@@ -3350,6 +3351,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						matchedVO.setQuestion(number+") "+objects[1].toString());
 						matchedVO.setOptionTypeId((Long)objects[2]);
 						matchedVO.setOptionType(objects[3].toString());
+						matchedVO.setRemarks(objects[6]!=null ? objects[6].toString():" ");
 						finalVO.getActivityVoList().add(matchedVO);
 					}
 					
@@ -3360,8 +3362,6 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					
 				}
 			}
-				
-				
 		} catch (Exception e) {
 			LOG.error("Exception raised at getQuestionnaireForScope", e);
 		}

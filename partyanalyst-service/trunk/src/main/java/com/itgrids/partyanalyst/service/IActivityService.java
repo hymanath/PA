@@ -29,7 +29,7 @@ public interface IActivityService {
 	
 	public ResultStatus deleteEventUploadFilebyActivityInfoDocId(String acitivityInfoDocId);
 	public ResultStatus saveActivityQuestionnaireDetails(final ActivityVO finalvo);
-	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId);
+	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId);
 
 	public ResultStatus uploadActivityDocuments(Long activityId,String sourcePath,ActivityDocumentVO activityLocation);
 	public List<IdNameVO> getActivityLeadersDetailsByActivityScope(List<Long> activityScopeIds,boolean showCounts);

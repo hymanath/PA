@@ -24,22 +24,24 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name="activity_questionnaire")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ActivityQuestionnaire extends BaseModel implements Serializable{
-	
 	private Long activityQuestionnaireId;
 	private Long activityScopeId;
 	private Long activityQuestionId;
 	private Long activityOptionTypeId;
 	private Long parentActivityQuestionnaireId;
+	private Long parentActivityOptionId;
 	private Long orderNo;
 	private String isDeleted;
 	private Long insertedBy;
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private String hasRemark;
 	
 	private ActivityScope activityScope;
 	private ActivityQuestion activityQuestion;
 	private ActivityOptionType activityOptionType;
+	private ActivityOption activityOption;
 	
 	private Long				respondentTypeId;
 	private RespondentType		respondentType;
@@ -76,6 +78,14 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	public Long getActivityOptionTypeId() {
 		return activityOptionTypeId;
 	}
+	
+	@Column(name = "has_remark")
+	public String getHasRemark() {
+		return hasRemark;
+	}
+	public void setHasRemark(String hasRemark) {
+		this.hasRemark = hasRemark;
+	}
 	public void setActivityOptionTypeId(Long activityOptionTypeId) {
 		this.activityOptionTypeId = activityOptionTypeId;
 	}
@@ -103,7 +113,24 @@ public class ActivityQuestionnaire extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	@Column(name ="parent_activity_option_id")
+	public Long getParentActivityOptionId() {
+		return parentActivityOptionId;
+	}
+	public void setParentActivityOptionId(Long parentActivityOptionId) {
+		this.parentActivityOptionId = parentActivityOptionId;
+	}
 	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="parent_activity_option_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityOption getActivityOption() {
+		return activityOption;
+	}
+	public void setActivityOption(ActivityOption activityOption) {
+		this.activityOption = activityOption;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="activity_scope_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
