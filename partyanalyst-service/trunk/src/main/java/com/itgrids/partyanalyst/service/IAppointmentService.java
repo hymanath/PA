@@ -83,4 +83,5 @@ public interface IAppointmentService {
 	public List<AppointmentCountVO> getLevelWiseCount(Long levelId);
 	public List<IdNameVO> getAppointmentStatusByUserId(Long userId);
 	public List<StatusTrackingVO> getAppointmentStatusTrackingDetails(Long appointmentId);
+	public List<IdNameVO> getUpdatedStatusForaAppointment(Long userTypeId,Long currentStatusId);
 }
