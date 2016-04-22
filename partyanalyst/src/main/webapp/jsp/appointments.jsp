@@ -1243,10 +1243,17 @@ function buildTotalAppointmentStatus(result){
 	$("#totalApptsForAdvancedDashBrd").html(str);
 }
 
+var color1 = ["#A3A670", "#D24E56","#77AE7E","#7D4993","#707265"];
 function buildTotalAppointmentStatusForToday(result){
 	var str='';
+	
+	var totalAppts =0;
+	$.each(result.statusList,function(index,value){
+	    totalAppts = totalAppts + value.totalCount;
+	});
+	str+='<tr style="font-weight:bold;"><td>Total Appointments</td><td>'+totalAppts+'</td></tr>';
 	$.each(result.statusList,function(index,value){		
-		str+='<tr style="color:'+color[index%9]+'">';
+		str+='<tr style="color:'+color1[index%5]+';font-weight:bold;">';
 			str+='<td>'+value.status+'</td>';
 			str+='<td>'+value.totalCount+'</td>';
 		str+='</tr>';	
