@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentPriorityDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentSmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentSmsSettingDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentStatusDAO;
+import com.itgrids.partyanalyst.dao.IAppointmentStatusFlowDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -155,8 +156,16 @@ public class AppointmentService implements IAppointmentService{
 	private IAppointmentSmsHistoryDAO appointmentSmsHistoryDAO;
 	private ISmsSenderService smsSenderService;
 	private IUserAppointmentUserDAO userAppointmentUserDAO;
+	private IAppointmentStatusFlowDAO appointmentStatusFlowDAO;
 	
 	
+	public IAppointmentStatusFlowDAO getAppointmentStatusFlowDAO() {
+		return appointmentStatusFlowDAO;
+	}
+	public void setAppointmentStatusFlowDAO(
+			IAppointmentStatusFlowDAO appointmentStatusFlowDAO) {
+		this.appointmentStatusFlowDAO = appointmentStatusFlowDAO;
+	}
 	public IUserAppointmentUserDAO getUserAppointmentUserDAO() {
 		return userAppointmentUserDAO;
 	}
@@ -5459,11 +5468,33 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					IdNameVO vo = new IdNameVO();
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setDistrictid(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));   //appointmentUserTypeId
 					returnList.add(vo);
 				}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getAppointmentStatusByUserId() method of AppointmentService", e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getUpdatedStatusForaAppointment(Long userTypeId,Long currentStatusId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		
+		try {
+			
+			List<Object[]> list = appointmentStatusFlowDAO.getUpdatedStatusForaAppointment(userTypeId, currentStatusId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUpdatedStatusForaAppointment() method of AppointmentService", e);
 		}
 		return returnList;
 	}

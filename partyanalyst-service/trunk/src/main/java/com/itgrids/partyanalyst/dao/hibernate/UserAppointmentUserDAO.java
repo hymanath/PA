@@ -18,7 +18,8 @@ public class UserAppointmentUserDAO extends GenericDaoHibernate<UserAppointmentU
 	public List<Object[]> getAppointmentStatusByUserId(Long userId){
 		
 		Query query = getSession().createQuery("select model1.appointmentStatus.appointmentStatusId," +
-									" model1.appointmentStatus.status" +
+									" model1.appointmentStatus.status," +
+									" model.appointmentUserType.appointmentUserTypeId" +
 									" from UserAppointmentUser model,AppointmentUserTypeAccessStatus model1" +
 									" where model.appointmentUserType.appointmentUserTypeId = model1.appointmentUserType.appointmentUserTypeId" +
 									" and model.user.userId = :userId");
