@@ -622,7 +622,7 @@
 										</div>
 										 
                                   </div>
-									<div class="panel panel-default m_top10 panelWhite">
+									<!--<div class="panel panel-default m_top10 panelWhite">
 										<div class="panel-heading">
 											<h4 class="panel-title">OVERALL PENDING APPOINTMENT REQUESTS OVERVIEW</h4>
 										</div>
@@ -637,7 +637,7 @@
 											  </tr>
 											</table>
 										</div>
-									</div>
+									</div>-->
 										
 								<!--Swadhin-->
 								<div class="panel panel-default m_top10 panelWhite" id="appointmentReqBlock">
@@ -797,7 +797,23 @@
 							<div class="row appointmentsDeleteDivCls commonDivCls" style="display:none;"></div>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="settings">
-							<div class="row">
+							<div class="panel panel-default m_top10 panelWhite">
+								<div class="panel-heading">
+									<h4 class="panel-title">OVERALL PENDING APPOINTMENT REQUESTS OVERVIEW</h4>
+								</div>
+								<div class="panel-body">
+									<table>
+										<tr>
+											<td style="width: 20%;background-color:#339967; text-align: center; padding: 20px 60px; "><h4 class="text-success" style="color:#fff !important;">APPROVED <br> <span  id="approvedStatus">0</span></h4></td>
+											<td style="width: 20%; background-color:#336799; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">NOT ATTENDED <br> <span  id="notAttendedStatus">0</span></h4></td>
+											<td style="width: 20%;background-color:#6A0208; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">CANCELLED <br> <span  id="cancelledStatus">0</span></h4></td>
+											<td style="width: 20%; background-color:#996532; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="width:110px;color:#fff !important;">RESCHEDULED <br> <span  id="reScheduledStatus">0</span></h4></td>
+											<!--<td style="width: 20%; background-color:#234794; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">Tentative  <br> <span  id="tentativeStatus">0</span></h4></td>-->
+										</tr>
+									</table>
+								</div>
+							</div>
+							<!--<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<div class="block">
                                     	<div class="row">
@@ -815,7 +831,7 @@
                                         </div>
                                     </div>
 								</div>
-							</div>
+							</div>-->
                             <div class="row">
 								<div id="confirmAppointmentsDivId"></div>
 								<div class="col-md-12 changeClass">
@@ -4227,7 +4243,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 <script>
 	
 	$(document).on("click",".cnfrmaptsCls",function(){
-		getAppointmentLabels();
+		//getAppointmentLabels();
+		getAppointmentStatusOverview();
 	});
 	
 	function getAppointmentLabels(){
@@ -6454,27 +6471,27 @@ function getCommitteeRoles(){
 		  
 		 for(var i in result)
 		  {
-			  if(result[i].id == 1)
+			  if(result[i].id == 2)
 			  {
 			
-				  $("#waitingStatus").html(''+result[i].availableCount+'');
+				  $("#approvedStatus").html(''+result[i].availableCount+'');
 			  }
-			  if(result[i].id == 5)
-			  {
-				  $("#rescheduledStatus").html(''+result[i].availableCount+''); 
-			  }
-			 if(result[i].id == 6)
-			  {
-				  $("#cancelledStatus").html(''+result[i].availableCount+''); 
-			  }
-			  if(result[i].id == 4)
+			  if(result[i].id == 10)
 			  {
 				  $("#notAttendedStatus").html(''+result[i].availableCount+''); 
 			  }
-			   if(result[i].id == 8)
+			 if(result[i].id == 5)
+			  {
+				  $("#cancelledStatus").html(''+result[i].availableCount+''); 
+			  }
+			  if(result[i].id == 8)
+			  {
+				  $("#reScheduledStatus").html(''+result[i].availableCount+''); 
+			  }
+			/*   if(result[i].id == 8)
 			  {
 				  $("#tentativeStatus").html(''+result[i].availableCount+''); 
-			  }
+			  }*/
 		  }
 	 }
 	 
