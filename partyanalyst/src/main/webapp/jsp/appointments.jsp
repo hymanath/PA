@@ -466,6 +466,7 @@
 										</div>
 										<input type="hidden" id="dateTypeText" name="appointmentVO.appointmentPreferableTimeType">
 										<input type="hidden" id="uniqueCode" name="appointmentVO.uniqueCode">
+										<input type="hidden" id="appointmentUserId" name="appointmentVO.appointmentUserId">
 									</form>
 									
 									<div class="block cloneBlock addattrid" style="display:none;">
@@ -1549,6 +1550,8 @@ $(".dropkickClass").dropkick();
 			var temp = $("#appointmentUserSelectBoxId option:selected").attr("attr_unique_code")+"_"+$("#appointmentUserSelectBoxId").val();
 			$("#uniqueCode").val(temp);
 			
+			$("#appointmentUserId").val($("#appointmentUserSelectBoxId option:selected").val());
+			
 			var uploadHandler = {
 				upload: function(o) {
 					$("#appntCreateAjax").css("display","none");
@@ -1586,10 +1589,12 @@ $(".dropkickClass").dropkick();
 			$( "#multiDate" ).multiDatesPicker("resetDates");
 			cloneCount = 0;
 			saveFieldsEmpty();
-		}else{
+		}else if (result1[0] == "fail"){
 			//setTimeout(function(){
-			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>");
+			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>");
 			//}, 1000);
+		}else{
+			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Not Eligible To Create Appointment.</span>");
 		}
 	}
 	function saveFieldsEmpty(){

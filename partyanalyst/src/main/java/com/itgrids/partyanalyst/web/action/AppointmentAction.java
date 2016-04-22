@@ -338,12 +338,16 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			}
 			
 			resultStatus = appointmentService.saveAppointment(appointmentVO,user.getRegistrationID());
+			if(resultStatus!=null){
+				if(resultStatus.getResultCode() == 0){
+					inputStream = new StringBufferInputStream("success");
+				}else if(resultStatus.getResultCode() == 1){
+					inputStream = new StringBufferInputStream("fail");
+				}else if(resultStatus.getResultCode() == 2){
+					inputStream = new StringBufferInputStream("not eligible");
+				}
+			}
 			
-			if(resultStatus != null && resultStatus.getExceptionMsg().equalsIgnoreCase("success")){
-				inputStream = new StringBufferInputStream("success");
-			}else{
-	        	 inputStream = new StringBufferInputStream("fail");
-	        }
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at saveAppointment", e);
