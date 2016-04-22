@@ -15,19 +15,50 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		
 	}
 	
-	public List<Object[]> getQuestionnaireForScope(Long scopeId){
-		Query query = getSession().createQuery(" select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
+	public List<Object[]> getQuestionnaireForScope(Long scopeId,Long questionId,Long optionId){
+		
+		  StringBuilder sb=new StringBuilder();
+		  sb.append(" select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
+				    " model.activityQuestionnaire.activityQuestion.question, " +//question
+				    " model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
+				    " model.activityQuestionnaire.activityOptionType.type, " +//option type
+				    " model.activityOption.activityOptionId, " +//option id
+				    " model.activityOption.option, " +//option
+				    " model.activityQuestionnaire.hasRemark " + //remarks
+				    " from ActivityQuestionnaireOption model " +
+				    " where model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId ");
+		  if(questionId == null || questionId.longValue()<=0){
+			  sb.append(" and model.activityQuestionnaire.parentActivityQuestionnaireId is null");
+		  }
+		  else if(questionId!=null && questionId>0l && optionId!=null && optionId>0l){
+			    sb.append(" and model.activityQuestionnaire.parentActivityQuestionnaireId=:questionId");
+			    sb.append(" and model.activityQuestionnaire.parentActivityOptionId=:optionId");
+		  }
+		  sb.append(" order by model.activityQuestionnaire.orderNo");
+		  
+		  Query query=getSession().createQuery(sb.toString());
+		  
+		  query.setParameter("scopeId", scopeId);
+		  
+		  if(questionId!=null && questionId>0l && optionId!=null && optionId>0l){
+			  query.setParameter("questionId", questionId);
+			  query.setParameter("optionId", optionId);
+		  }
+		  return query.list();
+		  
+		/*Query query = getSession().createQuery(" select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
 				" model.activityQuestionnaire.activityQuestion.question, " +//question
 				" model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
 				" model.activityQuestionnaire.activityOptionType.type, " +//option type
 				" model.activityOption.activityOptionId, " +//option id
-				" model.activityOption.option " +//option
+				" model.activityOption.option, " +//option
+				" model.activityQuestionnaire.hasRemark " + //remarks
 				" from ActivityQuestionnaireOption model " +
 				" where model.isDeleted='N' " +
 				" and model.activityQuestionnaire.activityScopeId=:scopeId " +
 				" order by model.activityQuestionnaire.orderNo ");
 		query.setParameter("scopeId", scopeId);
-		return query.list();
+		return query.list();*/
 	}
 	
 	public List<Object[]> getQuestionnaireOfScope(List<Long> scopeIds){
