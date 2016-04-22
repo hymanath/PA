@@ -118,7 +118,36 @@ public Long getAppointmentStatusId(Long appointmentId){
 		query.setParameter("appointmentId", appointmentId);
 		return (Long) query.uniqueResult();
 	}
-
+	
+	public List<Object[]> eachStatusApptCountByDateAndApptUser(Long apptUserId,List<Long> statusIds,Date date){
+		
+		StringBuilder sb= new StringBuilder();
+		sb.append(" select model.appointmentStatusId,model.appointmentStatus.status,count(distinct model.appointmentId)" +
+				"   from   Appointment model where model.isDeleted='N' ");
+		if(date!=null){
+			sb.append(" and date(model.updatedTime) = :date ");
+		}
+		if(apptUserId!=null && apptUserId>0l){
+			sb.append(" and model.appointmentUserId = :apptUserId ");
+		}
+		if(statusIds!=null && statusIds.size()>0){
+			sb.append(" and model.appointmentStatusId in (:statusIds)  ");
+		}
+		sb.append(" group by model.appointmentStatusId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(date!=null){
+			query.setDate("date",date);
+		}
+		if(apptUserId!=null && apptUserId>0l){
+			query.setParameter("apptUserId",apptUserId);
+		}
+		if(statusIds!=null && statusIds.size()>0){
+			query.setParameterList("statusIds",statusIds);
+		}
+		return query.list();
+		
+	}
 }
 	
 

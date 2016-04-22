@@ -452,13 +452,17 @@ public class AppointmentService implements IAppointmentService{
 	        				membershipNoList.add(basicInfo.getMembershipNum());
 	        			}
 	        		}
-		        	boolean apptCreationFlag = checkisEligibleForAppt(membershipNoList,appointmentVO.getAppointmentUserId());
-		        	if(apptCreationFlag){
-		        		
-		        		rs.setExceptionMsg("Not Eligible To Create Appointment.");
-		    			rs.setResultCode(2);
-		        		return rs;
-		        	}
+	        		
+	        		if(membershipNoList!=null && membershipNoList.size() >0 ){
+	        			
+	        			boolean apptCreationFlag = checkisEligibleForAppt(membershipNoList,appointmentVO.getAppointmentUserId());
+			        	if(apptCreationFlag){
+			        		
+			        		rs.setExceptionMsg("Not Eligible To Create Appointment.");
+			    			rs.setResultCode(2);
+			        		return rs;
+			        	}
+	        		}
 		        	
 		        	
 		        	Appointment appointment = new Appointment();
@@ -2474,92 +2478,62 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	}
 	
 	
-	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
+public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
+		
 		LabelStatusVO finalVo = new LabelStatusVO();
 		
-		try{
-			
-			DateUtilService dt = new DateUtilService();
-			Date curentDateTime = dt.getCurrentDateAndTime();
-			
-			List<Object[]> totalTodayObjList = new ArrayList<Object[]>();
-			List<Object[]> totalObjList = new ArrayList<Object[]>();
-			
-			//toDay Block
-				//Fixed Status
-						//0.statusId,1.status,2.count
-						List<Object[]> inProgreeList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","ToDay",aptUserId);
-						List<Object[]> upcomingList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","ToDay",aptUserId);
-						List<Object[]> completedList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","ToDay",aptUserId);
-						
-						if(inProgreeList !=null && inProgreeList.size()>0){
-							inProgreeList = setStatusOfObjectList1(inProgreeList,"Inprogress");	
-							totalTodayObjList.addAll(inProgreeList);
-						}if(upcomingList !=null && upcomingList.size()>0){
-							upcomingList = setStatusOfObjectList1(upcomingList,"Upcoming");
-							totalTodayObjList.addAll(upcomingList);
-						}
-						if(completedList !=null && completedList.size()>0){
-							completedList = setStatusOfObjectList1(completedList,"Completed");
-							totalTodayObjList.addAll(completedList);
-						}
-									
-								//Status Wise
-						
-						List<Object[]> statusObjList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"ToDay",aptUserId);
-						
-						if(statusObjList !=null && statusObjList.size()>0){
-							totalTodayObjList.addAll(statusObjList);
-						}
-						
-						//default Status List
-						List<LabelStatusVO> statusList = new ArrayList<LabelStatusVO>();
-						//setting default statuses
-						statusList = setStatusListOfAppointments(statusList);
-						
-						statusList = settingStausDetailsDataToFinalVo1(finalVo,totalTodayObjList,statusList);
-						if(statusList !=null && statusList.size()>0){
-							finalVo.setStatusList(statusList);
-						}
+		try{  
+			  
+			  List<Long>  apptStatusList =Arrays.asList(IConstants.TODAY_APPOINTMENTS_STATUS_LIST); 
+			  
+			  Map<Long,LabelStatusVO>  finalMap = new LinkedHashMap<Long,LabelStatusVO>();
+			  
+			  List<Object[]> statusList = appointmentStatusDAO.getStatusDetailsByIds(apptStatusList);
+			  if(statusList!=null && statusList.size()>0){
 				
-			/*//OverAll Scenario
-						List<Object[]> inProgreeOverAllList = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Inprogress","overall",aptUserId);
-						List<Object[]> upcomingOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Upcoming","overall",aptUserId);
-						List<Object[]> completedOverAllList  = labelAppointmentDAO.getLabelAppointmentsForFixedSatus(curentDateTime,"Completed","overall",aptUserId);
-						
-						
-						if(inProgreeOverAllList !=null && inProgreeOverAllList.size()>0){
-							inProgreeOverAllList = setStatusOfObjectList1(inProgreeOverAllList,"Inprogress");						
-							totalObjList.addAll(inProgreeOverAllList);
-						}if(upcomingOverAllList !=null && upcomingOverAllList.size()>0){
-							upcomingOverAllList = setStatusOfObjectList1(upcomingOverAllList,"Upcoming");
-							totalObjList.addAll(upcomingOverAllList);
-						}
-						if(completedOverAllList !=null && completedOverAllList.size()>0){
-							completedOverAllList =setStatusOfObjectList1(completedOverAllList,"Completed");
-							totalObjList.addAll(completedOverAllList);
-						}
-									
-								//Status Wise
-						
-						List<Object[]> statusObjOverAllList = labelAppointmentDAO.getLabelAppointmentsStatus(curentDateTime,"overall",aptUserId);
-						
-						if(statusObjOverAllList !=null && statusObjOverAllList.size()>0){
-							totalObjList.addAll(statusObjOverAllList);
-						}
-						
-						//clearing if any values
-						List<LabelStatusVO> overAllstatusList = new ArrayList<LabelStatusVO>();	
-						//setting default statuses
-						overAllstatusList = setStatusListOfAppointments(overAllstatusList);
-						
-						overAllstatusList = settingStausDetailsDataToFinalVo1(finalVo,totalObjList,overAllstatusList);
-				
-						if(overAllstatusList !=null && overAllstatusList.size()>0){
-							finalVo.setOverAllStatusList(overAllstatusList);
-						}*/
-						
-			
+				  for(Object[] obj : statusList){
+					  
+					  Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+					  
+					  if(statusId.longValue() != IConstants.APPOINTMENT_STATUS_SCHEDULED.longValue() ){
+						  
+						  LabelStatusVO statusVO = new LabelStatusVO();
+						  statusVO.setStatusId(obj[0]!=null?(Long)obj[0]:0l);
+						  statusVO.setStatus(obj[0]!=null?obj[1].toString():"");
+						  statusVO.setTotalCount(0l);
+						  
+						  finalMap.put(statusId, statusVO);
+					  }
+					  
+				  }
+			  }
+			  
+			  
+			  List<Object[]> countsList = appointmentDAO.eachStatusApptCountByDateAndApptUser(aptUserId,apptStatusList,new DateUtilService().getCurrentDateAndTime());
+			  
+			  if( countsList != null  && countsList.size() >0){
+				  
+				  for( Object[] obj : countsList){
+					  
+					  Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+					  
+					  LabelStatusVO statusVO = null;
+					  if(statusId.longValue() == IConstants.APPOINTMENT_STATUS_SCHEDULED.longValue() ){
+						  statusVO = finalMap.get(IConstants.APPOINTMENT_STATUS_APPROVED);
+					  }else{
+						  statusVO = finalMap.get(statusId);
+					  }
+					  
+					  if(statusVO != null){
+						  statusVO.setTotalCount(  statusVO.getTotalCount() +( obj[2]!=null?(Long)obj[2]:0l));
+					  }
+				  }
+			  }
+			  
+			  if(finalMap!=null && finalMap.size()>0){
+				  finalVo.setStatusList(new ArrayList<LabelStatusVO>(finalMap.values()));
+			  }
+			  
 		}catch(Exception e){
 			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);
 		}
@@ -2571,64 +2545,78 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	    List<AppointmentStatusVO> finalList = new ArrayList<AppointmentStatusVO>(0);
 	    try{
 	       
-	       List<String> statusList = appointmentStatusDAO.getAllStatus();
-	      /* if(statusList!=null && statusList.size()>0){
-	         statusList.add(1,"Labelled");
-	       }*/
+	       List<Object[]> statusList = appointmentStatusDAO.getAllAppointmentStatus();
+	       
+	       Map<Long,AppointmentStatusVO> finalMap = new LinkedHashMap<Long,AppointmentStatusVO>();
 	       
 	       if(statusList!=null && statusList.size()>0){
-	        for (String status : statusList) {
-	          
-	          AppointmentStatusVO VO = new AppointmentStatusVO();
-	          VO.setStatus(status);
-	          VO.setStatusCount(0l);
-	          VO.setMembersCount(0l);
-	          finalList.add(VO);
+	        for (Object[] obj : statusList) {
+	           
+	        	Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+	        	
+	        	if( statusId.longValue() != IConstants.APPOINTMENT_STATUS_WITHDRAWN.longValue() && 
+	        	    statusId.longValue() != IConstants.APPOINTMENT_STATUS_NOTATTENDED.longValue() && 
+	        	    statusId.longValue() != IConstants.APPOINTMENT_STATUS_RESCHEDULED.longValue()){
+	        		
+	        		 AppointmentStatusVO VO = new AppointmentStatusVO();
+	        		 VO.setAppointmentStatusId(statusId);
+	        		 VO.setStatus(obj[1]!=null?obj[1].toString():"");
+	   	             VO.setStatusCount(0l);
+	   	             VO.setMembersCount(0l);
+	   	             finalMap.put(statusId,VO);
+	        	}
 	        }
 	       }
-	        
-	       List<Object[]> countList = appointmentCandidateRelationDAO.getApptAndMembersCountsByStatus(apptUserId);
+	       
+	       List<Long>  apptBasicCountsList =Arrays.asList(IConstants.REQUIRED_APPOINTMENTS_LIST);
+	       List<Object[]> countList = appointmentCandidateRelationDAO.eachStatusApptCountAndUniqueMemCount(apptUserId,apptBasicCountsList);
 	       if(countList!=null && countList.size()>0){
 	         for(Object[] obj:countList){
-	           
-	           String status = obj[1]!=null?obj[1].toString():"";
-	           AppointmentStatusVO statusvo = getMatchedStatus(finalList,status);
-	           if(statusvo!=null  && !statusvo.getStatus().equalsIgnoreCase("Fixed") && !statusvo.getStatus().equalsIgnoreCase("Attended")){
-	            
+	        	 
+	           Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+	           AppointmentStatusVO statusvo = finalMap.get(statusId);
+	           if(statusvo!=null){
 	             statusvo.setStatusCount(obj[2]!=null?(Long)obj[2]:0l);
 	             statusvo.setMembersCount(obj[3]!=null?(Long)obj[3]:0l);
 	           }
 	         }
 	       }
-	       
-	      /* List<Object[]> waitingCounts = appointmentCandidateRelationDAO.getLabelledAndNonLabelledApptIdsForWaitingStatus(apptUserId,"N",IConstants.WAITING_APPOINTMENT_STATUS_ID);
-	       List<Object[]> labelledWithWaitingCounts = appointmentCandidateRelationDAO.getLabelledAndNonLabelledApptIdsForWaitingStatus(apptUserId,"Y",IConstants.WAITING_APPOINTMENT_STATUS_ID);
-	       setData(finalList,waitingCounts,"Waiting");
-	       setData(finalList,labelledWithWaitingCounts,"Labelled");*/
 	      
-	       DateUtilService dts = new DateUtilService();
+	      
+	       List<Long> approvedlist = new ArrayList<Long>();
+	       approvedlist.add(IConstants.APPOINTMENT_STATUS_APPROVED);
+	       approvedlist.add(IConstants.APPOINTMENT_STATUS_NOTATTENDED);
 	       
-	       List<Object[]> fixedCounts= appointmentCandidateRelationDAO.getOnlyFixedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_FIXED);
-	       List<Object[]> attendedCounts= appointmentCandidateRelationDAO.getAttendedStatusCounts(apptUserId,dts.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_ATTENDED,IConstants.APPOINTMENT_STATUS_FIXED);
-	       setData(finalList,fixedCounts,"Fixed");
-	       setData(finalList,attendedCounts,"Attended");
-	    
+	       Object[] approvedObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,approvedlist);
+	       setData(finalMap,approvedObj,IConstants.APPOINTMENT_STATUS_APPROVED);
+	       
+	       List<Long> scheduledList = new ArrayList<Long>();
+	       scheduledList.add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
+	       scheduledList.add(IConstants.APPOINTMENT_STATUS_RESCHEDULED);
+	       
+	       Object[] scheduledObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,scheduledList);
+	       setData(finalMap,scheduledObj,IConstants.APPOINTMENT_STATUS_SCHEDULED);
+	       
+	       if(finalMap!=null && finalMap.size()>0){
+	    	   finalList.addAll(finalMap.values());
+	       }
+	       
 	    }catch(Exception e){
 	    	LOG.error("Exception raised at getAppointmentStatusCounts", e);
 	    }
 	    return finalList;
 	  }
-	  public void setData(List<AppointmentStatusVO> finalList,List<Object[]> countsList,String status){
-	    
-	    if(countsList!=null && countsList.size()>0){
-	       Object[] obj = countsList.get(0);
-	       AppointmentStatusVO statusvo = getMatchedStatus(finalList,status);
-	       if(statusvo!=null){
-	         statusvo.setStatusCount(obj[0]!=null?(Long)obj[0]:0l);
-	         statusvo.setMembersCount(obj[1]!=null?(Long)obj[1]:0l); 
-	       }
-	     }
-	  }
+	public void setData(Map<Long,AppointmentStatusVO> finalMap,Object[] objArray,Long statusId){
+    
+    if(objArray!=null && objArray.length>0){
+       
+       AppointmentStatusVO statusvo = finalMap.get(statusId.longValue());
+       if(statusvo!=null){
+         statusvo.setStatusCount(objArray[0]!=null?(Long)objArray[0]:0l);
+         statusvo.setMembersCount(objArray[1]!=null?(Long)objArray[1]:0l); 
+       }
+     }
+  }
 	  
 	  
 	  public AppointmentStatusVO getMatchedStatus(List<AppointmentStatusVO> finalList, String status){

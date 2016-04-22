@@ -41,4 +41,7 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType);
 	public List<Object[]> checkIsAppointmentEligible(List<String> membershipNoList,List<Long> apptStatusIds,Long appointmentUserId);
 	
+	public List<Object[]> eachStatusApptCountAndUniqueMemCount(Long apptUserId,List<Long> statusIds);
+	public Object[] combinedStatusApptAndUniqueMemCount(Long apptUserId,List<Long> statusIds);
+	
 }

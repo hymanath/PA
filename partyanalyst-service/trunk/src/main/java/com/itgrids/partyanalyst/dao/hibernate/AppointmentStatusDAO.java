@@ -28,4 +28,14 @@ public class AppointmentStatusDAO extends GenericDaoHibernate<AppointmentStatus,
     return query.list();
   }
    
+   public List<Object[]> getStatusDetailsByIds(List<Long> statusIds){
+	   
+	    Query query=getSession().createQuery(" select model.appointmentStatusId,model.status " +
+	    		"from AppointmentStatus model " +
+	    		"where model.appointmentStatusId in (:statusIds) order by model.orderNo");
+	    
+	    query.setParameterList("statusIds",statusIds );
+	    return query.list();
+  }
+   
  }

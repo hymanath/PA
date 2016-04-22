@@ -10,5 +10,7 @@ public interface IAppointmentStatusDAO extends GenericDao<AppointmentStatus, Lon
 	public List<Object[]> getAppointmentStatusList();
 	public List<Object[]> getAllAppointmentStatus();
 	 public List<String> getAllStatus();
+	 
+   public List<Object[]> getStatusDetailsByIds(List<Long> statusIds);
 
 }
