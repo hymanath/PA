@@ -19,7 +19,7 @@ public class LabelStatusVO {
 	private List<LabelStatusVO> overAllStatusList = new ArrayList<LabelStatusVO>(0);
 	private List<AppointmentStatus> staticStatusList = new ArrayList<AppointmentStatus>(0);
 	
-	
+	private List<Long> clickIds;
 	
 	public Long getLabelId() {
 		return labelId;
@@ -74,6 +74,12 @@ public class LabelStatusVO {
 	}
 	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
+	}
+	public List<Long> getClickIds() {
+		return clickIds;
+	}
+	public void setClickIds(List<Long> clickIds) {
+		this.clickIds = clickIds;
 	}
 	
 	

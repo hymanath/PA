@@ -2502,6 +2502,9 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 						  statusVO.setStatus(obj[0]!=null?obj[1].toString():"");
 						  statusVO.setTotalCount(0l);
 						  
+						  statusVO.setClickIds(new ArrayList<Long>(0));
+						  statusVO.getClickIds().add(statusId);
+						  
 						  finalMap.put(statusId, statusVO);
 					  }
 					  
@@ -2520,6 +2523,9 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 					  LabelStatusVO statusVO = null;
 					  if(statusId.longValue() == IConstants.APPOINTMENT_STATUS_SCHEDULED.longValue() ){
 						  statusVO = finalMap.get(IConstants.APPOINTMENT_STATUS_APPROVED);
+						  if(statusVO!=null){
+							  statusVO.getClickIds().add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
+						  }
 					  }else{
 						  statusVO = finalMap.get(statusId);
 					  }
@@ -2617,7 +2623,7 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
        
        AppointmentStatusVO statusvo = finalMap.get(statusId.longValue());
        if(statusvo!=null){
-    	  statusvo.setClickIds(clickList);
+    	 statusvo.setClickIds(clickList);
          statusvo.setStatusCount(objArray[0]!=null?(Long)objArray[0]:0l);
          statusvo.setMembersCount(objArray[1]!=null?(Long)objArray[1]:0l); 
        }
