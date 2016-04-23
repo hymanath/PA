@@ -835,6 +835,7 @@
 								</div>
 							</div>-->
                             <div class="row">
+								<img id="confirmAppointmentsAjaxImg" src="images/icons/loading.gif" style="display:none; height: 50px; width: 50px;"/>
 								<div id="confirmAppointmentsDivId"></div>
 								<div class="col-md-8 changeClass">
 									<div class="block">
@@ -4160,6 +4161,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	});
 	
 	function getAppointmentsOfALabel(){
+		$("#confirmAppointmentsAjaxImg").show();
 		var jsObj={
 			labelId : $("#appointmentLabelToGetSlotsId").val(),
 			callFrom : "timeSlot",
@@ -4285,6 +4287,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			}
 			str+='</div>'
 			str+='</div>'
+		$("#confirmAppointmentsAjaxImg").hide();
 		$("#confirmAppointmentsDivId").html(str);
 		$(document).on("click",".historyshowmodalbtn",function(){
 			$("#appCandidateNameId").html('');
