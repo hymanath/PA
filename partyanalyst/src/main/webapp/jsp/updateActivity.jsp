@@ -1307,11 +1307,12 @@ $("#hideAsmblyData").click(function(){
 	 // $("#buildAssConsActivity").hide();
   }
       $(document).on("change",".selectedVal",function(){
-		var serialNoTypeId=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'];  
+		var serialNoTypeId=['a','b','c','d','e'];  
 		var optionId=$(this).val();
 		var questionId=$(this).attr("attr_qid");
 		var subQustionDivId =$(this).attr("subQustionDivId");
-		getQuestionnaire(18839,questionId,optionId,subQustionDivId,serialNoTypeId);
+		var locationValue = $(this).attr("attr_location_Value");
+		getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId);
 	});
   
 	
@@ -1344,7 +1345,7 @@ $("#hideAsmblyData").click(function(){
 				var str='';
 				if(result!=null && result.activityVoList!=null && result.activityVoList.length>0){
 					for(var i in result.activityVoList){
-						str+='<div class="row">';
+						str+='<div class="row" style="margin-left: 0px;">';
 						str+='<div class="col-md-12 m_top10">';
 						if(divId!="questionsDivBodyId"){
 							str+='<label>'+serialNoTypeId[i]+''+result.activityVoList[i].question+' ? </label><br/>';
@@ -1361,7 +1362,7 @@ $("#hideAsmblyData").click(function(){
 									str+=' ramarkFieldId="remark'+result.activityVoList[i].questionId+'" ';
 								else
 									str+=' ramarkFieldId="0" ';
-								str+=' subQustionDivId="questionId'+result.activityVoList[i].questionId+'">';
+								str+=' subQustionDivId="questionId'+result.activityVoList[i].questionId+'" attr_location_Value="'+locationValue+'">';
 								str+='<option value="0">Select Option </option>';
 								for(var j in result.activityVoList[i].optionsList){
 									str+='<option value="'+result.activityVoList[i].optionsList[j].optionId+'">'+result.activityVoList[i].optionsList[j].option+'</option>';
@@ -1370,22 +1371,22 @@ $("#hideAsmblyData").click(function(){
 							}
 							else if(result.activityVoList[i].optionTypeId==2){
 								for(var j in result.activityVoList[i].optionsList){
-									str+='&nbsp;&nbsp;<label><input type="checkbox" attr_type="ckeckBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" value="'+result.activityVoList[i].optionsList[j].optionId+'"/>&nbsp;&nbsp;'+result.activityVoList[i].optionsList[j].option+'</label>';
+									str+='&nbsp;&nbsp;<label><input type="checkbox" attr_type="ckeckBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" value="'+result.activityVoList[i].optionsList[j].optionId+'" attr_location_Value="'+locationValue+'"/>&nbsp;&nbsp;'+result.activityVoList[i].optionsList[j].option+'</label>';
 								}
 							}
 							else if(result.activityVoList[i].optionTypeId==3){
-									str+='&nbsp;&nbsp;<label><input type="text" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" /></label>';
+									str+='&nbsp;&nbsp;<label><input type="text" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" attr_location_Value="'+locationValue+'"/></label>';
 							}
 						} 
 						if(result.activityVoList[i].remarks=="true"){
 							   str+='&nbsp;&nbsp;<br><input type="text" name="result'+result.activityVoList[i].questionId+'" placeholder="Enter Remarks" class="remarksCls form-control" attr_qid="'+result.activityVoList[i].questionId+'" id="remark'+result.activityVoList[i].questionId+'" />';
 						    }
 						str+='</div>';
-							str+='<div id="questionId'+result.activityVoList[i].questionId+'"></div>';
+							str+='<div id="questionId'+result.activityVoList[i].questionId+'" ></div>';
 						str+='</div>';
 					}
 					$("#questionsDivFooterId").html('<button type="button" id="saveResult" class="btn btn-custom btn-success" attr_location_Value="'+locationValue+'">Save</button>');
-				}else{
+				}else if(serialNoTypeId ==1){
 					str+='<h4>No Data Found.</h4>';
 				}
 				$("#"+divId+"").html(str);
