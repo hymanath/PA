@@ -4028,24 +4028,40 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	{
 		ResultStatus result = new ResultStatus();
 		try{
-			//status updation
-			Appointment appointment = appointmentDAO.get(inputVO.getAppointmentId());
-			appointment.setAppointmentStatusId(inputVO.getStatusId());;
-			appointment.setUpdatedBy(userId);
-			appointmentDAO.save(appointment);
+			
+			//status updation.
+			
+			Long currentStatusId = inputVO.getCurrentStatusId();
+			Long toStatusId = null;
+			Long appointmentActionId = null;
+			
+			boolean issaveTracking = false;
+			
+			if( inputVO.getCommented() != null  && inputVO.getCommented().trim().length() > 0){
+				
+				issaveTracking =true;
+				
+				appointmentActionId = 2l;
+				toStatusId = currentStatusId;
+			}
+			
+			if( inputVO.getStatusId()!=null && inputVO.getStatusId() > 0l ){
+				issaveTracking =true;
+				
+				appointmentActionId = 1l;
+				toStatusId = inputVO.getStatusId();
+				appointmentDAO.updateApptStatusbyApptId(inputVO.getAppointmentId(),dateUtilService.getCurrentDateAndTime(),inputVO.getStatusId(),userId);
+			}
+			
+			if( issaveTracking ){
+				saveAppointmentTrackingDetails(inputVO.getAppointmentId(),appointmentActionId,currentStatusId,toStatusId,userId,inputVO.getCommented());
+			}
+			
 			
 			//SMS sending
 			if(inputVO.isIssmsChecked())
 			{
-				/* List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
-				 if(list != null && list.size() > 0)
-				 {
-					 for(Object[] params : list)
-					 {
-						 if(params[2] != null && !params[2].toString().isEmpty())
-						 cadreRegistrationService.sendSMS(params[2].toString(), inputVO.getSmsText()); 
-					 }
-				 }*/
+				
 				AppointmentUpdateStatusVO smsVO = new AppointmentUpdateStatusVO();
 				smsVO.setAppointmentId(inputVO.getAppointmentId());
 				smsVO.setSmsText(inputVO.getSmsText());
@@ -4053,17 +4069,16 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 				
 			}
 			
-			//commnts saving
-			getappointmentComments(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,inputVO.getCommented(),userId);
 			
-			//unvoid old appointments
+			
+			/*//unvoid old appointments
 			if(inputVO.getStatusId().equals(IConstants.APPOINTMENT_STATUS_RESCHEDULED) || inputVO.getStatusId().equals(IConstants.APPOINTMENT_STATUS_CANCELLED) || inputVO.getStatusId() == IConstants.APPOINTMENT_STATUS_RESCHEDULED || inputVO.getStatusId() == IConstants.APPOINTMENT_STATUS_CANCELLED){
 				List<Long> apptIds =getAppointmentIdsForVoid(inputVO.getAppointmentId(),IConstants.APPOINTMENT_STATUS_VOID,inputVO.getApptUserId());
 				
 				if(apptIds!=null && apptIds.size()>0){
 			    	 appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_WAITING,userId);
 			     }
-			}
+			}*/
 			
 			result.setMessage("success");
 		}

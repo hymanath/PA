@@ -12,6 +12,7 @@ public class AppointmentUpdateStatusVO {
 	private Long userId;
 	private Long appointmentStatusId;
 	private Long apptUserId;
+	private Long currentStatusId;
 	
 	public Long getAppointmentStatusId() {
 		return appointmentStatusId;
@@ -79,6 +80,12 @@ public class AppointmentUpdateStatusVO {
 	}
 	public void setApptUserId(Long apptUserId) {
 		this.apptUserId = apptUserId;
+	}
+	public Long getCurrentStatusId() {
+		return currentStatusId;
+	}
+	public void setCurrentStatusId(Long currentStatusId) {
+		this.currentStatusId = currentStatusId;
 	}
 	
 	
