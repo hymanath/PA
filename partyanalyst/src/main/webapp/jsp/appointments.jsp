@@ -1273,8 +1273,13 @@ function buildTotalAppointmentStatusForToday(result){
 	str+='<tr style="font-weight:bold;"><td>Total Appointments</td><td>'+totalAppts+'</td></tr>';
 	$.each(result.statusList,function(index,value){		
 		str+='<tr style="color:'+color1[index%5]+';font-weight:bold;">';
-			str+='<td>'+value.status+'</td>';
-			str+='<td>'+value.totalCount+'</td>';
+		str+='<td>'+value.status+'</td>';
+		var todayStatusArr = value.clickIds;
+		if(value.totalCount == 0){
+			str+='<td> - </td>';
+		}else{
+			str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" >'+value.totalCount+'</td>';
+		}
 		str+='</tr>';	
 	});
 	$("#todayAppointmentsId").html(str);
@@ -6819,6 +6824,26 @@ function  getappointmentStatusDetails(statusArray){
 				buildAppointmentSearchResult(result);		
 			})
 }
+
+/* $(document).on("click",".todayappointmentStatusCls",function(){
+	
+	 $('html, body').animate({
+		scrollTop: $('.showTimeSlotsCls').offset().top
+	}, 2000);
+	
+	var statusArray =[];
+	 $(this).each(function(){
+		 var statusIds= $(this).attr("attr_todayStatusArr");
+		 if(statusIds.indexOf(',') !== -1){
+			 statusArray = statusIds.split(",");
+		 }else{
+			 statusArray.push( statusIds );
+		 }	
+	 });
+	
+	getappointmentStatusDetails(statusArray);			
+	
+}); */
 </script>
 </body>
 </html>
