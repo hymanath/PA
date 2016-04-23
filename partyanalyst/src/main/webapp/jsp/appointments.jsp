@@ -1227,7 +1227,9 @@ function buildTotalAppointmentStatus(result){
 			if(result[i].statusCount == 0){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
-				str+='<td style="text-align:center;">'+result[i].statusCount+'</td>';
+				var statusArr= result[i].clickIds;
+			
+				str+='<td class="appointmentStatusCls" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
 			}
 			
 			if(result[i].membersCount == 0){
@@ -2102,7 +2104,7 @@ $("#dashboardSelectDateIds").daterangepicker({opens:"left", "parentEl": ".todayB
            'This Month': [moment().startOf('month'), moment().endOf('month')],
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }});
-$('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
+//$('#dashboardSelectDateIds').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 	$(".ranges").find("ul").prepend('<li class="activeCls">Total</li>');
 	$(".ranges").find("ul li").removeClass("active");
 	$(".ranges li:nth-child(1)").addClass("active");
@@ -6673,8 +6675,9 @@ function getStatusTrackingDetls(appontmntId){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-		console.log(result)	
-		apptTrackingStatus(result);
+			apptTrackingStatus(result);
+		}else{
+			$("#apptStatusTracking").html("<center>No Data Available</center>")
 		}
 	});
 }
@@ -6769,6 +6772,48 @@ function getSerchDetailsByStatus(statusId){
 				
 			});
 
+}
+$(document).on("click",".appointmentStatusCls",function(){
+	
+	 $('html, body').animate({
+		scrollTop: $('.showTimeSlotsCls').offset().top
+	}, 2000);
+	
+	var statusArray =[];
+	 $(this).each(function(){
+		 var statusIds= $(this).attr("attr_statusArrId");
+		 if(statusIds.indexOf(',') !== -1){
+			 statusArray = statusIds.split(",");
+		 }else{
+			 statusArray.push( statusIds );
+		 }	
+	 });
+	
+	getappointmentStatusDetails(statusArray);			
+	
+});
+
+function  getappointmentStatusDetails(statusArray){
+	
+	var jsObj={
+			createdBy : 0,
+			appointmentUserId:$("#appointmentUserSelectBoxId").val(),
+			searchStr:'',
+			strDate:'',
+			endDate:'',
+			statusArray:statusArray,
+			task:""
+			
+		}
+		
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAppointmentSearchDetailsAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildAppointmentSearchResult(result);		
+			})
 }
 </script>
 </body>
