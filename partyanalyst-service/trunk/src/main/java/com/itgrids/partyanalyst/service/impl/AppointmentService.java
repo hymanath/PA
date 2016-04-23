@@ -2556,7 +2556,8 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	        	
 	        	if( statusId.longValue() != IConstants.APPOINTMENT_STATUS_WITHDRAWN.longValue() && 
 	        	    statusId.longValue() != IConstants.APPOINTMENT_STATUS_NOTATTENDED.longValue() && 
-	        	    statusId.longValue() != IConstants.APPOINTMENT_STATUS_RESCHEDULED.longValue()){
+	        	    statusId.longValue() != IConstants.APPOINTMENT_STATUS_CANCELLED.longValue() && 
+	        		statusId.longValue() != IConstants.APPOINTMENT_STATUS_RESCHEDULED.longValue() ){     
 	        		
 	        		 AppointmentStatusVO VO = new AppointmentStatusVO();
 	        		 VO.setAppointmentStatusId(statusId);
@@ -2589,6 +2590,7 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	       List<Long> approvedlist = new ArrayList<Long>();
 	       approvedlist.add(IConstants.APPOINTMENT_STATUS_APPROVED);
 	       approvedlist.add(IConstants.APPOINTMENT_STATUS_NOTATTENDED);
+	       approvedlist.add(IConstants.APPOINTMENT_STATUS_CANCELLED);
 	       
 	       Object[] approvedObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,approvedlist);
 	       setData(finalMap,approvedObj,IConstants.APPOINTMENT_STATUS_APPROVED,approvedlist);
