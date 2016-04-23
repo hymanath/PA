@@ -19,6 +19,7 @@
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 <link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
+<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -1000,6 +1001,7 @@
 <script src="dist/Appointment/DragDrop/Sortable.js" type="text/javascript"></script>
 <script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/AdvancedDashboard/advanceddashboard.js" type="text/javascript"></script>
+<script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript">
 /* Drag and Drop */
 
@@ -4202,8 +4204,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	function buildLabelResult(result,labelName){
 		var i = 0;
 		var str='';
-			str+='<div class="col-md-4">';
-				str+='<div class="block"  id="dragId">';
+			str+='<div class="col-md-4 custom-scroll-ins block" style="height:488px">';
+				str+='<div class=""  id="dragId" >';
 			
 			//str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
 			for(var i in result){
@@ -4220,6 +4222,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					
 					str+='<p>Priority : '+result[i].priority+'</p>';
 					str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					
 					str+='<p>Purpose : '+result[i].subject+'</p>';
 					
 					
@@ -4306,6 +4309,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='</div>'
 		$("#confirmAppointmentsAjaxImg").hide();
 		$("#confirmAppointmentsDivId").html(str);
+		$(".custom-scroll-ins").mCustomScrollbar();
+		$(".mCSB_dragger_bar").css("background-color","#000");
 		$(document).on("click",".historyshowmodalbtn",function(){
 			$("#appCandidateNameId").html('');
 			$(".historyShowModal").modal("show");
