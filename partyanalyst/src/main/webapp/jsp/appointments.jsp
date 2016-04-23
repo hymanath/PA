@@ -6710,9 +6710,10 @@ function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			for(var i in result){
-			  $('#'+apptSelectBoxId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-			}
+			//HARDCODED TO AVOID SCHEDULED STATUS.
+				if(result[i].id != 3){
+					$('#'+apptSelectBoxId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				}
 		}
 		$('#'+apptSelectBoxId).dropkick();
 		var ele = new Dropkick('#'+apptSelectBoxId);
