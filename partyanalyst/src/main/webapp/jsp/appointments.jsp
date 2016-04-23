@@ -4196,6 +4196,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			if(result!=null && result!=0){
 			  buildLabelResult(result,labelName);
 			}else{
+			  $("#confirmAppointmentsAjaxImg").hide();
 			  $("#confirmAppointmentsDivId").html("<div class='col-md-4'><div class='block'><div><p style='color:green;font-size:20px'>No Data available.</p></div></div></div>");	
 			}
 		});
@@ -4284,7 +4285,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												}
 											str+='</tr>';
 										str+='</table>'; */
-										str+='<div class="m_top10">';
+										/*str+='<div class="m_top10">';
 											str+='<span style="font-size: 16px;"><b>REQUESTED DATES :</b></span>';
 											
 											if(result[i].apptpreferableDates != null){							
@@ -4295,12 +4296,24 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												str+='<span> - </span>';
 											}							
 											//str+='<span>2016-04-15</span>';
-										str+='</div>';
+										str+='</div>';*/
 											
 									str+='</div>';
 								str+='</div>';
 							str+='</li>';
-						}	
+						}
+						str+='<div class="m_top10">';
+							str+='<span style="font-size: 16px;"><b>REQUESTED DATES :</b></span>';
+							
+							if(result[i].apptpreferableDates != null){							
+								str+='<span>'+result[i].apptpreferableDates+'</span>';
+							}else if(result[i].dateType != null && result[i].dateType.trim() != "" && result[i].minDate != null && result[i].maxDate != null){
+								str+='<span>'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+')</span>';
+							}else{
+								str+='<span> - </span>';
+							}							
+							//str+='<span>2016-04-15</span>';
+						str+='</div>';
 					str+='</ul>';	
 				  str+='</div>';
 				str+='</div>';
@@ -6286,10 +6299,12 @@ function getCommitteeRoles(){
      
 			$(document).on("click",".refreshBlockDiv",function(e){
 				$("#LineChart").html('');
+				$("#selectStatusId").val(0);
 				getTotalAppointmentStatus();
 				$(".daterangepicker").hide();
 				//getAppointmentUsersDtls();
 				getAppointmentStatusCounts();
+				getSearchDetails();
 			});
 			
 		function getPublicRepresentsDetails(){
