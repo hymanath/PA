@@ -10,6 +10,7 @@ public class AppointmentInputVO {
 	private String endDate;
 	
 	private List<Long> statusIds;
+	private String type;
 	
 	public Long getUserId() {
 		return userId;
@@ -46,6 +47,12 @@ public class AppointmentInputVO {
 	}
 	public void setStatusIds(List<Long> statusIds) {
 		this.statusIds = statusIds;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

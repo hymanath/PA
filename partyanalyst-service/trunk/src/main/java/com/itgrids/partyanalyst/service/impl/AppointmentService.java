@@ -2818,10 +2818,19 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 			Date strDate = null;
 			Date endDate = null;
 			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			
+			DateUtilService dt = new DateUtilService();
+			
 			if(inputVo.getStrDate() != null && !inputVo.getStrDate().isEmpty())
 			{
 				strDate = format.parse(inputVo.getStrDate());
 				endDate = format.parse(inputVo.getEndDate());
+			}else{
+				if(inputVo.getType() !=null && !inputVo.getType().isEmpty() && inputVo.getType().equalsIgnoreCase("today")){
+					Date date = dt.getCurrentDateAndTime();					
+					strDate = date;
+					endDate = date;					
+				}
 			}
 			 if(inputVo.getName() != null && !inputVo.getName().isEmpty())
 			 {
