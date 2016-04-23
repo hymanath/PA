@@ -655,7 +655,6 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	 }
 	
 	
-	
 	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
 	{
 		StringBuilder str = new StringBuilder();
@@ -675,7 +674,9 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 					" join user u on a.created_by = u.user_id " +
 					" join appointment_status asts  on a.appointment_status_id = asts.appointment_status_id" +
 					" join appointment_user au on au.appointment_user_id = a.appointment_user_id" +
-					"  left join appointment_time_slot ats on a.appointment_id = ats.appointment_id ");
+					"  left join appointment_time_slot ats on a.appointment_id = ats.appointment_id " +
+
+					" WHERE a.is_deleted = 'N' ");
 		
 		
 		if(inputVo.getCreatedBy() != null && inputVo.getCreatedBy()  > 0)
