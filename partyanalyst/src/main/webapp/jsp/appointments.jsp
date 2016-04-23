@@ -1305,11 +1305,15 @@ function buildTotalAppointmentStatusForToday(result){
 		
 	$(document).on("click",".settingsIcon",function(e){
 		
+		var appId=$(this).attr("attr_span_popup_id");
+		
+		$("#errSpanId"+appId).html("");
+		
 		e.stopPropagation();
 		$(".updateAppointment").hide();
 		$(".messageBlock").hide();
 		$(".appointmentSettingsBLock").hide();
-		 var appId=$(this).attr("attr_span_popup_id");
+		 
 		 
 		 var apptSelectBoxId = $("#appointmentStatus"+appId).attr("id")
 		 getUpdatedStatusForaAppointment($(this).attr("attr_appt_status_id"),apptSelectBoxId);
