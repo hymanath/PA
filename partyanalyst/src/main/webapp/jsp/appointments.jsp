@@ -6711,6 +6711,7 @@ function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 	}).done(function(result){
 		if(result != null && result.length > 0){
 			//HARDCODED TO AVOID SCHEDULED STATUS.
+				for(var i in result)
 				if(result[i].id != 3){
 					$('#'+apptSelectBoxId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
