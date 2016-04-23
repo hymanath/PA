@@ -836,7 +836,7 @@
 							</div>-->
                             <div class="row">
 								<div id="confirmAppointmentsDivId"></div>
-								<div class="col-md-12 changeClass">
+								<div class="col-md-8 changeClass">
 									<div class="block">
 										<h4 class="text-success">
 											CREATE APPOINTMENT TIME SLOT
@@ -4211,7 +4211,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='<div class="col-md-12">';
 										str+='<div class="media">';
 											str+='<div class="media-left">';
-												str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+												if(result[i].subList[j].imageUrl != null && result[i].subList[j].imageUrl.length > 0)
+													str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+												else
+													str+='<img class="media-object thumbnail" src="dist/Appointment/img/thumb.jpg" onerror="setDefaultImage(this);" alt="Candidate Image">';
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
@@ -5895,7 +5898,8 @@ function getAppointmentCreatedUsers(){
 			$("#errorDivForTimeSlotId").show();
 			$("#ajaxImgForTimeSlotId").css("display","none");
 			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
-				getViewAppointmentsOfALable();
+				//getViewAppointmentsOfALable();
+				getAppointmentStatusOverview();
 				if(type=="save"){
 				 $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Saved Successfully</p>");
 				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
@@ -6769,7 +6773,7 @@ function getSerchDetailsByStatus(statusId){
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				
+				buildLabelResult(result,labelName);
 			});
 
 }
