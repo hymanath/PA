@@ -995,7 +995,7 @@ public interface IConstants {
 	public static final Long APPOINTMENT_STATUS_ATTENDED=4L;
 	public static final Long APPOINTMENT_STATUS_NOTATTENDED=10L;
 	public static final Long APPOINTMENT_STATUS_RESCHEDULED=8L;
-	public static final Long APPOINTMENT_STATUS_CANCELLED=7L;
+	public static final Long APPOINTMENT_STATUS_CANCELLED=5L;
 	public static final Long APPOINTMENT_STATUS_TENTATIVE=8L;
 	public static final Long APPOINTMENT_STATUS_VOID=9L;
 	public static final Integer APPOINTMENT_HISTORY_MAX_RESULT =5;
