@@ -1292,19 +1292,25 @@ function buildTotalAppointmentStatusForToday(result){
 		$(".appointmentSettingsBLock").hide();
 		$(".messageBlock").hide();		
 		});
+		
 	$(document).on("click",".settingsIcon",function(e){
+		
 		e.stopPropagation();
 		$(".updateAppointment").hide();
 		$(".messageBlock").hide();
 		$(".appointmentSettingsBLock").hide();
 		 var appId=$(this).attr("attr_span_popup_id");
+		 
+		 var apptSelectBoxId = $("#appointmentStatus"+appId).attr("id")
+		 getUpdatedStatusForaAppointment($(this).attr("attr_appt_status_id"),apptSelectBoxId);
+		 
 		 var appointmentSettingsBLockId=$("#appointmentSettingsBLockId"+appId).attr("id");
-		 var appointmentStatusId=$("#appointmentStatus"+appId).attr("id");
 		 $("#"+appointmentSettingsBLockId).show();
-		 $("#"+appointmentStatusId).dropkick();
+		 
 		 //var cmpltAppSttsDrpKckId=$(this).parent().parent().parent().find(".appointmentSettingsBLock ").find("Select").attr("id");
 	
 	})
+	
     $(document).on("click",".messageIcon",function(e){
 		e.stopPropagation();
 		$(".updateAppointment").hide();
@@ -3593,36 +3599,55 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		var apptId = $(this).attr("appointmentid");
 		var updateDivId=$("#appointmentSettingsBLockId"+apptId).attr("id");
 		var processImgId=$("#prcssngImgFrUpdtId"+apptId).attr("id");
-		var smsCheck = false;
-		var smsText = '';
-		var commentTxt = '';
-		var statusId;
 		
 		$("#errSpanId"+apptId).html("");
-		if($("#appointmentStatus"+apptId).val()==0){
-			$("#errSpanId"+apptId).html("Please Select Status.");
-			return;
-		}else{
-			statusId = $("#appointmentStatus"+apptId).val();
-		}
+		
+		var validCheck =false;
+		
+		var smsCheck = false;
+		var smsText = '';
+		
 		if($("#smsChkId"+apptId).is(':checked')){
+			
 			if($("#smsTextId"+apptId).val().trim() == "" || $("#smsTextId"+apptId).val() == null || $("#smsTextId"+apptId).val().length == 0){
 				$("#errSpanId"+apptId).html("Please Enter SMS Text.");
 				return;	
 			}else{
+				validCheck = true;
+				
 				smsCheck = true;
 				smsText = $("#smsTextId"+apptId).val().trim();
 			}
 		}
+		
+		var commentTxt = '';
 		if($("#comentChkId"+apptId).is(':checked')){
+			
 			if($("#commentTxtId"+apptId).val().trim() == "" || $("#commentTxtId"+apptId).val() == null || $("#commentTxtId"+apptId).val().length == 0){
 				$("#errSpanId"+apptId).html("Please Enter Comment.");
 				return;	
 			}else{
+				validCheck = true;
 				commentTxt = $("#commentTxtId"+apptId).val().trim();
 			}
 		}
+		
+		var statusId = $("#appointmentStatus"+apptId).val();
+		alert(statusId);
+		
+		if( statusId > 0 ){
+			validCheck = true;
+		}
+		
+		if(!validCheck){
+			$("#errSpanId"+apptId).html("Select Status Or Comment Or Send SMS");
+			return;
+		}
+		
 		$("#"+processImgId).show();
+		
+		var currentStatusId = $(this).attr("appointmentStatusId");
+		
 		var jsObj={
 			appointmentId : apptId,
 			date : '',
@@ -3630,6 +3655,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			smsCheck : smsCheck,
 			smsText:smsText,
 			statusId:statusId,
+			currentStatusId:currentStatusId,
 			commentTxt:commentTxt,
 			apptuserId : $("#appointmentUserSelectBoxId").val()
 		}
@@ -3908,15 +3934,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;</span></p>';
 							}
 							
-							str+='<i  attr_span_popup_id='+result[i].appointmentId+' class="glyphicon glyphicon-cog settingsIcon pull-right"></i>';
+							str+='<i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right"></i>';
 							str+='<div class="appointmentSettingsBLock arrow_box" id="appointmentSettingsBLockId'+result[i].appointmentId+'">';
 							str+='<label>Select Appointment Status</label><span style="color:red;" id="errSpanId'+result[i].appointmentId+'"></span>';
 								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
-									str+='<option value="0">Select Status</option>';
-									str+='<option value="4">Attended</option>';
-									str+='<option value="5">Not Attended</option>';
-									str+='<option value="6" >Reschedule</option>';
-									str+='<option value="7">Cancel</option>';
+									//str+='<option value="0">Select Status</option>';
+									//str+='<option value="4">Attended</option>';
+									//str+='<option value="5">Not Attended</option>';
+									//str+='<option value="6" >Reschedule</option>';
+									//str+='<option value="7">Cancel</option>';
 									
 								str+='</select>';
 							str+='<div class="row m_top10">';
@@ -3939,7 +3965,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							
 							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<img id="prcssngImgFrUpdtId'+result[i].appointmentId+'" style="display:none;" src="images/search.gif">';
-							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentStatusId='+result[i].statusId+' appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';
 							
 						str+='</div>';
@@ -6610,8 +6636,12 @@ function getAppointmentStatus(){
 		}
 	});     
 }
-//getUpdatedStatusForaAppointment();
-function getUpdatedStatusForaAppointment(){
+
+function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
+	
+	$('#'+apptSelectBoxId).find('option').remove();
+    $('#'+apptSelectBoxId).append('<option value="0">Select Status</option>');
+	
 	var jsObj={
 		userTypeId : userTypeId,
 		currentStatusId : currentStatusId
@@ -6623,8 +6653,11 @@ function getUpdatedStatusForaAppointment(){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			
+			for(var i in result){
+			  $('#'+apptSelectBoxId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
 		}
+		$('#'+apptSelectBoxId).dropkick();
 	});
 }
 
