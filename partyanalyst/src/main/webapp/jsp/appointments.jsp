@@ -1281,7 +1281,7 @@ function buildTotalAppointmentStatusForToday(result){
 		if(value.totalCount == 0){
 			str+='<td> - </td>';
 		}else{
-			str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" >'+value.totalCount+'</td>';
+			str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
 		}
 		str+='</tr>';	
 	});
@@ -3586,6 +3586,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			strDate:strDate,
 			endDate:endDate,
 			statusArray:statusArray,
+			type:'',
 			task:""
 			
 		}
@@ -6841,11 +6842,15 @@ $(document).on("click",".appointmentStatusCls",function(){
 		 }	
 	 });
 	
-	getappointmentStatusDetails(statusArray);			
+	getappointmentStatusDetails(statusArray,null);			
 	
 });
 
-function  getappointmentStatusDetails(statusArray){
+function  getappointmentStatusDetails(statusArray,type){
+	
+	if(type ==null){
+		type='';
+	}
 	
 	var jsObj={
 			createdBy : 0,
@@ -6854,8 +6859,8 @@ function  getappointmentStatusDetails(statusArray){
 			strDate:'',
 			endDate:'',
 			statusArray:statusArray,
-			task:""
-			
+			type:type,
+			task:""			
 		}
 		
 		  	$.ajax({
@@ -6868,7 +6873,7 @@ function  getappointmentStatusDetails(statusArray){
 			})
 }
 
-/* $(document).on("click",".todayappointmentStatusCls",function(){
+ $(document).on("click",".todayappointmentStatusCls",function(){
 	
 	 $('html, body').animate({
 		scrollTop: $('.showTimeSlotsCls').offset().top
@@ -6884,9 +6889,9 @@ function  getappointmentStatusDetails(statusArray){
 		 }	
 	 });
 	
-	getappointmentStatusDetails(statusArray);			
+	getappointmentStatusDetails(statusArray,"today");			
 	
-}); */
+});
 </script>
 </body>
 </html>
