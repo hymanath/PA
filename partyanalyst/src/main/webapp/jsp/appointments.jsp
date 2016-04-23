@@ -3611,10 +3611,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		$("#errSpanId"+apptId).html("");
 		
 		var validCheck =false;
+		var statusChange=false;
 		
 		var smsCheck = false;
 		var smsText = '';
-		
 		if($("#smsChkId"+apptId).is(':checked')){
 			
 			if($("#smsTextId"+apptId).val().trim() == "" || $("#smsTextId"+apptId).val() == null || $("#smsTextId"+apptId).val().length == 0){
@@ -3640,10 +3640,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			}
 		}
 		
-		var statusId = $("#appointmentStatus"+apptId).val();
-		alert(statusId);
+		var statusId   = $("#appointmentStatus"+apptId).val();
+		var statusText = $("#appointmentStatus"+apptId).find("option:selected").text();
 		
 		if( statusId > 0 ){
+			statusChange = true;
 			validCheck = true;
 		}
 		
@@ -3655,6 +3656,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		$("#"+processImgId).show();
 		
 		var currentStatusId = $(this).attr("appointmentStatusId");
+		var currentUpdateButton = $(this);
 		
 		var jsObj={
 			appointmentId : apptId,
@@ -3676,17 +3678,32 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			 $("#"+processImgId).hide();
 			if(result != null && result.message=="success"){
 				$(".msgDiv"+apptId).html("Updated Successfully.").css("color","green");
-				//setTimeout(function(){$(".msgDiv"+apptId).html("");},2000);
 				setTimeout(function(){$("#"+updateDivId).hide();},2000);
 				setTimeout(function(){$(".msgDiv"+apptId).html("");},2000);
+				
 				$("#smsChkId"+apptId).attr("checked",false);
 				$("#comentChkId"+apptId).attr("checked",false);
+				
 				$("#commentTxtId"+apptId).attr("placeholder", "Please Enter Comment...").val("");
 			    $("#smsTextId"+apptId).attr("placeholder", "Please Enter Sms...").val("");
+				
 				$("#commentTxtId"+apptId).hide();
 				$("#smsTextId"+apptId).hide();
-				var ele = new Dropkick("#appointmentStatus"+apptId);
-				 ele.select(0);
+				
+				// Refresh the block
+				if(statusChange){
+					
+					$(currentUpdateButton).attr("appointmentstatusid",statusId);
+					$(currentUpdateButton).closest('.manageAppViewPanelClass').find('.settingClass').find('span').html(statusText);
+					$(currentUpdateButton).closest('.manageAppViewPanelClass').find('.settingClass').find('.settingsIcon').attr("attr_appt_status_id",statusId);
+				    
+					var apptSelectBoxId = $("#appointmentStatus"+apptId).attr("id")
+					getUpdatedStatusForaAppointment(statusId,apptSelectBoxId);
+				
+				}
+				
+				 //var ele = new Dropkick("#appointmentStatus"+apptId);
+				// ele.select(0);
 			}else{
 				$(".msgDiv"+apptId).html("Please try Again.").css("color","red");
 			}
@@ -3936,7 +3953,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<div class="col-md-4 col-xs-6 col-sm-6 col-lg-4">';
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<p class="" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							str+='<p class="settingClass" style="font-size:10px;">ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							if(result[i].date != "" && result[i].time != null && result[i].toTime != null){
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;</span></p>';
@@ -6656,6 +6673,7 @@ function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 	$('#'+apptSelectBoxId).find('option').remove();
     $('#'+apptSelectBoxId).append('<option value="0">Select Status</option>');
 	
+	
 	var jsObj={
 		userTypeId : userTypeId,
 		currentStatusId : currentStatusId
@@ -6672,6 +6690,8 @@ function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 			}
 		}
 		$('#'+apptSelectBoxId).dropkick();
+		var ele = new Dropkick('#'+apptSelectBoxId);
+		ele.refresh();
 	});
 }
 
