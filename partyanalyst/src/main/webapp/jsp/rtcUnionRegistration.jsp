@@ -1477,7 +1477,7 @@
 											<s:else>
 											  <input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;"  value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTNameId');"/>
 											</s:else>
-											<input type="text" class="form-control border-radius-0" placeholder="Voter Telugu Name" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
+											<input type="text" id="voterTeluguNameId" class="form-control border-radius-0" placeholder="Voter Telugu Name" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
 										</div>	
 										<!--<div class="span6">	
 											<h5 class="text-align1"> Cadre Telugu Name  </h5>
@@ -2773,14 +2773,17 @@
 		</div>		
 		<div class="" style="width:56%;float:left;">
 			<div class="message"  style="font-size: 25px;margin-top:30px;margin-left: 125px;"></div>
-			<div class="clock"></div>
+			<div class="clock"></div>   
 		</div>
 		
-	</div>
+	</div>    
 
 <!-- end FlipClock -->	
 
+<script src="js/googleTranslator/googleTranslator.js" type="text/javascript"></script>
+<script src="js/googleTranslator/callbackTranslator.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 var existingCadreArr = [];
 var existingCadreInfoArr = [];
 function getExistingCadreInfo(){
