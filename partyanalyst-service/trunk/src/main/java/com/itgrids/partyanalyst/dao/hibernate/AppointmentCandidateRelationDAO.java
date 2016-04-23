@@ -693,7 +693,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 		if(fromDate != null && toDate !=null)
 		{
-			str.append(" and date(a.inserted_time) between :fromDate and :toDate  ");
+			str.append(" and date(a.updated_time) between :fromDate and :toDate  ");
 		}
 		
 		if(inputVo.getStatusIds() !=null && inputVo.getStatusIds().size()>0){
@@ -701,7 +701,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		}
 		
 		
-		str.append(" group by a.appointment_id,ac.appointment_candidate_id order by a.inserted_time ");
+		str.append(" group by a.appointment_id,ac.appointment_candidate_id order by a.updated_time desc");
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("apptCandId",Hibernate.LONG)
 				.addScalar("name",Hibernate.STRING)

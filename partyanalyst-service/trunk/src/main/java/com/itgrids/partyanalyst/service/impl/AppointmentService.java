@@ -3799,17 +3799,19 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 				       timeSlot.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				       timeSlot.setIsDeleted("N");
 			      
-				       //timeSlot=appointmentTimeSlotDAO.save(timeSlot);
-				       
+				   //TimeSlot Booking For An Appointment
 				       AppointmentTimeSlot appointmentTimeSlot = appointmentTimeSlotDAO.save(timeSlot);
 				       
 				       getappointmentComments(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,commentTxt,userId);
 				       
+				       //Allocating To 'Schedule' Status Of An Appointment
 				       Integer updtdSts = appointmentDAO.updateAppntmntStatusById(appointmentTimeSlot.getAppointmentId(), dateUtilService.getCurrentDateAndTime() );
 				       
 				       AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
 				       inputVO.setAppointmentId(appointmentTimeSlot.getAppointmentId());
 					   inputVO.setSmsText("Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
+					   
+					  //Sending Sms To TimeSlot Booked Candidates
 				       sendSmsForAppointment(inputVO);
 				       
 				       
@@ -3821,10 +3823,10 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 				      
 				      
 				     //void appt status
-				     List<Long> apptIds = getAppointmentIdsForVoid(appointmentId,IConstants.APPOINTMENT_STATUS_WAITING,apptUserId);
+				     /*List<Long> apptIds = getAppointmentIdsForVoid(appointmentId,IConstants.APPOINTMENT_STATUS_WAITING,apptUserId);
 				     if(apptIds!=null && apptIds.size()>0){
 				    	 appointmentDAO.updateApptStatusbyApptIds(apptIds,dateUtilService.getCurrentDateAndTime(),IConstants.APPOINTMENT_STATUS_VOID,userId);
-				     }
+				     }*/
 				      
 			      rs.setExceptionMsg("success");
 			      rs.setResultCode(0);
