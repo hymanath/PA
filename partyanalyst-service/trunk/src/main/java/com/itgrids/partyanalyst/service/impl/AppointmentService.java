@@ -2563,6 +2563,9 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	        		 VO.setStatus(obj[1]!=null?obj[1].toString():"");
 	   	             VO.setStatusCount(0l);
 	   	             VO.setMembersCount(0l);
+	   	             
+	   	             VO.setClickIds(new ArrayList<Long>());
+	   	             VO.getClickIds().add(statusId);
 	   	             finalMap.put(statusId,VO);
 	        	}
 	        }
@@ -2588,14 +2591,14 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	       approvedlist.add(IConstants.APPOINTMENT_STATUS_NOTATTENDED);
 	       
 	       Object[] approvedObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,approvedlist);
-	       setData(finalMap,approvedObj,IConstants.APPOINTMENT_STATUS_APPROVED);
+	       setData(finalMap,approvedObj,IConstants.APPOINTMENT_STATUS_APPROVED,approvedlist);
 	       
 	       List<Long> scheduledList = new ArrayList<Long>();
 	       scheduledList.add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
 	       scheduledList.add(IConstants.APPOINTMENT_STATUS_RESCHEDULED);
 	       
 	       Object[] scheduledObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,scheduledList);
-	       setData(finalMap,scheduledObj,IConstants.APPOINTMENT_STATUS_SCHEDULED);
+	       setData(finalMap,scheduledObj,IConstants.APPOINTMENT_STATUS_SCHEDULED,scheduledList);
 	       
 	       if(finalMap!=null && finalMap.size()>0){
 	    	   finalList.addAll(finalMap.values());
@@ -2606,12 +2609,13 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	    }
 	    return finalList;
 	  }
-	public void setData(Map<Long,AppointmentStatusVO> finalMap,Object[] objArray,Long statusId){
+	public void setData(Map<Long,AppointmentStatusVO> finalMap,Object[] objArray,Long statusId,List<Long> clickList){
     
     if(objArray!=null && objArray.length>0){
        
        AppointmentStatusVO statusvo = finalMap.get(statusId.longValue());
        if(statusvo!=null){
+    	  statusvo.setClickIds(clickList);
          statusvo.setStatusCount(objArray[0]!=null?(Long)objArray[0]:0l);
          statusvo.setMembersCount(objArray[1]!=null?(Long)objArray[1]:0l); 
        }

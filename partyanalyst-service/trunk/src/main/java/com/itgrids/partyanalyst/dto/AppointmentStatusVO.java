@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class AppointmentStatusVO {
 
 	private Long appointmentStatusId;
@@ -7,6 +9,8 @@ public class AppointmentStatusVO {
 	private Long statusCount;
 	private String updatedTime;
 	private Long   membersCount;
+	
+	private List<Long> clickIds;
 	
 	public Long getAppointmentStatusId() {
 		return appointmentStatusId;
@@ -37,6 +41,12 @@ public class AppointmentStatusVO {
 	}
 	public void setMembersCount(Long membersCount) {
 		this.membersCount = membersCount;
+	}
+	public List<Long> getClickIds() {
+		return clickIds;
+	}
+	public void setClickIds(List<Long> clickIds) {
+		this.clickIds = clickIds;
 	}
 	
 }
