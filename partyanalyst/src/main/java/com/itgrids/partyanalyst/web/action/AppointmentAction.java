@@ -788,6 +788,7 @@ public String getCandidateWiseDetails(){
 			inputVo.setName(jObj.getString("searchStr"));
 			inputVo.setStrDate(jObj.getString("strDate"));
 			inputVo.setEndDate(jObj.getString("endDate"));
+			inputVo.setType(jObj.getString("type"));
 			
 			JSONArray  jsonArray = jObj.getJSONArray("statusArray");
 			
