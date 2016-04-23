@@ -323,7 +323,7 @@ footer
 							
 								<c:if test="${sessionScope.USER.isAdmin == 'true' ||fn:contains(sessionScope.USER.entitlements, 'AFFILIATED_UNION_REGISTRATION_ENTITLEMENT' )}">
 								 <li>
-									<a href="affiliatedCadreSearchAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;All Union Registration</span></a>
+									<a href="affiliatedCadreSearchAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;All Union Registrations</span></a>
 								 </li>
 								</c:if>
 								
