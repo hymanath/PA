@@ -148,6 +148,18 @@ public Long getAppointmentStatusId(Long appointmentId){
 		return query.list();
 		
 	}
+	
+	public Integer updateApptStatusbyApptId(Long appointmentId, Date updatedTime,Long statusId,Long userID) {
+		
+		Query query = getSession().createQuery(
+		 " update Appointment model set model.appointmentStatusId= :statusId, model.updatedTime = :updatedTime,model.updatedBy=:userID " +
+		 " where model.appointmentId = :appointmentId ");
+		query.setParameter("appointmentId", appointmentId);
+		query.setTimestamp("updatedTime", updatedTime);
+		query.setParameter("statusId",statusId);
+		query.setParameter("userID", userID);
+		return query.executeUpdate();
+	}
 }
 	
 
