@@ -2177,7 +2177,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				}
 				
 				cadreRegistrationVOList.add(cadreRegistrationVO);
-				surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"WEB");
+				surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"ONLINE");
 				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
 					LOG.debug("fileuploades is sucess Method");
 					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
