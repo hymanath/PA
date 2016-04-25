@@ -426,11 +426,13 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			Long activityLevelId = jObj.getLong("activityLevelId");
 			Long activityLevelValue = jObj.getLong("activityLevelValue");
 			JSONArray questionArr = jObj.getJSONArray("responseArray");
+			String conductedDate = jObj.getString("conductedDate");
 			
 			finalvo.setId(regVO.getRegistrationID());
 			finalvo.setActivityTypeId(activityScopeId);
 			finalvo.setActivityLevelId(activityLevelId);
 			finalvo.setLocationValue(activityLevelValue);
+			finalvo.setConductedDate(conductedDate);
 			
 			if(questionArr != null && questionArr.length() > 0){
 				for (int i = 0; i < questionArr.length(); i++) {

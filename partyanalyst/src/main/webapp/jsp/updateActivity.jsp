@@ -991,10 +991,12 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].conductedDate != null)
-										str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
+										str+='<input type="text" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
 									else
-										str+='<input type="text" class="dateCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
-								str+='</div></td>';
+										str+='<input type="text" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
+								str+='</div>';
+								str+='<div id="errCls" style="color:red;"></div></td>';
+								
 								/*
 								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
 								{
@@ -1317,8 +1319,12 @@ $("#hideAsmblyData").click(function(){
 	});
   
 	
-	$(document).on("click","#updateQBtnId",function(){			
-		var locationValue = $(this).attr("attr_location_Value");		
+	$(document).on("click","#updateQBtnId",function(){
+		if($(".conductedDtCls").val() == ""){
+			$("#errCls").html("Date Required");
+			return;
+		}
+		var locationValue = $(this).attr("attr_location_Value");
 		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1);
  	});
     function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId){
@@ -1434,7 +1440,8 @@ $("#hideAsmblyData").click(function(){
 		         activityScopeId : $("#ActivityList").val(),
 				 activityLevelId : $("#activityLevelList").val(),
 				 activityLevelValue : $(this).attr("attr_location_Value"),
-				 responseArray : resultArr
+				 responseArray : resultArr,
+				 conductedDate : $(".conductedDtCls").val()
 		       };
 			  
 		 $.ajax({
