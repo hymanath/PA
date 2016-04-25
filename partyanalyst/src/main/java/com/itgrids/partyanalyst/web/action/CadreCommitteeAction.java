@@ -103,7 +103,6 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<IdNameVO>  castes;
 	
 	
-	
 	public ActivityVO getActivityVO() {
 		return activityVO;
 	}
@@ -629,38 +628,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	public String newCadreSearchExe(){
-		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-		boolean noaccess = false;
-		if(regVO==null){
-			return "input";
-		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),IConstants.TDP_CADRE_SEARCH)
-				|| entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT")
-				|| entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_SEARCH_ENT"))){
-			noaccess = true ;
-		}
-		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
-			noaccess = false;
-		}
 		
-		if(noaccess){
-			return "error";
-		}
-		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
-		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
-		cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
-		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
-		castes=cadreCommitteeService.getAllCastes();
-		List<BasicVO> accLoc = getUserAccessConstituencies();
-		if(accLoc!=null && accLoc.size()>0){
-			finalStatus = accLoc.get(0).getName();
-		}
-		if(panchayatId == null) //default values for prepopulate fields
-		{
-			panchayatId = "0";
-			committeeTypeId = 0L;
-			committeeId = 0L;
-			result3 = "0";
-		}
+		selectOptionVOList = staticDataService.getConstituencies(1l);
 		
 		return Action.SUCCESS;
 	}

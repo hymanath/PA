@@ -72,7 +72,18 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> districtsList;
 	private List<SelectOptionVO> publicationDatesList;
 	private boolean infoManager;
+	private List<SelectOptionVO>				selectOptionVOList;
 	
+
+	
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+
+
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
 
 
 	public EntitlementsHelper getEntitlementsHelper() {
@@ -1077,4 +1088,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 	}
 	
+	public String newCadreSearch(){
+		
+		selectOptionVOList = staticDataService.getConstituencies(1l);
+		
+		return Action.SUCCESS;
+	}
 }

@@ -459,7 +459,7 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				unionTabUserList = rtcUnionService.getDesignationsOfAffiliatedUnionType(Long.valueOf(tdpMemberTypeId));
 				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,Long.valueOf(tdpMemberTypeId));
 				idNameVOList=rtcUnionService.getDistrictsForState(1l);			
-				if(user.getRegistrationID().longValue() != 3930L) // party office userId
+				if(user != null && user.getRegistrationID() != null && user.getRegistrationID().longValue() != 3930L) // party office userId
 	    		{
 	    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
 		    		Date now = new DateUtilService().getCurrentDateAndTime();
