@@ -506,6 +506,18 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 		return Action.ERROR;
 	} 
 	
+	public String updatePaymentStatus(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			task=cadreRegistrationService.updatePaymentStatus(tdpCadreId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDistrictsForState() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	public String getDistrictsForState(){
 		try{
 			jObj = new JSONObject(getTask());
