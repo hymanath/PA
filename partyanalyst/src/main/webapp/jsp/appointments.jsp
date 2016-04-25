@@ -6718,34 +6718,34 @@ function getAppointmentStatus(){
 	});     
 }
 
+</script>
+<script>
 function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 	
 	$('#'+apptSelectBoxId).find('option').remove();
     $('#'+apptSelectBoxId).append('<option value="0">Select Status</option>');
 	
 	
-	var jsObj={
-		userTypeId : userTypeId,
-		currentStatusId : currentStatusId
-	}
-	$.ajax({
-		type : 'POST',
-		url : 'getUpdatedStatusForaAppointmentAction.action',
-		dataType : 'json',
-		data: {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length > 0){
-			//HARDCODED TO AVOID SCHEDULED STATUS.
-				for(var i in result)
-				if(result[i].id != 3){
-					$('#'+apptSelectBoxId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		<c:forEach items="${appointmentStatusList}" var="status">
+
+		var userTpid = parseInt(${status.typeId});
+		var fromStatusId = parseInt(${status.statusId});
+		var tostatusid = parseInt(${status.toStatusId});
+		var toStts = '${status.toStatus}';
+		
+			if(userTpid == userTypeId && fromStatusId == currentStatusId){				
+				if(tostatusid != 3){
+					$('#'+apptSelectBoxId).append('<option value="'+tostatusid+'">'+toStts+'</option>');
 				}
-		}
+			}	
+		</c:forEach>
+		
 		$('#'+apptSelectBoxId).dropkick();
 		var ele = new Dropkick('#'+apptSelectBoxId);
 		ele.refresh();
-	});
 }
+</script>
+<script>
 
 function getStatusTrackingDetls(appontmntId,aptName){
 	
