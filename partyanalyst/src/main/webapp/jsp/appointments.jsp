@@ -838,6 +838,43 @@
                             <div class="row">
 								<img id="confirmAppointmentsAjaxImg" src="images/icons/loading.gif" style="display:none; height: 50px; width: 50px;"/>
 								<div id="confirmAppointmentsDivId"></div>
+								
+								  <!--  TIME SLOT --> 
+									<div class="col-md-8">
+										<div class="block">
+											<div class="row">
+												<div class="col-md-12">
+													<h4 class="text-capitalize text-success">Select Date To View Appointment Time Slot</h4>
+												</div>
+												
+												<div class="col-md-6 m_top10">
+													<div class="form-inline">
+													  <div class="form-group">
+														<label>Date<span style="color:red;">*</span> </label>
+														<div class="input-group inputSearch">
+															<span class="input-group-addon">
+																<i class="glyphicon glyphicon-calendar"></i>
+															</span>
+															<input class="form-control" type="text" id="appointmentDateSlotHeadingId"/>
+														</div>
+													  </div>
+													</div>
+												</div>
+												
+												<div class="col-md-2 m_top10">
+													<input class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId()"/>
+												</div>
+												<div class="col-md-4 m_top10" style="color:red;font-size:16px;" id="timeSlotErrMsgId">
+												</div>
+												<div class="col-md-12 m_top10" id="timeSlotDatesBuildId">
+													
+												</div>
+												
+												
+											</div>
+										</div>
+									</div>
+									
 								<div class="col-md-8 changeClass">
 									<div class="block">
 										<h4 class="text-success">
@@ -845,32 +882,6 @@
 											<!--<button class="btn btn-success pull-right">VIEW BOOKED TIME SLOTS</button>-->
 										</h4>
 										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
-													<div class="col-md-12">
-														<div id="timeSlotsWarnId" class="validateClr"></div>
-														<div class="pluginTable" id="pluginTableId">
-															<ul class="row">
-																<li class="col-md-2 col-xs-4 col-sm-2">
-																	<table class="table tablePluginDate" id="tablePluginDateId">
-																		
-																	</table>
-																</li>
-																<li class="col-md-10 col-xs-8 col-sm-10">
-																	<table class="table table-bordered tablePlugin" id="tablePluginId">
-																	
-																	</table>
-																</li>
-															</ul>
-															<div class="row">
-																<div class="col-md-12">
-																	<p class="pull-right"><span class="boxIcon">&nbsp;</span>Appointment Booked Time Slot</p>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
 											<div class="col-md-12">
 												 <div class="confirmAppointmentBlock">
 													<div class="row">
@@ -2147,6 +2158,8 @@ $(document).on("click",".rangesDashboard ul li",function(){
 });
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
 $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
+$("#appointmentDateSlotHeadingId").daterangepicker({singleDatePicker:true});
+$('#appointmentDateSlotHeadingId').val(moment().format('MM/DD/YYYY'));
 $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 
@@ -4612,6 +4625,7 @@ function buildTimeSlotsTable(result){
 		str+='</td>';
 		str+='</tr>';
 		$("#tablePluginDateId").html(str);
+		
 		var str1='';
 		str1+='<thead>';
 		str1+='<th colspan="4">6a</th>';
@@ -6906,6 +6920,114 @@ function  getappointmentStatusDetails(statusArray,type){
 	getappointmentStatusDetails(statusArray,"today");			
 	
 });
+getTimeSlotsForADayByAppytUserId();
+function getTimeSlotsForADayByAppytUserId(){
+	
+	$('#timeSlotErrMsgId').html('');
+	$('#timeSlotDatesBuildId').html('');
+	
+	var  dateStr       = $('#appointmentDateSlotHeadingId').val();
+	var  appntmntId   =  $("#appointmentUserSelectBoxId option:selected").val();
+	if(dateStr.trim().length <= 0){
+		$('#timeSlotErrMsgId').html('Please Select Date');
+		return;
+	}
+	
+	var jsObj={
+			dateStr : dateStr,
+			appntmntId:appntmntId
+		}
+		
+		  	$.ajax({
+				type : 'POST',
+				url : 'getTimeSlotsForADayByAppytUserIdAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				timeSlotTableBuilding(result,dateStr);
+			})
+	
+}
+
+function timeSlotTableBuilding(result,dateStr){
+	
+	var str='';
+	str+='<div class="pluginTable">';
+			str+='<ul class="row">';
+			
+				str+='<li class="col-md-2 col-xs-4 col-sm-2 m_top10">';
+					str+='<table class="table tablePluginDate m_top20">';
+						str+='<tr>';
+							str+='<td class="text-center" style="height:29px;background-color:none;">'+dateStr+'</td>';
+						str+='</tr>';
+					str+='</table>';
+				str+='</li>';
+				
+				str+='<li class="col-md-10 col-xs-8 col-sm-10">';
+				str+='<table class="table table-bordered tablePlugin">';
+					
+						str+='<thead>';
+							str+='<th colspan="4">6a</th>';
+							str+='<th colspan="4">7</th>';
+							str+='<th colspan="4">8</th>';
+							str+='<th colspan="4">9</th>';
+							str+='<th colspan="4">10</th>';
+							str+='<th colspan="4">11</th>';
+							str+='<th colspan="4">12p</th>';
+							str+='<th colspan="4">1</th>';
+							str+='<th colspan="4">2</th>';
+							str+='<th colspan="4">3</th>';
+							str+='<th colspan="4">4</th>';
+							str+='<th colspan="4">5</th>';
+							str+='<th colspan="4">6</th>';
+							str+='<th colspan="4">7</th>';
+							str+='<th colspan="4">8</th>';
+							str+='<th colspan="4">9</th>';
+							str+='<th colspan="4">10</th>';
+						str+='</thead>';
+				
+	                   str+='<tr class="borderSlot">';
+						for(var unique=0;unique<=63;unique++){
+				          str+='<td id="'+unique+'"></td>';
+			            }	
+	                  str+='</tr>';
+	
+					$('#timeSlotDatesBuildId').html(str);
+					
+					if(result!=null && result.length>0){
+					
+					for(var i in result){
+					 
+						var start=result[i].startDate;
+						var end =result[i].endDate;
+						var startIdForHour=start.substr(11,2);
+						var startIdForMin=start.substr(14,2);
+						var startId=(startIdForHour-6)*4;
+					
+						startId= startId+(startIdForMin/15);
+						var strtDividedVleForMnte=startIdForMin%15;
+						   if(strtDividedVleForMnte>=8){
+							   startId=startId+1;
+						   }
+						var endIdForHour=end.substr(11,2);
+						var endIdForMin=end.substr(14,2);
+						var endId=(endIdForHour-6)*4;
+						
+						endId= endId+(endIdForMin/15);
+						var endDividedVleForMnte=endIdForMin%15;
+						   if(endDividedVleForMnte>=8){
+							   endId=endId+1;
+						   }
+						endId=endId-1;  
+						for(var start=startId;start<=endId;start++){
+							$("#"+start).addClass("bookedSlots");
+						}
+				}
+		    }
+	}
+	
+
+
 </script>
 </body>
 </html>

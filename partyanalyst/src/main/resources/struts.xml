@@ -11912,6 +11912,13 @@
 			<param name="root">statusTrackingVOList</param>
 		</result>
 	</action>
+	
+	<action name="getTimeSlotsForADayByAppytUserIdAction" class="appointmentAction" method="getTimeSlotsForADayByAppytUserId">
+		<result type="json" name="success">
+			<param name="root">apptSlotList</param>
+		</result>
+	</action>
+	
 	<action name="getActivityQuestionAnswerCountReasonWiseAction" class="activityAction" method="getActivityQuestionAnswerCountReasonWise">
 		<result type="json" name="success">
 			<param name="root">idNameVOList</param>
