@@ -364,8 +364,9 @@ function generateOTPForMobileNo(currentButton){
 		$("#getOtpId").html("");
 		var refNo = Math.floor((Math.random() * 1000000) + 1);
 		$("#randomRefNo").val(refNo);
-		if(refNo >0)
+		/*if(refNo >0)
 			$("#getOtpId").html(" OTP Reference No: "+refNo+" (Note: If you not get OTP, click Generate OTP once again.)");
+		*/
 		var jsObj =
 		{    
 			mobileNo : mobileNo,
@@ -433,5 +434,5 @@ $(document).on("click","#nextStepId",function(){
 	}      
 	var caderId = $('input[name="otpMobileNo"]:checked').val();//attr("attr_cadreId");
 	//var caderId=$(this).attr("attr_cadreId");//target="_blank"
-	window.open("affiliatedGraduatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
+	window.location.href = "affiliatedGraduatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5";
 });
