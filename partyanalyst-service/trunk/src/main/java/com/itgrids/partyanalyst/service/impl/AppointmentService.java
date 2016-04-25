@@ -5482,8 +5482,8 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				String fname = params[3] != null ? params[3].toString() : "";
 				String lname = params[4] != null ? params[4].toString() : "";
 				vo.setUname(fname+" "+lname);
-				vo.setComments(params[5] != null ? params[5].toString() : "");
-				vo.setDate(params[6] != null ? params[6].toString() : "");
+				vo.setComments(params[8] != null ? params[8].toString() : "");
+				vo.setDate(params[6] != null ? params[6].toString().substring(0, 19) : "");
 				resultList.add(vo);
 				
 				 StatusTrackingVO orderVo = getMatchedStatusVo(orderStatusList,vo.getId());
