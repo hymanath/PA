@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -3244,6 +3245,12 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						activityLocationInfo.setUpdatedBy(finalvo.getId());
 						activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
 						activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+						try {
+						activityLocationInfo.setConductedDate(formatter.parse(finalvo.getConductedDate() != null ? finalvo.getConductedDate().toString() : ""));
+						} catch (ParseException e) {
+							LOG.error("Exception rised in saveActivityQuestionnaireDetails()",e);
+						}
 						tempactivityLocationInfo = activityLocationInfoDAO.save(activityLocationInfo);
 					}
 					
