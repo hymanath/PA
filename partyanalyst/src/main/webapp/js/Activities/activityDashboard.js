@@ -696,8 +696,7 @@ function buildMandalResult(result,divId,locationId,teamSearchType)
 	{
 		for(var i in result.activityVoList)
 			{			
-				if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0)
-				{
+		//if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount >0){
 			str+='<div class="panel-body">';
 			str+='<div class="panel-group panel-group1 m_0" id="collapseOne1LevelMandal1'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-customtd">';
@@ -800,7 +799,7 @@ function buildMandalResult(result,divId,locationId,teamSearchType)
 			str+='</div>';
 			str+='</div>';
 			str+='</div>';
-			}
+			//}
 			}
 	}
 	
