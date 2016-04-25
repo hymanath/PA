@@ -16537,7 +16537,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 											activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
 											activityLocationInfo.setActivityScopeId(activityScopeId);
 											activityLocationInfo.setLocationLevel(locationLevelId);
-											if(locationLevelId.longValue()<=5L)
+											if(locationLevelId.longValue() == 5L || locationLevelId.longValue() == 6L || locationLevelId.longValue() == 7L
+													 || locationLevelId.longValue() == 8L || locationLevelId.longValue() == 9L)
 												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
 											else if(locationLevelId.longValue() == 13L){
 												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue()));
