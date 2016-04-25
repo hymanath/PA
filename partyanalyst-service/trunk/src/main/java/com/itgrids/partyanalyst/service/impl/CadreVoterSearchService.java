@@ -1051,8 +1051,8 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		      
 		      otp = String.valueOf(number).substring(0,6);
 		      if(otp != null && !otp.isEmpty()){
-		      String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;
-		      
+		     /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
+		      String messageStr = " Cadre Registration OTP number: "+otp+"";
 		      SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
 		      
 		      smsOtpDetails.setOtpReferenceId(refNo);
