@@ -846,5 +846,19 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	//query.setParameterList("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED_LIST);
 		return query.list();
 	}
+public List<Object[]> checkIsAppointmentEligibleCadre(List<Long> cadreList,List<Long> apptStatusIds,Long appointmentUserId){
+		
+		Query query = getSession().createQuery("" +
+		" select  acr.appointment.appointmentId,acr.appointmentCandidate.appointmentCandidateId,acr.appointmentCandidate.tdpCadre.tdpCadreId" +
+		" from    AppointmentCandidateRelation acr " +
+		" where   acr.appointment.appointmentStatusId in (:apptStatusIds) and acr.appointment.isDeleted='N' " +
+		"         and acr.appointmentCandidate.tdpCadre.tdpCadreId in (:cadreNoList) " +
+		"         and acr.appointment.appointmentUserId = :appointmentUserId");
+		
+		query.setParameterList("cadreNoList", cadreList);
+		query.setParameterList("apptStatusIds", apptStatusIds);
+		query.setParameter("appointmentUserId", appointmentUserId);
+		return query.list();
+	}
 	
 }
