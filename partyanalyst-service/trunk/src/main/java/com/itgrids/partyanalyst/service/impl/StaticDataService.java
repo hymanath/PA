@@ -1233,8 +1233,13 @@ public class StaticDataService implements IStaticDataService {
 		this.stateRegionDAO = stateRegionDAO;
 	}
 
-	public List<SelectOptionVO> getConstituencies(Long stateId) {
-		List<Constituency> constList = constituencyDAO.findByStateId(stateId);
+	public List<SelectOptionVO> getConstituencies(Long stateId,Long stateTypeId) {
+		List<Constituency> constList = null;
+		if(stateTypeId == null)
+			constList = constituencyDAO.findByStateId(stateId);
+		else 
+			constList = constituencyDAO.getConstituenciesByStteIdStatTypeId(stateId,stateTypeId);
+		
 		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
 
 		for (Constituency constituency : constList)
