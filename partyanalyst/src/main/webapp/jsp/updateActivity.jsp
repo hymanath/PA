@@ -464,6 +464,9 @@ var globalLctnInfoId = null;
 
 $(document).ready(function(){
 	//$('.searchDateCls').daterangepicker();
+	$('#activityTypeList').val(1);
+	$('#activityLevelList').val(1);
+	getActivityNames(1);
 	$('.applyBtn').click(function(){
 		
 		/*var startDate = $("input[name=daterangepicker_start]").val();
@@ -582,7 +585,7 @@ function submitForm(){
 }
 
 	
-function getActivityNames()
+function getActivityNames(id)
 {
 	$('#mandalsList').find('option').remove();
 	$('#mandalsList').append('<option value="0"> Select Mandal/Town/Division</option>');
@@ -597,7 +600,9 @@ function getActivityNames()
 	$('#ActivityList').find('option').remove();
 	$('#ActivityList').append('<option value="0"> Select Activity </option>');	
 	
-	var activityLevelId = $('#activityLevelList').val();
+	var activityLevelId = id;
+	if(id == 0)
+		activityLevelId = $('#activityLevelList').val();
 	
 	if($("#activityTypeList").val()!=4){
 		if(activityLevelId == 1){
@@ -632,6 +637,8 @@ function getActivityNames()
 			{
 				for(var i in result)
 					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+				
+				$('#ActivityList').val(12);
 			}
 		});
 		
@@ -963,7 +970,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
 						else if(activityLevelId == 5)
 							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';							
-						str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
+						//str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
 						str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 						//str+='<th>PRESIDENT</th>';
 						//str+='<th>GENERAL SECRETARY</th>';
@@ -979,14 +986,15 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
 								str+='<input type="hidden" value="'+result.result[i].locationId+'" name="activityVO.activityVoList['+i+'].locationValue">';
 								str+='<td> '+result.result[i].locationName+'</td>';
-								str+='<td  style="text-align:center;width:180px">';
+								/*str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].planedDate != null)
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value="'+result.result[i].planedDate+'"/>';
 									else
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
-								str+='</div></td>';
+								
+								str+='</div></td>';*/
 								str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
@@ -1549,7 +1557,7 @@ $("#hideAsmblyData").click(function(){
 		}else{
 			$("#searchId").show();
 		}
-		getActivityNames();
+		getActivityNames(0);
 	});
 	
 	function getCadreDetailsBySearchCriteria(startIndex)
