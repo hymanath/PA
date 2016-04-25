@@ -621,7 +621,8 @@ public class AppointmentService implements IAppointmentService{
 		        			
 		        		}
 		        	}
-		            saveAppointmentTrackingDetails(appointment.getAppointmentId(),1l,null,1l,loggerUserId,appointmentVO.getReason());
+		            saveAppointmentTrackingDetails(appointment.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,null,
+		            		IConstants.APPOINTMENT_STATUS_WAITING,loggerUserId,appointmentVO.getReason());
 		        	rs.setExceptionMsg("success");
 					rs.setResultCode(0);
 					return rs;
@@ -3776,6 +3777,10 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 			  public ResultStatus setTimeSlotForAppointment(Long appointmentId,String dateStr,String fromTime,String toTime,Long userId,String type,Long timeSlotId,String commentTxt,Long apptUserId){
 			    ResultStatus rs = new ResultStatus();
 			    try {
+			    	
+			    	  //getPresent Status
+				       Long currentStatusId =  appointmentDAO.getCurrentAppointmentStatus(appointmentId);
+			    				    	
 			      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			      Date date = sdf.parse(dateStr);
 			      
@@ -3836,6 +3841,10 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 					   
 					  //Sending Sms To TimeSlot Booked Candidates
 				       sendSmsForAppointment(inputVO);
+				       
+				       //Appointment Tracking Saving
+				       	saveAppointmentTrackingDetails(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,currentStatusId,
+				       			IConstants.APPOINTMENT_STATUS_SCHEDULED,userId,commentTxt);
 				       
 				       
 				      /*if(type !=null && type.equalsIgnoreCase("update")){
