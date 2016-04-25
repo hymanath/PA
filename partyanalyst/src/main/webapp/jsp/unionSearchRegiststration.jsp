@@ -6,63 +6,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-<meta charset="utf-8">   
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Search</title>
+<title>TELUGUNADU GRADUATES FEDERATION MEMBER ENROLLMENT</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/css/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
+<link href="dist/GraduatesSearch/custom.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-
-h1,h2,h3,h4,h5,h6,p,ul   
-{
-	margin:0px;
-}
-label
-{
-	font-weight:400
-}
-.registeredMem
-{
-	padding:0px;
-	margin-top:20px;
-}
-.registeredMem li
-{
-	list-style:none;
-	border:1px solid #ddd;
-	padding:4px;
-}
-.registeredMem li img.profile
-{
-	height:60px;
-	width:40px;
-}
-.registeredMem li .media .media-object
-{
-	margin:0px;
-}
-.m_top20
-{
-	margin-top:20px;
-}
-.m_top25
-{
-	margin-top:25px;
-}
-</style>
 </head>
 <body>
 <div class="container">
 	<div class="row">
-    	<div class="col-md-8 col-md-offset-2">
-        	<div class="panel panel-default">
-            	<div class="panel-heading">
-               		<h4 class="panel-title">TELUGU GRADUATES CELL ENROLLEMENT</h4>
-                </div>
-                <div class="panel-body">
+		<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-body bgImage" style="padding:30px;padding-bottom:140px;">
+					<div class="row">
+						<div class="col-md-7 col-md-offset-5 col-xs-12 col-sm-offset-4 col-sm-8">
+							<div class="row">
+								<div class="col-md-3">
+									<img src="dist/GraduatesSearch/Logo.png" class="img-responsive"/>
+								</div>
+								<div class="col-md-9 m_top20" style="border-left:1px solid #ddd">
+									<h3>TELUGUNADU GRADUATES FEDERATION MEMBER ENROLLMENT</h3>
+								</div>
+							</div>
+							<div class="row m_top20">
+								<div class="col-md-12">
+								<div class="panel panel-default">
+            	<div class="panel-body">
                 	<div class="row">
 				
                     	<div class="col-md-12">
@@ -90,7 +61,7 @@ label
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-6 m_top10">
 							<label>Constituency<span style="color:red;">*</span></label>
 							<!--<select class="dropkickClass" id="constituencyId">
 								<option value="0">Select Constituency</option>
@@ -146,10 +117,15 @@ label
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>	
-	
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
@@ -158,10 +134,12 @@ label
 <script src="js/smsTransactions/smsTransactions.js" type="text/javascript"></script>
 <script src="js/locationSearch/locationSearch.js" type="text/javascript"></script>
 <script src="js/locationSearch/locationSearchAjax.js" type="text/javascript"></script>
+
 <script>
 $(document).ready(function(){
 	$("#trigger").hide();
 	$("#loginId").hide();
+	$(".adminCls").hide();
 });
 
 </script>
