@@ -1,0 +1,24 @@
+.bgImage
+{
+	background:url("backgroundImage.jpg");
+	background-color:#959595;
+	background-repeat:no-repeat;
+}
+.block
+{
+	background:#fff;
+	padding:30px;
+	margin-top:30px;
+}
+.m_top10
+{
+	margin-top:10px;
+}
+.m_top20
+{
+	margin-top:20px;
+}
+.checkbox-inline
+{
+	padding-left:0px;
+}
