@@ -2719,6 +2719,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="loginRequiredUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginRequiredUrlDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 	<!--  end -->
 </beans>		
