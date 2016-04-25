@@ -9,6 +9,10 @@
 <div id="statusDiv"></div>
 
 <script>
+
+function startSearchingPage(){
+	window.location.href="affiliatedCadreSearchAction.action";
+}
 function showUploadStatus()
 	{
 		var str = '';
@@ -31,7 +35,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
@@ -44,7 +48,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
