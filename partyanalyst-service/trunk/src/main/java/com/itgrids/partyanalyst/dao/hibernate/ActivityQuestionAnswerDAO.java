@@ -744,5 +744,19 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByDayWise(SearchAt
 		return null;
 
 }
+@Override
+public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId) {
+	
+	  StringBuilder queryStr=new StringBuilder();
+	
+	     queryStr.append("select model.activityOption.activityOptionId," +
+	     		" model.activityOption.option," +
+	     		" count(model.activityQuestionAnswerId) " +
+	     		" from ActivityQuestionAnswer model where model.activityQuestionnaireId in ("+questionId+") group by model.activityOptionId");
+	     
+	     Query query=getSession().createQuery(queryStr.toString());
+	     
+	return query.list();
+}
 
 }

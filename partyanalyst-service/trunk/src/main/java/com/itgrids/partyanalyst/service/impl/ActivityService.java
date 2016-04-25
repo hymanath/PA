@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireOptionDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
+import com.itgrids.partyanalyst.dao.IActivityStatusQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityTabRequestBackupDAO;
 import com.itgrids.partyanalyst.dao.IActivityTabUserDAO;
@@ -170,8 +171,17 @@ public class ActivityService implements IActivityService{
 	private IActivityLocationAttendanceDAO activityLocationAttendanceDAO;
 	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IActivityStatusQuestionnaireDAO activityStatusQuestionnaireDAO;
 	
 	
+	
+	public IActivityStatusQuestionnaireDAO getActivityStatusQuestionnaireDAO() {
+		return activityStatusQuestionnaireDAO;
+	}
+	public void setActivityStatusQuestionnaireDAO(
+			IActivityStatusQuestionnaireDAO activityStatusQuestionnaireDAO) {
+		this.activityStatusQuestionnaireDAO = activityStatusQuestionnaireDAO;
+	}
 	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
 		return userConstituencyAccessInfoDAO;
 	}
@@ -4397,5 +4407,47 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			LOG.error("Exception Occured in getActivityTypeList() method, Exception - ",e);
 		}
 		return idNameVoList;
+	}
+	
+	public List<IdNameVO> getActivityStatusDetailsByScopeId(Long activityScopeId){
+		 List<IdNameVO> returnList =new ArrayList<IdNameVO>(0);
+		try {
+			List<Long>activityStatusQuestionnaireIdsList = activityStatusQuestionnaireDAO.getActivityStatusQuestionsListByActivityScopeId(activityScopeId);
+			if(activityStatusQuestionnaireIdsList != null && activityStatusQuestionnaireIdsList.size()>0){
+				Long questionId = activityStatusQuestionnaireIdsList.get(0);
+				List<Object[]>  statusList = activityQuestionnaireDAO.getQuestionnareOptionsDetails(questionId);
+				Map<Long, IdNameVO> statusVOMap = new LinkedHashMap<Long, IdNameVO>(0);
+				if(statusList != null && statusList.size()>0){
+					for (Object[] status : statusList) {
+							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
+							String name = commonMethodsUtilService.getStringValueForObject(status[1]);
+							IdNameVO vo = new IdNameVO();
+							vo.setId(id);
+							vo.setName(name);
+							vo.setActualCount(0L);
+							
+							statusVOMap.put(id, vo);
+					}
+					List<Object[]> answeredOptionsDetails = activityQuestionAnswerDAO.getActivityQuestionAnswerCountReasonWise(questionId);
+					if(answeredOptionsDetails != null && answeredOptionsDetails.size()>0){
+						for (Object[] status : answeredOptionsDetails) {
+							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
+							Long count = commonMethodsUtilService.getLongValueForObject(status[2]);
+							IdNameVO  vo = statusVOMap.get(id);
+							if(vo != null){
+								vo.setActualCount(count);
+							}
+						}
+					}
+					if(statusVOMap != null && statusVOMap.size()>0){
+						returnList.addAll(statusVOMap.values());
+					}
+				}
+			
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityStatusDetailsByScopeId() method, Exception - ",e);
+		}
+		return returnList;
 	}
 }
