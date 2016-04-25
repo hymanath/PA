@@ -1320,6 +1320,7 @@ $("#hideAsmblyData").click(function(){
   
 	
 	$(document).on("click","#updateQBtnId",function(){
+		$("#errCls").html("");
 		if($(".conductedDtCls").val() == ""){
 			$("#errCls").html("Date Required");
 			return;
