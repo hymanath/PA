@@ -11430,6 +11430,12 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
+	<action name="updatePaymentStatsAction" class="rtcUnionAction" method="updatePaymentStatus">
+		<result type="json" name="success">
+    	    <param name="root">task</param>
+         </result>
+	</action>
+	
 	<action name="getDistrictsForStateAction" class="rtcUnionAction" method="getDistrictsForState">
 		<result type="json" name="success">
     	    <param name="root">idNameVOList</param>
