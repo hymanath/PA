@@ -6757,7 +6757,7 @@ function apptTrackingStatus(result,aptName)
 				str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 				if(result[i].comments != null && result[i].comments.length > 0)
 				{
-				str+='<p style="font-size:15px;">Comments</p>';
+				str+='<u style="font-size:15px;">Comments</u>';
 				str+='<p>'+result[i].comments+'</p>';	
 				}
 			str+='</div>';
