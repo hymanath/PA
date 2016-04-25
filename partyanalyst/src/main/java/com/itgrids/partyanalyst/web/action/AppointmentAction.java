@@ -5,6 +5,7 @@ import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentLocVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentStatusFlowVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
@@ -82,6 +84,8 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<AppointmentLocVO> appointmentLocVOList;
 	private  List<AppointmentCountVO> appointmentCountVOList;
 	private  List<StatusTrackingVO> statusTrackingVOList;
+	
+	private static List<AppointmentStatusFlowVO> appointmentStatusFlowVOList;
 	private  List<AppointmentSlotsVO> apptSlotList;
 	
 	public List<StatusTrackingVO> getStatusTrackingVOList() {
@@ -300,8 +304,28 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public void setAppointmentCountsVO(AppointmentCountsVO appointmentCountsVO) {
 		this.appointmentCountsVO = appointmentCountsVO;
 	}
+	
+	public static List<AppointmentStatusFlowVO> getAppointmentStatusFlowVOList() {
+		return appointmentStatusFlowVOList;
+	}
+
+	public static void setAppointmentStatusFlowVOList(
+			List<AppointmentStatusFlowVO> appointmentStatusFlowVOList) {
+		AppointmentAction.appointmentStatusFlowVOList = appointmentStatusFlowVOList;
+	}
 
 	public String execute(){
+		
+		//appointmentStatusFlowVOList = new ArrayList<AppointmentStatusFlowVO>(0);
+		
+		ServletContext context = request.getSession().getServletContext();		
+		
+		if(appointmentStatusFlowVOList ==null){
+			appointmentStatusFlowVOList = appointmentService.getApplicationContextWiseSatuses();
+		}
+		
+		context.setAttribute("appointmentStatusList", appointmentStatusFlowVOList);
+
 		return Action.SUCCESS;
 	}
 	
@@ -1246,6 +1270,7 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String getTimeSlotsForADayByAppytUserId(){
 		try{
 			
@@ -1260,5 +1285,7 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	
 	
 }
