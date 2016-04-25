@@ -1168,7 +1168,7 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 						str+='<th class="text-center">BATCH NAME</th>';
 					
 					str+='<th class="text-center">  DATE </th>';
-					str+='<th class="text-center"> STATUS </th>';
+					//str+='<th class="text-center"> STATUS </th>';
 					str+='</thead>';				
 					str+='<tbody>';
 					for(var i in result){
@@ -1192,10 +1192,10 @@ function getTrainingCenterDetailsBasedOnDates(fromType){
 						else
 							str+='<td style="text-align:center;"> - </td>';
 						 
-						if(result[i].inviteeAttendedCount != null && result[i].inviteeAttendedCount>0)
-							str+='<td style="text-align:center;"> ATTENDED </td>';
-						else
-							str+='<td style="text-align:center;"> ABSENT </td>';
+						//if(result[i].inviteeAttendedCount != null && result[i].inviteeAttendedCount>0)
+						//	str+='<td style="text-align:center;"> ATTENDED </td>';
+						//else
+						//	str+='<td style="text-align:center;"> ABSENT </td>';
 							
 						str+='</tr>';
 					}
