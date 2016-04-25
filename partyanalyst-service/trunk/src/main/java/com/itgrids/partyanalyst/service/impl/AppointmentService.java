@@ -5805,7 +5805,41 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
     	
     	return apptvo;
     }
-    
+    public List<AppointmentSlotsVO>  getTimeSlotsForADayByAppytUserId(Long apptUserId,String dateStr){
+    		
+    		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+    		
+    		List<AppointmentSlotsVO> finalList = null;
+    	try{
+    		  Date date = null;
+    		  if(dateStr !=null && !dateStr.isEmpty()){
+    			  date = sdf.parse(dateStr);
+    		  }
+    			List<Object[]> dates = appointmentTimeSlotDAO.getAppointmentConfirmDates(date,apptUserId);
+    			Date givenDate=null;
+    			
+    			if(dates != null && dates.size() >0){
+    				finalList = new ArrayList<AppointmentSlotsVO>();
+    				for(Object[] obj : dates){
+    					
+    					AppointmentSlotsVO vo = new AppointmentSlotsVO();
+    					vo.setStartDate(obj[1]!=null?obj[1].toString():"");
+    					vo.setEndDate(obj[2]!=null?obj[2].toString():"");
+    					givenDate = obj[0] !=null?(Date)obj[0]:null;
+    					finalList.add(vo);
+    				}
+    				if(finalList != null && finalList.size() >0 ){
+    					finalList.get(0).setDate(sdf1.format(givenDate));
+    				}
+    				
+    			}
+    		
+		}catch(Exception e){
+			LOG.error("Exception raised at getTimeSlotsForADayByAppytUserId",e);
+		}
+    	return finalList;
+    }
 public boolean checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentUserId){
 	
 	boolean flag = false;
