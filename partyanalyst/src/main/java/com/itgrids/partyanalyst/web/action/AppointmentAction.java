@@ -82,7 +82,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private List<AppointmentLocVO> appointmentLocVOList;
 	private  List<AppointmentCountVO> appointmentCountVOList;
 	private  List<StatusTrackingVO> statusTrackingVOList;
-
+	private  List<AppointmentSlotsVO> apptSlotList;
 	
 	public List<StatusTrackingVO> getStatusTrackingVOList() {
 		return statusTrackingVOList;
@@ -337,6 +337,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 
 	public void setAppointmentLocVOList(List<AppointmentLocVO> appointmentLocVOList) {
 		this.appointmentLocVOList = appointmentLocVOList;
+	}
+	
+	public List<AppointmentSlotsVO> getApptSlotList() {
+		return apptSlotList;
+	}
+
+	public void setApptSlotList(List<AppointmentSlotsVO> apptSlotList) {
+		this.apptSlotList = apptSlotList;
 	}
 
 	public String saveAppointment(){
@@ -1238,4 +1246,19 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getTimeSlotsForADayByAppytUserId(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long apptUserId = jObj.getLong("appntmntId");
+			String dateStr  = jObj.getString("dateStr");
+			
+			apptSlotList = appointmentService.getTimeSlotsForADayByAppytUserId(apptUserId,dateStr);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAppointmentStatusTrackingDetails() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
