@@ -80,6 +80,7 @@ import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentStatusFlowVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
@@ -5851,4 +5852,43 @@ public boolean checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointme
 	}
 	return flag;
 }
+    public List<AppointmentStatusFlowVO> getApplicationContextWiseSatuses(){
+		List<AppointmentStatusFlowVO> returnList = new ArrayList<AppointmentStatusFlowVO>();
+		
+		try {
+			
+			List<Object[]> list = appointmentStatusFlowDAO.getApplicationContextWiseSatuses();
+			if(list != null && list.size() > 0){				
+				returnList = setApptStatusValuesToFlowList(list,returnList);								
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getUpdatedStatusForaAppointment() method of AppointmentService", e);
+		}
+		return returnList;
+	}
+    
+    public List<AppointmentStatusFlowVO> setApptStatusValuesToFlowList(List<Object[]> list ,List<AppointmentStatusFlowVO> returnList){
+    	try{
+    		
+    		for (Object[] obj : list) {
+				AppointmentStatusFlowVO vo = new AppointmentStatusFlowVO();
+				
+				vo.setTypeId(obj[0] !=null ? (Long)obj[0]:0l);
+				vo.setType(obj[1] !=null ? obj[1].toString():"");
+				
+				vo.setStatusId(obj[2] !=null ? (Long)obj[2]:0l);
+				vo.setStatus(obj[3] !=null ? obj[3].toString():"");
+				
+				vo.setToStatusId(obj[4] !=null ? (Long)obj[4]:0l);
+				vo.setToStatus(obj[5] !=null ? obj[5].toString():"");
+				
+				returnList.add(vo);
+			}
+    		    		
+    	}catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return returnList;
+    }
+    
 }

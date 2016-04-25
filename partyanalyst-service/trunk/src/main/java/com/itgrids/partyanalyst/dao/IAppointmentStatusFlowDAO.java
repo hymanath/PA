@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.AppointmentStatusFlow;
 public interface IAppointmentStatusFlowDAO extends GenericDao<AppointmentStatusFlow,Long>{
 
 	public List<Object[]> getUpdatedStatusForaAppointment(Long userTypeId,Long currentStatusId);
+	public List<Object[]> getApplicationContextWiseSatuses();
 }

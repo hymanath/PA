@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAppointmentStatusFlowDAO;
@@ -32,6 +33,32 @@ public class AppointmentStatusFlowDAO extends GenericDaoHibernate<AppointmentSta
 		query.setParameter("userTypeId", userTypeId);
 		query.setParameter("currentStatusId", currentStatusId);
 		
+		return query.list();
+	}
+	
+	public List<Object[]> getApplicationContextWiseSatuses(){
+		
+		StringBuilder str = new StringBuilder();
+		
+		 str.append(" SELECT UT.appointment_user_type_id as aptUserTypeId,UT.user_type as userType," +
+				"F.appointment_status_id as aptStatusId,F.status as status,T.appointment_status_id as aptToStatusId,T.status as toStatus " +
+				" FROM " +
+				" appointment_status_flow ASF,appointment_status F,appointment_status T,appointment_user_type_access_status UA,appointment_user_type UT " +
+				" WHERE " +
+				" UA.appointment_user_type_id = UT.appointment_user_type_id AND " +
+				" UA.appointment_status_id = ASF.to_status_id AND " +
+				" ASF.to_status_id = T.appointment_status_id AND " +
+				" ASF.from_status_id = F.appointment_status_id " +
+				" ORDER BY UT.appointment_user_type_id,F.appointment_status_id,T.appointment_status_id");
+				
+				Query query = getSession().createSQLQuery(str.toString())
+				 .addScalar("aptUserTypeId",Hibernate.LONG)
+				 .addScalar("userType",Hibernate.STRING)
+				 .addScalar("aptStatusId",Hibernate.LONG)
+				 .addScalar("status",Hibernate.STRING)
+				 .addScalar("aptToStatusId",Hibernate.LONG)
+				 .addScalar("toStatus",Hibernate.STRING);
+				
 		return query.list();
 	}
 }

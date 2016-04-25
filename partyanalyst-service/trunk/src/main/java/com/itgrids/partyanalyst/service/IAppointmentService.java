@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
+import com.itgrids.partyanalyst.dto.AppointmentStatusFlowVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentUpdateStatusVO;
 import com.itgrids.partyanalyst.dto.AppointmentVO;
@@ -84,7 +85,7 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentStatusByUserId(Long userId);
 	public List<StatusTrackingVO> getAppointmentStatusTrackingDetails(Long appointmentId);
 	public List<IdNameVO> getUpdatedStatusForaAppointment(Long userTypeId,Long currentStatusId);
-	
 	public List<AppointmentSlotsVO>  getTimeSlotsForADayByAppytUserId(Long apptUserId,String dateStr);
 	public boolean checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentUserId);
+	public List<AppointmentStatusFlowVO> getApplicationContextWiseSatuses();
 }
