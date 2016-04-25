@@ -2882,7 +2882,7 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 								vo.setToDate(params[12]!=null ? params[12].toString():"");
 								vo.setDate(params[14]!=null ? params[14].toString().split(" ")[0]:"");
 								vo.setAppointmentUniqueId(params[13]!=null?params[13].toString():"");
-								vo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
+							//	vo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
 								
 							resultList.add(vo);
 						}
@@ -2890,6 +2890,7 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 						candidateVo.setId(params[0] != null ? Long.valueOf(params[0].toString()) :0l);
 						candidateVo.setName(params[1] != null ? params[1].toString() :"");
 						candidateVo.setMobileNo(params[2] != null ? params[2].toString() : "");
+						candidateVo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
 						
 						candidateVo.setDesignation(params[3] != null ? params[3].toString() : "");
 						String fname = params[6] != null ? params[6].toString() : "";
