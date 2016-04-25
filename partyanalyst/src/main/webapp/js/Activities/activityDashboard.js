@@ -36,6 +36,8 @@ function getActivityNames(type)
 				//getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
 				getDetails();
 			}
+			
+			getActivityQuestionAnswerCountReasonWise();
 		});
 		
 }
@@ -2927,3 +2929,41 @@ $(document).on('click', '.searchTypeCls', function(){
 	$(".dynChildWidthbd2").css("width",$(".getChildWidthbd2").width()+15);
 	$(".dynChildWidthbd").css("width",$(".getChildWidthbd").width()+15);
 }
+function getActivityQuestionAnswerCountReasonWise(){
+	
+	var scopeId = $('#ActivityList').val();
+		var jsObj = {
+			scopeId:scopeId
+		}
+	$.ajax({
+		type : 'GET',
+		url : 'getActivityQuestionAnswerCountReasonWiseAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){ 
+	  if(result!=null && result!=0){
+		  buildActivityReasonReport(result);
+	  }
+	});     
+}
+function buildActivityReasonReport(result)
+{
+	var str='';
+	str+='<table class="table table-bordered table-condensed">';
+	 str+='<tbody>';
+	  str+='<tr>';
+	   for(var i in result){
+		 str+='<td attr_option_id='+result[i].id+' class="bg_ef text-center">'+result[i].name+'</td>';
+	  }
+	  str+='</tr>';
+	  str+='<tr>';
+	  for(var i in result){
+		str+='<td class="text-center">'+result[i].actualCount+'</td>';
+	  }
+	  str+='</tr>';
+	  str+='</tbody>';
+	  str+='</table>';
+	 $("#buildActivityReasonReportTableId").html(str); 
+}
+
+

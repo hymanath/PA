@@ -2972,6 +2972,7 @@
 		<property name="activityLocationAttendanceDAO" ref="activityLocationAttendanceDAO" />
 		<property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
+		<property name="activityStatusQuestionnaireDAO" ref="activityStatusQuestionnaireDAO" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />

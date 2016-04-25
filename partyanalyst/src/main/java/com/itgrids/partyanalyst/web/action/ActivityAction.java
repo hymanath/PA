@@ -1,5 +1,5 @@
-package com.itgrids.partyanalyst.web.action;
 
+package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -849,6 +849,16 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		
 		//idNameVOList = activityService.getAccessValuesOfUserId(userId,"All");
 				
+		return Action.SUCCESS;
+	}
+	public String getActivityQuestionAnswerCountReasonWise(){
+		try{
+		   LOG.info("Enter into getActivityQuestionAnswerCountReasonWise() in ActivityAction");
+			jObj = new JSONObject(getTask());
+		    idNameVOList=activityService.getActivityStatusDetailsByScopeId(jObj.getLong("scopeId"));
+		}catch(Exception e){
+			LOG.info("Error raised at getActivityQuestionAnswerCountReasonWise() in ActivityAction");
+		}
 		return Action.SUCCESS;
 	}
 }

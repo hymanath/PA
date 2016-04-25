@@ -2714,5 +2714,11 @@
 	<bean id="userAppointmentUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAppointmentUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="activityStatusQuestionnaireDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityStatusQuestionnaireDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	<!--  end -->
 </beans>		
