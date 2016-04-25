@@ -3,7 +3,7 @@
 <head>
 <link href="dist/activity/css/bootstrap.min.css" rel="stylesheet"/>
 <script src="dist/activity/js/bootstrap.min.js" type="text/javascript"></script> 
-
+ <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
 <div id="statusDiv"></div>
@@ -18,6 +18,9 @@ function showUploadStatus()
 		{
 			str+= '<div class="container m_top10 text-center" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align">CADRE REGISTRATION</h3>';
+			str+= '</div>';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
 			str+= '<p class="text-align">Thank You For Your Registration</p>';
 			str+= '<h3 class="text-align"> Successfully Registration Completed </h3>';
 			str+= '</div>';
@@ -28,7 +31,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
@@ -41,7 +44,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
