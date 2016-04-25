@@ -1451,8 +1451,9 @@ $("#hideAsmblyData").click(function(){
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.resultCode == 0){
-				$(".errMsgCls").html("Question Saved Successfully")
-				setTimeout(function(){$(".errMsgCls").html("");},2000);
+				$(".errMsgCls").html("Question Saved Successfully");
+				
+				setTimeout(function(){$(".errMsgCls").html("");$("#questionsModal").modal("hide");},2000);
 			}else{
 				$(".errMsgCls").html("Exception Occurred try Again")
 			}
