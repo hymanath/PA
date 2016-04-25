@@ -11123,6 +11123,21 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return returnList;
 	}
 	
+	public String  updatePaymentStatus(Long tdpCadreId){
+		String status = "";
+		try {
+			TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
+			saveDataToHistoryTable(tdpCadre);
+			tdpCadre.setPayMentStaus(IConstants.PAID_STATUS);
+			tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+			tdpCadreDAO.save(tdpCadre);
+			status =IConstants.SUCCESS;
+		} catch (Exception e) {
+			status =IConstants.FAILURE;
+			LOG.error("Exception riased at updatePaymentStatus in RtcUnionService Service class", e);
+		}
+		return status;
+	}
 	
 	//SAVING AFFLICATED CADRE SAVING 1111
 	public void tdpAffliatedCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadreNew,String insertTypeNew,final boolean statusVar)
@@ -11141,6 +11156,13 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					TdpCadre  tdpCadre1 = null;
+					
+					if(cadreRegistrationVO.getCadreId() != null && cadreRegistrationVO.getCadreId().longValue()>0L){
+						tdpCadre.setPayMentStaus(IConstants.NOT_REQUIRED);
+						tdpCadre.setParentTdpCadreId(cadreRegistrationVO.getCadreId());
+					}
+					else
+						tdpCadre.setPayMentStaus(IConstants.NOT_PAID_STATUS);
 					
 					if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0 && !insertType.equalsIgnoreCase("update"))
 					{
