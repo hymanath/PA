@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@ page import = "java.sql.*, java.util.*, java.util.zip.*,java.lang.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
@@ -123,7 +124,26 @@
     cursor:pointer;
   }
 	</style>
-	
+	<%!	
+	String randomNumber = getRandomNumber();
+	String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+randomNumber, "1", "http://www.mytdp.com/activitiesDashboard.action", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
+	String getChecksum(String MerchantId, String OrderId, String Amount, String redirectUrl, String WorkingKey) {
+		String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
+
+		Adler32  adl = new Adler32();
+		adl.update(str.getBytes());
+		return (Long.valueOf(adl.getValue()).toString());
+	}	
+	String getRandomNumber(){
+		Random randomNumber = new Random();
+		int number = randomNumber.nextInt();
+		do{
+			number = randomNumber.nextInt();
+		}while(number<0);
+		
+		return String.valueOf(number).substring(0, 5);
+	}
+%>
 		
 	<script>
 	var remainingTime = '${countDownTime}';
@@ -480,7 +500,7 @@
 		var regionSelId = $('#regionSelectId').val();
 		var depotSelId = $('#depotSelectId').val();
 		var employeeId = $('#emplyeeId').val();
-		var designationval = $("#desigId").val();
+		//var designationval = $("#desigId").val();
 		var school = $("#schoolId").val();
 		var drivingLicense = $("#drivingId").val();
 		var vehicleVal = $("#vehicleId").val();
@@ -709,13 +729,13 @@
 			$('#roadErr').html(' Road is required.');
 		}
 		
-		if(designationval == 0)
+		/*if(designationval == 0)
 		// if(roadVal == 0)
 		{
 			isErrorStr = " error";
 			$('#desigErr').html(' Designation is required.');
 		}
-		 	 
+		 	 */
 			//$('#roadErr').html(' Road is required.');
 		//}
 		if(tdpMemberTypeId == 2){
@@ -922,6 +942,10 @@
 	return isSuccess;	
 	}
 	
+	function updatePaymentDetails(){
+		$( "#affiliatedCadreForm" ).submit();
+	}
+
 	function showUploadStatus(myResult)
 	{
 		$('#mainDiv').html('');
@@ -931,6 +955,31 @@
 		var resultArr = result.split(',');
 		if(result.search('SUCCESS') != -1)
 		{
+			
+			str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
+			str+='<input type="hidden" name="ip" value="49.204.21.50" readonly>';
+			str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';
+			str+='<input type="hidden" name="Amount" value="1">';
+			str+='<input type="hidden" name="Order_Id" value="CADRE_2016<%=randomNumber%>">';
+			str+='<input type="hidden" name="Redirect_Url" value="http://www.mytdp.com/activitiesDashboard.action">';
+			str+='<input type="hidden" name="Checksum" value="<%=checksumValue%>">';
+			str+='<input type="hidden" name="billing_cust_name" value="">';
+			str+='<input type="hidden" name="billing_cust_address" value="">';
+			str+='<input type="hidden" name="billing_cust_tel" value="">';
+			str+='<input type="hidden" name="billing_cust_email" value="">';
+			str+='<input type="hidden" name="Merchant_Param" value="">';
+			str+='<input type="hidden" name="billing_cust_notes" value="TDP E-Member Registration fee">';
+			str+='<input type="hidden" name="billing_zip_code" value="">';
+			str+='<input type="hidden" name="delivery_cust_name" maxlength="6" value="Telugau Desam Party">';
+			str+='<input type="hidden" name="delivery_cust_address" value="NTR Bhavan, Banjarahills, Road No:12">';
+			str+='<input type="hidden" name="delivery_cust_country" value="India">';
+			str+='<input type="hidden" name="delivery_cust_state" value="Andhrapradesh & Telangana">';
+			str+='<input type="hidden" name="delivery_cust_city" value="Vijayawada & Hyderabad">';
+			str+='<input type="hidden" name="delivery_zip_code" value="500008">	'; 
+			str+='<input type="submit" name="submit button" value="PAY NOW">'; 
+			str+='</form>';
+			
+			/*
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
 			str+= '<p class="text-align">Thank You For Your Registration</p>';
@@ -946,6 +995,7 @@
 			str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
+			*/
 		}
 		else if(result.search('FAILURE') != -1)
 		{
@@ -1441,7 +1491,10 @@
 	</div>
 	<div id="mainDiv">
 		<div>
-			<form action="tdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">	
+		<form action="rtcUnionRegistrationPage.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">
+
+		<input type="hidden" name="tdpCadreId" value="${candidateId}" >				
+				 
 		<div class="container m_top10"style="position: relative;">
 		
 			<div class="span12" >
@@ -1765,12 +1818,12 @@
 			<div class="row">
 			<div class="span12">
 				
-				<div class="span" id="designDivId">
-					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>
+				<!--<div class="span" id="designDivId">
+					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>-->
 					<!--<select class="form-control" id="desigId" name="cadreRegistrationVO.designationId">-->
-						<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="desigId" list="unionTabUserList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
+					<!--	<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="desigId" list="unionTabUserList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
 					<span id="desigErr" style="color:red;font-size:12px;margin-right: 10px;"></span>
-				</div>	
+				</div>	-->
 				<div class="span3" id="schoolNameDiv" style="display:none">
 					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> </h5>
 						<input type="text" id="schoolId" placeholder="SchoolName" name="cadreRegistrationVO.schoolName" value="${voterInfoVOList[0].schoolName}"></input>
