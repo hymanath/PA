@@ -84,5 +84,7 @@ public interface IAppointmentService {
 	public List<IdNameVO> getAppointmentStatusByUserId(Long userId);
 	public List<StatusTrackingVO> getAppointmentStatusTrackingDetails(Long appointmentId);
 	public List<IdNameVO> getUpdatedStatusForaAppointment(Long userTypeId,Long currentStatusId);
+	
+	public List<AppointmentSlotsVO>  getTimeSlotsForADayByAppytUserId(Long apptUserId,String dateStr);
 	public boolean checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentUserId);
 }
