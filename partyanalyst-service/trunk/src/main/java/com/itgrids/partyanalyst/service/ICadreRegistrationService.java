@@ -189,4 +189,5 @@ public interface ICadreRegistrationService {
 	//public List<GenericVO> getCadreMemberTypeListByYear(Long year);
 	public AffiliatedCadreVO getAllTotalCountsForAll(String searchType);
 	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate);
+	public String  updatePaymentStatus(Long tdpCadreId);
 }
