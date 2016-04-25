@@ -118,9 +118,23 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private CardPrintUserVO cardPrintUserVO;
 	private AffiliatedCadreVO affiliatedCadreVO;
+	private Long membershipNo;
+	private Long entitlementNo;
 	
 	
 	
+	public Long getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(Long membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+	public Long getEntitlementNo() {
+		return entitlementNo;
+	}
+	public void setEntitlementNo(Long entitlementNo) {
+		this.entitlementNo = entitlementNo;
+	}
 	public AffiliatedCadreVO getAffiliatedCadreVO() {
 		return affiliatedCadreVO;
 	}
