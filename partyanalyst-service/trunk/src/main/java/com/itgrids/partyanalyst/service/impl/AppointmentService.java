@@ -5806,4 +5806,15 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
     	return apptvo;
     }
     
+public boolean checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentUserId){
+	
+	boolean flag = false;
+	
+	List<Long>  apptCreationStatusList =Arrays.asList(IConstants.APPOINTMENT_STATUS_CREATION_LIST);
+	List<Object[]> list = appointmentCandidateRelationDAO.checkIsAppointmentEligibleCadre(cadreNoList,apptCreationStatusList,appointmentUserId);
+	if(list!=null && list.size()>0){
+		flag = true;
+	}
+	return flag;
+}
 }
