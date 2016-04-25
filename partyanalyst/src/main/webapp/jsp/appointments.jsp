@@ -2156,7 +2156,7 @@ $(document).on("click",".rangesDashboard ul li",function(){
 		getCandiCountsByLocations();
 	 }
 });
-$("#appointmentDateSlotId").daterangepicker({singleDatePicker:true});
+$("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
 $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
 $("#appointmentDateSlotHeadingId").daterangepicker({singleDatePicker:true});
 $('#appointmentDateSlotHeadingId').val(moment().format('MM/DD/YYYY'));
