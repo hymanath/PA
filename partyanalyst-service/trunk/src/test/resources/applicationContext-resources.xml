@@ -801,6 +801,9 @@
 				  <value>com.itgrids.partyanalyst.model.SmsOtpDetails</value>
 				  <value>com.itgrids.partyanalyst.model.UserAppointmentUser</value>
 				 <!-- appointment related Models -->
+				 
+				 <!-- Login related Models -->
+				  <value>com.itgrids.partyanalyst.model.LoginRequiredUrl</value>
 			</list>
 		</property>
 	</bean>
@@ -3524,14 +3527,17 @@
 	</bean>
 	<bean id="appointmentSmsSettingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsSettingDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="appointmentSmsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsHistoryDAO" >
+	</bean>	<bean id="appointmentSmsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppointmentSmsHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="smsOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsOtpDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="userAppointmentUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAppointmentUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="loginRequiredUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginRequiredUrlDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
