@@ -11157,13 +11157,14 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					TdpCadre  tdpCadre1 = null;
 					
-					if(cadreRegistrationVO.getCadreId() != null && cadreRegistrationVO.getCadreId().longValue()>0L){
-						tdpCadre.setPayMentStaus(IConstants.NOT_REQUIRED);
-						tdpCadre.setParentTdpCadreId(cadreRegistrationVO.getCadreId());
+					if(registrationType.equalsIgnoreCase("ONLINE")  && !insertType.equalsIgnoreCase("update") ){
+						if(cadreRegistrationVO.getCadreId() != null && cadreRegistrationVO.getCadreId().longValue()>0L){
+							tdpCadre.setPayMentStaus(IConstants.NOT_REQUIRED);
+							tdpCadre.setParentTdpCadreId(cadreRegistrationVO.getCadreId());
+						}
+						else
+							tdpCadre.setPayMentStaus(IConstants.NOT_PAID_STATUS);
 					}
-					else
-						tdpCadre.setPayMentStaus(IConstants.NOT_PAID_STATUS);
-					
 					if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0 && !insertType.equalsIgnoreCase("update"))
 					{
 						if(tdpCadre.getDataSourceType() == null){
