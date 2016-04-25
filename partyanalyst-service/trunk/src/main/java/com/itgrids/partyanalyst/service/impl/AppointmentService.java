@@ -1232,7 +1232,9 @@ public class AppointmentService implements IAppointmentService{
 								 }
 							 }
 						 } 
+						 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
 			      }
+			     
 			  	
 			 	
 		} catch (Exception e) {
@@ -1577,6 +1579,8 @@ public void setDataMembersForCadreRole(List<Object[]> membersList, List<Appointm
 				 }
 			 }
 		 }
+		 
+		 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
 	 }
 }
 
@@ -1623,6 +1627,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					 }
 				 }
 			 }
+			 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
 	  }
 }
 
@@ -5841,16 +5846,26 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
     	return finalList;
     }
-public boolean checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentUserId){
+public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentUserId,List<AppointmentCandidateVO>  finalList){
 	
 	boolean flag = false;
 	
 	List<Long>  apptCreationStatusList =Arrays.asList(IConstants.APPOINTMENT_STATUS_CREATION_LIST);
 	List<Object[]> list = appointmentCandidateRelationDAO.checkIsAppointmentEligibleCadre(cadreNoList,apptCreationStatusList,appointmentUserId);
-	if(list!=null && list.size()>0){
-		flag = true;
+	if(list != null && list.size() > 0)
+	{
+		for(Object[] params : list)
+		{
+			AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[3]);
+			 if(vo != null)
+			 {
+				vo.setAptExists(true);
+				vo.setAptId((Long)params[0]);
+				vo.setAptName(params[1] != null ? params[1].toString() : "");
+				vo.setAptStatus(params[5] != null ? params[5].toString() : "");
+			 }
+		}
 	}
-	return flag;
 }
     public List<AppointmentStatusFlowVO> getApplicationContextWiseSatuses(){
 		List<AppointmentStatusFlowVO> returnList = new ArrayList<AppointmentStatusFlowVO>();

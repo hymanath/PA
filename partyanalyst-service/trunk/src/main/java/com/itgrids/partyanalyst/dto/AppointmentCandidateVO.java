@@ -17,8 +17,39 @@ public class AppointmentCandidateVO implements Serializable{
     private String imageURL;
     private Long candidateTypeId;
     private Long appointmentCandidateId;
+    private Long aptId;
+    private String aptName;
+    private boolean isAptExists;
+    private String aptStatus;
     
     
+    
+    
+    
+	public String getAptStatus() {
+		return aptStatus;
+	}
+	public void setAptStatus(String aptStatus) {
+		this.aptStatus = aptStatus;
+	}
+	public Long getAptId() {
+		return aptId;
+	}
+	public void setAptId(Long aptId) {
+		this.aptId = aptId;
+	}
+	public String getAptName() {
+		return aptName;
+	}
+	public void setAptName(String aptName) {
+		this.aptName = aptName;
+	}
+	public boolean isAptExists() {
+		return isAptExists;
+	}
+	public void setAptExists(boolean isAptExists) {
+		this.isAptExists = isAptExists;
+	}
 	public Long getAppointmentCandidateId() {
 		return appointmentCandidateId;
 	}

@@ -849,7 +849,8 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 public List<Object[]> checkIsAppointmentEligibleCadre(List<Long> cadreList,List<Long> apptStatusIds,Long appointmentUserId){
 		
 		Query query = getSession().createQuery("" +
-		" select  acr.appointment.appointmentId,acr.appointmentCandidate.appointmentCandidateId,acr.appointmentCandidate.tdpCadre.tdpCadreId" +
+		" select  acr.appointment.appointmentId, acr.appointment.appointmentUniqueId,acr.appointmentCandidate.appointmentCandidateId,acr.appointmentCandidate.tdpCadre.tdpCadreId" +
+		",acr.appointment.appointmentStatusId,acr.appointment.appointmentStatus.status" +
 		" from    AppointmentCandidateRelation acr " +
 		" where   acr.appointment.appointmentStatusId in (:apptStatusIds) and acr.appointment.isDeleted='N' " +
 		"         and acr.appointmentCandidate.tdpCadre.tdpCadreId in (:cadreNoList) " +
