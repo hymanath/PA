@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.ActivityQuestionnaire;
 public interface IActivityQuestionnaireDAO extends GenericDao<ActivityQuestionnaire, Long>{
 
 	public List<Long> getQuestionnaireIdsListByScopeId(Long scopeId);
+	public List<Object[]> getQuestionnareOptionsDetails(Long questionId);
 }

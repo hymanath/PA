@@ -26,7 +26,7 @@ public class ActivityStatusQuestionnaire {
 	private Long activityScopeId;
 	private Long activityQuestionnaireId;
 	private String isDeleted;
-	
+
 	private ActivityScope activityScope;
 	private ActivityQuestionnaire activityQuestionnaire;
 	

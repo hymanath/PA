@@ -53,4 +53,5 @@ public interface IActivityService {
 	public ActivityVO getActivityDetailsForCadre(Long cadreId);
 	public ActivityVO getActivityDetailsByActivityLevelIdAndCadreId(Long activityLevelId,Long tdpCadreId,Long locationId,Long boothId,Long panchayatId,Long mandalId,Long constituencyId,Long districtId,Long stateId);
 	public List<IdNameVO> getAccessValuesOfUserId(Long userId,String type);
+	public List<IdNameVO> getActivityStatusDetailsByScopeId(Long activityScopeId);
 }

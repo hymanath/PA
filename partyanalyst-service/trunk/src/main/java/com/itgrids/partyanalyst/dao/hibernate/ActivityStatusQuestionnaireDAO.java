@@ -14,4 +14,10 @@ public class ActivityStatusQuestionnaireDAO extends GenericDaoHibernate<Activity
 		super(ActivityStatusQuestionnaire.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Long> getActivityStatusQuestionsListByActivityScopeId(Long activityScopeId){
+		return getSession().createQuery(" select distinct model.activityQuestionnaireId from ActivityStatusQuestionnaire model" +
+				"  where model.activityScopeId ="+activityScopeId+" and model.isDeleted ='false'").list();
+		
+	}
 }
