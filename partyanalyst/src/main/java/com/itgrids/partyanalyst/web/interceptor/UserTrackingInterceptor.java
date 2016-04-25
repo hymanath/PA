@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.interceptor;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,12 +85,16 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		if( request.getRequestURL().indexOf("loginPopUpsAction") == -1 && checkRequestNeedAuthentication(request.getRequestURL())  && IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 		{
 			String[] arr = request.getRequestURL().toString().split("/");
-			if(registrationVO == null && request.getRequestURL().indexOf("login") == -1)
-				return "tdpLoginPage";
-			else if(arr[arr.length-1].toString().trim().equalsIgnoreCase("login.action"))
-				return "success";
-			else if(arr[arr.length-1].toString().trim().equalsIgnoreCase("loginPopUpsAction.action"))
-				return "dashboard";
+			//if(arr[arr.length-1].toString().trim().equalsIgnoreCase("unionSearchRegiststrationAction.action"))
+			if(!(Arrays.asList(IConstants.LOGIN_SKIP_URLS_LIST).contains(arr[arr.length-1].toString().trim())))
+			{
+				if(registrationVO == null && request.getRequestURL().indexOf("login") == -1)
+					return "tdpLoginPage";
+				else if(arr[arr.length-1].toString().trim().equalsIgnoreCase("login.action"))
+					return "success";
+				else if(arr[arr.length-1].toString().trim().equalsIgnoreCase("loginPopUpsAction.action"))
+					return "dashboard";
+			}
 			
 		}
 		
