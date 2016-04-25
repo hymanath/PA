@@ -111,7 +111,7 @@ footer
 				</c:if>
 				<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
 				
-				<a href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
+				<a id="loginId" href="javascript:{}" onClick="openDialogForLoginWindow()" class="btn btn-mini"><i class="icon-user"></i><b> Login</b></a>
 					<!--<span>|</span>
 					<a href="<c:out value="${pageContext.request.contextPath}/freeUserRegistration.action" />">Register</a>-->
 					
