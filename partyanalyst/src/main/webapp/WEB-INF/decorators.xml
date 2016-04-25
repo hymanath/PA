@@ -654,5 +654,6 @@
 	<pattern>/affiliatedCadreDashBoardAction*</pattern>
 	<pattern>/appointmentsAction*</pattern>
 	<pattern>/appointmentsReportDashBoardAction*</pattern>
+	<pattern>/registrationSuccessAction*</pattern>
 	</decorator> 
 </decorators>

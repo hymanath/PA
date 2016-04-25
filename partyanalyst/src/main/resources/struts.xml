@@ -11917,5 +11917,8 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
+	<action name="registrationSuccessAction" class="cadreRegistrationAction" method="registrationSuccess">
+		<result name="success">/jsp/registrationSuccess.jsp</result>
+	</action>
 </package>
 </struts>      
