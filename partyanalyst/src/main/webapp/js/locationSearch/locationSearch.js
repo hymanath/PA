@@ -1,4 +1,4 @@
-getConstituenciesForState(1)
+//getConstituenciesForState(1)
 function getConstituenciesForState(stateId){
    var jsObj=
 	{				

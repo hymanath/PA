@@ -152,7 +152,7 @@ function buildVoterDetails(result){
 				str+='<li>District: '+result[i].districtName+'</li>';
 				str+='<li>Constituency: '+result[i].constituencyName+'</li>';
 				if(result[i].tehsilId > 0)
-					str+='<li>Mandal: '+result[i].tehsilId+'</li>';
+					str+='<li>Mandal: '+result[i].tehsil+'</li>';
 				else if(result[i].localElectionBodyId > 0)
 					str+='<li>Muncipality: '+result[i].leb+'</li>';
 				

@@ -3662,6 +3662,8 @@ function showTakeImage(){
 }
 $(document).ready(function(){
 	$("#wrapper").hide();
+	$("#trigger").hide();
+	$("#loginId").hide();
 });
     hideShowFamilyRelatedDiv();
 	function hideShowFamilyRelatedDiv(){

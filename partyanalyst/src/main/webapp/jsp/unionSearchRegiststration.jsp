@@ -1,8 +1,10 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
 <head>
 <meta charset="utf-8">   
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -90,9 +92,10 @@ label
 					<div class="row">
 						<div class="col-md-6">
 							<label>Constituency<span style="color:red;">*</span></label>
-							<select class="dropkickClass" id="constituencyId">
+							<!--<select class="dropkickClass" id="constituencyId">
 								<option value="0">Select Constituency</option>
-							</select>
+							</select>-->
+							<s:select theme="simple" cssClass="form-control" id="constituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"/>
 							<div id="constErrId" style="color:red;"></div>
 						</div>
 					</div>
@@ -156,6 +159,10 @@ label
 <script src="js/locationSearch/locationSearch.js" type="text/javascript"></script>
 <script src="js/locationSearch/locationSearchAjax.js" type="text/javascript"></script>
 <script>
+$(document).ready(function(){
+	$("#trigger").hide();
+	$("#loginId").hide();
+});
 
 </script>
 </body>
