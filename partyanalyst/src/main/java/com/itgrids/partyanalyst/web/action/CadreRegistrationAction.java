@@ -2078,12 +2078,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			{
 				session = request.getSession();
 				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-				if(user == null)
+				/*if(user == null)
 				{
 					inputStream = new StringBufferInputStream("notlogged");
 					return Action.SUCCESS;
-				}
-				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				}*/
+				if(user != null)
+					cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				else
+					cadreRegistrationVO.setCreatedUserId(1l);
 				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
 					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
 					  cadreRegistrationVO.setPanchayatId(cadreRegistrationVO.getPanchayatId().substring(1));

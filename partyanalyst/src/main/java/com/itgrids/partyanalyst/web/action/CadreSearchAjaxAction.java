@@ -51,8 +51,26 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	private SearchListVO searchListVO;
 	private String cadreId;
 	private Long totalSearchCount;
+	private List<SelectOptionVO>				selectOptionVOList;
+	private IStaticDataService					staticDataService;
 	
 	
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public SmsResultVO getSmsResultVO() {
 		return smsResultVO;
 	}
@@ -587,4 +605,11 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		return SUCCESS;
 	}
 
+	public String newCadreSearchExe(){
+		
+		selectOptionVOList = staticDataService.getConstituencies(1l);
+		
+		return Action.SUCCESS;
+	}
+	
 }	
