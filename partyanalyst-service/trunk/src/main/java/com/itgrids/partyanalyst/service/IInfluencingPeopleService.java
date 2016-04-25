@@ -106,6 +106,5 @@ public interface IInfluencingPeopleService {
     public String checkVoterExistAsInfluencePeopleByVoterId(Long voterId);
     public String saveInfluencePeopleDetails(VoterDetailsVO voterDetails);
 
-
 	
 }
