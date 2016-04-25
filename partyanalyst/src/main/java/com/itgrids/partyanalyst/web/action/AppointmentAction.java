@@ -920,6 +920,8 @@ public String getCandidateWiseDetails(){
 			inputVO.setStatusId(jObj.getLong("statusId"));
 			inputVO.setCommented(jObj.getString("commentTxt"));
 			inputVO.setApptUserId(jObj.getLong("apptuserId"));
+			inputVO.setCurrentStatusId(jObj.getLong("currentStatusId"));
+			
 			resultStatus = appointmentService.updateAppointmentStatus(inputVO,user.getRegistrationID());
 		} catch (Exception e) {
 			LOG.error("Exception raised at updateAppointmentStatus", e);
