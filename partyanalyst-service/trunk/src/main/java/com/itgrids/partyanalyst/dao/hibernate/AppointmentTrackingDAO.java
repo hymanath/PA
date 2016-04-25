@@ -20,7 +20,7 @@ public class AppointmentTrackingDAO extends GenericDaoHibernate<AppointmentTrack
 				+ "appointmentComment.appointmentCommentId,appointmentComment.comment"
 				+ " from AppointmentTracking model left join model.appointmentComment appointmentComment"
 				+ " where model.appointment.appointmentId = :appointmentId"
-				+ " order by model.appointmentStatus.orderNo asc");
+				+ " order by model.actionTime desc");
 		query.setParameter("appointmentId", appointmentId);
 		return query.list();
 	}
