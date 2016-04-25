@@ -3990,7 +3990,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<div class="panel-heading bg_ff pad_5">';
 							str+='<p class="settingClass" style="font-size:10px;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right"></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
-							if(result[i].date != "" && result[i].time != null && result[i].toTime != null){
+							if(result[i].date != "" && result[i].time != null && result[i].toTime != null && result[i].statusId == 3){
 							str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;</span>';
 							}
 							
