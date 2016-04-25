@@ -150,6 +150,8 @@ public class TdpCadre {
 	private UnionTabUser createdUnionTabUser;
 	private UnionTabUser updatedUnionTabUser;
 	
+	private String payMentStaus;
+	private Long parentTdpCadreId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -1044,6 +1046,23 @@ public class TdpCadre {
 	public void setUpdatedUnionTabUser(UnionTabUser updatedUnionTabUser) {
 		this.updatedUnionTabUser = updatedUnionTabUser;
 	}
+	
+	@Column(name="payment_status")
+	public String getPayMentStaus() {
+		return payMentStaus;
+	}
+	public void setPayMentStaus(String payMentStaus) {
+		this.payMentStaus = payMentStaus;
+	}
+	
+	@Column(name="parent_tdp_cadre_id")
+	public Long getParentTdpCadreId() {
+		return parentTdpCadreId;
+	}
+	public void setParentTdpCadreId(Long parentTdpCadreId) {
+		this.parentTdpCadreId = parentTdpCadreId;
+	}
+	
 	
 	
 }
