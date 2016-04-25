@@ -96,7 +96,7 @@ public interface IStaticDataService {
 		
 		public List<ElectionBasicInfoVO> getParliamentElectionsInfoForAConstituency(Long constituencyId);
 		
-		public List<SelectOptionVO> getConstituencies(Long stateId);
+		public List<SelectOptionVO> getConstituencies(Long stateId,Long stateTypeId);
 		
 		public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear, String electionType);
 		
