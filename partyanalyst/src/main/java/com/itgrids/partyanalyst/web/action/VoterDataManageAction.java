@@ -230,7 +230,7 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			allConstituenciesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		}
-		constituencyList = staticDataService.getConstituencies(1l);
+		constituencyList = staticDataService.getConstituencies(1l,null);
 		
 		constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
 			

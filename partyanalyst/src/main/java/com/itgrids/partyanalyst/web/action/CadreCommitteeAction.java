@@ -629,7 +629,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	}
 	public String newCadreSearchExe(){
 		
-		selectOptionVOList = staticDataService.getConstituencies(1l);
+		selectOptionVOList = staticDataService.getConstituencies(1l,1L);
 		
 		return Action.SUCCESS;
 	}
