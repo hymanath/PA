@@ -808,6 +808,8 @@
 				  <value>com.itgrids.partyanalyst.model.AppointmentUserType</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentUserTypeAccessStatus</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentStatusFlow</value>
+				  <value>com.itgrids.partyanalyst.model.LoginRequiredUrl</value>
+				  
 				  
 				 <!-- appointment related Models -->
 				 
