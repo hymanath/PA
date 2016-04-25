@@ -2475,7 +2475,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='</div>';
 								if(result[i].designation==null)
 									result[i].designation = "";
-								str+='<div class="col-md-1 m_top10 col-md-offset-4" attr_id="'+result[i].id+'" >';
+								str+='<div class="col-md-2 m_top10 col-md-offset-3" attr_id="'+result[i].id+'" >';
 								if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0)
 								str+='<a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
 								/* <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
