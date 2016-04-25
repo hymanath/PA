@@ -104,7 +104,7 @@ footer
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
             	<p style="margin-top:1px;margin-bottom:0px;font-size:10px;color:#333;padding:0px;">Welcome, ${sessionScope.UserName} |</p> </c:if>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
-				<p style="padding:0px;font-size:10px;color:#333;margin-top:1px;margin-bottom:0px;">Welcome, ${sessionScope.UserName} |</c:if>
+				<p style="padding:0px;font-size:10px;color:#333;margin-top:1px;margin-bottom:0px;" class="adminCls">Welcome, ${sessionScope.UserName} |</c:if>
 				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<a style="color:green !important;" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
 						|
