@@ -114,12 +114,21 @@
                         </div>
 						
 						<div class="row">
-								<div class="col-md-12">
-									<div id="stateWiseViewDid"></div>
-								</div>
+							<div class="col-md-12">
+								<div id="stateWiseViewDid"></div>
 							</div>
-							
-                        <div class="panel-body pad_0" id="nonBloodDonationDivId">
+						</div>
+						<div class="row  m_top10">
+							<div class="col-md-12">
+								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
+									<h4 class="panel-title" id="headingDiv" style="font-weight:bold;">ACTIVITIES STATUS REPORT</h4>
+								</div>
+                            </div>
+							<div class="col-md-12">
+								<div id="buildActivityReasonReportTableId"></div>
+							</div>
+						</div>
+                        <div class="panel-body pad_0 m_top20" id="nonBloodDonationDivId">
 							<div class="row">
 								<div class="col-md-12">
 									<div class=" pad_10">
@@ -352,6 +361,8 @@ var tableToExcel = (function() {
     window.location.href = uri + base64(format(template, ctx))
   }
 })()
+
+
 </script>
 </body>
 </html>

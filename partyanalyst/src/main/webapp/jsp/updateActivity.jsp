@@ -1318,7 +1318,7 @@ $("#hideAsmblyData").click(function(){
 	 // $("#buildAssConsActivity").hide();
   }
       $(document).on("change",".selectedVal",function(){
-		var serialNoTypeId=['a','b','c','d','e'];  
+		var serialNoTypeId=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];  
 		var optionId=$(this).val();
 		var questionId=$(this).attr("attr_qid");
 		var subQustionDivId =$(this).attr("subQustionDivId");
@@ -1395,7 +1395,7 @@ $("#hideAsmblyData").click(function(){
 							}
 						} 
 						if(result.activityVoList[i].remarks=="true"){
-							   str+='&nbsp;&nbsp;<br><input type="text" name="result'+result.activityVoList[i].questionId+'" placeholder="Enter Remarks" class="remarksCls form-control" attr_qid="'+result.activityVoList[i].questionId+'" id="remark'+result.activityVoList[i].questionId+'" />';
+							   str+='&nbsp;&nbsp;<br><textarea rows="2" cols="10" maxlength="200" name="result'+result.activityVoList[i].questionId+'" placeholder="Enter Remarks" class="remarksCls form-control" attr_qid="'+result.activityVoList[i].questionId+'" id="remark'+result.activityVoList[i].questionId+'"/>';
 						    }
 						str+='</div>';
 							str+='<div id="questionId'+result.activityVoList[i].questionId+'" ></div>';

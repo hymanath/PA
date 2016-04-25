@@ -820,7 +820,8 @@
 				  <value>com.itgrids.partyanalyst.model.AppointmentSmsHistory</value>
 				  <value>com.itgrids.partyanalyst.model.SmsOtpDetails</value>
 				  <value>com.itgrids.partyanalyst.model.UserAppointmentUser</value>
-			     </list>
+				   <value>com.itgrids.partyanalyst.model.ActivityStatusQuestionnaire</value>
+				 </list>
 			
 		</property>
 	</bean>
