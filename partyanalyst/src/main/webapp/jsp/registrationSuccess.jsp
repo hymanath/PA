@@ -9,7 +9,11 @@
 <div id="statusDiv"></div>
 
 <script>
+var membershipNo = '${membershipNo}';
+var enrollMentNO = '${enrollMentNO}';
+var status = '${status}';
 
+showUploadStatus();		
 function startSearchingPage(){
 	window.location.href="affiliatedCadreSearchAction.action";
 }
@@ -30,7 +34,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
 			str+= '<p class="text-align">Your Membership No : '+membershipNo+' </p>';
-			str+= '<p class="text-align">Your Enrollment No : '+entitlementNo+' </p>';			
+			str+= '<p class="text-align">Your Enrollment No : '+enrollMentNO+' </p>';			
 			str+= '</div>';
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
@@ -55,13 +59,7 @@ function showUploadStatus()
 		$('#statusDiv').html(str);
 	}
 </script>
-<script>	
-var membershipNo = '${membershipNo}';
-var entitlementNo = '${entitlementNo}';
-var status = '${status}';
-        showUploadStatus();
 
-</script>	
 </body>
 </html>
    
