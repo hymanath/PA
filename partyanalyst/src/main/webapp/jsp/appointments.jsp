@@ -6616,12 +6616,13 @@ function getCommitteeRoles(){
 		str+='<td>'+result[i].preferredDate+'</td>';
 		str+='<td>'+result[i].confirmedDate+'</td>';
 		str+='<td>'+result[i].status+'</td>';
-		str+='<td><a onclick="getAppointCommentsForTracking(\''+result[i].id+'\',\''+result[i].uniqueCode+'\')">View Comments</a></td>';
+		//str+='<td><a onclick="getAppointCommentsForTracking(\''+result[i].id+'\',\''+result[i].uniqueCode+'\')">View Comments</a></td>';
+		str+='<td><img onclick="getAppointCommentsForTracking(\''+result[i].id+'\',\''+result[i].uniqueCode+'\')" style="height:16px;cursor:pointer;margin-right:5px;" title="View Status History" attr-aptname="'+result[i].uniqueCode+'" attr-id="'+result[i].id+'" class="pull-right " src="dist/Appointment/img/reqHistoryicon+.png">';
 		str+='</tr>';	
 		}
 		str+='</tbody>';
 		str+='</table>';
-		str+='<div id="appointmentCommentsDiv"></div>';
+		str+='<div id="appointmentCommentsDiv" class="m_top30"></div>';
 		$("#aptCandidateHistoryDiv").html(str);	
 	     $('#aptCandidateHistorydatatable').DataTable();
 	}
@@ -6648,8 +6649,10 @@ function getCommitteeRoles(){
 	function buildAppointCommentsForTracking(result,aptName)
 	{
 			var str='';
-	//$("#statusTrackingName").html(''+aptName+' Appointment Status Tracking')
+	
 	str+='<h4>'+aptName+' Appointment Status Tracking </h4>';
+	if(result == null || result.length == 0)
+		$("#appointmentCommentsDiv").html('No Data Available');
 	str+='<ul class="apptStatusTracking">';
 	for(var i in result){
 		
@@ -6659,7 +6662,8 @@ function getCommitteeRoles(){
 			str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 				else
 				str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
-				if(result[i].commentsList != null && result[i].commentsList.length > 0)
+			
+				if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0)
 				{
 					str+='<u style="font-size:15px;">Comments</u>';
 					for(var j in result[i].commentsList)
@@ -6896,7 +6900,7 @@ function getStatusTrackingDetls(appontmntId,aptName){
 	}
 	$.ajax({
 		type : 'POST',
-		url : 'getAppointmentStatusTrackingAction.action',
+		url : 'getAppointmentStatusCommentsTrackingDetails.action',
 		dataType : 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
@@ -6913,19 +6917,25 @@ function apptTrackingStatus(result,aptName)
 {
 	var str='';
 	$("#statusTrackingName").html(''+aptName+' Appointment Status Tracking')
-	str+='<ul class="apptStatusTracking">';
+		str+='<ul class="apptStatusTracking">';
 	for(var i in result){
+		
 		str+='<li>';
 			str+='<div class="arrow_box">';
 			if(result[i].id == 1)
-			str+='<p> <span class="text-success"><b>'+result[i].status+'</b></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+			str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 				else
 				str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
-				if(result[i].comments != null && result[i].comments.length > 0)
+				if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0)
 				{
-				str+='<u style="font-size:15px;">Comments</u>';
-				str+='<p>'+result[i].comments+'</p>';	
+					str+='<u style="font-size:15px;">Comments</u>';
+					for(var j in result[i].commentsList)
+					{
+					
+					str+='<p>'+result[i].commentsList[j]+'</p>';	
+					}
 				}
+				
 			str+='</div>';
 		str+='</li>';	
 	}
