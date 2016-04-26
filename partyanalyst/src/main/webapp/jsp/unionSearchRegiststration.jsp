@@ -21,13 +21,13 @@
 			<div class="panel panel-default">
 				<div class="panel-body bgImage" style="padding:30px;padding-bottom:140px;">
 					<div class="row">
-						<div class="col-md-7 col-md-offset-5 col-xs-12 col-sm-offset-4 col-sm-8">
+						<div class="col-md-7 col-md-offset-5 col-xs-12 col-sm-offset-4 col-sm-8 changeDiv">
 							<div class="row">
-								<div class="col-md-3">
+								<div class="col-md-3 imgDiv">
 									<img src="dist/GraduatesSearch/Logo.png" class="img-responsive"/>
 								</div>
 								<div class="col-md-9 m_top20" style="border-left:1px solid #ddd">
-									<h3>TELUGUNADU GRADUATES FEDERATION MEMBER ENROLLMENT</h3>
+									<p style="font-size:16px"><span style="font-size:20px">T</span>ELUGUNADU <span style="font-size:20px">G</span>RADUATES <span style="font-size:20px">F</span>EDERATION <br/>MEMBER ENROLLMENT</p>
 								</div>
 							</div>
 							<div class="row m_top20">
@@ -86,7 +86,7 @@
 							<img src='images/icons/cadreSearch.gif' class="offset3"  id="searchDataImg" class="col-md-4 col-md-offset-2" style="height: 250px; padding-bottom: 26px;display:none;"/>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreMemberListCls">
 								<div id="topPaginationDivId" class="paginationDivId"></div>
-								<div class="well well-sm" style="border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
+								<div style="overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
 								<div id="paginationDivId"  class="paginationDivId"></div>
 
 							</div>

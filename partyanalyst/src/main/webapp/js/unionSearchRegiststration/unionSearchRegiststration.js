@@ -84,9 +84,11 @@ $("#searchId").click(function(){
 	var registeredChk = $('input[name="tdpCadreRadio"]:checked').val();
 	if(registeredChk == "yes"){
 		getCadreDetailsBySearchCriteria(0);
+		
 	}
 	else if(registeredChk == "no"){
 		getVoterDetailsBySearch();
+		
 	}
 });
 
@@ -130,15 +132,18 @@ function buildVoterDetails(result){
 	
 	if(result != null){
 		for(var i in result){
-			str+='<div class="media " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border-bottom: 1px solid rgb(51, 51, 51);cursor:pointer;">';
+			str+='<div class="media " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border:1px solid #ddd;padding:8px;cursor:pointer;background:#f8f8f8">';
 				//str+='<span href="#" class="media-left">';
 				//str+='<img style="width: 64px; height: 64px;" src="images/Member_thamb_image.png" />';
 				//str+='</span>';
 				str+='<div class="media-body">';
-				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].voterName+'';				
-				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+'  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button> </h5>';
+				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].voterName+'';	
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+'  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button> ';
+				if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
+					str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;"> Already Registered </span>';
+				str+='</h5>';
 				str+='<ul class="list-inline">';
-				str+='<li>Age:'+result[i].age+'</li>';
+				str+='<li>Age:'+result[i].age+'</li>';	
 				str+='<li>Gender: '+result[i].gender+'</li>';
 				if(result[i].mobileNo != null && result[i].mobileNo.length > 0)
 					str+='<li>Mobile No:'+result[i].mobileNo+'</span></li>';
@@ -160,6 +165,12 @@ function buildVoterDetails(result){
 		}
 		$(".cadreMemberListCls").show();
 		$('#cadreDetailsDiv').html(str);
+		$(".bgImage").css("background-image","none");
+		$(".bgImage").css("background-color","#959595");
+		$(".changeDiv").removeClass("col-md-7 col-md-offset-5 col-xs-12 col-sm-offset-4 col-sm-8")
+		$(".changeDiv").addClass("col-md-12 col-xs-12 col-sm-12")
+		$(".imgDiv").removeClass("col-md-3")
+		$(".imgDiv").addClass("col-md-2")
 }
 
 $(document).on("click",".detailsCls",function(){
@@ -283,6 +294,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		}
 	}
 	getCadreDetails(jsObj);
+	
 }
 
 function buildCadreDetails(result,jsObj){
@@ -296,7 +308,7 @@ function buildCadreDetails(result,jsObj){
 				if(result[i].deletedStatus == "MD"){
 					str+='<div class="media eachCadreMainDivCls" style="background: rgba(255, 0, 0, 0.1) none repeat scroll 0 0;padding: 5px;border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
 				}else{
-					 str+='<div class="media" id="main'+result[i].tdpCadreId+'" style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
+					 str+='<div class="media" id="main'+result[i].tdpCadreId+'" style="border:1px solid #ddd;padding:8px;cursor:pointer;background:#f8f8f8" attr_cadre_id='+result[i].tdpCadreId+'>';
 				}
 				
 				str+='<span href="#" class="media-left">';
@@ -304,15 +316,17 @@ function buildCadreDetails(result,jsObj){
 				str+='</span>';
 				str+='<div class="media-body">';
 				str+='<span class="pull-right"><input type="checkbox" name="otpMobileNo"  attr_cadreId="'+result[i].tdpCadreId+'" value="'+result[i].tdpCadreId+'" id="cadreCheckId'+i+'" class="otpCheckboxCls"/></span>'
+				if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
+					str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;">  Already Registered </span>';
 				str+='<h5 class="media-heading"><div id="nameId" attr_cadreId="'+result[i].tdpCadreId+'"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
 				str+='<span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
 				str+='<li><span style="font-weight:bold;">Age:</span>'+result[i].age+';</li>';
 				str+='<li><span style="font-weight:bold;">Gender: </span>'+result[i].gender+'</span></li>';
 				str+='<li><span style="font-weight:bold;">Mobile No:</span> <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span><input type="hidden" id="mobileNo'+result[i].tdpCadreId+'" value="'+result[i].mobileNo+'"/></li><br>';
-				str+='<li><span style="font-weight:bold;">Caste: </span><span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
+				//str+='<li><span style="font-weight:bold;">Caste: </span><span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
 				str+='<li><span style="font-weight:bold;">Voter ID:</span> '+result[i].voterCardNo+'</li><br>';
-				str+='<li><span style="font-weight:bold;">MemberShipNo:</span> '+result[i].memberShipCardId+'</li>';
+				//str+='<li><span style="font-weight:bold;">MemberShipNo:</span> '+result[i].memberShipCardId+'</li>';
 				//str+='<li><span style="font-weight:bold;">Registered Through:</span> '+result[i].dataSourceType+'</li>';
 				if(result[i].deletedStatus == "MD"){
 					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
@@ -359,6 +373,12 @@ function buildCadreDetails(result,jsObj){
 		}
 		$(".cadreMemberListCls").show();
 		$('#cadreDetailsDiv').html(str);
+		$(".bgImage").css("background-image","none");
+		$(".bgImage").css("background-color","#959595");
+		$(".changeDiv").removeClass("col-md-7 col-md-offset-5 col-xs-12 col-sm-offset-4 col-sm-8")
+		$(".changeDiv").addClass("col-md-12 col-xs-12 col-sm-12")
+		$(".imgDiv").removeClass("col-md-3")
+		$(".imgDiv").addClass("col-md-2")
 }
 
 function generateOTPForMobileNo(currentButton){
