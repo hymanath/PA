@@ -119,22 +119,50 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private CardPrintUserVO cardPrintUserVO;
 	private AffiliatedCadreVO affiliatedCadreVO;
 	private Long membershipNo;
-	private Long entitlementNo;
+	private Long enrollMentNO;
+	private String AuthDesc;
+	private String Order_Id;
+	private String Merchant_Id;
 	
 	
 	
+	public Long getEnrollMentNO() {
+		return enrollMentNO;
+	}
+	public void setEnrollMentNO(Long enrollMentNO) {
+		this.enrollMentNO = enrollMentNO;
+	}
+	public String getAuthDesc() {
+		return AuthDesc;
+	}
+	public void setAuthDesc(String authDesc) {
+		AuthDesc = authDesc;
+	}
+	public String getOrder_Id() {
+		return Order_Id;
+	}
+	public void setOrder_Id(String order_Id) {
+		Order_Id = order_Id;
+	}
+	public String getMerchant_Id() {
+		return Merchant_Id;
+	}
+	public void setMerchant_Id(String merchant_Id) {
+		Merchant_Id = merchant_Id;
+	}
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
 	public Long getMembershipNo() {
 		return membershipNo;
 	}
 	public void setMembershipNo(Long membershipNo) {
 		this.membershipNo = membershipNo;
 	}
-	public Long getEntitlementNo() {
-		return entitlementNo;
-	}
-	public void setEntitlementNo(Long entitlementNo) {
-		this.entitlementNo = entitlementNo;
-	}
+	
 	public AffiliatedCadreVO getAffiliatedCadreVO() {
 		return affiliatedCadreVO;
 	}
