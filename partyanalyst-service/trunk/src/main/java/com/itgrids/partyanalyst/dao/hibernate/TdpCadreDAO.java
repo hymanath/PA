@@ -6660,6 +6660,6 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		return query.list();
 	}
 	  
-	  
 	
+	  
 }
