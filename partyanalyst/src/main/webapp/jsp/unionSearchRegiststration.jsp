@@ -51,23 +51,22 @@
 							<div class="form-inline btn btn-default">
 								<div class="radio">
 									<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" id="membershipId" value="1">  MEMBERSHIP ID    &nbsp;&nbsp;</label>
-								
+								 
 									<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  value="2" >  VOTER ID    &nbsp;&nbsp;</label>
-								
+								        
 									<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"    value="3"> MOBILE NO &nbsp;&nbsp;</label><br>
 									<input type="hidden" id="cadreSearchType" value="membershipId" />
 								</div>				  
 							</div>
 						</div>
-					</div>
+					</div>    
 					<div class="row">
 						<div class="col-md-6 m_top10">
-							<label>Constituency<span style="color:red;">*</span></label>
+							<label>Constituency</label>
 							<!--<select class="dropkickClass" id="constituencyId">
 								<option value="0">Select Constituency</option>
 							</select>-->
-							<s:select theme="simple" cssClass="form-control" id="constituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"/>
-							<div id="constErrId" style="color:red;"></div>
+							<s:select theme="simple" cssClass="form-control" id="constituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue="ALL"/>
 						</div>
 					</div>
 					<div class="row">
