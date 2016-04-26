@@ -12,11 +12,31 @@ public class StatusTrackingVO {
 	private String uname;
 	private String date;
 	private String time;
-	
+	private List<String> commentsList;
 	
 	private boolean current;
+	private Long fromStatusId;
+	private String fromStatus;
 	
+	public List<String> getCommentsList() {
+		return commentsList;
+	}
+	public void setCommentsList(List<String> commentsList) {
+		this.commentsList = commentsList;
+	}
 	
+	public Long getFromStatusId() {
+		return fromStatusId;
+	}
+	public void setFromStatusId(Long fromStatusId) {
+		this.fromStatusId = fromStatusId;
+	}
+	public String getFromStatus() {
+		return fromStatus;
+	}
+	public void setFromStatus(String fromStatus) {
+		this.fromStatus = fromStatus;
+	}
 	public String getTime() {
 		return time;
 	}

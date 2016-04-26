@@ -5452,15 +5452,8 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		try{
 			
 			List<Object[]> list = appointmentTrackingDAO.getAppointmentTrackingDetails(appointmentId);
-				List<StatusTrackingVO> orderStatusList = getOrderStatusList();
-				 	Long currentStatus = appointmentDAO.getCurrentAppointmentStatus(appointmentId);
-					resultList = getStatusFlowList(list,orderStatusList,currentStatus);
-					setTimeDiffForTracking(orderStatusList);
-					if(resultList != null && resultList.size() > 0)
-					{
-						resultList.get(0).setFlowList(orderStatusList);
-					}
-				}
+				resultList = getStatusTrackingList(list);
+			}
 		catch(Exception e)
 		{
 			e.printStackTrace();
@@ -5468,6 +5461,32 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return resultList;
 	}
+	
+	
+	// Appointment Status Flow Tracking Details
+	
+		public List<StatusTrackingVO> getAppointmentStatusCommentsTrackingDetails(Long appointmentId)
+		{
+			LOG.info("Entered in getAppointmentStatusTrackingDetails() method");
+			List<StatusTrackingVO> resultList = null;
+			try{
+				
+				List<Object[]> list = appointmentTrackingDAO.getAppointmentTrackingDetails(appointmentId);
+				
+						resultList = getStatusCommentsList(list);
+						/*setTimeDiffForTracking(orderStatusList);
+						if(resultList != null && resultList.size() > 0)
+						{
+							resultList.get(0).setFlowList(orderStatusList);
+						}*/
+					}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				LOG.error("Entered in getAppointmentStatusFlowTrackingDetails() method");
+			}
+			return resultList;
+		}
 	
 	public void setTimeDiffForTracking(List<StatusTrackingVO> list)
 	{
@@ -5537,13 +5556,14 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		return orderList;
 		
 	}
-	
-	public List<StatusTrackingVO> getStatusFlowList(List<Object[]> list,List<StatusTrackingVO> orderStatusList,Long currentStatus)
+	public List<StatusTrackingVO> getStatusTrackingList(List<Object[]> list)
 	{
 		List<StatusTrackingVO>  resultList = new ArrayList<StatusTrackingVO>();
 		try{
+			
 			for(Object[] params : list)
 			{
+				
 				StatusTrackingVO vo = new StatusTrackingVO();
 				vo.setId((Long)params[0]);
 				vo.setStatus(params[1] != null ? params[1].toString() : "");
@@ -5553,16 +5573,65 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				vo.setUname(fname+" "+lname);
 				vo.setComments(params[8] != null ? params[8].toString() : "");
 				vo.setDate(params[6] != null ? params[6].toString().substring(0, 19) : "");
+				if(params[9] != null)
+				{
+					vo.setFromStatusId((Long)params[9]);
+					vo.setFromStatus(params[10].toString());
+				}
+				
 				resultList.add(vo);
 				
-				 StatusTrackingVO orderVo = getMatchedStatusVo(orderStatusList,vo.getId());
-				 if(orderVo != null)
-				 {
-					 orderVo.setDate(params[6] != null ? params[6].toString() : "");
-					 if(currentStatus.longValue() == vo.getId().longValue())
-						 orderVo.setCurrent(true);
-						 
-				 }
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			LOG.error("Entered in getStatusFlowList() method");
+		}
+		return resultList;
+	}
+	public List<StatusTrackingVO> getStatusCommentsList(List<Object[]> list)
+	{
+		List<StatusTrackingVO>  resultList = new ArrayList<StatusTrackingVO>();
+		try{
+			for(int i=0;i<list.size();i++)
+			{
+				Object[] params = list.get(i);
+				StatusTrackingVO vo = new StatusTrackingVO();
+				vo.setId((Long)params[0]);
+				vo.setStatus(params[1] != null ? params[1].toString() : "");
+				vo.setUserId((Long)params[2]);
+				String fname = params[3] != null ? params[3].toString() : "";
+				String lname = params[4] != null ? params[4].toString() : "";
+				vo.setUname(fname+" "+lname);
+				if(vo.getCommentsList() == null || vo.getCommentsList().size() > 0)
+				{
+					vo.setCommentsList(new ArrayList<String>());
+					vo.getCommentsList().add(params[8] != null ? params[8].toString() : "");
+				}
+				vo.setDate(params[6] != null ? params[6].toString().substring(0, 19) : "");
+				if(params[9] != null)
+				{
+					vo.setFromStatusId((Long)params[9]);
+					vo.setFromStatus(params[10].toString());
+				}
+				
+				  for(int j=i+1;j<list.size();j++)
+				  {
+					  Object[] params1 = list.get(j);
+					//  Long l = (Long)params[0];
+					  if(params[1].toString().equalsIgnoreCase(params1[1].toString()))
+					  {
+						  vo.getCommentsList().add(params1[8] != null ? params1[8].toString() : "");
+						  i++;
+					  }
+					  else
+					  {
+						  break;
+					  }
+					  
+				  }
+				resultList.add(vo);
 			}
 		}
 		catch(Exception e)
