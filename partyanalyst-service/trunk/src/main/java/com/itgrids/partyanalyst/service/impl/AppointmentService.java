@@ -2485,7 +2485,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	}
 	
 	
-public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
+	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 		
 		LabelStatusVO finalVo = new LabelStatusVO();
 		
@@ -2495,6 +2495,13 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 			  
 			  Map<Long,LabelStatusVO>  finalMap = new LinkedHashMap<Long,LabelStatusVO>();
 			  
+			  
+			  Map<Long,LabelStatusVO>  approvedMap = new LinkedHashMap<Long,LabelStatusVO>();
+			  List<Long> approvedlist = new ArrayList<Long>();
+			  approvedlist.add(IConstants.APPOINTMENT_STATUS_APPROVED);
+			  approvedlist.add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
+			  
+			  
 			  List<Object[]> statusList = appointmentStatusDAO.getStatusDetailsByIds(apptStatusList);
 			  if(statusList!=null && statusList.size()>0){
 				
@@ -2502,7 +2509,22 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 					  
 					  Long statusId = obj[0]!=null?(Long)obj[0]:0l;
 					  
-					  if(statusId.longValue() != IConstants.APPOINTMENT_STATUS_SCHEDULED.longValue() ){
+					  if( approvedlist.contains(statusId) ){
+		        			
+						     LabelStatusVO statusVO = new LabelStatusVO();
+						     statusVO.setStatusId(obj[0]!=null?(Long)obj[0]:0l);
+							 statusVO.setStatus(obj[0]!=null?obj[1].toString():"");
+							 statusVO.setTotalCount(0l);
+							  
+							 statusVO.setClickIds(new ArrayList<Long>(0));
+							 statusVO.getClickIds().add(statusId);
+							  
+			   	             approvedMap.put(statusId,statusVO);
+		        	  }
+					  
+					  
+					  
+					  if( !approvedlist.contains(statusId) || ( approvedlist.contains(statusId) && statusId == IConstants.APPOINTMENT_STATUS_APPROVED.longValue())){
 						  
 						  LabelStatusVO statusVO = new LabelStatusVO();
 						  statusVO.setStatusId(obj[0]!=null?(Long)obj[0]:0l);
@@ -2528,6 +2550,7 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 					  Long statusId = obj[0]!=null?(Long)obj[0]:0l;
 					  
 					  LabelStatusVO statusVO = null;
+					  
 					  if(statusId.longValue() == IConstants.APPOINTMENT_STATUS_SCHEDULED.longValue() ){
 						  statusVO = finalMap.get(IConstants.APPOINTMENT_STATUS_APPROVED);
 						  if(statusVO!=null){
@@ -2540,10 +2563,21 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 					  if(statusVO != null){
 						  statusVO.setTotalCount(  statusVO.getTotalCount() +( obj[2]!=null?(Long)obj[2]:0l));
 					  }
+					  
+					  LabelStatusVO approvedIndividualListVO = null;
+					  approvedIndividualListVO = approvedMap.get(statusId);
+					  if(approvedIndividualListVO !=null){
+						  approvedIndividualListVO.setTotalCount(obj[2]!=null?(Long)obj[2]:0l);
+					  }
 				  }
 			  }
 			  
 			  if(finalMap!=null && finalMap.size()>0){
+				  
+				  LabelStatusVO statusvo =  finalMap.get(IConstants.APPOINTMENT_STATUS_APPROVED.longValue());
+		    	  if(statusvo != null){
+		    		  statusvo.setSubList(new ArrayList<LabelStatusVO>(approvedMap.values()));
+		    	  }
 				  finalVo.setStatusList(new ArrayList<LabelStatusVO>(finalMap.values()));
 			  }
 			  
@@ -2554,25 +2588,45 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	}
 	
 	public List<AppointmentStatusVO> getAppointmentStatusCounts(Long apptUserId){
-	    
-	    List<AppointmentStatusVO> finalList = new ArrayList<AppointmentStatusVO>(0);
-	    try{
-	       
-	       List<Object[]> statusList = appointmentStatusDAO.getAllAppointmentStatus();
-	       
-	       Map<Long,AppointmentStatusVO> finalMap = new LinkedHashMap<Long,AppointmentStatusVO>();
-	       
-	       if(statusList!=null && statusList.size()>0){
-	        for (Object[] obj : statusList) {
-	           
-	        	Long statusId = obj[0]!=null?(Long)obj[0]:0l;
-	        	
-	        	if( statusId.longValue() != IConstants.APPOINTMENT_STATUS_WITHDRAWN.longValue() && 
-	        	    statusId.longValue() != IConstants.APPOINTMENT_STATUS_NOTATTENDED.longValue() && 
-	        	    statusId.longValue() != IConstants.APPOINTMENT_STATUS_CANCELLED.longValue() && 
-	        		statusId.longValue() != IConstants.APPOINTMENT_STATUS_RESCHEDULED.longValue() ){     
-	        		
-	        		 AppointmentStatusVO VO = new AppointmentStatusVO();
+    
+    List<AppointmentStatusVO> finalList = new ArrayList<AppointmentStatusVO>(0);
+    
+    try{
+       
+       List<Object[]> statusList = appointmentStatusDAO.getAllAppointmentStatus();
+       
+       List<Long> approvedlist = new ArrayList<Long>();
+       approvedlist.add(IConstants.APPOINTMENT_STATUS_APPROVED);
+       approvedlist.add(IConstants.APPOINTMENT_STATUS_NOTATTENDED);
+       approvedlist.add(IConstants.APPOINTMENT_STATUS_CANCELLED);
+       approvedlist.add(IConstants.APPOINTMENT_STATUS_RESCHEDULED);
+       
+       
+       Map<Long,AppointmentStatusVO> finalMap = new LinkedHashMap<Long,AppointmentStatusVO>();
+       Map<Long,AppointmentStatusVO> approvedMap = new LinkedHashMap<Long,AppointmentStatusVO>();
+       
+       if(statusList!=null && statusList.size()>0){
+        for (Object[] obj : statusList) {
+           
+        	Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+        	
+        	if( statusId.longValue() != IConstants.APPOINTMENT_STATUS_WITHDRAWN.longValue()){
+        		
+        		if( approvedlist.contains(statusId) ){
+        			
+        			 AppointmentStatusVO VO = new AppointmentStatusVO();
+	        		 VO.setAppointmentStatusId(statusId);
+	        		 VO.setStatus(obj[1]!=null?obj[1].toString():"");
+	   	             VO.setStatusCount(0l);
+	   	             VO.setMembersCount(0l);
+	   	             
+	   	             VO.setClickIds(new ArrayList<Long>());
+	   	             VO.getClickIds().add(statusId);
+	   	             approvedMap.put(statusId,VO);
+        		}
+        		
+        		if( !approvedlist.contains(statusId) || ( approvedlist.contains(statusId) && statusId == IConstants.APPOINTMENT_STATUS_APPROVED.longValue())){
+        			 AppointmentStatusVO VO = new AppointmentStatusVO();
 	        		 VO.setAppointmentStatusId(statusId);
 	        		 VO.setStatus(obj[1]!=null?obj[1].toString():"");
 	   	             VO.setStatusCount(0l);
@@ -2581,61 +2635,65 @@ public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
 	   	             VO.setClickIds(new ArrayList<Long>());
 	   	             VO.getClickIds().add(statusId);
 	   	             finalMap.put(statusId,VO);
-	        	}
-	        }
-	       }
-	       
-	       List<Long>  apptBasicCountsList =Arrays.asList(IConstants.REQUIRED_APPOINTMENTS_LIST);
-	       List<Object[]> countList = appointmentCandidateRelationDAO.eachStatusApptCountAndUniqueMemCount(apptUserId,apptBasicCountsList);
-	       if(countList!=null && countList.size()>0){
-	         for(Object[] obj:countList){
-	        	 
-	           Long statusId = obj[0]!=null?(Long)obj[0]:0l;
-	           AppointmentStatusVO statusvo = finalMap.get(statusId);
-	           if(statusvo!=null){
-	             statusvo.setStatusCount(obj[2]!=null?(Long)obj[2]:0l);
-	             statusvo.setMembersCount(obj[3]!=null?(Long)obj[3]:0l);
-	           }
-	         }
-	       }
-	      
-	      
-	       List<Long> approvedlist = new ArrayList<Long>();
-	       approvedlist.add(IConstants.APPOINTMENT_STATUS_APPROVED);
-	       approvedlist.add(IConstants.APPOINTMENT_STATUS_NOTATTENDED);
-	       approvedlist.add(IConstants.APPOINTMENT_STATUS_CANCELLED);
-	       
-	       Object[] approvedObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,approvedlist);
-	       setData(finalMap,approvedObj,IConstants.APPOINTMENT_STATUS_APPROVED,approvedlist);
-	       
-	       List<Long> scheduledList = new ArrayList<Long>();
-	       scheduledList.add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
-	       scheduledList.add(IConstants.APPOINTMENT_STATUS_RESCHEDULED);
-	       
-	       Object[] scheduledObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,scheduledList);
-	       setData(finalMap,scheduledObj,IConstants.APPOINTMENT_STATUS_SCHEDULED,scheduledList);
-	       
-	       if(finalMap!=null && finalMap.size()>0){
-	    	   finalList.addAll(finalMap.values());
-	       }
-	       
-	    }catch(Exception e){
-	    	LOG.error("Exception raised at getAppointmentStatusCounts", e);
-	    }
-	    return finalList;
-	  }
-	public void setData(Map<Long,AppointmentStatusVO> finalMap,Object[] objArray,Long statusId,List<Long> clickList){
-    
-    if(objArray!=null && objArray.length>0){
-       
-       AppointmentStatusVO statusvo = finalMap.get(statusId.longValue());
-       if(statusvo!=null){
-    	 statusvo.setClickIds(clickList);
-         statusvo.setStatusCount(objArray[0]!=null?(Long)objArray[0]:0l);
-         statusvo.setMembersCount(objArray[1]!=null?(Long)objArray[1]:0l); 
+        		}
+        	}
+        }
        }
-     }
+       
+       List<Long>  apptBasicCountsList =Arrays.asList(IConstants.REQUIRED_APPOINTMENTS_LIST);
+       List<Object[]> countList = appointmentCandidateRelationDAO.eachStatusApptCountAndUniqueMemCount(apptUserId,apptBasicCountsList);
+       if(countList!=null && countList.size()>0){
+         for(Object[] obj:countList){
+        	 
+           Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+           
+           AppointmentStatusVO statusvo = finalMap.get(statusId);
+           if(statusvo!=null){
+             statusvo.setStatusCount(obj[2]!=null?(Long)obj[2]:0l);
+             statusvo.setMembersCount(obj[3]!=null?(Long)obj[3]:0l);
+           }
+           AppointmentStatusVO individualInApprovedListVO = approvedMap.get(statusId);
+           if(individualInApprovedListVO!=null){
+        	   individualInApprovedListVO.setStatusCount(obj[2]!=null?(Long)obj[2]:0l);
+        	   individualInApprovedListVO.setMembersCount(obj[3]!=null?(Long)obj[3]:0l);
+           }
+           
+         }
+       }
+      
+       
+       Object[] approvedObj =appointmentCandidateRelationDAO.combinedStatusApptAndUniqueMemCount(apptUserId,approvedlist);
+       setData(finalMap,approvedObj,IConstants.APPOINTMENT_STATUS_APPROVED,approvedlist);
+       
+       
+       if(finalMap!=null && finalMap.size()>0){
+    	   
+    	  AppointmentStatusVO statusvo =  finalMap.get(IConstants.APPOINTMENT_STATUS_APPROVED.longValue());
+    	  if(statusvo != null){
+    		  statusvo.setSubList(new ArrayList<AppointmentStatusVO>(approvedMap.values()));
+    	  }
+    	   
+    	   finalList.addAll(finalMap.values());
+       }
+       
+    }catch(Exception e){
+    	LOG.error("Exception raised at getAppointmentStatusCounts", e);
+    }
+    return finalList;
   }
+
+	public void setData(Map<Long,AppointmentStatusVO> finalMap,Object[] objArray,Long statusId,List<Long> clickList){
+	
+		if(objArray!=null && objArray.length>0){
+		   
+		   AppointmentStatusVO statusvo = finalMap.get(statusId.longValue());
+		   if(statusvo!=null){
+			 statusvo.setClickIds(clickList);
+		     statusvo.setStatusCount(objArray[0]!=null?(Long)objArray[0]:0l);
+		     statusvo.setMembersCount(objArray[1]!=null?(Long)objArray[1]:0l); 
+		   }
+		 }
+	}
 	  
 	  
 	  public AppointmentStatusVO getMatchedStatus(List<AppointmentStatusVO> finalList, String status){

@@ -20,6 +20,7 @@ public class LabelStatusVO {
 	private List<AppointmentStatus> staticStatusList = new ArrayList<AppointmentStatus>(0);
 	
 	private List<Long> clickIds;
+	private List<LabelStatusVO> subList;
 	
 	public Long getLabelId() {
 		return labelId;
@@ -80,6 +81,12 @@ public class LabelStatusVO {
 	}
 	public void setClickIds(List<Long> clickIds) {
 		this.clickIds = clickIds;
+	}
+	public List<LabelStatusVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<LabelStatusVO> subList) {
+		this.subList = subList;
 	}
 	
 	
