@@ -739,6 +739,47 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		return query.list();
 		
 	}
+	public List<Object[]> getAllScheduledApptsByDate(Long apptUserId,Date date,Long apptStatusId){
+		
+		StringBuilder sb =new StringBuilder();
+		
+		sb.append(" select   ACR.appointmentCandidate.appointmentCandidateId, ACR.appointmentCandidate.name," +
+				"            ACR.appointmentCandidate.mobileNo,ACR.appointmentCandidate.candidateDesignation.designation," +
+				"            ACR.appointment.reason,ACR.appointment.createdUser.userId,ACR.appointment.createdUser.firstName,ACR.appointment.createdUser.lastName," +
+				"            ATS.fromDate," +
+				"            ACR.appointment.appointmentStatusId,ACR.appointment.appointmentStatus.status,ACR.appointment.appointmentId," +
+				"            ATS.toDate," +
+				"            ACR.appointment.appointmentUniqueId,ATS.date,ACR.appointmentCandidate.imageURL,ACR.appointment.appointmentStatus.statusColor " +
+				"   from     AppointmentCandidateRelation ACR, AppointmentTimeSlot ATS " +
+				"   where    ACR.appointment.appointmentId = ATS.appointment.appointmentId " +
+				"            and ACR.appointment.isDeleted='N' and ATS.isDeleted='N' ");
+		
+				if(apptUserId != null && apptUserId >0l){
+					sb.append(" and ACR.appointment.appointmentUserId = :apptUserId");
+				}
+				if( date!=null ){
+					sb.append(" and ATS.date = :date");
+				}
+				if(apptStatusId!=null && apptStatusId >0l){
+					sb.append(" and ACR.appointment.appointmentStatusId = :apptStatusId");
+				}
+				sb.append(" order by ACR.appointment.updatedTime desc");
+				
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(apptUserId != null && apptUserId >0l){
+			query.setParameter("apptUserId",apptUserId);
+		}
+		if( date!=null ){
+			query.setDate("date",date);
+		}
+		if(apptStatusId!=null && apptStatusId >0l){
+			query.setParameter("apptStatusId",apptStatusId);
+		}
+		return query.list();
+	}
+	
+	
 	
 	public List<Object[]> getAppointmentsBySearchCriteria(Long designationId,Long priorityId,Long statusId,Long districtId,Long constituencyId,Date fromDate,Date toDate,Long selUserId,
 			Long candidateTypeId,Long dateTypeValue){

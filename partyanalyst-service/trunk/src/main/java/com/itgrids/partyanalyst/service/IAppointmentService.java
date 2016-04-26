@@ -87,5 +87,6 @@ public interface IAppointmentService {
 	public List<IdNameVO> getUpdatedStatusForaAppointment(Long userTypeId,Long currentStatusId);
 	public List<AppointmentSlotsVO>  getTimeSlotsForADayByAppytUserId(Long apptUserId,String dateStr);
 	public List<AppointmentStatusFlowVO> getApplicationContextWiseSatuses();
+	public List<AppointmentScheduleVO> getAllScheduledApptsByDate(Long apptUserId,String dateStr);
 	public List<StatusTrackingVO> getAppointmentStatusCommentsTrackingDetails(Long appointmentId);
 }
