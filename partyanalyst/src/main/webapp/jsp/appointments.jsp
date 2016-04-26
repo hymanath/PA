@@ -1030,6 +1030,7 @@
 		{
 			$("#confirmAppointmentBlockDropId").append("<h4 class='deleteTag' style='height:150px;'>DROP HERE</h4>")
 		}
+		$("#setTimeSlotBtnId").prop('disabled',true);
       },
       setData: function (dataTransfer, dragEl) {
         dataTransfer.setData('Text', dragEl.textContent);
@@ -1063,6 +1064,13 @@
 			  str+='</div>';
 			  $("#dragId").append(str);
 		}
+		//Set Button disabling and Enabling when drag and Drop
+		 if (isEmpty($('#confirmAppointmentBlockDropId'))) {
+			   $("#setTimeSlotBtnId").prop('disabled',true);
+		  }else{
+			 $("#setTimeSlotBtnId").prop('disabled',false);
+		  }
+		
 	  },
       onUpdate: function (evt){ console.log('onUpdate.editable:', [evt.item, evt.from]);},
       onRemove: function (evt){ console.log('onRemove.editable:', [evt.item, evt.from]); },
@@ -3087,7 +3095,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									
 									//history modal start
 									 if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
-											str+='<a  title="Click here to View '+result[i].subList[j].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
+											str+='<a  title="Click here to View '+result[i].subList[j].name+' Appointment History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
 									} 			
 									//history modal end
 									
@@ -3546,7 +3554,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									str+='<div class="col-md-8 font12">';									
 									//history modal start
 									 if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
-											str+='<a  title="Click here to View '+result[i].subList[j].name+' History"  data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><i class="glyphicon glyphicon-time m_top20" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
+											str+='<a  title="Click here to View '+result[i].subList[j].name+' Appointment History"  data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><i class="glyphicon glyphicon-time m_top20" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
 									} 
 									
 									str+='<div class=" displayrow " style="margin-top: -25px;">';
@@ -4100,7 +4108,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<p>'+result[i].subList[j].name+'</p>';
 						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'';
 						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
-								str+='<a style="display:inline-block;" title="Click here to View '+result[i].subList[j].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
+								str+='<a style="display:inline-block;" title="Click here to View '+result[i].subList[j].name+' Appointment History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
 						}
 						str+='</p>';
 						str+='</div>';
@@ -4190,8 +4198,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 <script>
 	
 	$(document).on("click",".cnfrmaptsCls",function(){
-		//getAppointmentLabels();
-		getAppointmentStatusOverview();
+		getAppointmentStatusOverview();	
+		//Set Button disabling
+		$('#setTimeSlotBtnId').attr('disabled',true);
+
+		//clearing the Div Area and setting default time format		
+		$("#confirmAppointmentBlockDropId").empty();
+		$("#confirmAppointmentBlockDropId").html("<h4 class='deleteTag'>DROP HERE</h4>");
+		   $("#fromTimeId").val("06:00 AM");
+		   $("#toTimeId").val("10:00 PM");
+		   $("#commentTxt").val("");
+ 		
 	});
 	
 	function getAppointmentLabels(){
@@ -4403,7 +4420,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='<span> - </span>';
 							}							
 							//str+='<span>2016-04-15</span>';
+							str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right statusTrackingModalbtn" attr-id='+result[i].appointmentId+' attr-aptName='+result[i].aptUniqueCode+' alt="ViewReqHistory" style="height:16px;cursor:pointer;margin-right:5px;"/>';
+							
 						str+='</div>';
+						 
 					str+='</ul>';	
 				  str+='</div>';
 				str+='</div>';
