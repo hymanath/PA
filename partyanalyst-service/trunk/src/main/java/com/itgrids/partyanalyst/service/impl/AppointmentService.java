@@ -4721,52 +4721,49 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		List<IdNameVO> candidteStusLst=null;
 		try {
 			List<AppointmentStatus> statusList=appointmentStatusDAO.getAll();
+			
 			if(statusList!=null && statusList.size()>0){
 				candidteStusLst=new ArrayList<IdNameVO>();
 				for(AppointmentStatus appintstts:statusList){
-					IdNameVO appointVO=new IdNameVO();
-					appointVO.setId(appintstts.getAppointmentStatusId());
-					appointVO.setName(appintstts.getStatus());
-					appointVO.setAvailableCount(0l);
-					candidteStusLst.add(appointVO);
-				}
+					
+					Long  statusId = appintstts.getAppointmentStatusId();
+					
+					if( statusId !=  IConstants.APPOINTMENT_STATUS_WITHDRAWN.longValue() && 
+						statusId !=  IConstants.APPOINTMENT_STATUS_CANCELLED.longValue() &&
+						statusId !=  IConstants.APPOINTMENT_STATUS_NOTATTENDED.longValue() && 
+						statusId !=  IConstants.APPOINTMENT_STATUS_RESCHEDULED.longValue() ){
+					
+						IdNameVO appointVO=new IdNameVO();
+						appointVO.setId(appintstts.getAppointmentStatusId());
+						appointVO.setName(appintstts.getStatus());
+						appointVO.setAvailableCount(0l);
+						candidteStusLst.add(appointVO);
+				    }
+			     }
 			}
-			
 			
 			List<Object[]> candidteStusCnt=appointmentCandidateRelationDAO.getAppointStatusOverviewforCandidate(apointmntcandidteId,apptUserId);
 			if(candidteStusCnt != null && candidteStusCnt.size() > 0)
 			{
 				for(Object[] params : candidteStusCnt)
 				{
-					IdNameVO vo = getMathedStatsVO(candidteStusLst,(Long)params[1]);
-					if(vo != null)
-						vo.setAvailableCount((Long)params[0]);
+					IdNameVO vo = null;
+					
+					Long statusId =params[1]!=null? (Long)params[1]:0l;
+					if( statusId == IConstants.APPOINTMENT_STATUS_CANCELLED.longValue() ||
+					    statusId == IConstants.APPOINTMENT_STATUS_RESCHEDULED.longValue() ||
+					    statusId == IConstants.APPOINTMENT_STATUS_NOTATTENDED.longValue() ){
+						
+						vo  = getMathedStatsVO(candidteStusLst,IConstants.APPOINTMENT_STATUS_APPROVED);
+					}else{
+						vo = getMathedStatsVO(candidteStusLst,statusId);
+					}
+					
+					if(vo != null){
+						vo.setAvailableCount(vo.getAvailableCount() + (Long)params[0]);
+					}
 				}
-				
 			}
-			 List<Object[]> list1 = appointmentCandidateRelationDAO.getFixedAttendedCount(apointmntcandidteId,dateUtilService.getCurrentDateAndTime(),apptUserId);
-			 Long fixedAttendedCnt =0l;
-			 if(list1 != null && list1.size() > 0)
-			 {
-				 for(Object[] params : list1)
-					{
-					 fixedAttendedCnt = fixedAttendedCnt + (Long)params[0];
-					} 
-			 }
-			 if(fixedAttendedCnt != null && fixedAttendedCnt > 0)
-			 {
-				 for(IdNameVO vo : candidteStusLst)
-				 {
-					 if(vo.getId().longValue() == IConstants.APPOINTMENT_STATUS_FIXED) //Fixed
-					 {
-						 vo.setAvailableCount(vo.getAvailableCount() - fixedAttendedCnt);
-					 }
-					 if(vo.getId().longValue() == IConstants.APPOINTMENT_STATUS_ATTENDED) //Attended 
-					 {
-						 vo.setAvailableCount(vo.getAvailableCount() + fixedAttendedCnt);
-					 }
-				 }
-			 }
 			
 		}catch(Exception e){
 			LOG.error("Error occured  in getApointmentStatusOvrviwforCandidte() method of AppointmentService",e);
