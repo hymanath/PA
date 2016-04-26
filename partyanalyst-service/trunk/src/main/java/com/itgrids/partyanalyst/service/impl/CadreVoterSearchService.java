@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -1000,6 +1001,15 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		
 		try {
 			List<VoterDetailsVO> voterDetailsList = new ArrayList<VoterDetailsVO>();
+			Map<String,String> voterCheckMap = new LinkedHashMap<String, String>();
+			
+			List<Object[]> list1 = tdpCadreDAO.checkVoterCardNumberRegistration(voterIDCardNo);
+			if(list1 != null && list1.size() > 0){
+				for (Object[] obj : list1) {
+					String registeredVoter = obj[0] != null ? obj[0].toString():"";
+					voterCheckMap.put(registeredVoter, "Already Registered");
+				}
+			}
 			
 			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsByVoterCardNumber(voterIDCardNo,constId);
 			if(list != null && list.size() > 0){
@@ -1009,7 +1019,12 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					vo.setVoterId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setVoterName(obj[1] != null ? obj[1].toString():"");
 					vo.setRelativeName(obj[2] != null ? obj[2].toString():"");
-					vo.setVoterIDCardNo(obj[3] != null ? obj[3].toString():"");
+					String voterCardNo = obj[3] != null ? obj[3].toString():"";
+					vo.setVoterIDCardNo(voterCardNo);
+					String check = voterCheckMap.get(voterCardNo);
+					if(check != null){
+						vo.setAlreadyRegistered(check);
+					}
 					vo.setGender(obj[4] != null ? obj[4].toString():"");
 					vo.setAge(obj[5] != null ? obj[5].toString():"");
 					vo.setDateOfBirth(obj[6] != null ? obj[6].toString():"");
@@ -1031,6 +1046,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 			}
 			
 			voterDetailsvo.setSubList(voterDetailsList);
+			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getVoterDetailsByVoterCardNumber() in CadreVoterSearchService ",e);
 		}

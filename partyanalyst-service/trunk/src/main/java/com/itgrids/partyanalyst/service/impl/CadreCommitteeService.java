@@ -2034,6 +2034,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				{
 					setCurrentDesignation(cadreCommitteeList,tdpCadreIdsList);
 					setCurrentElectrolInfo(cadreCommitteeList,tdpCadreIdsList);
+					checkIsAlreadyRegistered(cadreCommitteeList, tdpCadreIdsList);
 				}
 				cadreCommitteeVO.setPreviousRoles(cadreCommitteeList);
 			}
@@ -2042,6 +2043,27 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCadreCommitte", e);
 		}
 		return cadreCommitteeVO;
+	}
+	
+	public void checkIsAlreadyRegistered(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
+		
+		Map<Long,String> checkMap = new LinkedHashMap<Long, String>();
+		List<Object[]> list = tdpCadreDAO.checkAlreayRegistrationByMemberShipNo(tdpCadreIdsList);
+		if(list != null && list.size() > 0){
+			for (Object[] objects : list) {
+				checkMap.put(Long.valueOf(objects[1].toString()), "Already Registered");
+			}
+		}
+		
+		if(cadreCommitteeList != null && cadreCommitteeList.size() > 0){
+			for (CadreCommitteeVO vo : cadreCommitteeList) {
+				Long cadreId = vo.getTdpCadreId();
+				String check = checkMap.get(cadreId);
+				if(check != null){
+					vo.setAlreadyRegistered(check);
+				}
+			}
+		}
 	}
 	
 	public void setCurrentDesignation(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList){

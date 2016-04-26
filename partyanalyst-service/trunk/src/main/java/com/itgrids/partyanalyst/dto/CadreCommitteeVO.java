@@ -71,9 +71,15 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String deletedReason;
 	
 	private Long tdpCadreCommitteeId;
+	private String alreadyRegistered;
 	
 	
-	
+	public String getAlreadyRegistered() {
+		return alreadyRegistered;
+	}
+	public void setAlreadyRegistered(String alreadyRegistered) {
+		this.alreadyRegistered = alreadyRegistered;
+	}
 	public String getDeletedReason() {
 		return deletedReason;
 	}
