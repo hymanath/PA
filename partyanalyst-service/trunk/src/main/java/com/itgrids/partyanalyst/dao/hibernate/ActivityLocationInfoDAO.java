@@ -26,7 +26,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 				"model.activityScopeId =:activityScopeId ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and (date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
-
+		queryStr.append(" order by  model.locationValue ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("activityScopeId", activityScopeId);
 		if(startDate != null && endDate != null){
