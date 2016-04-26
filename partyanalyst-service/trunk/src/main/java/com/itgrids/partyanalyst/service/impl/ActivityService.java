@@ -2889,13 +2889,12 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				activityLocationInfo.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
 				activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
 				activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-				/*try {
-				activityLocationInfo.setConductedDate(formatter.parse(finalvo.getConductedDate() != null ? finalvo.getConductedDate().toString() : ""));
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				try {
+					activityLocationInfo.setConductedDate(formatter.parse(eventFileUploadVO.getEventDateStr() != null ? eventFileUploadVO.getEventDateStr().toString() : ""));
 				} catch (ParseException e) {
 					LOG.error("Exception rised in saveActivityQuestionnaireDetails()",e);
-				}*/
-				activityLocationInfo.setConductedDate(new DateUtilService().getCurrentDateAndTime());
+				}
 				ActivityLocationInfo tempactivityLocationInfo = activityLocationInfoDAO.save(activityLocationInfo);
 				activityInfoDocument.setActivityLocationInfoId(tempactivityLocationInfo.getActivityLocationInfoId());
 			}
