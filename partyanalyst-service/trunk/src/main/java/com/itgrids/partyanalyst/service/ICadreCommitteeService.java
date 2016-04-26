@@ -91,7 +91,7 @@ public interface ICadreCommitteeService {
 	public List<AccessedPageLoginTimeVO> getElctoralInfoForALocation(Long locationValue);
 
 	public List<LocationWiseBoothDetailsVO> getMandalsByConstituency(Long constituencyId );
-	public List<LocationWiseBoothDetailsVO> getPanchayatWardByMandalId(String mandalId);
+	public List<LocationWiseBoothDetailsVO> getPanchayatWardByMandalId(String mandalId,Long constituencyId);
 	public List<CadreCommitteeMemberVO> getElectrolsOfPanchayatAndWards(Long locationId,Long locationType,Long basicCommitteeTypeId);
 	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status);
 	public ResultStatus updateCandidateDesignation(final Long committeeId,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long userId);
@@ -153,7 +153,7 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getActivityLevelsList();
 	 public List<IdNameVO> getActivitiesListByTypeAndLevel(Long activityTypeId,Long  activityLevelId);
 	 public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
-			 String searchDateStr,String searchEndDateStr);
+			 String searchDateStr,String searchEndDateStr,Long constituencyId);
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsNew(Long constituencyId);
 	 public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetailsNew(Long constituencyId);
 	 public CadreCommitteeMemberVO getAllCommitteeMembInfoInLocation(Long activityLevelId,List<Long> constituencyIds,List<LocationWiseBoothDetailsVO> mandalList,
