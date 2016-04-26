@@ -4209,6 +4209,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		   $("#toTimeId").val("10:00 PM");
 		   $("#commentTxt").val("");
  		
+		getTimeSlotsForADayByAppytUserId();
 	});
 	
 	function getAppointmentLabels(){
@@ -7011,7 +7012,7 @@ function  getappointmentStatusDetails(statusArray,type){
 	getappointmentStatusDetails(statusArray,"today");			
 	
 });
-getTimeSlotsForADayByAppytUserId();
+
 function getTimeSlotsForADayByAppytUserId(){
 	
 	$('#timeSlotErrMsgId').html('');
