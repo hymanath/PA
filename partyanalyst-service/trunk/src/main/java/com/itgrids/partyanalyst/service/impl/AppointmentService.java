@@ -2943,7 +2943,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						candidateVo.setName(params[1] != null ? params[1].toString() :"");
 						candidateVo.setMobileNo(params[2] != null ? params[2].toString() : "");
 						candidateVo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
-						
+						candidateVo.setTdpCadreId(params[17] != null ? (Long)params[17] : null);
 						candidateVo.setDesignation(params[3] != null ? params[3].toString() : "");
 						String fname = params[6] != null ? params[6].toString() : "";
 						String lname = params[7] != null ?params[7].toString() : "";
