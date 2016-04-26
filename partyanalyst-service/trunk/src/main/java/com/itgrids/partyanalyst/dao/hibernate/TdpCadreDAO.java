@@ -6589,7 +6589,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 		
 		if(inputVo.getCommitteeId() !=null && inputVo.getCommitteeId()>0){
-			str.append( " and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeId =:basicCommitteeId  ");
+			str.append( " and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId =:basicCommitteeId  ");
 		}
 		Query query = getSession().createQuery(str.toString());
 		if(locationVo != null)
