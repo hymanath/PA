@@ -700,5 +700,13 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.list();
 	}
 	
+	public List<Object[]> getLocationValue(Long activityScopeId)
+	{
+		Query query = getSession().createQuery(" select AID.activityInfoDocumentId,AID.activityLocationInfo.activityLocationInfoId," +
+				" AID.activityLocationInfo.locationValue,AID.locationValueAddress from ActivityInfoDocument AID where AID.isDeleted = 'N' and AID.activityDocument.activityScopeId = :activityScopeId ");
+		query.setParameter("activityScopeId",activityScopeId);
+		return query.list();
+		
+	}
 
 }

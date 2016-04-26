@@ -183,6 +183,8 @@ import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
@@ -268,7 +270,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ILocationInfoDAO locationInfoDAO;
 	
 	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
-	
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
 	
 	
@@ -16870,8 +16872,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				startDate = format.parse(searchStartDateStr);
 				endDate = format.parse(searchEndDateStr);
 			}
-			
-			
+
 			if(activityScopeId != null && activityScopeId.longValue()>0L)
 			{
 				 List<Object[]> updatedList= activityLocationInfoDAO.getUpdatedLocationsListForScope(activityScopeId,startDate,endDate);
@@ -16913,6 +16914,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							 vo.setConductedDate(format.format(conductedDateStr).toString());
 						 vo.setLocationValue(finalLocationId);
 						 vo.setLocationLevel(locationlevel);
+						 
 						 list.add(vo);
 						 activityMap.put(locationValue, list);
 						 if(conductedDate != null )
@@ -17027,6 +17029,15 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						wardMap = membersVO.getGenericMap1();
 					}
 				}*/
+				 List<Long> locatnValList = null;
+					List<Object[]> locatnValues = activityInfoDocumentDAO.getLocationValue(activityScopeId);
+					if(locatnValues != null && locatnValues.size() >0){
+						locatnValList = new ArrayList<Long>() ;
+						for(Object[] obj : locatnValues){
+							if(!locatnValList.contains(obj[2]))
+									locatnValList.add((Long)obj[2]);
+					}
+				}
 				String[] levelIdsArr = {"1","2"};
 				if(reportList != null && reportList.size()>0)
 				{
@@ -17045,6 +17056,12 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 								if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
 									locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
 								
+								//To show Only Already Upload Images 
+								if(locatnValList.contains(locationsId)){
+									 vo.setIsAlreadyImageUpload("true");
+								 }else{
+									 vo.setIsAlreadyImageUpload("false"); 
+								 }
 								List<ActivityVO> activityVOList = activityMap.get(locationsId);
 								
 								if(activityVOList != null && activityVOList.size()>0)
@@ -17052,6 +17069,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 									for (ActivityVO activityVO : activityVOList) {
 										finalVO.setPlanedDate(activityVO.getPlannedDate());
 										finalVO.setConductedDate(activityVO.getConductedDate());
+										
 										returnList.add(finalVO);
 									}
 								}else
@@ -17072,6 +17090,11 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 								if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
 									locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
 								
+								if(locatnValList.contains(locationsId)){
+									 vo.setIsAlreadyImageUpload("true");
+								 }else{
+									 vo.setIsAlreadyImageUpload("false"); 
+								 }
 								List<ActivityVO> activityVOList = activityMap.get(locationsId);
 								
 								if(activityVOList != null && activityVOList.size()>0)
@@ -17079,6 +17102,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 									for (ActivityVO activityVO : activityVOList) {
 										finalVO.setPlanedDate(activityVO.getPlannedDate());
 										finalVO.setConductedDate(activityVO.getConductedDate());
+										
 										returnList.add(finalVO);
 									}
 								}else
@@ -17098,12 +17122,18 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
 								locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
 							
+							if(locatnValList.contains(locationsId)){
+								 vo.setIsAlreadyImageUpload("true");
+							 }else{
+								 vo.setIsAlreadyImageUpload("false"); 
+							 }
 							List<ActivityVO> activityVOList = activityMap.get(locationsId);
 							if(activityVOList != null && activityVOList.size()>0)
 							{
 								for (ActivityVO activityVO : activityVOList) {
 									finalVO.setPlanedDate(activityVO.getPlannedDate());
 									finalVO.setConductedDate(activityVO.getConductedDate());
+									
 									returnList.add(finalVO);
 								}
 							}else
@@ -17112,7 +17142,6 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							}
 						}
 					}
-						
 					Collections.sort(returnList,new Comparator<LocationWiseBoothDetailsVO>() {
 						public int compare(LocationWiseBoothDetailsVO o1,
 								LocationWiseBoothDetailsVO o2) {
