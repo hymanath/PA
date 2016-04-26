@@ -1251,16 +1251,16 @@ function buildTotalAppointmentStatus(result){
 				str+='<td class="appointmentStatusCls" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
 			}
 			str+='</tr>';
-            
+			
+            var colorsublist = ["#98CCCA","#77AE7E","#7D4993","#707265"];
 			for(var j in result[i].subList){
-				
-				str+='<tr class="totalSubStatusClass" >';
-				str+='<td style="background:#f8f8f8">&nbsp;&nbsp;&nbsp;<span class="columnChart" ></span>'+result[i].subList[j].status+'</td>';
+				str+='<tr class="totalSubStatusClass" style="color:'+colorsublist[j%4]+'" >';
+				str+='<td style="background:#f8f8f8;">&nbsp;&nbsp;&nbsp;<span class="columnChart" ></span>'+result[i].subList[j].status+'</td>';
 				if(result[i].subList[j].statusCount == 0){
 					str+='<td style="text-align:center;background:#f8f8f8"> - </td>';
 				}else{
 					var statusArr= result[i].subList[j].clickIds;
-					str+='<td style="background:#f8f8f8" class="appointmentStatusCls text-center" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].subList[j].statusCount+'</td>';
+					str+='<td style="background:#f8f8f8;text-align:center;cursor:pointer;" class="appointmentStatusCls text-center"  attr_statusArrId ="'+statusArr+'">'+result[i].subList[j].statusCount+'</td>';
 				}
 				str+='</tr>';
 			}
@@ -1322,15 +1322,15 @@ function buildTotalAppointmentStatusForToday(result){
 			}
 			str+='</tr>';
 			
-			
+			 var todaycolorsublist = ["#98CCCA","#673301"];
 			 for(var i in value.subList){
-				 str+='<tr class="subStatusClass">';
+				 str+='<tr class="subStatusClass" style="color:'+todaycolorsublist[i%2]+';font-weight:bold;">';
 				str+='<td style="background:#f8f8f8">&nbsp;&nbsp;&nbsp; '+value.subList[i].status+'</td>';
 				var clickAray = value.subList[i].clickIds;
 				if(value.subList[i].totalCount == 0){
 					str+='<td style="background:#f8f8f8"> - </td>';
 				}else{
-					str+='<td style="background:#f8f8f8" class="todayappointmentStatusCls" attr_todayStatusArr= "'+clickAray+'" style="cursor:pointer;">'+value.subList[i].totalCount+'</td>';
+					str+='<td style="background:#f8f8f8;cursor:pointer;" class="todayappointmentStatusCls" attr_todayStatusArr= "'+clickAray+'" >'+value.subList[i].totalCount+'</td>';
 				} 
 				str+='</tr>';
 			 }
@@ -4312,7 +4312,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	function buildLabelResult(result,labelName){
 		var i = 0;
 		var str='';
-			str+='<div class="col-md-4 custom-scroll-ins block" style="height:488px">';
+			str+='<div class="col-md-4 custom-scroll-ins block" style="height:625px">';
 				str+='<div class=""  id="dragId" >';
 			
 			//str+='<h4 class="text-success" style="margin-bottom:10px;">'+labelName +' MEMBERS</h4>';
@@ -6857,7 +6857,7 @@ function apptTrackingStatus(result,aptName)
 		str+='<li>';
 			str+='<div class="arrow_box">';
 			if(result[i].id == 1)
-			str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+			str+='<p> <span class="text-success"><b>'+result[i].status+'</b></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 				else
 				str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 				if(result[i].comments != null && result[i].comments.length > 0)
