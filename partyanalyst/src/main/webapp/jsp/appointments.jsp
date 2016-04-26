@@ -6857,7 +6857,7 @@ function apptTrackingStatus(result,aptName)
 		str+='<li>';
 			str+='<div class="arrow_box">';
 			if(result[i].id == 1)
-			str+='<p> <span class="text-success"><b>'+result[i].status+'</b></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+			str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 				else
 				str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 				if(result[i].comments != null && result[i].comments.length > 0)
