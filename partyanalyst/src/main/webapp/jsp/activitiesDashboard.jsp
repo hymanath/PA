@@ -121,7 +121,7 @@
 						<div class="row  m_top10">
 							<div class="col-md-12">
 								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
-									<h4 class="panel-title" id="headingDiv" style="font-weight:bold;">ACTIVITIES STATUS REPORT</h4>
+									<h4 class="panel-title" id="activityHeadingDiv" style="font-weight:bold;display:none;">ACTIVITIES STATUS REPORT</h4>
 								</div>
                             </div>
 							<div class="col-md-12">
