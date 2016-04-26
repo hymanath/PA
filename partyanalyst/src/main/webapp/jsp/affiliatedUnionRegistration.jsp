@@ -124,26 +124,7 @@
     cursor:pointer;
   }
 	</style>
-	<%!	
-	String randomNumber = getRandomNumber();
-	String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+randomNumber, "1", "http://www.mytdp.com/registrationSuccessAction.action", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
-	String getChecksum(String MerchantId, String OrderId, String Amount, String redirectUrl, String WorkingKey) {
-		String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
-
-		Adler32  adl = new Adler32();
-		adl.update(str.getBytes());
-		return (Long.valueOf(adl.getValue()).toString());
-	}	
-	String getRandomNumber(){
-		Random randomNumber = new Random();
-		int number = randomNumber.nextInt();
-		do{
-			number = randomNumber.nextInt();
-		}while(number<0);
-		
-		return String.valueOf(number).substring(0, 5);
-	}
-%>
+	
 		
 	<script>
 	var remainingTime = '${countDownTime}';
@@ -532,12 +513,12 @@
 			}
 
 			//Age Updation As Per Date Of Birth
-			var d = new Date();
+		/*	var d = new Date();
 			var curntYer = d.getFullYear();
 			var doYer = dateOfbirth.substring('-',4);
 			var age = parseInt(curntYer)-parseInt(doYer);
 			$('#cadreAgeId').val(age);
-			
+			*/
 		if(validateName('nameErr','cadreNameId',1)){
 			isErrorStr = " error";	
 		}
@@ -567,12 +548,12 @@
 			isErrorStr = " error";
 			$("#emailErr").html('Invalid Email Id.');
 		}
-		if(cadreAge != null && cadreAge.trim().length == 0)
+		/*if(cadreAge != null && cadreAge.trim().length == 0)
 		{
 			isErrorStr = " error";
 			$('#ageErr').html(' Candidate Age is required.');
-		}
-		if(tdpMemberTypeId == 3 || tdpMemberTypeId == 4){
+		}*/
+		/*if(tdpMemberTypeId == 3 || tdpMemberTypeId == 4){
 			
 		if(age <21 || age >70)
 		{
@@ -596,6 +577,7 @@
 			$('#ageErr').html(' Candidate Age Between 21 to 100');
 		}
 		}
+		*//*
 		if(cadreCardNumber != null && cadreCardNumber.trim().length == 0)
 		{
 			var cbck = $('#relativeTypeChecked').is(':checked'); 
@@ -634,7 +616,7 @@
 			$('#nameErr').html(' Candidate Name is required.');
 		}		
 		
-		
+		*/
 		if(presentDistrict == 0)
 		{
 			isErrorStr = " error";
@@ -656,12 +638,12 @@
 			$('#presentVillWardIdErr').html('Village/Ward is required.');
 		}
 
-		
+		/*
 		if(addressVal == 0)
 		{
 			isErrorStr = " error";
 			$('#addressErr1').html(' Address is required.');
-		}
+		}*/
 		
 		/* 
 			//caste validation.
@@ -673,13 +655,13 @@
 			} 
 		*/
 		
-		
+		/*
 		if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
 			$('#landmarkErr').html(' LandMark  is required.');
 		}
-		
+		*/
 		
 		//Working Address validations.
 		
@@ -690,7 +672,7 @@
 		var constituency = $('#constituencyId').val();
 		var mandalId = $('#manTowDivId').val();
 		var villageId = $('#villWardId').val();
-		
+		/*
 		if(tdpMemberTypeId !=5 ){
 			
 			if(workAddressVal == 0){
@@ -728,7 +710,7 @@
 			isErrorStr = " error";
 			$('#roadErr').html(' Road is required.');
 		}
-		
+		*/
 		/*if(designationval == 0)
 		// if(roadVal == 0)
 		{
@@ -738,15 +720,15 @@
 		 	 */
 			//$('#roadErr').html(' Road is required.');
 		//}
-		if(tdpMemberTypeId == 2){
-			if(employeeId != null && employeeId.trim().length == 0)
-		if(landmarkVal == 0)
+		//if(tdpMemberTypeId == 2){
+		//	if(employeeId != null && employeeId.trim().length == 0)
+		/*if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
-			$('#landmarkErr').html(' LandMark  is required.');
-			$('#addressErr1').html(' Address is required.');
-			$('#addressErr').html(' Address is required.');
-		}
+			$('#landmarkErr').html(' LandMark  is required.');*/
+			//$('#addressErr1').html(' Address is required.');
+			//$('#addressErr').html(' Address is required.');
+		//}
 		/* if(roadVal == 0)
 			$('#addressErr').html(' Address is required.');
 		}*/
@@ -755,12 +737,12 @@
 			isErrorStr = " error";
 			$('#roadErr').html(' Road is required.');
 		}*/
-		if(landmarkVal == 0)
+		/*if(landmarkVal == 0)
 		{
 			isErrorStr = " error";
 			$('#landmarkErr').html(' LandMark  is required.');
-		}
-		if(workAddressVal == 0)
+		}*/
+		/*if(workAddressVal == 0)
 		{
 			isErrorStr = " error";
 			$('#workAddressErr').html(' Address is required.');
@@ -797,8 +779,8 @@
 				isErrorStr = " error";
 				$('#depotErr').html(' Depot is required.');
 			}
-		}
-		else if(tdpMemberTypeId == 3){
+		}*/
+		//else if(tdpMemberTypeId == 3){
 			/*if(designationval == 0)
 			{
 				isErrorStr = " error";
@@ -809,8 +791,8 @@
 				isErrorStr = " error";
 				$('#schoolErr').html(' School Name is required.');
 			}	 */ 
-		}
-		else if(tdpMemberTypeId == 4){
+		//}
+		//else if(tdpMemberTypeId == 4){
 			/*if(designationval == 0)
 			{
 				isErrorStr = " error";
@@ -821,8 +803,8 @@
 				isErrorStr = " error";
 				$('#schoolErr').html(' School Name is required.');
 			}	 */ 
-		}
-		else if(tdpMemberTypeId == 5){
+	//	}
+		/*else if(tdpMemberTypeId == 5){
 			if(drivingLicense == 0)
 			{
 				isErrorStr = " error";
@@ -833,16 +815,16 @@
 				isErrorStr = " error";
 				$('#vehicleErr').html('Vehicle Type is required.');
 			}	
-		}
-		else if(tdpMemberTypeId == 6){
+		}*/
+		//else if(tdpMemberTypeId == 6){
 			/*if(designationvalue == 0)
 			{
 				isErrorStr = " error";
 				$('#designation13Err').html('Designation is required.');
 			}	*/
-		}
-		}		
-	
+		//}
+		//}		
+	/*
 			$('.fromDateCls').each(function(){
 		
 			var keyId = $(this).attr('key');
@@ -885,7 +867,7 @@
 			
 		});
 				
-		
+		*/
 		if(!isNumber()){//iferror return false
 			isErrorStr = " error";	
 		} 
@@ -907,7 +889,7 @@
 		} 
 		
 		*/
-		
+		/*
 		$('.famAgeErrCls').each(function(){
 			var key = $(this).attr('key');
 			$('#famAgeErr'+key).html('');
@@ -920,7 +902,7 @@
 			}else{
 				$(this).val("");
 			}
-		});
+		});*/
 		if(isErrorStr.trim().length >0)
 		{
 		    $("#submitCadreFormBtnReqId").removeAttr("disabled");
@@ -954,15 +936,36 @@
 		var str = '';
 		var resultArr = result.split(',');
 		if(result.search('SUCCESS') != -1)
-		{
-			
+		{			
 			if(srchType == 'voter'){
+				
+			<%!	
+				String orderNo = getRandomNumber();
+				String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+orderNo, "1", "http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+resultArr[2]+"&entitlementNo="+resultArr[1]+"&status=success", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
+				String getChecksum(String MerchantId, String OrderId, String Amount, String redirectUrl, String WorkingKey) {
+					String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
+
+					Adler32  adl = new Adler32();
+					adl.update(str.getBytes());
+					return (Long.valueOf(adl.getValue()).toString());
+				}	
+				String getRandomNumber(){
+					Random randomNumber = new Random();
+					int number = randomNumber.nextInt();
+					do{
+						number = randomNumber.nextInt();
+					}while(number<0);
+					
+					return String.valueOf(number).substring(0, 5);
+				}
+			%>
+
 				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
 				str+='<input type="hidden" name="ip" value="49.204.21.50" readonly>';
 				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';
 				str+='<input type="hidden" name="Amount" value="1">';
-				str+='<input type="hidden" name="Order_Id" value="CADRE_2016<%=randomNumber%>">';
-				str+='<input type="hidden" name="Redirect_Url" value="http://www.mytdp.com/registrationSuccessAction.action">';
+				str+='<input type="hidden" name="Order_Id" value="CADRE_2016<%=orderNo%>">';
+				str+='<input type="hidden" name="Redirect_Url" value="http://www.mytdp.com/registrationSuccessAction.action?membershipNo='+resultArr[2]+'&entitlementNo='+resultArr[1]+'&status=success">';
 				str+='<input type="hidden" name="Checksum" value="<%=checksumValue%>">';
 				str+='<input type="hidden" name="billing_cust_name" value="">';
 				str+='<input type="hidden" name="billing_cust_address" value="">';
@@ -981,7 +984,7 @@
 				str+='<div class="container m_top10" id="yourElement">';
 				str+='<div class="span12  show-grid" style="position: relative;">';
 				str+='<p class="text-align">	Thank You For Your Registration</p>';
-				str+='<h3 class="text-align"> To complete your Registration Successfully. Please make payment.  </h3>';
+				str+='<h3 class="text-align"> Please make payment , to complete your Registration .   </h3>';
 				str+='</div>';
 				str+='</div>';
 				str+='<div class="container m_top10" id="yourElement">';
@@ -1004,7 +1007,7 @@
 				str+= '</div>';
 				str+= '<div class="container m_top10" id="yourElement">';
 				str+= '<div class="span12  show-grid" style="position: relative;">';
-				str+= '<a href="affiliatedCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+				str+= '<a href="javascript:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 				str+= '</div>';
 				str+= '</div>';
 			}
@@ -1499,7 +1502,7 @@
 		</div><!-- Header Row End-->
 	<div class="container m_top10 " id="yourElement">
 		<div class="span12 show-grid" style="position: relative;">
-			<h3 class="text-align">CADRE REGISTRATION</h3>
+			<h3 class="text-align"> TELUGUNADU GRADUATES FEDERATION MEMBER REGISTRATION </h3>
 		</div>
 	</div>
 	<div id="mainDiv">
@@ -1529,7 +1532,7 @@
 											<span id="nameErr" style="color:red;font-size:12px;"></span>
 										</div>	
 										<div class="span5">	
-											<h5 class="text-align1">Age <span class="mandatory">*</span> </h5>
+											<h5 class="text-align1">Age  </h5>
 											<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
 											<span id="ageErr" style="color:red;font-size:12px;"></span>
 										</div>
@@ -1600,7 +1603,7 @@
 										</div>
 									<div class="span12">
 										<div class="span6">
-											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory"> * </span></h5>
+											<h5 class="text-align1">DATE OF BIRTH  </h5>
 												
 												<div class="input-prepend text-align2 ">
 													
@@ -1896,20 +1899,20 @@
 					<div class="span11">
 							<h4  class="text-align1">ADDRESS<hr class="m_0"/></h4>
 					</div>
-					<div class="span11">
+					<div class="span11">					
 							<h4  class="text-align1">PRESENT ADDRESS<hr class="m_0"/></h4>
 					</div>
-					<div class="span3" id="addressDivId"><h5 class="text-align1">H:NO/Flat No:<span class="mandatory">*</span> </span></h5>
+					<div class="span3" id="addressDivId"><h5 class="text-align1">H:NO/Flat No: </h5>
 							<input type="text" class="text-align2 form-control border-radius-0 " placeholder="House Number" id="addressId" name="cadreRegistrationVO.prsntAddrsHNo" value="${voterInfoVOList[0].houseNo}"></input>
 							<br><span id="addressErr1" style="color:red;font-size:12px;">
 				   </div>
 					<div class="span3" id="roadDivId">
-					   <h5 class="text-align1">ROAD/STREET<span class="mandatory">*</span> </h5>
+					   <h5 class="text-align1">ROAD/STREET</h5>
 					   <input type="text" class="form-control border-radius-0 " placeholder="ROAD/STREET" id="roadId" name="cadreRegistrationVO.prsntAddrsStreet"   value="${voterInfoVOList[0].street}"></input>
 					   <br><span id="roadErr" style="color:red;font-size:12px;"></span>
 					</div>
 					<div class="span3" id="landmarkDivId">
-						<h5 class="text-align1">LANDMARK<span class="mandatory">*</span> </h5>
+						<h5 class="text-align1">LANDMARK </h5>
 							<input type="text" class="form-control border-radius-0 " placeholder="LANDMARK" id="landmarkId" name="cadreRegistrationVO.prsntAddrsLandmark" value="${voterInfoVOList[0].landmark}"></input>
 							<br><span id="landmarkErr" style="color:red;font-size:12px;"></span>
 					</div>
@@ -3657,7 +3660,7 @@ function getExistingCadreInfo1(){
 			$('#'+errDiv+'').html('Special Characters are not allowed.');
 		} 
 	}
-	else
+	/*else
 	{
 		$('#ageErr').html('');
 		if (str.length == 0) 
@@ -3673,7 +3676,7 @@ function getExistingCadreInfo1(){
 			$('#cadreAgeId').val('');			
 		}
 		
-	}
+	}*/
 	return reqErstatus;
  }
  
