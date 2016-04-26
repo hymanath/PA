@@ -60,6 +60,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private Long activityLevel;
 	private String locationName;
 	private String temp;
+	private String eventDateStr;
 	private List<BasicVO> basicVOList;
 	private IAttendanceService attendanceService;
 	private List<String> dates;
@@ -72,6 +73,12 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private Long divisonId;
 	
 	
+	public String getEventDateStr() {
+		return eventDateStr;
+	}
+	public void setEventDateStr(String eventDateStr) {
+		this.eventDateStr = eventDateStr;
+	}
 	public Long getDivisonId() {
 		return divisonId;
 	}
@@ -320,7 +327,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			EventFileUploadVO eventFileUploadVO = new EventFileUploadVO();
 			eventFileUploadVO.setUserId(regVO.getRegistrationID());
 			eventFileUploadVO.setUpdatedBy(regVO.getRegistrationID());
-			
+			eventFileUploadVO.setEventDateStr(eventDateStr);//date value
 		       MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
 		       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
 		       String fileUrl = "" ;
