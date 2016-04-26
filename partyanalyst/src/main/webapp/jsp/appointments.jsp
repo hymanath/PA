@@ -4210,6 +4210,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		   $("#commentTxt").val("");
  		
 		getTimeSlotsForADayByAppytUserId();
+		getAllScheduledApptsByDate();
 	});
 	
 	function getAppointmentLabels(){
@@ -7040,7 +7041,33 @@ function getTimeSlotsForADayByAppytUserId(){
 			})
 	
 }
-
+function getAllScheduledApptsByDate(){
+	
+	//$('#timeSlotErrMsgId').html('');
+	//$('#timeSlotDatesBuildId').html('');
+	
+	var  dateStr       = $('#appointmentDateSlotHeadingId').val();
+	var  apptUserId   =  $("#appointmentUserSelectBoxId option:selected").val();
+	/* if(dateStr.trim().length <= 0){
+		$('#timeSlotErrMsgId').html('Please Select Date');
+		return;
+	} */
+	
+	var jsObj={
+			dateStr : dateStr,
+			apptUserId:apptUserId
+		}
+		
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAllScheduledApptsByDateAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				//timeSlotTableBuilding(result,dateStr);
+				
+			})
+}
 function timeSlotTableBuilding(result,dateStr){
 	
 	var str='';
