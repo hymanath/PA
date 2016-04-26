@@ -193,6 +193,12 @@
 		
 		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
+		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
+		<span class="btn-success btn btn-xs pull-right" >
+		<input type="checkbox" onclick="getLocationDetailsForActivity('','');" id="imageChekId">
+			SHOW ONLY IMAGES UPLOADED LOCATIONS
+		</span>
+		</div>
             	<div class="panel-heading">
                 	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
                     <span class="pull-right">
@@ -983,6 +989,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 						if(result.result != null && result.result.length>0){
 							for(var i in result.result)
 							{
+								if(!$("#imageChekId").is(':checked')){
 								str+='<tr>';
 								//str+='<td></td>';
 								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
@@ -1023,12 +1030,64 @@ function getLocationDetailsForActivity(startDate,endDate)
 								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
-							
-								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';    
+							if(result.result[i].isAlreadyImageUpload == "true"){								
+								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+							}else{
+								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/ImageUpload2.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+							}    
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
 								str+='</td>';
 								str+='</tr>';
+							}else if(result.result[i].isAlreadyImageUpload == "true"){
+								str+='<tr>';
+								//str+='<td></td>';
+								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
+								str+='<input type="hidden" value="'+result.result[i].locationId+'" name="activityVO.activityVoList['+i+'].locationValue">';
+								str+='<td> '+result.result[i].locationName+'</td>';
+								/*str+='<td  style="text-align:center;width:180px">';
+								str+='<div class="input-g1 input-group">';
+									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
+									if(result.result[i].planedDate != null)
+										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value="'+result.result[i].planedDate+'"/>';
+									else
+										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
+								
+								str+='</div></td>';*/
+								str+='<td  style="text-align:center;width:180px">';
+								str+='<div class="input-g1 input-group">';
+									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
+									if(result.result[i].conductedDate != null)
+										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
+									else
+										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
+								str+='</div>';
+								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div></td>';
+								
+								/*
+								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
+								{
+									if(result.result[i].hamletsOfTownship.length >= 1)
+										str+='<td  style="text-align:center;"> '+result.result[i].hamletsOfTownship[0].name+'<br>'+result.result[i].hamletsOfTownship[0].partno+' </td>';
+									if(result.result[i].hamletsOfTownship.length >= 2)
+										str+='<td  style="text-align:center;"> '+result.result[i].hamletsOfTownship[1].name+'<br>'+result.result[i].hamletsOfTownship[1].partno+' </td>';
+								}else{
+									str+='<td  style="text-align:center;"> - </td>';
+									str+='<td  style="text-align:center;"> - </td>';
+								}
+								*/
+								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
+								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
+								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
+								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
+															
+								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+							  
+								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
+								
+								str+='</td>';
+								str+='</tr>';
+							}
 							}
 							str+='</table>';
 						}
@@ -1518,6 +1577,11 @@ $("#hideAsmblyData").click(function(){
 					locationLevelId = 8;//ward
 			}
 		}*/
+		$("#errCls").html("");
+		if($(".conductedDtCls").val() == ""){
+			$("#errCls").html("Date Required");
+			return;
+		}
 		
 		var locationName = $(this).attr("attr_location_Name");
 		gobalLevelValue = $(this).attr("attr_location_Value");
