@@ -145,7 +145,7 @@ public String execute(){
 			if(type.equalsIgnoreCase("mandal")){
 				resultList = cadreCommitteeService.getMandalsByConstituency(jobj.getLong("id"));	
 			}else if(type.equalsIgnoreCase("panchayat")){			
-				resultList = cadreCommitteeService.getPanchayatWardByMandalId(Long.toString(jobj.getLong("id")));	
+				resultList = cadreCommitteeService.getPanchayatWardByMandalId(Long.toString(jobj.getLong("id")),null);	
 			}
 			else{
 				resultList = cadreVoterSearchService.getAllDistrictsAndConstis(type,jobj.getLong("id"));
