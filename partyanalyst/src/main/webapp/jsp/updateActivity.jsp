@@ -194,7 +194,7 @@
 		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
-		<span class="btn-success btn btn-xs pull-right" >
+		<span class="btn-success btn btn-xs pull-right" style="font-weight:bold;">
 		<input type="checkbox" onclick="getLocationDetailsForActivity('','');" id="imageChekId">
 			SHOW ONLY IMAGES UPLOADED LOCATIONS
 		</span>
@@ -645,6 +645,7 @@ function getActivityNames(id)
 					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 				
 				$('#ActivityList').val(12);
+				//$('#ActivityList').trigger('change');
 			}
 		});
 		
@@ -1033,7 +1034,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 							if(result.result[i].isAlreadyImageUpload == "true"){								
 								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 							}else{
-								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/ImageUpload2.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 							}    
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
@@ -1096,7 +1097,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 					
 					$('#plannedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					$('#conductedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
-					$('#home').append(' <div><input type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
+					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
 					$('.dateCls').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					
 					$("#locationsTab").dataTable({
@@ -1380,11 +1381,14 @@ $("#hideAsmblyData").click(function(){
   }
       $(document).on("change",".selectedVal",function(){
 		var serialNoTypeId=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];  
+		$(".errMsgCls").html("");
 		var optionId=$(this).val();
 		var questionId=$(this).attr("attr_qid");
 		var subQustionDivId =$(this).attr("subQustionDivId");
 		var locationValue = $(this).attr("attr_location_Value");
-		getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId);
+		if(optionId >0)
+			getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId);
+		
 	});
   
 	
@@ -1400,7 +1404,9 @@ $("#hideAsmblyData").click(function(){
 		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1);
  	});
     function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId){
-		console.log(serialNoTypeId[0]);
+		//console.log(serialNoTypeId[0]);
+		$(".errMsgCls").html("");
+			$("#errMsg").html("");
 		$("#"+divId+"").html('');
 		var scopeId = $("#ActivityList").val();
 		if(scopeId==null || scopeId==0){
@@ -1508,7 +1514,8 @@ $("#hideAsmblyData").click(function(){
 			}	
 				
 		});
-		 var jsObj={
+		if(resultArr != null && resultArr.length>0){
+			 var jsObj={
 		         activityScopeId : $("#ActivityList").val(),
 				 activityLevelId : $("#activityLevelList").val(),
 				 activityLevelValue : $(this).attr("attr_location_Value"),
@@ -1516,21 +1523,25 @@ $("#hideAsmblyData").click(function(){
 				 conductedDate : $(".conductedDtCls").val()
 		       };
 			  
-		 $.ajax({
-			type : "GET",
-			url : "saveActivityQuestionnaireDetailsAction.action",
-			dataType: 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			if(result != null && result.resultCode == 0){
-				$(".errMsgCls").html("Question Saved Successfully");
-				
-				setTimeout(function(){$(".errMsgCls").html("");$("#questionsModal").modal("hide");},2000);
-			}else{
-				$(".errMsgCls").html("Exception Occurred try Again")
-			}
-			//console.log(result);
-		});
+			 $.ajax({
+				type : "GET",
+				url : "saveActivityQuestionnaireDetailsAction.action",
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.resultCode == 0){
+					$(".errMsgCls").html("Question Saved Successfully");
+					
+					setTimeout(function(){$(".errMsgCls").html("");$("#questionsModal").modal("hide");},2000);
+				}else{
+					$(".errMsgCls").html("Exception Occurred try Again")
+				}
+				//console.log(result);
+			});
+		}else{
+			$(".errMsgCls").html("<b class='text-danger'>Please Answer atleast one question.</b>");
+		}
+		
 		//console.log(resultArr);
 	});
 	
@@ -2025,7 +2036,7 @@ function getQuestionnaireDetails(requiredAttributeId)
 	$(".questionnaireCls").html("");
 	
 	var jsObj={   
-				scopeId 			: 5,
+				scopeId 			: activityScopeId,
 				requiredAttributeId : requiredAttributeId,
             };
        
