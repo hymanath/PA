@@ -26,6 +26,16 @@ public class LocationWiseBoothDetailsVO {
 	private String mobileNo;
 	private String planedDate;
 	private String conductedDate;
+	private String isAlreadyImageUpload;
+	
+	
+	
+	public String getIsAlreadyImageUpload() {
+		return isAlreadyImageUpload;
+	}
+	public void setIsAlreadyImageUpload(String isAlreadyImageUpload) {
+		this.isAlreadyImageUpload = isAlreadyImageUpload;
+	}
 	
 	
 	public String getPlanedDate() {
