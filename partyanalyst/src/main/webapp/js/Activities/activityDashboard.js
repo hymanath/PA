@@ -2947,6 +2947,7 @@ function getActivityQuestionAnswerCountReasonWise(){
 }
 function buildActivityReasonReport(result)
 {
+	$("#activityHeadingDiv").show();
 	var str='';
 	str+='<table class="table table-bordered table-condensed">';
 	 str+='<tbody>';
