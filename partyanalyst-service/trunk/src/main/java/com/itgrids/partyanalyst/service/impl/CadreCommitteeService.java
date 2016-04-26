@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,6 +41,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -16614,6 +16616,68 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 											activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 											//activityLocationInfoDAO.isAlreadAvailableActivity();
 										 }
+										 else
+										 {
+											 String locationTypeflagId = activityvo.getLocationValue().toString().substring(0, 1);										
+											 Long locationLevel = activityvo.getLocationLevel();
+											 Long locationLevelId = null;
+											 if(locationLevel.longValue() == 1L)
+											 {
+												 if(locationTypeflagId.equalsIgnoreCase("1"))
+														locationLevelId = 6L;
+												 else if(locationTypeflagId.equalsIgnoreCase("2"))
+														locationLevelId = 8L;
+											 }
+											 else if(locationLevel.longValue() == 2L)
+											 {
+												 	if(locationTypeflagId.equalsIgnoreCase("1"))
+														locationLevelId = 7L;
+												 	else if(locationTypeflagId.equalsIgnoreCase("2"))
+														locationLevelId = 5L;
+												 	else if(locationTypeflagId.equalsIgnoreCase("3"))
+														locationLevelId = 9L;
+											 }
+											 else if(locationLevel.longValue() == 3L)
+												 locationLevelId = 11L;
+											 else if(locationLevel.longValue() == 4L)
+												 locationLevelId = 10L;
+											 else if(locationLevel.longValue() == 5L)
+												 locationLevelId = 13L;
+											ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
+											activityLocationInfo.setConstituencyId(activityVO.getConstituencyId());
+											activityLocationInfo.setActivityScopeId(activityScopeId);
+											activityLocationInfo.setLocationLevel(locationLevelId);
+											if(locationLevelId.longValue() == 5L || locationLevelId.longValue() == 6L || locationLevelId.longValue() == 7L
+													 || locationLevelId.longValue() == 8L || locationLevelId.longValue() == 9L)
+												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
+											else if(locationLevelId.longValue() == 13L){
+												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue()));
+												activityLocationInfo.setConstituencyId(activityLocationInfo.getLocationValue());
+											}
+											else
+												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue()));
+											
+											 List<Long> availableIds = activityLocationInfoDAO.isAlreadyAvailableActivityLocationDtls(
+														activityLocationInfo.getActivityScopeId(), activityLocationInfo.getLocationLevel(), activityLocationInfo.getLocationValue());
+												if(availableIds != null && availableIds.size()>0){
+													ActivityLocationInfo existingVO = activityLocationInfoDAO.get(availableIds.get(0));
+													
+													try {
+														if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
+															existingVO.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+														else
+															existingVO.setPlannedDate(null);
+														if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
+															existingVO.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+														else
+															existingVO.setConductedDate(null);
+													} catch (ParseException e) {
+														LOG.error("Exception rised in saveActivityDetails()",e);
+													}
+
+													activityLocationInfoDAO.save(existingVO);
+												}
+										 }
 									 }
 								}
 							 }
@@ -16791,7 +16855,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			//List<LocationWiseBoothDetailsVO> mandalList = new ArrayList<LocationWiseBoothDetailsVO>(0);
 			//List<LocationWiseBoothDetailsVO> panchayatList=new ArrayList<LocationWiseBoothDetailsVO>(0);
 			
-			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 			
 			Date startDate = null;
@@ -16853,7 +16917,6 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 //updatedLocationIdsList.add(locationValue);
 					}
 				 }
-				 
 			}
 			if(activityLevelId != null && activityLevelId.longValue()>0L)
 			{
@@ -16959,7 +17022,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						wardMap = membersVO.getGenericMap1();
 					}
 				}*/
-				
+				String[] levelIdsArr = {"1","2"};
 				if(reportList != null && reportList.size()>0)
 				{
 					returnVO = new LocationWiseBoothDetailsVO();
@@ -16972,7 +17035,13 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 								
 								LocationWiseBoothDetailsVO finalVO = new LocationWiseBoothDetailsVO();
 								finalVO = vo;
-								List<ActivityVO> activityVOList = activityMap.get(vo.getLocationId());
+								
+								Long locationsId = vo.getLocationId();
+								if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
+									locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
+								
+								List<ActivityVO> activityVOList = activityMap.get(locationsId);
+								
 								if(activityVOList != null && activityVOList.size()>0)
 								{
 									for (ActivityVO activityVO : activityVOList) {
@@ -16993,7 +17062,13 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							if(updatedLocationIdsList.contains(Long.valueOf(locationIdStr))){
 								LocationWiseBoothDetailsVO finalVO = new LocationWiseBoothDetailsVO();
 								finalVO = vo;
-								List<ActivityVO> activityVOList = activityMap.get(vo.getLocationId());
+								
+								Long locationsId = vo.getLocationId();
+								if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
+									locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
+								
+								List<ActivityVO> activityVOList = activityMap.get(locationsId);
+								
 								if(activityVOList != null && activityVOList.size()>0)
 								{
 									for (ActivityVO activityVO : activityVOList) {
@@ -17009,11 +17084,16 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						}
 					}
 					else if(isChecked != null && isChecked.equalsIgnoreCase("all")){
+						
 						for (LocationWiseBoothDetailsVO vo : reportList) {
 
 							LocationWiseBoothDetailsVO finalVO = new LocationWiseBoothDetailsVO();
 							finalVO = vo;
-							List<ActivityVO> activityVOList = activityMap.get(vo.getLocationId());
+							Long locationsId = vo.getLocationId();
+							if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
+								locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
+							
+							List<ActivityVO> activityVOList = activityMap.get(locationsId);
 							if(activityVOList != null && activityVOList.size()>0)
 							{
 								for (ActivityVO activityVO : activityVOList) {
