@@ -11,6 +11,7 @@ public class AppointmentStatusVO {
 	private Long   membersCount;
 	
 	private List<Long> clickIds;
+	private List<AppointmentStatusVO> subList;
 	
 	public Long getAppointmentStatusId() {
 		return appointmentStatusId;
@@ -47,6 +48,12 @@ public class AppointmentStatusVO {
 	}
 	public void setClickIds(List<Long> clickIds) {
 		this.clickIds = clickIds;
+	}
+	public List<AppointmentStatusVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<AppointmentStatusVO> subList) {
+		this.subList = subList;
 	}
 	
 }

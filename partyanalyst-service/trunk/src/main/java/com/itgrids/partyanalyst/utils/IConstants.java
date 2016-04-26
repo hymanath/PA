@@ -1022,7 +1022,7 @@ public interface IConstants {
     
 	//NEW
 	public static final Long[] APPOINTMENT_STATUS_CREATION_LIST={1L,2L,3L,5L,7L,8L,10L};
-	public static final Long[] REQUIRED_APPOINTMENTS_LIST={1L,2l,3L,4L,5L,6l,7L};
+	public static final Long[] REQUIRED_APPOINTMENTS_LIST={1L,2l,3L,4L,5L,6l,7L,8L,10L};
 	public static final Long   APPOINTMENT_STATUS_WITHDRAWN=9L;
 	public static final Long   APPOINTMENT_STATUS_APPROVED=2L;
 	public static final Long  APPOINTMENT_STATUS_SCHEDULED=3L;
