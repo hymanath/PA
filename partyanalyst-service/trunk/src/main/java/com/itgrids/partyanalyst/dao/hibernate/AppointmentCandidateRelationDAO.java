@@ -663,7 +663,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				" u.lastname as lastName,ats.from_date as fromDate,asts.appointment_status_id as aptStatusId,asts.status as aptStatus,a.appointment_id as aptId" +
 				" ,ats.to_date as toDate," +
 				"a.appointment_unique_id as uniqueId,ats.date as date,ac.image_url as url," +
-				" asts.status_color as colour" +
+				" asts.status_color as colour,ac.tdp_cadre_id as tdpCadreId" +
 				
 					" FROM " +
 					
@@ -719,7 +719,8 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				.addScalar("uniqueId",Hibernate.STRING)
 				.addScalar("date",Hibernate.STRING)
 				.addScalar("url",Hibernate.STRING)
-				.addScalar("colour",Hibernate.STRING)    
+				.addScalar("colour",Hibernate.STRING)   
+				.addScalar("tdpCadreId",Hibernate.LONG)
 				;
 		
 		if(fromDate != null)
