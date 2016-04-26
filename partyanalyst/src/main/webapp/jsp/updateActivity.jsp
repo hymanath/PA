@@ -560,7 +560,7 @@ function submitForm(){
 			var myResult = (String)(uploadResult);
 			
 			if(myResult.search('success') != -1){
-				alert("Successfully Updated");
+				//alert("Successfully Updated");
 				/*var startDate = $("input[name=daterangepicker_start]").val();
 				var endDate =  $("input[name=daterangepicker_end]").val();*/
 			var startDate = "";
@@ -999,11 +999,11 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].conductedDate != null)
-										str+='<input type="text" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
+										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
 									else
-										str+='<input type="text" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
+										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
 								str+='</div>';
-								str+='<div id="errCls" style="color:red;"></div></td>';
+								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div></td>';
 								
 								/*
 								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
@@ -1020,9 +1020,9 @@ function getLocationDetailsForActivity(startDate,endDate)
 								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
 								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
-								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId"/>';
+								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
 							
-								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images"/>';    
+								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';    
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
 								str+='</td>';
@@ -1328,9 +1328,11 @@ $("#hideAsmblyData").click(function(){
   
 	
 	$(document).on("click","#updateQBtnId",function(){
-		$("#errCls").html("");
-		if($(".conductedDtCls").val() == ""){
-			$("#errCls").html("Date Required");
+		var dateVal = $(this).attr('attr_date');
+		$(".errCls").html("");
+		$("#err"+dateVal).html("");
+		if($("#"+dateVal).val() == ""){
+			$("#err"+dateVal).html("Date Required");
 			return;
 		}
 		var locationValue = $(this).attr("attr_location_Value");
@@ -1472,6 +1474,14 @@ $("#hideAsmblyData").click(function(){
 	});
 	
 	$(document).on("click","#uploadImagesId",function(){
+		 var dateVal = $(this).attr('attr_date');
+		$(".errCls").html("");
+		$("#err"+dateVal).html("");
+		if($("#"+dateVal).val() == ""){
+			$("#err"+dateVal).html("Date Required");
+			return;
+		}
+		
 		
 		/*var locationValue = $(this).attr("attr_location_Value");
 		var activityLevel = $("#activityLevelList").val();
@@ -1506,10 +1516,13 @@ $("#hideAsmblyData").click(function(){
 					locationLevelId = 8;//ward
 			}
 		}*/
+		
 		var locationName = $(this).attr("attr_location_Name");
 		gobalLevelValue = $(this).attr("attr_location_Value");
+		var dateStr = $("#"+dateVal).val();
 		setGobalValues();
-		window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'','_blank');
+		window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'&eventDateStr='+dateStr+'','_blank');
+		
 	});
 	
 	
@@ -1965,8 +1978,8 @@ function buildQuestionnaireDetails(result)
      var str='';
 	if(result!=null && result.activityVoList!=null && result.activityVoList.length>0){
 		for(var i in result.activityVoList){
-			alert(result.activityVoList[i].question);
-			alert(result.activityVoList[i].remarks);
+			//alert(result.activityVoList[i].question);
+			//alert(result.activityVoList[i].remarks);
 			
 			str+='<div class="col-md-12">'
 			str+='<div class="row">'
