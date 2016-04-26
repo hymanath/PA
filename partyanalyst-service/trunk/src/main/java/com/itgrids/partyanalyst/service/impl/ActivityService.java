@@ -2602,7 +2602,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			{
 				for (String dateStr : datesMap.keySet()) {
 					ActivityVO vo = datesMap.get(dateStr);
-					//if(vo.getIvrcovered() != null && vo.getIvrcovered().longValue() > 0)
+					if(vo.getInfoCellcoveredPerc() == null)
+						vo.setInfoCellcoveredPerc("-");
+					if(vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue() > 0)
 						finalList.add(vo);
 				}
 			}
@@ -2658,8 +2660,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							}
 							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED"))
 								vo.setInfoCellcovered(count);
-							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L 
-									&& vo.getPlannedCount() != null && vo.getPlannedCount().longValue()>0L){
+							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L){
 								double perc = (vo.getInfoCellcovered()*100.0)/vo.getPlannedCount();;
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setInfoCellcoveredPerc(percentage);
