@@ -2533,6 +2533,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						  
 						  statusVO.setClickIds(new ArrayList<Long>(0));
 						  statusVO.getClickIds().add(statusId);
+						  statusVO.getClickIds().add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
 						  
 						  finalMap.put(statusId, statusVO);
 					  }
@@ -2553,9 +2554,6 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					  
 					  if(statusId.longValue() == IConstants.APPOINTMENT_STATUS_SCHEDULED.longValue() ){
 						  statusVO = finalMap.get(IConstants.APPOINTMENT_STATUS_APPROVED);
-						  if(statusVO!=null){
-							  statusVO.getClickIds().add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
-						  }
 					  }else{
 						  statusVO = finalMap.get(statusId);
 					  }
