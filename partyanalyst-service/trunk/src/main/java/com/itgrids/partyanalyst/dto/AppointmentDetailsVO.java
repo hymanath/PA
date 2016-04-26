@@ -47,6 +47,7 @@ public class AppointmentDetailsVO implements Serializable{
 	private String aptUniqueCode;
 	private String imageUrl;
 	private String pdfPath;
+	private Long candidateTypeId;
 	
     
 	public String getPdfPath() {
@@ -246,6 +247,12 @@ public class AppointmentDetailsVO implements Serializable{
 	}
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+	public Long getCandidateTypeId() {
+		return candidateTypeId;
+	}
+	public void setCandidateTypeId(Long candidateTypeId) {
+		this.candidateTypeId = candidateTypeId;
 	}
     
 	

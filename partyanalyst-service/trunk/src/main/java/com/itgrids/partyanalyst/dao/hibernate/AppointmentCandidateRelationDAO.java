@@ -145,7 +145,7 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		 " select  model.appointment.appointmentId ," +
 		 "          appointmentCandidate.appointmentCandidateId,appointmentCandidate.name,appointmentCandidate.tdpCadreId," +
 		 "         appointmentCandidate.mobileNo,appointmentCandidate.candidateDesignation.designation," +
-		 "         constituency.name,appointmentCandidate.imageURL " +
+		 "         constituency.name,appointmentCandidate.imageURL,appointmentCandidate.appointmentCandidateTypeId " +
 		 " from    AppointmentCandidateRelation model " +
 		 " LEFT JOIN model.appointmentCandidate appointmentCandidate " +
 		 " LEFT JOIN appointmentCandidate.userAddress.constituency constituency " +

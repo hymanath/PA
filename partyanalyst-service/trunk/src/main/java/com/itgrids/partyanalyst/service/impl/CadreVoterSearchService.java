@@ -1080,7 +1080,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		      smsOtpDetails.setUserId(userId);
 		      smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
 		      
-		      SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+		      //SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
 		      
 		      status = IConstants.SUCCESS;
 		      }
