@@ -934,14 +934,16 @@
 		var result = (String)(myResult);
 		var errorDivEle = document.getElementById('errorMsgDiv');
 		var str = '';
+		
 		var resultArr = result.split(',');
 		if(result.search('SUCCESS') != -1)
 		{			
 			if(srchType == 'voter'){
 				
 			<%!	
+				
 				String orderNo = getRandomNumber();
-				String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+orderNo, "1", "http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+resultArr[2]+"&entitlementNo="+resultArr[1]+"&status=success", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
+				String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+orderNo, "1", "http://www.mytdp.com/registrationSuccessAction.action?membershipNo=1234567&enrollMentNO=1234567&status=success", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
 				String getChecksum(String MerchantId, String OrderId, String Amount, String redirectUrl, String WorkingKey) {
 					String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
 
@@ -965,7 +967,7 @@
 				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';
 				str+='<input type="hidden" name="Amount" value="1">';
 				str+='<input type="hidden" name="Order_Id" value="CADRE_2016<%=orderNo%>">';
-				str+='<input type="hidden" name="Redirect_Url" value="http://www.mytdp.com/registrationSuccessAction.action?membershipNo='+resultArr[2]+'&entitlementNo='+resultArr[1]+'&status=success">';
+				str+='<input type="hidden" name="Redirect_Url" value="http://www.mytdp.com/registrationSuccessAction.action?membershipNo=1234567&enrollMentNO=1234567&status=success">';
 				str+='<input type="hidden" name="Checksum" value="<%=checksumValue%>">';
 				str+='<input type="hidden" name="billing_cust_name" value="">';
 				str+='<input type="hidden" name="billing_cust_address" value="">';
