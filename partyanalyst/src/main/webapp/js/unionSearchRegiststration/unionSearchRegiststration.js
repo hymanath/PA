@@ -1,5 +1,6 @@
 
 $(".searchCls").click(function(){
+	$("#constituencyId").val(0);
 	$("#errChkDivId").html("");
 	$("#nextStepId").hide();
 	$("#success").hide();
@@ -26,6 +27,7 @@ $(".searchCls").click(function(){
 	}
 });
 $(".searchTypeCls").click(function(){
+	$("#constituencyId").val(0);
 	$("#errChkDivId").html("");
 	$("#success").hide();
 	$("#fail").hide();
@@ -465,4 +467,14 @@ $(document).on("click","#nextStepId",function(){
 	var caderId = $('input[name="otpMobileNo"]:checked').val();//attr("attr_cadreId");
 	//var caderId=$(this).attr("attr_cadreId");//target="_blank"
 	window.location.href = "affiliatedGraduatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5";
+});
+$(document).on("change","#constituencyId",function(){
+	$("#searchBy").val("");
+	$(".cadreMemberListCls").hide();
+	$('#cadreDetailsDiv').html("");
+	$('#generateOtpId').hide();
+	$('#otpId').hide();
+	$('#nextStepId').hide();
+	$('#success').hide();
+	$('#fail').hide();	
 });
