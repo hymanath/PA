@@ -1229,8 +1229,8 @@ function buildTotalAppointmentStatus(result){
 	var str='';
 		str+='<thead>';
 		str+='<th> APPOINTMENTS</th>';
-		str+='<th> TOTAL</th>';
-		str+='<th> UNIQUE</th>';
+		str+='<th style="text-align:center;"> TOTAL</th>';
+		<!--str+='<th> UNIQUE</th>';-->
 		str+='</thead>';
 		str+='<tbody>';
 	for(var i in result){
@@ -1246,27 +1246,27 @@ function buildTotalAppointmentStatus(result){
 				str+='<td class="appointmentStatusCls" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
 			}
 			
-			if(result[i].membersCount == 0){
+			/* if(result[i].membersCount == 0){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
 				str+='<td style="text-align:center;">'+result[i].membersCount+'</td>';
-			}
+			} */
 			
 		str+='</tr>';
 		
 	}
 		str+='<tr>';
-		str+='<td>TOTAL</td>';
+		str+='<td style="text-align:center;">TOTAL</td>';
 		if(totalApptCount!=0){
 			str+='<td style="text-align:center;"><h4>'+totalApptCount+'</h4></td>';
 		}else{
 			str+='<td> - </td>';
 		}
-		if(totalUniqueMembersCount!=0){
+		/* if(totalUniqueMembersCount!=0){
 			str+='<td style="text-align:center;"><h4>'+totalUniqueMembersCount+'</h4></td>';
 		}else{
 			str+='<td> - </td>';
-		}
+		} */
 		str+='</tr>';
 	str+='</tbody>';
 	$("#totalApptStatusCounts").html(totalApptCount);
