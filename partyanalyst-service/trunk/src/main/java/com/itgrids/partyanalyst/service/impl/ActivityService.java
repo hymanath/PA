@@ -610,7 +610,7 @@ public class ActivityService implements IActivityService{
 					}
 					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.MANDAL))
 					{
-						reportList = cadreCommitteeService.getPanchayatWardByMandalId(locationId.toString());
+						reportList = cadreCommitteeService.getPanchayatWardByMandalId(locationId.toString(),null);
 					}
 					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.PANCHAYAT))
 					{
@@ -1613,7 +1613,7 @@ public class ActivityService implements IActivityService{
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
 				
-					List<LocationWiseBoothDetailsVO>  villagesORWardsList =  cadreCommitteeService.getPanchayatWardByMandalId(searchAttributeVO.getLocationId().toString());
+					List<LocationWiseBoothDetailsVO>  villagesORWardsList =  cadreCommitteeService.getPanchayatWardByMandalId(searchAttributeVO.getLocationId().toString(),null);
 					List<Long> locationIdsList = new ArrayList<Long>(0);
 					
 					if(villagesORWardsList != null && villagesORWardsList.size()>0)

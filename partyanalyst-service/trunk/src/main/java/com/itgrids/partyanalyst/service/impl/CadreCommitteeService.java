@@ -8065,7 +8065,7 @@ return constiLst;
 	     
 	     return status;
 	}
-	public List<LocationWiseBoothDetailsVO> getPanchayatWardByMandalId(String mandalId){
+	public List<LocationWiseBoothDetailsVO> getPanchayatWardByMandalId(String mandalId,Long constituencyId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
 		List<Long> mandalIds = new ArrayList<Long>();
@@ -8089,8 +8089,13 @@ return constiLst;
         	}
         }
 		   if(localBodyIds.size() > 0){
-	        	//0wardId,1pwardName,2localBdyName
-	        	List<Object[]> localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
+			   List<Object[]> localBodyList = new ArrayList<Object[]>();
+			   //0wardId,1pwardName,2localBdyName
+			   if(constituencyId == null)
+				   localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
+			   else
+				   localBodyList = assemblyLocalElectionBodyWardDAO.getWardsInLocalElectionBody(localBodyIds, constituencyId);
+			   
 	        	for(Object[] localBody:localBodyList){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("2"+(Long)localBody[0]));
@@ -16842,7 +16847,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	}
 	
 	public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
-			 String searchStartDateStr,String searchEndDateStr)
+			 String searchStartDateStr,String searchEndDateStr,Long constituencyId)
 	{
 		LocationWiseBoothDetailsVO returnVO = null;	
 		try {
@@ -16959,7 +16964,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					}
 					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.MANDAL))
 					{
-						reportList = getPanchayatWardByMandalId(locationId.toString());
+						reportList = getPanchayatWardByMandalId(locationId.toString(),constituencyId);
 					}
 					else if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.PANCHAYAT))
 					{
