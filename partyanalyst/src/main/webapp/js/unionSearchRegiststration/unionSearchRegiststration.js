@@ -181,7 +181,7 @@ $(document).on("click",".detailsCls",function(){
 });
 
 function getDetailsForVoter(voterId){ 
-	window.open("affiliatedGraduatesRegistrationAction.action?candidateId="+voterId+"&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5");
+	window.location.href = "affiliatedGraduatesRegistrationAction.action?candidateId="+voterId+"&searchType=voter&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5";
 }
 		  
 function getCadreDetailsBySearchCriteria(startIndex){
@@ -468,6 +468,11 @@ $(document).on("click","#nextStepId",function(){
 	//var caderId=$(this).attr("attr_cadreId");//target="_blank"
 	window.location.href = "affiliatedGraduatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5";
 });
+
+
+function startSearchingPage(){
+	window.location.href="affiliatedCadreSearchAction.action";
+}
 $(document).on("change","#constituencyId",function(){
 	$("#searchBy").val("");
 	$(".cadreMemberListCls").hide();
