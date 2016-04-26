@@ -203,16 +203,16 @@ public String execute(){
 	public String generateOTPForMobileNumber(){
 		LOG.info("Entered into generateOTPForMobileNumber method");
 		try {
-			HttpSession session = request.getSession();
+			/*HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			Long userId = user.getRegistrationID();
-			
+			*/
 			jobj = new JSONObject(getTask());
 			
 			String mobileNo	= jobj.getString("mobileNo");
 			String refNo = jobj.getString("refNo");
 			
-			status = cadreVoterSearchService.generateOTPForMobileNumber(userId,mobileNo,refNo);
+			status = cadreVoterSearchService.generateOTPForMobileNumber(1L,mobileNo,refNo);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in generateOTPForMobileNumber method in CadreVoterSearchAction action", e);
