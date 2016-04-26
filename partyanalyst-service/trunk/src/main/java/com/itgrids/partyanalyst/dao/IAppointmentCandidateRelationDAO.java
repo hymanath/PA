@@ -45,4 +45,6 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public Object[] combinedStatusApptAndUniqueMemCount(Long apptUserId,List<Long> statusIds);
 	public List<Object[]> checkIsAppointmentEligibleCadre(List<Long> cadreList,List<Long> apptStatusIds,Long appointmentUserId);
 	
+	public List<Object[]> getAllScheduledApptsByDate(Long apptUserId,Date date,Long apptStatusId);
+	
 }
