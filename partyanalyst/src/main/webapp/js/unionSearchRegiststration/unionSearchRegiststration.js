@@ -1,6 +1,5 @@
 
 $(".searchCls").click(function(){
-	$('#constErrId').html("");
 	$("#errChkDivId").html("");
 	$("#nextStepId").hide();
 	$("#success").hide();
@@ -27,7 +26,6 @@ $(".searchCls").click(function(){
 	}
 });
 $(".searchTypeCls").click(function(){
-	$('#constErrId').html("");
 	$("#errChkDivId").html("");
 	$("#success").hide();
 	$("#fail").hide();
@@ -63,7 +61,6 @@ $(".searchTypeCls").click(function(){
 
 $(document).keypress(function(e) {
 	if(e.keyCode==13){
-		$('#constErrId').html("");
 		var registeredChk = $('input[name="tdpCadreRadio"]:checked').val();
 		if(registeredChk=="yes"){
 			getCadreDetailsBySearchCriteria(0);
@@ -75,7 +72,6 @@ $(document).keypress(function(e) {
 
 $("#searchId").click(function(){
 	$('#getOtpId').html("");
-	$('#constErrId').html("");
 	$(".cadreMemberListCls").hide();
 	$("#cadreDetailsDiv").hide();
 	$("#generateOtpId").hide();
@@ -99,20 +95,20 @@ function getVoterDetailsBySearch(){
 	$('#searchErrDiv').html('');
 	$('#cadreDetailsDiv').html('');
 	var constituencyId = $('#constituencyId').val();
-	if(constituencyId==0){
+	/* if(constituencyId==0){
 		$('#constErrId').html('Please Select Your Constituency.');
 		return;
-	}
+	} */
 	var voterCardNo = $("#searchBy").val();
 	if($("#searchBy").val().length==0){
 		$('#searchErrDiv').html('Please enter voterCard No.');
 		return;
 	}
 	var jsObj =
-	{   constId : constituencyId,
-		voterIDCardNo : voterCardNo
-	}
-	
+			{   
+				constId : constituencyId,
+				voterIDCardNo : voterCardNo
+			}
 	$.ajax({    
 		type : "POST",
 		url : "getVoterDetailsByVoterCardNumberAction.action",
@@ -199,10 +195,10 @@ function getCadreDetailsBySearchCriteria(startIndex){
 	var searchRadioType =$('#cadreSearchType').val();
 	
 	var constituencyId = $('#constituencyId').val();
-	if(constituencyId==0){
+	/* if(constituencyId==0){
 		$('#constErrId').html('Please Select Your Constituency.');
 		return;
-	}
+	} */
 	if(searchRadioType == 'membershipId')   
 	{
 		memberShipCardNo = $('#searchBy').val().trim();
@@ -259,18 +255,32 @@ function getCadreDetailsBySearchCriteria(startIndex){
 	}
 	
 	$("#searchDataImg").show();  
-
-	var jsObj =
-	{  
-		locationLevel :4,
-		locationValue:constituencyId,
-		mobileNo: mobileNo,  
-		memberShipCardNo: memberShipCardNo,
-		voterCardNo:voterCardNo,
-		startIndex:startIndex,
-		maxIndex : 50,
-		removedStatus:false,  
-		task:"tdpCadreSearch"     
+	if(constituencyId==0){
+		var jsObj =
+		{  
+			locationLevel :2,
+			locationValue:3,
+			mobileNo: mobileNo,  
+			memberShipCardNo: memberShipCardNo,
+			voterCardNo:voterCardNo,
+			startIndex:startIndex,
+			maxIndex : 50, 
+			removedStatus:false,  
+			task:"tdpCadreSearch"     
+		}
+	}else{
+		var jsObj =
+		{  
+			locationLevel :4,
+			locationValue:constituencyId,
+			mobileNo: mobileNo,  
+			memberShipCardNo: memberShipCardNo,
+			voterCardNo:voterCardNo,
+			startIndex:startIndex,
+			maxIndex : 50,
+			removedStatus:false,  
+			task:"tdpCadreSearch"     
+		}
 	}
 	getCadreDetails(jsObj);
 }
