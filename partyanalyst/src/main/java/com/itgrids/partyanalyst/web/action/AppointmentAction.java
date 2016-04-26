@@ -1285,6 +1285,20 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getAllScheduledApptsByDate(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long apptUserId = jObj.getLong("apptUserId");
+			String dateStr  = jObj.getString("dateStr");
+			
+			searchList = appointmentService.getAllScheduledApptsByDate(apptUserId,dateStr);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAppointmentStatusTrackingDetails() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 	
