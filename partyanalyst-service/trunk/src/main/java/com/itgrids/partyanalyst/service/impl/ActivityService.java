@@ -2736,7 +2736,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			
 			
 			String folderName = folderCreation();
-			
+			 
 			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
@@ -2749,7 +2749,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			 StringBuilder str = new StringBuilder();
 			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
 				
-			String destPath = folderName+"/"+randomNumber+"."+eventFileUploadVO.getFileExtension();
+			String destPath = folderName+"\\"+randomNumber+"."+eventFileUploadVO.getFileExtension();
 			
 			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
 			{   
@@ -2775,7 +2775,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						LOG.error(" Exception Raise in copying file");
 						throw new ArithmeticException();
 					}
-				
+				 
 			}
 			
 			activityDocument.setDocumentName(str.toString());
@@ -2863,7 +2863,42 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    if(levelValue.longValue() ==0L)
 		    	levelValue = eventFileUploadVO.getLevelValue();
 		    activityInfoDocument.setLocationValueAddress(levelValue);
-		    activityInfoDocument.setActivityLocationInfoId( eventFileUploadVO.getActivityLocationInfoId());
+		    
+		    List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
+			if(ids != null && ids.size()>0){
+				try {
+					 activityInfoDocument.setActivityLocationInfoId(ids.get(0));
+				} catch (Exception e) {}
+			}else
+			{
+				ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
+				 
+				if(eventFileUploadVO.getLevelId() != null && eventFileUploadVO.getLevelId().longValue() <= 9L)
+				{
+					Long constituencyId = getConstituencyId(eventFileUploadVO.getLevelId(),  Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
+					if(constituencyId != null && constituencyId.longValue()>0L)
+						activityLocationInfo.setConstituencyId(constituencyId);
+				}
+				else if(eventFileUploadVO.getLevelId() != null && eventFileUploadVO.getLevelId().longValue() == 13L)
+					activityLocationInfo.setConstituencyId( Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
+				
+				activityLocationInfo.setActivityScopeId(eventFileUploadVO.getActivityScopeId());
+				activityLocationInfo.setLocationLevel(eventFileUploadVO.getLevelId());
+				activityLocationInfo.setLocationValue( Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
+				activityLocationInfo.setInsertedBy(eventFileUploadVO.getUpdatedBy());
+				activityLocationInfo.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
+				activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
+				activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				/*try {
+				activityLocationInfo.setConductedDate(formatter.parse(finalvo.getConductedDate() != null ? finalvo.getConductedDate().toString() : ""));
+				} catch (ParseException e) {
+					LOG.error("Exception rised in saveActivityQuestionnaireDetails()",e);
+				}*/
+				activityLocationInfo.setConductedDate(new DateUtilService().getCurrentDateAndTime());
+				ActivityLocationInfo tempactivityLocationInfo = activityLocationInfoDAO.save(activityLocationInfo);
+				activityInfoDocument.setActivityLocationInfoId(tempactivityLocationInfo.getActivityLocationInfoId());
+			}
 		    activityInfoDocument = activityInfoDocumentDAO.save(activityInfoDocument);
 		    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		    resultStatus.setResultState(activityInfoDocument.getActivityInfoDocumentId());
@@ -2912,7 +2947,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			 String activityDocDir = createFolder(staticPath+IConstants.ACTIVITY_DOCUMENTS);
 			 
 			 String yr = String.valueOf(year); // YEAR YYYY
-			 String yrDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"/"+yr;
+			 String yrDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"\\"+yr;
 			 
 			 String yrFldrSts = createFolder(yrDir);
 			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
@@ -2925,13 +2960,13 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			 
 			 
 			 String mnth = str.toString();
-			 String mnthDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"/"+yr+"/"+mnth;
+			 String mnthDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"\\"+yr+"\\"+mnth;
 			 String mnthDirSts = createFolder(mnthDir);
 			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
 			 }
 			 
-			 return staticPath+IConstants.ACTIVITY_DOCUMENTS+"/"+yr+"/"+mnth;
+			 return staticPath+IConstants.ACTIVITY_DOCUMENTS+"\\"+yr+"\\"+mnth;
 			 
 		} catch (Exception e) {
 			LOG.error(" Failed to Create");
