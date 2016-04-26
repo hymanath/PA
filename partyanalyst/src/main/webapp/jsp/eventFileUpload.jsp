@@ -187,7 +187,7 @@ var gobalLocName = "";
 var gobalActivityDate = null;
 var gobalTempVar = "dayCalCulationNotReq";
 var gobalDay = 0;
-
+var gobalDateStr = '${temp}';
 if(actScopeId>0 && locationValueID > 0 && actvityLevelId> 0)
 {
 	$("#showHideDiv").hide();
