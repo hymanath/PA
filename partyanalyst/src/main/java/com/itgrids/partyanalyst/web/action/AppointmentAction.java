@@ -1300,6 +1300,20 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 	}
 	
+	public String getAppointmentStatusCommentsTrackingDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long appntmntId = jObj.getLong("appntmntId");
+			
+			statusTrackingVOList = appointmentService.getAppointmentStatusCommentsTrackingDetails(appntmntId);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAppointmentStatusCommentsTrackingDetails() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	
 }
