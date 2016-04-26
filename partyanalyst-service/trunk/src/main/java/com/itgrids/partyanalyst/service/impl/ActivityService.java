@@ -2749,7 +2749,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			 StringBuilder str = new StringBuilder();
 			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
 				
-			String destPath = folderName+"\\"+randomNumber+"."+eventFileUploadVO.getFileExtension();
+			String destPath = folderName+"/"+randomNumber+"."+eventFileUploadVO.getFileExtension();
 			
 			if(eventFileUploadVO.getInsertType() != null && eventFileUploadVO.getInsertType().trim().equalsIgnoreCase("WS"))
 			{   
@@ -2946,7 +2946,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			 String activityDocDir = createFolder(staticPath+IConstants.ACTIVITY_DOCUMENTS);
 			 
 			 String yr = String.valueOf(year); // YEAR YYYY
-			 String yrDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"\\"+yr;
+			 String yrDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"/"+yr;
 			 
 			 String yrFldrSts = createFolder(yrDir);
 			 if(!yrFldrSts.equalsIgnoreCase("SUCCESS")){
@@ -2959,13 +2959,13 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			 
 			 
 			 String mnth = str.toString();
-			 String mnthDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"\\"+yr+"\\"+mnth;
+			 String mnthDir = staticPath+IConstants.ACTIVITY_DOCUMENTS+"/"+yr+"/"+mnth;
 			 String mnthDirSts = createFolder(mnthDir);
 			 if(!mnthDirSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
 			 }
 			 
-			 return staticPath+IConstants.ACTIVITY_DOCUMENTS+"\\"+yr+"\\"+mnth;
+			 return staticPath+IConstants.ACTIVITY_DOCUMENTS+"/"+yr+"/"+mnth;
 			 
 		} catch (Exception e) {
 			LOG.error(" Failed to Create");
