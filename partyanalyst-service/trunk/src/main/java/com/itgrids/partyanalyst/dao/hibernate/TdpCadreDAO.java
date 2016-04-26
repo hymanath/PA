@@ -6661,5 +6661,31 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	}
 	  
 	
-	  
+	public List<Object[]> checkVoterCardNumberRegistration(String voterIDCardNo){
+		
+		Query query = getSession().createQuery("select model.voter.voterIDCardNo," +
+									" model.tdpCadreId" +
+									" from TdpCadre model" +
+									" where model.voter.voterIDCardNo = :voterIDCardNo" +
+									" and model.isDeleted = 'N'" +
+									" and model.tdpMemberTypeId = 5" +
+									" and model.enrollmentYear = 2016");
+		query.setParameter("voterIDCardNo", voterIDCardNo);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> checkAlreayRegistrationByMemberShipNo(List<Long> tdpCadreIdsList){
+		
+		Query query = getSession().createQuery("select model.tdpCadreId," +
+									" model.parentTdpCadreId" +
+									" from TdpCadre model" +
+									" where model.parentTdpCadreId in (:tdpCadreIdsList)" +
+									" and model.isDeleted = 'N'" +
+									" and model.tdpMemberTypeId = 5" +
+									" and model.enrollmentYear = 2016");
+		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		
+		return query.list();
+	}
 }

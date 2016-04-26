@@ -46,8 +46,15 @@ public class VoterDetailsVO {
 	private String tehsil;
 	private String leb;
 	private List<VoterDetailsVO> subList = new ArrayList<VoterDetailsVO>(0);
+	private String alreadyRegistered;
 	
 	
+	public String getAlreadyRegistered() {
+		return alreadyRegistered;
+	}
+	public void setAlreadyRegistered(String alreadyRegistered) {
+		this.alreadyRegistered = alreadyRegistered;
+	}
 	public List<VoterDetailsVO> getSubList() {
 		return subList;
 	}
