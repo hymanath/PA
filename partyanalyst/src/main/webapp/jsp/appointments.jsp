@@ -1217,42 +1217,58 @@ function buildChartForAppStatus(jsonObj) {
 function buildTotalAppointmentStatus(result){
 	
 	var totalApptCount =0;
-	var totalUniqueMembersCount=0;
-	
 	if(result!=null && result.length>0){
 		for(var i in result){
 			totalApptCount = totalApptCount + result[i].statusCount;
-			totalUniqueMembersCount=totalUniqueMembersCount+result[i].membersCount;
 		}
 	}
 	
-	var str='';
+	    var str='';
 		str+='<thead>';
 		str+='<th> APPOINTMENTS</th>';
 		str+='<th style="text-align:center;"> TOTAL</th>';
-		<!--str+='<th> UNIQUE</th>';-->
 		str+='</thead>';
 		str+='<tbody>';
+		
 	for(var i in result){
 		
+		if(result[i].subList !=null && result[i].subList.length >0 ){
+			
+			str+='<tr style="color:'+color[i%9]+'">';
+			str+='<td><i style="cursor:pointer" class="glyphicon glyphicon-plus-sign changeIcon totalparentStatusClass pull-right"></i><span class="columnChart" style="background-color:'+color[i%9]+'"></span>'+result[i].status+'</td>';
+			if(result[i].statusCount == 0){
+				str+='<td style="text-align:center;"> - </td>';
+			}else{
+				var statusArr= result[i].clickIds;
+				str+='<td class="appointmentStatusCls" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
+			}
+			str+='</tr>';
+            
+			for(var j in result[i].subList){
+				
+				str+='<tr class="totalSubStatusClass" >';
+				str+='<td style="background:#f8f8f8">&nbsp;&nbsp;&nbsp;<span class="columnChart" ></span>'+result[i].subList[j].status+'</td>';
+				if(result[i].subList[j].statusCount == 0){
+					str+='<td style="text-align:center;background:#f8f8f8"> - </td>';
+				}else{
+					var statusArr= result[i].subList[j].clickIds;
+					str+='<td style="background:#f8f8f8" class="appointmentStatusCls text-center" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].subList[j].statusCount+'</td>';
+				}
+				str+='</tr>';
+			}
 		
-		str+='<tr style="color:'+color[i%9]+'">';
+		}else{
+			
+			str+='<tr style="color:'+color[i%9]+'">';
 			str+='<td><span class="columnChart" style="background-color:'+color[i%9]+'"></span>'+result[i].status+'</td>';
 			if(result[i].statusCount == 0){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
 				var statusArr= result[i].clickIds;
-			
 				str+='<td class="appointmentStatusCls" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
 			}
-			
-			/* if(result[i].membersCount == 0){
-				str+='<td style="text-align:center;"> - </td>';
-			}else{
-				str+='<td style="text-align:center;">'+result[i].membersCount+'</td>';
-			} */
-			
-		str+='</tr>';
+			str+='</tr>';
+		}
 		
 	}
 		str+='<tr>';
@@ -1262,11 +1278,7 @@ function buildTotalAppointmentStatus(result){
 		}else{
 			str+='<td> - </td>';
 		}
-		/* if(totalUniqueMembersCount!=0){
-			str+='<td style="text-align:center;"><h4>'+totalUniqueMembersCount+'</h4></td>';
-		}else{
-			str+='<td> - </td>';
-		} */
+		
 		str+='</tr>';
 	str+='</tbody>';
 	$("#totalApptStatusCounts").html(totalApptCount);
@@ -1274,6 +1286,8 @@ function buildTotalAppointmentStatus(result){
 	
 	$("#totalApptStatusCountsAdDash").html(totalApptCount);
 	$("#totalApptsForAdvancedDashBrd").html(str);
+	
+	$(".totalSubStatusClass").hide();
 }
 
 var color1 = ["#A3A670", "#D24E56","#77AE7E","#7D4993","#707265"];
@@ -1284,23 +1298,65 @@ function buildTotalAppointmentStatusForToday(result){
 	$.each(result.statusList,function(index,value){
 	    totalAppts = totalAppts + value.totalCount;
 	});
-	str+='<tr style="font-weight:bold;"><td>Total Appointments</td><td>'+totalAppts+'</td></tr>';
-	$.each(result.statusList,function(index,value){		
-		str+='<tr style="color:'+color1[index%5]+';font-weight:bold;">';
-		str+='<td>'+value.status+'</td>';
-		var todayStatusArr = value.clickIds;
-		if(value.totalCount == 0){
-			str+='<td> - </td>';
+	str+='<tr style="font-weight:bold;"><td>Total Appointments</td><td>'+totalAppts+'</td></tr>';	
+	$.each(result.statusList,function(index,value){	
+	
+		if(value.subList !=null && value.subList.length >0 ){
+			
+			str+='<tr style="color:'+color1[index%5]+';font-weight:bold;">';
+		
+			str+='<td><i style="cursor:pointer" class="glyphicon glyphicon-plus-sign changeIcon parentStatusClass pull-right"></i>'+value.status+'</td>';
+			var todayStatusArr = value.clickIds;
+			if(value.totalCount == 0){
+				str+='<td> - </td>';
+			}else{
+				str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
+			}
+			str+='</tr>';
+			
+			
+			 for(var i in value.subList){
+				 str+='<tr class="subStatusClass">';
+				str+='<td style="background:#f8f8f8">&nbsp;&nbsp;&nbsp; '+value.subList[i].status+'</td>';
+				var clickAray = value.subList[i].clickIds;
+				if(value.subList[i].totalCount == 0){
+					str+='<td style="background:#f8f8f8"> - </td>';
+				}else{
+					str+='<td style="background:#f8f8f8" class="todayappointmentStatusCls" attr_todayStatusArr= "'+clickAray+'" style="cursor:pointer;">'+value.subList[i].totalCount+'</td>';
+				} 
+				str+='</tr>';
+			 }
+			
+			
 		}else{
-			str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
+			str+='<tr style="color:'+color1[index%5]+';font-weight:bold;">';
+		
+			str+='<td>'+value.status+'</td>';
+			var todayStatusArr = value.clickIds;
+			if(value.totalCount == 0){
+				str+='<td> - </td>';
+			}else{
+				str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
+			}
+			str+='</tr>';
 		}
-		str+='</tr>';	
+			
 	});
 	$("#todayAppointmentsId").html(str);
-	
 	$("#todayApptsForAdvancedDashBrd").html(str);
+	
+	$(".subStatusClass").hide();
+	
 }
-
+	
+	$(document).on("click",".parentStatusClass",function(){
+		$(this).toggleClass("glyphicon-minus-sign");
+		$(".subStatusClass").toggle();
+	});
+	$(document).on("click",".totalparentStatusClass",function(){
+		$(this).toggleClass("glyphicon-minus-sign");
+		$(".totalSubStatusClass").toggle();
+	});
 	$(document).on("click",".appointmentSettings",function(e){
 		$(".updateAppointment").hide();
 		$(".messageBlock").hide();
