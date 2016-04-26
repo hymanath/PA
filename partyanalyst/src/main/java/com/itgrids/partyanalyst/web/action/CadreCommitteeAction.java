@@ -1595,7 +1595,7 @@ public String getSummaryDetails(){
 	public String getPanchayatWardByMandal(){
 		try{
 			jObj = new JSONObject(getTask());
-			locations=cadreCommitteeService.getPanchayatWardByMandalId(jObj.getString("mandalId"));
+			locations=cadreCommitteeService.getPanchayatWardByMandalId(jObj.getString("mandalId"),jObj.getLong("constituencyId"));
 			
 		}catch(Exception e){	
 			LOG.error("Exception occured in getPanchayatWardByMandal() method ",e);

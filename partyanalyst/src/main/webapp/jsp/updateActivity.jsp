@@ -721,7 +721,8 @@ function getPanchayatWardByMandal(mandalId){
 		     $('#villageWardsList').find('option').remove();
 			 $('#villageWardsList').append('<option value="0"> Select Mandal/Town/Division</option>');	
 			var jsObj={
-				mandalId:mandalId
+				mandalId:mandalId,
+				constituencyId : $("#constiList").val()
 			}
 			$.ajax({
 				type : "POST",
@@ -946,7 +947,8 @@ function getLocationDetailsForActivity(startDate,endDate)
 				searchBy:searchBy,
 				locationId:locationId,
 				locationId:locationId,
-				task:"getLocationDetailsForActivity"
+				task:"getLocationDetailsForActivity",
+				constituencyId : constituencyId
 			};		
 			$.ajax({
 				  type:'GET',

@@ -1019,13 +1019,14 @@ public String getAllConstituencysForADistrict(){
 			Long locationId = jObj.getLong("locationId");
 			String searchStartDateStr=jObj.getString("startDate");
 			String searchEndDateStr=jObj.getString("endDate");
+			Long constituencyId = jObj.getLong("constituencyId");
 			
 			if(searchStartDateStr != null && searchStartDateStr.trim().length() > 0 && searchEndDateStr != null && searchEndDateStr.trim().length() > 0){
 				locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
-						locationId,searchStartDateStr,searchEndDateStr);
+						locationId,searchStartDateStr,searchEndDateStr,constituencyId);
 			}else{
 				locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
-						locationId,null,null);
+						locationId,null,null,constituencyId);
 			}
 			
 			
