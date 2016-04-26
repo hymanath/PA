@@ -19,7 +19,9 @@
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"> </script>
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 	<script type="text/javascript" src="js/md5.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 </head>
 <style>
 #trigger{
@@ -1887,7 +1889,7 @@ $(document).on("click",".changePwdLink",function(){
 	
 	 $("#connectPeoplePopup").dialog({
             modal: true,
-            title: "<b>Change Password</b>",
+            title: "Change Password",
 			width: 565,
             height: 320
            
