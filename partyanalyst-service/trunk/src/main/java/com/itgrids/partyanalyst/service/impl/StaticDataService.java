@@ -158,6 +158,7 @@ import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.CandidateElecResultVOComparator;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.ConstituencyNamesComparator;
 import com.itgrids.partyanalyst.utils.DistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
@@ -1234,18 +1235,25 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	public List<SelectOptionVO> getConstituencies(Long stateId,Long stateTypeId) {
-		List<Constituency> constList = null;
-		if(stateTypeId == null)
-			constList = constituencyDAO.findByStateId(stateId);
-		else 
-			constList = constituencyDAO.getConstituenciesByStteIdStatTypeId(stateId,stateTypeId);
-		
 		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
-
-		for (Constituency constituency : constList)
-			constituencies.add(new SelectOptionVO(constituency
-					.getConstituencyId(), constituency.getName()));
-
+		try {
+			List<Constituency> constList = null;
+			if(stateTypeId == null){
+				constList = constituencyDAO.findByStateId(stateId);
+				for (Constituency constituency : constList)
+					constituencies.add(new SelectOptionVO(constituency.getConstituencyId(), constituency.getName()));
+			}			
+			else {
+				List<Object[]> constiList = constituencyDAO.getConstituenciesByStateId(stateId,stateTypeId);
+				CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+				
+				if(constiList != null && constiList.size()>0)
+					for (Object[] constituency : constiList) 
+						constituencies.add(new SelectOptionVO(commonMethodsUtilService.getLongValueForObject(constituency[0]), commonMethodsUtilService.getStringValueForObject(constituency[1])));
+			}
+		} catch (Exception e) {
+			log.error("Exception Occured in getConstituencies ");
+		}
 		return constituencies;
 	}
 
