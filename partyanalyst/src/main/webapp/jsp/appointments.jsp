@@ -6604,6 +6604,7 @@ function getCommitteeRoles(){
 		str+='<th>PREFERED DATE</th>';
 		str+='<th>CONFIRMED DATE</th>';
 		str+='<th>STATUS</th>';
+		str+='<th></th>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result)
@@ -6615,13 +6616,71 @@ function getCommitteeRoles(){
 		str+='<td>'+result[i].preferredDate+'</td>';
 		str+='<td>'+result[i].confirmedDate+'</td>';
 		str+='<td>'+result[i].status+'</td>';
+		str+='<td><a onclick="getAppointCommentsForTracking(\''+result[i].id+'\',\''+result[i].uniqueCode+'\')">View Comments</a></td>';
 		str+='</tr>';	
 		}
 		str+='</tbody>';
 		str+='</table>';
+		str+='<div id="appointmentCommentsDiv"></div>';
 		$("#aptCandidateHistoryDiv").html(str);	
 	     $('#aptCandidateHistorydatatable').DataTable();
 	}
+	function getAppointCommentsForTracking(id,name)
+	{
+		$("#appointmentCommentsDiv").html('<img src="images/search.gif" />');
+		var jsObj={
+	    			appntmntId:id,
+					
+					task:""
+	    		}
+		$.ajax({
+		  type : 'GET',
+		  url : 'getAppointmentStatusCommentsTrackingDetails.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+		  buildAppointCommentsForTracking(result,name);
+		});
+		
+	}
+	
+	
+	function buildAppointCommentsForTracking(result,aptName)
+	{
+			var str='';
+	//$("#statusTrackingName").html(''+aptName+' Appointment Status Tracking')
+	str+='<h4>'+aptName+' Appointment Status Tracking </h4>';
+	str+='<ul class="apptStatusTracking">';
+	for(var i in result){
+		
+		str+='<li>';
+			str+='<div class="arrow_box">';
+			if(result[i].id == 1)
+			str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+				else
+				str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+				if(result[i].commentsList != null && result[i].commentsList.length > 0)
+				{
+					str+='<u style="font-size:15px;">Comments</u>';
+					for(var j in result[i].commentsList)
+					{
+					
+					str+='<p>'+result[i].commentsList[j]+'</p>';	
+					}
+				}
+				
+			str+='</div>';
+		str+='</li>';	
+	}
+	str+='</ul>';
+	$("#appointmentCommentsDiv").html(str);
+	 $('html,body').animate({
+        scrollTop: $("#appointmentCommentsDiv").offset().top},
+        'slow');
+
+
+	}
+
 	
 	function buildAppointmentCommentsForViewHistory(result){
 		
