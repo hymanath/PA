@@ -138,7 +138,7 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 			param = request.getParameter("type");
 		} else if(params.containsKey(STATEID) && params.size() == 1){
 			param = request.getParameter(STATEID);
-			setConstituencies(getStaticDataService().getConstituencies(Long.valueOf(param)));
+			setConstituencies(getStaticDataService().getConstituencies(Long.valueOf(param),null));
 			return Action.SUCCESS;
 		} 
 		
@@ -149,7 +149,7 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		setStates(getStaticDataService().getStates(defaultElectionTypeId));
 		setYears(getStaticDataService().getElectionIdsAndYears(defaultElectionTypeId));
 		setParties(getStaticDataService().getStaticParties());
-		setConstituencies(getStaticDataService().getConstituencies(Long.valueOf(getStates().get(0).getId())));
+		setConstituencies(getStaticDataService().getConstituencies(Long.valueOf(getStates().get(0).getId()),null));
 		final Long stateId = getStates().get(0).getId();
 		final Long partyId = getParties().get(0).getId();
 		final Long electionId = getYears().get(0).getId();
@@ -206,7 +206,7 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		setStates(getStaticDataService().getStates(defaultElectionTypeId));
 		setYears(getStaticDataService().getElectionIdsAndYears(defaultElectionTypeId));
 		setParties(getStaticDataService().getStaticParties());
-		setConstituencies(getStaticDataService().getConstituencies(stateId));
+		setConstituencies(getStaticDataService().getConstituencies(stateId,null));
 		setCandidates(candidateSearchService.getNominatedPartyCandidates(stateId, partyId, electionId));
 		setRebelCandidates(partyRebelCandidatesService.findByPartyIdAndElectionId(partyId, electionId));
 		
