@@ -736,7 +736,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				queryStr.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 			}
 			
-			queryStr.append(" model.locationLevel,date(model.plannedDate),count(distinct model.locationValue) from ActivityLocationInfo model " );
+			queryStr.append(" model.locationLevel,date(model.conductedDate),count(distinct model.locationValue) from ActivityLocationInfo model " );
 			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 				queryStr.append("  ,Tehsil T ,Panchayat P ");
@@ -835,24 +835,24 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 			
 			queryStr.append("   ");
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-				queryStr.append(" group by model.constituency.district.districtId,date(model.plannedDate)  ");
+				queryStr.append(" group by model.constituency.district.districtId,date(model.conductedDate)  ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-				queryStr.append(" group by  model.constituency.constituencyId,date(model.plannedDate)");
+				queryStr.append(" group by  model.constituency.constituencyId,date(model.conductedDate)");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-				queryStr.append("  group by  T.tehsilId,date(model.plannedDate) ");
+				queryStr.append("  group by  T.tehsilId,date(model.conductedDate) ");
 			}
 			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-				queryStr.append("  group by  LEB.localElectionBodyId,date(model.plannedDate) ");
+				queryStr.append("  group by  LEB.localElectionBodyId,date(model.conductedDate) ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-				queryStr.append("  group by  P.panchayatId,date(model.plannedDate) ");
+				queryStr.append("  group by  P.panchayatId,date(model.conductedDate) ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-				queryStr.append(" group by   C.constituencyId,date(model.plannedDate) ");
+				queryStr.append(" group by   C.constituencyId,date(model.conductedDate) ");
 			}
-			queryStr.append(" order by  date(model.plannedDate) asc  ");
+			queryStr.append(" order by  date(model.conductedDate) asc  ");
 			query = getSession().createQuery(queryStr.toString());
 			
 			if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)

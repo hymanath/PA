@@ -23,7 +23,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day" +
-				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId");
+				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted = 'N' " );
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
@@ -75,7 +75,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.activityDocument.activityDocumentId)" +
-				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId");
+				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted = 'N'  ");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
