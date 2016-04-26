@@ -116,10 +116,11 @@
 					<div>
 					  <ul class="nav nav-tabs navTabsCustom" role="tablist">
 						<li role="presentation"  class="active refreshBlockDiv"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
-						<li role="presentation"><a href="#advncdDashboard" aria-controls="advnceDashboard" role="tab" data-toggle="tab" class="advnceDashboardCls"><img src="dist/Appointment/img/AdvanceDashboard.png">Advance Dashboard</a></li>
+						
 						<li role="presentation"><a style="padding-left:0px;padding-right:0px" href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
 						<!--<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="MngeAppntmntCls"><img src="dist/Appointment/img/manageappointments.png">Manage Appointments</a></li>-->
 						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm Appointments</a></li>
+						<li role="presentation"><a href="#advncdDashboard" aria-controls="advnceDashboard" role="tab" data-toggle="tab" class="advnceDashboardCls"><img src="dist/Appointment/img/AdvanceDashboard.png">Advance Dashboard</a></li>
 					  </ul>
 					  <!-- Tab panes -->
 					  <div class="tab-content">
@@ -4344,9 +4345,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						
 					
 					str+='<p>Priority : '+result[i].priority+'</p>';
-					str+='<p>Requested Date : '+result[i].dateString+'</p>';
+					if(result[i].dateString !=null && result[i].dateString.length>0){
+						str+='<p>Requested Date : '+result[i].dateString.split(" ")[0]+'</p>';
+					}
 					
-					str+='<p>Purpose : '+result[i].subject+'</p>';
+					if(result[i].subject !=null && result[i].subject.length>0){
+						str+='<p>Purpose : '+result[i].subject+'</p>';
+					}
+					
 					
 					
 				str+='</div>';
@@ -4368,10 +4374,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											//	str+='<span class="colorStatus green"></span>';
 											str+='</div>';
 											str+='<div class="media-body">';
-												str+='<p>'+result[i].subList[j].name+' - Cadre</p>';
+												str+='<p>'+result[i].subList[j].name+'</p>';
 												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
-												str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
+												if(result[i].subList[j].candidateTypeId !=null && 
+													result[i].subList[j].candidateTypeId >0 && result[i].subList[j].candidateTypeId != 1)
+														if(result[i].subList[j].constituency!=null && result[i].subList[j].constituency.trim().length>0){
+															str+='<p>Constituency : '+result[i].subList[j].constituency+'</p>';
+														}
+												
 												/* if(result[i].subList[j].lastVisit !=null && result[i].subList[j].lastVisit.trim().length>0){
 													str+='<p>Last Visit: '+result[i].subList[j].lastVisit+'</p>';
 												}else{
