@@ -37,6 +37,7 @@ public class SmsOtpDetails  extends BaseModel{
 	private Date insertedTime;
 	private Date updatedTime;
 	private String mobileNo;
+	private Date generateTime;
 	private Long userId;
 	private User user;
 	
@@ -109,7 +110,14 @@ public class SmsOtpDetails  extends BaseModel{
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-
+	
+	@Column(name = "generate_time")
+	public Date getGenerateTime() {
+		return generateTime;
+	}
+	public void setGenerateTime(Date generateTime) {
+		this.generateTime = generateTime;
+	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
