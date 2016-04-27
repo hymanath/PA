@@ -2720,6 +2720,7 @@
 		   <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 		   <property name="locationInfoDAO" ref="locationInfoDAO" />
 		    <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
+		     <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
 		   
     </bean>
 	
