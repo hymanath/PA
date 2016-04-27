@@ -10,7 +10,9 @@
 	<import resource="conf/spring/daos.xml" />
 	<import resource="conf/spring/interceptors.xml" />
 	<import resource="conf/spring/webserviceComponents.xml" />
-	
+	<import resource="conf/spring/pg_services.xml" />
+	<import resource="conf/spring/pg_daos.xml" />
+	<import resource="conf/spring/pg_persistence.xml" />
 </beans>
 	
 
