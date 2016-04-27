@@ -74,6 +74,7 @@ $(document).keypress(function(e) {
 
 $("#searchId").click(function(){
 	$('#getOtpId').html("");
+	$('#generateOtpId').show();
 	$(".cadreMemberListCls").hide();
 	$("#cadreDetailsDiv").hide();
 	$("#generateOtpId").hide();
@@ -386,31 +387,36 @@ function buildCadreDetails(result,jsObj){
 }
 
 function generateOTPForMobileNo(currentButton){
-	$(currentButton).attr("disabled","disabled");
-	$("#success").hide();
-	$("#fail").hide();
-	$("#otpId").val("");
-	$("#nextStepId").hide();
-	var memberShipNo = $('input[name="otpMobileNo"]:checked').val();
-	var mobileNo = $('#mobileNo'+memberShipNo+'').val();
-	$("#getOtpId").html("");
-	if (typeof(mobileNo) != "undefined"){
+	
+		$(currentButton).attr("disabled","disabled");
+		$("#success").hide();
+		$("#fail").hide();
+		$("#otpId").val("");
+		$("#nextStepId").hide();   
+		var memberShipNo = $('input[name="otpMobileNo"]:checked').val();
+		var mobileNo = $('#mobileNo'+memberShipNo+'').val();
 		$("#getOtpId").html("");
-		var refNo = Math.floor((Math.random() * 1000000) + 1);
-		$("#randomRefNo").val(refNo);
-		/*if(refNo >0)
-			$("#getOtpId").html(" OTP Reference No: "+refNo+" (Note: If you not get OTP, click Generate OTP once again.)");
-		*/
-		var jsObj =
-		{    
-			mobileNo : mobileNo,
-			refNo : refNo
+		if (typeof(mobileNo) != "undefined"){
+			$("#getOtpId").html("");
+			var refNo = Math.floor((Math.random() * 1000000) + 1);
+			$("#randomRefNo").val(refNo);
+			//var prevRefNo = $("#priviousRandomRefNo").val();
+			/*if(refNo >0)
+				$("#getOtpId").html(" OTP Reference No: "+refNo+" (Note: If you not get OTP, click Generate OTP once again.)");
+			*/
+			var jsObj =
+			{    
+				mobileNo : mobileNo,
+				refNo : refNo
+				//prevRefNo : prevRefNo
+			}
+			//console.log(mobileNo);
+			generateOTPForMobileNumber(jsObj,currentButton);
+		}else{
+			$("#getOtpId").html("Please select atleast one member.");
 		}
-		//console.log(mobileNo);
-		generateOTPForMobileNumber(jsObj,currentButton);
-	}else{
-		$("#getOtpId").html("Please select atleast one member.");
-	}
+		//$("#priviousRandomRefNo").val(refNo);
+	
 }
 $("#otpId").keyup(function(){
 	var otp=$("#otpId").val().trim();
