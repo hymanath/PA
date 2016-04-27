@@ -2768,7 +2768,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				        selectcc.refresh();
 						popDesignation = "Other";
 				        getDesignationsByType(4,'designationSelId'+temp);
-				        
+				        $('#othrCnddtDsgntnBlckId'+temp).show();
+						
 					}else if( candidateType == 'cadre'){
 						
 						$('#candidateTypeSelId'+temp).val(3);
