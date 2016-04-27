@@ -5988,7 +5988,8 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
     		  if(dateStr !=null && !dateStr.isEmpty()){
     			  date = sdf.parse(dateStr);
     		  }
-    			List<Object[]> dates = appointmentTimeSlotDAO.getAppointmentConfirmDates(date,apptUserId);
+    		     
+    			List<Object[]> dates = appointmentTimeSlotDAO.getAppointmentConfirmDates(date,apptUserId,IConstants.APPOINTMENT_STATUS_SCHEDULED);
     			Date givenDate=null;
     			
     			if(dates != null && dates.size() >0){

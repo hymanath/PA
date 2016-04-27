@@ -25,14 +25,16 @@ public class AppointmentTimeSlotDAO extends GenericDaoHibernate<AppointmentTimeS
 	    query.setParameterList("appointmentIds", appointmentIds);
 	    return query.list();
 	}
-	public List<Object[]> getAppointmentConfirmDates(Date date,Long apptUserId)
+	public List<Object[]> getAppointmentConfirmDates(Date date,Long apptUserId,Long apptStatusId)
 	{	
 		
 		Query query = getSession().createQuery(" select model.date,model.fromDate,model.toDate " +
 				" from   AppointmentTimeSlot model " +
-				" where  model.appointment.isDeleted='N' and model.date =:date and model.appointment.appointmentUserId =:apptUserId ");
+				" where  model.appointment.isDeleted='N' and model.date =:date and model.appointment.appointmentUserId =:apptUserId " +
+				"        and model.appointment.appointmentStatusId = :apptStatusId ");
 	    query.setParameter("apptUserId", apptUserId);
 	    query.setDate("date", date);
+	    query.setParameter("apptStatusId", apptStatusId);
 	    return query.list();
 	}
 }
