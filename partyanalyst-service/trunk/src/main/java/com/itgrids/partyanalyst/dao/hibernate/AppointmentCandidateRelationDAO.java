@@ -148,7 +148,8 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		 "         constituency.name,appointmentCandidate.imageURL,appointmentCandidate.appointmentCandidateTypeId " +
 		 " from    AppointmentCandidateRelation model " +
 		 " LEFT JOIN model.appointmentCandidate appointmentCandidate " +
-		 " LEFT JOIN appointmentCandidate.userAddress.constituency constituency " +
+		 " LEFT JOIN appointmentCandidate.userAddress userAddress" +
+		 " LEFT JOIN userAddress.constituency constituency " +
 		 " where   model.appointment.isDeleted = 'N' and model.appointment.appointmentId in (:appointmentIds)");
 		
 		query.setParameterList("appointmentIds",appointmentIds);
@@ -790,12 +791,12 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		sb.append(" select  distinct acr.appointment_id as appid, a.reason as reason, ap.priority as priority, ass.status as status," +
 				"            a.inserted_time as insertedTime,a.appointment_unique_id as uniqueId" +
 				"   from    appointment_candidate_relation acr " +
-				"           join appointment                  a    on  acr.appointment_id=a.appointment_id " +
-				"           join appointment_priority         ap   on  a.appointment_priority_id=ap.appointment_priority_id " +
+				"           join appointment                  a    on  acr.appointment_id=a.appointment_id " +				
 				"           join appointment_status           ass  on  a.appointment_status_id=ass.appointment_status_id " +
-				"           join appointment_preferable_date  apd  on  acr.appointment_id=apd.appointment_id " +
+				"           left join appointment_preferable_date  apd  on  acr.appointment_id=apd.appointment_id " +
 				"           join appointment_candidate        ac   on  acr.appointment_candidate_id=ac.appointment_candidate_id " +
 				"           join user_address                 ua   on  ac.address_id=ua.user_address_id " +
+				"           left join appointment_priority    ap   on  a.appointment_priority_id=ap.appointment_priority_id " +
 				
 				" where a.is_deleted='N' ");
 		

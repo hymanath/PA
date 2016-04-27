@@ -93,6 +93,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.model.Appointment;
 import com.itgrids.partyanalyst.model.AppointmentCandidate;
+import com.itgrids.partyanalyst.model.AppointmentCandidateDesignation;
 import com.itgrids.partyanalyst.model.AppointmentCandidateRelation;
 import com.itgrids.partyanalyst.model.AppointmentComment;
 import com.itgrids.partyanalyst.model.AppointmentLabel;
@@ -468,8 +469,14 @@ public class AppointmentService implements IAppointmentService{
 		        	
 		        	Appointment appointment = new Appointment();
 		        	appointment.setAppointmentUserId(appointmentVO.getAppointmentUserId());
-		        	appointment.setAppointmentPriorityId(appointmentVO.getAppointmentPriorityId());
-		        	appointment.setReason(appointmentVO.getReason());
+		        	
+		        	if(appointmentVO.getAppointmentPriorityId() != null  && appointmentVO.getAppointmentPriorityId()>0){
+		        		appointment.setAppointmentPriorityId(appointmentVO.getAppointmentPriorityId());
+		        	}		 
+		        	if(appointmentVO.getReason() !=null && !appointmentVO.getReason().isEmpty()){
+		        		appointment.setReason(appointmentVO.getReason());
+		        	}
+		        	
 		        	appointment.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_WAITING);
 		        	
 		        	/*if(appointmentVO.getUniqueCode()!=null && !appointmentVO.getUniqueCode().trim().equalsIgnoreCase("")){
@@ -477,13 +484,13 @@ public class AppointmentService implements IAppointmentService{
 		        		appointment.setAppointmentUserId(Long.parseLong(temp[1]));
 		        	}*/
 		        	
-		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
+		        	if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
 		        		appointment.setAppointmentPreferableTimeId(1l);
-		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
 		        		appointment.setAppointmentPreferableTimeId(2l);
-		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextMonth")){
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextMonth")){
 		        		appointment.setAppointmentPreferableTimeId(3l);
-		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
 		        		appointment.setAppointmentPreferableTimeId(4l);
 		        	} 
 		        	
@@ -505,7 +512,7 @@ public class AppointmentService implements IAppointmentService{
 		        	List<Date> datesList = new ArrayList<Date>(0);
 		        	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		        	
-		        	if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
+		        	if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("multipleDates")){
 		        		if(appointmentVO.getAppointmentDates() != null && appointmentVO.getAppointmentDates().trim() != ""){
 		        			String temp[] = appointmentVO.getAppointmentDates().split(",");
 		        			for(int i=0;i<temp.length;i++){
@@ -517,13 +524,13 @@ public class AppointmentService implements IAppointmentService{
 			
 		        			}
 		        		} 
-		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextWeek")){
 		        		appointment.setAppointmentPreferableTimeId(2l);
 		        		datesList = dateUtilService.getDatesOfWeekAfterCurrentWeek();
-		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextMonth")){
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("nextMonth")){
 		        		appointment.setAppointmentPreferableTimeId(3l);
 		        		datesList = dateUtilService.getDatesOfNextMonth();
-		        	}else if(appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
+		        	}else if(appointmentVO.getAppointmentPreferableTimeType() !=null && appointmentVO.getAppointmentPreferableTimeType().equalsIgnoreCase("thisWeek")){
 		        		appointment.setAppointmentPreferableTimeId(4l);
 		        		datesList = dateUtilService.getDatesOfCurrentWeek();
 		        	}
@@ -3889,7 +3896,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       Integer updtdSts = appointmentDAO.updateAppntmntStatusById(appointmentTimeSlot.getAppointmentId(), dateUtilService.getCurrentDateAndTime() );
 				       
 				       AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
-				       inputVO.setAppointmentId(appointmentTimeSlot.getAppointmentId());
+				       inputVO.setAppointmentId(appointmentTimeSlot.getAppointmentId());  
 					   inputVO.setSmsText("Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
 					   
 					  //Sending Sms To TimeSlot Booked Candidates
@@ -4794,9 +4801,17 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		
 		try{
 			appCandi.setName(basicInfo.getName());
-			appCandi.setDesignationId(basicInfo.getDesignationId());
-			appCandi.setMobileNo(basicInfo.getMobileNo());
-			appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
+			if(basicInfo.getDesignationId() !=null){
+				appCandi.setDesignationId(basicInfo.getDesignationId());
+			}
+				
+			if(basicInfo.getMobileNo() !=null && !basicInfo.getMobileNo().isEmpty()){
+				appCandi.setMobileNo(basicInfo.getMobileNo());
+			}
+			if(basicInfo.getLocationScopeId() !=null && basicInfo.getLocationScopeId()>0){
+				appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
+			}
+			
 			if(basicInfo.getLocationScopeId().longValue() == 3l){			 		//dist
 				appCandi.setLocationValue(basicInfo.getDistrictId());
 			}
@@ -4812,16 +4827,22 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				appCandi.setLocationValue(id);
 			}
 			
-			//user addres saving logic
-			UserAddress userAddress = new UserAddress();
+			//user addres saving logics
+			
+			UserAddress userAddress = null;
+			if( basicInfo.getDistrictId() !=null && basicInfo.getDistrictId() > 0l){
+				
+				userAddress = new UserAddress();//Minimum should know the District,then create the object for UserAddress
+				
+				userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
+			}
+			
 			if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()>10){
 				userAddress.setState(stateDAO.get(1l));
-			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()<=10){
+			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId() >0 && basicInfo.getDistrictId()<=10){
 				userAddress.setState(stateDAO.get(36l));
 			}
 			
-			if(basicInfo.getDistrictId() > 0l)
-			userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
 			if(basicInfo.getConstituencyId() > 0l)
 			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
 			
@@ -4837,9 +4858,14 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
 			}
 			
-			userAddress = userAddressDAO.save(userAddress);
+			if(userAddress !=null){
+				userAddress = userAddressDAO.save(userAddress);
+			}
 			
-			appCandi.setAddressId(userAddress.getUserAddressId());
+			if(userAddress !=null){
+				appCandi.setAddressId(userAddress.getUserAddressId());
+			}
+			
 			appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
 			appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
 			appCandi.setMembershipId(basicInfo.getMembershipNum());
@@ -5813,7 +5839,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				}
 			}
 			
-			//candidate prevoius info.
+			//candidate previous info.
 			List<Long> candidates = null;
 			if(candidateIds!=null && candidateIds.size()>0){
 				candidates = new ArrayList<Long>(candidateIds);
@@ -6044,6 +6070,29 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 			e.printStackTrace();
 		}
     	return returnList;
+    }
+    public ResultStatus saveDesignationForOtherCandidate(String designation,Long candidateTypeId){
+    	ResultStatus result = new ResultStatus();    	
+    	try{
+    		
+    		AppointmentCandidateDesignation aptDesignation = new AppointmentCandidateDesignation();
+    		if(designation !=null && !designation.isEmpty()){
+    			aptDesignation.setDesignation(designation);
+    		}
+    		if(candidateTypeId !=null && candidateTypeId>0){
+    			aptDesignation.setAppointmentCandidateTypeId(candidateTypeId);
+    		}
+    		
+    		candidateDesignationDAO.save(aptDesignation);
+    		result.setExceptionMsg("Success");
+    		result.setResultCode(0);
+    		
+    	}catch (Exception e) {
+    		result.setExceptionMsg("failure");
+    		result.setResultCode(1);
+    		LOG.error("Exception raised at saveDesignationForOtherCandidate() method of AppointmentService", e);
+		}
+    	return result;
     }
     public List<AppointmentScheduleVO> getAllScheduledApptsByDate(Long apptUserId,String dateStr)
 	{
