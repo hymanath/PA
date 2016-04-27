@@ -278,7 +278,7 @@
 											
 											<div class="col-md-3 advanceSearchCls">
 												<label>Search Type</label>
-                                                <select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();">
+                                                <select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
 													<option value="0">Select Search Type</option>
 													<option value="1">Name</option>
 													<option value="2">Public Representative</option>
@@ -289,7 +289,7 @@
                                             	<label class="advanceNameCls">Search By Name<span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control advanceNameCls clearCls" id="advanceSearchValueId">
 												<label class="advancePRCls">Search Designation</label>
-												 <select class="advancePRCls dropkickClass"  id="advanceDesignationId">
+												 <select class="advancePRCls dropkickClass"  id="advanceDesignationId" onchange="getLevelByDesignation();">
 													<option value="0">Select Designation</option>
 													<!--<option value="1">MP</option>
 													<option value="2">MLA</option>
@@ -7616,7 +7616,7 @@ function timeSlotTableBuilding(result,dateStr){
 		$(".updateChangeClass").removeClass("col-md-4");
 		$(".updateChangeClass").addClass("col-md-6");
 			
-	})	
+	})
 	function saveDesignationForOtherCandidate(){
 		
 		var jsObj={
@@ -7632,7 +7632,64 @@ function timeSlotTableBuilding(result,dateStr){
 			
 		});		
 	}
+	function buildLevels()
+	{
+		var str='';
+		 $("#levelId").find('option').remove();
+		  str+='<option value="10">State</option>';
+		  str+='<option value="11">District</option>';
+		  str+='<option value="5">Mandal/Muncipality</option>';
+		  str+='<option value="6">Village/Ward</option>';
+		  $("#levelId").append(str);
+		    $("#levelId").dropkick();
+			 var select = new Dropkick("#levelId");
+			 select.refresh();
+	}
+ function getLevelByDesignation()
+ {
+	 
+	  $("#levelId").find('option').remove();
+	   var stateGrpIds = ["6","23","7","12","16","22"];
+	 var distGrpIds = ["2","8","10","1","9","11"];
+	 var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
 	
+	 var designationId =$("#advanceDesignationId").val();
+	
+	 var str ='';
+	  if(jQuery.inArray(designationId, stateGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		
+		 $("#levelId").append(str);
+	 }
+	else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		 str+='<option value="11">District</option>';
+		 $("#levelId").append(str);
+	 }
+	 else if(jQuery.inArray(designationId, mandalGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		 str+='<option value="11">District</option>';
+		 str+='<option value="5">Mandal/Muncipality</option>';
+		 $("#levelId").append(str);
+	 }
+	 
+	else
+	 {
+		  str+='<option value="10">State</option>';
+		  str+='<option value="11">District</option>';
+		  str+='<option value="5">Mandal/Muncipality</option>';
+		  str+='<option value="6">Village/Ward</option>';
+		  $("#levelId").append(str);
+	 }
+	   $("#levelId").dropkick();
+			 var select = new Dropkick("#levelId");
+			 select.refresh();
+	 	
+ }
+
 </script>
 </body>
 </html>
