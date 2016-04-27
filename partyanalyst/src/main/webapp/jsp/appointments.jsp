@@ -407,15 +407,15 @@
 											</div>
 											<div class="row">
 												<div class="col-md-4 m_top10">
-													<label>Appointment Priority Type</label><span style='color:red'> &nbsp * </span>
+													<label>Appointment Priority Type</label>
 													<select name="appointmentVO.appointmentPriorityId" class="manageAppTypeCls" id="createAppTypeListId">
 														<option value="0">Select Priority</option>
 													</select>
-													<div class="errorAptCls validateClr"></div>
+													<!--<div class="errorAptCls validateClr"></div>-->
 												</div>
 												<div class="col-md-8 m_top10">
 													<label class="radio-inline">
-														<input type="radio" id="selectManualDateId" class="dateRadioCls" checked name="dateTypeRadio" value="multipleDates">Select Preferrable Dates
+														<input type="radio" id="selectManualDateId" class="dateRadioCls" name="dateTypeRadio" value="multipleDates">Select Preferrable Dates
 													</label>
 													<label class="radio-inline">
 														<input type="radio" class="dateRadioCls" name="dateTypeRadio" value="nextWeek">Next Week(Any Date)
@@ -433,16 +433,16 @@
 														</span>
 														<input type="text" class="form-control multiDateCls disableCls" id="multiDate" name="appointmentVO.appointmentDates" readOnly>
 													</div>
-													<div class="errorSpdCls validateClr"></div>
+													<!--<div class="errorSpdCls validateClr"></div>-->
 												</div>
 												<div class="col-md-6 m_top10">
 													
 													
 												</div>
 												<div class="col-md-12 m_top10">
-													<label>Appointment Purpose</label><span style='color:red'> &nbsp * </span>
+													<label>Appointment Purpose</label>
 													<textarea class="form-control" id="appointmentReasonId" name="appointmentVO.reason"></textarea>
-													<div class="errorArCls validateClr"></div>
+													<!--<div class="errorArCls validateClr"></div>-->
 												</div>
 												
 												
@@ -484,24 +484,26 @@
 												<input type="text" class="form-control cloneNameCls">
 												<div class="cloneErrCandidateNameCls validateClr"></div>
 											</div>
-												<div class="col-md-3 m_top10">
-												<label>Candidate Type</label><span style='color:red'> &nbsp * </span>
+											<div class="col-md-3 m_top10">
+												<label>Candidate Type</label>
+												<!--<span style='color:red'> &nbsp * </span>-->
 												<select class="cloneCandidateTypeCls">
 													<option value="0">Select Candidate Type</option>
 												</select>
-												<div class="cloneErrCandidateTypeCls validateClr"></div>
+												<!--<div class="cloneErrCandidateTypeCls validateClr"></div>-->
 											</div>
 											<div class="col-md-3 m_top10">
-												<label>Designation</label><span style='color:red'> &nbsp * </span>
+												<label>Designation</label>
+												<!--<span style='color:red'> &nbsp * </span>-->
 												<select class="cloneDesignationCls " >
 													<option value="0">Select Designation</option>
 												</select>
-												<div class="cloneErrCandidateDesgCls validateClr"></div>
+												<!--<div class="cloneErrCandidateDesgCls validateClr"></div>-->
 											</div>
 										 <div class="col-md-3 m_top10">
-												<label>Contact Number</label><span style='color:red'> &nbsp * </span>
+												<label>Contact Number</label>
 												<input type="text" class="form-control cloneMobileCls">
-												<div class="cloneErrCandidateMobileCls validateClr"></div>
+												<!--<div class="cloneErrCandidateMobileCls validateClr"></div>-->
 											</div>
 										</div>
 										<div class="row">
@@ -520,7 +522,8 @@
 												<div class="cloneErrCandidateMemShipCls validateClr"></div>
 											</div>
 											<div class="col-md-4 m_top10">
-												<label>Location Scope</label><span style='color:red'> &nbsp * </span>
+												<label>Location Scope</label>
+												<!--<span style='color:red'> &nbsp * </span>-->
 												<select class="cloneLocationScopeCls regionScopeCls ">
 													<option value="0">Select Scope</option>
 													<option value="3">DISTRICT</option>
@@ -530,7 +533,7 @@
 													<option value="7">MUNICIPAL-CORP-GMC</option>
 													<option value="8">WARD</option>
 												</select>
-												<div class="cloneErrCandidateLcScopeCls validateClr"></div>
+												<!--<div class="cloneErrCandidateLcScopeCls validateClr"></div>-->
 											</div>
 										</div>
 										<div class="row m_top10">
@@ -547,34 +550,38 @@
 												</select>
 											</div>-->
 											<div class="col-md-4 cloneDistDivCls" style="display:none;">
-												<label>Select District</label><span style='color:red'> &nbsp * </span>
+												<label>Select District</label>
+												<!--<span style='color:red'> &nbsp * </span>-->
 												<select class="cloneDistrictCls ">
 													<option value="0">select dist</option>
 													<!--<option value="14">test dist1</option>-->
 												</select>
-												<div class="cloneErrCandidateDistrictCls validateClr"></div>
+												<!--<div class="cloneErrCandidateDistrictCls validateClr"></div>-->
 											</div>
 											<div class="col-md-4 cloneConstDivCls" style="display:none;">
-												<label>Select Constituency</label><span style='color:red'> &nbsp * </span>
+												<label>Select Constituency</label>
+												<!--<span style='color:red'> &nbsp * </span>-->
 												<select class="cloneConstituencyCls " >
 													<option value="0">select const</option>
 													<!--<option value="142">test const1</option>-->
 												</select>
-												<div class="cloneErrCandidateConstCls validateClr"></div>
+												<!--<div class="cloneErrCandidateConstCls validateClr"></div>-->
 											</div>
 											<div class="col-md-4 cloneMandalDivCLs" style="display:none;">
-													<label>Select Mandal/Muncilpality</label><span style='color:red'> &nbsp * </span>
+													<label>Select Mandal/Muncilpality</label>
+													<!--<span style='color:red'> &nbsp * </span>-->
 													<select class="cloneMandalCls ">
 														<option value="0">Select Mandal</option>
 													</select>
-													<div class="cloneErrCandidateMandalCls validateClr"></div>
+													<!--<div class="cloneErrCandidateMandalCls validateClr"></div>-->
 												</div>
 												<div class="col-md-4 cloneVillageDivCls" style="display:none;">
-													<label>Select Village/Ward</label><span style='color:red'> &nbsp * </span>
+													<label>Select Village/Ward</label>
+													<!--<span style='color:red'> &nbsp * </span>-->
 													<select class="cloneVillageCls ">
 														<option value="0">Select VILLAGE</option>
 													</select>
-													<div class="cloneErrCandidateVillageCls validateClr"></div>
+													<!--<div class="cloneErrCandidateVillageCls validateClr"></div>-->
 												</div>
 											</div>
 									</div>
@@ -1396,11 +1403,6 @@ function buildTotalAppointmentStatusForToday(result){
 		$(".messageBlock").hide();		
 		});
 		
-		$(document).on("click",".navTabsCustom li",function(){
-		
-		$(".addattrid").css("display","none");
-	});
-		
 	$(document).on("click",".settingsIcon",function(e){
 		
 		var appId=$(this).attr("attr_span_popup_id");
@@ -1452,11 +1454,11 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneDesignationCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].designationId');
 	e.find(".cloneDesignationCls").attr("id",'designationSelId'+cloneCount);
 	e.find(".cloneDesignationCls").attr("attr_val",cloneCount);	
-	e.find(".cloneErrCandidateDesgCls").attr("id",'cloneErrCandidateDesgId'+cloneCount);
+	//e.find(".cloneErrCandidateDesgCls").attr("id",'cloneErrCandidateDesgId'+cloneCount);
 	
 	e.find(".cloneMobileCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].mobileNo');
 	e.find(".cloneMobileCls").attr("id",'mobileNoId'+cloneCount);	
-	e.find(".cloneErrCandidateMobileCls").attr("id",'cloneErrCandidateMobileId'+cloneCount);
+	//e.find(".cloneErrCandidateMobileCls").attr("id",'cloneErrCandidateMobileId'+cloneCount);
 	
 	e.find(".cloneMembershipNumCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].membershipNum');
 	e.find(".cloneMembershipNumCls").attr("id",'membershipNumId'+cloneCount);
@@ -1475,7 +1477,7 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneLocationScopeCls").attr("id",'locationScopeSelId'+cloneCount);
 	e.find(".cloneLocationScopeCls").attr("attr_val",cloneCount);
 	//e.find(".cloneLocationScopeCls").attr("id","locationScopeSelId"+cloneCount);
-	e.find(".cloneErrCandidateLcScopeCls").attr("id",'cloneErrCandidateLcScopeId'+cloneCount);
+	//e.find(".cloneErrCandidateLcScopeCls").attr("id",'cloneErrCandidateLcScopeId'+cloneCount);
 	
 	e.find(".cloneLocationScopeCls").attr("onChange","showhideLocationBoxes("+cloneCount+")");
 	
@@ -1485,7 +1487,7 @@ $(document).on("click","#addOneBlock",function(){
 	
 	e.find(".cloneDistrictCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].districtId');
 	e.find(".cloneDistrictCls").attr("id",'districtId'+cloneCount);
-	e.find(".cloneErrCandidateDistrictCls").attr("id","cloneErrCandidateDistrictId"+cloneCount);
+	//e.find(".cloneErrCandidateDistrictCls").attr("id","cloneErrCandidateDistrictId"+cloneCount);
 	e.find(".cloneDistrictCls").attr("onChange",'getConstituencies('+cloneCount+');');
 	e.find(".cloneDistrictCls").attr("attr_val",cloneCount);
 	
@@ -1494,7 +1496,7 @@ $(document).on("click","#addOneBlock",function(){
 	
 	e.find(".cloneConstituencyCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].constituencyId');
 	e.find(".cloneConstituencyCls").attr("id",'constituencyId'+cloneCount);
-	e.find(".cloneErrCandidateConstCls").attr("id",'cloneErrCandidateConstId'+cloneCount);
+	//e.find(".cloneErrCandidateConstCls").attr("id",'cloneErrCandidateConstId'+cloneCount);
 	e.find(".cloneConstituencyCls").attr("onChange",'getMandamMuncipalties('+cloneCount+');');
 	e.find(".cloneConstituencyCls").attr("attr_val",cloneCount);
 	
@@ -1503,7 +1505,7 @@ $(document).on("click","#addOneBlock",function(){
 
 	e.find(".cloneMandalCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].tehsilId');
 	e.find(".cloneMandalCls").attr("id",'tehsilId'+cloneCount);
-	e.find(".cloneErrCandidateMandalCls").attr("id",'cloneErrCandidateMandalId'+cloneCount);
+	//e.find(".cloneErrCandidateMandalCls").attr("id",'cloneErrCandidateMandalId'+cloneCount);
 	e.find(".cloneMandalCls").attr("onChange",'getVillageWard('+cloneCount+');');
 	e.find(".cloneMandalCls").attr("attr_val",cloneCount);
 	
@@ -1512,7 +1514,7 @@ $(document).on("click","#addOneBlock",function(){
 	
 	e.find(".cloneVillageCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].villageId');
 	e.find(".cloneVillageCls").attr("id",'villageId'+cloneCount);
-	e.find(".cloneErrCandidateVillageCls").attr("id",'cloneErrCandidateVillageId'+cloneCount);
+	//e.find(".cloneErrCandidateVillageCls").attr("id",'cloneErrCandidateVillageId'+cloneCount);
 	e.find(".cloneVillageCls").attr("attr_val",cloneCount);
 	
 	e.find(".cloneCandidateIdCls").attr("id","candidateId"+cloneCount);
@@ -1525,7 +1527,7 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneCandidateTypeCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].candidateTypeId');
 	e.find(".cloneCandidateTypeCls").attr("id",'candidateTypeSelId'+cloneCount);
 	e.find(".cloneCandidateTypeCls").attr("attr_val",cloneCount);	
-	e.find(".cloneErrCandidateTypeCls").attr("id",'cloneErrCandidateTypeId'+cloneCount);
+	//e.find(".cloneErrCandidateTypeCls").attr("id",'cloneErrCandidateTypeId'+cloneCount);
 	
 	e.find(".cloneCandidateTypeCls").attr("onChange",'getDesignationsByTypeForChange('+cloneCount+');');
 	
@@ -1703,7 +1705,6 @@ $(".dropkickClass").dropkick();
 		clearAllValidationCls();
 		
 		var flag = validateSavingDetails();
-		
 		if(!flag){
 			
 			$("#appntCreateAjax").css("display","block");			
@@ -1761,7 +1762,7 @@ $(".dropkickClass").dropkick();
 	function saveFieldsEmpty(){
 		$("#createAppTypeListId").val(0);
 		$("#createAppTypeListId").dropkick('reset');
-		$("#selectManualDateId").trigger('click');
+		//$("#selectManualDateId").trigger('click');
 		$(".disableCls").attr('disabled',false); 
 		$("#appointmentReasonId").val("");
 		//$("#searchTypeId").val(0);
@@ -1812,7 +1813,7 @@ $(".dropkickClass").dropkick();
 			var str='';
 			var str1='';
 			str+='<option value="select">Select District</option>';
-			str1+='<option value="select">Select District</option>';
+			str1+='<option value="0">Select District</option>';
 			str+='<option value="0" selected>ALL</option>';
 			if(result != null && result.length > 0){
 				for(var i in result){
@@ -2640,7 +2641,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	var popDesignation ;
 	 $(document).on("click",".apptDetailsDiv",function(){
 		 
-		$(".addattrid ").css("dispaly","block");
+		 
 		 if($(this).is(':checked')){
 			  var searchType = $("#searchTypeId").val();
 			  $("#addOneBlock").trigger("click");
@@ -3391,7 +3392,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 																	str+='- Cadre</p>';
 																else
 																	str+='</p>';
-																str+='<p>Contact Number: '+result[i].basicInfoList[j].mobileNo+'</p>';
+																if(result[i].basicInfoList[j].mobileNo !=null && result[i].basicInfoList[j].mobileNo.length>0){
+																	str+='<p>Contact Number: '+result[i].basicInfoList[j].mobileNo+'</p>';
+																}else{
+																	str+='<p>Contact Number: - </p>';
+																}
+																
 																str+='<p>Designation: '+result[i].basicInfoList[j].designation+'</p>';
 															str+='</div>';
 														str+='</div>';
@@ -4373,9 +4379,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<span class="requestedCheckboxPanel hidelabel"><i class="glyphicon glyphicon-remove"></i></span>';
 						str+='</div>';
 					str+='</div>';
-						
-					
-					str+='<p>Priority : '+result[i].priority+'</p>';
+					str+='<b>ID: '+result[i].aptUniqueCode+'</b>&nbsp;&nbsp;&nbsp;';
+					if(result[i].priority !=null && result[i].priority.length>0){
+						str+='<p>Priority : '+result[i].priority+'</p>';
+					}					
 					if(result[i].dateString !=null && result[i].dateString.length>0){
 						str+='<p>Requested Date : '+result[i].dateString.split(" ")[0]+'</p>';
 					}
@@ -4406,7 +4413,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											str+='</div>';
 											str+='<div class="media-body">';
 												str+='<p>'+result[i].subList[j].name+'</p>';
-												str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+												
+												if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
+													str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+												}
+												
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
 												if(result[i].subList[j].candidateTypeId !=null && 
 													result[i].subList[j].candidateTypeId >0 && result[i].subList[j].candidateTypeId != 1)
@@ -4844,19 +4855,19 @@ function buildTimeSlotsTable(result){
 		
 	}
 	function clearAllValidationCls(){
-		$(".errorAptCls").html('');
-		$(".errorSpdCls").html('');
-		$(".errorArCls").html('');
+		//$(".errorAptCls").html('');
+		//$(".errorSpdCls").html('');
+		//$(".errorArCls").html('');
 		$(".errorCandidateMainDivCls").html('');
 		$(".cloneErrCandidateNameCls").html('');
-		$(".cloneErrCandidateDesgCls").html('');
-		$(".cloneErrCandidateMobileCls").html('');
-		$(".cloneErrCandidateLcScopeCls").html('');
-		$(".cloneErrCandidateDistrictCls").html('');
-		$(".cloneErrCandidateConstCls").html('');
-		$(".cloneErrCandidateMandalCls").html('');
-		$(".cloneErrCandidateVillageCls").html('');
-		$(".cloneErrCandidateTypeCls").html('');
+		//$(".cloneErrCandidateDesgCls").html('');
+		//$(".cloneErrCandidateMobileCls").html('');
+		//$(".cloneErrCandidateLcScopeCls").html('');
+		//$(".cloneErrCandidateDistrictCls").html('');
+		//$(".cloneErrCandidateConstCls").html('');
+		//$(".cloneErrCandidateMandalCls").html('');
+		//$(".cloneErrCandidateVillageCls").html('');
+		//$(".cloneErrCandidateTypeCls").html('');
 		$(".cloneErrCandidateMemShipCls").html('');
 	}
 	
@@ -4864,24 +4875,27 @@ function buildTimeSlotsTable(result){
 	function validateSavingDetails(){
 	
 		var isErrAvailable=false;
-		var prType = $("#createAppTypeListId").val();
+		//var prType = $("#createAppTypeListId").val();
 		var selectDate = $(".multiDateCls").val();
 		var validateReason=$("#appointmentReasonId").val();
 		
-		if(prType == null || prType ==0 || prType == undefined){
+		<!-- Priority type,Prefereble Dates and Reason Validation -->
+		/* if(prType == null || prType ==0 || prType == undefined){
 			$(".errorAptCls").html("Please Select AppointmentType");
 			isErrAvailable=true;
-		}		
-		if(selectDate == null || selectDate.length<=0 || selectDate == undefined){
+		}	 */	
+		/* if(selectDate == null || selectDate.length<=0 || selectDate == undefined){
 			if($("#selectManualDateId").is(":checked")){
 				$(".errorSpdCls").html("Please Select Appointment Date(s)");
 				isErrAvailable=true;				
 			}			
-		}
-		if(validateReason ==null || validateReason.length<=0 || validateReason == undefined || validateReason==""){
+		} */
+		/* if(validateReason ==null || validateReason.length<=0 || validateReason == undefined || validateReason==""){
 			$(".errorArCls").html("Please Specify The Reason");	
 			isErrAvailable=true;				
-		}
+		} */
+		
+		
 		if (isEmpty($('#moreCandidatesDivId'))) {
 			$(".errorCandidateMainDivCls").html("Please Add Candidate");	
 			isErrAvailable=true;				
@@ -4899,15 +4913,17 @@ function buildTimeSlotsTable(result){
 					  isErrAvailable=true;	
 				 }
 				 
-				 var mobileValue=$("#mobileNoId"+i).val();
-				 if(mobileValue ==null || mobileValue.length ==0 || mobileValue == undefined || mobileValue ==""){
+				 <!-- MobileNo Validation-->
+				 
+				 /*var mobileValue=$("#mobileNoId"+i).val();
+				  if(mobileValue ==null || mobileValue.length ==0 || mobileValue == undefined || mobileValue ==""){
 					  $("#cloneErrCandidateMobileId"+i).html("Please enter Mobile No");
 					  isErrAvailable=true;
-				 }	
+				 } 	
 				else if(mobileValue.length != 10 || isNaN(mobileValue)){		
 					$("#cloneErrCandidateMobileId"+i).html("Please enter Valid Mobile Number");
 					isErrAvailable=true;
-				}
+				}*/
 				
 				 var canTypeValue=$("#candidateTypeSelId"+i).val();
 				 if(canTypeValue ==null || canTypeValue ==0 || canTypeValue == undefined || canTypeValue ==""){
@@ -4922,8 +4938,9 @@ function buildTimeSlotsTable(result){
 						 isErrAvailable=true;
 				   }
 				}
-							 
-			 var locationScopeValue=$("#locationScopeSelId"+i).val();
+				<!-- Location Scope validation -->	
+				
+			 /* var locationScopeValue=$("#locationScopeSelId"+i).val();
 				 if(locationScopeValue ==null || locationScopeValue ==0 || locationScopeValue == undefined || locationScopeValue == ""){
 					  $("#cloneErrCandidateLcScopeId"+i).html("Please Selection Location Scope");
 					  isErrAvailable=true;	
@@ -5044,7 +5061,7 @@ function buildTimeSlotsTable(result){
 									isErrAvailable=true;
 								}					 
 					 }
-				 }
+				 } */
 			});
 			
 			
@@ -6464,16 +6481,16 @@ function getPanchayatsForReferPopup(){
 	
 	function buildAllCandidateTypes(result){
 		$(".cloneCandidateTypeCls option").remove(); 
-		$(".addCandidateTypeCls option").remove(); 
+		//$(".addCandidateTypeCls option").remove(); 
 		$("#candidateType option").remove(); 
 			$(".cloneCandidateTypeCls").append('<option value="0">Select Candidate Type</option>'); 
-			$(".addCandidateTypeCls").append('<option value="select">Select Candidate Type</option>');
-			$(".addCandidateTypeCls").append('<option value="0" selected>All</option>');
+		//	$(".addCandidateTypeCls").append('<option value="select">Select Candidate Type</option>');
+		//	$(".addCandidateTypeCls").append('<option value="0" selected>All</option>');
 			$("#candidateType").append('<option value="select">Select Candidate Type</option>');
 			$("#candidateType").append('<option value="0" selected>All</option>');
 			for(var i in result){
 				$(".cloneCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-				$(".addCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			//	$(".addCandidateTypeCls").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 				$("#candidateType").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 			$("#candidateType").chosen();
@@ -7570,9 +7587,23 @@ function timeSlotTableBuilding(result,dateStr){
 		$(".updateChangeClass").removeClass("col-md-4");
 		$(".updateChangeClass").addClass("col-md-6");
 			
-	})
- 
-
+	})	
+	function saveDesignationForOtherCandidate(){
+		
+		var jsObj={
+			designation:textValue,
+			candidateTypeId:4
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'saveDesignationForOtherCandidateAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});		
+	}
+	
 </script>
 </body>
 </html>
