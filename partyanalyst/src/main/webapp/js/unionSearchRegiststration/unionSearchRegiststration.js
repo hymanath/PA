@@ -317,7 +317,9 @@ function buildCadreDetails(result,jsObj){
 				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
-				str+='<span class="pull-right"><input type="checkbox" name="otpMobileNo"  attr_cadreId="'+result[i].tdpCadreId+'" value="'+result[i].tdpCadreId+'" id="cadreCheckId'+i+'" class="otpCheckboxCls"/></span>'
+				str+='<div class="btn btn-success pull-right btn-xs">';
+					str+='<label style="margin-bottom:0px;"><input type="checkbox" name="otpMobileNo"  attr_cadreId="'+result[i].tdpCadreId+'" value="'+result[i].tdpCadreId+'" id="cadreCheckId'+i+'" class="otpCheckboxCls color:red;"/>&nbsp;Select</label>';
+				str+='</div>';
 				if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
 					str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;">  Already Registered </span>';
 				str+='<h5 class="media-heading"><div id="nameId" attr_cadreId="'+result[i].tdpCadreId+'"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				

@@ -27,7 +27,7 @@
 									<img src="dist/GraduatesSearch/Logo.png" class="img-responsive"/>
 								</div>
 								<div class="col-md-9 m_top20" style="border-left:1px solid #ddd">
-									<p style="font-size:16px"><span style="font-size:20px">T</span>ELUGUNADU <span style="font-size:20px">G</span>RADUATES <span style="font-size:20px">F</span>EDERATION <br/>MEMBER ENROLLMENT</p>
+									<p style="font-size:16px"><span style="font-size:20px"><b>T</b></span>ELUGU <b>N</b>ADU<span style="font-size:20px"><b> G</b></span>RADUATES <span style="font-size:20px"><b>F</b></span>EDERATION <br/><b>M</b>EMBER<b> E</b>NROLLMENT</p>
 								</div>
 							</div>
 							<div class="row m_top20">
