@@ -90,6 +90,13 @@
 	</repositories>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>com.itgrids.paymentgateway</groupId>
+			<artifactId>Payment-Gateway</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency> 
+		
 		<!-- Junit -->
 		<dependency>
 			<groupId>junit</groupId>
