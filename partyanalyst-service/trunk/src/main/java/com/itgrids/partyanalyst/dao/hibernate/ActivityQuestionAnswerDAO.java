@@ -759,6 +759,56 @@ public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId) 
 	return query.list();
 }
 
+	public List<Object[]> getActivityQuestionAnswerCountByQuestionAndLocation(Long questionId,String searchType,Long searchValue){
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.activityOption.activityOptionId," +
+						" model.activityOption.option," +
+						" count(model.activityQuestionAnswerId)" +
+						" from ActivityQuestionAnswer model");
+		
+		if(searchType != null && searchType.equalsIgnoreCase("muncipality")){
+			str.append(",Constituency const");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("mandal")){
+			str.append(",Panchayat pancha");
+		}
+		
+		str.append(" where model.activityQuestionnaireId = :questionId");
+		
+		if(searchType != null && searchType.equalsIgnoreCase("village")){
+			str.append(" and model.activityLocationInfo.locationValue = :searchValue" +
+						" and model.activityLocationInfo.locationLevel = 6");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("ward")){
+			str.append(" and model.activityLocationInfo.locationValue = :searchValue" +
+						" and model.activityLocationInfo.locationLevel = 8");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("muncipality")){
+			str.append(" and const.localElectionBody.localElectionBodyId = :searchValue" +
+						" and model.activityLocationInfo.locationLevel = 8" +
+						" and model.activityLocationInfo.locationValue = const.constituencyId");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("mandal")){
+			str.append(" and pancha.tehsil.tehsilId = :searchValue" +
+						" and model.activityLocationInfo.locationLevel = 6" +
+						" and model.activityLocationInfo.locationValue = pancha.panchayatId");
+		}
+		else if(searchType != null && searchType.equalsIgnoreCase("constituency")){
+			str.append(" and model.activityLocationInfo.constituency.constituencyId = :searchValue");
+		}
+		
+		str.append(" group by model.activityOptionId");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("questionId", questionId);
+		if(searchType != null){
+			query.setParameter("searchValue", searchValue);
+		}
+		
+		return query.list();
+	}
 public List<Object[]> getTheLocationWiseData(Long questionId,Long activityScopeId) {
 	
 	Query query = getSession().createQuery("select model.activityOptionId," +
