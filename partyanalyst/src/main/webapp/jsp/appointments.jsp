@@ -18,6 +18,7 @@
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
 <link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
+<!--<link href="dist/Appointment/DropkickNew/dropkick.css" rel="stylesheet" type="text/css">-->
 <link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	<!-- YUI Dependency files (Start) -->
@@ -1025,7 +1026,8 @@
 
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/js/AppointmentScreenBootstrap.js" type="text/javascript"></script>
-<script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
+<!--<script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>-->
+<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 <script src="dist/HighCharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>
@@ -7048,7 +7050,7 @@ function apptTrackingStatus(result,aptName)
 	for(var i in result){
 		
 		str+='<li>';
-			str+='<div class="arrow_box">';
+			str+='<div class="arrow_box_left">';
 			if(result[i].id == 1)
 			str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 				else
