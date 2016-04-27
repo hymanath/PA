@@ -3835,7 +3835,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					
 					$('#scheduledTimeId'+apptId).remove();
 					getUpdatedStatusForaAppointment(statusId,apptSelectBoxId);
-				
+					getAppointmentStatusCounts();
+					getTotalAppointmentStatus();
 				}
 				
 				 //var ele = new Dropkick("#appointmentStatus"+apptId);
@@ -6331,10 +6332,7 @@ if($("#referconstituencyId").val() == 0)
 			mandalStr +='<option value="0">All</option>';
 				for(var i in result)
 				{
-					
-				
-					 mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-				
+					mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 				}
 			 $("#refermandalNameId").html(''+mandalStr+'');
 			 $("#refermandalNameId").dropkick();
