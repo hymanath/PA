@@ -1744,9 +1744,8 @@ $(".dropkickClass").dropkick();
 	});
 
 	function showStatus(myResult,num){
-		var result = myResult.split("<pre>");
-		var result1 = result[1].split("</pre>");
-		if(result1[0] == "success"){
+		
+		if(myResult.indexOf("success") > -1){
 			$("#savingStatusDivId").html("<span style='color: green;font-size:22px;'>Appointment Created Successfully.</span>");
 			setTimeout(function(){
 			$("#savingStatusDivId").html("");
@@ -1756,7 +1755,7 @@ $(".dropkickClass").dropkick();
 			$( "#multiDate" ).multiDatesPicker("resetDates");
 			cloneCount = 0;
 			saveFieldsEmpty();
-		}else if (result1[0] == "fail"){
+		}else if (myResult.indexOf("fail") > -1){
 			//setTimeout(function(){
 			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Appointment Creation Failed. Please Try Again.</span>");
 			//}, 1000);
