@@ -2490,6 +2490,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			searchValue:searchValue,
 			aptUserId:aptUserId
 		  }
+		$("#apptmemberDetailsDiv").html("");
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppntmntSearchDetailsAction.action',
@@ -5899,6 +5900,7 @@ function getAppointmentCreatedUsers(){
 			levelStr:levelStr,
 			aptUserId:aptUserId
 		}
+		$("#apptmemberDetailsDiv").html("");
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppntmntAdvancedSearchDetailsAction.action',
