@@ -1122,6 +1122,13 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
+	public String activitiesQuestionResponces(){
+		
+		basicVO = cadreCommitteeService.getActivityTypeList();
+		idNameVOList = cadreCommitteeService.getActivityLevelsList();
+		
+		return Action.SUCCESS;
+	}
 	public String getAvailableDatesForActivities()
 	{
 		try {

@@ -11965,6 +11965,18 @@
 			<param name="root">idNameVOList</param>
 		</result>
 	</action>
-	
+	<action name="activitiesQuestionResponcesAction" class="committeeDashBoardAction" method="activitiesQuestionResponces">
+	   	<result name="success">/jsp/activitiesQuestionResponces.jsp</result>
+	</action>
+	<action name="getQuestionsForReportTypeAction" class="activityAction" method="getQuestionsForReportType">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	<action name="getOptionDetailsForQuestionAction" class="activityAction" method="getOptionDetailsForQuestion">
+		<result type="json" name="success">
+			<param name="root">optnsCountVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      

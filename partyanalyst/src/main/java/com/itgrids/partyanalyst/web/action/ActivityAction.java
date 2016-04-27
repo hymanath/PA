@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MobileUserVO;
+import com.itgrids.partyanalyst.dto.OptionsCountVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
@@ -71,8 +72,16 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private List<MobileUserVO> 		mobileUserVoList;
 	private MobileUserVO 			mobileUserVO;
 	private Long divisonId;
+	private List<OptionsCountVo> 		optnsCountVOList;
 	
 	
+	
+	public List<OptionsCountVo> getOptnsCountVOList() {
+		return optnsCountVOList;
+	}
+	public void setOptnsCountVOList(List<OptionsCountVo> optnsCountVOList) {
+		this.optnsCountVOList = optnsCountVOList;
+	}
 	public String getEventDateStr() {
 		return eventDateStr;
 	}
@@ -904,6 +913,36 @@ public String getOptionsForQuestion(){
 	    idNameVOList = activityService.getOptionsForQuestion(questionId);
 	}catch(Exception e){
 		LOG.info("Error raised at getOptionsForQuestion() in ActivityAction");
+	}
+	return Action.SUCCESS;
+}
+public String getQuestionsForReportType(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			
+			Long scopeId = jObj.getLong("scopeId");
+			//Long reportType = jObj.getLong("reportType");
+			
+			idNameVOList = activityService.getQuestionsForReportType(scopeId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getQuestionsForReportType()", e);
+		}
+		return Action.SUCCESS;
+	}
+public String getOptionDetailsForQuestion(){
+	
+	try {
+		jObj = new JSONObject(getTask());
+		
+		Long scopeId 		= jObj.getLong("scopeId");
+		Long reportType 	= jObj.getLong("reportType");
+		Long qstnId 		= jObj.getLong("questionId");
+		optnsCountVOList = activityService.getOptionDetailsForQuestion(scopeId, reportType, qstnId);
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised at getOptionDetailsForQuestion()", e);
 	}
 	return Action.SUCCESS;
 }

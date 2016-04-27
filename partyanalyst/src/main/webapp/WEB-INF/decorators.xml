@@ -655,5 +655,6 @@
 	<pattern>/appointmentsAction*</pattern>
 	<pattern>/appointmentsReportDashBoardAction*</pattern>
 	<pattern>/registrationSuccessAction*</pattern>
+	<pattern>/activitiesQuestionResponcesAction*</pattern>
 	</decorator> 
 </decorators>
