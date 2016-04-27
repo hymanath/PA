@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -407,5 +408,135 @@ public class CommonMethodsUtilService {
 				}
 				return b.toString();
 			}
-		  
+		  public static void main(String[] args){
+			  try{
+				  String strDate = new Date().toString();
+				  System.out.println(strDate);
+				  
+			      DateFormat f = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+			        Date d = f.parse("05/27/2015 18:25:12");
+			        String unit = "year";
+			        Long interval = 1l;
+			        boolean valid = isActiveForSomeYears(d,unit,interval);
+			        System.out.println(valid);
+			  }catch(Exception e){
+				  e.printStackTrace();
+				  
+			  }
+		  }
+		  public static boolean isActiveForSomeSeconds(Date lastData,String unit,long interval){
+			  try{
+				  if(unit.equalsIgnoreCase("second")){
+					  long totalTime = 1000 * interval;
+					  long currMiliSec = java.lang.System.currentTimeMillis();
+					  long lastMiliSec = lastData.getTime();
+					  long diff =currMiliSec - lastMiliSec;
+					  if(diff>=totalTime){
+						  return false;
+					  }else{
+						  return true;
+					  }
+				  }
+				
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+			  return true;
+		  }
+		  public static boolean isActiveForSomeMinutes(Date lastData,String unit,long interval){
+			  try{
+				  if(unit.equalsIgnoreCase("minute")){
+					  long totalTime = 60000 * interval;
+					  long currMiliSec = java.lang.System.currentTimeMillis();
+					  long lastMiliSec = lastData.getTime();
+					  long diff =currMiliSec - lastMiliSec;
+					  if(diff>=totalTime){
+						  return false;
+					  }else{
+						  return true;
+					  }
+				  }
+				
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+			  return true;
+		  }
+		  public static boolean isActiveForSomeHours(Date lastData,String unit,long interval){
+			  try{
+				  if(unit.equalsIgnoreCase("hour")){
+					  long totalTime = 3600000 * interval;
+					  long currMiliSec = java.lang.System.currentTimeMillis();
+					  long lastMiliSec = lastData.getTime();
+					  long diff =currMiliSec - lastMiliSec;
+					  if(diff>=totalTime){
+						  return false;
+					  }else{
+						  return true;
+					  }
+				  }
+				
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+			  return true;
+		  }
+		  public static boolean isActiveForSomeWeeks(Date lastData,String unit,long interval){
+			  try{
+				  if(unit.equalsIgnoreCase("week")){
+					  long totalTime = 604800000 * interval;
+					  long currMiliSec = java.lang.System.currentTimeMillis();
+					  long lastMiliSec = lastData.getTime();
+					  long diff =currMiliSec - lastMiliSec;
+					  if(diff>=totalTime){
+						  return false;
+					  }else{
+						  return true;
+					  }
+				  }
+				
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+			  return true;
+		  }
+		  public static boolean isActiveForSomeMonths(Date lastData,String unit,long interval){
+			  try{
+				  if(unit.equalsIgnoreCase("month")){
+					  long totalTime = 2628000000l * interval;
+					  long currMiliSec = java.lang.System.currentTimeMillis();
+					  long lastMiliSec = lastData.getTime();
+					  long diff =currMiliSec - lastMiliSec;
+					  if(diff>=totalTime){
+						  return false;
+					  }else{
+						  return true;
+					  }
+				  }
+				
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+			  return true;
+		  }
+		  public static boolean isActiveForSomeYears(Date lastData,String unit,long interval){
+			  try{
+				  if(unit.equalsIgnoreCase("year")){
+					  long totalTime = 31540000000l * interval;
+					  long currMiliSec = java.lang.System.currentTimeMillis();
+					  long lastMiliSec = lastData.getTime();
+					  long diff =currMiliSec - lastMiliSec;
+					  if(diff>=totalTime){
+						  return false;
+					  }else{
+						  return true;
+					  }
+				  }
+				
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+			  return true;
+		  }
+		 
 }
