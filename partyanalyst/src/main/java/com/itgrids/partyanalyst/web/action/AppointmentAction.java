@@ -1314,6 +1314,22 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 	}
 	
+	public String saveDesignationForOtherCandidate(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			String designation = jObj.getString("designation");
+			Long candidateTypeId  = jObj.getLong("candidateTypeId");
+			
+			
+			resultStatus = appointmentService.saveDesignationForOtherCandidate(designation,candidateTypeId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception occured in updateDesignationForOtherCandidate() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	
 }

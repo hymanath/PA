@@ -11932,14 +11932,21 @@
 	<action name="registrationSuccessAction" class="cadreRegistrationAction" method="registrationSuccess">
 		<result name="success">/jsp/registrationSuccess.jsp</result>
 	</action>
-		<action name="getAllScheduledApptsByDateAction" class="appointmentAction" method="getAllScheduledApptsByDate">
+	
+	<action name="getAllScheduledApptsByDateAction" class="appointmentAction" method="getAllScheduledApptsByDate">
 		<result type="json" name="success">
 			<param name="root">searchList</param>
 		</result>
 	</action>
-		<action name="getAppointmentStatusCommentsTrackingDetails" class="appointmentAction" method="getAppointmentStatusCommentsTrackingDetails">
+	<action name="getAppointmentStatusCommentsTrackingDetails" class="appointmentAction" method="getAppointmentStatusCommentsTrackingDetails">
 		<result type="json" name="success">
 			<param name="root">statusTrackingVOList</param>
+		</result>
+	</action>
+	
+	<action name="saveDesignationForOtherCandidateAction" class="appointmentAction" method="saveDesignationForOtherCandidate">
+		<result type="json" name="success">
+			<param name="root"></param>
 		</result>
 	</action>
 	
