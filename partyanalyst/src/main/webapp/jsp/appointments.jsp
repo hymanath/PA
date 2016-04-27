@@ -1040,6 +1040,7 @@
 <script src="dist/newmultiselect/chosen.jquery.min.js" type="text/javascript"></script>
 <script src="dist/Appointment/AdvancedDashboard/advanceddashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
+<script src="dist/Appointment/statusColorAppointment.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* Drag and Drop */
 
@@ -1164,16 +1165,16 @@ function getAppointmentStatusCounts(){
 	});     
 }
 
-var color = ["#2095F4","#98CCCA","#673301","#650199","#4EAF50","#FF9800","#CC0001","#9800CD","#656533"];
 
 function buildJSONForAppStatus(result){	
 
     var jsonObj = [];
 	var flag=false;
 	for(var i in result){
+		var color = getColorCodeByStatus(result[i].status);
 		if(result[i].statusCount>0 && result[i].membersCount > 0)
 		{	flag = true;
-			jsonObj.push({"name":result[i].status,"y":result[i].statusCount,"color":color[i%9]});
+			jsonObj.push({"name":result[i].status,"y":result[i].statusCount,"color":color});
 		}
 	}
 	if(flag==true){
@@ -1260,17 +1261,18 @@ function buildTotalAppointmentStatus(result){
 	
 	    var str='';
 		str+='<thead>';
-		str+='<th> APPOINTMENTS</th>';
-		str+='<th style="text-align:center;"> TOTAL</th>';
+		str+='<th style="font-weight:bold;"> APPOINTMENTS</th>';
+		str+='<th style="text-align:center;font-weight:bold;"> TOTAL</th>';
 		str+='</thead>';
 		str+='<tbody>';
 		
 	for(var i in result){
-		
+		var color = getColorCodeByStatus(result[i].status);
 		if(result[i].subList !=null && result[i].subList.length >0 ){
 			
-			str+='<tr style="color:'+color[i%9]+'">';
-			str+='<td><i style="cursor:pointer" class="glyphicon glyphicon-plus-sign changeIcon totalparentStatusClass pull-right"></i><span class="columnChart" style="background-color:'+color[i%9]+'"></span>'+result[i].status+'</td>';
+			
+			str+='<tr style="color:'+color+'">';
+			str+='<td><i style="cursor:pointer" class="glyphicon glyphicon-plus-sign changeIcon totalparentStatusClass pull-right"></i><span class="columnChart" style="background-color:'+color+'"></span>'+result[i].status+'</td>';
 			if(result[i].statusCount == 0){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
@@ -1279,9 +1281,9 @@ function buildTotalAppointmentStatus(result){
 			}
 			str+='</tr>';
 			
-            var colorsublist = ["#98CCCA","#77AE7E","#7D4993","#707265"];
-			for(var j in result[i].subList){
-				str+='<tr class="totalSubStatusClass" style="color:'+colorsublist[j%4]+'" >';
+           for(var j in result[i].subList){
+			   var color = getColorCodeByStatus(result[i].subList[j].status);
+				str+='<tr class="totalSubStatusClass" style="color:'+color+'" >';
 				str+='<td style="background:#f8f8f8;">&nbsp;&nbsp;&nbsp;<span class="columnChart" ></span>'+result[i].subList[j].status+'</td>';
 				if(result[i].subList[j].statusCount == 0){
 					str+='<td style="text-align:center;background:#f8f8f8"> - </td>';
@@ -1294,8 +1296,8 @@ function buildTotalAppointmentStatus(result){
 		
 		}else{
 			
-			str+='<tr style="color:'+color[i%9]+'">';
-			str+='<td><span class="columnChart" style="background-color:'+color[i%9]+'"></span>'+result[i].status+'</td>';
+			str+='<tr style="color:'+color+'">';
+			str+='<td><span class="columnChart" style="background-color:'+color+'"></span>'+result[i].status+'</td>';
 			if(result[i].statusCount == 0){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
@@ -1325,7 +1327,7 @@ function buildTotalAppointmentStatus(result){
 	$(".totalSubStatusClass").hide();
 }
 
-var color1 = ["#A3A670", "#D24E56","#77AE7E","#7D4993","#707265"];
+
 function buildTotalAppointmentStatusForToday(result){
 	var str='';
 	
@@ -1335,10 +1337,10 @@ function buildTotalAppointmentStatusForToday(result){
 	});
 	str+='<tr style="font-weight:bold;"><td>Total Appointments</td><td>'+totalAppts+'</td></tr>';	
 	$.each(result.statusList,function(index,value){	
-	
+	var color = getColorCodeByStatus(value.status);
 		if(value.subList !=null && value.subList.length >0 ){
 			
-			str+='<tr style="color:'+color1[index%5]+';font-weight:bold;">';
+			str+='<tr style="color:'+color+';">';
 		
 			str+='<td><i style="cursor:pointer" class="glyphicon glyphicon-plus-sign changeIcon parentStatusClass pull-right"></i>'+value.status+'</td>';
 			var todayStatusArr = value.clickIds;
@@ -1349,9 +1351,9 @@ function buildTotalAppointmentStatusForToday(result){
 			}
 			str+='</tr>';
 			
-			 var todaycolorsublist = ["#98CCCA","#673301"];
 			 for(var i in value.subList){
-				 str+='<tr class="subStatusClass" style="color:'+todaycolorsublist[i%2]+';font-weight:bold;">';
+				 var color = getColorCodeByStatus(value.subList[i].status);
+				 str+='<tr class="subStatusClass" style="color:'+color+';">';
 				str+='<td style="background:#f8f8f8">&nbsp;&nbsp;&nbsp; '+value.subList[i].status+'</td>';
 				var clickAray = value.subList[i].clickIds;
 				if(value.subList[i].totalCount == 0){
@@ -1364,7 +1366,7 @@ function buildTotalAppointmentStatusForToday(result){
 			
 			
 		}else{
-			str+='<tr style="color:'+color1[index%5]+';font-weight:bold;">';
+			str+='<tr style="color:'+color+';">';
 		
 			str+='<td>'+value.status+'</td>';
 			var todayStatusArr = value.clickIds;
@@ -1589,6 +1591,7 @@ $(".dropkickClass").dropkick();
 				getAppointmentPriority();
 				searchTypeRadioCls();
 				getAllCandidateTypes();
+				setcolorsForStatus();
 				
 			}, 1000);
 			getAppointmentsLabelStatus("onload");
@@ -4060,11 +4063,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	
 	function buildAppointmentSearchResult(result)
 	{
-		
+		setcolorsForStatus();
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
-		 str+='<h4 class="text-success">TOTAL APPOINTMENTS </h4>';
+		 str+='<h4 class="text-success">TOTAL APPOINTMENTS  </h4>';
 		/*str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings completedSetting">';
 		str+=''; */
 		str+='<div class="updateAppointment arrow_box">';
@@ -4093,7 +4096,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
 							str+='<p class="settingClass" style="font-size:10px;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right"></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
-							str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+							var colorstatus = result[i].appointmentStatus;
+							var color = getColorCodeByStatus(colorstatus);
+							str+='<span style="font-weight:bold;color:'+color+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							
 							if(result[i].date != "" && result[i].time != null && result[i].toTime != null && result[i].statusId == 3){
 							str+='<span id="scheduledTimeId'+result[i].appointmentId+'" class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;'+result[i].time+' to '+result[i].toTime+'</span> &nbsp;</span>';
@@ -4376,6 +4381,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	}
 	
 	function buildLabelResult(result,labelName){
+		
+		setcolorsForStatus();
 		var i = 0;
 		var str='';
 			str+='<div class="col-md-4 custom-scroll-ins block" style="height:625px">';
@@ -4388,7 +4395,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-12">';
-						str+='<span class="requestedCheckboxPanel text-danger" style="margin-right:25px">'+result[i].status+'</span>';
+						var color = getColorCodeByStatus(result[i].status);
+						str+='<span class="requestedCheckboxPanel text-danger" style="margin-right:25px;color:'+color+'">'+result[i].status+'</span>';
 						str+='<span class="requestedCheckboxPanel hidelabel"><i class="glyphicon glyphicon-remove"></i></span>';
 						str+='</div>';
 					str+='</div>';
@@ -7064,17 +7072,18 @@ function getStatusTrackingDetls(appontmntId,aptName){
 
 function apptTrackingStatus(result,aptName)
 {
+	setcolorsForStatus();
 	var str='';
 	$("#statusTrackingName").html(''+aptName+' Appointment Status Tracking')
 		str+='<ul class="apptStatusTracking">';
 	for(var i in result){
-		
+		var color = getColorCodeByStatus(result[i].status);
 		str+='<li>';
 			str+='<div class="arrow_box_left">';
 			if(result[i].id == 1)
 			str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
 				else
-				str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+				str+='<p>Appointment status changed to <span class="" style="color:'+color+'"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
 				if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0)
 				{
 					str+='<u style="font-size:15px;">Comments</u>';
@@ -7363,7 +7372,9 @@ function timeSlotTableBuilding(result,dateStr){
 			})
 	}
 	function buildAppointmentMembersDetails(result){
-			var str = '';
+		
+		setcolorsForStatus();
+		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
 		
@@ -7393,8 +7404,8 @@ function timeSlotTableBuilding(result,dateStr){
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
 							str+='<p class="settingClass" style="font-size:10px;cursor:pointer;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' attr_date='+result[i].formatDate+' attr_from_time="'+result[i].time+'" attr_to_time="'+result[i].toTime+'"  attr_comment="'+result[i].subject+'" attr_timeSlotId="'+result[i].apptTimeSlotId+'" class="glyphicon glyphicon-cog updateAppointmentClass  pull-right" id="updateSettingApptId'+result[i].appointmentId+'" ></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
-							
-							str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+							var color = getColorCodeByStatus(result[i].appointmentStatus);
+							str+='<span style="font-weight:bold;color:'+color+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							
 							if(result[i].date != "" && result[i].time != null && result[i].toTime != null && result[i].statusId == 3){
 								var dateAndtime = result[i].date +"  "+result[i].time+' to '+result[i].toTime;
