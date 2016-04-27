@@ -17,5 +17,5 @@ import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
 
 public interface IAppointmentTimeSlotDAO extends GenericDao<AppointmentTimeSlot, Long>{
 	public List<Object[]> getAppointmentConfirmDates(List<Long> appointmentIds);
-	public List<Object[]> getAppointmentConfirmDates(Date date,Long apptUserId);
+	public List<Object[]> getAppointmentConfirmDates(Date date,Long apptUserId,Long apptStatusId);
 }
