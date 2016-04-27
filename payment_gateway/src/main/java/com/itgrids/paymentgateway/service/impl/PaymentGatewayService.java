@@ -34,18 +34,4 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 		}
 		return null;
 	}
-	
-	public boolean savePaymentMethod(String paymentMethodStr)
-	{
-		try{
-			PaymentMethod paymentMethod = new PaymentMethod();
-			paymentMethod.setMethod(paymentMethodStr);
-			paymentMethodDAO.save(paymentMethod);
-			return true;
-		}catch(Exception e)
-		{
-			LOG.error(e);
-		}
-		return false;
-	}
 }
