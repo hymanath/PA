@@ -319,7 +319,7 @@ body
 .requestedCheckboxPanel
 {
 	padding:2px 4px;
-	background-color:#ccc;
+	background-color:#ececec;
 	float:right !important;
 	position:absolute;
 	right:10px;
@@ -664,4 +664,13 @@ body
 	border-right-color: #ccc;
 	border-width: 11px;
 	margin-top: -11px;
+}
+@media screen and (device-aspect-ratio: 2/3) {
+  ::i-block-chrome,::i-block-opera,
+	.tableC thead th , .tableC tr td{font-size:9px !important;padding:2px !important;}
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  ::i-block-chrome,::i-block-opera,
+	.tableC thead th , .tableC tr td{font-size:9px !important;padding:2px !important;}
+	#candidateWiseCounts .table tr td{font-size:12px}
 }

@@ -1,59 +1,52 @@
-			<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<table class="table table-bordered bg_ff m_top10">
-										<tr>
-											<td>
-												<h4 class="panel-title m_top10">TODAY APPOINTMENTS</h4>
-												<table class="table table-condensed tableAppointment" id="todayApptsForAdvancedDashBrd">
-													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayForAdvancedDashBrdAjaxId"></center></div>
-												</table>
-											</td>
-											<td>
-												<table class="table removetopborder">
-													<tr>
-														<td>
-															<h4 class="panel-title">TOTAL APPOINTMENTS REQUESTED</h4>
-																<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="totalForAdvancedDashBrdAjaxId"></center></div>
-															<!--<ul class="columnChartUl" id="totalAppointmentsId"></ul>-->
-															<table class="table table-condensed tableAppointment" id="totalApptsForAdvancedDashBrd">
-															</table>	
-															
-														</td>
-														<td>
-															<div id="LineChartForAdvancedDashBrd" style="width:500px;height:300px;"></div>
-															<div  style="text-align: center;">Total Appointments - <span id="totalApptStatusCountsAdDash"></span></div>
-														</td>
-													</tr>
-												</table>
-                                            	
-                                            </td>
-										</tr>
-									</table>
-								</div>
-							</div>
-							
-<div>
 	<div class="row">
-		<div class="col-md-12">
-			<div class="block">
-				<div class="row">
-					
-					<div class="pull-right col-md-3">
-					<div class="input-group">
-						<input class="form-control getDate" type="text">
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-calendar"></i>
-						</span>
-					</div>
-				</div>
-				</div>
-			</div>
+		<div class="col-md-12 col-xs-12 col-sm-12">
+			<table class="table table-bordered bg_ff m_top10">
+				<tr>
+					<td>
+						<h4 class="panel-title m_top10 text-success text-capitalize">TODAY APPOINTMENTS</h4>
+						<table class="table table-condensed tableAppointment" id="todayApptsForAdvancedDashBrd">
+							<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayForAdvancedDashBrdAjaxId"></center></div>
+						</table>
+					</td>
+					<td>
+						<table class="table removetopborder">
+							<tr>
+								<td>
+									<h4 class="panel-title text-success text-capitalize">TOTAL APPOINTMENTS REQUESTED</h4>
+										<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="totalForAdvancedDashBrdAjaxId"></center></div>
+									<!--<ul class="columnChartUl" id="totalAppointmentsId"></ul>-->
+									<table class="table table-condensed tableAppointment" id="totalApptsForAdvancedDashBrd">
+									</table>	
+									
+								</td>
+								<td>
+									<div id="LineChartForAdvancedDashBrd" style="width:500px;height:300px;"></div>
+									<div  style="text-align: center;">Total Appointments - <span id="totalApptStatusCountsAdDash"></span></div>
+								</td>
+							</tr>
+						</table>
+						
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
+							
+<div>
 	<div class="row m_top10">
 		<div class="col-md-12">
 			<div class="block">
 				<div class="row">
+					<div class="pull-right col-md-3">
+						<div class="input-group">
+							<input class="form-control getDate" type="text">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="row m_top20">
 					<div id="candidateWiseCounts"></div>
 				</div>
 			</div>
@@ -64,8 +57,8 @@
 			<div class="block">
 				<div class="row">
 					<div>
-						<div class="col-md-3">
-							<h4>Location Wise Appointments</h4>
+						<div class="col-md-4">
+							<h4 class="text-capitalize text-success">Location Wise Appointments</h4>
 						</div>
 						<div class="col-md-4" id="locationValue">
 							<label class="radio-inline">
@@ -75,7 +68,7 @@
 								<input type="radio"  name= "locationType" value="Constituency"/>Constituency
 							</label>
 						</div>
-						<div class="col-xs-2 col-xs-offset-3">
+						<div class="col-md-2 col-md-offset-2">
 						<label > Select State</label>
 							<select class="dropkickClass" id="state">
 								<option value="0">ALL</option>
@@ -126,7 +119,7 @@
     <div class="block">
       <div class="row">
         <div class="col-md-12">
-          <h4 class="text-capitalize">committee members wise appointments</h4>
+          <h4 class="text-capitalize text-success">committee members wise appointments</h4>
 		  <div id="committeeLvlAppntId"></div>
         </div>
       </div>
