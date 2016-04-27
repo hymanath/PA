@@ -744,13 +744,14 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 		StringBuilder sb =new StringBuilder();
 		
-		sb.append(" select   ACR.appointmentCandidate.appointmentCandidateId, ACR.appointmentCandidate.name," +
+		sb.append(" select   distinct ACR.appointmentCandidate.appointmentCandidateId, ACR.appointmentCandidate.name," +
 				"            ACR.appointmentCandidate.mobileNo,ACR.appointmentCandidate.candidateDesignation.designation," +
 				"            ACR.appointment.reason,ACR.appointment.createdUser.userId,ACR.appointment.createdUser.firstName,ACR.appointment.createdUser.lastName," +
 				"            ATS.fromDate," +
 				"            ACR.appointment.appointmentStatusId,ACR.appointment.appointmentStatus.status,ACR.appointment.appointmentId," +
 				"            ATS.toDate," +
-				"            ACR.appointment.appointmentUniqueId,ATS.date,ACR.appointmentCandidate.imageURL,ACR.appointment.appointmentStatus.statusColor " +
+				"            ACR.appointment.appointmentUniqueId,ATS.date,ACR.appointmentCandidate.imageURL,ACR.appointment.appointmentStatus.statusColor," +
+				"            ATS.appointmentTimeSlotId " +
 				"   from     AppointmentCandidateRelation ACR, AppointmentTimeSlot ATS " +
 				"   where    ACR.appointment.appointmentId = ATS.appointment.appointmentId " +
 				"            and ACR.appointment.isDeleted='N' and ATS.isDeleted='N' ");

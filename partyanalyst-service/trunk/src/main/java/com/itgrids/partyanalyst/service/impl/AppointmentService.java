@@ -3005,7 +3005,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								vo.setFromDate(params[8]!=null ? params[8].toString():"");
 								vo.setToDate(params[12]!=null ? params[12].toString():"");
 								vo.setDate(params[14]!=null ? params[14].toString().split(" ")[0]:"");
+								vo.setFormatDate(params[14]!=null ? format.format((Date)params[14]):"");
 								vo.setAppointmentUniqueId(params[13]!=null?params[13].toString():"");
+								vo.setApptTimeSlotId(params[17]!=null?(Long)params[17]:0l);
 							resultList.add(vo);
 						}
 						AppointmentScheduleVO candidateVo = new AppointmentScheduleVO();
@@ -3952,7 +3954,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				   //TimeSlot Booking For An Appointment
 				       AppointmentTimeSlot appointmentTimeSlot = appointmentTimeSlotDAO.save(timeSlot);
 				       
-				       getappointmentComments(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,commentTxt,userId);
+				       //getappointmentComments(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,commentTxt,userId);
 				       
 				       //Allocating To 'Schedule' Status Of An Appointment
 				       Integer updtdSts = appointmentDAO.updateAppntmntStatusById(appointmentTimeSlot.getAppointmentId(), dateUtilService.getCurrentDateAndTime() );
@@ -3965,8 +3967,19 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				       sendSmsForAppointment(inputVO);
 				       
 				       //Appointment Tracking Saving
-				       	saveAppointmentTrackingDetails(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,currentStatusId,
-				       			IConstants.APPOINTMENT_STATUS_SCHEDULED,userId,commentTxt);
+				       if(type !=null && type.equalsIgnoreCase("update")){
+				    	   Long apptActionId =1l;
+				    	   if(commentTxt!=null && !commentTxt.isEmpty()){
+				    		   apptActionId =2l;
+				    	   }
+				    	   saveAppointmentTrackingDetails(appointmentTimeSlot.getAppointmentId(),apptActionId,currentStatusId,
+					       			IConstants.APPOINTMENT_STATUS_SCHEDULED,userId,commentTxt);
+				       }else{
+				    	   saveAppointmentTrackingDetails(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,currentStatusId,
+					       			IConstants.APPOINTMENT_STATUS_SCHEDULED,userId,commentTxt);
+				       }
+				       
+				       	
 				       
 				       
 				      /*if(type !=null && type.equalsIgnoreCase("update")){

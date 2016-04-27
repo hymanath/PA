@@ -25,8 +25,8 @@ private String toDate;
 private String appointmentUniqueId;
 private String date;
 private String imageUrl;
-
-
+private String formatDate;
+private Long   apptTimeSlotId;
 
 
 public String getDate() {
@@ -161,6 +161,18 @@ public Long getId() {
 }
 public void setId(Long id) {
 	this.id = id;
+}
+public String getFormatDate() {
+	return formatDate;
+}
+public void setFormatDate(String formatDate) {
+	this.formatDate = formatDate;
+}
+public Long getApptTimeSlotId() {
+	return apptTimeSlotId;
+}
+public void setApptTimeSlotId(Long apptTimeSlotId) {
+	this.apptTimeSlotId = apptTimeSlotId;
 }
 
 
