@@ -16535,11 +16535,11 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 									 if(activityvo != null)
 									 {
 
-										 if((activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0) || 
-												( activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0 )){
+										 if((activityvo.getConductedDate() != null && activityvo.getConductedDate().trim().length() > 0) || 
+												( activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0 )){
 											 ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
 											 
-											 String locationTypeflagId = activityvo.getLocationValue().toString().substring(0, 1);										
+											 String locationTypeflagId = activityvo.getLocationValue().toString().trim().substring(0, 1);										
 											 Long locationLevel = activityvo.getLocationLevel();
 											 Long locationLevelId = null;
 											 if(locationLevel.longValue() == 1L)
@@ -16570,7 +16570,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 											activityLocationInfo.setLocationLevel(locationLevelId);
 											if(locationLevelId.longValue() == 5L || locationLevelId.longValue() == 6L || locationLevelId.longValue() == 7L
 													 || locationLevelId.longValue() == 8L || locationLevelId.longValue() == 9L)
-												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
+												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().trim().substring(1)));
 											else if(locationLevelId.longValue() == 13L){
 												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue()));
 												activityLocationInfo.setConstituencyId(activityLocationInfo.getLocationValue());
@@ -16579,11 +16579,11 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 												activityLocationInfo.setLocationValue(Long.valueOf(activityvo.getLocationValue()));
 											
 											try {
-												if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
+												if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0)
 													activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
 												else
 													activityLocationInfo.setPlannedDate(null);
-												if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
+												if(activityvo.getConductedDate() != null && activityvo.getConductedDate().trim().length() > 0)
 													activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
 												else
 													activityLocationInfo.setConductedDate(null);
@@ -16600,7 +16600,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 												//existingVO.setLocationLevel(locationLevelId);
 												//existingVO.setLocationValue(Long.valueOf(activityvo.getLocationValue().toString().substring(1)));
 												try {
-													if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().length() > 0)
+													if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0)
 														existingVO.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
 													
 													if(activityvo.getConductedDate() != null && activityvo.getConductedDate().length() > 0)
