@@ -1731,7 +1731,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	{
 		Query query = getSession().createSQLQuery("select distinct t.tehsil_id as tehsilId ,t.tehsil_name as name from " +
 				" tehsil t,delimitation_constituency_mandal_details dcmd where t.tehsil_id = dcmd.tehsil_id and delimitation_constituency_id =" +
-				" (select delimitation_constituency_id from delimitation_constituency where constituency_id =:constituencyId and year = 2009)")
+				" (select delimitation_constituency_id from delimitation_constituency where constituency_id =:constituencyId and year = 2009) order by t.tehsil_name ")
 				.addScalar("tehsilId",Hibernate.LONG)
 				.addScalar("name",Hibernate.STRING);
 		query.setParameter("constituencyId", constituencyId);
@@ -1744,7 +1744,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 				"election_type et  " +
 				" where assemblyLocalBody.local_election_body_id = localBody.local_election_body_id and  year = " +
 				" (select max(year) from assembly_local_election_body) and et.election_type_id = localBody.election_type_id " +
-				"and assemblyLocalBody.constituency_id = :constituencyId ")
+				"and assemblyLocalBody.constituency_id = :constituencyId order by localBody.name ")
 				.addScalar("id",Hibernate.LONG)
 				.addScalar("name",Hibernate.STRING);
 		query.setParameter("constituencyId", constituencyId);
