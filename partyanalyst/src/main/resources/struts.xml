@@ -11946,7 +11946,7 @@
 	
 	<action name="saveDesignationForOtherCandidateAction" class="appointmentAction" method="saveDesignationForOtherCandidate">
 		<result type="json" name="success">
-			<param name="root"></param>
+			<param name="root">resultStatus</param>
 		</result>
 	</action>
 	

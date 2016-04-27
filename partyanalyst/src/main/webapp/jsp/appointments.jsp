@@ -495,7 +495,9 @@
 											</div>
 											<div class="col-md-3 m_top10">
 												<label>Designation</label>
-												<!--<span style='color:red'> &nbsp * </span>-->
+												<span class="pull-right cloneDesignationSpanCls" style="display:none;">
+													<i class="glyphicon glyphicon-plus-sign" title="Click here to add new designation." style="margin-left:10px;cursor:pointer"></i>
+												</span>
 												<select class="cloneDesignationCls " >
 													<option value="0">Select Designation</option>
 												</select>
@@ -1021,6 +1023,21 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!--Designation block for other candidate-->
+<div class="modal fade bs-example-modal-sm" id="blockForOtherCandidateModalId" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+       <div class="modal-body" style="padding:25px;">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<label>Designation</label><span class="designationErrCls" style="color:red;"></span>
+		<input type="text" class="form-control designationCls">
+		</div>
+		<div class="statusCls"></div>
+		<button class="btn btn-success btn-block m_top10 saveDesignationCls" >Save</button>
+	  </div>
+    </div>
+ </div>
+
 
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
@@ -1457,6 +1474,10 @@ $(document).on("click","#addOneBlock",function(){
 	
 	e.find(".cloneDesignationCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].designationId');
 	e.find(".cloneDesignationCls").attr("id",'designationSelId'+cloneCount);
+	
+	e.find(".cloneDesignationSpanCls").attr("id",'othrCnddtDsgntnBlckId'+cloneCount);
+	e.find(".cloneDesignationSpanCls").attr("attr_coneId",cloneCount);
+	
 	e.find(".cloneDesignationCls").attr("attr_val",cloneCount);	
 	//e.find(".cloneErrCandidateDesgCls").attr("id",'cloneErrCandidateDesgId'+cloneCount);
 	
@@ -1533,7 +1554,7 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneCandidateTypeCls").attr("attr_val",cloneCount);	
 	//e.find(".cloneErrCandidateTypeCls").attr("id",'cloneErrCandidateTypeId'+cloneCount);
 	
-	e.find(".cloneCandidateTypeCls").attr("onChange",'getDesignationsByTypeForChange('+cloneCount+');');
+	e.find(".cloneCandidateTypeCls").attr("onChange",'getDesignationsByTypeForChange('+cloneCount+'," ");');
 	
 	e.removeClass("cloneBlock");
 	$("#moreCandidatesDivId").append(e);
@@ -6022,16 +6043,34 @@ function getAppointmentCreatedUsers(){
 		
 	})
 	/*$(document).on('change',".cloneCandidateTypeCls",function() {
-		
-		getDesignationsByType($(this).val(),$(this).attr(id));
+		alert($(this).val());
+		//getDesignationsByType($(this).val(),$(this).attr(id));
 	})*/
-	function getDesignationsByTypeForChange(cnt)
+	function buildDesgnationBlockForOtherCandidate(candidateTypeId,cnt){
+    	var  othrCnddtDsgntnBlckId=$("#othrCnddtDsgntnBlckId"+cnt).attr("id");
+			if(candidateTypeId==4){
+				$("#"+othrCnddtDsgntnBlckId).show();
+			}else{
+				$("#"+othrCnddtDsgntnBlckId).hide();
+			}
+	}
+	$(document).on("click",".cloneDesignationSpanCls",function(){
+	    $(".designationCls").val(" ");
+		$(".designationErrCls").html(" ");
+		var cloneId=$(this).attr("attr_coneId");
+		$(".saveDesignationCls").attr("id",cloneId);
+	    $("#blockForOtherCandidateModalId").modal("show");
+ 	});
+	function getDesignationsByTypeForChange(cnt,status)
 	{
-	var typeId = $("#candidateTypeSelId"+cnt).val();	
-	var jsObj = {
+	  var typeId = $("#candidateTypeSelId"+cnt).val();
+	  if(status.trim()!="other"){
+		  buildDesgnationBlockForOtherCandidate(typeId,cnt);
+	   }
+	   var jsObj = {
 		typeId : typeId,
 		task:""
-	}
+	    }
 		$.ajax({
 			type : 'GET',
 			url : 'getAppCandidateDesigListByTypeAction.action',
@@ -6040,7 +6079,7 @@ function getAppointmentCreatedUsers(){
 		}).done(function(result){ 
 			if(result != null && result.length > 0){
 				//app-appointment
-				buildDesignationForCreateApp1(result,"designationSelId"+cnt);
+				buildDesignationForCreateApp1(result,"designationSelId"+cnt,status);
 			}
 			
 		});
@@ -6061,13 +6100,13 @@ function getAppointmentCreatedUsers(){
 		}).done(function(result){ 
 			if(result != null && result.length > 0){
 				//app-appointment
-				buildDesignationForCreateApp1(result,selectId);
+				buildDesignationForCreateApp1(result,selectId," ");
 			}
 			
 		});
 	}
 	
-	function buildDesignationForCreateApp1(result,selectId){
+	function buildDesignationForCreateApp1(result,selectId,status){
 			/*$("#designationListId  option").remove();
 			$("#designationListId").append('<option value="0">Select Designation</option>');
 			 $(".cloneDesignationCls option").remove(); 
@@ -6086,16 +6125,23 @@ function getAppointmentCreatedUsers(){
 			var select1 = new Dropkick("#manageAppDesigId");
 			select1.refresh();  */
 			
-			$("#"+selectId+"  option").remove();
-		$('#'+selectId).append('<option value="0">Select Designation</option>');
+		 $("#"+selectId+"  option").remove();
+		 $('#'+selectId).append('<option value="0">Select Designation</option>');
 		for(var i in result){
 			if(popDesignation == result[i].name)
 			$('#'+selectId).append('<option value='+result[i].id+' typeId='+result[i].orderId+' selected="true">'+result[i].name+'</option>');
 		else
 			$('#'+selectId).append('<option value='+result[i].id+' typeId='+result[i].orderId+'>'+result[i].name+'</option>');
 		 }
-		var select = new Dropkick('#'+selectId);
-		select.refresh();
+		 var listIndex=result.length;
+		 if(status.trim()=="other"){
+		  var select = new Dropkick('#'+selectId);
+		  select.refresh();
+		  select.select(listIndex);
+		 }else{
+		  var select = new Dropkick('#'+selectId);
+		   select.refresh();
+		 }
 	} 
 	function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
@@ -7652,10 +7698,19 @@ function timeSlotTableBuilding(result,dateStr){
 		$(".updateChangeClass").addClass("col-md-6");
 			
 	})
-	function saveDesignationForOtherCandidate(){
+	$(".saveDesignationCls").click(function(){
+		var designation=$(".designationCls").val();
+		var cnt=$(this).attr("id");
+		 if(designation==" " || designation==undefined || designation.trim().length==0){
+			 $(".designationErrCls").html("Please Enter Designation.");
+		 }else{
+			 saveDesignationForOtherCandidate(designation,cnt); 
+		 }
+	});
+	function saveDesignationForOtherCandidate(designation,cnt){
 		
 		var jsObj={
-			designation:textValue,
+			designation:designation,
 			candidateTypeId:4
 		}
 		$.ajax({
@@ -7664,7 +7719,16 @@ function timeSlotTableBuilding(result,dateStr){
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			
+			if(result!=null && result!=0){
+				if(result.exceptionMsg=="Success"){
+					$(".statusCls").html("<p style='color:green;'>Designation Saved Successfully.</p>");
+					 setTimeout(function(){$(".statusCls").html("");}, 2000);
+					 setTimeout(function(){$("#blockForOtherCandidateModalId").modal("hide");}, 2000);
+					 getDesignationsByTypeForChange(cnt,"other");
+				}else{
+					$(".statusCls").html("<p style='color:red;'>Error occured try again.</p>");
+				}
+			}
 		});		
 	}
 	function buildLevels()
