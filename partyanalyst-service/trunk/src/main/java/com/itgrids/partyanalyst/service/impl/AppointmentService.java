@@ -4801,7 +4801,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		
 		try{
 			appCandi.setName(basicInfo.getName());
-			if(basicInfo.getDesignationId() !=null){
+			if(basicInfo.getDesignationId() !=null && basicInfo.getDesignationId()>0){
 				appCandi.setDesignationId(basicInfo.getDesignationId());
 			}
 				
@@ -4866,16 +4866,27 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				appCandi.setAddressId(userAddress.getUserAddressId());
 			}
 			
-			appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
-			appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
-			appCandi.setMembershipId(basicInfo.getMembershipNum());
-			appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum()));
+			if(basicInfo.getVoterCardNo() !=null && !basicInfo.getVoterCardNo().isEmpty()){
+				appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
+				appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
+			}
+			if(basicInfo.getMembershipNum() !=null && !basicInfo.getMembershipNum().isEmpty()){
+				appCandi.setMembershipId(basicInfo.getMembershipNum());
+				appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum()));
+			}
+			if(basicInfo.getCandiImageUrl() !=null && !basicInfo.getCandiImageUrl().isEmpty()){
+				appCandi.setImageURL(basicInfo.getCandiImageUrl());
+			}
+			if(basicInfo.getCandidateTypeId() !=null && basicInfo.getCandidateTypeId()>0){
+				appCandi.setAppointmentCandidateTypeId(basicInfo.getCandidateTypeId());
+			}
+				
+			
 			appCandi.setCreatedBy(loggerUserId);
 			appCandi.setUpdatedBy(loggerUserId);
 			appCandi.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			appCandi.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-			appCandi.setImageURL(basicInfo.getCandiImageUrl());
-			appCandi.setAppointmentCandidateTypeId(basicInfo.getCandidateTypeId());
+			
 			appCandi = appointmentCandidateDAO.save(appCandi);
 			
 			
