@@ -4917,11 +4917,11 @@ function buildTimeSlotsTable(result){
 					  isErrAvailable=true;
 					  $("#cloneErrCandidateNameId"+i+"").html("Please enter Name");
 				 }
-				 var desgValue=$("#designationSelId"+i).val();
+				/*  var desgValue=$("#designationSelId"+i).val();
 				 if(desgValue ==null || desgValue ==0 || desgValue == undefined || desgValue ==""){
 					  $("#cloneErrCandidateDesgId"+i).html("Please Select Designation");
 					  isErrAvailable=true;	
-				 }
+				 } */
 				 
 				 <!-- MobileNo Validation-->
 				 
@@ -4935,7 +4935,7 @@ function buildTimeSlotsTable(result){
 					isErrAvailable=true;
 				}*/
 				
-				 var canTypeValue=$("#candidateTypeSelId"+i).val();
+				 /* var canTypeValue=$("#candidateTypeSelId"+i).val();
 				 if(canTypeValue ==null || canTypeValue ==0 || canTypeValue == undefined || canTypeValue ==""){
 					  $("#cloneErrCandidateTypeId"+i).html("Please Select Candidate Type");
 					  isErrAvailable=true;	
@@ -4947,7 +4947,7 @@ function buildTimeSlotsTable(result){
 						 $("#cloneErrCandidateMemShipId"+i).html("Please Enter Membership Number");
 						 isErrAvailable=true;
 				   }
-				}
+				} */
 				<!-- Location Scope validation -->	
 				
 			 /* var locationScopeValue=$("#locationScopeSelId"+i).val();
