@@ -2492,7 +2492,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			searchValue:searchValue,
 			aptUserId:aptUserId
 		  }
-		$("#apptmemberDetailsDiv").html("");
+		$("#apptmemberDetailsDiv").html('');
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppntmntSearchDetailsAction.action',
@@ -2500,6 +2500,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				 $("#searchMemberAjax").css("display","none");
+				
 				if(result !=null && result.length>0){
 				buildapptmemberDetails(result);
 				
@@ -5906,7 +5907,7 @@ function getAppointmentCreatedUsers(){
 			$("#errorDivId").html(errorStr);
 			return;
 		}
-		//$("#ajaxImgForAppintId").show();
+		$("#searchMemberAjax").css("display","block");
 	
 		$("#apptmemberDetailsDiv").html("<center><img src='images/search.gif'/> </center>");
 		
@@ -5924,14 +5925,14 @@ function getAppointmentCreatedUsers(){
 			levelStr:levelStr,
 			aptUserId:aptUserId
 		}
-		$("#apptmemberDetailsDiv").html("");
+		$("#apptmemberDetailsDiv").html('');
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppntmntAdvancedSearchDetailsAction.action',
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				//$("#ajaxImgForAppintId").hide();
+				$("#searchMemberAjax").css("display","none");
 				$("#apptmemberDetailsDiv").html("");
 				if(result !=null && result.length>0){
 				buildapptmemberDetails(result);
