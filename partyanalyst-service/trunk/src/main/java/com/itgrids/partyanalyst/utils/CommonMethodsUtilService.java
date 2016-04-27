@@ -413,8 +413,11 @@ public class CommonMethodsUtilService {
 				  String strDate = new Date().toString();
 				  System.out.println(strDate);
 				  
-			      DateFormat f = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-			        Date d = f.parse("05/27/2015 18:25:12");
+			      DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			      //String sampleDate = "05/27/2015 18:25:12.4";
+			      String sampleDate = "2016-04-27 18:25:12.4";
+			        Date d = f.parse(sampleDate);
+			        System.out.println(d);
 			        String unit = "year";
 			        Long interval = 1l;
 			        boolean valid = isActiveForSomeYears(d,unit,interval);
