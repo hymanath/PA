@@ -4464,11 +4464,13 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							
 							statusVOMap.put(id, vo);
 					}
+					Long totalCount = 0l;
 					List<Object[]> answeredOptionsDetails = activityQuestionAnswerDAO.getActivityQuestionAnswerCountReasonWise(questionId);
 					if(answeredOptionsDetails != null && answeredOptionsDetails.size()>0){
 						for (Object[] status : answeredOptionsDetails) {
 							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
 							Long count = commonMethodsUtilService.getLongValueForObject(status[2]);
+							totalCount = totalCount+count;
 							IdNameVO  vo = statusVOMap.get(id);
 							if(vo != null){
 								vo.setActualCount(count);
@@ -4478,6 +4480,90 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					if(statusVOMap != null && statusVOMap.size()>0){
 						returnList.addAll(statusVOMap.values());
 					}
+					IdNameVO totalVo = new IdNameVO();
+					totalVo.setId(totalCount);
+					totalVo.setName("Total");
+					totalVo.setActualCount(totalCount);
+					
+					returnList.add(totalVo);
+				}
+			
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityStatusDetailsByScopeId() method, Exception - ",e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getActivityStatusDetailsByScopeIdAndLocationValue(Long activityScopeId,Long constituencyId,String mandalId,String villageId){
+		 List<IdNameVO> returnList =new ArrayList<IdNameVO>(0);
+		try {
+			List<Long> activityStatusQuestionnaireIdsList = activityStatusQuestionnaireDAO.getActivityStatusQuestionsListByActivityScopeId(activityScopeId);
+			if(activityStatusQuestionnaireIdsList != null && activityStatusQuestionnaireIdsList.size()>0){
+				Long questionId = activityStatusQuestionnaireIdsList.get(0);
+				List<Object[]>  statusList = activityQuestionnaireDAO.getQuestionnareOptionsDetails(questionId);
+				Map<Long, IdNameVO> statusVOMap = new LinkedHashMap<Long, IdNameVO>(0);
+				if(statusList != null && statusList.size()>0){
+					for (Object[] status : statusList) {
+							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
+							String name = commonMethodsUtilService.getStringValueForObject(status[1]);
+							IdNameVO vo = new IdNameVO();
+							vo.setId(id);
+							vo.setName(name);
+							vo.setActualCount(0L);
+							
+							statusVOMap.put(id, vo);
+					}
+					
+					String searchType = null;
+					Long searchValue = 0l;
+					
+					if(villageId != null && villageId.trim().toString().length() > 1){
+						if(villageId.substring(0, 1).trim().equalsIgnoreCase("1")){
+							searchType = "village";
+							searchValue = Long.valueOf(villageId.substring(1).trim());
+						}
+						else if(villageId.substring(0, 1).trim().equalsIgnoreCase("2")){
+							searchType = "ward";
+							searchValue = Long.valueOf(villageId.substring(1).trim());
+						}
+					}
+					else if(mandalId != null && mandalId.trim().toString().length() > 1){
+						if(mandalId.substring(0, 1).trim().equalsIgnoreCase("1")){
+							searchType = "muncipality";
+							searchValue = Long.valueOf(mandalId.substring(1).trim());
+						}
+						else if(mandalId.substring(0, 1).trim().equalsIgnoreCase("2")){
+							searchType = "mandal";
+							searchValue = Long.valueOf(mandalId.substring(1).trim());
+						}
+					}
+					else if(constituencyId != null && constituencyId.longValue() > 0l){
+						searchType = "constituency";
+						searchValue = constituencyId;
+					}
+					Long totalCount = 0l;
+					List<Object[]> answeredOptionsDetails = activityQuestionAnswerDAO.getActivityQuestionAnswerCountByQuestionAndLocation(questionId, searchType, searchValue);
+					if(answeredOptionsDetails != null && answeredOptionsDetails.size()>0){
+						for (Object[] status : answeredOptionsDetails) {
+							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
+							Long count = commonMethodsUtilService.getLongValueForObject(status[2]);
+							totalCount = totalCount+count;
+							IdNameVO  vo = statusVOMap.get(id);
+							if(vo != null){
+								vo.setActualCount(count);
+							}
+						}
+					}
+					if(statusVOMap != null && statusVOMap.size()>0){
+						returnList.addAll(statusVOMap.values());
+					}
+					IdNameVO totalVo = new IdNameVO();
+					totalVo.setId(totalCount);
+					totalVo.setName("Total");
+					totalVo.setActualCount(totalCount);
+					
+					returnList.add(totalVo);
 				}
 			
 			}

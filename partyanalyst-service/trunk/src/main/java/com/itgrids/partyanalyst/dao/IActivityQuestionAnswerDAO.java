@@ -13,6 +13,7 @@ public interface IActivityQuestionAnswerDAO extends GenericDao<ActivityQuestionA
 	public List<Object[]> getActivityQuestionnairesAttributeCountsByLocation(SearchAttributeVO searchAttributeVO,Long optionId,Long stateId);
 	public List<Object[]> getActivityQuestionnairesCountsByDayWise(SearchAttributeVO searchAttributeVO,Long stateId);
 	public List<Object[]> getActivityQuestionnairesAttributeCountsByDayWise(SearchAttributeVO searchAttributeVO,Long optionId,Long stateId);
-	public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId) ;
+	public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId);
+	public List<Object[]> getActivityQuestionAnswerCountByQuestionAndLocation(Long questionId,String searchType,Long searchValue);
 	public List<Object[]> getTheLocationWiseData(Long questionId,Long activityScopeId);
 }
