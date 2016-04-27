@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -27,5 +29,12 @@ public class SmsOtpDetailsDAO extends GenericDaoHibernate<SmsOtpDetails, Long>
 		query.setParameter("otp", otp);
 		
 		return (Long) query.uniqueResult();
+	}
+	public List<Object[]> checkForExpire(String mobileNo){
+		Query query = getSession().createQuery("select model.smsOtpDetailsId, min(model.generateTime), model.otpNo " +
+												" from SmsOtpDetails model "+
+												" where model.mobileNo = :mobileNo");
+		query.setParameter("mobileNo", mobileNo);
+		return query.list();
 	}
 }
