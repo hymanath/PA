@@ -164,7 +164,7 @@
 							</div>
 							<div class="row">
 							<div class="col-md-3 m_top10 col-md-offset-4">
-								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','');">SEARCH</button>
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','','0','0');">SEARCH</button>
 							</div>
 							</div>
 								
@@ -192,10 +192,19 @@
 		   </div>
 		
 		</div>
+		
+		<div class="col-md-4">
+		<select class="form-control" id="questionsId"></select>
+		</div>
+		<div class="col-md-4" style="display:none;" id="questionsForOptDiv">
+		<select class="form-control" id="questionsForOptionsId">
+		<option value="0">Select Options </option>
+		</select>
+		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
 		<span class="btn-success btn btn-xs pull-right" style="font-weight:bold;">
-		<input type="checkbox" onclick="getLocationDetailsForActivity('','');" id="imageChekId">
+		<input type="checkbox" onclick="getLocationDetailsForActivity('','','0','0');" id="imageChekId">
 			SHOW ONLY IMAGES UPLOADED LOCATIONS
 		</span>
 		</div>
@@ -204,13 +213,13 @@
                     <span class="pull-right">
                     	<label class="checkbox-inline">
 							<span>
-								<input type="radio" checked="checked" id="allId" onclick="getLocationDetailsForActivity('','');" name="radio1">All
+								<input type="radio" checked="checked" id="allId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">All
 							</span>
 							<span>
-								<input type="radio" id="conductedId" onclick="getLocationDetailsForActivity('','');" name="radio1">Show Conducted Locations
+								<input type="radio" id="conductedId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">Show Conducted Locations
 							</span>
 							<span  style="margin-left:30px;">
-								<input type="radio" id="notConductedId" onclick="getLocationDetailsForActivity('','');" name="radio1">Show Not Conducted Locations
+								<input type="radio" id="notConductedId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">Show Not Conducted Locations
 							</span>
 							<!--<span  style="margin-left:30px;">
 								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity('','');">
@@ -485,7 +494,7 @@ $(document).ready(function(){
 		  startDate=dateArray[0];
 		  endDate=dateArray[1];
 		}
-		getLocationDetailsForActivity(startDate,endDate);
+		getLocationDetailsForActivity(startDate,endDate,0,0);
 		//alert(startDate);
 	});
 });
@@ -578,7 +587,7 @@ function submitForm(){
 				  startDate=dateArray[0];
 				  endDate=dateArray[1];
 				}
-				getLocationDetailsForActivity(startDate,endDate);
+				getLocationDetailsForActivity(startDate,endDate,0,0);
 			}else{
 			}
 		},
@@ -646,6 +655,7 @@ function getActivityNames(id)
 				
 				$('#ActivityList').val(12);
 				//$('#ActivityList').trigger('change');
+				getQuestions();
 			}
 		});
 		
@@ -853,7 +863,7 @@ function updateMobileNumber(index,tdpCadreId){
 	  });
 }
 
-function getLocationDetailsForActivity(startDate,endDate)
+function getLocationDetailsForActivity(startDate,endDate,optionId,questionId)
 {
 	
 	var activityTypeId =$('#activityTypeList').val();
@@ -861,6 +871,8 @@ function getLocationDetailsForActivity(startDate,endDate)
 	var ActivityId =$('#ActivityList').val();
 	var constituencyId =$('#constiList').val();
 	var districtId =$('#districtList').val();
+	var optionId =$(questionsForOptionsId).val();
+	var questionId = $("#questionsId").val();
 	$('#ErrDiv').html("");
 	var errStr ='';
 	if(activityTypeId == null || activityTypeId == 0)
@@ -955,7 +967,9 @@ function getLocationDetailsForActivity(startDate,endDate)
 				locationId:locationId,
 				locationId:locationId,
 				task:"getLocationDetailsForActivity",
-				constituencyId : constituencyId
+				constituencyId : constituencyId,
+				optionId : optionId,
+				questionId : questionId
 			};		
 			$.ajax({
 				  type:'GET',
@@ -2305,6 +2319,7 @@ function getActivityDates(){
 		uploadImgs();
 	});
 	
+		
 	
 
 $(document).on("click",".updateDateDetls",function(){
@@ -2342,7 +2357,52 @@ $(document).on("click",".updateDateDetls",function(){
 		});			
 		
 });
+	
+	function getQuestions(){
+	var scopeId = $("#ActivityList").val();
+	var jsObj={	
+			scopeId :scopeId		 
+		}
+		$.ajax({
+				  type:'GET',
+				  url: 'getQuestionsAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result != null && result.length >0)
+			{
+				for(var i in result)
+					$('#questionsId').append('<option value="0">Select Questions</option>');
+					$('#questionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+			}
+			   
+		   });
+	}
+$(document).on("change","#questionsId",function(){	
+$("#questionsForOptDiv").show();
+var questionId = $("#questionsId").val();
+	var jsObj={	
+			questionId:questionId		 
+		}
+		$.ajax({
+				  type:'GET',
+				  url: 'getOptionsForQuestionAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			    if(result != null && result.length >0)
+			{
+				for(var i in result)
+				$('#questionsForOptionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+			}
+		   });
+	});
+$(document).on("change","#questionsForOptionsId",function(){
 
+		var optionId =$(this).val();
+		var questionId = $("#questionsId").val();
+		getLocationDetailsForActivity('','',optionId,questionId);
+});
 </script>
 </body>
 </html>
