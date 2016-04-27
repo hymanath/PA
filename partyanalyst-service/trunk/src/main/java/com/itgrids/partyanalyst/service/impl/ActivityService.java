@@ -4485,4 +4485,29 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		}
 		return returnList;
 	}
+	public Map<Long, List<Long>> getActivityLocationWiseQuestionsData(Long activityScopeId,Long questionId){
+		Map<Long, List<Long>> finalMap = new LinkedHashMap<Long, List<Long>>(0);
+		try {
+			LOG.error("Entered  in to getActivityLocationWiseQuestionsData() method,");
+			
+			List<Object[]> activityLocationWiseList = activityQuestionAnswerDAO.getTheLocationWiseData(questionId, activityScopeId);
+			if(activityLocationWiseList != null && activityLocationWiseList.size()>0){
+				for (Object[] obj : activityLocationWiseList) {
+					Long optionId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long locationValue = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					List<Long> finalList = finalMap.get(optionId);
+					if(finalList != null){
+						finalList = new ArrayList<Long>();
+						finalList.add(locationValue);
+					}
+					else{
+						finalList.add(locationValue);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityLocationWiseQuestionsData() method, Exception - ",e);
+		}
+		return finalMap;
+	}
 }
