@@ -1396,6 +1396,11 @@ function buildTotalAppointmentStatusForToday(result){
 		$(".messageBlock").hide();		
 		});
 		
+		$(document).on("click",".navTabsCustom li",function(){
+		
+		$(".addattrid").css("display","none");
+	});
+		
 	$(document).on("click",".settingsIcon",function(e){
 		
 		var appId=$(this).attr("attr_span_popup_id");
@@ -2635,7 +2640,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	var popDesignation ;
 	 $(document).on("click",".apptDetailsDiv",function(){
 		 
-		 
+		$(".addattrid ").css("dispaly","block");
 		 if($(this).is(':checked')){
 			  var searchType = $("#searchTypeId").val();
 			  $("#addOneBlock").trigger("click");
@@ -7283,7 +7288,6 @@ function timeSlotTableBuilding(result,dateStr){
 				}
 		    }
 	}
-	
 	function getAllScheduledApptsByDate(){
 	
 	//$('#timeSlotErrMsgId').html('');
@@ -7567,6 +7571,8 @@ function timeSlotTableBuilding(result,dateStr){
 		$(".updateChangeClass").addClass("col-md-6");
 			
 	})
+ 
+
 </script>
 </body>
 </html>
