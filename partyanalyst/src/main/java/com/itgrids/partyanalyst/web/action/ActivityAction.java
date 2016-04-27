@@ -868,4 +868,32 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+public String getQuestions(){
+		try{
+		   LOG.info("Enter into getQuestions() in ActivityAction");
+
+		   jObj = new JSONObject(getTask());
+			Long scopeId = jObj.getLong("scopeId");
+			
+		    idNameVOList = activityService.getQuestions(scopeId);
+		}catch(Exception e){
+			LOG.info("Error raised at getQuestions() in ActivityAction");
+		}
+		return Action.SUCCESS;
+	}
+
+public String getOptionsForQuestion(){
+	try{
+	   LOG.info("Enter into getOptionsForQuestion() in ActivityAction");
+
+	   jObj = new JSONObject(getTask());
+		Long questionId = jObj.getLong("questionId");
+		
+	    idNameVOList = activityService.getOptionsForQuestion(questionId);
+	}catch(Exception e){
+		LOG.info("Error raised at getOptionsForQuestion() in ActivityAction");
+	}
+	return Action.SUCCESS;
+}
 }
