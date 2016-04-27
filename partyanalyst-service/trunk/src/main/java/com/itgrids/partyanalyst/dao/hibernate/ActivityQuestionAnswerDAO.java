@@ -759,4 +759,18 @@ public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId) 
 	return query.list();
 }
 
+public List<Object[]> getTheLocationWiseData(Long questionId,Long activityScopeId) {
+	
+	Query query = getSession().createQuery("select model.activityOptionId," +
+			"model.activityLocationInfo.locationValue " +
+			"from ActivityQuestionAnswer model  " +
+			"where model.activityQuestionnaire.activityQuestionId =:questionId " +
+			"and model.activityLocationInfo.activityScopeId =:activityScopeId");
+	
+	query.setParameter("questionId", questionId);
+	query.setParameter("activityScopeId", activityScopeId);
+	return query.list();
+}
+
+
 }
