@@ -5,5 +5,5 @@ import java.util.List;
 public interface IPaymentGatewayService {
 
 	public List<Object[]> getAllPaymentMethodIds();
-	public boolean savePaymentMethod(String paymentMethodStr);
+	
 }
