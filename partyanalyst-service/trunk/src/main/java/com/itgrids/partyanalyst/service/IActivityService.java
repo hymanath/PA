@@ -55,7 +55,7 @@ public interface IActivityService {
 	public ActivityVO getActivityDetailsByActivityLevelIdAndCadreId(Long activityLevelId,Long tdpCadreId,Long locationId,Long boothId,Long panchayatId,Long mandalId,Long constituencyId,Long districtId,Long stateId);
 	public List<IdNameVO> getAccessValuesOfUserId(Long userId,String type);
 	public List<IdNameVO> getActivityStatusDetailsByScopeId(Long activityScopeId);
-	public List<IdNameVO> getActivityStatusDetailsByScopeIdAndLocationValue(Long activityScopeId,Long constituencyId,String mandalId,String villageId);
+	public List<IdNameVO> getActivityStatusDetailsByScopeIdAndLocationValue(Long activityScopeId,Long constituencyId,String mandalId,String villageId,Long activityQuestionId);
 	public List<IdNameVO> getQuestions(Long scopeId);
 	public List<IdNameVO> getOptionsForQuestion(Long questionId);
 	public List<IdNameVO> getQuestionsForReportType(Long activityScopeId);
