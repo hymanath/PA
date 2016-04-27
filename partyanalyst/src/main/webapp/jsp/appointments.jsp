@@ -130,7 +130,7 @@
 									<table class="table table-bordered bg_ff m_top10">
 										<tr>
 											<td>
-												<h4 class="panel-title m_top10">TODAY APPOINTMENTS</h4>
+												<h4 class="panel-title m_top10 text-success">TODAY APPOINTMENTS</h4>
 												<table class="table table-condensed tableAppointment" id="todayAppointmentsId">
 													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
@@ -139,7 +139,7 @@
 												<table class="table removetopborder">
 													<tr>
 														<td>
-															<h4 class="panel-title">TOTAL APPOINTMENTS REQUESTED</h4>
+															<h4 class="panel-title text-success">TOTAL APPOINTMENTS REQUESTED</h4>
 																<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="totalAptLoadingId"></center></div>
 															<!--<ul class="columnChartUl" id="totalAppointmentsId"></ul>-->
 															<table class="table table-condensed tableAppointment" id="totalAppointmentsId">
@@ -209,10 +209,7 @@
 							</div>
 							
                             <div class="row">
-								<div class="col-md-12 m_top20">
-									<h4>TOTAL APPOINTMENTS</h4>
-								</div>
-                            	<!--<div class="col-md-4">
+								<!--<div class="col-md-4">
                                 	<div id="upcomingAppointMentId" >
                                     
                                     </div>
@@ -235,10 +232,11 @@
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div class="block">
-										<div class="col-md-9">
-											<h4 class="text-success">SEARCH MEMBER TO CREATE APPOINTMENT REQUESTED</h4>
-										</div>
-										<div class="col-md-3">
+										<div class="row">
+											<div class="col-md-9">
+												<h4 class="text-success">SEARCH MEMBER TO CREATE APPOINTMENT REQUESTED</h4>
+											</div>
+												<div class="col-md-3">
 												<div class="onoffswitch">
 													<input type="checkbox" value="1" name="searchTypeRadio" class="onoffswitch-checkbox searchTypeRadioCls" id="myonoffswitch" checked>
 													<label class="onoffswitch-label" for="myonoffswitch">
@@ -246,11 +244,13 @@
 														<span class="onoffswitch-switch"></span>
 													</label>
 												</div>
+											</div>
+										</div>
 											<!--<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
 											<button class="btn btn-block btn-success m_top25 getDetailsByAdvancedSearch">Advanced Search</button>-->
 											<!--<input type="radio" value="1" name="searchTypeRadio" class="searchTypeRadioCls" checked/>SEARCH MEMBER
 											<input type="radio" value="2" name="searchTypeRadio" class="searchTypeRadioCls"/>Advanced Search-->
-										</div>
+										
                                         <div class="row m_top20">
                                         	<!--<div class="col-md-4 pad_right0">
                                             	<label>Select Location</label>
@@ -398,15 +398,13 @@
 											</div>
                                         </div>
                                     </div>
-									<div class="block">
-										<div class="row">
-											<div class="col-md-12">
-                                            	<h4 class="text-success">CREATE APPOINTMENT REQUEST</h4>
-                                            </div>
-										</div>
-									</div>
 									<form name="saveAppointment" id="saveAppointment"  method="post">
 										<div class="block">
+											<div class="row">
+												<div class="col-md-12">
+													<h4 class="text-success">CREATE APPOINTMENT REQUEST</h4>
+												</div>
+											</div>
 											<div class="row">
 												<div class="col-md-4 m_top10">
 													<label>Appointment Priority Type</label><span style='color:red'> &nbsp * </span>
@@ -451,7 +449,7 @@
 											</div>
 											
 										</div>
-										<div style="margin-top: 50px;"><img id="checkboxMemberAjax" src="images/icons/loading.gif" style="display:none;"/></div>
+										<div><img id="checkboxMemberAjax" src="images/icons/loading.gif" style="display:none;margin-top: 50px;"/></div>
 										<div class="errorCandidateMainDivCls validateClr"></div>
 										<div id="showapptDetails">
 											<div id="moreCandidatesDivId"></div>
@@ -802,7 +800,7 @@
 						</div>
 						<div role="tabpanel" class="tab-pane" id="settings">
 							<div class="panel panel-default m_top10 panelWhite">
-								<div class="panel-heading">
+								<div class="panel-heading text-success">
 									<h4 class="panel-title">OVERALL PENDING APPOINTMENT REQUESTS OVERVIEW</h4>
 								</div>
 								<div class="panel-body">
@@ -4047,9 +4045,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
-		/* str+='<h4 class="text-success">COMPLETED APPOINTMENTS ';
-		str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings completedSetting">';
-		str+='</h4>'; */
+		 str+='<h4 class="text-success">TOTAL APPOINTMENTS </h4>';
+		/*str+='<img src="dist/Appointment/img/subMenu.png" class="appointmentSettings completedSetting">';
+		str+=''; */
 		str+='<div class="updateAppointment arrow_box">';
 			str+='<label class="radio-inline">';
 		str+='<input type="radio" value="6" name="CompletedRadio1" class="statusAllCompleted" checked>Reschedule';
@@ -6901,7 +6899,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
 		str+='<div class="block">';
 			str+='<div class="row">';
 				str+='<div class="col-md-12">';
-					str+='<h4 class="text-capitalize">public representative wise appointments</h4>';
+					str+='<h4 class="text-capitalize text-success">public representative wise appointments</h4>';
 					str+='<table class="table table-bordered">';
 						str+='<thead>';
 							str+='<tr>';
