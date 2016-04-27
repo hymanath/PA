@@ -4496,10 +4496,11 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		return returnList;
 	}
 	
-	public List<IdNameVO> getActivityStatusDetailsByScopeIdAndLocationValue(Long activityScopeId,Long constituencyId,String mandalId,String villageId){
+	public List<IdNameVO> getActivityStatusDetailsByScopeIdAndLocationValue(Long activityScopeId,Long constituencyId,String mandalId,String villageId,Long activityQuestionId){
 		 List<IdNameVO> returnList =new ArrayList<IdNameVO>(0);
 		try {
-			List<Long> activityStatusQuestionnaireIdsList = activityStatusQuestionnaireDAO.getActivityStatusQuestionsListByActivityScopeId(activityScopeId);
+			//List<Long> activityStatusQuestionnaireIdsList = activityStatusQuestionnaireDAO.getActivityStatusQuestionsListByActivityScopeId(activityScopeId);
+			List<Long> activityStatusQuestionnaireIdsList = activityQuestionnaireDAO.getActivityQuestionnaireIdByQuestionId(activityScopeId,activityQuestionId);
 			if(activityStatusQuestionnaireIdsList != null && activityStatusQuestionnaireIdsList.size()>0){
 				Long questionId = activityStatusQuestionnaireIdsList.get(0);
 				List<Object[]>  statusList = activityQuestionnaireDAO.getQuestionnareOptionsDetails(questionId);
