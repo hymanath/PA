@@ -2704,6 +2704,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				$('#mobileNoId'+temp).val(mobile);
 				$('#voterCardNoID'+temp).val(votercardno);
 				$('#membershipNumId'+temp).val(membershipno);
+				$('#membershipNumId'+temp).prop("readonly",true);
 			    //$('#designationSelId'+temp).val(desg);
 				var candidateType1;
 				//$("#designationSelId+temp option").each(function() {
