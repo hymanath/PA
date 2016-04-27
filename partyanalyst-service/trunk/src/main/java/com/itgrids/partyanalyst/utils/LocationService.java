@@ -69,7 +69,7 @@ public class LocationService {
 							levelValues.add(1l);levelValues.add(36l);
 							}
 							else
-							levelValues.add(locationVO.getStateId());
+							levelValues.add(mainVo.getStateId());
 							locationVO.setStateIdsList(levelValues);//stateIds List						
 							locationVO.setLevelId(levelId);
 							

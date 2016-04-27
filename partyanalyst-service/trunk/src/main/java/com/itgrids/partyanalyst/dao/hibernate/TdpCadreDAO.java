@@ -6476,7 +6476,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 						if(locationVo.getStateId() == 1)
 							str.append("and model2.userAddress.district.districtId > 10  and model2.userAddress.district.districtId <=23");
 							if(locationVo.getStateId() == 36)
-								str.append("and model2.userAddress.district.districtId >= 1  and model2.userAddress.district.districtId <=11");
+								str.append("and model2.userAddress.district.districtId >= 1  and model2.userAddress.district.districtId < 11");
 					}
 					if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)//District
 					{
