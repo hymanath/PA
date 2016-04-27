@@ -11,4 +11,5 @@ public interface IActivityQuestionnaireOptionDAO extends GenericDao<ActivityQues
 	public List<Object[]> getQuestionnaireOfScope(List<Long> scopeIds);
 	
 	public List<Object[]> getQuestionnaireForScopeAndRespondentTypeIds(Long scopeId,Long requiredAttributeId);
+	public List<Object[]> getOptionsForQuestions(Long questionId);
 }
