@@ -11950,5 +11950,17 @@
 		</result>
 	</action>
 	
+	<action name="getQuestionsAction" class="activityAction" method="getQuestions">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
+	<action name="getOptionsForQuestionAction" class="activityAction" method="getOptionsForQuestion">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
