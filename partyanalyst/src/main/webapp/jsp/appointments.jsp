@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -2231,8 +2232,8 @@ $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true});
 $(".daterangepicker_end_input").find("input").addClass("form-control");
 $(".daterangepicker_start_input").find("input").addClass("form-control");
 $("#mngAppntmntsDtPckrId").val("");
-$("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
-})
+//$("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0
+//})
 $("#dashboardSelectDateIds").daterangepicker({opens:"left", "parentEl": ".todayBlock",ranges: {
            'Today': [moment(), moment()],
            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -5340,6 +5341,7 @@ function buildTimeSlotsTable(result){
 	 });
 	$(".dateRadioCls").click(function(){		
 		if($("#selectManualDateId").is(":checked")){
+			$("#multiDate").multiDatesPicker({numberOfMonths: [1,2],minDate:0})
 			$(".disableCls").attr('disabled', false); 
 		}else{
 			$(".disableCls").attr('disabled', true); 
