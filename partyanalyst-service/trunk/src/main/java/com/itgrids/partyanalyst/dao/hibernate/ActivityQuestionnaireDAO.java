@@ -35,9 +35,15 @@ public class ActivityQuestionnaireDAO extends GenericDaoHibernate<ActivityQuesti
 	}
 	
 	public List<Object[]> getQuestionnareForScopeId(Long scopeId){
+		    
+		    Query query = getSession().createQuery(" select distinct model.activityQuestion.activityQuestionId , model.activityQuestion.question from ActivityQuestionnaire model " +
+		              " where model.activityScope.activityScopeId = :scopeId and model.isDeleted = 'N' ");
+		    query.setParameter("scopeId", scopeId);
+		    return query.list();
+		  }
 	    
 	    Query query = getSession().createQuery(" select distinct model.activityQuestion.activityQuestionId , model.activityQuestion.question from ActivityQuestionnaire model " +
-	              " where model.activityScope.activityScopeId = :scopeId and model.parentActivityQuestionnaireId = null and model.isDeleted = 'N' ");
+	              " where model.activityScope.activityScopeId = :scopeId and model.isDeleted = 'N' ");
 	    query.setParameter("scopeId", scopeId);
 	    return query.list();
 	  }
