@@ -2953,7 +2953,7 @@ function buildActivityReasonReport(result)
 	 str+='<tbody>';
 	  str+='<tr>';
 	   for(var i in result){
-		 str+='<td attr_option_id='+result[i].id+' class="bg_ef text-center">'+result[i].name+'</td>';
+		 str+='<td attr_option_id='+result[i].id+' class="bg_ef text-center" style="text-transform:uppercase">'+result[i].name+'</td>';
 	  }
 	  str+='</tr>';
 	  str+='<tr>';

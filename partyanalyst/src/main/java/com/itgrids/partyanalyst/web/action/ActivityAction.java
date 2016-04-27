@@ -869,6 +869,17 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
+	public String getActivityStatusDetailsByScopeIdAndLocationValue(){
+		try{
+		   LOG.info("Enter into getActivityQuestionAnswerCountReasonWise() in ActivityAction");
+			jObj = new JSONObject(getTask());
+		    idNameVOList=activityService.getActivityStatusDetailsByScopeIdAndLocationValue(jObj.getLong("scopeId"),jObj.getLong("constituencyId"),jObj.getString("mandalId"),jObj.getString("villageId"));
+		}catch(Exception e){
+			LOG.info("Error raised at getActivityQuestionAnswerCountReasonWise() in ActivityAction");
+		}
+		return Action.SUCCESS;
+	}
+	
 public String getQuestions(){
 		try{
 		   LOG.info("Enter into getQuestions() in ActivityAction");

@@ -174,7 +174,16 @@
                 </div>
             </div>
         </div>
-		
+		<div class="row  m_top10">
+			<div class="col-md-12">
+				<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
+					<h4 class="panel-title" id="activityHeadingDiv" style="font-weight:bold;display:none;">ACTIVITIES STATUS REPORT</h4>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div id="buildActivityReasonReportTableId"></div>
+			</div>
+		</div>
 		
         <div class="col-md-12" >
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
@@ -1136,7 +1145,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId)
 					$('#headingId').html(' '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 				});	
 	}
-		
+	getActivityStatusDetailsByScopeIdAndLocationValue();	
 }
 
 
@@ -2318,6 +2327,52 @@ function getActivityDates(){
 		setGobalValues();
 		uploadImgs();
 	});
+	
+function getActivityStatusDetailsByScopeIdAndLocationValue(){
+	
+	var scopeId = $('#ActivityList').val();
+	var constituencyId = $("#constiList").val();
+	var mandalId = $("#mandalsList").val();
+	var villageId = $("#villageWardsList").val();
+	
+	var jsObj = {
+		scopeId : scopeId,
+		constituencyId : constituencyId,
+		mandalId : mandalId,
+		villageId : villageId
+	}
+	
+	$.ajax({
+		type : 'GET',
+		url : 'getActivityStatusDetailsByScopeIdAndLocationValueAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)} 
+	}).done(function(result){ 
+	  if(result!=null && result!=0){
+		  buildActivityReasonReport(result);
+	  }
+	});     
+}
+function buildActivityReasonReport(result)
+{
+	$("#activityHeadingDiv").show();
+	var str='';
+	str+='<table class="table table-bordered table-condensed">';
+	 str+='<tbody>';
+	  str+='<tr>';
+	   for(var i in result){
+		 str+='<td attr_option_id='+result[i].id+' class="bg_ef text-center" style="text-transform:uppercase">'+result[i].name+'</td>';
+	  }
+	  str+='</tr>';
+	  str+='<tr>';
+	  for(var i in result){
+		str+='<td class="text-center">'+result[i].actualCount+'</td>';
+	  }
+	  str+='</tr>';
+	  str+='</tbody>';
+	  str+='</table>';
+	 $("#buildActivityReasonReportTableId").html(str); 
+}
 	
 		
 	

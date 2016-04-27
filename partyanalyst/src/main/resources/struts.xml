@@ -11943,7 +11943,11 @@
 			<param name="root">statusTrackingVOList</param>
 		</result>
 	</action>
-	
+	<action name="getActivityStatusDetailsByScopeIdAndLocationValueAction" class="activityAction" method="getActivityStatusDetailsByScopeIdAndLocationValue">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
 	<action name="saveDesignationForOtherCandidateAction" class="appointmentAction" method="saveDesignationForOtherCandidate">
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
