@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,6 +38,7 @@ import com.itgrids.partyanalyst.model.SmsOtpDetails;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1056,34 +1060,79 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	public String generateOTPForMobileNumber(Long userId,String mobileNo,String refNo){
 		String status = null;
 		try {
-			
-			Random random=new Random();
-		      int number= 0;
-		      String otp = "";
-		      do{
-		        number = Math.abs(random.nextInt());
-		        otp = String.valueOf(number);
-		      }while(otp.trim().length()<=6);
-		      
-		      otp = String.valueOf(number).substring(0,6);
-		      if(otp != null && !otp.isEmpty()){
-		     /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
-		      String messageStr = " Cadre Registration OTP number: "+otp+"";
-		      SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
-		      
-		      smsOtpDetails.setOtpReferenceId(refNo);
-		      smsOtpDetails.setOtpNo(otp);
-		      smsOtpDetails.setIsDeleted("N");
-		      smsOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-		      smsOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		      smsOtpDetails.setMobileNo(mobileNo);
-		      smsOtpDetails.setUserId(userId);
-		      smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
-		      
-		      SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
-		      
-		      status = IConstants.SUCCESS;
-		      }
+				List<Object[]> userList = smsOtpDetailsDAO.checkForExpire(mobileNo);
+				if(userList.get(0)[0]==null){
+					Random random=new Random();
+				    int number= 0;
+				    String otp = "";
+				    do{
+				      number = Math.abs(random.nextInt());
+				      otp = String.valueOf(number);
+				    }while(otp.trim().length()<=6);
+				    
+				    otp = String.valueOf(number).substring(0,6);
+				    if(otp != null && !otp.isEmpty()){
+				    /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
+				    String messageStr = " Cadre Registration OTP number: "+otp+". This OTP is valid upto next one Hour.";
+				    SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
+				    
+				    smsOtpDetails.setOtpReferenceId(refNo);
+				    smsOtpDetails.setOtpNo(otp);
+				    smsOtpDetails.setIsDeleted("N");
+				    smsOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				    smsOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				    smsOtpDetails.setMobileNo(mobileNo);
+				    smsOtpDetails.setGenerateTime(dateUtilService.getCurrentDateAndTime());
+				    smsOtpDetails.setUserId(userId);
+				    smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
+				      
+				    SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+				      
+				    status = IConstants.SUCCESS;
+				    }
+				}else{
+					String lastDate = userList.get(0)[1].toString();
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				    Date lstlDate = df.parse(lastDate);
+					String unit = "hour";
+					long interval = 1l;
+					boolean valid = CommonMethodsUtilService.isActiveForSomeHours(lstlDate, unit, interval);
+					if(valid==true){
+						String messageStr = " Cadre Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto next one Hour.";
+						SmsHistory smsHistory1 = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+						status = IConstants.SUCCESS;
+					}else{
+						Random random=new Random();
+					    int number= 0;
+					    String otp = "";
+					    do{
+					      number = Math.abs(random.nextInt());
+					      otp = String.valueOf(number);
+					    }while(otp.trim().length()<=6);
+					    
+					    otp = String.valueOf(number).substring(0,6);
+					    if(otp != null && !otp.isEmpty()){
+					    /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
+					    String messageStr = " Cadre Registration OTP number: "+otp+". This OTP is valid upto next one Hour.";
+					    SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
+					    
+					    smsOtpDetails.setOtpReferenceId(refNo);
+					    smsOtpDetails.setOtpNo(otp);
+					    smsOtpDetails.setIsDeleted("N");
+					    smsOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					    smsOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					    smsOtpDetails.setMobileNo(mobileNo);
+					    smsOtpDetails.setGenerateTime(dateUtilService.getCurrentDateAndTime());
+					    smsOtpDetails.setUserId(userId);
+					    smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
+					      
+					    SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+					      
+					    status = IConstants.SUCCESS;
+					    }
+					}
+					
+				}
 		} catch (Exception e) {
 			status = IConstants.FAILURE;
 			LOG.error("Exception occured in generateOTPForMobileNumber() in CadreVoterSearchService ",e);
