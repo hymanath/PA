@@ -119,7 +119,7 @@
 						
 						<li role="presentation"><a style="padding-left:0px;padding-right:0px" href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
 						<!--<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" class="MngeAppntmntCls"><img src="dist/Appointment/img/manageappointments.png">Manage Appointments</a></li>-->
-						<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm Appointments</a></li>
+						<li role="presentation"><a href="#settings" style="cursor:pointer;" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm Appointments</a></li>
 						<li role="presentation"><a href="#advncdDashboard" aria-controls="advnceDashboard" role="tab" data-toggle="tab" class="advnceDashboardCls"><img src="dist/Appointment/img/AdvanceDashboard.png">Advance Dashboard</a></li>
 					  </ul>
 					  <!-- Tab panes -->
@@ -841,7 +841,7 @@
 								<div id="confirmAppointmentsDivId"></div>
 								
 								  <!--  TIME SLOT --> 
-									<div class="col-md-8">
+									<div class="col-md-12 changeClass">
 										<div class="block">
 											<div class="row">
 												<div class="col-md-12">
@@ -863,7 +863,7 @@
 												</div>
 												
 												<div class="col-md-2 m_top10">
-													<input class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId()"/>
+													<input class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId();getAllScheduledApptsByDate()"/>
 												</div>
 												<div class="col-md-4 m_top10" style="color:red;font-size:16px;" id="timeSlotErrMsgId">
 												</div>
@@ -876,7 +876,7 @@
 										</div>
 									</div>
 									
-								<div class="col-md-8 changeClass">
+								<div class="col-md-12 changeClass" >
 									<div class="block">
 										<h4 class="text-success">
 											CREATE APPOINTMENT TIME SLOT
@@ -943,7 +943,7 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-md-12 m_top20" id="appointmentMembersId"></div>
+											<div class="col-md-12 m_top20" id="appointmentMembersDivId"></div>
 										</div>
 									</div>
 								</div>
@@ -997,6 +997,25 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!--appointment time slot-->
+<div class="modal fade appointmentTimeSlotModalpopup" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+	 <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <h4 class="modal-title text-capitalize" >Update Appointment Time Slot</h4>
+		  </div>
+      <div class="modal-body">
+		<div id="appointmentTimeSlotModal"></div>
+      </div>
+      <div class="modal-footer">
+	  <div id="updateTimeSlotMsgShow"  class="col-xs-10"></div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -2176,6 +2195,7 @@ function showConfirmationBox(){
 	
 $("#toTimeId").datetimepicker({format: 'LT'})	
 $("#fromTimeId").datetimepicker({format: 'LT'})
+
 $("#modalDateId").daterangepicker({singleDatePicker:false});	
 $('#modalDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));	
 $("#mngAppntmntsDtPckrId").daterangepicker({singleDatePicker:true});
@@ -2223,6 +2243,8 @@ $(document).on("click",".rangesDashboard ul li",function(){
 });
 $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
 $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
+
+
 $("#appointmentDateSlotHeadingId").daterangepicker({singleDatePicker:true});
 $('#appointmentDateSlotHeadingId').val(moment().format('MM/DD/YYYY'));
 $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
@@ -4212,6 +4234,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 <script>
 	
 	$(document).on("click",".cnfrmaptsCls",function(){
+		$(".changeClass").removeClass("col-md-8");
+		$(".changeClass").addClass("col-md-12");
+		
+		$(".updateChangeClass").removeClass("col-md-6");
+		$(".updateChangeClass").addClass("col-md-4");
+		
 		getAppointmentStatusOverview();	
 		//Set Button disabling
 		$('#setTimeSlotBtnId').attr('disabled',true);
@@ -6029,35 +6057,48 @@ function getAppointmentCreatedUsers(){
 	});
 	
 	function setTimeSlotForAppointment(appointmentId,date,fromTime,toTime,type,timeSlotId,commentTxt){
-		 $("#errorDivForTimeSlotId").show();
-		 $("#errorDivForTimeSlotId").html(" ");
+		
+		var errorMsgId='';
+		if(type == "save"){
+			$("#errorDivForTimeSlotId").show();
+		    $("#errorDivForTimeSlotId").html(" ");
+			
+			errorMsgId = $("#errorDivForTimeSlotId");
+		}else if(type == "update"){
+		   $("#updateTimeSlotMsgShow").html('');
+		   
+		   errorMsgId =  $("#updateTimeSlotMsgShow");
+		}
+		
 		//Validations For Time Slot Creation
+		
 		   if(appointmentId ==null || appointmentId <=0 || appointmentId ==undefined){
-			$("#errorDivForTimeSlotId").html("Please Specify the Appointment");
+			$(errorMsgId).html("<span style='color:red;font-size:14px'>Please Specify the Appointment</span>");
 			return;
 		  }   
 		
 		if(fromTime ==null || fromTime.length ==0 || fromTime == undefined){
-			$("#errorDivForTimeSlotId").html("Please Specify the From Time");
+			$(errorMsgId).html("<span style='color:red;font-size:14px'>Please Specify the From Time</span>");
 			return;
 		}if(toTime ==null || toTime.length ==0 || toTime == undefined){
-			$("#errorDivForTimeSlotId").html("Please Specify the To Time");
+			$(errorMsgId).html("<span style='color:red;font-size:14px'>Please Specify the To Time</span>");
 			return;
 		}
-
-		//var commentTxt = $("#commentTxt").val().trim();
 		
 		 
-		if(!((Date.parse(date+" "+fromTime)>=Date.parse(date+" "+"6:00 AM")) && (   	Date.parse(date+" "+toTime)<=Date.parse(date+" "+"10:00 PM")))){	
-			 $("#errorDivForTimeSlotId").html("From time and to time should be between 6:00 AM to 10:00 PM.");
+		if(!((Date.parse(date+" "+fromTime)>=Date.parse(date+" "+"6:00 AM")) && (   	Date.parse(date+" "+toTime)<=Date.parse(date+" "+"10:00 PM")))){
+			 $(errorMsgId).html("<span style='color:red;font-size:14px'>From time and to time should be between 6:00 AM to 10:00 PM.</span>");
 			 return;
 		 } 
 		if(!(Date.parse(date+" "+toTime) > Date.parse(date+" "+fromTime))){
-			 $("#errorDivForTimeSlotId").html("To Time should be greater than From Time.");
+			 $(errorMsgId).html("<span style='color:red;font-size:14px'>To Time should be greater than From Time.</span>");
 			 return;
 		 }
-	
-		 $("#ajaxImgForTimeSlotId").css("display","inline-block");
+		
+		if(type=="save"){
+			$("#ajaxImgForTimeSlotId").css("display","inline-block");
+		}
+		 
 		var jsObj={
 			appointmentId : appointmentId,
 			date : date,
@@ -6075,39 +6116,72 @@ function getAppointmentCreatedUsers(){
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#errorDivForTimeSlotId").show();
-			$("#ajaxImgForTimeSlotId").css("display","none");
+			
+			if(type=="save"){
+				$("#errorDivForTimeSlotId").show();
+			    $("#ajaxImgForTimeSlotId").css("display","none");
+			}else if(type=="update"){
+				$("#updateTimeSlotMsgShow").html('');
+			}
 			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
-				//getViewAppointmentsOfALable();
+				
 				getAppointmentStatusOverview();
+				
 				if(type=="save"){
-				 $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Saved Successfully</p>");
-				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
-				  $('html, body').animate({
-				   scrollTop: $("#errorDivForTimeSlotId").offset().top
-					}, 2000);
-					$("#confirmAppointmentBlockDropId").empty();
-					$("#confirmAppointmentBlockDropId").html("<h4 class='deleteTag'>DROP HERE</h4>");
-					//setting default time format
+					
+					  $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Saved Successfully</p>");
+					  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
+					  $('html, body').animate({scrollTop: $("#errorDivForTimeSlotId").offset().top}, 2000);
+					  $("#confirmAppointmentBlockDropId").empty();
+					  $("#confirmAppointmentBlockDropId").html("<h4 class='deleteTag'>DROP HERE</h4>");
+					  //setting default time format
 					   $("#fromTimeId").val("06:00 AM");
-		               $("#toTimeId").val("10:00 PM");
+					   $("#toTimeId").val("10:00 PM");
 					   $("#commentTxt").val("");
-					}else{
-			    $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Updated Successfully</p>");
-				  setTimeout('$("#errorDivForTimeSlotId").hide()', 2000);
-				   $('html, body').animate({
-				    scrollTop: $("#errorDivForTimeSlotId").offset().top
-					}, 2000);
+					   
+					   getAllScheduledApptsByDate();
+					   
+			   }else if(type=="update"){
+				   
+				     $("#updateTimeSlotMsgShow").html("<p style='color:green;font-size:20px'>Appointment TimeSlot Updated Successfully</p>");
+					 setTimeout('$(".appointmentTimeSlotModalpopup").modal("hide")', 2000);
+					 
+					 //set updated values.
+					 
+					 var attrId = $("#updateSettingApptId"+appointmentId);
+					 $(attrId).attr("attr_date",date);      
+					 $(attrId).attr("attr_from_time",fromTime);
+					 $(attrId).attr("attr_to_time",toTime);
+					 
+					 var dateAndtime = date +"  "+fromTime+' to '+toTime;
+					 $('#updateApptTimeSlotDateAndTimeId'+appointmentId).html(dateAndtime);
+					 
 				}
 			}else{
-				 $("#errorDivForTimeSlotId").html("<p style='color:red;font-size:20px'>Failure,Some problem occured while creating time slot.</p>");
-				   $('html, body').animate({
-				    scrollTop: $("#errorDivForTimeSlotId").offset().top
-					}, 2000);
+				  if(type=="save"){
+					  $("#errorDivForTimeSlotId").html("<p style='color:red;font-size:20px'>Failure,Some problem occured while creating time slot.</p>");
+				      $('html, body').animate({scrollTop: $("#errorDivForTimeSlotId").offset().top}, 2000); 
+				  }else if(type=="update"){
+					  $("#updateTimeSlotMsgShow").html("<p style='color:red;font-size:20px'>Failure,Some problem occured while Updating time slot.</p>");
+				  }
+				  
 			}
 		});
 		
 	}
+	function clearUpdateTimeSlotModalPopUp(){
+		
+		 $('#appointmentDateSlotModalId').val('');
+		 $('#fromTimeModalId').val('');
+		 $('#toTimeModalId').val('');
+		 $('#showCommentTxt').val('');
+		 
+		 $('#hiddenTimeSlotModalId').val('');
+		 $('#hiddenTimeSlotApptModalId').val('');
+		 
+		 $("#updateTimeSlotMsgShow").html('');
+	}
+	
 	 $(document).on("click","#addApptsId",function(){
 		 setTimeout(function() {$('html, body').animate({scrollTop:2000}, 3000); },0);
 	});
@@ -7134,33 +7208,7 @@ function getTimeSlotsForADayByAppytUserId(){
 			})
 	
 }
-function getAllScheduledApptsByDate(){
-	
-	//$('#timeSlotErrMsgId').html('');
-	//$('#timeSlotDatesBuildId').html('');
-	
-	var  dateStr       = $('#appointmentDateSlotHeadingId').val();
-	var  apptUserId   =  $("#appointmentUserSelectBoxId option:selected").val();
-	/* if(dateStr.trim().length <= 0){
-		$('#timeSlotErrMsgId').html('Please Select Date');
-		return;
-	} */
-	
-	var jsObj={
-			dateStr : dateStr,
-			apptUserId:apptUserId
-		}
-		
-		  	$.ajax({
-				type : 'POST',
-				url : 'getAllScheduledApptsByDateAction.action',
-				dataType : 'json',
-				data: {task:JSON.stringify(jsObj)}
-			}).done(function(result){
-				//timeSlotTableBuilding(result,dateStr);
-				
-			})
-}
+
 function timeSlotTableBuilding(result,dateStr){
 	
 	var str='';
@@ -7238,8 +7286,289 @@ function timeSlotTableBuilding(result,dateStr){
 		    }
 	}
 	
-
-
+	function getAllScheduledApptsByDate(){
+	
+	//$('#timeSlotErrMsgId').html('');
+	//$('#timeSlotDatesBuildId').html('');
+	
+	var  dateStr       = $('#appointmentDateSlotHeadingId').val();
+	var  apptUserId   =  $("#appointmentUserSelectBoxId option:selected").val();
+	/* if(dateStr.trim().length <= 0){
+		$('#timeSlotErrMsgId').html('Please Select Date');
+		return;
+	} */
+	
+	var jsObj={
+			dateStr : dateStr,
+			apptUserId:apptUserId
+		}
+		
+		  	$.ajax({
+				type : 'POST',
+				url : 'getAllScheduledApptsByDateAction.action',
+				dataType : 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				buildAppointmentMembersDetails(result);
+			})
+	}
+	function buildAppointmentMembersDetails(result){
+			var str = '';
+		var flag = false;
+		str+='<div class="upcomingAppointments heightAdjust">';
+		
+		str+='<div class="updateAppointment arrow_box">';
+			str+='<label class="radio-inline">';
+		str+='<input type="radio" value="6" name="CompletedRadio1" class="statusAllCompleted" checked>Reschedule';
+		str+='</label>';
+		str+='<label class="radio-inline">';
+		str+='<input type="radio" value="7" name="CompletedRadio1" class="statusAllCompleted">Cancel';
+		str+='</label>';
+		str+='<textarea class="form-control m_top10 CompletedSmsText" ></textarea>';
+		str+='<span class="msgDiv2Completed"></span>';
+		str+='<button class="btn btn-block btn-success updateAll" value="Completed">UPDATE APPOINTMENT</button>';
+		str+='</div>';
+		str+='<div><h4 class="text-success">APPOINTMENT TIMESLOT UPDATION</h4></div>';
+		if(result != null)
+		{
+			var xindex = 0;
+			
+			for(var i in result)
+			{ 
+			if( xindex % 3 == 0)
+			{
+				str+='<div class="row m_top10">';
+			}
+					str+='<div class=" col-xs-4 updateChangeClass">';
+					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
+						str+='<div class="panel-heading bg_ff pad_5">';
+							str+='<p class="settingClass" style="font-size:10px;cursor:pointer;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' attr_date='+result[i].formatDate+' attr_from_time="'+result[i].time+'" attr_to_time="'+result[i].toTime+'"  attr_comment="'+result[i].subject+'" attr_timeSlotId="'+result[i].apptTimeSlotId+'" class="glyphicon glyphicon-cog updateAppointmentClass  pull-right" id="updateSettingApptId'+result[i].appointmentId+'" ></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							
+							str+='<span style="font-weight:bold;color:#'+result[i].appointmentStatusColor+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
+							
+							if(result[i].date != "" && result[i].time != null && result[i].toTime != null && result[i].statusId == 3){
+								var dateAndtime = result[i].date +"  "+result[i].time+' to '+result[i].toTime;
+								
+								str+='<span class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;<span id="updateApptTimeSlotDateAndTimeId'+result[i].appointmentId+'">'+dateAndtime+'</span></span> &nbsp;</span>';
+							}
+							
+							str+='</p>';
+							
+						/* 	str+='<div class="appointmentSettingsBLock arrow_box" id="appointmentSettingsBLockId'+result[i].appointmentId+'">';
+							str+='<label>Select Appointment Status</label><span style="color:red;" id="errSpanId'+result[i].appointmentId+'"></span>';
+								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+								str+='</select>';
+							str+='<div class="row m_top10">';
+							str+='<div class="col-xs-5">';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" attr_cmmnt_chckbx_id='+result[i].appointmentId+' value="2"  name="upcomeRadio" id="comentChkId'+result[i].appointmentId+'" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
+							str+='</label>';
+							str+='</div>';
+							str+='<div class="col-xs-5">';
+							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+							str+='<input type="checkbox" attr_sms_chckbx_id='+result[i].appointmentId+' value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
+							str+='</label>';
+							str+='</div>';
+							str+='</div>';
+							
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
+							
+							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
+							
+							
+							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
+							str+='<img id="prcssngImgFrUpdtId'+result[i].appointmentId+'" style="display:none;" src="images/search.gif">';
+							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentStatusId='+result[i].statusId+' appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
+							str+='</div>'; */
+							
+						str+='</div>';
+						str+='<div class="panel-body pad_5">';
+						str+='<ul>';
+						flag = true;
+						for(var j in result[i].subList)
+						{
+						
+						str+='<li>';
+						str+='<div class="media m_0">';
+						str+='<div class="media-left">';
+						str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
+						str+='</div>';
+						str+='<div class="media-body font12">';
+						str+='<p>'+result[i].subList[j].name+'</p>';
+						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'';
+						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
+								str+='<a style="display:inline-block;" title="Click here to View '+result[i].subList[j].name+' Appointment History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
+						}
+						str+='</p>';
+						str+='</div>';
+						str+='</div>';
+						//multiple
+						
+						str+='</li>';
+						
+						}
+						str+='</ul>';
+						if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							  str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
+							}
+					str+='<p class="font12 m_top10">';
+					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
+					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon"/>';
+					 
+					  str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right statusTrackingModalbtn" attr-id='+result[i].appointmentId+' attr-aptName='+result[i].appointmentUniqueId+' alt="ViewReqHistory" style="height:16px;cursor:pointer;margin-right:5px;"/>'; 
+					str+='</p>';
+					str+='<div class="messageBlock arrow_box">';
+					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
+					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
+					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
+					str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='</div>';
+				//}
+				if(xindex % 3 == 2)
+				{
+					str+='</div>';
+				}
+				
+				if(result.length-1 == xindex && xindex % 3 != 2)
+				{
+					str+='</div>';
+				}	
+			xindex++;
+			}
+			
+		}
+		else
+		{
+			flag = false;
+			//str+='No Data';	
+		}
+		
+		if(flag == false)
+		{
+			$(".completedSetting").hide();
+			str+='No Data Available';	
+		}
+		$("#appointmentMembersDivId").html(str);
+		
+		$('[data-toggle="tooltip"]').tooltip();
+		if(flag == false){
+		   $(".completedSetting").hide();
+		}
+			
+		}
+	$(document).on("click",".updateAppointmentClass",function(e){
+		
+		
+		$(".appointmentTimeSlotModalpopup").modal("show");
+		
+		var appId             =  $(this).attr("attr_span_popup_id");
+		var scheduledDate     =  $(this).attr("attr_date");
+		var fromScheduledTime =  $(this).attr("attr_from_time");
+		var toScheduledTime   =  $(this).attr("attr_to_time");
+		var commentTxt        =  $(this).attr("attr_comment");
+		var appntTimeSlotId   =  $(this).attr("attr_timeSlotId");
+		
+		showModalForappointmentTimeSlot();
+		 
+		 //clear the values
+		clearUpdateTimeSlotModalPopUp();
+		  
+		//initlization dates
+		$("#appointmentDateSlotModalId").daterangepicker({singleDatePicker:true,minDate:new Date()});
+		$("#toTimeModalId").datetimepicker({format: 'LT'})	
+		$("#fromTimeModalId").datetimepicker({format: 'LT'})
+		
+		// set the values
+		$('#appointmentDateSlotModalId').val(scheduledDate);
+		$('#fromTimeModalId').val(fromScheduledTime);
+		$('#toTimeModalId').val(toScheduledTime);
+		$('#showCommentTxt').val();
+		$('#hiddenTimeSlotModalId').val(appntTimeSlotId);
+		$('#hiddenTimeSlotApptModalId').val(appId);
+		
+	})
+	
+	$(document).on("click","#updateTimeSlotForApptId",function(e){
+		
+		setTimeSlotForAppointment( $('#hiddenTimeSlotApptModalId').val() ,$('#appointmentDateSlotModalId').val(),$('#fromTimeModalId').val(),$('#toTimeModalId').val(),'update',$('#hiddenTimeSlotModalId').val(),$('#showCommentTxt').val());
+	})
+	
+	function showModalForappointmentTimeSlot(){
+		
+		var str='';
+		
+	 str+='<div class="row m_top20">';
+		 str+='<div class="col-md-12">';
+			 str+='<div style="background:#F3f3f3;margin:0px -10px;padding:12px 0px;" class="row">';
+			 
+				 str+='<div id="" class="validateClr m_left16"></div>';
+				 
+				 str+='<div class="col-md-4">';
+					 str+='<label>Select Date</label>';
+					 str+='<div class="input-group inputSearch">';
+						 str+='<span class="input-group-addon">';
+							 str+='<i class="glyphicon glyphicon-calendar"></i>';
+							 str+='<span class="caret"></span>';
+						 str+='</span>';
+						 str+='<input type="text" class="form-control" id="appointmentDateSlotModalId">';
+					 str+='</div>';
+				 str+='</div>';
+				 
+				 str+='<div class="col-md-3">';
+					 str+='<label>From Time</label><span style="color:red"> &nbsp * </span>';
+					 str+='<div class="input-group inputSearch">';
+						 str+='<span class="input-group-addon">';
+							 str+='<i class="glyphicon glyphicon-time"></i>';
+							 str+='<span class="caret"></span>';
+						 str+='</span>';
+						 str+='<input type="text" id="fromTimeModalId" class="form-control" style="width: 86px;">';
+					 str+='</div>';
+				 str+='</div>';
+				 
+				 str+='<div class="col-md-3">';
+					 str+='<label>To Time</label><span style="color:red;width:500px"> &nbsp * &nbsp </span>';
+					 str+='<div class="input-group inputSearch">';
+						 str+='<span class="input-group-addon">';
+							 str+='<i class="glyphicon glyphicon-time"></i>';
+							 str+='<span class="caret"></span>';
+						 str+='</span>';
+						 str+='<input type="text" id="toTimeModalId" class="form-control" style="width: 87px;">';
+					 str+='</div>';
+				 str+='</div>';
+				 
+				 str+='<div class="col-md-8 m_top10">';
+				 str+='<textarea  placeholder="Please Enter Comment..." cols="40" rows="2" id="showCommentTxt"></textarea>';
+				 str+='</div>';
+				 str+='<div class="col-md-4">';
+					 str+='<button class="btn btn-success m_top25" id="updateTimeSlotForApptId">SET</button>';
+				 str+='</div>';
+				 
+				   //hidden variable for time slotId
+				  str+='<input type="hidden" id="hiddenTimeSlotModalId" class="form-control">';
+				  str+='<input type="hidden" id="hiddenTimeSlotApptModalId" class="form-control">';
+				  str+='<input type="hidden" id="hiddenTimeSlotApptModalId" class="form-control">';
+				  
+			 str+='</div>';
+		 str+='</div>';
+		
+	 str+='</div>';
+	 
+	 $("#appointmentTimeSlotModal").html(str);
+	}
+	
+	$(document).on("click",".confirmViewClass",function(e){
+		
+		$(".changeClass").removeClass("col-md-12");
+		$(".changeClass").addClass("col-md-8");
+		
+		$(".updateChangeClass").removeClass("col-md-4");
+		$(".updateChangeClass").addClass("col-md-6");
+			
+	})
 </script>
 </body>
 </html>
