@@ -882,7 +882,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		try{
 		   LOG.info("Enter into getActivityQuestionAnswerCountReasonWise() in ActivityAction");
 			jObj = new JSONObject(getTask());
-		    idNameVOList=activityService.getActivityStatusDetailsByScopeIdAndLocationValue(jObj.getLong("scopeId"),jObj.getLong("constituencyId"),jObj.getString("mandalId"),jObj.getString("villageId"));
+		    idNameVOList=activityService.getActivityStatusDetailsByScopeIdAndLocationValue(jObj.getLong("scopeId"),jObj.getLong("constituencyId"),jObj.getString("mandalId"),jObj.getString("villageId"),jObj.getLong("questionId"));
 		}catch(Exception e){
 			LOG.info("Error raised at getActivityQuestionAnswerCountReasonWise() in ActivityAction");
 		}
