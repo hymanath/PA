@@ -2099,6 +2099,25 @@ public String getSummaryDetails(){
 				return "input";
 			}
 			Long userId = regVO.getRegistrationID();
+			try {
+				 jObj = new JSONObject(getTask());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if(jObj != null){
+				activityVO = new ActivityVO();
+				activityVO.setActivityLevelId(jObj.getLong("activityScopeId"));
+				activityVO.setConstituencyId(jObj.getLong("contituencyId"));
+				
+				ActivityVO locationVO = new ActivityVO();
+				locationVO.setConductedDate(jObj.getString("conductedDateStr").trim());
+				locationVO.setPlannedDate(jObj.getString("plannedDateStr").trim());
+				locationVO.setLocationValue(jObj.getLong("locationValue"));				
+				locationVO.setLocationLevel(jObj.getLong("activityLevelId"));
+				
+				activityVO.getActivityVoList().add(locationVO);
+			}
+			 
 			status = cadreCommitteeService.saveActivityDetails(activityVO,userId);
 			
 		} catch (Exception e) {
