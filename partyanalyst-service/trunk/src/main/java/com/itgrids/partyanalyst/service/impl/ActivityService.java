@@ -3292,7 +3292,8 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 						try {
-						activityLocationInfo.setConductedDate(formatter.parse(finalvo.getConductedDate() != null ? finalvo.getConductedDate().toString() : ""));
+							if(finalvo.getConductedDate() != null && finalvo.getConductedDate().toString().trim().length()>0)
+								activityLocationInfo.setConductedDate(formatter.parse(finalvo.getConductedDate() != null ? finalvo.getConductedDate().toString() : ""));
 						} catch (ParseException e) {
 							LOG.error("Exception rised in saveActivityQuestionnaireDetails()",e);
 						}
