@@ -202,8 +202,9 @@
 		
 		</div>
 		
-		<div class="col-md-4">
-		<select class="form-control" id="questionsId"></select>
+		<div class="col-md-4" style="display:none;" id="questionsDiv">
+		<select class="form-control" id="questionsId">
+		<option value="0">Select Questions</option></select>
 		</div>
 		<div class="col-md-4" style="display:none;" id="questionsForOptDiv">
 		<select class="form-control" id="questionsForOptionsId">
@@ -875,13 +876,12 @@ function updateMobileNumber(index,tdpCadreId){
 function getLocationDetailsForActivity(startDate,endDate,optionId,questionId)
 {
 	
+	$("#questionsDiv").show();
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
 	var constituencyId =$('#constiList').val();
 	var districtId =$('#districtList').val();
-	var optionId =$(questionsForOptionsId).val();
-	var questionId = $("#questionsId").val();
 	$('#ErrDiv').html("");
 	var errStr ='';
 	if(activityTypeId == null || activityTypeId == 0)
@@ -2427,7 +2427,6 @@ $(document).on("click",".updateDateDetls",function(){
 			   if(result != null && result.length >0)
 			{
 				for(var i in result)
-					$('#questionsId').append('<option value="0">Select Questions</option>');
 					$('#questionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 			}
 			   
