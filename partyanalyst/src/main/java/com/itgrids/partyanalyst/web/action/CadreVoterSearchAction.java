@@ -211,6 +211,8 @@ public String execute(){
 			
 			String mobileNo	= jobj.getString("mobileNo");
 			String refNo = jobj.getString("refNo");
+			//String prevRefNo = jobj.getString("prevRefNo");
+			
 			
 			status = cadreVoterSearchService.generateOTPForMobileNumber(1L,mobileNo,refNo);
 			
