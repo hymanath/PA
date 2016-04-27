@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +40,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
-import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -52,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
+import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IActivitySubTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
@@ -142,11 +141,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VO;
-import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.ActivityLevel;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
-import com.itgrids.partyanalyst.model.ActivitySubType;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -184,7 +180,6 @@ import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
-import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
@@ -268,12 +263,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IActivityScopeDAO activityScopeDAO;
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	private ILocationInfoDAO locationInfoDAO;
+	private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
 	
 	private IActivityInfoDocumentDAO activityInfoDocumentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
 	
 	
+	public IActivityQuestionAnswerDAO getActivityQuestionAnswerDAO() {
+		return activityQuestionAnswerDAO;
+	}
+
+	public void setActivityQuestionAnswerDAO(
+			IActivityQuestionAnswerDAO activityQuestionAnswerDAO) {
+		this.activityQuestionAnswerDAO = activityQuestionAnswerDAO;
+	}
+
 	public IActivityInfoDocumentDAO getActivityInfoDocumentDAO() {
 		return activityInfoDocumentDAO;
 	}
@@ -16849,7 +16854,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	}
 	
 	public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
-			 String searchStartDateStr,String searchEndDateStr,Long constituencyId)
+			 String searchStartDateStr,String searchEndDateStr,Long constituencyId,Long optionId,Long questionId)
 	{
 		LocationWiseBoothDetailsVO returnVO = null;	
 		try {
@@ -17149,6 +17154,27 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						}
 					});
 					
+					Map<Long,List<Long>> questionResponsesMap = getActivityLocationWiseQuestionsData(activityScopeId,questionId);
+					if(questionResponsesMap!= null && questionResponsesMap.size()>0){
+						List<Long> locationValuesList = questionResponsesMap.get(optionId);
+						List<LocationWiseBoothDetailsVO> optionsVOList = new ArrayList<LocationWiseBoothDetailsVO>(0);
+						if(returnList!= null && returnList.size()>0){
+							for (LocationWiseBoothDetailsVO vo : returnList) {
+								Long locationsId = vo.getLocationId();
+								if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
+									locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
+								
+								if(locationValuesList.contains(locationsId)){
+									optionsVOList.add(vo);
+								}
+										
+							}
+							if(optionsVOList != null && optionsVOList.size()>0){
+								returnList.clear();
+								returnList.addAll(optionsVOList);
+							}
+						}
+					}
 					returnVO.getResult().addAll(returnList);
 				}
 			}
@@ -17984,6 +18010,32 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 			LOG.error(e);
 		}
 		return basicCmmty;
+	}
+ public Map<Long, List<Long>> getActivityLocationWiseQuestionsData(Long activityScopeId,Long questionId){
+		Map<Long, List<Long>> finalMap = new LinkedHashMap<Long, List<Long>>(0);
+		try {
+			LOG.error("Entered  in to getActivityLocationWiseQuestionsData() method,");
+			
+			List<Object[]> activityLocationWiseList = activityQuestionAnswerDAO.getTheLocationWiseData(questionId, activityScopeId);
+			if(activityLocationWiseList != null && activityLocationWiseList.size()>0){
+				for (Object[] obj : activityLocationWiseList) {
+					Long optionId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long locationValue = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					List<Long> finalList = finalMap.get(optionId);
+					if(finalList != null){
+						finalList.add(locationValue);
+					}
+					else{
+						finalList = new ArrayList<Long>();
+						finalList.add(locationValue);
+						finalMap.put(optionId, finalList);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getActivityLocationWiseQuestionsData() method, Exception - ",e);
+		}
+		return finalMap;
 	}
  
 }

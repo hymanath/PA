@@ -4485,29 +4485,40 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		}
 		return returnList;
 	}
-	public Map<Long, List<Long>> getActivityLocationWiseQuestionsData(Long activityScopeId,Long questionId){
-		Map<Long, List<Long>> finalMap = new LinkedHashMap<Long, List<Long>>(0);
+	
+	public List<IdNameVO> getQuestions(Long scopeId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>();
 		try {
-			LOG.error("Entered  in to getActivityLocationWiseQuestionsData() method,");
-			
-			List<Object[]> activityLocationWiseList = activityQuestionAnswerDAO.getTheLocationWiseData(questionId, activityScopeId);
-			if(activityLocationWiseList != null && activityLocationWiseList.size()>0){
-				for (Object[] obj : activityLocationWiseList) {
-					Long optionId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					Long locationValue = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
-					List<Long> finalList = finalMap.get(optionId);
-					if(finalList != null){
-						finalList = new ArrayList<Long>();
-						finalList.add(locationValue);
-					}
-					else{
-						finalList.add(locationValue);
-					}
+			List<Object[]> list = activityQuestionnaireDAO.getQuestionnareForScopeId(scopeId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(obj[0] != null ? Long.valueOf(obj[0].toString()):0l);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					voList.add(vo);
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Exception Occured in getActivityLocationWiseQuestionsData() method, Exception - ",e);
+			Log.error("Exception Occured in getQuestions method in ActivityService ",e);
 		}
-		return finalMap;
+		return voList;
+	}
+	
+	public List<IdNameVO> getOptionsForQuestion(Long questionId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> list = activityQuestionnaireOptionDAO.getOptionsForQuestions(questionId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(obj[0] != null ? Long.valueOf(obj[0].toString()):0l);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getOptionsForQuestion method in ActivityService ",e);
+		}
+		return voList;
 	}
 }
