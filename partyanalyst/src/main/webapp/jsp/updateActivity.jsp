@@ -81,7 +81,7 @@
  </style>
 </head>
 <body>
-	<form method="POST" enctype="multipart/form-data" name="uploadInsureeDetailsForm" action="saveActivityDetailsAction.action">
+	<form method="POST" enctype="multipart/form-data" name="saveActivityDetails" action="saveActivityDetailsAction.action">
 <div class="container">
 
 
@@ -561,7 +561,7 @@ function getActivityNames()
 function submitForm(){
 	var uploadHandler = {
 		upload: function(result) {
-			console.log(result);
+			//console.log(result);
 			uploadResult = result.responseText;
 			var myResult = (String)(uploadResult);
 			
@@ -990,7 +990,8 @@ function getLocationDetailsForActivity(startDate,endDate)
 						if(result.result != null && result.result.length>0){
 							for(var i in result.result)
 							{
-								if(!$("#imageChekId").is(':checked')){
+								if(!$("#imageChekId").is(':checked'))
+								{
 								str+='<tr>';
 								//str+='<td></td>';
 								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
@@ -1004,7 +1005,7 @@ function getLocationDetailsForActivity(startDate,endDate)
 									else
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 								
-								str+='</div></td>';*/
+								str+='</div>  <i class="glyphicon glyphicon-ok updateDateDetls"></i> </td>';*/
 								str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
@@ -1012,8 +1013,10 @@ function getLocationDetailsForActivity(startDate,endDate)
 										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
 									else
 										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
+									str+='<span class="input-group-addon" style="padding:6px 0px;" title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls" attr_location_Value="'+result.result[i].locationId+'" attr_date="dateId'+result.result[i].locationId+'"  style="cursor:pointer;" attr_img="img'+result.result[i].locationId+'"></i></span>';
 								str+='</div>';
-								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div></td>';
+								
+								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div> </td>';
 								
 								/*
 								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
@@ -1031,16 +1034,23 @@ function getLocationDetailsForActivity(startDate,endDate)
 								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
-							if(result.result[i].isAlreadyImageUpload == "true"){								
-								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
-							}else{
-								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
-							}    
+								if(result.result[i].conductedDate != null){
+									if(result.result[i].isAlreadyImageUpload == "true"){								
+										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+									}else{
+										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+									} 
+								}
+								else{
+									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;display:none;" class="img'+result.result[i].locationId+'" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+								}
+							   
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
 								str+='</td>';
 								str+='</tr>';
-							}else if(result.result[i].isAlreadyImageUpload == "true"){
+							}else if(result.result[i].isAlreadyImageUpload == "true")
+							{
 								str+='<tr>';
 								//str+='<td></td>';
 								str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+i+'].locationLevel">';
@@ -1054,16 +1064,18 @@ function getLocationDetailsForActivity(startDate,endDate)
 									else
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 								
-								str+='</div></td>';*/
+								str+='</div>  <i class="glyphicon glyphicon-ok updateDateDetls"></i></td>';*/
 								str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].conductedDate != null)
-										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
+										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'" readonly="true"/>';
 									else
-										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
+										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="" />';
+									str+='<span class="input-group-addon" style="padding:6px 0px;"  title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls" attr_location_Value="'+result.result[i].locationId+'" attr_date="dateId'+result.result[i].locationId+'"  style="cursor:pointer;" attr_img="img'+result.result[i].locationId+'"></i></span>';
+									
 								str+='</div>';
-								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div></td>';
+								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div>   </td>';
 								
 								/*
 								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
@@ -1081,8 +1093,8 @@ function getLocationDetailsForActivity(startDate,endDate)
 								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
-															
-								str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+								if(result.result[i].conductedDate != null)				
+									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 							  
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
@@ -1097,7 +1109,8 @@ function getLocationDetailsForActivity(startDate,endDate)
 					
 					$('#plannedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					$('#conductedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
-					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
+					/*$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
+					*/
 					$('.dateCls').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					
 					$("#locationsTab").dataTable({
@@ -1393,13 +1406,13 @@ $("#hideAsmblyData").click(function(){
   
 	
 	$(document).on("click","#updateQBtnId",function(){
-		var dateVal = $(this).attr('attr_date');
+		/*var dateVal = $(this).attr('attr_date');
 		$(".errCls").html("");
 		$("#err"+dateVal).html("");
 		if($("#"+dateVal).val() == ""){
 			$("#err"+dateVal).html("Date Required");
 			return;
-		}
+		}*/
 		var locationValue = $(this).attr("attr_location_Value");
 		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1);
  	});
@@ -1547,13 +1560,13 @@ $("#hideAsmblyData").click(function(){
 	
 	$(document).on("click","#uploadImagesId",function(){
 		 var dateVal = $(this).attr('attr_date');
-		$(".errCls").html("");
+		/*$(".errCls").html("");
 		$("#err"+dateVal).html("");
 		if($("#"+dateVal).val() == ""){
 			$("#err"+dateVal).html("Date Required");
 			return;
 		}
-		
+		*/
 		
 		/*var locationValue = $(this).attr("attr_location_Value");
 		var activityLevel = $("#activityLevelList").val();
@@ -1588,11 +1601,6 @@ $("#hideAsmblyData").click(function(){
 					locationLevelId = 8;//ward
 			}
 		}*/
-		$("#errCls").html("");
-		if($(".conductedDtCls").val() == ""){
-			$("#errCls").html("Date Required");
-			return;
-		}
 		
 		var locationName = $(this).attr("attr_location_Name");
 		gobalLevelValue = $(this).attr("attr_location_Value");
@@ -2296,6 +2304,45 @@ function getActivityDates(){
 		setGobalValues();
 		uploadImgs();
 	});
+	
+	
+
+$(document).on("click",".updateDateDetls",function(){
+
+		var dateVal = $(this).attr('attr_date');
+		var attrImgCls = $(this).attr('attr_img');
+		$(".errCls").html("");
+		$("#err"+dateVal).html("");
+		if($("#"+dateVal).val() == ""){
+			$("#err"+dateVal).html("Date Required");
+			return;
+		}
+	
+	var jObj = {
+			plannedDateStr : "",
+			conductedDateStr : $("#"+dateVal).val(),
+			locationValue : $(this).attr('attr_location_value'),
+			activityScopeId  : $('#ActivityList').val(),
+			activityLevelId:$('#activityLevelList').val(),
+			contituencyId  : $('#constiList').val(),
+			task:"saveActivityDetails"
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'saveActivityDetailsAction.action',
+         data : {task:JSON.stringify(jObj)} 
+        }).done(function(result){
+			if(result != null && result.resultCode==0){
+				$('.'+attrImgCls+'').show();
+				$("#err"+dateVal).html("<b class='text-success'> Updated Successfully.</b>");
+			}
+			else
+				$("#err"+dateVal).html("<b> Error Occured.</b>");
+		});			
+		
+});
+
 </script>
 </body>
 </html>
