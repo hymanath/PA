@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.OptionsCountVo;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.dto.TabDetailsVO;
@@ -57,4 +58,6 @@ public interface IActivityService {
 	public List<IdNameVO> getActivityStatusDetailsByScopeIdAndLocationValue(Long activityScopeId,Long constituencyId,String mandalId,String villageId);
 	public List<IdNameVO> getQuestions(Long scopeId);
 	public List<IdNameVO> getOptionsForQuestion(Long questionId);
+	public List<IdNameVO> getQuestionsForReportType(Long activityScopeId);
+	public List<OptionsCountVo> getOptionDetailsForQuestion(Long activityScopeId,Long reportType, Long qstnId);
 }

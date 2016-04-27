@@ -85,6 +85,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.OptionsCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
@@ -4607,5 +4608,53 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			Log.error("Exception Occured in getOptionsForQuestion method in ActivityService ",e);
 		}
 		return voList;
+	}
+	public List<IdNameVO> getQuestionsForReportType(Long activityScopeId){
+		List<IdNameVO> returnList =new ArrayList<IdNameVO>();
+		List<Object[]> qstns = activityQuestionnaireDAO.getQuestionIdsByScopeId(activityScopeId);
+		if(qstns != null && qstns.size() >0){
+			for(Object[] astn : qstns){
+				IdNameVO vo = new IdNameVO();
+				vo.setId(astn[0] != null ? Long.valueOf((Long)astn[0]) : 0l);
+				vo.setName(astn[1] != null ? astn[1].toString() : "");
+				returnList.add(vo);
+			}
+		}
+		return returnList;
+	}
+	
+	public List<OptionsCountVo> getOptionDetailsForQuestion(Long activityScopeId,Long reportType, Long qstnId){
+		List<OptionsCountVo> returnList =new ArrayList<OptionsCountVo>();
+		List<Object[]> qstns = activityQuestionAnswerDAO.getOptionsCountByScopId(activityScopeId,reportType,qstnId);
+		if(qstns != null && qstns.size() >0
+				){
+			for(Object[] astn : qstns){
+				OptionsCountVo vo = getMatchedVOForReportType(returnList,Long.valueOf((Long)astn[3]));
+				if(vo == null){
+					vo = new OptionsCountVo();
+					returnList.add(vo);
+				}
+					vo.setConstincyId(commonMethodsUtilService.getLongValueForObject(astn[3]));
+					vo.setConstincyName(commonMethodsUtilService.getStringValueForObject(astn[2]));
+					OptionsCountVo vo2 = new OptionsCountVo();
+					vo2.setOptionId(astn[0] != null ? Long.valueOf((Long)astn[0]) : 0l);
+					vo2.setOptionName(astn[1] != null ? astn[1].toString() : "");
+					Long count = commonMethodsUtilService.getLongValueForObject(astn[4]);
+					vo2.setCount(count != null ? count.intValue() : 0);
+					vo.getOptionsList().add(vo2);
+					
+			}
+		}
+		return returnList;
+	}
+	public OptionsCountVo getMatchedVOForReportType(List<OptionsCountVo> returnList, Long reportTypeId){
+		if(returnList != null && returnList.size() >0){
+			for(OptionsCountVo vo : returnList){
+				if(vo != null && vo.getConstincyId().longValue() == reportTypeId.longValue()){
+					return vo;
+				}
+			}
+		}
+		return null;
 	}
 }

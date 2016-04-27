@@ -21,18 +21,52 @@ public class OptionsCountVo implements Comparable<OptionsCountVo>,Serializable {
 	private Map<Integer,Integer> priorityCount = new HashMap<Integer,Integer>(4);
 	private List<String> textBoxes =new ArrayList<String>(0);
 	private int count=0;
+	private String optionName;
+	private String constincyName;
+	private Long constincyId;
+	private List<OptionsCountVo> optionsList = new ArrayList<OptionsCountVo>();
 	//private List<String> remarks;
+	
+	
 	public int getCount() {
 		return count;
 	}
 
+	public List<OptionsCountVo> getOptionsList() {
+		return optionsList;
+	}
 
+	public void setOptionsList(List<OptionsCountVo> optionsList) {
+		this.optionsList = optionsList;
+	}
+
+	public String getOptionName() {
+		return optionName;
+	}
+
+	public void setOptionName(String optionName) {
+		this.optionName = optionName;
+	}
+
+	public String getConstincyName() {
+		return constincyName;
+	}
+
+	public void setConstincyName(String constincyName) {
+		this.constincyName = constincyName;
+	}
+
+	public Long getConstincyId() {
+		return constincyId;
+	}
+
+	public void setConstincyId(Long constincyId) {
+		this.constincyId = constincyId;
+	}
 
 	public List<String> getTextBoxes() {
 		return textBoxes;
 	}
-
-
 
 	public void setTextBoxes(List<String> textBoxes) {
 		this.textBoxes = textBoxes;
