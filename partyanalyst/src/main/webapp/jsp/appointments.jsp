@@ -4151,7 +4151,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										
 						
 						//str+='<p>'+result[i].subList[j].name+'</p>';
-						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'';
+						if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
+							str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'';
+						}else{
+							str+='<p>Contact Number: - '
+						}
 						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
 								str+='<a style="display:inline-block;" title="Click here to View '+result[i].subList[j].name+' Appointment History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
 						}
