@@ -2554,11 +2554,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										if(result[i].designation !=null && result[i].designation.length>0){
 												str+='<p >Designation: '+result[i].designation+'</p>';
 										}else{
-											if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
-												str+='<p>Designation: - Cadre</p>';
+											str+='<p>Designation: - </p>';
+											
+											 if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
+												 if(result[i].candidateType == 'cadre'){
+													str+='<p>Designation: - Cadre</p>'; 
+												 }else{
+													 str+='<p>Designation: - </p>';
+												 }
 											}else{
 												str+='<p>Designation: - </p>';
-											}
+											} 
 										}
 										
 										  // str+='<p>Recent Appt History: 20-feb-2016</p>';
@@ -2583,7 +2589,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								if(result[i].aptExists == false)
 								{
 									
-								str+='<input style="margin-left:10px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile='+result[i].mobileNo+' attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Check this to Create Appointment Request">';	
+								str+='<input style="margin-left:10px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Check this to Create Appointment Request">';	
 								}
 								
 							else
@@ -2645,9 +2651,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			getAppointStatusOverviewforCandidate(id);
 			getAppointmentHistoryForCandidate(id);
 		});
-	var popDesignation ;
+		
+	 var popDesignation ;
 	 $(document).on("click",".apptDetailsDiv",function(){
-		 
 		 
 		 if($(this).is(':checked')){
 			  var searchType = $("#searchTypeId").val();
@@ -2680,6 +2686,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				 var closeId1 = $(this).attr("attr_id");
 				 var candidateTypeId = $(this).attr("attr_candidateType_id");
 				 var designation = $(this).attr("attr_designation");
+				 
 			    popDesignation = designation;
 		
 		var jsObj={
@@ -2694,6 +2701,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				// $("#checkboxMemberAjax").css("display","none");
+				
 				var lctscpid = ''+result.locationScopeId+'';
 				var consId = ''+result.constituencyId+'';
 				var distId = ''+result.districtId+'';
@@ -2707,35 +2715,50 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				$('#block'+temp).attr("attr_blk",closeId1);
 				$('#mobileNoId'+temp).val(mobile);
 				$('#voterCardNoID'+temp).val(votercardno);
-				$('#membershipNumId'+temp).val(membershipno);
-				$('#membershipNumId'+temp).prop("readonly",true);
-			    //$('#designationSelId'+temp).val(desg);
-				var candidateType1;
-				//$("#designationSelId+temp option").each(function() {
-					$('#designationSelId'+temp+' option').each(function() {
-				if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
-				candidateType1 = $(this).attr("typeId");
-				if(designation != null)
-				{
-					getDesignationsByType(candidateType1,'designationSelId'+temp);
-					$('#candidateTypeSelId'+temp).val(candidateType1);
-					var selectcc = new Dropkick('#candidateTypeSelId'+temp);
-					selectcc.refresh();
-				}
 				
-				} 
-			  });	
-				var selectx = new Dropkick('#designationSelId'+temp);
-					selectx.refresh();
-					
-			  if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){	
-			 
-				$('#candidateTypeSelId'+temp).val(3);
-			 	 var selectcc = new Dropkick('#candidateTypeSelId'+temp);
-				selectcc.refresh();
-				popDesignation = "Cadre";
-				getDesignationsByType(3,'designationSelId'+temp);
+				if(membershipno!= 'null'){
+				   $('#membershipNumId'+temp).val(membershipno);
+				   $('#membershipNumId'+temp).prop("readonly",true);	
 				}
+			  
+				var candidateType1;
+				$('#designationSelId'+temp+' option').each(function() {
+					
+					if($(this).text().toUpperCase() == ''+designation.toUpperCase()+'') {
+						
+						candidateType1 = $(this).attr("typeId");
+						if(designation != null){
+							getDesignationsByType(candidateType1,'designationSelId'+temp);
+							$('#candidateTypeSelId'+temp).val(candidateType1);
+							var selectcc = new Dropkick('#candidateTypeSelId'+temp);
+							selectcc.refresh();
+						}
+					}
+			  });
+			  
+				var selectx = new Dropkick('#designationSelId'+temp);
+				selectx.refresh();
+					
+			    if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
+					
+					if( candidateType == 'voter'){
+						
+						$('#candidateTypeSelId'+temp).val(4);
+						var selectcc = new Dropkick('#candidateTypeSelId'+temp);
+				        selectcc.refresh();
+						popDesignation = "Other";
+				        getDesignationsByType(4,'designationSelId'+temp);
+				        
+					}else if( candidateType == 'cadre'){
+						
+						$('#candidateTypeSelId'+temp).val(3);
+			 	        var selectcc = new Dropkick('#candidateTypeSelId'+temp);
+				        selectcc.refresh();
+				        popDesignation = "Cadre";
+				        getDesignationsByType(3,'designationSelId'+temp);
+					}
+				} 
+				
 				$('#locationScopeSelId'+temp).val(lctscpid);
 				var selectL = new Dropkick('#locationScopeSelId'+temp);
 				selectL.refresh();
