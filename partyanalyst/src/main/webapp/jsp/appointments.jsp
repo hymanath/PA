@@ -5228,6 +5228,7 @@ function buildTimeSlotsTable(result){
 	}
 	
 	$(document).on("click",".createAppReqCls",function(){
+		
 		clearAllValidationCls();
 		clearFields();
 		$("#errDigitsId").html('');
@@ -5566,7 +5567,7 @@ function buildTimeSlotsTable(result){
 				$(".advancePRCls").hide();
 				$("#cadreCommitteeDiv_chosen").hide();
 				$("#referCommitteeDiv").hide();
-				
+				clearNameSearchTypeFields();
 				
 			}
 			else
@@ -5580,8 +5581,6 @@ function buildTimeSlotsTable(result){
 				$(".locationsFilterCls").show();
 				$("#advanceSearchValueId").val("");
 				$(".advanceprclsDiv").hide();
-				
-				
 			}
 				disableByLevel();
 				$(".stateCls").show();
@@ -5589,26 +5588,47 @@ function buildTimeSlotsTable(result){
 				$(".constiCls").hide();
 				$(".mandalCls").hide();
 				$(".panchayatCls").hide();
-				
-				
-			
-	}
+	   }
+	 
+	  function  clearNameSearchTypeFields(){
+		  clearLevelField();
+		  clearStateField();
+	  }
+	   function clearLevelField(){
+		  $("#levelId").val(0);	
+		  $("#levelId").dropkick('reset'); 
+	   }
+	   function clearStateField(){
+		 $("#stateId").val(0);	
+		 $("#stateId").dropkick('reset');
+	   }
+	   
 	function setToDefaultAdvancedSearch()
-	{
-	
-		
+	{	
 			$("#advanceDesignationId").val(0);
 			$("#advanceDesignationId").dropkick('reset');
+			
 			$("#levelId").val(0);	
 			$("#levelId").dropkick('reset');
+			
+			$("#stateId").val(0);	
+			$("#stateId").dropkick('reset');
+			
+			$("#referCommitteeId").val(0);	
+			$("#referCommitteeId").dropkick('reset');
+			
 			$("#referdistrictId").val(0);
-				$("#referdistrictId").dropkick('reset');
+			$("#referdistrictId").dropkick('reset');
+			
 		   $("#referconstituencyId").val(0);
 			$("#referconstituencyId").dropkick('reset');
+			
 		   $("#refermandalNameId").val(0);
 			$("#refermandalNameId").dropkick('reset');
+			
 		   $("#referpanchayatId").val(0);
-		$("#referpanchayatId").dropkick('reset');
+		   $("#referpanchayatId").dropkick('reset');
+		
 	}
 	$(document).on("click","#deleteMultipleAppointmentsId",function(){
 		$("#deleteAppointmentErrDivId").html("");
