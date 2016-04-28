@@ -664,7 +664,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				" u.lastname as lastName,ats.from_date as fromDate,asts.appointment_status_id as aptStatusId,asts.status as aptStatus,a.appointment_id as aptId" +
 				" ,ats.to_date as toDate," +
 				"a.appointment_unique_id as uniqueId,ats.date as date,ac.image_url as url," +
-				" asts.status_color as colour,ac.tdp_cadre_id as tdpCadreId" +
+				" asts.status_color as colour,ac.tdp_cadre_id as tdpCadreId,date(a.inserted_time) as insertedTime" +
 				
 					" FROM " +
 					
@@ -722,6 +722,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				.addScalar("url",Hibernate.STRING)
 				.addScalar("colour",Hibernate.STRING)   
 				.addScalar("tdpCadreId",Hibernate.LONG)
+				.addScalar("insertedTime",Hibernate.DATE)
 				;
 		
 		if(fromDate != null)
@@ -816,7 +817,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		}
 		if(statusId!=null && statusId == 0l)
 		{
-			 sb.append(" and a.appointment_status_id in(2,10,5,8)");	
+			 sb.append(" and a.appointment_status_id in (:allPendingStatus)");	
 		}
 		if(districtId!=null && districtId >0l){
 			  sb.append(" and ua.district_id = :districtId");	
@@ -889,6 +890,10 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	
 	if(candidateTypeId !=null && candidateTypeId>0){
 		query.setParameter("candidateTypeId",candidateTypeId);
+	}
+	
+	if(statusId!=null && statusId == 0l){
+		query.setParameterList("allPendingStatus",IConstants.APPOINTMENT_ALL_PENDING_STATUS);	
 	}
 	
 	//query.setParameterList("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED_LIST);
