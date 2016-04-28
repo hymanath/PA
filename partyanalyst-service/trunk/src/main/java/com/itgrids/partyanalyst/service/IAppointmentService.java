@@ -91,4 +91,5 @@ public interface IAppointmentService {
 	public List<StatusTrackingVO> getAppointmentStatusCommentsTrackingDetails(Long appointmentId);
 	public ResultStatus saveDesignationForOtherCandidate(String designation,Long candidateTypeId);
 	public void getDesignationsForCadre(List<Long> tdpCadreIds,List<AppointmentCandidateVO> finalList);
+	public AppointmentStatusFlowVO getLoginUserAppointmentUserType(Long userId);
 }

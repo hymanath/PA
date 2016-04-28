@@ -6233,5 +6233,28 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
     	}
     }
     
+    
+    
+	public AppointmentStatusFlowVO getLoginUserAppointmentUserType(Long userId) {
+		
+		AppointmentStatusFlowVO appointmentStatusFlowVO=new AppointmentStatusFlowVO();
+		
+		try{
+			
+			List<Long> apptUserTypeIds=userAppointmentUserDAO.getLoginUserAppointmentUserType(userId);
+			
+			if(apptUserTypeIds!=null && apptUserTypeIds.size() >0 ){
+				
+				Long apptUserTypeId = apptUserTypeIds.get(0);
+				
+				appointmentStatusFlowVO.setAppointmentUserTypeId(apptUserTypeId);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getLoginUserAppointmentUserType() method of AppointmentService", e);
+		}
+		return appointmentStatusFlowVO;
+	}
+    
  }
 
