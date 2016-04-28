@@ -817,6 +817,8 @@
 								<div class="panel-body">
 									<table>
 										<tr>
+										
+										<td style="width: 20%;background-color:#339967; text-align: center; padding: 20px 60px; "><h4 class="text-success" style="color:#fff !important;">ALL <br> <span  id="AllStatus">0</span></h4></td>
 											<td style="width: 20%;background-color:#339967; text-align: center; padding: 20px 60px; "><h4 class="text-success" style="color:#fff !important;">APPROVED <br> <span  id="approvedStatus">0</span></h4></td>
 											<td style="width: 20%; background-color:#336799; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">NOT ATTENDED <br> <span  id="notAttendedStatus">0</span></h4></td>
 											<td style="width: 20%;background-color:#6A0208; text-align: center; padding: 20px 60px;color:#fff;"> <h4 class="text-success" style="color:#fff !important;">CANCELLED <br> <span  id="cancelledStatus">0</span></h4></td>
@@ -6797,7 +6799,17 @@ function getCommitteeRoles(){
 	  }
 	  function buildAppointmentStatusOverAllView(result)
 	  {
-		  
+		
+			var total = 0;
+		 for(var i in result)
+		  {
+			 if(result[i].id == 2 || result[i].id == 10 || result[i].id == 5 || result[i].id == 8)
+			 {
+				 total = total + result[i].availableCount;
+			 }				 
+		  }
+		
+		 $("#AllStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId="0">'+total+'</a>');	  
 		 for(var i in result)
 		  {
 			  if(result[i].id == 2)
