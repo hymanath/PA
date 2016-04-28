@@ -12,6 +12,10 @@ public class AppointmentStatusFlowVO implements Serializable{
 	
 	private Long toStatusId;
 	private String toStatus;
+	
+	private Long appointmentUserTypeId;
+	private Long apptUserOrMgrId; 
+	
 	public Long getStatusId() {
 		return statusId;
 	}
@@ -47,6 +51,18 @@ public class AppointmentStatusFlowVO implements Serializable{
 	}
 	public void setToStatus(String toStatus) {
 		this.toStatus = toStatus;
+	}
+	public Long getAppointmentUserTypeId() {
+		return appointmentUserTypeId;
+	}
+	public void setAppointmentUserTypeId(Long appointmentUserTypeId) {
+		this.appointmentUserTypeId = appointmentUserTypeId;
+	}
+	public Long getApptUserOrMgrId() {
+		return apptUserOrMgrId;
+	}
+	public void setApptUserOrMgrId(Long apptUserOrMgrId) {
+		this.apptUserOrMgrId = apptUserOrMgrId;
 	}
 	
 	

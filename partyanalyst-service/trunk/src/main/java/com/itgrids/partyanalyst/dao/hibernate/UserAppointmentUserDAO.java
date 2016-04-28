@@ -27,4 +27,16 @@ public class UserAppointmentUserDAO extends GenericDaoHibernate<UserAppointmentU
 		
 		return query.list();
 	}
+	
+	public List<Long> getLoginUserAppointmentUserType(Long userId){
+		
+		Query query = getSession().createQuery("" +
+				" select distinct model.appointmentUserTypeId " +
+				" from   UserAppointmentUser model " +
+				" where  model.user.userId = :userId " +
+				" order by model.userAppointmentUserId desc ");
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
 }
