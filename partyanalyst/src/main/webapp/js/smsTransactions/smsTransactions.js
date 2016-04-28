@@ -27,9 +27,7 @@ function generateOTPForMobileNumber(jsObj,currentButton){
 		url : "generateOTPForMobileNumberAction.action",
 		data : {task:JSON.stringify(jsObj)} ,   
 	}).done(function(result){
-		if(result != null && result == "Success"){
-			$(currentButton).removeAttr('disabled');
-		}
+		updateOTPDetails(result,currentButton);		
 	}); 
 }	
 
