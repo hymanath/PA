@@ -31,7 +31,6 @@ public class AppointmentCandidate extends BaseModel {
 	 private String mobileNo;
 	 private Long locationScopeId;
 	 private Long locationValue;
-	 private Long addressId;
 	 private Long voterId;
 	 private String voterIdCardNo;
 	 private Long tdpCadreId;
@@ -97,13 +96,7 @@ public class AppointmentCandidate extends BaseModel {
 	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
 	}
-	@Column(name = "address_id")
-	public Long getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(Long addressId) {
-		this.addressId = addressId;
-	}
+
 	@Column(name = "voter_id")
 	public Long getVoterId() {
 		return voterId;
@@ -172,7 +165,7 @@ public class AppointmentCandidate extends BaseModel {
 		this.candidateDesignation = candidateDesignation;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="address_id", insertable=false, updatable = false)
+	@JoinColumn(name="address_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public UserAddress getUserAddress() {
