@@ -444,12 +444,41 @@ public class AppointmentService implements IAppointmentService{
 	}
 	
 	
+	public void saveApptDetailsInFatalLog(AppointmentVO appointmentVO)
+	{
+		try{
+			
+			Date currentDateAndTime = new DateUtilService().getCurrentDateAndTime();
+			
+			LOG.fatal("-----------------"+currentDateAndTime+"-----------------------------------");
+			
+			LOG.fatal(" apptUserId - "+appointmentVO.getAppointmentUserId()+"\tapptPriorityId - "+appointmentVO.getAppointmentPriorityId()+
+					  " \tapptReason - "+appointmentVO.getReason()+"\tapptPreferableTime - "+appointmentVO.getAppointmentPreferableTimeType()+"\tapptDates - "+appointmentVO.getAppointmentDates());
+			
+			if(appointmentVO.getBasicInfoList() != null && appointmentVO.getBasicInfoList().size() > 0){
+				for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
+					
+				  LOG.fatal(" candiname - "+basicInfo.getName()+"\tdesignationId - "+basicInfo.getDesignationId()+
+							  " \tmobileNo - "+basicInfo.getMobileNo()+"\tlocationScopeId - "+basicInfo.getLocationScopeId()+"\tdistrictId - "+basicInfo.getDistrictId()+
+							  "\tconstId -"+basicInfo.getConstituencyId() + "\ttehsilId - "+ basicInfo.getTehsilId() +"\tvillageId - "+basicInfo.getVillageId()+
+							  "\tvotercardno - "+basicInfo.getVoterCardNo() +"\tmembershipno - "+basicInfo.getMembershipNum() +"\tcandidateTypeId - "+basicInfo.getCandidateTypeId()	);
+				         
+				}
+			}
+			
+			LOG.fatal("----------------------------------------------------");
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in saveApptDetailsInFatalLog() - ",e);
+		}
+	}
 	
 	
 	public ResultStatus saveAppointment(final AppointmentVO appointmentVO,final Long loggerUserId){
 		 ResultStatus status = new ResultStatus();
 		try {
-			
+			 saveApptDetailsInFatalLog(appointmentVO);
+			 
 			status = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
@@ -651,6 +680,7 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return status;
 	}
+	
 	public List<IdNameVO> getAppointmentStatusList(){
 		List<IdNameVO> appointmentStatusList = new ArrayList<IdNameVO>(0);
 		try{
