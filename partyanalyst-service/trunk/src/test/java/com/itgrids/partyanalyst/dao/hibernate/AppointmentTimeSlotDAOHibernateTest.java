@@ -7,6 +7,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IAbusedCommentsDAO;
 import com.itgrids.partyanalyst.dao.IAppointmentTimeSlotDAO;
 import com.itgrids.partyanalyst.model.AbusedComments;
+import com.itgrids.partyanalyst.model.AppointmentTimeSlot;
 import com.itgrids.partyanalyst.service.impl.DateService;
 
 public class AppointmentTimeSlotDAOHibernateTest extends BaseDaoTestCase{
@@ -23,9 +24,15 @@ public class AppointmentTimeSlotDAOHibernateTest extends BaseDaoTestCase{
 		this.appointmentTimeSlotDAO = appointmentTimeSlotDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		
+	}*/
+	
+	public void testGetAppointmentTimeSlotByAppointmentId()
+	{
+		AppointmentTimeSlot slot = appointmentTimeSlotDAO.getAppointmentTimeSlotByAppointmentId(1L);
+		System.out.println(slot.getAppointmentId());
 	}
 
 }
