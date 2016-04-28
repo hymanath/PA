@@ -30,8 +30,17 @@ public class LocationInputVO {
 	private List<Long> designationIds;
 	private Long stateId;
 	private Long aptUserId;
+	private List<Long> constituencyIds;
 	
 	
+	
+	
+	public List<Long> getConstituencyIds() {
+		return constituencyIds;
+	}
+	public void setConstituencyIds(List<Long> constituencyIds) {
+		this.constituencyIds = constituencyIds;
+	}
 	public Long getAptUserId() {
 		return aptUserId;
 	}
