@@ -6213,9 +6213,9 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
     	}
     	tdpCadreIds.removeAll(filterCadreIds);
     	List<Object[]> comittteeList = tdpCommitteeMemberDAO.getDesignationsForCadreCommittee(tdpCadreIds);
-    	if(representativeList != null && representativeList.size() > 0)
+    	if(comittteeList != null && comittteeList.size() > 0)
     	{
-    		for(Object[] params : representativeList)
+    		for(Object[] params : comittteeList)
     		{
     			AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
     			 if(vo != null)
