@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -64,7 +65,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	private ISmsSenderService smsSenderService;
 	private ISmsOtpDetailsDAO smsOtpDetailsDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
-	
+	private CommonMethodsUtilService commonMethodsUtilService= new CommonMethodsUtilService();
 	
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
@@ -1061,7 +1062,18 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		String status = null;
 		try {
 				List<Object[]> userList = smsOtpDetailsDAO.checkForExpire(mobileNo);
-				if(userList.get(0)[0]==null){
+				Date currentTime = dateUtilService.getCurrentDateAndTime();
+		    	Calendar calendar = Calendar.getInstance();
+		    	calendar.setTime(currentTime);
+		    	 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		    	 int hours = calendar.get(Calendar.HOUR_OF_DAY);
+		    	// int minutes = calendar.get(Calendar.MINUTE);
+		    	// int seconds = calendar.get(Calendar.SECOND);
+		    	 String timeFormat ="AM";
+		    	 if(hours > 11 && hours <24)
+		    		 timeFormat ="PM";
+		    	 
+				if(userList != null && userList.get(0)[0]==null){
 					Random random=new Random();
 				    int number= 0;
 				    String otp = "";
@@ -1073,7 +1085,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				    otp = String.valueOf(number).substring(0,6);
 				    if(otp != null && !otp.isEmpty()){
 				    /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
-				    String messageStr = " Cadre Registration OTP number: "+otp+". This OTP is valid upto next one Hour.";
+				    String messageStr = " TNGF Registration OTP number: "+otp+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
 				    SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
 				    
 				    smsOtpDetails.setOtpReferenceId(refNo);
@@ -1086,7 +1098,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				    smsOtpDetails.setUserId(userId);
 				    smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
 				      
-				    SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+				   smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
 				      
 				    status = IConstants.SUCCESS;
 				    }
@@ -1096,10 +1108,11 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				    Date lstlDate = df.parse(lastDate);
 					String unit = "hour";
 					long interval = 1l;
-					boolean valid = CommonMethodsUtilService.isActiveForSomeHours(lstlDate, unit, interval);
+					boolean valid = commonMethodsUtilService.isActiveForSomeHours(lstlDate, unit, interval);
 					if(valid==true){
-						String messageStr = " Cadre Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto next one Hour.";
-						SmsHistory smsHistory1 = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+						//String messageStr = " Cadre Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto next one Hour.";
+						String messageStr = " TNGF Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
+						smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
 						status = IConstants.SUCCESS;
 					}else{
 						Random random=new Random();
@@ -1113,7 +1126,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					    otp = String.valueOf(number).substring(0,6);
 					    if(otp != null && !otp.isEmpty()){
 					    /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
-					    String messageStr = " Cadre Registration OTP number: "+otp+". This OTP is valid upto next one Hour.";
+					    String messageStr = " TNGF Registration OTP number: "+otp+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
 					    SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
 					    
 					    smsOtpDetails.setOtpReferenceId(refNo);
