@@ -1033,7 +1033,7 @@
 		<label>Designation</label><span class="designationErrCls" style="color:red;"></span>
 		<input type="text" class="form-control designationCls">
 		</div>
-		<div class="statusCls"></div>
+		<div class="statusCls text-center"></div>
 		<button class="btn btn-success btn-block m_top10 saveDesignationCls" >Save</button>
 	  </div>
     </div>
@@ -6066,6 +6066,7 @@ function getAppointmentCreatedUsers(){
 	$(document).on("click",".cloneDesignationSpanCls",function(){
 	    $(".designationCls").val(" ");
 		$(".designationErrCls").html(" ");
+		$(".statusCls").html(" ");
 		var cloneId=$(this).attr("attr_coneId");
 		$(".saveDesignationCls").attr("id",cloneId);
 	    $("#blockForOtherCandidateModalId").modal("show");
@@ -7708,9 +7709,9 @@ function timeSlotTableBuilding(result,dateStr){
 			
 	})
 	$(".saveDesignationCls").click(function(){
-		var designation=$(".designationCls").val();
+		var designation=$(".designationCls").val().trim();
 		var cnt=$(this).attr("id");
-		 if(designation==" " || designation==undefined || designation.trim().length==0){
+		 if(designation==" " || designation==undefined || designation.length==0){
 			 $(".designationErrCls").html("Please Enter Designation.");
 		 }else{
 			 saveDesignationForOtherCandidate(designation,cnt); 
@@ -7734,8 +7735,10 @@ function timeSlotTableBuilding(result,dateStr){
 					 setTimeout(function(){$(".statusCls").html("");}, 2000);
 					 setTimeout(function(){$("#blockForOtherCandidateModalId").modal("hide");}, 2000);
 					 getDesignationsByTypeForChange(cnt,"other");
+				}else if(result.exceptionMsg=="exist"){
+					$(".statusCls").html("<p style='color:red;text-center'>Designation already exist.</p>");
 				}else{
-					$(".statusCls").html("<p style='color:red;'>Error occured try again.</p>");
+				  $(".statusCls").html("<p style='color:red;text-center'>Error occured try again.</p>");
 				}
 			}
 		});		
