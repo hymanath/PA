@@ -107,5 +107,13 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		query.setParameter("questionId", questionId);
 		return query.list();
 	}
+public List<Object[]> getOptionsByQuesttionareIds(Long questionnareId){
+		
+		Query query = getSession().createQuery(" select distinct model.activityOptionId,model.activityOption.option " +
+				"from ActivityQuestionnaireOption model " +
+				" where model.activityQuestionnaire.activityQuestionnaireId =:questionnareId ");
+		query.setParameter("questionnareId", questionnareId);
+		return query.list();
+	}
 
 }
