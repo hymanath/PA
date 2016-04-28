@@ -928,6 +928,10 @@
 		$( "#affiliatedCadreForm" ).submit();
 	}
 
+	function startSearchingPage(){
+	window.location.href="affiliatedCadreSearchAction.action";
+}
+
 	function showUploadStatus(myResult)
 	{
 		$('#mainDiv').html('');
