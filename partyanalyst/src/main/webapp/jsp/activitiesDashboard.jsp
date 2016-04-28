@@ -118,16 +118,34 @@
 								<div id="stateWiseViewDid"></div>
 							</div>
 						</div>
+						<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default panel-custom">
+					<div class="panel-heading ">
+						<h4 class="panel-title">ACTIVITY RESPONSES</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4" id="questionsDiv">
+								<select class="form-control" id="questionsId">
+									<option value="0">Select Questions</option>
+								</select>	
+							</div>
+						</div>
 						<div class="row  m_top10">
 							<div class="col-md-12">
-								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
-									<h4 class="panel-title" id="activityHeadingDiv" style="font-weight:bold;display:none;">ACTIVITIES STATUS REPORT</h4>
+								<div class="bg_66" id="activityHeadingDiv" style="padding:10px 15px;background:#D3D3D3;display:none;">
+									<h4 class="panel-title" style="font-weight:bold;">STATUS REPORT</h4>
 								</div>
                             </div>
 							<div class="col-md-12">
 								<div id="buildActivityReasonReportTableId"></div>
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
                         <div class="panel-body pad_0 m_top20" id="nonBloodDonationDivId">
 							<div class="row">
 								<div class="col-md-12">
