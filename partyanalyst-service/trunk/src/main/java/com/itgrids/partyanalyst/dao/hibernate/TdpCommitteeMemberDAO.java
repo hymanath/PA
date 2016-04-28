@@ -1903,4 +1903,22 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 		
 		return query.list();
 	}
+	public List<Object[]> getDesignationsForCadreCommittee(List<Long> tdpCadreIds)
+	{
+		Query query=getSession().createQuery("select Tr.TdpCadre.tdpCadreId,Tr.TdpCommitteeRole.TdpRoles.role,Tr.TdpCommitteeRole.TdpRoles.tdpRolesId from tdpCommitteeMember Tr  where " +
+				"Tr.TdpCadre.tdpCadreId in(:tdpCadreIds)" );
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		return query.list();
+	}
+	public List<Object[]> getDesignationsForPublicRepresentative(List<Long> tdpCadreIds)
+	{
+		Query query=getSession().createQuery("select distinct tc.TdpCadre.tdpCadreId,pr.publicRepresentativeTypeId,pr.type  "+
+				 "from  publicReprsentative pr, " +
+				"  tdpCadreCondidate tc where  pr.candidateId=tc.candidateId and  tc.TdpCadre.tdpCadreId in(:tdpCadreIds)");
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		return query.list();
+		
+	}
+	
+	
 }
