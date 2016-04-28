@@ -169,7 +169,7 @@ function buildCommitteeLvlAppntmnts(result){
 							str+='</tr>';
          	str+='<tr>';
 							// str +='<th></th>';
-								str+='<th class="text-capitalize">role</th>';
+								str+='<th class="text-capitalize">Committee Level</th>';
 								str+='<th class="text-capitalize">total</th>';
 								str+='<th class="text-capitalize">unique</th>';
 								str+='<th class="text-capitalize">total</th>';
