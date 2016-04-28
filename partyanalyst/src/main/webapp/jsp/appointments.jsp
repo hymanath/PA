@@ -2572,10 +2572,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										}else{
 											str+='<p>Contact Number: - </p>';
 										}
+										
 										if(result[i].designation !=null && result[i].designation.length>0){
+											
 												str+='<p >Designation: '+result[i].designation+'</p>';
 										}else{
-											str+='<p>Designation: - </p>';
+											
+											//str+='<p>Designation: - </p>';
 											
 											 if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
 												 if(result[i].candidateType == 'cadre'){
@@ -2756,7 +2759,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						}
 					}
 			  });
-			  
+			 
 				var selectx = new Dropkick('#designationSelId'+temp);
 				selectx.refresh();
 					
@@ -2764,20 +2767,41 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					
 					if( candidateType == 'voter'){
 						
+						if(designation == null || designation.length == 0)
+						{
 						$('#candidateTypeSelId'+temp).val(4);
 						var selectcc = new Dropkick('#candidateTypeSelId'+temp);
 				        selectcc.refresh();
 						popDesignation = "Other";
 				        getDesignationsByType(4,'designationSelId'+temp);
 				        $('#othrCnddtDsgntnBlckId'+temp).show();
+						}
+						else
+						{
+							getDesignationsByType(candidateType1,'designationSelId'+temp);
+							$('#candidateTypeSelId'+temp).val(candidateType1);
+							var selectcc = new Dropkick('#candidateTypeSelId'+temp);
+							selectcc.refresh();
+						}
 						
 					}else if( candidateType == 'cadre'){
 						
+						if(designation == null || designation.length == 0)
+						{
 						$('#candidateTypeSelId'+temp).val(3);
 			 	        var selectcc = new Dropkick('#candidateTypeSelId'+temp);
 				        selectcc.refresh();
 				        popDesignation = "Cadre";
 				        getDesignationsByType(3,'designationSelId'+temp);
+						}
+						else
+						{
+							getDesignationsByType(candidateType1,'designationSelId'+temp);
+							$('#candidateTypeSelId'+temp).val(candidateType1);
+							var selectcc = new Dropkick('#candidateTypeSelId'+temp);
+							selectcc.refresh();
+						}
+					
 					}
 				} 
 				
