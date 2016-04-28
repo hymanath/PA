@@ -4220,24 +4220,21 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									
 								str+='</select>';
 							str+='<div class="row m_top10">';
-							str+='<div class="col-xs-5">';
+							str+='<div class="col-xs-12">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" attr_cmmnt_chckbx_id='+result[i].appointmentId+' value="2"  name="upcomeRadio" id="comentChkId'+result[i].appointmentId+'" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
+							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							str+='</div>';
-							str+='<div class="col-xs-5">';
+							str+='<div class="col-xs-12">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" attr_sms_chckbx_id='+result[i].appointmentId+' value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
 							str+='</label>';
-							str+='</div>';
-							str+='</div>';
-							
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
-							
 							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
-							
-							
-							str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
+							str+='</div>';
+							str+='</div>';
+						
+    						str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
 							str+='<img id="prcssngImgFrUpdtId'+result[i].appointmentId+'" style="display:none;" src="images/search.gif">';
 							str+='<button class="btn btn-block btn-success m_top10 appointmentStatus" appointmentStatusId='+result[i].statusId+' appointmentId='+result[i].appointmentId+' >UPDATE APPOINTMENT</button>';
 							str+='</div>';

@@ -196,12 +196,12 @@ body
 	position:absolute;
 	right:0px;
 	background:#fff;
-	border:1px solid #ddd;
+	border:1px solid rgba(51, 51, 51, 0.6);
 	width:320px;
 	z-index:99;
 	top:30px;
 	padding:8px;
-	box-shadow:0px 0px 8px rgba(0,0,0,0.4) 
+	box-shadow:0px 0px 50px rgba(0,0,0,0.8) 
 }
 .messageBlock
 {
@@ -217,7 +217,7 @@ body
 }
 .arrow_box {
 	background: #fff;
-	border: 1px solid #ddd;
+	border: 1px solid rgba(51, 51, 51, 0.6);
 }
 .arrow_box:after, .arrow_box:before {
 	bottom: 100%;
@@ -238,7 +238,7 @@ body
 }
 .arrow_box:before {
 	border-color: rgba(221, 221, 221, 0);
-	border-bottom-color: #ddd;
+	border-bottom-color: rgba(51, 51, 51, 0.6);
 	border-width: 9px;
 	margin-left: -9px;
 }
