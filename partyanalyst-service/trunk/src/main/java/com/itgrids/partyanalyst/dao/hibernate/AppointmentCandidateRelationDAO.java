@@ -814,6 +814,10 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		if(statusId!=null && statusId >0l){
 			  sb.append(" and a.appointment_status_id = :statusId");	
 		}
+		if(statusId!=null && statusId == 0l)
+		{
+			 sb.append(" and a.appointment_status_id in(2,10,5,8)");	
+		}
 		if(districtId!=null && districtId >0l){
 			  sb.append(" and ua.district_id = :districtId");	
 		}
