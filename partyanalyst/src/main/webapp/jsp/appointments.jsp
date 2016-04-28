@@ -873,11 +873,11 @@
 												
 												<div class="col-md-2 m_top10">
 													<input class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId();getAllScheduledApptsByDate()"/>
+												<img src="images/search.gif" style="display:none;" id="ajaxImgFortimeSlotButtonId"/>
 												</div>
 												<div class="col-md-4 m_top10" style="color:red;font-size:16px;" id="timeSlotErrMsgId">
 												</div>
 												<div class="col-md-12 m_top10" id="timeSlotDatesBuildId">
-													
 												</div>
 												
 												
@@ -2698,7 +2698,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		if(designation != null && designation.length > 0)
 			$("#appCandidateNameId").html(''+name+' ('+designation+') - '+mobile+'');
 		else
-			$("#appCandidateNameId").html(''+name+' ('+mobile+')');
+			$("#appCandidateNameId").html(''+name+' - '+mobile+'');
 			getAppointStatusOverviewforCandidate(id);
 			getAppointmentHistoryForCandidate(id);
 		});
@@ -4394,8 +4394,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		$(".changeClass").removeClass("col-md-8");
 		$(".changeClass").addClass("col-md-12");
 		
-		$(".updateChangeClass").removeClass("col-md-6");
-		$(".updateChangeClass").addClass("col-md-4");
+		/* $(".updateChangeClass").removeClass("col-md-6");
+		$(".updateChangeClass").addClass("col-md-4"); */
 		
 		getAppointmentStatusOverview();	
 		//Set Button disabling
@@ -4664,7 +4664,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		if(designation != null && designation.length > 0)
 			$("#appCandidateNameId").html(''+name+' ('+designation+') - '+mobile+'');
 		else
-			$("#appCandidateNameId").html(''+name+' ('+mobile+')');
+			$("#appCandidateNameId").html(''+name+' - '+mobile+'');
 			getAppointStatusOverviewforCandidate(id);
 			getAppointmentHistoryForCandidate(id);
 		});
@@ -4866,6 +4866,8 @@ var tableToExcel = (function() {
 	}
 	
 	$(document).on("click","#setTimeSlotBtnId",function(){
+		setTimeout(function(){ $(".updateChangeClass").addClass("col-md-6"); }, 400);
+			
 		//var appointmentId = $("#appointmentLabelToGetSlotsId").val();		
 		var appointmentId = $("#confirmAppointmentBlockDropId div").attr("attr_appointment_id");
 		var date = $("#appointmentDateSlotId").val();
@@ -7421,7 +7423,7 @@ function getTimeSlotsForADayByAppytUserId(){
 	
 	$('#timeSlotErrMsgId').html('');
 	$('#timeSlotDatesBuildId').html('');
-	
+	$("#ajaxImgFortimeSlotButtonId").show();
 	var  dateStr       = $('#appointmentDateSlotHeadingId').val();
 	var  appntmntId   =  $("#appointmentUserSelectBoxId option:selected").val();
 	if(dateStr.trim().length <= 0){
@@ -7440,6 +7442,7 @@ function getTimeSlotsForADayByAppytUserId(){
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+				$("#ajaxImgFortimeSlotButtonId").hide();
 				timeSlotTableBuilding(result,dateStr);
 			})
 	
@@ -7576,7 +7579,7 @@ function timeSlotTableBuilding(result,dateStr){
 			{
 				str+='<div class="row m_top10">';
 			}
-					str+='<div class=" col-xs-4 updateChangeClass">';
+					str+='<div class=" col-xs-4 updateChangeClass" >';
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
 							str+='<p class="settingClass" style="font-size:10px;cursor:pointer;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' attr_date='+result[i].formatDate+' attr_from_time="'+result[i].time+'" attr_to_time="'+result[i].toTime+'"  attr_comment="'+result[i].subject+'" attr_timeSlotId="'+result[i].apptTimeSlotId+'" class="glyphicon glyphicon-cog updateAppointmentClass  pull-right" id="updateSettingApptId'+result[i].appointmentId+'"  title="Appointment Status Update" data-toggle="tooltip" data-placement="top" ></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
@@ -7801,11 +7804,16 @@ function timeSlotTableBuilding(result,dateStr){
 		
 		$(".changeClass").removeClass("col-md-12");
 		$(".changeClass").addClass("col-md-8");
+		 
+		$(".updateChangeClass").addClass("col-md-6"); 
 		
-		$(".updateChangeClass").removeClass("col-md-4");
-		$(".updateChangeClass").addClass("col-md-6");
-			
 	})
+	  $(document).on("click","#timeSlotButtonId",function(e){
+		setTimeout(function(){$(".updateChangeClass").addClass("col-md-6");
+		}, 400);
+	})  
+	
+	
 	$(".saveDesignationCls").click(function(){
 		var designation=$(".designationCls").val().trim();
 		var cnt=$(this).attr("id");
