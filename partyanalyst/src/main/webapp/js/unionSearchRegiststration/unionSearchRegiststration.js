@@ -141,9 +141,11 @@ function buildVoterDetails(result){
 				//str+='</span>';
 				str+='<div class="media-body">';
 				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].voterName+'';	
-				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+'  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button> ';
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+'  ';
 				if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
 					str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;"> Already Registered </span>';
+				else
+					str+='  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button>';
 				str+='</h5>';
 				str+='<ul class="list-inline">';
 				str+='<li>Age:'+result[i].age+'</li>';	
@@ -318,11 +320,14 @@ function buildCadreDetails(result,jsObj){
 				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
-				str+='<div class="btn btn-success pull-right btn-xs">';
-					str+='<label style="margin-bottom:0px;"><input type="checkbox" name="otpMobileNo"  attr_cadreId="'+result[i].tdpCadreId+'" value="'+result[i].tdpCadreId+'" id="cadreCheckId'+i+'" class="otpCheckboxCls color:red;"/>&nbsp;Select</label>';
-				str+='</div>';
+				
 				if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
 					str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;">  Already Registered </span>';
+				else{
+					str+='<div class="btn btn-success pull-right btn-xs">';
+					str+='<label style="margin-bottom:0px;"><input type="checkbox" name="otpMobileNo"  attr_cadreId="'+result[i].tdpCadreId+'" value="'+result[i].tdpCadreId+'" id="cadreCheckId'+i+'" class="otpCheckboxCls color:red;"/>&nbsp;Select</label>';
+					str+='</div>';
+				}
 				str+='<h5 class="media-heading"><div id="nameId" attr_cadreId="'+result[i].tdpCadreId+'"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+'</div> ';				
 				str+='<span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
@@ -401,9 +406,7 @@ function generateOTPForMobileNo(currentButton){
 			var refNo = Math.floor((Math.random() * 1000000) + 1);
 			$("#randomRefNo").val(refNo);
 			//var prevRefNo = $("#priviousRandomRefNo").val();
-			/*if(refNo >0)
-				$("#getOtpId").html(" OTP Reference No: "+refNo+" (Note: If you not get OTP, click Generate OTP once again.)");
-			*/
+			$("#getOtpId").html("Please wait OTP is Sending to your registered mobile no..");
 			var jsObj =
 			{    
 				mobileNo : mobileNo,
@@ -417,6 +420,16 @@ function generateOTPForMobileNo(currentButton){
 		}
 		//$("#priviousRandomRefNo").val(refNo);
 	
+}
+
+function updateOTPDetails(result,currentButton){
+	$(currentButton).removeAttr('disabled');
+	if(result != null && result == "Success"){
+			$("#getOtpId").html(" OTP sent successfully.");
+	}
+	else{
+		$("#getOtpId").html("<span class='text-danger'> Error occured Generate OTP once again.</span>");
+	}
 }
 $("#otpId").keyup(function(){
 	var otp=$("#otpId").val().trim();
