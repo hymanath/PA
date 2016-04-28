@@ -2593,9 +2593,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											str+='<p>'+result[i].name+'</p>';
 										}
 										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
-												str+='<p >Contact Number: '+result[i].mobileNo+'</p>';
+												str+='<p ><i class="fa fa-mobile" style="font-size:20px"></i> &nbsp '+result[i].mobileNo+'</p>';
 										}else{
-											str+='<p>Contact Number: - </p>';
+											str+='<p><i class="fa fa-mobile" style="font-size:20px"></i>   - </p>';
 										}
 										
 										if(result[i].designation !=null && result[i].designation.length>0){
@@ -4284,11 +4284,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										
 						
 						//str+='<p>'+result[i].subList[j].name+'</p>';
-						if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
-							str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'';
-						}else{
-							str+='<p>Contact Number: - '
+						if(globalLoginUSerAppointmentUserTypeId != 1){
+
+							if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
+								str+='<p><i class="fa fa-mobile" style="font-size:20px"></i>  '+result[i].subList[j].mobileNo+'';
+							}else{
+								str+='<p><i class="fa fa-mobile" style="font-size:20px"></i> - '
+							}
 						}
+						
+						
+						
 						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
 								str+='<a style="display:inline-block;" title="Appointments History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
 						}
@@ -4555,7 +4561,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												str+='<p>'+result[i].subList[j].name+'</p>';
 												
 												if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
-													str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
+													str+='<p> <i class="fa fa-mobile" style="font-size:20px"></i> &nbsp;'+result[i].subList[j].mobileNo+'</p>';
 												}
 												
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
@@ -7621,7 +7627,7 @@ function timeSlotTableBuilding(result,dateStr){
 						str+='</div>';
 						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
-						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'';
+						str+='<p><i class="fa fa-mobile" style="font-size:20px"></i> &nbsp '+result[i].subList[j].mobileNo+'';
 						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
 								str+='<a style="display:inline-block;" title="Appointments History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
 						}
