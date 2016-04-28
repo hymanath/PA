@@ -4621,6 +4621,14 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		}
 		return voList;
 	}
+	
+	/**
+	 * @author 		:Hymavathi
+	 * @date   		:${27/04/2016}
+	 * @param  		:Long 
+	 * @returntype  :${List<IdNameVO>}
+	 * @description :${To get Question By Sending param like scopeId, Here we are getting questions for activityScope}
+	 */
 	public List<IdNameVO> getQuestionsForReportType(Long activityScopeId){
 		List<IdNameVO> returnList =new ArrayList<IdNameVO>();
 		List<Object[]> qstns = activityQuestionnaireDAO.getQuestionIdsByScopeId(activityScopeId);
@@ -4635,30 +4643,46 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		return returnList;
 	}
 	
+	/**
+	 * @author 		:Hymavathi
+	 * @date   		:${27/04/2016}
+	 * @param  		:Long ,Long , Long 
+	 * @returntype  :${List<OptionsCountVo>}
+	 * @description :${To get Option with  Count for each Question By param like district/constituency & questionId & scopeId}
+	 */
 	public List<OptionsCountVo> getOptionDetailsForQuestion(Long activityScopeId,Long reportType, Long qstnId){
 		List<OptionsCountVo> returnList =new ArrayList<OptionsCountVo>();
+		
 		List<Object[]> qstns = activityQuestionAnswerDAO.getOptionsCountByScopId(activityScopeId,reportType,qstnId);
-		if(qstns != null && qstns.size() >0
-				){
+		List<Long> qusetionareId = activityQuestionnaireDAO.getQuestionareId(activityScopeId, qstnId);
+		List<Object[]> optns = activityQuestionnaireOptionDAO.getOptionsByQuesttionareIds(qusetionareId.get(0));
+		if(qstns != null && qstns.size() >0){
 			for(Object[] astn : qstns){
 				OptionsCountVo vo = getMatchedVOForReportType(returnList,Long.valueOf((Long)astn[3]));
 				if(vo == null){
-					vo = new OptionsCountVo();
-					returnList.add(vo);
+						vo = new OptionsCountVo();
+						vo.setConstincyId(commonMethodsUtilService.getLongValueForObject(astn[3]));
+						vo.setConstincyName(commonMethodsUtilService.getStringValueForObject(astn[2]));
+						vo.setOptionsList(setOptionsCount(optns));
+						returnList.add(vo);
 				}
-					vo.setConstincyId(commonMethodsUtilService.getLongValueForObject(astn[3]));
-					vo.setConstincyName(commonMethodsUtilService.getStringValueForObject(astn[2]));
-					OptionsCountVo vo2 = new OptionsCountVo();
-					vo2.setOptionId(astn[0] != null ? Long.valueOf((Long)astn[0]) : 0l);
-					vo2.setOptionName(astn[1] != null ? astn[1].toString() : "");
-					Long count = commonMethodsUtilService.getLongValueForObject(astn[4]);
-					vo2.setCount(count != null ? count.intValue() : 0);
-					vo.getOptionsList().add(vo2);
-					
+				OptionsCountVo vo2 = getMatchedVOForReportType(vo.getOptionsList(),Long.valueOf((Long)astn[0]));
+				if(vo2 != null){
+						Long count = commonMethodsUtilService.getLongValueForObject(astn[4]);
+						vo2.setCount(count != null ? count.intValue() : 0);
+				}
 			}
 		}
 		return returnList;
 	}
+	
+	/**
+	 * @author 		:Hymavathi
+	 * @date   		:${27/04/2016}
+	 * @param  		:List<OptionsCountVo> returnList, Long reportTypeId
+	 * @returntype  :${OptionsCountVo}
+	 * @description :${By sending parameter as Unique Id we are getting matched Vo}
+	 */
 	public OptionsCountVo getMatchedVOForReportType(List<OptionsCountVo> returnList, Long reportTypeId){
 		if(returnList != null && returnList.size() >0){
 			for(OptionsCountVo vo : returnList){
@@ -4668,5 +4692,26 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * @author 		:Hymavathi
+	 * @date   		:${28/04/2016}
+	 * @param  		:List<Object[]>
+	 * @returntype  :${List<OptionsCountVo>}
+	 * @description :${Maintaining All Options Of One Question in a List as a Static template with count 0 }
+	 */
+	public List<OptionsCountVo> setOptionsCount(List<Object[]> optns){
+		List<OptionsCountVo> returnList = new ArrayList<OptionsCountVo>();
+		if(optns != null && optns.size() >0){
+			for(Object[] optn : optns){
+				OptionsCountVo vo = new OptionsCountVo();
+				vo.setConstincyId(commonMethodsUtilService.getLongValueForObject(optn[0]));//optionId
+				vo.setConstincyName(commonMethodsUtilService.getStringValueForObject(optn[1]));//optionName
+				vo.setCount(0);
+				returnList.add(vo);
+			}
+		}
+		return returnList;
 	}
 }
