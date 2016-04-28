@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserAppointmentUserDAO;
@@ -159,8 +160,15 @@ public class AppointmentService implements IAppointmentService{
 	private ISmsSenderService smsSenderService;
 	private IUserAppointmentUserDAO userAppointmentUserDAO;
 	private IAppointmentStatusFlowDAO appointmentStatusFlowDAO;
+	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	
-	
+	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
+		return tdpCommitteeMemberDAO;
+	}
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+	}
 	public IAppointmentStatusFlowDAO getAppointmentStatusFlowDAO() {
 		return appointmentStatusFlowDAO;
 	}
@@ -1241,6 +1249,7 @@ public class AppointmentService implements IAppointmentService{
 							 }
 						 } 
 						 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
+						 getDesignationsForCadre(tdpCadreIds,finalList);
 			      }
 			     
 			  	
@@ -1589,6 +1598,7 @@ public void setDataMembersForCadreRole(List<Object[]> membersList, List<Appointm
 		 }
 		 
 		 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
+		 getDesignationsForCadre(tdpCadreIds,finalList);
 	 }
 }
 
@@ -1636,6 +1646,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				 }
 			 }
 			 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
+			 getDesignationsForCadre(tdpCadreIds,finalList);
 	  }
 }
 
@@ -6182,4 +6193,39 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		return resultList;
 		
 	}
-}
+    public void getDesignationsForCadre(List<Long> tdpCadreIds,List<AppointmentCandidateVO> finalList)
+    {
+    	List<Long> filterCadreIds = new ArrayList<Long>();
+    	
+    	List<Object[]> representativeList = tdpCommitteeMemberDAO.getDesignationsForPublicRepresentative(tdpCadreIds);
+    	if(representativeList != null && representativeList.size() > 0)
+    	{
+    		for(Object[] params : representativeList)
+    		{
+    			AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
+    			 if(vo != null)
+    			 {
+    				  vo.setDesignation(params[2]!=null?params[2].toString():"");
+    				 if(!filterCadreIds.contains((Long)params[0]))
+    					 filterCadreIds.add((Long)params[0]);
+    			 }
+    		}
+    	}
+    	tdpCadreIds.removeAll(filterCadreIds);
+    	List<Object[]> comittteeList = tdpCommitteeMemberDAO.getDesignationsForCadreCommittee(tdpCadreIds);
+    	if(representativeList != null && representativeList.size() > 0)
+    	{
+    		for(Object[] params : representativeList)
+    		{
+    			AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
+    			 if(vo != null)
+    			 {
+    				
+    				  vo.setDesignation(params[2]!=null?params[2].toString():"");
+    			 }
+    		}
+    	}
+    }
+    
+ }
+
