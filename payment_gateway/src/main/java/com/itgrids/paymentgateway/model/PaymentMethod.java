@@ -12,19 +12,19 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.itgrids.paymentgateway.model.BaseModel;
-
 @Entity
 @Table(name="payment_method")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class PaymentMethod extends BaseModel implements Serializable{
+public class PaymentMethod extends BaseModel  implements Serializable{
 
 	private static final long serialVersionUID = 49424353562240371L;
 	
 	private Long paymentMethodId;
 	private String method;
+	private String isActive;
+	private String isDeleted;
 	
-	public PaymentMethod(){}
+	//public PaymentMethod(){}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -45,5 +45,22 @@ public class PaymentMethod extends BaseModel implements Serializable{
 	public void setMethod(String method) {
 		this.method = method;
 	}
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 }
