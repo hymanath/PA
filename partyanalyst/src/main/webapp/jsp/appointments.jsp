@@ -2562,6 +2562,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='<thead><th></th></thead>';
 			str+='<tbody>';
 			for(var i in result){
+				
+				
 					str+='<tr><td style="padding:0px !important;">';
 					str+='<div class="col-md-12">';
 					str+='<ul class="createAppointmentSearch">';
@@ -2581,7 +2583,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											if(result[i].id != null && result[i].id > 0)
 											str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'"><div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div></a>';
 											else
-											str+='<p>'+result[i].name+'</p>';
+											 str+='<span style="color:#34A7C1;">'+result[i].name+'</span> ';
 											</c:when>
 											<c:otherwise>
 											str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
@@ -2590,7 +2592,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											
 										}else{
 											
-											str+='<p>'+result[i].name+'</p>';
+											str+='<div style="color:#34A7C1;">'+result[i].name+'</div>';
 										}
 										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
 												str+='<p ><i class="fa fa-mobile" style="font-size:20px"></i> &nbsp '+result[i].mobileNo+'</p>';
@@ -4189,7 +4191,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='<span class="msgDiv2Completed"></span>';
 		str+='<button class="btn btn-block btn-success updateAll" value="Completed">UPDATE APPOINTMENT</button>';
 		str+='</div>';
-		
+		str+='<table>';
+		str+='<thead><th></th><th></th><th></th></thead>';
 		if(result != null)
 		{
 			var xindex = 0;
@@ -4198,9 +4201,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			{ 
 			if( xindex % 3 == 0)
 			{
-				str+='<div class="row">';
+				str+='<tr>';
 			}
-					str+='<div class="col-md-4 col-xs-6 col-sm-6 col-lg-4">';
+				str+='<td style="vertical-align:top">';
+					
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">';
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
 							str+='<p class="settingClass" style="font-size:10px;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right" title="Appointment Status Update" data-toggle="tooltip" data-placement="top"></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
@@ -4268,10 +4273,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						
 						else if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
 							
-							str+='<span >'+result[i].subList[j].name+' &nbsp ('+result[i].subList[j].designation+')</span> </div></a>';
+							str+='<span >'+result[i].subList[j].name+' &nbsp ('+result[i].subList[j].designation+')</span> </a>';
 						}else{
 							
-							str+='<span >'+result[i].subList[j].name+'</span> </div></a>';
+							str+='<span >'+result[i].subList[j].name+'</span> </a>';
 						}
 						
 						</c:when>
@@ -4326,16 +4331,16 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='</div>';
+				str+='</td>';
 				//}
 				if(xindex % 3 == 2)
 				{
-					str+='</div>';
+					str+='</tr>';
 				}
 				
 				if(result.length-1 == xindex && xindex % 3 != 2)
 				{
-					str+='</div>';
+					str+='</tr>';
 				}	
 			xindex++;
 			}
