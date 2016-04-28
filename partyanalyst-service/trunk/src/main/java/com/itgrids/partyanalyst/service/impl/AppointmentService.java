@@ -6201,8 +6201,9 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 	}
     public void getDesignationsForCadre(List<Long> tdpCadreIds,List<AppointmentCandidateVO> finalList)
     {
+    	try{
     	List<Long> filterCadreIds = new ArrayList<Long>();
-    	
+    	if(tdpCadreIds != null && tdpCadreIds.size() > 0){
     	List<Object[]> representativeList = tdpCommitteeMemberDAO.getDesignationsForPublicRepresentative(tdpCadreIds);
     	if(representativeList != null && representativeList.size() > 0)
     	{
@@ -6217,7 +6218,12 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
     			 }
     		}
     	}
+    	if(filterCadreIds != null && filterCadreIds.size() > 0)
     	tdpCadreIds.removeAll(filterCadreIds);
+    	}
+    	
+    	if(tdpCadreIds != null && tdpCadreIds.size() > 0)
+    	{
     	List<Object[]> comittteeList = tdpCommitteeMemberDAO.getDesignationsForCadreCommittee(tdpCadreIds);
     	if(comittteeList != null && comittteeList.size() > 0)
     	{
@@ -6231,8 +6237,14 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
     			 }
     		}
     	}
+    	}
     }
-    
+    	 catch(Exception e)
+    	 {
+    		 LOG.error("Exception raised at getDesignationsForCadre", e);
+    	 }
+    }
+   
     
     
 	public AppointmentStatusFlowVO getLoginUserAppointmentUserType(Long userId) {
