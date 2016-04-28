@@ -1777,4 +1777,44 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setDate("date", date);
 		return query.list();
 	}
+	public List<Object[]> getConstituenciesByStateId(Long stateId){
+		
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.constituencyId,model.name from Constituency model where " +
+				" model.state.stateId = :stateId  and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 ");
+		if(stateId.longValue() == 1L)
+		{
+			str.append(" and model.district.districtId between 11 and 23 ");
+		}
+		else if(stateId.longValue() == 36L)
+		{
+			str.append(" and model.district.districtId between 1 and 10 ");
+		}
+		str.append(" order by model.name "); 
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("stateId", stateId);
+		return query.list();
+		
+		
+				
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesByDistrictIds(List<Long> districtIds)
+	{
+		StringBuilder str =new StringBuilder();
+		str.append("select model.constituencyId , model.name from Constituency model where model.electionScope.electionType.electionTypeId = 2 and model.deformDate IS NULL" +
+				" order by model.name");
+		if(districtIds != null && districtIds.size() > 0)
+		str.append("model.district.districtId in(:districtIds) "); 
+		Query query = getSession().createQuery(str.toString());
+		if(districtIds != null && districtIds.size() > 0)
+			query.setParameterList("districtIds", districtIds);
+		return query.list();
+	}
 }
+
+

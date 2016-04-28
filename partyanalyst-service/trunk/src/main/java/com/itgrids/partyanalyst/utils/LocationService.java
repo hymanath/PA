@@ -136,7 +136,45 @@ public class LocationService {
 						}
 					
 						
-					}else if(levelId == 5l){//Mandal
+					}
+					
+					else if(levelId == 1l){//Constituency
+						
+						//List<Long> districtIdsLst = new ArrayList<Long>(0);
+						if(levelStr !=null && !levelStr.isEmpty() && levelStr.equalsIgnoreCase("state") ){
+							
+								List<Object[]> constituencies = constituencyDAO.getConstituenciesByStateId(mainVo.getStateId());
+								if(constituencies !=null && constituencies.size()>0){
+									for (Object[] objects : constituencies) {									
+										levelValues.add(objects[0] !=null ? (Long)objects[0]:0l);									
+									}
+								}							
+						}
+						
+						if(levelStr !=null && !levelStr.isEmpty() && levelStr.equalsIgnoreCase("district") ){
+							
+							List<Object[]> constituencies = constituencyDAO.getConstituenciesByDistrictIds(districtIds);
+							if(constituencies !=null && constituencies.size()>0){
+								for (Object[] objects : constituencies) {									
+									levelValues.add(objects[0] !=null ? (Long)objects[0]:0l);									
+								}
+							}							
+					}
+						if(levelStr !=null && !levelStr.isEmpty() && levelStr.equalsIgnoreCase("constituency") ){
+							levelValues.addAll(constituencyIds);						
+						}
+						//Setting to VO
+						if(levelValues !=null && levelValues.size()>0){
+							locationVO.setConstituencyIds(levelValues);//stateIds List						
+							locationVO.setLevelId(levelId);
+						}
+					
+						
+					}
+					
+					
+					
+					else if(levelId == 5l){//Mandal
 						
 						if(levelStr !=null && !levelStr.isEmpty() && levelStr.equalsIgnoreCase("district")){
 							

@@ -6402,6 +6402,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 							{
 								sb.append("and model.userAddress.district.districtId in(:districtIds) ");
 							}
+							if(locationVo.getConstituencyIds() != null && locationVo.getConstituencyIds().size() > 0)//Constituency
+							{
+								sb.append("and model.userAddress.constituency.constituencyId in(:constituencyIds) ");
+							}
 							if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)//Tehsil
 							{
 								sb.append("and model.userAddress.tehsil.tehsilId in(:tehsilIds) ");
@@ -6440,6 +6444,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 							query.setParameterList("locationStateIds", locationVo.getStateIdsList());*/
 						if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)
 							query.setParameterList("districtIds", locationVo.getDistrictIdsList());
+						if(locationVo.getConstituencyIds() != null && locationVo.getConstituencyIds().size() > 0)
+							query.setParameterList("constituencyIds", locationVo.getConstituencyIds());
 						if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
 							query.setParameterList("tehsilIds", locationVo.getTehsilIdsList());
 						if(locationVo.getVillageIdsList() != null && locationVo.getVillageIdsList().size() > 0)
@@ -6482,6 +6488,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					{
 						str.append("and model2.userAddress.district.districtId in(:districtIds) ");
 					}
+					if(locationVo.getConstituencyIds() != null && locationVo.getConstituencyIds().size() > 0)//Constituency
+					{
+						str.append("and model.userAddress.constituency.constituencyId in(:constituencyIds) ");
+					}
 					if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)//Tehsil
 					{
 						str.append("and model2.userAddress.tehsil.tehsilId in(:tehsilIds) ");
@@ -6514,6 +6524,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					query.setParameterList("locationStateIds", locationVo.getStateIdsList());*/
 				if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)
 					query.setParameterList("districtIds", locationVo.getDistrictIdsList());
+				if(locationVo.getConstituencyIds() != null && locationVo.getConstituencyIds().size() > 0)
+					query.setParameterList("constituencyIds", locationVo.getConstituencyIds());
 				if(locationVo.getTehsilIdsList() != null && locationVo.getTehsilIdsList().size() > 0)
 					query.setParameterList("tehsilIds", locationVo.getTehsilIdsList());
 				if(locationVo.getVillageIdsList() != null && locationVo.getVillageIdsList().size() > 0)
