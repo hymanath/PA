@@ -871,7 +871,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		try{
 		   LOG.info("Enter into getActivityQuestionAnswerCountReasonWise() in ActivityAction");
 			jObj = new JSONObject(getTask());
-		    idNameVOList=activityService.getActivityStatusDetailsByScopeId(jObj.getLong("scopeId"));
+		    idNameVOList=activityService.getActivityStatusDetailsByScopeId(jObj.getLong("scopeId"),jObj.getLong("questionsId"));
 		}catch(Exception e){
 			LOG.info("Error raised at getActivityQuestionAnswerCountReasonWise() in ActivityAction");
 		}
@@ -880,11 +880,11 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	
 	public String getActivityStatusDetailsByScopeIdAndLocationValue(){
 		try{
-		   LOG.info("Enter into getActivityQuestionAnswerCountReasonWise() in ActivityAction");
+		   LOG.info("Enter into getActivityStatusDetailsByScopeIdAndLocationValue() in ActivityAction");
 			jObj = new JSONObject(getTask());
 		    idNameVOList=activityService.getActivityStatusDetailsByScopeIdAndLocationValue(jObj.getLong("scopeId"),jObj.getLong("constituencyId"),jObj.getString("mandalId"),jObj.getString("villageId"),jObj.getLong("questionId"));
 		}catch(Exception e){
-			LOG.info("Error raised at getActivityQuestionAnswerCountReasonWise() in ActivityAction");
+			LOG.info("Error raised at getActivityStatusDetailsByScopeIdAndLocationValue() in ActivityAction");
 		}
 		return Action.SUCCESS;
 	}
