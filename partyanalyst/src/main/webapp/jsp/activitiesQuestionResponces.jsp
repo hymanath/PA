@@ -148,9 +148,9 @@
 							<div class="col-md-4"><span class="starMark">*</span>
 								<label> Questions </label>
 								<select id="questnsListId" class="form-control">
-									<option value="0"> All </option>
 								</select>
-							</div>							
+							</div>
+								
 							<!--<div class="col-md-4 m_top10" id="constituencyDivId"  style="display:none;"><span class="starMark">*</span>
 								<label>Constituency</label>
 								<select id="constiList" class="form-control" onchange="getMunciMandalsList(this.value)" name="activityVO.constituencyId" >
@@ -172,10 +172,11 @@
 							</div>
 							<div class="row">
 							<div class="col-md-3 m_top10 col-md-offset-4">
-								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','');">SEARCH</button>
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getOptionDetailsForQuestion();">SEARCH</button>
 							</div>
 							</div>
-								
+								<div class="m_top10 col-md-12" id="optionsCntId">
+								</div>
                             </div>
                         </div>
                     </div>
@@ -347,7 +348,6 @@ $(document).on("change","#activityTypeList",function(){
 	});
 	
 function getQuestionsForReportTypeAction(){
-	alert(765)
 var activityScopeId = $("#ActivityList").val();
 	 var jsObj=
 	   {				
@@ -360,12 +360,64 @@ var activityScopeId = $("#ActivityList").val();
 				  dataType: 'json',
 				  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
-			   console.log(result)
+			  // console.log(result)
 			   				for(var i in result)
 					$('#questnsListId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		   });
 	}
 	
+function getOptionDetailsForQuestion(){
+     var activityScopeId = $("#ActivityList").val();
+	 var reportType = $("#districtList").val();
+	 var questionId = $("#questnsListId").val();
+	 var jsObj=
+	   {				
+		  scopeId:activityScopeId,
+		  reportType:reportType,
+		  questionId:questionId,
+		  task:""				
+		}
+		$.ajax({
+				  type:'GET',
+				  url: 'getOptionDetailsForQuestionAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result != null && result.length >0){
+			   buildOptionsCount(result);
+			   }
+		   });
+	}
+	function buildOptionsCount(result){
+		$("#optionsCntId").html("");
+		var str = '';
+		str+='<div class="table-responsive">';
+		str+='<table class="table table-bordered table-condensed" style="background:#fff" id="optionsTableId">';
+		var optnindx = 0;
+		for(var i in result){
+			for(var x in result[i].optionsList){
+				if(optnindx == 0){
+					str+='<tr>';
+				str+='<td style="width:150px;"></td>';
+				}
+				if(i==0){
+				str+='<td style="width:100px;">'+result[i].optionsList[x].constincyName+'</td>';//option name
+				}
+				if(optnindx < x)
+					str+='</tr>';
+				optnindx++;
+			}
+			str+='<tr>';
+			str+='<td style="width:150px;">'+result[i].constincyName+'</td>';
+			for(var x in result[i].optionsList){
+				str+='<td class="text-center" style="width:100px;">'+result[i].optionsList[x].count+'</td>';
+			}
+			str+='</tr>';
+		}
+		str+='</table>';
+		str+='</div>';
+		$("#optionsCntId").html(str);
+	}
 </script>
 </body>
 </html>
