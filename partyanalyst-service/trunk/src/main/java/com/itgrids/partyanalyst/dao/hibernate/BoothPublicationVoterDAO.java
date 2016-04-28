@@ -8297,7 +8297,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	public List<Object[]> getVoterDetailsVoterId(String voterIDCardNo)
 	{
-		Query query = getSession().createQuery("SELECT model.voter.voterId, model.voter.name,model.voter.mobileNo,model.booth.constituency.constituencyId " +
+		Query query = getSession().createQuery("SELECT model.voter.voterId, model.voter.name,model.voter.mobileNo,model.booth.constituency.constituencyId,model.booth.constituency.name " +
 				" FROM  BoothPublicationVoter model WHERE model.voter.voterIDCardNo = :voterIDCardNo AND  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_PUBLICATION_ID);
 		query.setParameter("voterIDCardNo",voterIDCardNo);
 		return query.list();
