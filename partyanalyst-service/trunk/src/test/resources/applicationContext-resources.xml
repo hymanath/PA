@@ -804,6 +804,7 @@
 				 
 				 <!-- Login related Models -->
 				  <value>com.itgrids.partyanalyst.model.LoginRequiredUrl</value>
+				  <value>com.itgrids.partyanalyst.model.AppointmentUserType</value>
 			</list>
 		</property>
 	</bean>
