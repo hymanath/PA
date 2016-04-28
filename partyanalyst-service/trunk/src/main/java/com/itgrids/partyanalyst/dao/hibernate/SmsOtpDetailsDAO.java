@@ -18,22 +18,19 @@ public class SmsOtpDetailsDAO extends GenericDaoHibernate<SmsOtpDetails, Long>
 	
 	public Long validateOTP(String mobileNo,String refNo,String otp){
 		
-		Query query = getSession().createQuery("select model.smsOtpDetailsId" +
-										" from SmsOtpDetails model" +
-										" where model.mobileNo = :mobileNo" +
-										" and model.otpReferenceId = :refNo" +
-										" and model.otpNo = :otp" +
-										" and model.isDeleted = 'N'");
+		Query query = getSession().createQuery(" select distinct model.smsOtpDetailsId from SmsOtpDetails model where model.mobileNo = :mobileNo " +
+										" and model.otpNo = :otp and model.isDeleted = 'N' ");
+		
 		query.setParameter("mobileNo", mobileNo);
-		query.setParameter("refNo", refNo);
+	//	query.setParameter("refNo", refNo);
 		query.setParameter("otp", otp);
 		
 		return (Long) query.uniqueResult();
 	}
 	public List<Object[]> checkForExpire(String mobileNo){
-		Query query = getSession().createQuery("select model.smsOtpDetailsId, min(model.generateTime), model.otpNo " +
+		Query query = getSession().createQuery("select model.smsOtpDetailsId, model.generateTime, model.otpNo " +
 												" from SmsOtpDetails model "+
-												" where model.mobileNo = :mobileNo");
+												" where model.mobileNo = :mobileNo and model.isDeleted='N' order by model.smsOtpDetailsId desc ");
 		query.setParameter("mobileNo", mobileNo);
 		return query.list();
 	}
