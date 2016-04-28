@@ -943,36 +943,15 @@
 		if(result.search('SUCCESS') != -1)
 		{			
 			if(srchType == 'voter'){
-				
-			<%!	
-				
-				String orderNo = getRandomNumber();
-				String checksumValue = getChecksum("M_tdpcbn_2144", "CADRE_2016"+orderNo, "1", "http://www.mytdp.com/registrationSuccessAction.action?membershipNo=1234567&enrollMentNO=1234567&status=success", "0kag9s53yyi788y3prdk8ydhf8glfj9e");
-				String getChecksum(String MerchantId, String OrderId, String Amount, String redirectUrl, String WorkingKey) {
-					String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
-
-					Adler32  adl = new Adler32();
-					adl.update(str.getBytes());
-					return (Long.valueOf(adl.getValue()).toString());
-				}	
-				String getRandomNumber(){
-					Random randomNumber = new Random();
-					int number = randomNumber.nextInt();
-					do{
-						number = randomNumber.nextInt();
-					}while(number<0);
-					
-					return String.valueOf(number).substring(0, 5);
-				}
-			%>
+			
 
 				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
 				str+='<input type="hidden" name="ip" value="49.204.21.50" readonly>';
-				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';
-				str+='<input type="hidden" name="Amount" value="1">';
-				str+='<input type="hidden" name="Order_Id" value="CADRE_2016<%=orderNo%>">';
-				str+='<input type="hidden" name="Redirect_Url" value="http://www.mytdp.com/registrationSuccessAction.action?membershipNo=1234567&enrollMentNO=1234567&status=success">';
-				str+='<input type="hidden" name="Checksum" value="<%=checksumValue%>">';
+				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			
+				str+='<input type="hidden" name="Order_Id" value="'+resultArr[3].trim()+'">';				
+				str+='<input type="hidden" name="Checksum" value="'+resultArr[4].trim()+'">';
+				str+='<input type="hidden" name="Redirect_Url" value="'+resultArr[5].trim()+'">';
+					str+='<input type="hidden" name="Amount" value="'+resultArr[6].trim()+'">';
 				str+='<input type="hidden" name="billing_cust_name" value="">';
 				str+='<input type="hidden" name="billing_cust_address" value="">';
 				str+='<input type="hidden" name="billing_cust_tel" value="">';
