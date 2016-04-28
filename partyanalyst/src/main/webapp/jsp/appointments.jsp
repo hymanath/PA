@@ -2589,6 +2589,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											</c:choose>
 											
 										}else{
+											
 											str+='<p>'+result[i].name+'</p>';
 										}
 										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
@@ -4259,12 +4260,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						
 						<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
 						if(result[i].subList[j].tdpCadreId != null && result[i].subList[j].tdpCadreId > 0)
-						str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].subList[j].tdpCadreId+'"><div style="color:#34A7C1;">';
-						else
-						str+='<div style="color:#34A7C1;"><span >'+result[i].subList[j].name+'</span></div>';
-						if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
+						{
+							
+							str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].subList[j].tdpCadreId+'"><div style="color:#34A7C1;">'+result[i].subList[j].name+'</div>';
+						}
+						
+						
+						else if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
+							
 							str+='<span >'+result[i].subList[j].name+' &nbsp ('+result[i].subList[j].designation+')</span> </div></a>';
 						}else{
+							
 							str+='<span >'+result[i].subList[j].name+'</span> </div></a>';
 						}
 						
