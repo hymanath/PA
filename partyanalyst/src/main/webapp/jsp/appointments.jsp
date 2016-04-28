@@ -7839,9 +7839,9 @@ function timeSlotTableBuilding(result,dateStr){
 	 
 	  $("#levelId").find('option').remove();
 	   var stateGrpIds = ["6","23","7","12","16","22"];
-	 var distGrpIds = ["8","10","1","9","11"];
+	 var distGrpIds = ["1","9","11"];
 	 var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
-	 var constiGrpIds =["2"];
+	 var constiGrpIds =["2","8","10",];
 	 var designationId =$("#advanceDesignationId").val();
 	
 	 var str ='';
