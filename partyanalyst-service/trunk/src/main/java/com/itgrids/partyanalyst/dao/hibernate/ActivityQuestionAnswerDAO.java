@@ -861,4 +861,22 @@ public List<Object[]> getOptionsCountByScopId(Long activityScopeId,Long reportTy
 		return query.list();
 	}
 
+	public int updateActivityQuestionnaireAnswerIdsList(Long activityScopeId,Long locationValue,Long constituencyId){
+		/*Query query = getSession().createQuery("select distinct model.activityQuestionAnswerId " +
+				"from ActivityQuestionAnswer model  " +
+				" where model.activityLocationInfo.activityScopeId =:activityScopeId and " +
+				" model.activityLocationInfo.locationValue =:locationValue and " +
+				" model.activityLocationInfo.constituencyId =:constituencyId  ");
+		*/
+		Query query = getSession().createQuery(" update ActivityQuestionAnswer model set model.isDeleted='Y'   " +
+				" where model.activityLocationInfo.activityScopeId =:activityScopeId and " +
+				" model.activityLocationInfo.locationValue =:locationValue and " +
+				" model.activityLocationInfo.constituencyId =:constituencyId  ");
+		
+		query.setParameter("locationValue", locationValue); 
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.executeUpdate();
+	}
+	
 }
