@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -123,7 +124,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String AuthDesc;
 	private String Order_Id;
 	private String Merchant_Id;
-	
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
 	
 	public Long getEnrollMentNO() {
@@ -2206,12 +2207,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				
 				cadreRegistrationVOList.add(cadreRegistrationVO);
 				surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"ONLINE");
-				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
+				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){/*
 					LOG.debug("fileuploades is sucess Method");
 					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
 						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +"," +surveyCadreResponceVO.getMembershipNo()  +",");
 					}
-				}
+				*/
+			          String checkSumDetails = commonMethodsUtilService.getChecksumDetails("CADRE_2016"+surveyCadreResponceVO.getMembershipNo(),"100","http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success");
+			            
+			            inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()+"," +
+			                "" +surveyCadreResponceVO.getMembershipNo()+"," +//2
+			                ""+"CADRE_2016"+surveyCadreResponceVO.getMembershipNo()+"," +//3
+			                ""+checkSumDetails+"," +//4
+			                ""+"http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success"+"," +//5
+			                "100,");//6
+			          }	
 				else
 					inputStream = new StringBufferInputStream("fail");
 			}
