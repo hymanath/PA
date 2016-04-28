@@ -671,7 +671,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 					"  appointment_candidate_relation acr " +
 					" join appointment_candidate ac on acr.appointment_candidate_id=ac.appointment_candidate_id " +
 					" join appointment a on acr.appointment_id=a.appointment_id " +
-					" join appointment_candidate_designation acd on ac.designation_id = acd.appointment_candidate_designation_id  " +
+					" left join appointment_candidate_designation acd on ac.designation_id = acd.appointment_candidate_designation_id  " +
 					" join user u on a.created_by = u.user_id " +
 					" join appointment_status asts  on a.appointment_status_id = asts.appointment_status_id" +
 					" join appointment_user au on au.appointment_user_id = a.appointment_user_id" +
