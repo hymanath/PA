@@ -6102,6 +6102,12 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
     	ResultStatus result = new ResultStatus();    	
     	try{
     		
+    		 String isDesignationExist=candidateDesignationDAO.checkDesignationExistOrNot(candidateTypeId, designation);
+    		 
+    		 if(isDesignationExist!=null){
+    			 result.setExceptionMsg("exist");
+    			 return result;
+    		 }
     		AppointmentCandidateDesignation aptDesignation = new AppointmentCandidateDesignation();
     		if(designation !=null && !designation.isEmpty()){
     			aptDesignation.setDesignation(designation);

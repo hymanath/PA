@@ -25,5 +25,10 @@ public class AppointmentCandidateDesignationDAO extends GenericDaoHibernate<Appo
 		query.setParameter("typeId", typeId);
 		return query.list();
 	}
-
+   public String checkDesignationExistOrNot(Long appointmentCandidateTypeId,String designation){
+	   Query query=getSession().createQuery("select model.designation from AppointmentCandidateDesignation model where model.appointmentCandidateTypeId=:appointmentCandidateTypeId and model.designation=:designation");
+	        query.setParameter("appointmentCandidateTypeId", appointmentCandidateTypeId);
+	        query.setParameter("designation", designation);
+	        return (String) query.uniqueResult();
+   }
 }
