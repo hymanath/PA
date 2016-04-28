@@ -1065,7 +1065,8 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				Date currentTime = dateUtilService.getCurrentDateAndTime();
 		    	Calendar calendar = Calendar.getInstance();
 		    	calendar.setTime(currentTime);
-		    	 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		    	calendar.add(Calendar.HOUR, 1);// adding next once hour.
+		    	 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		    	 int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		    	// int minutes = calendar.get(Calendar.MINUTE);
 		    	// int seconds = calendar.get(Calendar.SECOND);
@@ -1073,7 +1074,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		    	 if(hours > 11 && hours <24)
 		    		 timeFormat ="PM";
 		    	 
-				if(userList != null && userList.get(0)[0]==null){
+				if(userList == null || userList.size() == 0 ){
 					Random random=new Random();
 				    int number= 0;
 				    String otp = "";
@@ -1110,6 +1111,17 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					long interval = 1l;
 					boolean valid = commonMethodsUtilService.isActiveForSomeHours(lstlDate, unit, interval);
 					if(valid==true){
+						
+						calendar = Calendar.getInstance();
+				    	calendar.setTime(lstlDate);
+				    	calendar.add(Calendar.HOUR, 1);// adding next once hour.
+				    	 hours = calendar.get(Calendar.HOUR_OF_DAY);
+				    	// int minutes = calendar.get(Calendar.MINUTE);
+				    	// int seconds = calendar.get(Calendar.SECOND);
+				    	 timeFormat ="AM";
+				    	 if(hours > 11 && hours <24)
+				    		 timeFormat ="PM";
+				    	 
 						//String messageStr = " Cadre Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto next one Hour.";
 						String messageStr = " TNGF Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
 						smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
@@ -1158,8 +1170,12 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		try {
 			
 			Long smsOTPDetailsId = smsOtpDetailsDAO.validateOTP(mobileNo, refNo, otp);
-			if(smsOTPDetailsId != null && smsOTPDetailsId.longValue() > 0l)
+			if(smsOTPDetailsId != null && smsOTPDetailsId.longValue() > 0l){
+				SmsOtpDetails smsOtpDetails = smsOtpDetailsDAO.get(smsOTPDetailsId);
+				smsOtpDetails.setIsDeleted("Y");
+				smsOtpDetailsDAO.save(smsOtpDetails);
 				status = IConstants.SUCCESS;
+			}
 		      
 		} catch (Exception e) {
 			status = IConstants.FAILURE;
