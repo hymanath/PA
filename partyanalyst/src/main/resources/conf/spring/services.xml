@@ -3055,6 +3055,7 @@
 		<property name="smsSenderService" ref="smsSenderService" />
 		<property name="userAppointmentUserDAO" ref="userAppointmentUserDAO" />
 		<property name="appointmentStatusFlowDAO" ref="appointmentStatusFlowDAO" />
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" />
 	</bean>
 	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
 		<property name="constituencyDAO" ref="constituencyDAO"/>
