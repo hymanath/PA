@@ -1033,4 +1033,6 @@ public interface IConstants {
 	public static final String PAID_STATUS = "PAID";
 	public static final String NOT_PAID_STATUS = "NOT PAID";
 	public static final String NOT_REQUIRED = "NR";
+	public static final Long[] APPOINTMENT_ALL_PENDING_STATUS={2L,10L,5L,8L};
+	
 }

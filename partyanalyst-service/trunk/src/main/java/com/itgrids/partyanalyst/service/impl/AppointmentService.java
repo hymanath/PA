@@ -2925,6 +2925,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 		List<AppointmentScheduleVO> resultList = null;
 		try{
 			
+			SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
+			
 			String searchType = null;
 			Date strDate = null;
 			Date endDate = null;
@@ -2984,6 +2986,23 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								vo.setToDate(params[12]!=null ? params[12].toString():"");
 								vo.setDate(params[14]!=null ? params[14].toString().split(" ")[0]:"");
 								vo.setAppointmentUniqueId(params[13]!=null?params[13].toString():"");
+								
+								// Preferable Dates && requestred Date Start 
+								
+									List<Long> aptmnts  = new ArrayList<Long>();
+									aptmnts.add(vo.getAppointmentId());		
+									
+									vo = setPreferDatesToAppointment(aptmnts,vo);
+									
+									Date dateStr = params[18]!=null ? (Date)params[18]:null;
+									if(dateStr !=null){
+										vo.setRequestedDate(prefer.format(dateStr));										
+									}
+									
+								
+								//Preferable Dates && requestred Dates End
+								
+								
 							resultList.add(vo);
 						}
 						AppointmentScheduleVO candidateVo = new AppointmentScheduleVO();
@@ -4845,82 +4864,91 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			Map<String,Long> voterCardIdsMap,Map<String,Long> cadreIdsMap,Long loggerUserId){
 		
 		try{
-			appCandi.setName(basicInfo.getName());
-			if(basicInfo.getDesignationId() !=null && basicInfo.getDesignationId()>0){
+			
+			appCandi.setName(basicInfo.getName() != null ? basicInfo.getName().trim() : "");
+			
+			if(basicInfo.getDesignationId() != null && basicInfo.getDesignationId()>0){
 				appCandi.setDesignationId(basicInfo.getDesignationId());
 			}
 				
-			if(basicInfo.getMobileNo() !=null && !basicInfo.getMobileNo().isEmpty()){
-				appCandi.setMobileNo(basicInfo.getMobileNo());
+			if(basicInfo.getMobileNo() != null && !basicInfo.getMobileNo().isEmpty()){
+				appCandi.setMobileNo(basicInfo.getMobileNo().trim());
 			}
-			if(basicInfo.getLocationScopeId() !=null && basicInfo.getLocationScopeId()>0){
+			
+			if(basicInfo.getLocationScopeId() !=null && basicInfo.getLocationScopeId() > 0)
+			{
 				appCandi.setLocationScopeId(basicInfo.getLocationScopeId());
-			}
 			
-			if(basicInfo.getLocationScopeId().longValue() == 3l){			 		//dist
-				appCandi.setLocationValue(basicInfo.getDistrictId());
-			}
-			else if(basicInfo.getLocationScopeId().longValue() == 4l){				//const
-				appCandi.setLocationValue(basicInfo.getConstituencyId());
-			}
-			else if(basicInfo.getLocationScopeId().longValue() == 5l || basicInfo.getLocationScopeId().longValue() == 7l){		//tehsil || Muncipality
-				Long id = Long.valueOf(basicInfo.getTehsilId().toString().substring(1));
-				appCandi.setLocationValue(id);
-			}
-			else if(basicInfo.getLocationScopeId().longValue() == 6l || basicInfo.getLocationScopeId().longValue() == 8l){		//Village || Ward
-				Long id = Long.valueOf(basicInfo.getVillageId().toString().substring(1));
-				appCandi.setLocationValue(id);
-			}
-			
-			//user addres saving logics
-			
-			UserAddress userAddress = null;
-			if( basicInfo.getDistrictId() !=null && basicInfo.getDistrictId() > 0l){
+				if(basicInfo.getLocationScopeId().longValue() == 3l && basicInfo.getDistrictId() != null && basicInfo.getDistrictId() > 0)			 		//dist
+					appCandi.setLocationValue(basicInfo.getDistrictId());
 				
-				userAddress = new UserAddress();//Minimum should know the District,then create the object for UserAddress
+				else if(basicInfo.getLocationScopeId().longValue() == 4l && basicInfo.getConstituencyId() != null && basicInfo.getConstituencyId() > 0)				//const
+					appCandi.setLocationValue(basicInfo.getConstituencyId());
 				
-				userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
-			}
+				else if((basicInfo.getLocationScopeId().longValue() == 5l || basicInfo.getLocationScopeId().longValue() == 7l) && (basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0))
+				{		//tehsil || Muncipality
+					Long id = Long.valueOf(basicInfo.getTehsilId().toString().substring(1));
+					appCandi.setLocationValue(id);
+				}
+				else if((basicInfo.getLocationScopeId().longValue() == 6l || basicInfo.getLocationScopeId().longValue() == 8l) && (basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0))
+				{		//Village || Ward
+					Long id = Long.valueOf(basicInfo.getVillageId().toString().substring(1));
+					appCandi.setLocationValue(id);
+				}
 			
-			if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()>10){
-				userAddress.setState(stateDAO.get(1l));
-			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId() >0 && basicInfo.getDistrictId()<=10){
-				userAddress.setState(stateDAO.get(36l));
-			}
+				//user address saving logics
 				
-			if(basicInfo.getConstituencyId() > 0l)
-			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
+				UserAddress userAddress = null;
+				if( basicInfo.getDistrictId() != null && basicInfo.getDistrictId() > 0l){
+					
+					userAddress = new UserAddress();//Minimum should know the District,then create the object for UserAddress
+					
+					userAddress.setDistrict(districtDAO.get(basicInfo.getDistrictId()));
+				}
+				
+				if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId()>10){
+					userAddress.setState(stateDAO.get(1l));
+				}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId() >0 && basicInfo.getDistrictId()<=10){
+					userAddress.setState(stateDAO.get(36l));
+				}
+					
+				if(basicInfo.getConstituencyId() != null && basicInfo.getConstituencyId() > 0l)
+					userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
+				
+				if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
+					userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
+					if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
+						userAddress.setPanchayatId(Long.valueOf(basicInfo.getVillageId().toString().substring(1)));
+				}
+				else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
+					if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
+					{
+						//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
+						userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
+					}
+				}
+				
+				if(userAddress != null){
+					userAddress = userAddressDAO.save(userAddress);
+				}
+				
+				if(userAddress != null){
+					appCandi.setUserAddress(userAddress);
+				}
+			}
 			
-			if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
-				userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-					userAddress.setPanchayatId(Long.valueOf(basicInfo.getVillageId().toString().substring(1)));
-			}
-			else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
-				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-				if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-					//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
-					userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
-			}
-			
-			if(userAddress != null){
-				userAddress = userAddressDAO.save(userAddress);
-			}
-			
-			if(userAddress != null){
-				appCandi.setUserAddress(userAddress);
-			}
 			
 			if(basicInfo.getVoterCardNo() !=null && !basicInfo.getVoterCardNo().isEmpty()){
-				appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo());
-				appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo()));
+				appCandi.setVoterIdCardNo(basicInfo.getVoterCardNo().trim());
+				appCandi.setVoterId(voterCardIdsMap.get(basicInfo.getVoterCardNo().trim()));
 			}
 			if(basicInfo.getMembershipNum() !=null && !basicInfo.getMembershipNum().isEmpty()){
-				appCandi.setMembershipId(basicInfo.getMembershipNum());
-				appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum()));
+				appCandi.setMembershipId(basicInfo.getMembershipNum().trim());
+				appCandi.setTdpCadreId(cadreIdsMap.get(basicInfo.getMembershipNum().trim()));
 			}
 			if(basicInfo.getCandiImageUrl() !=null && !basicInfo.getCandiImageUrl().isEmpty()){
-				appCandi.setImageURL(basicInfo.getCandiImageUrl());
+				appCandi.setImageURL(basicInfo.getCandiImageUrl().trim());
 			}
 			if(basicInfo.getCandidateTypeId() !=null && basicInfo.getCandidateTypeId()>0){
 				appCandi.setAppointmentCandidateTypeId(basicInfo.getCandidateTypeId());
@@ -4934,9 +4962,8 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			
 			appCandi = appointmentCandidateDAO.save(appCandi);
 			
-			
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error occured  in candidateDetailsSaving() method of AppointmentService",e);
 		}
 		return appCandi;
 	}
@@ -6296,6 +6323,60 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 			LOG.error("Exception raised at getLoginUserAppointmentUserType() method of AppointmentService", e);
 		}
 		return appointmentStatusFlowVO;
+	}
+	
+	public AppointmentScheduleVO setPreferDatesToAppointment(List<Long> aptmnts,AppointmentScheduleVO apptvo){
+		
+		try{
+			
+			SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
+			
+			List<Object[]>  apptDates = appointmentPreferableDateDAO.getMultipleDatesforAppointments(aptmnts);
+			if(apptDates!=null && apptDates.size()>0){
+				for(Object[] object : apptDates){
+					//AppointmentDetailsVO   appointmentVO1 = new AppointmentDetailsVO();
+					apptvo.setDateTypeId((Long)object[2]);
+					apptvo.setDateType(object[3].toString());
+					if((Long)object[2]==1l){
+						if(apptvo.getApptpreferableDates()==null){
+							
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							if(preferDate !=null){
+								apptvo.setApptpreferableDates(prefer.format(preferDate));
+							}
+							
+						}else{
+							
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							if(preferDate !=null){
+								apptvo.setApptpreferableDates(apptvo.getApptpreferableDates() + " , " + (prefer.format(preferDate)) );
+							}
+							
+						}
+						
+					}else{
+						
+						if(apptvo.getMinDateCheck() == 0l){	
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							if(preferDate !=null){
+								apptvo.setMinDate(prefer.format(preferDate));
+								apptvo.setMaxDate(prefer.format(preferDate));
+							}
+						}else{
+							Date preferDate = object[1]!=null?(Date)object[1]:null;
+							apptvo.setMaxDate(prefer.format(preferDate));
+						}
+						apptvo.setMinDateCheck(apptvo.getMinDateCheck()+1l);
+						
+					}
+					
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return apptvo;
 	}
     
  }

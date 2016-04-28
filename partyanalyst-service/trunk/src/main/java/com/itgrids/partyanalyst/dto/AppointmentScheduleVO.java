@@ -28,6 +28,14 @@ private String imageUrl;
 private String formatDate;
 private Long   apptTimeSlotId;
 
+//prefferable Dates Scenario
+private Long dateTypeId;
+private String dateType;
+private String  apptpreferableDates;
+private Long   minDateCheck=0l;
+private String minDate;
+private String maxDate;
+private String requestedDate;
 
 public String getDate() {
 	return date;
@@ -173,6 +181,48 @@ public Long getApptTimeSlotId() {
 }
 public void setApptTimeSlotId(Long apptTimeSlotId) {
 	this.apptTimeSlotId = apptTimeSlotId;
+}
+public Long getDateTypeId() {
+	return dateTypeId;
+}
+public void setDateTypeId(Long dateTypeId) {
+	this.dateTypeId = dateTypeId;
+}
+public String getDateType() {
+	return dateType;
+}
+public void setDateType(String dateType) {
+	this.dateType = dateType;
+}
+public String getApptpreferableDates() {
+	return apptpreferableDates;
+}
+public void setApptpreferableDates(String apptpreferableDates) {
+	this.apptpreferableDates = apptpreferableDates;
+}
+public Long getMinDateCheck() {
+	return minDateCheck;
+}
+public void setMinDateCheck(Long minDateCheck) {
+	this.minDateCheck = minDateCheck;
+}
+public String getMinDate() {
+	return minDate;
+}
+public void setMinDate(String minDate) {
+	this.minDate = minDate;
+}
+public String getMaxDate() {
+	return maxDate;
+}
+public void setMaxDate(String maxDate) {
+	this.maxDate = maxDate;
+}
+public String getRequestedDate() {
+	return requestedDate;
+}
+public void setRequestedDate(String requestedDate) {
+	this.requestedDate = requestedDate;
 }
 
 
