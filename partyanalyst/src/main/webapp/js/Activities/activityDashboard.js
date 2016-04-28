@@ -36,8 +36,8 @@ function getActivityNames(type)
 				//getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
 				getDetails();
 			}
-			
-			getActivityQuestionAnswerCountReasonWise();
+			getQuestions(); 
+			//getActivityQuestionAnswerCountReasonWise();
 		});
 		
 }
@@ -1499,10 +1499,11 @@ function buildDayWiseResults(result,divId,jObj)
 	{
 		for(var i in result.activityVoList)
 		{
-			str+='<li>';
+			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0){
+				str+='<li>';
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			str+='<tr>';
-			str+='<td style="width:175px;"><span class="days" style="border-radius: 20px;  text-shadow: 1px 1px rgba(0, 0, 0, 0.5); font-size: 12px; padding: 6px; line-height: 14px;">'+result.activityVoList[i].name+'</span></td>';
+			str+='<td style="width:175px;"><span class="days" style="border-radius: 20px; width:90px; text-shadow: 1px 1px rgba(0, 0, 0, 0.5); font-size: 12px; padding: 6px 12px; line-height: 14px;">'+result.activityVoList[i].name+'</span></td>';
 			if(result.activityVoList[i].totalCount != null && result.activityVoList[i].totalCount>0)
 				str+='<td class="dynChildWidth aligncenter">'+result.activityVoList[i].totalCount+'</td>';
 			else
@@ -1566,8 +1567,10 @@ function buildDayWiseResults(result,divId,jObj)
 			
 
 			str+='</li>';
+			}
 		}
 	}
+	
 	str+='</ul>';
 	str+='</div>';
 	$('#'+divId+'').html(str);
@@ -2931,8 +2934,10 @@ $(document).on('click', '.searchTypeCls', function(){
 function getActivityQuestionAnswerCountReasonWise(){
 	
 	var scopeId = $('#ActivityList').val();
+	var questionsId = $('#questionsId').val();
 		var jsObj = {
-			scopeId:scopeId
+			scopeId:scopeId,
+			questionsId :questionsId
 		}
 	$.ajax({
 		type : 'GET',
@@ -2965,5 +2970,28 @@ function buildActivityReasonReport(result)
 	  str+='</table>';
 	 $("#buildActivityReasonReportTableId").html(str); 
 }
+function getQuestions(){
+		
+	var scopeId = $("#ActivityList").val();
+	var jsObj={	
+			scopeId :scopeId		 
+		}
+		$.ajax({
+				  type:'GET',
+				  url: 'getQuestionsAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   if(result != null && result.length >0)
+			{
+				for(var i in result)
+					$('#questionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+			}
+			   
+		   });
+	}
+$(document).on("change","#questionsId",function(){	
+getActivityQuestionAnswerCountReasonWise();
+});
 
 
