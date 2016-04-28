@@ -1806,10 +1806,10 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	public List<Object[]> getConstituenciesByDistrictIds(List<Long> districtIds)
 	{
 		StringBuilder str =new StringBuilder();
-		str.append("select model.constituencyId , model.name from Constituency model where model.electionScope.electionType.electionTypeId = 2 and model.deformDate IS NULL" +
-				" order by model.name");
+		str.append("select model.constituencyId , model.name from Constituency model where model.electionScope.electionType.electionTypeId = 2 and model.deformDate IS NULL");
 		if(districtIds != null && districtIds.size() > 0)
-		str.append("model.district.districtId in(:districtIds) "); 
+		str.append(" and model.district.districtId in(:districtIds) "); 
+		str.append("order by model.name");
 		Query query = getSession().createQuery(str.toString());
 		if(districtIds != null && districtIds.size() > 0)
 			query.setParameterList("districtIds", districtIds);
