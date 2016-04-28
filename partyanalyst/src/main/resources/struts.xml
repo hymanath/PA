@@ -11978,5 +11978,10 @@
 			<param name="root">optnsCountVOList</param>
 		</result>
 	</action>
+	<action name="getLoginUserAppointmentUserTypeAction" class="appointmentAction" method="getLoginUserAppointmentUserType">
+		<result type="json" name="success">
+			<param name="root">appointmentStatusFlowVO</param>
+		</result>
+	</action>
 </package>
 </struts>      
