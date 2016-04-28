@@ -3269,6 +3269,17 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					 else if(activityLevelId.longValue() == 5L)
 						 locationLevel = 13L;
 					
+					Long constituencyId = getConstituencyId(locationLevel, locationValue);
+					if(constituencyId != null && constituencyId.longValue()>0L){
+						List<Long> answerIds = activityQuestionAnswerDAO.getActivityQuestionnaireAnswerIdsList(finalvo.getActivityTypeId(),locationValue,constituencyId);
+						if(answerIds != null && answerIds.size()>0)
+							for (Long activityQuestionAnswerId : answerIds) {
+								ActivityQuestionAnswer temp = activityQuestionAnswerDAO.get(activityQuestionAnswerId);
+								temp.setIsDeleted("Y");
+								activityQuestionAnswerDAO.save(temp);
+							}
+					}
+					
 					List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(finalvo.getActivityTypeId(),locationLevel, locationValue);
 					ActivityLocationInfo tempactivityLocationInfo =null;
 					if(ids == null || ids.size()==0L)
@@ -3277,7 +3288,6 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							 
 						if(locationLevel != null && locationLevel.longValue() <= 9L)
 						{
-							Long constituencyId = getConstituencyId(locationLevel, locationValue);
 							if(constituencyId != null && constituencyId.longValue()>0L)
 								activityLocationInfo.setConstituencyId(constituencyId);
 						}
@@ -3782,7 +3792,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	{
 		List<BasicVO> resultList = null;
 		try{
-			if(levelId >= 5l){
+			if(levelId.longValue() >= 5l && levelId.longValue() <= 9l){
 				levelValue = Long.parseLong(levelValue.toString().substring(1).toString());
 			}
 			Date actDate = null;
@@ -4545,7 +4555,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						searchValue = constituencyId;
 					}
 					Long totalCount = 0l;
-					List<Object[]> answeredOptionsDetails = activityQuestionAnswerDAO.getActivityQuestionAnswerCountByQuestionAndLocation(questionId, searchType, searchValue);
+					List<Object[]> answeredOptionsDetails = activityQuestionAnswerDAO.getActivityQuestionAnswerCountByQuestionAndLocation(questionId, searchType, searchValue,activityScopeId);
 					if(answeredOptionsDetails != null && answeredOptionsDetails.size()>0){
 						for (Object[] status : answeredOptionsDetails) {
 							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
@@ -4565,7 +4575,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					totalVo.setName("Total");
 					totalVo.setActualCount(totalCount);
 					
-					returnList.add(totalVo);
+					returnList.add(0,totalVo);
 				}
 			
 			}
