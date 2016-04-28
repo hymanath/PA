@@ -1217,7 +1217,7 @@ public class AppointmentService implements IAppointmentService{
 				    		  vo.setCandidateType("voter");
 				    		  vo.setName(obj[1]!=null?obj[1].toString():"");
 				    		  vo.setMobileNo(obj[2]!=null?obj[2].toString():"");
-				    		  vo.setConstituency(obj[3]!=null?obj[3].toString():"");
+				    		  vo.setConstituency(obj[4] != null?obj[4].toString():"");
 				    		  vo.setVoterCardNo(searchValue);
 				    		  finalList.add(vo);
 				    		
@@ -2949,7 +2949,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						candidateVo.setId(params[0] != null ? Long.valueOf(params[0].toString()) :0l);
 						candidateVo.setName(params[1] != null ? params[1].toString() :"");
 						candidateVo.setMobileNo(params[2] != null ? params[2].toString() : "");
-						candidateVo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
+						candidateVo.setImageUrl(params[15]!=null?params[15].toString():null);
 						candidateVo.setTdpCadreId(params[17] != null ? (Long)params[17] : null);
 						candidateVo.setDesignation(params[3] != null ? params[3].toString() : "");
 						String fname = params[6] != null ? params[6].toString() : "";
@@ -3874,8 +3874,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			           if(type !=null && type.equalsIgnoreCase("update")){
 			             timeSlot = appointmentTimeSlotDAO.get(timeSlotId);
 			           }else{
-			             timeSlot = new AppointmentTimeSlot();
-			             timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			        	   timeSlot = appointmentTimeSlotDAO.getAppointmentTimeSlotByAppointmentId(appointmentId);
+			        	   if(timeSlot == null)
+			        	   {
+			        		   timeSlot = new AppointmentTimeSlot();
+			        		   timeSlot.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			        	   }
 			           }
 			           
 				       timeSlot.setAppointmentId(appointmentId);
@@ -4842,7 +4846,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			}else if(basicInfo.getDistrictId() !=null && basicInfo.getDistrictId() >0 && basicInfo.getDistrictId()<=10){
 				userAddress.setState(stateDAO.get(36l));
 			}
-			
+				
 			if(basicInfo.getConstituencyId() > 0l)
 			userAddress.setConstituency(constituencyDAO.get(basicInfo.getConstituencyId()));
 			
@@ -4858,12 +4862,12 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
 			}
 			
-			if(userAddress !=null){
+			if(userAddress != null){
 				userAddress = userAddressDAO.save(userAddress);
 			}
 			
-			if(userAddress !=null){
-				appCandi.setAddressId(userAddress.getUserAddressId());
+			if(userAddress != null){
+				appCandi.setUserAddress(userAddress);
 			}
 			
 			if(basicInfo.getVoterCardNo() !=null && !basicInfo.getVoterCardNo().isEmpty()){
@@ -6161,7 +6165,7 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 						candidateVo.setId(params[0] != null ? Long.valueOf(params[0].toString()) :0l);
 						candidateVo.setName(params[1] != null ? params[1].toString() :"");
 						candidateVo.setMobileNo(params[2] != null ? params[2].toString() : "");
-						candidateVo.setImageUrl(params[15]!=null?"images/cadre_images/"+params[15].toString():null);
+						candidateVo.setImageUrl(params[15]!=null?params[15].toString():"");
 						
 						candidateVo.setDesignation(params[3] != null ? params[3].toString() : "");
 						String fname = params[6] != null ? params[6].toString() : "";
