@@ -87,7 +87,18 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	
 	private static List<AppointmentStatusFlowVO> appointmentStatusFlowVOList;
 	private  List<AppointmentSlotsVO> apptSlotList;
+	private  AppointmentStatusFlowVO appointmentStatusFlowVO;
 	
+	
+	public AppointmentStatusFlowVO getAppointmentStatusFlowVO() {
+		return appointmentStatusFlowVO;
+	}
+
+	public void setAppointmentStatusFlowVO(
+			AppointmentStatusFlowVO appointmentStatusFlowVO) {
+		this.appointmentStatusFlowVO = appointmentStatusFlowVO;
+	}
+
 	public List<StatusTrackingVO> getStatusTrackingVOList() {
 		return statusTrackingVOList;
 	}
@@ -1329,6 +1340,25 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getLoginUserAppointmentUserType(){
+		try{
+			
+			session = request.getSession();
+			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if(registrationVO == null || registrationVO.getRegistrationID() == null){
+				return ERROR;
+			}
+		
+			if(registrationVO!=null){
+				appointmentStatusFlowVO= appointmentService.getLoginUserAppointmentUserType(registrationVO.getRegistrationID());
+			}
+		}catch(Exception e){
+		 LOG.error("Exception raised at getAppointmentUsersDtls() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	
 	

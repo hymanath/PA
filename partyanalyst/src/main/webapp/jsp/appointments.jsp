@@ -201,7 +201,7 @@
 												</div>
 											</div>
 											<div  class="col-md-1 m_top25" style="border-left:1px solid #ddd;">
-                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails();">VIEW</button>
+                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails('false');">VIEW</button>
                                             </div>
 											
 											
@@ -1600,9 +1600,10 @@ $(document).on("click",".closeIcon",function(){
 });
 $(".dropkickClass").dropkick();
 	$(document).ready(function(){
+		
 	//getAppointmentLabelsAction						
 			setTimeout(function(){ 
-			/* balu */
+			
 				//getAppointmentLabels();					
 				getTotalAppointmentStatus();
 				getAppointmentStatusCounts();
@@ -1621,7 +1622,25 @@ $(".dropkickClass").dropkick();
 			
 	});
 	getAppointmentUsersDtls();
+	getLoginUserAppointmentUserType();
+	
 	//getCandidateDesignation();
+	
+	var globalLoginUSerAppointmentUserTypeId;
+	function getLoginUserAppointmentUserType(){
+		
+		$.ajax({
+			type : 'GET',
+			url : 'getLoginUserAppointmentUserTypeAction.action',
+			dataType : 'json',
+			data : {}
+		}).done(function(result){
+			if(result != null){
+				globalLoginUSerAppointmentUserTypeId = result.appointmentUserTypeId;
+			}
+		});
+	}
+	
 	function getCandidateDesignation(){
 		$.ajax({
 			type : 'GET',
@@ -2029,7 +2048,9 @@ $(".dropkickClass").dropkick();
 		for(var i in result){
 			$("#appointmentUserSelectBoxId").append('<option attr_unique_code="'+result[i].date+'" value='+result[i].appointmentUserId+'>'+result[i].name+'</option>');
 		}
-		getSearchDetails();
+		
+		getSearchDetails(true);
+		
 		/* $("#appointmentUserSelectBoxId").dropkick();
 			var select = new Dropkick("#appointmentUserSelectBoxId");
 			select.refresh();
@@ -3751,19 +3772,33 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	}
 	
 	 var searchJobj;
-	function getSearchDetails()
+	function getSearchDetails(isCheckParticlurUser)
 	{
+		
 		searchJobj;
-		var statusArray=[];
+		
 		$("#upcomingAppointMentId").html("");
 		$("#inprogreessAppointMentId").html("");
 		$("#completedAppointMentId").html("");
 		$(".appointmentSettings").show();
 		var createdBy =$("#appointmentcreatedBy").val();
-		var statusId =$("#selectStatusId").val();
-		if(statusId !=null && statusId>0){
-			statusArray.push(statusId);
+		
+		var statusArray=[];
+		
+		if(isCheckParticlurUser == true){
+			
+			if( globalLoginUSerAppointmentUserTypeId == 1){
+				var statusId = 1; 
+				statusArray.push(statusId);
+			}
+		}else{
+			var statusId =$("#selectStatusId").val();
+			if(statusId !=null && statusId>0){
+				statusArray.push(statusId);
+			}
 		}
+		
+		
 		var appointmentUserId =$("#appointmentUserSelectBoxId").val();
 		var searchStr=$("#searchStrId").val().trim();
 		var strDate='';
@@ -6069,7 +6104,7 @@ function getAppointmentCreatedUsers(){
 		getAppointmentLabels();					
 		getTotalAppointmentStatus();
 		getAppointmentStatusCounts();
-		getSearchDetails();
+		getSearchDetails(false);
 	});
 	$( "#selectStsForLabelId" ).change(function() {
 		getLabelDtls();
@@ -6676,7 +6711,7 @@ function getCommitteeRoles(){
 				$(".daterangepicker").hide();
 				//getAppointmentUsersDtls();
 				getAppointmentStatusCounts();
-				getSearchDetails();
+				getSearchDetails(true);
 			});
 			
 		function getPublicRepresentsDetails(){
