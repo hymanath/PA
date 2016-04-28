@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.Adler32;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -542,4 +543,13 @@ public class CommonMethodsUtilService {
 			  return true;
 		  }
 		 
+		  public String getChecksumDetails(String OrderId,String  AmountStr,String  redirectUrl){
+		        String WorkingKey ="0kag9s53yyi788y3prdk8ydhf8glfj9e";
+		        String MerchantId ="M_tdpcbn_2144";
+		        String Amount = "1";
+		        String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
+		        Adler32  adl = new Adler32();
+		        adl.update(str.getBytes());
+		        return (Long.valueOf(adl.getValue()).toString());
+		      }
 }
