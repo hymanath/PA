@@ -312,11 +312,11 @@
 													<div class="col-md-2 levelShowCls" style="display:none;">
 														<label>Level</label>
 														<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
-														<!--<option value="0">ALL</option>-->
+														<!--<option value="0">ALL</option>
 														<option value="10">State</option>
 														<option value="11">District</option>
 														<option value="5">Mandal/Muncipality</option>
-														<option value="6">Village/Ward</option>
+														<option value="6">Village/Ward</option>-->
 														</select>
 													</div>
 												  <div class="col-md-2 stateShowCls" style="display:none;">
@@ -5914,6 +5914,8 @@ function getAppointmentCreatedUsers(){
 			level = "mandal";
 		if(levelId == 6)
 			level = "village";
+		if(levelId == 1)
+			level = "constituency";
 	 if(districtId == 0)
 		{
 			levelStr = "state";
@@ -6595,6 +6597,23 @@ function getPanchayatsForReferPopup(){
 				$(".stateCls").show();
 				$(".distCls").show();
 				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+		}
+		else if(levelId == 1)
+		{
+			  $("#referconstituencyId").find('option').not(':first').remove();
+			  $("#refermandalNameId").find('option').not(':first').remove();
+			  $("#referpanchayatId").find('option').not(':first').remove();
+			   var select = new Dropkick("#referconstituencyId");
+				select.refresh();
+				var select = new Dropkick("#refermandalNameId");
+				select.refresh();
+				var select = new Dropkick("#referpanchayatId");
+				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").show();
 				$(".mandalCls").hide();
 				$(".panchayatCls").hide();
 		}
@@ -7801,10 +7820,13 @@ function timeSlotTableBuilding(result,dateStr){
 	}
 	function buildLevels()
 	{
+		var searchType = $("#advanceSearchTypeId").val();
 		var str='';
 		 $("#levelId").find('option').remove();
 		  str+='<option value="10">State</option>';
 		  str+='<option value="11">District</option>';
+		  if(searchType != 3)
+		  str+='<option value="1">Constituency</option>';
 		  str+='<option value="5">Mandal/Muncipality</option>';
 		  str+='<option value="6">Village/Ward</option>';
 		  $("#levelId").append(str);
@@ -7817,9 +7839,9 @@ function timeSlotTableBuilding(result,dateStr){
 	 
 	  $("#levelId").find('option').remove();
 	   var stateGrpIds = ["6","23","7","12","16","22"];
-	 var distGrpIds = ["2","8","10","1","9","11"];
+	 var distGrpIds = ["8","10","1","9","11"];
 	 var mandalGrpIds =["13","3","4","5","17","18","19","20","21"];
-	
+	 var constiGrpIds =["2"];
 	 var designationId =$("#advanceDesignationId").val();
 	
 	 var str ='';
@@ -7835,6 +7857,13 @@ function timeSlotTableBuilding(result,dateStr){
 		 str+='<option value="11">District</option>';
 		 $("#levelId").append(str);
 	 }
+	 else if(jQuery.inArray(designationId, distGrpIds ) > -1)
+	 {
+		 str+='<option value="10">State</option>';
+		 str+='<option value="11">District</option>';
+		  str+='<option value="1">Constituency</option>';
+		 $("#levelId").append(str);
+	 }
 	 else if(jQuery.inArray(designationId, mandalGrpIds ) > -1)
 	 {
 		 str+='<option value="10">State</option>';
@@ -7847,6 +7876,7 @@ function timeSlotTableBuilding(result,dateStr){
 	 {
 		  str+='<option value="10">State</option>';
 		  str+='<option value="11">District</option>';
+		   str+='<option value="1">Constituency</option>';
 		  str+='<option value="5">Mandal/Muncipality</option>';
 		  str+='<option value="6">Village/Ward</option>';
 		  $("#levelId").append(str);
@@ -7854,9 +7884,10 @@ function timeSlotTableBuilding(result,dateStr){
 	   $("#levelId").dropkick();
 			 var select = new Dropkick("#levelId");
 			 select.refresh();
+			 		disableByLevel();
 	 	
  }
-
+buildLevels();
 </script>
 </body>
 </html>
