@@ -164,7 +164,7 @@
 							</div>
 							<div class="row">
 							<div class="col-md-3 m_top10 col-md-offset-4">
-								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','','0','0');">SEARCH</button>
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getLocationDetailsForActivity('','','0','0',1);">SEARCH</button>
 							</div>
 							</div>
 								
@@ -174,16 +174,7 @@
                 </div>
             </div>
         </div>
-		<div class="row  m_top10">
-			<div class="col-md-12">
-				<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
-					<h4 class="panel-title" id="activityHeadingDiv" style="font-weight:bold;display:none;">ACTIVITIES STATUS REPORT</h4>
-				</div>
-			</div>
-			<div class="col-md-12">
-				<div id="buildActivityReasonReportTableId"></div>
-			</div>
-		</div>
+		
 		
         <div class="col-md-12" >
 		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
@@ -208,13 +199,24 @@
 		</div>
 		<div class="col-md-4" style="display:none;" id="questionsForOptDiv">
 		<select class="form-control" id="questionsForOptionsId">
-		<option value="0">Select Options </option>
+		<option value="0">Select All </option>
 		</select>
 		</div>
+		<div class="row  m_top10" id="statsDiv" style="display:none;margin-top:45px;">
+			<div class="col-md-12">
+				<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
+					<h4 class="panel-title" id="activityHeadingDiv" style="font-weight:bold;display:none;">ACTIVITIES STATUS REPORT</h4>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div id="buildActivityReasonReportTableId"></div>
+			</div>
+		</div>
+		
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
 		<span class="btn-success btn btn-xs pull-right" style="font-weight:bold;">
-		<input type="checkbox" onclick="getLocationDetailsForActivity('','','0','0');" id="imageChekId">
+		<input type="checkbox" onclick="getLocationDetailsForActivity('','','0','0',2);" id="imageChekId">
 			SHOW ONLY IMAGES UPLOADED LOCATIONS
 		</span>
 		</div>
@@ -226,10 +228,10 @@
 								<input type="radio" checked="checked" id="allId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">All
 							</span>
 							<span>
-								<input type="radio" id="conductedId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">Show Conducted Locations
+								<input type="radio" id="conductedId" onclick="getLocationDetailsForActivity('','','0','0',2);" name="radio1">Show Conducted Locations
 							</span>
 							<span  style="margin-left:30px;">
-								<input type="radio" id="notConductedId" onclick="getLocationDetailsForActivity('','','0','0');" name="radio1">Show Not Conducted Locations
+								<input type="radio" id="notConductedId" onclick="getLocationDetailsForActivity('','','0','0',2);" name="radio1">Show Not Conducted Locations
 							</span>
 							<!--<span  style="margin-left:30px;">
 								<input type="button" class="btn btn-success btn-xs" value="Get Details" onclick="getLocationDetailsForActivity('','');">
@@ -504,7 +506,7 @@ $(document).ready(function(){
 		  startDate=dateArray[0];
 		  endDate=dateArray[1];
 		}
-		getLocationDetailsForActivity(startDate,endDate,0,0);
+		getLocationDetailsForActivity(startDate,endDate,0,0,2);
 		//alert(startDate);
 	});
 });
@@ -597,7 +599,7 @@ function submitForm(){
 				  startDate=dateArray[0];
 				  endDate=dateArray[1];
 				}
-				getLocationDetailsForActivity(startDate,endDate,0,0);
+				getLocationDetailsForActivity(startDate,endDate,0,0,2);
 			}else{
 			}
 		},
@@ -873,9 +875,12 @@ function updateMobileNumber(index,tdpCadreId){
 	  });
 }
 
-function getLocationDetailsForActivity(startDate,endDate,optionId,questionId)
+function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,searchById)
 {
-	
+	if(searchById == 1){
+		$('#questionsId,#questionsForOptionsId').val(0);
+	}
+	getActivityStatusDetailsByScopeIdAndLocationValue();
 	$("#questionsDiv").show();
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
@@ -1145,7 +1150,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId)
 					$('#headingId').html(' '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 				});	
 	}
-	getActivityStatusDetailsByScopeIdAndLocationValue();	
+	
 }
 
 
@@ -1423,23 +1428,23 @@ $("#hideAsmblyData").click(function(){
 		var subQustionDivId =$(this).attr("subQustionDivId");
 		var locationValue = $(this).attr("attr_location_Value");
 		if(optionId >0)
-			getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId);
+			getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId,0);
 		
 	});
   
 	
 	$(document).on("click","#updateQBtnId",function(){
-		/*var dateVal = $(this).attr('attr_date');
-		$(".errCls").html("");
+		var dateFieldId = $(this).attr('attr_date');
+		/*$(".errCls").html("");
 		$("#err"+dateVal).html("");
 		if($("#"+dateVal).val() == ""){
 			$("#err"+dateVal).html("Date Required");
 			return;
 		}*/
 		var locationValue = $(this).attr("attr_location_Value");
-		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1);
+		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1,dateFieldId);
  	});
-    function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId){
+    function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId,dateFieldId){
 		//console.log(serialNoTypeId[0]);
 		$(".errMsgCls").html("");
 			$("#errMsg").html("");
@@ -1448,7 +1453,7 @@ $("#hideAsmblyData").click(function(){
 		if(scopeId==null || scopeId==0){
 			alert("Please Select Activity Name");
 			return false;
-		}
+		} 
 		var jsObj={   
 				scopeId : scopeId,
 				requiredAttributeId:0,
@@ -1506,7 +1511,10 @@ $("#hideAsmblyData").click(function(){
 							str+='<div id="questionId'+result.activityVoList[i].questionId+'" ></div>';
 						str+='</div>';
 					}
-					$("#questionsDivFooterId").html('<button type="button" id="saveResult" class="btn btn-custom btn-success" attr_location_Value="'+locationValue+'">Save</button>');
+					if(dateFieldId == 0)
+						str+='';
+					else
+						$("#questionsDivFooterId").html('<button type="button" id="saveResult" class="btn btn-custom btn-success" attr_location_Value="'+locationValue+'" attr_date_field_id="'+dateFieldId+'">Save</button>');
 				}else if(serialNoTypeId ==1){
 					str+='<h4>No Data Found.</h4>';
 				}
@@ -1550,13 +1558,15 @@ $("#hideAsmblyData").click(function(){
 			}	
 				
 		});
+		
+		var dateFieldId = $(this).attr('attr_date_field_id');
 		if(resultArr != null && resultArr.length>0){
 			 var jsObj={
 		         activityScopeId : $("#ActivityList").val(),
 				 activityLevelId : $("#activityLevelList").val(),
 				 activityLevelValue : $(this).attr("attr_location_Value"),
 				 responseArray : resultArr,
-				 conductedDate : $(".conductedDtCls").val()
+				 conductedDate : $("#"+dateFieldId+"").val()
 		       };
 			  
 			 $.ajax({
@@ -2329,7 +2339,8 @@ function getActivityDates(){
 	});
 	
 function getActivityStatusDetailsByScopeIdAndLocationValue(){
-	
+	 $("#buildActivityReasonReportTableId").html('');
+$('#statsDiv').hide();	 
 	var scopeId = $('#ActivityList').val();
 	var constituencyId = $("#constiList").val();
 	var mandalId = $("#mandalsList").val();
@@ -2339,7 +2350,8 @@ function getActivityStatusDetailsByScopeIdAndLocationValue(){
 		scopeId : scopeId,
 		constituencyId : constituencyId,
 		mandalId : mandalId,
-		villageId : villageId
+		villageId : villageId,
+		questionId:$('#questionsId').val()
 	}
 	
 	$.ajax({
@@ -2372,6 +2384,7 @@ function buildActivityReasonReport(result)
 	  str+='</tbody>';
 	  str+='</table>';
 	 $("#buildActivityReasonReportTableId").html(str); 
+	 $('#statsDiv').show();	
 }
 	
 		
@@ -2414,6 +2427,7 @@ $(document).on("click",".updateDateDetls",function(){
 });
 	
 	function getQuestions(){
+		
 	var scopeId = $("#ActivityList").val();
 	var jsObj={	
 			scopeId :scopeId		 
@@ -2434,7 +2448,11 @@ $(document).on("click",".updateDateDetls",function(){
 	}
 $(document).on("change","#questionsId",function(){	
 $("#questionsForOptDiv").show();
+$('#questionsForOptionsId').find('option').remove();
+$('#questionsForOptionsId').append('<option value="0">All</option>');	
 var questionId = $("#questionsId").val();
+getActivityStatusDetailsByScopeIdAndLocationValue();
+getLocationDetailsForActivity('','',0,questionId);
 	var jsObj={	
 			questionId:questionId		 
 		}
@@ -2447,7 +2465,7 @@ var questionId = $("#questionsId").val();
 			    if(result != null && result.length >0)
 			{
 				for(var i in result)
-				$('#questionsForOptionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+					$('#questionsForOptionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 			}
 		   });
 	});
@@ -2455,6 +2473,7 @@ $(document).on("change","#questionsForOptionsId",function(){
 
 		var optionId =$(this).val();
 		var questionId = $("#questionsId").val();
+		getActivityStatusDetailsByScopeIdAndLocationValue();
 		getLocationDetailsForActivity('','',optionId,questionId);
 });
 </script>
