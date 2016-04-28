@@ -173,7 +173,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        
 		
 		
         <div class="col-md-12" >
@@ -192,26 +192,40 @@
 		   </div>
 		
 		</div>
-		
-		<div class="col-md-4" style="display:none;" id="questionsDiv">
-		<select class="form-control" id="questionsId">
-		<option value="0">Select Questions</option></select>
-		</div>
-		<div class="col-md-4" style="display:none;" id="questionsForOptDiv">
-		<select class="form-control" id="questionsForOptionsId">
-		<option value="0">Select All </option>
-		</select>
-		</div>
-		<div class="row  m_top10" id="statsDiv" style="display:none;margin-top:45px;">
+		<div class="row" id="activityresponsesDiv" style="display:none;">
 			<div class="col-md-12">
-				<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
-					<h4 class="panel-title" id="activityHeadingDiv" style="font-weight:bold;display:none;">ACTIVITIES STATUS REPORT</h4>
+				<div class="panel panel-default panel-custom">
+					<div class="panel-heading ">
+						<h4 class="panel-title">ACTIVITY RESPONSES</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4" style="display:none;" id="questionsDiv">
+								<select class="form-control" id="questionsId">
+									<option value="0">Select Questions</option>
+								</select>	
+							</div>
+							<div class="col-md-4" style="display:none;" id="questionsForOptDiv">
+							<select class="form-control" id="questionsForOptionsId">
+								<option value="0">Select All </option>
+							</select>
+							</div>
+						</div>
+						<div class="row  m_top10" id="statsDiv" style="display:none;">
+							<div class="col-md-12">
+								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
+									<h4 class="panel-title" id="activityHeadingDiv" style="font-weight:bold;display:none;">STATUS REPORT</h4>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div id="buildActivityReasonReportTableId"></div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
-				<div id="buildActivityReasonReportTableId"></div>
-			</div>
 		</div>
+		
 		
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
@@ -281,7 +295,7 @@
 	</form>
 	
 </div>
-
+</div>
 <div id="dialogSummaryDistsrict" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
 			<div class="modal-dialog modal-lg">
@@ -882,6 +896,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 	}
 	getActivityStatusDetailsByScopeIdAndLocationValue();
 	$("#questionsDiv").show();
+	$("#activityresponsesDiv").show();
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
@@ -1064,13 +1079,13 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
 								if(result.result[i].conductedDate != null){
 									if(result.result[i].isAlreadyImageUpload == "true"){								
-										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 									}else{
-										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 									} 
 								}
 								else{
-									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;display:none;" class="img'+result.result[i].locationId+'" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;display:none;" class="img'+result.result[i].locationId+'" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 								}
 							   
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
@@ -1122,7 +1137,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
 								if(result.result[i].conductedDate != null)				
-									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 							  
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
@@ -2369,7 +2384,7 @@ function buildActivityReasonReport(result)
 {
 	$("#activityHeadingDiv").show();
 	var str='';
-	str+='<table class="table table-bordered table-condensed">';
+	str+='<table class="table table-bordered table-condensed" style="background:#fff">';
 	 str+='<tbody>';
 	  str+='<tr>';
 	   for(var i in result){
