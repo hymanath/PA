@@ -1905,16 +1905,16 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 	}
 	public List<Object[]> getDesignationsForCadreCommittee(List<Long> tdpCadreIds)
 	{
-		Query query=getSession().createQuery("select Tr.TdpCadre.tdpCadreId,Tr.TdpCommitteeRole.TdpRoles.role,Tr.TdpCommitteeRole.TdpRoles.tdpRolesId from tdpCommitteeMember Tr  where " +
-				"Tr.TdpCadre.tdpCadreId in(:tdpCadreIds)" );
+		Query query=getSession().createQuery("select Tr.tdpCadre.tdpCadreId,Tr.tdpCommitteeRole.tdpRoles.role,Tr.tdpCommitteeRole.tdpRoles.tdpRolesId from TdpCommitteeMember Tr  where " +
+				"Tr.tdpCadre.tdpCadreId in(:tdpCadreIds)" );
 		query.setParameterList("tdpCadreIds", tdpCadreIds);
 		return query.list();
 	}
 	public List<Object[]> getDesignationsForPublicRepresentative(List<Long> tdpCadreIds)
 	{
-		Query query=getSession().createQuery("select distinct tc.TdpCadre.tdpCadreId,pr.publicRepresentativeTypeId,pr.type  "+
-				 "from  publicrepresentative pr, " +
-				"  tdpcadrecandidate tc where  pr.candidateId=tc.candidateId and  tc.TdpCadre.tdpCadreId in(:tdpCadreIds)");
+		Query query=getSession().createQuery("select distinct tc.tdpCadre.tdpCadreId,pr.publicRepresentativeTypeId,pr.type  "+
+				 "from  PublicRepresentative pr, " +
+				"  TdpCadreCandidate tc where  pr.candidateId=tc.candidateId and  tc.tdpCadre.tdpCadreId in(:tdpCadreIds)");
 		query.setParameterList("tdpCadreIds", tdpCadreIds);
 		return query.list();
 		
