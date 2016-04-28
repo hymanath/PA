@@ -4205,12 +4205,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			{
 				str+='<tr>';
 			}
-				str+='<td style="vertical-align:top">';
+				str+='<td style="vertical-align:top;width:33.3%">';
 					
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">';
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<p class="settingClass" style="font-size:10px;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right" title="Appointment Status Update" data-toggle="tooltip" data-placement="top"></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							str+='<p class="settingClass" style="font-size:9px;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right" title="Appointment Status Update" data-toggle="tooltip" data-placement="top"></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							var colorstatus = result[i].appointmentStatus;
 							var color = getColorCodeByStatus(colorstatus);
 							str+='<span style="font-weight:bold;color:'+color+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
@@ -4868,7 +4868,7 @@ var tableToExcel = (function() {
 	}
 	
 	$(document).on("click","#setTimeSlotBtnId",function(){
-		setTimeout(function(){ $(".updateChangeClass").addClass("col-md-6"); }, 400);
+		setTimeout(function(){ $(".updateChangeClass").addClass("col-md-6"); }, 500);
 			
 		//var appointmentId = $("#appointmentLabelToGetSlotsId").val();		
 		var appointmentId = $("#confirmAppointmentBlockDropId div").attr("attr_appointment_id");
@@ -7822,7 +7822,7 @@ function timeSlotTableBuilding(result,dateStr){
 	})
 	  $(document).on("click","#timeSlotButtonId",function(e){
 		setTimeout(function(){$(".updateChangeClass").addClass("col-md-6");
-		}, 400);
+		}, 500);
 	})  
 	
 	
