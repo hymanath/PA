@@ -84,4 +84,6 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getAllCommitteeMembInfoInLocation(Long locationLvl,List<Long> locationVal);
 	public List<Object[]> getComitteeMembersInfoInActivity(Long levelId,Long locationVal,Long committeeTypeId);
 	public List<Object[]> getCommitteeMemberDetailsByPositionsForCentral(List<Long> committeeLevelIds,List<Long> commiteeRoleIds);
+	public List<Object[]> getDesignationsForCadreCommittee(List<Long> tdpCadreIds);
+	public List<Object[]> getDesignationsForPublicRepresentative(List<Long> tdpCadreIds);
 }
