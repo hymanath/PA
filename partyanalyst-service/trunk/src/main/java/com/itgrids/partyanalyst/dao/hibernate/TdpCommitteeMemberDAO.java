@@ -1905,7 +1905,7 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 	}
 	public List<Object[]> getDesignationsForCadreCommittee(List<Long> tdpCadreIds)
 	{
-		Query query=getSession().createQuery("select Tr.tdpCadre.tdpCadreId,Tr.tdpCommitteeRole.tdpRoles.role,Tr.tdpCommitteeRole.tdpRoles.tdpRolesId from TdpCommitteeMember Tr  where " +
+		Query query=getSession().createQuery("select Tr.tdpCadre.tdpCadreId,Tr.tdpCommitteeRole.tdpRoles.tdpRolesId,Tr.tdpCommitteeRole.tdpRoles.role from TdpCommitteeMember Tr  where " +
 				"Tr.tdpCadre.tdpCadreId in(:tdpCadreIds)" );
 		query.setParameterList("tdpCadreIds", tdpCadreIds);
 		return query.list();
