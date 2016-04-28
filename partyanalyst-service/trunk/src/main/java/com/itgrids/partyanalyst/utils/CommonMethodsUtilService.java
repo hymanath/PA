@@ -409,26 +409,8 @@ public class CommonMethodsUtilService {
 				}
 				return b.toString();
 			}
-		  public static void main(String[] args){
-			  try{
-				  String strDate = new Date().toString();
-				  System.out.println(strDate);
-				  
-			      DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			      //String sampleDate = "05/27/2015 18:25:12.4";
-			      String sampleDate = "2016-04-27 18:25:12.4";
-			        Date d = f.parse(sampleDate);
-			        System.out.println(d);
-			        String unit = "year";
-			        Long interval = 1l;
-			        boolean valid = isActiveForSomeYears(d,unit,interval);
-			        System.out.println(valid);
-			  }catch(Exception e){
-				  e.printStackTrace();
-				  
-			  }
-		  }
-		  public static boolean isActiveForSomeSeconds(Date lastData,String unit,long interval){
+		  
+		  public boolean isActiveForSomeSeconds(Date lastData,String unit,long interval){
 			  try{
 				  if(unit.equalsIgnoreCase("second")){
 					  long totalTime = 1000 * interval;
@@ -447,7 +429,7 @@ public class CommonMethodsUtilService {
 			  }
 			  return true;
 		  }
-		  public static boolean isActiveForSomeMinutes(Date lastData,String unit,long interval){
+		  public boolean isActiveForSomeMinutes(Date lastData,String unit,long interval){
 			  try{
 				  if(unit.equalsIgnoreCase("minute")){
 					  long totalTime = 60000 * interval;
@@ -466,7 +448,7 @@ public class CommonMethodsUtilService {
 			  }
 			  return true;
 		  }
-		  public static boolean isActiveForSomeHours(Date lastData,String unit,long interval){
+		  public boolean isActiveForSomeHours(Date lastData,String unit,long interval){
 			  try{
 				  if(unit.equalsIgnoreCase("hour")){
 					  long totalTime = 3600000 * interval;
@@ -485,7 +467,7 @@ public class CommonMethodsUtilService {
 			  }
 			  return true;
 		  }
-		  public static boolean isActiveForSomeWeeks(Date lastData,String unit,long interval){
+		  public boolean isActiveForSomeWeeks(Date lastData,String unit,long interval){
 			  try{
 				  if(unit.equalsIgnoreCase("week")){
 					  long totalTime = 604800000 * interval;
@@ -504,7 +486,7 @@ public class CommonMethodsUtilService {
 			  }
 			  return true;
 		  }
-		  public static boolean isActiveForSomeMonths(Date lastData,String unit,long interval){
+		  public boolean isActiveForSomeMonths(Date lastData,String unit,long interval){
 			  try{
 				  if(unit.equalsIgnoreCase("month")){
 					  long totalTime = 2628000000l * interval;
@@ -523,7 +505,7 @@ public class CommonMethodsUtilService {
 			  }
 			  return true;
 		  }
-		  public static boolean isActiveForSomeYears(Date lastData,String unit,long interval){
+		  public boolean isActiveForSomeYears(Date lastData,String unit,long interval){
 			  try{
 				  if(unit.equalsIgnoreCase("year")){
 					  long totalTime = 31540000000l * interval;
