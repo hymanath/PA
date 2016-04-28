@@ -1912,7 +1912,7 @@ public List<Object[]> getPartyPositionsBycadreIdsList(List<Long> cadreIdsList){
 	}
 	public List<Object[]> getDesignationsForPublicRepresentative(List<Long> tdpCadreIds)
 	{
-		Query query=getSession().createQuery("select distinct tc.tdpCadre.tdpCadreId,pr.publicRepresentativeTypeId,pr.type  "+
+		Query query=getSession().createQuery("select distinct tc.tdpCadre.tdpCadreId,pr.publicRepresentativeType.publicRepresentativeTypeId,pr.publicRepresentativeType.type  "+
 				 "from  PublicRepresentative pr, " +
 				"  TdpCadreCandidate tc where  pr.candidateId=tc.candidateId and  tc.tdpCadre.tdpCadreId in(:tdpCadreIds)");
 		query.setParameterList("tdpCadreIds", tdpCadreIds);
