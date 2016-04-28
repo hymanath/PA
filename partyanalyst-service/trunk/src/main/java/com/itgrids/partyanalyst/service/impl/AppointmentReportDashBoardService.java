@@ -238,10 +238,10 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 			sbM.append(" and model.appointment.appointmentStatusId in (:apptStatusIds)");
 		}
 		if(startDate!=null){
-			sbM.append(" and date(model.appointment.updatedTime) >= : startDate");
+			sbM.append(" and date(model.appointment.updatedTime) >= :startDate");
 		}
 		if(endDate!=null){
-			sbM.append(" and date(model.appointment.updatedTime) <= : endDate");
+			sbM.append(" and date(model.appointment.updatedTime) <= :endDate");
 		}
 		
 		if(candiTypeIds != null && candiTypeIds.size() > 0 && !candiTypeIds.contains(0l)){
@@ -303,10 +303,10 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 				sbM.append(" and model.appointment.appointmentStatusId in (:apptStatusIds)");
 			}
 			if(startDate!=null){
-				sbM.append(" and date(model.appointment.updatedTime) >= : startDate");
+				sbM.append(" and date(model.appointment.updatedTime) >= :startDate");
 			}
 			if(endDate!=null){
-				sbM.append(" and date(model.appointment.updatedTime) <= : endDate");
+				sbM.append(" and date(model.appointment.updatedTime) <= :endDate");
 			}
 			
 			StringBuilder sbE =  new StringBuilder();
