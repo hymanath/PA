@@ -759,7 +759,7 @@ public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId) 
 	return query.list();
 }
 
-	public List<Object[]> getActivityQuestionAnswerCountByQuestionAndLocation(Long questionId,String searchType,Long searchValue){
+	public List<Object[]> getActivityQuestionAnswerCountByQuestionAndLocation(Long questionId,String searchType,Long searchValue,Long activityScopeId){
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.activityOption.activityOptionId," +
@@ -774,7 +774,7 @@ public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId) 
 			str.append(",Panchayat pancha");
 		}
 		
-		str.append(" where model.activityQuestionnaireId = :questionId");
+		str.append(" where model.activityQuestionnaireId = :questionId and model.activityLocationInfo.activityScopeId =:activityScopeId ");
 		
 		if(searchType != null && searchType.equalsIgnoreCase("village")){
 			str.append(" and model.activityLocationInfo.locationValue = :searchValue" +
@@ -803,24 +803,28 @@ public List<Object[]> getActivityQuestionAnswerCountReasonWise(Long questionId) 
 		Query query = getSession().createQuery(str.toString());
 		
 		query.setParameter("questionId", questionId);
+		query.setParameter("activityScopeId", activityScopeId);
 		if(searchType != null){
 			query.setParameter("searchValue", searchValue);
 		}
 		
 		return query.list();
 	}
-public List<Object[]> getTheLocationWiseData(Long questionId,Long activityScopeId) {
 	
-	Query query = getSession().createQuery("select model.activityOptionId," +
-			"model.activityLocationInfo.locationValue " +
-			"from ActivityQuestionAnswer model  " +
-			"where model.activityQuestionnaire.activityQuestionId =:questionId " +
-			"and model.activityLocationInfo.activityScopeId =:activityScopeId");
-	
-	query.setParameter("questionId", questionId);
-	query.setParameter("activityScopeId", activityScopeId);
-	return query.list();
-}
+	public List<Object[]> getTheLocationWiseData(Long questionId,Long activityScopeId,Long constituencyId) {
+		
+		Query query = getSession().createQuery("select model.activityOptionId," +
+				"model.activityLocationInfo.locationValue " +
+				"from ActivityQuestionAnswer model  " +
+				"where model.activityQuestionnaire.activityQuestionId =:questionId " +
+				"and model.activityQuestionnaire.activityScopeId =:activityScopeId and " +
+				" model.activityLocationInfo.constituencyId =:constituencyId ");
+		
+		query.setParameter("questionId", questionId);
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 public List<Object[]> getOptionsCountByScopId(Long activityScopeId,Long reportType,Long questionId) {
 	
 	 StringBuilder queryStr=new StringBuilder();
@@ -843,5 +847,18 @@ public List<Object[]> getOptionsCountByScopId(Long activityScopeId,Long reportTy
 	query.setParameter("activityScopeId", activityScopeId);
 	return query.list();
 }
+
+	public List<Long> getActivityQuestionnaireAnswerIdsList(Long activityScopeId,Long locationValue,Long constituencyId){
+		Query query = getSession().createQuery("select distinct model.activityQuestionAnswerId " +
+				"from ActivityQuestionAnswer model  " +
+				" where model.activityLocationInfo.activityScopeId =:activityScopeId and " +
+				" model.activityLocationInfo.locationValue =:locationValue and " +
+				" model.activityLocationInfo.constituencyId =:constituencyId  ");
+		
+		query.setParameter("locationValue", locationValue); 
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 
 }
