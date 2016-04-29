@@ -4264,32 +4264,39 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 						str+='</div>';
 						str+='<div class="media-body font12">';
+						
+						
+						var name = result[i].subList[j].name;
 						<c:choose>
-						
-						<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
-						if(result[i].subList[j].tdpCadreId != null && result[i].subList[j].tdpCadreId > 0)
-						{
+							<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
 							
-							str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;display:inline-block;" href="cadreDetailsAction.action?cadreId='+result[i].subList[j].tdpCadreId+'"><div style="color:#34A7C1;">'+result[i].subList[j].name+'</div>';
+							if(result[i].subList[j].tdpCadreId != null && result[i].subList[j].tdpCadreId > 0)
+							{
+								
+								str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;display:inline-block;" href="cadreDetailsAction.action?cadreId='+result[i].subList[j].tdpCadreId+'"><div style="color:#34A7C1;">'+name+'</div></a>';
+							}
+							else{
+								str+='<span>'+name+'</span> ';
+							}
+							
+							</c:when>
+							<c:otherwise>
+							    str+='<span style="color:#34A7C1;">'+name+'</span>';
+							</c:otherwise>
+						</c:choose>		
+						
+						var candDesignation = result[i].subList[j].candDesignation;
+						var location = result[i].subList[j].constituency;
+						var candiDesignationBuild = "";
+						
+						if(candDesignation!=null && candDesignation.length>0){
+							candiDesignationBuild =  candDesignation;
+							if(location!=null && location.length>0){
+								candiDesignationBuild = candiDesignationBuild + " - " + location ;
+							}
 						}
 						
-						
-						else if(result[i].subList[j].designation !=null && result[i].subList[j].designation.length>0){
-							
-							str+='<span >'+result[i].subList[j].name+' &nbsp ('+result[i].subList[j].designation+')</span> </a>';
-						}else{
-							
-							str+='<span >'+result[i].subList[j].name+'</span> </a>';
-						}
-						
-						</c:when>
-						<c:otherwise>
-						
-						str+='<span style="color:#34A7C1;">'+result[i].subList[j].name+'</span>';
-						</c:otherwise>
-						</c:choose>
-											
-										
+						str+='<p> '+candiDesignationBuild+'</p>';
 						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
 								str+='<a style="display:inline-block;" title="Appointments History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
 						}
