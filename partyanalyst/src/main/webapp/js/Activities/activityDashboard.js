@@ -1499,7 +1499,7 @@ function buildDayWiseResults(result,divId,jObj)
 	{
 		for(var i in result.activityVoList)
 		{
-			if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0){
+			//if(result.activityVoList[i].infoCellTotal != null && result.activityVoList[i].infoCellTotal >0){
 				str+='<li>';
 			str+='<table class="table table-col table-condensed" style="display:inline" >';
 			str+='<tr>';
@@ -1567,7 +1567,7 @@ function buildDayWiseResults(result,divId,jObj)
 			
 
 			str+='</li>';
-			}
+			//}
 		}
 	}
 	
@@ -2986,8 +2986,9 @@ function getQuestions(){
 			{
 				for(var i in result)
 					$('#questionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+			 getActivityQuestionAnswerCountReasonWise(); 
 			}
-			   
+			 
 		   });
 	}
 $(document).on("change","#questionsId",function(){	
