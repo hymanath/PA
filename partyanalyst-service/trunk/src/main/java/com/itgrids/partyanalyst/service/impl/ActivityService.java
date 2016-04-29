@@ -4678,6 +4678,19 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				if(vo2 != null){
 						Long count = commonMethodsUtilService.getLongValueForObject(astn[4]);
 						vo2.setCount(count != null ? count.intValue() : 0);
+						//vo2.setOptionTypeId(astn[5] != null ? commonMethodsUtilService.getLongValueForObject(astn[5]) : 0l);// option TextCount
+				}
+			}
+		}
+		List<Object[]> optnCmnts = activityQuestionAnswerDAO.getOptionsCountByScopIdForComments(activityScopeId,reportType,qstnId);
+		if(optnCmnts != null && optnCmnts.size() >0){
+			for(Object[] optnCmt : optnCmnts){
+				OptionsCountVo vo = getMatchedVOForReportType(returnList,Long.valueOf((Long)optnCmt[3]));
+				if(vo != null){
+				OptionsCountVo vo2 = getMatchedVOForReportType(vo.getOptionsList(),Long.valueOf((Long)optnCmt[0]));
+				if(vo2 != null){
+						vo2.setOptionTypeId(optnCmt[4] != null ? commonMethodsUtilService.getLongValueForObject(optnCmt[4]) : 0l);// option TextCount
+				}
 				}
 			}
 		}
@@ -4717,6 +4730,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				vo.setConstincyId(commonMethodsUtilService.getLongValueForObject(optn[0]));//optionId
 				vo.setConstincyName(commonMethodsUtilService.getStringValueForObject(optn[1]));//optionName
 				vo.setCount(0);
+				vo.setOptionTypeId(0l);//option text count
 				returnList.add(vo);
 			}
 		}

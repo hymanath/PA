@@ -834,8 +834,32 @@ public List<Object[]> getOptionsCountByScopId(Long activityScopeId,Long reportTy
 	}else if(reportType == 2l){
 		queryStr.append("model.activityLocationInfo.constituency.name,model.activityLocationInfo.constituency.constituencyId,   " );
 	}
-	queryStr.append("count(distinct model.activityQuestionAnswerId) from ActivityQuestionAnswer model where" +
+	queryStr.append("count(distinct model.activityQuestionAnswerId),count(model.optionTxt) from ActivityQuestionAnswer model where" +
 			" model.activityLocationInfo.activityScopeId =:activityScopeId and model.activityQuestionnaire.activityQuestionId =:questionId and model.isDeleted = 'N' ");
+	if(reportType == 1l){
+		queryStr.append(" group by model.activityLocationInfo.constituency.district.districtId,model.activityOption.activityOptionId ");
+	}else if(reportType == 2l){
+		queryStr.append(" group by model.activityLocationInfo.constituency.constituencyId,model.activityOption.activityOptionId ");
+	}
+	Query query=getSession().createQuery(queryStr.toString());
+	
+	query.setParameter("questionId", questionId);
+	query.setParameter("activityScopeId", activityScopeId);
+	return query.list();
+}
+
+public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Long reportType,Long questionId) {
+	
+	 StringBuilder queryStr=new StringBuilder();
+	 queryStr.append("select model.activityOption.activityOptionId, model.activityOption.option, " );
+	if(reportType == 1l){
+		queryStr.append("model.activityLocationInfo.constituency.district.districtName,model.activityLocationInfo.constituency.district.districtId,   " );
+	}else if(reportType == 2l){
+		queryStr.append("model.activityLocationInfo.constituency.name,model.activityLocationInfo.constituency.constituencyId,   " );
+	}
+	queryStr.append("count(model.optionTxt) from ActivityQuestionAnswer model where" +
+			" model.activityLocationInfo.activityScopeId =:activityScopeId and model.activityQuestionnaire.activityQuestionId =:questionId and model.isDeleted = 'N' " +
+			" and model.optionTxt is not null and model.optionTxt !='' ");
 	if(reportType == 1l){
 		queryStr.append(" group by model.activityLocationInfo.constituency.district.districtId,model.activityOption.activityOptionId ");
 	}else if(reportType == 2l){
