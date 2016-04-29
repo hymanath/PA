@@ -109,6 +109,7 @@ import com.itgrids.partyanalyst.dao.ITwoWayMessageDAO;
 import com.itgrids.partyanalyst.dao.ITwoWaySmsMobileDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVerifiedDataRequestDAO;
 import com.itgrids.partyanalyst.dao.IVerifiedDataResponseDAO;
@@ -135,17 +136,18 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
-import com.itgrids.partyanalyst.dto.SurveyReportVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -192,6 +194,7 @@ import com.itgrids.partyanalyst.model.TirupatiByelection;
 import com.itgrids.partyanalyst.model.TwoWayMessage;
 import com.itgrids.partyanalyst.model.TwoWaySmsMobile;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.UserFeedback;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VerifiedDataRequest;
 import com.itgrids.partyanalyst.model.VerifiedDataResponse;
@@ -199,8 +202,10 @@ import com.itgrids.partyanalyst.model.VerifiedDataStatus;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRtcUnionService;
+import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -301,6 +306,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IRtcDepotDAO rtcDepotDAO;
 	private ITdpMemberTypeDAO tdpMemberTypeDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private IUserFeedbackDAO userFeedbackDAO;
+	private IMailService mailService;
+	private ISmsSenderService smsSenderService;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -315,8 +323,32 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	
 	
+	public ISmsSenderService getSmsSenderService() {
+		return smsSenderService;
+	}
+
+	public void setSmsSenderService(ISmsSenderService smsSenderService) {
+		this.smsSenderService = smsSenderService;
+	}
+
+	public IMailService getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
 	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
 		return cadreMissedCallCampaignDAO;
+	}
+
+	public IUserFeedbackDAO getUserFeedbackDAO() {
+		return userFeedbackDAO;
+	}
+
+	public void setUserFeedbackDAO(IUserFeedbackDAO userFeedbackDAO) {
+		this.userFeedbackDAO = userFeedbackDAO;
 	}
 
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
@@ -12871,4 +12903,82 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		return returnList;
 	}
 	
+	public ResultStatus saveRegistrationQueriesForm(final RegistrationQueriesVO regQueriesVO){
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					UserFeedback userFeedback = new UserFeedback();
+					
+					userFeedback.setUserFeedbackModuleId(1l);
+					userFeedback.setName(regQueriesVO.getName());
+					userFeedback.setMobile(regQueriesVO.getMobileNo());
+					userFeedback.setEmail(regQueriesVO.getEmail());
+					userFeedback.setFeedbackDescription(regQueriesVO.getDescription());
+					
+					userFeedback = userFeedbackDAO.save(userFeedback);
+					
+					
+					//Email Sending...
+					EmailDetailsVO mailvo = new EmailDetailsVO();
+					
+					String content = "";
+					content = content + ""+getHeader()+ "<br/>";
+					content = content + "<p style='margin-left:20px'>Name : "+regQueriesVO.getName()+"</p> ";
+					content = content + "<p style='margin-left:20px'>Mobile : "+regQueriesVO.getMobileNo()+"</p> ";
+					content = content + "<p style='margin-left:20px'>Email : "+regQueriesVO.getEmail()+"</p> ";
+					content = content + "<p style='margin-left:20px'>Description : "+regQueriesVO.getDescription()+"</p>";//regQueriesVO.getDescription();
+					content = content + "<p style='margin-left:20px'>Thanks,</p> ";
+					content = content + "<p style='margin-left:20px'>"+regQueriesVO.getName()+"</p> ";
+					
+					/*String content = "";
+					content = content + "<p style='text-align:center'>"+getHeader()+ "</p><br/>";
+					content = content + regQueriesVO.getDescription()+" <br/><br/> ";//regQueriesVO.getDescription();
+					
+					content = content + "<p style='text-align:center'>Thanks for your feed back . We will contact you shortly.</p><br/><br/>";
+			    	content = content + "<p style='text-align:center'>Thanks,</p> <br/>";
+			    	content = content + "<p style='text-align:center'>Telugu Nadu Graduates Federation (TNGF),</p> <br/>";
+			    	content = content + "<p style='text-align:center'>Telugu Desam Party.</p>";*/
+					
+			    	mailvo.setSubject("TNGF Enrollment Registration Form Feedback");
+					mailvo.setContent(content);
+					mailvo.setToAddress("sravanth.itgrids.hyd@gmail.com");
+					
+					List<EmailDetailsVO> mailvoList = new ArrayList<EmailDetailsVO>();
+					mailvoList.add(mailvo);
+					
+					/*String message = regQueriesVO.getDescription();
+					message = message+"Thanks for your feedback,We will contact shortly.";
+					smsSenderService.sendSMS(1l, "TNGF", true, message, regQueriesVO.getMobileNo());*/
+					
+					return mailService.sendEmails(mailvoList);
+					
+				}
+			}); 
+			
+			resultStatus.setMessage(IConstants.SUCCESS);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		} catch (Exception e) {
+			resultStatus.setMessage(IConstants.FAILURE);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			LOG.error("Exception raised in saveRegistrationQueriesForm in CadreRegistrationService service", e);
+		}
+		return resultStatus;
+	}
+	
+	public static String getHeader()
+ 	{
+ 	
+ 		String header="<table cellspacing='0' cellpadding='0'  border='0' style='border-collapse:collapse;border:0'>";
+ 		header+="<tbody><tr><td><table cellspacing='0' cellpadding='0' width='100%' border='0' style='border-collapse:collapse;background-color:#f9f9f9;border-top:0;border-bottom:0'>";
+         header+="<tbody><tr><td valign='top' style=''>";
+ 		header+="<table cellspacing='0' cellpadding='0' width='100%' border='0' style='border-collapse:collapse'><tbody><tr>"+
+ 				"<td valign='top'><table cellspacing='0' cellpadding='0' width='100%' border='0' align='left' style='border-collapse:collapse'>"+
+ 				"<tbody><tr><td valign='top' style='text-align:left; padding-top:5px; padding-bottom:5px;'>"+
+                 "<img src='http://www.mytdp.com/images/mytdp_logo.png'  width='100%'/>"+
+ 				"</td></tr><tr><td valign='top' style='text-align:center;'>"+
+ 				"</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>";
+ 		
+ 		return header;
+ 	}
 }
