@@ -1767,7 +1767,6 @@ $(".dropkickClass").dropkick();
 				upload: function(o) {
 					$("#appntCreateAjax").css("display","none");
 					uploadResult = o.responseText;
-					console.log(uploadResult);
 					showStatus(uploadResult);
 				}
 			};
@@ -2381,7 +2380,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				console.log(result);
 				if(result!=null && result!=0){
 				  buildAppntmntCnddtDtlsRsult(result);
 				}else{
@@ -2572,7 +2570,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
 							str+='<div class="row">';
-								str+='<div class="col-md-7">';
+								str+='<div class="col-md-7 col-md-offset-1">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
 											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
@@ -2598,26 +2596,26 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											str+='<div style="color:#34A7C1;">'+result[i].name+'</div>';
 										}
 										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
-												str+='<p ><i class="fa fa-mobile" style="font-size:20px"></i> &nbsp '+result[i].mobileNo+'</p>';
+												str+='<p ><span><i class="fa fa-mobile" style="font-size:15px"></i> &nbsp '+result[i].mobileNo+'</span>';
 										}else{
-											str+='<p><i class="fa fa-mobile" style="font-size:20px"></i>   - </p>';
+											str+='<p><span><i class="fa fa-mobile" style="font-size:15px"></i>   - </span>';
 										}
 										
 										if(result[i].designation !=null && result[i].designation.length>0){
 											
-												str+='<p >Designation: '+result[i].designation+'</p>';
+												str+='<span style="margin-left:10px;">Designation: '+result[i].designation+'</span></p>';
 										}else{
 											
-											//str+='<p>Designation: - </p>';
+											//str+='<span style="margin-left:10px;">Designation: - </span></p>';
 											
 											 if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
 												 if(result[i].candidateType == 'cadre'){
-													str+='<p>Designation: - Cadre</p>'; 
+													str+='<span style="margin-left:10px;">Designation: - Cadre</span></p>'; 
 												 }else{
-													 str+='<p>Designation: - </p>';
+													 str+='<span style="margin-left:10px;">Designation: - </span></p>';
 												 }
 											}else{
-												str+='<p>Designation: - </p>';
+												str+='<span style="margin-left:10px;">Designation: - </span></p>';
 											} 
 										}
 										
@@ -2625,25 +2623,25 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
-							   str+='<div class="col-md-2">';
+							   //str+='<div class="col-md-2">';
 									//str+='<p class="m_top10"><a href="#" class="text-success">View Appt History</a></p>';
-								str+='</div>';
-								str+='<div class="col-md-2">';
+								//str+='</div>';
+								//str+='<div class="col-md-2">';
 									//str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
-								str+='</div>';
+								//str+='</div>';
 								if(result[i].designation==null)
 									result[i].designation = "";
 								if(result[i].aptExists == false)
-								str+='<div class="col-md-1 m_top10 col-md-offset-4" attr_id="'+result[i].id+'" >';
-									else
-									str+='<div class="col-md-2 m_top10 col-md-offset-3" attr_id="'+result[i].id+'" >';
+									str+='<div class="col-md-3 m_top10 col-md-offset-1" attr_id="'+result[i].id+'" >';
+								else
+									str+='<div class="col-md-3 m_top10 col-md-offset-1" attr_id="'+result[i].id+'" >';
 								if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0)
 								str+='<a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
 								
 								if(result[i].aptExists == false)
 								{
 									
-								str+='<input style="margin-left:10px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Check this to Create Appointment Request">';	
+								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request">SELECT</label></div>';	
 								}
 								
 							else
@@ -4295,9 +4293,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						if(globalLoginUSerAppointmentUserTypeId != 1){
 
 							if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
-								str+='<p><i class="fa fa-mobile" style="font-size:20px"></i>  '+result[i].subList[j].mobileNo+'';
+								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i>  '+result[i].subList[j].mobileNo+'';
 							}else{
-								str+='<p><i class="fa fa-mobile" style="font-size:20px"></i> - '
+								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i> - '
 							}
 						}
 						
@@ -4320,17 +4318,43 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}else{
 							  str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
 							}
-					str+='<p class="font12 m_top10">';
-					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
+					str+='<div class="font12 m_top10">';
+					//str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
+					
+					
+					
+					//Preferable Dates Scenario start
+					str+='<div class=" m_top10">';
+							str+='<p style="font-size: 10px;"><b>PREFERABLE DATES : </b>';
+							
+							if(result[i].apptpreferableDates != null){							
+								str+='<span style="font-size: 10px;">'+result[i].apptpreferableDates+'</span></p>';
+							}else if(result[i].apptpreferableDates == null && result[i].maxDate != null && result[i].minDate != null && result[i].dateType != null && result[i].dateType.trim() != ""){
+								str+='<span style="font-size: 10px;">'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+')</span></p>';
+							}else{
+								str+='<span> - </span></p>';
+							}
+							str+='<p style="font-size: 10px;"> <b>REQUESTED DATE : </b>';
+							if(result[i].requestedDate !=null && result[i].requestedDate.length>0){								
+								str+='<span style="font-size: 10px;">'+result[i].requestedDate+'</span>';
+							}
+					
+						
+					//Preferable Dates Scenario end
+					
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top" />';
 					 /* if(result[i].id != null && result[i].id > 0)
 								str+='<a  title="Appointments History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].id+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png" class="pull-right" alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;'; */
 					  str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right statusTrackingModalbtn" attr-id='+result[i].appointmentId+' attr-aptName='+result[i].appointmentUniqueId+' alt="ViewReqHistory" style="height:16px;cursor:pointer;margin-right:5px;" title="Appointment Requested History" data-toggle="tooltip" data-placement="top" />'; 
 					str+='</p>';
+					
+					
 					str+='<div class="messageBlock arrow_box">';
 					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
 					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
 					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
+					str+='</div>';
+					str+='</div>';
 					str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -4574,7 +4598,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 												str+='<p>'+result[i].subList[j].name+'</p>';
 												
 												if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
-													str+='<p> <i class="fa fa-mobile" style="font-size:20px"></i> &nbsp;'+result[i].subList[j].mobileNo+'</p>';
+													str+='<p> <i class="fa fa-mobile" style="font-size:15px"></i> &nbsp;'+result[i].subList[j].mobileNo+'</p>';
 												}
 												
 												str+='<p>Designation: '+result[i].subList[j].designation+'</p>';
@@ -7661,7 +7685,7 @@ function timeSlotTableBuilding(result,dateStr){
 						str+='</div>';
 						str+='<div class="media-body font12">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
-						str+='<p><i class="fa fa-mobile" style="font-size:20px"></i> &nbsp '+result[i].subList[j].mobileNo+'';
+						str+='<p><i class="fa fa-mobile" style="font-size:15px"></i> &nbsp '+result[i].subList[j].mobileNo+'';
 						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
 								str+='<a style="display:inline-block;" title="Appointments History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
 						}
