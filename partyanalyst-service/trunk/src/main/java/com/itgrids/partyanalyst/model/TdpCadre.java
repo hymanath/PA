@@ -134,6 +134,7 @@ public class TdpCadre {
 	private String						voterCardVerified;
 	private String						voterCardType;
 	private String						mode;
+	private String						designationName;
 	
 	
 	private String validStatus;
@@ -1063,6 +1064,11 @@ public class TdpCadre {
 		this.parentTdpCadreId = parentTdpCadreId;
 	}
 	
-	
-	
+	@Column(name="designation")
+	public String getDesignationName() {
+		return designationName;
+	}
+	public void setDesignationName(String designationName) {
+		this.designationName = designationName;
+	}
 }
