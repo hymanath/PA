@@ -130,28 +130,39 @@
 						<div role="tabpanel" class="tab-pane active" id="home">
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div class="block">
+										<div class="row">
+											<div class="col-md-6" style="border-right: 1px solid rgb(221, 221, 221);">
+												<h2 class="m_top10 text-success">TODAY APPOINTMENTS</h2>
+												<table class="table table-condensed tableAppointment" style="font-size:20px;" id="todayAppointmentsId">
+													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
+												</table>
+											</div>
+											<div class="col-md-6">
+												<div id="LineChart" style="width:500px;height:300px;"></div>
+												<div  style="text-align: center;">Total Appointments - <span id="totalApptStatusCounts"></span></div>
+											</div>
+										</div>
+									</div>
+									
 									<table class="table table-bordered bg_ff m_top10">
 										<tr>
 											<td>
-												<h4 class="panel-title m_top10 text-success">TODAY APPOINTMENTS</h4>
-												<table class="table table-condensed tableAppointment" id="todayAppointmentsId">
-													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
-												</table>
+												
 											</td>
 											<td>
 												<table class="table removetopborder">
 													<tr>
-														<td>
+														<!--<td>
 															<h4 class="panel-title text-success">TOTAL APPOINTMENTS REQUESTED</h4>
 																<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="totalAptLoadingId"></center></div>
-															<!--<ul class="columnChartUl" id="totalAppointmentsId"></ul>-->
+															<ul class="columnChartUl" id="totalAppointmentsId"></ul>
 															<table class="table table-condensed tableAppointment" id="totalAppointmentsId">
 															</table>	
 															
-														</td>
+														</td>-->
 														<td>
-															<div id="LineChart" style="width:500px;height:300px;"></div>
-															<div  style="text-align: center;">Total Appointments - <span id="totalApptStatusCounts"></span></div>
+															
 														</td>
 													</tr>
 												</table>
@@ -202,7 +213,7 @@
 												</div>
 											</div>
 											<div  class="col-md-1 m_top25" style="border-left:1px solid #ddd;">
-                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls" onclick="getSearchDetails('false');">VIEW</button>
+                                            	<button id="" class="btn btn-success btn-block showTimeSlotsCls btnNewCustom1" onclick="getSearchDetails('false');">VIEW</button>
                                             </div>
 											
 											
@@ -240,13 +251,18 @@
 												<h4 class="text-success">SEARCH MEMBER TO CREATE APPOINTMENT REQUESTED</h4>
 											</div>
 												<div class="col-md-3">
-												<div class="onoffswitch">
+												 <div class="btn-group">
+												  <button type="button" attr_val="1" class="btn btnClassChange btnNewCustom btnActive">SEARCH</button>
+												  <button type="button" attr_val="2" class="btn btnClassChange btnNewCustom">ADVANCED SEARCH</button>
+												</div>
+												
+												<!--<div class="onoffswitch">
 													<input type="checkbox" value="1" name="searchTypeRadio" class="onoffswitch-checkbox searchTypeRadioCls" id="myonoffswitch" checked>
 													<label class="onoffswitch-label" for="myonoffswitch">
 														<span class="onoffswitch-inner"></span>
 														<span class="onoffswitch-switch"></span>
 													</label>
-												</div>
+												</div>-->
 											</div>
 										</div>
 											<!--<button class="btn btn-block btn-success m_top25 getDetailsBySrch">SEARCH MEMBER</button>
@@ -386,7 +402,7 @@
 											<p id="errorDivId" style="color:red;clear:both;margin-left:5px;"></p>
 											<div class="col-md-2">
 											
-												<button class="btn btn-block btn-success m_top20 advancedSearchBtn" onclick="handleBySearchType();"  style="margin-top: 25px;">Search Member</button>
+												<button class="btn btn-block btn-success m_top20 advancedSearchBtn btnNewCustom1" onclick="handleBySearchType();"  style="margin-top: 25px;">Search Member</button>
 											</div>
                                             
 											
@@ -467,7 +483,7 @@
 										</div>
 										<div class="row">
 											<div class="col-md-6 m_top25">
-												<button class="btn btn-success btn-block" type="button" onClick="savingAppointment();">CREATE APPOINTMENT</button>
+												<button class="btn btn-success btn-block btnNewCustom1" type="button" onClick="savingAppointment();">CREATE APPOINTMENT</button>
 											</div>
 											<div style="margin-top:12px;"><img id="appntCreateAjax" src="images/icons/loading.gif" style="display:none;"/></div>
 											<div class="col-md-6 m_top25" id="savingStatusDivId"></div>
@@ -1358,19 +1374,19 @@ function buildTotalAppointmentStatusForToday(result){
 	$.each(result.statusList,function(index,value){
 	    totalAppts = totalAppts + value.totalCount;
 	});
-	str+='<tr style="font-weight:bold;"><td>Total Appointments</td><td>'+totalAppts+'</td></tr>';	
+	str+='<tr class= "text-center" style="font-weight:bold;"><td>Today Appointments</td><td>'+totalAppts+'</td></tr>';	
 	$.each(result.statusList,function(index,value){	
 	var color = getColorCodeByStatus(value.status);
 		if(value.subList !=null && value.subList.length >0 ){
 			
 			str+='<tr style="color:'+color+';">';
 		
-			str+='<td><i style="cursor:pointer" class="glyphicon glyphicon-plus-sign changeIcon parentStatusClass pull-right"></i>'+value.status+'</td>';
+			str+='<td><i style="cursor:pointer" class="glyphicon glyphicon-chevron-down changeIcon parentStatusClass pull-right"></i>'+value.status+'</td>';
 			var todayStatusArr = value.clickIds;
 			if(value.totalCount == 0){
-				str+='<td> - </td>';
+				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
+				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
 			}
 			str+='</tr>';
 			
@@ -1380,9 +1396,9 @@ function buildTotalAppointmentStatusForToday(result){
 				str+='<td style="background:#f8f8f8">&nbsp;&nbsp;&nbsp; '+value.subList[i].status+'</td>';
 				var clickAray = value.subList[i].clickIds;
 				if(value.subList[i].totalCount == 0){
-					str+='<td style="background:#f8f8f8"> - </td>';
+					str+='<td class="text-center" style="background:#f8f8f8"> - </td>';
 				}else{
-					str+='<td style="background:#f8f8f8;cursor:pointer;" class="todayappointmentStatusCls" attr_todayStatusArr= "'+clickAray+'" >'+value.subList[i].totalCount+'</td>';
+					str+='<td style="background:#f8f8f8;cursor:pointer;" class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+clickAray+'" >'+value.subList[i].totalCount+'</td>';
 				} 
 				str+='</tr>';
 			 }
@@ -1394,9 +1410,9 @@ function buildTotalAppointmentStatusForToday(result){
 			str+='<td>'+value.status+'</td>';
 			var todayStatusArr = value.clickIds;
 			if(value.totalCount == 0){
-				str+='<td> - </td>';
+				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="todayappointmentStatusCls" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
+				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
 			}
 			str+='</tr>';
 		}
@@ -1410,11 +1426,11 @@ function buildTotalAppointmentStatusForToday(result){
 }
 	
 	$(document).on("click",".parentStatusClass",function(){
-		$(this).toggleClass("glyphicon-minus-sign");
+		$(this).toggleClass("glyphicon-chevron-up");
 		$(".subStatusClass").toggle();
 	});
 	$(document).on("click",".totalparentStatusClass",function(){
-		$(this).toggleClass("glyphicon-minus-sign");
+		$(this).toggleClass("glyphicon-chevron-up");
 		$(".totalSubStatusClass").toggle();
 	});
 	$(document).on("click",".appointmentSettings",function(e){
@@ -1617,7 +1633,7 @@ $(".dropkickClass").dropkick();
 				getAppointmentCreatedUsers();
 				getAppointmentStatusList();
 				getAppointmentPriority();
-				searchTypeRadioCls();
+				searchTypeRadioCls(1);
 				getAllCandidateTypes();
 				setcolorsForStatus();
 				
@@ -2572,7 +2588,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<ul class="createAppointmentSearch">';
 						str+='<li>';
 							str+='<div class="row">';
-								str+='<div class="col-md-7 col-md-offset-1">';
+								
+								str+='<div class="col-md-6 col-md-offset-1">';
 									str+='<div class="media">';
 										str+='<div class="media-left">';
 											str+='<img class="media-object thumbnailSearch thumbnail" src="'+result[i].imageURL+'" onerror="setDefaultImage(this);" alt="Candidate Image" style="width: 60px !important; height: 60px  !important;">';
@@ -2605,19 +2622,19 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										
 										if(result[i].designation !=null && result[i].designation.length>0){
 											
-												str+='<span style="margin-left:10px;">Designation: '+result[i].designation+'</span></p>';
+												str+='<span style="margin-left:10px;"> '+result[i].designation+'</span></p>';
 										}else{
 											
 											//str+='<span style="margin-left:10px;">Designation: - </span></p>';
 											
 											 if($("#searchTypeId").val()=="mobileno" || $("#searchTypeId").val() == "mebershipno" || $("#searchTypeId").val() == "votercardno" || $("#advanceSearchTypeId").val() == 1){
 												 if(result[i].candidateType == 'cadre'){
-													str+='<span style="margin-left:10px;">Designation: - Cadre</span></p>'; 
+													str+='<span style="margin-left:10px;"> - Cadre</span></p>'; 
 												 }else{
-													 str+='<span style="margin-left:10px;">Designation: - </span></p>';
+													 str+='<span style="margin-left:10px;"> - </span></p>';
 												 }
 											}else{
-												str+='<span style="margin-left:10px;">Designation: - </span></p>';
+												str+='<span style="margin-left:10px;"> - </span></p>';
 											} 
 										}
 										
@@ -2631,19 +2648,26 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								//str+='<div class="col-md-2">';
 									//str+='<p class="m_top10"><a href="#" class="text-success">View/Edit Profile</a></p>';
 								//str+='</div>';
-								if(result[i].designation==null)
-									result[i].designation = "";
-								if(result[i].aptExists == false)
-									str+='<div class="col-md-3 m_top10 col-md-offset-1" attr_id="'+result[i].id+'" >';
-								else
-									str+='<div class="col-md-3 m_top10 col-md-offset-1" attr_id="'+result[i].id+'" >';
-								if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0)
-								str+='<a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
+								if(result[i].appointmentCandidateId != null && result[i].appointmentCandidateId > 0){
+									
+									str+='<div class="col-md-1 m_top10"><a  title="Click here to View '+result[i].name+' History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].appointmentCandidateId+'" attr-name="'+result[i].name+'" attr-designation="'+result[i].designation+'" attr-mobile="'+result[i].mobileNo+'"><i class="glyphicon glyphicon-time" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a></div>&nbsp;&nbsp;';
+									
+								}
 								
+								
+								if(result[i].designation==null){
+									result[i].designation = "";
+								}
+								if(result[i].aptExists == false && result[i].appointmentCandidateId != null){
+									str+='<div class="col-md-1   m_top10" attr_id="'+result[i].id+'" >';
+								}
+								else{
+									str+='<div class="col-md-1 col-xs-offset-1 m_top10" attr_id="'+result[i].id+'" >';
+								}
 								if(result[i].aptExists == false)
 								{
 									
-								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request">SELECT</label></div>';	
+								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request"> &nbsp;SELECT</label></div>';	
 								}
 								
 							else
@@ -3089,7 +3113,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			
 		 for(var i in result){
 			  str+='<div class="panel panel-default manageAppViewPanelClass m_top10">';
-				str+='<div class="panel-heading pad_5 font12">';
+				str+='<div class="panel-heading pad_5">';
 				        if(result[i].labeled){
 							str+='<div class="row">';
 								str+='<div class="col-md-2">';
@@ -3158,14 +3182,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='</div>';
 				  str+='<div class="panel-body pad_5">';
 					for(var j in result[i].subList){
-						str+='<ul class="viewAppointmentRequestedMembers font12">';
+						str+='<ul class="viewAppointmentRequestedMembers">';
 							str+='<li>';
 								str+='<div class="row">';
 									//str+='<div class="col-md-12">';
 										//str+='<span class="requestedCheckbox text-success"></span>';
 									//str+='</div>';
 									str+='<div class="col-md-4">';
-										str+='<div class="media font12">';
+										str+='<div class="media">';
 											str+='<div class="media-left">';
 											str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 											//	str+='<span class="colorStatus green"></span>';
@@ -3234,7 +3258,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									//history modal end
 									
 										//str+='<h4>PREVIOUS APPOINTMENT REQUEST DETAILS</h4>';
-										str+='<table class="table table-bordered table-condensed m_top10 font12">';
+										str+='<table class="table table-bordered table-condensed m_top10">';
 										if(result[i].subList[j].subList != null && result[i].subList[j].subList.length>0){
 											str+='<thead>';
 											str+='<th>APPOINTMENT ID</th>';
@@ -3523,7 +3547,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 									}
 									
 								str+='</ul>';
-								str+='<p class="font12 m_top10">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top"></p>';
+								str+='<p class="m_top10">Appt Created By: '+result[i].userName+' &nbsp;&nbsp;&nbsp;&nbsp; <img src="dist/Appointment/img/message.png" class="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top"></p>';
 								str+='<div class="messageBlock arrow_box">';
 				                str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
 				                str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
@@ -3622,7 +3646,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			for(var i in result){
 				str+='<tr><td>';
 				str+='<div class="panel panel-default manageAppViewPanelClass">';
-				str+='<div class="panel-heading pad_5 font12">';
+				str+='<div class="panel-heading pad_5">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-2">';
 							str+='<span>Appointment ID: '+result[i].aptUniqueCode+'</span>';
@@ -3655,14 +3679,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='</div>';
 				str+='<div class="panel-body pad_5">';
 					for(var j in result[i].subList){
-						str+='<ul class="viewAppointmentRequestedMembers font12">';
+						str+='<ul class="viewAppointmentRequestedMembers">';
 							str+='<li>';
 								str+='<div class="row">';
 									//str+='<div class="col-md-12">';
 										//str+='<span class="requestedCheckbox text-success"></span>';
 									//str+='</div>';
 									str+='<div class="col-md-4">';
-										str+='<div class="media font12">';
+										str+='<div class="media">';
 											str+='<div class="media-left">';
 												str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 											//	str+='<span class="colorStatus green"></span>';
@@ -3690,7 +3714,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										
 											
 									str+='</div>';
-									str+='<div class="col-md-8 font12">';									
+									str+='<div class="col-md-8">';									
 									//history modal start
 									 if(result[i].subList[j].candidateId != null && result[i].subList[j].candidateId > 0){
 											str+='<a  title="Appointments History"  data-toggle="tooltip" data-placement="top" class="historyShowModalBtn"  style="cursor:pointer;" attr-id="'+result[i].subList[j].candidateId+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><i class="glyphicon glyphicon-time m_top20" style="color: rgb(142, 142, 142); font-size: 16px;"></i></a>&nbsp;&nbsp;';
@@ -4125,7 +4149,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<div class="media-left">';
 						str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 						str+='</div>';
-						str+='<div class="media-body font12">';
+						str+='<div class="media-body">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
 						str+='<p>Contact Number: '+result[i].subList[j].mobileNo+'</p>';
 						str+='<p></p>';
@@ -4195,7 +4219,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='<button class="btn btn-block btn-success updateAll" value="Completed">UPDATE APPOINTMENT</button>';
 		str+='</div>';
 		str+='<table id="searchApptmntdatatable" class="tablepaddingremove">';
-		str+='<thead><th></th><th></th><th></th></thead>';
+		str+='<thead><th></th><th></th></thead>';
 		if(result != null)
 		{
 			var xindex = 0;
@@ -4204,14 +4228,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			{ 
 			if( xindex == 0)
 			{
-				str+='<tr>';
+				str+='<tr style="background:#f2f2f2">';
 			}
-				str+='<td style="vertical-align:top;width:33.3%">';
+				str+='<td style="vertical-align:top;width:50%">';
 					
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">';
 					str+='<div class="panel panel-default manageAppViewPanelClass m_top5">';
 						str+='<div class="panel-heading bg_ff pad_5">';
-							str+='<p class="settingClass" style="font-size:9px;"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right" title="Appointment Status Update" data-toggle="tooltip" data-placement="top"></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
+							str+='<p class="settingClass"><i  attr_span_popup_id='+result[i].appointmentId+' attr_appt_status_id='+result[i].statusId+' class="glyphicon glyphicon-cog settingsIcon pull-right" title="Appointment Status Update" data-toggle="tooltip" data-placement="top"></i>ID: '+result[i].appointmentUniqueId+'&nbsp;&nbsp;&nbsp;';
 							var colorstatus = result[i].appointmentStatus;
 							var color = getColorCodeByStatus(colorstatus);
 							str+='<span style="font-weight:bold;color:'+color+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
@@ -4263,7 +4287,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<div class="media-left">';
 						str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 						str+='</div>';
-						str+='<div class="media-body font12">';
+						str+='<div class="media-body">';
 						
 						
 						var name = result[i].subList[j].name;
@@ -4307,16 +4331,16 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i>  '+result[i].subList[j].mobileNo+'</p>';
 							}
 							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
 							}else if(result[i].subject!=null && result[i].subject.length>0){
-							  str+='<p class="font12" >Purpose:'+result[i].subject+' </p>';
+							  str+='<p class="" >Purpose:'+result[i].subject+' </p>';
 							}
 							
 						}else{
 							if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
 							}else if(result[i].subject!=null && result[i].subject.length>0){
-							  str+='<p  class="font12">Purpose:'+result[i].subject+' </p>';
+							  str+='<p  class="">Purpose:'+result[i].subject+' </p>';
 							}
 							
 						}
@@ -4331,7 +4355,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						}
 						str+='</ul>';
 						
-					str+='<div class="font12 m_top10">';
+					str+='<div class="m_top10">';
 					//str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					
 					
@@ -4340,16 +4364,16 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<div class=" m_top10">';
 							
 							if(result[i].apptpreferableDates != null){	
-							str+='<p style="font-size: 10px;"><b>REQUESTED DATES : </b>';							
-								str+='<span style="font-size: 10px;">'+result[i].apptpreferableDates+'</span></p>';
+							str+='<p class="b_top1 pad_5"><b>REQUESTED DATES : </b>';							
+								str+='<span >'+result[i].apptpreferableDates+'</span></p>';
 							}else if(result[i].apptpreferableDates == null && result[i].maxDate != null && result[i].minDate != null && result[i].dateType != null && result[i].dateType.trim() != ""){
-								str+='<p style="font-size: 10px;"><b>REQUESTED DATES : </b>';
-								str+='<span style="font-size: 10px;">'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+')</span></p>';
+								str+='<p class="b_top1 pad_5"><b>REQUESTED DATES : </b>';
+								str+='<span>'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+')</span></p>';
 							}
 							
 							if(result[i].requestedDate !=null && result[i].requestedDate.length>0){
-							str+='<p style="font-size: 10px;"> <b>CREATED DATE : </b>';								
-								str+='<span style="font-size: 10px;">'+result[i].requestedDate+'</span></p>';
+							str+='<p class="b_top1 pad_5"> <b>CREATED DATE : </b>';								
+								str+='<span >'+result[i].requestedDate+'</span></p>';
 							}
 					
 						
@@ -4375,14 +4399,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				//}
 				xindex++;
 				if(result.length-1 == i){
-					if(xindex % 3 == 1){
-						str+='<td></td><td></td>';
+					if(xindex % 2 == 1){
+						str+='<td></td>';
 					}else if(xindex % 3 == 2){
 						str+='<td></td>';
 					}
-					xindex = 3;
+					xindex = 2;
 				}
-				if( xindex == 3){
+				if( xindex == 2){
 					str+='</tr>';
 					xindex = 0;
 				}
@@ -4403,6 +4427,8 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}
 		$("#searchApptmntDivId").html(str);
 		$('#searchApptmntdatatable').DataTable({bFilter: false});
+		$("#searchApptmntdatatable_length").addClass("pull-right")
+		$("#searchApptmntdatatable_wrapper").css("margin-top","-15px")
 		$('[data-toggle="tooltip"]').tooltip();
 		if(flag == false)
 		$(".completedSetting").hide();
@@ -5402,7 +5428,7 @@ function buildTimeSlotsTable(result){
 						str+='</li>';
 			}
 			str+='</ul>';
-			str+='<p class="font12 m_top10">';
+			str+='<p class="m_top10">';
 			str+="<i>Appt Created By: "+result[i].userName+"</i>";
 			str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top" ></p>';
 			str+='</div>';
@@ -6138,13 +6164,19 @@ function getAppointmentCreatedUsers(){
 				}
 		  }); 
 	}
-		$(document).on("click",".searchTypeRadioCls",function(){
-			searchTypeRadioCls();
+		$(document).on("click",".btnClassChange",function(){
+			var selectedValue = $(this).attr("attr_val");
+			$("#apptmemberDetailsDiv").html("");
+			searchTypeRadioCls(selectedValue);
+			
 		})
-	function searchTypeRadioCls()
+	function searchTypeRadioCls(selected)
 	{
+		
 		$(".clearCls").val("");
-		var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
+		//var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
+		//var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
+		
 		if(selected == 1)
 		{
 			showHideSearch("search");
@@ -6160,15 +6192,25 @@ function getAppointmentCreatedUsers(){
 	}
 	function handleBySearchType()
 	{
-		var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
-		if(selected == 1)
-		{
-			getDetailsBySrch();
-		}
-		else
-		{
-			getAdvancedSearchDetails();
-		}
+		//var selected = $("input[type='checkbox'][name='searchTypeRadio']:checked").val();
+		$(".btnClassChange").each(function(){
+			if($(this).hasClass("btnActive"))
+			{
+			
+				var selected = $(this).attr("attr_val");
+				
+				if(selected == 1)
+				{
+					getDetailsBySrch();
+				}
+				else
+				{
+					getAdvancedSearchDetails();
+				}
+			}
+		})
+		
+		
 	}
 	
 	$('#searchValueId').keydown(function(event){    
@@ -7696,7 +7738,7 @@ function timeSlotTableBuilding(result,dateStr){
 						str+='<div class="media-left">';
 						str+='<img class="media-object thumbnail" src="'+result[i].subList[j].imageUrl+'" onerror="setDefaultImage(this);" alt="Candidate Image">';
 						str+='</div>';
-						str+='<div class="media-body font12">';
+						str+='<div class="media-body">';
 						str+='<p>'+result[i].subList[j].name+'</p>';
 						str+='<p><i class="fa fa-mobile" style="font-size:15px"></i> &nbsp '+result[i].subList[j].mobileNo+'';
 						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
@@ -7712,11 +7754,11 @@ function timeSlotTableBuilding(result,dateStr){
 						}
 						str+='</ul>';
 						if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
 							}else{
-							  str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
+							  str+='<p class="" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
 							}
-					str+='<p class="font12 m_top10">';
+					str+='<p class="m_top10">';
 					str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top" />';
 					 
@@ -7996,7 +8038,10 @@ $(document).on("click",".timeSlotHideShowCls",function(){
 	
 	
 }); 
-	
+$(document).on("click",".btnClassChange",function(){
+	$(".btnClassChange").removeClass("btnActive");
+	$(this).addClass("btnActive");
+})	
 </script>
 </body>
 </html>
