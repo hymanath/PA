@@ -427,7 +427,6 @@ function getOptionDetailsForQuestion(){
 			for(var x in result[i].optionsList){
 				str+='<td class="text-center" style="width:100px;">'+result[i].optionsList[x].count+'';
 				if(result[i].optionsList[x].optionTypeId > 0){
-					alert(34)
 				str+=' ('+result[i].optionsList[x].optionTypeId+'  <img src="images/edit.png"  style="cursor:pointer;" title="Click Here to View Comments">)';	
 				}
 				str+='</td>';
