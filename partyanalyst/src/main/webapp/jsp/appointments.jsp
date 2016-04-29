@@ -172,6 +172,35 @@
 									</table>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="block">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+												<div id="newStatusBuildingId"></div>
+												<!--<table class="table table-bordered text-center b_border" style="font-size: 18px; text-transform: uppercase; color: rgb(255, 255, 255);">
+													<tbody>
+														<tr>
+															<td colspan="6" style="background: rgba(10, 37, 63,0.5) none repeat scroll 0px 0px;">TOTAL APPOINTMENTS- 22</td>
+														</tr>
+														<tr></tr>
+														<tr>
+															<td><span style="color: rgb(169, 68, 66);">Waiting <br><span style="font-weight: bold; font-size: 28px ! important;">15</span></span></td>
+															<td><span style="color: rgb(72, 179, 107)">Approved - <span style="font-weight: bold; font-size: 28px ! important;">15</span>
+																<table style="font-size: 12px; color: rgb(51, 51, 51);" class="table table-border"><tbody><tr><td style="background: rgba(72, 179, 107, 0.2) none repeat scroll 0px 0px;">Approved - 3</td><td style="background: rgba(169, 68, 66, 0.2) none repeat scroll 0px 0px;">Cancelled - 3</td><td style="background: rgba(168, 111, 197, 0.2) none repeat scroll 0px 0px;">Rescheduled - 3</td><td style="background: rgba(138, 109, 59, 0.2) none repeat scroll 0px 0px;">Not Attended - 3</td></tr>
+															</tbody></table></span></td>
+															<td><span style="color: rgb(103, 51, 1)">Scheduled <br><span style="font-weight: bold; font-size: 28px ! important;">15</span></span></td>
+															<td><span style="color:rgb(60, 118, 61)">Completed <br><span style="font-weight: bold; font-size: 28px ! important;">15</span></span></td>
+															<td><span style="color:rgb(0, 187, 212)">Rejected <br><span style="font-weight: bold; font-size: 28px ! important;">15</span></span></td>
+															<td> <span style="color: rgb(254, 150, 1)">Hold <br><span style="font-weight: bold; font-size: 28px ! important;">15</span></span></td>
+														</tr>
+													</tbody>
+												</table>-->
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 							<div id="containerpie" ></div>
 							<div class="row m_top10">
 								<div class="col-md-12">
@@ -1199,6 +1228,7 @@ function getAppointmentStatusCounts(){
 		if(result != null){
 			buildJSONForAppStatus(result);
 			buildTotalAppointmentStatus(result);
+			buildTotalAppointmentStatusForNew(result);
 		}
 		
 	});     
@@ -8035,13 +8065,67 @@ $(document).on("click",".timeSlotHideShowCls",function(){
 		$(this).removeClass("glyphicon-minus-sign");
 		$(this).addClass("glyphicon-plus-sign");
 	}
-	
-	
-}); 
+});
 $(document).on("click",".btnClassChange",function(){
 	$(".btnClassChange").removeClass("btnActive");
 	$(this).addClass("btnActive");
-})	
+});
+	function buildTotalAppointmentStatusForNew(result){
+			var str='';
+		   var totalApptCount =0;
+			if(result!=null && result.length>0){
+				for(var i in result){
+					totalApptCount = totalApptCount + result[i].statusCount;
+				}
+			}
+			str+='<table class="table table-bordered text-center b_border" style="font-size: 18px; text-transform: uppercase; color: rgb(255, 255, 255);">';
+			str+='<tbody>';
+			str+='<tr>';
+				str+='<td colspan="6" style="background: rgba(10, 37, 63,0.5) none repeat scroll 0px 0px;">TOTAL APPOINTMENTS- '+totalApptCount+'</td>';
+			str+='</tr>';
+			str+='<tr></tr>';
+			str+='<tr>';
+			if(result !=null){
+				for(var i in result){
+					var color = getColorCodeByStatus(result[i].status);
+					if(result[i].appointmentStatusId !=2){
+						if(result[i].statusCount == 0){
+						str+='<td><span style="color: '+color+'">'+result[i].status+' <br><span style="font-weight: bold; font-size: 28px ! important;">'+result[i].statusCount+'</span></span></td>';
+						}else{
+						 var statusArr= result[i].clickIds;
+						 str+='<td class="appointmentStatusCls" attr_statusArrId ="'+statusArr+'"><span style="color: '+color+';cursor:pointer">'+result[i].status+' <br><span style="font-weight: bold; font-size: 28px ! important;">'+result[i].statusCount+'</span></span></td>';
+					  }
+					
+					}else if(result[i].appointmentStatusId ==2){
+						var statusArr= result[i].clickIds;
+						 str+='<td><span style="color: '+color+';cursor:pointer">'+result[i].status+' - <span style="font-weight: bold; font-size: 28px ! important;"><span class="appointmentStatusCls" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</span></span>';
+						
+						str+='<table style="font-size: 12px; color: rgb(51, 51, 51);" class="table table-border"><tbody>';
+						str+='<tr>';
+						
+						if(result[i].subList !=null && result[i].subList.length>0){
+							for(var j in result[i].subList){
+							var internalColor = getColorCodeByStatus(result[i].subList[j].status)		
+								if(result[i].subList[j].statusCount == 0){
+								str+='<td style="background: '+internalColor+'"> '+result[i].subList[j].status+' - '+result[i].subList[j].statusCount+'</td>';
+								}else{
+								var statusArr= result[i].subList[j].clickIds;
+								 str+='<td class="appointmentStatusCls" attr_statusArrId ="'+statusArr+'" style="background: '+internalColor+';cursor:pointer"> '+result[i].subList[j].status+' - '+result[i].subList[j].statusCount+'</td>';	
+								}					
+							}						
+						}
+						str+='</tr>';
+						str+='</tbody></table></span></td>';
+					}
+				}			
+			}
+			str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';
+			
+			$("#newStatusBuildingId").html(str);
+			
+	}	
 </script>
 </body>
 </html>
