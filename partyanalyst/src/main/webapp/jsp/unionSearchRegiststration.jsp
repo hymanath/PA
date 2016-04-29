@@ -119,17 +119,71 @@
 								</div>
 							</div>
 						</div>
+						
+						<a href="#" id="submitQuerreisId" class="submitQuerriesCls  pull-right">SubmitQuerries/Suggestions</a>
+
 					</div>
 				</div>
+				
 			</div>
 		</div>
 	</div>
 </div>
+
+   <div class="modal fade" id="modalSubmitQuriesId" role="dialog">
+	<div class="modal-dialog">
+	
+	  <!-- Modal content-->
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title text-center" style="text-transform:uppercase">Query/Suggestion Form</h4>
+		</div>
+		
+		
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-8">
+					<label>Name&nbsp;<span class="queryNameErrCls" style="color:red"></span>&nbsp;<span class="text-danger">*</span></label>
+					<input type="text" name="name" id="modalNameId" class="form-control">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<label>Mobile No&nbsp;<span class="queryMobileNOErrCls" style="color:red"></span>&nbsp;<span class="text-danger">*</span></label>
+					<input type="text" name="mobile No" id="modalMobileNoId" class="form-control"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<label>Email&nbsp;<span class="queryEmailErrCls" style="color:red"></span>&nbsp;<span class="text-danger">*</span></label>
+					<input type="email" name="email" id="emailId" class="form-control"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<label>Querries/Suggestions&nbsp;<span class="querySuggErrCls" style="color:red">&nbsp;</span><span class="text-danger">*</span></label>
+					<textarea class="form-control" rows="4" cols="50"  maxlength="200" name="querriesSuggestions" id="qurySuggstinsId" ></textarea>
+				</div>
+			</div>
+				  
+			</div>
+		 
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-success submitButnCls" id="submitButnId" onclick="validateFieldUnionRegistrion();">submit</button>
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	</div>
+  </div>
+ 
+
 <script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="js/tdpCadreAjax/tdpCadreAjax.js" type="text/javascript"></script>
 <script src="js/unionSearchRegiststration/unionSearchRegiststration.js" type="text/javascript"></script>
+<script src="js/mobileOperation/mobileValidation.js" type="text/javascript"></script>
 <script src="js/smsTransactions/smsTransactions.js" type="text/javascript"></script>
 <script src="js/locationSearch/locationSearch.js" type="text/javascript"></script>
 <script src="js/locationSearch/locationSearchAjax.js" type="text/javascript"></script>
