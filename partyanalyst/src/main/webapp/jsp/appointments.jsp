@@ -4293,19 +4293,17 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 
 							if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
 								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i>  '+result[i].subList[j].mobileNo+'</p>';
-							}else{
-								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i> - </p>';
 							}
 							if(result[i].subject!=null && result[i].subject.length>35){
 							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
+							}else if(result[i].subject!=null && result[i].subject.length>0){
 							  str+='<p class="font12" >Purpose:'+result[i].subject+' </p>';
 							}
 							
 						}else{
 							if(result[i].subject!=null && result[i].subject.length>35){
 							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
+							}else if(result[i].subject!=null && result[i].subject.length>0){
 							  str+='<p  class="font12">Purpose:'+result[i].subject+' </p>';
 							}
 							
@@ -4328,18 +4326,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					
 					//Preferable Dates Scenario start
 					str+='<div class=" m_top10">';
-							str+='<p style="font-size: 10px;"><b>REQUESTED DATES : </b>';
 							
-							if(result[i].apptpreferableDates != null){							
+							if(result[i].apptpreferableDates != null){	
+							str+='<p style="font-size: 10px;"><b>REQUESTED DATES : </b>';							
 								str+='<span style="font-size: 10px;">'+result[i].apptpreferableDates+'</span></p>';
 							}else if(result[i].apptpreferableDates == null && result[i].maxDate != null && result[i].minDate != null && result[i].dateType != null && result[i].dateType.trim() != ""){
+								str+='<p style="font-size: 10px;"><b>REQUESTED DATES : </b>';
 								str+='<span style="font-size: 10px;">'+result[i].dateType+' ('+result[i].minDate+' to '+result[i].maxDate+')</span></p>';
-							}else{
-								str+='<span> - </span></p>';
 							}
-							str+='<p style="font-size: 10px;"> <b>CREATED DATE : </b>';
-							if(result[i].requestedDate !=null && result[i].requestedDate.length>0){								
-								str+='<span style="font-size: 10px;">'+result[i].requestedDate+'</span>';
+							
+							if(result[i].requestedDate !=null && result[i].requestedDate.length>0){
+							str+='<p style="font-size: 10px;"> <b>CREATED DATE : </b>';								
+								str+='<span style="font-size: 10px;">'+result[i].requestedDate+'</span></p>';
 							}
 					
 						
