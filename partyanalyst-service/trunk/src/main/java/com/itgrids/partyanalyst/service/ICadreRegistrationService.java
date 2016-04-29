@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RtcUnionInputVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -190,4 +191,5 @@ public interface ICadreRegistrationService {
 	public AffiliatedCadreVO getAllTotalCountsForAll(String searchType);
 	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate);
 	public String  updatePaymentStatus(Long tdpCadreId);
+	public ResultStatus saveRegistrationQueriesForm(final RegistrationQueriesVO regQueriesVO);
 }
