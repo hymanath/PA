@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.dto.ActivityScopeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -2305,11 +2306,67 @@ public class ActivityService implements IActivityService{
 				}
 			}
 		  }	
+			EventDocumentVO locationVo = new EventDocumentVO();
+			locationVo.setLocationScope(getInputSearchType(searchAttributeVO.getSearchType()));
+			locationVo.setLocationValue(searchAttributeVO.getLocationId());
+			locationVo.setActivityId(searchAttributeVO.getAttributesIdsList().get(0));	
+			if(searchAttributeVO.getStartDate() != null)
+			locationVo.setStrDate(searchAttributeVO.getStartDate().toString());	
+			if(searchAttributeVO.getEndDate() != null)
+			locationVo.setEndDate(searchAttributeVO.getEndDate().toString());
+			BasicVO countVO = cadreCommitteeService.getLocationsHierarchyForEvent(locationVo);
+			
+			setImagesCount(countVO.getLocationsList(),returnVO.getActivityVoList());
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getActivityDetailsBySearchCriteria() ActivityService Class... ",e);
 		}
 		return returnVO;
+	}
+	
+	public String getInputSearchType(String type)
+	{
+		String returnType="";
+		if(type.equalsIgnoreCase("district"))
+			returnType = "state";
+		else if(type.equalsIgnoreCase("constituency"))
+			returnType = "district";
+		else if(type.equalsIgnoreCase("mandal") || type.equalsIgnoreCase("URBAN"))
+			returnType = "constituency";
+		else if(type.equalsIgnoreCase("village"))
+			returnType = "mandal";
+		else
+			returnType = type;
+		return returnType;
+	}
+	
+	public void setImagesCount(List<BasicVO> countVOList,List<ActivityVO> activityVoList)
+	{
+		try{
+			if(activityVoList != null && activityVoList.size() > 0)
+			{
+				for(ActivityVO vo : activityVoList)
+				{
+					boolean flag = false;
+					for(BasicVO vo1 : countVOList)
+					{
+						
+						if(vo1.getId().longValue() == vo.getId().longValue())
+						{
+							vo.setImagesCount(vo1.getCount());
+							flag = true;
+						}
+						if(flag == true)
+							break;
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			
+			LOG.error(" Exception occured in setImagesCount() ActivityService Class... ",e);
+		}
 	}
 //2222
 	public ActivityAttendanceInfoVO getActivityAttendenceDetails(SearchAttributeVO searchAttributeVO,Long stateId)
