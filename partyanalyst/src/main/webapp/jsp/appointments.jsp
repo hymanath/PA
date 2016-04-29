@@ -1041,8 +1041,6 @@
 	  </div>
     </div>
  </div>
-
-
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -1065,7 +1063,6 @@
 <script type="text/javascript">
 /* Drag and Drop */
 
- 
   Sortable.create(confirmAppointmentBlockDropId,{
       filter: '.hidelabel',
       onFilter: function (evt) {
@@ -4268,7 +4265,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						if(result[i].subList[j].tdpCadreId != null && result[i].subList[j].tdpCadreId > 0)
 						{
 							
-							str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].subList[j].tdpCadreId+'"><div style="color:#34A7C1;">'+result[i].subList[j].name+'</div>';
+							str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;display:inline-block;" href="cadreDetailsAction.action?cadreId='+result[i].subList[j].tdpCadreId+'"><div style="color:#34A7C1;">'+result[i].subList[j].name+'</div>';
 						}
 						
 						
@@ -4283,28 +4280,38 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						</c:when>
 						<c:otherwise>
 						
-						str+='<div style="color:#34A7C1;"><span >'+result[i].subList[j].name+'</span></div>';
+						str+='<span style="color:#34A7C1;">'+result[i].subList[j].name+'</span>';
 						</c:otherwise>
 						</c:choose>
 											
 										
-						
+						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
+								str+='<a style="display:inline-block;" title="Appointments History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
+						}
 						//str+='<p>'+result[i].subList[j].name+'</p>';
 						if(globalLoginUSerAppointmentUserTypeId != 1){
 
 							if(result[i].subList[j].mobileNo !=null && result[i].subList[j].mobileNo.length>0){
-								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i>  '+result[i].subList[j].mobileNo+'';
+								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i>  '+result[i].subList[j].mobileNo+'</p>';
 							}else{
-								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i> - '
+								str+='<p><i class="fa fa-mobile" style="font-size:15px"></i> - </p>';
 							}
+							if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							  str+='<p class="font12" >Purpose:'+result[i].subject+' </p>';
+							}
+							
+						}else{
+							if(result[i].subject!=null && result[i].subject.length>35){
+							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
+							}else{
+							  str+='<p  class="font12">Purpose:'+result[i].subject+' </p>';
+							}
+							
 						}
 						
-						
-						
-						if(result[i].subList[j].id != null && result[i].subList[j].id > 0){
-								str+='<a style="display:inline-block;" title="Appointments History" data-toggle="tooltip" data-placement="top" class="historyShowModalBtn pull-right"  style="cursor:pointer;" attr-id="'+result[i].subList[j].id+'" attr-name="'+result[i].subList[j].name+'" attr-designation="'+result[i].subList[j].designation+'" attr-mobile="'+result[i].subList[j].mobileNo+'"><img src="dist/Appointment/img/view-Appt-History-icon.png"  alt="ViewApptHistory" style="height:16px;cursor:pointer;margin-right:5px;"/></a>&nbsp;&nbsp;';
-						}
-						str+='</p>';
+					
 						str+='</div>';
 						str+='</div>';
 						//multiple
@@ -4313,11 +4320,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						
 						}
 						str+='</ul>';
-						if(result[i].subject!=null && result[i].subject.length>35){
-							  str+='<p class="font12" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
-							  str+='<p class="font12" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
-							}
+						
 					str+='<div class="font12 m_top10">';
 					//str+='<i>Appt Created By: '+result[i].subList[j].createdBy+'</i>';
 					
@@ -7969,6 +7972,7 @@ function timeSlotTableBuilding(result,dateStr){
 	 	
  }
 buildLevels();
+	
 </script>
 </body>
 </html>
