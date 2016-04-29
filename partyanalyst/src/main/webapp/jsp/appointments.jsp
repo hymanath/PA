@@ -4325,7 +4325,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					
 					//Preferable Dates Scenario start
 					str+='<div class=" m_top10">';
-							str+='<p style="font-size: 10px;"><b>PREFERABLE DATES : </b>';
+							str+='<p style="font-size: 10px;"><b>REQUESTED DATES : </b>';
 							
 							if(result[i].apptpreferableDates != null){							
 								str+='<span style="font-size: 10px;">'+result[i].apptpreferableDates+'</span></p>';
@@ -4334,7 +4334,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							}else{
 								str+='<span> - </span></p>';
 							}
-							str+='<p style="font-size: 10px;"> <b>REQUESTED DATE : </b>';
+							str+='<p style="font-size: 10px;"> <b>CREATED DATE : </b>';
 							if(result[i].requestedDate !=null && result[i].requestedDate.length>0){								
 								str+='<span style="font-size: 10px;">'+result[i].requestedDate+'</span>';
 							}
