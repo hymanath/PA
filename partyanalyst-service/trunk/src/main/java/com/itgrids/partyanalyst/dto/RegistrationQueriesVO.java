@@ -18,6 +18,13 @@ public class RegistrationQueriesVO {
 	private String email;
 	private String description;
 	
+	
+	public RegistrationQueriesVO(String name,String mobileNo,String email ,String description){
+		this.name=name;
+		this.mobileNo = mobileNo;
+		this.email=email;
+		this.description = description;
+	}	
 	public Long getId() {
 		return id;
 	}
