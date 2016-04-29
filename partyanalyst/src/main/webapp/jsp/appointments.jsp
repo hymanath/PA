@@ -503,7 +503,7 @@
 												<select class="cloneDesignationCls " >
 													<option value="0">Select Designation</option>
 												</select>
-												<!--<div class="cloneErrCandidateDesgCls validateClr"></div>-->
+												<div class="cloneErrCandidateDesgCls validateClr"></div>
 											</div>
 										 <div class="col-md-3 m_top10">
 												<label>Contact Number</label>
@@ -1483,7 +1483,7 @@ $(document).on("click","#addOneBlock",function(){
 	e.find(".cloneDesignationSpanCls").attr("attr_coneId",cloneCount);
 	
 	e.find(".cloneDesignationCls").attr("attr_val",cloneCount);	
-	//e.find(".cloneErrCandidateDesgCls").attr("id",'cloneErrCandidateDesgId'+cloneCount);
+	e.find(".cloneErrCandidateDesgCls").attr("id",'cloneErrCandidateDesgId'+cloneCount);
 	
 	e.find(".cloneMobileCls").attr("name",'appointmentVO.basicInfoList['+cloneCount+'].mobileNo');
 	e.find(".cloneMobileCls").attr("id",'mobileNoId'+cloneCount);	
@@ -5021,7 +5021,7 @@ function buildTimeSlotsTable(result){
 		//$(".errorArCls").html('');
 		$(".errorCandidateMainDivCls").html('');
 		$(".cloneErrCandidateNameCls").html('');
-		//$(".cloneErrCandidateDesgCls").html('');
+		$(".cloneErrCandidateDesgCls").html('');
 		//$(".cloneErrCandidateMobileCls").html('');
 		//$(".cloneErrCandidateLcScopeCls").html('');
 		//$(".cloneErrCandidateDistrictCls").html('');
@@ -5067,6 +5067,14 @@ function buildTimeSlotsTable(result){
 				 if(nameValue ==null || nameValue.length<=0 || nameValue == undefined || typeof nameValue === "undefined" || nameValue.trim() == ""){
 					  isErrAvailable=true;
 					  $("#cloneErrCandidateNameId"+i+"").html("Please enter Name");
+				 }
+				 var canTypeValue=$("#candidateTypeSelId"+i).val();
+				 if(canTypeValue>0){
+					 var desgValue=$("#designationSelId"+i).val();
+					  if(desgValue ==null || desgValue ==0 || desgValue == undefined || desgValue ==""){
+					  $("#cloneErrCandidateDesgId"+i).html("Please Select Designation");
+					  isErrAvailable=true;	
+				      } 
 				 }
 				/*  var desgValue=$("#designationSelId"+i).val();
 				 if(desgValue ==null || desgValue ==0 || desgValue == undefined || desgValue ==""){
