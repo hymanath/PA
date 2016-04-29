@@ -743,7 +743,7 @@ public interface IConstants {
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
 
-   // public static final String STATIC_CONTENT_FOLDER_URL = "G:\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+   // public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
     public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
    // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
     public static final String CADRE_REG_AMOUNT_FILES_FOLDER = "cadre_reg_amount_files";
@@ -1034,5 +1034,12 @@ public interface IConstants {
 	public static final String NOT_PAID_STATUS = "NOT PAID";
 	public static final String NOT_REQUIRED = "NR";
 	public static final Long[] APPOINTMENT_ALL_PENDING_STATUS={2L,10L,5L,8L};
+	public static final Long[] PR_AC_DESG_IDS={2L,8L,10L,21L};
+	public static final Long[] PR_PC_DESG_IDS={1L,9L,11L};
+	public static final Long[] PR_MANDAL_DESG_IDS={3L,4L,5L,13L};
+	public static final Long[] PR_STATE_DESG_IDS={6L,7L,12L,16L,22L,23L};
+	public static final Long[] PR_DISTRICT_DESG_IDS={14L,15L};
+	public static final Long[] PR_TOWN_DESG_IDS={17L,19L,20L};
+	public static final Long[] PR_WARD_DESG_IDS={18L};
 	
 }

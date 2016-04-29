@@ -1,23 +1,35 @@
 package com.itgrids.partyanalyst.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import java.util.List;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.LocationInputVO;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public class LocationService {
 	private IConstituencyDAO constituencyDAO;
 	private IDistrictDAO districtDAO;
 	private ITehsilDAO tehsilDAO;
+	private IPublicRepresentativeDAO publicRepresentativeDAO;
 	
 	
 	
 	
-	 public IConstituencyDAO getConstituencyDAO() {
+	
+	 public IPublicRepresentativeDAO getPublicRepresentativeDAO() {
+		return publicRepresentativeDAO;
+	}
+	public void setPublicRepresentativeDAO(
+			IPublicRepresentativeDAO publicRepresentativeDAO) {
+		this.publicRepresentativeDAO = publicRepresentativeDAO;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
@@ -417,5 +429,51 @@ public class LocationService {
 			}
 			
 			return villageWards;
+		}
+		
+		public String getLocationForDesignation(Long tdpCadreId,Long designationId)
+		{
+			
+			String location = "";
+			try{
+				UserAddress userAddress = publicRepresentativeDAO.getUserAddressForCadre(tdpCadreId);
+				if(userAddress != null)
+				{
+					
+					  if(Arrays.asList(IConstants.PR_STATE_DESG_IDS).contains(designationId))
+					  {
+						  location = userAddress.getState() != null ? userAddress.getState().getStateName() : "";
+					  }
+					  else if(Arrays.asList(IConstants.PR_DISTRICT_DESG_IDS).contains(designationId))
+					  {
+						  location = userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictName() : "";
+					  }
+					  if(Arrays.asList(IConstants.PR_AC_DESG_IDS).contains(designationId))
+					  {
+						  location = userAddress.getConstituency() != null ? userAddress.getConstituency().getName() : "";
+					  }
+					  if(Arrays.asList(IConstants.PR_PC_DESG_IDS).contains(designationId))
+					  {
+						  location = userAddress.getParliamentConstituency() != null ? userAddress.getParliamentConstituency().getName() : "";
+					  }
+					  if(Arrays.asList(IConstants.PR_MANDAL_DESG_IDS).contains(designationId))
+					  {
+						  location = userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilName() : "";
+					  }
+					  if(Arrays.asList(IConstants.PR_TOWN_DESG_IDS).contains(designationId))
+					  {
+						  location = userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getName() : "";
+					  }
+					  if(Arrays.asList(IConstants.PR_WARD_DESG_IDS).contains(designationId))
+					  {
+						  location = userAddress.getWard() != null ? userAddress.getWard().getName() : "";
+					  }
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return location;
 		}
 }
