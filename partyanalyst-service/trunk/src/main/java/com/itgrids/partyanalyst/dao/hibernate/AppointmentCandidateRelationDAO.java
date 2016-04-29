@@ -796,7 +796,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				"           join appointment_status           ass  on  a.appointment_status_id=ass.appointment_status_id " +
 				"           left join appointment_preferable_date  apd  on  acr.appointment_id=apd.appointment_id " +
 				"           join appointment_candidate        ac   on  acr.appointment_candidate_id=ac.appointment_candidate_id " +
-				"           join user_address                 ua   on  ac.address_id=ua.user_address_id " +
+				"           left join user_address                 ua   on  ac.address_id=ua.user_address_id " +
 				"           left join appointment_priority    ap   on  a.appointment_priority_id=ap.appointment_priority_id " +
 				
 				" where a.is_deleted='N' ");
