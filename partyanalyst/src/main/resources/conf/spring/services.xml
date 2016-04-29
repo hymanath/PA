@@ -3060,7 +3060,9 @@
 	<bean name="locationService" class="com.itgrids.partyanalyst.utils.LocationService">
 		<property name="constituencyDAO" ref="constituencyDAO"/>
 		<property name="districtDAO" ref="districtDAO"/>
-		<property name="tehsilDAO" ref="tehsilDAO"/>		
+		<property name="tehsilDAO" ref="tehsilDAO"/>
+		<property name="publicRepresentativeDAO" ref="publicRepresentativeDAO"/>		
+			
 	</bean>
 	
 	<bean id="appointmentReportDashBoardService" class="com.itgrids.partyanalyst.service.impl.AppointmentReportDashBoardService">
