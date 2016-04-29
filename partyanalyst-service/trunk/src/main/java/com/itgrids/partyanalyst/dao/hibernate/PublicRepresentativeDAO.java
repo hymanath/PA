@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.model.PublicRepresentative;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresentative, Long> implements IPublicRepresentativeDAO{
@@ -120,5 +121,14 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		Query query=getSession().createQuery("select model.addressId from PublicRepresentative model where model.candidateId =:candidateId");
 		query.setParameter("candidateId", candidateId);
 		return query.list(); 
+	}
+	
+	public UserAddress getUserAddressForCadre(Long tdpCadreId)
+	{
+		Query query = getSession().createQuery("select model.userAddress from PublicRepresentative model,TdpCadreCandidate model1 where model.candidate.candidateId = model1.candidate.candidateId" +
+				" and model1.tdpCadreId = :tdpCadreId and  model1.tdpCadre.isDeleted='N' and  model1.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+"");
+		return (UserAddress) query.uniqueResult();
+		
+		
 	}
  }
