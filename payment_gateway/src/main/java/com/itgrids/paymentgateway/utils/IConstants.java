@@ -12,4 +12,12 @@ public interface IConstants {
 	public final static String COMMA = ",";
 	public static final String SECKEYFAC ="PBKDF2WithHmacSHA1";
 	public static final String SECRAN="SHA1PRNG";
+	
+	public static final String TGNF_REGISTRATION_REDIRECTURL="file:///C:/Users/Administrator/Desktop/tngfRegistrationSuccess.html";//"http://localhost:8080/PartyAnalyst/registrationSuccessAction.action";
+	public static final String TGNF_ENROLLMENT_AMOUNT="1";
+	public static final String TGNF_ENROLLMENT_RANDOMNUMBERCODE="CADRE_2016";
+	public static final String TGNF_ENROLLMENT_MERCHANT_ID="M_tdpcbn_2144";
+	public static final String TGNF_ENROLLMENT_WORKING_KEY="0kag9s53yyi788y3prdk8ydhf8glfj9e";
+	
+	public static final String MD5_PRIMARY_KEY ="CADRE2016!tGrid$";
 }
