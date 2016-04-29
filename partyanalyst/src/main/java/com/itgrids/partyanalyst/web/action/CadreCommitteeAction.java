@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.EventCreationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -2142,4 +2143,27 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 	}
 	
+	public String saveRegistrationFeedbackQueriesDetails() {
+		try{ 
+          jObj = new JSONObject(getTask());
+			
+		String name = jObj.getString("name");
+		String mobile = jObj.getString("number");
+		String email = jObj.getString("emalValue");
+		String description = jObj.getString("textArea");
+		
+		RegistrationQueriesVO regQueriesVO = new RegistrationQueriesVO();
+		regQueriesVO.setName(name);
+		regQueriesVO.setMobileNo(mobile);
+		regQueriesVO.setEmail(email);
+		regQueriesVO.setDescription(description);
+			
+		status =  cadreRegistrationService.saveRegistrationQueriesForm(regQueriesVO);
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
 }

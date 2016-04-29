@@ -36,7 +36,27 @@ function validateFieldUnionRegistrion(){
 	   flag=false;
 	}
 	
-	if(flag){
-		//here we can call ajacx call 	
+	if(!flag){
+		return;	
+	}
+	else{
+	var jsObj =
+		{   
+			name : name,
+			number : number,
+			emalValue : emalValue,
+			textArea : textArea
 		}
+	$.ajax({    
+		type : "POST",
+		url : "saveRegistrationFeedbackQueriesDetailsAction.action",
+		data : {task:JSON.stringify(jsObj)} ,   
+	}).done(function(result){
+		if(result != null){
+			if(result.resultCode == 0){
+				$(".querySuggErrCls").html("Your Feedback Submitted Successfully...");
+			}
+		}
+	});
+}
 }
