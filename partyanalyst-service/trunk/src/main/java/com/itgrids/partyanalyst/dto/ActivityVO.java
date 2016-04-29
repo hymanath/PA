@@ -79,8 +79,16 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String isLocation;
 	private String isAttended;
 	private String attendendLocation;
+	private Long imagesCnt =0l;
 	
 	
+	
+	public Long getImagesCnt() {
+		return imagesCnt;
+	}
+	public void setImagesCnt(Long imagesCnt) {
+		this.imagesCnt = imagesCnt;
+	}
 	public String getAttendendLocation() {
 		return attendendLocation;
 	}
