@@ -2348,6 +2348,7 @@ public class ActivityService implements IActivityService{
 				for(ActivityVO vo : activityVoList)
 				{
 					boolean flag = false;
+					if(countVOList != null && countVOList.size() > 0)
 					for(BasicVO vo1 : countVOList)
 					{
 						
