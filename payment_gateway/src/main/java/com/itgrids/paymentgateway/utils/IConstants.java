@@ -13,7 +13,7 @@ public interface IConstants {
 	public static final String SECKEYFAC ="PBKDF2WithHmacSHA1";
 	public static final String SECRAN="SHA1PRNG";
 	
-	public static final String TGNF_REGISTRATION_REDIRECTURL="file:///C:/Users/Administrator/Desktop/tngfRegistrationSuccess.html";//"http://localhost:8080/PartyAnalyst/registrationSuccessAction.action";
+	public static final String TGNF_REGISTRATION_REDIRECTURL="http://telugudesam.org/emembership/tngfRegistrationSuccess.html";//"file:///C:/Users/Administrator/Desktop/tngfRegistrationSuccess.html";//"http://localhost:8080/PartyAnalyst/registrationSuccessAction.action";
 	public static final String TGNF_ENROLLMENT_AMOUNT="1";
 	public static final String TGNF_ENROLLMENT_RANDOMNUMBERCODE="CADRE_2016";
 	public static final String TGNF_ENROLLMENT_MERCHANT_ID="M_tdpcbn_2144";
