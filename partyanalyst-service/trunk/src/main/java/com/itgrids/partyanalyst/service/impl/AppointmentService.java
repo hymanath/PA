@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -3033,7 +3034,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							if(apptcanditype.longValue() == 4l){
 								
 								candidateVo.setCandDesignation(params[20] !=null ?params[20].toString():"");
-								candidateVo.setConstituency(params[22] !=null ?params[22].toString()+" Constituency":"");
+								candidateVo.setConstituency(params[22] !=null ?WordUtils.capitalize(params[22].toString().toLowerCase())+" Constituency":"");
 								
 							}else if(apptcanditype.longValue() == 3l){
 								candidateVo.setCandDesignation(params[20] !=null ?params[20].toString():"");
@@ -3083,7 +3084,12 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								
 								if(candi.getTdpCadreId()!=null){
 									String location = publicRepresLocaMap.get(candi.getTdpCadreId());
-									candi.setConstituency(location);
+									if(location!=null && !location.isEmpty()){
+										candi.setConstituency(WordUtils.capitalize(location.toLowerCase()));
+									}else{
+										candi.setConstituency(location);
+									}
+									
 								}
 							}
 						}
@@ -3180,7 +3186,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 									if(location == null || location.isEmpty()){
 										candi.setConstituency("");
 									}else{
-										candi.setConstituency(location+" Constituency");
+										candi.setConstituency(WordUtils.capitalize(location.toLowerCase())+" Constituency");
 									}
 									
 								}
