@@ -174,7 +174,22 @@ public class CadreRegistrationVO implements Serializable{
 	private Long presentPerAddrsConstId;
 	private Long presentPerAddrsMandalId;
 	private Long presentPerAddrsVillId;
+	private String dataSourceType;
+	private String otherDesignationStr;
 	
+	
+	public String getOtherDesignationStr() {
+		return otherDesignationStr;
+	}
+	public void setOtherDesignationStr(String otherDesignationStr) {
+		this.otherDesignationStr = otherDesignationStr;
+	}
+	public String getDataSourceType() {
+		return dataSourceType;
+	}
+	public void setDataSourceType(String dataSourceType) {
+		this.dataSourceType = dataSourceType;
+	}
 	public Long getPresentPerAddrsDistId() {
 		return presentPerAddrsDistId;
 	}

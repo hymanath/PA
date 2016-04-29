@@ -23,7 +23,12 @@ public class EmailDetailsVO implements Serializable{
 	private String mobile;
 	private Long id;
 	
-	
+	public EmailDetailsVO(){}
+	public EmailDetailsVO(String subject,String content,String toAddress){
+		this.subject =subject;
+		this.content = content;
+		this.toAddress = toAddress;
+	}
 	
 	
 	public String getEmail() {
