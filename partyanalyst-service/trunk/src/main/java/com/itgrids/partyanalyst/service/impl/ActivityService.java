@@ -2715,12 +2715,14 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 									vo.setIvrNotPlanned(count);
 							}
 							else if(type.trim().equalsIgnoreCase("IVR TOTAL")){
+								if(vo.getIvrcovered() != null && vo.getIvrcovered().longValue()>0L &&  vo.getIvrNotPlanned() != null &&  vo.getIvrNotPlanned().longValue()>0L)
 								vo.setIvrTotal(vo.getIvrcovered() + vo.getIvrNotPlanned());
 							}
 							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED"))
 								vo.setInfoCellcovered(count);
-							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L){
-								double perc = (vo.getInfoCellcovered()*100.0)/vo.getPlannedCount();;
+							else if(type.trim().equalsIgnoreCase("INFO CELL COVERED %") && vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L
+									 &&vo.getPlannedCount() != null && vo.getPlannedCount().longValue()>0L){
+								double perc = (vo.getInfoCellcovered()*100.0)/vo.getPlannedCount();
 								String percentage = commonMethodsUtilService.roundTo2DigitsFloatValueAsString(Float.valueOf(String.valueOf(perc)));
 								vo.setInfoCellcoveredPerc(percentage);
 							}
@@ -2731,6 +2733,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 									vo.setInfoCellNotPlanned(count);
 							}
 							else if(type.trim().equalsIgnoreCase("INFO CELL TOTAL")){
+								if(vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue()>0L && vo.getInfoCellNotPlanned() != null && vo.getInfoCellNotPlanned().longValue()>0L )
 								vo.setInfoCellTotal(vo.getInfoCellcovered() + vo.getInfoCellNotPlanned());
 							}
 							else if(type.trim().equalsIgnoreCase("WHATSAPP IMAGES COVERED")){
