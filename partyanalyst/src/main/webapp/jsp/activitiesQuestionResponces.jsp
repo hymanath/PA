@@ -81,7 +81,7 @@
  </style>
 </head>
 <body>
-	<form method="POST" enctype="multipart/form-data" name="uploadInsureeDetailsForm" action="saveActivityDetailsAction.action">
+	
 <div class="container">
 
 
@@ -140,7 +140,7 @@
 								
 							<div class="col-md-4"><span class="starMark">*</span>
 								<label>Report Type</label>
-								<select id="districtList" class="form-control">
+								<select id="reportList" class="form-control">
 								<option value="1"> District</option>
 								<option value="2"> Constituency</option>
 								</select>
@@ -174,17 +174,28 @@
 							<div class="col-md-3 m_top10 col-md-offset-4">
 								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getOptionDetailsForQuestion();">SEARCH</button>
 							</div>
+							<button class="btn btn-success" id="lcnExcelBtn" onclick="generateExcel('actvtyQstnOptnExclId')" style="margin-left: 650px; display:none;">Export Excel</button>
 							</div>
-								<div class="m_top10 col-md-12" id="optionsCntId">
+						<div class="row  m_top10" id="optnsCntDiv" style="display:none;">
+							<div class="col-md-12">
+								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
+									<h4 class="panel-title" id="actvtyQstnOptnHdng" style="font-weight:bold;display:none;">ACTIVITY QUESTION OPTION RESPONCE</h4>
 								</div>
-                            </div>
+							</div>
+							<div class="col-md-12">
+								<div  id="optionsCntId">
+								</div>
+							</div>
+						</div>
+						<div id="actvtyQstnOptnExclId" style="display:none;"></div>
+							</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-	</form>
+	
 	
 </div>
 
@@ -367,8 +378,10 @@ var activityScopeId = $("#ActivityList").val();
 	}
 	
 function getOptionDetailsForQuestion(){
+	$('#optnsCntDiv').hide();
      var activityScopeId = $("#ActivityList").val();
-	 var reportType = $("#districtList").val();
+	 var reportType = $("#reportList").val();
+	 var reportText = $("#reportList option:selected").text();
 	 var questionId = $("#questnsListId").val();
 	 var jsObj=
 	   {				
@@ -384,11 +397,13 @@ function getOptionDetailsForQuestion(){
 				  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
 			   if(result != null && result.length >0){
-			   buildOptionsCount(result);
+				   $("#lcnExcelBtn").show();
+			   buildOptionsCount(result,reportText);
 			   }
 		   });
 	}
-	function buildOptionsCount(result){
+	function buildOptionsCount(result,reportText){
+		$("#actvtyQstnOptnHdng").show();
 		$("#optionsCntId").html("");
 		var str = '';
 		str+='<div class="table-responsive">';
@@ -398,7 +413,7 @@ function getOptionDetailsForQuestion(){
 			for(var x in result[i].optionsList){
 				if(optnindx == 0){
 					str+='<tr>';
-				str+='<td style="width:150px;"></td>';
+				str+='<td style="width:150px;">'+reportText+' Name</td>';
 				}
 				if(i==0){
 				str+='<td style="width:100px;">'+result[i].optionsList[x].constincyName+'</td>';//option name
@@ -410,14 +425,63 @@ function getOptionDetailsForQuestion(){
 			str+='<tr>';
 			str+='<td style="width:150px;">'+result[i].constincyName+'</td>';
 			for(var x in result[i].optionsList){
-				str+='<td class="text-center" style="width:100px;">'+result[i].optionsList[x].count+'</td>';
+				str+='<td class="text-center" style="width:100px;">'+result[i].optionsList[x].count+'';
+				if(result[i].optionsList[x].optionTypeId > 0){
+					alert(34)
+				str+=' ('+result[i].optionsList[x].optionTypeId+'  <img src="images/edit.png"  style="cursor:pointer;" title="Click Here to View Comments">)';	
+				}
+				str+='</td>';
 			}
 			str+='</tr>';
 		}
 		str+='</table>';
 		str+='</div>';
 		$("#optionsCntId").html(str);
+		 $('#optnsCntDiv').show();
+     var exlStr = '';
+		exlStr+='<div class="table-responsive">';
+		exlStr+='<table class="table table-bordered table-condensed" style="background:#fff" id="optionsTableId">';
+		var optnindx = 0;
+		for(var i in result){
+			for(var x in result[i].optionsList){
+				if(optnindx == 0){
+					exlStr+='<tr>';
+					exlStr+='<td style="width:150px;">'+reportText+' Name</td>';
+				}
+				if(i==0){
+					exlStr+='<td style="width:100px;">'+result[i].optionsList[x].constincyName+'</td>';//option name
+				}
+				if(optnindx < x)
+					exlStr+='</tr>';
+					optnindx++;
+			}
+			exlStr+='<tr>';
+			exlStr+='<td style="width:150px;">'+result[i].constincyName+'</td>';
+			for(var x in result[i].optionsList){
+				exlStr+='<td class="text-center" style="width:100px;">'+result[i].optionsList[x].count+'</td>';
+			}
+			exlStr+='</tr>';
+		}
+		exlStr+='</table>';
+		exlStr+='</div>';
+		$("#actvtyQstnOptnExclId").html(exlStr);	 
 	}
+	function generateExcel(divId){
+	tableToExcel(divId, 'Activity Question Option Responce');
+}
+</script>
+<script>
+var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
 </script>
 </body>
 </html>
