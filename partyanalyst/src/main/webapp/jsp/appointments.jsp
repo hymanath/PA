@@ -852,8 +852,13 @@
 								<img id="confirmAppointmentsAjaxImg" src="images/icons/loading.gif" style="display:none; height: 50px; width: 50px;"/>
 								<div id="confirmAppointmentsDivId"></div>
 								
+								<!-- Hide show Divs -->
+								<span class="pull-right timeSlotHideShowMainCls">
+													<i class="glyphicon glyphicon-plus-sign timeSlotHideShowCls" title="view TimeSlot" style="margin-right:17px;cursor:pointer;font-size:20px;"></i>
+								</span>
+								
 								  <!--  TIME SLOT --> 
-									<div class="col-md-12 changeClass">
+									<div class="col-md-12 changeClass changeTimeSlotClass" style="display:none">
 										<div class="block">
 											<div class="row">
 												<div class="col-md-12">
@@ -887,7 +892,7 @@
 											</div>
 										</div>
 									</div>
-									
+																	
 								<div class="col-md-12 changeClass" >
 									<div class="block">
 										<h4 class="text-success">
@@ -1033,7 +1038,7 @@
     <div class="modal-content">
        <div class="modal-body" style="padding:25px;">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<label>Designation</label><span class="designationErrCls" style="color:red;"></span>
+		<label>New Designation</label><span class="designationErrCls" style="color:red;"></span>
 		<input type="text" class="form-control designationCls">
 		</div>
 		<div class="statusCls text-center"></div>
@@ -7970,6 +7975,20 @@ function timeSlotTableBuilding(result,dateStr){
 	 	
  }
 buildLevels();
+
+$(document).on("click",".timeSlotHideShowCls",function(){
+	$(".changeTimeSlotClass").toggle();
+
+	if($(this).hasClass("glyphicon-plus-sign")){
+		$(this).removeClass("glyphicon-plus-sign");
+		$(this).addClass("glyphicon-minus-sign");
+	}else{
+		$(this).removeClass("glyphicon-minus-sign");
+		$(this).addClass("glyphicon-plus-sign");
+	}
+	
+	
+}); 
 	
 </script>
 </body>
