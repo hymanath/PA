@@ -127,6 +127,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 	{
 		Query query = getSession().createQuery("select model.userAddress from PublicRepresentative model,TdpCadreCandidate model1 where model.candidate.candidateId = model1.candidate.candidateId" +
 				" and model1.tdpCadreId = :tdpCadreId and  model1.tdpCadre.isDeleted='N' and  model1.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+"");
+		query.setParameter("tdpCadreId",tdpCadreId);
 		return (UserAddress) query.uniqueResult();
 		
 		

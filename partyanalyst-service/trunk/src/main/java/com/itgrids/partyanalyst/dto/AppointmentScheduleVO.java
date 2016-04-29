@@ -37,6 +37,10 @@ private String minDate;
 private String maxDate;
 private String requestedDate;
 
+private Long   apptCandiTypeId;
+private String candDesignation;
+private String constituency;
+
 public String getDate() {
 	return date;
 }
@@ -223,6 +227,24 @@ public String getRequestedDate() {
 }
 public void setRequestedDate(String requestedDate) {
 	this.requestedDate = requestedDate;
+}
+public String getCandDesignation() {
+	return candDesignation;
+}
+public void setCandDesignation(String candDesignation) {
+	this.candDesignation = candDesignation;
+}
+public String getConstituency() {
+	return constituency;
+}
+public void setConstituency(String constituency) {
+	this.constituency = constituency;
+}
+public Long getApptCandiTypeId() {
+	return apptCandiTypeId;
+}
+public void setApptCandiTypeId(Long apptCandiTypeId) {
+	this.apptCandiTypeId = apptCandiTypeId;
 }
 
 

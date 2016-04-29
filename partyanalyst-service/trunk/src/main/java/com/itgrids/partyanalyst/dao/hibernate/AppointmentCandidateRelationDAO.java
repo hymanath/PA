@@ -659,23 +659,28 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	public List<Object[]> getAppointmentSearchDetailsForStatus(Date fromDate,Date toDate,AppointmentInputVO inputVo,String searchType)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("SELECT ac.appointment_candidate_id as apptCandId,ac.name as name,ac.mobile_no as mobileNo,acd.designation as designation," +
-				" a.reason as reason ,u.user_id as userId,u.firstname as firstName," +
-				" u.lastname as lastName,ats.from_date as fromDate,asts.appointment_status_id as aptStatusId,asts.status as aptStatus,a.appointment_id as aptId" +
-				" ,ats.to_date as toDate," +
-				"a.appointment_unique_id as uniqueId,ats.date as date,ac.image_url as url," +
-				" asts.status_color as colour,ac.tdp_cadre_id as tdpCadreId,date(a.inserted_time) as insertedTime" +
+		str.append("SELECT ac.appointment_candidate_id as apptCandId,ac.name as name,ac.mobile_no as mobileNo,acd.designation as designation," +//3
+				"          a.reason as reason ,u.user_id as userId,u.firstname as firstName," +//6
+				"          u.lastname as lastName,ats.from_date as fromDate,asts.appointment_status_id as aptStatusId,asts.status as aptStatus,a.appointment_id as aptId" +//11
+				"          ,ats.to_date as toDate," +//12
+				"          a.appointment_unique_id as uniqueId,ats.date as date,ac.image_url as url," +//15
+				"          asts.status_color as colour,ac.tdp_cadre_id as tdpCadreId,date(a.inserted_time) as insertedTime," +//18
+				"          act.appointment_candidate_type_id as acid ,act.candidate_type as actype,ac.tdp_cadre_id as tdpCadreId,constituency.name as constname," +
+				"          acd.appointment_candidate_designation_id as candiDesigId" +//23
 				
-					" FROM " +
+					" FROM " + 
 					
 					"  appointment_candidate_relation acr " +
-					" join appointment_candidate ac on acr.appointment_candidate_id=ac.appointment_candidate_id " +
-					" join appointment a on acr.appointment_id=a.appointment_id " +
+					" join appointment_candidate      ac   on acr.appointment_candidate_id=ac.appointment_candidate_id " +
+					" join appointment a              on   acr.appointment_id=a.appointment_id " +
 					" left join appointment_candidate_designation acd on ac.designation_id = acd.appointment_candidate_designation_id  " +
 					" join user u on a.created_by = u.user_id " +
-					" join appointment_status asts  on a.appointment_status_id = asts.appointment_status_id" +
-					" join appointment_user au on au.appointment_user_id = a.appointment_user_id" +
-					"  left join appointment_time_slot ats on a.appointment_id = ats.appointment_id " +
+					" join appointment_status asts   on a.appointment_status_id = asts.appointment_status_id" +
+					" join appointment_user au       on au.appointment_user_id = a.appointment_user_id" +
+					" left join appointment_time_slot ats on a.appointment_id = ats.appointment_id " +
+					" left join appointment_candidate_type act on ac.appointment_candidate_type_id = act.appointment_candidate_type_id " +
+					" left join user_address ua on ac.address_id = ua.user_address_id " +
+					" left join constituency constituency on ua.constituency_id = constituency.constituency_id " +
 
 					" WHERE a.is_deleted = 'N' ");
 		
@@ -722,7 +727,12 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				.addScalar("url",Hibernate.STRING)
 				.addScalar("colour",Hibernate.STRING)   
 				.addScalar("tdpCadreId",Hibernate.LONG)
-				.addScalar("insertedTime",Hibernate.DATE)
+				.addScalar("insertedTime",Hibernate.DATE)   
+				.addScalar("acid",Hibernate.LONG)
+				.addScalar("actype",Hibernate.STRING)
+				.addScalar("tdpCadreId",Hibernate.LONG)
+				.addScalar("constname",Hibernate.STRING)
+				.addScalar("candiDesigId",Hibernate.LONG)
 				;
 		
 		if(fromDate != null)
