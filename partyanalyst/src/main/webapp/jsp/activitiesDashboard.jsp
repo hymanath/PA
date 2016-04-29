@@ -127,8 +127,8 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-4" id="questionsDiv">
-								<select class="form-control" id="questionsId">
-									<option value="0">Select Questions</option>
+								<select class="form-control" id="questionsId" selected>
+									<!--<option value="0">Select Questions</option>-->
 								</select>	
 							</div>
 						</div>
