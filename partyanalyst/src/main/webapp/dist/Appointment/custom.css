@@ -14,8 +14,8 @@ label{font-weight:400}
 body
 {
 	font-family: 'Roboto', sans-serif;
-	color:#666;
-	font-size:13px;
+	color:#333;
+	font-size:14px;
 }
 .navTabsCustom
 {
@@ -72,8 +72,7 @@ body
 }
 .tableAppointment tr td
 {
-	background:#F2F2F2;
-	border:1px solid #fff !important;
+	border:1px solid #ccc !important;
 	padding-left:8px !important;
 }
 .pad_15
@@ -131,9 +130,9 @@ body
 }
 .settingsIcon , .settingsIconConfirm
 {
-	font-size:10px;
-	color:#666;
-	background:#ddd;
+	font-size:14px;
+	color:#333;
+	background:#ccc;
 	padding:3px;
 	border-radius:3px;
 	top:-1px;
@@ -151,7 +150,8 @@ body
 }
 .thumbnail
 {
-	height:40px;
+	height:75px;
+	width:65px;
 }
 .thumbnailSearch
 {
@@ -296,6 +296,14 @@ body
  {
 	 border:1px solid #ddd;
  }
+ .b_top1
+ {
+	 border-top:1px solid #ddd;
+ }
+ .pad_5{padding:5px !important}
+ .btnNewCustom,.btnNewCustom:hover,.btnNewCustom:focus{background:#fff;border:1px solid #666 !important;color:#333;}
+ .btnNewCustom1,.btnNewCustom1:hover,.btnNewCustom1:active,.btnNewCustom1:focus{background:#34a7c1 !important;border:1px solid #34a7c1 !important;color:#fff;}
+ .btnActive{background:#34a7c1 !important;color:#fff !important;border:1px solid #34a7c1 !important}
 .appointmentRequestedMembers , .viewAppointmentRequestedMembers , .updateLabelMembers , .searchConfirm
 {
 	padding:0px;
@@ -403,7 +411,7 @@ body
 .manageAppViewPanelClass
 {
 	border-radius:0px;
-	box-shadow:0 0 5px rgba(0, 0, 0, 0.4);
+	box-shadow:1px 3px 3px rgba(0, 0, 0, 0.3);
 	position:relative;
 }
 .manageAppViewPanelClass .panel-heading
@@ -602,7 +610,7 @@ body
 	}
 	.text-success
 	{
-		color:#4CB050 !important
+		color:#3c763d !important
 	}
 	.bg_cc
 	{
