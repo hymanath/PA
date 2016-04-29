@@ -4465,6 +4465,13 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				Long questionId = activityStatusQuestionnaireIdsList.get(0);
 				List<Object[]>  statusList = activityQuestionnaireDAO.getQuestionnareOptionsDetails(questionId);
 				Map<Long, IdNameVO> statusVOMap = new LinkedHashMap<Long, IdNameVO>(0);
+				
+				IdNameVO totalVo = new IdNameVO();
+				totalVo.setId(100l);
+				totalVo.setName("Total");
+				totalVo.setActualCount(0l);
+				
+				statusVOMap.put(100l, totalVo);
 				if(statusList != null && statusList.size()>0){
 					for (Object[] status : statusList) {
 							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
@@ -4489,15 +4496,16 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							}
 						}
 					}
+					IdNameVO totalVo1 = statusVOMap.get(100l);
+					if(totalVo1 != null){
+						totalVo1.setActualCount(totalCount);
+					}
+					
+					
+					
 					if(statusVOMap != null && statusVOMap.size()>0){
 						returnList.addAll(statusVOMap.values());
 					}
-					IdNameVO totalVo = new IdNameVO();
-					totalVo.setId(totalCount);
-					totalVo.setName("Total");
-					totalVo.setActualCount(totalCount);
-					
-					returnList.add(totalVo);
 				}
 			
 			}
