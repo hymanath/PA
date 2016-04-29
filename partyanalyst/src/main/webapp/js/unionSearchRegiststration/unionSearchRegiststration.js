@@ -317,11 +317,43 @@ function buildCadreDetails(result,jsObj){
 				}
 				
 				str+='<span href="#" class="media-left">';
-				str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/'+result[i].imageURL+'" />';
+				str+='<img style="width: 66px; height: 66px;border:1px solid #ddd" src="images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
-				
-				if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
+				//ss
+				str+='<div class="row">';
+					str+='<div class="col-md-8">';
+						str+='<ul class="list-inline" style="margin-bottom:0px">';
+							str+='<li><b>Name</b>: '+result[i].cadreName+' </li>';
+							str+='<li><b>Relative Name</b>: '+result[i].relativeName+' </li>';
+							if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
+								str+='<li class="text-success pull-right" style="font-weight:bold;">Already Registered</li>';
+						str+='</ul>';
+						str+='<ul class="list-inline" style="margin-bottom:0px">';
+							str+='<li><b>Age</b>:'+result[i].age+'<li>';
+							str+='<li><b>Gender</b>: '+result[i].gender+' </li>';
+							str+='<li><b>Mobile No</b>: <span id="mobile'+result[i].tdpCadreId+'">'+result[i].mobileNo+'</span><input type="hidden" id="mobileNo'+result[i].tdpCadreId+'" value="'+result[i].mobileNo+'"/></li>';
+						str+='</ul>';
+						str+='<ul class="list-inline" style="margin-bottom:0px">';
+							str+='<li><b>Voter ID</b>: '+result[i].voterCardNo+'</li>';
+							if(result[i].deletedStatus == "MD"){
+								str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
+							}
+							else{
+								str+='<li id="delete'+result[i].tdpCadreId+'"></li>';
+							}
+						str+='</ul>';
+					str+='</div>';
+					str+='<div class="col-md-2">';
+						str+='<div class="btn btn-success">';
+							str+='<label style="margin-bottom:0px;">';
+								str+='<input type="checkbox" class="otpCheckboxCls color:red;" attr_cadreId="'+result[i].tdpCadreId+'" id="cadreCheckId0" value="'+result[i].tdpCadreId+'" name="otpMobileNo">&nbsp;Select';
+							str+='</label>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				//ee
+				/*if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
 					str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;">  Already Registered </span>';
 				else{
 					str+='<div class="btn btn-success pull-right btn-xs">';
@@ -349,7 +381,7 @@ function buildCadreDetails(result,jsObj){
 				
 				str+='<div>';
 				
-				str+='</div>';
+				str+='</div>';*/
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{

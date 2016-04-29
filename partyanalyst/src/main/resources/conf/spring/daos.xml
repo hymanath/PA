@@ -2722,7 +2722,13 @@
 	<bean id="loginRequiredUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginRequiredUrlDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="userFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserFeedbackDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
+	<bean id="userFeedbackModuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserFeedbackModuleDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="paymentMethodDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentMethodDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
