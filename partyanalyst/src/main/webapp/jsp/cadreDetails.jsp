@@ -566,6 +566,17 @@ var globalCadreId = '${cadreId}';
 					
                     </div>
                 </div>
+				<div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
+                    </div>
+					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
+					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+					<div id="deathHospitalDivId">
+					</div>
+					
+                </div>
+				
 				<div id="ntrTrustDivId">
 					
 				</div>
@@ -643,16 +654,16 @@ var globalCadreId = '${cadreId}';
 					</div>
 				  </div>
 				</div>
-                <div class="panel panel-default">
+                <!-- <div class="panel panel-default">
                 	<div class="panel-heading">
                     	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
                     </div>
-					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
+					
 					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
 					<div id="deathHospitalDivId">
 					</div>
 					
-                </div>
+                </div> -->
 				<!--<div class="row">
 					<div class="col-md-12 col-xs-12">
 						<div class="panel panel-default">
