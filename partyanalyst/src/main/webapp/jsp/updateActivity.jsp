@@ -2411,10 +2411,10 @@ $(document).on("click",".updateDateDetls",function(){
 		var attrImgCls = $(this).attr('attr_img');
 		$(".errCls").html("");
 		$("#err"+dateVal).html("");
-		if($("#"+dateVal).val() == ""){
+		/*if($("#"+dateVal).val() == ""){
 			$("#err"+dateVal).html("Date Required");
 			return;
-		}
+		}*/
 	
 	var jObj = {
 			plannedDateStr : "",
