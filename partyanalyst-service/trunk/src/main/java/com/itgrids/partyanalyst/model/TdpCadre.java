@@ -1064,7 +1064,7 @@ public class TdpCadre {
 		this.parentTdpCadreId = parentTdpCadreId;
 	}
 	
-	@Column(name="designation")
+	@Column(name="designation_name")
 	public String getDesignationName() {
 		return designationName;
 	}
