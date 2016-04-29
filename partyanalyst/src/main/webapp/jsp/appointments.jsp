@@ -3632,7 +3632,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj1)}
 			}).done(function(result){
-				buildAppointmentSearchResult(result," ",statusId);				
+				buildAppointmentSearchResult(result,statusId," ",);				
 			})
 	}
 	
