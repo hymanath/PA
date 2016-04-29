@@ -110,6 +110,7 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAppointmentService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.LocationService;
@@ -161,6 +162,7 @@ public class AppointmentService implements IAppointmentService{
 	private IUserAppointmentUserDAO userAppointmentUserDAO;
 	private IAppointmentStatusFlowDAO appointmentStatusFlowDAO;
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	
 	
 	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
 		return tdpCommitteeMemberDAO;
@@ -2953,6 +2955,11 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				searchType = "name"; 
 			}
 			 
+			  
+				List<Long> partyCommiteeDesigCadreIds = new ArrayList<Long>();
+				List<Long> cadreIds = new ArrayList<Long>();
+				Map<Long,String> publicRepresLocaMap = new HashMap<Long,String>();
+				
 				List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentSearchDetailsForStatus(strDate,endDate,inputVo,searchType);
 				if(list != null && list.size() > 0){
 				
@@ -3015,15 +3022,176 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						String fname = params[6] != null ? params[6].toString() : "";
 						String lname = params[7] != null ?params[7].toString() : "";
 						candidateVo.setCreatedBy(fname+" "+lname);
-					
+						
+						Long apptcanditype = params[19] !=null ?(Long)params[19]:null;
+						Long tdpcadreId =    params[21] !=null ?(Long)params[21]:null;
+						
+						
+						 //candidates designation based on appt cand type
+						if(apptcanditype != null){
+							candidateVo.setApptCandiTypeId(apptcanditype);
+							if(apptcanditype.longValue() == 4l){
+								
+								candidateVo.setCandDesignation(params[20] !=null ?params[20].toString():"");
+								candidateVo.setConstituency(params[22] !=null ?params[22].toString()+" Constituency":"");
+								
+							}else if(apptcanditype.longValue() == 3l){
+								candidateVo.setCandDesignation(params[20] !=null ?params[20].toString():"");
+								cadreIds.add(tdpcadreId);
+							}else if(apptcanditype.longValue() == 2l && tdpcadreId!=null){
+								partyCommiteeDesigCadreIds.add(tdpcadreId);
+							}else if(apptcanditype.longValue() == 1l && tdpcadreId!=null && params[23]!=null){
+								candidateVo.setCandDesignation(params[3] != null ? params[3].toString() : "");
+								publicRepresLocaMap.put(tdpcadreId,locationService.getLocationForDesignation(tdpcadreId,(Long)params[23]));
+							}
+						}
+						
 						vo.getSubList().add(candidateVo);
 					}
 				}
-			   
+				
+				if(cadreIds!=null && cadreIds.size()>0){
+					setConstituenciesforTdpcadreIds(resultList,cadreIds);
+				}
+				if(partyCommiteeDesigCadreIds!=null && partyCommiteeDesigCadreIds.size()>0){
+					setPartyPositionDesignationsforTdpcadreIds(resultList,partyCommiteeDesigCadreIds);
+				}
+				if(publicRepresLocaMap!=null && publicRepresLocaMap.size()>0){
+					setPublicRepresenativeLocations(resultList,publicRepresLocaMap);
+				}
+				
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentSearchDetails", e);
+			
 		}
 		return resultList;
+		
+	}
+	public void setPublicRepresenativeLocations(List<AppointmentScheduleVO> resultList,Map<Long,String> publicRepresLocaMap){
+		
+		try{
+			
+			if(publicRepresLocaMap!=null && publicRepresLocaMap.size()>0){
+				
+				for( AppointmentScheduleVO appt :resultList){
+					
+					if(appt.getSubList()!=null && appt.getSubList().size()>0){
+						
+						for(AppointmentScheduleVO candi :appt.getSubList()){
+							
+							if(candi.getApptCandiTypeId()!=null && candi.getApptCandiTypeId().longValue() == 1l){
+								
+								if(candi.getTdpCadreId()!=null){
+									String location = publicRepresLocaMap.get(candi.getTdpCadreId());
+									candi.setConstituency(location);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at setPublicRepresenativeLocations", e);
+		}
+		
+	}
+	
+	public void setPartyPositionDesignationsforTdpcadreIds(List<AppointmentScheduleVO> resultList,List<Long> cadreIds){
+		
+		try{
+			
+			Map<Long,String> partyCommiteeDesignationsMap = new HashMap<Long, String>();
+			 List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(cadreIds);
+			 
+			 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+			 {
+				 CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+				 
+				 for (Object[] partyPosition : partyPositionDetails) {
+
+					 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+					 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+					 
+					 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
+					 
+					 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+					 
+					 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+					 {
+						 level = state+" "+level;
+					 }
+					 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+					 if(!partyPositionStr.isEmpty())
+					 { 
+						 partyCommiteeDesignationsMap.put((Long)partyPosition[5],partyPositionStr);
+					 }
+				 }
+			 }
+			
+			if(partyCommiteeDesignationsMap!=null && partyCommiteeDesignationsMap.size()>0){
+				
+				for( AppointmentScheduleVO appt :resultList){
+					
+					if(appt.getSubList()!=null && appt.getSubList().size()>0){
+						
+						for(AppointmentScheduleVO candi :appt.getSubList()){
+							
+							if(candi.getApptCandiTypeId()!=null && candi.getApptCandiTypeId().longValue() == 2l){
+								
+								if(candi.getTdpCadreId()!=null){
+									candi.setCandDesignation(partyCommiteeDesignationsMap.get(candi.getTdpCadreId()));
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}catch(Exception e) {
+			LOG.error("Exception raised at setPartyPositionDesignationsforTdpcadreIds", e);
+		}
+		 
+	}
+	
+	public void setConstituenciesforTdpcadreIds(List<AppointmentScheduleVO> resultList,List<Long> cadreIds){
+		
+		try{
+			Map<Long,String> constMap = new HashMap<Long,String>();
+			if(cadreIds!=null && cadreIds.size() >0 ){
+				List<Object[]> constlist = tdpCadreDAO.getConstituencyForCadreIds(cadreIds);
+				if(constlist!=null && constlist.size()>0){
+					for(Object[] obj :constlist){
+						constMap.put((Long)obj[0],obj[1].toString());
+					}
+				}
+			}
+			if(constMap!=null && constMap.size()>0){
+				
+				for( AppointmentScheduleVO appt :resultList){
+					
+					if(appt.getSubList()!=null && appt.getSubList().size()>0){
+						
+						for(AppointmentScheduleVO candi :appt.getSubList()){
+							
+							if(candi.getApptCandiTypeId()!=null && candi.getApptCandiTypeId().longValue() == 3l){
+								if(candi.getTdpCadreId()!=null){
+									String location = constMap.get(candi.getTdpCadreId());
+									if(location == null || location.isEmpty()){
+										candi.setConstituency("");
+									}else{
+										candi.setConstituency(location+" Constituency");
+									}
+									
+								}
+							}
+						}
+					}
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised at setConstituenciesforTdpcadreIds", e);
+		}
 		
 	}
 	

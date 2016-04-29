@@ -89,6 +89,17 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return (Long)query.uniqueResult(); 
 	}
+	public List<Object[]> getPublicRepresentativeDetailsByCadreIds(List<Long> cadreIds){
+		
+		Query query=getSession().createQuery(" select distinct model.tdpCadre.tdpCadreId,model1.publicRepresentativeType.publicRepresentativeTypeId," +
+				" model1.publicRepresentativeType.type " +
+				" from TdpCadreCandidate model,PublicRepresentative model1 " +
+				" where model.candidate.candidateId = model1.candidate.candidateId " +
+				" and model.tdpCadre.tdpCadreId in (:cadreIds)  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014  ");
 	
+		query.setParameterList("cadreIds", cadreIds);
+		
+	return query.list();
+	}
 	
 }

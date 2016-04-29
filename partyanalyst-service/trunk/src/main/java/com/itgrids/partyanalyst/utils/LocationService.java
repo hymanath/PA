@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import java.util.List;
 
+import org.apache.commons.lang.WordUtils;
+
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
@@ -438,35 +440,35 @@ public class LocationService {
 			try{
 				UserAddress userAddress = publicRepresentativeDAO.getUserAddressForCadre(tdpCadreId);
 				if(userAddress != null)
-				{
+				{   
 					
 					  if(Arrays.asList(IConstants.PR_STATE_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getState() != null ? userAddress.getState().getStateName() +" State" : "";
+						  location = userAddress.getState() != null ? WordUtils.capitalize(userAddress.getState().getStateName().toLowerCase()) +" State" : "";
 					  }
 					  else if(Arrays.asList(IConstants.PR_DISTRICT_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictName() +" District": "";
+						  location = userAddress.getDistrict() != null ? WordUtils.capitalize(userAddress.getDistrict().getDistrictName().toLowerCase()) +" District": "";
 					  }
 					  if(Arrays.asList(IConstants.PR_AC_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getConstituency() != null ? userAddress.getConstituency().getName() +" Constituency" : "";
+						  location = userAddress.getConstituency() != null ? WordUtils.capitalize(userAddress.getConstituency().getName().toLowerCase()) +" Constituency" : "";
 					  }
 					  if(Arrays.asList(IConstants.PR_PC_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getParliamentConstituency() != null ? userAddress.getParliamentConstituency().getName()+" Parliament" : "";
+						  location = userAddress.getParliamentConstituency() != null ? WordUtils.capitalize(userAddress.getParliamentConstituency().getName().toLowerCase())+" Parliament" : "";
 					  }
 					  if(Arrays.asList(IConstants.PR_MANDAL_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilName() +" Mandal": "";
+						  location = userAddress.getTehsil() != null ? WordUtils.capitalize(userAddress.getTehsil().getTehsilName().toLowerCase()) +" Mandal": "";
 					  }
 					  if(Arrays.asList(IConstants.PR_TOWN_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getName() +" Town": "";
+						  location = userAddress.getLocalElectionBody() != null ? WordUtils.capitalize(userAddress.getLocalElectionBody().getName().toLowerCase()) +" Town": "";
 					  }
 					  if(Arrays.asList(IConstants.PR_WARD_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getWard() != null ? userAddress.getWard().getName(): "";
+						  location = userAddress.getWard() != null ? WordUtils.capitalize( userAddress.getWard().getName().toLowerCase()): "";
 					  }
 				}
 			}

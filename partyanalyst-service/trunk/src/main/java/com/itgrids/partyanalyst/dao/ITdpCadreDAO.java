@@ -426,4 +426,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]>  advancedSearchMemberForPublicRepresentative(String searchType,LocationInputVO locationVo,LocationInputVO inputVo);
 	  public List<Object[]> checkVoterCardNumberRegistration(String voterIDCardNo);
 	  public List<Object[]> checkAlreayRegistrationByMemberShipNo(List<Long> tdpCadreIdsList);
+	  
+	  public List<Object[]> getConstituencyForCadreIds(List<Long> tdpcadreIds);
 }
