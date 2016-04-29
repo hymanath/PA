@@ -442,31 +442,31 @@ public class LocationService {
 					
 					  if(Arrays.asList(IConstants.PR_STATE_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getState() != null ? userAddress.getState().getStateName() : "";
+						  location = userAddress.getState() != null ? userAddress.getState().getStateName() +" State" : "";
 					  }
 					  else if(Arrays.asList(IConstants.PR_DISTRICT_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictName() : "";
+						  location = userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictName() +" District": "";
 					  }
 					  if(Arrays.asList(IConstants.PR_AC_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getConstituency() != null ? userAddress.getConstituency().getName() : "";
+						  location = userAddress.getConstituency() != null ? userAddress.getConstituency().getName() +" Constituency" : "";
 					  }
 					  if(Arrays.asList(IConstants.PR_PC_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getParliamentConstituency() != null ? userAddress.getParliamentConstituency().getName() : "";
+						  location = userAddress.getParliamentConstituency() != null ? userAddress.getParliamentConstituency().getName()+" Parliament" : "";
 					  }
 					  if(Arrays.asList(IConstants.PR_MANDAL_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilName() : "";
+						  location = userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilName() +" Mandal": "";
 					  }
 					  if(Arrays.asList(IConstants.PR_TOWN_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getName() : "";
+						  location = userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getName() +" Town": "";
 					  }
 					  if(Arrays.asList(IConstants.PR_WARD_DESG_IDS).contains(designationId))
 					  {
-						  location = userAddress.getWard() != null ? userAddress.getWard().getName() : "";
+						  location = userAddress.getWard() != null ? userAddress.getWard().getName(): "";
 					  }
 				}
 			}
