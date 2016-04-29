@@ -74,7 +74,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	public Long getEventDocumentsCount(EventDocumentVO inputVO,Date startDate,Date endDate)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(model.activityDocument.activityDocumentId)" +
+		str.append("select distinct count(model.activityDocument.activityDocumentId)" +
 				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted = 'N'  ");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
@@ -241,7 +241,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			str.append(" select  distinct model.userAddress.ward.constituencyId, model.userAddress.ward.name");
 		}
 		str.append(" ,count(model.activityDocument.activityDocumentId)");
-		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null ");
+		str.append(" from ActivityInfoDocument model where model.isDeleted = 'N' and model.activityDocument.activityDate is not null ");
 		if(startDate != null)
 		{
 			str.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
