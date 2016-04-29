@@ -60,6 +60,7 @@
 	<!-- YUI Dependency files (End) -->
 <style type="text/css">
 .tableC thead th , .tableC tr td{font-size:11px;padding:4px !important;}
+.tablepaddingremove thead th , .tablepaddingremove tr td{padding:0px !important;}
 .SelectPosition li{padding:5px;width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;list-style:none;cursor:pointer;}
 .daterangepicker_end_input{padding:0px !important;}
 .SelectPosition li:last-child{border-bottom:1px solid #ccc;}
@@ -4193,7 +4194,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='<span class="msgDiv2Completed"></span>';
 		str+='<button class="btn btn-block btn-success updateAll" value="Completed">UPDATE APPOINTMENT</button>';
 		str+='</div>';
-		str+='<table>';
+		str+='<table id="searchApptmntdatatable" class="tablepaddingremove">';
 		str+='<thead><th></th><th></th><th></th></thead>';
 		if(result != null)
 		{
@@ -4201,7 +4202,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			
 			for(var i in result)
 			{ 
-			if( xindex % 3 == 0)
+			if( xindex == 0)
 			{
 				str+='<tr>';
 			}
@@ -4335,16 +4336,20 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				str+='</div>';
 				str+='</td>';
 				//}
-				if(xindex % 3 == 2)
-				{
-					str+='</tr>';
+				xindex++;
+				if(result.length-1 == i){
+					if(xindex % 3 == 1){
+						str+='<td></td><td></td>';
+					}else if(xindex % 3 == 2){
+						str+='<td></td>';
+					}
+					xindex = 3;
 				}
-				
-				if(result.length-1 == xindex && xindex % 3 != 2)
-				{
+				if( xindex == 3){
 					str+='</tr>';
-				}	
-			xindex++;
+					xindex = 0;
+				}
+			
 			}
 			
 		}
@@ -4360,6 +4365,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='No Data Available';	
 		}
 		$("#searchApptmntDivId").html(str);
+		$('#searchApptmntdatatable').DataTable({bFilter: false});
 		$('[data-toggle="tooltip"]').tooltip();
 		if(flag == false)
 		$(".completedSetting").hide();
