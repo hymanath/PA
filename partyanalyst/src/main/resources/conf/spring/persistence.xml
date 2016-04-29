@@ -819,10 +819,13 @@
 			     <value>com.itgrids.partyanalyst.model.AppointmentAction</value>
 			     <value>com.itgrids.partyanalyst.model.AppointmentComment</value>
 			     <value>com.itgrids.partyanalyst.model.AppointmentSmsSetting</value>
-				  <value>com.itgrids.partyanalyst.model.AppointmentSmsHistory</value>
-				  <value>com.itgrids.partyanalyst.model.SmsOtpDetails</value>
-				  <value>com.itgrids.partyanalyst.model.UserAppointmentUser</value>
-				   <value>com.itgrids.partyanalyst.model.ActivityStatusQuestionnaire</value>
+				 <value>com.itgrids.partyanalyst.model.AppointmentSmsHistory</value>
+				 <value>com.itgrids.partyanalyst.model.SmsOtpDetails</value>
+				 <value>com.itgrids.partyanalyst.model.UserAppointmentUser</value>
+				 <value>com.itgrids.partyanalyst.model.ActivityStatusQuestionnaire</value>
+				 
+				 <value>com.itgrids.partyanalyst.model.UserFeedback</value>
+				 <value>com.itgrids.partyanalyst.model.UserFeedbackModule</value>
 				   
 				   <value>com.itgrids.paymentgateway.model.PaymentMethod</value>
 				   <value>com.itgrids.paymentgateway.model.PaymentModuleSubType</value>

@@ -2447,6 +2447,9 @@
 		<property name="rtcUnionService" ref="rtcUnionService" />
 		<property name="rtcDepotDAO" ref="rtcDepotDAO" />
 		<property name="tdpMemberTypeDAO" ref="tdpMemberTypeDAO" />
+		<property name="userFeedbackDAO" ref="userFeedbackDAO" />
+		<property name="mailService" ref="mailService" />
+		<property name="smsSenderService" ref="smsSenderService" />
 	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
