@@ -213,7 +213,7 @@ body
 	width:320px;
 	z-index:99;
 	padding:8px;
-	box-shadow:0px 0px 8px rgba(0,0,0,0.4) 
+	box-shadow:0px 0px 50px rgba(0,0,0,0.8); 
 }
 .arrow_box {
 	background: #fff;
