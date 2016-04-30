@@ -504,13 +504,15 @@ var globalCadreId = '${cadreId}';
                     </tr>
                 </table>
 				<div class="panel panel-default" id="participatedDivId" style="display:none">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY</h4>
+                	<div class="panel-heading" id="participatedConstHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY <span class="pull-right" id="participatedConstHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="participatedConstShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
-					<div class="panel-body">
+					<div class="panel-body" id="participatedConstBodyId">
                     	<h5 class="m_0">Location : <span id="participatedConstId" class="text-bold"></span></h5>
                      </div> 
                 </div>
+				
             	<div class="panel panel-default">
                 	<div class="panel-heading" role="tab" id="headingTwo12">
 								<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#collapseTwo12" aria-expanded="false" aria-controls="collapseTwo12">	
@@ -537,9 +539,49 @@ var globalCadreId = '${cadreId}';
 						</div>
                     </div> 
                 </div>
+				<!--swadhin-->
+				<div class="panel panel-default">
+				<div class="panel-heading" id="cadreBenefitsHeadingId">
+					<h4 class="panel-title" style="cursor:pointer;">
+						<img src="images/User_icon_BLACK-01.png"> 
+						CANDIDATE BENEFITS <span class="pull-right" id="cadreBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="cadreBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+					</h4>
+				</div>
+				<div class="panel-body pad_0" id="cadreBenefitsBodyId">
+					<ul class="benefits-block">
+						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none;"></center>
+						<li id="candidaterequestedDiv" style="display:none;">
+									 FINANCIAL REQUESTED <span class="pull-right" id="candidateRequestAmount">0</span>
+						</li>
+						<li id="candidateapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="candidateApprovedAmount">0</span></li>
+						<li id="candidatedeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
+							<ul  class="hoverclassli">
+								<li id="candidateDeathInsurance">0
+									
+								</li>
+							</ul>
+							
+							</span></li>
+						<li id="candidatehospitalDiv">HOSPITALIZATION INSURANCE REQUESTS <span class="pull-right" >
+							<ul  class="hoverclassli">
+								<li id="candidateHospitalizationInsurance">0
+									
+								</li>
+							</ul>
+							
+							</span>
+						</li>
+						<li id="candidateEducationBenefitDiv">
+							<span id="cadreIdSpanForEducationBenefit"></span>	
+						</li>
+					</ul>
+				</div>
+				</div>
+				<!--swadhin-->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					  <h4 class="panel-title"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
+					  <h4 class="panel-title"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
 					</div>
 					<div class="panel-body pad_0" id="referralGrievanceDetailsId">
 					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
@@ -547,14 +589,14 @@ var globalCadreId = '${cadreId}';
 					</div>
 				  </div>
             	<div class="panel panel-default">
-                	<div class="panel-heading">
+                	<div class="panel-heading" id="familyGrievanceDtlsHeaderId">
 					  
-                    	<h4 class="panel-title text-bold"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS<span class="pull-right" id="fmlyGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-up" ></i></span>
 						 <span class="pull-right"><span class="count-style" id="totalFamilyComplaints">0</span></span>
 						</h4>
 						 
                     </div>
-					 <div class="panel-body pad_0">					 
+					 <div class="panel-body pad_0" id="familyGrievanceDtlsBodyId">					 
 						<div  id="familyMemberDiv">
 							<img id="familyMemberImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
 						</div>
@@ -566,9 +608,64 @@ var globalCadreId = '${cadreId}';
 					
                     </div>
                 </div>
+				<!--SWADHIN-->
 				<div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION</h4>
+				<div class="panel-heading" id="familyBenefitsHeadingId">
+					<h4 class="panel-title" style="cursor:pointer;">
+					<img src="images/family_icon.png">
+						FAMILY BENEFITS<span class="pull-right" id="familyBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="familyBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+					</h4>
+				</div>
+				<div class="panel-body pad_0" id="familyBenefitsBodyId">
+					<ul class="benefits-block">
+					<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none"></center>
+					<li id="familyrequestedDiv" style="display:none;">
+								 FINANCIAL REQUESTED <span class="pull-right" id="familyRequestAmount">0</span>
+					</li>
+					<li id="familyapprovedDiv">APPROVED FINANCIAL SUPPORT <span class="pull-right" id="familyApprovedAmount">0</span></li>
+					<li id="familydeathDiv">DEATH INSURANCE REQUESTS <span class="pull-right" >
+						<ul  class="hoverclassli">
+							<li id="familyDeathInsurance">0
+							</li>
+						</ul>
+						</span></li>
+					<li id="familyhospitalDiv">HOSPITALIZATION INSURANCE REQUESTS<span class="pull-right" >
+						<ul  class="hoverclassli">
+							<li id="familyHospitalizationInsurance">0
+								
+							</li>
+						</ul>
+						
+						</span></li>
+					<li id="familyEducationBenefitDiv">
+						<span id="familyIdSpanForEducationBenefit"></span>	
+						
+					</li>
+					</ul>
+				</div>
+				</div>
+				<!--SWADHIN-->
+				<div class="panel panel-default">
+					<div class="panel-heading" id="familyMemberHeadingId">
+						<h4 class="panel-title text-bold" style="cursor:pointer;">
+							<img src="dist/img/family-icon.png">&nbsp;&nbsp;&nbsp;FAMILY MEMBERS<span class="pull-right" id="familyMemberHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="familyMemberShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						</h4>
+					</div>
+					<div class="panel-body" id="familyMemberBodyId">
+					
+					<center><img style="width: 25px; height: 25px;display:none;" src="images/icons/loading.gif" id="dataLoadingsImgForFamilyMembers"/></center>
+						<div class="family-members" id="familyMembersDiv">
+						  
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel panel-default">
+                	<div class="panel-heading" id="deathHospitalDivHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						</h4>
                     </div>
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -581,14 +678,15 @@ var globalCadreId = '${cadreId}';
 					
 				</div>
 				<div>
-				  <div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
+			<!--	  <div class="panel panel-default">
+					<div class="panel-heading" id="cadreBenefitsHeadingId">
+						<h4 class="panel-title" style="cursor:pointer;">
 							<img src="images/User_icon_BLACK-01.png"> 
-							CADRE BENEFITS
+							CADRE BENEFITS <span class="pull-right" id="cadreBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+							<span class="pull-right" id="cadreBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
 					</div>
-					<div class="panel-body pad_0">
+					<div class="panel-body pad_0" id="cadreBenefitsBodyId">
 						<ul class="benefits-block">
 							<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none;"></center>
 							<li id="candidaterequestedDiv" style="display:none;">
@@ -617,15 +715,17 @@ var globalCadreId = '${cadreId}';
 							</li>
 						</ul>
 					</div>
-				  </div>
+				  </div>-->
+				  <!--
 				  <div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
+					<div class="panel-heading" id="familyBenefitsHeadingId">
+						<h4 class="panel-title" style="cursor:pointer;">
 						<img src="images/family_icon.png">
-							FAMILY BENEFITS
+							FAMILY BENEFITS<span class="pull-right" id="familyBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+							<span class="pull-right" id="familyBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
 					</div>
-					<div class="panel-body pad_0">
+					<div class="panel-body pad_0" id="familyBenefitsBodyId">
 						<ul class="benefits-block">
 						<center><img class="dataLoadingsImgForTabSection" src="images/icons/loading.gif" style="width: 50px; height: 50px;display:none"></center>
 						<li id="familyrequestedDiv" style="display:none;">
@@ -652,7 +752,7 @@ var globalCadreId = '${cadreId}';
 						</li>
 						</ul>
 					</div>
-				  </div>
+				  </div>-->
 				</div>
                 <!-- <div class="panel panel-default">
                 	<div class="panel-heading">
@@ -677,37 +777,38 @@ var globalCadreId = '${cadreId}';
 						</div>
 					</div>
 				</div>-->
-                <div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold">
-                        	<img src="dist/img/family-icon.png">&nbsp;&nbsp;&nbsp;FAMILY MEMBERS
+				
+            <!--    <div class="panel panel-default">
+                	<div class="panel-heading" id="familyMemberHeadingId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;">
+                        	<img src="dist/img/family-icon.png">&nbsp;&nbsp;&nbsp;FAMILY MEMBERS<span class="pull-right" id="familyMemberHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="familyMemberShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
                         </h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" id="familyMemberBodyId">
 					
 					<center><img style="width: 25px; height: 25px;display:none;" src="images/icons/loading.gif" id="dataLoadingsImgForFamilyMembers"/></center>
                     	<div class="family-members" id="familyMembersDiv">
                           
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="col-md-8">
             	<div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE</h4>
+                	<div class="panel-heading" id="cadrMmbrBthHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE <span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" id="cadrMmbrBthBodyId">
                     	<div class="panel-group electionPerformanceDiv" id="accordion" role="tablist" aria-multiselectable="true">
                           
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS</h4>
+                	<div class="panel-heading" id="cadreEnrolmentStatsHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS <span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
-                    <div class="panel-body" style="padding:0px 15px;">
+                    <div class="panel-body" id="cadreEnrolmentStatsBodyId" style="padding:0px 15px;">
                     	<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
 						   
                         </div>
@@ -728,20 +829,20 @@ var globalCadreId = '${cadreId}';
                     </div>-->
 					
 					<div class="panel panel-default">
-					<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY</h4>
+					<div class="panel-heading" id="ivrSummaryHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY<span class="pull-right" id="ivrSummaryHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="ivrSummaryShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>		
-					<div class="panel-body">
+					<div class="panel-body" id="ivrSummaryBodyId">
 						<div id="ivrTypeDetailsDivId"></div>
 					 </div>
 				 </div>
 					
 				<!-- IVR SUMMARY  END ----> 
                 <div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES</h4>
+                	<div class="panel-heading" id="cadreActivitiesHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES <span class="pull-right" id="cadreActivitiesHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreActivitiesShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" id="cadreActivitiesBodyId">
                     	<div class="row">
                         	<div class="col-md-4 col-xs-12" id="eventInvitatinDiv">
                             	
@@ -886,10 +987,10 @@ var globalCadreId = '${cadreId}';
 				 </div>-->
                 
                 <div class="panel panel-default" id="electionProfileMainDivId">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE</h4>
+                	<div class="panel-heading" id="cadreElectionProfileHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE <span class="pull-right" id="cadreElectionProfileShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreElectionProfileHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" id="cadreElectionProfileBodyId">
                     	<div class="cadre-election" >
 						<div id="electionProfileDivId"> </div>
                         	
@@ -920,12 +1021,12 @@ var globalCadreId = '${cadreId}';
                 <div class="panel panel-default">
                 	<div class="panel-heading">
 					<a id="" class="showbtnCls" title="Click here to Show Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
-                    	<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS
+                    	<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						 <i class="pull-right glyphicon glyphicon-triangle-top "></i>							
 						</h4>
 						</a>
 						<a id="" class="newsMainDivId" style="display:none;" title="Click here to Hide Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
-						<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS
+						<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span>
 							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
 						</h4>
 						</a>
@@ -1017,13 +1118,13 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
 					<a href="javascript:{hideAndShowCommittee(1);}" title="Click here to Show Committee Details" id="showId">
                     	<h4 class="panel-title">
-                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES 
+                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span> 
 							 <i class="pull-right glyphicon glyphicon-triangle-top "></i>							
                         </h4>
 						</a>
 						<a href="javascript:{hideAndShowCommittee(2);}" title="Click here to Hide Committee Details" style="display:none;" id="hideId">
 							<h4 class="panel-title">
-                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES 
+                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span> 
 							 
 							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
                         </h4>
@@ -1118,12 +1219,12 @@ var globalCadreId = '${cadreId}';
             	<div class="panel panel-default">
                 	<div class="panel-heading">
 					<a href="javascript:{hideAndShowSurvey(1);}" title="Click here to Show Committee Details" id="surveyshowId"> 
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
 							<i class="pull-right glyphicon glyphicon-triangle-top "></i>
 						</h4>
 						</a>
 							<a href="javascript:{hideAndShowSurvey(2);}" title="Click here to Hide Committee Details" style="display:none;" id="surveyhideId">
-						<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS
+						<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span>
 							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
 						</h4>
 						</a>
@@ -2871,10 +2972,135 @@ function getCadreFamilyDetailsByCadreId()
 			getNtrTrustStudentDetailsInstitutionWise("cadre");
 	  });
  } 
- 
+
+$("#familyMemberBodyId").collapse('hide');
+$(document).on("click","#familyMemberHeadingId",function(){
+	var isVisible = $( "#familyMemberHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#familyMemberHideId" ).show();
+		 $( "#familyMemberShowId" ).hide();
+	}else{
+		$( "#familyMemberHideId" ).hide();
+		$( "#familyMemberShowId" ).show();
+	}
+	$("#familyMemberBodyId").collapse('toggle')
+});
+$("#familyBenefitsBodyId").collapse('hide');
+$(document).on("click","#familyBenefitsHeadingId",function(){
+	var isVisible = $( "#familyBenefitsHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#familyBenefitsHideId" ).show();
+		 $( "#familyBenefitsShowId" ).hide();
+	}else{
+		$( "#familyBenefitsHideId" ).hide();
+		$( "#familyBenefitsShowId" ).show();
+	}
+	$("#familyBenefitsBodyId").collapse('toggle')
+});
+$("#cadreBenefitsBodyId").collapse('hide');
+$(document).on("click","#cadreBenefitsHeadingId",function(){
+	var isVisible = $( "#cadreBenefitsHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#cadreBenefitsHideId" ).show();
+		 $( "#cadreBenefitsShowId" ).hide();
+	}else{
+		$( "#cadreBenefitsHideId" ).hide();
+		$( "#cadreBenefitsShowId" ).show();
+	}
+	$("#cadreBenefitsBodyId").collapse('toggle')
+});
+$("#deathHospitalDivId").collapse('hide');
+$(document).on("click","#deathHospitalDivHeaderId",function(){
+	var isVisible = $( "#deathHospitalDivHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#deathHospitalDivHideId" ).show();
+		 $( "#deathHospitalDivShowId" ).hide();
+	}else{
+		$( "#deathHospitalDivHideId" ).hide();
+		$( "#deathHospitalDivShowId" ).show();
+	}
+	$("#deathHospitalDivId").collapse('toggle')
+});
+$("#familyGrievanceDtlsBodyId").collapse('hide');
+$(document).on("click","#familyGrievanceDtlsHeaderId",function(){
+	$("#familyGrievanceDtlsBodyId").collapse('toggle')
+});
+$("#cadreEnrolmentStatsBodyId").collapse('show');
+$(document).on("click","#cadreEnrolmentStatsHeaderId",function(){
+	var isVisible = $( "#cadreEnrolmentStatsHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#cadreEnrolmentStatsHideId" ).show();
+		 $( "#cadreEnrolmentStatsShowId" ).hide();
+	}else{
+		$( "#cadreEnrolmentStatsHideId" ).hide();
+		$( "#cadreEnrolmentStatsShowId" ).show();
+	}
+	$("#cadreEnrolmentStatsBodyId").collapse('toggle')
+});
+$("#ivrSummaryBodyId").collapse('hide');
+$(document).on("click","#ivrSummaryHeaderId",function(){  
+	var isVisible = $( "#ivrSummaryHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#ivrSummaryHideId" ).show();
+		 $( "#ivrSummaryShowId" ).hide();
+	}else{
+		$( "#ivrSummaryHideId" ).hide();
+		$( "#ivrSummaryShowId" ).show();
+	}
+	$("#ivrSummaryBodyId").collapse('toggle')
+});
+$("#cadreActivitiesBodyId").collapse('hide');
+$(document).on("click","#cadreActivitiesHeaderId",function(){
+	var isVisible = $( "#cadreActivitiesHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#cadreActivitiesHideId" ).show();
+		 $( "#cadreActivitiesShowId" ).hide();
+	}else{
+		$( "#cadreActivitiesHideId" ).hide();
+		$( "#cadreActivitiesShowId" ).show();
+	}
+	$("#cadreActivitiesBodyId").collapse('toggle')
+});
+$("#cadreElectionProfileBodyId").collapse('show');
+$(document).on("click","#cadreElectionProfileHeaderId",function(){
+	var isVisible = $( "#cadreElectionProfileHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#cadreElectionProfileHideId" ).show();
+		 $( "#cadreElectionProfileShowId" ).hide();
+	}else{
+		$( "#cadreElectionProfileHideId" ).hide();
+		$( "#cadreElectionProfileShowId" ).show();
+	}
+	$("#cadreElectionProfileBodyId").collapse('toggle')
+});
+$("#participatedConstBodyId").collapse('hide');
+$(document).on("click","#participatedConstHeaderId",function(){
+	var isVisible = $( "#participatedConstHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#participatedConstHideId" ).show();
+		 $( "#participatedConstShowId" ).hide();
+	}else{
+		$( "#participatedConstHideId" ).hide();
+		$( "#participatedConstShowId" ).show();
+	}
+	$("#participatedConstBodyId").collapse('toggle')
+});
+$("#cadrMmbrBthBodyId").collapse('show');
+$(document).on("click","#cadrMmbrBthHeaderId",function(){ 
+var isVisible = $( "#cadrMmbrBthHideId" ).is( ":visible" );
+if(isVisible==false){
+		 $( "#cadrMmbrBthHideId" ).show();
+		 $( "#cadrMmbrBthShowId" ).hide();
+	}else{
+		$( "#cadrMmbrBthHideId" ).hide();
+		$( "#cadrMmbrBthShowId" ).show();
+	}
+	$("#cadrMmbrBthBodyId").collapse('toggle')
+});
+
  var familycadreIdsArrayGlobal=[];
  function buildCadreFamilyDetails(result)
- {
+ { 
  //console.log(result.familyMembersList)
 	  familyInfoArr=[];
 	 var constId = $('#cadreConstituencyId').val();
@@ -3489,7 +3715,7 @@ function buildElectionPerformanceInCadreLocation(result)
 	var str = '';
 	for(var i in result)
 	{
-		
+	
 		str += '<div class="panel panel-default">';
 		str += '<div class="panel-heading  bg_white" style="" role="tab" id="headingOne'+result[i].year+'">';
 		str += '<h4 class="panel-title">';
