@@ -4797,4 +4797,62 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		}
 		return returnList;
 	}
+	public List<OptionsCountVo> getCommentDetails(Long activityScopeId,Long reportType, Long qstnId, Long levelId, Long reportTypeId){
+		List<OptionsCountVo> returnList = new ArrayList<OptionsCountVo>();
+		List<Object[]> villgeList = null;
+		List<Object[]> wardList = null;
+		List<Object[]> mandalList = null;
+		List<Object[]> TownList = null;
+		List<Object[]> urbanList = null;
+		List<Object[]> constncyList = null;
+		
+		if(levelId != null && levelId.longValue()>0L){
+			if(levelId.longValue() ==1L){
+				 villgeList = activityQuestionAnswerDAO.getCommentDetails(activityScopeId,reportType,qstnId,6l,reportTypeId,IConstants.VILLAGE);
+				 wardList = activityQuestionAnswerDAO.getCommentDetails(activityScopeId,reportType,qstnId,2l,reportTypeId,IConstants.WARD);
+			}else if(levelId.longValue() ==2L){
+				 mandalList = activityQuestionAnswerDAO.getCommentDetails(activityScopeId,reportType,qstnId,5l,reportTypeId,IConstants.MANDAL);
+				 TownList = activityQuestionAnswerDAO.getCommentDetails(activityScopeId,reportType,qstnId,7l,reportTypeId,IConstants.TOWN);
+				 urbanList = activityQuestionAnswerDAO.getCommentDetails(activityScopeId,reportType,qstnId,9l,reportTypeId,IConstants.URBAN);
+			}else if(levelId.longValue() ==5L){
+				 constncyList = activityQuestionAnswerDAO.getCommentDetails(activityScopeId,reportType,qstnId,13l,reportTypeId,IConstants.CONSTITUENCY);
+			}
+		}
+		if(villgeList != null && villgeList.size()>0){
+		setCommentDetails( villgeList, returnList,"village");
+		}else if(wardList != null && wardList.size()>0){
+			setCommentDetails( wardList, returnList,"ward");
+		}else if(mandalList != null && mandalList.size()>0){
+			setCommentDetails( mandalList, returnList,"mandal");
+		}else if(TownList != null && TownList.size()>0){
+			setCommentDetails( TownList, returnList,"town");
+		}else if(urbanList != null && urbanList.size()>0){
+			setCommentDetails( urbanList, returnList, "urban");
+		}else if(constncyList != null && constncyList.size()>0){
+			setCommentDetails( constncyList, returnList, "constituency");
+		}
+		return returnList;
+	}
+	public void setCommentDetails(List<Object[]> commentDetails, List<OptionsCountVo> returnList, String region){
+		if(commentDetails != null && commentDetails.size()>0){
+			for(Object[] commnt : commentDetails){
+			OptionsCountVo vo = new OptionsCountVo();
+			vo.setDistrictId(commnt[0] !=null ?commonMethodsUtilService.getLongValueForObject(commnt[0]) : 0l);
+			vo.setDistrictName(commnt[1] !=null ?commonMethodsUtilService.getStringValueForObject(commnt[1]) : "");
+			vo.setConstincyId(commnt[2] !=null ?commonMethodsUtilService.getLongValueForObject(commnt[2]) : 0l);
+			vo.setConstincyName(commnt[3] !=null ?commonMethodsUtilService.getStringValueForObject(commnt[3]) : "");
+			vo.setTehsilId(commnt[4] !=null ?commonMethodsUtilService.getLongValueForObject(commnt[4]) : 0l);
+			vo.setTehsilName(commnt[5] !=null ?commonMethodsUtilService.getStringValueForObject(commnt[5]) : "");
+			if(region == "town" || region == "urban"){
+			vo.setPanchayatId(0l);
+			vo.setPanchayatName("");
+			}else{
+				vo.setPanchayatId(commnt[6] !=null ?commonMethodsUtilService.getLongValueForObject(commnt[6]) : 0l);
+				vo.setPanchayatName(commnt[7] !=null ?commonMethodsUtilService.getStringValueForObject(commnt[7]) : "");
+			}
+			vo.setOptnCommnt(commnt[8] !=null ?commonMethodsUtilService.getStringValueForObject(commnt[8]) : "");
+		    returnList.add(vo);
+			}
+		}
+	}
 }

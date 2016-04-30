@@ -25,11 +25,93 @@ public class OptionsCountVo implements Comparable<OptionsCountVo>,Serializable {
 	private String constincyName;
 	private Long constincyId;
 	private List<OptionsCountVo> optionsList = new ArrayList<OptionsCountVo>();
+	private Long tehsilId;
+	private String tehsilName;
+	private Long districtId;
+	private String districtName;
+	private Long panchayatId;
+	private String panchayatName;
+	private Long localElectionBodyId;
+	private String localElectionName;
+	private String optnCommnt;
 	//private List<String> remarks;
+	
 	
 	
 	public int getCount() {
 		return count;
+	}
+
+	public String getOptnCommnt() {
+		return optnCommnt;
+	}
+
+	public void setOptnCommnt(String optnCommnt) {
+		this.optnCommnt = optnCommnt;
+	}
+
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+
+	public String getLocalElectionName() {
+		return localElectionName;
+	}
+
+	public void setLocalElectionName(String localElectionName) {
+		this.localElectionName = localElectionName;
+	}
+
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+
+	public String getTehsilName() {
+		return tehsilName;
+	}
+
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
 	}
 
 	public List<OptionsCountVo> getOptionsList() {
