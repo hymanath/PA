@@ -92,4 +92,5 @@ public interface IAppointmentService {
 	public ResultStatus saveDesignationForOtherCandidate(String designation,Long candidateTypeId);
 	public void getDesignationsForCadre(List<Long> tdpCadreIds,List<AppointmentCandidateVO> finalList);
 	public AppointmentStatusFlowVO getLoginUserAppointmentUserType(Long userId);
+	public AppointmentScheduleVO setPreferDatesToAppointment(List<Long> aptmnts,AppointmentScheduleVO apptvo);
 }

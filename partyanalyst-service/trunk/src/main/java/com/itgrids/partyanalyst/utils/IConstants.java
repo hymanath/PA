@@ -1042,4 +1042,6 @@ public interface IConstants {
 	public static final Long[] PR_TOWN_DESG_IDS={17L,19L,20L};
 	public static final Long[] PR_WARD_DESG_IDS={18L};
 	//public static final String EMAIL_IMAGES_PATH = "D:/Tomcat/webapps/PartyAnalyst/images/TDP/";
+	
+	public static final Long APPOINTMENTS_PUBLICATION_ID = 12l;
 }

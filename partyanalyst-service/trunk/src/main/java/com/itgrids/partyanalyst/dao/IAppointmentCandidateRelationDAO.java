@@ -47,4 +47,6 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	
 	public List<Object[]> getAllScheduledApptsByDate(Long apptUserId,Date date,Long apptStatusId);
 	
+	public List<Object[]> getTotalAppointmentDetails(Long appointmentId);
+	
 }
