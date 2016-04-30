@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.AppointmentCandidateVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
+import com.itgrids.partyanalyst.dto.AppointmentFieldsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentLocVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
@@ -88,7 +89,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private static List<AppointmentStatusFlowVO> appointmentStatusFlowVOList;
 	private  List<AppointmentSlotsVO> apptSlotList;
 	private  AppointmentStatusFlowVO appointmentStatusFlowVO;
-	
+	private  AppointmentFieldsVO  appointmentFieldsVO;
 	
 	public AppointmentStatusFlowVO getAppointmentStatusFlowVO() {
 		return appointmentStatusFlowVO;
@@ -323,6 +324,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public static void setAppointmentStatusFlowVOList(
 			List<AppointmentStatusFlowVO> appointmentStatusFlowVOList) {
 		AppointmentAction.appointmentStatusFlowVOList = appointmentStatusFlowVOList;
+	}
+	
+	public AppointmentFieldsVO getAppointmentFieldsVO() {
+		return appointmentFieldsVO;
+	}
+
+	public void setAppointmentFieldsVO(AppointmentFieldsVO appointmentFieldsVO) {
+		this.appointmentFieldsVO = appointmentFieldsVO;
 	}
 
 	public String execute(){
@@ -1359,7 +1368,19 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getTotalAppointmentDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			Long appointmentId  =    jObj.getLong("appointmentId");
+			
+			appointmentFieldsVO = appointmentReportDashBoardService.getTotalAppointmentDetails(appointmentId);
+			
+		}catch(Exception e){
+		 LOG.error("Exception raised at getAppointmentUsersDtls() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	
 }
