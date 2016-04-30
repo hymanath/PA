@@ -89,7 +89,7 @@
    		<div class="col-md-12">
         	<div class="panel panel-default panel-custom">
             	<div class="panel-heading">
-                	<h4 class="panel-title">ACTIVITIES REPORT
+                	<h4 class="panel-title">ACTIVITIES RESPONCE REPORT
 						<!--<span class="pull-right" >
 							<div class="input-group col-md-12" style="margin-top:-8px">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -102,9 +102,9 @@
                 <div class="panel-body">
                 	<div class="row">
                     	
-                        <div class="col-md-9">
+                        <div class="col-md-12">
 							<div class="row">
-								<div class="col-md-9" id="ErrDiv" style="color:#E6211E;">
+								<div class="col-md-12" id="ErrDiv" style="color:#E6211E;">
 								</div>
 							</div>
                         	<div class="row">
@@ -172,7 +172,9 @@
 							<div class="col-md-3 m_top10 col-md-offset-4">
 								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getOptionDetailsForQuestion();">GET REPORT</button>
 							</div>
-							<button class="btn btn-success" id="lcnExcelBtn" onclick="generateExcel('actvtyQstnOptnExclId')" style="margin-left: 650px; display:none;">Export Excel</button>
+							<div class="col-md-12">
+							<button class="btn btn-success pull-right" id="lcnExcelBtn" onclick="generateExcel('actvtyQstnOptnExclId')" style="display:none;">Export Excel</button>
+							</div>
 							</div>
 						<div class="row  m_top10" id="optnsCntDiv" style="display:none;">
 							<div class="col-md-12">
@@ -258,7 +260,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="viewCommentsBlock" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -423,23 +425,23 @@ function getOptionDetailsForQuestion(){
 		$("#optionsCntId").html("");
 		var str = '';
 		str+='<div class="table-responsive">';
-		str+='<table class="table table-bordered table-condensed" style="background:#fff" id="optionsTableId">';
+		str+='<table class="table table-bordered table-condensed" style="background:#fff;margin-ytop:15px;" id="optionsTableId">';
 		var optnindx = 0;
 		for(var i in result){
 			for(var x in result[i].optionsList){
 				if(optnindx == 0){
 					str+='<tr>';
-				str+='<td style="width:150px;">'+reportText+' Name</td>';
+				str+='<td style="width:150px;font-weight:bold;">'+reportText+' Name</td>';
 				}
 				if(i==0){
-				str+='<td style="width:100px;">'+result[i].optionsList[x].constincyName+'</td>';//option name
+				str+='<td style="width:100px;font-weight:bold;">'+result[i].optionsList[x].constincyName+'</td>';//option name
 				}
 				if(optnindx < x)
 					str+='</tr>';
 				optnindx++;
 			}
 			str+='<tr>';
-			str+='<td style="width:150px;" id='+result[i].constincyId+' class="constituncyCls">'+result[i].constincyName+'</td>';
+			str+='<td style="width:150px;font-weight:bold;" id='+result[i].constincyId+' class="constituncyCls">'+result[i].constincyName+'</td>';
 			for(var x in result[i].optionsList){
 				str+='<td class="text-center" style="width:100px;">'+result[i].optionsList[x].count+'';
 				if(result[i].optionsList[x].optionTypeId > 0){
@@ -532,26 +534,26 @@ function buildCommentsDetails(result){
 	var str ='';
 	var excelDivid = "excelData";
 	if(result != null && result.length >0){
-	str+='<button class="btn btn-success" id="cmntsExcl" onclick="generateExcel(\'excelData\')" style="margin-left: 450px;">Export Excel</button>';
-	str+='<table class="table table-bordered">';
+	str+='<button class="btn btn-success pull-right" id="cmntsExcl" onclick="generateExcel(\'excelData\')">Export Excel</button>';
+	str+='<table class="table table-bordered "  style="margin-top:15px;">';
 	str+='<thead>';
-	str+='<th>District</th>';
-	str+='<th>Constituency</th>';
-	str+='<th>Mandal/Municipality</th>';
-	str+='<th>Village/Ward</th>';
-	str+='<th>Comments</th>';
+	str+='<th style="font-weight:bold;">District</th>';
+	str+='<th style="font-weight:bold;">Constituency</th>';
+	str+='<th style="font-weight:bold;">Mandal/Municipality</th>';
+	str+='<th style="font-weight:bold;">Village/Ward</th>';
+	str+='<th style="font-weight:bold;">Comments</th>';
 	str+='</thead>';
 	str+='<tbody>';
 	
 	for(var i in result){
 	str+='<tr>';
-	str+='<td>'+result[i].districtName+'</td>';
-	str+='<td>'+result[i].constincyName+'</td>';
-	str+='<td>'+result[i].tehsilName+'</td>';
+	str+='<td style="font-weight:bold;">'+result[i].districtName+'</td>';
+	str+='<td style="font-weight:bold;">'+result[i].constincyName+'</td>';
+	str+='<td style="font-weight:bold;">'+result[i].tehsilName+'</td>';
 	if(result[i].panchayatName != ""){
-	str+='<td>'+result[i].panchayatName+'</td>';
+	str+='<td style="font-weight:bold;">'+result[i].panchayatName+'</td>';
 	}
-	str+='<td>'+result[i].optnCommnt+'</td>';
+	str+='<td style="font-weight:bold;">'+result[i].optnCommnt+'</td>';
 	str+='</tr>';
 	}			
 	
@@ -570,11 +572,11 @@ function excelCommentDetails(result){
 	
 	str+='<table class="table table-bordered">';
 	str+='<thead>';
-	str+='<th>District</th>';
-	str+='<th>Constituency</th>';
-	str+='<th>Mandal/Municipality</th>';
-	str+='<th>Village/Ward</th>';
-	str+='<th>Comments</th>';
+	str+='<th style="font-weight:bold;">District</th>';
+	str+='<th style="font-weight:bold;">Constituency</th>';
+	str+='<th style="font-weight:bold;">Mandal/Municipality</th>';
+	str+='<th style="font-weight:bold;">Village/Ward</th>';
+	str+='<th style="font-weight:bold;">Comments</th>';
 	str+='</thead>';
 	str+='<tbody>';
 	
