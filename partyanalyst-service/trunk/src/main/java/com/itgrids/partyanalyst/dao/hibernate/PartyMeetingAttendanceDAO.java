@@ -55,7 +55,7 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 		if(todayDate != null )
 			queryStr.append(" and date(PMA.partyMeeting.startDate) <=:todayDate ");
 		
-		queryStr.append(" group by PMA.partyMeeting.partyMeetingId order by PMA.partyMeeting.partyMeetingId ");
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingId,PMA.attendance.tdpCadreId order by PMA.partyMeeting.partyMeetingId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(partyMeetingTypeId != null && partyMeetingTypeId.longValue() >0L)
 			query.setParameter("partyMeetingTypeId", partyMeetingTypeId);		
