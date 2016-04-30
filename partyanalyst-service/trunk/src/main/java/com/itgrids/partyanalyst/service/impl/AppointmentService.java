@@ -4140,7 +4140,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					   inputVO.setSmsText("Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
 					   
 					  //Sending Sms To TimeSlot Booked Candidates
-				       sendSmsForAppointment(inputVO);
+				       //sendSmsForAppointment(inputVO);
 				       
 				       //Appointment Tracking Saving
 				       if(type !=null && type.equalsIgnoreCase("update")){
@@ -4408,7 +4408,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 			
 			//SMS sending
-			if(inputVO.isIssmsChecked())
+			/*if(inputVO.isIssmsChecked())
 			{
 				
 				AppointmentUpdateStatusVO smsVO = new AppointmentUpdateStatusVO();
@@ -4416,7 +4416,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				smsVO.setSmsText(inputVO.getSmsText());
 		        sendSmsForAppointment(smsVO);
 				
-			}
+			}*/
 			
 			
 			
