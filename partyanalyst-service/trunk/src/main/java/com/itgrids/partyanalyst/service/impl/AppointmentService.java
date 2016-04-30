@@ -2585,7 +2585,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						  
 						  statusVO.setClickIds(new ArrayList<Long>(0));
 						  statusVO.getClickIds().add(statusId);
-						  statusVO.getClickIds().add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
+						  if(statusId == 2l){
+							  statusVO.getClickIds().add(IConstants.APPOINTMENT_STATUS_SCHEDULED);
+						  }
 						  
 						  finalMap.put(statusId, statusVO);
 					  }
