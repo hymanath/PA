@@ -3071,6 +3071,11 @@
 	<bean id="appointmentReportDashBoardService" class="com.itgrids.partyanalyst.service.impl.AppointmentReportDashBoardService">
 		<property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO"/>
 		<property name="appointmentCandidateTypeDAO" ref="appointmentCandidateTypeDAO"/>
+		<property name="locationService" ref="locationService"/>
+		<property name="appointmentService" ref="appointmentService"/>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"/>
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
 	</bean>
 	
 	<!-- <bean name="insertTriggerForEveryDayChangeApptStatus" class="org.springframework.scheduling.quartz.CronTriggerBean">
