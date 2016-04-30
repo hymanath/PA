@@ -995,7 +995,7 @@ public String getCandidateWiseDetails(){
 			AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
 			inputVO.setAppointmentId(jObj.getLong("appointmentId"));
 			inputVO.setSmsText(jObj.getString("smsText"));
-		    resultStatus = appointmentService.sendSmsForAppointment(inputVO);
+		    //resultStatus = appointmentService.sendSmsForAppointment(inputVO);
 		} catch (Exception e) {
 			LOG.error("Exception raised at sendSmsForAppointment", e);
 		}
