@@ -459,13 +459,14 @@ public class AppointmentService implements IAppointmentService{
 					  " \tapptReason - "+appointmentVO.getReason()+"\tapptPreferableTime - "+appointmentVO.getAppointmentPreferableTimeType()+"\tapptDates - "+appointmentVO.getAppointmentDates());
 			
 			if(appointmentVO.getBasicInfoList() != null && appointmentVO.getBasicInfoList().size() > 0){
-				for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {
-					
-				  LOG.fatal(" candiname - "+basicInfo.getName()+"\tdesignationId - "+basicInfo.getDesignationId()+
-							  " \tmobileNo - "+basicInfo.getMobileNo()+"\tlocationScopeId - "+basicInfo.getLocationScopeId()+"\tdistrictId - "+basicInfo.getDistrictId()+
-							  "\tconstId -"+basicInfo.getConstituencyId() + "\ttehsilId - "+ basicInfo.getTehsilId() +"\tvillageId - "+basicInfo.getVillageId()+
-							  "\tvotercardno - "+basicInfo.getVoterCardNo() +"\tmembershipno - "+basicInfo.getMembershipNum() +"\tcandidateTypeId - "+basicInfo.getCandidateTypeId()	);
-				         
+				for (AppointmentBasicInfoVO basicInfo : appointmentVO.getBasicInfoList()) {					
+					if(basicInfo !=null){
+						LOG.fatal(" candiname - "+basicInfo.getName()+"\tdesignationId - "+basicInfo.getDesignationId()+
+								  " \tmobileNo - "+basicInfo.getMobileNo()+"\tlocationScopeId - "+basicInfo.getLocationScopeId()+"\tdistrictId - "+basicInfo.getDistrictId()+
+								  "\tconstId -"+basicInfo.getConstituencyId() + "\ttehsilId - "+ basicInfo.getTehsilId() +"\tvillageId - "+basicInfo.getVillageId()+
+								  "\tvotercardno - "+basicInfo.getVoterCardNo() +"\tmembershipno - "+basicInfo.getMembershipNum() +"\tcandidateTypeId - "+basicInfo.getCandidateTypeId()	);
+					    
+					}
 				}
 			}
 			
@@ -5066,7 +5067,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				}
 				else if((basicInfo.getLocationScopeId().longValue() == 6l || basicInfo.getLocationScopeId().longValue() == 8l) && (basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0))
 				{		//Village || Ward
-					Long id = Long.valueOf(basicInfo.getVillageId().toString().substring(1));
+					Long id = Long.valueOf(basicInfo.getVillageId().toString());
 					appCandi.setLocationValue(id);
 				}
 			
@@ -5091,15 +5092,19 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				
 				if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("4")){
 					userAddress.setTehsil(tehsilDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
-					if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
-						userAddress.setPanchayatId(Long.valueOf(basicInfo.getVillageId().toString().substring(1)));
+					if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l){
+						//userAddress.setPanchayatId(Long.valueOf(basicInfo.getVillageId().toString().substring(1)));
+						userAddress.setPanchayatId(Long.valueOf(basicInfo.getVillageId().toString()));
+					}
+						
 				}
 				else if(basicInfo.getTehsilId() != null && basicInfo.getTehsilId() > 0l && basicInfo.getTehsilId().toString().substring(0, 1).equalsIgnoreCase("5")){
 					userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(basicInfo.getTehsilId().toString().substring(1))));
 					if(basicInfo.getVillageId() != null && basicInfo.getVillageId() > 0l)
 					{
 						//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
-						userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
+						//userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString().substring(1))));
+						userAddress.setWard(constituencyDAO.get(Long.parseLong(basicInfo.getVillageId().toString())));
 					}
 				}
 				
