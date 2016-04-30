@@ -469,7 +469,6 @@ public class AppointmentService implements IAppointmentService{
 					}
 				}
 			}
-			
 			LOG.fatal("----------------------------------------------------");
 		}catch(Exception e)
 		{
@@ -4561,7 +4560,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("5"+localBodi[0].toString()));
-		        	vo.setLocationName(localBodi[1].toString() +" "+ localBodi[2].toString());
+		        	vo.setLocationName(localBodi[4].toString() +" "+ localBodi[2].toString());
 		        	locationsList.add(vo);
 	        	}else{
 	        		if(!greaterCorpIds.contains(localBdyId)){
@@ -6009,7 +6008,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		   List<AppointmentDetailsVO> finalList = new ArrayList<AppointmentDetailsVO>(0);
 		   SimpleDateFormat sdf =  new SimpleDateFormat("MM/dd/yyyy");
 		   SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM yyyy h:mm a");
-		   SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
+		   SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy"); 
 		try {
 			
 			 Date fromDate = null;
