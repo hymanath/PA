@@ -7346,7 +7346,7 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 		if(result != null){
 			var str='';
 			 str+'<div class="panel-body pad_0">';
-			 str+='NOTE : I:INVITED , NI:NON-INVITED';
+			 str+='NOTE : IA:INVITED  , NI:NON-INVITED';
 				str+='<table class="table m_0 table-bordered m_0" style="font-size:12px">'
 					
 					str+='<thead>';
