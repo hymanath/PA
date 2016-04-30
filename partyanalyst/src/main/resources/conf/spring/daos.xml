@@ -2729,30 +2729,6 @@
 	<bean id="userFeedbackModuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserFeedbackModuleDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="paymentMethodDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentMethodDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-		<bean id="paymentModuleSubTypeDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentModuleSubTypeDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-		<bean id="paymentAmountDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentAmountDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-		<bean id="paymentGatewayDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentGatewayDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-		<bean id="paymentModuleGatewayMerchantDetailsDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentModuleGatewayMerchantDetailsDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-		<bean id="transactionStatusDAO" class="com.itgrids.paymentgateway.dao.hibernate.TransactionStatusDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-		<bean id="paymentModuleDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentModuleDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-		<bean id="paymentTransactionDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentTransactionDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
 	
 	
 	<!--  end -->
