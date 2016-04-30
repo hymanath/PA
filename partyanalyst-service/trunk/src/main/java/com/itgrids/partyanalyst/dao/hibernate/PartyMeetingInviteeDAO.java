@@ -21,11 +21,11 @@ public class PartyMeetingInviteeDAO extends GenericDaoHibernate<PartyMeetingInvi
 	{
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct PMI.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMI.partyMeeting.partyMeetingLevel.level," +
-				" PMI.partyMeeting.partyMeetingType.partyMeetingTypeId,  PMI.partyMeeting.partyMeetingType.type, count( distinct  PMI.tdpCadreId)  from PartyMeetingInvitee PMI where " +
+				" PMI.partyMeeting.partyMeetingType.partyMeetingTypeId,  PMI.partyMeeting.partyMeetingType.type, count( distinct  PMI.partyMeeting.partyMeetingId)  from PartyMeetingInvitee PMI where " +
 				" date(PMI.partyMeeting.startDate) <= :toDayDate  ");
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			queryStr.append(" and  PMI.tdpCadreId in (:tdpCadreIdsList) ");
-		queryStr.append(" group by PMI.partyMeeting.partyMeetingType.partyMeetingTypeId order by PMI.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
+		queryStr.append(" group by PMI.partyMeeting.partyMeetingType.partyMeetingTypeId ,  PMI.tdpCadreId order by PMI.partyMeeting.partyMeetingLevel.partyMeetingLevelId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		 query.setDate("toDayDate", toDayDate);
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
