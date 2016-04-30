@@ -11988,6 +11988,11 @@
 			<param name="root">status</param>				
 		</result>
 	</action>
+	<action name="getTrainingCampAttendenceInfoInCadreLocationAction" class="cadreDetailsAction" method="getTrainingCampAttendenceInfoInCadreLocation" >
+		<result type="json" name="success">
+			<param name="root">idNameVoList</param>
+		</result>
+	</action>
 	<action name="getCommentDetailsAction" class="activityAction" method="getCommentDetails">
 		<result type="json" name="success">
 			<param name="root">optnsCountVOList</param>

@@ -792,6 +792,16 @@ var globalCadreId = '${cadreId}';
                         </div>
                     </div>
                 </div>-->
+				<div class="panel panel-default">
+                	<div class="panel-heading">
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> TRAINING CAMP DETAILS </h4>
+                    </div>
+					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
+					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+					<div id="trainingCampParticipationDivId">
+					</div>
+					
+                </div>
             </div>
             <div class="col-md-8">
             	<div class="panel panel-default">
@@ -1931,6 +1941,7 @@ var globalCadreId = '${cadreId}';
 					getTotalComplaintsForCandidate();
 					getRefferelDetailsStatusWise();
 					  getConductedPartyMeetingDetails("","","true");
+					getTrainingCampAttendenceInfoInCadreLocation();
 				}
 			});
 		}
@@ -7311,6 +7322,55 @@ function buildPopupComplaintInfo1(result) {
 	$("#popupContentDiv").html(str)
 	$("#tableId").dataTable();
 	$("#tableId").removeClass("dataTable")
+}
+
+function getTrainingCampAttendenceInfoInCadreLocation(){
+	
+	$("#trainingCampParticipationDivId").html('');
+	
+	var jsobj={
+		boothId : $("#cadreBoothId").val(),
+		panchayatId : globalPanchayatId,
+		wardId : 0,
+		mandalId : globalTehsilId,
+		lebId : globalElectionBodyId,
+		constituencyId : globalConstituencyId,
+		parliamentid : globalParliamentId,
+		districtid : globalDistrictId
+	}
+	$.ajax({
+		type:'GET',
+		 url: 'getTrainingCampAttendenceInfoInCadreLocationAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result != null){
+			var str='';
+			 str+'<div class="panel-body pad_0">';
+			 str+='NOTE : I:INVITED , NI:NON-INVITED';
+				str+='<table class="table m_0 table-bordered m_0" style="font-size:12px">'
+					
+					str+='<thead>';
+						str+='<th style="background-color:#f5f5f5">LOCATION</th>';
+						str+='<th style="background-color:#f5f5f5">TOTAL INVITED</th>';
+						str+='<th style="background-color:#f5f5f5">ATTENDED</th>';
+						str+='<th style="background-color:#f5f5f5">INVITEE ATTENDED PERCENTAGE</th>';
+					str+='</thead>'
+					for(var i in result){
+						str+='<tr>';
+							str+='<td style="text-transform:uppercase">'+result[i].name+'</td>';
+							str+='<td>'+result[i].count+'</td>';
+							str+='<td>'+result[i].actualCount+'(I), '+result[i].availableCount+'(NI)</td>';
+							str+='<td>'+result[i].percentage+' (%)</td>';
+						str+='</tr>';
+					}	
+					
+				str+'</table>';
+			str+='</div>';
+		
+		$("#trainingCampParticipationDivId").html(str);
+		}
+		$("#dataLoadingsImgForTrainingCampParticipation").hide();
+	});
 }
 </script>
 
