@@ -61,4 +61,5 @@ public interface IActivityService {
 	public List<IdNameVO> getQuestionsForReportType(Long activityScopeId);
 	public List<OptionsCountVo> getOptionDetailsForQuestion(Long activityScopeId,Long reportType, Long qstnId);
 	public List<IdNameVO> getActivityStatusDetailsByScopeId(Long activityScopeId,Long questionsId);
+	public List<OptionsCountVo> getCommentDetails(Long activityScopeId,Long reportType, Long qstnId, Long levelId, Long reportTypeId);
 }

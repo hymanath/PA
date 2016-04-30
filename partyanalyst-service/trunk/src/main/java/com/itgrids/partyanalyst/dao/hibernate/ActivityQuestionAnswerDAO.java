@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
+import com.google.gdata.data.IContent;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
@@ -834,7 +835,7 @@ public List<Object[]> getOptionsCountByScopId(Long activityScopeId,Long reportTy
 	}else if(reportType == 2l){
 		queryStr.append("model.activityLocationInfo.constituency.name,model.activityLocationInfo.constituency.constituencyId,   " );
 	}
-	queryStr.append("count(distinct model.activityQuestionAnswerId),count(model.optionTxt) from ActivityQuestionAnswer model where" +
+	queryStr.append("count(distinct model.activityQuestionAnswerId) from ActivityQuestionAnswer model where" +
 			" model.activityLocationInfo.activityScopeId =:activityScopeId and model.activityQuestionnaire.activityQuestionId =:questionId and model.isDeleted = 'N' ");
 	if(reportType == 1l){
 		queryStr.append(" group by model.activityLocationInfo.constituency.district.districtId,model.activityOption.activityOptionId ");
@@ -902,5 +903,61 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		query.setParameter("constituencyId", constituencyId);
 		return query.executeUpdate();
 	}
-	
+	public List<Object[]> getCommentDetails(Long activityScopeId,Long reportType,Long questnId, Long levelId, Long reportTypeId,String locationLevelStr){
+				
+		 StringBuilder queryStr=new StringBuilder();
+		 
+		 queryStr.append("select distinct  model.activityLocationInfo.constituency.district.districtId, model.activityLocationInfo.constituency.district.districtName," +
+		 		" model.activityLocationInfo.constituency.constituencyId,  model.activityLocationInfo.constituency.name, ");
+		 if(locationLevelStr.equalsIgnoreCase(IConstants.VILLAGE))
+			 queryStr.append(" model2.tehsil.tehsilId, model2.tehsil.tehsilName, model1.panchayatId, model1.panchayatName, ");
+		 else  if(locationLevelStr.equalsIgnoreCase(IConstants.WARD))
+			 queryStr.append(" model2.localBody.localElectionBodyId,model2.localBody.name,model1.constituencyId,model1.name, ");
+		 else  if(locationLevelStr.equalsIgnoreCase(IConstants.MANDAL))
+			 queryStr.append(" model1.tehsilId,model1.tehsilName, model2.localBody.localElectionBodyId,model2.localBody.name, ");
+		 else  if(locationLevelStr.equalsIgnoreCase(IConstants.TOWN) || locationLevelStr.equalsIgnoreCase(IConstants.URBAN))
+			 queryStr.append(" model2.localBody.localElectionBodyId, model2.localBody.name,model1.localElectionBodyId,model1.name, ");
+		 
+		 queryStr.append(" model.optionTxt from ActivityQuestionAnswer model " );
+		 
+		 if(locationLevelStr.equalsIgnoreCase(IConstants.VILLAGE))
+			 queryStr.append(" , Panchayat model1 , Booth model2 ");
+		 else  if(locationLevelStr.equalsIgnoreCase(IConstants.WARD))
+			 queryStr.append(" , Constituency model1, Booth model2 ");
+		 else  if(locationLevelStr.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 queryStr.append(" , Constituency model1 ");
+		 else  if(locationLevelStr.equalsIgnoreCase(IConstants.MANDAL))
+			 queryStr.append(" ,  Tehsil model1, Booth model2 ");
+		 else  if(locationLevelStr.equalsIgnoreCase(IConstants.TOWN) || locationLevelStr.equalsIgnoreCase(IConstants.URBAN))
+			 queryStr.append(" , LocalElectionBody model1,  Booth model2 ");
+		 
+		 queryStr.append(" where model.activityLocationInfo.activityScopeId =:activityScopeId ");
+				if(reportType == 1l){
+					queryStr.append(" and model.activityLocationInfo.constituency.district.districtId =:reportTypeId  " );
+				}else if(reportType == 2l){
+					queryStr.append(" and model.activityLocationInfo.constituency.constituencyId =:reportTypeId " );
+				}
+				
+				if(locationLevelStr.equalsIgnoreCase(IConstants.VILLAGE))
+					 queryStr.append(" and model.activityLocationInfo.locationValue = model1.panchayatId and model2.panchayat.panchayatId = model1.panchayatId ");
+				 else  if(locationLevelStr.equalsIgnoreCase(IConstants.WARD))
+					 queryStr.append(" and model.activityLocationInfo.locationValue = model1.constituencyId and model1.localElectionBody.localElectionBodyId = model2.localBody.localElectionBodyId ");
+				 else  if(locationLevelStr.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					 queryStr.append(" and model.activityLocationInfo.locationValue = model1.constituencyId ");
+				 else  if(locationLevelStr.equalsIgnoreCase(IConstants.MANDAL))
+					 queryStr.append(" and model.activityLocationInfo.locationValue = model1.tehsilId and model2.tehsil.tehsilId = model1.tehsilId ");
+				 else  if(locationLevelStr.equalsIgnoreCase(IConstants.TOWN) || locationLevelStr.equalsIgnoreCase(IConstants.URBAN))
+					 queryStr.append(" and model.activityLocationInfo.locationValue = model1.localElectionBodyId and model2.localBody.localElectionBodyId = model1.localElectionBodyId ");
+				
+				
+				queryStr.append("  and model.activityQuestionnaire.activityQuestionId =:questnId and model.isDeleted = 'N' " +
+						" and model.activityLocationInfo.locationLevel =:levelId and model.optionTxt is not null");
+		Query query=getSession().createQuery(queryStr.toString());	
+		
+		query.setParameter("levelId", levelId);
+		query.setParameter("reportTypeId", reportTypeId);
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameter("questnId", questnId);
+		return query.list();
+	}
 }
