@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
@@ -78,8 +79,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<IvrOptionsVO> ivrOptionsVOList;
 	private List<IvrOptionsVO> ivrOptionsList;
 	private List<LocationVO>  cadreDetlsLst;
+	private List<IdNameVO>	  idNameVoList;
 	
 	
+	public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	}
+	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+		this.idNameVoList = idNameVoList;
+	}
 	public List<IvrOptionsVO> getIvrOptionsList() {
 		return ivrOptionsList;
 	}
@@ -873,6 +881,27 @@ public String updateLeaderShip(){
 			jObj=new JSONObject(getTask());
 			Long tdpCadreId=jObj.getLong("cadreId");
 			cadreDetlsLst=cadreDetailsService.getCheckCandidateCadreDtls(tdpCadreId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCheckCandidateDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTrainingCampAttendenceInfoInCadreLocation(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long boothId = jObj.getLong("boothId");
+			Long panchayatId = jObj.getLong("panchayatId");
+			Long wardId = jObj.getLong("wardId");
+			Long mandalId = jObj.getLong("mandalId");
+			Long lebId = jObj.getLong("lebId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long parliamentid = jObj.getLong("parliamentid");
+			Long districtid = jObj.getLong("districtid");
+			
+			idNameVoList = cadreDetailsService.getTrainingCampAttendenceInfoInCadreLocation(boothId, panchayatId, wardId, mandalId, lebId, constituencyId, parliamentid, districtid);
+			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getCheckCandidateDetails() in CadreDetailsAction ",e);
 		}
