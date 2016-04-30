@@ -11175,8 +11175,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	public void tdpAffliatedCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadreNew,String insertTypeNew,final boolean statusVar)
 	{
 		
-		
-		if(registrationType.equalsIgnoreCase("ONLINE") && cadreRegistrationVO.getOrderId() != null && cadreRegistrationVO.getOrderId().trim().length() > 0){
+		if((registrationType.equalsIgnoreCase("ONLINE") && cadreRegistrationVO.getOrderId() != null && cadreRegistrationVO.getOrderId().trim().length() > 0)
+				 || (cadreRegistrationVO.getDataSourceType() != null && cadreRegistrationVO.getDataSourceType().trim().equalsIgnoreCase("ONLINE"))){
 			List<TdpCadre> tdpCadres = tdpCadreDAO.checkOnlineAccountExistsOrNot(cadreRegistrationVO.getOrderId());
 			if(tdpCadres != null && tdpCadres.size() > 0 && tdpCadres.get(0) != null){
 				tdpCadreNew = tdpCadres.get(0);
@@ -11201,6 +11201,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					{
 						if(tdpCadre.getDataSourceType() == null){
 						  tdpCadre.setDataSourceType(registrationType.trim().toUpperCase());
+						}
+						else if(cadreRegistrationVO.getDataSourceType() != null && cadreRegistrationVO.getDataSourceType().trim().equalsIgnoreCase("ONLINE")){
+							tdpCadre.setDataSourceType(cadreRegistrationVO.getDataSourceType().trim());
 						}
 					}
 					
@@ -11401,6 +11404,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						}
 						if(cadreRegistrationVO.getDesignationId() != null){
 							tdpCadre.setDesignationId(cadreRegistrationVO.getDesignationId());
+							if(cadreRegistrationVO.getOtherDesignationStr() != null && cadreRegistrationVO.getOtherDesignationStr().trim().length()>0)
+								tdpCadre.setDesignationName(cadreRegistrationVO.getOtherDesignationStr().trim());
 						}
 						
 						//tdpCadre.setTdpMemberTypeId(2l);
@@ -11927,7 +11932,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
 					}
 					boolean noSms = false;
-					if(registrationType != null && (registrationType.equalsIgnoreCase("TAB") || registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
+					if(registrationType != null && (registrationType.equalsIgnoreCase("TAB") || registrationType.equalsIgnoreCase("WEB") || 
+							registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 						String userId = "0000";
 						if(cadreRegistrationVO.getCreatedUserId() != null){
 						   userId = cadreRegistrationVO.getCreatedUserId().toString();
@@ -11945,7 +11951,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 							  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						
-					}else if(registrationType != null && (registrationType.equalsIgnoreCase("TAB") || registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
+					}else if(registrationType != null && (registrationType.equalsIgnoreCase("TAB") || registrationType.equalsIgnoreCase("WEB") ||
+							registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
 						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 						tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
@@ -12017,8 +12024,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								}
 								
 								if(flag)
-								{
-									String jobCode = sendSMSForAffliatedCadre(cadreRegistrationVO.getMobileNumber().trim(), "Thanks for registration, your Membership ID  :"+tdpCadre1.getMemberShipNo());
+								{   
+									String jobCode =  "";
+									if(cadreRegistrationVO.getDataSourceType() != null && !cadreRegistrationVO.getDataSourceType().trim().equalsIgnoreCase("ONLINE"))
+											jobCode = sendSMSForAffliatedCadre(cadreRegistrationVO.getMobileNumber().trim(), "Thanks for registration, your Membership ID  :"+tdpCadre1.getMemberShipNo());
 								}
 								
 								
@@ -12031,9 +12040,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				}
 				});
 				
-		/*} catch (Exception e) {
-			LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
-		}*/
+		//} catch (Exception e) {
+		//	LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
+		//}
 	}
 	public static String folderCreation(String folderPath){
 	  	 try {
@@ -12940,12 +12949,14 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			    	content = content + "<p style='text-align:center'>Telugu Nadu Graduates Federation (TNGF),</p> <br/>";
 			    	content = content + "<p style='text-align:center'>Telugu Desam Party.</p>";*/
 					
-			    	mailvo.setSubject("TNGF Enrollment Registration Form Feedback");
-					mailvo.setContent(content);
-					mailvo.setToAddress("sravanth.itgrids.hyd@gmail.com");
+					String subject = "TNGF Enrollment Registration Form Feedback";
+					//mailvo.setContent(content);
+					//mailvo.setToAddress("sravanth.itgrids.hyd@gmail.com");
 					
 					List<EmailDetailsVO> mailvoList = new ArrayList<EmailDetailsVO>();
-					mailvoList.add(mailvo);
+					//mailvoList.add(new EmailDetailsVO(subject,content,"sravanth.itgrids.hyd@gmail.com"));
+					//mailvoList.add(new EmailDetailsVO(subject,content,"a.dakavaram@gmail.com"));
+					mailvoList.add(new EmailDetailsVO(subject,content,"srishailam.itgrids.hyd@gmail.com"));
 					
 					/*String message = regQueriesVO.getDescription();
 					message = message+"Thanks for your feedback,We will contact shortly.";
