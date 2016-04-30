@@ -1265,7 +1265,7 @@ function buildTotalAppointmentStatusForToday(result){
 			if(value.totalCount == 0){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="">'+value.totalCount+'</td>';
+				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
 			}
 			str+='</tr>';
 			
@@ -1277,7 +1277,7 @@ function buildTotalAppointmentStatusForToday(result){
 				if(value.subList[i].totalCount == 0){
 					str+='<td class="text-center" style="background:#f8f8f8"> - </td>';
 				}else{
-					str+='<td style="background:#f8f8f8;" class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+clickAray+'" >'+value.subList[i].totalCount+'</td>';
+					str+='<td style="background:#f8f8f8;cursor:pointer;" class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+clickAray+'" >'+value.subList[i].totalCount+'</td>';
 				} 
 				str+='</tr>';
 			 }
@@ -1291,7 +1291,7 @@ function buildTotalAppointmentStatusForToday(result){
 			if(value.totalCount == 0){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="">'+value.totalCount+'</td>';
+				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer">'+value.totalCount+'</td>';
 			}
 			str+='</tr>';
 		}
@@ -6943,7 +6943,7 @@ function  getappointmentStatusDetails(statusArray,type,statusType){
 			})
 }
 
- /* $(document).on("click",".todayappointmentStatusCls",function(){
+  $(document).on("click",".todayappointmentStatusCls",function(){
 	
 	 var statusType=$(this).attr("attr_status_type");
 	  if(statusType==undefined || statusType==" " || statusType==null){
@@ -6964,7 +6964,7 @@ function  getappointmentStatusDetails(statusArray,type,statusType){
 	 });
 	getappointmentStatusDetails(statusArray,"today",statusType);			
 	
-}); */
+}); 
 
 function getTimeSlotsForADayByAppytUserId(){
 	
