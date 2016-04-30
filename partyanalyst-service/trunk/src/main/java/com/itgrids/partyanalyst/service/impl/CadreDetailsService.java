@@ -5890,7 +5890,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(lebId);
-				vo.setName("leb");
+				vo.setName("muncipality");
 				vo.setCount(lebInvitedCount);
 				vo.setActualCount(lebInvAtdCount);
 				vo.setAvailableCount(lebNonInvAtdCount);
