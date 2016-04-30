@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
@@ -67,4 +68,5 @@ public interface ICadreDetailsService {
 	public List<IvrOptionsVO> getTypeWiseIvrDetailsOFCadre(Long tdpCadreId);
 	public String getVoterImageUrlByVoterId(Long voterId);
 	public List<LocationVO> getCheckCandidateCadreDtls(Long tdpCadreId);
+	public List<IdNameVO> getTrainingCampAttendenceInfoInCadreLocation(Long boothId,Long panchayatId,Long wardId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId);
 }

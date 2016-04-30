@@ -487,4 +487,68 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   query.setParameter("todayDate", todayDate);
 	   return query.list();
    }
+   
+   public Long getInvitedCountByLocation(Long id,String searchType){
+	   
+	   StringBuilder str = new StringBuilder();
+	   str.append("select count(distinct model.tdpCadreId)" +
+	   					" from TrainingCampBatchAttendee model" +
+	   					" where");
+	   
+	   if(searchType.equalsIgnoreCase("panchayat"))
+		   str.append(" model.tdpCadre.userAddress.panchayat.panchayatId = :id and");
+	   else if(searchType.equalsIgnoreCase("ward"))
+		   str.append(" model.tdpCadre.userAddress.ward.constituencyId = :id and");
+	   else if(searchType.equalsIgnoreCase("mandal"))
+		   str.append(" model.tdpCadre.userAddress.tehsil.tehsilId = :id and");
+	   else if(searchType.equalsIgnoreCase("leb"))
+		   str.append(" model.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :id and");
+	   else if(searchType.equalsIgnoreCase("constituency"))
+		   str.append(" model.tdpCadre.userAddress.constituency.constituencyId = :id and");
+	   else if(searchType.equalsIgnoreCase("parliament"))
+		   str.append(" model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :id and");
+	   else if(searchType.equalsIgnoreCase("district"))
+		   str.append(" model.tdpCadre.userAddress.district.districtId = :id and");
+	   
+	   str.append(" model.isDeleted = 'false'");
+	   
+	   Query query = getSession().createQuery(str.toString());
+	   
+	   if(searchType != null)
+		   query.setParameter("id", id);
+	   
+	   return (Long) query.uniqueResult();
+   }
+   
+   public List<Long> getInvitedCadreIdsByLocation(Long id,String searchType){
+	   
+	   StringBuilder str = new StringBuilder();
+	   str.append("select distinct model.tdpCadreId" +
+	   					" from TrainingCampBatchAttendee model" +
+	   					" where");
+	   
+	   if(searchType.equalsIgnoreCase("panchayat"))
+		   str.append(" model.tdpCadre.userAddress.panchayat.panchayatId = :id and");
+	   else if(searchType.equalsIgnoreCase("ward"))
+		   str.append(" model.tdpCadre.userAddress.ward.constituencyId = :id and");
+	   else if(searchType.equalsIgnoreCase("mandal"))
+		   str.append(" model.tdpCadre.userAddress.tehsil.tehsilId = :id and");
+	   else if(searchType.equalsIgnoreCase("leb"))
+		   str.append(" model.tdpCadre.userAddress.localElectionBody.localElectionBodyId = :id and");
+	   else if(searchType.equalsIgnoreCase("constituency"))
+		   str.append(" model.tdpCadre.userAddress.constituency.constituencyId = :id and");
+	   else if(searchType.equalsIgnoreCase("parliament"))
+		   str.append(" model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :id and");
+	   else if(searchType.equalsIgnoreCase("district"))
+		   str.append(" model.tdpCadre.userAddress.district.districtId = :id and");
+	   
+	   str.append(" model.isDeleted = 'false'");
+	   
+	   Query query = getSession().createQuery(str.toString());
+	   
+	   if(searchType != null)
+		   query.setParameter("id", id);
+	   
+	   return query.list();
+   }
 }
