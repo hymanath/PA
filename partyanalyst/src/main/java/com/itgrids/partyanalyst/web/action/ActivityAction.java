@@ -946,4 +946,21 @@ public String getOptionDetailsForQuestion(){
 	}
 	return Action.SUCCESS;
 }
+public String getCommentDetails(){
+	
+	try {
+		jObj = new JSONObject(getTask());
+		
+		Long scopeId 		= jObj.getLong("scopeId");
+		Long reportType 	= jObj.getLong("reportType");
+		Long qstnId 		= jObj.getLong("questionId");
+		Long levelId 		= jObj.getLong("levelId");
+		Long reportTypeId 		= jObj.getLong("reportTypeId");
+		optnsCountVOList = activityService.getCommentDetails(scopeId, reportType, qstnId, levelId, reportTypeId);
+		
+	} catch (Exception e) {
+		LOG.error("Exception raised at getOptionDetailsForQuestion()", e);
+	}
+	return Action.SUCCESS;
+}
 }

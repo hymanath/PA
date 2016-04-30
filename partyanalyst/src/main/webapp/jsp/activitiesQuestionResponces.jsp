@@ -89,7 +89,7 @@
    		<div class="col-md-12">
         	<div class="panel panel-default panel-custom">
             	<div class="panel-heading">
-                	<h4 class="panel-title">SEARCH TO UPDATE PROGRAM ACTIVITIES 
+                	<h4 class="panel-title">ACTIVITIES REPORT
 						<!--<span class="pull-right" >
 							<div class="input-group col-md-12" style="margin-top:-8px">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
@@ -101,9 +101,7 @@
                 </div>
                 <div class="panel-body">
                 	<div class="row">
-                    	<div class="col-md-3">
-                        	<img src="img/searchicon.png" style="border-right:1px solid #00B17D">
-                        </div>
+                    	
                         <div class="col-md-9">
 							<div class="row">
 								<div class="col-md-9" id="ErrDiv" style="color:#E6211E;">
@@ -172,7 +170,7 @@
 							</div>
 							<div class="row">
 							<div class="col-md-3 m_top10 col-md-offset-4">
-								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getOptionDetailsForQuestion();">SEARCH</button>
+								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getOptionDetailsForQuestion();">GET REPORT</button>
 							</div>
 							<button class="btn btn-success" id="lcnExcelBtn" onclick="generateExcel('actvtyQstnOptnExclId')" style="margin-left: 650px; display:none;">Export Excel</button>
 							</div>
@@ -201,17 +199,17 @@
 
 <div id="dialogSummaryDistsrict" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					
-					 <div class="modal-header">
-					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
-						<h3 class="panel-header text-center"></h3>
-					  </div>
-						<div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
-						<center><img class="text-center" id="dataLoadingImg" src="images/Loading-data.gif" style="display:none;"/></center>
-				</div>
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				
+				 <div class="modal-header">
+				  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+					<h3 class="panel-header text-center"></h3>
+				  </div>
+					<div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
+					<center><img class="text-center" id="dataLoadingImg" src="images/Loading-data.gif" style="display:none;"/></center>
 			</div>
+		</div>
     </div>
 
 	<!-- questions modal start-->
@@ -233,6 +231,7 @@
 		</div>
 	  </div>
 	</div>
+	 <div id="excelData" style="display:none;"></div>
 	
 	<!-- questions modal end -->
 	
@@ -258,7 +257,24 @@
   </div>
 </div>
 <!-- Modal -->
-	
+<div class="modal fade" id="viewCommentsBlock" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Question Option Comments</h4>
+      </div>
+      <div class="modal-body">
+	  <div id="commentsDiv">
+	  
+	  </div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
@@ -423,11 +439,11 @@ function getOptionDetailsForQuestion(){
 				optnindx++;
 			}
 			str+='<tr>';
-			str+='<td style="width:150px;">'+result[i].constincyName+'</td>';
+			str+='<td style="width:150px;" id='+result[i].constincyId+' class="constituncyCls">'+result[i].constincyName+'</td>';
 			for(var x in result[i].optionsList){
 				str+='<td class="text-center" style="width:100px;">'+result[i].optionsList[x].count+'';
 				if(result[i].optionsList[x].optionTypeId > 0){
-				str+=' ('+result[i].optionsList[x].optionTypeId+'  <img src="images/edit.png"  style="cursor:pointer;" title="Click Here to View Comments">)';	
+				str+=' ('+result[i].optionsList[x].optionTypeId+'  <img src="images/edit.png"  style="cursor:pointer;" attr_consncy_id='+result[i].constincyId+' title="Click Here to View Comments" class="optnCommentsCls">)';	
 				}
 				str+='</td>';
 			}
@@ -437,7 +453,10 @@ function getOptionDetailsForQuestion(){
 		str+='</div>';
 		$("#optionsCntId").html(str);
 		 $('#optnsCntDiv').show();
-     var exlStr = '';
+      excelReportForOptionsCnt(result,reportText);
+	}
+	function excelReportForOptionsCnt(result,reportText){
+		var exlStr = '';
 		exlStr+='<div class="table-responsive">';
 		exlStr+='<table class="table table-bordered table-condensed" style="background:#fff" id="optionsTableId">';
 		var optnindx = 0;
@@ -463,7 +482,7 @@ function getOptionDetailsForQuestion(){
 		}
 		exlStr+='</table>';
 		exlStr+='</div>';
-		$("#actvtyQstnOptnExclId").html(exlStr);	 
+		$("#actvtyQstnOptnExclId").html(exlStr);	
 	}
 	function generateExcel(divId){
 	tableToExcel(divId, 'Activity Question Option Responce');
@@ -481,6 +500,103 @@ var tableToExcel = (function() {
     window.location.href = uri + base64(format(template, ctx))
   }
 })()
+
+$(document).on("click",".optnCommentsCls",function(){
+	 var levelId = $("#activityLevelList").val();	
+     var activityScopeId = $("#ActivityList").val();
+	 var reportType = $("#reportList").val();
+	 var questionId = $("#questnsListId").val();
+	 var reportTypeId = $(this).attr("attr_consncy_id");
+	
+	 var jsObj= {				
+		  scopeId:activityScopeId,
+		  reportType:reportType,
+		  questionId:questionId,
+		  levelId  :levelId,
+		  reportTypeId : reportTypeId,
+		  task:""				
+		}
+		$.ajax({
+				  type:'GET',
+				  url: 'getCommentDetailsAction.action',
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			  
+				 //console.log(result);
+				 buildCommentsDetails(result)
+			   
+		   });
+});
+function buildCommentsDetails(result){
+	var str ='';
+	var excelDivid = "excelData";
+	if(result != null && result.length >0){
+	str+='<button class="btn btn-success" id="cmntsExcl" onclick="generateExcel(\'excelData\')" style="margin-left: 450px;">Export Excel</button>';
+	str+='<table class="table table-bordered">';
+	str+='<thead>';
+	str+='<th>District</th>';
+	str+='<th>Constituency</th>';
+	str+='<th>Mandal/Municipality</th>';
+	str+='<th>Village/Ward</th>';
+	str+='<th>Comments</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	
+	for(var i in result){
+	str+='<tr>';
+	str+='<td>'+result[i].districtName+'</td>';
+	str+='<td>'+result[i].constincyName+'</td>';
+	str+='<td>'+result[i].tehsilName+'</td>';
+	if(result[i].panchayatName != ""){
+	str+='<td>'+result[i].panchayatName+'</td>';
+	}
+	str+='<td>'+result[i].optnCommnt+'</td>';
+	str+='</tr>';
+	}			
+	
+	str+='</tbody>';
+	str+='</table>';
+	}else{
+		str+='No Data Available';
+	}
+	$("#commentsDiv").html(str);
+	$("#viewCommentsBlock").modal('show');
+	excelCommentDetails(result);
+}
+function excelCommentDetails(result){
+	var str ='';
+	if(result != null && result.length >0){
+	
+	str+='<table class="table table-bordered">';
+	str+='<thead>';
+	str+='<th>District</th>';
+	str+='<th>Constituency</th>';
+	str+='<th>Mandal/Municipality</th>';
+	str+='<th>Village/Ward</th>';
+	str+='<th>Comments</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	
+	for(var i in result){
+	str+='<tr>';
+	str+='<td>'+result[i].districtName+'</td>';
+	str+='<td>'+result[i].constincyName+'</td>';
+	str+='<td>'+result[i].tehsilName+'</td>';
+	if(result[i].panchayatName != ""){
+	str+='<td>'+result[i].panchayatName+'</td>';
+	}
+	str+='<td>'+result[i].optnCommnt+'</td>';
+	str+='</tr>';
+	}			
+	
+	str+='</tbody>';
+	str+='</table>';
+	}else{
+		str+='No Data Available';
+	}
+	$("#excelData").html(str);
+}
 </script>
 </body>
 </html>
