@@ -7,9 +7,11 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long id;
 	private String name;
 	private Long districtid;
-	private Long availableCount;
+	private Long availableCount=0l;
 	private Long actualCount=0l;
 	private Long orderId;
+	private String percentage;
+	private Long count = 0l;
 	
 	
 	@Override
@@ -71,5 +73,19 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 		this.orderId = orderId;
 	}
 
-	
+	public String getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
 }

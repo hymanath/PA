@@ -64,10 +64,10 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -76,6 +76,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
@@ -162,8 +163,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ITrainingCampAttendanceDAO trainingCampAttendanceDAO;
 	private IIvrSurveyServiceDAO ivrSurveyServiceDAO;
 	private IUserAddressDAO userAddressDAO;
+	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
 	
 	
+	public ITrainingCampBatchAttendeeDAO getTrainingCampBatchAttendeeDAO() {
+		return trainingCampBatchAttendeeDAO;
+	}
+
+	public void setTrainingCampBatchAttendeeDAO(
+			ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO) {
+		this.trainingCampBatchAttendeeDAO = trainingCampBatchAttendeeDAO;
+	}
+
 	public IIvrSurveyServiceDAO getIvrSurveyServiceDAO() {
 		return ivrSurveyServiceDAO;
 	}
@@ -5755,5 +5766,239 @@ public class CadreDetailsService implements ICadreDetailsService{
 			LOG.error("Exception occured in getCheckCandidateCadreDtls() Method ",e);
 		}
 		return resultList;
+	}
+	
+	public List<IdNameVO> getTrainingCampAttendenceInfoInCadreLocation(Long boothId,Long panchayatId,Long wardId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>();
+		try {
+			Long panchayatInvitedCount = 0l;
+			Long panTotalCount = 0l;
+			Long panInvAtndCount = 0l;
+			Long panNonInvtAtdCount = 0l;
+			List<Long> pancCareIds = new ArrayList<Long>();
+			List<Long> panTotalCadrIds = new ArrayList<Long>();
+			if(panchayatId != null && panchayatId.longValue() > 0l){
+				panchayatInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(panchayatId, "panchayat");
+				pancCareIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(panchayatId, "panchayat");
+				panTotalCount = trainingCampAttendanceDAO.getAttendedCountByLocation(panchayatId, "panchayat");
+				panTotalCadrIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(panchayatId, "panchayat");
+				if(pancCareIds != null && panTotalCadrIds != null ){
+					for (Long long1 : pancCareIds) {
+						if(panTotalCadrIds.contains(long1)){
+							panInvAtndCount = panInvAtndCount + 1l;
+						}
+					}
+					panNonInvtAtdCount = panTotalCount - panInvAtndCount;
+				}
+				String percentage = (new BigDecimal((panInvAtndCount * 100.0)/panchayatInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				
+				IdNameVO vo = new IdNameVO();
+				vo.setId(panchayatId);
+				vo.setName("panchayat");
+				vo.setCount(panchayatInvitedCount);
+				vo.setActualCount(panInvAtndCount);
+				vo.setAvailableCount(panNonInvtAtdCount);
+				vo.setPercentage(percentage);
+				
+				voList.add(vo);
+			}
+			
+			Long wardInvitedCount = 0l;
+			Long wardTotalcount = 0l;
+			Long wardInvAtdCount = 0l;
+			Long wardNonInvAtdCount = 0l;
+			List<Long> wardInvCadreIds = new ArrayList<Long>();
+			List<Long> wardTotalCadreIds = new ArrayList<Long>();
+			if(wardId != null && wardId.longValue() > 0l){
+				wardInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(wardId, "ward");
+				wardInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(wardId, "ward");
+				wardTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(wardId, "ward");
+				wardTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(wardId, "ward");
+				if(wardInvCadreIds != null && wardTotalCadreIds != null){
+					for (Long long1 : wardInvCadreIds) {
+						if(wardTotalCadreIds.contains(long1)){
+							wardInvAtdCount = wardInvAtdCount + 1l;
+						}
+					}
+					wardNonInvAtdCount = wardTotalcount - wardInvAtdCount;
+				}
+				String percentage = (new BigDecimal((wardInvAtdCount * 100.0)/wardInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				
+				IdNameVO vo = new IdNameVO();
+				vo.setId(wardId);
+				vo.setName("ward");
+				vo.setCount(wardInvitedCount);
+				vo.setActualCount(wardInvAtdCount);
+				vo.setAvailableCount(wardNonInvAtdCount);
+				vo.setPercentage(percentage);
+				
+				voList.add(vo);
+			}
+			
+			Long mandalInvitedCount = 0l;
+			Long mandalTotalcount = 0l;
+			Long mandalInvAtdCount = 0l;
+			Long mandalNonInvAtdCount = 0l;
+			List<Long> mandalInvCadreIds = new ArrayList<Long>();
+			List<Long> mandalTotalCadreIds = new ArrayList<Long>();
+			if(mandalId != null && mandalId.longValue() > 0l){
+				mandalInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(mandalId, "mandal");
+				mandalInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(mandalId, "mandal");
+				mandalTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(mandalId, "mandal");
+				mandalTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(mandalId, "mandal");
+				if(mandalInvCadreIds != null && mandalTotalCadreIds != null){
+					for (Long long1 : mandalInvCadreIds) {
+						if(mandalTotalCadreIds.contains(long1)){
+							mandalInvAtdCount = mandalInvAtdCount + 1l;
+						}
+					}
+					mandalNonInvAtdCount = mandalTotalcount - mandalInvAtdCount;
+				}
+				String percentage = (new BigDecimal((mandalInvAtdCount * 100.0)/mandalInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				
+				IdNameVO vo = new IdNameVO();
+				vo.setId(mandalId);
+				vo.setName("mandal");
+				vo.setCount(mandalInvitedCount);
+				vo.setActualCount(mandalInvAtdCount);
+				vo.setAvailableCount(mandalNonInvAtdCount);
+				vo.setPercentage(percentage);
+				
+				voList.add(vo);
+			}
+			
+			Long lebInvitedCount = 0l;
+			Long lebTotalcount = 0l;
+			Long lebInvAtdCount = 0l;
+			Long lebNonInvAtdCount = 0l;
+			List<Long> lebInvCadreIds = new ArrayList<Long>();
+			List<Long> lebTotalCadreIds = new ArrayList<Long>();
+			if(lebId != null && lebId.longValue() > 0l){
+				lebInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(lebId, "leb");
+				lebInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(lebId, "leb");
+				lebTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(lebId, "leb");
+				lebTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(lebId, "leb");
+				if(lebInvCadreIds != null && lebTotalCadreIds != null){
+					for (Long long1 : lebInvCadreIds) {
+						if(lebTotalCadreIds.contains(long1)){
+							lebInvAtdCount = lebInvAtdCount + 1l;
+						}
+					}
+					lebNonInvAtdCount = lebTotalcount - lebInvAtdCount;
+				}
+				String percentage = (new BigDecimal((lebInvAtdCount * 100.0)/lebInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				
+				IdNameVO vo = new IdNameVO();
+				vo.setId(lebId);
+				vo.setName("leb");
+				vo.setCount(lebInvitedCount);
+				vo.setActualCount(lebInvAtdCount);
+				vo.setAvailableCount(lebNonInvAtdCount);
+				vo.setPercentage(percentage);
+				
+				voList.add(vo);
+			}
+			
+			Long constInvitedCount = 0l;
+			Long constTotalcount = 0l;
+			Long constInvAtdCount = 0l;
+			Long constNonInvAtdCount = 0l;
+			List<Long> constInvCadreIds = new ArrayList<Long>();
+			List<Long> constTotalCadreIds = new ArrayList<Long>();
+			if(constituencyId != null && constituencyId.longValue() > 0l){
+				constInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(constituencyId, "constituency");
+				constInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(constituencyId, "constituency");
+				constTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(constituencyId, "constituency");
+				constTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(constituencyId, "constituency");
+				if(constInvCadreIds != null && constTotalCadreIds != null){
+					for (Long long1 : constInvCadreIds) {
+						if(constTotalCadreIds.contains(long1)){
+							constInvAtdCount = constInvAtdCount + 1l;
+						}
+					}
+					constNonInvAtdCount = constTotalcount - constInvAtdCount;
+				}
+				String percentage = (new BigDecimal((constInvAtdCount * 100.0)/constInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				
+				IdNameVO vo = new IdNameVO();
+				vo.setId(constituencyId);
+				vo.setName("constituency");
+				vo.setCount(constInvitedCount);
+				vo.setActualCount(constInvAtdCount);
+				vo.setAvailableCount(constNonInvAtdCount);
+				vo.setPercentage(percentage);
+				
+				voList.add(vo);
+			}
+			
+			Long parliInvitedCount = 0l;
+			Long parliTotalcount = 0l;
+			Long parliInvAtdCount = 0l;
+			Long parliNonInvAtdCount = 0l;
+			List<Long> parliInvCadreIds = new ArrayList<Long>();
+			List<Long> parliTotalCadreIds = new ArrayList<Long>();
+			if(parliamentId != null && parliamentId.longValue() > 0l){
+				parliInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(parliamentId, "parliament");
+				parliInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(parliamentId, "parliament");
+				parliTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(parliamentId, "parliament");
+				parliTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(parliamentId, "parliament");
+				if(parliInvCadreIds != null && parliTotalCadreIds != null){
+					for (Long long1 : parliInvCadreIds) {
+						if(parliTotalCadreIds.contains(long1)){
+							parliInvAtdCount = parliInvAtdCount + 1l;
+						}
+					}
+					parliNonInvAtdCount = parliTotalcount - parliInvAtdCount;
+				}
+				String percentage = (new BigDecimal((parliInvAtdCount * 100.0)/parliInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				
+				IdNameVO vo = new IdNameVO();
+				vo.setId(parliamentId);
+				vo.setName("parliament");
+				vo.setCount(parliInvitedCount);
+				vo.setActualCount(parliInvAtdCount);
+				vo.setAvailableCount(parliNonInvAtdCount);
+				vo.setPercentage(percentage);
+				
+				voList.add(vo);
+			}
+				
+			Long distInvitedCount = 0l;
+			Long distTotalcount = 0l;
+			Long distInvAtdCount = 0l;
+			Long distNonInvAtdCount = 0l;
+			List<Long> distInvCadreIds = new ArrayList<Long>();
+			List<Long> distTotalCadreIds = new ArrayList<Long>();
+			if(districtId != null && districtId.longValue() > 0l){
+				distInvitedCount = trainingCampBatchAttendeeDAO.getInvitedCountByLocation(districtId, "district");
+				distInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(districtId, "district");
+				distTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(districtId, "district");
+				distTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(districtId, "district");
+				if(distInvCadreIds != null && distTotalCadreIds != null){
+					for (Long long1 : distInvCadreIds) {
+						if(distTotalCadreIds.contains(long1)){
+							distInvAtdCount = distInvAtdCount + 1l;
+						}
+					}
+					distNonInvAtdCount = distTotalcount - distInvAtdCount;
+				}
+				String percentage = (new BigDecimal((distInvAtdCount * 100.0)/distInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
+				
+				IdNameVO vo = new IdNameVO();
+				vo.setId(districtId);
+				vo.setName("district");
+				vo.setCount(distInvitedCount);
+				vo.setActualCount(distInvAtdCount);
+				vo.setAvailableCount(distNonInvAtdCount);
+				vo.setPercentage(percentage);
+				
+				voList.add(vo);
+			}
+				
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getTrainingCampAttendenceInfoInCadreIdLocation() Method ",e);
+		}
+		return voList;
 	}
 }
