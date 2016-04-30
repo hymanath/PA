@@ -17,7 +17,7 @@ public class RegistrationQueriesVO {
 	private String mobileNo;
 	private String email;
 	private String description;
-	
+	public RegistrationQueriesVO(){}
 	
 	public RegistrationQueriesVO(String name,String mobileNo,String email ,String description){
 		this.name=name;
