@@ -909,7 +909,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	//query.setParameterList("labelStatus", IConstants.APPOINTMENT_STATUS_LABELED_LIST);
 		return query.list();
 	}
-public List<Object[]> checkIsAppointmentEligibleCadre(List<Long> cadreList,List<Long> apptStatusIds,Long appointmentUserId){
+	public List<Object[]> checkIsAppointmentEligibleCadre(List<Long> cadreList,List<Long> apptStatusIds,Long appointmentUserId){
 		
 		Query query = getSession().createQuery("" +
 		" select  acr.appointment.appointmentId, acr.appointment.appointmentUniqueId,acr.appointmentCandidate.appointmentCandidateId,acr.appointmentCandidate.tdpCadre.tdpCadreId" +
@@ -923,6 +923,65 @@ public List<Object[]> checkIsAppointmentEligibleCadre(List<Long> cadreList,List<
 		query.setParameterList("apptStatusIds", apptStatusIds);
 		query.setParameter("appointmentUserId", appointmentUserId);
 		return query.list();
+	}
+	
+	public List<Object[]> getTotalAppointmentDetails(Long appointmentId){
+		
+	
+		StringBuilder sb = new StringBuilder();
+		sb.append(" " +
+		" select  a.appointment_id as apptId,a.appointment_unique_id as apptUniqueId," +//1
+		"         a.appointment_user_id as apptUserId,au.name as apptUname,date(a.inserted_time) as apptDate," +//4
+		"         priority.priority as apptpriority,a.reason as reason,a.appointment_preferable_time_id as pfTimeId," +//7
+		"         ass.appointment_status_id as statusId,ass.status as status," +//9
+		
+		"         ats.date as date,ats.from_date as fromDate,ats.to_date as toDate," +//12
+		"         ac.appointment_candidate_id as candiId,ac.name as name,ac.image_url as imageUrl," +//15
+		"         act.appointment_candidate_type_id as canditypeId,act.candidate_type as candiType," +//17
+		"         ac.designation_id as desgId,acd.designation as desg,ac.mobile_no as mobile," +//20
+		"         ac.voter_id as voterId,ac.tdp_cadre_id as cadreId,ac.membership_id as membershipId," +//23
+		"" +
+		"         state.state_name as state,district.district_name as distName,const.name as constName,tehsil.tehsil_name as tehsil," +//27
+		"         leb.name as lebName,panchayat.panchayat_name as panName,ward.name as wardName," +//30
+		"         ac.voter_id_card_no as votercardNo" +//31
+	
+		"  " +
+		" from     appointment a join appointment_status ass on a.appointment_status_id = ass.appointment_status_id " +
+		"          join appointment_user au on a.appointment_user_id = au.appointment_user_id " +
+		"          left join appointment_priority priority on a.appointment_priority_id = priority.appointment_priority_id" +
+		"          join appointment_candidate_relation acr on acr.appointment_id = a.appointment_id  " +
+		"          join appointment_candidate ac on acr.appointment_candidate_id = ac.appointment_candidate_id  " +
+		"          left join appointment_time_slot ats on ats.appointment_id = a.appointment_id and ats.is_deleted='N' " +
+		"          left join appointment_candidate_designation acd on ac.designation_id = acd.appointment_candidate_designation_id" +
+		"          left join appointment_candidate_type act on ac.appointment_candidate_type_id = act.appointment_candidate_type_id " +
+		"          left join user_address ua on ac.address_id = ua.user_address_id" +
+		"          left join state  state  on ua.state_id= state.state_id" +
+		"          left join district  district  on ua.district_id = district.district_id " +
+		"          left join constituency const  on ua.constituency_id = const.constituency_id " +
+		"          left join tehsil       tehsil  on tehsil.tehsil_id=ua.tehsil_id" +
+		"          left join panchayat panchayat on ua.panchayat_id = panchayat.panchayat_id" +
+		"          left join local_election_body leb on ua.local_election_body = leb.local_election_body_id " +
+		"          left join Constituency ward on  ua.ward = ward.constituency_id " +
+		" where    a.appointment_id = :appointmentId and a.is_deleted='N'");
+		
+		       
+		 Query query = getSession().createSQLQuery(sb.toString())
+		  .addScalar("apptId",Hibernate.LONG).addScalar("apptUniqueId",Hibernate.STRING).addScalar("apptUserId",Hibernate.LONG)
+		 .addScalar("apptUname",Hibernate.STRING).addScalar("apptDate",Hibernate.DATE).addScalar("apptpriority",Hibernate.STRING)
+		 .addScalar("reason",Hibernate.STRING).addScalar("pfTimeId",Hibernate.LONG).addScalar("statusId",Hibernate.LONG)
+		 .addScalar("status",Hibernate.STRING).addScalar("date",Hibernate.DATE).addScalar("fromDate",Hibernate.TIMESTAMP)
+		 .addScalar("toDate",Hibernate.TIMESTAMP).addScalar("candiId",Hibernate.LONG).addScalar("name",Hibernate.STRING)
+		 .addScalar("imageUrl",Hibernate.STRING).addScalar("canditypeId",Hibernate.LONG).addScalar("candiType",Hibernate.STRING)
+		 .addScalar("desgId",Hibernate.LONG).addScalar("desg",Hibernate.STRING).addScalar("mobile",Hibernate.STRING)
+		 .addScalar("voterId",Hibernate.LONG).addScalar("cadreId",Hibernate.LONG).addScalar("membershipId",Hibernate.STRING)
+		 .addScalar("state",Hibernate.STRING).addScalar("distName",Hibernate.STRING).addScalar("constName",Hibernate.STRING)
+		 .addScalar("tehsil",Hibernate.STRING).addScalar("lebName",Hibernate.STRING).addScalar("panName",Hibernate.STRING)
+		 .addScalar("wardName",Hibernate.STRING).addScalar("votercardNo",Hibernate.STRING);
+		
+		 
+		 query.setParameter("appointmentId",appointmentId);
+		 return query.list();
+				
 	}
 	
 }
