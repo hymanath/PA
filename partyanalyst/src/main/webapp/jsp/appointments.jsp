@@ -6302,7 +6302,9 @@ function getCommitteeRoles(){
     			  url: 'getAppointmentStatusOverviewAction.action',
     			  data: {task:JSON.stringify(jsObj)}
     	   }).done(function(result){
-				buildAppointmentStatusOverAllView(result);
+    		   if(result!=null && result.length>0){
+				   buildAppointmentStatusOverAllView(result);
+			   }
     	   });	
 	  }
 	  function buildAppointmentStatusOverAllView(result)
