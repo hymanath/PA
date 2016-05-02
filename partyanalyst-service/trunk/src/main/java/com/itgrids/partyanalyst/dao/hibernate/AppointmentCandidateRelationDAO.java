@@ -961,7 +961,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		"          left join tehsil       tehsil  on tehsil.tehsil_id=ua.tehsil_id" +
 		"          left join panchayat panchayat on ua.panchayat_id = panchayat.panchayat_id" +
 		"          left join local_election_body leb on ua.local_election_body = leb.local_election_body_id " +
-		"          left join Constituency ward on  ua.ward = ward.constituency_id " +
+		"          left join constituency ward on  ua.ward = ward.constituency_id " +
 		" where    a.appointment_id = :appointmentId and a.is_deleted='N'");
 		
 		       
