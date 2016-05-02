@@ -1229,7 +1229,9 @@ public String getPanchayatiesByMandalOrMuncipality(){
 	public String getPublicRepresentativeWiseAppointmentCnt(){
 		try{
 			jObj = new JSONObject(getTask());
-			appointmentCountVOList = appointmentService.getPublicRepresentativeWiseAppointmentCnt();
+			Long apointmntCandateId=jObj.getLong("apontntCnditeId");
+		
+			appointmentCountVOList = appointmentService.getPublicRepresentativeWiseAppointmentCnt(apointmntCandateId);
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getPublicRepresentativeWiseAppointmentCnt() of AppointmentAction",e);
@@ -1256,8 +1258,9 @@ public String getPanchayatiesByMandalOrMuncipality(){
 	
 	public String getCommitteeLevelAppointments(){
 		try{
-			
-			appointmentCountVOList = appointmentService.getCommitteeLevelAppointments();
+			jObj = new JSONObject(getTask());
+			Long appointCandidteId=jObj.getLong("appointmentCndiateId");
+			appointmentCountVOList = appointmentService.getCommitteeLevelAppointments(appointCandidteId);
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getCommitteeLevelAppointments() of AppointmentAction",e);
