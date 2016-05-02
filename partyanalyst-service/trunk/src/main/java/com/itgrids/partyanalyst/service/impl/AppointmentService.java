@@ -5500,7 +5500,9 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				list = appointmentCandidateDAO.getCommitteeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId());//Committee Members
 			}
 			if(list != null && list.size() > 0)
-			setAppointmentMembersData(list,returnList);
+			setAppointmentMembersData(list,returnList,inputVO);
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -5509,8 +5511,9 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		return returnList;
 	}
 	
- public void setAppointmentMembersData(List<Object[]> list,List<AppointmentMembersDataVO> returnList)
+ public void setAppointmentMembersData(List<Object[]> list,List<AppointmentMembersDataVO> returnList,AppointmentMemberInputVO inputVO)
  {
+	 List<Long> cadreIds = new ArrayList<Long>();
 	 try{
 		 if(list != null && list.size() > 0)
 		 {
@@ -5524,13 +5527,48 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				 vo.setImageUrl(params[4] != null ?params[4].toString() : "");
 				 vo.setMobile(params[5] != null ?params[5].toString() : "");
 				 vo.setTdpCadreId((Long)params[0]);
+				 if(inputVO.getMemberType().equalsIgnoreCase("PR"))
+				 {
+					 vo.setLocation(locationService.getLocationForDesignation(vo.getTdpCadreId(), vo.getDesignationId()));
+				 }
+				 cadreIds.add(vo.getTdpCadreId());
 				 returnList.add(vo);
+			 }
+			 if(inputVO.getMemberType().equalsIgnoreCase("CommitteeMember"))
+			 {
+				 List<Object[]> constlist = tdpCadreDAO.getConstituencyForCadreIds(cadreIds);
+				 if(constlist != null && constlist.size() > 0)
+				 {
+					 
+					 setLocationForCadre(constlist,returnList);
+				 }
 			 }
 		 }
 	 }
 	 catch(Exception e)
 	 {
 		e.printStackTrace(); 
+	 }
+ }
+ 
+ public void setLocationForCadre(List<Object[]> constlist,List<AppointmentMembersDataVO> returnList)
+ {
+	 try{
+		 Map<Long,String> constiMap = new HashMap<Long, String>();
+				 if(constlist!=null && constlist.size()>0){
+						for(Object[] obj :constlist){
+							constiMap.put((Long)obj[0],obj[1].toString());
+						}
+					}
+				 
+				 for(AppointmentMembersDataVO vo : returnList)
+				 {
+					vo.setLocation(constiMap.get(vo.getTdpCadreId().longValue()));
+				 }
+	 }
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
 	 }
  }
 	
