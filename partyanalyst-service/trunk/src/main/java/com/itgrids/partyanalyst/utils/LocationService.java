@@ -438,10 +438,11 @@ public class LocationService {
 			
 			String location = "";
 			try{
-				UserAddress userAddress = publicRepresentativeDAO.getUserAddressForCadre(tdpCadreId);
-				if(userAddress != null)
+				List<UserAddress> userAddressList = publicRepresentativeDAO.getUserAddressForCadre(tdpCadreId);
+				
+				if(userAddressList != null && userAddressList.size() > 0)
 				{   
-					
+					UserAddress userAddress = userAddressList.get(0);
 					  if(Arrays.asList(IConstants.PR_STATE_DESG_IDS).contains(designationId))
 					  {
 						  location = userAddress.getState() != null ? userAddress.getState().getStateName()+" State" : "";
