@@ -440,6 +440,56 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 			 query.setParameterList("statusIds", statusIds);
 		 return query.list();
 		}
-
 	
+	
+	public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId){
+		StringBuilder str=new StringBuilder();
+		str.append("select ");
+		if(type.equalsIgnoreCase("unique"))
+		str.append(" distinct model.appointmentCandidate.tdpCadreId,");
+		else
+			str.append("model.appointmentCandidate.tdpCadreId,");
+		str.append("model.appointmentCandidate.name,model.appointmentCandidate.candidateDesignation.appointmentCandidateDesignationId," +
+				"model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
+				"model.appointmentCandidate.imageURL,model.appointmentCandidateId");
+		str.append(",model2.publicRepresentativeType.publicRepresentativeTypeId,"
+				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model ");
+		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.appointmentCandidate.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
+		if(statusIds != null && statusIds.size() > 0)
+			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
+		if(roleId != null && roleId > 0)
+			str.append(" and model2.publicRepresentativeType.publicRepresentativeTypeId =:roleId ");
+		
+		Query query = getSession().createQuery(str.toString());
+		 if(statusIds != null && statusIds.size() > 0)
+			 query.setParameterList("statusIds", statusIds);
+		 if(roleId != null && roleId > 0)
+			 query.setParameter("roleId", roleId);
+		 return query.list();
+		}
+	
+	
+	public List<Object[]>  getCommitteeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId){
+		StringBuilder str=new StringBuilder();
+		str.append("select ");
+		if(type.equalsIgnoreCase("unique"))
+		str.append(" distinct model.appointmentCandidate.tdpCadreId,");
+		else
+		str.append("model.appointmentCandidate.tdpCadreId,");
+		str.append("model.appointmentCandidate.name,model.appointmentCandidate.candidateDesignation.appointmentCandidateDesignationId," +
+				"model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
+				"model.appointmentCandidate.imageURL,model.appointmentCandidateId");
+		str.append(" from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
+				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
+				if(statusIds != null && statusIds.size() > 0)
+					str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
+				if(roleId != null && roleId > 0)
+				str.append(" and  TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+		Query query = getSession().createQuery(str.toString());
+		 if(statusIds != null && statusIds.size() > 0)
+			 query.setParameterList("statusIds", statusIds);
+		 if(roleId != null && roleId > 0)
+			 query.setParameter("roleId", roleId);
+		 return query.list();
+		}	
 }

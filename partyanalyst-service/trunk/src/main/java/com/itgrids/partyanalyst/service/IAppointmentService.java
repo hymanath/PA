@@ -9,6 +9,8 @@ import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentMemberInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentMembersDataVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusFlowVO;
@@ -93,4 +95,5 @@ public interface IAppointmentService {
 	public void getDesignationsForCadre(List<Long> tdpCadreIds,List<AppointmentCandidateVO> finalList);
 	public AppointmentStatusFlowVO getLoginUserAppointmentUserType(Long userId);
 	public AppointmentScheduleVO setPreferDatesToAppointment(List<Long> aptmnts,AppointmentScheduleVO apptvo);
+	public List<AppointmentMembersDataVO> getAppointmentMembersByScheduleType(AppointmentMemberInputVO inputVO);
 }
