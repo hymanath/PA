@@ -22,8 +22,8 @@ public interface IAppointmentCandidateDAO extends GenericDao<AppointmentCandidat
  public List<Object[]> getAppointmentCandidateIdForCadreIds(List<Long> cadreIds,Long aptUserId);
  public List<AppointmentCandidate> getAppointmentCandidateObjByMemship(String membershipId);
  public List<Object[]>  getPublicRepresentativeWiseAppointmentCnt(List<Long> statusIds,String type,Long apointmntCandateId);
- public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId);
- public List<Object[]>  getCommitteeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId);
+ public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId);
+ public List<Object[]>  getCommitteeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId);
  
  
 
