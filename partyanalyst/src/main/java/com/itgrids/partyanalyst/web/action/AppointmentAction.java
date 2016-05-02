@@ -92,8 +92,9 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private  List<AppointmentSlotsVO> apptSlotList;
 	private  AppointmentStatusFlowVO appointmentStatusFlowVO;
 	private  AppointmentFieldsVO  appointmentFieldsVO;
-	private List<AppointmentMembersDataVO> membersList;
+	private List<IdNameVO> smsStatusEnabledList;
 	
+	private List<AppointmentMembersDataVO> membersList;
 	
 	
 	public List<AppointmentMembersDataVO> getMembersList() {
@@ -346,6 +347,15 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	public void setAppointmentFieldsVO(AppointmentFieldsVO appointmentFieldsVO) {
 		this.appointmentFieldsVO = appointmentFieldsVO;
 	}
+	
+	
+	public List<IdNameVO> getSmsStatusEnabledList() {
+		return smsStatusEnabledList;
+	}
+
+	public void setSmsStatusEnabledList(List<IdNameVO> smsStatusEnabledList) {
+		this.smsStatusEnabledList = smsStatusEnabledList;
+	}
 
 	public String execute(){
 		
@@ -358,6 +368,8 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 		}
 		
 		context.setAttribute("appointmentStatusList", appointmentStatusFlowVOList);
+		
+		smsStatusEnabledList = appointmentService.getSMSEnablingDetailsForAllStatus();
 
 		return Action.SUCCESS;
 	}
@@ -1006,9 +1018,12 @@ public String getCandidateWiseDetails(){
 			
 			jObj = new JSONObject(getTask());
 			AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
+			inputVO.setUserId(user.getRegistrationID());
 			inputVO.setAppointmentId(jObj.getLong("appointmentId"));
 			inputVO.setSmsText(jObj.getString("smsText"));
-		    //resultStatus = appointmentService.sendSmsForAppointment(inputVO);
+			
+		    resultStatus = appointmentService.sendSmsForAppointment(inputVO);
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at sendSmsForAppointment", e);
 		}
