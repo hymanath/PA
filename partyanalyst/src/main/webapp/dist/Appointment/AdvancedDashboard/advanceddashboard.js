@@ -470,3 +470,33 @@ function getCandidCountsByStatesAction(){
        
        });   
   }
+function buildAppointmentMembersData(result)
+ {
+   var str='';
+  if(result != null){
+			str +='<table class="table table-bordered">';
+            str +='<thead>';
+            str+='<tr>';
+							
+			str+='<th class="text-capitalize">NAME</th>';
+			str+='<th class="text-capitalize">Designation</th>';
+			str+='<th class="text-capitalize">Image</th>';
+			str+='<th class="text-capitalize">Mobile</th>';
+								
+			str+='</tr>';
+						str+='</thead>';
+						str+='<tbody>';
+	for(var i in result)
+	{
+		str +='<tr>';
+		 
+            str +='<td style="text-align:center">'+result[i].name+'</td>';
+            str +='<td style="text-align:center">'+result[i].designation+'</td>';
+            str +='<td style="text-align:center">'+result[i].imageUrl+'</td>';
+			str +='<td style="text-align:center">'+result[i].mobile+'</td>';
+            
+			str +=' </tr>';
+	}
+	str +='</tbody>';
+			str +='</table>';
+	}
