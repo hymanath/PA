@@ -420,7 +420,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		
 	}
 	
-	public List<Object[]>  getPublicRepresentativeWiseAppointmentCnt(List<Long> statusIds,String type){
+	public List<Object[]>  getPublicRepresentativeWiseAppointmentCnt(List<Long> statusIds,String type,Long aptUserId){
 		StringBuilder str=new StringBuilder();
 		str.append("select ");
 		if(type.equalsIgnoreCase("unique"))
@@ -432,12 +432,16 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.appointmentCandidate.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
-		
+		if(aptUserId !=null)
+			str.append(" and model.appointmentCandidate.createdBy =:apointmntCandateId");
 		str.append(" group by model2.publicRepresentativeType.type ");
 		
 		 Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
+		 if(aptUserId !=null){
+			 query.setParameter("apointmntCandateId", aptUserId);
+		 }
 		 return query.list();
 		}
 	

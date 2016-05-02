@@ -5367,11 +5367,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 	}
 	
-	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt()
+	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt(Long apointmntCandateId)
 	{
 		List<AppointmentCountVO> returnList = new ArrayList<AppointmentCountVO>();
 		try{
-			 List<Object[]> list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(null,"total"); //Total
+			 List<Object[]> list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(null,"total",apointmntCandateId); //Total
 			 if(list != null && list.size() > 0)
 				for(Object[] params : list)
 				{
@@ -5386,7 +5386,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setTotal(vo.getTotal() +(Long)params[0]);
 				}
 			 
-			 List<Object[]> list1 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(null,"unique"); //Total
+			 List<Object[]> list1 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(null,"unique",apointmntCandateId); //Total
 			 if(list1 != null && list1.size() > 0)
 				for(Object[] params : list1)
 				{
@@ -5401,7 +5401,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setUniquecnt(vo.getUniquecnt() +(Long)params[0]);
 				}
 			 Long[] schedul =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
-			 List<Object[]> list2 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(schedul),"Schedule");
+			 List<Object[]> list2 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(schedul),"Schedule",apointmntCandateId);
 			 if(list2 != null && list2.size() > 0)
 				for(Object[] params : list2)
 				{
@@ -5418,7 +5418,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				}
 			 
 			
-			 List<Object[]> list3 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(schedul),"unique");
+			 List<Object[]> list3 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(schedul),"unique",apointmntCandateId);
 			 if(list3 != null && list3.size() > 0)
 				for(Object[] params : list3)
 				{
@@ -5434,7 +5434,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				
 				}
 			 Long[] req =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
-			 List<Object[]> list4 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(req),"Request");
+			 List<Object[]> list4 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(req),"Request",apointmntCandateId);
 			 if(list4 != null && list4.size() > 0)
 				for(Object[] params : list4)
 				{
@@ -5450,7 +5450,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					
 				}
 			 
-			 List<Object[]> list5 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(req),"unique");
+			 List<Object[]> list5 = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentCnt(Arrays.asList(req),"unique",apointmntCandateId);
 			 if(list5 != null && list5.size() > 0)
 				for(Object[] params : list5)
 				{
@@ -5632,11 +5632,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return null;
 	}
-	public List<AppointmentCountVO> getCommitteeLevelAppointments()
+	public List<AppointmentCountVO> getCommitteeLevelAppointments(Long appointCandidteId)
 	{
 		List<AppointmentCountVO> returnList = new ArrayList<AppointmentCountVO>();
 		try{
-			 List<Object[]> list =  appointmentCandidateRelationDAO.getCommitteeLevelAppointments(null,"total"); //Total
+			 List<Object[]> list =  appointmentCandidateRelationDAO.getCommitteeLevelAppointments(null,"total",appointCandidteId); //Total
 			 if(list != null && list.size() > 0)
 				for(Object[] params : list)
 				{
@@ -5651,7 +5651,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setTotal(vo.getTotal() +(Long)params[0]);
 				}
 			 
-			 List<Object[]> list1 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(null,"unique"); //Total
+			 List<Object[]> list1 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(null,"unique",appointCandidteId); //Total
 			 if(list1 != null && list1.size() > 0)
 				for(Object[] params : list1)
 				{
@@ -5666,7 +5666,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setUniquecnt(vo.getUniquecnt() +(Long)params[0]);
 				}
 			 Long[] schedul =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
-			 List<Object[]> list2 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(schedul),"Schedule");
+			 List<Object[]> list2 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(schedul),"Schedule",appointCandidteId);
 			 if(list2 != null && list2.size() > 0)
 				for(Object[] params : list2)
 				{
@@ -5681,7 +5681,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					vo.setScheduledCnt((Long)params[0] + vo.getScheduledCnt());
 				}
 			 
-			List<Object[]> list3 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(schedul),"unique");
+			List<Object[]> list3 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(schedul),"unique",appointCandidteId);
 			 if(list3 != null && list3.size() > 0)
 				for(Object[] params : list3)
 				{
@@ -5697,7 +5697,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				
 				}
 			 Long[] req =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
-			 List<Object[]> list4 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(req),"Request");
+			 List<Object[]> list4 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(req),"Request",appointCandidteId);
 			 if(list4 != null && list4.size() > 0)
 				for(Object[] params : list4)
 				{
@@ -5712,7 +5712,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					vo.setRequestedCnt((Long)params[0] + vo.getRequestedCnt());
 				}
 			 
-			 List<Object[]> list5 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(req),"unique");
+			 List<Object[]> list5 = appointmentCandidateRelationDAO.getCommitteeLevelAppointments(Arrays.asList(req),"unique",appointCandidteId);
 			 if(list5 != null && list5.size() > 0)
 				for(Object[] params : list5)
 				{
