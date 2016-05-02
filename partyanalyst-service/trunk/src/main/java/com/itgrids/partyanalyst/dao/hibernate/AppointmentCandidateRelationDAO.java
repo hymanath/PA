@@ -545,7 +545,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 			str.append("count(model.appointmentCandidate.tdpCadreId),");
 		str.append(" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId, TCM.tdpCommitteeRole.tdpRoles.role " + 
 		"from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
-		" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId = :levelId ");
+		" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId ");
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		str.append(" group by TCM.tdpCommitteeRole.tdpRoles.tdpRolesId ");

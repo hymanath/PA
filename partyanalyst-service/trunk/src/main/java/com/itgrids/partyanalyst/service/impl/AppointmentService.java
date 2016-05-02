@@ -80,6 +80,8 @@ import com.itgrids.partyanalyst.dto.AppointmentCountVO;
 import com.itgrids.partyanalyst.dto.AppointmentCountsVO;
 import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentMemberInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentMembersDataVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusFlowVO;
@@ -5472,6 +5474,65 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return returnList;
 	}
+	
+	public List<AppointmentMembersDataVO> getAppointmentMembersByScheduleType(AppointmentMemberInputVO inputVO)
+	{
+		List<AppointmentMembersDataVO> returnList = new ArrayList<AppointmentMembersDataVO>();
+		List<Long> statusIds = new ArrayList<Long>();
+		 Long[] longArr;
+		 List<Object[]> list= null;
+		try{
+			
+			if(inputVO.getScheduleType() != null && inputVO.getScheduleType().toString().equalsIgnoreCase("Schedule"))
+				longArr =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
+			
+			else if(inputVO.getScheduleType() != null && inputVO.getScheduleType().toString().equalsIgnoreCase("Request"))
+				longArr =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
+			else
+				statusIds = null;
+			if(inputVO.getMemberType().equalsIgnoreCase("PR"))
+			{
+			 list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId()); //Total
+			}
+			
+			else
+			{
+				list = appointmentCandidateDAO.getCommitteeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId());//Committee Members
+			}
+			if(list != null && list.size() > 0)
+			setAppointmentMembersData(list,returnList);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
+ public void setAppointmentMembersData(List<Object[]> list,List<AppointmentMembersDataVO> returnList)
+ {
+	 try{
+		 if(list != null && list.size() > 0)
+		 {
+			 for(Object[] params : list)
+			 {
+				 AppointmentMembersDataVO vo = new AppointmentMembersDataVO();
+				 vo.setId(params[6] != null ?(Long)params[6]:null);
+				 vo.setName(params[1] != null ? params[1].toString() : "");
+				 vo.setDesignationId(params[2] != null ?(Long)params[2]:null);
+				 vo.setDesignation(params[3] != null ?params[3].toString() : "");
+				 vo.setImageUrl(params[4] != null ?params[4].toString() : "");
+				 vo.setMobile(params[5] != null ?params[5].toString() : "");
+				 vo.setTdpCadreId((Long)params[0]);
+				 returnList.add(vo);
+			 }
+		 }
+	 }
+	 catch(Exception e)
+	 {
+		e.printStackTrace(); 
+	 }
+ }
 	
 	public AppointmentCountVO getMatchedRole(List<AppointmentCountVO> returnList,Long roleId)
 	{
