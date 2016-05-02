@@ -81,8 +81,8 @@ public interface IAppointmentService {
 	public List<AppHistoryVO> getAppointmentHistoryForCandidate(Long appointmentCandidateId,Long apptUserID);
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO);
 	public AppointmentCountsVO getCandidCountsByStates(String startDateString,String endDateString,Long appointmentUserId);
-	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt();
-	public List<AppointmentCountVO> getCommitteeLevelAppointments();
+	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt(Long appointmentUserId);
+	public List<AppointmentCountVO> getCommitteeLevelAppointments(Long appointmentUserId);
 	public List<AppointmentCountVO> getLevelWiseCount(Long levelId);
 	public List<IdNameVO> getAppointmentStatusByUserId(Long userId);
 	public List<StatusTrackingVO> getAppointmentStatusTrackingDetails(Long appointmentId);
