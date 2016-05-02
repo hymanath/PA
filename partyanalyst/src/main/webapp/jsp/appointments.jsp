@@ -6692,7 +6692,9 @@ function getCommitteeRoles(){
 	
 	function getPublicRepresentativeWiseAppointmentCnt(){
 		
+		var appointmntCandteId=$("#appointmentUserSelectBoxId").val();
 		var jsObj = {
+			apontntCnditeId:appointmntCandteId
 			task:""
 		}
 	$.ajax({
