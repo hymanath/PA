@@ -6705,12 +6705,12 @@ function getCommitteeRoles(){
 	}).done(function(result){ 
 
 		if(result != null){
-			buildPublicRepresentativeWiseAppointmentCnt(result);
+			buildPublicRepresentativeWiseAppointmentCnt(result,jsObj);
 		}
 		
 	});     
 }
-function buildPublicRepresentativeWiseAppointmentCnt(result)
+function buildPublicRepresentativeWiseAppointmentCnt(result,jsObj)
 {
    var str='';
     str+='<div class="block">';
@@ -6742,7 +6742,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
               str+='<td>'+result[i].role+'</td>';
               if(result[i].total>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'total\');">'+result[i].total+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'total\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].total+'</a></td>';
               }
               else
               {
@@ -6750,7 +6750,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
               }
               if(result[i].uniquecnt>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'total\');">'+result[i].uniquecnt+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'total\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].uniquecnt+'</a></td>';
               }
               else
               {
@@ -6758,7 +6758,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
               }
               if(result[i].requestedCnt>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Request\');">'+result[i].requestedCnt+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Request\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].requestedCnt+'</a></td>';
               }
               else
               {
@@ -6766,7 +6766,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
               }
               if(result[i].uniqueRequestedCnt>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Request\');">'+result[i].uniqueRequestedCnt+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Request\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].uniqueRequestedCnt+'</a></td>';
               }
               else
               {
@@ -6774,7 +6774,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
               }
               if(result[i].scheduledCnt>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Schedule\');">'+result[i].scheduledCnt+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Schedule\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].scheduledCnt+'</a></td>';
               }
               else
               {
@@ -6784,7 +6784,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result)
               {
 
 
-			str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Schedule\');">'+result[i].uniqueScheduledCnt+'</a></td>';
+			str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Schedule\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].uniqueScheduledCnt+'</a></td>';
               }
               else
               {
@@ -7776,7 +7776,6 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 				}
 			}
 			
-		  
 		 str+=' </div>';
 		 
 		 str+='</div>';
@@ -7785,11 +7784,9 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
      str+=' <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
      str+=' </div>';
 	
-	 
 	    $("#buildAppointmentAllDetailsDiv").html(str);
 	}
 	
-
 </script>
 </body>
 </html>

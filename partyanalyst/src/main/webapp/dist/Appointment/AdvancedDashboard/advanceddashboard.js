@@ -451,7 +451,7 @@ function getCandidCountsByStatesAction(){
 						
 	}
 	
-  function getMemebersByScheduleType(roleId,memberType,countType,scheduleType)
+  function getMemebersByScheduleType(roleId,memberType,countType,scheduleType,aptUserId)
   {
 	$("#appointmentMembersDiv").html('<img src="images/search.gif"/>');
   $("#membersModelId").modal("show");
@@ -460,6 +460,7 @@ function getCandidCountsByStatesAction(){
     memberType : memberType,
     cntType : countType,
     scheduleType : scheduleType,
+	aptUserId:aptUserId,
     task:""
    }
     $.ajax({
@@ -495,7 +496,7 @@ function buildAppointmentMembersData(result)
 	{
 		str +='<tr>';
 			str+='<td><img src="'+result[i].imageUrl+'" class="img-responsive img-border img-circle" style="height:40px;width:40px"></td>';
-            str +='<td ><div class="col-md-1 m_top10"><a attr-mobile="'+result[i].mobile+'" attr-designation="'+result[i].designation+'" attr-name="'+result[i].name+'" attr-id="'+result[i].id+'" style="cursor:pointer;" class="historyShowModalBtn" data-placement="top" data-toggle="tooltip" title="" data-original-title="Click here to View '+result[i].name+' History"><i style="color: rgb(142, 142, 142); font-size: 16px;" class="glyphicon glyphicon-time"></i></a></div>'+result[i].name+'</td>';
+            str +='<td ><div class="col-md-1"><a attr-mobile="'+result[i].mobile+'" attr-designation="'+result[i].designation+'" attr-name="'+result[i].name+'" attr-id="'+result[i].id+'" style="cursor:pointer;" class="historyShowModalBtn" data-placement="top" data-toggle="tooltip" title="" data-original-title="Click here to View '+result[i].name+' History"><i style="color: rgb(142, 142, 142); font-size: 16px;" class="glyphicon glyphicon-time"></i></a></div>'+result[i].name+'</td>';
 			if(result[i].location != null && result[i].location.length > 0)
 			str+='<td >'+result[i].location+'</td>';
 			else{

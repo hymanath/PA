@@ -143,9 +143,11 @@
 
 function getCommitteeLevelCount(){
 	var apontmntCndiateId=$("#appointmentUserSelectBoxId").val();
+	
+	
 		var jsObj = {
 				appointmentCndiateId:apontmntCndiateId,
-			task:""
+				task:""
 		}
 	$.ajax({
 		type : 'GET',
@@ -153,10 +155,11 @@ function getCommitteeLevelCount(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
-			buildCommitteeLvlAppntmnts(result);
+			buildCommitteeLvlAppntmnts(result,jsObj);
 	});     
 }
-function buildCommitteeLvlAppntmnts(result){
+function buildCommitteeLvlAppntmnts(result,jsObj){
+	
    $("#committeeLvlAppntId").html("");
   var str = '';
   if(result != null){
@@ -183,42 +186,42 @@ function buildCommitteeLvlAppntmnts(result){
        
     for(var i in result){
             str +='<tr>';
-		str +='<td id='+result[i].roleId+'><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getLevelWiseCount(\''+result[i].roleId+'\',\''+result[i].role+'\');">'+result[i].role+'</a></td>';
+		str +='<td id='+result[i].roleId+'><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getLevelWiseCount(\''+result[i].roleId+'\',\''+result[i].role+'\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].role+'</a></td>';
         
         if(result[i].total>0)
         {
-        str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'total\');">'+result[i].total+'</a></td>';
+        str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'total\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].total+'</a></td>';
         }else{
           str+='<td style="text-align:center">'+result[i].total+'</td>';
         }
 		  if(result[i].uniquecnt>0)
         {
-        str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'total\');">'+result[i].uniquecnt+'</a></td>';
+        str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'total\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].uniquecnt+'</a></td>';
         }else{
           str+='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
         }
         if(result[i].requestedCnt>0)
         {
-         str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'Request\');">'+result[i].requestedCnt+'</a></td>';
+         str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'Request\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].requestedCnt+'</a></td>';
         }else{
           str+='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
         }
         if(result[i].uniqueRequestedCnt>0)
         {
-                str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'Request\');">'+result[i].uniqueRequestedCnt+'</a></td>';
+                str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'Request\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].uniqueRequestedCnt+'</a></td>';
         }else{
           str+='<td style="text-align:center">'+result[i].uniqueRequestedCnt+'</td>';
         }
         if(result[i].scheduledCnt>0)
         {
-                str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'Schedule\');">'+result[i].scheduledCnt+'</a></td>';
+                str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'Schedule\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].scheduledCnt+'</a></td>';
         }else{
           str+='<td style="text-align:center">'+result[i].scheduledCnt+'</td>';
         }
         if(result[i].uniqueScheduledCnt>0)
         {
 
-		str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'Schedule\');">'+result[i].uniqueScheduledCnt+'</a></td>';
+		str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'Schedule\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].uniqueScheduledCnt+'</a></td>';
         }else{
           str+='<td style="text-align:center">'+result[i].uniqueScheduledCnt+'</td>';
         }
@@ -232,8 +235,9 @@ function buildCommitteeLvlAppntmnts(result){
       $("#committeeLvlAppntId").html(str);
 }
 
-function getLevelWiseCount(levelId,level){
+function getLevelWiseCount(levelId,level,aptUserId){
 		var jsObj = {
+			aptUserId:aptUserId,
 			levelId:levelId
 		}
 	$.ajax({

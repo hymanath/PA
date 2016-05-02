@@ -1247,6 +1247,7 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			vo.setRoleId(jObj.getLong("roleId"));
 			vo.setScheduleType(jObj.getString("scheduleType"));
 			vo.setCntType(jObj.getString("cntType"));
+			vo.setAptUserId(jObj.getLong("aptUserId"));
 			membersList = appointmentService.getAppointmentMembersByScheduleType(vo);
 			
 		}catch(Exception e) {
@@ -1272,7 +1273,9 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			jObj = new JSONObject(getTask());
 			  
 			  Long levelId   = jObj.getLong("levelId");
-			appointmentCountVOList = appointmentService.getLevelWiseCount(levelId);
+			  Long aptUserId = jObj.getLong("aptUserId");
+			 
+			appointmentCountVOList = appointmentService.getLevelWiseCount(levelId,aptUserId);
 			
 		}catch(Exception e) {
 			LOG.error("Exception occured in getLevelWiseCount() of AppointmentAction",e);
