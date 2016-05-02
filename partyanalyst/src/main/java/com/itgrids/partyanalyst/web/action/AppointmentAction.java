@@ -23,6 +23,8 @@ import com.itgrids.partyanalyst.dto.AppointmentDetailsVO;
 import com.itgrids.partyanalyst.dto.AppointmentFieldsVO;
 import com.itgrids.partyanalyst.dto.AppointmentInputVO;
 import com.itgrids.partyanalyst.dto.AppointmentLocVO;
+import com.itgrids.partyanalyst.dto.AppointmentMemberInputVO;
+import com.itgrids.partyanalyst.dto.AppointmentMembersDataVO;
 import com.itgrids.partyanalyst.dto.AppointmentScheduleVO;
 import com.itgrids.partyanalyst.dto.AppointmentSlotsVO;
 import com.itgrids.partyanalyst.dto.AppointmentStatusFlowVO;
@@ -90,7 +92,17 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private  List<AppointmentSlotsVO> apptSlotList;
 	private  AppointmentStatusFlowVO appointmentStatusFlowVO;
 	private  AppointmentFieldsVO  appointmentFieldsVO;
+	private List<AppointmentMembersDataVO> membersList;
 	
+	
+	
+	public List<AppointmentMembersDataVO> getMembersList() {
+		return membersList;
+	}
+
+	public void setMembersList(List<AppointmentMembersDataVO> membersList) {
+		this.membersList = membersList;
+	}
 	public AppointmentStatusFlowVO getAppointmentStatusFlowVO() {
 		return appointmentStatusFlowVO;
 	}
@@ -99,6 +111,7 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 			AppointmentStatusFlowVO appointmentStatusFlowVO) {
 		this.appointmentStatusFlowVO = appointmentStatusFlowVO;
 	}
+
 
 	public List<StatusTrackingVO> getStatusTrackingVOList() {
 		return statusTrackingVOList;
@@ -1223,6 +1236,24 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getAppointmentMembersByScheduleType(){
+		try{
+			jObj = new JSONObject(getTask());
+			AppointmentMemberInputVO vo = new AppointmentMemberInputVO();
+			vo.setMemberType(jObj.getString("memberType"));
+			vo.setRoleId(jObj.getLong("roleId"));
+			vo.setScheduleType(jObj.getString("scheduleType"));
+			vo.setCntType(jObj.getString("cntType"));
+			membersList = appointmentService.getAppointmentMembersByScheduleType(vo);
+			
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAppointmentMembersByScheduleType() of AppointmentAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 	public String getCommitteeLevelAppointments(){
 		try{
 			
