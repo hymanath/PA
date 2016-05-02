@@ -1281,7 +1281,7 @@ function buildTotalAppointmentStatusForToday(result){
 			if(value.totalCount == 0){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
+				str+='<td class="todayappointmentStatusCls text-center" attr_status_type="totalApproved" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
 			}
 			str+='</tr>';
 			
@@ -2190,12 +2190,10 @@ $(document).on("click",".rangesDashboard ul li",function(){
 		getCandiCountsByLocations();
 	 }
 });
-$("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
-$('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
-
-
-$("#appointmentDateSlotHeadingId").daterangepicker({singleDatePicker:true});
-$('#appointmentDateSlotHeadingId').val(moment().format('MM/DD/YYYY'));
+//$("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
+//$('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
+//$("#appointmentDateSlotHeadingId").daterangepicker({singleDatePicker:true});
+//$('#appointmentDateSlotHeadingId').val(moment().format('MM/DD/YYYY'));
 $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
 
@@ -3620,7 +3618,11 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		$("#viewAllMembersId").dataTable();
 		
 	}
-	
+	$("#searchStrId").keypress(function(e) {
+		if(e.which == 13) {
+			getSearchDetails('false');
+		 }
+     });
 	 var searchJobj;
 	function getSearchDetails(isCheckParticlurUser)
 	{
@@ -3898,7 +3900,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							var color = getColorCodeByStatus(colorstatus);
 							str+='<span style="font-weight:bold;color:'+color+'" id="statusSpanId'+result[i].appointmentId+'">'+result[i].appointmentStatus+'</span>';
 							if(result[i].date != "" && result[i].statusId == 3){
-							str+='<span id="scheduledTimeId'+result[i].appointmentId+'" class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'</span>';
+							str+='<span id="scheduledTimeId'+result[i].appointmentId+'" class="pull-right"><span class="text-success"><i class="glyphicon glyphicon-time"></i>&nbsp;&nbsp;'+result[i].date+'&nbsp;&nbsp;</span>';
 							}
 							str+='</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box" id="appointmentSettingsBLockId'+result[i].appointmentId+'">';
@@ -4107,6 +4109,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 <script>
 	
 	$(document).on("click",".cnfrmaptsCls",function(){
+		
+	   $("#appointmentDateSlotHeadingId").daterangepicker({singleDatePicker:true});
+       $('#appointmentDateSlotHeadingId').val(moment().format('MM/DD/YYYY'));
+	   $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
+       $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
+	   
 		$(".changeClass").removeClass("col-md-8");
 		$(".changeClass").addClass("col-md-12");
 		getAppointmentStatusOverview();	
@@ -4119,17 +4127,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		   $("#fromTimeId").val("00:00 AM");
 		   $("#toTimeId").val("00:00 PM");
 		   $("#commentTxt").val("");
-		   
-		//clear create appointment fields after changing the tab  
-		 $("#moreCandidatesDivId").html('');
-		 $( "#multiDate" ).multiDatesPicker("resetDates");
-		 $(".dateRadioCls").prop('checked', false);
-		 cloneCount = 0;
- 		 saveFieldsEmpty();
-		 //end
-		 
-		getTimeSlotsForADayByAppytUserId();
+	
+    	getTimeSlotsForADayByAppytUserId();
 		getAllScheduledApptsByDate();
+		
 	});
 	
 	function getAppointmentLabels(){
@@ -5016,6 +5017,13 @@ function buildTimeSlotsTable(result){
 		
 		clearAllValidationCls();
 		clearFields();
+		//clear create appointment fields after changing the tab  
+		 $("#moreCandidatesDivId").html('');
+		 $( "#multiDate" ).multiDatesPicker("resetDates");
+		 $(".dateRadioCls").prop('checked', false);
+		 cloneCount = 0;
+ 		 saveFieldsEmpty();
+		 //end
 		$("#errDigitsId").html('');
 		$("#searchValueId").val('');
 		$("#searchTypeId").val(0);
@@ -6315,6 +6323,7 @@ function getCommitteeRoles(){
      
 			$(document).on("click",".refreshBlockDiv",function(e){
 				$("#LineChart").html('');
+				$("#searchStrId").attr("placeholder", "Name or MobileNumber").val("");
 				$("#selectStatusId").val(0);
 				getTotalAppointmentStatus();
 				$(".daterangepicker").hide();
