@@ -23,4 +23,20 @@ public class AppointmentSmsSettingDAO extends GenericDaoHibernate<AppointmentSms
 	    query.setParameter("appointmentStatusId", appointmentStatusId);
 	   return query.list();
 	}
+	
+	public String checkIsValidForSendingSMS(Long appointmentStatusId){
+		
+		Query query = getSession().createQuery(" select model.isEnabled from AppointmentSmsSetting model where model.appointmentStatus.appointmentStatusId = :appointmentStatusId ");
+		
+		query.setParameter("appointmentStatusId",appointmentStatusId);
+		return (String) query.uniqueResult();
+		
+	}
+	
+	public List<Object[]> getSMSEnablingDetailsForAllStatus(){
+		
+		Query query = getSession().createQuery(" select model.appointmentStatus.appointmentStatusId,model.isEnabled from AppointmentSmsSetting model ");
+		return  query.list();
+	}
+	
 }
