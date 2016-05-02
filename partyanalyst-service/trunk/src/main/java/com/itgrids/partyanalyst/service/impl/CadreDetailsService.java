@@ -5775,6 +5775,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long panTotalCount = 0l;
 			Long panInvAtndCount = 0l;
 			Long panNonInvtAtdCount = 0l;
+			String panPercentage = "0.00";
 			List<Long> pancCareIds = new ArrayList<Long>();
 			List<Long> panTotalCadrIds = new ArrayList<Long>();
 			if(panchayatId != null && panchayatId.longValue() > 0l){
@@ -5782,15 +5783,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				pancCareIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(panchayatId, "panchayat");
 				panTotalCount = trainingCampAttendanceDAO.getAttendedCountByLocation(panchayatId, "panchayat");
 				panTotalCadrIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(panchayatId, "panchayat");
-				if(pancCareIds != null && panTotalCadrIds != null ){
+				if(panchayatInvitedCount.longValue() > 0l && panTotalCount.longValue() > 0l){
 					for (Long long1 : pancCareIds) {
 						if(panTotalCadrIds.contains(long1)){
 							panInvAtndCount = panInvAtndCount + 1l;
 						}
 					}
 					panNonInvtAtdCount = panTotalCount - panInvAtndCount;
+					panPercentage = (new BigDecimal((panInvAtndCount * 100.0)/panchayatInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				}
-				String percentage = (new BigDecimal((panInvAtndCount * 100.0)/panchayatInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(panchayatId);
@@ -5798,7 +5799,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				vo.setCount(panchayatInvitedCount);
 				vo.setActualCount(panInvAtndCount);
 				vo.setAvailableCount(panNonInvtAtdCount);
-				vo.setPercentage(percentage);
+				vo.setPercentage(panPercentage);
 				
 				voList.add(vo);
 			}
@@ -5807,6 +5808,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long wardTotalcount = 0l;
 			Long wardInvAtdCount = 0l;
 			Long wardNonInvAtdCount = 0l;
+			String wardPercentage = "0.00";
 			List<Long> wardInvCadreIds = new ArrayList<Long>();
 			List<Long> wardTotalCadreIds = new ArrayList<Long>();
 			if(wardId != null && wardId.longValue() > 0l){
@@ -5814,15 +5816,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				wardInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(wardId, "ward");
 				wardTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(wardId, "ward");
 				wardTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(wardId, "ward");
-				if(wardInvCadreIds != null && wardTotalCadreIds != null){
+				if(wardInvitedCount.longValue() > 0l && wardTotalcount.longValue() > 0l){
 					for (Long long1 : wardInvCadreIds) {
 						if(wardTotalCadreIds.contains(long1)){
 							wardInvAtdCount = wardInvAtdCount + 1l;
 						}
 					}
 					wardNonInvAtdCount = wardTotalcount - wardInvAtdCount;
+					wardPercentage = (new BigDecimal((wardInvAtdCount * 100.0)/wardInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				}
-				String percentage = (new BigDecimal((wardInvAtdCount * 100.0)/wardInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(wardId);
@@ -5830,7 +5832,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				vo.setCount(wardInvitedCount);
 				vo.setActualCount(wardInvAtdCount);
 				vo.setAvailableCount(wardNonInvAtdCount);
-				vo.setPercentage(percentage);
+				vo.setPercentage(wardPercentage);
 				
 				voList.add(vo);
 			}
@@ -5839,6 +5841,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long mandalTotalcount = 0l;
 			Long mandalInvAtdCount = 0l;
 			Long mandalNonInvAtdCount = 0l;
+			String mandPercentage = "0.00";
 			List<Long> mandalInvCadreIds = new ArrayList<Long>();
 			List<Long> mandalTotalCadreIds = new ArrayList<Long>();
 			if(mandalId != null && mandalId.longValue() > 0l){
@@ -5846,15 +5849,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				mandalInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(mandalId, "mandal");
 				mandalTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(mandalId, "mandal");
 				mandalTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(mandalId, "mandal");
-				if(mandalInvCadreIds != null && mandalTotalCadreIds != null){
+				if(mandalInvitedCount.longValue() > 0l && mandalTotalcount.longValue() > 0l){
 					for (Long long1 : mandalInvCadreIds) {
 						if(mandalTotalCadreIds.contains(long1)){
 							mandalInvAtdCount = mandalInvAtdCount + 1l;
 						}
 					}
 					mandalNonInvAtdCount = mandalTotalcount - mandalInvAtdCount;
+					mandPercentage = (new BigDecimal((mandalInvAtdCount * 100.0)/mandalInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				}
-				String percentage = (new BigDecimal((mandalInvAtdCount * 100.0)/mandalInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(mandalId);
@@ -5862,7 +5865,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				vo.setCount(mandalInvitedCount);
 				vo.setActualCount(mandalInvAtdCount);
 				vo.setAvailableCount(mandalNonInvAtdCount);
-				vo.setPercentage(percentage);
+				vo.setPercentage(mandPercentage);
 				
 				voList.add(vo);
 			}
@@ -5871,6 +5874,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long lebTotalcount = 0l;
 			Long lebInvAtdCount = 0l;
 			Long lebNonInvAtdCount = 0l;
+			String lebPercentage = "0.00";
 			List<Long> lebInvCadreIds = new ArrayList<Long>();
 			List<Long> lebTotalCadreIds = new ArrayList<Long>();
 			if(lebId != null && lebId.longValue() > 0l){
@@ -5878,15 +5882,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				lebInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(lebId, "leb");
 				lebTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(lebId, "leb");
 				lebTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(lebId, "leb");
-				if(lebInvCadreIds != null && lebTotalCadreIds != null){
+				if(lebInvitedCount.longValue() > 0l && lebTotalcount.longValue() > 0l){
 					for (Long long1 : lebInvCadreIds) {
 						if(lebTotalCadreIds.contains(long1)){
 							lebInvAtdCount = lebInvAtdCount + 1l;
 						}
 					}
 					lebNonInvAtdCount = lebTotalcount - lebInvAtdCount;
+					lebPercentage = (new BigDecimal((lebInvAtdCount * 100.0)/lebInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				}
-				String percentage = (new BigDecimal((lebInvAtdCount * 100.0)/lebInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(lebId);
@@ -5894,7 +5898,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				vo.setCount(lebInvitedCount);
 				vo.setActualCount(lebInvAtdCount);
 				vo.setAvailableCount(lebNonInvAtdCount);
-				vo.setPercentage(percentage);
+				vo.setPercentage(lebPercentage);
 				
 				voList.add(vo);
 			}
@@ -5903,6 +5907,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long constTotalcount = 0l;
 			Long constInvAtdCount = 0l;
 			Long constNonInvAtdCount = 0l;
+			String consPercentage = "0.00";
 			List<Long> constInvCadreIds = new ArrayList<Long>();
 			List<Long> constTotalCadreIds = new ArrayList<Long>();
 			if(constituencyId != null && constituencyId.longValue() > 0l){
@@ -5910,15 +5915,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				constInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(constituencyId, "constituency");
 				constTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(constituencyId, "constituency");
 				constTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(constituencyId, "constituency");
-				if(constInvCadreIds != null && constTotalCadreIds != null){
+				if(constInvitedCount.longValue() > 0l && constTotalcount.longValue() > 0l){
 					for (Long long1 : constInvCadreIds) {
 						if(constTotalCadreIds.contains(long1)){
 							constInvAtdCount = constInvAtdCount + 1l;
 						}
 					}
 					constNonInvAtdCount = constTotalcount - constInvAtdCount;
+					consPercentage = (new BigDecimal((constInvAtdCount * 100.0)/constInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				}
-				String percentage = (new BigDecimal((constInvAtdCount * 100.0)/constInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(constituencyId);
@@ -5926,7 +5931,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				vo.setCount(constInvitedCount);
 				vo.setActualCount(constInvAtdCount);
 				vo.setAvailableCount(constNonInvAtdCount);
-				vo.setPercentage(percentage);
+				vo.setPercentage(consPercentage);
 				
 				voList.add(vo);
 			}
@@ -5935,6 +5940,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long parliTotalcount = 0l;
 			Long parliInvAtdCount = 0l;
 			Long parliNonInvAtdCount = 0l;
+			String parlPercentage = "0.00";
 			List<Long> parliInvCadreIds = new ArrayList<Long>();
 			List<Long> parliTotalCadreIds = new ArrayList<Long>();
 			if(parliamentId != null && parliamentId.longValue() > 0l){
@@ -5942,15 +5948,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				parliInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(parliamentId, "parliament");
 				parliTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(parliamentId, "parliament");
 				parliTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(parliamentId, "parliament");
-				if(parliInvCadreIds != null && parliTotalCadreIds != null){
+				if(parliInvitedCount.longValue() > 0l && parliTotalcount.longValue() > 0l){
 					for (Long long1 : parliInvCadreIds) {
 						if(parliTotalCadreIds.contains(long1)){
 							parliInvAtdCount = parliInvAtdCount + 1l;
 						}
 					}
 					parliNonInvAtdCount = parliTotalcount - parliInvAtdCount;
+					parlPercentage = (new BigDecimal((parliInvAtdCount * 100.0)/parliInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				}
-				String percentage = (new BigDecimal((parliInvAtdCount * 100.0)/parliInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(parliamentId);
@@ -5958,7 +5964,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				vo.setCount(parliInvitedCount);
 				vo.setActualCount(parliInvAtdCount);
 				vo.setAvailableCount(parliNonInvAtdCount);
-				vo.setPercentage(percentage);
+				vo.setPercentage(parlPercentage);
 				
 				voList.add(vo);
 			}
@@ -5967,6 +5973,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Long distTotalcount = 0l;
 			Long distInvAtdCount = 0l;
 			Long distNonInvAtdCount = 0l;
+			String distPercentage = "0.00";
 			List<Long> distInvCadreIds = new ArrayList<Long>();
 			List<Long> distTotalCadreIds = new ArrayList<Long>();
 			if(districtId != null && districtId.longValue() > 0l){
@@ -5974,15 +5981,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				distInvCadreIds = trainingCampBatchAttendeeDAO.getInvitedCadreIdsByLocation(districtId, "district");
 				distTotalcount = trainingCampAttendanceDAO.getAttendedCountByLocation(districtId, "district");
 				distTotalCadreIds = trainingCampAttendanceDAO.getAttendedCadreIdsByLocation(districtId, "district");
-				if(distInvCadreIds != null && distTotalCadreIds != null){
+				if(distInvitedCount.longValue() > 0l && distTotalcount.longValue() > 0l){
 					for (Long long1 : distInvCadreIds) {
 						if(distTotalCadreIds.contains(long1)){
 							distInvAtdCount = distInvAtdCount + 1l;
 						}
 					}
 					distNonInvAtdCount = distTotalcount - distInvAtdCount;
+					distPercentage = (new BigDecimal((distInvAtdCount * 100.0)/distInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				}
-				String percentage = (new BigDecimal((distInvAtdCount * 100.0)/distInvitedCount.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP)).toString();
 				
 				IdNameVO vo = new IdNameVO();
 				vo.setId(districtId);
@@ -5990,7 +5997,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				vo.setCount(distInvitedCount);
 				vo.setActualCount(distInvAtdCount);
 				vo.setAvailableCount(distNonInvAtdCount);
-				vo.setPercentage(percentage);
+				vo.setPercentage(distPercentage);
 				
 				voList.add(vo);
 			}
