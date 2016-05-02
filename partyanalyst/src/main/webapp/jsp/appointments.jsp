@@ -6694,7 +6694,7 @@ function getCommitteeRoles(){
 		
 		var appointmntCandteId=$("#appointmentUserSelectBoxId").val();
 		var jsObj = {
-			apontntCnditeId:appointmntCandteId
+			apontntCnditeId:appointmntCandteId,
 			task:""
 		}
 	$.ajax({
