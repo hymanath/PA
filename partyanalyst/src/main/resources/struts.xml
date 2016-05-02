@@ -11887,6 +11887,12 @@
 			<param name="root">appointmentCountVOList</param>
 		</result>
 	</action>
+	<action name="getAppointmentMembersByScheduleTypeAction" class="appointmentAction" method="getAppointmentMembersByScheduleType">
+		<result type="json" name="success">
+			<param name="root">membersList</param>
+		</result>
+	</action>
+	
 	<action name="getCommitteeLevelAppmentsAction" class="appointmentAction" method="getCommitteeLevelAppointments">
 		<result type="json" name="success">
 			<param name="root">appointmentCountVOList</param>
