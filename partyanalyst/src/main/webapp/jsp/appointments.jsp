@@ -5926,8 +5926,6 @@ function getAppointmentCreatedUsers(){
 			}
 			if(result != null && result.exceptionMsg != null && result.exceptionMsg == "success"){
 				
-				getAppointmentStatusOverview();
-				
 				if(type=="save"){
 					
 					  $("#errorDivForTimeSlotId").html("<p style='color:green;font-size:20px'>Saved Successfully</p>");
@@ -5941,6 +5939,7 @@ function getAppointmentCreatedUsers(){
 					   $("#commentTxt").val("");
 					   
 					   getAllScheduledApptsByDate();
+					   getAppointmentStatusOverview();
 					   
 			   }else if(type=="update"){
 				   
@@ -6361,7 +6360,6 @@ function getCommitteeRoles(){
 	  }
 	  function buildAppointmentStatusOverAllView(result)
 	  {
-		
 			var total = 0;
 		 for(var i in result)
 		  {
@@ -6374,27 +6372,36 @@ function getCommitteeRoles(){
 		 $("#AllStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId="0">'+total+'</a>');	  
 		 for(var i in result)
 		  {
+			
 			  if(result[i].id == 2)
 			  {
 			
 				  $("#approvedStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
+			  }else{
+				 $("#approvedStatus").html('<a style="color:white" >0</a>'); 
 			  }
 			  if(result[i].id == 10)
 			  {
 				  $("#notAttendedStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
 				  
 				 // $("#notAttendedStatus").html(''+result[i].availableCount+''); 
+			  }else{
+				  $("#notAttendedStatus").html('<a style="color:white">0</a>');
 			  }
 			 if(result[i].id == 5)
 			  {
 				   $("#cancelledStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
 				 // $("#cancelledStatus").html(''+result[i].availableCount+''); 
+			  }else{
+				   $("#cancelledStatus").html('<a  style="color:white" >0</a>');
 			  }
 			  if(result[i].id == 8)
 			  {
 				  $("#reScheduledStatus").html('<a class="confirmViewClass" style="cursor:pointer;color:white" attr_statusId='+result[i].id+'>'+result[i].availableCount+'</a>');
 				  
 				 // $("#reScheduledStatus").html(''+result[i].availableCount+''); 
+			  }else{
+				   $("#reScheduledStatus").html('<a  style="color:white">0</a>');
 			  }
 		  }
 	 }
