@@ -3822,7 +3822,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										$(currentUpdateButton).closest('.manageAppViewPanelClass').find('.settingClass').find('.settingsIcon').attr("attr_appt_status_id",statusId);
 										
 										var apptSelectBoxId = $("#appointmentStatus"+apptId).attr("id")
-
+										
+										if( getCorrespondingEnablingStatusByStatusId(statusId) == "Y" ){
+											$('#smsEnabledDivId'+apptId).show();
+										}else{
+											$('#smsEnabledDivId'+apptId).hide();
+										}
+										
 										$('#scheduledTimeId'+apptId).remove();
 										getUpdatedStatusForaAppointment(statusId,apptSelectBoxId);
 										getAppointmentStatusCounts();
