@@ -450,3 +450,23 @@ function getCandidCountsByStatesAction(){
 						 //$('#candidateWiseDataTable').removeClass("dataTable");
 						
 	}
+	
+  function getMemebersByScheduleType(roleId,memberType,countType,scheduleType)
+  {
+  $("#membersModelId").modal("show");
+   var jsObj = {
+     roleId : roleId,
+    memberType : memberType,
+    cntType : countType,
+    scheduleType : scheduleType,
+    task:""
+   }
+    $.ajax({
+    type : 'GET',
+    url : 'getAppointmentMembersByScheduleTypeAction.action',
+    dataType : 'json',
+    data : {task:JSON.stringify(jsObj)}  
+    }).done(function(result){ 
+       
+       });   
+  }
