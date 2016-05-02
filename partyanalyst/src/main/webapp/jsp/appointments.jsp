@@ -1039,7 +1039,9 @@
       onSort:function(evt){ console.log('onStart.editable:', [evt.item, evt.from]);},
       onEnd: function(evt){ console.log('onEnd.editable:', [evt.item, evt.from]);}
   });
-  
+ 
+
+
 /* Drag and Drop END */
 //getTotalAppointmentStatus();
 function getTotalAppointmentStatus(){
@@ -1554,6 +1556,8 @@ $(".dropkickClass").dropkick();
 			}
 		});
 	}
+	var SMSEnablingDetailsArray=[];
+	getSMSEnablingDetailsForAllStatus(SMSEnablingDetailsArray);
 	
 	function getCandidateDesignation(){
 		$.ajax({
@@ -2576,8 +2580,32 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}); */
 		applyPagination();
 	}
+	
+	function getSMSEnablingDetailsForAllStatus(SMSEnablingDetailsArray){
+		<c:if test="${not empty smsStatusEnabledList}">  
+			 <c:forEach var="apptStatus" items="${smsStatusEnabledList}">
+			   var obj = { statusId : '${apptStatus.id}', SMSStatus : '${apptStatus.name}' }
+			   SMSEnablingDetailsArray.push(obj);
+			</c:forEach>
+		 </c:if>
+	}
+	function getCorrespondingEnablingStatusByStatusId(statusId){
+		
+		if(SMSEnablingDetailsArray != null && SMSEnablingDetailsArray.length > 0)
+		{
+			for(var i in SMSEnablingDetailsArray)
+			{   
+				if(SMSEnablingDetailsArray[i].statusId == statusId){
+					
+				   return SMSEnablingDetailsArray[i].SMSStatus;	
+				}
+					
+			}
+		}
+	}
 	</script>
 	<script>
+	
 	 $(document).on("click",".historyShowModalBtn",function(){
 			$("#appCandidateNameId").html('');
 			$(".historyShowModal").modal("show");
@@ -3762,49 +3790,62 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			commentTxt:commentTxt,
 			apptuserId : $("#appointmentUserSelectBoxId").val()
 		}
-			$.ajax({
-			type : 'POST',
-			url : 'updateAppointmentStatusAction.action',
-			dataType : 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			 $("#"+processImgId).hide();
-			if(result != null && result.message=="success"){
-				$(".msgDiv"+apptId).html("Updated Successfully.").css("color","green");
-				setTimeout(function(){$("#"+updateDivId).hide();},2000);
-				setTimeout(function(){$(".msgDiv"+apptId).html("");},2000);
-				
-				$("#smsChkId"+apptId).attr("checked",false);
-				$("#comentChkId"+apptId).attr("checked",false);
-				
-				$("#commentTxtId"+apptId).attr("placeholder", "Please Enter Comment...").val("");
-			    $("#smsTextId"+apptId).attr("placeholder", "Please Enter Sms...").val("");
-				
-				$("#commentTxtId"+apptId).hide();
-				$("#smsTextId"+apptId).hide();
-				
-				// Refresh the block
-				if(statusChange){
-					
-					$(currentUpdateButton).attr("appointmentstatusid",statusId);
-					$(currentUpdateButton).closest('.manageAppViewPanelClass').find('.settingClass').find('span').html(statusText);
-					$(currentUpdateButton).closest('.manageAppViewPanelClass').find('.settingClass').find('.settingsIcon').attr("attr_appt_status_id",statusId);
-				    
-					var apptSelectBoxId = $("#appointmentStatus"+apptId).attr("id")
-					
-					$('#scheduledTimeId'+apptId).remove();
-					getUpdatedStatusForaAppointment(statusId,apptSelectBoxId);
-					getAppointmentStatusCounts();
-					getTotalAppointmentStatus();
-				}
-				
-				 //var ele = new Dropkick("#appointmentStatus"+apptId);
-				// ele.select(0);
-			}else{
-				$(".msgDiv"+apptId).html("Please try Again.").css("color","red");
-			}
-			   
-		});
+		
+		$.ajax({
+			
+				  url      :   "updateAppointmentStatusAction.action",
+				  type     :   "POST",
+				  datatype :   "json",
+				  data     :  { task:JSON.stringify(jsObj) },
+				  success  :  function (result) {
+								
+								$("#"+processImgId).hide();
+								if(result != null && result.message=="success"){
+									$(".msgDiv"+apptId).html("Updated Successfully.").css("color","green");
+									setTimeout(function(){$("#"+updateDivId).hide();},2000);
+									setTimeout(function(){$(".msgDiv"+apptId).html("");},2000);
+									
+									$("#smsChkId"+apptId).attr("checked",false);
+									$("#comentChkId"+apptId).attr("checked",false);
+									
+									$("#commentTxtId"+apptId).attr("placeholder", "Please Enter Comment...").val("");
+									$("#smsTextId"+apptId).attr("placeholder", "Please Enter Sms...").val("");
+									
+									$("#commentTxtId"+apptId).hide();
+									$("#smsTextId"+apptId).hide();
+									
+									// Refresh the block
+									if(statusChange){
+										
+										$(currentUpdateButton).attr("appointmentstatusid",statusId);
+										$(currentUpdateButton).closest('.manageAppViewPanelClass').find('.settingClass').find('span').html(statusText);
+										$(currentUpdateButton).closest('.manageAppViewPanelClass').find('.settingClass').find('.settingsIcon').attr("attr_appt_status_id",statusId);
+										
+										var apptSelectBoxId = $("#appointmentStatus"+apptId).attr("id")
+
+										$('#scheduledTimeId'+apptId).remove();
+										getUpdatedStatusForaAppointment(statusId,apptSelectBoxId);
+										getAppointmentStatusCounts();
+										getTotalAppointmentStatus();
+									}
+									
+									 //var ele = new Dropkick("#appointmentStatus"+apptId);
+									// ele.select(0);
+								}else{
+									$(".msgDiv"+apptId).html("Please try Again.").css("color","red");
+								}
+							  },
+				  error     : function (jqXHR, textStatus, errorThrown) {
+					              $("#"+processImgId).hide();
+								  if(jqXHR.status == 500){
+									  $(".msgDiv"+apptId).html("Unexpected Error.Please Try Again..").css("color","red");
+								  }else{
+									 alert('Unexpected error.');
+								  }
+							  }
+			 });
+			 
+		
 	});
 	
 	$(document).on("click",".updateAll",function() {
@@ -3843,14 +3884,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		});
 	})
 	
-	$(document).on("click",".status",function(){
-		var val = $(this).val();
-			if(val == 5)
-			$(".upcomedateCls1").show();
-		else
-				$(".upcomedateCls1").hide();
+	$(document).on("change",".status",function(){
 		
+		var val = $(this).val();
+		var apptId = $(this).attr("attr_appt_id");
+		
+		if( getCorrespondingEnablingStatusByStatusId(val) == "Y" ){
+			$('#smsEnabledDivId'+apptId).show();
+		}else{
+			$('#smsEnabledDivId'+apptId).hide();
+		}
 	});
+	
 	function buildAppointmentSearchResult(result,statusId,statusType)
 	{
 	    setcolorsForStatus();
@@ -3905,8 +3950,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</p>';
 							str+='<div class="appointmentSettingsBLock arrow_box" id="appointmentSettingsBLockId'+result[i].appointmentId+'">';
 							str+='<label>Select Appointment Status</label><span style="color:red;" id="errSpanId'+result[i].appointmentId+'"></span>';
-								 str+='<select class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
+								 str+='<select attr_appt_id='+result[i].appointmentId+' class="status'+result[i].appointmentId+' status" id="appointmentStatus'+result[i].appointmentId+'" style="box-shadow:none;margin-top:0px;padding:0px;">';
 								str+='</select>';
+								
 							str+='<div class="row m_top10">';
 							str+='<div class="col-xs-12">';
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
@@ -3914,12 +3960,21 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='</label>';
 							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							str+='</div>';
-							str+='<div class="col-xs-12">';
-							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
-							str+='<input type="checkbox" attr_sms_chckbx_id='+result[i].appointmentId+' value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
-							str+='</label>';
-							str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
-							str+='</div>';
+							
+							if (getCorrespondingEnablingStatusByStatusId(result[i].statusId) == "Y" ){
+								str+='<div id="smsEnabledDivId'+result[i].appointmentId+'" class="col-xs-12">';
+							}else{
+								str+='<div id="smsEnabledDivId'+result[i].appointmentId+'" class="col-xs-12" style="display:none">';
+							}
+								str+='<label class="checkbox-inline" style="margin-left: 0px;">';
+								str+='<input type="checkbox" attr_sms_chckbx_id='+result[i].appointmentId+' value="3"  name="upcomeRadio" id="smsChkId'+result[i].appointmentId+'" class="smsCheckedCls'+result[i].appointmentId+' showSmsBox" >Send Sms &nbsp;&nbsp;';
+								str+='</label>';
+								
+								str+='<textarea placeholder="Please Enter Sms..." class=" m_top10 form-control  smsTextCls'+result[i].appointmentId+'" id="smsTextId'+result[i].appointmentId+'" style="display:none;"></textarea>';
+								
+								str+='</div>';
+							
+							
 							str+='</div>';
 						
     						str+='<span class="msgDiv'+result[i].appointmentId+'"></span>';
@@ -4030,7 +4085,14 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					
 						
 					//Preferable Dates Scenario end
-					str+='<img src="dist/Appointment/img/message.png" class="messageIcon" alt="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top" />';
+					
+					if (getCorrespondingEnablingStatusByStatusId(result[i].statusId) == "Y" ){
+						
+						str+='<img src="dist/Appointment/img/message.png" id="enabledSMSId'+result[i].appointmentId+'" class="messageIcon" alt="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top" />';
+					}else{
+						str+='<img src="dist/Appointment/img/message.png" id="enabledSMSId'+result[i].appointmentId+'" class="messageIcon" alt="messageIcon" title="Send Sms" data-toggle="tooltip" data-placement="top" style="display:none"/>';
+					}
+					
 					  str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right statusTrackingModalbtn" attr-id='+result[i].appointmentId+' attr-aptName='+result[i].appointmentUniqueId+' alt="ViewReqHistory" style="height:16px;cursor:pointer;margin-right:5px;" title="Appointment Requested History" data-toggle="tooltip" data-placement="top" />'; 
 					str+='<span attr_appt_id='+result[i].appointmentId+' class="glyphicon glyphicon-info-sign pull-right appointmentAllDetailsModel" aria-hidden="true" title="Appointment Complete Information" data-toggle="tooltip" data-placement="top" style="cursor:pointer; margin-right: 10px;"></span>';
 					str+='</p>';
@@ -4038,7 +4100,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='<div class="messageBlock arrow_box">';
 					str+='<span class="errorCls msgDiv1'+result[i].appointmentId+'"></span>';
 					str+='<textarea class="form-control sendSms'+result[i].appointmentId+'" ></textarea>';
+					
 					str+='<button class="btn btn-success btn-block sendsms" value="'+result[i].appointmentId+'">SEND SMS</button>';
+					
 					str+='</div>';
 					str+='</div>';
 					str+='</div>';
@@ -6661,8 +6725,9 @@ function getCommitteeRoles(){
 		  $('#commentsdatatable').DataTable();
 	}
 	$(document).on("click",".sendsms",function() {
+		
 		var flag = false;
-		var statusIdForsms = null;
+		
 		var appointmentId = $(this).attr("value");
 		$(".msgDiv1"+appointmentId).html("").css("color","");;
 		var smsText = $(".sendSms"+appointmentId).val().trim();
@@ -6678,21 +6743,29 @@ function getCommitteeRoles(){
 		}
 		var jsObj={
 			appointmentId : appointmentId,
-			smsText:smsText,
-			statusId:statusIdForsms
+			smsText:smsText
 			}
+			
 			$.ajax({
-			type : 'POST',
-			url : 'sendSMSForAppointmtAction.action',
-			dataType : 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$(".msgDiv1"+appointmentId).html("Sms Sent Successfully").css("color","green");
-			setTimeout(function(){
-			 $(".msgDiv1"+appointmentId).html("");
-			},2000);
-			$(".sendSms"+appointmentId).val('');
-		});
+			
+				  url      :   "sendSMSForAppointmtAction.action",
+				  type     :   "POST",
+				  datatype :   "json",
+				  data     :  { task:JSON.stringify(jsObj) },
+				  success  :  function (result) {
+								  $(".msgDiv1"+appointmentId).html("Sms Sent Successfully").css("color","green");
+								  setTimeout(function(){ $(".msgDiv1"+appointmentId).html(""); },2000); 
+								  $(".sendSms"+appointmentId).val('');
+							  },
+				  error     : function (jqXHR, textStatus, errorThrown) {
+								  if(jqXHR.status == 500){
+									  $(".msgDiv1"+appointmentId).html("Unexpected Error.Please Try Again..").css("color","red");
+								  }else{
+									 alert('Unexpected error.');
+								  }
+							  }
+			 }); 
+			
 	});
 	 function clearFields(){
 		$("#multiDate").val("");
@@ -6843,6 +6916,7 @@ function getAppointmentStatus(){
 
 </script>
 <script>
+
 function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 	
 	$('#'+apptSelectBoxId).find('option').remove();
@@ -6866,6 +6940,8 @@ function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 		$('#'+apptSelectBoxId).dropkick();
 		var ele = new Dropkick('#'+apptSelectBoxId);
 		ele.refresh();
+		
+		
 }
 </script>
 <script>
@@ -7810,5 +7886,6 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 	}
 	
 </script>
+
 </body>
 </html>
