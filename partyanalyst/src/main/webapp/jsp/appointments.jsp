@@ -5967,9 +5967,9 @@ function getAppointmentCreatedUsers(){
 					 $(attrId).attr("attr_date",date);      
 					 $(attrId).attr("attr_from_time",fromTime);
 					 $(attrId).attr("attr_to_time",toTime);
-					 
-					 var dateAndtime = date;//+"  "+fromTime+' to '+toTime;
-					 $('#updateApptTimeSlotDateAndTimeId'+appointmentId).html(dateAndtime);
+					 var dateArr=date.split("/");
+					// var dateAndtime = date;//+"  "+fromTime+' to '+toTime;
+					 $('#updateApptTimeSlotDateAndTimeId'+appointmentId).html(dateArr[2]+"-"+dateArr[0]+"-"+dateArr[1]);
 					 
 				}
 			}else{
