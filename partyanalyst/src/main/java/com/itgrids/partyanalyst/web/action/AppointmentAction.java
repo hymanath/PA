@@ -1434,5 +1434,26 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		return Action.SUCCESS;
 	}
 	
+	public String updateAppointmentReason(){
+		try{
+			
+			final HttpSession session = request.getSession();
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null || user.getRegistrationID() == null){
+				return ERROR;
+			}
+			
+			jObj = new JSONObject(getTask());
+			Long appointmentId  =    jObj.getLong("appointmentId");
+			String reason = jObj.getString("updatedReason");
+			
+			resultStatus = appointmentService.updateAppointmentReason(appointmentId,reason,user.getRegistrationID());
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at updateAppointmentReason() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }

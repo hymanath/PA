@@ -12011,5 +12011,10 @@
 			<param name="root">optnsCountVOList</param>
 		</result>
 	</action>
+	<action name="updateAppointmentReasonAction" class="appointmentAction" method="updateAppointmentReason">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
 </package>
 </struts>      
