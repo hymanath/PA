@@ -156,48 +156,79 @@ function getCommitteeLevelCount(){
 	});     
 }
 function buildCommitteeLvlAppntmnts(result){
-	 $("#committeeLvlAppntId").html("");
-	var str = '';
-	if(result != null){
-			str +='<table class="table table-bordered">';
+   $("#committeeLvlAppntId").html("");
+  var str = '';
+  if(result != null){
+      str +='<table class="table table-bordered">';
             str +='<thead>';
            str+='<tr>';
-								str+='<th></th>';
-								str+='<th class="text-capitalize text-center" colspan="2">total</th>';
-								str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
-								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
-							str+='</tr>';
-         	str+='<tr>';
-							// str +='<th></th>';
-								str+='<th class="text-capitalize">Committee Level</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-							str+='</tr>';
-						str+='</thead>';
-						str+='<tbody>';
-		   
-		for(var i in result){
+                str+='<th></th>';
+                str+='<th class="text-capitalize text-center" colspan="2">total</th>';
+                str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
+                str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
+              str+='</tr>';
+           str+='<tr>';
+              // str +='<th></th>';
+                str+='<th class="text-capitalize">Committee Level</th>';
+                str+='<th class="text-capitalize">total</th>';
+                str+='<th class="text-capitalize">unique</th>';
+                str+='<th class="text-capitalize">total</th>';
+                str+='<th class="text-capitalize">unique</th>';
+                str+='<th class="text-capitalize">total</th>';
+                str+='<th class="text-capitalize">unique</th>';
+              str+='</tr>';
+            str+='</thead>';
+            str+='<tbody>';
+       
+    for(var i in result){
             str +='<tr>';
-		
-				str +='<td id='+result[i].roleId+'><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getLevelWiseCount(\''+result[i].roleId+'\',\''+result[i].role+'\');">'+result[i].role+'</a></td>';
-            str +='<td style="text-align:center">'+result[i].total+'</td>';
-            str +='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].uniqueRequestedCnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].scheduledCnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].uniqueScheduledCnt+'</td>';
-			str +=' </tr>';
-		   }
-			str +='</tbody>';
-			str +='</table>';
-	}else{
-		str +='No Data Available.';
-	}
-		  $("#committeeLvlAppntId").html(str);
+		str +='<td id='+result[i].roleId+'><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getLevelWiseCount(\''+result[i].roleId+'\',\''+result[i].role+'\');">'+result[i].role+'</a></td>';
+        
+        if(result[i].total>0)
+        {
+        str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'total\');">'+result[i].total+'</a></td>';
+        }else{
+          str+='<td style="text-align:center">'+result[i].total+'</td>';
+        }
+		  if(result[i].uniquecnt>0)
+        {
+        str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'total\');">'+result[i].uniquecnt+'</a></td>';
+        }else{
+          str+='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
+        }
+        if(result[i].requestedCnt>0)
+        {
+         str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'Request\');">'+result[i].requestedCnt+'</a></td>';
+        }else{
+          str+='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
+        }
+        if(result[i].uniqueRequestedCnt>0)
+        {
+                str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'Request\');">'+result[i].uniqueRequestedCnt+'</a></td>';
+        }else{
+          str+='<td style="text-align:center">'+result[i].uniqueRequestedCnt+'</td>';
+        }
+        if(result[i].scheduledCnt>0)
+        {
+                str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'total\',\'Schedule\');">'+result[i].scheduledCnt+'</a></td>';
+        }else{
+          str+='<td style="text-align:center">'+result[i].scheduledCnt+'</td>';
+        }
+        if(result[i].uniqueScheduledCnt>0)
+        {
+
+		str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMember\',\'unique\',\'Schedule\');">'+result[i].uniqueScheduledCnt+'</a></td>';
+        }else{
+          str+='<td style="text-align:center">'+result[i].uniqueScheduledCnt+'</td>';
+        }
+          str +=' </tr>';
+       }
+      str +='</tbody>';
+      str +='</table>';
+  }else{
+    str +='No Data Available.';
+  }
+      $("#committeeLvlAppntId").html(str);
 }
 
 function getLevelWiseCount(levelId,level){
