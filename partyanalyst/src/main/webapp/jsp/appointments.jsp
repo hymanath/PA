@@ -534,7 +534,7 @@
 												<div class="col-md-4 cloneVillageDivCls" style="display:none;">
 													<label>Select Village/Ward</label>
 													<!--<span style='color:red'> &nbsp * </span>-->
-													<select class="cloneVillageCls ">
+													<select class="cloneVillageCls">
 														<option value="0">Select VILLAGE</option>
 													</select>
 													<!--<div class="cloneErrCandidateVillageCls validateClr"></div>-->
@@ -2649,8 +2649,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				var distId = ''+result.districtId+'';
 				var locEleId = ''+result.localElectionBodyId+'';
 				var tehsilId = ''+result.tehsilId+'';
-				var villageId = ''+result.villageId+'';
-				var wardId = ''+result.wardId+'';
+				var villageId =0;
+				var wardId =0;
+				if(result.villageId !=null){
+					villageId = ''+result.villageId.toString().substring(1)+'';
+				}
+				if(result.wardId !=null){
+					wardId = ''+result.wardId.toString().substring(1)+'';
+				}
+				
 				var temp=parseInt(cloneCount)-1;
 				
 				$('#candidateNameId'+temp).val(name);
@@ -2802,14 +2809,16 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					var str='';
 					str+='<option value="0">Select Village/Ward</option>';
 					for(var i in result.villWardList){
-						str+='<option value="'+result.villWardList[i].locationId+'">'+result.villWardList[i].locationName+'</option>';
+						var villageWardId = result.villWardList[i].locationId.toString().substring(1);
+						str+='<option value="'+villageWardId+'">'+result.villWardList[i].locationName+'</option>';
 					}
 					$('#villageId'+temp).html(str);
 					var select = new Dropkick('#villageId'+temp);
 					select.refresh();
 					}
-					
-					$('#villageId'+temp).val(villageId);
+					if(villageId !=null && villageId>0){
+						$('#villageId'+temp).val(villageId);
+					}					
 					var selectV = new Dropkick('#villageId'+temp);
 					selectV.refresh();
 				}
@@ -2833,14 +2842,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					var str='';
 					str+='<option value="0">Select Village/Ward</option>';
 					for(var i in result.villWardList){
-						str+='<option value="'+result.villWardList[i].locationId+'">'+result.villWardList[i].locationName+'</option>';
+						var villageWardId = result.villWardList[i].locationId.toString().substring(1);
+						
+						str+='<option value="'+villageWardId+'">'+result.villWardList[i].locationName+'</option>';
 					}
 					$('#villageId'+temp).html(str);
 					var select = new Dropkick('#villageId'+temp);
 					select.refresh();
 					}
+					if(wardId !=null && wardId>0){
+						$('#villageId'+temp).val(wardId);
+					}
 					
-					$('#villageId'+temp).val(wardId);
 					var selectW = new Dropkick('#villageId'+temp);
 					selectW.refresh();
 				}
