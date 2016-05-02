@@ -72,6 +72,8 @@ var cb = function(start, end, label) {
 		getCommitteeLevelCount();
 		getCandidCountsByStatesAction();
 		getCandiCountsByLocations();
+		$("#roleWiseApptId").html("");
+		
 		
 	});
 
