@@ -903,6 +903,22 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<!-- model for members-->
+<div class="modal fade bs-example-modal-sm" id="membersModelId" tabindex="-1" role="dialog" aria-labelledby="membersModelLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+	 <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <h4 class="modal-title text-capitalize" >Members</h4>
+		  </div>
+      <div class="modal-body" style="padding:25px;">
+		<div id="appointmentMembersDiv"></div>
+	  </div>
+    </div>
+  </div>
+</div>
+<!-- end -->
 <!--Designation block for other candidate-->
 <div class="modal fade bs-example-modal-sm" id="blockForOtherCandidateModalId" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog modal-sm">
@@ -6674,49 +6690,93 @@ function getCommitteeRoles(){
 }
 function buildPublicRepresentativeWiseAppointmentCnt(result)
 {
-	 var str='';
-		str+='<div class="block">';
-			str+='<div class="row">';
-				str+='<div class="col-md-12">';
-					str+='<h4 class="text-capitalize text-success">public representative wise appointments</h4>';
-					str+='<table class="table table-bordered">';
-						str+='<thead>';
-							str+='<tr>';
-								str+='<th></th>';
-								str+='<th class="text-capitalize text-center" colspan="2">total</th>';
-								str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
-								str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
-							str+='</tr>';
-							str+='<tr>';
-							// str +='<th></th>';
-								str+='<th class="text-capitalize">role</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-								str+='<th class="text-capitalize">total</th>';
-								str+='<th class="text-capitalize">unique</th>';
-							str+='</tr>';
-						str+='</thead>';
-						str+='<tbody>';
-						for(var i in result){
-							str+='<tr>';
-								str+='<td>'+result[i].role+'</td>';
-								str+='<td>'+result[i].total+'</td>';
-								str+='<td>'+result[i].uniquecnt+'</td>';
-								str+='<td>'+result[i].requestedCnt+'</td>';
-								str+='<td>'+result[i].uniqueRequestedCnt+'</td>';
-								str+='<td>'+result[i].scheduledCnt+'</td>';
-								str+='<td>'+result[i].uniqueScheduledCnt+'</td>';
-								
-							str+='</tr>';
-						}
-						str+='</tbody>';
-					str+='</table>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-		$("#advanceDshAppointmentPrWiseDiv").html(str);
+   var str='';
+    str+='<div class="block">';
+      str+='<div class="row">';
+        str+='<div class="col-md-12">';
+          str+='<h4 class="text-capitalize text-success">public representative wise appointments</h4>';
+          str+='<table class="table table-bordered">';
+            str+='<thead>';
+              str+='<tr>';
+                str+='<th></th>';
+                str+='<th class="text-capitalize text-center" colspan="2">total</th>';
+                str+='<th class="text-capitalize text-center" colspan="2">requested</th>';
+                str+='<th class="text-capitalize text-center" colspan="2">appointment scheduled</th>';
+              str+='</tr>';
+              str+='<tr>';
+              // str +='<th></th>';
+                str+='<th class="text-capitalize">role</th>';
+                str+='<th class="text-capitalize">total</th>';
+                str+='<th class="text-capitalize">unique</th>';
+                str+='<th class="text-capitalize">total</th>';
+                str+='<th class="text-capitalize">unique</th>';
+                str+='<th class="text-capitalize">total</th>';
+                str+='<th class="text-capitalize">unique</th>';
+              str+='</tr>';
+            str+='</thead>';
+            str+='<tbody>';
+            for(var i in result){
+              str+='<tr>';
+              str+='<td>'+result[i].role+'</td>';
+              if(result[i].total>0)
+              {
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'total\');">'+result[i].total+'</a></td>';
+              }
+              else
+              {
+                str+='<td>'+result[i].total+'</td>';
+              }
+              if(result[i].uniquecnt>0)
+              {
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'total\');">'+result[i].uniquecnt+'</a></td>';
+              }
+              else
+              {
+              str+='<td>'+result[i].uniquecnt+'</td>';  
+              }
+              if(result[i].requestedCnt>0)
+              {
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Request\');">'+result[i].requestedCnt+'</a></td>';
+              }
+              else
+              {
+                str+='<td>'+result[i].requestedCnt+'</td>';
+              }
+              if(result[i].uniqueRequestedCnt>0)
+              {
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Request\');">'+result[i].uniqueRequestedCnt+'</a></td>';
+              }
+              else
+              {
+                str+='<td>'+result[i].uniqueRequestedCnt+'</td>';
+              }
+              if(result[i].scheduledCnt>0)
+              {
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Schedule\');">'+result[i].scheduledCnt+'</a></td>';
+              }
+              else
+              {
+              str+='<td>'+result[i].scheduledCnt+'</td>';  
+              }
+              if(result[i].uniqueScheduledCnt>0)
+              {
+
+
+			str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Schedule\');">'+result[i].uniqueScheduledCnt+'</a></td>';
+              }
+              else
+              {
+                  str+='<td>'+result[i].uniqueScheduledCnt+'</td>';  
+              }
+                
+              str+='</tr>';
+            }
+            str+='</tbody>';
+          str+='</table>';
+        str+='</div>';
+      str+='</div>';
+    str+='</div>';
+    $("#advanceDshAppointmentPrWiseDiv").html(str);
 }
 var userTypeId = 0;
 getAppointmentStatus();
@@ -7706,6 +7766,8 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 	 
 	    $("#buildAppointmentAllDetailsDiv").html(str);
 	}
+	
+
 </script>
 </body>
 </html>
