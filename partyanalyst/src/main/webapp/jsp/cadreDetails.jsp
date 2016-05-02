@@ -799,7 +799,6 @@ var globalCadreId = '${cadreId}';
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
 					<div id="trainingCampDetailsBodyId">
-						swadhin
 						<div id="trainingCampParticipationDivId">
 						</div>
 					</div>
