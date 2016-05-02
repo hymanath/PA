@@ -1681,6 +1681,10 @@ var globalCadreId = '${cadreId}';
 						mstr+=' <ul class="nav nav-tabs nav-tabs-custom" role="tablist">';
 						if(result.status != null)
 						{
+							/*if(result.status == 'central' || result.status == 'Central' )
+							{																
+								 mstr+='<li role="presentation"  class="meetingCls  "  id="district" key="districttabs"><a href="#districttabs" aria-controls="districttabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'districttabs\',\'district\',\'true\');">Central</a></li>';								
+							}*/
 							if(result.status == 'district' || result.status == 'District' )
 							{																
 								 mstr+='<li role="presentation"  class="meetingCls  "  id="district" key="districttabs"><a href="#districttabs" aria-controls="districttabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'districttabs\',\'district\',\'true\');">District</a></li>';								
@@ -1714,27 +1718,36 @@ var globalCadreId = '${cadreId}';
 						$('#commitMeetingDiv').show();
 	
 					}
-					else if((result.representativeType != null && (result.representativeType.trim() == 'MLA' || result.representativeType.trim() == 'mla' )) )
+					/*else if(result.representativeType != null){
+						alert(result.representativeType.trim())
+						var representStr = result.representativeType.trim().split(",");
+						alert(representStr);
+						if(representStr.search('MLA') || representStr.search('mla')){
+							alert(1111);
+							
+						}
+					}*/
+					else if((result.representativeType != null && (result.representativeType.trim().split(",") == 'MLA' || result.representativeType.trim() == 'mla' )) )
 					{
 						var mstr='';
-						mstr+=' <ul class="nav nav-tabs nav-tabs-custom" role="tablist">';															
-						mstr+='<li role="presentation"   class="meetingCls active" id="constituency" key="constabs"><a href="#constabs" aria-controls="constabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'constabs\',\'constituency\',\'true\');">Constituency</a></li>';
-																					
-						mstr+='<li role="presentation"  class="meetingCls"  id="MandalORTownORDivision" key="mandaltabs"><a href="#mandaltabs" aria-controls="mandaltabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'mandaltabs\',\'MandalORTownORDivision\',\'true\');">Mandal/Town/Division</a></li>';	
-						mstr+='<li role="presentation"  class="meetingCls"  id="VillageORWard" key="villagetabs"><a href="#villagetabs" aria-controls="settings" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'villagetabs\',\'VillageORWard\',\'true\');">Village/Ward</a></li>';
-						                         
-                         mstr+=' </ul>';
-                         mstr+=' <div class="tab-content">';
-                         mstr+='   <div role="tabpanel" class="tab-pane active" id="statetabs">';
-                         mstr+='   </div>';
-                          mstr+='  <div role="tabpanel" class="tab-pane" id="districttabs"></div>';
-                          mstr+='  <div role="tabpanel" class="tab-pane" id="constabs"></div>';
-                          mstr+='  <div role="tabpanel" class="tab-pane" id="mandaltabs"></div>';
-                         mstr+='   <div role="tabpanel" class="tab-pane" id="villagetabs"></div>';
-                         mstr+='  </div>';
-							
-						$('#committeMeetingDivId').html(mstr);
-						$('#commitMeetingDiv').show();
+							mstr+=' <ul class="nav nav-tabs nav-tabs-custom" role="tablist">';															
+							mstr+='<li role="presentation"   class="meetingCls active" id="constituency" key="constabs"><a href="#constabs" aria-controls="constabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'constabs\',\'constituency\',\'true\');">Constituency</a></li>';
+																						
+							mstr+='<li role="presentation"  class="meetingCls"  id="MandalORTownORDivision" key="mandaltabs"><a href="#mandaltabs" aria-controls="mandaltabs" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'mandaltabs\',\'MandalORTownORDivision\',\'true\');">Mandal/Town/Division</a></li>';	
+							mstr+='<li role="presentation"  class="meetingCls"  id="VillageORWard" key="villagetabs"><a href="#villagetabs" aria-controls="settings" role="tab" data-toggle="tab" onclick="getConductedPartyMeetingDetails(\'villagetabs\',\'VillageORWard\',\'true\');">Village/Ward</a></li>';
+													 
+							 mstr+=' </ul>';
+							 mstr+=' <div class="tab-content">';
+							 mstr+='   <div role="tabpanel" class="tab-pane active" id="statetabs">';
+							 mstr+='   </div>';
+							  mstr+='  <div role="tabpanel" class="tab-pane" id="districttabs"></div>';
+							  mstr+='  <div role="tabpanel" class="tab-pane" id="constabs"></div>';
+							  mstr+='  <div role="tabpanel" class="tab-pane" id="mandaltabs"></div>';
+							 mstr+='   <div role="tabpanel" class="tab-pane" id="villagetabs"></div>';
+							 mstr+='  </div>';
+								
+							$('#committeMeetingDivId').html(mstr);
+							$('#commitMeetingDiv').show();
 					}
 					
 					getConductedPartyMeetingDetails('','','true');
@@ -7365,15 +7378,36 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 	
 	$("#trainingCampParticipationDivId").html('');
 	
+	var panchaId = 0;
+	var mandId = 0;
+	var localElecId = 0;
+	var consttncyId = 0;
+	var parlmntId = 0;
+	var dstctId = 0;
+	
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		consttncyId = participatedConstituencyId;
+		parlmntId = participatedParliamentId;
+		dstctId = participatedDistrictId;
+	}
+	else{
+		panchaId = globalPanchayatId;
+		mandId = globalTehsilId;
+		localElecId = globalElectionBodyId;
+		consttncyId = globalConstituencyId;
+		parlmntId = globalParliamentId;
+		dstctId = globalDistrictId;
+	}
+	
 	var jsobj={
 		boothId : $("#cadreBoothId").val(),
-		panchayatId : globalPanchayatId,
+		panchayatId : panchaId,
 		wardId : 0,
-		mandalId : globalTehsilId,
-		lebId : globalElectionBodyId,
-		constituencyId : globalConstituencyId,
-		parliamentid : globalParliamentId,
-		districtid : globalDistrictId
+		mandalId : mandId,
+		lebId : localElecId,
+		constituencyId : consttncyId,
+		parliamentid : parlmntId,
+		districtid : dstctId
 	}
 	$.ajax({
 		type:'GET',
@@ -7383,7 +7417,7 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 		if(result != null){
 			var str='';
 			 str+'<div class="panel-body pad_0">';
-			 str+='NOTE : IA:INVITED  , NI:NON-INVITED';
+			 str+='NOTE : IA:INVITEE ATTENTED  , NI:NON-INVITEE';
 				str+='<table class="table m_0 table-bordered m_0" style="font-size:12px">'
 					
 					str+='<thead>';
@@ -7396,7 +7430,7 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 						str+='<tr>';
 							str+='<td style="text-transform:uppercase">'+result[i].name+'</td>';
 							str+='<td>'+result[i].count+'</td>';
-							str+='<td>'+result[i].actualCount+'(I), '+result[i].availableCount+'(NI)</td>';
+							str+='<td>'+result[i].actualCount+'(IA), '+result[i].availableCount+'(NI)</td>';
 							str+='<td>'+result[i].percentage+' (%)</td>';
 						str+='</tr>';
 					}	
