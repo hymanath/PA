@@ -6780,6 +6780,25 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		}
 		return apptvo;
 	}
+	
+	public ResultStatus updateAppointmentReason(Long appointmentId,String reason,Long userId){
+		ResultStatus result = new ResultStatus();
+		try{
+			
+			Date presentDate = dateUtilService.getCurrentDateAndTime();
+			
+			int record = appointmentDAO.updateAppointmentReason(appointmentId,reason,presentDate,userId);
+			result.setExceptionMsg("success");
+			result.setResultCode(0);
+			result.setMessage(reason);
+			
+		}catch (Exception e) {
+			result.setExceptionMsg("failure");
+			result.setResultCode(1);
+			LOG.error("Exception raised at updateAppointmentReason() method of AppointmentService", e);
+		}
+		return result;
+	}
     
  }
 

@@ -99,4 +99,5 @@ public interface IAppointmentService {
 	public boolean checkIsValidForSendingSMS(Long appointmentStatusId);
 	public List<IdNameVO> getSMSEnablingDetailsForAllStatus();
 	public List<AppointmentMembersDataVO> getAppointmentMembersByScheduleType(AppointmentMemberInputVO inputVO);
+	public ResultStatus updateAppointmentReason(Long appointmentId,String reason,Long userId);
 }
