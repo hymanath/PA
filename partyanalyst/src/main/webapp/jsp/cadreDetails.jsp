@@ -353,13 +353,13 @@ table.gridtable td {
 	margin-top:10px;
 }
 </style>
-	
-	<!--<style type="text/css">
-			.block{background-color:#fff !important;margin-top:30px;}
-			body{background:#d9dbd4 none repeat scroll 0 0}
-			.pad_10{padding:10px;}
-		</style>  -->
-		
+
+<!--<style type="text/css">
+	.block{background-color:#fff !important;margin-top:30px;}
+	body{background:#d9dbd4 none repeat scroll 0 0}
+	.pad_10{padding:10px;}
+</style>  -->
+
 <script>
 var globalCadreId = '${cadreId}';
 
@@ -478,10 +478,10 @@ var globalCadreId = '${cadreId}';
 					  </td>
 					</tr>
 					<tr>
-                    	<td class="text-bold"><i class="icon-articles"></i> IDENTITY</td>
+                    	<td class="text-bold" id="identityHeaderId" style="cursor:pointer;background: rgb(204, 204, 204) none repeat scroll 0% 0%;"><i class="icon-articles"></i> IDENTITY <span class="pull-right" id="identityHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="identityShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></td>
                     </tr>
-                    <tr>
-                    	<td>
+                    <tr >
+                    	<td id="identityBodyId">
                         	<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
                             <p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
                             <p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
@@ -490,10 +490,10 @@ var globalCadreId = '${cadreId}';
                         </td>
                     </tr>
 					<tr>
-                    	<td class="text-bold"><i class="glyphicon glyphicon-map-marker"></i> ADDRESS</td>
+                    	<td class="text-bold" id="addressHeaderId" style="cursor:pointer;background: rgb(204, 204, 204) none repeat scroll 0% 0%;"><i class="glyphicon glyphicon-map-marker"></i> ADDRESS<span class="pull-right" id="addressHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="addressShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></td>
                     </tr>
                     <tr>
-                    	<td>
+                    	<td id="addressBodyId">
                         	<p class="m_0">H NO :<span id="houseNoId"></span></p>
                             <p class="m_0">PANCHAYAT : <span id="panchayatId"></span></p>
                             <p class="m_0">MANDAL : <span id="mandalId"></span></p>
@@ -581,7 +581,7 @@ var globalCadreId = '${cadreId}';
 				<!--swadhin-->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					  <h4 class="panel-title"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
+					  <h4 class="panel-title"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
 					</div>
 					<div class="panel-body pad_0" id="referralGrievanceDetailsId">
 					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
@@ -591,7 +591,7 @@ var globalCadreId = '${cadreId}';
             	<div class="panel panel-default">
                 	<div class="panel-heading" id="familyGrievanceDtlsHeaderId">
 					  
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS<span class="pull-right" id="fmlyGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-up" ></i></span>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS<span class="pull-right" id="fmlyGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span>
 						 <span class="pull-right"><span class="count-style" id="totalFamilyComplaints">0</span></span>
 						</h4>
 						 
@@ -793,14 +793,16 @@ var globalCadreId = '${cadreId}';
                     </div>
                 </div>-->
 				<div class="panel panel-default">
-                	<div class="panel-heading">
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-flash"></i> TRAINING CAMP DETAILS </h4>
+                	<div class="panel-heading" id="trainingCampDetailsHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
-					<div id="trainingCampParticipationDivId">
+					<div id="trainingCampDetailsBodyId">
+						swadhin
+						<div id="trainingCampParticipationDivId">
+						</div>
 					</div>
-					
                 </div>
             </div>
             <div class="col-md-8">
@@ -2994,7 +2996,7 @@ $(document).on("click","#familyMemberHeadingId",function(){
 		$( "#familyMemberHideId" ).hide();
 		$( "#familyMemberShowId" ).show();
 	}
-	$("#familyMemberBodyId").collapse('toggle')
+	$("#familyMemberBodyId").collapse('toggle');
 });
 $("#familyBenefitsBodyId").collapse('hide');
 $(document).on("click","#familyBenefitsHeadingId",function(){
@@ -3006,7 +3008,7 @@ $(document).on("click","#familyBenefitsHeadingId",function(){
 		$( "#familyBenefitsHideId" ).hide();
 		$( "#familyBenefitsShowId" ).show();
 	}
-	$("#familyBenefitsBodyId").collapse('toggle')
+	$("#familyBenefitsBodyId").collapse('toggle');
 });
 $("#cadreBenefitsBodyId").collapse('hide');
 $(document).on("click","#cadreBenefitsHeadingId",function(){
@@ -3018,7 +3020,7 @@ $(document).on("click","#cadreBenefitsHeadingId",function(){
 		$( "#cadreBenefitsHideId" ).hide();
 		$( "#cadreBenefitsShowId" ).show();
 	}
-	$("#cadreBenefitsBodyId").collapse('toggle')
+	$("#cadreBenefitsBodyId").collapse('toggle');
 });
 $("#deathHospitalDivId").collapse('hide');
 $(document).on("click","#deathHospitalDivHeaderId",function(){
@@ -3030,11 +3032,11 @@ $(document).on("click","#deathHospitalDivHeaderId",function(){
 		$( "#deathHospitalDivHideId" ).hide();
 		$( "#deathHospitalDivShowId" ).show();
 	}
-	$("#deathHospitalDivId").collapse('toggle')
+	$("#deathHospitalDivId").collapse('toggle');
 });
 $("#familyGrievanceDtlsBodyId").collapse('hide');
 $(document).on("click","#familyGrievanceDtlsHeaderId",function(){
-	$("#familyGrievanceDtlsBodyId").collapse('toggle')
+	$("#familyGrievanceDtlsBodyId").collapse('toggle');
 });
 $("#cadreEnrolmentStatsBodyId").collapse('show');
 $(document).on("click","#cadreEnrolmentStatsHeaderId",function(){
@@ -3046,7 +3048,7 @@ $(document).on("click","#cadreEnrolmentStatsHeaderId",function(){
 		$( "#cadreEnrolmentStatsHideId" ).hide();
 		$( "#cadreEnrolmentStatsShowId" ).show();
 	}
-	$("#cadreEnrolmentStatsBodyId").collapse('toggle')
+	$("#cadreEnrolmentStatsBodyId").collapse('toggle');
 });
 $("#ivrSummaryBodyId").collapse('hide');
 $(document).on("click","#ivrSummaryHeaderId",function(){  
@@ -3058,7 +3060,7 @@ $(document).on("click","#ivrSummaryHeaderId",function(){
 		$( "#ivrSummaryHideId" ).hide();
 		$( "#ivrSummaryShowId" ).show();
 	}
-	$("#ivrSummaryBodyId").collapse('toggle')
+	$("#ivrSummaryBodyId").collapse('toggle');
 });
 $("#cadreActivitiesBodyId").collapse('hide');
 $(document).on("click","#cadreActivitiesHeaderId",function(){
@@ -3070,7 +3072,7 @@ $(document).on("click","#cadreActivitiesHeaderId",function(){
 		$( "#cadreActivitiesHideId" ).hide();
 		$( "#cadreActivitiesShowId" ).show();
 	}
-	$("#cadreActivitiesBodyId").collapse('toggle')
+	$("#cadreActivitiesBodyId").collapse('toggle');
 });
 $("#cadreElectionProfileBodyId").collapse('show');
 $(document).on("click","#cadreElectionProfileHeaderId",function(){
@@ -3082,7 +3084,7 @@ $(document).on("click","#cadreElectionProfileHeaderId",function(){
 		$( "#cadreElectionProfileHideId" ).hide();
 		$( "#cadreElectionProfileShowId" ).show();
 	}
-	$("#cadreElectionProfileBodyId").collapse('toggle')
+	$("#cadreElectionProfileBodyId").collapse('toggle');
 });
 $("#participatedConstBodyId").collapse('hide');
 $(document).on("click","#participatedConstHeaderId",function(){
@@ -3094,7 +3096,7 @@ $(document).on("click","#participatedConstHeaderId",function(){
 		$( "#participatedConstHideId" ).hide();
 		$( "#participatedConstShowId" ).show();
 	}
-	$("#participatedConstBodyId").collapse('toggle')
+	$("#participatedConstBodyId").collapse('toggle');
 });
 $("#cadrMmbrBthBodyId").collapse('show');
 $(document).on("click","#cadrMmbrBthHeaderId",function(){ 
@@ -3106,7 +3108,43 @@ if(isVisible==false){
 		$( "#cadrMmbrBthHideId" ).hide();
 		$( "#cadrMmbrBthShowId" ).show();
 	}
-	$("#cadrMmbrBthBodyId").collapse('toggle')
+	$("#cadrMmbrBthBodyId").collapse('toggle');
+});
+$("#trainingCampDetailsBodyId").collapse('hide');
+$(document).on("click","#trainingCampDetailsHeaderId",function(){ 
+var isVisible = $( "#trainingCampDetailsHideId" ).is( ":visible" );
+if(isVisible==false){
+		 $( "#trainingCampDetailsHideId" ).show();
+		 $( "#trainingCampDetailsShowId" ).hide();
+	}else{
+		$( "#trainingCampDetailsHideId" ).hide();
+		$( "#trainingCampDetailsShowId" ).show();
+	}
+	$("#trainingCampDetailsBodyId").collapse('toggle');
+});
+$("#identityBodyId").collapse('hide');
+$(document).on("click","#identityHeaderId",function(){ 
+var isVisible = $( "#identityHideId" ).is( ":visible" );
+if(isVisible==false){
+		 $( "#identityHideId" ).show();
+		 $( "#identityShowId" ).hide();
+	}else{
+		$( "#identityHideId" ).hide();
+		$( "#identityShowId" ).show();
+	}
+	$("#identityBodyId").collapse('toggle');
+});
+$("#addressBodyId").collapse('hide');
+$(document).on("click","#addressHeaderId",function(){ 
+var isVisible = $( "#addressHideId" ).is( ":visible" );
+if(isVisible==false){
+		 $( "#addressHideId" ).show();
+		 $( "#addressShowId" ).hide();
+	}else{
+		$( "#addressHideId" ).hide();
+		$( "#addressShowId" ).show();
+	}
+	$("#addressBodyId").collapse('toggle');
 });
 
  var familycadreIdsArrayGlobal=[];
