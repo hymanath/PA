@@ -6707,4 +6707,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		query.setParameterList("tdpcadreIds",tdpcadreIds);
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getAddressForCadreIds(List<Long> tdpcadreIds){
+		Query query = getSession().createQuery("" +
+			" select  model.tdpCadreId,model.userAddress from TdpCadre model where model.isDeleted = 'N' and model.tdpCadreId in (:tdpcadreIds) ");
+		query.setParameterList("tdpcadreIds",tdpcadreIds);
+		return query.list();
+	}
 }

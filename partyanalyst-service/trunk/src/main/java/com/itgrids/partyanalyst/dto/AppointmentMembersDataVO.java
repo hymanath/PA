@@ -9,6 +9,45 @@ public class AppointmentMembersDataVO {
 	private String location;
 	private String mobile;
 	private String imageUrl;
+	private String state;
+	private String district;
+	private String constituency;
+	private String mandal;
+	private String village;
+	
+	
+	
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	public String getMandal() {
+		return mandal;
+	}
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
+	}
+	public String getVillage() {
+		return village;
+	}
+	public void setVillage(String village) {
+		this.village = village;
+	}
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
