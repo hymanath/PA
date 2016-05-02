@@ -446,7 +446,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		}
 	
 	
-	public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId){
+	public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){
 		StringBuilder str=new StringBuilder();
 		str.append("select ");
 		if(type.equalsIgnoreCase("unique"))
@@ -463,17 +463,20 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		if(roleId != null && roleId > 0)
 			str.append(" and model2.publicRepresentativeType.publicRepresentativeTypeId =:roleId ");
-		
+		if(aptUserId != null && aptUserId > 0)
+			str.append(" and model.appointmentCandidate.createdBy =:aptUserId ");
 		Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(roleId != null && roleId > 0)
 			 query.setParameter("roleId", roleId);
+		 if(aptUserId != null && aptUserId > 0)
+			 query.setParameter("aptUserId", aptUserId);
 		 return query.list();
 		}
 	
 	
-	public List<Object[]>  getCommitteeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId){
+	public List<Object[]>  getCommitteeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){
 		StringBuilder str=new StringBuilder();
 		str.append("select ");
 		if(type.equalsIgnoreCase("unique"))
@@ -489,11 +492,15 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 					str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 				if(roleId != null && roleId > 0)
 				str.append(" and  TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :roleId ");
+				if(aptUserId != null && aptUserId > 0)
+					str.append(" and model.appointmentCandidate.createdBy =:aptUserId ");
 		Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(roleId != null && roleId > 0)
 			 query.setParameter("roleId", roleId);
+		 if(aptUserId != null && aptUserId > 0)
+			 query.setParameter("aptUserId", aptUserId);
 		 return query.list();
 		}	
 }

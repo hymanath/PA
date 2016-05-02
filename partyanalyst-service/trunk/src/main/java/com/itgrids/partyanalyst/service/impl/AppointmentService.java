@@ -5492,12 +5492,12 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				statusIds = null;
 			if(inputVO.getMemberType().equalsIgnoreCase("PR"))
 			{
-			 list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId()); //Total
+			 list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId(),inputVO.getAptUserId()); //Total
 			}
 			
 			else
 			{
-				list = appointmentCandidateDAO.getCommitteeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId());//Committee Members
+				list = appointmentCandidateDAO.getCommitteeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId(),inputVO.getAptUserId());//Committee Members
 			}
 			if(list != null && list.size() > 0)
 			setAppointmentMembersData(list,returnList,inputVO);
@@ -5785,11 +5785,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 	      }
 	      return apptIds;
 	}
-	public List<AppointmentCountVO> getLevelWiseCount(Long levelId)
+	public List<AppointmentCountVO> getLevelWiseCount(Long levelId,Long aptUserId)
 	{
 		List<AppointmentCountVO> returnList = new ArrayList<AppointmentCountVO>();
 		try{
-			 List<Object[]> list =  appointmentCandidateRelationDAO.getLevelWiseCount(null,"total",levelId); //Total
+			 List<Object[]> list =  appointmentCandidateRelationDAO.getLevelWiseCount(null,"total",levelId,aptUserId); //Total
 			 if(list != null && list.size() > 0)
 				for(Object[] params : list)
 				{
@@ -5804,7 +5804,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setTotal(vo.getTotal() +(Long)params[0]);
 				}
 			 
-			 List<Object[]> list1 = appointmentCandidateRelationDAO.getLevelWiseCount(null,"unique",levelId); //Total
+			 List<Object[]> list1 = appointmentCandidateRelationDAO.getLevelWiseCount(null,"unique",levelId,aptUserId); //Total
 			 if(list1 != null && list1.size() > 0)
 				for(Object[] params : list1)
 				{
@@ -5819,7 +5819,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 						vo.setUniquecnt(vo.getUniquecnt() +(Long)params[0]);
 				}
 			 Long[] schedul =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
-			 List<Object[]> list2 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(schedul),"Schedule",levelId);
+			 List<Object[]> list2 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(schedul),"Schedule",levelId,aptUserId);
 			 if(list2 != null && list2.size() > 0)
 				for(Object[] params : list2)
 				{
@@ -5834,7 +5834,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					vo.setScheduledCnt((Long)params[0] + vo.getScheduledCnt());
 				}
 			 
-			List<Object[]> list3 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(schedul),"unique",levelId);
+			List<Object[]> list3 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(schedul),"unique",levelId,aptUserId);
 			 if(list3 != null && list3.size() > 0)
 				for(Object[] params : list3)
 				{
@@ -5850,7 +5850,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				
 				}
 			 Long[] req =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
-			 List<Object[]> list4 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(req),"Request",levelId);
+			 List<Object[]> list4 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(req),"Request",levelId,aptUserId);
 			 if(list4 != null && list4.size() > 0)
 				for(Object[] params : list4)
 				{
@@ -5865,7 +5865,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					vo.setRequestedCnt((Long)params[0] + vo.getRequestedCnt());
 				}
 			 
-			 List<Object[]> list5 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(req),"unique",levelId);
+			 List<Object[]> list5 = appointmentCandidateRelationDAO.getLevelWiseCount(Arrays.asList(req),"unique",levelId,aptUserId);
 			 if(list5 != null && list5.size() > 0)
 				for(Object[] params : list5)
 				{

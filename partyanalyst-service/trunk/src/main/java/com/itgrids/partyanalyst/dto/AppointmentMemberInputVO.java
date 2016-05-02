@@ -6,6 +6,7 @@ public class AppointmentMemberInputVO {
 	private String scheduleType;
 	private String cntType;
 	private String memberType;
+	private Long aptUserId;
 	
 	
 	
@@ -13,6 +14,13 @@ public class AppointmentMemberInputVO {
 	
 	
 	
+	
+	public Long getAptUserId() {
+		return aptUserId;
+	}
+	public void setAptUserId(Long aptUserId) {
+		this.aptUserId = aptUserId;
+	}
 	public String getMemberType() {
 		return memberType;
 	}

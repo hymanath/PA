@@ -83,7 +83,7 @@ public interface IAppointmentService {
 	public AppointmentCountsVO getCandidCountsByStates(String startDateString,String endDateString,Long appointmentUserId);
 	public List<AppointmentCountVO> getPublicRepresentativeWiseAppointmentCnt(Long appointmentUserId);
 	public List<AppointmentCountVO> getCommitteeLevelAppointments(Long appointmentUserId);
-	public List<AppointmentCountVO> getLevelWiseCount(Long levelId);
+	public List<AppointmentCountVO> getLevelWiseCount(Long levelId,Long aptUserId);
 	public List<IdNameVO> getAppointmentStatusByUserId(Long userId);
 	public List<StatusTrackingVO> getAppointmentStatusTrackingDetails(Long appointmentId);
 	public List<IdNameVO> getUpdatedStatusForaAppointment(Long userTypeId,Long currentStatusId);
