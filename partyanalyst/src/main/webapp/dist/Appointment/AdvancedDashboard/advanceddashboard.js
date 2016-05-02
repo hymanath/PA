@@ -453,6 +453,7 @@ function getCandidCountsByStatesAction(){
 	
   function getMemebersByScheduleType(roleId,memberType,countType,scheduleType)
   {
+	$("#appointmentMembersDiv").html('<img src="images/search.gif"/>');
   $("#membersModelId").modal("show");
    var jsObj = {
      roleId : roleId,
@@ -467,20 +468,24 @@ function getCandidCountsByStatesAction(){
     dataType : 'json',
     data : {task:JSON.stringify(jsObj)}  
     }).done(function(result){ 
-       
+	
+	
+       buildAppointmentMembersData(result);
        });   
   }
 function buildAppointmentMembersData(result)
  {
+	
    var str='';
   if(result != null){
 			str +='<table class="table table-bordered">';
             str +='<thead>';
             str+='<tr>';
-							
+			str+='<th class="text-capitalize">Image</th>';				
 			str+='<th class="text-capitalize">NAME</th>';
+			str+='<th class="text-capitalize">Location</th>';
 			str+='<th class="text-capitalize">Designation</th>';
-			str+='<th class="text-capitalize">Image</th>';
+			
 			str+='<th class="text-capitalize">Mobile</th>';
 								
 			str+='</tr>';
@@ -489,14 +494,37 @@ function buildAppointmentMembersData(result)
 	for(var i in result)
 	{
 		str +='<tr>';
-		 
-            str +='<td style="text-align:center">'+result[i].name+'</td>';
-            str +='<td style="text-align:center">'+result[i].designation+'</td>';
-            str +='<td style="text-align:center">'+result[i].imageUrl+'</td>';
-			str +='<td style="text-align:center">'+result[i].mobile+'</td>';
+			str+='<td><img src="'+result[i].imageUrl+'" class="img-responsive img-border img-circle" style="height:40px;width:40px"></td>';
+            str +='<td ><div class="col-md-1 m_top10"><a attr-mobile="'+result[i].mobile+'" attr-designation="'+result[i].designation+'" attr-name="'+result[i].name+'" attr-id="'+result[i].id+'" style="cursor:pointer;" class="historyShowModalBtn" data-placement="top" data-toggle="tooltip" title="" data-original-title="Click here to View '+result[i].name+' History"><i style="color: rgb(142, 142, 142); font-size: 16px;" class="glyphicon glyphicon-time"></i></a></div>'+result[i].name+'</td>';
+			if(result[i].location != null && result[i].location.length > 0)
+			str+='<td >'+result[i].location+'</td>';
+			else{
+			str+='<td>';
+			if(result[i].state != null && result[i].state.length > 0)
+			str+='S :'+result[i].state+'';
+			if(result[i].district != null && result[i].district.length > 0)
+			str+='<br>D :'+result[i].district+'';
+			if(result[i].constituency != null && result[i].constituency.length > 0)
+			str+='<br>C :'+result[i].constituency+'';
+			if(result[i].mandal != null && result[i].mandal.length > 0)
+			str+='<br>M :'+result[i].mandal+'';
+			if(result[i].village != null && result[i].village.length > 0)
+			str+='<br>V :'+result[i].village+'';
+			str+='</td>';		
+			}
+			
+			str +='<td>'+result[i].designation+'</td>';
+			
+           
+			str +='<td>'+result[i].mobile+'</td>';
             
 			str +=' </tr>';
 	}
 	str +='</tbody>';
 			str +='</table>';
+  }
+  else{
+	  str+='No Data Available';
+  }
+			$("#appointmentMembersDiv").html(str);
 	}
