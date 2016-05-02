@@ -142,8 +142,9 @@
 
 
 function getCommitteeLevelCount(){
-		
+	var apontmntCndiateId=$("#appointmentUserSelectBoxId").val();
 		var jsObj = {
+				appointmentCndiateId:apontmntCndiateId,
 			task:""
 		}
 	$.ajax({
