@@ -484,7 +484,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 				if(statusIds != null && statusIds.size() > 0)
 					str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 				if(roleId != null && roleId > 0)
-				str.append(" and  TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+				str.append(" and  TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :roleId ");
 		Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);

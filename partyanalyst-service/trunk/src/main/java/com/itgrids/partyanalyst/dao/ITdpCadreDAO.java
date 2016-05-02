@@ -428,4 +428,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> checkAlreayRegistrationByMemberShipNo(List<Long> tdpCadreIdsList);
 	  
 	  public List<Object[]> getConstituencyForCadreIds(List<Long> tdpcadreIds);
+	  public List<Object[]> getAddressForCadreIds(List<Long> tdpcadreIds);
 }

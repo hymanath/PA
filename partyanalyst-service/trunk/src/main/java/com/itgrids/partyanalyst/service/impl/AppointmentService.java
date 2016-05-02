@@ -5524,8 +5524,8 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				 vo.setName(params[1] != null ? params[1].toString() : "");
 				 vo.setDesignationId(params[2] != null ?(Long)params[2]:null);
 				 vo.setDesignation(params[3] != null ?params[3].toString() : "");
-				 vo.setImageUrl(params[4] != null ?params[4].toString() : "");
-				 vo.setMobile(params[5] != null ?params[5].toString() : "");
+				 vo.setImageUrl(params[5] != null ?params[5].toString() : "");
+				 vo.setMobile(params[4] != null ?params[4].toString() : "");
 				 vo.setTdpCadreId((Long)params[0]);
 				 if(inputVO.getMemberType().equalsIgnoreCase("PR"))
 				 {
@@ -5536,11 +5536,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			 }
 			 if(inputVO.getMemberType().equalsIgnoreCase("CommitteeMember"))
 			 {
-				 List<Object[]> constlist = tdpCadreDAO.getConstituencyForCadreIds(cadreIds);
+				 List<Object[]> constlist = tdpCadreDAO.getAddressForCadreIds(cadreIds);
 				 if(constlist != null && constlist.size() > 0)
 				 {
 					 
-					 setLocationForCadre(constlist,returnList);
+					 setLocationForCadre(constlist,returnList,inputVO);
 				 }
 			 }
 		 }
@@ -5551,19 +5551,68 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 	 }
  }
  
- public void setLocationForCadre(List<Object[]> constlist,List<AppointmentMembersDataVO> returnList)
+ public void setLocationForCadre(List<Object[]> constlist,List<AppointmentMembersDataVO> returnList,AppointmentMemberInputVO inputVO)
  {
 	 try{
-		 Map<Long,String> constiMap = new HashMap<Long, String>();
+		 Map<Long,UserAddress> constiMap = new HashMap<Long, UserAddress>();
 				 if(constlist!=null && constlist.size()>0){
 						for(Object[] obj :constlist){
-							constiMap.put((Long)obj[0],obj[1].toString());
+							UserAddress userAddress = (UserAddress) obj[1];
+							constiMap.put((Long)obj[0],userAddress);
 						}
 					}
 				 
 				 for(AppointmentMembersDataVO vo : returnList)
 				 {
-					vo.setLocation(constiMap.get(vo.getTdpCadreId().longValue()));
+					 UserAddress address = constiMap.get(vo.getTdpCadreId().longValue());
+					 if(address != null)
+					 {
+						 if(inputVO.getRoleId().longValue() == 10L)
+							 vo.setState(address.getState().getStateName());
+						 else if(inputVO.getRoleId().longValue() == 11L)
+						 {
+							 vo.setState(address.getState()!= null ? address.getState().getStateName() : "");	
+							 vo.setDistrict(address.getDistrict() != null ? address.getDistrict().getDistrictName() : "");
+						 }
+						 else if(inputVO.getRoleId().longValue() == 5L)
+						 {
+							 vo.setState(address.getState()!= null ? address.getState().getStateName() : "");	
+							 vo.setDistrict(address.getDistrict() != null ? address.getDistrict().getDistrictName() : "");
+							 vo.setConstituency(address.getConstituency() != null ? address.getConstituency().getName() : "");
+							 vo.setMandal(address.getTehsil() != null ? address.getTehsil().getTehsilName() : "");
+						 }
+								
+						 else if(inputVO.getRoleId().longValue() == 6L)
+						 {
+							 vo.setState(address.getState()!= null ? address.getState().getStateName() : "");	
+							 vo.setDistrict(address.getDistrict() != null ? address.getDistrict().getDistrictName() : "");
+							 vo.setMandal(address.getTehsil() != null ? address.getTehsil().getTehsilName() : "");
+							 vo.setConstituency(address.getConstituency() != null ? address.getConstituency().getName() : "");
+							 vo.setVillage(address.getPanchayat() != null ?address.getPanchayat().getPanchayatName() : "" );
+						 }
+						 else if(inputVO.getRoleId().longValue() == 8L || inputVO.getRoleId().longValue() == 9L)
+						 {
+							 vo.setState(address.getState()!= null ? address.getState().getStateName() : "");	
+							 vo.setDistrict(address.getDistrict() != null ? address.getDistrict().getDistrictName() : "");
+							 vo.setMandal(address.getTehsil() != null ? address.getTehsil().getTehsilName() : "");
+							 vo.setConstituency(address.getConstituency() != null ? address.getConstituency().getName() : "");
+							 vo.setVillage(address.getWard() != null ?address.getWard().getName() : "" );
+						 }
+						 else if(inputVO.getRoleId().longValue() == 7L)
+						 {
+							 vo.setState(address.getState()!= null ? address.getState().getStateName() : "");	
+							 vo.setDistrict(address.getDistrict() != null ? address.getDistrict().getDistrictName() : "");
+							 vo.setConstituency(address.getConstituency() != null ? address.getConstituency().getName() : "");
+							 vo.setMandal(address.getLocalElectionBody() != null ? address.getLocalElectionBody().getName() : "");
+							
+						 }
+						 else
+						 {
+							 vo.setState(address.getState()!= null ? address.getState().getStateName() : ""); 
+							 vo.setDistrict(address.getDistrict() != null ? address.getDistrict().getDistrictName() : "");
+						 }
+					 }
+						
 				 }
 	 }
 	 catch(Exception e)
