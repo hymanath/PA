@@ -427,7 +427,7 @@ public class SmsSenderService implements ISmsSenderService{
 	    		 if(mobilenumber.endsWith(","))
 	    			 mobilenumber = mobilenumber.substring(0,mobilenumber.length()-1);
 	    		 
-	    		 SmsHistory smsHistory = saveInSmsHistoryDetails(message,userId,moduleName,mobilenumber);
+	    		 SmsHistory smsHistory = saveInSmsHistoryDetails(message,userId,moduleName,mobilenumber.split(","));
 	    		 
 	    		 HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
 	    		 client.getHttpConnectionManager().getParams().setConnectionTimeout(

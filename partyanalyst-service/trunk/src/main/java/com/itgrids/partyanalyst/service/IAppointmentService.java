@@ -95,5 +95,8 @@ public interface IAppointmentService {
 	public void getDesignationsForCadre(List<Long> tdpCadreIds,List<AppointmentCandidateVO> finalList);
 	public AppointmentStatusFlowVO getLoginUserAppointmentUserType(Long userId);
 	public AppointmentScheduleVO setPreferDatesToAppointment(List<Long> aptmnts,AppointmentScheduleVO apptvo);
+	
+	public boolean checkIsValidForSendingSMS(Long appointmentStatusId);
+	public List<IdNameVO> getSMSEnablingDetailsForAllStatus();
 	public List<AppointmentMembersDataVO> getAppointmentMembersByScheduleType(AppointmentMemberInputVO inputVO);
 }

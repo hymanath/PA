@@ -9,4 +9,7 @@ import com.itgrids.partyanalyst.model.AppointmentSmsSetting;
 public interface IAppointmentSmsSettingDAO extends GenericDao<AppointmentSmsSetting,Long>{
 
 	public List<Object[]> getContentTypeAndSmsContent(Long appointmentStatusId);
+	
+	public String checkIsValidForSendingSMS(Long appointmentStatusId);
+	public List<Object[]> getSMSEnablingDetailsForAllStatus();
 }

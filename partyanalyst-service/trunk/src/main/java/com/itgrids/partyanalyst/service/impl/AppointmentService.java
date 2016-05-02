@@ -4132,17 +4132,23 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				   //TimeSlot Booking For An Appointment
 				       AppointmentTimeSlot appointmentTimeSlot = appointmentTimeSlotDAO.save(timeSlot);
 				       
-				       //getappointmentComments(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_STATUS_FIXED,commentTxt,userId);
-				       
 				       //Allocating To 'Schedule' Status Of An Appointment
 				       Integer updtdSts = appointmentDAO.updateAppntmntStatusById(appointmentTimeSlot.getAppointmentId(), dateUtilService.getCurrentDateAndTime() );
 				       
-				       AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
-				       inputVO.setAppointmentId(appointmentTimeSlot.getAppointmentId());  
-					   inputVO.setSmsText("Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
-					   
-					  //Sending Sms To TimeSlot Booked Candidates
-				       //sendSmsForAppointment(inputVO);
+				     //Sending Sms To TimeSlot Booked Candidates
+				       
+				       if (checkIsValidForSendingSMS(IConstants.APPOINTMENT_STATUS_SCHEDULED)){
+				    	   
+				    	   AppointmentUpdateStatusVO inputVO = new AppointmentUpdateStatusVO();
+					       inputVO.setAppointmentId(appointmentTimeSlot.getAppointmentId());  
+						   //inputVO.setSmsText("Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate())+" " +"From"+" " +new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getFromDate())+" " +"To"+" "+new SimpleDateFormat("HH:mm").format(appointmentTimeSlot.getToDate()));
+					       inputVO.setSmsText( "Your Appointment Fixed on " +" "+new SimpleDateFormat("yyyy-MM-dd").format(appointmentTimeSlot.getDate()) );
+					       
+					       inputVO.setUserId(userId);
+						   inputVO.setAppointmentStatusId(IConstants.APPOINTMENT_STATUS_SCHEDULED);
+						   sendSms(inputVO);
+				       }
+				       
 				       
 				       //Appointment Tracking Saving
 				       if(type !=null && type.equalsIgnoreCase("update")){
@@ -4156,15 +4162,6 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				    	   saveAppointmentTrackingDetails(appointmentTimeSlot.getAppointmentId(),IConstants.APPOINTMENT_ACTION_STATUS_CHANGE,currentStatusId,
 					       			IConstants.APPOINTMENT_STATUS_SCHEDULED,userId,commentTxt);
 				       }
-				       
-				       	
-				       
-				       
-				      /*if(type !=null && type.equalsIgnoreCase("update")){
-			        	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),6l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
-			         }else{
-			          	  saveAppointmentTrackingDetails(timeSlot.getAppointmentId(),5l,appointmentDAO.get(appointmentId).getAppointmentStatusId(),userId,"");
-			         }*/
 				      
 				      
 				     //void appt status
@@ -4410,17 +4407,24 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 			
 			//SMS sending
-			/*if(inputVO.isIssmsChecked())
+			if(inputVO.isIssmsChecked())
 			{
-				
 				AppointmentUpdateStatusVO smsVO = new AppointmentUpdateStatusVO();
 				smsVO.setAppointmentId(inputVO.getAppointmentId());
 				smsVO.setSmsText(inputVO.getSmsText());
-		        sendSmsForAppointment(smsVO);
 				
-			}*/
-			
-			
+				if ( toStatusId!= null && toStatusId > 0l ){
+					smsVO.setAppointmentStatusId(toStatusId);
+				}else{
+					smsVO.setAppointmentStatusId(currentStatusId);
+				}
+				result = sendSmsForAppointment(smsVO);
+				
+			}else{
+				
+				result.setResultCode(0);
+				result.setMessage("success");
+			}
 			
 			/*//unvoid old appointments
 			if(inputVO.getStatusId().equals(IConstants.APPOINTMENT_STATUS_RESCHEDULED) || inputVO.getStatusId().equals(IConstants.APPOINTMENT_STATUS_CANCELLED) || inputVO.getStatusId() == IConstants.APPOINTMENT_STATUS_RESCHEDULED || inputVO.getStatusId() == IConstants.APPOINTMENT_STATUS_CANCELLED){
@@ -4431,20 +4435,22 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			     }
 			}*/
 			
-			result.setMessage("success");
 		}
 		catch (Exception e) {
 			LOG.error("Exception raised in updateAppointmentStatus", e);
+			result.setResultCode(2);
 			result.setMessage("fail");
 			
 		}
 		return result;
 	}
 	
-	public ResultStatus sendSmsForAppointment(AppointmentUpdateStatusVO inputVO)
+	/*public ResultStatus sendSmsForAppointment(AppointmentUpdateStatusVO inputVO)
 	{
 		ResultStatus result = new ResultStatus();
 		try{
+			
+			
 			     List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentCandidateMobileNos(inputVO.getAppointmentId());
 				 if(list != null && list.size() > 0)
 				 {
@@ -4464,7 +4470,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 			
 		}
 		return result;
-	}
+	}*/
 	
 	public ResultStatus updateAllAppointmentStatusByType(AppointmentUpdateStatusVO statusinputVo,AppointmentInputVO inputVo,Long userId)
 	{
@@ -5162,6 +5168,74 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		}
 		return null;
 	}
+	
+	public List<IdNameVO> getSMSEnablingDetailsForAllStatus(){
+		
+		List<IdNameVO> finalList = null;
+		
+		List<Object[]> list = appointmentSmsSettingDAO.getSMSEnablingDetailsForAllStatus();
+		
+		if( list != null && list.size() > 0){
+			
+			finalList = new ArrayList<IdNameVO>();
+			
+			for( Object[] obj : list){
+				
+				IdNameVO statusVO = new IdNameVO();
+				statusVO.setId(obj[0] != null ? (Long)obj[0] :0l);
+				statusVO.setName(obj[1] != null ? obj[1].toString() :"");
+				
+				finalList.add(statusVO);
+			}
+			
+		}
+		
+		return finalList;
+	}
+	public boolean checkIsValidForSendingSMS(Long appointmentStatusId){
+		
+		boolean isenabled = false;
+		String enabledStatus= appointmentSmsSettingDAO.checkIsValidForSendingSMS(appointmentStatusId);
+		 
+		if(enabledStatus.equalsIgnoreCase("Y")){
+			isenabled = true;
+		}
+		
+		return isenabled;
+	}
+	
+	
+	public ResultStatus sendSmsForAppointment(AppointmentUpdateStatusVO inputVO)
+	{
+		ResultStatus result = new ResultStatus();
+		try{   
+			    
+				if(inputVO.getAppointmentStatusId() == null){
+					inputVO.setAppointmentStatusId(appointmentDAO.getAppointmentStatusId(inputVO.getAppointmentId()));
+				}
+			    
+				if( checkIsValidForSendingSMS( inputVO.getAppointmentStatusId() )){
+					
+					sendSms(inputVO);
+					
+					result.setResultCode(0);
+					result.setMessage("success");
+					
+				}else{
+					result.setResultCode(1);
+					result.setMessage("Not Configured To Send SMS");
+				}
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in sendSmsForAppointment", e);
+			result.setResultCode(2);
+			result.setMessage("fail");
+			
+		}
+		return result;
+	}
+	
 	
 	public ResultStatus sendSms(AppointmentUpdateStatusVO inputVO)
 	{
