@@ -5569,12 +5569,12 @@ function getAppointmentCreatedUsers(){
 		{
 			 searchType = "publicRepresentative";
 			 searchValue = $("#advanceDesignationId").val();
-			 if(searchValue == 0 || searchValue.length ==0)
+			 /*if(searchValue == 0 || searchValue.length ==0)
 			 {
 				 errorStr='Please Select Designation';
 				 $("#errorDivId").html(errorStr);
 				 return;
-			 }
+			 }*/
 		}
 		else if(advanceSearchType == 3)
 		{
@@ -5716,6 +5716,7 @@ function getAppointmentCreatedUsers(){
 	//Public Representatives
 	if(advanceSearchType !=null && advanceSearchType == 2){
 		var desgnaValue = $("#advanceDesignationId").val();
+		if(desgnaValue > 0)
 		statusArr.push(desgnaValue);
 		committeeId = "0";	
 	}
