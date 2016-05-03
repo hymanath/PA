@@ -299,8 +299,9 @@ function getCandidCountsByStatesAction(){
 	}
 	
 	$(document).on("click","#locationWiseDetailsDiv",function(){
-	    getCandiCountsByLocations();
+		getCandiCountsByLocations();
     });
+	
 	function getCandiCountsByLocations(){
 		
 		$("#candiCountsWiseLocations").html("");
@@ -309,7 +310,7 @@ function getCandidCountsByStatesAction(){
 		var candidateTypeArray = $("#candidateType").val();
 		var requestedTypeArray = $("#requestedTypeId").val();
 		var stateId = $("#state option:selected").val();
-	  
+		
 		var locationType = $("input[name='locationType']:checked").val();
 		
 		var startDateString = "";
@@ -321,6 +322,8 @@ function getCandidCountsByStatesAction(){
 			startDateString = datesArr[0].trim();
 			endDateString = datesArr[1].trim();
 		}
+		
+		
 	
 		var jsObj = {
 			startDateString    :startDateString,
@@ -347,22 +350,44 @@ function getCandidCountsByStatesAction(){
 	String.prototype.capitalize = function() {
        return this.charAt(0).toUpperCase() + this.slice(1);
    }
-
+	
+	
 	function buildCandiCountsByLocations(result){
-		var str='';
 		
-		str+='<table class="table table-bordered table-condensed tableC" id="candidateWiseDataTable">';
+		var totalUniqueArray=[];
+		$("input[name='totalUniqueType']:checked").each(function() {
+			totalUniqueArray.push($(this).val());
+		});
+		
+		
+		var isTotalBuild=false;
+		var isuniqueBuild = false;
+		
+		if($('#totalValueId').is(":checked")){
+			var totalname = $('#totalValueId').val();
+			isTotalBuild = true;
+		}
+		if($('#uniqueValueId').is(":checked")){
+			var uniquename = $('#uniqueValueId').val();
+			isuniqueBuild = true;
+		}
+		var totalUniquelength = totalUniqueArray.length;
+		
+		
+		var str='';
+			str+='<table class="table table-bordered table-condensed tableC" id="candidateWiseDataTable">';
 							str+='<thead>';
 							
 								str+='<tr>';
 								
 									str+='<th rowspan="3"></th>';
 									
-									str+='<th rowspan="2" colspan="2">Total Requested</th>';
-									str+='<th rowspan="2" colspan="2">Total Scheduled</th>';
-									str+='<th rowspan="2" colspan="2">Total Waiting</th>';
+									str+='<th rowspan="2" colspan="'+totalUniquelength+'">Total Requested</th>';
+									str+='<th rowspan="2" colspan="'+totalUniquelength+'">Total Scheduled</th>';
+									str+='<th rowspan="2" colspan="'+totalUniquelength+'">Total Waiting</th>';
 									
-									var colspanForReqType = result[0].subList[0].subList.length * 2;
+									var colspanForReqType = result[0].subList[0].subList.length * totalUniquelength;
+									
 									for(var i in result[0].subList){
 										str+='<th class="text-center" colspan="'+colspanForReqType+'">'+result[0].subList[i].name+'</th>';
 									}
@@ -371,25 +396,43 @@ function getCandidCountsByStatesAction(){
 								str+='<tr>';
 								for(var i in result[0].subList){
 										for(var j in result[0].subList[i].subList){
-											str+='<th colspan="2">'+result[0].subList[i].subList[j].name.capitalize();+'</th>';
+											str+='<th colspan="'+totalUniquelength+'">'+result[0].subList[i].subList[j].name.capitalize();+'</th>';
 										}
 									}
 								str+='</tr>';
 								
 								str+='<tr>';
 								
-									str+='<th>T</th>';
-									str+='<th>U</th>';
+									if(isTotalBuild){  
+										str+='<th class="text-center">T</th>';
+									}
+									if(isuniqueBuild){  
+										str+='<th class="text-center">U</th>';
+									}
 									
-									str+='<th>T</th>';
-									str+='<th>U</th>';
+									if(isTotalBuild){  
+										str+='<th class="text-center">T</th>';
+									}
+									if(isuniqueBuild){  
+										str+='<th class="text-center">U</th>';
+									}
 									
-									str+='<th>T</th>';
-									str+='<th>U</th>';
+									if(isTotalBuild){  
+										str+='<th class="text-center">T</th>';
+									}
+									if(isuniqueBuild){  
+										str+='<th class="text-center">U</th>';
+									}
+									
+									
 									for(var i in result[0].subList){
 										for(var j in result[0].subList[i].subList){
-											str+='<th>T</th>';
-											str+='<th>U</th>';
+											if(isTotalBuild){  
+												str+='<th class="text-center">T</th>';
+											}
+											if(isuniqueBuild){  
+												str+='<th class="text-center">U</th>';
+											}
 										}
 									}
 								str+='</tr>';
@@ -404,31 +447,41 @@ function getCandidCountsByStatesAction(){
 									   str+='<td>'+result[i].name+'</td>';
 									   
 									   for(var j in result[i].typeList){
-										   if(result[i].typeList[j].count == 0){
-											   str+='<td> - </td>';
-										   }else{
-											   str+='<td>'+result[i].typeList[j].count+'</td>';
-										   }
-										   if(result[i].typeList[j].uniqueCount == 0){
-											   str+='<td> - </td>';
-										   }else{
-											   str+='<td>'+result[i].typeList[j].uniqueCount+'</td>';
-										   }
+										   
+										   if(isTotalBuild){  
+											  if(result[i].typeList[j].count == 0){
+											   str+='<td class="text-center"> - </td>';
+										     }else{
+											   str+='<td class="text-center">'+result[i].typeList[j].count+'</td>';
+										     }
+									       }
+										   if(isuniqueBuild){  
+												 if(result[i].typeList[j].uniqueCount == 0){
+												   str+='<td class="text-center"> - </td>';
+												}else{
+												   str+='<td class="text-center">'+result[i].typeList[j].uniqueCount+'</td>';
+												}
+										  }
+										  
 										   
 									   }
 									    for(var k in result[i].subList){
 											
 											for(var m in result[i].subList[k].subList){
 												
-												if(result[i].subList[k].subList[m].count==0){
-													str+='<td> - </td>';
-												}else{
-													str+='<td>'+result[i].subList[k].subList[m].count+'</td>';
+												if(isTotalBuild){
+												  if(result[i].subList[k].subList[m].count==0){
+													 str+='<td class="text-center"> - </td>';
+												 }else{
+													str+='<td class="text-center">'+result[i].subList[k].subList[m].count+'</td>';
+												 }
 												}
-												if(result[i].subList[k].subList[m].uniqueCount==0){
-													str+='<td> - </td>';
-												}else{
-													str+='<td>'+result[i].subList[k].subList[m].uniqueCount+'</td>';
+												if(isuniqueBuild){ 
+													if(result[i].subList[k].subList[m].uniqueCount==0){
+													  str+='<td class="text-center"> - </td>';
+												   }else{
+													str+='<td class="text-center">'+result[i].subList[k].subList[m].uniqueCount+'</td>';
+												   }
 												}
 										        
 											}
@@ -436,6 +489,49 @@ function getCandidCountsByStatesAction(){
 									   }
 									 str+='</tr>';  
 								   }
+								    str+='<tr>';
+								    str+='<td style="font-weight:bold;">Total</td>';
+								     for(var i in result[0].typeList){
+										 if(isTotalBuild){
+											 if(result[0].typeList[i].totalCount == 0){
+												 str+='<td class="text-center"> - </td>'; 
+											 }else{
+												 str+='<td class="text-center" style="font-weight:bold;">'+result[0].typeList[i].totalCount+'</td>'; 
+											 }
+											
+										 }
+										 if(isuniqueBuild){ 
+											if(result[0].typeList[i].totalUniqueCount == 0){
+												 str+='<td class="text-center"> - </td>';
+											}else{
+												str+='<td class="text-center" style="font-weight:bold;">'+result[0].typeList[i].totalUniqueCount+'</td>'; 
+											}
+											
+										 }
+										   
+									   }
+										for(var i in result[0].subList){
+											for(var j in result[0].subList[i].subList){
+											 if(isTotalBuild){
+												 if(result[0].subList[i].subList[j].totalCount == 0){
+													 str+='<td class="text-center"> - </td>'; 
+												 }else{
+													str+='<td class="text-center" style="font-weight:bold;">'+result[0].subList[i].subList[j].totalCount+'</td>';  
+												 }
+											}
+											if(isuniqueBuild){ 
+												if(result[0].subList[i].subList[j].totalUniqueCount == 0){
+													str+='<td class="text-center"> - </td>'; 
+												}else{
+													str+='<td class="text-center" style="font-weight:bold;">'+result[0].subList[i].subList[j].totalUniqueCount+'</td>'; 
+												}
+												 
+											}
+										}
+									}
+								
+									
+								str+='</tr>';
 									
 								
 							str+='</tbody>';
@@ -452,6 +548,8 @@ function getCandidCountsByStatesAction(){
 						 //$('#candidateWiseDataTable').removeClass("dataTable");
 						
 	}
+	
+	
 	
   function getMemebersByScheduleType(roleId,memberType,countType,scheduleType,aptUserId)
   {
