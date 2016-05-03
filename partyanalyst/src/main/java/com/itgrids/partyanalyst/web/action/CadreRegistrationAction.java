@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -47,6 +48,7 @@ import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.MD5Algoritm;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -119,20 +121,42 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private CardPrintUserVO cardPrintUserVO;
 	private AffiliatedCadreVO affiliatedCadreVO;
-	private Long membershipNo;
-	private Long enrollMentNO;
+	private String membershipNo;
+	private String enrollMentNO;
+	private String mn;
+	private String en;
 	private String AuthDesc;
 	private String Order_Id;
 	private String Merchant_Id;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private MD5Algoritm md5Algoritm = new MD5Algoritm();
 	
-	
-	public Long getEnrollMentNO() {
+	public String getEnrollMentNO() {
 		return enrollMentNO;
 	}
-	public void setEnrollMentNO(Long enrollMentNO) {
+	public void setEnrollMentNO(String enrollMentNO) {
 		this.enrollMentNO = enrollMentNO;
 	}
+	public String getMn() {
+		return mn;
+	}
+	public void setMn(String mn) {
+		this.mn = mn;
+	}
+	public String getEn() {
+		return en;
+	}
+	public void setEn(String en) {
+		this.en = en;
+	}
+	
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+	
 	public String getAuthDesc() {
 		return AuthDesc;
 	}
@@ -156,12 +180,6 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
-	}
-	public Long getMembershipNo() {
-		return membershipNo;
-	}
-	public void setMembershipNo(Long membershipNo) {
-		this.membershipNo = membershipNo;
 	}
 	
 	public AffiliatedCadreVO getAffiliatedCadreVO() {
@@ -2206,21 +2224,33 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				}
 				
 				cadreRegistrationVOList.add(cadreRegistrationVO);
-				surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"ONLINE");
+				//surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"ONLINE");
+				if(cadreRegistrationVO.getDataSourceType() != null && cadreRegistrationVO.getDataSourceType().trim().equalsIgnoreCase("ONLINE"))
+					surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"ONLINE");
+				else
+					surveyCadreResponceVO = cadreRegistrationService.saveAfflicatedCadreRegistration(cadreRegistrationVOList,"WEB");
+				
 				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){/*
 					LOG.debug("fileuploades is sucess Method");
 					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
 						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +"," +surveyCadreResponceVO.getMembershipNo()  +",");
 					}
 				*/
-			          String checkSumDetails = commonMethodsUtilService.getChecksumDetails("CADRE_2016"+surveyCadreResponceVO.getMembershipNo(),"100","http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success");
+			         /* String checkSumDetails = commonMethodsUtilService.getChecksumDetails("CADRE_2016"+surveyCadreResponceVO.getMembershipNo(),"100","http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success");
 			            
 			            inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()+"," +
 			                "" +surveyCadreResponceVO.getMembershipNo()+"," +//2
 			                ""+"CADRE_2016"+surveyCadreResponceVO.getMembershipNo()+"," +//3
 			                ""+checkSumDetails+"," +//4
 			                ""+"http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success"+"," +//5
-			                "100,");//6
+			                "100,");//6*/
+					PaymentGatewayVO pamentGateWayVO = cadreRegistrationService.getPaymentBasicInfoByPaymentGateWayType(1L,surveyCadreResponceVO.getMembershipNo().trim(),surveyCadreResponceVO.getEnrollmentNumber().trim());			            
+					inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()+"," +//1
+			                ""+surveyCadreResponceVO.getMembershipNo().trim()+"," +//2
+			                ""+pamentGateWayVO.getOrderNo().trim()+"," +//3
+			                ""+pamentGateWayVO.getCheckSum().trim()+"," +//4
+			                ""+pamentGateWayVO.getRedirectURL().trim()+"," +//5
+			                ""+pamentGateWayVO.getAmount().trim()+",");//6
 			          }	
 				else
 					inputStream = new StringBufferInputStream("fail");
@@ -2288,6 +2318,23 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	public String registrationSuccess(){
+		try {
+			enrollMentNO = md5Algoritm.generateMD5Decrypt(en.toString().trim());
+			if(AuthDesc != null && AuthDesc.trim().equalsIgnoreCase("Y")){
+				membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
+				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo);
+				if(resultStatus != null)
+					status="error";
+				else
+					status="failure";
+			}
+			else{
+				status="failure";
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in registrationSuccess method in CadreRegistrationAction Action",e);
+		}
 		return Action.SUCCESS;
 	}
 }
