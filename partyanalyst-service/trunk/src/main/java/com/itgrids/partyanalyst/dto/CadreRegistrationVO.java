@@ -176,8 +176,15 @@ public class CadreRegistrationVO implements Serializable{
 	private Long presentPerAddrsVillId;
 	private String dataSourceType;
 	private String otherDesignationStr;
+	private String userIpAddress;
 	
 	
+	public String getUserIpAddress() {
+		return userIpAddress;
+	}
+	public void setUserIpAddress(String userIpAddress) {
+		this.userIpAddress = userIpAddress;
+	}
 	public String getOtherDesignationStr() {
 		return otherDesignationStr;
 	}
