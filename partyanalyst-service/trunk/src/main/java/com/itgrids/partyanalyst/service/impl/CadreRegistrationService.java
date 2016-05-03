@@ -12359,6 +12359,57 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
         	return "error"; 
           }
 		  
+		 /* SmsHistory smsHistory = smsSenderService.sendSMS(userId, "Affiliated Graduates Enrollment", false, message, mobileNo);
+		  if(smsHistory != null)
+			  return "success";
+		  else
+			  return "error";
+		  */
+		  
+	      HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+	      client.getHttpConnectionManager().getParams().setConnectionTimeout(
+	        Integer.parseInt("30000"));
+	    
+	      boolean isEnglish = true;
+	      
+	      PostMethod post = new PostMethod("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+	      
+	      post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
+	      post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
+	      post.addParameter("mobilenumber", mobileNo);
+	      post.addParameter("message", message);
+	      post.addParameter("mtype", isEnglish ? "N" : "OL");
+	      post.addParameter("DR", "Y");
+	      
+	      
+	      try 
+	      {
+	        int statusCode = client.executeMethod(post);
+	        
+	        if (statusCode != HttpStatus.SC_OK) {
+	          System.out.println("SmsCountrySmsService.sendSMS failed: "+ post.getStatusLine());
+	          return "error";
+	        }
+	        else{
+	          return "success";
+	        }
+
+	      }catch (Exception e) {
+	          System.out.println("Exception rised in sending sms while cadre registration "+e);
+	          return "exception";
+	      } finally {
+	          post.releaseConnection();
+	      }
+	      
+	    }
+	
+	
+	private String sendSMSAffliatedCadre(Long userId,String mobileNo,String message){
+		  
+		  if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+      	return "error"; 
+        }
+		  
 		  SmsHistory smsHistory = smsSenderService.sendSMS(userId, "Affiliated Graduates Enrollment", false, message, mobileNo);
 		  if(smsHistory != null)
 			  return "success";
@@ -12381,7 +12432,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	      post.addParameter("mtype", isEnglish ? "N" : "OL");
 	      post.addParameter("DR", "Y");
 	      
-	       PUSH the URL 
+	       
 	      try 
 	      {
 	        int statusCode = client.executeMethod(post);
