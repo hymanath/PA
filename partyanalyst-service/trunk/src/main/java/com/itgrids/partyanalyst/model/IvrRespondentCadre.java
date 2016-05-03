@@ -44,6 +44,7 @@ public class IvrRespondentCadre {
 	private User updatedUser;
 	private Voter voter;
 	private TdpCadre tdpCadre;
+	private IvrRespondent ivrRespondent;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -164,6 +165,17 @@ public class IvrRespondentCadre {
 	}
 	public void setTdpCadre(TdpCadre tdpCadre) {
 		this.tdpCadre = tdpCadre;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "ivr_respondent_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrRespondent getIvrRespondent() {
+		return ivrRespondent;
+	}
+	public void setIvrRespondent(IvrRespondent ivrRespondent) {
+		this.ivrRespondent = ivrRespondent;
 	}
 	
 	

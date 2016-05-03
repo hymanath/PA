@@ -115,5 +115,11 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 		return query.list();
 		
 	}
+	public Long getCandateParticipatedSurveyCnt(Long ivrResondentId){
+		Query query = getSession().createQuery(" select count(distinct model.ivrSurvey.ivrSurveyId) from IvrSurveyAnswer model where " +
+				" model.ivrRespondent.ivrRespondentId =: ivrResondentId and model.isDeleted = 'false' and model.isValid = 'Y' ");
 	
+	query.setParameter("ivrResondentId", ivrResondentId);
+		return (Long) query.uniqueResult();
+	}
 }
