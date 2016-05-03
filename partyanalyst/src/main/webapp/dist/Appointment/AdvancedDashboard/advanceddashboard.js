@@ -531,3 +531,53 @@ function buildAppointmentMembersData(result)
   }
 			$("#appointmentMembersDiv").html(str);
 	}
+
+function buildTtlAppntmntSttsFrAdncDshBrd(result){
+	var str='';
+	var totalAppts =0;
+	$.each(result.statusList,function(index,value){
+	    totalAppts = totalAppts + value.totalCount;
+	});
+	str+='<tr class= "text-center" style="font-weight:bold;"><td>Today Appointments</td><td>'+totalAppts+'</td></tr>';	
+	$.each(result.statusList,function(index,value){	
+	var color = getColorCodeByStatus(value.status);
+		if(value.subList !=null && value.subList.length >0 ){
+			
+			str+='<tr style="color:'+color+';">';
+		
+			str+='<td><i class="glyphicon glyphicon-chevron-down changeIcon parentStatusClass pull-right"></i>'+value.status+'</td>';
+			if(value.totalCount == 0){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td >'+value.totalCount+'</td>';
+			}
+			str+='</tr>';
+			
+			 for(var i in value.subList){
+				 var color = getColorCodeByStatus(value.subList[i].status);
+				 str+='<tr class="subStatusClass" style="color:'+color+';">';
+				str+='<td style="background:#f8f8f8">&nbsp;&nbsp;&nbsp; '+value.subList[i].status+'</td>';
+				if(value.subList[i].totalCount == 0){
+					str+='<td class="text-center" style="background:#f8f8f8"> - </td>';
+				}else{
+					str+='<td class"text-center" >'+value.subList[i].totalCount+'</td>';
+				} 
+				str+='</tr>';
+			 }
+			
+			
+		}else{
+			str+='<tr style="color:'+color+';">';
+		
+			str+='<td>'+value.status+'</td>';
+			if(value.totalCount == 0){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+value.totalCount+'</td>';
+			}
+			str+='</tr>';
+		}
+	});
+	$("#todayApptsForAdvancedDashBrd").html(str);
+}	
+	

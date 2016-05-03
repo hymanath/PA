@@ -228,6 +228,7 @@
                             <div class="row">
 								
 								<div class="col-md-12 ">
+									<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="srhPrcssngImgId"></center></div>
                                 	<div id="searchApptmntDivId"></div>
                                 </div>
 								
@@ -1066,6 +1067,7 @@ function getTotalAppointmentStatus(){
 	$("#todayForAdvancedDashBrdAjaxId").hide();
 		if(result != null){
 			buildTotalAppointmentStatusForToday(result);
+			buildTtlAppntmntSttsFrAdncDshBrd(result);
 			//buildJSONForAppStatus(result);
 			//buildTotalAppointmentStatus(result);
 		}
@@ -1213,7 +1215,7 @@ function buildTotalAppointmentStatus(result){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
 				var statusArr= result[i].clickIds;
-				str+='<td class="appointmentStatusCls" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
+				str+='<td attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
 			}
 			str+='</tr>';
 			
@@ -1225,7 +1227,7 @@ function buildTotalAppointmentStatus(result){
 					str+='<td style="text-align:center;background:#f8f8f8"> - </td>';
 				}else{
 					var statusArr= result[i].subList[j].clickIds;
-					str+='<td style="background:#f8f8f8;text-align:center;cursor:pointer;" class="appointmentStatusCls text-center"  attr_statusArrId ="'+statusArr+'">'+result[i].subList[j].statusCount+'</td>';
+					str+='<td style="background:#f8f8f8;text-align:center;" class="text-center"  attr_statusArrId ="'+statusArr+'">'+result[i].subList[j].statusCount+'</td>';
 				}
 				str+='</tr>';
 			}
@@ -1238,7 +1240,7 @@ function buildTotalAppointmentStatus(result){
 				str+='<td style="text-align:center;"> - </td>';
 			}else{
 				var statusArr= result[i].clickIds;
-				str+='<td class="appointmentStatusCls" style="text-align:center;cursor:pointer;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
+				str+='<td style="text-align:center;" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</td>';
 			}
 			str+='</tr>';
 		}
@@ -1316,7 +1318,7 @@ function buildTotalAppointmentStatusForToday(result){
 			
 	});
 	$("#todayAppointmentsId").html(str);
-	$("#todayApptsForAdvancedDashBrd").html(str);
+	//$("#todayApptsForAdvancedDashBrd").html(str);
 	
 	$(".subStatusClass").hide();
 	
@@ -2478,10 +2480,15 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 										if(result[i].constituency !=null && result[i].constituency.length>0 ){
 											<c:choose>
 											<c:when test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS')}">
-											if(result[i].id != null && result[i].id > 0)
-											str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'"><div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div></a>';
+											if(result[i].id != null && result[i].id > 0){
+												if(result[i].candidateType=="voter"){
+												 str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div>';
+												}else{
+													str+='<a  target="_blank" data-toggle="tooltip" data-placement="top" title="Cadre Details" style="cursor:pointer;" href="cadreDetailsAction.action?cadreId='+result[i].id+'"><div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span >'+result[i].constituency+' Constituency</span></div></a>';
+												}
+											}
 											else
-											 str+='<span style="color:#34A7C1;">'+result[i].name+'</span> ';
+											str+='<span style="color:#34A7C1;">'+result[i].name+'</span> ';
 											</c:when>
 											<c:otherwise>
 											str+='<div style="color:#34A7C1;"><span >'+result[i].name+'</span>   -   <span>'+result[i].constituency+' Constituency</span></div>';
@@ -2489,7 +2496,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 											</c:choose>
 											
 										}else{
-											
 											str+='<div style="color:#34A7C1;">'+result[i].name+'</div>';
 										}
 										if(result[i].mobileNo !=null && result[i].mobileNo.length>0){
@@ -2540,7 +2546,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 								str+='<div class="btn btn-success btn-sm" style="border-radius:20px;"><label style="margin-bottom: 0px; line-height: 10px;"><input style="margin-left: 0px; margin-top: 0px;" type="checkbox" data-toggle="tooltip" data-placement="top" class="apptDetailsDiv"  attr_designation = "'+result[i].designation+'" attr_candidateType="'+result[i].candidateType+'" attr_name="'+result[i].name+'" attr_mobile="'+result[i].mobileNo+'" attr_desg="'+result[i].designationId+'" attr_memberShipNo="'+result[i].memberShipId+'" attr_voterCardNo="'+result[i].voterCardNo+'" attr_id="'+result[i].id+'" attr_close_id="uncheck'+result[i].id+'" attr_img_url="'+result[i].imageURL+'" attr_candidateType_id='+result[i].candidateTypeId+' title="Create Appointment Request"> &nbsp;SELECT</label></div>';	
 							}								
 							else{
-								
 								str+='<label data-toggle="tooltip"  data-placement="top" title="This Candidate Already in '+result[i].aptName+' Appointment with '+result[i].aptStatus+' Status: you can not addtion to another Appointment"> ';
 								str+=''+result[i].aptName+' - '+result[i].aptStatus+'';
 								str+='</label>';
@@ -3657,9 +3662,10 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		
 		searchJobj;
 		
-		$("#upcomingAppointMentId").html("");
-		$("#inprogreessAppointMentId").html("");
-		$("#completedAppointMentId").html("");
+		//$("#upcomingAppointMentId").html("");
+		//$("#inprogreessAppointMentId").html("");
+		//$("#completedAppointMentId").html("");
+		$("#searchApptmntDivId").empty();
 		$(".appointmentSettings").show();
 		var createdBy =$("#appointmentcreatedBy").val();
 		
@@ -3708,7 +3714,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			task:""
 			
 		}
-		
+		$("#srhPrcssngImgId").show();
 		searchJobj = jsObj;
 		  	$.ajax({
 				type : 'POST',
@@ -3716,6 +3722,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj1)}
 			}).done(function(result){
+				$("#srhPrcssngImgId").hide();
 				buildAppointmentSearchResult(result,statusId," ");				
 			})
 	}
@@ -7106,7 +7113,9 @@ function  getappointmentStatusDetails(statusArray,type,statusType){
 	if(type ==null){
 		type='';
 	}
-	
+	//clearing the searchAppointment div
+	$("#searchApptmntDivId").empty();
+	$("#srhPrcssngImgId").show();
 	var jsObj={
 			createdBy : 0,
 			appointmentUserId:$("#appointmentUserSelectBoxId").val(),
@@ -7117,13 +7126,13 @@ function  getappointmentStatusDetails(statusArray,type,statusType){
 			type:type,
 			task:""			
 		}
-		
 		  	$.ajax({
 				type : 'POST',
 				url : 'getAppointmentSearchDetailsAction.action',
 				dataType : 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+				$("#srhPrcssngImgId").hide();
 				buildAppointmentSearchResult(result," ",statusType);		
 			})
 }
