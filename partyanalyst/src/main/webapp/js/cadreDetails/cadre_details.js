@@ -1,14 +1,133 @@
-	/* var globalCadreId = '${cadreId}'; */
-	var participatedConstituencyId=0;
-	var participatedConstituencyType="";
-	var participatedParliamentId = 0;
-	var participatedDistrictId = 0;
-	
-	var participatedConstName = "";
-	var participatedParlName = "";
-	var participatedDistName = "";
-	
-	function getParticipatedConstituencyId(cadreId){
+$(document).ready(function() {
+  var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+  }
+
+setcolorsForStatus();
+  var optionSet1 = {
+	startDate: moment().subtract(29, 'days'),
+	endDate: moment(),
+	minDate: '01/01/2012',
+	maxDate: '12/31/2015',
+	//dateLimit: { days: 60 },
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary newsSubmitBtn',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+
+  var optionSet2 = {
+	startDate: moment().subtract(7, 'days'),
+	endDate: moment(),
+	opens: 'left',
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	}
+  };
+
+  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+  $('#reportrange').daterangepicker(optionSet1, cb);
+
+  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+	console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); 
+  });
+  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+   var cb = function(start, end, label) {
+	console.log(start.toISOString(), end.toISOString(), label);
+  }
+  
+  /*Meeting DatePicker*/
+setcolorsForStatus();
+  var MeetingSet = {
+	startDate: moment().subtract(1, 'year'),
+	endDate: moment(),
+	/* minDate: '01/01/2012',
+	maxDate: '12/31/2015', */
+	showDropdowns: true,
+	showWeekNumbers: true,
+	timePicker: false,
+	timePickerIncrement: 1,
+	timePicker12Hour: true,
+	ranges: {
+	   'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   'Last Year': [moment().subtract(1, 'year'),moment()]
+	},
+	opens: 'left',
+	buttonClasses: ['btn btn-default'],
+	applyClass: 'btn-small btn-primary meetingSubmitBtn',
+	cancelClass: 'btn-small',
+	format: 'MM/DD/YYYY',
+	separator: ' to ',
+	locale: {
+		applyLabel: 'Submit',
+		cancelLabel: 'Clear',
+		fromLabel: 'From',
+		toLabel: 'To',
+		customRangeLabel: 'Custom',
+		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		firstDay: 1
+	}
+  };
+  $('#meetingDatePicker span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+  $('#meetingDatePicker').daterangepicker(MeetingSet, cb);
+
+  $('#meetingDatePicker').on('show.daterangepicker', function() { /*console.log("show event fired"); */});
+  $('#meetingDatePicker').on('hide.daterangepicker', function() { /*console.log("hide event fired"); */});
+  $('#meetingDatePicker').on('apply.daterangepicker', function(ev, picker) { 
+	/*console.log("apply event fired, start/end dates are " 
+	  + picker.startDate.format('MMMM D, YYYY') 
+	  + " to " 
+	  + picker.endDate.format('MMMM D, YYYY')
+	); */
+  });
+  $('#MeetingDatePicker').on('cancel.daterangepicker', function(ev, picker) { /*console.log("cancel event fired");*/ });
+});
+
+function getParticipatedConstituencyId(cadreId){
 		var jsObj={
 			tdpCadreId:cadreId
 		}	
@@ -37,7 +156,6 @@
 							participatedConstituencyType=" Parliament";
 							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
 						}
-						
 						getCategoryWiseStatusCount();
 						getTotalMemberShipRegistrationsInCadreLocation();		
 						//getCadreFamilyDetailsByCadreId();
@@ -51,29 +169,11 @@
 						getEventsOverviewFortdpCadre();
 						//getCandidateAndConstituencySurveyResult();
 						getActivityDetails();
-						
 					}
-						
 				});
-}
- //global Ids of CADRE
-	 
-	 var globalPanchayatId=0;
-	 var globalTehsilId=0;
-	 var globalConstituencyId=0;
-	 var globalParliamentId=0;
-	 var globalDistrictId=0;
-	 
-	 var globalPancName = "";
-	 var globalTehsName = "";
-	 var globalConstName = "";
-	 var globalParlName = "";
-	 var globalDistName = "";
-	 
-	 var globalCandidateId; 
-	 var ownBoothDetailsVo;
-	 var globalAreaType="";
-		function cadreFormalDetailedInformation(globalCadreId){
+			}
+			
+	function cadreFormalDetailedInformation(globalCadreId){
 			var localCadreId=globalCadreId;
 			//loading images showing
 			$("#dataLoadingsImgForownBoothDetailsId").show();
@@ -141,13 +241,13 @@
                          
                          mstr+=' </ul>';
                          mstr+=' <div class="tab-content">';
-                         mstr+='   <div role="tabpanel" class="tab-pane active" id="statetabs">';
-                         mstr+='   </div>';
-                          mstr+='  <div role="tabpanel" class="tab-pane" id="districttabs"></div>';
-                          mstr+='  <div role="tabpanel" class="tab-pane" id="constabs"></div>';
-                          mstr+='  <div role="tabpanel" class="tab-pane" id="mandaltabs"></div>';
-                         mstr+='   <div role="tabpanel" class="tab-pane" id="villagetabs"></div>';
-                         mstr+='  </div>';
+                         mstr+=' <div role="tabpanel" class="tab-pane active" id="statetabs">';
+                         mstr+=' </div>';
+                         mstr+=' <div role="tabpanel" class="tab-pane" id="districttabs"></div>';
+                         mstr+=' <div role="tabpanel" class="tab-pane" id="constabs"></div>';
+                         mstr+=' <div role="tabpanel" class="tab-pane" id="mandaltabs"></div>';
+                         mstr+=' <div role="tabpanel" class="tab-pane" id="villagetabs"></div>';
+                         mstr+=' </div>';
 							
 						$('#committeMeetingDivId').html(mstr);
 						$('#commitMeetingDiv').show();
@@ -380,21 +480,21 @@
 					 globalParlName = result.pConstituencyName;
 					 globalDistName = result.districtName;
 					 
-					 getCandidateAndConstituencySurveyResult();
-					 complaintDetailsOfCadre(localCadreId,result.membershipNo);
-					 getCandidateElectDetatails(localCadreId);
-					 getCheckCandidateExits();
-					 getDeathsAndHospitalizationDetails();
+					getCandidateAndConstituencySurveyResult();
+					complaintDetailsOfCadre(localCadreId,result.membershipNo);
+					getCandidateElectDetatails(localCadreId);
+					getCheckCandidateExits();
+					getDeathsAndHospitalizationDetails();
 					getTdpCadreSurveyDetails(globalCadreId,0,null,"NotAll",0,'true');
 					getCadreFamilyDetailsByCadreId();
 					getTotalComplaintsForCandidate();
 					getRefferelDetailsStatusWise();
-					  getConductedPartyMeetingDetails("","","true");
+					getConductedPartyMeetingDetails("","","true");
 					getTrainingCampAttendenceInfoInCadreLocation();
 				}
 			});
-}
-		function buildingOwnBoothDetails(boothDetailsVo){
+		}
+	function buildingOwnBoothDetails(boothDetailsVo){
 			
 			var ownBoothDetailsVo=boothDetailsVo;
 			var str='';
@@ -429,12 +529,11 @@
 				$("#ownBoothDetailsId").html(str);
 			}
 			
-}
+		}
 		
 		function complaintDetailsOfCadre(cadreId,membershipId){
 			var localCadreId=cadreId;
 			var localMemberShipId=membershipId;
-			
 			//$("#dataLoadingsImgForComplaint").show();
 			//33160
 			var jsobj={
@@ -469,10 +568,9 @@
 						$("#grievanceDetailsId").html("Data Not Available.");
 					}
 				} */
-				
-				
 			});
-}
+		}
+	
 		function getEventDetailsOfCadre(globalCadreId){
 			var localCadreId=globalCadreId;
 			//8341157
@@ -500,7 +598,6 @@
 					//$("#eventHeadingId").html('<span> EVENT PARTICIPATION DETAILS </span>');
 					str+='</tr>';
 						str+='<tr>';
-						
 						str+='<th>MAIN EVENT</th>';
 						str+='<th>SUB EVENT</th>';
 						str+='<th>INIVITED</th>';
@@ -509,46 +606,44 @@
 							str+='';
 						else
 							str+='<th>ABSENT</th>';
-						
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
 					var results = myresult[k].knownList;
 					if(results !=null && results.length>0){
 					for(var i in results){
-						var subLength;
-						if(results[i].knownList !=null){
-							subLength=results[i].knownList.length;
-						}					
-								if(results[i].knownList !=null){
-									for(var j in results[i].knownList){
-										str+='<tr>';
-										if(j==0){											
-												str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
-										}else{
-											str+='<td style="border:#fff;"></td>';
-										}
-										str+='<td>'+results[i].knownList[j].name+'</td>';
-										if(results[i].knownList[j].eventTypeId == 2)
-											str+='<td>0</td>';
-										else
-											str+='<td>'+results[i].knownList[j].invitationCount+'</td>';
-										str+='<td>'+results[i].knownList[j].total+'</td>';
-										if(results[i].knownList[j].eventTypeId != 2)
-											str+='<td>'+results[i].knownList[j].absentCount+'</td>';
-										 str+='</tr>';
+							var subLength;
+							if(results[i].knownList !=null){
+								subLength=results[i].knownList.length;
+							}					
+							if(results[i].knownList !=null){
+								for(var j in results[i].knownList){
+									str+='<tr>';
+									if(j==0){											
+											str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
+									}else{
+										str+='<td style="border:#fff;"></td>';
 									}
+									str+='<td>'+results[i].knownList[j].name+'</td>';
+									if(results[i].knownList[j].eventTypeId == 2)
+										str+='<td>0</td>';
+									else
+										str+='<td>'+results[i].knownList[j].invitationCount+'</td>';
+									str+='<td>'+results[i].knownList[j].total+'</td>';
+									if(results[i].knownList[j].eventTypeId != 2)
+										str+='<td>'+results[i].knownList[j].absentCount+'</td>';
+									 str+='</tr>';
 								}
-								else{
-									str+='</tbody>';
-									str+='</table>';
-									$("#participationTableDivId").html("Data Not Available.");
-									return;
-								}	
+							}
+							else{
+								str+='</tbody>';
+								str+='</table>';
+								$("#participationTableDivId").html("Data Not Available.");
+								return;
+							}	
 						}
-						
 					str+='</tbody>';
-				   str+='</table>';	
+				    str+='</table>';	
 				   //$("#participationTableDivId").html(str);
 				}else{
 					str+='</tbody>';
@@ -556,7 +651,7 @@
 					//$("#participationTableDivId").html("Data Not Available.");
 					}					
 				}
-				 $("#participationTableDivId").html(str);	  
+				 $("#participationTableDivId").html(str);	
 				   
 				}else{
 					$("#eventParticipationCollapseDivId").hide();
@@ -564,8 +659,7 @@
 				}
 				
 			});
-}
-
+		}
 		function familyMembersSurveyDetails(votercardNo)
 		{	
 			$("#familySurveyDataLoadoing").show();
@@ -594,11 +688,8 @@
 				//console.log(result);
 				$("#familySurveyDataLoadoing").hide();
 				if(result != null){
-					
 					if(result.verifierVOList !=null){
-						
 						var str='';
-											
 						str='';
 						str+='<div class="tab-content m_top20">';
 						str+='<div role="tabpanel" class="tab-pane active" id="area">';
@@ -611,36 +702,27 @@
 								str+=''+result.verifierVOList[i].name+'';
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable" id="bottomsurveyTable'+i+'" style="display:none;"></i></span>';
 								str+='</h4> </a><div style="offset4"><center><img id="familyAjax'+result.verifierVOList[i].id+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;"/></center></div>';
-								
 								str+='</div>';
-								
 								str+='<div id="familySurveyTable'+i+'" class="panel-collapse collapse in allSurveyDtlsCls hideSurveyCls " role="" aria-labelledby="" style="display:none;">';
-									str+='<div class="panel-body table-responsive">';										
-									str+='</div>';
-									str+='</div>';
+								str+='<div class="panel-body table-responsive">';										
 								str+='</div>';
-						str+='</div>';
+								str+='</div>';
+								str+='</div>';
+								str+='</div>';
 
 							}
-
-					
 					str+='</div>';
 					str+='</div> ';                     
-					
 					$('.familySurveyDetailsCls').html(str);
-				
 				 }
 				}
 			});
 		}
-		
-	function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo){
+		function getTdpCadreFamilySurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority,voterCardNo){
 		$("#"+divId+"").html("");
-
 		if($("#"+divId).hasClass("showSurveyCls")){
 			return;
 		}
-		
 		if(participatedConstituencyType == '')
 		participatedConstituencyType = null; 
 		var temp="familyAjax"+surveyId+"";
@@ -649,7 +731,7 @@
 		var surveyId=surveyId;
 		var indexId=indexId;
 		if(participatedConstituencyId == null )
-				participatedConstituencyId=0;
+			participatedConstituencyId=0;
 		var jsObj={
 			cadreId:localCadreId,
 			surveyId:surveyId,
@@ -699,52 +781,6 @@
 		});
 		
 	}
-	
-	$(document).on('click', '.innerDiv', function(){
-		/*var surveyDivId = $(this).attr("attr_survy_divId");
-		//$(".allSurveyDtlsCls").hide();
-		var temp = $("#"+surveyDivId).css("display");
-		alert(temp);
-		if(temp != "none"){alert(1);
-			$("#"+surveyDivId).css("display")="none";
-		}else{alert(2);
-			$("#"+surveyDivId).show();
-		}*/
-		var surveyDivId = $(this).attr("attr_survy_divId");
-		
-		//alert($("#"+surveyDivId).hasClass("hideSurvey"));
-		
-		if($("#"+surveyDivId).hasClass("hideSurvey")){
-			$("#"+surveyDivId).removeClass("hideSurvey");
-			$("#"+surveyDivId).addClass("showSurvey");
-			$("#"+surveyDivId).css({"display":"block"});
-		}else if($("#"+surveyDivId).hasClass("showSurvey")){
-			$("#"+surveyDivId).removeClass("showSurvey");
-			$("#"+surveyDivId).addClass("hideSurvey");
-			$("#"+surveyDivId).css({"display":"none"});
-			
-		}
-		
-	});
-	$(document).on('click', '.innerDivFamilyCls', function(){
-	
-		var surveyDivId = $(this).attr("attr_survy_divId");
-		
-		//alert(surveyDivId);
-		
-		if($("#"+surveyDivId).hasClass("hideSurveyCls")){
-			$("#"+surveyDivId).removeClass("hideSurveyCls");
-			$("#"+surveyDivId).addClass("showSurveyCls");
-			$("#"+surveyDivId).css({"display":"block"});
-		}else if($("#"+surveyDivId).hasClass("showSurveyCls")){
-			$("#"+surveyDivId).removeClass("showSurveyCls");
-			$("#"+surveyDivId).addClass("hideSurveyCls");
-			$("#"+surveyDivId).css({"display":"none"});
-			
-		}
-	
-	});
-	
 	var participatedSurveysArr = new Array();
 	var isparticipatedSelected = '';
 	function getTdpCadreSurveyDetails(globalCadreId,surveyId,indexId,searchTypeStr,divId,isPriority){
@@ -952,16 +988,7 @@
 		});
 			
 	}
-		
-		$('#accordionSurvey').on('shown.bs.collapse', function() {
-			var surveyId = $(this).find("div.in").attr("attr_survey_id");
-			var cadreId= $(this).find("div.in").attr("attr_cadre_id");
-			var indexId=$(this).find("div.in").attr("attr_index_id");
-			getTdpCadreSurveyDetails(cadreId,surveyId,indexId,"NotAll",0,'true');
-		});
-
-		
-		function buildingSurveyQuestionsDetails(results,surveyId,indexId,divId,isPriority){
+	function buildingSurveyQuestionsDetails(results,surveyId,indexId,divId,isPriority){
 			$("#dataLoadingsImg").hide();
 			var str='';
 				if(results.verifierVOList !=null){					
@@ -970,68 +997,60 @@
 					{
 						str+='<div class="pull-right tooltipClass" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-default btn-xs " style="padding:3px 5px 5px;background-color:#CCC;border-radius:0px;" data-toggle="tooltip" data-placement="bottom" title="View All Questions Response"><i class="glyphicon glyphicon-list"></i></a> </div>';
 					}
-					
-									str+='<table class="table m_0 table-bordered">';
-										/*str+='<thead>';
-											str+='<th style="text-align:center;">Question</th>';
-											str+='<th style="text-align:center;">Answer</th>';
-										str+='</thead>';*/
-										str+='<tbody>';
-										
-										for(var i in results.verifierVOList){
-											str+='<tr>';
-												str+='<td>'+results.verifierVOList[i].name+'</td>';
-												str+='<td>'+results.verifierVOList[i].option+'</td>'; 
-											str+='</tr>';
-											if(results.verifierVOList[i].verifierVOList != null && results.verifierVOList[i].verifierVOList.length>0)
-											{
-												
-											
-								if(results.verifierVOList[i].verifierVOList[0].verifierVOList != null && results.verifierVOList[i].verifierVOList[0].verifierVOList.length>0)
-											{
-												str+='<tr>';
-													str+='<td colspan="2">';
-													str+='<div class="table-responsive" style="width:1059px;overflow-y:auto">';
-													str+='<table class="table table-bordered">';
-														str+='<thead >';
-															str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
-																str+=' Location ';
-															str+='</th>';
-															for(var k in results.verifierVOList[i].verifierVOList[0].verifierVOList)
-															{	
-																str+='<th style="background-color:lightgrey;">';
-																str+=''+results.verifierVOList[i].verifierVOList[0].verifierVOList[k].option+'';
-																str+='</th>';
-															}
-														str+='</thead>';
-														str+='<tbody>';
-															for(var k in results.verifierVOList[i].verifierVOList)
-															{	
-																str+='<tr>';
-																str+='<th style="background-color:lightgrey;">';
-																str+=''+results.verifierVOList[i].verifierVOList[k].name+'';
-																str+='</th>';
-																for(var l in results.verifierVOList[i].verifierVOList[k].verifierVOList)
-																{
-																	var perc = results.verifierVOList[i].verifierVOList[k].verifierVOList[l].percentage;
-																	perc = parseFloat(perc).toFixed(2);
-																	str+='<td>'+perc+'</td>';
-																}
-																str+='</tr>';
-															}
-														str+='</tbody>';
-														str+='</table>';
-														str+='</div>'; 
-													str+='</td>'; 
-												str+='</tr>';
-											}
-											}
-										}
-											
-										str+='</tbody>';
-									str+='</table>';
+						str+='<table class="table m_0 table-bordered">';
+							/*str+='<thead>';
+								str+='<th style="text-align:center;">Question</th>';
+								str+='<th style="text-align:center;">Answer</th>';
+							str+='</thead>';*/
+							str+='<tbody>';
+							for(var i in results.verifierVOList){
+								str+='<tr>';
+									str+='<td>'+results.verifierVOList[i].name+'</td>';
+									str+='<td>'+results.verifierVOList[i].option+'</td>'; 
+								str+='</tr>';
+								if(results.verifierVOList[i].verifierVOList != null && results.verifierVOList[i].verifierVOList.length>0){
+									if(results.verifierVOList[i].verifierVOList[0].verifierVOList != null && results.verifierVOList[i].verifierVOList[0].verifierVOList.length>0){
+										str+='<tr>';
+											str+='<td colspan="2">';
+											str+='<div class="table-responsive" style="width:1059px;overflow-y:auto">';
+											str+='<table class="table table-bordered">';
+												str+='<thead >';
+													str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
+														str+=' Location ';
+													str+='</th>';
+													for(var k in results.verifierVOList[i].verifierVOList[0].verifierVOList)
+													{	
+														str+='<th style="background-color:lightgrey;">';
+														str+=''+results.verifierVOList[i].verifierVOList[0].verifierVOList[k].option+'';
+														str+='</th>';
+													}
+												str+='</thead>';
+												str+='<tbody>';
+													for(var k in results.verifierVOList[i].verifierVOList)
+													{	
+														str+='<tr>';
+														str+='<th style="background-color:lightgrey;">';
+														str+=''+results.verifierVOList[i].verifierVOList[k].name+'';
+														str+='</th>';
+														for(var l in results.verifierVOList[i].verifierVOList[k].verifierVOList)
+														{
+															var perc = results.verifierVOList[i].verifierVOList[k].verifierVOList[l].percentage;
+															perc = parseFloat(perc).toFixed(2);
+															str+='<td>'+perc+'</td>';
+														}
+														str+='</tr>';
+													}
+												str+='</tbody>';
+												str+='</table>';
+												str+='</div>'; 
+											str+='</td>'; 
+										str+='</tr>';
+									}
+								}
+							}
+					str+='</tbody>';
+					str+='</table>';
 					str+='</div>';
-					
 				}else{
 					str+='<div>"Data Not Available."</div>';
 				}
@@ -1052,309 +1071,61 @@
 				if(result !=null && result !=''){
 					$("#electionProfileMainDivId").show();
 					str+='<div>';
-					
-					for(var i in result){
-						if(result[i].status==true)
-						{
-							str+='<ul class="wl-sub-details" style="margin-bottom:0px;">';
-							str+='<li onmouseover="this.style.color=\'#06ABEA\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
-							str+='<strong><span style="color:green">Won</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
-							str+='</ul>';
+						for(var i in result){
+							if(result[i].status==true)
+							{
+								str+='<ul class="wl-sub-details" style="margin-bottom:0px;">';
+								str+='<li onmouseover="this.style.color=\'#06ABEA\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
+								str+='<strong><span style="color:green">Won</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
+								str+='</ul>';
+							}
 						}
-					}
-					for(var i in result){
-						if(result[i].status ==false){
-							str+='<ul class="wl-sub-details">';
-							str+='<li onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
-							str+='<strong><span style="color:red">Lost</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
-							str+='</ul>';
+						for(var i in result){
+							if(result[i].status ==false){
+								str+='<ul class="wl-sub-details">';
+								str+='<li onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
+								str+='<strong><span style="color:red">Lost</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
+								str+='</ul>';
+							}
 						}
-					}
-						str+='</div>';
-						
+					str+='</div>';
 					$("#electionProfileDivId").html(str);
 				}
 				 else{
 					$("#electionProfileMainDivId").hide();
 				}
 			});
-			
 		}
-		
-		$(document).on("click",".eachParticipationListCls",function(){
-			
-			var constId=$(this).attr("attr_constId");
-			var elecType=$(this).attr("attr_election_type");
-			var elecYear=$(this).attr("attr_election_year");
-			
-			var win =window.open("constituencyElectionResultsAction.action?constituencyId="+constId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
-			win.focus();
-		});
-		
-		$(function () {
-		  $('[data-toggle="tooltip"]').tooltip();
-		});
-	
-
-$('.table-scroll').scrollator({
-	custom_class: 'table-scroll',
-});
-
-
-/*$('#myStathalf').circliful();
-$('#myStathalf1').circliful();
-$('#myStathalf2').circliful();
-$('#myStathalf3').circliful();
-$('#myStathalf4').circliful();
-$('#myStathalf5').circliful();
-$('#myStathalf6').circliful();
-$('#myStathalf7').circliful();
-$('#myStathalf8').circliful();
-$('#myStathalf9').circliful();
-$('#myStathalf10').circliful();
-$('#myStathalf11').circliful();
-$('#myStathalf12').circliful();
-$('#myStathalf13').circliful();
-$('#myStathalf14').circliful();
-$('#myStathalf15').circliful();
-$('#myStathalf16').circliful();
-$('#myStathalf17').circliful();
-$('#myStathalf18').circliful();*/
-
-
-	
-$(document).ready(function() {
-  var cb = function(start, end, label) {
-	console.log(start.toISOString(), end.toISOString(), label);
-  }
-
-setcolorsForStatus();
-  var optionSet1 = {
-	startDate: moment().subtract(29, 'days'),
-	endDate: moment(),
-	minDate: '01/01/2012',
-	maxDate: '12/31/2015',
-	//dateLimit: { days: 60 },
-	showDropdowns: true,
-	showWeekNumbers: true,
-	timePicker: false,
-	timePickerIncrement: 1,
-	timePicker12Hour: true,
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	},
-	opens: 'left',
-	buttonClasses: ['btn btn-default'],
-	applyClass: 'btn-small btn-primary newsSubmitBtn',
-	cancelClass: 'btn-small',
-	format: 'MM/DD/YYYY',
-	separator: ' to ',
-	locale: {
-		applyLabel: 'Submit',
-		cancelLabel: 'Clear',
-		fromLabel: 'From',
-		toLabel: 'To',
-		customRangeLabel: 'Custom',
-		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		firstDay: 1
-	}
-  };
-
-  var optionSet2 = {
-	startDate: moment().subtract(7, 'days'),
-	endDate: moment(),
-	opens: 'left',
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	}
-  };
-
-  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
-  $('#reportrange').daterangepicker(optionSet1, cb);
-
-  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
-  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-	console.log("apply event fired, start/end dates are " 
-	  + picker.startDate.format('MMMM D, YYYY') 
-	  + " to " 
-	  + picker.endDate.format('MMMM D, YYYY')
-	); 
-  });
-  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
-   var cb = function(start, end, label) {
-	console.log(start.toISOString(), end.toISOString(), label);
-  }
-  
-  /*Meeting DatePicker*/
-setcolorsForStatus();
-  var MeetingSet = {
-	startDate: moment().subtract(1, 'year'),
-	endDate: moment(),
-	/* minDate: '01/01/2012',
-	maxDate: '12/31/2015', */
-	showDropdowns: true,
-	showWeekNumbers: true,
-	timePicker: false,
-	timePickerIncrement: 1,
-	timePicker12Hour: true,
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	   'Last Year': [moment().subtract(1, 'year'),moment()]
-	},
-	opens: 'left',
-	buttonClasses: ['btn btn-default'],
-	applyClass: 'btn-small btn-primary meetingSubmitBtn',
-	cancelClass: 'btn-small',
-	format: 'MM/DD/YYYY',
-	separator: ' to ',
-	locale: {
-		applyLabel: 'Submit',
-		cancelLabel: 'Clear',
-		fromLabel: 'From',
-		toLabel: 'To',
-		customRangeLabel: 'Custom',
-		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		firstDay: 1
-	}
-  };
-  $('#meetingDatePicker span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
-  $('#meetingDatePicker').daterangepicker(MeetingSet, cb);
-
-  $('#meetingDatePicker').on('show.daterangepicker', function() { /*console.log("show event fired"); */});
-  $('#meetingDatePicker').on('hide.daterangepicker', function() { /*console.log("hide event fired"); */});
-  $('#meetingDatePicker').on('apply.daterangepicker', function(ev, picker) { 
-	/*console.log("apply event fired, start/end dates are " 
-	  + picker.startDate.format('MMMM D, YYYY') 
-	  + " to " 
-	  + picker.endDate.format('MMMM D, YYYY')
-	); */
-  });
-  $('#MeetingDatePicker').on('cancel.daterangepicker', function(ev, picker) { /*console.log("cancel event fired");*/ });
-});
-
-$(document).on("click",".newsSubmitBtn",function(){
-	getCandidateAndLocationSummaryNews();
-});
-$(document).on("click",".meetingSubmitBtn",function(){
-	getConductedPartyMeetingDetails('','','true');
-});
-
-var globalDate = "global";
-$(document).on("click","#meetingDatePicker",function(){
-	globalDate ="meetingGlobal";
-});
-
-
-
-
-
- function getTotalMemberShipRegistrationsInCadreLocation()
- {
-	$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
-	var pcId=0;
-	//pcId:participatedConstituencyId,pcType:participatedConstituencyType
-	//alert(participatedParliamentId);
-	if(participatedConstituencyId != null && participatedConstituencyId > 0){
-		pcId = participatedConstituencyId;
-	}else{
-		pcId = participatedParliamentId;
-	}
-
-	var pcType = participatedConstituencyType;
-	//pcType="Assembly";
-	  $.ajax({
-			type : "POST",
-			url  : "getTotalMemberShipRegsInCadreLocationAction.action",
-			data : {tdpCadreId:globalCadreId,pcId:pcId,pcType:pcType}
-		  }).done(function(result){
-			if(result != null){
-				  buildTotalMemberShipRegInCadreLocation(result,pcType);
+	function getTotalMemberShipRegistrationsInCadreLocation(){
+			$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+			var pcId=0;
+			//pcId:participatedConstituencyId,pcType:participatedConstituencyType
+			//alert(participatedParliamentId);
+			if(participatedConstituencyId != null && participatedConstituencyId > 0){
+				pcId = participatedConstituencyId;
+			}else{
+				pcId = participatedParliamentId;
 			}
-			  else{
-				$("#memberShipCountDiv").html('No Data Available.');  
-			  }
-		});
-			
-}
-
-/*function buildTotalMemberShipRegInCadreLocation(result)
-{
-	 var locationNamesArr = [];
-	 locationNamesArr.push("Own Booth");
-	 if(result.cadreLocation =="Mandal")
-		locationNamesArr.push("Own Panchayat");
-	
-	 locationNamesArr.push("Own Mandal/Muncipality","Own AC","Own PC","Own District");
-	// console.log(locationNamesArr);
-	 
-	 var dataArr = [];
-	 dataArr.push(parseFloat(result.boothPerc));
-	  if(result.cadreLocation =="Mandal")
-	   dataArr.push(parseFloat(result.panchPerc));
-   dataArr.push(parseFloat(result.mandalPerc),parseFloat(result.constiPerc),parseFloat(result.parConsPerc),parseFloat(result.districtPerc));
-  // console.log(dataArr);
-   Highcharts.setOptions({
-        colors: ["#66cdcc"]
-    });
-	
-	 $('#memberShipCountDiv').highcharts({
-        chart: {
-            type: 'column'
-        },
-        xAxis: {
-            categories: locationNamesArr,
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: ' '
-            }
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Percentage',
-            data: dataArr
-
-        }]
-    });
-	 
-	 
-}*/
-
-function buildTotalMemberShipRegInCadreLocation(result,pcType)
-{
+			var pcType = participatedConstituencyType;
+			//pcType="Assembly";
+			  $.ajax({
+					type : "POST",
+					url  : "getTotalMemberShipRegsInCadreLocationAction.action",
+					data : {tdpCadreId:globalCadreId,pcId:pcId,pcType:pcType}
+				  }).done(function(result){
+					if(result != null){
+						  buildTotalMemberShipRegInCadreLocation(result,pcType);
+					}
+				  else{
+					$("#memberShipCountDiv").html('No Data Available.');  
+				  }
+				});
+		}
+function buildTotalMemberShipRegInCadreLocation(result,pcType){
 	var str = '';
 		str += '<table class="table m_0">';
 		str += '<tr>';
-	//	alert(pcType);
 	if(pcType !=null && pcType !="" && pcType !=undefined){
-		
 		if(pcType == "Assembly"){
 			str += '<td>';
 			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+participatedConstName.toUpperCase()+')"></div>';
@@ -1367,10 +1138,8 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType)
 		str += '<td>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+participatedDistName.toUpperCase()+')"></div>';
 		str += '</td>';
-		
 	}
 	else{
-		
 		str += '<td>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
 		str += '</td>';
@@ -1380,7 +1149,6 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType)
 			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
 			str += '</td>';
 		 }
-		
 		str += '<td>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
 		str += '</td>';
@@ -1400,18 +1168,11 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType)
 	}
 		str += '</tr>';
 		str += '</table>';
-	
-	
-	
-	
-	
 	 $("#memberShipCountDiv").html(str);
 	 $('.fulCircleCls').circliful();
 }
 
-
-function getCadreFamilyDetailsByCadreId()
-{
+function getCadreFamilyDetailsByCadreId(){
 	//$("#familyMembersDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
 	$("#dataLoadingsImgForFamilyMembers").show();
 		  $.ajax({
@@ -1424,176 +1185,13 @@ function getCadreFamilyDetailsByCadreId()
 		  buildCadreFamilyDetails(result); 
 		}else{
 			$("#familyMembersDiv").html("No Data Available");
-			}
-			
+		}
 			getNtrTrustStudentDetailsInstitutionWise("cadre");
 	  });
  } 
-
-$("#familyMemberBodyId").collapse('hide');
-$(document).on("click","#familyMemberHeadingId",function(){
-	var isVisible = $( "#familyMemberHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#familyMemberHideId" ).show();
-		 $( "#familyMemberShowId" ).hide();
-	}else{
-		$( "#familyMemberHideId" ).hide();
-		$( "#familyMemberShowId" ).show();
-	}
-	$("#familyMemberBodyId").collapse('toggle');
-});
-$("#familyBenefitsBodyId").collapse('hide');
-$(document).on("click","#familyBenefitsHeadingId",function(){
-	var isVisible = $( "#familyBenefitsHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#familyBenefitsHideId" ).show();
-		 $( "#familyBenefitsShowId" ).hide();
-	}else{
-		$( "#familyBenefitsHideId" ).hide();
-		$( "#familyBenefitsShowId" ).show();
-	}
-	$("#familyBenefitsBodyId").collapse('toggle');
-});
-$("#cadreBenefitsBodyId").collapse('hide');
-$(document).on("click","#cadreBenefitsHeadingId",function(){
-	var isVisible = $( "#cadreBenefitsHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#cadreBenefitsHideId" ).show();
-		 $( "#cadreBenefitsShowId" ).hide();
-	}else{
-		$( "#cadreBenefitsHideId" ).hide();
-		$( "#cadreBenefitsShowId" ).show();
-	}
-	$("#cadreBenefitsBodyId").collapse('toggle');
-});
-$("#deathHospitalDivId").collapse('hide');
-$(document).on("click","#deathHospitalDivHeaderId",function(){
-	var isVisible = $( "#deathHospitalDivHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#deathHospitalDivHideId" ).show();
-		 $( "#deathHospitalDivShowId" ).hide();
-	}else{
-		$( "#deathHospitalDivHideId" ).hide();
-		$( "#deathHospitalDivShowId" ).show();
-	}
-	$("#deathHospitalDivId").collapse('toggle');
-});
-$("#familyGrievanceDtlsBodyId").collapse('hide');
-$(document).on("click","#familyGrievanceDtlsHeaderId",function(){
-	$("#familyGrievanceDtlsBodyId").collapse('toggle');
-});
-$("#cadreEnrolmentStatsBodyId").collapse('show');
-$(document).on("click","#cadreEnrolmentStatsHeaderId",function(){
-	var isVisible = $( "#cadreEnrolmentStatsHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#cadreEnrolmentStatsHideId" ).show();
-		 $( "#cadreEnrolmentStatsShowId" ).hide();
-	}else{
-		$( "#cadreEnrolmentStatsHideId" ).hide();
-		$( "#cadreEnrolmentStatsShowId" ).show();
-	}
-	$("#cadreEnrolmentStatsBodyId").collapse('toggle');
-});
-$("#ivrSummaryBodyId").collapse('hide');
-$(document).on("click","#ivrSummaryHeaderId",function(){  
-	var isVisible = $( "#ivrSummaryHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#ivrSummaryHideId" ).show();
-		 $( "#ivrSummaryShowId" ).hide();
-	}else{
-		$( "#ivrSummaryHideId" ).hide();
-		$( "#ivrSummaryShowId" ).show();
-	}
-	$("#ivrSummaryBodyId").collapse('toggle');
-});
-$("#cadreActivitiesBodyId").collapse('hide');
-$(document).on("click","#cadreActivitiesHeaderId",function(){
-	var isVisible = $( "#cadreActivitiesHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#cadreActivitiesHideId" ).show();
-		 $( "#cadreActivitiesShowId" ).hide();
-	}else{
-		$( "#cadreActivitiesHideId" ).hide();
-		$( "#cadreActivitiesShowId" ).show();
-	}
-	$("#cadreActivitiesBodyId").collapse('toggle');
-});
-$("#cadreElectionProfileBodyId").collapse('show');
-$(document).on("click","#cadreElectionProfileHeaderId",function(){
-	var isVisible = $( "#cadreElectionProfileHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#cadreElectionProfileHideId" ).show();
-		 $( "#cadreElectionProfileShowId" ).hide();
-	}else{
-		$( "#cadreElectionProfileHideId" ).hide();
-		$( "#cadreElectionProfileShowId" ).show();
-	}
-	$("#cadreElectionProfileBodyId").collapse('toggle');
-});
-$("#participatedConstBodyId").collapse('hide');
-$(document).on("click","#participatedConstHeaderId",function(){
-	var isVisible = $( "#participatedConstHideId" ).is( ":visible" );
-	if(isVisible==false){
-		 $( "#participatedConstHideId" ).show();
-		 $( "#participatedConstShowId" ).hide();
-	}else{
-		$( "#participatedConstHideId" ).hide();
-		$( "#participatedConstShowId" ).show();
-	}
-	$("#participatedConstBodyId").collapse('toggle');
-});
-$("#cadrMmbrBthBodyId").collapse('show');
-$(document).on("click","#cadrMmbrBthHeaderId",function(){ 
-var isVisible = $( "#cadrMmbrBthHideId" ).is( ":visible" );
-if(isVisible==false){
-		 $( "#cadrMmbrBthHideId" ).show();
-		 $( "#cadrMmbrBthShowId" ).hide();
-	}else{
-		$( "#cadrMmbrBthHideId" ).hide();
-		$( "#cadrMmbrBthShowId" ).show();
-	}
-	$("#cadrMmbrBthBodyId").collapse('toggle');
-});
-$("#trainingCampDetailsBodyId").collapse('hide');
-$(document).on("click","#trainingCampDetailsHeaderId",function(){ 
-var isVisible = $( "#trainingCampDetailsHideId" ).is( ":visible" );
-if(isVisible==false){
-		 $( "#trainingCampDetailsHideId" ).show();
-		 $( "#trainingCampDetailsShowId" ).hide();
-	}else{
-		$( "#trainingCampDetailsHideId" ).hide();
-		$( "#trainingCampDetailsShowId" ).show();
-	}
-	$("#trainingCampDetailsBodyId").collapse('toggle');
-});
-$("#identityBodyId").collapse('hide');
-$(document).on("click","#identityHeaderId",function(){ 
-var isVisible = $( "#identityHideId" ).is( ":visible" );
-if(isVisible==false){
-		 $( "#identityHideId" ).show();
-		 $( "#identityShowId" ).hide();
-	}else{
-		$( "#identityHideId" ).hide();
-		$( "#identityShowId" ).show();
-	}
-	$("#identityBodyId").collapse('toggle');
-});
-$("#addressBodyId").collapse('hide');
-$(document).on("click","#addressHeaderId",function(){ 
-var isVisible = $( "#addressHideId" ).is( ":visible" );
-if(isVisible==false){
-		 $( "#addressHideId" ).show();
-		 $( "#addressShowId" ).hide();
-	}else{
-		$( "#addressHideId" ).hide();
-		$( "#addressShowId" ).show();
-	}
-	$("#addressBodyId").collapse('toggle');
-});
-
+ 
  var familycadreIdsArrayGlobal=[];
- function buildCadreFamilyDetails(result)
- { 
+ function buildCadreFamilyDetails(result){ 
  //console.log(result.familyMembersList)
 	  familyInfoArr=[];
 	 var constId = $('#cadreConstituencyId').val();
@@ -1601,19 +1199,15 @@ if(isVisible==false){
 	 var str = '';
 	 
 	 str += '<ul>';
-	 for(var i in result)
-	 {
+	 for(var i in result){
 		 if(result[i].tdpCadreId !=null){
 			 familycadreIdsArrayGlobal.push(result[i].tdpCadreId);
 		 }
 		var imgPath;
-			
-			 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0)
-			 { imgPath = result[i].imagePath;
-			 }			
-			  else
-			  {
-			 imgPath = "http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg"	;
+			 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0){ 
+				imgPath = result[i].imagePath;
+			 }else{
+				imgPath = "http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg"	;
 			  }
 	 var familyObj = {
 	 voterId:result[i].votercardNo,
@@ -1623,19 +1217,14 @@ if(isVisible==false){
 	 relativeName:result[i].relativeName,
 	 imagePath:imgPath
 	 };
-	 
 	 familyInfoArr.push(familyObj);
-	 
-		 str += '<li>';
+	 	 str += '<li>';
          str += '<div class="media">';
 		 var imgPath='';
-		 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0)
-		 { 
-		 imgPath = result[i].imagePath;
-		 } 
-		 else
-		 {
-		 imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
+		 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0){ 
+			imgPath = result[i].imagePath;
+		 }else{
+			imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
 		 }
 		  str += '<div class="media-left ">';
 		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
@@ -1662,16 +1251,13 @@ if(isVisible==false){
 		  else{
 			  str += '<div class="media-body">';
 		  } */
-         
-		 str += '<div class="media-body">';
+         str += '<div class="media-body">';
 		  if(result[i].deletedStatus == "MD"){
 			  str += '<div class="m_0"><span style="color:red">'+result[i].name+'</span>';
 		  }else{
 			  str += '<div class="m_0">'+result[i].name+'';
 		  }
-		  
-         
-		if(result[i].tdpCadreId != null )
+		 if(result[i].tdpCadreId != null )
 		str+=' [ <b><a href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" data-toggle="tooltip" data-placement="right" title="Membership No" class="membershipno-cls">'+result[i].membershipNo+'</a></b> ] ';
 		/*if(result[i].publicRepresentativeStr != null){
 			str+='[<b>'+result[i].publicRepresentativeStr+'</b>]';
@@ -1724,17 +1310,12 @@ if(isVisible==false){
 	 str += '</ul>';
 	$("#familyMembersDiv").html(str);
 	getMemberComplaints();
-	$(function () {
-	  $('.membershipno-cls').tooltip()
-	})
-	
+	$('.membershipno-cls').tooltip();
 	getNtrTrustStudentDetailsInstitutionWise("family");
  }
+ //Grievance  CANDIDATE//
  
- <!--Grievance  CANDIDATE-->
- 
-function getTotalComplaintsForCandidate()
-{//9999
+function getTotalComplaintsForCandidate(){
     $("#complaintCountDiv").html('');
 	$("#financialDiv").html('');
 	$("#complaintsDiv").html('');
@@ -1743,57 +1324,52 @@ function getTotalComplaintsForCandidate()
 	$("#candidateApprovedAmount").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
 	$("#candidateDeathInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
 	$("#candidateHospitalizationInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
-var votercardNo = $('#cadreVoterCardNo').val();
-var membershipId = $('#cadreMemberShipId').val();
-var arr =[];
+	var votercardNo = $('#cadreVoterCardNo').val();
+	var membershipId = $('#cadreMemberShipId').val();
+	var arr =[];
 
-$("#complaintCountImg").show();
+	$("#complaintCountImg").show();
 
-var obj = {
-	"voterId":votercardNo,
-	"membershipId" :membershipId,
-	"name":"",
-	"relation":""
-}
+	var obj = {
+		"voterId":votercardNo,
+		"membershipId" :membershipId,
+		"name":"",
+		"relation":""
+	}
 
-arr.push(obj);
-
-var url = window.location.href;
-var wurl = url.substr(0,(url.indexOf(".com")+4));
-
-	$.ajax({
-			type : "POST",
-			url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-			//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
-			  data: JSON.stringify(arr),
-			 contentType: "application/json; charset=utf-8",
-			 dataType: "json",
-			 username: "grievance",
-             password: "grievance@!tG"	
-			 }).done(function(myresult){
-				$("#candidateapprovedDiv").hide();
-				$("#candidatedeathDiv").hide();
-				$("#candidatehospitalDiv").hide();
-				$("#candidaterequestedDiv").hide();
-				$("#complaintCountImg").hide();
-				if(myresult != null && myresult !=""){
-					buildTotalComplaints(myresult,0);
-					buildInsuranceTotalComplaints(myresult,0);
-				}
-			/* else{
-				
-				$("#comaplaintCountInmgMainDivid").html("No Data Available.");
-				//$("#complaintCountDiv").html('No Data Available.');
-				//$("#complaintsDiv").html('No Data Available.');
-				
-			} */
-			});
-}
-
-
-function buildTotalComplaints(result,complaintId)
+	arr.push(obj);
+	var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+		$.ajax({
+				type : "POST",
+				url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				//url: "http://localhost:8080/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
+				  data: JSON.stringify(arr),
+				 contentType: "application/json; charset=utf-8",
+				 dataType: "json",
+				 username: "grievance",
+				 password: "grievance@!tG"	
+				 }).done(function(myresult){
+					$("#candidateapprovedDiv").hide();
+					$("#candidatedeathDiv").hide();
+					$("#candidatehospitalDiv").hide();
+					$("#candidaterequestedDiv").hide();
+					$("#complaintCountImg").hide();
+					if(myresult != null && myresult !=""){
+						buildTotalComplaints(myresult,0);
+						buildInsuranceTotalComplaints(myresult,0);
+					}
+				/* else{
+					
+					$("#comaplaintCountInmgMainDivid").html("No Data Available.");
+					//$("#complaintCountDiv").html('No Data Available.');
+					//$("#complaintsDiv").html('No Data Available.');
+					
+				} */
+				});
+	}
+	function buildTotalComplaints(result,complaintId)
 {
-
 	var str = '';
 	str += '<ul class="list-inline">';
 	
@@ -1801,37 +1377,28 @@ function buildTotalComplaints(result,complaintId)
 	str += '<li style="margin-top:5px">';
 	str += '<ul class="display-style pull-right graph-list count-list">';
 	for(var i in result[0].subList){
-		
-	if(result[0].subList[i].count  > 0)
-	{
-	var color=getColorCodeByStatus(result[0].subList[i].status);
-	
-	str += '<li><span style="background-color:'+color+';height:11px;width:11px;display:inline-block;margin-right:4px"></span><span class="approved-text">'+result[0].subList[i].status.toUpperCase()+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
-	}
+		if(result[0].subList[i].count  > 0){
+		var color=getColorCodeByStatus(result[0].subList[i].status);
+			str += '<li><span style="background-color:'+color+';height:11px;width:11px;display:inline-block;margin-right:4px"></span><span class="approved-text">'+result[0].subList[i].status.toUpperCase()+'<span class="pull-right">'+result[0].subList[i].count+'</span></span></li>';
+		}
 	}
 	str += '</ul>';
 	str += '</li>';
 	str += '</ul>';
 	$("#complaintCountDiv").html(str);
-	
 	var comp1='';
 	if(result[0].amountVO != null){
 	if(result[0].amountVO.cmRefiedFund == null)
 	result[0].amountVO.cmRefiedFund =0;
 	if(result[0].amountVO.partyFund == null)
 	result[0].amountVO.partyFund =0;
-	if(result[0].amountVO.requested > 0)
-	{
+	if(result[0].amountVO.requested > 0){
 		$("#candidaterequestedDiv").show();
 		$("#candidateRequestAmount").html(''+result[0].amountVO.requested+'/-');
-   }
-		if(result[0].amountVO.approved  >0)
-		{
+	}if(result[0].amountVO.approved  >0){
 		$("#candidateApprovedAmount").html(''+result[0].amountVO.approved+'/-');
 		$("#candidateapprovedDiv").show();
-		}
-		else
-		{
+		}else{
 		$("#candidateapprovedDiv").hide();
 		}
 	}
@@ -1849,17 +1416,14 @@ function buildTotalComplaints(result,complaintId)
 			 comp += '<p class="m_0">'+result[0].voList[j].raisedDate+'</p>';
 			 comp += '</li>';
 		}
-		 
-   }
+	 }
    
    for(var j in result[0].voList){
 		if(result[0].voList[j].complaintId != complaintId){
 		var color = getColorCodeByStatus(result[0].voList[j].status);
 			comp += '<li style="background:'+color+';border-left:4px solid '+color+'" ';
-			
 			comp += '<p class="m_0">C ID - '+result[0].voList[j].complaintId+'</p>';
 			comp += '<p class="m_0">'+result[0].voList[j].subject+'</p>';
-			
 			comp += '<p class="m_0">Status - <span class="textTransFormCls">'+result[0].voList[j].status+'</span></p>';
 			if(result[0].voList[j].raisedDate != null)
 			 comp += '<p class="m_0">'+result[0].voList[j].raisedDate+'</p>';
@@ -1870,77 +1434,66 @@ function buildTotalComplaints(result,complaintId)
 	comp += '</ul>';
 	 if(result[0].count == 0)
 	$("#complaintCountDiv").html('No Data Available.');
-	
-    $("#complaintsDiv").html(comp);
+	$("#complaintsDiv").html(comp);
 	$(".custom-scroll-ins").mCustomScrollbar();
 }
-
 function buildInsuranceTotalComplaints(result,complaintId)
 {
-
 	 var hosReq = 0;
 	 var deathReq=0;
 	 for(var j in result[1].voList){
-				if(result[1].voList[j].issueType == 'Hospitalization')
-				{
-				hosReq = 1 +hosReq;
-				}
-				if(result[1].voList[j].issueType == 'Death')
-				{
-					deathReq = 1 +deathReq;
-				}
-			}
-	
+		if(result[1].voList[j].issueType == 'Hospitalization'){
+			hosReq = 1 +hosReq;
+		}if(result[1].voList[j].issueType == 'Death'){
+			deathReq = 1 +deathReq;
+		}
+	}
 	var str ='';
 	str+=''+deathReq+'';
-	if(deathReq > 0)
-	{
-	str+='<ul class="hoverclassul">';
-	 for(var j in result[1].voList){
-	 if(result[1].voList[j].issueType == 'Death'){
-	str+='<li>';
-	str+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
-	str+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
-	str+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
-	str+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
-	str+='</li>';
-	}
-	}
-	str+='</ul>';
-	$("#candidateDeathInsurance").html(str);
-	$("#candidatedeathDiv").show();
+	if(deathReq > 0){
+		str+='<ul class="hoverclassul">';
+		 for(var j in result[1].voList){
+			 if(result[1].voList[j].issueType == 'Death'){
+					str+='<li>';
+					str+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
+					str+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
+					str+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
+					str+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
+					str+='</li>';
+				}
+			}
+		str+='</ul>';
+		$("#candidateDeathInsurance").html(str);
+		$("#candidatedeathDiv").show();
 	}
 	else{
 	$("#candidatedeathDiv").hide();
 	}
 	var str1 ='';
 	str1+=''+hosReq+'';
-	if(hosReq > 0)
-	{
+	if(hosReq > 0){
 	str1+='<ul class="hoverclassul">';
-	 for(var j in result[1].voList){
-	 if(result[1].voList[j].issueType == 'Hospitalization'){
-	str1+='<li>';
-	str1+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
-	str1+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
-	str1+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
-	str1+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
-	str1+='</li>';
-	}
-	}
-	str1+='</ul>';
-	$("#candidateHospitalizationInsurance").html(str1);
-	$("#candidatehospitalDiv").show();
+		 for(var j in result[1].voList){
+			 if(result[1].voList[j].issueType == 'Hospitalization'){
+				str1+='<li>';
+				str1+='<p class="m_0" >C ID -'+result[1].voList[j].complaintId+'</p>';
+				str1+='<p class="m_0">'+result[1].voList[j].subject+'</p>';
+				str1+='<p class="m_0">Status - '+result[1].voList[j].status +'</p>';
+				str1+='<p class="m_0"> '+result[1].voList[j].raisedDate+'</p>';
+				str1+='</li>';
+			}
+		}
+			str1+='</ul>';
+			$("#candidateHospitalizationInsurance").html(str1);
+			$("#candidatehospitalDiv").show();
 	}
 	else{
 	$("#candidatehospitalDiv").hide();
 	}
-	
 }
+//end//
 
-<!--end-->
- //Grievance Family 
- var familyInfoArr =new Array();
+var familyInfoArr =new Array();
 function getMemberComplaints()
 {
   $("#familyDeathInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
@@ -1968,29 +1521,24 @@ function getMemberComplaints()
 					buildFamilyMemberComplaint(myresult);
 					buildInsuranceFamilyMemberComplaint(myresult);
 				}
-					else{
-			   $("#familyMemberDiv").html("<div style='text-align:center;padding:10px'>NO DATA AVAILABLE </div>");
-			
-			}
+				else{
+					$("#familyMemberDiv").html("<div style='text-align:center;padding:10px'>NO DATA AVAILABLE </div>");
+				}
 			});
-
 }
-function buildFamilyMemberComplaint(result,jobj)
-{
-
+function buildFamilyMemberComplaint(result,jobj){
 	 var flag = false;
  try{
 	 var cnt = 0;
-
 	if(result!=null && result.length>0){
-	for(var j in result[0].subList){
-	  if(result[0].subList[j].subList != null && result[0].subList[j].subList.length > 0)
-	  {
-	  for(var k in result[0].subList[j].subList)
-				{
-				cnt  = cnt + 1;
-		  }
-	 }
+		for(var j in result[0].subList){
+		  if(result[0].subList[j].subList != null && result[0].subList[j].subList.length > 0)
+		  {
+		  for(var k in result[0].subList[j].subList)
+					{
+					cnt  = cnt + 1;
+			  }
+		 }
 	}		  
 	var comp = '';
 	if(result[0].amountVO != null){
@@ -2007,11 +1555,10 @@ function buildFamilyMemberComplaint(result,jobj)
 	//comp+='<h5 class="m_0">TOTAL APPROVED :'+result[0].amountVO.approved+'/-</h5>';
 	//comp+='<p class="m_0">Party Support '+result[0].amountVO.partyMembsCount+' ['+result[0].amountVO.partyFund+'/-]</p>';
   //comp+='<p class="m_0">Govt Support '+result[0].amountVO.cmReliefMembsCount+' ['+result[0].amountVO.cmRefiedFund+'/-]</p>';
-   if(result[0].amountVO.requested > 0 )
-   {
+   if(result[0].amountVO.requested > 0 ){
 	$("#familyrequestedDiv").show();
 	$("#familyRequestAmount").html(''+result[0].amountVO.requested+'/-');
-   }
+	}
 	$("#familyapprovedDiv").show();
 	$("#familyApprovedAmount").html(''+result[0].amountVO.approved+'/-');
 	}
@@ -2023,7 +1570,6 @@ function buildFamilyMemberComplaint(result,jobj)
 	//comp+='</div>';
 	//comp+='</div>';
 	//comp += '<div class="panel-group m_0" id="accordion155" role="tablist" aria-multiselectable="true">';
-	
 	 for(var j in result[0].subList){
 	  if(result[0].subList[j].subList != null && result[0].subList[j].subList.length > 0)
 			{ 
@@ -2090,26 +1636,20 @@ function buildFamilyMemberComplaint(result,jobj)
  }catch(e){}
  $(".custom-scroll-ins").mCustomScrollbar();
 }
-
-
 function buildInsuranceFamilyMemberComplaint(result)
 {
-	  var hosReq = 0;
-	 var deathReq=0;
+	    var hosReq = 0;
+		var deathReq=0;
 	for(var j in result[1].subList){
-	  if(result[1].subList[j].subList != null && result[1].subList[j].subList.length > 0)
-			{ 
-			for(var k in result[1].subList[j].subList)
-				{
-				if(result[1].subList[j].subList[k].issueType == 'Hospitalization')
-				{
-				hosReq = 1 +hosReq;
-				}
-			if(result[1].subList[j].subList[k].issueType == 'Death')
-				{
-				deathReq = 1 +deathReq;
-				}
-		   }  
+	  if(result[1].subList[j].subList != null && result[1].subList[j].subList.length > 0){ 
+		for(var k in result[1].subList[j].subList){
+					if(result[1].subList[j].subList[k].issueType == 'Hospitalization'){
+						hosReq = 1 +hosReq;
+					}
+				if(result[1].subList[j].subList[k].issueType == 'Death'){
+					deathReq = 1 +deathReq;
+					}
+			}  
 		}
 	} 
 	var str = '';
@@ -2144,8 +1684,6 @@ function buildInsuranceFamilyMemberComplaint(result)
 	$("#familydeathDiv").hide();
 	}
 	
-	
-	
 	var str1 = '';
 	str1+=''+hosReq+'';
 	if(hosReq > 0)
@@ -2176,13 +1714,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 	{
 	$("#familyhospitalDiv").hide();
 	}
-	
-	
-	
-	
 }
- // end
- 
  function getElectionPerformanceInCadreLocation()
  {
 			
@@ -2198,8 +1730,7 @@ function buildInsuranceFamilyMemberComplaint(result)
 			  else
 				$(".electionPerformanceDiv").html("No Data Available");
 			});
-			
-}
+	}
 
 function buildElectionPerformanceInCadreLocation(result)
 {
@@ -2274,35 +1805,29 @@ function buildElectionPerformanceInCadreLocation(result)
 	$(".electionPerformanceDiv").html(str);
 	$('.fulCircleCls1').circliful();
 }
-
 // Financial
 var financialColorArr = [];
 var typearr = ['EDP','CM Relief Fund','Educational','Financial Support','Personal'];
 function setcolorsForFinancialchart()
 	{
-		
-		financialColorArr = new Array();
+	financialColorArr = new Array();
 		var colorStatic = new Array('#D64D54','#66CDCC','#00B17D','#663300','#4169E1','#1771D7');
 		
 		var colorCount = 0;
 		
 		for(var i in typearr)
 		{
-		 
-				var obj = {
+		 		var obj = {
 				 type : typearr[i],
 				 color : colorStatic[colorCount]
 				}
 				financialColorArr.push(obj)
-			  
-				if(colorCount == (colorStatic.length)-1)
+			  if(colorCount == (colorStatic.length)-1)
 				colorCount = 0;
 				 colorCount++;
 		}
-		
 		return financialColorArr;
 	}
-
 	function getColorCodeByType(type)
 	{
 
@@ -2315,8 +1840,8 @@ function setcolorsForFinancialchart()
 			}
 		}
 	}
-
-function getApprovedFinancialSupprotForCadre()
+	
+	function getApprovedFinancialSupprotForCadre()
 {
 	setcolorsForFinancialchart();
 	$.ajax({
@@ -2333,7 +1858,6 @@ function getApprovedFinancialSupprotForCadre()
 		  buildApprovedFinancialSupprotForCadre(result);
 	  else
 		$("#donutchart2").html("No Data Available."); 
-		
 	});
 }
 
@@ -2416,27 +1940,6 @@ function buildApprovedFinancialSupprotForCadre(result)
 	
 	
 }
-	$(document).click(function() {
-		$('.survey-hover').hide();
-	});
-	$(document).on("click",".survey-drop",function(){
-		$('.survey-hover').hide();
-		$(this).parent().find('.survey-hover').show();
-		e.stopPropagation(); 
-	});
-	
-
-/* getTotalMemberShipRegistrationsInCadreLocation();		
-getCadreFamilyDetailsByCadreId();
-getElectionPerformanceInCadreLocation();
-getApprovedFinancialSupprotForCadre(); */
-
-//News
-//getCandidateAndLocationSummaryNews();
-$(document).on("click",".newsRadioCls",function(){
-	getCandidateAndLocationSummaryNews();
-});
-
 function getCandidateAndLocationSummaryNews(){
 	//rebuilding the blocks
 	$("#candidateCategoryWiseNewsId").html("");
@@ -2484,8 +1987,6 @@ function getCandidateAndLocationSummaryNews(){
 			var endArray=toDate.split("/");
 			endDate=endArray[1]+"-"+endArray[0]+"-"+endArray[2];
 		}
-
-		//3424,47,"09-06-2015";,"15-07-2015";
 		if(globalCandidateId ==undefined || globalCandidateId ==null){
 			globalCandidateId=0;
 		}
@@ -2497,9 +1998,6 @@ function getCandidateAndLocationSummaryNews(){
 		
 		startDate=startDate;
 		endDate=endDate;
-		
-		//alert(startDate);
-		//alert(endDate);
 		
 		var url = window.location.href;
 		var wurl = url.substr(0,(url.indexOf(".com")+4));
@@ -2569,7 +2067,6 @@ function getCandidateAndLocationSummaryNews(){
 				}else{
 					$("#issuesSummary").html("<center><h5>&nbsp No Data Available.</h5></center>");
 				}
-
 				if(result.locationSummary !=null){
 					$("#propertiesId").html("");
 					buildingPropertiesResult(result.locationSummary,startDate,endDate,locationId,locationType);
@@ -2581,7 +2078,6 @@ function getCandidateAndLocationSummaryNews(){
 		}
 	}); 
 }
-	
 	function buildingIssuesTable(result,startDate,endDate,locationId,locationType){
 		$("#issuesSummary").html("");
 		$("#issuesCount").html("");
@@ -2596,16 +2092,7 @@ function getCandidateAndLocationSummaryNews(){
 		}
 		$("#issuesSummary").html(str);
 	}
-	
-	/* $(document).on("click",".depCount",function(){
-		buildArticlesPage();
-	}); */
-	
-	/* function buildArticlesPage(){
-		var win = window.open('articleDetailsAction.action', '_blank');
-	} */
-	
-	function buildingPropertiesResult(result,startDate,endDate,locationId,locationType){
+function buildingPropertiesResult(result,startDate,endDate,locationId,locationType){
 		$("#propertiesId").html("");
 		var props = result.typeList;
 		var str = '';
@@ -2670,7 +2157,6 @@ function getCandidateAndLocationSummaryNews(){
 							}
 							
 						}
-                        
                         str+='</table>';
 						if(totalCheck){
 							$("#divId").show();
@@ -2782,20 +2268,6 @@ function getCandidateAndLocationSummaryNews(){
 		});
 	}
 	
-	$(document).on("click",".ranges li",function(){
-		if($(this).text() == "Custom"){
-			return;
-		}
-		if(globalDate == "meetingGlobal"){
-			getConductedPartyMeetingDetails('','','true');
-			globalDate="global";
-		}else{
-			getCandidateAndLocationSummaryNews();
-		}
-		
-		
-	});
-	
 	//Dont Delete the Below Content Please..
 	
 	 /* var jsObj={
@@ -2812,19 +2284,16 @@ function getCandidateAndLocationSummaryNews(){
 			}).done(function(result){
 				console.log(result);
 			}); */
-	
-function getCadreIdByMemberShipId()
-{
+			
+function getCadreIdByMemberShipId(){
 	$.ajax({
 		type : "POST",
 		url  : "getCadreIdByMembershipIdAction.action",
 		data : {membershipId:"38324292"}
-		
-	}).done(function(result){
-		//console.log(result);
-	});
-	
-}
+		}).done(function(result){
+			//console.log(result);
+		});
+	}
 
 function getCategoryWiseStatusCount()
 {
@@ -2844,8 +2313,6 @@ function getCategoryWiseStatusCount()
 		}
 	  else
 	   $("#totalComplaintsId").html("0");
-		  
-	  
 	});
 }
 
@@ -2860,7 +2327,6 @@ function categroyWiseChart(result)
 	  data.push(result[i].status,result[i].count);
 	  dataArr.push(data);
 	  colorsarr.push(result[i].color);
-		  
 	}
 
 	Highcharts.setOptions({
@@ -2947,33 +2413,28 @@ function buildCategroyInfo(result)
 	$("#complaintStatusUL").html(str);
 	
 }
-
-
 var membershipId = '${memberShipId}';
-var constituencyId = '${constituencyId}';
-if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0))
-{
+	var constituencyId = '${constituencyId}';
+	if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
 		getCadreIdByMemberShipId();
-}
-else 
-{
-	getParticipatedConstituencyId(globalCadreId);
-	/* getCategoryWiseStatusCount();
-	getTotalMemberShipRegistrationsInCadreLocation();		
-	
-	getElectionPerformanceInCadreLocation();
-	getApprovedFinancialSupprotForCadre();
-	cadreFormalDetailedInformation(globalCadreId);
-	getEventDetailsOfCadre(globalCadreId);
-	//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
-	getLocationwiseCommitteesCount();
-	getPartyMeetingsOverViewForCadre();
-	getEventsOverviewFortdpCadre(); */
+	}
+	else 
+	{
+		getParticipatedConstituencyId(globalCadreId);
+		/* getCategoryWiseStatusCount();
+		getTotalMemberShipRegistrationsInCadreLocation();		
 		
-}
-function getCadreIdByMemberShipId()
-{
-
+		getElectionPerformanceInCadreLocation();
+		getApprovedFinancialSupprotForCadre();
+		cadreFormalDetailedInformation(globalCadreId);
+		getEventDetailsOfCadre(globalCadreId);
+		//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+		getLocationwiseCommitteesCount();
+		getPartyMeetingsOverViewForCadre();
+		getEventsOverviewFortdpCadre(); */
+			
+	}
+function getCadreIdByMemberShipId(){
 	$.ajax({
 		type : "POST",
 		url  : "getCadreIdByMembershipIdAction.action",
@@ -2981,14 +2442,9 @@ function getCadreIdByMemberShipId()
 		
 	}).done(function(result){
 		//console.log(result);
-		if(result != null)
-		{
+		if(result != null){
 			globalCadreId = result;
-			
-
-			if((participatedConstituencyId == null || participatedConstituencyId == 0) && (globalCadreId != null && globalCadreId > 0))
-			{
-			
+			if((participatedConstituencyId == null || participatedConstituencyId == 0) && (globalCadreId != null && globalCadreId > 0)){
 				getParticipatedConstituencyId(globalCadreId);
 				/* getCategoryWiseStatusCount();
 				getTotalMemberShipRegistrationsInCadreLocation();		
@@ -3017,12 +2473,9 @@ function getCadreIdByMemberShipId()
 				getActivityDetails();
 			}
 		}
-		
-		
-	});
-	
-}
 
+	});
+}
 function getLocationwiseCommitteesCount()
 {
 	var locationId=0;
@@ -3121,83 +2574,6 @@ function buildLocationwiseCommitteesCount(result)
 	str += '</table>';
 	$("#committeesCountDiv").html(str);
 }
-
-
-$('.committeeLocCls').click(function(){
-    getLocationwiseCommitteesCount();
-  });
-
-//getCadreIdByMemberShipId();
-//getCategoryWiseStatusCount();
-
-$(document).on("click",".candidateRedirectedCls",function(){
-	var candidateId=$(this).attr("attr_candidateId");;
-	var categoryId=$(this).attr("attr_categoryId");
-	var benefitId=$(this).attr("attr_benefitId");
-	var fromDate=$(this).attr("attr_fromDate");
-	var toDate=$(this).attr("attr_toDate");
-	var articlesCount=$(this).attr("attr_count");
-	var type="candidate";
-	
-	var win = window.open('articleDetailsAction.action?cid='+candidateId+'&caid='+categoryId+'&bfid='+benefitId+'&fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&atCnt='+articlesCount+'', '_blank');
-});
-
-$(document).on("click",".departmentNewsCls",function(){
-	var fromDate=$(this).attr("attr_fromDate");
-	var toDate=$(this).attr("attr_toDate");
-	var departmentId=$(this).attr("attr_departmentId");
-	var locationId=$(this).attr("attr_locationId");
-	var locationType=$(this).attr("attr_locationType");
-	var articlesCount=$(this).attr("attr_count");
-	var type="department";
-	
-	var win = window.open('articleDetailsAction.action?did='+departmentId+'&fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&lid='+locationId+'&ltp='+locationType+'&atCnt='+articlesCount+'', '_blank');
-	
-});
-
-$(document).on("click",".analysisNewsCls",function(){
-	var fromDate=$(this).attr("attr_fromDate");
-	var toDate=$(this).attr("attr_toDate");
-	var benefitId=$(this).attr("attr_benefitId");
-	var locationId=$(this).attr("attr_locationId");
-	var partyId=$(this).attr("attr_partyId");
-	var propertyId=$(this).attr("attr_propertyId");
-	var propertyType=$(this).attr("attr_propertyType");
-	var articlesCount=$(this).attr("attr_count");
-	var locationType=$(this).attr("attr_locationType");
-	var type="location"; 
-
-	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&bfid='+benefitId+'&lid='+locationId+'&ltp='+locationType+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
-});
-
-$(document).on("click",".actionReactionNewsCls",function(){
-	var fromDate=$(this).attr("attr_fromDate");
-	var toDate=$(this).attr("attr_toDate");
-	var locationId=$(this).attr("attr_locationId");
-	var partyId=$(this).attr("attr_partyId");
-	var propertyId=$(this).attr("attr_propertyId");
-	var secondaryPartyId=$(this).attr("attr_secondaryPartyId");
-	var propertyType=$(this).attr("attr_propertyType");
-	var articlesCount=$(this).attr("attr_count");
-	var locationType=$(this).attr("attr_locationType");
-	var type="location";
-	
-	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&scpid='+secondaryPartyId+'&ltp='+locationType+'&lid='+locationId+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
-});
-
-$(document).on("click",".summaryNewsCls",function(){
-	var fromDate=$(this).attr("attr_fromDate");
-	var toDate=$(this).attr("attr_toDate");
-	var locationId=$(this).attr("attr_locationId");
-	var partyId=$(this).attr("attr_partyId");
-	var propertyId=$(this).attr("attr_propertyId");
-	var propertyType=$(this).attr("attr_propertyType");
-	var articlesCount=$(this).attr("attr_count");
-	var locationType=$(this).attr("attr_locationType");
-	var type="location"; 
-
-	var win = window.open('articleDetailsAction.action?fdt='+fromDate+'&tdt='+toDate+'&typ='+type+'&lid='+locationId+'&ltp='+locationType+'&ptid='+partyId+'&prid='+propertyId+'&pttp='+propertyType+'&atCnt='+articlesCount+'','_blank');
-});
 
 var globalCandidateResult;	
  function getCheckCandidateExits(){
@@ -3341,193 +2717,7 @@ function getDeathsAndHospitalizationDetails(){
 			$("#deathHospitalDivId").html(str);
 		});
 }
-
-
-$(document).on("click",".deathDetailsCls",function(){
-	var locationId=$(this).attr("attr_locationId");
-	var locationType=$(this).attr("attr_locationType");
-	var insuranceTypeId=$(this).attr("attr_insuranceTypeId");
-	var insuranceType=$(this).attr("attr_insuranceType");
 	
-	getCadresDetailsOfDeathsAndHospitalization(locationId,locationType,insuranceTypeId,insuranceType);
-});
-
-function getCadresDetailsOfDeathsAndHospitalization(locationId,locationType,insuranceTypeId,insuranceType){
-	
-	$("#deathTitleId").html('');
-	$("#popupForDeathDetails").html('');
-	
-	$("#dataLoadingsImgForDeathPopUp").show();
-	
-	var jsObj={
-		locationId:locationId,
-		locationType:locationType,
-		insuranceTypeId:insuranceTypeId
-		
-	}
-	
-	$.ajax({
-			type:'POST',
-			 url: 'getCadresDetailsOfDeathsAndHospitalizationAction.action',
-			 data : {task:JSON.stringify(jsObj)} ,
-			}).done(function(result){
-				
-				$("#dataLoadingsImgForDeathPopUp").hide();
-				
-				$("#deathTitleId").html("<div style='color:green;'>"+insuranceType+" Cadres Details</div>");
-				if(result !=null){
-						if(result.knownList !=null && result.knownList.length>0){
-							buildingAllCadresDetails(result.knownList);
-						}
-						else{
-							$("#popupForDeathDetails").html("No Data Available.");
-						}
-					}
-				else{
-					$("#popupForDeathDetails").html("Problem occured.Please contact admin.");
-				}
-			});
-}
-/* function buildingAllCadresDetails(result){
-	var str='';
-	for(var i in result){
-			
-			str+='<div class="media " style="border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].cadreId+'>';
-				str+='<span href="#" class="media-left">';
-				str+='<img style="width: 64px; height: 64px;" src="'+result[i].imagePath+'" />';
-				str+='</span>';
-				str+='<div class="media-body">';
-				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].name+' ; ';				
-				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
-				str+='<ul class="list-inline">';
-				str+='<li>Age:'+result[i].age+';</li>';
-				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
-				str+='<li>Caste: '+result[i].casteName+'</li>';
-				str+='<li>Voter ID: '+result[i].voterIdCardNo+'</li>';
-				str+='<li>MemberShip No: '+result[i].membershipNo+'</li>';
-				str+='<li>Registered On: '+result[i].registeredOn+'</li>';
-				str+='<li>Occupation: '+result[i].occupation+'</li>';
-				str+='</ul>';
-				 
-				str+='</div>';
-				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
-				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].cadreId+' attr_membership_id='+result[i].membershipNo+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"/></div>';
-				</c:if>
-			str+='</div>';
-			
-		}
-		$("#popupForDeathDetails").html(str);
-		$('.table-scroll-1').scrollator({
-			custom_class: 'table-scroll-1',
-		});
-	
-} */
-$(document).on("click",".cadreDetailsCls",function(){
-		var cadreId=$(this).attr("attr_cadre_id");
-		var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+cadreId+'','_blank');
-	});
-
-function hideAndShowCommittee(typeId)
-{
-	if(typeId == 1)
-	{
-		if(participatedConstituencyType !=null && participatedConstituencyType !="" && participatedConstituencyType !=undefined){
-			$(".urbanClass").hide();
-		}else{
-			if(globalAreaType == "URBAN"){
-				$(".urbanClass").hide();
-			}
-			else{
-				$(".urbanClass").show();
-			}
-		}
-			$('#committeesDivId').show();
-			$('#showId').hide();
-			$('#hideId').show();
-		
-	}
-	else if(typeId == 2)
-	{
-		$('#committeesDivId').hide();
-		$('#showId').show();
-		$('#hideId').hide();
-	}
-}
-function hideAndShowSurvey(typeId)
-{	
-	if(typeId == 1)
-	{
-		getIVRDetails();
-		$('#surveyDetailsId').show();
-		$('#surveyshowId').hide();
-		$('#surveyhideId').show();
-	}
-	else if(typeId == 2)
-	{
-		$('#surveyDetailsId').hide();
-		$('#surveyshowId').show();
-		$('#surveyhideId').hide();
-	}
-}
-
-function hideAndShowIVRSurvey(typeId)
-{	
-	if(typeId == 1)
-	{
-		getIVRDetails();
-		$('#ivrsurveyDetailsId').show();
-		$('#ivrsurveyshowId').hide();
-		$('#ivrsurveyhideId').show();
-	}
-	else if(typeId == 2)
-	{
-		$('#ivrsurveyDetailsId').hide();
-		$('#ivrsurveyshowId').show();
-		$('#ivrsurveyhideId').hide();
-	}
-}
-
-function tableshidesandShow(divId,index)
-{
-
-	$('#topsurveyTable'+index+'').hide();
-	$('.topsurveyTable'+index+'').hide();
-	var styleStr = $('#'+divId+'').is(":visible")
-	if(styleStr)
-	{
-		$('#'+divId+'').hide();
-		$('.'+divId+'').hide();
-		$('.topsurveyTable'+index+'').show();
-	}
-	else
-	{
-		$('#'+divId+'').show();
-		$('.'+divId+'').show();
-		$('#topsurveyTable'+index+'').show();
-	}	
-}
-
-function newsHideAndShow(divId)
-{
-	$('.showbtnCls').hide();
-	$('.dateCls').hide();
-		var styleStr = $('#'+divId+'').is(":visible")
-		//console.log(styleStr);
-		if(styleStr)
-		{
-			$('#'+divId+'').hide();
-			$('.'+divId+'').hide();
-			$('.showbtnCls').show();
-			
-		}
-		else
-		{
-			$('#'+divId+'').show();
-			$('.'+divId+'').show();
-			$('.dateCls').show();
-		}	
-}
-
 function getPartyMeetingDetails()
 {
 	$('#partyMeetingDescDiv').html('');
@@ -3575,8 +2765,6 @@ function getPartyMeetingDetails()
 				}
 			});
 }
-
-
 function getPartyMeetingDetaildReprt()
 {
 	$('#partyMetindetlsDivId').html('');
@@ -3724,6 +2912,8 @@ function getPartyMeetingDetaildReprt()
 				}
 			});
 }
+getPartyMeetingsOverViewForCadre();
+getEventsOverviewFortdpCadre();
 
 var absetPArtyMeetingsArr = new Array();
 function getPartyMeetingsOverViewForCadre()
@@ -3790,8 +2980,6 @@ function getPartyMeetingsOverViewForCadre()
 				}
 			});
 }
-
-
 function getEventsOverviewFortdpCadre()
 {
 	$('#eventInvitatinDiv').html('');
@@ -3837,12 +3025,7 @@ function getEventsOverviewFortdpCadre()
 				}
 			});
 }
-
-getPartyMeetingsOverViewForCadre();
-getEventsOverviewFortdpCadre();
-
-
-	function getNtrTrustStudentDetailsInstitutionWise(type){
+function getNtrTrustStudentDetailsInstitutionWise(type){
 		
 		$(".dataLoadingsImgForTabSection").show();
 		$("#cadreIdSpanForEducationBenefit").html("");
@@ -3909,8 +3092,8 @@ getEventsOverviewFortdpCadre();
 					}
 					
 			});
-	} 
-	function buildingStudentDetailsInstitutionWiseOfCadre(result,type){
+	}
+function buildingStudentDetailsInstitutionWiseOfCadre(result,type){
 		str='';
 		if(result !=null){
 			if(type =="cadre"){
@@ -3946,7 +3129,6 @@ getEventsOverviewFortdpCadre();
 			
 		}
 	}
-	
 	function buildingStudentDetailsInstitutionWiseOfFamily(result,type){
 		str='';
 		if(result !=null){
@@ -3983,34 +3165,7 @@ getEventsOverviewFortdpCadre();
 		}
 	}
 	
-	$(document).on("click",".showStudentBenefitModalcls",function(){
-		var title=$(this).attr("attr_title");
-		var type = $(this).attr("attr_type");
-			$(".modelTitleCls").html(title);
-			$("#modelForBenefitsId").modal("show");
-	});
-	
-	$(document).on("click",".showStudentBenefitModalclsFamily",function(){
-		var title=$(this).attr("attr_title");
-		var type = $(this).attr("attr_type");
-		$(".modelTitleClsFamily").html(title);
-		$("#modelForBenefitsFamilyId").modal("show");
-	});
-	
-	$(document).on("click",".ntrBenefitCountCls",function(){
-		var instituId=$(this).attr("attr_id");
-		var type=$(this).attr("attr_type");
-		getStudentFormalDetailsByCadre(instituId,type);
-	});
-	
-	$(document).on("click",".ntrBenefitCountClsFamily",function(){
-		var instituId=$(this).attr("attr_id");
-		var type=$(this).attr("attr_type");
-		getStudentFormalDetailsByCadre(instituId,type);
-	});
-	function getStudentFormalDetailsByCadre(institutionId,type){
-		
-		
+function getStudentFormalDetailsByCadre(institutionId,type){
 		if(type =="cadre"){
 			$(".NtrTrustStudentDivClass").html("");
 			$("#dataLoadingImageForModelSchoolCadre").show();
@@ -4197,8 +3352,7 @@ getEventsOverviewFortdpCadre();
 					}
 				});
 	}
-	
-	/* function buildNtrStudentDetails(result){
+/* function buildNtrStudentDetails(result){
 		var str='';
 			if(result !=null){
 				
@@ -4349,9 +3503,7 @@ getEventsOverviewFortdpCadre();
 		
 	}*/
 	
-	
-//getCandidateAndConstituencySurveyResult();
-var candiConstiSurveyCount = 0;
+	var candiConstiSurveyCount = 0;
 function getCandidateAndConstituencySurveyResult()
 {
 	$('.surveyDetailsCls').html("");
@@ -4386,7 +3538,6 @@ function getCandidateAndConstituencySurveyResult()
 		}
 	});
 }
-
 function getCandidateAndConstituencySurveyResultBySurvey(surveyId,divId){
 	var candidateId = globalCandidateId;
 	var constituencyId = 0;
@@ -4474,7 +3625,6 @@ function buildCandidateAndConstituencySurveyResult(result,surveyId,divId){
 		$('.surveyDetailsCls').html("NO DATA AVAILABLE");
 	}
 }
-
 function getIVRDetails()
 {
 	$("#ivrsurveyDataLoadoing").show();
@@ -4680,7 +3830,6 @@ function buildPublicScoreTable(myResult)
 	$("#ivrsurveyDataLoadoing").hide();
 	$(".ivrDetailsCls").html(str);
 }
-
 function getCategoryFeedBackAnswerForCadre(){
 $("#feedbackDivId").html("");
 	var jsObj ={
@@ -4775,7 +3924,6 @@ $("#feedbackDivId").html("");
 		$("#feedbackDivId").html(str);
 	});
 }
-
 getStatusCountOfCadreForInvitationAndAttendance();
 function getStatusCountOfCadreForInvitationAndAttendance(){
 	
@@ -4824,19 +3972,6 @@ function buiildingTrainigStatusDetailsOfCadre(result){
 	}
 	$("#trainingDetailsBodyId").html(str);
 }
-
-$(document).on("click",".detailsCls",function(){
-	
-	var programId = $(this).attr("attr_programId");
-	var cadreId = globalCadreId;
-	
-	$("#modelForTrainingDetails").show();
-	$("#dataLoadingsImgForTrainingDetails").show();
-	getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
-	getRemarkSOfCadreByCallPurpose(programId,cadreId);
-	getCategoryFeedBackAnswerForCadre();//call for feedback answer
-	
-});
 
 function getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId){
 	
@@ -4923,8 +4058,6 @@ function getRemarkSOfCadreByCallPurpose(programId,cadreId){
 		}
 	});
 }
-
-
 function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst)
 {
 	/*
@@ -5071,7 +4204,6 @@ $('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:5
 	
 	},1000);
 }
-
 function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 {
 		var str='';
@@ -5143,7 +4275,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 	$('#'+divId+'').html(str);
 	
 }
-	getIVRSummaryByTdpCadreId();
+getIVRSummaryByTdpCadreId();
 	function getIVRSummaryByTdpCadreId(){
 		$("#ivrSummaryajaxImg").html('<img alt="Processing Image" src="./images/icons/search.gif">');
 		var tdpCadreId='${param.cadreId}' ;
@@ -5199,7 +4331,7 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr)
 	getTotalIVRDetailsByTdpCadreId(0);
 	
 	});	
-
+	
 	function getTotalIVRDetailsByTdpCadreId(startIndex){
 		
 		$("#ivrDetailsdataLoding").html('<img alt="Processing Image" src="./images/icons/loading.gif" style="width: 35px; height: 35px;">');
