@@ -247,10 +247,10 @@ function getLevelWiseCount(levelId,level,aptUserId){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
 	console.log(result);
-	buildRoleWiseCount(result,level);
+	buildRoleWiseCount(result,level,jsObj);
 	});     
 }
-function buildRoleWiseCount(result,level){
+function buildRoleWiseCount(result,level,jsObj){
 	$("#roleWiseApptId").html("");
 	$("#mandalDivId").show();
 	 
@@ -282,12 +282,12 @@ function buildRoleWiseCount(result,level){
             str +='<tr>';
 		
 				str +='<td id='+result[i].roleId+'>'+result[i].role+'</td>';
-            str +='<td style="text-align:center">'+result[i].total+'</td>';
-            str +='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].uniqueRequestedCnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].scheduledCnt+'</td>';
-            str +='<td style="text-align:center">'+result[i].uniqueScheduledCnt+'</td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\');">'+result[i].total+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\');">'+result[i].uniquecnt+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\');">'+result[i].requestedCnt+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\');">'+result[i].uniqueRequestedCnt+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\');">'+result[i].scheduledCnt+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\');">'+result[i].uniqueScheduledCnt+'</a></td>';
 			str +=' </tr>';
 		   }
 			str +='</tbody>';
