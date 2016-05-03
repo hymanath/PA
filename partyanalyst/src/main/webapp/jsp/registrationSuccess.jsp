@@ -4,6 +4,7 @@
 <link href="dist/activity/css/bootstrap.min.css" rel="stylesheet"/>
 <script src="dist/activity/js/bootstrap.min.js" type="text/javascript"></script> 
  <link href="css/style.css" rel="stylesheet"/>
+ 
 </head>
 <body>
 <div id="statusDiv"></div>
@@ -13,7 +14,15 @@ var membershipNo = '${membershipNo}';
 var enrollMentNO = '${enrollMentNO}';
 var status = '${status}';
 
-showUploadStatus();		
+
+$(document).ready(function(){
+	$("#wrapper").hide();
+	$("#trigger").hide();
+	$("#loginId").hide();
+	showUploadStatus();
+});
+
+		
 function startSearchingPage(){
 	window.location.href="affiliatedCadreSearchAction.action";
 }
@@ -52,7 +61,20 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >New Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+		}
+		else if(regex.test('failure'))
+		{
+			str+= '<div class="container m_top10 text-center" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align"> Your Payment Transaction is failed </h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
+			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  > New Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
