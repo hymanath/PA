@@ -13045,8 +13045,12 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 				}
 			});
 			
+			status.setResultCode(0);
+			status.setMessage(IConstants.SUCCESS);
 		} catch (Exception e) {
 			LOG.error("error occured while generating payment gateway basic details in updatePaymentStatus() .");
+			status.setResultCode(1);
+			status.setMessage(IConstants.FAILURE);
 		}
 		return status;
 	}
