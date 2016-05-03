@@ -144,10 +144,11 @@ public class AppointmentCandidateRelationDAO extends GenericDaoHibernate<Appoint
 		Query query = getSession().createQuery("" +
 		 " select  model.appointment.appointmentId ," +
 		 "          appointmentCandidate.appointmentCandidateId,appointmentCandidate.name,appointmentCandidate.tdpCadreId," +
-		 "         appointmentCandidate.mobileNo,appointmentCandidate.candidateDesignation.designation," +
+		 "         appointmentCandidate.mobileNo,candidateDesignation.designation," +
 		 "         constituency.name,appointmentCandidate.imageURL,appointmentCandidate.appointmentCandidateTypeId " +
 		 " from    AppointmentCandidateRelation model " +
-		 " LEFT JOIN model.appointmentCandidate appointmentCandidate " +
+		 " LEFT JOIN model.appointmentCandidate appointmentCandidate" +
+		 " LEFT JOIN appointmentCandidate.candidateDesignation candidateDesignation " +
 		 " LEFT JOIN appointmentCandidate.userAddress userAddress" +
 		 " LEFT JOIN userAddress.constituency constituency " +
 		 " where   model.appointment.isDeleted = 'N' and model.appointment.appointmentId in (:appointmentIds)");
