@@ -151,21 +151,20 @@ function buildVoterDetails(result){
 				//str+='<img style="width: 64px; height: 64px;" src="images/Member_thamb_image.png" />';
 				//str+='</span>';
 				str+='<div class="media-body">';
-				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].voterName+'';	
-				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+'  ';
-				if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
-					str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;"> Already Registered </span>';
-				else
-					str+='  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button>';
-				str+='</h5>';
-				str+='<ul class="list-inline">';
+				str+='<div class="row">';
+				str+='<div class="col-md-8">';
+				str+='<ul class="list-inline" style="margin-bottom:0px">';
+					str+='<li><b> Name:</b> '+result[i].voterName+'</li>';
+					str+='<li><b> Relative Name: </b>'+result[i].relativeName+' </li>';
+				str+='</ul>';
+				str+='<ul class="list-inline"  style="margin-bottom:0px">';
 				str+='<li>Age:'+result[i].age+'</li>';	
 				str+='<li>Gender: '+result[i].gender+'</li>';
 				if(result[i].mobileNo != null && result[i].mobileNo.length > 0)
 					str+='<li>Mobile No:'+result[i].mobileNo+'</span></li>';
 				str+='<li>Voter ID: '+result[i].voterIDCardNo+'</li>';
 				str+='</ul>';
-				str+='<ul class="list-inline">';
+				str+='<ul class="list-inline"  style="margin-bottom:0px">';
 				str+='<li>District: '+result[i].districtName+'</li>';
 				str+='<li>Constituency: '+result[i].constituencyName+'</li>';
 				if(result[i].tehsilId > 0)
@@ -175,6 +174,15 @@ function buildVoterDetails(result){
 				
 				str+='</ul>';
 				
+				str+='</div>';
+				str+='<div class="col-md-2">';
+					if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
+						str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;"> Already Registered </span>';
+					else
+						str+='  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button>';
+					
+				str+='</div>';
+				str+='</div>';
 				str+='</div>';
 				str+='</div>';
 			}
