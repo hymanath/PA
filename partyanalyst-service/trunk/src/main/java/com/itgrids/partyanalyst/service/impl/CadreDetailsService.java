@@ -6027,6 +6027,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							surveyVo = new VerifierVO();
 							surveyVo.setId((Long)params[0]);
 							surveyVo.setName(params[1] != null ? params[1].toString() : "");
+							surveyVo.setAnswerType(params[10] != null ? params[10].toString() : "");
 							returnVo.getVerifierVOList().add(surveyVo);
 						}
 						
@@ -6038,21 +6039,23 @@ public class CadreDetailsService implements ICadreDetailsService{
 							questionVo = new VerifierVO();
 							questionVo.setId((Long)params[5]);
 							questionVo.setName(params[6] != null ? params[6].toString() : "");
-							questionVo.setAnswerType(params[10] != null ? params[10].toString() : "");
 							questionVo.setRound(params[3] != null ? params[3].toString() : "");
 							surveyVo.getVerifierVOList().add(questionVo);
 						}
 						
-						//Option List	
-						VerifierVO optionVo =  getMatchedVerifierVO(questionVo.getVerifierVOList(),(Long)params[7]);
-						if(optionVo == null)
+						//Option List
+						if(params[7] != null)
 						{
-							optionVo = new VerifierVO();
-							optionVo.setId((Long)params[7]);
-							optionVo.setName(params[8] != null ? params[8].toString() : "");
-							questionVo.setAnswerType(params[10] != null ? params[10].toString() : "");
-							questionVo.setRound(params[3] != null ? params[3].toString() : "");
-							questionVo.getVerifierVOList().add(optionVo);
+							VerifierVO optionVo =  getMatchedVerifierVO(questionVo.getVerifierVOList(),(Long)params[7]);
+							if(optionVo == null)
+							{
+								optionVo = new VerifierVO();
+								optionVo.setId((Long)params[7]);
+								optionVo.setName(params[8] != null ? params[8].toString() : "");
+								questionVo.setAnswerType(params[10] != null ? params[10].toString() : "");
+								questionVo.setRound(params[3] != null ? params[3].toString() : "");
+								questionVo.getVerifierVOList().add(optionVo);
+							}
 						}
 				}
 			}
