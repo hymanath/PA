@@ -101,7 +101,7 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 	}
 
 	//BUSINESS SERVICES
-	public List<AppointmentLocVO> getCandiCountsByLocations(String startDateStr,String endDateStr,Long appointmentUserId,String locType,Long stateId,List<Long> candiTypeIds,List<String> requestedTypes){
+public List<AppointmentLocVO> getCandiCountsByLocations(String startDateStr,String endDateStr,Long appointmentUserId,String locType,Long stateId,List<Long> candiTypeIds,List<String> requestedTypes){
 		
 		List<AppointmentLocVO> finalList = null; 
 		Map<Long,AppointmentLocVO> finalMap = null;		
@@ -117,6 +117,9 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 			if(endDateStr != null && endDateStr.trim().length() > 0){
 				endDate = sdf.parse(endDateStr);
 			}
+			
+			
+			//TOTAL RELATED.
 			
 			String totalQuery = getQuery(appointmentUserId,null,startDate,endDate,locType,stateId);
 			List<Object[]>  totalReqCountsList = appointmentCandidateRelationDAO.getTotalCountCandiByLocation(totalQuery,appointmentUserId,null,startDate,endDate);
@@ -146,19 +149,25 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 			}
 			
 			
-			List<Long>  scheduledList = Arrays.asList(IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST);
+			List<Long>  scheduledList = Arrays.asList(IConstants.APPOINTMENT_SCHEDULED_LIST);
 			String totalScheduledQuery = getQuery(appointmentUserId,scheduledList,startDate,endDate,locType,stateId);
 			List<Object[]>  totalScheduledCountsList = appointmentCandidateRelationDAO.getTotalCountCandiByLocation(totalScheduledQuery,appointmentUserId,scheduledList,startDate,endDate);
 			
-			List<Long>  waitingList = Arrays.asList(IConstants.APPOINTMENT_STATUS_WAITING_LIST);
+			List<Long>  waitingList = Arrays.asList(IConstants.APPOINTMENT_WAITING_LIST);
 			String totalWaitingQuery = getQuery(appointmentUserId,waitingList,startDate,endDate,locType,stateId);
 			List<Object[]>  totalWaitingCountsList = appointmentCandidateRelationDAO.getTotalCountCandiByLocation(totalWaitingQuery,appointmentUserId,waitingList,startDate,endDate);
 			
-			setTotalCountsToLocation(totalReqCountsList,finalMap,"requested");
-			setTotalCountsToLocation(totalScheduledCountsList,finalMap,"scheduled");
-			setTotalCountsToLocation(totalWaitingCountsList,finalMap,"waiting");
+			 //get first district to set the total counts.
+			 Map.Entry<Long,AppointmentLocVO> districts=finalMap.entrySet().iterator().next();
+			 AppointmentLocVO firstLocationVO = districts.getValue();
 			 
+			 
+			setTotalCountsToLocation(totalReqCountsList,finalMap,"requested",firstLocationVO);
+			setTotalCountsToLocation(totalScheduledCountsList,finalMap,"scheduled",firstLocationVO);
+			setTotalCountsToLocation(totalWaitingCountsList,finalMap,"waiting",firstLocationVO);
 			
+			
+			//FILTERED RELATED.
 			List<Object[]>  filterReqCountsList = null;
 			List<Object[]> filterScheduledCountsList = null;
 			List<Object[]> filterWaitingCountsList = null;
@@ -190,10 +199,9 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 					filterWaitingCountsList = appointmentCandidateRelationDAO.getCountsOfCandiByLocation(filterWaitingQuery,appointmentUserId,waitingList,startDate,endDate,candiTypeIds);
 				}
 			}
-			setFilteredCountsToLocation(filterReqCountsList,finalMap,"requested");
-			setFilteredCountsToLocation(filterScheduledCountsList,finalMap,"scheduled");
-			setFilteredCountsToLocation(filterWaitingCountsList,finalMap,"waiting");
-			
+			setFilteredCountsToLocation(filterReqCountsList,finalMap,"requested",firstLocationVO);
+			setFilteredCountsToLocation(filterScheduledCountsList,finalMap,"scheduled",firstLocationVO);
+			setFilteredCountsToLocation(filterWaitingCountsList,finalMap,"waiting",firstLocationVO);
 			
 			if(finalMap!=null && finalMap.size() >0){
 				for(Map.Entry<Long,AppointmentLocVO>  entry  :finalMap.entrySet()){
@@ -207,6 +215,7 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 				finalMap.clear();
 			}
 			
+			
 		}catch(Exception e) {
 			LOG.error("Exception raised at getCandiCountsByLocations() method of AppointmentReportDashBoardService", e);
 		}
@@ -214,24 +223,75 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 	}
 	
 
-	public void setFilteredCountsToLocation(List<Object[]> dataList,Map<Long,AppointmentLocVO> finalMap,String reqType){
+	public void setFilteredCountsToLocation(List<Object[]> dataList,Map<Long,AppointmentLocVO> finalMap,String reqType,AppointmentLocVO firstLocationVO){
+	try{
+		 if(dataList != null && dataList.size() >0){
+			 for(Object[] obj : dataList){
+				 
+				 Long locId = obj[0]!=null ?(Long)obj[0]:0l; 
+				 AppointmentLocVO locVO = finalMap.get(locId);
+				 
+				 Long candiTypeId = obj[2]!=null ?(Long)obj[2]:0l;
+				 if(locVO !=null && candiTypeId.longValue() > 0l)
+				 {  
+					 AppointmentLocVO candiVO = locVO.getSubMap().get(candiTypeId);
+					 if(candiVO!=null)
+					 {
+						 AppointmentLocVO typeVO = getMatchedRequestedType(candiVO.getSubList(),reqType);
+						 if(typeVO!=null)
+						 {
+							 typeVO.setCount(obj[3]!=null ?(Long)obj[3]:0l);
+							 typeVO.setUniqueCount(obj[4]!=null ?(Long)obj[4]:0l);
+						 }
+					 }
+					
+				 }
+				 
+				 //FOR TOTAL COUNTS
+				 if(firstLocationVO !=null && candiTypeId.longValue() > 0l)
+				 {  
+					 AppointmentLocVO candiVO = firstLocationVO.getSubMap().get(candiTypeId);
+					 if(candiVO!=null)
+					 {
+						 AppointmentLocVO typeVO = getMatchedRequestedType(candiVO.getSubList(),reqType);
+						 if(typeVO!=null)
+						 {
+							 typeVO.setTotalCount(  typeVO.getTotalCount() +  (obj[3]!=null ?(Long)obj[3]:0l) );
+							 typeVO.setTotalUniqueCount( typeVO.getTotalUniqueCount() + (obj[4]!=null ?(Long)obj[4]:0l) );
+						 }
+					 }
+					
+				 }
+				 
+			 }
+		 }
+		
+	}catch(Exception e){
+		LOG.error("Exception raised at setFilteredCountsToLocation() method of AppointmentReportDashBoardService", e);
+	}
+	
+	}
+	public void setTotalCountsToLocation(List<Object[]> dataList,Map<Long,AppointmentLocVO> finalMap,String reqType,AppointmentLocVO firstLocationVO){
 		try{
 			 if(dataList != null && dataList.size() >0){
 				 for(Object[] obj : dataList){
 					 
 					 Long locId = obj[0]!=null ?(Long)obj[0]:0l; 
 					 AppointmentLocVO locVO = finalMap.get(locId);
+					 
 					 if(locVO !=null){
-						 Long candiTypeId = obj[2]!=null ?(Long)obj[2]:0l;
-						 if(candiTypeId.longValue() > 0l){
-							 AppointmentLocVO candiVO = locVO.getSubMap().get(candiTypeId);
-							 if(candiVO!=null){
-								 AppointmentLocVO typeVO = getMatchedRequestedType(candiVO.getSubList(),reqType);
-								 if(typeVO!=null){
-									 typeVO.setCount(obj[3]!=null ?(Long)obj[3]:0l);
-									 typeVO.setUniqueCount(obj[4]!=null ?(Long)obj[4]:0l);
-								 }
-							 }
+						 
+						 AppointmentLocVO typeVO = getMatchedRequestedType(locVO.getTypeList(),reqType);
+						 if(typeVO !=null){
+							 typeVO.setCount(obj[2]!=null?(Long)obj[2]:0l);
+							 typeVO.setUniqueCount(obj[3]!=null?(Long)obj[3]:0l);
+						 }
+						 
+						 //FOR TOTAL COUNTS
+						 AppointmentLocVO firstLocationRequestStatusVO = getMatchedRequestedType(firstLocationVO.getTypeList(),reqType);
+						 if(firstLocationRequestStatusVO != null ){
+							 firstLocationRequestStatusVO.setTotalCount(firstLocationRequestStatusVO.getTotalCount() + (obj[2]!=null?(Long)obj[2]:0l));
+							 firstLocationRequestStatusVO.setTotalUniqueCount(firstLocationRequestStatusVO.getTotalUniqueCount()+(obj[3]!=null?(Long)obj[3]:0l));
 						 }
 						 
 					 }
@@ -239,31 +299,8 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 			 }
 			
 		}catch(Exception e){
-			LOG.error("Exception raised at setFilteredCountsToLocation() method of AppointmentReportDashBoardService", e);
-		}
-		
-	}
-	public void setTotalCountsToLocation(List<Object[]> dataList,Map<Long,AppointmentLocVO> finalMap,String reqType){
-		try{
-			 if(dataList != null && dataList.size() >0){
-				 for(Object[] obj : dataList){
-					 
-					 Long locId = obj[0]!=null ?(Long)obj[0]:0l; 
-					 AppointmentLocVO locVO = finalMap.get(locId);
-					 if(locVO !=null){
-						 AppointmentLocVO typeVO = getMatchedRequestedType(locVO.getTypeList(),reqType);
-						 if(typeVO !=null){
-							 typeVO.setCount(obj[2]!=null?(Long)obj[2]:0l);
-							 typeVO.setUniqueCount(obj[3]!=null?(Long)obj[3]:0l);
-						 }
-					 }
-				 }
-			 }
-			
-		}catch(Exception e){
 			LOG.error("Exception raised at setTotalCountsToLocation() method of AppointmentReportDashBoardService", e);
 		}
-		
 	}
 	public AppointmentLocVO getMatchedRequestedType(List<AppointmentLocVO> voList,String status){
 		if(voList != null && voList.size()>0){
@@ -339,67 +376,68 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 		LOG.error("Exception raised at getFilterdQueryByLocation() method of AppointmentReportDashBoardService", e);
 	}
 	return sq.toString();
-}
+  }
 	
 	
 	
 	public String getQuery(Long appointmentUserId,List<Long> apptStatusIds,Date startDate,Date endDate,String locType,Long stateId){
 		
-			StringBuilder sq = new StringBuilder();
-		try{
-			
-			StringBuilder sbS =  new StringBuilder();
-			sbS.append(" select ");
-			
-			StringBuilder sbM =  new StringBuilder();
-			sbM.append(" from   AppointmentCandidateRelation model " +
-					"    where  model.appointment.isDeleted='N' and model.appointment.appointmentUser.appointmenUserId =:appointmentUserId ");
-			
-			if(apptStatusIds!=null && apptStatusIds.size()>0){
-				sbM.append(" and model.appointment.appointmentStatusId in (:apptStatusIds)");
-			}
-			if(startDate!=null){
-				sbM.append(" and date(model.appointment.updatedTime) >= :startDate");
-			}
-			if(endDate!=null){
-				sbM.append(" and date(model.appointment.updatedTime) <= :endDate");
-			}
-			
-			StringBuilder sbE =  new StringBuilder();
-			if(locType != null && locType.equalsIgnoreCase("district")){
-				
-				sbS.append(" model.appointmentCandidate.userAddress.district.districtId,model.appointmentCandidate.userAddress.district.districtName ");
-				if( stateId != null && stateId > 0l){
-					if( stateId.longValue() == 1l ){
-						sbM.append(" and model.appointmentCandidate.userAddress.district.districtId between 11 and 23 ");
-					}else if(stateId.longValue() == 36l){
-						sbM.append(" and model.appointmentCandidate.userAddress.district.districtId between 1 and 10 ");
-					}
-				}
-				sbE.append(" group by model.appointmentCandidate.userAddress.district.districtId " +
-						   " order by model.appointmentCandidate.userAddress.district.districtName  ");
-				
-			}else if(locType != null && locType.equalsIgnoreCase("constituency")){
-				sbS.append(" model.appointmentCandidate.userAddress.constituency.constituencyId,model.appointmentCandidate.userAddress.constituency.name ");
-				if( stateId != null && stateId > 0l){
-					if( stateId.longValue() == 1l ){
-						sbM.append(" and model.appointmentCandidate.userAddress.constituency.district.districtId between 11 and 23 ");
-					}else if(stateId.longValue() == 36l){
-						sbM.append(" and model.appointmentCandidate.userAddress.constituency.district.districtId between 1 and 10 ");
-					}
-				}
-				sbE.append(" group by model.appointmentCandidate.userAddress.constituency.constituencyId " +
-						   " order by model.appointmentCandidate.userAddress.constituency.name ");
-			}
-			sbS.append(" ,count(model.appointmentCandidate.appointmentCandidateId),count(distinct model.appointmentCandidate.appointmentCandidateId)");
-			
-	        sq.append(sbS.toString()).append(sbM.toString()).append(sbE.toString());
-	        
-		}catch(Exception e) {
-			LOG.error("Exception raised at getQuery() method of AppointmentReportDashBoardService", e);
+		StringBuilder sq = new StringBuilder();
+	try{
+		
+		StringBuilder sbS =  new StringBuilder();
+		sbS.append(" select ");
+		
+		StringBuilder sbM =  new StringBuilder();
+		sbM.append(" from   AppointmentCandidateRelation model " +
+				"    where  model.appointment.isDeleted='N' and model.appointment.appointmentUser.appointmenUserId =:appointmentUserId ");
+		
+		if(apptStatusIds!=null && apptStatusIds.size()>0){
+			sbM.append(" and model.appointment.appointmentStatusId in (:apptStatusIds)");
 		}
-		return sq.toString();
+		if(startDate!=null){
+			sbM.append(" and date(model.appointment.updatedTime) >= :startDate");
+		}
+		if(endDate!=null){
+			sbM.append(" and date(model.appointment.updatedTime) <= :endDate");
+		}
+		
+		StringBuilder sbE =  new StringBuilder();
+		if(locType != null && locType.equalsIgnoreCase("district")){
+			
+			sbS.append(" model.appointmentCandidate.userAddress.district.districtId,model.appointmentCandidate.userAddress.district.districtName ");
+			if( stateId != null && stateId > 0l){
+				if( stateId.longValue() == 1l ){
+					sbM.append(" and model.appointmentCandidate.userAddress.district.districtId between 11 and 23 ");
+				}else if(stateId.longValue() == 36l){
+					sbM.append(" and model.appointmentCandidate.userAddress.district.districtId between 1 and 10 ");
+				}
+			}
+			sbE.append(" group by model.appointmentCandidate.userAddress.district.districtId " +
+					   " order by model.appointmentCandidate.userAddress.district.districtName  ");
+			
+		}else if(locType != null && locType.equalsIgnoreCase("constituency")){
+			sbS.append(" model.appointmentCandidate.userAddress.constituency.constituencyId,model.appointmentCandidate.userAddress.constituency.name ");
+			if( stateId != null && stateId > 0l){
+				if( stateId.longValue() == 1l ){
+					sbM.append(" and model.appointmentCandidate.userAddress.constituency.district.districtId between 11 and 23 ");
+				}else if(stateId.longValue() == 36l){
+					sbM.append(" and model.appointmentCandidate.userAddress.constituency.district.districtId between 1 and 10 ");
+				}
+			}
+			sbE.append(" group by model.appointmentCandidate.userAddress.constituency.constituencyId " +
+					   " order by model.appointmentCandidate.userAddress.constituency.name ");
+		}
+		sbS.append(" ,count(model.appointmentCandidate.appointmentCandidateId),count(distinct model.appointmentCandidate.appointmentCandidateId)");
+		
+        sq.append(sbS.toString()).append(sbM.toString()).append(sbE.toString());
+        
+	}catch(Exception e) {
+		//LOG.error("Exception raised at getQuery() method of AppointmentReportDashBoardService", e);
+		e.printStackTrace();
 	}
+	return sq.toString();
+  }
 	
 	public void preInstantiationLogic(List<Object[]>  dataList,Map<Long,AppointmentLocVO> finalMap,List<Object[]> candiTypes,List<String> requestedTypes,List<String> allRequestedTypes){
 		
@@ -602,11 +640,6 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 				   }
 			   }
 			   
-			   if(voterIds!=null && voterIds.size()>0){
-				   Map<Long,String> constMapForVoters = getConstituenciesByVoterIds(voterIds);
-				   setConstituenciesByVoterIds(finalVO.getSubList(),constMapForVoters);
-				}
-			   
 			   if(cadreIds!=null && cadreIds.size()>0){
 				   Map<Long,String> constMap = getConstituenciesforTdpcadreIds(cadreIds);
 				   setConstituencyforTdpCadreIds(finalVO.getSubList(),constMap);
@@ -620,7 +653,10 @@ public class AppointmentReportDashBoardService implements IAppointmentReportDash
 				if(publicRepresLocaMap!=null && publicRepresLocaMap.size()>0){
 					setConstituencyforTdpCadreIds(finalVO.getSubList(),publicRepresLocaMap);
 				}
-				
+				/*if(voterIds!=null && voterIds.size()>0){
+					 Map<Long,String> constMapForVoters = getConstituenciesByVoterIds(voterIds);
+					 setConstituenciesByVoterIds(finalVO.getSubList(),constMapForVoters);
+				}*/
 		}catch (Exception e){
 			LOG.error("Exception raised at getTotalAppointmentDetails", e);
 		}
