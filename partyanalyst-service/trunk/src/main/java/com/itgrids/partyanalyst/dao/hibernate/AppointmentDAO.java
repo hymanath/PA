@@ -170,6 +170,7 @@ public Long getAppointmentStatusId(Long appointmentId){
 		query.setParameter("appointmentId", appointmentId);
 		query.setTimestamp("updatedTime", presentDate);
 		query.setParameter("userId", userId);
+		query.setParameter("reason", reason);
 		
 		return query.executeUpdate();
 	}
