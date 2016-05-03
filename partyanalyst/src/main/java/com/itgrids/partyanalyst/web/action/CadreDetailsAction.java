@@ -484,6 +484,19 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	public String getTdpCadreIvrSurveyDetails(){
+		
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long cadreId=jObj.getLong("cadreId");
+			verifierVO=cadreDetailsService.getTdpCadreIvrSurveyDetails(cadreId);
+		}catch(Exception e){
+			LOG.error("Exception raised in getTdpCadreIvrSurveyDetails  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getCandidateElectDetatails(){
 		
 		try{

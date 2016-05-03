@@ -10280,6 +10280,12 @@
 				<param name="root">verifierVO</param>
 			</result>
 		</action>
+		<action name="getTdpCadreIvrSurveyDetailsAction" class="cadreDetailsAction" method="getTdpCadreIvrSurveyDetails" >
+			<result type="json" name="success">
+				<param name="root">verifierVO</param>
+			</result>
+		</action>
+		
 		<action name="getCadreWithFamilyDetailsOfEachCadreAction" class="cadreRegistrationAction" method="getCadreWithFamilyDetailsOfEachCadre" >
 			<result type="json" name="success">
 				<param name="root">resultList</param>
