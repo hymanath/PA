@@ -5349,11 +5349,11 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			 List<Object[]>  list= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,null,startDate,endDate);
 			 setDataToList(list,"total",finalVO);
 			 
-			 List<Long>      scheduledList =Arrays.asList(IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST);
+			 List<Long>      scheduledList =Arrays.asList(IConstants.APPOINTMENT_SCHEDULED_LIST);
 			 List<Object[]>  scheduledCounts= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,scheduledList,startDate,endDate);
 			 setDataToList(scheduledCounts,"scheduled",finalVO);
 			 
-			 List<Long>     waitingList =Arrays.asList(IConstants.APPOINTMENT_STATUS_WAITING_LIST);
+			 List<Long>     waitingList =Arrays.asList(IConstants.APPOINTMENT_WAITING_LIST);
 			 List<Object[]> waitingCounts= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,waitingList,startDate,endDate);
 			 setDataToList(waitingCounts,"waiting",finalVO);
 			 
