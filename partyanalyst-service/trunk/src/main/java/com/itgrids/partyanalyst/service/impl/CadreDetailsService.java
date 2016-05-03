@@ -6008,7 +6008,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		return voList;
 	}
-	
+
 	public VerifierVO getTdpCadreIvrSurveyDetails(Long cadreId)
 	{
 		VerifierVO returnVo = new VerifierVO();
@@ -6079,5 +6079,25 @@ public class CadreDetailsService implements ICadreDetailsService{
 			LOG.error(" Exception Occured in getMatchedTdpCadreFamilyDetailsVO() method, Exception - ",e);
 			return null;
 		}
+	}
+	
+	/**
+	 * @author 		:Hymavathi
+	 * @date   		:${03/05/2016}
+	 * @param  		:Long 
+	 * @returntype  :${VerifierVO}
+	 * @description :${Getting Total Count of Candidate Participated in IVR Survey By Sending Input as TdpCadre Id}
+	 */
+	public VerifierVO getCandateParicipatedSurveyCount(Long tdpCadreId){
+		VerifierVO verifierVO = new VerifierVO();
+		Long ivrRespondantId = ivrRespondentCadreDAO.getIvrRespondentId(tdpCadreId);
+		if(ivrRespondantId != null && ivrRespondantId.longValue() > 0){
+			Long count = ivrSurveyAnswerDAO.getCandateParticipatedSurveyCnt(ivrRespondantId);
+			if(count != null && count.longValue() > 0){
+				verifierVO.setTotalCount(count);
+			}
+		}
+				
+		return verifierVO;
 	}
 }
