@@ -920,4 +920,16 @@ public String updateLeaderShip(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getCandateParicipatedSurveyCount(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long tdpCadreId=jObj.getLong("cadreId");
+			verifierVO=cadreDetailsService.getCandateParicipatedSurveyCount(tdpCadreId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCandateParicipatedSurveyCount() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
