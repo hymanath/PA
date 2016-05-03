@@ -7788,12 +7788,13 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 			}
 		 
 			 str+='<div class="col-md-12 m_top10">';
-			 str+=' <p class="text-success"  style="font-weight: bold;">APPOINTMENT PURPOSE</p>';
-			 str+=' <textarea class="form-control appntmntRsnCls" rows="2">'+result.reason+'</textarea>';
+			// str+=' <p class="text-success"  style="font-weight: bold;">APPOINTMENT PURPOSE</p>';
+			 str+='<h5 class="text-success" style="font-weight: bold;">APPOINTMENT PURPOSE<label class="pull-right" style="border-radius:20px;" data-toggle="tooltip" data-placement="top" title="Check to edit appointment purpose"><input type="checkbox" id="editCheckBoxId"/></label></h5>';
+			 str+='<textarea class="form-control appntmntRsnCls" rows="2" attr_reason=\''+result.reason+'\' readonly>'+result.reason+'</textarea>';
 			 str+='</div>';
 			 str+='<div style="text-center;margin-left:20px" id="updateReasonStatus"></div>';
 		     str+='<div class="col-md-offset-10 col-md-2 m_top10">';
-			 str+='<button type="button" class="btn btn-success" style="border-radius:20px;" attr_apppointment_id='+result.appointmentId+' id="updateAppBtnReasonId">Update</button>';
+			 str+='<button type="button" class="btn btn-success" style="border-radius:20px;" attr_apppointment_id='+result.appointmentId+' id="updateAppBtnReasonId" disabled>Update</button>';
 			str+='</div>';
 			
 			str+='<div class="col-xs-12  m_top10">';
@@ -7909,12 +7910,29 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 				 if(result.exceptionMsg="success"){
 					$("#updateReasonStatus").html("<p style='color:green'>Appointment purpose updated successfully.");  
 					setTimeout(function(){$("#updateReasonStatus").html("");},2000);
+					  //clear fields after updating
+					  $('#editCheckBoxId').attr('checked', false);
+					  $(".appntmntRsnCls").attr("readonly",true);
+		              $("#updateAppBtnReasonId").attr("disabled",true);
+					  $(".appntmntRsnCls").attr("attr_reason",updatedReason);
 				 }else{
 					 $("#updateReasonStatus").html("<p style='color:red'>Error occured ...Try again.");  
 				 }
 			 }
 		 })
 	});
+	$(document).on("click","#editCheckBoxId",function(){
+		 var reason=$(".appntmntRsnCls").attr("attr_reason");
+		if($(this).is(':checked')){
+			$(".appntmntRsnCls").removeAttr("readonly");
+	        $("#updateAppBtnReasonId").removeAttr("disabled");
+		}else{
+		    $(".appntmntRsnCls").attr("readonly",true);
+		    $("#updateAppBtnReasonId").attr("disabled",true);
+		    $(".appntmntRsnCls").val(' ');
+		    $(".appntmntRsnCls").val(reason);
+		}
+    });
 	
 </script>
 
