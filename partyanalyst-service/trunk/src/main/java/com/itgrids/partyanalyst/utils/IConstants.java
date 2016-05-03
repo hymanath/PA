@@ -1026,7 +1026,8 @@ public interface IConstants {
 	public static final Long   APPOINTMENT_STATUS_WITHDRAWN=9L;
 	public static final Long   APPOINTMENT_STATUS_APPROVED=2L;
 	public static final Long  APPOINTMENT_STATUS_SCHEDULED=3L;
-	public static final Long[] TODAY_APPOINTMENTS_STATUS_LIST={2L,3L,4L,5L,8L,10L};
+	//public static final Long[] TODAY_APPOINTMENTS_STATUS_LIST={2L,3L,4L,5L,8L,10L};
+	public static final Long[] TODAY_APPOINTMENTS_STATUS_LIST={3L,4L,10L};
 	public static final String[] LOGIN_SKIP_URLS_LIST = {"unionSearchRegiststrationAction.action","getCadreDetailsAction.action","affiliatedGraduatesRegistrationAction.action","getAddressDetailsAction.action","getVoterWorkAddressDetailsAction.action","getAllRelationDetails.action","getCadreLevelsForCadreSearchAction.action","getConstituenciesForDistrictAction.action","getSubLevelLctnsForConstituencyAndMandal.action","rtcUnionRegistrationPage.action","getVoterDetailsByVoterCardNumberAction.action","generateOTPForMobileNumberAction.action","validateOTPAction.action","registrationSuccessAction.action","saveRegistrationFeedbackQueriesDetailsAction.action"};
 	public static final Long  APPOINTMENT_ACTION_STATUS_CHANGE = 1L;
 	
@@ -1044,4 +1045,7 @@ public interface IConstants {
 	//public static final String EMAIL_IMAGES_PATH = "D:/Tomcat/webapps/PartyAnalyst/images/TDP/";
 	
 	public static final Long APPOINTMENTS_PUBLICATION_ID = 12l;
+	
+	public static final Long[] APPOINTMENT_WAITING_LIST= {1L,2L,5L,6L,7L,8L,9L};
+	public static final Long[] APPOINTMENT_SCHEDULED_LIST= {3L,4L,10L};
 }
