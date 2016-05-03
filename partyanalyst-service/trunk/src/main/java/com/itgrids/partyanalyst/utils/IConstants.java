@@ -482,14 +482,14 @@ public interface IConstants {
     
     
     // Fror Mailing
-    public static final String LOCALFROMEMAILID = "partyanalyst04@gmail.com";
+    public static final String LOCALFROMEMAILID = "itgrids.portal@gmail.com";//"partyanalyst04@gmail.com";
     public static final String SERVER = "server";
     public static final String LOCALHOST = "localhost";
     public static final String HOST = "smtp.gmail.com";
     public static final String PORT = "465";
     public static final String FROMEMAILID = "info@partyanalyst.com";
     public static final String TOEMAILID = "kripton514@gmail.com";
-    public static final String PASSWORD="ITGRIDS123";
+    public static final String PASSWORD="itgrids$678";//"ITGRIDS123";
     public static final String SUBJECT = "User Requirements From PartyAnalyst";
     public static final String CADRE_ROLE_ASSIGN_PROBLEMS = "Assign Problems";
     public static final String YES = "Yes";
@@ -1045,6 +1045,16 @@ public interface IConstants {
 	//public static final String EMAIL_IMAGES_PATH = "D:/Tomcat/webapps/PartyAnalyst/images/TDP/";
 	
 	public static final Long APPOINTMENTS_PUBLICATION_ID = 12l;
+	
+	public static final Long TGNF_REGISTRATION_CADRE_TYPE_ID=5L;
+	public static final String TGNF_REGISTRATION_REDIRECTURL="http://telugudesam.org/emembership/tngfRegistrationSuccess.html";//"http://localhost:8080/PartyAnalyst/registrationSuccessAction.action";//"file:///C:/Users/Administrator/Desktop/tngfRegistrationSuccess.html";//"http://telugudesam.org/emembership/tngfRegistrationSuccess.html";//
+	public static final String TGNF_ENROLLMENT_AMOUNT="1";
+	public static final String TGNF_ENROLLMENT_RANDOMNUMBERCODE="CADRE_2016";
+	public static final String TGNF_ENROLLMENT_MERCHANT_ID="M_tdpcbn_2144";
+	public static final String TGNF_ENROLLMENT_WORKING_KEY="0kag9s53yyi788y3prdk8ydhf8glfj9e";
+	
+	public static final String MD5_PRIMARY_KEY ="CADRE2016!tGrid$";
+	
 	
 	public static final Long[] APPOINTMENT_WAITING_LIST= {1L,2L,5L,6L,7L,8L,9L};
 	public static final Long[] APPOINTMENT_SCHEDULED_LIST= {3L,4L,10L};
