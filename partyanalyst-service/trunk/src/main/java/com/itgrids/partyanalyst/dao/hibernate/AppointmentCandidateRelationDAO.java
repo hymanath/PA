@@ -643,7 +643,9 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	     "          count(distinct model.appointment.appointmentId),count(distinct model.appointmentCandidate.appointmentCandidateId)" +
 	     " from     AppointmentCandidateRelation model  " +
 	     " where    model.appointment.isDeleted='N' and model.appointment.appointmentUserId = :apptUserId " +
-	     "          and model.appointment.appointmentStatusId in (:statusIds)" +
+	     "          and model.appointment.appointmentStatusId in (:statusIds) " +
+	     " and model.appointment.appointmentId is not null" +
+	     " and model.appointmentCandidate.appointmentCandidateId is not null " +
 	     " group by model.appointment.appointmentStatusId ");
 	    query.setParameter("apptUserId", apptUserId);
 	    query.setParameterList("statusIds", statusIds);
@@ -656,7 +658,9 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 	     " select   count(distinct model.appointment.appointmentId),count(distinct model.appointmentCandidate.appointmentCandidateId)" +
 	     " from     AppointmentCandidateRelation model  " +
 	     " where    model.appointment.isDeleted='N' and model.appointment.appointmentUserId = :apptUserId " +
-	     "          and model.appointment.appointmentStatusId in (:statusIds) ");
+	     "          and model.appointment.appointmentStatusId in (:statusIds)" +
+	     " and model.appointment.appointmentId is not null" +
+	     " and model.appointmentCandidate.appointmentCandidateId is not null ");
 	    query.setParameter("apptUserId", apptUserId);
 	    query.setParameterList("statusIds", statusIds);
 	    return (Object[])query.uniqueResult();
