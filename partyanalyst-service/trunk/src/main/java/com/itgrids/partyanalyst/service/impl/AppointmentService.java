@@ -4412,6 +4412,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				AppointmentUpdateStatusVO smsVO = new AppointmentUpdateStatusVO();
 				smsVO.setAppointmentId(inputVO.getAppointmentId());
 				smsVO.setSmsText(inputVO.getSmsText());
+				smsVO.setUserId(userId);
 				
 				if ( toStatusId!= null && toStatusId > 0l ){
 					smsVO.setAppointmentStatusId(toStatusId);
