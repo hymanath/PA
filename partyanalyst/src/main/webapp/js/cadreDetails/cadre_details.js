@@ -5006,3 +5006,19 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 		$("#dataLoadingsImgForTrainingCampParticipation").hide();
 	});
 }
+
+
+function getIvrSurveyForCandidateParticipated(cadreId)
+{
+	var jsObj={
+		cadreId:cadreId,
+		task:""	
+			}
+			
+			$.ajax({
+				type:'GET',
+				 url: 'getTdpCadreIvrSurveyDetailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			})				
+}
