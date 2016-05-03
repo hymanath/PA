@@ -7787,14 +7787,14 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 		        str+=' </div>';
 			}
 		 
-			str+='<div class="col-md-12 m_top10">';
+			 str+='<div class="col-md-12 m_top10">';
 			 str+=' <p class="text-success"  style="font-weight: bold;">APPOINTMENT PURPOSE</p>';
-			 str+=' <textarea class="form-control" rows="2">'+result.reason+'</textarea>';
+			 str+=' <textarea class="form-control appntmntRsnCls" rows="2">'+result.reason+'</textarea>';
+			 str+='</div>';
+			 str+='<div style="text-center;margin-left:20px" id="updateReasonStatus"></div>';
+		     str+='<div class="col-md-offset-10 col-md-2 m_top10">';
+			 str+='<button type="button" class="btn btn-success" style="border-radius:20px;" attr_apppointment_id='+result.appointmentId+' id="updateAppBtnReasonId">Update</button>';
 			str+='</div>';
-			
-		   /*  str+='<div class="col-md-offset-10 col-md-2 m_top10">';
-			str+=' <button type="button" class="btn btn-success">Update</button>';
-			str+='</div>'; */
 			
 			str+='<div class="col-xs-12  m_top10">';
 			str+='<h4 class="panel-title text-success "  style="font-weight: bold;">';
@@ -7890,6 +7890,31 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 	
 	    $("#buildAppointmentAllDetailsDiv").html(str);
 	}
+	
+	$(document).on("click","#updateAppBtnReasonId",function(){
+		var appointmentId=$(this).attr("attr_apppointment_id");
+		var updatedReason=$(".appntmntRsnCls").val();
+		
+		var jsObj={
+			appointmentId:appointmentId,
+			updatedReason:updatedReason
+		}
+		 $.ajax({
+			 type:'POST',
+			 url :'updateAppointmentReasonAction.action',
+			 dataType:'json',
+			 data: {task:JSON.stringify(jsObj)}
+		 }).done(function(result){
+			 if(result!=null && result!=0){
+				 if(result.exceptionMsg="success"){
+					$("#updateReasonStatus").html("<p style='color:green'>Appointment purpose updated successfully.");  
+					setTimeout(function(){$("#updateReasonStatus").html("");},2000);
+				 }else{
+					 $("#updateReasonStatus").html("<p style='color:red'>Error occured ...Try again.");  
+				 }
+			 }
+		 })
+	});
 	
 </script>
 
