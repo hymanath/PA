@@ -6008,4 +6008,73 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		return voList;
 	}
+	
+	public VerifierVO getTdpCadreIvrSurveyDetails(Long cadreId)
+	{
+		VerifierVO returnVo = new VerifierVO();
+		try{
+			Long ivrRespondentId = ivrRespondentCadreDAO.getIvrRespondentId(cadreId);
+			List<Object[]> list = ivrSurveyAnswerDAO.getIvrSurveyAnswerInfoForTdpCadre(ivrRespondentId);
+			if(list != null && list.size() > 0)
+			{
+				
+				for(Object[] params : list)
+				{
+					//Survey List
+						VerifierVO surveyVo =  getMatchedVerifierVO(returnVo.getVerifierVOList(),(Long)params[0]);
+						if(surveyVo == null)
+						{
+							surveyVo = new VerifierVO();
+							surveyVo.setId((Long)params[0]);
+							surveyVo.setName(params[1] != null ? params[1].toString() : "");
+							returnVo.getVerifierVOList().add(surveyVo);
+						}
+						
+						//question List	
+						
+						VerifierVO questionVo =  getMatchedVerifierVO(surveyVo.getVerifierVOList(),(Long)params[5]);
+						if(questionVo == null)
+						{
+							questionVo = new VerifierVO();
+							questionVo.setId((Long)params[5]);
+							questionVo.setName(params[6] != null ? params[6].toString() : "");
+							questionVo.setAnswerType(params[10] != null ? params[10].toString() : "");
+							questionVo.setRound(params[3] != null ? params[3].toString() : "");
+							surveyVo.getVerifierVOList().add(questionVo);
+						}
+						
+						//Option List	
+						VerifierVO optionVo =  getMatchedVerifierVO(questionVo.getVerifierVOList(),(Long)params[7]);
+						if(optionVo == null)
+						{
+							optionVo = new VerifierVO();
+							optionVo.setId((Long)params[7]);
+							optionVo.setName(params[8] != null ? params[8].toString() : "");
+							questionVo.setAnswerType(params[10] != null ? params[10].toString() : "");
+							questionVo.setRound(params[3] != null ? params[3].toString() : "");
+							questionVo.getVerifierVOList().add(optionVo);
+						}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception occured in getTdpCadreIvrSurveyDetails() Method ",e);	
+		}
+		return returnVo;
+	}
+	
+	public VerifierVO getMatchedVerifierVO(List<VerifierVO> resultList,Long id)
+	{
+		try{
+			for(VerifierVO detailsVO:resultList)
+				if(detailsVO.getId() != null && detailsVO.getId().longValue()>0L && detailsVO.getId().longValue() == id.longValue() )
+					return detailsVO;
+			return null;
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getMatchedTdpCadreFamilyDetailsVO() method, Exception - ",e);
+			return null;
+		}
+	}
 }

@@ -31,9 +31,29 @@ public class VerifierVO implements Serializable{
 	private Map<String,VerifierVO> verifierVOMap;
 	private String isDeleted;
 	private String percentage;
+	private String round;
+	private String answerType;
 	
 	
 	
+	
+	
+	public String getRound() {
+		return round;
+	}
+
+	public void setRound(String round) {
+		this.round = round;
+	}
+
+	public String getAnswerType() {
+		return answerType;
+	}
+
+	public void setAnswerType(String answerType) {
+		this.answerType = answerType;
+	}
+
 	public String getPercentage() {
 		return percentage;
 	}

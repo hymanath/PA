@@ -69,4 +69,5 @@ public interface ICadreDetailsService {
 	public String getVoterImageUrlByVoterId(Long voterId);
 	public List<LocationVO> getCheckCandidateCadreDtls(Long tdpCadreId);
 	public List<IdNameVO> getTrainingCampAttendenceInfoInCadreLocation(Long boothId,Long panchayatId,Long wardId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId);
+	public VerifierVO getTdpCadreIvrSurveyDetails(Long cadreId);
 }
