@@ -2538,7 +2538,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	}
 	
 	
-	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
+	public LabelStatusVO getStatusWiseCountsOfAppointments1(Long aptUserId){
 		
 		LabelStatusVO finalVo = new LabelStatusVO();
 		
@@ -6800,6 +6800,66 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		}
 		return result;
 	}
-    
+	
+	public LabelStatusVO getStatusWiseCountsOfAppointments(Long aptUserId){
+		
+		LabelStatusVO finalVo = new LabelStatusVO();
+		
+		try{  
+			  
+			  List<Long>  apptStatusList =Arrays.asList(IConstants.TODAY_APPOINTMENTS_STATUS_LIST); 
+			  
+			  Map<Long,LabelStatusVO>  finalMap = new LinkedHashMap<Long,LabelStatusVO>();
+			  
+			  List<Object[]> statusList = appointmentStatusDAO.getStatusDetailsByIds(apptStatusList);
+			  
+			  if(statusList!=null && statusList.size()>0){
+				
+				  for(Object[] obj : statusList){
+					  
+					  Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+					  
+					  LabelStatusVO statusVO = new LabelStatusVO();
+					  statusVO.setStatusId(obj[0]!=null?(Long)obj[0]:0l);
+					  statusVO.setStatus(obj[0]!=null?obj[1].toString():"");
+					  statusVO.setTotalCount(0l);
+					  
+					  statusVO.setClickIds(new ArrayList<Long>(0));
+					  statusVO.getClickIds().add(statusId);
+						  
+						finalMap.put(statusId, statusVO);
+				  }
+					  
+			  }
+			  
+			  
+			  List<Object[]> countsList = appointmentDAO.eachStatusApptCountByDateAndApptUser(aptUserId,apptStatusList,new DateUtilService().getCurrentDateAndTime());
+			  
+			  if( countsList != null  && countsList.size() >0){
+				  
+				  for( Object[] obj : countsList){
+					  
+					  Long statusId = obj[0]!=null?(Long)obj[0]:0l;
+					  
+					  LabelStatusVO statusVO = null;
+					  
+					  statusVO = finalMap.get(statusId);
+					  
+					  if(statusVO != null){
+						  statusVO.setTotalCount(  statusVO.getTotalCount() +( obj[2]!=null?(Long)obj[2]:0l));
+					  }
+					
+				  }
+			  }
+			  
+			  if(finalMap!=null && finalMap.size()>0){
+				  finalVo.setStatusList(new ArrayList<LabelStatusVO>(finalMap.values()));
+			  }
+			  
+		}catch(Exception e){
+			LOG.error("Exception raised at getStatusWiseCountsOfAppointments", e);
+		}
+		return finalVo;
+	}
  }
 
