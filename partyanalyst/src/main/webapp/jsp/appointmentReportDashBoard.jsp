@@ -60,7 +60,7 @@
 						<div class="col-md-4">
 							<h4 class="text-capitalize text-success">Location Wise Appointments</h4>
 						</div>
-						<div class="col-md-4" id="locationValue">
+						<div class="col-md-3" id="locationValue" style="width: 212px;">
 							<label class="radio-inline">
 								<input type="radio"  name= "locationType" checked="checked" value="District"/>District
 							</label>
@@ -68,17 +68,33 @@
 								<input type="radio"  name= "locationType" value="Constituency"/>Constituency
 							</label>
 						</div>
-						<div class="col-md-2 col-md-offset-2">
-						<label > Select State</label>
-							<select class="dropkickClass" id="state">
+						<div class="col-md-4" style="margin-top: -3px; margin-left: -28px;">
+						<div class="">
+							<label  class="col-sm-4 " style="margin-top: 6px; width: 115px;">Select State</label>
+							<div class="col-sm-3" style="width: 129px;margin-left: -25px;">
+							 <select class="dropkickClass" id="state">
 								<option value="0">ALL</option>
 								<option value="1">AP</option>
 								<option value="36">TS</option>
 							</select>
+							</div>
+						  </div>
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row m_top10">
+				<div class="col-md-3">
+				 <label style="margin-right: 8px;">
+					<input type="checkbox" value="totalValue" name="totalUniqueType" checked id="totalValueId" >
+					Total
+				  </label>
+				   <label>
+					<input type="checkbox" name= "totalUniqueType" value="uniqueValue" id="uniqueValueId">
+					Unique
+				  </label>
+				</div>
+				</div>
+				<div class="row m_top10">
 					<div class="col-md-3">
 						<!--multiselect-->
 						<label > Select Request Type</label>
