@@ -156,6 +156,7 @@
 				clock.start();			
 			}
 			
+			$('#userIdAddress').val(userip);
 		});
 		
 		
@@ -946,7 +947,7 @@
 			
 
 				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
-				str+='<input type="hidden" name="ip" value="49.204.21.50" readonly>';
+				str+='<input type="hidden" name="ip" value="'+userip+'" readonly>';
 				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			
 				str+='<input type="hidden" name="Order_Id" value="'+resultArr[3].trim()+'">';				
 				str+='<input type="hidden" name="Checksum" value="'+resultArr[4].trim()+'">';
@@ -1495,6 +1496,8 @@
 		<form action="rtcUnionRegistrationPage.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">
 
 		<input type="hidden" name="tdpCadreId" value="${candidateId}" >				
+		<input type="hidden" name="cadreRegistrationVO.dataSourceType" value="ONLINE" >				
+		<input type="hidden" name="cadreRegistrationVO.userIpAddress" value="" id="userIdAddress" >				
 				 
 		<div class="container m_top10"style="position: relative;">
 		
@@ -4531,6 +4534,12 @@ function getDistricts(district,populateConstituency,populateMandal,populateVilla
 		}
 			return numberFlag;
 	}
-</script>   
+</script> 
+
+<script>
+var userip = "";
+
+</script>
+<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>  
 </body>
 </html>
