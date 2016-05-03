@@ -4724,8 +4724,11 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		
 		List<Object[]> qstns = activityQuestionAnswerDAO.getOptionsCountByScopId(activityScopeId,reportType,qstnId);
 		List<Long> qusetionareId = activityQuestionnaireDAO.getQuestionareId(activityScopeId, qstnId);
-		List<Object[]> optns = activityQuestionnaireOptionDAO.getOptionsByQuesttionareIds(qusetionareId.get(0));
-		if(qstns != null && qstns.size() >0){
+		List<Object[]> optns = null;
+		if(qusetionareId != null && qusetionareId.size() > 0){
+		 optns = activityQuestionnaireOptionDAO.getOptionsByQuesttionareIds(qusetionareId.get(0));
+		}
+		if(qstns != null && qstns.size() >0 && optns != null && optns.size() >0 ){
 			for(Object[] astn : qstns){
 				OptionsCountVo vo = getMatchedVOForReportType(returnList,Long.valueOf((Long)astn[3]));
 				if(vo == null){

@@ -502,5 +502,32 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		 if(aptUserId != null && aptUserId > 0)
 			 query.setParameter("aptUserId", aptUserId);
 		 return query.list();
+		}
+	public List<Object[]>  getCommitteeMemROleWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){
+		StringBuilder str=new StringBuilder();
+		str.append("select ");
+		if(type.equalsIgnoreCase("unique"))
+		str.append(" distinct model.appointmentCandidate.tdpCadreId,");
+		else
+		str.append("model.appointmentCandidate.tdpCadreId,");
+		str.append("model.appointmentCandidate.name,model.appointmentCandidate.candidateDesignation.appointmentCandidateDesignationId," +
+				"model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
+				"model.appointmentCandidate.imageURL,model.appointmentCandidateId");
+		str.append(" from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
+				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
+				if(statusIds != null && statusIds.size() > 0)
+					str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
+				if(roleId != null && roleId > 0)
+				str.append(" and  TCM.tdpCommitteeRole.tdpRoles.tdpRolesId = :roleId ");
+				if(aptUserId != null && aptUserId > 0)
+					str.append(" and model.appointmentCandidate.createdBy =:aptUserId ");
+		Query query = getSession().createQuery(str.toString());
+		 if(statusIds != null && statusIds.size() > 0)
+			 query.setParameterList("statusIds", statusIds);
+		 if(roleId != null && roleId > 0)
+			 query.setParameter("roleId", roleId);
+		 if(aptUserId != null && aptUserId > 0)
+			 query.setParameter("aptUserId", aptUserId);
+		 return query.list();
 		}	
 }
