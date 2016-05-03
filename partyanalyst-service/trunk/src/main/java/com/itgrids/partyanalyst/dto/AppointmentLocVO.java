@@ -17,6 +17,8 @@ public class AppointmentLocVO implements Serializable{
 	private List<AppointmentLocVO> subList;
 	private Map<Long,AppointmentLocVO> subMap;
 	
+	private Long totalCount=0l;
+	private Long totalUniqueCount=0l;
 	
 	public Long getId() {
 		return id;
@@ -59,6 +61,18 @@ public class AppointmentLocVO implements Serializable{
 	}
 	public void setSubMap(Map<Long, AppointmentLocVO> subMap) {
 		this.subMap = subMap;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getTotalUniqueCount() {
+		return totalUniqueCount;
+	}
+	public void setTotalUniqueCount(Long totalUniqueCount) {
+		this.totalUniqueCount = totalUniqueCount;
 	}
 	
 	
