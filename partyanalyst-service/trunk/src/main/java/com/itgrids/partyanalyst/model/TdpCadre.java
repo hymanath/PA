@@ -151,7 +151,7 @@ public class TdpCadre {
 	private UnionTabUser createdUnionTabUser;
 	private UnionTabUser updatedUnionTabUser;
 	
-	private String payMentStaus;
+	private String payMentStatus;
 	private Long parentTdpCadreId;
 	
 	@Id
@@ -1048,14 +1048,6 @@ public class TdpCadre {
 		this.updatedUnionTabUser = updatedUnionTabUser;
 	}
 	
-	@Column(name="payment_status")
-	public String getPayMentStaus() {
-		return payMentStaus;
-	}
-	public void setPayMentStaus(String payMentStaus) {
-		this.payMentStaus = payMentStaus;
-	}
-	
 	@Column(name="parent_tdp_cadre_id")
 	public Long getParentTdpCadreId() {
 		return parentTdpCadreId;
@@ -1071,4 +1063,14 @@ public class TdpCadre {
 	public void setDesignationName(String designationName) {
 		this.designationName = designationName;
 	}
+	
+	@Column(name="payment_status")
+	public String getPayMentStatus() {
+		return payMentStatus;
+	}
+	public void setPayMentStatus(String payMentStatus) {
+		this.payMentStatus = payMentStatus;
+	}
+	
+	
 }
