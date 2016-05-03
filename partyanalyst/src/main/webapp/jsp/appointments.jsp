@@ -4331,7 +4331,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 						str+='<p>Priority : '+result[i].priority+'</p>';
 					}					
 					if(result[i].dateString !=null && result[i].dateString.length>0){
-						str+='<p>Requested Date : '+result[i].dateString.split(" ")[0]+'</p>';
+						str+='<p>Created Date : '+result[i].dateString.split(" ")[0]+'</p>';
 					}
 					
 					if(result[i].subject !=null && result[i].subject.length>0){
