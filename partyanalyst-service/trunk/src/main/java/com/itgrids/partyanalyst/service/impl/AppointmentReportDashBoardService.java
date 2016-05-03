@@ -433,8 +433,7 @@ public List<AppointmentLocVO> getCandiCountsByLocations(String startDateStr,Stri
         sq.append(sbS.toString()).append(sbM.toString()).append(sbE.toString());
         
 	}catch(Exception e) {
-		//LOG.error("Exception raised at getQuery() method of AppointmentReportDashBoardService", e);
-		e.printStackTrace();
+		LOG.error("Exception raised at getQuery() method of AppointmentReportDashBoardService", e);
 	}
 	return sq.toString();
   }
@@ -653,10 +652,10 @@ public List<AppointmentLocVO> getCandiCountsByLocations(String startDateStr,Stri
 				if(publicRepresLocaMap!=null && publicRepresLocaMap.size()>0){
 					setConstituencyforTdpCadreIds(finalVO.getSubList(),publicRepresLocaMap);
 				}
-				/*if(voterIds!=null && voterIds.size()>0){
+				if(voterIds!=null && voterIds.size()>0){
 					 Map<Long,String> constMapForVoters = getConstituenciesByVoterIds(voterIds);
 					 setConstituenciesByVoterIds(finalVO.getSubList(),constMapForVoters);
-				}*/
+				}
 		}catch (Exception e){
 			LOG.error("Exception raised at getTotalAppointmentDetails", e);
 		}
