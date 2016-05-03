@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.Adler32;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -141,6 +142,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
+import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -175,6 +177,7 @@ import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.RegistrationStatus;
 import com.itgrids.partyanalyst.model.RegistrationStatusTemp;
+import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
 import com.itgrids.partyanalyst.model.TabUserKeys;
@@ -211,6 +214,7 @@ import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
+import com.itgrids.partyanalyst.utils.MD5Algoritm;
 
 
 public class CadreRegistrationService implements ICadreRegistrationService {
@@ -309,6 +313,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IUserFeedbackDAO userFeedbackDAO;
 	private IMailService mailService;
 	private ISmsSenderService smsSenderService;
+	private MD5Algoritm md5Algoritm = new MD5Algoritm();
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -11155,22 +11160,6 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return returnList;
 	}
 	
-	public String  updatePaymentStatus(Long tdpCadreId){
-		String status = "";
-		try {
-			TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
-			saveDataToHistoryTable(tdpCadre);
-			tdpCadre.setPayMentStaus(IConstants.PAID_STATUS);
-			tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-			tdpCadreDAO.save(tdpCadre);
-			status =IConstants.SUCCESS;
-		} catch (Exception e) {
-			status =IConstants.FAILURE;
-			LOG.error("Exception riased at updatePaymentStatus in RtcUnionService Service class", e);
-		}
-		return status;
-	}
-	
 	//SAVING AFFLICATED CADRE SAVING 1111
 	public void tdpAffliatedCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadreNew,String insertTypeNew,final boolean statusVar)
 	{
@@ -11191,11 +11180,11 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					
 					if(registrationType.equalsIgnoreCase("ONLINE")  && !insertType.equalsIgnoreCase("update") ){
 						if(cadreRegistrationVO.getCadreId() != null && cadreRegistrationVO.getCadreId().longValue()>0L){
-							tdpCadre.setPayMentStaus(IConstants.NOT_REQUIRED);
+							tdpCadre.setPayMentStatus(IConstants.NOT_REQUIRED);
 							tdpCadre.setParentTdpCadreId(cadreRegistrationVO.getCadreId());
 						}
 						else
-							tdpCadre.setPayMentStaus(IConstants.NOT_PAID_STATUS);
+							tdpCadre.setPayMentStatus(IConstants.NOT_PAID_STATUS);
 					}
 					if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0 && !insertType.equalsIgnoreCase("update"))
 					{
@@ -12027,7 +12016,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								{   
 									String jobCode =  "";
 									if(cadreRegistrationVO.getDataSourceType() != null && !cadreRegistrationVO.getDataSourceType().trim().equalsIgnoreCase("ONLINE"))
-											jobCode = sendSMSForAffliatedCadre(cadreRegistrationVO.getMobileNumber().trim(), "Thanks for registration, your Membership ID  :"+tdpCadre1.getMemberShipNo());
+											jobCode = sendSMSForAffliatedCadre(cadreRegistrationVO.getCreatedUserId(),cadreRegistrationVO.getMobileNumber().trim(), "Thanks for registration, your Membership ID  :"+tdpCadre1.getMemberShipNo());
 								}
 								
 								
@@ -12364,12 +12353,19 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		
 	}
 
-	private String sendSMSForAffliatedCadre(String mobileNo,String message){
+	private String sendSMSForAffliatedCadre(Long userId,String mobileNo,String message){
 		  
 		  if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
         	return "error"; 
           }
 		  
+		  SmsHistory smsHistory = smsSenderService.sendSMS(userId, "Affiliated Graduates Enrollment", false, message, mobileNo);
+		  if(smsHistory != null)
+			  return "success";
+		  else
+			  return "error";
+		  
+		  /*
 	      HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
 	      client.getHttpConnectionManager().getParams().setConnectionTimeout(
 	        Integer.parseInt("30000"));
@@ -12385,7 +12381,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	      post.addParameter("mtype", isEnglish ? "N" : "OL");
 	      post.addParameter("DR", "Y");
 	      
-	      /* PUSH the URL */
+	       PUSH the URL 
 	      try 
 	      {
 	        int statusCode = client.executeMethod(post);
@@ -12404,7 +12400,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 	      } finally {
 	          post.releaseConnection();
 	      }
-	      
+	      */
 	    }
 	
 	public List<GenericVO> getCadreMemberTypeListByYear(){
@@ -12954,10 +12950,10 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 					//mailvo.setToAddress("sravanth.itgrids.hyd@gmail.com");
 					
 					List<EmailDetailsVO> mailvoList = new ArrayList<EmailDetailsVO>();
-					//mailvoList.add(new EmailDetailsVO(subject,content,"sravanth.itgrids.hyd@gmail.com"));
+					mailvoList.add(new EmailDetailsVO(subject,content,"sravanth.itgrids.hyd@gmail.com"));
 					//mailvoList.add(new EmailDetailsVO(subject,content,"a.dakavaram@gmail.com"));
 					mailvoList.add(new EmailDetailsVO(subject,content,"srishailam.itgrids.hyd@gmail.com"));
-					
+					mailvoList.add(new EmailDetailsVO(subject,content,IConstants.LOCALFROMEMAILID));
 					/*String message = regQueriesVO.getDescription();
 					message = message+"Thanks for your feedback,We will contact shortly.";
 					smsSenderService.sendSMS(1l, "TNGF", true, message, regQueriesVO.getMobileNo());*/
@@ -12992,4 +12988,98 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
  		
  		return header;
  	}
+	
+	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId){
+		PaymentGatewayVO pamentGatewayVO = new PaymentGatewayVO();
+		try {
+				String encryptedCodeMN = md5Algoritm.generateMD5Encrypt(randomNo);
+				String encryptedCodeEN = md5Algoritm.generateMD5Encrypt(enrollId);
+				
+				String WorkingKey =IConstants.TGNF_ENROLLMENT_WORKING_KEY;
+		        String MerchantId =IConstants.TGNF_ENROLLMENT_MERCHANT_ID;
+		        String Amount = IConstants.TGNF_ENROLLMENT_AMOUNT;
+		        String redirectUrl = IConstants.TGNF_REGISTRATION_REDIRECTURL+"?mn="+encryptedCodeMN.trim()+"&en="+encryptedCodeEN.trim()+"";
+		        String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNo;
+		        String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
+		        Adler32  adl = new Adler32();
+		        adl.update(str.getBytes());
+		        //return (Long.valueOf(adl.getValue()).toString());
+
+		        pamentGatewayVO.setCheckSum(Long.valueOf(adl.getValue()).toString());
+		        pamentGatewayVO.setWorkingKey(WorkingKey);
+		        pamentGatewayVO.setAmount(Amount);
+		        pamentGatewayVO.setMerchantId(MerchantId);
+		        pamentGatewayVO.setRedirectURL(redirectUrl);
+		        pamentGatewayVO.setOrderNo(OrderId);
+		        
+		} catch (Exception e) {
+			LOG.error("error occured while generating payment gateway basic details.");
+		}
+		return pamentGatewayVO;
+	}
+	
+	public ResultStatus updatePaymenntStatus(final Long userId,final String memberShipNo){
+		ResultStatus status = new ResultStatus();
+		try {
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,IConstants.TGNF_REGISTRATION_CADRE_TYPE_ID,IConstants.UNIONS_REGISTRATION_YEAR);
+					if(tdpCadreList != null && tdpCadreList.size()>0){
+						Object[] tdpCadrEObj = tdpCadreList.get(0);
+						String paymentStatusStr = commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[2]);
+						if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.PAID_STATUS))
+							sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+						else if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS)){
+							TdpCadre tdpCadre = tdpCadreDAO.get(commonMethodsUtilService.getLongValueForObject(tdpCadrEObj[0]));
+							if(tdpCadre != null){
+								saveDataToHistoryTable(tdpCadre);
+								tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
+								tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								tdpCadre.setUpdatedUserId(userId);
+								tdpCadreDAO.save(tdpCadre);
+								sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+							}
+						}
+					}
+				}
+			});
+			
+		} catch (Exception e) {
+			LOG.error("error occured while generating payment gateway basic details in updatePaymentStatus() .");
+		}
+		return status;
+	}
+	
+	public String  checkPaymentStatus(String memberShipNo){
+		String status = null;
+		try {
+			List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,IConstants.TGNF_REGISTRATION_CADRE_TYPE_ID,IConstants.UNIONS_REGISTRATION_YEAR);
+			if(tdpCadreList != null && tdpCadreList.size()>0){
+				Object[] tdpCadrEObj = tdpCadreList.get(0);
+				return commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[2]);
+			}
+			
+		} catch (Exception e) {
+			status =IConstants.FAILURE;
+			LOG.error("Exception riased at updatePaymentStatus in RtcUnionService Service class", e);
+		}
+		return status;
+	}
+	
+	public String  updatePaymentStatus(Long tdpCadreId){
+		String status = "";
+		try {
+			TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
+			saveDataToHistoryTable(tdpCadre);
+			tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
+			tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+			tdpCadreDAO.save(tdpCadre);
+			status =IConstants.SUCCESS;
+		} catch (Exception e) {
+			status =IConstants.FAILURE;
+			LOG.error("Exception riased at updatePaymentStatus in RtcUnionService Service class", e);
+		}
+		return status;
+	}
 }
