@@ -120,7 +120,7 @@
 							</div>
 						</div>
 						
-						<a href="#" id="submitQuerreisId" class="submitQuerriesCls  pull-right">SubmitQuerries/Suggestions</a>
+						<a href="#" id="submitQuerreisId" class="submitQuerriesCls  pull-right">Submit Querries/Suggestions </a>
 
 					</div>
 				</div>
