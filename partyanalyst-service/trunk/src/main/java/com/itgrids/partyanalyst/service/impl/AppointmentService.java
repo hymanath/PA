@@ -1633,7 +1633,7 @@ public void setDataMembersForCadreRole(List<Object[]> membersList, List<Appointm
 		 }
 		 
 		 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
-		 getDesignationsForCadre(tdpCadreIds,finalList);
+		
 	 }
 }
 
