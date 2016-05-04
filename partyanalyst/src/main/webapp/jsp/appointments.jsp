@@ -4126,15 +4126,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 				if(result.length-1 == i){
 					if(xindex % 2 == 1){
 						str+='<td></td>';
-					}else if(xindex % 3 == 2){
-						str+='<td></td>';
+						str+='</tr>';
 					}
-					xindex = 2;
 				}
-				if( xindex == 2){
+				 if( xindex == 2){
 					str+='</tr>';
 					xindex = 0;
-				}
+				} 
 			
 			}
 			
@@ -4150,7 +4148,13 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='No Data Available';	
 		}
 		$("#searchApptmntDivId").html(str);
-		$('#searchApptmntdatatable').DataTable({bFilter: false});
+		$('#searchApptmntdatatable').dataTable({
+							"aaSorting": [[ 1, "desc" ]],
+							"iDisplayLength" : 10	,
+							 "bDestroy": true,
+							 "bFilter": false,
+							"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]		
+						});
 		$("#searchApptmntdatatable_length").addClass("pull-right")
 		$("#searchApptmntdatatable_wrapper").css("margin-top","-15px")
 		$('[data-toggle="tooltip"]').tooltip();
