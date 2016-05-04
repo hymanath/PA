@@ -38,6 +38,7 @@ function validateOTPAction(jsObj){
 		url : "validateOTPAction.action",
 		data : {task:JSON.stringify(jsObj)} ,   
 	}).done(function(result){
+		$("#validateOTPImg,").hide();
 		if(result != null && result=="Success"){
 			//$("#otpSuccessDiv").html("success");
 			$("#success").show();
