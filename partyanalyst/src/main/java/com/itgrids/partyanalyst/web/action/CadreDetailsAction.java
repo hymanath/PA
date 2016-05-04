@@ -8,10 +8,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
@@ -80,8 +82,16 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<IvrOptionsVO> ivrOptionsList;
 	private List<LocationVO>  cadreDetlsLst;
 	private List<IdNameVO>	  idNameVoList;
+	private List<CadreDetailsVO> cadreDetailsVO;
 	
 	
+	
+	public List<CadreDetailsVO> getCadreDetailsVO() {
+		return cadreDetailsVO;
+	}
+	public void setCadreDetailsVO(List<CadreDetailsVO> cadreDetailsVO) {
+		this.cadreDetailsVO = cadreDetailsVO;
+	}
 	public List<IdNameVO> getIdNameVoList() {
 		return idNameVoList;
 	}
@@ -954,4 +964,30 @@ public String updateLeaderShip(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getAppointmentsUserDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			
+			 List<Long> apptuserIds   = null;
+			 
+			JSONArray appointmentUserIds = jObj.getJSONArray("appointmentUserIds");
+			  if(appointmentUserIds != null && appointmentUserIds.length() > 0){
+				  apptuserIds = new ArrayList<Long>(); 
+					for (int i = 0; i < appointmentUserIds.length(); i++) {
+						apptuserIds.add(Long.parseLong(appointmentUserIds.get(i).toString()));
+					}
+			   }
+			  
+			  Long tdpCadreId=jObj.getLong("cadreId");
+			  
+			  cadreDetailsVO=cadreDetailsService.getAppointmentsUserDetails(apptuserIds,tdpCadreId);
+			  
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAppointmentsUserDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

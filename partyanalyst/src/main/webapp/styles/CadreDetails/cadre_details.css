@@ -318,3 +318,59 @@ table.gridtable td {
 .m_top10{
 	margin-top:10px;
 }
+.apptStatusTracking
+{
+	padding:0px;
+	border-left:2px solid #ccc;
+	position:relative;
+	margin-left: 8px;
+}
+.apptStatusTracking li
+{
+	list-style:none;
+	margin-left:12px;
+	margin-top:3px;
+}
+.apptStatusTracking li:before
+{
+	height:15px;
+	width:15px;
+	position:absolute;
+	content:' ';
+	left:-9px;
+	display:block;
+	background:#ccc;
+	border-radius:50%;
+	margin-top:9px;
+}
+.m_top30 {
+    margin-top: 60px;
+}
+
+.arrow_box {
+	background: #fff;
+	border: 1px solid rgba(51, 51, 51, 0.6);
+}
+.arrow_box:after, .arrow_box:before {
+	bottom: 100%;
+	right: 8px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 8px;
+	margin-left: -8px;
+}
+.arrow_box:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-bottom-color: rgba(51, 51, 51, 0.6);
+	border-width: 9px;
+	margin-left: -9px;
+}
