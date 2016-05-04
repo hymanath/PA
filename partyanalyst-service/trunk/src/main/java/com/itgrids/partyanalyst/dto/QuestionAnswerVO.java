@@ -30,8 +30,49 @@ public class QuestionAnswerVO implements Serializable {
 	private Long userId;
 	private Long count = 0l;
 	private List<QuestionAnswerVO> questions;
+	private Long id;
+	private String name;
+	private String candidateName;
+	private Long candidateId;
 	
 	
+	
+	
+	
+	
+	
+	public Long getCandidateId() {
+		return candidateId;
+	}
+
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+
+	public String getCandidateName() {
+		return candidateName;
+	}
+
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Long getQuestionId() {
 		return questionId;
 	}

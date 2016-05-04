@@ -71,4 +71,6 @@ public interface ICadreDetailsService {
 	public List<IdNameVO> getTrainingCampAttendenceInfoInCadreLocation(Long boothId,Long panchayatId,Long wardId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId);
 	public VerifierVO getTdpCadreIvrSurveyDetails(Long cadreId);
 	public VerifierVO getCandateParicipatedSurveyCount(Long cadreId);
+	public VerifierVO getSurveysOnCandidateCount(Long candidateId);
+	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId);
 }

@@ -41,6 +41,7 @@ public class IvrSurveyQuestion extends BaseModel implements Serializable{
 	private IvrQuestion ivrQuestion;
 	private User insertedUser;
 	private User updatedUser;
+	private IvrSurvey ivrSurvey;
 
 	
 	@Id
@@ -138,5 +139,17 @@ public class IvrSurveyQuestion extends BaseModel implements Serializable{
 	}
 	public void setIvrQuestion(IvrQuestion ivrQuestion) {
 		this.ivrQuestion = ivrQuestion;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ivr_survey_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrSurvey getIvrSurvey() {
+		return ivrSurvey;
+	}
+	public void setIvrSurvey(IvrSurvey ivrSurvey) {
+		this.ivrSurvey = ivrSurvey;
 	}	
+	
+	
 }

@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IEventTypeDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
 import com.itgrids.partyanalyst.dao.IIvrRespondentCadreDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyAnswerDAO;
+import com.itgrids.partyanalyst.dao.IIvrSurveyCandidateQuestionDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyEntityDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyServiceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -164,8 +165,20 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IIvrSurveyServiceDAO ivrSurveyServiceDAO;
 	private IUserAddressDAO userAddressDAO;
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
+	private IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO;
 	
 	
+	
+	
+	public IIvrSurveyCandidateQuestionDAO getIvrSurveyCandidateQuestionDAO() {
+		return ivrSurveyCandidateQuestionDAO;
+	}
+
+	public void setIvrSurveyCandidateQuestionDAO(
+			IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO) {
+		this.ivrSurveyCandidateQuestionDAO = ivrSurveyCandidateQuestionDAO;
+	}
+
 	public ITrainingCampBatchAttendeeDAO getTrainingCampBatchAttendeeDAO() {
 		return trainingCampBatchAttendeeDAO;
 	}
@@ -6100,4 +6113,123 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 		return verifierVO;
 	}
+	public VerifierVO getSurveysOnCandidateCount(Long candidateId){
+		VerifierVO verifierVO = new VerifierVO();
+		
+			Long count = ivrSurveyCandidateQuestionDAO.getIvrSurveyCountByCandiate(candidateId);
+			if(count != null && count.longValue() > 0){
+				verifierVO.setTotalCount(count);
+			}
+		return verifierVO;
+	}
+	
+	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId)
+	{
+		List<QuestionAnswerVO> returnList = new ArrayList<QuestionAnswerVO>();
+		List<Long> questionIds = new ArrayList<Long>();
+		try{
+			questionIds =ivrSurveyCandidateQuestionDAO.getIvrSurveyQuestionsByCandiate(candidateId);
+			if(questionIds != null && questionIds.size() > 0)
+			{
+				 List<Object[]> list = ivrSurveyAnswerDAO.getOptionsCountByQuestionIds(questionIds);
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params : list)
+					 {
+						 QuestionAnswerVO surveyVO = getMatchedVO(returnList,(Long)params[1]);
+						 
+						 if(surveyVO == null)
+						 {
+							 surveyVO = new QuestionAnswerVO();
+							 surveyVO.setId((Long)params[1]);
+							 surveyVO.setName(params[2] != null ? params[2].toString() :"");
+							 surveyVO.setQuestions(new ArrayList<QuestionAnswerVO>());
+							 returnList.add(surveyVO);
+						 }
+						 
+						 QuestionAnswerVO questionVO = getMatchedVO(surveyVO.getQuestions(),(Long)params[3]);
+						 
+						 if(questionVO == null)
+						 {
+							 questionVO = new QuestionAnswerVO();
+							 questionVO.setId((Long)params[3]);
+							 questionVO.setName(params[4] != null ? params[4].toString() :"");
+							 questionVO.setOptions(new ArrayList<QuestionAnswerVO>());
+							 questionVO.setCount(params[0] != null ? (Long)params[0] + questionVO.getCount() : 0l);
+							 surveyVO.getQuestions().add(questionVO);
+						 }
+						 
+						 
+						 QuestionAnswerVO optionVO = getMatchedVO(surveyVO.getOptions(),(Long)params[5]);
+						 
+						 if(optionVO == null)
+						 {
+							 optionVO = new QuestionAnswerVO();
+							 optionVO.setId((Long)params[5]);
+							 optionVO.setName(params[6] != null ? params[6].toString() :"");
+							 optionVO.setCount(params[0] != null ? (Long)params[0] + optionVO.getCount() : 0l);
+							 surveyVO.getOptions().add(optionVO);
+						 }
+					 }
+				 }
+				List<Object[]> list1 = ivrSurveyCandidateQuestionDAO.getIvrSurveyQuestionsOptionsByCandiate(questionIds);
+				if(list1 != null && list1.size() > 0)
+				{
+					 for(Object[] params : list1)
+					 {
+						 QuestionAnswerVO surveyVO = getMatchedVO(returnList,(Long)params[0]);
+						 if(surveyVO != null)
+						 {
+							 QuestionAnswerVO questionVO = getMatchedVO(surveyVO.getQuestions(),(Long)params[2]);
+							if(questionVO != null)
+							{
+								QuestionAnswerVO optionVO = getMatchedVO(questionVO.getOptions(),(Long)params[4]);
+						 
+							 if(optionVO != null)
+							 {
+								 optionVO.setCandidateId(params[6] != null ? (Long)params[6] : 0l);
+								 optionVO.setCandidateName(params[7] != null ? params[7].toString() :"");
+								 if(questionVO.getCount() != null && questionVO.getCount() > 0)
+								 {
+								 String percentage = (new BigDecimal(optionVO.getCount()*(100.0)/questionVO.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+								 optionVO.setPercentage(percentage);
+								 }
+								 else
+									 optionVO.setPercentage("0.0"); 
+								
+							 }
+						}
+					 }
+				}
+				
+				
+			}
+			
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
+	public QuestionAnswerVO getMatchedVO(List<QuestionAnswerVO> returnList,Long id)
+	{
+		try{
+			if(returnList == null || returnList.size() == 0)
+				return null;
+			for(QuestionAnswerVO vo : returnList)
+			{
+				if(vo.getId().longValue()== id.longValue())
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

@@ -117,9 +117,25 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 	}
 	public Long getCandateParticipatedSurveyCnt(Long ivrResondentId){
 		Query query = getSession().createQuery(" select count(distinct model.ivrSurvey.ivrSurveyId) from IvrSurveyAnswer model where " +
-				" model.ivrRespondent.ivrRespondentId =: ivrResondentId and model.isDeleted = 'false' and model.isValid = 'Y' ");
+				" model.ivrRespondent.ivrRespondentId =:ivrResondentId and model.isDeleted = 'false' and model.isValid = 'Y' ");
 	
 	query.setParameter("ivrResondentId", ivrResondentId);
 		return (Long) query.uniqueResult();
 	}
+	
+	
+	public List<Object[]> getOptionsCountByQuestionIds(List<Long> surveyQuestionIds)
+	{
+		Query query = getSession().createQuery("select count(model.ivrSurveyAnswerId),model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId," +
+				"model.ivrSurveyQuestion.ivrSurvey.surveyName," +
+				"model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId,model.ivrSurveyQuestion.ivrQuestion.question," +
+				" model.ivrOption.ivrOptionId,model.ivrOption.option" +
+				" from IvrSurveyAnswer model where " +
+				" model.isDeleted = 'false' and model.isValid = 'Y'" +
+				" and model.ivrOption.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false'" +
+				" group by model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId,model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId, model.ivrOption.ivrOptionId");
+		return query.list();
+	}
+	
+	
 }
