@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
@@ -72,5 +73,5 @@ public interface ICadreDetailsService {
 	public VerifierVO getTdpCadreIvrSurveyDetails(Long cadreId);
 	public VerifierVO getCandateParicipatedSurveyCount(Long cadreId);
 	public VerifierVO getSurveysOnCandidateCount(Long candidateId);
-	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId);
+	public List<CadreDetailsVO> getAppointmentsUserDetails(List<Long> appointmentUserIds, Long tdpcadreId);
 }

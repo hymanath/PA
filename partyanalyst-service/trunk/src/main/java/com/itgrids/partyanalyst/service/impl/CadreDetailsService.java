@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -69,8 +70,10 @@ import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
@@ -79,6 +82,7 @@ import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
+import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -165,10 +169,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IIvrSurveyServiceDAO ivrSurveyServiceDAO;
 	private IUserAddressDAO userAddressDAO;
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
+	private AppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
 	private IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO;
-	
-	
-	
 	
 	public IIvrSurveyCandidateQuestionDAO getIvrSurveyCandidateQuestionDAO() {
 		return ivrSurveyCandidateQuestionDAO;
@@ -177,6 +179,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public void setIvrSurveyCandidateQuestionDAO(
 			IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO) {
 		this.ivrSurveyCandidateQuestionDAO = ivrSurveyCandidateQuestionDAO;
+	}
+	
+	public AppointmentCandidateRelationDAO getAppointmentCandidateRelationDAO() {
+		return appointmentCandidateRelationDAO;
+	}
+
+	public void setAppointmentCandidateRelationDAO(
+			AppointmentCandidateRelationDAO appointmentCandidateRelationDAO) {
+		this.appointmentCandidateRelationDAO = appointmentCandidateRelationDAO;
 	}
 
 	public ITrainingCampBatchAttendeeDAO getTrainingCampBatchAttendeeDAO() {
@@ -6113,6 +6124,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 		return verifierVO;
 	}
+	
 	public VerifierVO getSurveysOnCandidateCount(Long candidateId){
 		VerifierVO verifierVO = new VerifierVO();
 		
@@ -6232,4 +6244,33 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return null;
 	}
 	
+	public List<CadreDetailsVO> getAppointmentsUserDetails(List<Long> appointmentUserIds, Long tdpcadreId){
+		
+		List<CadreDetailsVO> finalVo = new ArrayList<CadreDetailsVO>();
+		
+		try{
+			
+			List<Object[]>  apptUserDetails = appointmentCandidateRelationDAO.getCandidateAppointmentDetails(appointmentUserIds,tdpcadreId);
+			if(apptUserDetails !=null && apptUserDetails.size()>0){
+				for(Object[] obj : apptUserDetails){
+					CadreDetailsVO userVO = new CadreDetailsVO();
+					
+					userVO.setApptUserId(obj[0]!=null?(Long)obj[0]:0l);
+					userVO.setName(obj[1]!=null?obj[1].toString():"");
+					userVO.setApptcandidateId(obj[2]!=null?(Long)obj[2]:0l);
+					userVO.setApptCount(obj[3]!=null?(Long)obj[3]:0l);
+					userVO.setApptcandidateName(obj[4]!=null?obj[4].toString():"");
+					finalVo.add(userVO);
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in getAppointmentsUserDetails() method, Exception - ",e);
+		}
+		
+		return finalVo;
+		
+		
+	}
 }

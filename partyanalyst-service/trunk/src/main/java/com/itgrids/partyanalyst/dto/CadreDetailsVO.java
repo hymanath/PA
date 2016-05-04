@@ -65,7 +65,38 @@ public class CadreDetailsVO implements java.io.Serializable{
 	private Long feedBackAnswersCount;
 	private Long feedBackDocumentsCount;
 	
+	private Long apptcandidateId;
+	private Long apptCount;
+	private Long apptUserId;
+	private String apptcandidateName;
 	
+	
+	
+	
+	public String getApptcandidateName() {
+		return apptcandidateName;
+	}
+	public void setApptcandidateName(String apptcandidateName) {
+		this.apptcandidateName = apptcandidateName;
+	}
+	public Long getApptcandidateId() {
+		return apptcandidateId;
+	}
+	public void setApptcandidateId(Long apptcandidateId) {
+		this.apptcandidateId = apptcandidateId;
+	}
+	public Long getApptCount() {
+		return apptCount;
+	}
+	public void setApptCount(Long apptCount) {
+		this.apptCount = apptCount;
+	}
+	public Long getApptUserId() {
+		return apptUserId;
+	}
+	public void setApptUserId(Long apptUserId) {
+		this.apptUserId = apptUserId;
+	}
 	
 	public Long getFeedBackAnswersCount() {
 		return feedBackAnswersCount;
