@@ -12027,7 +12027,6 @@
 			<param name="root">verifierVO</param>
 		</result>
 	</action>
-	
 	<action name="getSurveysOnCandidateCountAction" class="cadreDetailsAction" method="getSurveysOnCandidateCount">
 		<result type="json" name="success">
 			<param name="root">verifierVO</param>
@@ -12037,6 +12036,11 @@
 	<action name="getSurveysOnCandidateDetailsAction" class="cadreDetailsAction" method="getSurveysOnCandidateDetails">
 		<result type="json" name="success">
 			<param name="root">finalList</param>
+		</result>
+	</action>
+	<action name="getAppointmentsUserDetailsAction" class="cadreDetailsAction" method="getAppointmentsUserDetails">
+		<result type="json" name="success">
+			<param name="root">cadreDetailsVO</param>
 		</result>
 	</action>
 </package>

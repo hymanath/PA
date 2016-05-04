@@ -5067,7 +5067,7 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 
 function getIvrSurveyForCandidateParticipated(cadreId)
 {
-		alert('1')
+	
 	var jsObj={
 		cadreId:cadreId,
 		task:""	
@@ -5079,9 +5079,204 @@ function getIvrSurveyForCandidateParticipated(cadreId)
 				 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				if(result != null){
-					alert(87)
 					buildAnsweredIvrSurveys(result);
 					buildUnAnsweredIvrSurveys(result);
 				}
 			})				
 }
+
+getAppointmentsUserDetails();
+function getAppointmentsUserDetails()
+{
+	$("#buildCandidateAppointmentUser").html('');
+	$("#candidateapptID").show();
+	$("#candidateAppointmentImg").show();
+	var appointmentUserIdsArray=[];
+		appointmentUserIdsArray.push(2);
+		var cadreId = globalCadreId;
+	
+	var jsObj={
+			appointmentUserIds:appointmentUserIdsArray,
+			cadreId:cadreId
+		}
+			$.ajax({
+				type:'GET',
+				 url: 'getAppointmentsUserDetailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$("#candidateAppointmentImg").hide();
+				var str='';
+				if(result != null){
+					for(var i in result){
+						str+='<h5 class="m_0" ><span style="text-transform: uppercase;">'+result[i].name+' </span> <span  attr_apptcandName="'+result[i].apptcandidateName+'" attr_apptUserId='+result[i].apptUserId+' attr_apptcandId="'+result[i].apptcandidateId+'" class="text-bold col-md-offset-3 historyShowModalBtn" style="font-size: 18px;cursor:pointer;">'+result[i].apptCount+'</span></h5>';
+					}	
+					
+					$("#buildCandidateAppointmentUser").html(str);
+				}else{
+				    $("#buildCandidateAppointmentUser").html("No Data Available");	
+				}
+			})				
+}
+	$(document).on("click",".historyShowModalBtn",function(){
+			$(".historyShowModal").modal("show");
+			var apptUserId = $(this).attr("attr_apptUserId");
+			var apptcandidateId = $(this).attr("attr_apptcandId");
+			var apptcandidateName = $(this).attr("attr_apptcandName");
+			//$("#appCandidateNameId").html(apptcandidateName);
+			getAppointStatusOverviewforCandidate(apptUserId,apptcandidateId);
+			getAppointmentHistoryForCandidate(apptUserId,apptcandidateId)
+		});
+		
+
+ function getAppointStatusOverviewforCandidate(apptUserId,apptcandidateId){
+	 
+		  $("#aptCandidateHistorystatusOverViewDiv").html('<img src="images/search.gif" />');
+	    	var jsObj={
+	    			appointmentCandidateId:apptcandidateId,
+					apptUserId:apptUserId,
+					task:""
+	    		}
+	    		$.ajax({
+	    			  type:'GET',
+	    			  url: 'getAppointStatusOverviewforCandidateAction.action',
+	    			  data: {task:JSON.stringify(jsObj)}
+	    	   }).done(function(result){
+					
+					buildAppointmentStatusOverView(result);
+					
+	    	   });	
+		  }
+		  function buildAppointmentStatusOverView(result)
+		  {
+			  
+			var str = '';
+			var total = 0;
+			for(var i in result)
+			{
+				total = total + result[i].availableCount;
+			}
+			str+='<p>Total Appointment Requested - '+total+'</p>';
+			str+='<table class="table table-bordered">';
+			str+='<tr class="text-center">';
+			for(var i in result)
+			{
+			
+			str+='<td>';
+			str+='<h4>'+result[i].availableCount+'</h4>';
+			str+='<h5>'+result[i].name+'</h5>';
+			str+='</td>';
+			
+			}
+			str+='</tr>';
+			str+='</table>';
+		   $("#aptCandidateHistorystatusOverViewDiv").html(str);			
+		  }
+		  
+		  function getAppointmentHistoryForCandidate(apptUserId,apptcandidateId){
+			$("#aptCandidateHistoryDiv").html('<img src="images/search.gif" />');
+			//$("#buildCommentsForHistoryView").html('<img src="images/search.gif" />');
+	    	var jsObj={
+	    			appointmentCandidateId:apptcandidateId,
+					apptUserId:apptUserId,
+					task:""
+	    		}
+		$.ajax({
+		  type : 'GET',
+		  url : 'getAppointmentHistoryForCandidateAction.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+		  buildAppointmentHistoryForCandidate(result);
+		  });
+	  }
+	  
+	function buildAppointmentHistoryForCandidate(result)
+	{
+		var str='';
+		str+='<table class="table table-condensed" style="border:1px solid #ddd" id="aptCandidateHistorydatatable">';
+		str+='<thead>';
+		str+='<th>ID</th>';
+		str+='<th>PURPOSE</th>';
+		str+='<th>CREATED ON</th>';
+		str+='<th>PREFERED DATE</th>';
+		str+='<th>CONFIRMED DATE</th>';
+		str+='<th>STATUS</th>';
+		str+='<th></th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result)
+		{
+		str+='<tr>';
+		str+='<td>'+result[i].uniqueCode+'</td>';
+		str+='<td>'+result[i].purpose+'</td>';
+		str+='<td>'+result[i].createdOn+'</td>';
+		str+='<td>'+result[i].preferredDate+'</td>';
+		str+='<td>'+result[i].confirmedDate+'</td>';
+		str+='<td>'+result[i].status+'</td>';
+		str+='<td><img onclick="getAppointCommentsForTracking(\''+result[i].id+'\',\''+result[i].uniqueCode+'\')" style="height:16px;cursor:pointer;margin-right:5px;" title="View Status History" attr-aptname="'+result[i].uniqueCode+'" attr-id="'+result[i].id+'" class="pull-right showanimate" src="dist/Appointment/img/reqHistoryicon+.png">';
+		str+='</tr>';	
+		}
+		str+='</tbody>';
+		str+='</table>';
+		str+='<div id="appointmentCommentsDiv" class="m_top30"></div>';
+		$("#aptCandidateHistoryDiv").html(str);	
+	     $('#aptCandidateHistorydatatable').DataTable();
+		 $('#aptCandidateHistorydatatable').removeClass("dataTable");
+	}
+	
+	function getAppointCommentsForTracking(id,name)
+	{
+		$("#appointmentCommentsDiv").html('<img src="images/search.gif" />');
+		var jsObj={
+	    			appntmntId:id,
+					task:""
+	    		}
+		$.ajax({
+		  type : 'GET',
+		  url : 'getAppointmentStatusCommentsTrackingDetails.action',
+		  dataType : 'json',
+		  data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+		  buildAppointCommentsForTracking(result,name);
+		});
+		
+	}
+	
+	function buildAppointCommentsForTracking(result,aptName)
+	{
+			var str='';
+	
+			str+='<h4>'+aptName+' Appointment Status Tracking </h4>';
+			if(result == null || result.length == 0)
+				$("#appointmentCommentsDiv").html('No Data Available');
+			str+='<ul class="apptStatusTracking">';
+			for(var i in result){
+				
+				str+='<li>';
+					str+='<div class="arrow_box">';
+					if(result[i].id == 1)
+					str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+						else
+						str+='<p>Appointment status changed to <span class="text-success"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+					
+						if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0)
+						{
+							str+='<u style="font-size:15px;">Comments</u>';
+							for(var j in result[i].commentsList)
+							{
+							
+							str+='<p>'+result[i].commentsList[j]+'</p>';	
+							}
+						}
+						
+					str+='</div>';
+				str+='</li>';	
+			}
+			str+='</ul>';
+			$("#appointmentCommentsDiv").html(str);
+			$('.historyShowModal').animate({
+						scrollTop: $("#appointmentCommentsDiv").offset().top},
+					'slow');
+	 
+	}
+	

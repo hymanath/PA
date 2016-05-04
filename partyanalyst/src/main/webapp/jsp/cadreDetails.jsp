@@ -168,6 +168,17 @@ var globalCadreId = '${cadreId}';
                     	<h5 class="m_0">Location : <span id="participatedConstId" class="text-bold"></span></h5>
                      </div> 
                 </div>
+				<div class="panel panel-default" id="candidateapptID" style="display:none">
+				<div class="panel-heading" id="candidateAppointmentId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="fa fa-calendar-plus-o"></i> CANDIDATE APPOINTMENT <span class="pull-right" id="candidateAppointmentHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="candidateAppointmentShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    </div>
+					<div class="panel-body" id="candidateAppointmentBodyId">
+					<img id="candidateAppointmentImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
+					<div id="buildCandidateAppointmentUser"></div>
+                     </div> 
+					 
+				</div>
 				
             	<div class="panel panel-default">
                 	<div class="panel-heading" role="tab" id="headingTwo12">
@@ -881,6 +892,23 @@ var globalCadreId = '${cadreId}';
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		
+			<div class="modal fade bs-example-modal-sm historyShowModal"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">	  
+				<div class="modal-dialog modal-lg">
+				<div class="modal-content ">
+				  <div class="modal-header" style="background-color:#CCCCCC">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"><span id="appCandidateNameId"></span>APPOINTMENT HISTORY</h4>
+				  </div>
+				  <div class="modal-body" style="padding:25px 5px 35px 5px;">
+					<div id="aptCandidateHistorystatusOverViewDiv"></div>
+					<div id="aptCandidateHistoryDiv"></div>
+					<div id="appointmentCommentsDiv"></div>
+				  </div>
+				</div>
+			  </div>
+		</div>
+	
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -1523,7 +1551,18 @@ $(document).on("click",".detailsCls",function(){
 	getCategoryFeedBackAnswerForCadre();//call for feedback answer
 	
 });
-
+$("#candidateAppointmentBodyId").collapse('hide');
+$(document).on("click","#candidateAppointmentId",function(){
+	var isVisible = $( "#candidateAppointmentHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#candidateAppointmentHideId" ).show();
+		 $( "#candidateAppointmentShowId" ).hide();
+	}else{
+		$( "#candidateAppointmentHideId" ).hide();
+		$( "#candidateAppointmentShowId" ).show();
+	}
+	$("#candidateAppointmentBodyId").collapse('toggle');
+});
 </script>
 
 </body>
