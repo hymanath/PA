@@ -785,6 +785,7 @@
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntity</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance</value>
 				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
+				 <value>com.itgrids.partyanalyst.model.IvrSurveyCandidateQuestion</value>
 				 
 				 <!-- appointment related Models -->
 				 <value>com.itgrids.partyanalyst.model.AppointmentStatus</value>
