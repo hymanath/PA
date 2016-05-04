@@ -355,14 +355,14 @@ var globalCadreId = '${cadreId}';
 						</div>
                     </div>
 				</div>
-					<div class="panel panel-default">
+					<!--<div class="panel panel-default">
 					<div class="panel-heading" id="ivrSummaryHeaderId">
                     	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY<span class="pull-right" id="ivrSummaryHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="ivrSummaryShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>		
 					<div class="panel-body" id="ivrSummaryBodyId">
 						<div id="ivrTypeDetailsDivId"></div>
 					 </div>
-				 </div>
+				 </div>-->
 					
 				<!-- IVR SUMMARY  END ----> 
                 <div class="panel panel-default">
@@ -652,19 +652,35 @@ var globalCadreId = '${cadreId}';
 						</a>
                     </div>
                     <div class="panel-body" id="surveyDetailsId" style="display:none;">
-						<h4 style="font-weight:bold;margin:5px;">TAB SURVEY'S</h4>
-						<div class="surveyDetailssCls">	</div>
-						<div class="surveyDetailsCls">	</div>
-						
-						<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
-                    	<div id="surveyDetailsMainDivId" class=""></div>
-						
-						<div id="ivrSurveysMainDivId">
-							<h4 style="font-weight:bold;margin-top:20px;">IVR SURVEY'S</h4>
-							<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
-							<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+						<div>
+
+						  <!-- Nav tabs -->
+						  <ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active"><a href="#tabsurvey" aria-controls="tabsurvey" role="tab" data-toggle="tab">TAB SURVEY</a></li>
+							<li role="presentation"><a href="#ivrsurvey" aria-controls="ivrsurvey" role="tab" data-toggle="tab" onclick="getCandidateParticipatedSurveyCnt();">IVR SURVEY</a></li>
+						  </ul>
+
+						  <!-- Tab panes -->
+						  <div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="tabsurvey">
+								<div class="surveyDetailssCls">	</div>
+								<div class="surveyDetailsCls">	</div>
+								<center><img id="surveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
+								<div id="surveyDetailsMainDivId" class=""></div>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="ivrsurvey">
+								<div id="ivrSurveysMainDivId">
+								<div class="ivrSurvyTabId"></div>
+								<div id="ivrTypeDetailsDivId"></div>
+								<div id="ivrDetailsBodyId"></div>
+								<center><img id="dataLoadingsImgForIVRDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+								<div class="ivrSurvysDetls"></div>
+									<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
+									<!--<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>-->
+								</div>
+							</div>
+						  </div>
 						</div>
-						
                     </div>
                 </div>
             </div>
@@ -731,8 +747,7 @@ var globalCadreId = '${cadreId}';
 						<li role="presentation" class="active 11"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">CADRE</a></li>
 						<li role="presentation" class="22"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">FAMILY</a></li>
 					  </ul>
-
-					  <!-- Tab panes -->
+					<!-- Tab panes -->
 					  <div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="home">
 							<center><img id="dataLoadingsImgForNtrTrust" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
@@ -856,8 +871,8 @@ var globalCadreId = '${cadreId}';
 				<h4 class="modal-title text-center"><span id="ivrModalHeadingId"></span></h4>
 			  </div>
 			  <div class="modal-body">
-				<div id="ivrDetailsBodyId">
-				</div>
+				<!--<div id="ivrDetailsBodyId">
+				</div>-->
 				<center><img id="dataLoadingsImgForIVRDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
 			  </div>
 			  <div class="modal-footer">
@@ -891,6 +906,7 @@ var globalCadreId = '${cadreId}';
     <script src="js/simplePagination/simplePagination.js" type="text/javascript"></script>
 	<script src="js/grievance/statusColor.js" type="text/javascript"></script>
 	<script src="js/cadreDetails/cadre_details.js" type="text/javascript"></script>
+	<script src="js/cadreDetails/cadre_details1.js" type="text/javascript"></script>
 	<script>
 	var globalCadreId = '${cadreId}';
 	
