@@ -46,6 +46,7 @@ public class TdpCadreVO implements java.io.Serializable
 
 	private Long webCount;
 	private Long tabCount;
+	private Long onlineCount;
 	
 	public String getName() {
 		return name;
@@ -282,5 +283,12 @@ public class TdpCadreVO implements java.io.Serializable
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
+	public Long getOnlineCount() {
+		return onlineCount;
+	}
+	public void setOnlineCount(Long onlineCount) {
+		this.onlineCount = onlineCount;
+	}
+	
 	
 }

@@ -12660,6 +12660,9 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 							else if(sourceType.trim().equalsIgnoreCase("TAB")){
 								vo.setTabCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
 							}
+							else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+								vo.setOnlineCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+							}
 						}
 					}
 					else{
@@ -12672,6 +12675,9 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 						}
 						else if(sourceType.trim().equalsIgnoreCase("TAB")){
 							vo.setTabCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
+						}
+						else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+							vo.setOnlineCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0L"));
 						}
 						afflCdrMap.put(id, vo);
 					}
@@ -12733,6 +12739,9 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 							}
 							else if(sourceType.trim().equalsIgnoreCase("TAB")){
 								finalvo.setTabCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0L"));
+							}
+							else if(sourceType.trim().equalsIgnoreCase("ONLINE")){
+								finalvo.setOnlineCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0L"));
 							}
 							if(finalvo.getCount() != null && finalvo.getCount().longValue() > 0L){
 								finalvo.setCount(finalvo.getCount().longValue() + Long.valueOf(Long.valueOf(obj[1] != null ? obj[1].toString():"0L")));
@@ -12887,6 +12896,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
 						tdpvo.setTabCount(0L);
 						tdpvo.setWebCount(0L);
+						tdpvo.setOnlineCount(0L);
 						tdpvo.setTotalCount(0L);
 						cadrelocationWiseMap.put(tdpvo.getId(), tdpvo);
 					}
@@ -12900,6 +12910,7 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 						tdpvo.setName(commonMethodsUtilService.getStringValueForObject(distCadre[1]));
 						tdpvo.setTabCount(0L);
 						tdpvo.setWebCount(0L);
+						tdpvo.setOnlineCount(0L);
 						tdpvo.setTotalCount(0L);
 						cadrelocationWiseMap.put(tdpvo.getId(),tdpvo);
 					}
@@ -12934,10 +12945,13 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 							else if(typeStr.trim().equalsIgnoreCase("WEB")){
 								vo.setWebCount(count);								
 							}
-							
+							else if(typeStr.trim().equalsIgnoreCase("ONLINE")){
+								vo.setOnlineCount(count);
+							}
 							Long webCount = vo.getWebCount() != null ? Long.valueOf(vo.getWebCount().toString().trim()):0L;
 							Long tabCount = vo.getTabCount() != null ? Long.valueOf(vo.getTabCount().toString().trim()):0L;
-							Long totalCount = webCount + tabCount;
+							Long onlineCount = vo.getOnlineCount() != null ? Long.valueOf(vo.getOnlineCount().toString().trim()):0L;
+							Long totalCount = webCount + tabCount + onlineCount;
 							if(totalCount != null && totalCount.longValue()>0L)
 								vo.setTotalCount(totalCount);
 						}

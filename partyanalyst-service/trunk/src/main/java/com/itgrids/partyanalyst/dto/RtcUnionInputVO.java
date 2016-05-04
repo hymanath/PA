@@ -11,6 +11,7 @@ public class RtcUnionInputVO {
 	private String toDate;
 	private String dateType;
 	private String appType;
+	private String sourceType;
 	public List<Long> getMemeberTypeIds() {
 		return memeberTypeIds;
 	}
@@ -52,6 +53,12 @@ public class RtcUnionInputVO {
 	}
 	public void setAppType(String appType) {
 		this.appType = appType;
+	}
+	public String getSourceType() {
+		return sourceType;
+	}
+	public void setSourceType(String sourceType) {
+		this.sourceType = sourceType;
 	}
 	
 	

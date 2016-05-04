@@ -22,9 +22,16 @@ public class AffiliatedCadreVO {
 	private Long count = 0L;
 	private Long webCount = 0L;
 	private Long tabCount = 0L;
+	private Long onlineCount = 0L;
 	private List<AffiliatedCadreVO> affiliatedCadreVoList;
 	
 	
+	public Long getOnlineCount() {
+		return onlineCount;
+	}
+	public void setOnlineCount(Long onlineCount) {
+		this.onlineCount = onlineCount;
+	}
 	public Long getId() {
 		return id;
 	}
