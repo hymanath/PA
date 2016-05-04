@@ -104,7 +104,7 @@ $(document).on("click",".applyBtn",function(){
 
 	 $(document).on("click",".getDate",function(){
 	$(".daterangepicker").css("display","block");	
-	//$(".show-calendar").css("display","none");	
+	$(".show-calendar").css("display","none");	
 	
 	}); 
 
