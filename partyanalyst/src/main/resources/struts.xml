@@ -11576,7 +11576,7 @@
 	    	<param name="root">affiliatedCadreVO</param>
 	    </result>
 	</action>
-		<action name="getRegistrationDetailsAction" class="rtcUnionAction" method="getRegistrationCadreDetails">
+	<action name="getRegistrationDetailsAction" class="rtcUnionAction" method="getRegistrationCadreDetails">
 		<result type="json" name="success">
 	    	<param name="root">cadreDataList</param>
 	    </result>
