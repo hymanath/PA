@@ -3583,7 +3583,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
 			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.houseNo,  ");
 			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.aadheerNo, model.dataSourceType , model.isDeleted,cadreDeleteReason.cadreDeleteReasonId," +
-					" cadreDeleteReason.reason ");
+					" cadreDeleteReason.reason");//20
 			queryStr.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
 			queryStr.append(" left join model.userAddress.tehsil tehsil ");
 			queryStr.append(" left join model.userAddress.constituency constituency ");
@@ -6676,7 +6676,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	public List<Object[]> checkVoterCardNumberRegistration(String voterIDCardNo){
 		
 		Query query = getSession().createQuery("select model.voter.voterIDCardNo," +
-									" model.tdpCadreId" +
+									" model.tdpCadreId, model.payMentStatus " +
 									" from TdpCadre model" +
 									" where model.voter.voterIDCardNo = :voterIDCardNo" +
 									" and model.isDeleted = 'N'" +
@@ -6690,7 +6690,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	public List<Object[]> checkAlreayRegistrationByMemberShipNo(List<Long> tdpCadreIdsList){
 		
 		Query query = getSession().createQuery("select model.tdpCadreId," +
-									" model.parentTdpCadreId" +
+									" model.parentTdpCadreId, model.payMentStatus" +
 									" from TdpCadre model" +
 									" where model.parentTdpCadreId in (:tdpCadreIdsList)" +
 									" and model.isDeleted = 'N'" +
