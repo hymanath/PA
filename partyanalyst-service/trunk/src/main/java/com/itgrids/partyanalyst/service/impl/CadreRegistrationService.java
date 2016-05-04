@@ -11182,6 +11182,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						if(cadreRegistrationVO.getCadreId() != null && cadreRegistrationVO.getCadreId().longValue()>0L){
 							tdpCadre.setPayMentStatus(IConstants.NOT_REQUIRED);
 							tdpCadre.setParentTdpCadreId(cadreRegistrationVO.getCadreId());
+							cadreRegistrationVO.setParentTdpCadreId(cadreRegistrationVO.getCadreId());
 						}
 						else
 							tdpCadre.setPayMentStatus(IConstants.NOT_PAID_STATUS);
@@ -12017,6 +12018,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 									String jobCode =  "";
 									if(cadreRegistrationVO.getDataSourceType() != null && !cadreRegistrationVO.getDataSourceType().trim().equalsIgnoreCase("ONLINE"))
 											jobCode = sendSMSForAffliatedCadre(cadreRegistrationVO.getCreatedUserId(),cadreRegistrationVO.getMobileNumber().trim(), "Thanks for registration, your Membership ID  :"+tdpCadre1.getMemberShipNo());
+									else if(cadreRegistrationVO.getParentTdpCadreId() != null && cadreRegistrationVO.getParentTdpCadreId().longValue()>0L)
+										jobCode = sendSMSForAffliatedCadre(cadreRegistrationVO.getCreatedUserId(),cadreRegistrationVO.getMobileNumber().trim(), "Thanks for TNGF registration, your Membership ID  :"+tdpCadre1.getMemberShipNo());
 								}
 								
 								
@@ -13103,7 +13106,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 								tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 								tdpCadre.setUpdatedUserId(userId);
 								tdpCadreDAO.save(tdpCadre);
-								sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+								String smsSentStatus= sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+								System.out.println("TNGF Registration sms sent status :"+smsSentStatus);
 							}
 						}
 					}
