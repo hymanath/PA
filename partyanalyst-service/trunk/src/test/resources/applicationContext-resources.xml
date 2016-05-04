@@ -766,6 +766,7 @@
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyLocation</value>
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntityType</value>
 				 <value>com.itgrids.partyanalyst.model.IvrSurveyEntity</value>
+				  <value>com.itgrids.partyanalyst.model.IvrSurveyCandidateQuestion</value>
 				 <value>com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance</value>
 				 
 				 <value>com.itgrids.partyanalyst.model.TdpMemberUnionTabUserRelation</value>
@@ -3539,6 +3540,9 @@
 	</bean>
 	
 	<bean id="loginRequiredUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginRequiredUrlDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ivrSurveyCandidateQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyCandidateQuestionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
