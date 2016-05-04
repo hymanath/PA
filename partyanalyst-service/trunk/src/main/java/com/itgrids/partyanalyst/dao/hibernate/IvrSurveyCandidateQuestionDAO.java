@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IIvrSurveyCandidateQuestionDAO;
 import com.itgrids.partyanalyst.model.HomePageQuestion;
@@ -13,4 +14,35 @@ public class IvrSurveyCandidateQuestionDAO extends GenericDaoHibernate<IvrSurvey
     public IvrSurveyCandidateQuestionDAO(){
     	super(IvrSurveyCandidateQuestion.class);
     }
+    
+	public Long getIvrSurveyCountByCandiate(Long candidateId){
+		Query query = getSession().createQuery(" select distinct model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId from IvrSurveyCandidateQuestion model " +
+				" where model.candidate.candidateId = :candidateId " +
+				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false' ");
+		query.setParameter("candidateId", candidateId);
+		return (Long) query.uniqueResult();
+	}
+	
+	public List<Long> getIvrSurveyQuestionsByCandiate(Long candidateId){
+		Query query = getSession().createQuery(" select distinct model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId from IvrSurveyCandidateQuestion model " +
+				" where model.candidate.candidateId = :candidateId " +
+				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false'");
+		query.setParameter("candidateId", candidateId);
+		return  query.list();
+	}
+	
+	public List<Object[]> getIvrSurveyQuestionsOptionsByCandiate(List<Long> questionIds){
+		Query query = getSession().createQuery("select distinct model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId," +
+				" model.ivrSurveyQuestion.ivrSurvey.surveyName," +
+				" model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId,model.ivrSurveyQuestion.ivrQuestion.question," +
+				" ivrOption.ivrOptionId,ivrOption.option," +
+				" model.candidate.candidateId,model.candidate.firstname" +
+				" from IvrSurveyCandidateQuestion model left join model.ivrOption ivrOption" +
+				" where model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId in(:questionIds) " +
+				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false'," +
+				" and ivrOption.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false' ");
+		query.setParameterList("questionIds", questionIds);
+		return query.list();
+	}
+    
 }
