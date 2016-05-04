@@ -74,4 +74,5 @@ public interface ICadreDetailsService {
 	public VerifierVO getCandateParicipatedSurveyCount(Long cadreId);
 	public VerifierVO getSurveysOnCandidateCount(Long candidateId);
 	public List<CadreDetailsVO> getAppointmentsUserDetails(List<Long> appointmentUserIds, Long tdpcadreId);
+	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId);
 }
