@@ -24,7 +24,8 @@ $(document).ready(function(){
 
 		
 function startSearchingPage(){
-	window.location.href="affiliatedCadreSearchAction.action";
+
+	window.location.href="http://telugudesam.org/emembership/teluguNaduGraduatesRegistration.html";
 }
 function showUploadStatus()
 	{
@@ -48,7 +49,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="javascript:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Another Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
@@ -61,7 +62,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >New Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="javascript:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >New Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
@@ -74,7 +75,7 @@ function showUploadStatus()
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12 show-grid text-center" style="position: relative;">';
-			str+= '<a href="javasctipt:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  > New Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="javascript:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  > New Registration <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
