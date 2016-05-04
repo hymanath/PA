@@ -1012,7 +1012,11 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 			if(list1 != null && list1.size() > 0){
 				for (Object[] obj : list1) {
 					String registeredVoter = obj[0] != null ? obj[0].toString():"";
-					voterCheckMap.put(registeredVoter, "Already Registered");
+					String paymentStatus = commonMethodsUtilService.getStringValueForObject(obj[2]);
+					if(paymentStatus != null && paymentStatus.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS))
+						voterCheckMap.put(registeredVoter, "Payment is Pending");
+					else
+						voterCheckMap.put(registeredVoter, "Already Registered");
 				}
 			}
 			
@@ -1027,6 +1031,9 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					String voterCardNo = obj[3] != null ? obj[3].toString():"";
 					vo.setVoterIDCardNo(voterCardNo);
 					String check = voterCheckMap.get(voterCardNo);
+					if(check != null && check.contains("Payment")){
+						vo.setPaymentStatus("PAY NOW");
+					}
 					if(check != null){
 						vo.setAlreadyRegistered(check);
 					}
