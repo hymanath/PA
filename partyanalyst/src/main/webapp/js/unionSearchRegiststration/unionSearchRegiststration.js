@@ -146,7 +146,7 @@ function buildVoterDetails(result){
 	
 	if(result != null){
 		for(var i in result){
-			str+='<div class="media " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border:1px solid #ddd;padding:8px;cursor:pointer;background:#f8f8f8">';
+			str+='<div class="media " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border:1px solid #ddd;padding:8px;background:#f8f8f8">';
 				//str+='<span href="#" class="media-left">';
 				//str+='<img style="width: 64px; height: 64px;" src="images/Member_thamb_image.png" />';
 				//str+='</span>';
@@ -175,11 +175,21 @@ function buildVoterDetails(result){
 				str+='</ul>';
 				
 				str+='</div>';
-				str+='<div class="col-md-2">';
-					if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
-						str+='<span class="text-success pull-right" style="font-weight:bold;margin-right: 250px;"> Already Registered </span>';
-					else
-						str+='  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button>';
+			
+					if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered"){
+							str+='<div class="col-md-2">';
+							str+='<span class="text-success pull-right" style="font-weight:bold;"> Already Registered </span>';
+					}						
+					else if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Payment is Pending"){
+							str+='<div class="col-md-4">';
+						str+='<li class="text-warning " style="font-weight:bold;" >Payment is Pending';
+						str+='  <button class=" detailsCls btn btn-warning btn-xs " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>PAY NOW</button> </li>';
+					}						
+					else{
+							str+='<div class="col-md-2">';
+							str+='  <button class=" detailsCls btn btn-success btn-xs pull-right" id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+'>REGISTER</button>';
+					}
+						
 					
 				str+='</div>';
 				str+='</div>';
@@ -332,7 +342,7 @@ function buildCadreDetails(result,jsObj){
 				if(result[i].deletedStatus == "MD"){
 					str+='<div class="media eachCadreMainDivCls" style="background: rgba(255, 0, 0, 0.1) none repeat scroll 0 0;padding: 5px;border-bottom: 1px solid rgb(51, 51, 51);" attr_cadre_id='+result[i].tdpCadreId+'>';
 				}else{
-					 str+='<div class="media" id="main'+result[i].tdpCadreId+'" style="border:1px solid #ddd;padding:8px;cursor:pointer;background:#f8f8f8" attr_cadre_id='+result[i].tdpCadreId+'>';
+					 str+='<div class="media" id="main'+result[i].tdpCadreId+'" style="border:1px solid #ddd;padding:8px;background:#f8f8f8" attr_cadre_id='+result[i].tdpCadreId+'>';
 				}
 				
 				str+='<span href="#" class="media-left">';
@@ -344,9 +354,12 @@ function buildCadreDetails(result,jsObj){
 					str+='<div class="col-md-8">';
 						str+='<ul class="list-inline" style="margin-bottom:0px">';
 							str+='<li><b>Name</b>: '+result[i].cadreName+' </li>';
-							str+='<li><b>Relative Name</b>: '+result[i].relativeName+' </li>';
+							str+='<li><b>Relative Name</b>: '+result[i].relativeName+' </li>'; 
 							if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
 								str+='<li class="text-success pull-right" style="font-weight:bold;">Already Registered</li>';
+							else if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Payment is Pending")
+								str+='<li class="text-warning pull-right" style="font-weight:bold;" >Payment is Pending</li>';
+								
 						str+='</ul>';
 						str+='<ul class="list-inline" style="margin-bottom:0px">';
 							str+='<li><b>Age</b>:'+result[i].age+'<li>';
@@ -363,13 +376,28 @@ function buildCadreDetails(result,jsObj){
 							}
 						str+='</ul>';
 					str+='</div>';
-					str+='<div class="col-md-2">';
-						str+='<div class="btn btn-success">';
-							str+='<label style="margin-bottom:0px;">';
-								str+='<input type="checkbox" class="otpCheckboxCls color:red;" attr_cadreId="'+result[i].tdpCadreId+'" id="cadreCheckId0" value="'+result[i].tdpCadreId+'" name="otpMobileNo">&nbsp;Select';
-							str+='</label>';
+					if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered"){
+						str+='';
+					}
+					else if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Payment is Pending"){
+						str+='<div class="col-md-2">';
+							str+='<div class="btn btn-warning  btn-xs">';
+								str+='<label style="margin-bottom:0px;">';
+									str+='<input type="checkbox" class="otpCheckboxCls  " style="color:red;" attr_cadreId="'+result[i].tdpCadreId+'" id="cadreCheckId0" value="'+result[i].tdpCadreId+'" name="otpMobileNo">&nbsp;PAY NOW';
+								str+='</label>';
+							str+='</div>';
 						str+='</div>';
-					str+='</div>';
+					}
+					else{
+						str+='<div class="col-md-2">';
+							str+='<div class="btn btn-success  btn-xs">';
+								str+='<label style="margin-bottom:0px;">';
+									str+='<input type="checkbox" class="otpCheckboxCls " style="color:red;" attr_cadreId="'+result[i].tdpCadreId+'" id="cadreCheckId0" value="'+result[i].tdpCadreId+'" name="otpMobileNo">&nbsp;Select';
+								str+='</label>';
+							str+='</div>';
+						str+='</div>';
+					}
+					
 				str+='</div>';
 				//ee
 				/*if(result[i].alreadyRegistered != null && result[i].alreadyRegistered == "Already Registered")
@@ -457,15 +485,15 @@ function generateOTPForMobileNo(currentButton){
 			var refNo = Math.floor((Math.random() * 1000000) + 1);
 			$("#randomRefNo").val(refNo);
 			//var prevRefNo = $("#priviousRandomRefNo").val();
-			$("#getOtpId").html("Please wait OTP is Sending to your registered mobile no..");
+			$("#getOtpId").html("<span class='text-success'>Please wait OTP is Sending to your registered mobile no..</span>");
 			var jsObj =
 			{    
 				mobileNo : mobileNo,
 				refNo : refNo
 				//prevRefNo : prevRefNo
 			}
-			//console.log(mobileNo);
-			generateOTPForMobileNumber(jsObj,currentButton);
+			console.log(mobileNo);
+			//generateOTPForMobileNumber(jsObj,currentButton);
 		}else{
 			$("#getOtpId").html("Please select atleast one member.");
 		}
@@ -476,7 +504,7 @@ function generateOTPForMobileNo(currentButton){
 function updateOTPDetails(result,currentButton){
 	$(currentButton).removeAttr('disabled');
 	if(result != null && result == "Success"){
-			$("#getOtpId").html(" OTP sent successfully.");
+			$("#getOtpId").html("<span class='text-success'> OTP sent successfully.</span>");
 	}
 	else{
 		$("#getOtpId").html("<span class='text-danger'> Error occured Generate OTP once again.</span>");
@@ -486,6 +514,7 @@ $("#otpId").keyup(function(){
 	var otp=$("#otpId").val().trim();
 	if(otp.length==6){
 		validateOTP(otp);
+		
 	}
 });
 function validateOTP(otp){
@@ -494,6 +523,7 @@ function validateOTP(otp){
 	var mobileNo = $('#mobileNo'+memberShipNo+'').val();
 	var refNo = $("#randomRefNo").val();
 	$("#fail,#success").hide();
+	$("#validateOTPImg,").show();
 	//alert(mobileNo+"::"+refNo+"::"+otp);
 	var jsObj =
 	{    
@@ -535,7 +565,7 @@ $(document).on("click","#nextStepId",function(){
 	if(count==0){
 		$("#errChkDivId").html("Please Select Atleast One Checkbox.");
 		return;
-	}      
+	}       
 	var caderId = $('input[name="otpMobileNo"]:checked').val();//attr("attr_cadreId");
 	//var caderId=$(this).attr("attr_cadreId");//target="_blank"
 	window.location.href = "affiliatedGraduatesRegistrationAction.action?candidateId="+caderId+"&searchType=cadre&constiteucnyId=0&houseNo=0&boothId=0&panchayatId=0&tdpMemberTypeId=5";
