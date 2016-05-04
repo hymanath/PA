@@ -59,8 +59,8 @@ var cb = function(start, end, label) {
 		
 }
 
-		 $(".ranges").find("ul").prepend('<li class="activeCls">Total</li>');
-		 $(".ranges").find("ul li").removeClass("active");
+		// $(".ranges").find("ul").prepend('<li class="activeCls">Total</li>');
+		// $(".ranges").find("ul li").removeClass("active");
 
 
 	$(document).on("click",".advnceDashboardCls",function(){
@@ -104,7 +104,7 @@ $(document).on("click",".applyBtn",function(){
 
 	 $(document).on("click",".getDate",function(){
 	$(".daterangepicker").css("display","block");	
-	$(".show-calendar").css("display","none");	
+	//$(".show-calendar").css("display","none");	
 	
 	}); 
 

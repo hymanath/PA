@@ -6030,9 +6030,12 @@ function getAppointmentCreatedUsers(){
 					   $("#fromTimeId").val("00:00 AM");
 					   $("#toTimeId").val("00:00 PM");
 					   $("#commentTxt").val("");
-					   
-					   getAllScheduledApptsByDate();
-					   getAppointmentStatusOverview();
+					   //Reinitializing date range picker after setting time slot for appointment
+					    $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
+                        $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
+						 
+					    getAllScheduledApptsByDate();
+					    getAppointmentStatusOverview();
 					   
 			   }else if(type=="update"){
 				   
@@ -7060,6 +7063,9 @@ function getSerchDetailsByStatus(statusId){
            return;		  
 		 } */
 		 
+		 //clearing drag drop time slot div 
+		 $("#confirmAppointmentBlockDropId").empty();
+		 $("#confirmAppointmentBlockDropId").html("<h4 class='deleteTag'>DROP HERE</h4>");
 		 var jsObj={
 			designationId:0,
 			priorityId:0,
