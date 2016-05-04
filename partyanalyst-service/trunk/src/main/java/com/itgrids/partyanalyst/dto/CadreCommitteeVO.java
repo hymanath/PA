@@ -72,8 +72,15 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	
 	private Long tdpCadreCommitteeId;
 	private String alreadyRegistered;
+	private String paymentStatus;
 	
-	
+	 
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 	public String getAlreadyRegistered() {
 		return alreadyRegistered;
 	}
