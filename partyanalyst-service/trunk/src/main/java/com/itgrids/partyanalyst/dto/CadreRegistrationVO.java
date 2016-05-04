@@ -177,8 +177,15 @@ public class CadreRegistrationVO implements Serializable{
 	private String dataSourceType;
 	private String otherDesignationStr;
 	private String userIpAddress;
+	private Long parentTdpCadreId;
 	
 	
+	public Long getParentTdpCadreId() {
+		return parentTdpCadreId;
+	}
+	public void setParentTdpCadreId(Long parentTdpCadreId) {
+		this.parentTdpCadreId = parentTdpCadreId;
+	}
 	public String getUserIpAddress() {
 		return userIpAddress;
 	}

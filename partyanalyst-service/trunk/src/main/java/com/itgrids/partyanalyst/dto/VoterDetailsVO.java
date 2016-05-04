@@ -47,8 +47,15 @@ public class VoterDetailsVO {
 	private String leb;
 	private List<VoterDetailsVO> subList = new ArrayList<VoterDetailsVO>(0);
 	private String alreadyRegistered;
+	private String paymentStatus;
 	
 	
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 	public String getAlreadyRegistered() {
 		return alreadyRegistered;
 	}
