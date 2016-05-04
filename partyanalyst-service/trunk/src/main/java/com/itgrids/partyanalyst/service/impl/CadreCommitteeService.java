@@ -2060,7 +2060,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<Object[]> list = tdpCadreDAO.checkAlreayRegistrationByMemberShipNo(tdpCadreIdsList);
 		if(list != null && list.size() > 0){
 			for (Object[] objects : list) {
-				checkMap.put(Long.valueOf(objects[1].toString()), "Already Registered");
+				//checkMap.put(Long.valueOf(objects[1].toString()), "Already Registered"); 
+				
+				String paymentStatus = commonMethodsUtilService.getStringValueForObject(objects[2]);
+				if(paymentStatus != null && paymentStatus.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS))
+					checkMap.put(Long.valueOf(objects[1].toString()), "Payment is Pending");
+				else
+					checkMap.put(Long.valueOf(objects[1].toString()), "Already Registered");
 			}
 		}
 		
@@ -2068,8 +2074,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			for (CadreCommitteeVO vo : cadreCommitteeList) {
 				Long cadreId = vo.getTdpCadreId();
 				String check = checkMap.get(cadreId);
+				
+				if(check != null && check.contains("Payment")){
+					vo.setPaymentStatus("PAY NOW");
+				}
 				if(check != null){
 					vo.setAlreadyRegistered(check);
+					vo.setPaymentStatus("PAID");
 				}
 			}
 		}
