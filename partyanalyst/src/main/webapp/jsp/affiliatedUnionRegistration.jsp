@@ -930,7 +930,7 @@
 	}
 
 	function startSearchingPage(){
-	window.location.href="affiliatedCadreSearchAction.action";
+	window.location.href="http://telugudesam.org/emembership/teluguNaduGraduatesRegistration.html";
 }
 
 	function showUploadStatus(myResult)
@@ -944,8 +944,6 @@
 		if(result.search('SUCCESS') != -1)
 		{			
 			if(srchType == 'voter'){
-			
-
 				str+='	<form id="affiliatedCadreForm" action="https://www.ccavenue.com/shopzone/cc_details.jsp" method="post" >';
 				str+='<input type="hidden" name="ip" value="'+userip+'" readonly>';
 				str+='<input type="hidden" name="Merchant_Id" value="M_tdpcbn_2144">';			

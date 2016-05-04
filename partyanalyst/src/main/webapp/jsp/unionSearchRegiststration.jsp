@@ -17,6 +17,9 @@
 <body>
 <div class="container">
 	<div class="row">
+		<div style="position: fixed; right: 0px; bottom: 40%; color: rgb(255, 255, 255); border-top-left-radius: 50%; border-bottom-left-radius: 50%; padding: 10px; font-size: 36px; background: rgb(149, 149, 149) none repeat scroll 0px 0px;cursor:pointer;">
+		  <i aria-hidden="true" class="fa fa-commenting" id="submitQuerreisId" class="submitQuerriesCls pull-right"  title=" Click here for Querries / Suggestions "></i>
+		</div>
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-body bgImage" style="padding:30px;padding-bottom:140px;">
@@ -100,11 +103,12 @@
 							</div>
 							<div class="col-md-2">
 								<input type="text" class="form-control m_top20" maxLength="6" id="otpId" style="display:none;"/>
+								<img src="images/ajaxImg2.gif" style="display:none;" class="img-responsive" id="validateOTPImg"/>
 							</div> 
 							<div class="col-md-2">
 							<button class="btn btn-success m_top25" id="nextStepId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;display:none;">NEXT</button>
 							</div>
-							<div id="errChkDivId" style="color:red;"></div>
+							<div id="errChkDivId" style="color:red;"></div> 
 							<div id="success" class="col-md-2 m_top25" style="display:none;">
 							<i class="glyphicon glyphicon-ok" style="color:green;margin-left: -145px;"></i>
 							</div>
@@ -120,7 +124,7 @@
 							</div>
 						</div>
 						
-						<a href="#" id="submitQuerreisId" class="submitQuerriesCls  pull-right">Submit Querries/Suggestions </a>
+						<!--<a href="#" id="submitQuerreisId" class="submitQuerriesCls  pull-right">Submit Querries/Suggestions </a> -->
 
 					</div>
 				</div>
@@ -163,7 +167,7 @@
 			<div class="row">
 				<div class="col-md-8">
 					<label>Querries/Suggestions&nbsp;<span class="querySuggErrCls" style="color:red">&nbsp;</span><span class="text-danger">*</span></label>
-					<textarea class="form-control" rows="4" cols="50"  maxlength="200" name="querriesSuggestions" id="qurySuggstinsId" ></textarea>
+					<textarea class="form-control" rows="4" cols="50"  maxlength="500" name="querriesSuggestions" id="qurySuggstinsId" ></textarea>
 				</div>
 			</div>
 				  
