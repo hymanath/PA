@@ -24,7 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class IvrSurveyCandidateQuestion extends BaseModel implements Serializable {
     
-	private Long candidateSurveyQuestionId;
+	private Long ivrCandidateSurveyQuestionId;
 	private Long candidateId;
 	private Long ivrSurveyQuestionId;
 	private Long ivrOptionsId;
@@ -39,17 +39,18 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "candidate_survey_question_id", unique = true, nullable = false)
-	public Long getCandidateSurveyQuestionId() {
-		return candidateSurveyQuestionId;
+	@Column(name = "ivr_candidate_survey_question_id", unique = true, nullable = false)
+	public Long getIvrCandidateSurveyQuestionId() {
+		return ivrCandidateSurveyQuestionId;
 	}
-	public void setCandidateSurveyQuestionId(Long candidateSurveyQuestionId) {
-		this.candidateSurveyQuestionId = candidateSurveyQuestionId;
+	public void setIvrCandidateSurveyQuestionId(Long ivrCandidateSurveyQuestionId) {
+		this.ivrCandidateSurveyQuestionId = ivrCandidateSurveyQuestionId;
 	}
 	@Column(name = "candidate_id")
 	public Long getCandidateId() {
 		return candidateId;
 	}
+	
 	public void setCandidateId(Long candidateId) {
 		this.candidateId = candidateId;
 	}
