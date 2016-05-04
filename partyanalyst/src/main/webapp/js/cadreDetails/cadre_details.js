@@ -5036,25 +5036,26 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 		if(result != null){
 			var str='';
 			 str+'<div class="panel-body pad_0">';
-			 str+='NOTE : IA:INVITEE ATTENTED  , NI:NON-INVITEE';
+			// str+='NOTE : IA:INVITEE ATTENTED  , NI:NON-INVITEE';
 				str+='<table class="table m_0 table-bordered m_0" style="font-size:12px">'
 					
 					str+='<thead>';
 						str+='<th style="background-color:#f5f5f5">LOCATION</th>';
 						str+='<th style="background-color:#f5f5f5">TOTAL INVITED</th>';
 						str+='<th style="background-color:#f5f5f5">ATTENDED</th>';
-						str+='<th style="background-color:#f5f5f5">INVITEE ATTENDED PERCENTAGE</th>';
+						str+='<th style="background-color:#f5f5f5">INVITEE ATTENDED (%)</th>';
 					str+='</thead>'
 					for(var i in result){
 						str+='<tr>';
 							str+='<td style="text-transform:uppercase">'+result[i].name+'</td>';
 							str+='<td>'+result[i].count+'</td>';
-							str+='<td>'+result[i].actualCount+'(IA), '+result[i].availableCount+'(NI)</td>';
-							str+='<td>'+result[i].percentage+' (%)</td>';
+							str+='<td>'+result[i].actualCount+' (IA), '+result[i].availableCount+' (NIA)</td>';
+							str+='<td>'+result[i].percentage+' </td>';
 						str+='</tr>';
 					}	
 					
 				str+'</table>';
+				str+='<span style="margin-left:15px">IA:INVITEE ATTENDED  ,<b></b> NIA:NON-INVITEE ATTENDED</span>';
 			str+='</div>';
 		
 		$("#trainingCampParticipationDivId").html(str);
