@@ -932,4 +932,26 @@ public String updateLeaderShip(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getSurveysOnCandidateCount(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long candidateId=jObj.getLong("candidateId");
+			verifierVO=cadreDetailsService.getSurveysOnCandidateCount(candidateId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getSurveysOnCandidateCount() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveysOnCandidateDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long candidateId=jObj.getLong("candidateId");
+			finalList=cadreDetailsService.getSurveysOnCandidateDetails(candidateId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getSurveysOnCandidateDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
