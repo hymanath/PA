@@ -555,12 +555,13 @@ function getCandidCountsByStatesAction(){
   {
 	$("#appointmentMembersDiv").html('<img src="images/search.gif"/>');
   $("#membersModelId").modal("show");
+   var apptUserId = $("#appointmentUserSelectBoxId").val();
    var jsObj = {
      roleId : roleId,
     memberType : memberType,
     cntType : countType,
     scheduleType : scheduleType,
-	aptUserId:aptUserId,
+	aptUserId : apptUserId,
     task:""
    }
     $.ajax({
