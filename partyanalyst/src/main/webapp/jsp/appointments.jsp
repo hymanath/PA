@@ -2182,7 +2182,6 @@ $(document).on("click","#dashboardSelectDateIds",function(){
 	}); 
 $(".todayBlock").find(".daterangepicker .ranges").addClass("rangesDashboard")
 $(document).on("click",".rangesDashboard ul li",function(){
-
 	$(".rangesDashboard ul li").find("ul li").removeClass("active");
 	$(this).addClass("active");
 	
@@ -6034,9 +6033,9 @@ function getAppointmentCreatedUsers(){
 					   $("#fromTimeId").val("00:00 AM");
 					   $("#toTimeId").val("00:00 PM");
 					   $("#commentTxt").val("");
-					   //Reinitializing date range picker after setting time slot for appointment
+					   /* //Reinitializing date range picker after setting time slot for appointment
 					    $("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
-                        $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
+                        $('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY')); */
 						 
 					    getAllScheduledApptsByDate();
 					    getAppointmentStatusOverview();
