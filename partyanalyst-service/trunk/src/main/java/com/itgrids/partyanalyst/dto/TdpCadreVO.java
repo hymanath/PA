@@ -46,8 +46,23 @@ public class TdpCadreVO implements java.io.Serializable
 
 	private Long webCount;
 	private Long tabCount;
+	private String alreadyRegistered;
+	private String paymentStatus;
+	
 	private Long onlineCount;
 	
+	public String getAlreadyRegistered() {
+		return alreadyRegistered;
+	}
+	public void setAlreadyRegistered(String alreadyRegistered) {
+		this.alreadyRegistered = alreadyRegistered;
+	}
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 	public String getName() {
 		return name;
 	}
