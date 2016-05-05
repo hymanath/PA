@@ -433,14 +433,14 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		if(aptUserId !=null)
-			str.append(" and model.appointmentCandidate.createdBy =:apointmntCandateId");
+			str.append(" and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
 		str.append(" group by model2.publicRepresentativeType.type ");
 		
 		 Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(aptUserId !=null){
-			 query.setParameter("apointmntCandateId", aptUserId);
+			 query.setParameter("appointmenUserId", aptUserId);
 		 }
 		 return query.list();
 		}
@@ -464,14 +464,14 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		if(roleId != null && roleId > 0)
 			str.append(" and model2.publicRepresentativeType.publicRepresentativeTypeId =:roleId ");
 		if(aptUserId != null && aptUserId > 0)
-			str.append(" and model.appointmentCandidate.createdBy =:aptUserId ");
+			str.append(" and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
 		Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(roleId != null && roleId > 0)
 			 query.setParameter("roleId", roleId);
 		 if(aptUserId != null && aptUserId > 0)
-			 query.setParameter("aptUserId", aptUserId);
+			 query.setParameter("appointmenUserId", aptUserId);
 		 return query.list();
 		}
 	
@@ -493,14 +493,14 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 				if(roleId != null && roleId > 0)
 				str.append(" and  TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :roleId ");
 				if(aptUserId != null && aptUserId > 0)
-					str.append(" and model.appointmentCandidate.createdBy =:aptUserId ");
+					str.append(" and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
 		Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(roleId != null && roleId > 0)
 			 query.setParameter("roleId", roleId);
 		 if(aptUserId != null && aptUserId > 0)
-			 query.setParameter("aptUserId", aptUserId);
+			 query.setParameter("appointmenUserId", aptUserId);
 		 return query.list();
 		}
 	public List<Object[]>  getCommitteeMemROleWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){
@@ -520,14 +520,14 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 				if(roleId != null && roleId > 0)
 				str.append(" and  TCM.tdpCommitteeRole.tdpRoles.tdpRolesId = :roleId ");
 				if(aptUserId != null && aptUserId > 0)
-					str.append(" and model.appointmentCandidate.createdBy =:aptUserId ");
+					str.append(" and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
 		Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(roleId != null && roleId > 0)
 			 query.setParameter("roleId", roleId);
 		 if(aptUserId != null && aptUserId > 0)
-			 query.setParameter("aptUserId", aptUserId);
+			 query.setParameter("appointmenUserId", aptUserId);
 		 return query.list();
 		}	
 }
