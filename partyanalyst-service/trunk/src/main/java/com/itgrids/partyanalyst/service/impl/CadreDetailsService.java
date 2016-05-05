@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreHealthStatusDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateContestedLocationDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -79,6 +81,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
+import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
@@ -169,6 +172,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IIvrSurveyServiceDAO ivrSurveyServiceDAO;
 	private IUserAddressDAO userAddressDAO;
 	private ITrainingCampBatchAttendeeDAO trainingCampBatchAttendeeDAO;
+	private ICadreHealthStatusDAO cadreHealthStatusDAO;
 	private AppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
 	private IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO;
 	
@@ -181,6 +185,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.ivrSurveyCandidateQuestionDAO = ivrSurveyCandidateQuestionDAO;
 	}
 	
+	public ICadreHealthStatusDAO getCadreHealthStatusDAO() {
+		return cadreHealthStatusDAO;
+	}
+
+	public void setCadreHealthStatusDAO(ICadreHealthStatusDAO cadreHealthStatusDAO) {
+		this.cadreHealthStatusDAO = cadreHealthStatusDAO;
+	}
+
 	public AppointmentCandidateRelationDAO getAppointmentCandidateRelationDAO() {
 		return appointmentCandidateRelationDAO;
 	}
@@ -6033,6 +6045,718 @@ public class CadreDetailsService implements ICadreDetailsService{
 		return voList;
 	}
 
+	/*public List<IdNameVO> getDeathsAndHospitalizationStatusWiseDetails(Long locationValue,String searchType,String issueType){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		
+		try {
+			
+			List<Object[]> statusList = cadreHealthStatusDAO.getAllGrievanceInsuranceStatus();
+			Map<Long,IdNameVO> statusMap=new LinkedHashMap<Long, IdNameVO>(0);
+			if(statusList != null && statusList.size() > 0){
+				for (Object[] obj : statusList) {
+					IdNameVO vo = new IdNameVO();
+					
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setId(id);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					statusMap.put(id, vo);
+				}
+			}
+			List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(locationValue, searchType, issueType);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					Long id = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					
+					IdNameVO vo = statusMap.get(id);
+					vo.setCount(count);
+				}
+			}
+			
+			returnList.addAll(statusMap.values());
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getDeathsAndHospitalizationStatusWiseDetails() Method ",e);
+		}
+		return returnList;
+	}*/
+	/*
+	 * 
+	 * public GrievanceDetailsVO getDeathsAndHospitalizationStatusWiseDetailsInCadreLocation(Long panchayatId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId){
+		GrievanceDetailsVO grievanDetailsVO = new GrievanceDetailsVO();
+		try {
+			List<Object[]> statusList = cadreHealthStatusDAO.getAllGrievanceInsuranceStatus();
+			Map<String,GrievanceDetailsVO> statusMap=new LinkedHashMap<String, GrievanceDetailsVO>(0);
+			if(statusList != null && statusList.size() > 0){
+				for (Object[] obj : statusList) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String idStr = "D-"+id.toString();
+					vo.setIdStr(idStr);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					statusMap.put(idStr, vo);
+				}
+				for (Object[] obj : statusList) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String idStr = "H-"+id.toString();
+					vo.setIdStr(idStr);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					statusMap.put(idStr, vo);
+				}
+			}
+			
+			Map<String,Map<String,GrievanceDetailsVO>> issueTypeMap = new LinkedHashMap<String, Map<String,GrievanceDetailsVO>>();
+			issueTypeMap.put("Death", statusMap);
+			issueTypeMap.put("Hospitalization", statusMap);
+			
+			Map<String,Map<String,Map<String,GrievanceDetailsVO>>> locationsMap = new LinkedHashMap<String, Map<String,Map<String,GrievanceDetailsVO>>>();
+			if(panchayatId != null && panchayatId.longValue() > 0l){
+				locationsMap.put("panchayat", issueTypeMap);
+				
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(panchayatId, "panchayat");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Map<String,GrievanceDetailsVO>> panIssTypeMap = locationsMap.get("panchayat");
+						Map<String,GrievanceDetailsVO> panStaMap = panIssTypeMap.get(issueType);
+						GrievanceDetailsVO panvo = null;
+						if(issueType.equalsIgnoreCase("Death"))
+							panvo = panStaMap.get("D-"+statusId.toString());
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							panvo = panStaMap.get("H-"+statusId.toString());
+						//panvo = panStaMap.get(statusId);
+						panvo.setCount(count);
+					}
+				}
+			}
+				
+			if(mandalId != null && mandalId.longValue() > 0l){
+				locationsMap.put("mandal", issueTypeMap);
+				
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(mandalId, "mandal");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Map<String,GrievanceDetailsVO>> manIssTypeMap = locationsMap.get("mandal");
+						Map<String,GrievanceDetailsVO> manStaMap = manIssTypeMap.get(issueType);
+						GrievanceDetailsVO panvo = null;
+						if(issueType.equalsIgnoreCase("Death"))
+							panvo = manStaMap.get("D-"+statusId.toString());
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							panvo = manStaMap.get("H-"+statusId.toString());
+						//panvo = panStaMap.get(statusId);
+						panvo.setCount(count);
+					}
+				}
+			}
+			else if(lebId != null && lebId.longValue() > 0l){
+				locationsMap.put("muncipality", issueTypeMap);
+				
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(lebId, "leb");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Map<String,GrievanceDetailsVO>> munIssTypeMap = locationsMap.get("muncipality");
+						Map<String,GrievanceDetailsVO> munStaMap = munIssTypeMap.get(issueType);
+						GrievanceDetailsVO panvo = null;
+						if(issueType.equalsIgnoreCase("Death"))
+							panvo = munStaMap.get("D-"+statusId.toString());
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							panvo = munStaMap.get("H-"+statusId.toString());
+						//panvo = panStaMap.get(statusId);
+						panvo.setCount(count);
+					}
+				}
+			}
+				
+			if(constituencyId != null && constituencyId.longValue() > 0l){
+				locationsMap.put("assembly", issueTypeMap);
+				
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(constituencyId, "constituency");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Map<String,GrievanceDetailsVO>> assIssTypeMap = locationsMap.get("assembly");
+						Map<String,GrievanceDetailsVO> assStaMap = assIssTypeMap.get(issueType);
+						GrievanceDetailsVO panvo = null;
+						if(issueType.equalsIgnoreCase("Death"))
+							panvo = assStaMap.get("D-"+statusId.toString());
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							panvo = assStaMap.get("H-"+statusId.toString());
+						//panvo = panStaMap.get(statusId);
+						panvo.setCount(count);
+					}
+				}
+			}
+				
+			if(parliamentId != null && parliamentId.longValue() > 0l){
+				locationsMap.put("parliament", issueTypeMap);
+				
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(parliamentId, "parliament");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Map<String,GrievanceDetailsVO>> parIssTypeMap = locationsMap.get("parliament");
+						Map<String,GrievanceDetailsVO> parStaMap = parIssTypeMap.get(issueType);
+						GrievanceDetailsVO panvo = null;
+						if(issueType.equalsIgnoreCase("Death"))
+							panvo = parStaMap.get("D-"+statusId.toString());
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							panvo = parStaMap.get("H-"+statusId.toString());
+						//panvo = panStaMap.get(statusId);
+						panvo.setCount(count);
+					}
+				}
+			}
+				
+			if(districtId != null && districtId.longValue() > 0l){
+				locationsMap.put("district", issueTypeMap);
+				
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(districtId, "district");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Map<String,GrievanceDetailsVO>> disIssTypeMap = locationsMap.get("district");
+						Map<String,GrievanceDetailsVO> disStaMap = disIssTypeMap.get(issueType);
+						GrievanceDetailsVO panvo = null;
+						if(issueType.equalsIgnoreCase("Death"))
+							panvo = disStaMap.get("D-"+statusId.toString());
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							panvo = disStaMap.get("H-"+statusId.toString());
+						//panvo = panStaMap.get(statusId);
+						panvo.setCount(count);
+					}
+				}
+			}
+			
+			Map<String,GrievanceDetailsVO> returnstatussVOMap = new LinkedHashMap<String,GrievanceDetailsVO>(0); 
+			if(statusList != null && statusList.size() > 0){
+				for (Object[] obj : statusList) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String idStr = "D-"+id.toString();
+					vo.setIdStr(idStr);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnstatussVOMap.put(idStr, vo);
+				}
+				for (Object[] obj : statusList) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					String idStr = "H-"+id.toString();
+					vo.setIdStr(idStr);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnstatussVOMap.put(idStr, vo);
+				}
+			}
+			
+			Map<String,GrievanceDetailsVO> returnLocMap = new LinkedHashMap<String, GrievanceDetailsVO>();
+			if(locationsMap != null && locationsMap.size()>0)
+				for (String locationStr : locationsMap.keySet()) {
+					GrievanceDetailsVO locationVo = new GrievanceDetailsVO();
+					locationVo.setLocationName(locationStr);
+					Map<String,Map<String,GrievanceDetailsVO>> issTypeMap = locationsMap.get(locationStr);
+					if(issTypeMap != null && issTypeMap.size()>0 ){
+						for (String issueTypeStr : issTypeMap.keySet()) {
+							Map<String, GrievanceDetailsVO> statusVOMap = issTypeMap.get(issueTypeStr);
+							if(statusVOMap != null && statusVOMap.size()>0 ){
+								for (String statusStr : statusVOMap.keySet()) {
+									GrievanceDetailsVO mapStatvo = statusVOMap.get(statusStr);
+									GrievanceDetailsVO vo = returnstatussVOMap.get(statusStr);
+									/*if(issueTypeStr.equalsIgnoreCase("Death"))
+										vo.setDeathCount(mapStatvo.getCount());
+									else if(issueTypeStr.equalsIgnoreCase("Hospitalization"))
+										vo.setHospitCount(mapStatvo.getCount());
+									vo.setCount(mapStatvo.getCount());
+								}
+							}
+						}
+					}
+					
+					locationVo.getSubList().addAll(returnstatussVOMap.values());
+					returnLocMap.put(locationStr, locationVo);
+				}
+			}
+			
+			if(returnLocMap != null && returnLocMap.size()>0){
+				grievanDetailsVO.getSubList().addAll(returnLocMap.values());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getDeathsAndHospitalizationStatusWiseDetailsInCadreLocation() Method ",e);
+		}
+		return grievanDetailsVO;
+	}
+	*/
+	
+	public void updateStatusMapDetails(List<Object[]> statusList,Map<String,Map<Long,GrievanceDetailsVO>> issueTypeMap,String issueTypeStr){
+		try {
+			Map<Long,GrievanceDetailsVO> statusMap=new LinkedHashMap<Long, GrievanceDetailsVO>(0);
+			if(statusList != null && statusList.size() > 0){
+				for (Object[] obj : statusList) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setId(id);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					statusMap.put(id, vo);
+				}
+				
+				if(statusMap != null && statusMap.size()>0)
+					issueTypeMap.put(issueTypeStr, statusMap);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateStatusMapDetails() Method ",e);
+		}
+	}
+	public GrievanceDetailsVO getDeathsAndHospitalizationStatusWiseDetailsInCadreLocation(Long panchayatId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId){
+		GrievanceDetailsVO grievanDetailsVO = new GrievanceDetailsVO();
+		try {
+			List<IdNameVO> locationsList = new ArrayList<IdNameVO>();
+			List<Object[]> statusList = cadreHealthStatusDAO.getAllGrievanceInsuranceStatus();
+			Map<Long,GrievanceDetailsVO> statusMap = new LinkedHashMap<Long, GrievanceDetailsVO>();
+			if(statusList != null && statusList.size() > 0){
+				for (Object[] obj : statusList) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					vo.setId(id);
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					statusMap.put(id, vo);
+				}
+				
+			}
+			
+			//Map<String,Map<Long,GrievanceDetailsVO>> issueTypeMap = new LinkedHashMap<String, Map<Long,GrievanceDetailsVO>>();
+			//issueTypeMap.put("Death", statusMap);
+			//issueTypeMap.put("Hospitalization", statusMap);
+			
+			
+			Map<String,Map<String,Map<Long,GrievanceDetailsVO>>> locationsMap = new LinkedHashMap<String, Map<String,Map<Long,GrievanceDetailsVO>>>();
+			if(panchayatId != null && panchayatId.longValue() > 0l){
+				//locationsMap.put("panchayat", issueTypeMap);
+				IdNameVO vo = new IdNameVO();
+				vo.setId(panchayatId);
+				vo.setName("Panchayat");
+				locationsList.add(vo);
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(panchayatId, "panchayat");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						Map<String,Map<Long,GrievanceDetailsVO>> panIssTypeMap = null;
+						if(locationsMap.get("panchayat") == null){
+							panIssTypeMap = new LinkedHashMap<String, Map<Long,GrievanceDetailsVO>>();
+							updateStatusMapDetails(statusList,panIssTypeMap,"Death");
+							updateStatusMapDetails(statusList,panIssTypeMap,"Hospitalization");
+							locationsMap.put("panchayat", panIssTypeMap);
+						}
+						else
+							panIssTypeMap = locationsMap.get("panchayat");
+						
+						Map<Long,GrievanceDetailsVO> panStaMap = panIssTypeMap.get(issueType);
+						
+						GrievanceDetailsVO panvo = panStaMap.get(statusId);
+						panvo.setCount(count);
+					}
+				}
+			}
+				
+			if(mandalId != null && mandalId.longValue() > 0l){
+				//locationsMap.put("mandal", issueTypeMap);
+				IdNameVO vo = new IdNameVO();
+				vo.setId(mandalId);
+				vo.setName("Mandal");
+				locationsList.add(vo);
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(mandalId, "mandal");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						Map<String,Map<Long,GrievanceDetailsVO>> manIssTypeMap = null;
+						//Map<String,Map<Long,GrievanceDetailsVO>> manIssTypeMap = locationsMap.get("mandal");
+						if(locationsMap.get("mandal") == null){
+							manIssTypeMap = new LinkedHashMap<String, Map<Long,GrievanceDetailsVO>>();
+							updateStatusMapDetails(statusList,manIssTypeMap,"Death");
+							updateStatusMapDetails(statusList,manIssTypeMap,"Hospitalization");
+							locationsMap.put("mandal", manIssTypeMap);
+						}
+						else
+							manIssTypeMap = locationsMap.get("mandal");
+						Map<Long,GrievanceDetailsVO> manStaMap = manIssTypeMap.get(issueType);
+						GrievanceDetailsVO manvo = manStaMap.get(statusId);
+						manvo.setCount(count);
+					}
+				}
+			}
+			else if(lebId != null && lebId.longValue() > 0l){
+				//locationsMap.put("muncipality", issueTypeMap);
+				IdNameVO vo = new IdNameVO();
+				vo.setId(lebId);
+				vo.setName("Muncipality");
+				locationsList.add(vo);
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(lebId, "leb");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						
+						//Map<String,Map<Long,GrievanceDetailsVO>> munIssTypeMap = locationsMap.get("muncipality");
+						Map<String,Map<Long,GrievanceDetailsVO>> munIssTypeMap = null;
+						if(locationsMap.get("muncipality") == null){
+							munIssTypeMap = new LinkedHashMap<String, Map<Long,GrievanceDetailsVO>>();
+							updateStatusMapDetails(statusList,munIssTypeMap,"Death");
+							updateStatusMapDetails(statusList,munIssTypeMap,"Hospitalization");
+							locationsMap.put("muncipality", munIssTypeMap);
+						}
+						else
+							munIssTypeMap = locationsMap.get("muncipality");
+						Map<Long,GrievanceDetailsVO> munStaMap = munIssTypeMap.get(issueType);
+						GrievanceDetailsVO munvo = munStaMap.get(statusId);
+						munvo.setCount(count);
+					}
+				}
+			}
+				
+			if(constituencyId != null && constituencyId.longValue() > 0l){
+				//locationsMap.put("assembly", issueTypeMap);
+				IdNameVO vo = new IdNameVO();
+				vo.setId(constituencyId);
+				vo.setName("Constituency");
+				locationsList.add(vo);
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(constituencyId, "constituency");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						Map<String,Map<Long,GrievanceDetailsVO>> assIssTypeMap = null;
+						//Map<String,Map<Long,GrievanceDetailsVO>> assIssTypeMap = locationsMap.get("assembly");
+						if(locationsMap.get("assembly") == null){
+						assIssTypeMap = new LinkedHashMap<String, Map<Long,GrievanceDetailsVO>>();
+						updateStatusMapDetails(statusList,assIssTypeMap,"Death");
+						updateStatusMapDetails(statusList,assIssTypeMap,"Hospitalization");
+						locationsMap.put("assembly", assIssTypeMap);
+						}
+						else
+							assIssTypeMap =locationsMap.get("assembly");
+						Map<Long,GrievanceDetailsVO> assStaMap = assIssTypeMap.get(issueType);
+						GrievanceDetailsVO assvo = assStaMap.get(statusId);
+						assvo.setCount(count);
+					}
+				}
+			}
+				
+			if(parliamentId != null && parliamentId.longValue() > 0l){
+				//locationsMap.put("parliament", issueTypeMap);
+				IdNameVO vo = new IdNameVO();
+				vo.setId(parliamentId);
+				vo.setName("Paliament");
+				locationsList.add(vo);
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(parliamentId, "parliament");
+				
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						Map<String,Map<Long,GrievanceDetailsVO>> parIssTypeMap = null;
+						//Map<String,Map<Long,GrievanceDetailsVO>> parIssTypeMap = locationsMap.get("parliament");
+						if(locationsMap.get("parliament") == null){
+							parIssTypeMap = new LinkedHashMap<String, Map<Long,GrievanceDetailsVO>>();
+							updateStatusMapDetails(statusList,parIssTypeMap,"Death");
+							updateStatusMapDetails(statusList,parIssTypeMap,"Hospitalization");
+							locationsMap.put("parliament", parIssTypeMap);
+						}
+						else
+							 parIssTypeMap = locationsMap.get("parliament");
+						Map<Long,GrievanceDetailsVO> parStaMap = parIssTypeMap.get(issueType);
+						GrievanceDetailsVO parvo = parStaMap.get(statusId);
+						parvo.setCount(count);
+					}
+				}
+			}
+				
+			if(districtId != null && districtId.longValue() > 0l){
+				//locationsMap.put("district", issueTypeMap);
+				IdNameVO vo = new IdNameVO();
+				vo.setId(districtId);
+				vo.setName("District");
+				locationsList.add(vo);
+				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
+				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(districtId, "district");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+						Map<String,Map<Long,GrievanceDetailsVO>> disIssTypeMap = null;
+						//Map<String,Map<Long,GrievanceDetailsVO>> disIssTypeMap = locationsMap.get("district");
+						if(locationsMap.get("district") == null ){
+						disIssTypeMap = new LinkedHashMap<String, Map<Long,GrievanceDetailsVO>>();
+						updateStatusMapDetails(statusList,disIssTypeMap,"Death");
+						updateStatusMapDetails(statusList,disIssTypeMap,"Hospitalization");
+						locationsMap.put("district", disIssTypeMap);
+						}
+						else
+							disIssTypeMap = locationsMap.get("district");
+						Map<Long,GrievanceDetailsVO> disStaMap = disIssTypeMap.get(issueType);
+						GrievanceDetailsVO disvo = disStaMap.get(statusId);
+						disvo.setCount(count);
+					}
+				}
+			}
+			
+			System.out.println(statusMap.size());
+			List<GrievanceDetailsVO> locationWiseVOList = segrigateInsuranceStatusDetails(locationsMap);
+			//statusMap id vo
+			if(locationWiseVOList != null && locationWiseVOList.size()>0){
+				for (GrievanceDetailsVO locationVO : locationWiseVOList) {
+					List<GrievanceDetailsVO> issueTypeVOList = locationVO.getSubList();
+					if(issueTypeVOList != null && issueTypeVOList.size()>0){
+						updateStatusDetails(statusMap, issueTypeVOList,locationVO.getLocationName());
+					}
+				}
+			}
+			
+			if(locationsList != null && locationsList.size() > 0){
+				grievanDetailsVO.getLocationList().addAll(locationsList);
+			}
+			
+			if(statusMap != null && statusMap.size()>0){
+				for (Long statusId : statusMap.keySet()) {
+					grievanDetailsVO.getSubList().add(statusMap.get(statusId));
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getDeathsAndHospitalizationStatusWiseDetailsInCadreLocation() Method ",e);
+		}
+		return grievanDetailsVO;
+	}
+	
+	public void updateStatusDetails(Map<Long,GrievanceDetailsVO> statusMap,List<GrievanceDetailsVO> issueTypeVOList,String locationName){
+		try {
+			for (GrievanceDetailsVO issueTypeVO : issueTypeVOList) {
+				List<GrievanceDetailsVO> statusVOList = issueTypeVO.getSubList();
+				if(statusVOList != null && statusVOList.size()>0){
+					for (GrievanceDetailsVO statusVO : statusVOList) {
+						GrievanceDetailsVO returnStatusVO = statusMap.get(statusVO.getId());
+						if(returnStatusVO != null){
+							//returnStatusVO.setLocationName(locationName);
+							GrievanceDetailsVO stusVO = new GrievanceDetailsVO();
+							stusVO.setName(issueTypeVO.getName());
+							stusVO.setCount(statusVO.getCount());
+							stusVO.setLocationName(locationName);
+							
+							stusVO.setId(statusVO.getId());
+							returnStatusVO.getSubList().add(stusVO);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateStatusDetails() Method ",e);
+		}
+	}
+	public List<GrievanceDetailsVO> segrigateInsuranceStatusDetails(Map<String,Map<String,Map<Long,GrievanceDetailsVO>>> locationsMap){
+		List<GrievanceDetailsVO> returnList = new LinkedList<GrievanceDetailsVO>();
+		try {
+			if(locationsMap != null && locationsMap.size()>0){
+				List<GrievanceDetailsVO> locationWiseVOList = new LinkedList<GrievanceDetailsVO>();
+				for (String locationStr : locationsMap.keySet()) {
+					Map<String,Map<Long,GrievanceDetailsVO>> issueTypeMap = locationsMap.get(locationStr);
+					
+					GrievanceDetailsVO locationVO = new GrievanceDetailsVO();
+					locationVO.setLocationName(locationStr);
+					
+					if(issueTypeMap != null && issueTypeMap.size()>0){
+						List<GrievanceDetailsVO> issueTypeVOList = new LinkedList<GrievanceDetailsVO>();
+						for (String issueTypeStr : issueTypeMap.keySet()) {// death/ Hospitalization
+							
+							GrievanceDetailsVO issueVO = new GrievanceDetailsVO(); 
+							issueVO.setName(issueTypeStr);
+							Map<Long, GrievanceDetailsVO> sttusMap = issueTypeMap.get(issueTypeStr);
+							
+							if(sttusMap != null && sttusMap.size()>0){
+								List<GrievanceDetailsVO> statusVOList = new LinkedList<GrievanceDetailsVO>();
+								for (Long statusId : sttusMap.keySet()) {//status list
+									
+									GrievanceDetailsVO statusObj = sttusMap.get(statusId);
+									
+									GrievanceDetailsVO statusVO = new GrievanceDetailsVO();
+									statusVO.setCount(statusObj.getCount());
+									statusVO.setName(statusObj.getName());
+									statusVO.setId(statusObj.getId());
+									statusVOList.add(statusVO);
+								}
+								issueVO.getSubList().addAll(statusVOList);
+							}
+							
+							issueTypeVOList.add(issueVO);
+						}
+						locationVO.getSubList().addAll(issueTypeVOList);
+					}
+					locationWiseVOList.add(locationVO);
+				}
+				
+				if(locationWiseVOList != null && locationWiseVOList.size()>0)
+					returnList.addAll(locationWiseVOList);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured in segrigateInsuranceStatusDetails() Method ",e);
+		}
+		return returnList;
+	}
+	public List<GrievanceDetailsVO> getDeathAndHospitalizationDetails(Long panchayatId,Long mandalId,Long lebId,Long constituencyId,Long parliamentId,Long districtId){
+		List<GrievanceDetailsVO> voList = new ArrayList<GrievanceDetailsVO>();
+		try {
+			
+			if(panchayatId != null && panchayatId.longValue() > 0l){
+				List<Object[]> list = tdpCadreInsuranceInfoDAO.getDeathAndHospitalizationDetails(panchayatId, "panchayat");
+				if(list != null && list.size() > 0){
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					vo.setName("panchayat");
+					for (Object[] obj : list) {
+						String issueType = obj[1] != null ? obj[1].toString():"";
+						if(issueType.equalsIgnoreCase("Death"))
+							vo.setDeathCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							vo.setHospitCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					}
+					voList.add(vo);
+				}
+			}
+			
+			if(mandalId != null && mandalId.longValue() > 0l){
+				List<Object[]> list = tdpCadreInsuranceInfoDAO.getDeathAndHospitalizationDetails(mandalId, "mandal");
+				if(list != null && list.size() > 0){
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					vo.setName("mandal");
+					for (Object[] obj : list) {
+						String issueType = obj[1] != null ? obj[1].toString():"";
+						if(issueType.equalsIgnoreCase("Death"))
+							vo.setDeathCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							vo.setHospitCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					}
+					voList.add(vo);
+				}
+			}
+			else if(lebId != null && lebId.longValue() > 0l){
+				List<Object[]> list = tdpCadreInsuranceInfoDAO.getDeathAndHospitalizationDetails(lebId, "leb");
+				if(list != null && list.size() > 0){
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					vo.setName("muncipality");
+					for (Object[] obj : list) {
+						String issueType = obj[1] != null ? obj[1].toString():"";
+						if(issueType.equalsIgnoreCase("Death"))
+							vo.setDeathCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							vo.setHospitCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					}
+					voList.add(vo);
+				}
+			}
+			
+			if(constituencyId != null && constituencyId.longValue() > 0l){
+				List<Object[]> list = tdpCadreInsuranceInfoDAO.getDeathAndHospitalizationDetails(constituencyId, "constituency");
+				if(list != null && list.size() > 0){
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					vo.setName("constituency");
+					for (Object[] obj : list) {
+						String issueType = obj[1] != null ? obj[1].toString():"";
+						if(issueType.equalsIgnoreCase("Death"))
+							vo.setDeathCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							vo.setHospitCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					}
+					voList.add(vo);
+				}
+			}
+			
+			if(parliamentId != null && parliamentId.longValue() > 0l){
+				List<Object[]> list = tdpCadreInsuranceInfoDAO.getDeathAndHospitalizationDetails(parliamentId, "parliament");
+				if(list != null && list.size() > 0){
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					vo.setName("parliament");
+					for (Object[] obj : list) {
+						String issueType = obj[1] != null ? obj[1].toString():"";
+						if(issueType.equalsIgnoreCase("Death"))
+							vo.setDeathCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							vo.setHospitCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					}
+					voList.add(vo);
+				}
+			}
+			
+			if(districtId != null && districtId.longValue() > 0l){
+				List<Object[]> list = tdpCadreInsuranceInfoDAO.getDeathAndHospitalizationDetails(districtId, "district");
+				if(list != null && list.size() > 0){
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					vo.setName("district");
+					for (Object[] obj : list) {
+						String issueType = obj[1] != null ? obj[1].toString():"";
+						if(issueType.equalsIgnoreCase("Death"))
+							vo.setDeathCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						else if(issueType.equalsIgnoreCase("Hospitalization"))
+							vo.setHospitCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					}
+					voList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getDeathAndHospitalizationDetails() Method ",e);
+		}
+		return voList;
+	}
+	
 	public VerifierVO getTdpCadreIvrSurveyDetails(Long cadreId)
 	{
 		VerifierVO returnVo = new VerifierVO();
@@ -6123,6 +6847,40 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 				
 		return verifierVO;
+	}
+	
+	public List<GrievanceDetailsVO> getComplaintsDetailsByLocationAndStatus(Long locationId,String locationType,Long insuranceStatId,String issueType){
+		List<GrievanceDetailsVO> returnList = new ArrayList<GrievanceDetailsVO>();
+		try {
+			
+			List<Object[]> list = cadreHealthStatusDAO.getComplaintsDetailsByLocationAndStatus(locationId, locationType, insuranceStatId, issueType);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					vo.setFirstName(obj[0] != null ? obj[0].toString():"");
+					vo.setMembershipNo(obj[1] != null ? obj[1].toString():"");
+					vo.setMobileNo(obj[2] != null ? obj[2].toString():"");
+					//vo.setSubject(obj[3] != null ? obj[3].toString():"");
+					//vo.setDescription(obj[4] != null ? obj[4].toString():"");
+					vo.setComplaintId(Long.valueOf(obj[3] != null ? obj[3].toString():""));
+					vo.setRaisedDate(obj[4] != null ? obj[4].toString():"");
+					vo.setTypeOfIssue(obj[5] != null ? obj[5].toString():"");
+					vo.setStatusId(Long.valueOf(obj[6] != null ? obj[6].toString():""));
+					vo.setStatus(obj[7] != null ? obj[7].toString():"");
+					vo.setUpdatedDate(obj[8] != null ? obj[8].toString():"");
+					vo.setTdpCadreId(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					vo.setSubject(obj[10] != null ? obj[10].toString():"");
+					vo.setDescription(obj[11] != null ? obj[11].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getComplaintsDetailsByLocationAndStatus() method, Exception - ",e);
+		}
+		return returnList;
 	}
 	
 	public VerifierVO getSurveysOnCandidateCount(Long candidateId){
