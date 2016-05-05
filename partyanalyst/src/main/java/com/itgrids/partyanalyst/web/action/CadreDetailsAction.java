@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.CategoryFeedbackVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
+import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
@@ -82,10 +83,24 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<IvrOptionsVO> ivrOptionsList;
 	private List<LocationVO>  cadreDetlsLst;
 	private List<IdNameVO>	  idNameVoList;
+	private List<GrievanceDetailsVO> grievDetailsVOList;
+	private GrievanceDetailsVO grievanceDetailsvo;
 	private List<CadreDetailsVO> cadreDetailsVO;
 	
 	
 	
+	public GrievanceDetailsVO getGrievanceDetailsvo() {
+		return grievanceDetailsvo;
+	}
+	public void setGrievanceDetailsvo(GrievanceDetailsVO grievanceDetailsvo) {
+		this.grievanceDetailsvo = grievanceDetailsvo;
+	}
+	public List<GrievanceDetailsVO> getGrievDetailsVOList() {
+		return grievDetailsVOList;
+	}
+	public void setGrievDetailsVOList(List<GrievanceDetailsVO> grievDetailsVOList) {
+		this.grievDetailsVOList = grievDetailsVOList;
+	}
 	public List<CadreDetailsVO> getCadreDetailsVO() {
 		return cadreDetailsVO;
 	}
@@ -638,7 +653,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 			Long mandalId=jObj.getLong("mandalId");
 			Long constituencyid=jObj.getLong("constituencyId");
 			Long districtId=jObj.getLong("districtId");
-			Long parlimentId=jObj.getLong("parliamentId");;
+			Long parlimentId=jObj.getLong("parliamentId");
 			
 			verifierVO=cadreDetailsService.getDeathsAndHospitalizationDetails(panchayatId,mandalId,constituencyid,parlimentId,districtId);
 		}catch (Exception e) {
@@ -931,6 +946,43 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 	}
 	
+	public String getDeathAndHospitalizationDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long panchayatId = jObj.getLong("panchayatId");
+			Long mandalId = jObj.getLong("mandalId");
+			Long lebId = jObj.getLong("lebId");
+			Long constituencyid = jObj.getLong("constituencyId");
+			Long districtId = jObj.getLong("districtId");
+			Long parlimentId = jObj.getLong("parliamentId");
+			
+			grievanceDetailsvo = cadreDetailsService.getDeathsAndHospitalizationStatusWiseDetailsInCadreLocation(panchayatId, mandalId, lebId, constituencyid, parlimentId, districtId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDeathAndHospitalizationDetails() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	/*public String getDeathsAndHospitalizationStatusWiseDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long locationValue = jObj.getLong("locationValue");
+			String searchType = jObj.getString("searchType");
+			String issueType = jObj.getString("issueType");
+			
+			idNameVoList = cadreDetailsService.getDeathsAndHospitalizationStatusWiseDetails(locationValue, searchType, issueType);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDeathsAndHospitalizationStatusWiseDetails() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}*/
+	
 	
 	public String getCandateParicipatedSurveyCount(){
 		try{
@@ -940,6 +992,24 @@ public String updateLeaderShip(){
 		}catch(Exception e){
 			LOG.error("Exception Occured in getCandateParicipatedSurveyCount() in CadreDetailsAction ",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getComplaintsDetailsByLocationAndStatus(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long locationId = jObj.getLong("locationId");
+			String locationType = jObj.getString("locationType");
+			Long statusId = jObj.getLong("statusId");
+			String issueType = jObj.getString("issueType");
+			
+			grievDetailsVOList = cadreDetailsService.getComplaintsDetailsByLocationAndStatus(locationId,locationType,statusId,issueType);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDeathAndHospitalizationDetails() method, Exception - ",e);
+		}
+		
 		return Action.SUCCESS;
 	}
 	

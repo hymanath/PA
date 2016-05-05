@@ -12022,9 +12022,24 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	<action name="getDeathAndHospitalizationDetailsAction" class="cadreDetailsAction" method="getDeathAndHospitalizationDetails">
+		<result type="json" name="success">
+				<param name="root">grievanceDetailsvo</param>
+		</result>
+	</action>
+	<action name="getDeathsAndHospitalizationStatusWiseDetailsAction" class="cadreDetailsAction" method="getDeathsAndHospitalizationStatusWiseDetails">
+		<result type="json" name="success">
+				<param name="root">idNameVoList</param>
+		</result>
+	</action>
 	<action name="getCandateParicipatedSurveyCountAction" class="cadreDetailsAction" method="getCandateParicipatedSurveyCount">
 		<result type="json" name="success">
 			<param name="root">verifierVO</param>
+		</result>
+	</action>
+	<action name="getComplaintsDetailsByLocationAndStatusAction" class="cadreDetailsAction" method="getComplaintsDetailsByLocationAndStatus">
+		<result type="json" name="success">
+				<param name="root">grievDetailsVOList</param>
 		</result>
 	</action>
 	<action name="getSurveysOnCandidateCountAction" class="cadreDetailsAction" method="getSurveysOnCandidateCount">

@@ -2601,122 +2601,183 @@ function getDeathsAndHospitalizationDetails(){
 	$("#dataLoadingsImgForDeathCount").show();
 	$("#deathHospitalDivId").html("");
 
-	if(globalCandidateResult != null && globalCandidateResult.length > 0)
-	   {
-		for(var i in globalCandidateResult){
-			
-			var panchayatId=globalCandidateResult[i].villageId;
-             if(panchayatId ==undefined || panchayatId ==0 || panchayatId ==null){
-				panchayatId=0;
-			}
-			
-			var mandalId=globalCandidateResult[i].tehsilId;
-			if(mandalId ==undefined || mandalId ==0 || mandalId ==null){
-				mandalId=0;
-			}
-			
-			var constituencyId=globalCandidateResult[i].constituencyId;
-			if(constituencyId ==undefined || constituencyId ==0 || constituencyId ==null){
-				constituencyId=0;
-			}
-			
-			var districtId=globalCandidateResult[i].districtId;
-		    if(districtId ==undefined || districtId =="" || districtId ==null){
-				districtId=0;
-			}
-
-	         var parliamentId=globalCandidateResult[i].ParliamentConstituencyId;;
-				if(parliamentId ==undefined || parliamentId =="" || parliamentId ==null){
-					parliamentId=0;
-				}	
-		} 
+	var panchaId = 0;
+	var mandId = 0;
+	var localElecId = 0;
+	var consttncyId = 0;
+	var parlmntId = 0;
+	var dstctId = 0;
+	
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		consttncyId = participatedConstituencyId;
+		parlmntId = participatedParliamentId;
+		dstctId = participatedDistrictId;
 	}
-	else
-	{
-			var panchayatId=globalPanchayatId;
-			if(panchayatId ==undefined || panchayatId =="" || panchayatId ==null){
-				panchayatId=0;
-			}
-			var mandalId=globalTehsilId;
-			if(mandalId ==undefined || mandalId =="" || mandalId ==null){
-				mandalId=0;
-			}
-			
-			var constituencyId=globalConstituencyId;
-			if(constituencyId ==undefined || constituencyId =="" || constituencyId ==null){
-				constituencyId=0;
-			}
-			
-			var parliamentId=globalParliamentId;
-			if(parliamentId ==undefined || parliamentId =="" || parliamentId ==null){
-				parliamentId=0;
-			}
-			
-			var districtId=globalDistrictId;
-			if(districtId ==undefined || districtId =="" || districtId ==null){
-				districtId=0;
-			}
+	else{
+		panchaId = globalPanchayatId;
+		mandId = globalTehsilId;
+		localElecId = globalElectionBodyId;
+		consttncyId = globalConstituencyId;
+		parlmntId = globalParliamentId;
+		dstctId = globalDistrictId;
 	}
-	var jsObj={
-		panchayatId:panchayatId,
-		mandalId:mandalId,
-		constituencyId:constituencyId,
-		parliamentId:parliamentId, 
-		districtId:districtId
-		
+	
+	var jsobj={
+		panchayatId : panchaId,
+		mandalId : mandId,
+		lebId : localElecId,
+		constituencyId : consttncyId,
+		parliamentId : parlmntId,
+		districtId : dstctId
 	}
 	$.ajax({
 			type:'POST',
-			 url: 'getDeathsAndHospitalizationDetailsAction.action',
-			 data : {task:JSON.stringify(jsObj)} ,
+			 url: 'getDeathAndHospitalizationDetailsAction.action',
+			 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(result){
-				$("#dataLoadingsImgForDeathCount").hide();
 				var str='';
-				if(result !=null){
-					if(result.verifierVOList !=null && result.verifierVOList.length>0){
-						 str+'<div class="panel-body pad_0">';
-							str+='<table class="table m_0 table-bordered m_0">'
-								
-								str+='<thead>';
-									str+='<th style="background-color:#f5f5f5">Location</th>';
-									str+='<th style="background-color:#f5f5f5">Death</th>';
-									str+='<th style="background-color:#f5f5f5">Hospitalization</th>';
-								str+='</thead>'
-								for(var i in result.verifierVOList){
-									str+='<tr>';
-										str+='<td id="'+result.verifierVOList[i].id+'">'+result.verifierVOList[i].name+'</td>';
-										if(result.verifierVOList[i].verifierVOList !=null && result.verifierVOList[i].verifierVOList.length>0){
-											for(var j in result.verifierVOList[i].verifierVOList){
-												if(result.verifierVOList[i].verifierVOList[j].count !=0){
-													str+='<td><a class="deathDetailsCls" attr_locationId='+result.verifierVOList[i].id+' attr_locationType='+result.verifierVOList[i].name+' attr_insuranceTypeId='+result.verifierVOList[i].verifierVOList[j].id+' attr_insuranceType='+result.verifierVOList[i].verifierVOList[j].name+' style="cursor:pointer;" data-toggle="modal" data-target=".myModalForDeath">'+result.verifierVOList[i].verifierVOList[j].count+'</a></td>';
-												}
-												else{
-													str+='<td>'+result.verifierVOList[i].verifierVOList[j].count+'</td>';
-												}
-												
-											}
+				if(result != null){
+					str+'<div class="panel-body pad_0">';
+					str+'<div class="table-responsive">';
+						str+='<table class="table m_0 table-bordered m_0">';
+							str+='<thead>';
+								str+='<tr>';
+									str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
+									for(var i in result.locationList){
+										str+='<th colspan="2" style="text-align:center;text-transform:uppercase"> '+result.locationList[i].name+' </th>';
 										}
-										else{
-											str+='<td>0</td>';
-											str+='<td>0</td>';
+								str+='</tr>';
+								str+='<tr>';
+								for(var i in result.locationList){
+									str+='<th style="text-align:center;">DEATH</th>';
+									str+='<th style="text-align:center;">HOSP</th>';
+								}
+								str+='</tr>';
+								str+='</thead>';
+								str+='<tbody>';
+									for(var i in result.subList){
+										str+='<tr>';
+										str+='<td style="text-transform:uppercase">'+result.subList[i].name+'</td>';
+										if(result.subList[i].subList != null && result.subList[i].subList.length>0){
+											for(var k in result.subList[i].subList){
+													if(result.subList[i].subList[k].count != null)
+														str+='<td style="text-align:center;"><a class="statusWiseDetailsCls" style="cursor:pointer;" attr_status_id="'+result.subList[i].subList[k].id+'" attr_statusName="'+result.subList[i].name+'" attr_issue_type="'+result.subList[i].subList[k].name+'" attr_locationStr="'+result.subList[i].subList[k].locationName+'" >'+result.subList[i].subList[k].count+'</a></td>';
+													else
+														str+='<td style="text-align:center;"> - </td>';
+											}											
 										}
-									str+='</tr>';
-								}	
-								
+										str+='</tr>';
+									}
+								str+='</tbody>';
 							str+'</table>';
-						str+='</div>';
-					}
-					else{
-						 str+='<div>Death And Hospital Data is Not Available.</div>';
-					}
-			 }
-			 else{
-				 str+='<div>Some Problem Occured Please Contact Admin.</div>';
-			 }
-				
+					str+='</div>';
+					str+='</div>';
+				}
+				 else{
+					 str+='<div>Some Problem Occured Please Contact Admin.</div>';
+				 }
+				$("#dataLoadingsImgForDeathCount").hide();
+			
 			$("#deathHospitalDivId").html(str);
 		});
 }
+
+$(document).on("click",".tdpCandidatePageCls",function(){
+	
+	var deathTdpCadreId = $(this).attr("attr_tdpCadreId");
+	var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+deathTdpCadreId+'','_blank');
+});
+
+$(document).on("click",".statusWiseDetailsCls",function(){
+	$("#deathHospModalBodyId").html('');
+	$("#deathHospModelDivId").modal("show");
+	$("#dataLoadingsImgForDeathHospDetails").show();
+	
+	var locationId = 0;
+	var locationType = $(this).attr("attr_locationStr");
+	var statusId = $(this).attr("attr_status_id");
+	var statusName = $(this).attr("attr_statusName");
+	var issueType = $(this).attr("attr_issue_type");
+	
+	//var heading = ""+locationType+" "+issueType+" "+statusName+" Requests Life Cycle ";
+	$("#deathHospModalHeadingId").html("<span style='text-transform:uppercase'>"+locationType+" "+issueType+" "+statusName+" Requests Life Cycle </span>");
+	
+	if(locationType == "panchayat")
+		locationId = globalPanchayatId;
+	else if(locationType == "mandal")
+		locationId = globalTehsilId;
+	else if(locationType == "muncipality")
+		locationId = globalElectionBodyId
+	else if(locationType == "assembly")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedConstituencyId;
+		else
+			locationId = globalConstituencyId;
+	else if(locationType == "parliament")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedParliamentId;
+		else
+			locationId = globalParliamentId;
+	else if(locationType == "district")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedDistrictId;
+		else
+			locationId = globalDistrictId;
+		
+	var jsobj={
+		locationId : locationId,
+		locationType : locationType,
+		statusId : statusId,
+		issueType : issueType
+	}
+	$.ajax({
+		 type:'POST',
+		 url: 'getComplaintsDetailsByLocationAndStatusAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+		}).done(function(result){
+			if(result != null){
+				var str='';
+				
+				str+='<table class="table m_0 table-bordered m_0" id="deathHospLifeCycleTableId">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th> Name </th>';
+							str+='<th> Issue Description </th>';
+							str+='<th> Complaint Info </th>';
+							str+='<th> Issue Type </th>';
+							str+='<th> Present Status </th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>'
+					for(var i in result){
+						str+='<tr>';
+							str+='<td><p>Name : '+result[i].firstName+'</p>';
+							str+='<p>MemberShip No : <a class="tdpCandidatePageCls" style="cursor:pointer;" attr_tdpCadreId="'+result[i].tdpCadreId+'">'+result[i].membershipNo+'</a></p>';
+							str+='<p>Mobile No : '+result[i].mobileNo+'</p>';
+							str+='</td>';
+							str+='<td><p>Subject : '+result[i].subject+'</p>';
+							str+='<p>Description : '+result[i].description+'</p>';
+							str+='</td>';
+							str+='</td>';
+							str+='<td><p>Complaint Id : '+result[i].complaintId+'</p>';
+							str+='<p>Posted Date : '+result[i].raisedDate+'</p>';
+							str+='</td>';
+							str+='<td>'+result[i].typeOfIssue+'</td>';
+							str+='<td><p>Status : '+result[i].status+'</p>';
+							if(result[i].updatedDate.length > 0)
+								str+='<p>Last Updated Date : '+result[i].updatedDate+'</p>';
+							str+='</td>';
+						str+='</tr>';
+					}
+					str+='</tbody>'
+				str+='</table>';
+				
+				$("#dataLoadingsImgForDeathHospDetails").hide();
+				$("#deathHospModalBodyId").html(str);
+				$("#deathHospLifeCycleTableId").dataTable();
+			}
+		});
+});
 	
 function getPartyMeetingDetails()
 {
