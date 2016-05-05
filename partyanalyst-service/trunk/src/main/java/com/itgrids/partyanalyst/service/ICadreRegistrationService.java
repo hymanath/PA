@@ -196,5 +196,6 @@ public interface ICadreRegistrationService {
 	public ResultStatus updatePaymenntStatus(Long userId,String memberShipNo);
 	public String  checkPaymentStatus(String memberShipNo);
 	public String  updatePaymentStatus(Long tdpCadreId);
+	public List<PartyMeetingWSVO> getRegistrationCadreDetailsSourceWise(RtcUnionInputVO inputVO);
 }
 
