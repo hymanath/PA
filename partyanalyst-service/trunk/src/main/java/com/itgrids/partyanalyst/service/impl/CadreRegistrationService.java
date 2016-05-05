@@ -12863,6 +12863,49 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetails(List<Long> member
 			  LOG.error("Exception raised in getRegistrationCadreDetails in CadreRegistrationService service", e);	}
 		return resultList;
 		  
+	}
+	public List<PartyMeetingWSVO> getRegistrationCadreDetailsSourceWise(RtcUnionInputVO inputVO)
+	  {
+		  List<PartyMeetingWSVO> resultList = new ArrayList<PartyMeetingWSVO>();
+		  try{
+				Date stDate=null;
+				Date edDate=null;
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+				Date today = dateUtilService.getCurrentDateAndTime();
+				if(inputVO.getStartDate()!=null && inputVO.getStartDate().trim().length()>0 && inputVO.getToDate()!=null && inputVO.getToDate().trim().length()>0){
+					stDate=sdf.parse(inputVO.getStartDate().trim());
+					edDate=sdf.parse(inputVO.getToDate().trim());
+				}
+				List<Long> tdpCadreIdsList = tdpCadreDAO.getCadreDetailsByTdpMemberTypeSourceWise(stDate,edDate,inputVO);
+				List<Object[]> cadreDetails = tdpCadreDAO.getCadreDetailsByYearSourceWise(tdpCadreIdsList,2016L);
+				List<Long> voterIds =new ArrayList<Long>();
+				
+		        if(cadreDetails != null && cadreDetails.size() > 0){
+		          for (Object[] obj : cadreDetails) {
+		            PartyMeetingWSVO vo = new PartyMeetingWSVO();
+		            
+		            Long cadreId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+		            String image = obj[5] != null ? obj[5].toString():"";
+		            vo.setTdpCadreId(cadreId);
+		            vo.setName(obj[1] != null ? obj[1].toString():"");
+		            vo.setDateOfBirth(obj[2] != null ? obj[2].toString():"");
+		            vo.setAge(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+		            vo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+		            vo.setImgStr("http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"");
+		            vo.setMemberShipNo(obj[6] != null ? obj[6].toString():"");
+		            vo.setVoterCardNo(obj[9] != null ? obj[9].toString():"");
+		            vo.setRegThrough(obj[10] != null ? obj[10].toString():"");
+		            vo.setMemberType(obj[12] != null ? obj[12].toString():"");
+		            vo.setVoterId(obj[13] != null ? (Long)obj[13]:0l);
+		            resultList.add(vo);
+		          }
+		        }
+		  }
+		  catch (Exception e) {
+			  e.printStackTrace();
+			  LOG.error("Exception raised in getRegistrationCadreDetailsSourceWise in CadreRegistrationService service", e);	}
+		return resultList;
+		  
 	  }
 	
 	public PartyMeetingWSVO getMatchedVoter(Long id,List<PartyMeetingWSVO> list){
