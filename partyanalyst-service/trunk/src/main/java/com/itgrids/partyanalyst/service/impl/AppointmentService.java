@@ -5597,7 +5597,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 			{
 			 list = appointmentCandidateDAO.getPublicRepresentativeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId(),inputVO.getAptUserId()); //Total
 			}else if(inputVO.getMemberType().equalsIgnoreCase("CommitteeMemberRole")){
-				 list = appointmentCandidateDAO.getCommitteeMemROleWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId(),inputVO.getAptUserId()); //Committee Members Roles
+				 list = appointmentCandidateDAO.getCommitteeMemROleWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId(),inputVO.getAptUserId(),inputVO.getLevelId()); //Committee Members Roles
 			}else
 			{
 				list = appointmentCandidateDAO.getCommitteeWiseAppointmentMembers(statusIds,inputVO.getCntType(),inputVO.getRoleId(),inputVO.getAptUserId());//Committee Members

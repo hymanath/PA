@@ -7,6 +7,7 @@ public class AppointmentMemberInputVO {
 	private String cntType;
 	private String memberType;
 	private Long aptUserId;
+	private Long levelId;
 	
 	
 	
@@ -15,6 +16,12 @@ public class AppointmentMemberInputVO {
 	
 	
 	
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
 	public Long getAptUserId() {
 		return aptUserId;
 	}
