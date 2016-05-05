@@ -503,7 +503,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 			 query.setParameter("appointmenUserId", aptUserId);
 		 return query.list();
 		}
-	public List<Object[]>  getCommitteeMemROleWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){
+	public List<Object[]>  getCommitteeMemROleWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId,Long levelId){
 		StringBuilder str=new StringBuilder();
 		str.append("select ");
 		if(type.equalsIgnoreCase("unique"))
@@ -514,7 +514,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 				"model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
 				"model.appointmentCandidate.imageURL,model.appointmentCandidateId");
 		str.append(" from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
-				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
+				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId");
 				if(statusIds != null && statusIds.size() > 0)
 					str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 				if(roleId != null && roleId > 0)
@@ -528,6 +528,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 			 query.setParameter("roleId", roleId);
 		 if(aptUserId != null && aptUserId > 0)
 			 query.setParameter("appointmenUserId", aptUserId);
+		 query.setParameter("levelId",levelId);
 		 return query.list();
 		}	
 }
