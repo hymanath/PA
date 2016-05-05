@@ -6850,7 +6850,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result,jsObj)
       str+='<div class="row">';
         str+='<div class="col-md-12">';
           str+='<h4 class="text-capitalize text-success">public representative wise appointments</h4>';
-          str+='<table class="table table-bordered">';
+          str+='<table class="table table-bordered" id="dataTablePublicId">';
             str+='<thead>';
               str+='<tr>';
                 str+='<th></th>';
@@ -6932,6 +6932,9 @@ function buildPublicRepresentativeWiseAppointmentCnt(result,jsObj)
       str+='</div>';
     str+='</div>';
     $("#advanceDshAppointmentPrWiseDiv").html(str);
+    
+    $("#dataTablePublicId").DataTable({	  
+	  });
 }
 var userTypeId = 0;
 getAppointmentStatus();

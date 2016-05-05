@@ -179,7 +179,7 @@ function buildCommitteeLvlAppntmnts(result,jsObj){
    $("#committeeLvlAppntId").html("");
   var str = '';
   if(result != null){
-      str +='<table class="table table-bordered">';
+      str +='<table class="table table-bordered" id="dataTableCommiteeId">';
             str +='<thead>';
            str+='<tr>';
                 str+='<th></th>';
@@ -249,6 +249,9 @@ function buildCommitteeLvlAppntmnts(result,jsObj){
     str +='No Data Available.';
   }
       $("#committeeLvlAppntId").html(str);
+      
+      $("#dataTableCommiteeId").DataTable({    
+      }); 
 }
 
 function getLevelWiseCount(levelId,level,aptUserId){
