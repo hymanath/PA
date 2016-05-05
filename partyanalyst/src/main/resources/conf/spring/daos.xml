@@ -2733,6 +2733,10 @@
 	<bean id="ivrSurveyCandidateQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrSurveyCandidateQuestionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="ivrRespondentLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrRespondentLocationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 	<!--  end -->
 </beans>		
