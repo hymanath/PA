@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Teja
@@ -17,13 +20,54 @@ public class GrievanceDetailsVO implements Serializable{
 	private String name;
 	private Long Count;
 	private String status;
-	
+	private String locationName;
 	private Long partyCount=0l;
 	private Long govtCount=0l;
 	private Long welfareCount=0l;
+	private String idStr;
+	
+	private Long deathCount = 0l;
+	private Long hospitCount = 0l;
+	private List<GrievanceDetailsVO> subList = new LinkedList<GrievanceDetailsVO>();	
+	private List<IdNameVO> locationList = new ArrayList<IdNameVO>();
 	
 	
-	
+	public List<IdNameVO> getLocationList() {
+		return locationList;
+	}
+	public void setLocationList(List<IdNameVO> locationList) {
+		this.locationList = locationList;
+	}
+	public String getIdStr() {
+		return idStr;
+	}
+	public void setIdStr(String idStr) {
+		this.idStr = idStr;
+	}
+	public List<GrievanceDetailsVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<GrievanceDetailsVO> subList) {
+		this.subList = subList;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public Long getDeathCount() {
+		return deathCount;
+	}
+	public void setDeathCount(Long deathCount) {
+		this.deathCount = deathCount;
+	}
+	public Long getHospitCount() {
+		return hospitCount;
+	}
+	public void setHospitCount(Long hospitCount) {
+		this.hospitCount = hospitCount;
+	}
 	public Long getPartyCount() {
 		return partyCount;
 	}
