@@ -452,15 +452,15 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				"          model.appointmentCandidate.userAddress.district.districtId,model.appointmentCandidate.userAddress.district.districtName," +
 				"          count(model.appointmentCandidate.appointmentCandidateId),count(distinct model.appointmentCandidate.appointmentCandidateId) " +
 				"   from   AppointmentCandidateRelation model" +
-				"   where  model.appointment.isDeleted='N' and model.appointment.appointmentUser.appointmenUserId =:appointmentUserId "); 
+				"   where  model.appointment.isDeleted='N' and model.appointment.appointmentUser.appointmenUserId = :appointmentUserId "); 
 		if(apptStatusIds!=null && apptStatusIds.size()>0){
 			sb.append(" and model.appointment.appointmentStatusId in (:apptStatusIds)");
 		}
 		if(startDate!=null){
-			sb.append(" and date(model.appointment.updatedTime) >= : startDate");
+			sb.append(" and date(model.appointment.updatedTime) >= :startDate");
 		}
 		if(endDate!=null){
-			sb.append(" and date(model.appointment.updatedTime) <= : endDate");
+			sb.append(" and date(model.appointment.updatedTime) <= :endDate");
 		}
 		sb.append(" group by model.appointmentCandidate.appointmentCandidateType.appointmentCandidateTypeId,model.appointmentCandidate.userAddress.district.districtId " +
 				  " order by model.appointmentCandidate.userAddress.district.districtId ");
@@ -531,14 +531,14 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		if(aptUserId !=null)
-			str.append( " and model.appointmentCandidate.createdBy =:aptUserId");
+			str.append( " and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
 		str.append(" group by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
 		
 		 Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(aptUserId!=null)
-			 query.setParameter("aptUserId", aptUserId);
+			 query.setParameter("appointmenUserId", aptUserId);
 		 return query.list();
 		}
 	public List<Object[]>  getLevelWiseCount(List<Long> statusIds,String type, Long levelId,Long aptUserId){
@@ -554,14 +554,14 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		if(aptUserId !=null)
-			str.append( " and model.appointmentCandidate.createdBy =:aptUserId");
+			str.append( " and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId");
 		str.append(" group by TCM.tdpCommitteeRole.tdpRoles.tdpRolesId ");
 		
 		 Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
 			 query.setParameterList("statusIds", statusIds);
 		 if(aptUserId!=null)
-			 query.setParameter("aptUserId", aptUserId);
+			 query.setParameter("appointmenUserId", aptUserId);
 		 query.setParameter("levelId",levelId);
 		 return query.list();
 		}
