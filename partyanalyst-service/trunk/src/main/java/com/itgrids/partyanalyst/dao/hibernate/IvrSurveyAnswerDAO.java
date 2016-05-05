@@ -134,7 +134,9 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 				" from IvrSurveyAnswer model where " +
 				" model.isDeleted = 'false' and model.isValid = 'Y'" +
 				" and model.ivrOption.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false'" +
+				" and model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId in(:surveyQuestionIds)" +
 				" group by model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId,model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId, model.ivrOption.ivrOptionId");
+		query.setParameterList("surveyQuestionIds", surveyQuestionIds);
 		return query.list();
 	}
 	

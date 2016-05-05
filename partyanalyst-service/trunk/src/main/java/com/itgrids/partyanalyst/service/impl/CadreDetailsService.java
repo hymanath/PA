@@ -6172,7 +6172,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						 }
 						 
 						 
-						 QuestionAnswerVO optionVO = getMatchedVO(surveyVO.getOptions(),(Long)params[5]);
+						 QuestionAnswerVO optionVO = getMatchedVO(questionVO.getOptions(),(Long)params[5]);
 						 
 						 if(optionVO == null)
 						 {
@@ -6180,7 +6180,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							 optionVO.setId((Long)params[5]);
 							 optionVO.setName(params[6] != null ? params[6].toString() :"");
 							 optionVO.setCount(params[0] != null ? (Long)params[0] + optionVO.getCount() : 0l);
-							 surveyVO.getOptions().add(optionVO);
+							 questionVO.getOptions().add(optionVO);
 						 }
 					 }
 				 }
