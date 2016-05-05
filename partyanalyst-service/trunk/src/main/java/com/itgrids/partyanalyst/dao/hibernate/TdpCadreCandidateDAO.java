@@ -102,4 +102,6 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 	return query.list();
 	}
 	
+
+	
 }

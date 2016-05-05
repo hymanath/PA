@@ -1282,9 +1282,11 @@ public class AppointmentService implements IAppointmentService{
 									 vo.setAppointmentCandidateId((Long)params[1]);
 								 }
 							 }
-						 } 
+						 }
+						 setConstituencyForPR(tdpCadreIds,finalList);
 						 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
 						 getDesignationsForCadre(tdpCadreIds,finalList);
+						
 			      }
 			     
 			  	
@@ -1552,6 +1554,7 @@ public  List<AppointmentCandidateVO> advancedSearchApptRequestedMembers(String s
 			    			}
 			    		}
 			      }
+			 	
 		 		}
 		 catch (Exception e) {
 		LOG.error("Exception raised at advancedSearchApptRequestedMembers() method of AppointmentService", e);
@@ -1597,7 +1600,27 @@ public void setDataMembers(List<Object[]> membersList, List<AppointmentCandidate
 	 }
     }
 }
-
+public void setConstituencyForPR(List<Long> tdpCadreIds,List<AppointmentCandidateVO>  finalList)
+{
+	try{
+	List<Object[]> list = tdpCadreDAO.getPRConstituenciesByCadreIds(tdpCadreIds);
+	if(list != null && list.size() > 0)
+	{
+		for(Object[] params : list)
+		{
+			AppointmentCandidateVO vo = getMatchedVO(finalList,(Long)params[0]);
+			 if(vo != null)
+			 {
+				  vo.setConstituency(params[1]!=null?params[1].toString():"");
+			 }
+		}
+	}
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+}
 
 public void setDataMembersForCadreRole(List<Object[]> membersList, List<AppointmentCandidateVO>  finalList,Long aptUserId)
 {
@@ -1631,7 +1654,7 @@ public void setDataMembersForCadreRole(List<Object[]> membersList, List<Appointm
 				 }
 			 }
 		 }
-		 
+		 setConstituencyForPR(tdpCadreIds,finalList);
 		 checkisEligibleForApptCadre(tdpCadreIds,aptUserId,finalList);
 		
 	 }
@@ -1686,13 +1709,14 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 }
 
 	public VoterAddressVO getMemberDetails(String candidateType,Long id){
-		
+	
 		VoterAddressVO addressVO = null;
 		try {
 			  if(candidateType.equalsIgnoreCase("appointmentCandidate")){
 				  addressVO=getVoterWorkAddressDetailsByCadreId(id,candidateType);
 			  }else if(candidateType.equalsIgnoreCase("cadre")){
 				  addressVO=getVoterWorkAddressDetailsByCadreId(id,candidateType);
+				 
 			  }else if(candidateType.equalsIgnoreCase("voter")){
 				  List<Object[]> list = boothPublicationVoterDAO.getVoterAddressDetailsVoterId(id);
 				  if(list!=null && list.size()>0){
@@ -1742,6 +1766,9 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						addressVO.setVillWardList(rtcUnionService.getLocationsOfSublevelConstituencyMandal(null,addressVO.getLocalElectionBodyId().toString(),5l));
 					 }
 			 }
+			  
+			  
+				  
 			
 		} catch (Exception e) {
 			LOG.error("Exception riased at getMemberDetails", e);
@@ -1752,16 +1779,17 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
      public VoterAddressVO getVoterWorkAddressDetailsByCadreId(Long id,String candidateType){
 		
 		VoterAddressVO addressVO=new VoterAddressVO();
-		
+		List<Long> tdpCadreIds = new ArrayList<Long>();
 		try{
 			List<UserAddress> userAddressList=null;
 			if(candidateType.equalsIgnoreCase("appointmentCandidate")){
 				userAddressList = appointmentCandidateDAO.getUserWorkAddress(id);
 			}else if(candidateType.equalsIgnoreCase("cadre")){
+				tdpCadreIds.add(id);
+				userAddressList = tdpCadreDAO.getUserAddressForPR(tdpCadreIds);
+				if(userAddressList == null || userAddressList.size() == 0)
 				userAddressList=tdpCadreDAO.getUserAddress(id);
 			}
-			
-			
 			if(userAddressList!=null && userAddressList.size()>0){
 				
 				UserAddress address=userAddressList.get(0);
@@ -6663,8 +6691,9 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
     {
     	try{
     	List<Long> filterCadreIds = new ArrayList<Long>();
-    	if(tdpCadreIds != null && tdpCadreIds.size() > 0){
-    	List<Object[]> representativeList = tdpCommitteeMemberDAO.getDesignationsForPublicRepresentative(tdpCadreIds);
+    	List<Long> cadreIds = tdpCadreIds;
+    	if(cadreIds != null && cadreIds.size() > 0){
+    	List<Object[]> representativeList = tdpCommitteeMemberDAO.getDesignationsForPublicRepresentative(cadreIds);
     	if(representativeList != null && representativeList.size() > 0)
     	{
     		for(Object[] params : representativeList)
@@ -6679,12 +6708,12 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
     		}
     	}
     	if(filterCadreIds != null && filterCadreIds.size() > 0)
-    	tdpCadreIds.removeAll(filterCadreIds);
+    		cadreIds.removeAll(filterCadreIds);
     	}
     	
-    	if(tdpCadreIds != null && tdpCadreIds.size() > 0)
+    	if(cadreIds != null && cadreIds.size() > 0)
     	{
-    	List<Object[]> comittteeList = tdpCommitteeMemberDAO.getDesignationsForCadreCommittee(tdpCadreIds);
+    	List<Object[]> comittteeList = tdpCommitteeMemberDAO.getDesignationsForCadreCommittee(cadreIds);
     	if(comittteeList != null && comittteeList.size() > 0)
     	{
     		for(Object[] params : comittteeList)

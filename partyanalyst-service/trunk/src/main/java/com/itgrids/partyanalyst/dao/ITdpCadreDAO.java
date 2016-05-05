@@ -430,4 +430,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getConstituencyForCadreIds(List<Long> tdpcadreIds);
 	  public List<Object[]> getAddressForCadreIds(List<Long> tdpcadreIds);
 	  public List<Object[]> checkMemberPaymentExistsByTypeId(String memberShipNo,Long tdpMemberTypeId,Long enrollmentYear);
+	  public List<Object[]> getPRConstituenciesByCadreIds(List<Long> cadreIds);
+	  public List<UserAddress> getUserAddressForPR(List<Long> cadreIds);
 }
