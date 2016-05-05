@@ -39,7 +39,7 @@ public class IvrSurveyCandidateQuestionDAO extends GenericDaoHibernate<IvrSurvey
 				" model.candidate.candidateId,model.candidate.firstname" +
 				" from IvrSurveyCandidateQuestion model left join model.ivrOption ivrOption" +
 				" where model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId in(:questionIds) " +
-				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false'," +
+				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false'" +
 				" and ivrOption.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false' ");
 		query.setParameterList("questionIds", questionIds);
 		return query.list();
