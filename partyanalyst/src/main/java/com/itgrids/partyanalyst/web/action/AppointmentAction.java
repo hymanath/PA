@@ -1263,6 +1263,8 @@ public String getPanchayatiesByMandalOrMuncipality(){
 			vo.setScheduleType(jObj.getString("scheduleType"));
 			vo.setCntType(jObj.getString("cntType"));
 			vo.setAptUserId(jObj.getLong("aptUserId"));
+			if(vo.getMemberType().equalsIgnoreCase("CommitteeMemberRole"))
+				vo.setLevelId(jObj.getLong("levelId"));
 			membersList = appointmentService.getAppointmentMembersByScheduleType(vo);
 			
 		}catch(Exception e) {

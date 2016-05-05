@@ -553,6 +553,7 @@ function getCandidCountsByStatesAction(){
 	
   function getMemebersByScheduleType(roleId,memberType,countType,scheduleType,aptUserId)
   {
+	   
 	$("#appointmentMembersDiv").html('<img src="images/search.gif"/>');
   $("#membersModelId").modal("show");
    var apptUserId = $("#appointmentUserSelectBoxId").val();
@@ -562,6 +563,33 @@ function getCandidCountsByStatesAction(){
     cntType : countType,
     scheduleType : scheduleType,
 	aptUserId : apptUserId,
+    task:""
+   }
+    $.ajax({
+    type : 'GET',
+    url : 'getAppointmentMembersByScheduleTypeAction.action',
+    dataType : 'json',
+    data : {task:JSON.stringify(jsObj)}  
+    }).done(function(result){ 
+	
+	
+       buildAppointmentMembersData(result);
+       });   
+  }
+
+   function getMemebersByScheduleTypeForRole(roleId,memberType,countType,scheduleType,aptUserId,levelId)
+  {
+	 
+	$("#appointmentMembersDiv").html('<img src="images/search.gif"/>');
+  $("#membersModelId").modal("show");
+   var apptUserId = $("#appointmentUserSelectBoxId").val();
+   var jsObj = {
+     roleId : roleId,
+    memberType : memberType,
+    cntType : countType,
+    scheduleType : scheduleType,
+	aptUserId : apptUserId,
+	levelId:levelId,
     task:""
    }
     $.ajax({
