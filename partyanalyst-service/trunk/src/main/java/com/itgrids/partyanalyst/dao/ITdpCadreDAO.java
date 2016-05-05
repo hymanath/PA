@@ -432,4 +432,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> checkMemberPaymentExistsByTypeId(String memberShipNo,Long tdpMemberTypeId,Long enrollmentYear);
 	  public List<Object[]> getPRConstituenciesByCadreIds(List<Long> cadreIds);
 	  public List<UserAddress> getUserAddressForPR(List<Long> cadreIds);
-}
+	  public List<Long> getCadreDetailsByTdpMemberTypeSourceWise(Date stDate,Date edDate,RtcUnionInputVO inputVO);
+	  public List<Object[]> getCadreDetailsByYearSourceWise(List<Long> tdpCadreList,Long year);
+} 
