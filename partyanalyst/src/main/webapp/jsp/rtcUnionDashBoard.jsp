@@ -1385,13 +1385,13 @@ function getCadreRegistrationTotalCount(searchType,locationLevel) {
 		for(var i in result){
 				str+='<tr>';
 				if(locationLevel == "District")
-					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv" onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')"><a href="javascript:{};" style="color: red;font-weight: bold"><span style="color:mediumseagreen;">'+result[i].name.toUpperCase()+'</span></a></td>';
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv" onclick="getRegistrationDetailsSourceWise(\''+result[i].id+'\',\''+result[i].name+'\',\'0\')"><a href="javascript:{};" style="color: red;font-weight: bold"><span style="color:mediumseagreen;">'+result[i].name.toUpperCase()+'</span></a></td>';
 				else
-					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv"  onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')"><a href="javascript:{};" style="color: red;font-weight: bold"><span style="color:mediumseagreen;">'+result[i].name.toUpperCase()+'</span></a></td>';
+					str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv"  onclick="getRegistrationDetailsSourceWise(\''+result[i].id+'\',\''+result[i].name+'\',\'0\')"><a href="javascript:{};" style="color: red;font-weight: bold"><span style="color:mediumseagreen;">'+result[i].name.toUpperCase()+'</span></a></td>';
 					if(result[i].totalCount==0){
 						str+='<td>'+result[i].totalCount+'</td>';
 					}else{
-						str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv" onclick="getRegistrationDetails(\''+result[i].id+'\',\''+result[i].name+'\')"><a href="javascript:{};" style="color: red;font-weight: bold"><span style="color:mediumseagreen;">'+result[i].totalCount+'</span></a></td>';
+						str+='<td class="cursorH" data-toggle="modal" data-target="#myModalDiv" onclick="getRegistrationDetailsSourceWise(\''+result[i].id+'\',\''+result[i].name+'\',\'0\')"><a href="javascript:{};" style="color: red;font-weight: bold"><span style="color:mediumseagreen;">'+result[i].totalCount+'</span></a></td>';
 					}
 					if(result[i].tabCount==0){
 						str+='<td>'+result[i].tabCount+'</td>';  
@@ -1434,27 +1434,29 @@ function getRegistrationDetailsSourceWise(locationId,title,source) {
 	membereTypeIds = $('#userMembersId').val();
 	if(membereTypeIds == null || membereTypeIds.length==0)
 	{
-		membereTypeIds = memberTypesIdsArr;
+		membereTypeIds = memberTypesIdsArr; 
 	}else{
 		for(var i in membereTypeIds){
 		if(jQuery.inArray( membereTypeIds[i], memberTypesIdsArr ) > 0){
 			alert(membereTypeIds)
 		membereTypeIds = membereTypeIds;
 		}
-		}
+		}  
 	}
-	var jObj={
+	var jObj={      
+		sourceType:source,         
 		membereTypeIds:membereTypeIds,
 		searchTypeStr:cadreInput.searchTypeStr,
 		startDate:cadreInput.startDate,
-		toDate:cadreInput.startDate,
+		toDate:cadreInput.toDate,
 		searchDateType:cadreInput.searchDatType,
 		locationId:locationId,
 		appType:""
 	};
+
 	$.ajax({
 		type:"Post",
-		url:'getRegistrationDetailsAction.action',
+		url:'getRegistrationDetailsSourceWiseAction.action',
 		dataType:'json',
 		data:{task:JSON.stringify(jObj)}
 	}).done(function(result){
@@ -1481,7 +1483,7 @@ function buildRegisteredCadresSourceWise(result,title,jObj,source){
 	str+='</thead>';
 	str+='<tbody>';
 	for(var i in result){
-		if(result[i].regThrough==source){
+		
 			str+='<tr>';
 			if(result[i].imgStr != null){
 				
@@ -1505,7 +1507,7 @@ function buildRegisteredCadresSourceWise(result,title,jObj,source){
 			str+='<td>'+result[i].voterCardNo+'</td>';
 			str+='<td>'+result[i].regThrough+'</td>';
 			str+='</tr>'
-		}	
+	
 	}
 	str+='</tbody>';
 	str+='</table>';
@@ -1539,7 +1541,7 @@ function getRegistrationDetails(locationId,title) {
 		membereTypeIds:membereTypeIds,
 		searchTypeStr:cadreInput.searchTypeStr,
 		startDate:cadreInput.startDate,
-		toDate:cadreInput.startDate,
+		toDate:cadreInput.toDate,
 		searchDateType:cadreInput.searchDatType,
 		locationId:locationId,
 		appType:""
