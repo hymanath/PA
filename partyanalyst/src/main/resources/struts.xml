@@ -12043,5 +12043,10 @@
 			<param name="root">cadreDetailsVO</param>
 		</result>
 	</action>
+	<action name="getRegistrationDetailsSourceWiseAction" class="rtcUnionAction" method="getRegistrationCadreDetailsSourceWise">
+		<result type="json" name="success">
+	    	<param name="root">cadreDataList</param>
+	    </result>
+	</action>
 </package>
 </struts>      
