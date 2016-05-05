@@ -4316,11 +4316,18 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		setcolorsForStatus();
 		var i = 0;
 		var str='';
-			str+='<div class="col-md-4 custom-scroll-ins block" style="height:625px">';
-				str+='<div class=""  id="dragId" >';
-			for(var i in result){
-			
-				str+='<div class="panel panel-default manageAppViewPanelClass newClass" attr_appointment_id='+result[i].appointmentId+'>';
+		
+			str+='<div class="col-md-4 block  m_top30" >';
+			str+='<div >';
+			str+='<table id="confirmAppointmentsdt"  >';
+			str+='<thead>';
+			str+='<th></th>';
+			str+='</thead>';
+			str+='<tbody id="dragId" >';
+		for(var i in result){
+			str+='<tr class="newClass" >';
+			str+='<td>';
+				str+='<div class="panel panel-default manageAppViewPanelClass " attr_appointment_id='+result[i].appointmentId+'>';
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-12">';
@@ -4340,8 +4347,6 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					if(result[i].subject !=null && result[i].subject.length>0){
 						str+='<p>Purpose : '+result[i].subject+'</p>';
 					}
-					
-					
 					
 				str+='</div>';
 				str+='<div class="panel-body pad_5">';
@@ -4401,11 +4406,26 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 					str+='</ul>';	
 				  str+='</div>';
 				str+='</div>';
+				str+='</td>';
+				str+='</tr>';
 			}
-			str+='</div>'
-			str+='</div>'
+				
+			str+='</tbody>';
+			str+='</table>'
+			str+='</div>';
+			str+='</div>';
 		$("#confirmAppointmentsAjaxImg").hide();
 		$("#confirmAppointmentsDivId").html(str);
+		$('#confirmAppointmentsdt').DataTable({
+			responsive: true,
+			"info":     false,
+			"bSearching": true,
+			 "scrollY":   "625px",	
+			"bPaginate": false,
+			"bLengthChange": false,
+			"bAutoWidth": false,
+			
+		});
 		$(".custom-scroll-ins").mCustomScrollbar();
 		$(".mCSB_dragger_bar").css("background-color","#000");
 		$(document).on("click",".historyshowmodalbtn",function(){
