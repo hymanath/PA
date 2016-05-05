@@ -5127,10 +5127,21 @@ function getAppointmentsUserDetails()
 				$("#candidateAppointmentImg").hide();
 				var str='';
 				if(result != null){
+						str+='<table class="table table-bordered">';
+						str+='<thead style="background-color:#f2f2f2;">';
+						str+='<th>CANDIDATE USER</th>';
+						str+='<th>COUNT</th>';
+						str+='</thead>';
+						str+='<tbody>';
 					for(var i in result){
-						str+='<h5 class="m_0" ><span style="text-transform: uppercase;">'+result[i].name+' </span> <span  attr_apptcandName="'+result[i].apptcandidateName+'" attr_apptUserId='+result[i].apptUserId+' attr_apptcandId="'+result[i].apptcandidateId+'" class="text-bold col-md-offset-3 historyShowModalBtn" style="font-size: 18px;cursor:pointer;">'+result[i].apptCount+'</span></h5>';
+						str+='<tr>';
+						str+='<td style="text-transform: uppercase;">'+result[i].name+'</td>';
+						str+='<td attr_apptcandName="'+result[i].apptcandidateName+'" attr_apptUserId='+result[i].apptUserId+' attr_apptcandId="'+result[i].apptcandidateId+'"  class="text-bold historyShowModalBtn" style="font-size: 18px;cursor:pointer;text-align:center;" >'+result[i].apptCount+'</td>';
+						str+='</tr>';
+						
 					}	
-					
+					str+='</tbody>';
+					str+='</table>';
 					$("#buildCandidateAppointmentUser").html(str);
 				}else{
 				    $("#buildCandidateAppointmentUser").html("No Data Available");	
