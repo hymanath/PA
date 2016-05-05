@@ -827,6 +827,7 @@
 				 
 				 <value>com.itgrids.partyanalyst.model.UserFeedback</value>
 				 <value>com.itgrids.partyanalyst.model.UserFeedbackModule</value>
+				  <value>com.itgrids.partyanalyst.model.IvrRespondentLocation</value>
 				   
 				 </list>
 			
