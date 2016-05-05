@@ -668,7 +668,7 @@ var globalCadreId = '${cadreId}';
 						  <!-- Nav tabs -->
 						  <ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active"><a href="#tabsurvey" aria-controls="tabsurvey" role="tab" data-toggle="tab">TAB SURVEY</a></li>
-							<li role="presentation"><a href="#ivrsurvey" aria-controls="ivrsurvey" role="tab" data-toggle="tab" onclick="getCandidateParticipatedSurveyCnt();">IVR SURVEY</a></li>
+							<li role="presentation"><a href="#ivrsurvey" aria-controls="ivrsurvey" role="tab" data-toggle="tab" onclick="getSurveysOnCandidateCount(); getCandidateParticipatedSurveyCnt();">IVR SURVEY</a></li>
 						  </ul>
 
 						  <!-- Tab panes -->
@@ -681,13 +681,18 @@ var globalCadreId = '${cadreId}';
 							</div>
 							<div role="tabpanel" class="tab-pane" id="ivrsurvey">
 								<div id="ivrSurveysMainDivId">
-								<div class="ivrSurvyTabId"></div>
+								<!--<div class="ivrcandtSurvysCntId"></div>-->
+								<div id="ivrSurvysCandtCntId">
+								<ul role="tablist" class="nav nav-tabs tab-list display-style" >
+								</ul>
+								</div>
 								<div id="ivrTypeDetailsDivId"></div>
 								<div id="ivrDetailsBodyId"></div>
+								<div class="ivrSurveyCandtDetailsCls">	</div>
 								<center><img id="dataLoadingsImgForIVRDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
 								<div class="ivrSurvysDetls"></div>
-									<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
-									<!--<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>-->
+								<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
+								<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
 								</div>
 							</div>
 						  </div>
