@@ -5085,6 +5085,26 @@ function getIvrSurveyForCandidateParticipated(cadreId)
 			})				
 }
 
+function getIVRSurveysOnCandidateDetails()
+{
+	
+	//var candidateId = globalCandidateId;
+	
+	var jsObj={
+			candidateId:446493,
+			task:""
+			
+	}
+	alert(jsObj)
+	$.ajax({
+		type:'GET',
+		url :'getSurveysOnCandidateDetailsAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		
+	});
+}
+
 getAppointmentsUserDetails();
 function getAppointmentsUserDetails()
 {
