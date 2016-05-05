@@ -89,31 +89,130 @@ function buildAnsweredIvrSurveys(result)
 } */
  
 function getCandidateParticipatedSurveyCnt(){
+	//$("#ivrSurvysCandtCntId").html("");
+	$('#ivrSurvysCandtCntId ul li').remove();
+	$("#ivrTypeDetailsDivId").html("");
+	$('.ivrSurveyCandtDetailsCls').html("");
 	var jsObj={
 		cadreId:globalCadreId
 	}
+	
 	$.ajax({
 			type:'POST',
 			 url: 'getCandateParicipatedSurveyCountAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				
+				if(result != null)
 				buildIVRSurveyTabs(result);
 			});
 }
 function buildIVRSurveyTabs(result){
 	
 	var str = '';
-	str+='<ul role="tablist" class="nav nav-tabs tab-list display-style" >';
-	if(result.totalCount != null && result.totalCount>0){
-	str+='<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr">';
-	str+='<a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();">CANDIDATE PARTICIPATED SURVEYS&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a>';
-	str+='</li>';
-	//$("#ivrsurveyDataLoadoing").hide();
+	if(result.totalCount != null && result.totalCount > 0){
+	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top:0px;padding:0px;"><a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();">CANDIDATE PARTICIPATED SURVEYS&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
 	}else{	
-	str+='<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;0</li>';
-	//$("#ivrsurveyDataLoadoing").hide();
+	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
 	}
-	str+='</ul>';
-	$(".ivrSurvyTabId").html(str);
+	$('#ivrsurveyDataLoadoing').hide();
+}
+function getSurveysOnCandidateCount(){
+	$('#ivrSurvysCandtCntId ul li').remove();
+	$('.ivrSurveyCandtDetailsCls').html("");
+	$("#ivrTypeDetailsDivId").html("");
+	var jsObj={
+	//globalCandidateId
+		candidateId:446493
+	}
+	$('#ivrsurveyDataLoadoing').show();
+	$.ajax({
+			type:'POST',
+			 url: 'getSurveysOnCandidateCountAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				
+				buildIVRSurveysOnCandidateCount(result);
+			});
+}
+function buildIVRSurveysOnCandidateCount(result){
+	
+	var str = '';
+	if(result.totalCount != null && result.totalCount > 0){
+	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();">SURVEYS ON CANDIDATE&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
+	}else{	
+	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;" class="text-bold">SURVEYS ON CANDIDATE&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
+	}
+	$('#ivrsurveyDataLoadoing').hide();
+}
+
+$(document).on("click","#ivrSurvysCandtCntId ul li",function(){
+	$("#ivrSurvysCandtCntId ul li").removeClass("active li_arr")
+	$(this).addClass("active li_arr")
+})
+function getIVRSurveysOnCandidateDetails()
+{
+	$("#ivrTypeDetailsDivId").html("");
+	$('.ivrSurveyCandtDetailsCls').html("");
+	$("#ivrDetailsBodyId").html("");
+	//var candidateId = globalCandidateId;
+	
+	var jsObj={
+			candidateId:446493,
+			task:""
+	}
+	$('#ivrsurveyDataLoadoing').show();
+	$.ajax({
+		type:'GET',
+		url :'getSurveysOnCandidateDetailsAction.action',
+		data : {task:JSON.stringify(jsObj)} ,
+	}).done(function(result){
+		buildSurveysOnCandidateDetails(result);
+	});
+}
+function buildSurveysOnCandidateDetails(result){
+	
+	var str = '';
+	if(result != null && result.length >0){
+	str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
+			for(var i in result){
+				
+			 str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+							str+='<h4 class="panel-title">';
+								str+=''+result[i].name+'';
+							str+='</h4>';
+						str+='</a>';
+					str+='</div>';
+					
+					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+						str+='<div class="panel-body">';
+						str+='<div>';
+				for(var j in result[i].questions)
+					{
+						str+='<table class="table table-bordered">';
+						str+='<tr><td colspan="3" style="text-weight:bold">'+result[i].questions[j].name+'</td></tr>';
+						str+='<b><tr><td>Option</td><td>Count</td><td>Percentage</td></tr></b>';
+						for(var k in result[i].questions[j].options){
+							str+='<tr>';
+								str+='<td>'+result[i].questions[j].options[k].name+'</td>';
+								str+='<td>'+result[i].questions[j].options[k].count+'</td>';
+								str+='<td>'+result[i].questions[j].options[k].percentage+'</td>';
+							str+='</tr>';
+						}
+						str+='</table>';
+					}
+						str+='</div>';
+					 str+='</div>';
+					str+='</div>';
+				  str+='</div>';
+			
+			}
+			str+='</div>';
+			$('.ivrSurveyCandtDetailsCls').html(str);
+			$('#ivrsurveyDataLoadoing').hide();
+	}else{
+		$('#ivrsurveyDataLoadoing').hide();
+		$('.ivrSurveyCandtDetailsCls').html("NO DATA AVAILABLE");
+	}
 }

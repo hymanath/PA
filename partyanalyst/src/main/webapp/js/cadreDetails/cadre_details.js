@@ -4587,9 +4587,13 @@ $("#mainheading").parent().find("p").removeClass("display-style");
 
 //getTypeWiseIvrDetailsOFCadre();
 function getTypeWiseIvrDetailsOFCadre(){
+	$("#ivrDetailsBodyId").html("");
+	$("#ivrTypeDetailsDivId").html("");
+	$('.ivrSurveyCandtDetailsCls').html("");
 	var jsObj={
 		cadreId:globalCadreId
 	}
+	$('#ivrsurveyDataLoadoing').show();
 	$.ajax({
 		type:'GET',
 		url :'getTypeWiseIvrDetailsOFCadreAction.action',
@@ -4628,7 +4632,8 @@ function getTypeWiseIvrDetailsOFCadre(){
 					str+='</table>';
 				str+='</div>';
 			}
-			str+='</div>'; 
+			str+='</div>';
+				$('#ivrsurveyDataLoadoing').hide();
 			/* str+='<table class="table m_0 table-bordered">';
 				str+='<thead>';
 					str+='<th class="text-center">IVR TYPE </th>';
@@ -4663,6 +4668,7 @@ function getTypeWiseIvrDetailsOFCadre(){
 			str+='</table>'; */		
 		}else{
 			str+='<div>Data Not Available</div>';
+			$('#ivrsurveyDataLoadoing').hide();
 		}		
 		$("#ivrTypeDetailsDivId").html(str);
 		$('[data-toggle="tooltip"]').tooltip()
@@ -4672,7 +4678,6 @@ function getTypeWiseIvrDetailsOFCadre(){
 
 function getIvrSurveyDetails(searchType,eventTypeId,eventName){
 	$("#ivrDetailsBodyId").html("");
-	//$("#ivrDetailsModelId").modal("show");
 	$("#dataLoadingsImgForIVRDetails").show();
 	
 	var jsObj={
@@ -5083,26 +5088,6 @@ function getIvrSurveyForCandidateParticipated(cadreId)
 					buildUnAnsweredIvrSurveys(result);
 				}
 			})				
-}
-
-function getIVRSurveysOnCandidateDetails()
-{
-	
-	//var candidateId = globalCandidateId;
-	
-	var jsObj={
-			candidateId:446493,
-			task:""
-			
-	}
-	alert(jsObj)
-	$.ajax({
-		type:'GET',
-		url :'getSurveysOnCandidateDetailsAction.action',
-		data : {task:JSON.stringify(jsObj)} ,
-	}).done(function(result){
-		
-	});
 }
 
 getAppointmentsUserDetails();
