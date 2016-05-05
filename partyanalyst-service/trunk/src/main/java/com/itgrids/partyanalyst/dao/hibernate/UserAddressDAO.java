@@ -38,4 +38,115 @@ public class UserAddressDAO extends GenericDaoHibernate<UserAddress, Long> imple
 		query.setParameterList("candidateIdsList", candidateIdsList);
 		return query.list();
 	}
+	  public List<Object[]> getGrievanceStatusCountsByTypeOfIssue(Long id,String searchType){
+		   StringBuilder str = new StringBuilder();
+		   
+		   str.append(" select model.type_of_issue," +
+		   		"count(Complaint_id) " +
+		   		"from complaint_master model " +
+		   		"where");
+		   
+		   if(searchType.equalsIgnoreCase("district"))
+			   str.append(" model.district_id =:id and  ");
+		   
+		   else if(searchType.equalsIgnoreCase("assembly"))
+			   str.append(" model.assembly_id = :id  and ");
+		   
+		   else if(searchType.equalsIgnoreCase("parliament"))
+			   str.append(" model.parliament_id= :id and ");
+		   
+		   str.append(" type_of_issue != 'Insurance' group by model.type_of_issue ");
+		   
+		   Query query = getSession().createSQLQuery(str.toString());
+		   query.setParameter("id", id);
+		   return query.list();
+	   }
+	  /*public List<Object[]> getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(Long id,String searchType){
+		  
+		  StringBuilder str = new StringBuilder();
+		  Query query = getSession().createSQLQuery(str.toString());
+		  
+		  str.append(" select model.type_of_issue," +
+		  			"model.Completed_Status," +
+			   		"count(Complaint_id) " +
+			   		"from complaint_master model " +
+			   		"where");
+			   
+			   if(searchType.equalsIgnoreCase("district"))
+				   str.append(" model.district_id =:id and  ");
+			   
+			   else if(searchType.equalsIgnoreCase("assembly"))
+				   str.append(" model.assembly_id = :id  and ");
+			   
+			   else if(searchType.equalsIgnoreCase("parliament"))
+				   str.append(" model.parliament_id= :id and ");
+			   
+			   str.append(" type_of_issue != 'Insurance' group by model.type_of_issue,model.Completed_Status ");
+			   query.setParameter("id", id);
+		return query.list();
+		  
+	  }*/
+public List<Object[]> getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(Long id,String searchType){
+		  
+		  StringBuilder str = new StringBuilder();
+		  str.append(" select model.type_of_issue," +
+		  			"model.Completed_Status," +
+			   		"count(Complaint_id) " +
+			   		"from complaint_master model " +
+			   		"where");
+			   
+			   if(searchType.equalsIgnoreCase("district"))
+				   str.append(" model.district_id =:id and  ");
+			   
+			   else if(searchType.equalsIgnoreCase("assembly"))
+				   str.append(" model.assembly_id = :id  and ");
+			   
+			   else if(searchType.equalsIgnoreCase("parliament"))
+				   str.append(" model.parliament_id= :id and ");
+			   
+			   str.append(" type_of_issue != 'Insurance' group by model.type_of_issue,model.Completed_Status ");
+			   Query query = getSession().createSQLQuery(str.toString());
+			   query.setParameter("id", id);
+		  
+		return query.list();
+		  
+	  }
+	  public List<String> getCompletedStatus(){
+		  
+		  Query query = getSession().createSQLQuery("select distinct Completed_Status from complaint_master where type_of_issue in ('Party','Govt','Welfare')");
+		  
+		  return query.list();
+	  }
+public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String searchType){
+		  
+		  StringBuilder str = new StringBuilder();
+		  
+		  str.append(" select model.Completed_Status," +
+		  		"count(model.Complaint_id)  " +
+		  		"from complaint_master model " +
+		  		"where");
+		  if(searchType.equalsIgnoreCase("district"))
+			   str.append(" model.district_id =:id and  ");
+		   
+		   else if(searchType.equalsIgnoreCase("assembly"))
+			   str.append(" model.assembly_id = :id  and ");
+		   
+		   else if(searchType.equalsIgnoreCase("parliament"))
+			   str.append(" model.parliament_id= :id and ");
+		  
+		  str.append(" type_of_issue != 'Insurance' ");
+		  str.append(" and model.delete_status !='0' or model.delete_status is null ");
+		  str.append(" and model.Subject != '' ");
+		  str.append(" and ((model.issue_type ='Personal' and  model.expected_amount is not null and model.expected_amount !='' ) or " +
+		  		"(model.issue_type ='CM Relief' and model.expected_amount is not null and model.expected_amount != '') or " +
+		  		"(model.issue_type ='Health' and model.health_amount is not null and model.health_amount != '') or " +
+		  		"(model.issue_type ='Financial Support' and model.expected_amount is not null and model.expected_amount !='')) "); 
+		  str.append(" group by model.Completed_Status; ");
+			   Query query = getSession().createSQLQuery(str.toString());
+			   query.setParameter("id", id);
+		  
+		return query.list();
+		  
+	  }
+	  
 }

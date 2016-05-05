@@ -30,6 +30,11 @@ public class GrievanceDetailsVO implements Serializable{
 	private Long hospitCount = 0l;
 	private List<GrievanceDetailsVO> subList = new LinkedList<GrievanceDetailsVO>();	
 	private List<IdNameVO> locationList = new ArrayList<IdNameVO>();
+	private String partyPerc;
+	private String govtPerc;
+	private String welfarePerc;
+	private Long benifitCount=0l;
+	
 	
 	private String firstName;
 	private String membershipNo;
@@ -43,6 +48,30 @@ public class GrievanceDetailsVO implements Serializable{
 	private Long statusId;
 	private Long tdpCadreId;
 	
+	public Long getBenifitCount() {
+		return benifitCount;
+	}
+	public void setBenifitCount(Long benifitCount) {
+		this.benifitCount = benifitCount;
+	}
+	public String getPartyPerc() {
+		return partyPerc;
+	}
+	public void setPartyPerc(String partyPerc) {
+		this.partyPerc = partyPerc;
+	}
+	public String getGovtPerc() {
+		return govtPerc;
+	}
+	public void setGovtPerc(String govtPerc) {
+		this.govtPerc = govtPerc;
+	}
+	public String getWelfarePerc() {
+		return welfarePerc;
+	}
+	public void setWelfarePerc(String welfarePerc) {
+		this.welfarePerc = welfarePerc;
+	}
 	
 	public Long getTdpCadreId() {
 		return tdpCadreId;
