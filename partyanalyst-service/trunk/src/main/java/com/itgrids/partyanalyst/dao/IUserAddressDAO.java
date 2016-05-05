@@ -14,4 +14,8 @@ public interface IUserAddressDAO extends GenericDao<UserAddress, Long>  {
 	
 	public List<UserAddress> getUserAddressByUserAddressId(Long userAddressId);
 	public List<Object[]> getUserAddressDetails(List<Long> candidateIdsList);
+	public List<Object[]> getGrievanceStatusCountsByTypeOfIssue(Long id,String searchType);
+	public List<Object[]> getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(Long id,String searchType);
+	public List<String> getCompletedStatus();
+	public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String searchType);
 }
