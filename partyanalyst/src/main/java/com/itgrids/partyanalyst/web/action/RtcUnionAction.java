@@ -847,6 +847,33 @@ public String getAllTotalCounts(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getRegistrationCadreDetailsSourceWise()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			//RtcUnionInputVO inputVo = new RtcUnionInputVO(); 
+			RtcUnionInputVO inputVo = new RtcUnionInputVO();
+			JSONArray membereTypeIdsList=jObj.getJSONArray("membereTypeIds");
+			List<Long>  idList=new ArrayList<Long>();
+			 for(int i=0;i<membereTypeIdsList.length();i++){
+				 Long id= Long.valueOf(membereTypeIdsList.get(i).toString());
+				 idList.add(id);
+			 }
+			 inputVo.setMemeberTypeIds(idList);
+			 inputVo.setSourceType(jObj.getString("sourceType"));
+			 inputVo.setLocationId(jObj.getLong("locationId"));
+			 inputVo.setLocationType(jObj.getString("searchTypeStr"));
+			 inputVo.setAppType(jObj.getString("appType"));
+			 inputVo.setStartDate(jObj.getString("startDate"));
+			 inputVo.setToDate(jObj.getString("toDate"));
+			 //inputVo.setDateType(jObj.getString("searchDateType"));
+			 cadreDataList=cadreRegistrationService.getRegistrationCadreDetailsSourceWise(inputVo); 
+		}
+		catch(Exception e){
+			LOG.error("Exception Occured in getRegistrationCadreDetailsSourceWise() in RtcUnionAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	public String getDesignationsOfAffiliatedUnionType(){
 		try {
