@@ -37,7 +37,7 @@ public class IvrRespondentCadreDAO extends GenericDaoHibernate<IvrRespondentCadr
 	}
 	public Long getIvrRespondentId(Long tdpCadreId){
 		Query query = getSession().createQuery(" select distinct model.ivrRespondentId from IvrRespondentCadre model " +
-				" where model.tdpCadre.tdpCadreId = :tdpCadreId and model.tdpCadre.mobileNo = model.ivrRespondent.mobileNo " +
+				" where model.tdpCadre.tdpCadreId = :tdpCadreId " +
 				" and model.isDeleted = 'false' ");
 		
 		query.setParameter("tdpCadreId", tdpCadreId);

@@ -95,7 +95,7 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getIvrSurveyAnswerInfoForTdpCadre(Long tdpCadreId)
+	public List<Object[]> getIvrSurveyAnswerInfoForTdpCadre(Long ivrResondentId)
 	{
 		Query query = getSession().createQuery(" select model.ivrSurvey.ivrSurveyId," +
 				" model.ivrSurvey.surveyName," +
@@ -110,8 +110,9 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 				" from IvrSurveyAnswer model left join model.ivrSurveyQuestion.ivrQuestion question" +
 				" left join model.ivrOption option" +
 				" where " +
-				" and model.ivrRespondent.ivrRespondentId = :respondentId" +
+				"  model.ivrRespondent.ivrRespondentId = :ivrResondentId" +
 				" and model.isValid = 'Y' and model.isDeleted = 'false'");
+		query.setParameter("ivrResondentId", ivrResondentId);
 		return query.list();
 		
 	}
