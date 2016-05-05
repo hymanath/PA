@@ -5400,6 +5400,25 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("enrollmentYear", enrollmentYear);
 			return query.list();
 		}
+		public List<Object[]> getCadreDetailsByYearSourceWise(List<Long> tdpCadreIds,Long enrollmentYear){
+			Query query = getSession().createQuery(" select distinct  model.tdpCadreId," +
+					" model.firstname," +
+					" date(model.dateOfBirth)," +
+					" model.age," +
+					" model.mobileNo," +
+					" model.image," +
+					" model.memberShipNo," +
+					" model.userAddress.constituency.constituencyId," +
+					" model.userAddress.constituency.name,vot.voterIDCardNo,model.dataSourceType," +
+					" model.tdpMemberType.tdpMemberTypeId,model.tdpMemberType.memberType,vot.voterId " +
+					" from TdpCadre model left join model.voter vot   " +
+					" where model.tdpCadreId in (:tdpCadreIds)" +
+					" and model.isDeleted ='N' and model.enrollmentYear = :enrollmentYear and model.tdpMemberType.isDeleted='false' order by model.tdpCadreId asc ");
+					query.setParameterList("tdpCadreIds", tdpCadreIds);
+					query.setParameter("enrollmentYear", enrollmentYear);
+					return query.list();
+		  }
+		
 		
 		public Object[] cadreFormalDetailedInformation(Long cadreId,Long enrollmentYear,Long tdpMemberTypeId){
 
@@ -6336,7 +6355,47 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return query.list();
 		}
-	
+	  public List<Long> getCadreDetailsByTdpMemberTypeSourceWise(Date fromDate, Date toDate, RtcUnionInputVO inputVO){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append(" select model.tdpCadreId from TdpCadre model where");
+		  
+		  if(inputVO.getLocationType().equalsIgnoreCase("District")){
+			  sb.append("  model.userAddress.district.districtId = :locationId");
+		  }
+		  
+		  if(inputVO.getLocationType().equalsIgnoreCase("constituency")){
+			  sb.append("  model.userAddress.constituency.constituencyId = :locationId");
+		  }
+		  
+		  if(fromDate != null && toDate != null){
+				sb.append(" and (date(model.surveyTime) between :fromDate and :toDate) ");
+		  }
+		  
+		  if( inputVO.getSourceType() != null &&  !inputVO.getSourceType().trim().equalsIgnoreCase("0"))
+			  sb.append("  and model.dataSourceType = :dataSourceType");
+		  
+		  if(inputVO.getMemeberTypeIds() != null && inputVO.getMemeberTypeIds().size() > 0){
+				sb.append(" and model.tdpMemberType.tdpMemberTypeId in(:memberTypeIds)");
+		  }
+		  
+		  sb.append(" and model.isDeleted ='N' and model.enrollmentYear = "+IConstants.UNIONS_REGISTRATION_YEAR+" ");
+		  Query query = getSession().createQuery(sb.toString());
+		  if(fromDate != null && toDate != null){
+			  	query.setParameter("fromDate", fromDate);
+				query.setParameter("toDate", toDate);
+		  }
+		  if(inputVO.getMemeberTypeIds() != null && inputVO.getMemeberTypeIds().size() > 0){
+				query.setParameterList("memberTypeIds", inputVO.getMemeberTypeIds());
+		  }
+		  
+		  if( inputVO.getSourceType() != null &&  !inputVO.getSourceType().trim().equalsIgnoreCase("0"))
+			  query.setParameter("dataSourceType", inputVO.getSourceType());
+		  
+		  if(inputVO.getLocationType() != null){
+				query.setParameter("locationId", inputVO.getLocationId());
+		  }
+		  return query.list();
+	  }
 	  public List<Object[]>  getmemberShipIdsByVoterIds(Long cadreEnrollmentYear,List<Long> voterIds){
 		  
 		  /*select   model.voter_id,model.membership_id,model.tdp_member_type_id
