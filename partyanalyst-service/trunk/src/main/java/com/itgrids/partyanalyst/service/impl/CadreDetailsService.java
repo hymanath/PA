@@ -6180,6 +6180,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							 optionVO.setId((Long)params[5]);
 							 optionVO.setName(params[6] != null ? params[6].toString() :"");
 							 optionVO.setCount(params[0] != null ? (Long)params[0] + optionVO.getCount() : 0l);
+							 optionVO.setPercentage("0.0"); 
 							 questionVO.getOptions().add(optionVO);
 						 }
 					 }

@@ -16,7 +16,7 @@ public class IvrSurveyCandidateQuestionDAO extends GenericDaoHibernate<IvrSurvey
     }
     
 	public Long getIvrSurveyCountByCandiate(Long candidateId){
-		Query query = getSession().createQuery(" select distinct model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId from IvrSurveyCandidateQuestion model " +
+		Query query = getSession().createQuery(" select count(distinct model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId) from IvrSurveyCandidateQuestion model " +
 				" where model.candidate.candidateId = :candidateId " +
 				" and model.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false' ");
 		query.setParameter("candidateId", candidateId);
