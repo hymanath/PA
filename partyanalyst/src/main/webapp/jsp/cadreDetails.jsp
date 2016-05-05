@@ -321,17 +321,16 @@ var globalCadreId = '${cadreId}';
 						<div class="family-members" id="familyMembersDiv"></div>
 					</div>
 				</div>
-				<div class="panel panel-default">
+				<!--<div class="panel panel-default">
                 	<div class="panel-heading" id="deathHospitalDivHeaderId">
                     	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
-					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
 					<div id="deathHospitalDivId">
 					</div>
-				</div>
+				</div>-->
 				<div id="ntrTrustDivId"></div>
 				
 				<div class="panel panel-default">
@@ -374,7 +373,6 @@ var globalCadreId = '${cadreId}';
 						<div id="ivrTypeDetailsDivId"></div>
 					 </div>
 				 </div>-->
-					
 				<!-- IVR SUMMARY  END ----> 
                 <div class="panel panel-default">
                 	<div class="panel-heading" id="cadreActivitiesHeaderId">
@@ -477,6 +475,16 @@ var globalCadreId = '${cadreId}';
 							
                         </div>
                     </div>
+					<div class="panel panel-default">
+                	<div class="panel-heading" id="deathHospitalDivHeaderId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						</h4>
+                    </div>
+					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+					<div id="deathHospitalDivId">
+					</div>
+				</div>
 				
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading" id="cadreElectionProfileHeaderId">
@@ -492,17 +500,19 @@ var globalCadreId = '${cadreId}';
 				
 				<!-- Meetings Start -->
                 <div class="panel panel-default" id="commitMeetingDiv" style="display:none;" >
-                	<div class="panel-heading">
+                	<div class="panel-heading" id="committeeMetingsHeaderId">
                     	<h4 class="panel-title text-bold"><img src="dist/img/photo.png"> COMMITTEE MEETINGS
 							<span class="pull-right" style="margin-top:-8px">
+							
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>	</span>
-									<input type="text" class="form-control" id="meetingDatePicker">
+									<input type="text" class="form-control" id="meetingDatePicker" style="width: 170px; padding-left: 0px; padding-right: 0px;"><span class="pull-right" id="committeeMetingsShowId" style="display:none;"><i style="padding-top: 9px;cursor:pointer;" class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="committeeMetingsHideId"><i class="glyphicon glyphicon-chevron-down" style="padding-top: 9px;cursor:pointer;"></i></span>
 								</div>
+							
 							</span>
 						</h4>
                     </div>
-                    <div class="panel-body pad_5">
+                    <div class="panel-body pad_5" id="committeeMetingsBodyId">
                     	<div id="committeMeetingDivId">
                           
                         </div>
@@ -598,6 +608,8 @@ var globalCadreId = '${cadreId}';
 					</div>
                     </div>
                 </div>
+				
+				
             </div>
         </div>
 		<div class="row m_top20">
@@ -890,6 +902,25 @@ var globalCadreId = '${cadreId}';
 				<!--<div id="ivrDetailsBodyId">
 				</div>-->
 				<center><img id="dataLoadingsImgForIVRDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+		<div class="modal fade" id="deathHospModelDivId">
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center"><span id="deathHospModalHeadingId"></span></h4>
+			  </div>
+			  <div class="modal-body">
+				<div id="deathHospModalBodyId">
+				</div>
+				<center><img id="dataLoadingsImgForDeathHospDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
 			  </div>
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -1217,7 +1248,18 @@ if(isVisible==false){
 	}
 	$("#addressBodyId").collapse('toggle');
 });
-
+$("#committeeMetingsBodyId").collapse('hide');
+$(document).on("click","#committeeMetingsHeaderId",function(){ 
+var isVisible = $( "#committeeMetingsHideId" ).is( ":visible" );
+if(isVisible==false){
+		 $( "#committeeMetingsHideId" ).show();
+		 $( "#committeeMetingsShowId" ).hide();
+	}else{
+		$( "#committeeMetingsHideId" ).hide();
+		$( "#committeeMetingsShowId" ).show();
+	}
+	$("#committeeMetingsBodyId").collapse('toggle');
+});
 
 	$(document).click(function() {
 		$('.survey-hover').hide();

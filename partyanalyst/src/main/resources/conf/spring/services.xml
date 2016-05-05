@@ -2649,6 +2649,7 @@
 		 <property name="ivrSurveyServiceDAO" ref="ivrSurveyServiceDAO" />
 		 <property name="userAddressDAO" ref="userAddressDAO" />
 		 <property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO" />
+		 <property name="cadreHealthStatusDAO" ref="cadreHealthStatusDAO" />
 		 <property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO" />
 		  <property name="ivrSurveyCandidateQuestionDAO" ref="ivrSurveyCandidateQuestionDAO" />
 	</bean>
