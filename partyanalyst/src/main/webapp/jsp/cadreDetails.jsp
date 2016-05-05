@@ -183,7 +183,7 @@ var globalCadreId = '${cadreId}';
             	<div class="panel panel-default">
                 	<div class="panel-heading" role="tab" id="headingTwo12">
 								<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#collapseTwo12" aria-expanded="false" aria-controls="collapseTwo12">	
-								<h4 class="panel-title" style="font-weight:400">
+								<h4 class="panel-title text-bold" style="cursor:pointer;">
 									<i class="glyphicon glyphicon-user"></i>
 										CANDIDATE GRIEVANCE DETAILS
 									<span class="pull-right"><span class="count-style" id="candidateTotalComplaintsDiv">0</span></span>
@@ -209,7 +209,7 @@ var globalCadreId = '${cadreId}';
 				<!--swadhin-->
 				<div class="panel panel-default">
 				<div class="panel-heading" id="cadreBenefitsHeadingId">
-					<h4 class="panel-title" style="cursor:pointer;">
+					<h4 class="panel-title text-bold" style="cursor:pointer;">
 						<img src="images/User_icon_BLACK-01.png"> 
 						CANDIDATE BENEFITS <span class="pull-right" id="cadreBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="cadreBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -247,7 +247,7 @@ var globalCadreId = '${cadreId}';
 				<!--swadhin-->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					  <h4 class="panel-title"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
+					  <h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
 					</div>
 					<div class="panel-body pad_0" id="referralGrievanceDetailsId">
 					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
@@ -275,7 +275,7 @@ var globalCadreId = '${cadreId}';
 				<!--SWADHIN-->
 				<div class="panel panel-default">
 				<div class="panel-heading" id="familyBenefitsHeadingId">
-					<h4 class="panel-title" style="cursor:pointer;">
+					<h4 class="panel-title text-bold" style="cursor:pointer;">
 					<img src="images/family_icon.png">
 						FAMILY BENEFITS<span class="pull-right" id="familyBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="familyBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -493,7 +493,7 @@ var globalCadreId = '${cadreId}';
 				<!-- Meetings Start -->
                 <div class="panel panel-default" id="commitMeetingDiv" style="display:none;" >
                 	<div class="panel-heading">
-                    	<h4 class="panel-title"><img src="dist/img/photo.png"> COMMITTEE MEETINGS
+                    	<h4 class="panel-title text-bold"><img src="dist/img/photo.png"> COMMITTEE MEETINGS
 							<span class="pull-right" style="margin-top:-8px">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>	</span>
@@ -605,13 +605,13 @@ var globalCadreId = '${cadreId}';
             	<div class="panel panel-default">
                 	<div class="panel-heading">
 					<a href="javascript:{hideAndShowCommittee(1);}" title="Click here to Show Committee Details" id="showId">
-                    	<h4 class="panel-title">
+                    	<h4 class="panel-title text-bold">
                         	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span> 
 							 <i class="pull-right glyphicon glyphicon-triangle-top "></i>							
                         </h4>
 						</a>
 						<a href="javascript:{hideAndShowCommittee(2);}" title="Click here to Hide Committee Details" style="display:none;" id="hideId">
-							<h4 class="panel-title">
+							<h4 class="panel-title text-bold">
                         	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span> 
 							 
 							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
