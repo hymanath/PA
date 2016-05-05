@@ -6467,7 +6467,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			StringBuilder str=new StringBuilder();
 			
-			str.append(" select model.tdpCadreId ,model.firstname,model.mobileNo,model.userAddress.constituency.name," +
+			str.append(" select model.tdpCadreId ,model.firstname,model.mobileNo,model2.userAddress.constituency.name," +
 					"   model.memberShipNo,model.voter.voterIDCardNo,model2.publicRepresentativeType.type,model.image " +
 					"   from TdpCadre model,PublicRepresentative model2,TdpCadreCandidate model1 where model.isDeleted='N' and model.enrollmentYear = :enrollmentYear"
 					+ " and model2.candidate.candidateId = model1.candidate.candidateId and model.tdpCadreId = model1.tdpCadre.tdpCadreId ");
@@ -6720,6 +6720,26 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	{
 		Query query = getSession().createQuery("select distinct model.tdpCadreId,model.mobileNo, model.payMentStatus from TdpCadre model where model.memberShipNo = '"+memberShipNo.trim()+"' and " +
 				" model.isDeleted = 'N' and model.tdpMemberTypeId ="+tdpMemberTypeId+" and model.enrollmentYear="+enrollmentYear+"  order by model.tdpCadreId desc ");
+		return query.list();
+	}
+	public List<Object[]> getPRConstituenciesByCadreIds(List<Long> cadreIds)
+	{
+		Query query=getSession().createQuery(" select distinct model.tdpCadre.tdpCadreId,model1.userAddress.constituency.name,model1.userAddress.constituency.constituencyId" +
+				" from TdpCadreCandidate model,PublicRepresentative model1 " +
+				" where model.candidate.candidateId = model1.candidate.candidateId " +
+				" and model.tdpCadre.tdpCadreId in (:cadreIds)  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014  ");
+	
+		query.setParameterList("cadreIds", cadreIds);
+		
+	return query.list();
+	}
+	
+	public List<UserAddress> getUserAddressForPR(List<Long> cadreIds){
+		
+		Query query=getSession().createQuery(" select model1.userAddress  from TdpCadreCandidate model,PublicRepresentative model1 " +
+				" where model.candidate.candidateId = model1.candidate.candidateId " +
+				" and model.tdpCadre.tdpCadreId in (:cadreIds)  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014  ");
+		query.setParameterList("cadreIds", cadreIds);
 		return query.list();
 	}
 	
