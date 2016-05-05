@@ -31,7 +31,85 @@ public class GrievanceDetailsVO implements Serializable{
 	private List<GrievanceDetailsVO> subList = new LinkedList<GrievanceDetailsVO>();	
 	private List<IdNameVO> locationList = new ArrayList<IdNameVO>();
 	
+	private String firstName;
+	private String membershipNo;
+	private String mobileNo;
+	private String description;
+	private String subject;
+	private Long complaintId;
+	private String raisedDate;
+	private String typeOfIssue;
+	private String updatedDate;
+	private Long statusId;
+	private Long tdpCadreId;
 	
+	
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public Long getComplaintId() {
+		return complaintId;
+	}
+	public void setComplaintId(Long complaintId) {
+		this.complaintId = complaintId;
+	}
+	public String getRaisedDate() {
+		return raisedDate;
+	}
+	public void setRaisedDate(String raisedDate) {
+		this.raisedDate = raisedDate;
+	}
+	public String getTypeOfIssue() {
+		return typeOfIssue;
+	}
+	public void setTypeOfIssue(String typeOfIssue) {
+		this.typeOfIssue = typeOfIssue;
+	}
+	public String getUpdatedDate() {
+		return updatedDate;
+	}
+	public void setUpdatedDate(String updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
 	public List<IdNameVO> getLocationList() {
 		return locationList;
 	}

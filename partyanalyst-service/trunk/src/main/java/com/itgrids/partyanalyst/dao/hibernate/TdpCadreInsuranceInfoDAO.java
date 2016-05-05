@@ -46,6 +46,64 @@ public class TdpCadreInsuranceInfoDAO extends GenericDaoHibernate<TdpCadreInsura
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getDeathAndHospitalizationDetails(Long locationValue,String searchType){
+		/*
+		 * 
+		 * SELECT #distinct CM.membership_id,
+				CM.issue_type
+			    #GIS.grievance_insurance_status_id,GIS.status
+				,COUNT(CM.Complaint_id)
+				FROM grievance_insurance_status GIS,complaint_master CM 
+			    left join tdp_cadre TC on CM.membership_id = TC.membership_id,user_address UA
+				WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id 
+				AND CM.delete_status IS NULL 
+				#and CM.issue_type = 'Death'
+			    and CM.type_of_issue = 'Insurance'
+			    and TC.address_id = UA.user_address_id
+			    and UA.tehsil_id = 1102
+			    #and CM.assembly_id = 282
+			    and CM.state_id_cmp IN (1,2)
+			    and (CM.Subject != '' OR CM.Subject IS NOT NULL)
+				#GROUP BY GIS.grievance_insurance_status_id;
+				GROUP BY CM.issue_type;
+		 */
+		StringBuilder str=new StringBuilder();
+		str.append("SELECT COUNT(CM.Complaint_id)," +
+						" CM.issue_type" +
+						" FROM complaint_master CM" +
+						" LEFT JOIN tdp_cadre TC ON CM.membership_id = TC.membership_id," +
+						" user_address UA" +
+						" WHERE CM.delete_status IS NULL" +
+						" AND CM.type_of_issue = 'Insurance'" +
+						" AND TC.address_id = UA.user_address_id" +
+						" AND CM.state_id_cmp IN (1,2)" +
+						" AND (CM.Subject != '' OR CM.Subject IS NOT NULL)");
+		
+		if(searchType.equalsIgnoreCase("panchayat"))
+			str.append(" AND UA.panchayat_id = :locationValue");
+    	else if(searchType.equalsIgnoreCase("mandal"))
+    		str.append(" AND UA.tehsil_id = :locationValue");
+    	else if(searchType.equalsIgnoreCase("leb"))
+    		str.append(" AND UA.local_election_body = :locationValue");
+    	else if(searchType.equalsIgnoreCase("constituency"))
+    		str.append(" AND UA.constituency_id = :locationValue");
+    	else if(searchType.equalsIgnoreCase("parliament"))
+    		str.append(" AND UA.parliament_constituency_id = :locationValue");
+    	else if(searchType.equalsIgnoreCase("district"))
+    		str.append(" AND UA.district_id = :locationValue");
+		
+		str.append(" GROUP BY CM.issue_type");
+		
+		Query query=getSession().createSQLQuery(str.toString());
+		
+		if(searchType !="" && searchType !=null){
+			query.setParameter("locationValue",locationValue);
+		}
+		
+		return query.list();
+	}
+
 	public List<Object[]> getDeathsAndHospitalizationDetailsForParliament(List<Long> typeIds,String type){
 	
 		StringBuilder str=new StringBuilder();
