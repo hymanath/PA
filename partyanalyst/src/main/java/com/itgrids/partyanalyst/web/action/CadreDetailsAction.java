@@ -88,7 +88,23 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<CadreDetailsVO> cadreDetailsVO;
 	
 	
+	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
+	private GrievanceDetailsVO gerGrievanceDetailsVO;
 	
+	
+	public GrievanceDetailsVO getGerGrievanceDetailsVO() {
+		return gerGrievanceDetailsVO;
+	}
+	public void setGerGrievanceDetailsVO(GrievanceDetailsVO gerGrievanceDetailsVO) {
+		this.gerGrievanceDetailsVO = gerGrievanceDetailsVO;
+	}
+	public List<GrievanceDetailsVO> getGrievanceDetailsVoList() {
+		return grievanceDetailsVoList;
+	}
+	public void setGrievanceDetailsVoList(
+			List<GrievanceDetailsVO> grievanceDetailsVoList) {
+		this.grievanceDetailsVoList = grievanceDetailsVoList;
+	}
 	public GrievanceDetailsVO getGrievanceDetailsvo() {
 		return grievanceDetailsvo;
 	}
@@ -994,6 +1010,38 @@ public String updateLeaderShip(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getGrievanceStatusDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long assemblyId = jObj.getLong("assemblyId");
+			Long parliamentid = jObj.getLong("parliamentid");
+			Long districtid = jObj.getLong("districtId");
+			
+			grievanceDetailsVoList = cadreDetailsService.getGrievanceStatusByTypeOfIssueLocation( districtid, assemblyId, parliamentid);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCheckCandidateDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getStatusCountDetailsForGrievance(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long assemblyId = jObj.getLong("assemblyId");
+			Long parliamentid = jObj.getLong("parliamentid");
+			Long districtid = jObj.getLong("districtId");
+			
+			gerGrievanceDetailsVO = cadreDetailsService.getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails( districtid, assemblyId, parliamentid);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCheckCandidateDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 	public String getComplaintsDetailsByLocationAndStatus(){
 		try{

@@ -12032,9 +12032,20 @@
 				<param name="root">idNameVoList</param>
 		</result>
 	</action>
-	<action name="getCandateParicipatedSurveyCountAction" class="cadreDetailsAction" method="getCandateParicipatedSurveyCount">
+		<action name="getCandateParicipatedSurveyCountAction" class="cadreDetailsAction" method="getCandateParicipatedSurveyCount">
 		<result type="json" name="success">
 			<param name="root">verifierVO</param>
+		</result>
+	</action>
+	
+	<action name="getGrievanceStatusDetailsAction" class="cadreDetailsAction" method="getGrievanceStatusDetails" >
+		<result type="json" name="success">
+			<param name="root">grievanceDetailsVoList</param>
+		</result>
+	</action>
+	<action name="getStatusCountDetailsForGrievanceAction" class="cadreDetailsAction" method="getStatusCountDetailsForGrievance" >
+		<result type="json" name="success">
+			<param name="root">gerGrievanceDetailsVO</param>
 		</result>
 	</action>
 	<action name="getComplaintsDetailsByLocationAndStatusAction" class="cadreDetailsAction" method="getComplaintsDetailsByLocationAndStatus">

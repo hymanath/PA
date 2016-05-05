@@ -491,6 +491,8 @@ function getParticipatedConstituencyId(cadreId){
 					getRefferelDetailsStatusWise();
 					getConductedPartyMeetingDetails("","","true");
 					getTrainingCampAttendenceInfoInCadreLocation();
+					//getGrievanceStatusDetails();
+					getStatusCountsForGrievanceDetails();
 				}
 			});
 		}
@@ -5357,3 +5359,148 @@ function getAppointmentsUserDetails()
 	 
 	}
 	
+			/*$.ajax({
+				type:'GET',
+				 url: 'getTdpCadreIvrSurveyDetailsAction.action',
+				 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			})				
+}*/
+function getGrievanceStatusDetails(){
+	$("#grievanceStatusMainDivId").html('');
+	
+	var constituencyId = 0;
+	var parliamentid = 0;
+	var districtId = 0;
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		constituencyId = participatedConstituencyId;
+		parliamentid = participatedParliamentId;
+		districtId = participatedDistrictId;
+	}
+	else{
+		constituencyId = globalConstituencyId;
+		parliamentid = globalParliamentId;
+		districtId = globalDistrictId;
+	}
+	var jsobj={
+		assemblyId : constituencyId,
+		parliamentid : parliamentid,
+		districtId : districtId
+		}
+	$.ajax({
+		type:'GET',
+		 url: 'getGrievanceStatusDetailsAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result != null){
+			buildGrievanceStatusDetails(result);
+		}
+	});
+}
+function buildGrievanceStatusDetails(result){
+	var str='';
+			 str+'<div class="panel-body pad_0">';
+				str+='<table class="table m_0 table-bordered table-condensed m_0" style="font-size:9px">';
+					str+='<thead>';
+						str+='<th style="background-color:#f5f5f5">LOCATION</th>';
+						str+='<th style="background-color:#f5f5f5">TOTAL GRIEVANCE REQUESTS</th>';
+						str+='<th style="background-color:#f5f5f5">PARTY(%)</th>';
+						str+='<th style="background-color:#f5f5f5">GOVT(%)</th>';
+						str+='<th style="background-color:#f5f5f5">WELFARE(%)</th>';
+					str+='</thead>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td style="text-transform:uppercase">'+result[i].name+'</td>';
+							str+='<td>'+result[i].count+'</td>';
+							str+='<td>'+result[i].partyCount+'('+result[i].partyPerc+'%)</td>';
+							str+='<td>'+result[i].govtCount+'('+result[i].govtPerc+'%)</td>';
+							str+='<td>'+result[i].welfareCount+'('+result[i].welfarePerc+'%)</td>';
+						str+='</tr>';
+					}		
+				str+'</table>';
+			str+='</div>';
+		$("#dataLoadingsImgForGrievanceStatusCount").hide();
+		$("#grievanceStatusMainDivId").html(str);
+} 
+function getStatusCountsForGrievanceDetails(){
+	$("#statusCountsMainDivId").html('');
+	
+	var constituencyId = 0;
+	var parliamentid = 0;
+	var districtId = 0;
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		constituencyId = participatedConstituencyId;
+		parliamentid = participatedParliamentId;
+		districtId = participatedDistrictId;
+	}
+	else{
+		constituencyId = globalConstituencyId;
+		parliamentid = globalParliamentId;
+		districtId = globalDistrictId;
+	}
+	var jsobj={
+		assemblyId : constituencyId,
+		parliamentid : parliamentid,
+		districtId : districtId
+		}
+	$.ajax({
+		type:'GET',
+		 url: 'getStatusCountDetailsForGrievanceAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result != null){
+			buildStatusCountsForGrievanceDetails(result);
+		}
+	});
+}
+function buildStatusCountsForGrievanceDetails(result){
+var str='';
+          str+'<div class="panel-body pad_0">';
+          str+'<div class="table-responsive">';
+            str+='<table class="table m_0 table-bordered m_0">';
+              str+='<thead>';
+                str+='<tr>';
+                  str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
+                 // for(var i in result){
+                   // str+='<th colspan="2" style="text-align:center;"> '+result.locationList[i].name+' </th>';
+                    str+='<th colspan="3" style="text-align:center;"> ASSEMBLY </th>';
+                    str+='<th colspan="3" style="text-align:center;"> PARLIAMENT </th>';
+                    str+='<th colspan="3" style="text-align:center;"> DISTRICT </th>';
+                  //}
+                str+='</tr>';
+                str+='<tr>';
+                //for(var i in result){
+                  str+='<th style="text-align:center;">Party</th>';
+                  str+='<th style="text-align:center;">Govt</th>';
+                  str+='<th style="text-align:center;">Welfare</th>';
+				  str+='<th style="text-align:center;">Party</th>';
+                  str+='<th style="text-align:center;">Govt</th>';
+                  str+='<th style="text-align:center;">Welfare</th>';
+				  str+='<th style="text-align:center;">Party</th>';
+                  str+='<th style="text-align:center;">Govt</th>';
+                  str+='<th style="text-align:center;">Welfare</th>';
+              //  }
+                str+='</tr>';
+                str+='</thead>';
+                str+='<tbody>';
+                  for(var i in result.subList){
+                    str+='<tr>';
+                    str+='<td>'+result.subList[i].name+'</td>';
+                    if(result.subList[i].subList != null && result.subList[i].subList.length>0){
+                      for(var k in result.subList[i].subList){
+                          if(result.subList[i].subList[k].count != null)
+                            str+='<td style="text-align:center;" >'+result.subList[i].subList[k].count+'</td>';
+                          else
+                            str+='<td style="text-align:center;"> - </td>';
+                      }                      
+                    }
+                    str+='</tr>';
+                  }
+                str+='</tbody>';
+              str+'</table>';
+          str+='</div>';
+          str+='</div>';
+       $("#dataLoadingsImgForStatusCount").hide();
+      $("#statusCountsMainDivId").html(str);
+}
+			

@@ -344,6 +344,28 @@ var globalCadreId = '${cadreId}';
 						</div>
 					</div>
                 </div>
+				<!--<div class="panel panel-default">
+                	<div class="panel-heading" id="grievanceStatusDivId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> GRIEVANCE STATUS DETAILS <span class="pull-right" id="grievanceStatusHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="grievanceStatusShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						</h4>
+                    </div>
+					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
+					<!--<center><img id="dataLoadingsImgForGrievanceStatusCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+					<div id="grievanceStatusMainDivId">
+					</div>
+				</div>-->
+				<!--<div class="panel panel-default">
+                	<div class="panel-heading" id="StatusCountsDivId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> GRIEVANCE STATUS COUNTS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						</h4>
+                    </div>
+					<center><img id="dataLoadingsImgForStatusCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+					<div id="statusCountsMainDivId">
+					</div>
+				</div>-->
+				
             </div>
             <div class="col-md-8">
             	<div class="panel panel-default">
@@ -608,6 +630,16 @@ var globalCadreId = '${cadreId}';
 					</div>
                     </div>
                 </div>
+				<div class="panel panel-default">
+                	<div class="panel-heading" id="StatusCountsDivId">
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE STATUS COUNTS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						</h4>
+                    </div>
+					<center><img id="dataLoadingsImgForStatusCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+					<div id="statusCountsMainDivId">
+					</div>
+				</div>
 				
 				
             </div>
@@ -1598,6 +1630,31 @@ $(document).on("click",".detailsCls",function(){
 	getCategoryFeedBackAnswerForCadre();//call for feedback answer
 	
 });
+/*$("#grievanceStatusMainDivId").collapse('hide');
+$(document).on("click","#grievanceStatusDivId",function(){
+	var isVisible = $( "#grievanceStatusHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#grievanceStatusHideId" ).show();
+		 $( "#grievanceStatusShowId" ).hide();
+	}else{
+		$( "#grievanceStatusHideId" ).hide();
+		$( "#grievanceStatusShowId" ).show();
+	}
+	$("#grievanceStatusMainDivId").collapse('toggle');
+});*/
+$("#statusCountsMainDivId").collapse('hide');
+$(document).on("click","#StatusCountsDivId",function(){
+	var isVisible = $( "#statusCountsHideId" ).is( ":visible" );
+	if(isVisible==false){
+		 $( "#statusCountsHideId" ).show();
+		 $( "#statusCountsShowId" ).hide();
+	}else{
+		$( "#statusCountsHideId" ).hide();
+		$( "#statusCountsShowId" ).show();
+	}
+	$("#statusCountsMainDivId").collapse('toggle');
+});
+
 $("#candidateAppointmentBodyId").collapse('hide');
 $(document).on("click","#candidateAppointmentId",function(){
 	var isVisible = $( "#candidateAppointmentHideId" ).is( ":visible" );
