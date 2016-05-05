@@ -492,8 +492,8 @@ function generateOTPForMobileNo(currentButton){
 				refNo : refNo
 				//prevRefNo : prevRefNo
 			}
-			console.log(mobileNo);
-			//generateOTPForMobileNumber(jsObj,currentButton);
+			//console.log(mobileNo);
+			generateOTPForMobileNumber(jsObj,currentButton);
 		}else{
 			$("#getOtpId").html("Please select atleast one member.");
 		}
@@ -523,7 +523,7 @@ function validateOTP(otp){
 	var mobileNo = $('#mobileNo'+memberShipNo+'').val();
 	var refNo = $("#randomRefNo").val();
 	$("#fail,#success").hide();
-	$("#validateOTPImg,").show();
+	//$("#validateOTPImg,").show();
 	//alert(mobileNo+"::"+refNo+"::"+otp);
 	var jsObj =
 	{    
