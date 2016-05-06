@@ -109,7 +109,7 @@ function buildIVRSurveyTabs(result){
 	
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top:0px;padding:0px;"><a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();">CANDIDATE PARTICIPATED SURVEYS&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
+	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top:0px;padding:0px;"><a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();" style="cursor:pointer;" >CANDIDATE PARTICIPATED SURVEYS&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
 	}else{	
 	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
 	}
@@ -121,7 +121,7 @@ function getSurveysOnCandidateCount(){
 	$("#ivrTypeDetailsDivId").html("");
 	var jsObj={
 	//globalCandidateId
-		candidateId:446493
+		candidateId:globalCandidateId
 	}
 	$('#ivrsurveyDataLoadoing').show();
 	$.ajax({
@@ -136,7 +136,7 @@ function buildIVRSurveysOnCandidateCount(result){
 	
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();">SURVEYS ON CANDIDATE&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
+	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;" >SURVEYS ON CANDIDATE&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
 	}else{	
 	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">SURVEYS ON CANDIDATE&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
 	}
@@ -155,7 +155,7 @@ function getIVRSurveysOnCandidateDetails()
 	//var candidateId = globalCandidateId;
 	
 	var jsObj={
-			candidateId:446493,
+			candidateId:globalCandidateId,
 			task:""
 	}
 	$('#ivrsurveyDataLoadoing').show();
