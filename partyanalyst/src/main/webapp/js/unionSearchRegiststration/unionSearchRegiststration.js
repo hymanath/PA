@@ -117,7 +117,7 @@ function getVoterDetailsBySearch(){
 	} */
 	var voterCardNo = $("#searchBy").val();
 	if($("#searchBy").val().length==0){
-		$('#searchErrDiv').html('Please enter voterCard No.');
+		$('#searchErrDiv').html('Please Enter Voter ID /Voter Card No.');
 		return;
 	}
 	var jsObj =
@@ -250,7 +250,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		
 		if(searchBy.trim().length == 0 )
 		{
-			$('#searchErrDiv').html('Please enter Membership Card No.');
+			$('#searchErrDiv').html('Please Enter Membership Card No.');
 			return;       
 		}
 	}			
@@ -260,7 +260,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		
 		if(searchBy.trim().length == 0 )
 		{
-			$('#searchErrDiv').html('Please enter Voter Card No.');
+			$('#searchErrDiv').html('Please Enter Voter ID /Voter Card No.');
 			return;
 		}
 		voterCardNo = voterCardNo +"-HIDE";
@@ -271,7 +271,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		
 		if(searchBy.trim().length == 0 )
 		{
-			$('#searchErrDiv').html('Please enter Mobile No.');
+			$('#searchErrDiv').html('Please Enter Mobile No.');
 			return;
 		}
 		
