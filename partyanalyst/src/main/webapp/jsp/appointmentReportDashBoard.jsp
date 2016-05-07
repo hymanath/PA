@@ -299,14 +299,44 @@ function buildRoleWiseCount(result,level,jsObj){
 		   
 		for(var i in result){
             str +='<tr>';
-		
-				str +='<td id='+result[i].roleId+'>'+result[i].role+'</td>';
+            
+		      str +='<td id='+result[i].roleId+'>'+result[i].role+'</td>';
+		  if(result[i].total>0)
+		    {
             str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].total+'</a></td>';
+		    }else{
+			   str+='<td style="text-align:center">'+result[i].total+'</td>';
+		    }
+		  if(result[i].uniquecnt>0)
+		   {
             str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'unique\',\'total\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].uniquecnt+'</a></td>';
+		   }else{
+			    str+='<td style="text-align:center">'+result[i].uniquecnt+'</td>';
+		   }
+		  if(result[i].requestedCnt)
+		  {
             str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'Request\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].requestedCnt+'</a></td>';
+		  }else{
+			  str+='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
+		  }
+		  if(result[i].uniqueRequestedCnt>0)
+		  {
             str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'unique\',\'Request\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].uniqueRequestedCnt+'</a></td>';
+		  }else{
+			  str+='<td style="text-align:center">'+result[i].uniqueRequestedCnt+'</td>';
+		  }
+		  if(result[i].scheduledCnt>0)
+		   {
             str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'Schedule\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].scheduledCnt+'</a></td>';
+		   }else{
+			    str+='<td style="text-align:center">'+result[i].scheduledCnt+'</td>';
+		   }
+		  if(result[i].uniqueScheduledCnt)
+		  {
             str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'unique\',\'Schedule\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].uniqueScheduledCnt+'</a></td>';
+		   }else{
+			   str+='<td style="text-align:center">'+result[i].uniqueScheduledCnt+'</td>';
+		   }
 			str +=' </tr>';
 		   }
 			str +='</tbody>';
