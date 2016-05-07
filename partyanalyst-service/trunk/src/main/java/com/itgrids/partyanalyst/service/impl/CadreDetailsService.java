@@ -6841,6 +6841,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	 */
 	public VerifierVO getCandateParicipatedSurveyCount(Long tdpCadreId){
 		VerifierVO verifierVO = new VerifierVO();
+		try {
 		Long ivrRespondantId = ivrRespondentCadreDAO.getIvrRespondentId(tdpCadreId);
 		if(ivrRespondantId != null && ivrRespondantId.longValue() > 0){
 			Long count = ivrSurveyAnswerDAO.getCandateParticipatedSurveyCnt(ivrRespondantId);
@@ -6848,7 +6849,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 				verifierVO.setTotalCount(count);
 			}
 		}
-				
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getCandateParicipatedSurveyCount() method, Exception - ",e);
+		}			
 		return verifierVO;
 	}
 	
