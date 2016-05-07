@@ -12074,5 +12074,20 @@
 	    	<param name="root">cadreDataList</param>
 	    </result>
 	</action>
+	<action name="getAllStatusDetailsByComplaintAction" class="cadreDetailsAction" method="getAllStatusDetailsByComplaint">
+		<result type="json" name="success">
+				<param name="root">grievanceSampleVO</param>
+		</result>
+	</action>
+	<action name="getStatusTrackingDetailsOfInsuranceByComplaintAction" class="cadreDetailsAction" method="getStatusTrackingDetailsOfInsuranceByComplaint">
+		<result type="json" name="success">
+				<param name="root">grievanceSampleVO</param>
+		</result>
+	</action>
+	<action name="getComplaintsDetailsForGrievanceByLocationAndStatusAction" class="cadreDetailsAction" method="getComplaintsDetailsForGrievanceByLocationAndStatus">
+		<result type="json" name="success">
+				<param name="root">grievDetailsVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      

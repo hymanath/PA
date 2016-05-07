@@ -2639,14 +2639,15 @@ function getDeathsAndHospitalizationDetails(){
 			}).done(function(result){
 				var str='';
 				if(result != null){
-					str+'<div class="panel-body pad_0">';
-					str+'<div class="table-responsive">';
-						str+='<table class="table m_0 table-bordered m_0">';
+					str+='<div> NOTE : DEATH - DEATH INSURANCE ,  HOSP. - HOSPITALIZATION INSURANCE</div>';
+					str+='<div class="panel-body pad_0">';
+					str+='<div class="table-responsive">';
+						str+='<table class="table m_0 table-bordered m_0"  style="margin-top:20px">';
 							str+='<thead>';
 								str+='<tr>';
 									str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
 									for(var i in result.locationList){
-										str+='<th colspan="2" style="text-align:center;text-transform:uppercase"> '+result.locationList[i].name+' </th>';
+										str+='<th colspan="2" style="text-align:center;text-transform:uppercase"> '+result.locationList[i].name+'. </th>';
 										}
 								str+='</tr>';
 								str+='<tr>';
@@ -2690,6 +2691,136 @@ $(document).on("click",".tdpCandidatePageCls",function(){
 	var redirectWindow=window.open('cadreDetailsAction.action?cadreId='+deathTdpCadreId+'','_blank');
 });
 
+$(document).on("click",".openmodalshow",function(){
+	var divId=$(this).attr("attr_divId");
+	$("#"+divId).show();
+});
+	
+function getComplaintTrackingDetails(complaintId,divId){
+	//alert(divId);
+	$("#tr"+divId).show();
+	var jsobj={
+		complaintId : complaintId
+	}
+	$.ajax({
+		 type:'POST',
+		 url: 'getStatusTrackingDetailsOfInsuranceByComplaintAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result!=null && result.onlystatus!=null && result.onlystatus.trim().length>0){
+			 var str='';
+			 str+='<div class="ui-steps-border">';
+			 str+='<div class="ui small steps" style="width:100%;">';
+			 str+='<div class="active step" style="padding:20px 10px">';
+				str+='<div class="content">';
+					str+='<div class="title" style="font-size:12px">'+result.onlystatus.toUpperCase() +'</div>';
+				 str+='</div>';
+			 str+='</div>';
+			 str+='</div>';
+			 str+='</div>';
+			 $('#'+divId).html(str);
+		}
+		else if(result!=null && result.simpleVOList1!=null && result.simpleVOList2!=null){
+		 var str='';
+		 str+='<div class="ui-steps-border">';
+		 str+='<div class="ui small steps" style="width:100%;">';
+		 for(var i in result.simpleVOList1){
+			 
+			 if(result.simpleVOList1[i].dateString==null)
+				str+='<div class="disabled step"  style="padding:20px 10px">';
+			 else{
+				  if(result.simpleVOList1[i].status=='current')
+					 str+='<div class="active step"  style="padding:20px 10px">';
+				  else
+					 str+='<div class="step">';
+			 }
+			 str+='<div class="content">';
+				  str+='<div class="title" style="font-size:12px">'+result.simpleVOList1[i].name.toUpperCase() +'</div>';
+				  if(result.simpleVOList1[i].name=='Applied'){
+					  if(result.simpleVOList1[i].dateString!=null)
+					   str+='<div class="description"  style="font-size:11px">Requested on  '+result.simpleVOList1[i].dateString+'</div>';
+				  }
+				  else{
+					  if(result.simpleVOList1[i].dateString!=null){
+						  str+='<div class="description">'+result.simpleVOList1[i].dateString+'</div>';
+					  }
+				  }
+			 str+='</div>';
+			 if( result.simpleVOList1[i].name!='Cheque Received' && result.simpleVOList1[i].name!='Not Eligible' && result.simpleVOList1[i].name!='Rejected')
+			   if(result.simpleVOList1[i].type!=null)
+				 str+='<span class="days">'+result.simpleVOList1[i].type+'</span>';
+			 str+='</div>';
+		 }
+		 
+		str+='</div>';
+		str+='</div>';
+		if(result.simpleVOList2!=null){
+			
+			str+='<div class="pull-right">';
+			str+='<button type="button" class="btn btn-default btn-sm openmodalshow" attr_divId="totaldivId'+complaintId+'" style="margin-top:5px"><i class="glyphicon glyphicon-eye-open"></i> &nbsp; Total Flow</span>';
+			str+='</div>';
+			 
+			str+='<div id="totaldivId'+complaintId+'" style="display:none;">';
+			str+='<table class="table table-bordered">';
+		   str+='<th>USERNAME</th>';
+		   str+='<th>STATUS</th>';
+		   str+='<th>DATE</th>';
+		   for(var i in result.simpleVOList2){
+			   str+='<tr>';
+			   str+='<td>'+result.simpleVOList2[i].username+'</td>';
+			   str+='<td>'+result.simpleVOList2[i].name.toUpperCase()+'</td>';
+			   str+='<td>'+result.simpleVOList2[i].dateString+'</td>';
+			   str+='</tr>';
+		   }
+		   str+='<tr>';
+		  
+		   str+='</tr>';
+		   str+='</table>';
+		   str+='</div>';
+		   str+='</div>';
+		}
+		$('#'+divId).html(str);
+	 }else{
+	 
+		 var str='';
+		 str+='<div class="ui-steps-border">';
+		 str+='<div class="ui small steps" style="width:100%">';
+		 for(var i in result.simpleVOList1){
+			 
+			 if(result.simpleVOList1[i].dateString==null)
+				str+='<div class="disabled step"  style="padding:20px 10px">';
+			 else{
+				  if(result.simpleVOList1[i].status=='current')
+					 str+='<div class="active step"  style="padding:20px 10px">';
+				  else
+					 str+='<div class="step"  style="padding:20px 10px">';
+			 }
+			 str+='<div class="content">';
+				  str+='<div class="title" style="font-size:12px;">'+result.simpleVOList1[i].name.toUpperCase() +'</div>';
+				  if(result.simpleVOList1[i].name=='not verified'){
+					  if(result.simpleVOList1[i].dateString!=null)
+					  str+='<div class="description" style="font-size:11px;">Requested on  '+result.simpleVOList1[i].dateString+'</div>';
+				  }
+				  else{
+					  if(result.simpleVOList1[i].dateString!=null){
+						  str+='<div class="description" style="font-size:11px;">'+result.simpleVOList1[i].dateString+'</div>';
+					  }
+				  }
+			 str+='</div>';
+			 
+			 if( result.simpleVOList1[i].name!='Cheque Received' && result.simpleVOList1[i].name!='Not Eligible' && result.simpleVOList1[i].name!='Rejected')
+			   if(result.simpleVOList1[i].type!=null)
+				 str+='<span class="days">'+result.simpleVOList1[i].type+'</span>';
+			 str+='</div>';
+		 }
+		 
+		str+='</div>';
+		str+='</div>';
+		 $('#'+divId).html(str);
+         }
+	});
+}
+
 $(document).on("click",".statusWiseDetailsCls",function(){
 	$("#deathHospModalBodyId").html('');
 	$("#deathHospModelDivId").modal("show");
@@ -2702,7 +2833,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 	var issueType = $(this).attr("attr_issue_type");
 	
 	//var heading = ""+locationType+" "+issueType+" "+statusName+" Requests Life Cycle ";
-	$("#deathHospModalHeadingId").html("<span style='text-transform:uppercase'>"+locationType+" "+issueType+" "+statusName+" Requests Life Cycle </span>");
+	$("#deathHospModalHeadingId").html("<span style='text-transform:uppercase'>"+locationType+" Wise "+issueType+" Insurance "+statusName+" Requests Life Cycle </span>");
 	
 	if(locationType == "panchayat")
 		locationId = globalPanchayatId;
@@ -2748,6 +2879,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 							str+='<th> Complaint Info </th>';
 							str+='<th> Issue Type </th>';
 							str+='<th> Present Status </th>';
+							str+='<th> View Details </th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>'
@@ -2769,14 +2901,16 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 							if(result[i].updatedDate.length > 0)
 								str+='<p>Last Updated Date : '+result[i].updatedDate+'</p>';
 							str+='</td>';
+							str+='<td><input type="button" value="View" class="btn btn-sm btn-primary complaintTrackingCla" onclick="getComplaintTrackingDetails('+result[i].complaintId+',\'statusDivIdForInsurance'+i+'\')"/></td>';
 						str+='</tr>';
+						str+='<tr id="trstatusDivIdForInsurance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForInsurance'+i+'"</td></tr>';
 					}
 					str+='</tbody>'
 				str+='</table>';
 				
 				$("#dataLoadingsImgForDeathHospDetails").hide();
 				$("#deathHospModalBodyId").html(str);
-				$("#deathHospLifeCycleTableId").dataTable();
+				//$("#deathHospLifeCycleTableId").dataTable();
 			}
 		});
 });
@@ -2946,8 +3080,8 @@ function getPartyMeetingDetaildReprt()
 										str+='<table class="table table-bordered" style="margin: 10px">';
 										str+='<thead>';
 										str+='<tr>';
-										str+='<th style=""> LOCATION </th>';
-										str+='<th style=""> TIME </th>';
+										//str+='<th style=""> LOCATION </th>';
+										str+='<th style=""> MEETING NAME  </th>';
 										str+='<th style=""> START DATE</th>';
 										str+='<th style=""> END DATE</th>';
 										str+='</tr>';
@@ -2957,12 +3091,14 @@ function getPartyMeetingDetaildReprt()
 										{
 											for(var k in result.partyMeetingVOList)
 											{
-												str+='<tr>';
-												str+='<td>'+result.partyMeetingVOList[k].location+'</td>';
-												str+='<td>'+result.partyMeetingVOList[k].name+'</td>';										
-												str+='<td>'+result.partyMeetingVOList[k].startDateStr+'</td>';
-												str+='<td>'+result.partyMeetingVOList[k].endDateStr+'</td>';
-												str+='</tr>';
+												if(result.partyMeetingVOList[k].name != null ){
+													str+='<tr>';
+													//str+='<td>'+result.partyMeetingVOList[k].location+'</td>';
+													str+='<td>'+result.partyMeetingVOList[k].name+'</td>';										
+													str+='<td>'+result.partyMeetingVOList[k].startDateStr+'</td>';
+													str+='<td>'+result.partyMeetingVOList[k].endDateStr+'</td>';
+													str+='</tr>';
+												}												
 											}
 										}
 										str+='</tbody>';
@@ -5491,8 +5627,10 @@ var str='';
                     str+='<td>'+result.subList[i].name+'</td>';
                     if(result.subList[i].subList != null && result.subList[i].subList.length>0){
                       for(var k in result.subList[i].subList){
-                          if(result.subList[i].subList[k].count != null)
-                            str+='<td style="text-align:center;" >'+result.subList[i].subList[k].count+'</td>';
+						   if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0 && (k==3 ||k==7 || k==11))
+                            str+='<td style="text-align:center;" >'+result.subList[i].subList[k].count+'</td>';						
+                          else if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0)
+                            str+='<td style="text-align:center;" ><a class="grievanceStatusWiseDetailsCls" style="cursor:pointer;" attr_status_name="'+result.subList[i].name+'" attr_location_type="'+result.subList[i].subList[k].locationName+'" attr_issue_type="'+result.subList[i].subList[k].name+'" >'+result.subList[i].subList[k].count+'</a></td>';
                           else
                             str+='<td style="text-align:center;"> - </td>';
                       }                      
@@ -5506,4 +5644,88 @@ var str='';
        $("#dataLoadingsImgForStatusCount").hide();
       $("#statusCountsMainDivId").html(str);
 }
-			
+
+$(document).on("click",".grievanceStatusWiseDetailsCls",function(){
+	$("#grievanceDetailsModalBodyId").html('');
+	$("#grievanceDetailsModalDivId").modal("show");
+	$("#dataLoadingsImgForGrievanceStatusDetails").show();
+	
+	var locationId = 0;
+	var locationType = $(this).attr("attr_location_type");
+	var statusName = $(this).attr("attr_status_name");
+	var issueType = $(this).attr("attr_issue_type");
+	
+	$("#grievanceDetailsModalHeadingId").html("<span style='text-transform:uppercase'>"+locationType+" Wise "+issueType+" Type "+statusName+" Grievance Requests Life Cycle </span>");
+	
+	if(locationType == "assembly")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedConstituencyId;
+		else
+			locationId = globalConstituencyId;
+	else if(locationType == "parliament")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedParliamentId;
+		else
+			locationId = globalParliamentId;
+	else if(locationType == "district")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedDistrictId;
+		else
+			locationId = globalDistrictId;
+		
+	var jsobj={
+		locationId : locationId,
+		locationType : locationType,
+		statusName : statusName,
+		issueType : issueType
+	}
+	$.ajax({
+		 type:'POST',
+		 url: 'getComplaintsDetailsForGrievanceByLocationAndStatusAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+		}).done(function(result){
+			if(result != null){
+				var str='';
+				
+				str+='<table class="table m_0 table-bordered m_0">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th> Name </th>';
+							str+='<th> Issue Description </th>';
+							str+='<th> Complaint Info </th>';
+							str+='<th> Issue Type </th>';
+							str+='<th> Present Status </th>';
+							//str+='<th> View Details </th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>'
+					for(var i in result){
+						str+='<tr>';
+							str+='<td><p>Name : '+result[i].firstName+'</p>';
+							//str+='<p>MemberShip No : <a class="tdpCandidatePageCls" style="cursor:pointer;" attr_tdpCadreId="'+result[i].tdpCadreId+'">'+result[i].membershipNo+'</a></p>';
+							str+='<p>Mobile No : '+result[i].mobileNo+'</p>';
+							str+='</td>';
+							str+='<td><p>Subject : '+result[i].subject+'</p>';
+							str+='<p>Description : '+result[i].description+'</p>';
+							str+='</td>';
+							str+='</td>';
+							str+='<td><p>Complaint Id : '+result[i].complaintId+'</p>';
+							str+='<p>Posted Date : '+result[i].raisedDate+'</p>';
+							str+='</td>';
+							str+='<td>'+result[i].typeOfIssue+'</td>';
+							str+='<td><p>Status : '+result[i].status+'</p>';
+							if(result[i].updatedDate.length > 0)
+								str+='<p>Last Updated Date : '+result[i].updatedDate+'</p>';
+							str+='</td>';
+							//str+='<td><input type="button" value="View" class="btn btn-sm btn-primary complaintTrackingCla" onclick="getComplaintTrackingDetails('+result[i].complaintId+',\'statusDivIdForInsurance'+i+'\')"/></td>';
+						str+='</tr>';
+						//str+='<tr id="trstatusDivIdForInsurance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForInsurance'+i+'"</td></tr>';
+					}
+					str+='</tbody>'
+				str+='</table>';
+				
+				$("#dataLoadingsImgForGrievanceStatusDetails").hide();
+				$("#grievanceDetailsModalBodyId").html(str);
+			}
+		});
+});
