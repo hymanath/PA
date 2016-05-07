@@ -4700,6 +4700,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	 */
 	public List<IdNameVO> getQuestionsForReportType(Long activityScopeId){
 		List<IdNameVO> returnList =new ArrayList<IdNameVO>();
+		try {
 		List<Object[]> qstns = activityQuestionnaireDAO.getQuestionIdsByScopeId(activityScopeId);
 		if(qstns != null && qstns.size() >0){
 			for(Object[] astn : qstns){
@@ -4708,6 +4709,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				vo.setName(astn[1] != null ? astn[1].toString() : "");
 				returnList.add(vo);
 			}
+		}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getQuestionsForReportType method in ActivityService ",e);
 		}
 		return returnList;
 	}
