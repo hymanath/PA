@@ -11806,6 +11806,10 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 								tdpCadre.setRefSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
 							}
+							
+							if(tdpCadre.getSurveyTime() == null){
+								tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
+							}
 						} catch (Exception e) {
 							LOG.error(e);
 						}
