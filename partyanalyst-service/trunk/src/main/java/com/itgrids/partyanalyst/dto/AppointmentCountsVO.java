@@ -20,6 +20,10 @@ public class AppointmentCountsVO implements Serializable{
 	private List<AppointmentCountsVO> scheduledCountsVOList;
 	private List<AppointmentCountsVO> waitingCountsVOList;
 	
+	private List<AppointmentCountsVO> scheduledStatusCountsVOList;
+	private List<AppointmentCountsVO> waitingStatusCountsVOList;
+	private List<AppointmentCountsVO> appointmentCountsVOList;
+	
 	private String resultMsg;
 	
 	
@@ -97,6 +101,28 @@ public class AppointmentCountsVO implements Serializable{
 	public void setResultMsg(String resultMsg) {
 		this.resultMsg = resultMsg;
 	}
+	public List<AppointmentCountsVO> getScheduledStatusCountsVOList() {
+		return scheduledStatusCountsVOList;
+	}
+	public void setScheduledStatusCountsVOList(
+			List<AppointmentCountsVO> scheduledStatusCountsVOList) {
+		this.scheduledStatusCountsVOList = scheduledStatusCountsVOList;
+	}
+	public List<AppointmentCountsVO> getWaitingStatusCountsVOList() {
+		return waitingStatusCountsVOList;
+	}
+	public void setWaitingStatusCountsVOList(
+			List<AppointmentCountsVO> waitingStatusCountsVOList) {
+		this.waitingStatusCountsVOList = waitingStatusCountsVOList;
+	}
+	public List<AppointmentCountsVO> getAppointmentCountsVOList() {
+		return appointmentCountsVOList;
+	}
+	public void setAppointmentCountsVOList(
+			List<AppointmentCountsVO> appointmentCountsVOList) {
+		this.appointmentCountsVOList = appointmentCountsVOList;
+	}
+	
 	
 	
 }
