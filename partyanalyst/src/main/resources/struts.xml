@@ -12089,5 +12089,16 @@
 				<param name="root">grievDetailsVOList</param>
 		</result>
 	</action>
+		<action name="getIVRSurveysOnCandidateAreaCountAction" class="cadreDetailsAction" method="getIVRSurveysOnCandidateAreaCount">
+		<result type="json" name="success">
+			<param name="root">verifierVO</param>
+		</result>
+	</action>
+	
+	<action name="getIVRSurveysOnCandidateAreaDetailsAction" class="cadreDetailsAction" method="getIVRSurveysOnCandidateAreaDetails">
+		<result type="json" name="success">
+			<param name="root">verifierVO</param>
+		</result>
+	</action>
 </package>
 </struts>      

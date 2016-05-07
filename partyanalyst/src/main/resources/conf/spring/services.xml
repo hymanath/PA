@@ -2652,6 +2652,8 @@
 		 <property name="cadreHealthStatusDAO" ref="cadreHealthStatusDAO" />
 		 <property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO" />
 		  <property name="ivrSurveyCandidateQuestionDAO" ref="ivrSurveyCandidateQuestionDAO" />
+		   <property name="ivrSurveyQuestionOptionDAO" ref="ivrSurveyQuestionOptionDAO" />
+		  
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
