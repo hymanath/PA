@@ -7190,7 +7190,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				        	updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Party");
 				        	updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Govt");
 				        	updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Welfare");
-				        	//updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Benefit");
+				        	updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Benefit");
 				        	locationWiseMap.put("assembly",assIssTypeMap);
 				        }
 				        else{
@@ -7215,7 +7215,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				        	updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Party");
 				        	updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Govt");
 				        	updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Welfare");
-				        	//updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Benefit");
+				        	updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Benefit");
 				        	locationWiseMap.put("parliament",parIssTypeMap);
 				        }
 				        else{
@@ -7240,7 +7240,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				        	updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Party");
 				        	updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Govt");
 				        	updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Welfare");
-				        	//updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Benefit");
+				        	updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Benefit");
 				        	locationWiseMap.put("district",disIssTypeMap);
 				        }
 				        else{
@@ -7263,36 +7263,39 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		        }
 		      }
 			
-			/*Map<String, GrievanceDetailsVO> benefitMap = getGrievanceStatusCountsBenifit(districtId,assemblyId,parliamentId);
+			Map<String, GrievanceDetailsVO> benefitMap = getGrievanceStatusCountsBenifit(districtId,assemblyId,parliamentId);
 		if(stausMap != null && stausMap.size()>0){
-			int i = 0;
 			for (String status : stausMap.keySet()) {
 				GrievanceDetailsVO grievanceDetailsVo = statusMap.get(status);
 				List<GrievanceDetailsVO> subList = grievanceDetailsVo.getSubList();
 				GrievanceDetailsVO  benefitVO = benefitMap.get(status);
+				int i = 0;
 				GrievanceDetailsVO tempVO = null;
 				if(benefitVO.getSubList() != null && benefitVO.getSubList().size()>0){
 					
 					do{
 						tempVO = benefitVO.getSubList().get(i);
-						if(subList != null && subList.size()>0){
-							for (int j=0;j<subList.size();j++) {
+						if(subList != null && subList.size()>0)
+						{
+							for (int j=0;j<subList.size();j++)
+							{
 								if(subList.get(j).getLocationName() != null &&  
 										subList.get(j).getLocationName().trim().equalsIgnoreCase(tempVO.getLocationName()))
 									continue;
-								else{
+								else if(j>0 && j<subList.size()){
 									subList.get(j-1).setCount(tempVO.getCount());
-									break;
+									i++;
+									tempVO = benefitVO.getSubList().get(i);
 								}
 							}
+							subList.get(subList.size()-1).setCount(tempVO.getCount());
 						}
 						
 					}while(i>3);
 				}
-				i++;
 			}
 		}
-			*/
+			
 			
 			if(stausMap != null && stausMap.size()>0){
 		        for (String status : stausMap.keySet()) {
@@ -7306,127 +7309,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		return grievanDetailsVO;
 		
 	}
-/*	public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails(Long districtId,Long assemblyId,Long parliamentId){
-		GrievanceDetailsVO grievanDetailsVO = new GrievanceDetailsVO();
-		try {
-			LOG.error("Entered in to getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails() Method ");
-			
-			Map<String, GrievanceDetailsVO> statusMap = new LinkedHashMap<String, GrievanceDetailsVO>(0);
-			List<String> statusList = userAddressDAO.getCompletedStatus();
-			if(statusList != null && statusList.size()>0){
-				for (String status : statusList) {
-					GrievanceDetailsVO vo = new GrievanceDetailsVO();
-					vo.setName(status.toUpperCase());
-					vo.setCount(0l);
-					statusMap.put(status.toUpperCase(), vo);
-				}
-			}
-			Map<String,GrievanceDetailsVO> stausMap = new LinkedHashMap<String, GrievanceDetailsVO>();
-			String order = IConstants.GRIEVANCE_STATUS_COUNTS;
-			String[] statusStrArr = order.split(",");
-			for (String string : statusStrArr) {
-				GrievanceDetailsVO vo = statusMap.get(string.toUpperCase());
-				stausMap.put(string.toUpperCase(), vo);
-			}
-			
-			Map<String,Map<String,Map<String, Long>>> locationWiseMap = new LinkedHashMap<String, Map<String,Map<String,Long>>>(0);
-			if(assemblyId != null && assemblyId.longValue() > 0l){
-			List <Object[]> assembliList = userAddressDAO.getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(assemblyId, "assembly");
-				if(assembliList != null && assembliList.size()>0){
-					for (Object[] obj : assembliList) {
-						String typeOfIssue = obj[0] != null ? obj[0].toString():"";
-				        String status = obj[1] != null ? obj[1].toString():"";
-				        Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-				        Map<String,Map<String, Long>> assIssTypeMap = null;
-				        if(locationWiseMap.get("assembly") == null){
-				        	
-				        	assIssTypeMap = new LinkedHashMap<String, Map<String,Long>>();
-				        	updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Party");
-				        	updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Govt");
-				        	updateStatusMapDetailsForGrievance(statusList,assIssTypeMap,"Welfare");
-				        	locationWiseMap.put("assembly",assIssTypeMap);
-				        }
-				        else{
-				        	assIssTypeMap = locationWiseMap.get("assembly");
-				        }
-				        Map<String, Long> staGetMap = assIssTypeMap.get(typeOfIssue);
-				        staGetMap.put(status.toUpperCase(),count);
-				        }
-					}
-				}
-			if(parliamentId != null && parliamentId.longValue() > 0l){
-				List<Object[]> parliamentList = userAddressDAO.getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(parliamentId, "parliament");
-				if(parliamentList != null && parliamentList.size()>0){
-					for (Object[] obj : parliamentList) {
-						String typeOfIssue = obj[0] != null ? obj[0].toString():"";
-				        String status = obj[1] != null ? obj[1].toString():"";
-				        Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-				        Map<String,Map<String, Long>> parIssTypeMap = null;
-				        
-				        if(locationWiseMap.get("parliament") == null){
-				        	parIssTypeMap = new LinkedHashMap<String, Map<String,Long>>();
-				        	updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Party");
-				        	updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Govt");
-				        	updateStatusMapDetailsForGrievance(statusList,parIssTypeMap,"Welfare");
-				        	locationWiseMap.put("parliament",parIssTypeMap);
-				        }
-				        else{
-				        	parIssTypeMap = locationWiseMap.get("parliament");
-				        }
-				        Map<String, Long> staGetMap = parIssTypeMap.get(typeOfIssue);
-				        staGetMap.put(status.toUpperCase(), count);
-					}
-				}
-			}
-			
-			if(districtId != null && districtId.longValue() > 0l){
-				List<Object[]> districtList = userAddressDAO.getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(districtId, "district");
-				if(districtList != null && districtList.size()>0){
-					for (Object[] obj : districtList) {
-						String typeOfIssue = obj[0] != null ? obj[0].toString():"";
-				        String status = obj[1] != null ? obj[1].toString():"";
-				        Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-				        Map<String,Map<String, Long>> disIssTypeMap = null;
-				        if(locationWiseMap.get("district") == null){
-				        	disIssTypeMap = new LinkedHashMap<String, Map<String,Long>>();
-				        	updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Party");
-				        	updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Govt");
-				        	updateStatusMapDetailsForGrievance(statusList,disIssTypeMap,"Welfare");
-				        	locationWiseMap.put("district",disIssTypeMap);
-				        }
-				        else{
-				        	disIssTypeMap = locationWiseMap.get("district");
-				        }
-				        Map<String, Long> staGetMap = disIssTypeMap.get(typeOfIssue);
-				        staGetMap.put(status.toUpperCase(), count);
-					}
-				}
-			}
-			
-			List<GrievanceDetailsVO> locationWiseVOList = segrigateGrievanceStatusDetails(locationWiseMap);
-			
-			if(locationWiseVOList != null && locationWiseVOList.size()>0){
-		        for (GrievanceDetailsVO locationVO : locationWiseVOList) {
-		          List<GrievanceDetailsVO> issueTypeVOList = locationVO.getSubList();
-		          if(issueTypeVOList != null && issueTypeVOList.size()>0){
-		            updateStatusDetailsForGrievance(stausMap, issueTypeVOList,locationVO.getLocationName());
-		          }
-		        }
-		      }
-			
-			if(stausMap != null && stausMap.size()>0){
-		        for (String status : stausMap.keySet()) {
-		          grievanDetailsVO.getSubList().add(stausMap.get(status.toUpperCase()));
-		        }
-		      }
-			
-		} catch (Exception e) {
-			LOG.error("Exception occured in getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails() Method ",e);
-		}
-		return grievanDetailsVO;
-		
-	}*/
-	
+
 	public List<GrievanceDetailsVO> segrigateGrievanceStatusDetails(Map<String,Map<String,Map<String,Long>>> locationsMap){
 	    List<GrievanceDetailsVO> returnList = new LinkedList<GrievanceDetailsVO>();
 	    try {
