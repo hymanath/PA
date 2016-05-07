@@ -5457,15 +5457,15 @@ function buildStatusCountsForGrievanceDetails(result){
 var str='';
           str+'<div class="panel-body pad_0">';
           str+'<div class="table-responsive">';
-            str+='<table class="table m_0 table-bordered m_0">';
+            str+='<table class="table m_0 table-bordered table-condensed m_0" style="font-size:12px">';
               str+='<thead>';
                 str+='<tr>';
                   str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
                  // for(var i in result){
                    // str+='<th colspan="2" style="text-align:center;"> '+result.locationList[i].name+' </th>';
-                    str+='<th colspan="3" style="text-align:center;"> ASSEMBLY </th>';
-                    str+='<th colspan="3" style="text-align:center;"> PARLIAMENT </th>';
-                    str+='<th colspan="3" style="text-align:center;"> DISTRICT </th>';
+                    str+='<th colspan="4" style="text-align:center;"> ASSEMBLY </th>';
+                    str+='<th colspan="4" style="text-align:center;"> PARLIAMENT </th>';
+                    str+='<th colspan="4" style="text-align:center;"> DISTRICT </th>';
                   //}
                 str+='</tr>';
                 str+='<tr>';
@@ -5473,12 +5473,15 @@ var str='';
                   str+='<th style="text-align:center;">Party</th>';
                   str+='<th style="text-align:center;">Govt</th>';
                   str+='<th style="text-align:center;">Welfare</th>';
+                  str+='<th style="text-align:center;">Benifit</th>';
 				  str+='<th style="text-align:center;">Party</th>';
                   str+='<th style="text-align:center;">Govt</th>';
                   str+='<th style="text-align:center;">Welfare</th>';
+                  str+='<th style="text-align:center;">Benifit</th>';
 				  str+='<th style="text-align:center;">Party</th>';
                   str+='<th style="text-align:center;">Govt</th>';
                   str+='<th style="text-align:center;">Welfare</th>';
+                  str+='<th style="text-align:center;">Benifit</th>';
               //  }
                 str+='</tr>';
                 str+='</thead>';
