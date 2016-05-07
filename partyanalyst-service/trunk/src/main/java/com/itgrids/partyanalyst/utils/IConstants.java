@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.utils;
 
 import java.awt.Color;
-import java.util.List;
 
 public interface IConstants {
 	public static final String DATE_PATTERN = "dd/MM/yyyy";
@@ -1048,7 +1047,8 @@ public interface IConstants {
 	public static final Long APPOINTMENTS_PUBLICATION_ID = 12l;
 	
 	public static final Long TGNF_REGISTRATION_CADRE_TYPE_ID=5L;
-	public static final String TGNF_REGISTRATION_REDIRECTURL="http://telugudesam.org/emembership/tngfRegistrationSuccess.html";//"http://localhost:8080/PartyAnalyst/registrationSuccessAction.action";//"file:///C:/Users/Administrator/Desktop/tngfRegistrationSuccess.html";//"http://telugudesam.org/emembership/tngfRegistrationSuccess.html";//
+	//public static final String TGNF_REGISTRATION_REDIRECTURL="http://localhost:8080/PartyAnalyst/registrationSuccessAction.action";//"file:///C:/Users/Administrator/Desktop/tngfRegistrationSuccess.html";//"http://telugudesam.org/emembership/tngfRegistrationSuccess.html";//
+	public static final String TGNF_REGISTRATION_REDIRECTURL="http://telugudesam.org/emembership/tngfRegistrationSuccess.html";
 	public static final String TGNF_ENROLLMENT_AMOUNT="1";
 	public static final String TGNF_ENROLLMENT_RANDOMNUMBERCODE="CADRE_2016";
 	public static final String TGNF_ENROLLMENT_MERCHANT_ID="M_tdpcbn_2144";
@@ -1059,6 +1059,6 @@ public interface IConstants {
 	
 	public static final Long[] APPOINTMENT_WAITING_LIST= {1L,2L,5L,6L,7L,8L,9L};
 	public static final Long[] APPOINTMENT_SCHEDULED_LIST= {3L,4L,10L};
-	public static final String GRIEVANCE_STATUS_COUNTS ="Not Verified,In Progress,Not Possible,Not Eligible,approved,completed";
+	public static final String GRIEVANCE_REQUESTS_STATUS_LIST ="Not Verified,In Progress,Not Possible,Not Eligible,approved,completed";
 	
 }
