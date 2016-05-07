@@ -177,7 +177,7 @@ function getParticipatedConstituencyId(cadreId){
 			var localCadreId=globalCadreId;
 			//loading images showing
 			$("#dataLoadingsImgForownBoothDetailsId").show();
-			$("#dataLoadingsImgForImagePath").show();
+			//$("#dataLoadingsImgForImagePath").show();
 			
 			$('#enrollementDiv').html('');
 			
@@ -194,13 +194,13 @@ function getParticipatedConstituencyId(cadreId){
 			}).done(function(result){
 				//loading images hiding
 				 $("#dataLoadingsImgForownBoothDetailsId").hide();
-				 $("#dataLoadingsImgForImagePath").hide();
+				// $("#dataLoadingsImgForImagePath").hide();
 				 
 				var str='';
 				var strEnrollment='';
 				if(result !=null){
-						$("#dataLoadingsImgForownBoothDetailsId").show();
-						$("#dataLoadingsImgForImagePath").show();
+						//$("#dataLoadingsImgForownBoothDetailsId").show();
+						//$("#dataLoadingsImgForImagePath").show();
 						
 				//nameId dobId ageId qualificationId occupationId voterIdSpan panchayatId mandalId constituencyId positionId representativeId
 					/* start Survey Fields */	
@@ -1321,7 +1321,7 @@ function getTotalComplaintsForCandidate(){
     $("#complaintCountDiv").html('');
 	$("#financialDiv").html('');
 	$("#complaintsDiv").html('');
-	$("#comaplaintCountInmgMainDivid").html('');
+	//$("#comaplaintCountInmgMainDivid").html('');
 	 $("#candidateRequestAmount").html('');
 	$("#candidateApprovedAmount").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
 	$("#candidateDeathInsurance").html('<img src="images/icons/loading.gif" style="width:20px;height:20px;"></img>');
@@ -1506,7 +1506,7 @@ function getMemberComplaints()
 	$.ajax({
 			type : "POST",
 			url: "http://mytdp.com/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
-			// url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
+			 //url: "http://localhost:8080/Grievance/WebService/Auth/getTotalComplaintsForCandidate",
 			  data: JSON.stringify(familyInfoArr),
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
@@ -2647,13 +2647,13 @@ function getDeathsAndHospitalizationDetails(){
 								str+='<tr>';
 									str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
 									for(var i in result.locationList){
-										str+='<th colspan="2" style="text-align:center;text-transform:uppercase"> '+result.locationList[i].name+'. </th>';
+										str+='<th colspan="2" style="text-align:center;text-transform:uppercase"> '+result.locationList[i].name+' </th>';
 										}
 								str+='</tr>';
 								str+='<tr>';
 								for(var i in result.locationList){
-									str+='<th style="text-align:center;">DEATH</th>';
-									str+='<th style="text-align:center;">HOSP</th>';
+									str+='<th style="text-align:center;">DEATH.</th>';
+									str+='<th style="text-align:center;">HOSP.</th>';
 								}
 								str+='</tr>';
 								str+='</thead>';
@@ -4861,7 +4861,7 @@ $(document).on('click', '.ivrAnsweredCls', function(){
 });
 
 function getRefferelDetailsStatusWise(){
-	$("#referralGrievanceDetailsId").html('');
+	//$("#referralGrievanceDetailsId").html('');
 	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	var cadreId = globalCadreId;
