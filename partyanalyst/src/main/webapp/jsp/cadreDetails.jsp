@@ -637,7 +637,7 @@ var globalCadreId = '${cadreId}';
 						</h4>
                     </div>
 					<center><img id="dataLoadingsImgForStatusCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
-					<div id="statusCountsMainDivId">
+					<div id="statusCountsMainDivId" class="table-responsive">
 					</div>
 				</div>
 				
