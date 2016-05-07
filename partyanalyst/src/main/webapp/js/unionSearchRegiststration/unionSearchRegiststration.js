@@ -1,5 +1,6 @@
 
 $(".searchCls").click(function(){
+	$("#otpErr").html("");
 	$("#constituencyId").val(0);
 	$("#errChkDivId").html("");
 	$("#nextStepId").hide();
@@ -10,24 +11,60 @@ $(".searchCls").click(function(){
 	$("#cadreDetailsDiv").html("");
 	$(".paginationDivId").html('');
 	$("#generateOtpId").hide();
+	$("#submitId").hide();
 	$("#otpId").hide();
+	$("#otpSpanId").hide();
 	$("#otpId").val("");
 	$("#getOtpId").html("");
-	$('#searchErrDiv').html('');
+	$('#searchErrDiv').html(''); 
 	var choice = $(this).val();
 	if(choice=="no"){
 		$("#searchBy").attr("placeholder","Search By VoterCard Number");
 		$(".inputChoice").hide();
 		$("#searchBy").val("");
 		$('#cadreDetailsDiv').html("");
+		$("#searchBy").removeAttr("maxLength"); 
+		$("#searchBy").removeClass("onlyDigit");
+		$("#searchBy").unbind('keydown');
+		$("#searchBy").addClass("txtNumeric");
+		initializeTextNumber();
 	}else{
 		$("#searchBy").attr("placeholder","Search By Membership Id/Mobile No/Voter Id");
 		$(".inputChoice").show();
 		$("#searchBy").val("");
+		var id = $('input[name="searchBasedOn"]:checked').attr("id");
+		if(id.trim() == 'membershipId')
+	{
+		$("#searchBy").removeClass("txtNumeric");
+		$("#searchBy").attr("maxLength","8"); 
+		$("#searchBy").addClass("onlyDigit");  
+		initializeNumber();
+		$('#cadreSearchType').val('membershipId');
+	}
+	if(id.trim() == 'voterId')
+	{
+		$("#searchBy").removeAttr("maxLength"); 
+		$("#searchBy").removeClass("onlyDigit");
+		$("#searchBy").unbind('keydown');
+		$("#searchBy").addClass("txtNumeric");
+		initializeTextNumber();
+		$('#cadreSearchType').val('voterId');
+	}
+	if(id.trim() == 'mobileNo')
+	{
+		$("#searchBy").removeClass("txtNumeric");
+		$("#searchBy").unbind('keydown');
+		$("#searchBy").addClass("onlyDigit");
+		$("#searchBy").attr("maxLength","10"); 
+		initializeNumber(); 
+		$('#cadreSearchType').val('mobileNo');
+	}
+		
 	}
 });
 $(".searchTypeCls").click(function(){
 	//debugger;
+	$("#otpErr").html("");
 	$("#constituencyId").val(0);
 	$("#errChkDivId").html("");
 	$("#success").hide();
@@ -35,7 +72,9 @@ $(".searchTypeCls").click(function(){
 	$(".cadreMemberListCls").hide();
 	$("#cadreDetailsDiv").html("");
 	$("#generateOtpId").hide();
+	$("#submitId").hide();
 	$("#otpId").hide();
+	$("#otpSpanId").hide();
 	$("#otpId").val("");
 	$("#getOtpId").html("");
 	$("#searchBy").val("");
@@ -49,9 +88,10 @@ $(".searchTypeCls").click(function(){
 
 	if(id.trim() == 'membershipId')
 	{
-		$("#searchBy").removeAttr("maxLength"); 
-		$("#searchBy").removeClass("onlyDigit");
-		$("#searchBy").unbind('keydown');
+		$("#searchBy").removeClass("txtNumeric");
+		$("#searchBy").attr("maxLength","8"); 
+		$("#searchBy").addClass("onlyDigit");  
+		initializeNumber();
 		$('#cadreSearchType').val('membershipId');
 	}
 	if(id.trim() == 'voterId')
@@ -59,14 +99,17 @@ $(".searchTypeCls").click(function(){
 		$("#searchBy").removeAttr("maxLength"); 
 		$("#searchBy").removeClass("onlyDigit");
 		$("#searchBy").unbind('keydown');
+		$("#searchBy").addClass("txtNumeric");
+		initializeTextNumber();
 		$('#cadreSearchType').val('voterId');
 	}
 	if(id.trim() == 'mobileNo')
 	{
+		$("#searchBy").removeClass("txtNumeric");
+		$("#searchBy").unbind('keydown');
 		$("#searchBy").addClass("onlyDigit");
 		$("#searchBy").attr("maxLength","10"); 
-		initializeNumber();  
-		
+		initializeNumber(); 
 		$('#cadreSearchType').val('mobileNo');
 	}
 	
@@ -84,14 +127,16 @@ $(document).keypress(function(e) {
 });
 
 $("#searchId").click(function(){
+	$("#otpErr").html("");
 	$('#getOtpId').html("");
-	$('#generateOtpId').show();
 	$(".cadreMemberListCls").hide();
 	$("#cadreDetailsDiv").hide();
 	$("#generateOtpId").hide();
+	$("#submitId").hide();
 	$("#nextStepId").hide();
 	$("#success").hide();
 	$("#otpId").hide();
+	$("#otpSpanId").hide();
 	$("#otpId").val("");
 	$("#searchErrDiv").html("");
 	var searchText = $("#searchBy").val().trim();
@@ -217,9 +262,12 @@ function getDetailsForVoter(voterId){
 }
 		  
 function getCadreDetailsBySearchCriteria(startIndex){
+	$("#otpErr").html("");
 	$("#generateOtpId").hide();
+	$("#submitId").hide();
 	$("#searchErrDiv").html("");
 	$("#otpId").hide();
+	$("#otpSpanId").hide();
 	$("#otpId").val("");
 	$("#cadreDetailsDiv").hide();
 	$("#cadreDetailsDiv").html("");
@@ -473,9 +521,12 @@ function buildCadreDetails(result,jsObj){
 function generateOTPForMobileNo(currentButton){
 	
 		$(currentButton).attr("disabled","disabled");
+		$(currentButton).html("REGENERATE OTP");
+		$("#otpErr").html("");
 		$("#success").hide();
 		$("#fail").hide();
 		$("#otpId").val("");
+		$("#otpSpanId").hide();
 		$("#nextStepId").hide();   
 		var memberShipNo = $('input[name="otpMobileNo"]:checked').val();
 		var mobileNo = $('#mobileNo'+memberShipNo+'').val();
@@ -503,6 +554,8 @@ function generateOTPForMobileNo(currentButton){
 
 function updateOTPDetails(result,currentButton){
 	$(currentButton).removeAttr('disabled');
+	$("#otpId").removeAttr('disabled');
+	$("#submitId").removeAttr('disabled');
 	if(result != null && result == "Success"){
 			$("#getOtpId").html("<span class='text-success'> OTP sent successfully.</span>");
 	}
@@ -511,18 +564,27 @@ function updateOTPDetails(result,currentButton){
 	}
 }
 $("#otpId").keyup(function(){
+	$("#fail,#success").hide();
+	$("#otpErr").html("");
+});
+$(document).on("click","#submitId",function(){
 	var otp=$("#otpId").val().trim();
-	if(otp.length==6){
-		validateOTP(otp);
-		
+	if(otp.length==0  || otp.length<6){
+		$("#otpErr").html("Please Enter Six digit");
+		return;
 	}
+	validateOTP(otp);
+	
+	
+	
 });
 function validateOTP(otp){
-
+	
 	var memberShipNo = $('input[name="otpMobileNo"]:checked').val();
 	var mobileNo = $('#mobileNo'+memberShipNo+'').val();
 	var refNo = $("#randomRefNo").val();
 	$("#fail,#success").hide();
+	$("#otpErr").html("");
 	//$("#validateOTPImg,").show();
 	//alert(mobileNo+"::"+refNo+"::"+otp);
 	var jsObj =
@@ -549,12 +611,19 @@ $(document).on("click",".otpCheckboxCls",function(){
 	var cntMmbr = $("input.otpCheckboxCls:checked").length;
 	if(cntMmbr==1){
 		$("#generateOtpId").show();
+		$("#generateOtpId").removeAttr('disabled');
+		$("#otpId").removeAttr('disabled');
+		$("#submitId").removeAttr('disabled');
+		$("#submitId").show(); 
 		$("#otpId").show();
+		$("#otpSpanId").show();
 		$("#otpId").val("");
 	}
 	if(cntMmbr==0){
 		$("#generateOtpId").hide();
+		$("#submitId").hide();
 		$("#otpId").hide();
+		$("#otpSpanId").hide();
 		$("#otpId").val("");
 	}
 	
@@ -580,11 +649,14 @@ $(document).on("change","#constituencyId",function(){
 	$(".cadreMemberListCls").hide();
 	$('#cadreDetailsDiv').html("");
 	$('#generateOtpId').hide();
+	$('#submitId').hide();
 	$('#otpId').hide();
+	$('#otpSpanId').hide();
 	$('#nextStepId').hide();
 	$('#success').hide();
 	$('#fail').hide();	
 });
+initializeNumber();
 function initializeNumber(){
 $(".onlyDigit").keydown(function (e) {
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
@@ -595,5 +667,17 @@ $(".onlyDigit").keydown(function (e) {
         if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
         }
+});
+}
+function initializeTextNumber() {
+$('.txtNumeric').keydown(function (e) {
+if (e.shiftKey || e.ctrlKey || e.altKey) {
+e.preventDefault();
+} else {
+var key = e.keyCode;
+if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105))) {
+e.preventDefault();
+}
+}
 });
 }

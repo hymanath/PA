@@ -1519,7 +1519,7 @@
 										</div>	
 										<div class="span5">	
 											<h5 class="text-align1">Age  </h5>
-											<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
+											<input style="width:180px;" id="cadreAgeId" maxlength="2" type="text" class="form-control border-radius-0 text-align2 onlyDigit"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
 											<span id="ageErr" style="color:red;font-size:12px;"></span>
 										</div>
 										</div>
@@ -1532,7 +1532,7 @@
 											<s:else>
 											  <input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;"  value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTNameId');"/>
 											</s:else>
-											<input type="text" id="voterTeluguNameId" class="form-control border-radius-0" placeholder="Voter Telugu Name" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
+											<input type="text" id="voterTeluguNameId" class="form-control border-radius-0 onlyText" placeholder="Voter Telugu Name" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
 										</div>	
 										<!--<div class="span6">	
 											<h5 class="text-align1"> Cadre Telugu Name  </h5>
@@ -1548,6 +1548,7 @@
 										</div>
 										<div class="span12"> 
 											  <ul class="unstyled inline text-center">
+												<label>&nbsp;&nbsp;&nbsp;Candidate Image<span style="color:red;">*</span></label>
 												  <li id="voterActualImgLiId">
 												   <s:if test="voterInfoVOList[0].voterImagePresent == true">
 													 <div class="well  pad-5 m_top10" style="width: 125px; padding-bottom: 15px;padding-top: 13px;">
@@ -4536,7 +4537,26 @@ function getDistricts(district,populateConstituency,populateMandal,populateVilla
 
 <script>
 var userip = "";
-
+$('.onlyText').keydown(function (e) {
+	if (e.shiftKey || e.ctrlKey || e.altKey){
+		e.preventDefault();
+	} else {
+		var key = e.keyCode; 
+		if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90) || (key >= 96 && key <= 105) || (key == 9))) {
+			e.preventDefault();
+		}
+	}
+});
+$(".onlyDigit").keydown(function (e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+});
 </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>  
 </body>

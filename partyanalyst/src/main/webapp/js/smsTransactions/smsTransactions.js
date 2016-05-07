@@ -41,11 +41,16 @@ function validateOTPAction(jsObj){
 		//$("#validateOTPImg,").hide();
 		if(result != null && result=="Success"){
 			//$("#otpSuccessDiv").html("success");
+			$("#otpSpanId").show();
 			$("#success").show();
 			$("#nextStepId").show();
+			$("#otpId").attr("disabled","disabled");
+			$("#submitId").attr("disabled","disabled");
+			$("#generateOtpId").attr("disabled","disabled");
 			$(".otpCheckboxCls").prop("disabled", true);
 			
 		}else{
+			$("#otpSpanId").show();
 			$("#fail").show();
 			$("#nextStepId").hide();
 			
