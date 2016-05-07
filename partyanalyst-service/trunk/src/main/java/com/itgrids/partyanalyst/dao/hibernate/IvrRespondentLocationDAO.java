@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IIvrRespondentLocationDAO;
 import com.itgrids.partyanalyst.model.IvrRespondentLocation;
@@ -13,4 +14,5 @@ public class IvrRespondentLocationDAO extends
 		super(IvrRespondentLocation.class);
 	}
 
+	
 }

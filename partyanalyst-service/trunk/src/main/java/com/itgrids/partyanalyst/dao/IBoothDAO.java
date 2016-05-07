@@ -484,4 +484,5 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public List<Long> getAllBoothIdsByWard(Long wardId,Long publicationId);
 	 public List<Object[]> getBoothsDataByDivisionId(Long divisionId,Long publicationId);
 	 public List<Object[]> getTotalVotersByBooths(List<Long> boothIds);
+	 public List<Object[]> getMandalMuncipalityIds(Long boothId);
 }

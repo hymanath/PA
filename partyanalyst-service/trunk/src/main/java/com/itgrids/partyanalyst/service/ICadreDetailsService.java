@@ -86,7 +86,9 @@ public interface ICadreDetailsService {
 	public List<CadreDetailsVO> getAppointmentsUserDetails(List<Long> appointmentUserIds, Long tdpcadreId);
 	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId);
 	//public List<GrievanceDetailsVO> getAllStatusDetailsForComplaint(Long complaintId);
-	public GrievanceSimpleVO getAllStatusDetailsByComplaint(Long complaintId);
-	public GrievanceSimpleVO getStatusTrackingDetailsOfInsuranceByComplaint(Long complaintId);
-	public List<GrievanceDetailsVO> getComplaintsDetailsForGrievanceByLocationAndStatus(Long locationId,String locationType,String status,String issueType);
+		public GrievanceSimpleVO getAllStatusDetailsByComplaint(Long complaintId);
+		public GrievanceSimpleVO getStatusTrackingDetailsOfInsuranceByComplaint(Long complaintId);
+		public List<GrievanceDetailsVO> getComplaintsDetailsForGrievanceByLocationAndStatus(Long locationId,String locationType,String status,String issueType);
+	public VerifierVO getIVRSurveysOnCandidateAreaCount(Long districtId);
+	public VerifierVO getIVRSurveysOnCandidateAreaDetails(Long districtId,Long constiId,Long parliamentId,Long boothId);
 }

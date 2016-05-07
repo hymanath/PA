@@ -36,8 +36,8 @@ public class IvrSurveyQuestionOption extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
-	
-	
+	private IvrOption ivrOption;
+	private IvrSurveyQuestion ivrSurveyQuestion;
 	private User insertedUser;
 	private User updatedUser;
 
@@ -59,12 +59,32 @@ public class IvrSurveyQuestionOption extends BaseModel implements Serializable{
 	public void setIvrSurveyQuestionId(Long ivrSurveyQuestionId) {
 		this.ivrSurveyQuestionId = ivrSurveyQuestionId;
 	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ivr_survey_question_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrSurveyQuestion getIvrSurveyQuestion() {
+		return ivrSurveyQuestion;
+	}
+	public void setIvrSurveyQuestion(IvrSurveyQuestion ivrSurveyQuestion) {
+		this.ivrSurveyQuestion = ivrSurveyQuestion;
+	}
 	@Column(name="ivr_option_id")
 	public Long getIvrOptionId() {
 		return ivrOptionId;
 	}
 	public void setIvrOptionId(Long ivrOptionId) {
 		this.ivrOptionId = ivrOptionId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ivr_option_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrOption getIvrOption() {
+		return ivrOption;
+	}
+	public void setIvrOption(IvrOption ivrOption) {
+		this.ivrOption = ivrOption;
 	}
 	@Column(name="ivr_survey_round_id")
 	public Long getIvrSurveyRoundId() {

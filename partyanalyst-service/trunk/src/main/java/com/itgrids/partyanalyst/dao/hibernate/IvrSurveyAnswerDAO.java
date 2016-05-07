@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IIvrSurveyAnswerDAO;
 import com.itgrids.partyanalyst.model.IvrSurveyAnswer;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Long> implements IIvrSurveyAnswerDAO{
@@ -140,5 +141,47 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 		return query.list();
 	}
 	
+	public Long getIvrSurveyCountByDistrict(Long districtId){
+		Query query = getSession().createQuery(" select count(distinct ISA.ivrSurveyQuestion.ivrSurvey.ivrSurveyId) from IvrRespondentLocation IRL," +
+				"IvrSurveyAnswer ISA " +
+				" where ISA.ivrRespondent.ivrRespondentId = IRL.ivrRespondent.ivrRespondentId" +
+				" and ISA.ivrSurveyQuestion.ivrSurvey.isDeleted = 'false' and  " +
+				" ISA.isDeleted = 'false' and ISA.isValid = 'Y'" +
+				" and ISA.ivrOption.isDeleted = 'false' and ISA.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false' " +
+				" and IRL.userAddress.district.districtId = :districtId");
+		query.setParameter("districtId", districtId);
+		return (Long) query.uniqueResult();
+	}
 	
+	
+	
+	
+	
+	public List<Object[]> getOptionsCountByQuestionIdsForLocation(String locType,Long locationId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.ivrSurveyAnswerId),model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId," +
+				"model.ivrSurveyQuestion.ivrSurvey.surveyName," );
+		str.append(" model.ivrSurveyRound.ivrSurveyRoundId," +
+						" model.ivrSurveyRound.roundName," );
+		str.append("model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId,model.ivrSurveyQuestion.ivrQuestion.question," +
+				" model.ivrOption.ivrOptionId,model.ivrOption.option,model.ivrSurveyQuestion.ivrSurveyQuestionId" +
+				" from IvrSurveyAnswer model,IvrRespondentLocation model1 where model.ivrRespondent.ivrRespondentId = model1.ivrRespondent.ivrRespondentId and" +
+				" model.isDeleted = 'false' and model.isValid = 'Y'" +
+				" and model.ivrOption.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false'");
+		if(locType.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" and model1.userAddress.district.districtId = :locationId");
+		if(locType.equalsIgnoreCase(IConstants.ASSEMBLY_CONSTITUENCY_TYPE))
+			str.append(" and model1.userAddress.constituency.constituencyId = :locationId");
+		if(locType.equalsIgnoreCase(IConstants.PARLIAMENT_CONSTITUENCY_TYPE))
+			str.append(" and model1.userAddress.parliamentConstituency.constituencyId = :locationId");
+		if(locType.equalsIgnoreCase(IConstants.MANDAL))
+			str.append(" and model1.userAddress.tehsil.tehsilId = :locationId");
+		if(locType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+			str.append(" and model1.userAddress.localElectionBody.localElectionBodyId = :locationId");
+		str.append(" group by model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId,model.ivrSurveyRound.ivrSurveyRoundId,model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId, model.ivrOption.ivrOptionId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("locationId", locationId);
+		return query.list();
+	}
 }

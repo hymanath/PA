@@ -16,4 +16,6 @@ public interface IIvrSurveyAnswerDAO extends GenericDao<IvrSurveyAnswer, Long>{
 	public List<Object[]> getIvrSurveyAnswerInfoForTdpCadre(Long ivrResondentId);
 	public Long getCandateParticipatedSurveyCnt(Long ivrResondentId);
 	public List<Object[]> getOptionsCountByQuestionIds(List<Long> surveyQuestionIds);
+	public Long getIvrSurveyCountByDistrict(Long districtId);
+	public List<Object[]> getOptionsCountByQuestionIdsForLocation(String locType,Long locationId);
 }
