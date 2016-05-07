@@ -122,9 +122,9 @@ public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String sear
 		  StringBuilder str = new StringBuilder();
 		  
 		  str.append(" select model.Completed_Status," +
-		  		"count(model.Complaint_id)  " +
-		  		"from complaint_master model " +
-		  		"where");
+		  		"count(distinct model.Complaint_id)" +
+		  		"  from complaint_master model" +
+		  		" where ");
 		  if(searchType.equalsIgnoreCase("district"))
 			   str.append(" model.district_id =:id and  ");
 		   
@@ -134,14 +134,15 @@ public List<Object[]> getGrievanceRequestCountsByTypeOfIssue(Long id,String sear
 		   else if(searchType.equalsIgnoreCase("parliament"))
 			   str.append(" model.parliament_id= :id and ");
 		  
-		  str.append(" type_of_issue != 'Insurance' ");
-		  str.append(" and model.delete_status !='0' or model.delete_status is null ");
-		  str.append(" and model.Subject != '' ");
-		  str.append(" and ((model.issue_type ='Personal' and  model.expected_amount is not null and model.expected_amount !='' ) or " +
-		  		"(model.issue_type ='CM Relief' and model.expected_amount is not null and model.expected_amount != '') or " +
-		  		"(model.issue_type ='Health' and model.health_amount is not null and model.health_amount != '') or " +
-		  		"(model.issue_type ='Financial Support' and model.expected_amount is not null and model.expected_amount !='')) "); 
-		  str.append(" group by model.Completed_Status; ");
+		  str.append(" type_of_issue != 'Insurance'");
+		  str.append(" and (delete_status !='0' or delete_status is null )" +
+		  		" and model.state_id_cmp in(1,2) and ");
+		  str.append(" model.Subject != '' ");
+		  str.append(" and ((model.issue_type ='Personal' and  model.expected_amount is not null and model.expected_amount !='' )" +
+		  		" or (model.issue_type ='CM Relief' and model.expected_amount is not null and model.expected_amount != '') or " +
+		  		" (model.issue_type ='Health' and model.health_amount is not null and model.health_amount != '') or " +
+		  		" (model.issue_type ='Financial Support' and model.expected_amount is not null and model.expected_amount !='')) ");
+		  str.append(" group by model.Completed_Status ");
 			   Query query = getSession().createSQLQuery(str.toString());
 			   query.setParameter("id", id);
 		  
