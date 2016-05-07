@@ -5367,23 +5367,89 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				 endDate = sdf.parse(endDateString);
 			 }
 			 
+			 //total Appointment Status Details
+			 List<Object[]> statusList = appointmentStatusDAO.getAllAppointmentStatus();
+			  
 			 List<Object[]> candidTypes = appointmentCandidateTypeDAO.getAllCandidateTypes();
+			 
+			 
+			 //Scheduled and Waiting Status Types List
+			 List<Long> scheduledList =Arrays.asList(IConstants.APPOINTMENT_SCHEDULED_LIST);
+			 List<Long> waitingList =Arrays.asList(IConstants.APPOINTMENT_WAITING_LIST);
+			 
+			 
+			 //Setting All CandidateTypes To every Status including to All/Total
+			 
 			 if(candidTypes!=null && candidTypes.size()>0){
 				 setCandidateTypes(candidTypes,"total",finalVO);
-				 setCandidateTypes(candidTypes,"scheduled",finalVO);
-				 setCandidateTypes(candidTypes,"waiting",finalVO);
+				 setCandidateTypes(candidTypes,"scheduledTotal",finalVO);
+				 setCandidateTypes(candidTypes,"waitingTotal",finalVO);
 			 }
+			 
+			 List<AppointmentCountsVO> defaultStatusList = new ArrayList<AppointmentCountsVO>();
+			 List<Long> totalStatusIds = new ArrayList<Long>(0);
+			 
+			 if(statusList !=null && statusList.size()>0){
+				 for (Object[] obj : statusList) {			
+					 
+					 AppointmentCountsVO statusVO = new AppointmentCountsVO();
+					 
+					 statusVO.setId(obj[0]!=null?(Long)obj[0]:0l);//statusId
+					 statusVO.setName(obj[1]!=null?obj[1].toString():"");//statusName
+					 //setting default candidate types List
+					 setCandidateTypes(candidTypes,statusVO.getId().toString(),statusVO);
+					
+					 defaultStatusList.add(statusVO);
+					 totalStatusIds.add(statusVO.getId());
+				 }
+			}
+			 finalVO.setAppointmentCountsVOList(defaultStatusList);
+			 
 			 
 			 List<Object[]>  list= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,null,startDate,endDate);
 			 setDataToList(list,"total",finalVO);
-			 
-			 List<Long>      scheduledList =Arrays.asList(IConstants.APPOINTMENT_SCHEDULED_LIST);
+			 			 
 			 List<Object[]>  scheduledCounts= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,scheduledList,startDate,endDate);
-			 setDataToList(scheduledCounts,"scheduled",finalVO);
+			 setDataToList(scheduledCounts,"scheduledTotal",finalVO);
 			 
-			 List<Long>     waitingList =Arrays.asList(IConstants.APPOINTMENT_WAITING_LIST);
+			
 			 List<Object[]> waitingCounts= appointmentCandidateRelationDAO.getCandidCountsByStatesAndStatus(appointmentUserId,waitingList,startDate,endDate);
-			 setDataToList(waitingCounts,"waiting",finalVO);
+			 setDataToList(waitingCounts,"waitingTotal",finalVO);
+			 
+			 
+			 //Scheduled && Waiting Statuses Wise Counts
+			 List<Object[]> overAllResultStatusList = appointmentCandidateRelationDAO.getCandidateCountsOfStatesByStatuses(appointmentUserId,totalStatusIds,startDate,endDate);
+			 setDataToStatusList(overAllResultStatusList,finalVO);
+			 
+			 /*//Waiting Statuses Wise Counts
+			 List<Object[]> waitingStatusList = appointmentCandidateRelationDAO.getCandidateCountsOfStatesByStatuses(appointmentUserId,waitingList,startDate,endDate);
+			 setDataToStatusList(waitingStatusList,waitingList,finalVO,"waiting");*/
+			 
+			 
+			//if(finalVO.getScheduledCountsVOList() !=null && finalVO.getScheduledCountsVOList().size()>0)
+			 
+			 List<AppointmentCountsVO> scheduledStatusCountsVOList = new ArrayList<AppointmentCountsVO>(0);
+			 List<AppointmentCountsVO> waitingStatusCountsVOList = new ArrayList<AppointmentCountsVO>(0);
+				
+				if(finalVO.getAppointmentCountsVOList() !=null && finalVO.getAppointmentCountsVOList().size()>0){
+					
+					for (AppointmentCountsVO VO : finalVO.getAppointmentCountsVOList()) {
+						
+						if(VO.getScheduledStatusCountsVOList() !=null && VO.getScheduledStatusCountsVOList().size()>0){
+							scheduledStatusCountsVOList.add(VO);
+						}else if(VO.getWaitingStatusCountsVOList() !=null && VO.getWaitingStatusCountsVOList().size()>0){
+							waitingStatusCountsVOList.add(VO);
+						}
+					}					
+				}
+				
+				
+				if(scheduledStatusCountsVOList !=null && scheduledStatusCountsVOList.size()>0){
+					finalVO.setScheduledStatusCountsVOList(scheduledStatusCountsVOList);
+				}
+				if(waitingStatusCountsVOList !=null && waitingStatusCountsVOList.size()>0){
+					finalVO.setWaitingStatusCountsVOList(waitingStatusCountsVOList);
+				}
 			 
 			 finalVO.setResultMsg("success");
 			
@@ -5394,14 +5460,77 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		return finalVO;
 	}
 	
+	
+	//Need to move for another place
+	
+	public void setDataToStatusList(List<Object[]> resultStatusList,AppointmentCountsVO finalVO){
+		
+		try{
+			
+			
+			//Scheduled and Waiting Status Types List
+			 List<Long> scheduledList =Arrays.asList(IConstants.APPOINTMENT_SCHEDULED_LIST);
+			 List<Long> waitingList =Arrays.asList(IConstants.APPOINTMENT_WAITING_LIST);
+			
+			
+			List<AppointmentCountsVO> internalList = new ArrayList<AppointmentCountsVO>(0);
+			
+			internalList = finalVO.getAppointmentCountsVOList();
+			
+			if(resultStatusList !=null && resultStatusList.size()>0){
+				for (Object[] obj : resultStatusList) {
+					AppointmentCountsVO returnStatusVo=getMatchedCandiType(internalList,(Long)obj[5]);//return StatusVO if Status Match 					
+					if(returnStatusVo !=null){
+						
+						AppointmentCountsVO matchedVO =null;	
+												
+						if(scheduledList.contains((Long)obj[5])){
+							matchedVO = getMatchedCandiType(returnStatusVo.getScheduledStatusCountsVOList(),obj[0] !=null ? (Long)obj[0]:0l);
+						}else if(waitingList.contains((Long)obj[5])){
+							matchedVO = getMatchedCandiType(returnStatusVo.getWaitingStatusCountsVOList(),obj[0] !=null ? (Long)obj[0]:0l);
+						}
+						
+						if(matchedVO !=null){
+							matchedVO = getValuesIntoMatchedVO(obj,matchedVO);
+						}
+					}					
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Error occured  in setDateToStatusList() method of AppointmentService class",e);
+		}
+		
+	}
+	
+	public AppointmentCountsVO getValuesIntoMatchedVO(Object[] obj,AppointmentCountsVO matchedVO){
+		try{
+			
+			Long districtId = obj[1]!=null?((Long)obj[1]).longValue():0l;
+			 if( districtId>10l && districtId <=23l){								 
+				 matchedVO.setApCount(  matchedVO.getApCount()+ (obj[3]!=null?(Long)obj[3]:0l));
+				 matchedVO.setUniqueApCount(matchedVO.getUniqueApCount()+ (obj[4]!=null?(Long)obj[4]:0l));								
+			 }else if( districtId >= 1l && districtId<=10l){								 
+				 matchedVO.setTsCount(  matchedVO.getTsCount()+ (obj[3]!=null?(Long)obj[3]:0l));
+				 matchedVO.setUniqueTsCount(matchedVO.getUniqueTsCount()+ (obj[4]!=null?(Long)obj[4]:0l));
+			 }							 
+			 matchedVO.setCount( matchedVO.getCount() + (obj[3]!=null?(Long)obj[3]:0l));
+			 matchedVO.setUniqueCount( matchedVO.getUniqueCount() + (obj[4]!=null?(Long)obj[4]:0l));
+			
+			
+		}catch (Exception e) {
+			LOG.error("Error occured  in getMatchedStatus() method of AppointmentService class",e);
+		}
+		return null;
+	}
+	
 	public void setDataToList(List<Object[]> list,String type,AppointmentCountsVO finalVO){
 		
 		List<AppointmentCountsVO> subList = null;
 		if(type.equalsIgnoreCase("total")){
 			subList = finalVO.getTotalCountsVOList();
-		}else if(type.equalsIgnoreCase("scheduled")){
+		}else if(type.equalsIgnoreCase("scheduledTotal")){
 			subList = finalVO.getScheduledCountsVOList();
-		}else if(type.equalsIgnoreCase("waiting")){
+		}else if(type.equalsIgnoreCase("waitingTotal")){
 			subList = finalVO.getWaitingCountsVOList();
 		}
 		
@@ -5415,21 +5544,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				 
 				 AppointmentCountsVO matchedVO = getMatchedCandiType(subList,candiType);
 				 if(matchedVO != null){
-					 
-					 Long districtId = obj[1]!=null?((Long)obj[1]).longValue():0l;
-					 if( districtId>10l && districtId <=23l){
-						 
-						 matchedVO.setApCount(  matchedVO.getApCount()+ (obj[3]!=null?(Long)obj[3]:0l));
-						 matchedVO.setUniqueApCount(matchedVO.getUniqueApCount()+ (obj[4]!=null?(Long)obj[4]:0l));
-						 
-					 }else if( districtId >= 1l && districtId<=10l){
-						 
-						 matchedVO.setTsCount(  matchedVO.getTsCount()+ (obj[3]!=null?(Long)obj[3]:0l));
-						 matchedVO.setUniqueTsCount(matchedVO.getUniqueTsCount()+ (obj[4]!=null?(Long)obj[4]:0l));
-					 }
-					 
-					 matchedVO.setCount( matchedVO.getCount() + (obj[3]!=null?(Long)obj[3]:0l));
-					 matchedVO.setUniqueCount( matchedVO.getUniqueCount() + (obj[4]!=null?(Long)obj[4]:0l));
+					 matchedVO = getValuesIntoMatchedVO(obj,matchedVO);
 				 }
 				 
 				
@@ -5452,6 +5567,10 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		
 		List<AppointmentCountsVO> list = new ArrayList<AppointmentCountsVO>(0);
 		
+		 //Scheduled and Waiting Status Types List
+		 List<Long> scheduledList =Arrays.asList(IConstants.APPOINTMENT_SCHEDULED_LIST);
+		 List<Long> waitingList =Arrays.asList(IConstants.APPOINTMENT_WAITING_LIST);
+		
 		for(Object[] obj : candiList){
 			
 			AppointmentCountsVO vo = new AppointmentCountsVO();
@@ -5463,10 +5582,14 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		
 		if(type.equalsIgnoreCase("total")){
 			finalVO.setTotalCountsVOList(list);
-		}else if(type.equalsIgnoreCase("scheduled")){
+		}else if(type.equalsIgnoreCase("scheduledTotal")){
 			finalVO.setScheduledCountsVOList(list);
-		}else if(type.equalsIgnoreCase("waiting")){
+		}else if(type.equalsIgnoreCase("waitingTotal")){
 			finalVO.setWaitingCountsVOList(list);
+		}else if(scheduledList.contains(Long.valueOf(type))){
+			finalVO.setScheduledStatusCountsVOList(list);
+		}else if(waitingList.contains(Long.valueOf(type))){
+			finalVO.setWaitingStatusCountsVOList(list);
 		}
 	}
 	
