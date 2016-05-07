@@ -686,7 +686,7 @@ var globalCadreId = '${cadreId}';
 				
             	<div class="panel panel-default">
                 	<div class="panel-heading" role="tab" id="headingTwo12">
-								<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#collapseTwo12" aria-expanded="false" aria-controls="collapseTwo12">	
+								<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#comaplaintCountInmgMainDivid" aria-expanded="false" aria-controls="comaplaintCountInmgMainDivid">	
 								<h4 class="panel-title text-bold" style="cursor:pointer;">
 									<i class="glyphicon glyphicon-user"></i>
 										CANDIDATE GRIEVANCE DETAILS
@@ -817,9 +817,12 @@ var globalCadreId = '${cadreId}';
 				<!--swadhin-->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					  <h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
-					</div>
-					<div class="panel-body pad_0" id="referralGrievanceDetailsId">
+					<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#referralGrievanceDetailsId" aria-expanded="false" aria-controls="referralGrievanceDetailsId">
+					
+					  <h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
+					  </a>
+					</div> 
+					<div class="panel-body pad_0" id="referralGrievanceDetailsId" >
 					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
 					  
 					</div>
@@ -1019,8 +1022,8 @@ var globalCadreId = '${cadreId}';
 				
 				<!-- Meetings Start -->
                 <div class="panel panel-default" id="commitMeetingDiv" style="display:none;" >
-                	<div class="panel-heading" id="committeeMetingsHeaderId">
-                    	<h4 class="panel-title text-bold"><img src="dist/img/photo.png"> COMMITTEE MEETINGS
+                	<div class="panel-heading" id="committeeMetingsHeaderId" style="cursor:pointer;">
+                    	<h4 class="panel-title text-bold"><img src="dist/img/photo.png" > COMMITTEE MEETINGS
 							<span class="pull-right" style="margin-top:-8px">
 							
 								<div class="input-group">
@@ -1041,7 +1044,7 @@ var globalCadreId = '${cadreId}';
 				 
 				 <div class="panel panel-default">
                 	<div class="panel-heading" id="deathHospitalDivHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION INSURANCE DETAILS <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
@@ -1064,7 +1067,7 @@ var globalCadreId = '${cadreId}';
 				
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/training.png" style="width:30px"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -1836,7 +1839,8 @@ if(isVisible==false){
 	}
 	$("#committeeMetingsBodyId").collapse('toggle');
 });
-
+$("#comaplaintCountInmgMainDivid").collapse('hide');
+$("#referralGrievanceDetailsId").collapse('hide');
 	$(document).click(function() {
 		$('.survey-hover').hide();
 	});
@@ -2213,7 +2217,7 @@ $(document).on("click","#candidateAppointmentId",function(){
 });
 function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst,firstRecord)
 {
-	$("#paginationId").html("");
+	$("#paginationId").hide();
 	/*
 		<input type="hidden" value="" id="cadreLevel" />
 		<input type="hidden" value="" id="cadreCommitteeType" />
@@ -2258,14 +2262,14 @@ function getConductedPartyMeetingDetails(divId,searchTypeStr,isFirst,firstRecord
 			//var  status = $('#publicRepresentativeTypId').val();
 			//console.log("srishailam111 : "+status);
 				searchTypeStr='constituency';	
-				$('#constituency').addClass('active');
+				//$('#constituency').addClass('active');
 				$('#constabs').addClass('active');
 				divId = "constabs";	
 		}
 		
 	}
 				
-	$('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>');
+	//$('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:50px" src="images/icons/loading.gif" id="dataLoadingsImgForNewsId"/></center>');
 	setTimeout(function(){
 	var startDate = $('.meetingSubmitBtn').parent().find('.dp_startDate').val();
 	var endDate = $('.meetingSubmitBtn').parent().find('.dp_endDate').val();
@@ -2419,7 +2423,8 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
 		str+='<td colspan="3" style="background-color:#ccc">';
 		if(result.totalCount >6)
 		{
-			str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/><a href="javascript:{getConductedPartyMeetingDetails(\''+divId+'\',\''+searchTypeStr+'\',\'false\',\'0\')}"></a></p>';
+			str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/></p>';
+			//str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/><a href="javascript:{getConductedPartyMeetingDetails(\''+divId+'\',\''+searchTypeStr+'\',\'false\',\'0\')}"></a></p>';
 		}
 			
 		str+='</td>';
@@ -2429,6 +2434,8 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
 	}
 	
 	$('#'+divId+'').html(str);
+	$("#paginationId").show();
+	if(firstRecord == 0){
 		var totalCount = result.totalCount;
         $("#paginationId").pagination({
           items: totalCount,
@@ -2442,8 +2449,8 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
           }
           
         });
-
-	
+	}
+		
 }
 </script>
 
