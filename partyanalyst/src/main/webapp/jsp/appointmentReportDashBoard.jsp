@@ -35,7 +35,7 @@
 <div>
 	<div class="row m_top10">
 		<div class="col-md-12">
-			<div class="block">
+			<div class="block advancedBlock">
 				<div class="row">
 					<div class="pull-right col-md-3">
 						<div class="input-group">
