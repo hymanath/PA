@@ -1114,7 +1114,6 @@ public String updateLeaderShip(){
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getAllStatusDetailsByComplaint(){
 		try{
 			jObj=new JSONObject(getTask());
@@ -1163,4 +1162,30 @@ public String updateLeaderShip(){
 		
 		return Action.SUCCESS;
 	}
+	public String getIVRSurveysOnCandidateAreaCount(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long districtId=jObj.getLong("districtId");
+			verifierVO=cadreDetailsService.getIVRSurveysOnCandidateAreaCount(districtId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getIVRSurveysOnCandidateAreaCount() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getIVRSurveysOnCandidateAreaDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long districtId=jObj.getLong("districtId");
+			Long constiId=jObj.getLong("constiId");
+			Long parliamentId=jObj.getLong("parliamentId");
+			Long boothId=jObj.getLong("boothId");
+			
+			verifierVO=cadreDetailsService.getIVRSurveysOnCandidateAreaDetails(districtId,constiId,parliamentId,boothId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in getIVRSurveysOnCandidateAreaDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
