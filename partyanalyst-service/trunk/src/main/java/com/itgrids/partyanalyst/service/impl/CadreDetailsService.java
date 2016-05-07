@@ -91,7 +91,6 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
-import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -7170,7 +7169,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				}
 			}
 			Map<String,GrievanceDetailsVO> stausMap = new LinkedHashMap<String, GrievanceDetailsVO>();
-			String order = IConstants.GRIEVANCE_STATUS_COUNTS;
+			String order = IConstants.GRIEVANCE_REQUESTS_STATUS_LIST;
 			String[] statusStrArr = order.split(",");
 			for (String string : statusStrArr) {
 				GrievanceDetailsVO vo = statusMap.get(string.toUpperCase());
@@ -7399,7 +7398,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 					statusMap.put(status.toUpperCase(), vo);
 				}
 			}
-			String order = IConstants.GRIEVANCE_STATUS_COUNTS;
+			String order = IConstants.GRIEVANCE_REQUESTS_STATUS_LIST;
 			String[] statusStrArr = order.split(",");
 			for (String string : statusStrArr) {
 				GrievanceDetailsVO vo = statusMap.get(string.toUpperCase());
