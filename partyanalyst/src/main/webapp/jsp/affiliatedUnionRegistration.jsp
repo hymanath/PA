@@ -429,30 +429,35 @@
 	
 	function submitCadreForm()
 	{	
-	    $("#submitCadreFormBtnReqId").removeAttr("onclick");
-	    $("#submitCadreFormBtnReqId").attr("disabled","disabled");
+		
+		if (confirm(" Are you sure want to submit?") == false) {
+			return;
+		} 
+	
+		$("#submitCadreFormBtnReqId").removeAttr("onclick");
+		$("#submitCadreFormBtnReqId").attr("disabled","disabled");
 		if(validateDetails())
 		{
-				if(!isNumber()){
-				
-					$('html,body').animate({
-					scrollTop:  $("#casteIdValue").offset().top 
-					});
-					return false;
+			if(!isNumber()){
+			
+			  $('html,body').animate({
+			  scrollTop:  $("#casteIdValue").offset().top 
+			  });
+			  return false;
+			}
+			$("#submitCadreFormBtnReqId").removeAttr("onclick");
+			$("#submitCadreFormBtnReqId").attr("disabled","disabled");
+			var uploadHandler = {
+				upload: function(o) {
+				  uploadResult = o.responseText;
+				  //console.log(uploadResult);
+				  showUploadStatus(uploadResult);  
 				}
-				$("#submitCadreFormBtnReqId").removeAttr("onclick");
-				$("#submitCadreFormBtnReqId").attr("disabled","disabled");
-				var uploadHandler = {
-						upload: function(o) {
-							uploadResult = o.responseText;
-							//console.log(uploadResult);
-							showUploadStatus(uploadResult);	
-						}
-					};
+			  };
 
-				YAHOO.util.Connect.setForm('uploadCadreForm',true);
-				YAHOO.util.Connect.asyncRequest('POST','rtcUnionRegistrationPage.action',uploadHandler);
-		}
+			YAHOO.util.Connect.setForm('uploadCadreForm',true);
+			YAHOO.util.Connect.asyncRequest('POST','rtcUnionRegistrationPage.action',uploadHandler);
+		}    
 	}
 	
 	function validateDetails()
