@@ -6,7 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8">   
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TELUGUNADU GRADUATES FEDERATION MEMBER ENROLLMENT</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
@@ -39,7 +39,7 @@
             	<div class="panel-body">
                 	<div class="row">
 				
-                    	<div class="col-md-12">
+                    	<div class="col-md-12">  
                         	<div class="form-group">
                             	<label>Are you registered as TDP Cadre in 2014-2016 &nbsp;</label>
 								<label class="radio-inline">
@@ -47,7 +47,7 @@
 								</label>
 								<label class="radio-inline">
 									<input type="radio" name="tdpCadreRadio" value="no" class="searchCls"/>No
-								</label>
+								</label>  
                             </div>
                         </div>
 						<div class="inputChoice col-md-8 col-sm-12 col-xs-12">
@@ -72,14 +72,14 @@
 							<s:select theme="simple" cssClass="form-control" id="constituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue="ALL"/>
 						</div>
 					</div>
-					<div class="row">
-                        <div class="col-md-6 m_top20">  
+					<div class="row">  
+                        <div class="col-md-6 m_top20">    
                         	<!--<label class="memberCls">Search By Membership Id/Mobile No/Voter Id</label>
 							<label class="nonMemberCls" style="display:none;">Search By VoterCard Number</label>-->
 							
-                            <input type="text" id="searchBy" class="form-control" placeholder="Search By Membership Id/Mobile No/Voter Id"/>
+                            <input type="text" id="searchBy" class="form-control onlyDigit" maxLength="8" placeholder="Search By Membership Id/Mobile No/Voter Id"/>
 							<div id="searchErrDiv" style="color:red;"></div>
-                        </div>
+                        </div>   
 						<div class="col-md-2">
 							<button class="btn btn-success m_top25" id="searchId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;">SEARCH</button>
 						</div>
@@ -96,26 +96,36 @@
 						</div>	
 						
 						<div class="col-md-12">
-						<div id="getOtpId" style="color:red;"></div>
+							<div id="getOtpId" style="color:red;"></div>  
 							<div class="col-md-4">
 							<!--	<div class="success" id="otpSuccessDiv"></div>-->
 								<button id="generateOtpId" class="btn btn-success m_top20" style="display:none;" onclick="generateOTPForMobileNo(this);">GENERATE OTP</button>
+								
 							</div>
-							<div class="col-md-2">
-								<input type="text" class="form-control m_top20" maxLength="6" id="otpId" style="display:none;"/>
+							<div class="col-md-3">
+								<div class="input-group m_top20">
+									<input type="text" class="form-control onlyDigit" maxLength="6" id="otpId" style="display:none;"/>
+									<span id="otpSpanId" class="input-group-addon" style="background:#fff;display:none;">
+										<i class="glyphicon glyphicon-ok text-success" style="display:none" id="success"></i>
+										<i class="glyphicon glyphicon-remove text-danger" style="display:none;" id="fail"></i>
+									</span>
+								</div>
+								
 								<img src="images/ajaxImg2.gif" style="display:none;" class="img-responsive" id="validateOTPImg"/>
-							</div> 
+								<div id="otpErr" style="color:red"></div>
+								
+							</div>      
+							<div class="col-md-2">  
+							<button class="btn btn-success m_top25 " id="submitId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;display:none;">SUBMIT</button>  
+							</div>
 							<div class="col-md-2">
 							<button class="btn btn-success m_top25" id="nextStepId" style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;display:none;">NEXT</button>
 							</div>
 							<div id="errChkDivId" style="color:red;"></div> 
-							<div id="success" class="col-md-2 m_top25" style="display:none;">
-							<i class="glyphicon glyphicon-ok" style="color:green;margin-left: -145px;"></i>
-							</div>
-							<div id="fail" class="col-md-2 m_top25" style="display:none;">
-							<i class="glyphicon glyphicon-remove" style="color:red;margin-left: -145px;"></i>
-							</div>
+							
+							
 						</div>
+						
 						<input type="hidden" id="randomRefNo"></input>
                     </div>
                 </div>
@@ -171,12 +181,12 @@
 				</div>
 			</div>
 				  
-			</div>
+			</div>  
 		 
 		<div class="modal-footer">
 		  <button type="button" class="btn btn-success submitButnCls" id="submitButnId" onclick="validateFieldUnionRegistrion();">submit</button>
 		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		</div>
+		</div>  
 	  </div>
 	</div>
   </div>
