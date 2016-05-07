@@ -24,7 +24,7 @@ public class VerifierVO implements Serializable{
 	private String isVerified;
 	private Long boothId;
 	private String colorCode;
-	private Long count;
+	private Long count = 0l;
 	private Long totalCount;
 	private List<OptionVO> optionsList;
 	private Long optionId;

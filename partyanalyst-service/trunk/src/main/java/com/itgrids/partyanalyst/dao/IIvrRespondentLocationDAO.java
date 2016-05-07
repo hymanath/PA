@@ -1,5 +1,10 @@
 package com.itgrids.partyanalyst.dao;
 
-public interface IIvrRespondentLocationDAO {
+import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.IvrRespondentLocation;
+
+public interface IIvrRespondentLocationDAO extends GenericDao<IvrRespondentLocation, Long>{
+	
 
 }

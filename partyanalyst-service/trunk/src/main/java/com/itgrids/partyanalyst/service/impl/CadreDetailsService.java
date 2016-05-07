@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IIvrRespondentCadreDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyAnswerDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyCandidateQuestionDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyEntityDAO;
+import com.itgrids.partyanalyst.dao.IIvrSurveyQuestionOptionDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyServiceDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileNumbersDAO;
@@ -176,8 +177,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ICadreHealthStatusDAO cadreHealthStatusDAO;
 	private AppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
 	private IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO;
+	private IIvrSurveyQuestionOptionDAO ivrSurveyQuestionOptionDAO;
 	
 	
+	
+	public IIvrSurveyQuestionOptionDAO getIvrSurveyQuestionOptionDAO() {
+		return ivrSurveyQuestionOptionDAO;
+	}
+
+	public void setIvrSurveyQuestionOptionDAO(
+			IIvrSurveyQuestionOptionDAO ivrSurveyQuestionOptionDAO) {
+		this.ivrSurveyQuestionOptionDAO = ivrSurveyQuestionOptionDAO;
+	}
+
 	public IIvrSurveyCandidateQuestionDAO getIvrSurveyCandidateQuestionDAO() {
 		return ivrSurveyCandidateQuestionDAO;
 	}
@@ -6817,20 +6829,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		}
 		return returnVo;
 	}
-	
-	public VerifierVO getMatchedVerifierVO(List<VerifierVO> resultList,Long id)
-	{
-		try{
-			for(VerifierVO detailsVO:resultList)
-				if(detailsVO.getId() != null && detailsVO.getId().longValue()>0L && detailsVO.getId().longValue() == id.longValue() )
-					return detailsVO;
-			return null;
-			
-		}catch (Exception e) {
-			LOG.error(" Exception Occured in getMatchedTdpCadreFamilyDetailsVO() method, Exception - ",e);
-			return null;
-		}
-	}
+
 	
 	/**
 	 * @author 		:Hymavathi
@@ -7490,7 +7489,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		return stausMap;
 		
 	}
-	
+
 	/*public List<GrievanceDetailsVO> getAllStatusDetailsForComplaint(Long complaintId)
 	{
 		List<GrievanceDetailsVO> resultList = new ArrayList<GrievanceDetailsVO>(0);
@@ -8015,4 +8014,225 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		}
 		return returnList;
 	}
+	public VerifierVO getIVRSurveysOnCandidateAreaCount(Long districtId){
+		VerifierVO verifierVO = new VerifierVO();
+		
+			Long count = ivrSurveyAnswerDAO.getIvrSurveyCountByDistrict(districtId);
+			if(count != null && count.longValue() > 0){
+				verifierVO.setTotalCount(count);
+			}
+		return verifierVO;
+	}
+	public VerifierVO getMatchedVerifierVO(List<VerifierVO> returnList,Long id)
+	{
+		try{
+			if(returnList == null || returnList.size() == 0)
+				return null;
+			for(VerifierVO vo : returnList)
+			{
+				if(vo.getId().longValue()== id.longValue())
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public VerifierVO getIVRSurveysOnCandidateAreaDetails(Long districtId,Long constiId,Long parliamentId,Long boothId){
+		
+		VerifierVO verifierVO = new VerifierVO();
+		Long mandalId = 0l;
+		Long localEleId = 0l;
+			List<Object[]> mandalMunciList = boothDAO.getMandalMuncipalityIds(boothId);
+			if(mandalMunciList != null && mandalMunciList.size() > 0)
+			{
+				for(Object[] params : mandalMunciList)
+				{
+					if(params[0] != null)
+						localEleId = params[0] != null ? (Long)params[0] : 0l;
+					else
+						mandalId = params[1] != null ? (Long)params[1] : 0l;
+				}
+			}
+			List<Object[]> districtList = ivrSurveyAnswerDAO.getOptionsCountByQuestionIdsForLocation(IConstants.DISTRICT,districtId);
+			if(districtList != null && districtList.size() > 0){
+				setIVRSurveysOnCandidateAreaDetails(districtList,verifierVO,IConstants.DISTRICT);
+			}
+			
+			List<Object[]> assemblyList = ivrSurveyAnswerDAO.getOptionsCountByQuestionIdsForLocation(IConstants.ASSEMBLY_CONSTITUENCY_TYPE,constiId);
+			if(assemblyList != null && assemblyList.size() > 0){
+				setIVRSurveysOnCandidateAreaDetails(assemblyList,verifierVO,IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
+			}
+			
+			List<Object[]> parlmentList = ivrSurveyAnswerDAO.getOptionsCountByQuestionIdsForLocation(IConstants.PARLIAMENT_CONSTITUENCY_TYPE,parliamentId);
+			if(parlmentList != null && parlmentList.size() > 0){
+				setIVRSurveysOnCandidateAreaDetails(parlmentList,verifierVO,IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
+			}
+			
+			
+			List<Object[]> mandalList = ivrSurveyAnswerDAO.getOptionsCountByQuestionIdsForLocation(IConstants.MANDAL,mandalId);
+			if(mandalList != null && mandalList.size() > 0){
+				setIVRSurveysOnCandidateAreaDetails(mandalList,verifierVO,IConstants.MANDAL);
+			}
+			List<Object[]> localbodyList = ivrSurveyAnswerDAO.getOptionsCountByQuestionIdsForLocation(IConstants.LOCALELECTIONBODY,localEleId);
+			if(localbodyList != null && localbodyList.size() > 0){
+				setIVRSurveysOnCandidateAreaDetails(localbodyList,verifierVO,IConstants.MANDAL);
+			}
+			if(verifierVO.getVerifierVOList() != null && verifierVO.getVerifierVOList().size() > 0)
+			for(VerifierVO vo : verifierVO.getVerifierVOList())//Survey
+			{
+				if(vo.getVerifierVOList() != null && vo.getVerifierVOList().size() > 0)
+				for(VerifierVO questionVO : vo.getVerifierVOList())//Round
+				{
+					if(questionVO.getVerifierVOList() != null && questionVO.getVerifierVOList().size() > 0)
+					for(VerifierVO roundVO : questionVO.getVerifierVOList())//Question
+					{
+						if(roundVO.getVerifierVOList() != null && roundVO.getVerifierVOList().size() > 0)
+						for(VerifierVO location : roundVO.getVerifierVOList())//location
+						{
+							if(location.getVerifierVOList() != null && location.getVerifierVOList().size() > 0)
+							for(VerifierVO optionVO : location.getVerifierVOList())//option
+							{
+								if(location.getCount() != null && location.getCount() > 0)
+								 {
+								 String percentage = (new BigDecimal(optionVO.getCount()*(100.0)/location.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+								 optionVO.setPercentage(percentage);
+								 }
+								 else
+									 optionVO.setPercentage("0.0"); 
+							}
+						}
+					}
+				}
+			}
+		return verifierVO;
+	}
+	public void setIVRSurveysOnCandidateAreaDetails(List<Object[]> list,VerifierVO verifierVO,String locType)
+	{
+		
+		try{
+			if(list != null && list.size() > 0)
+			{
+					for(Object[] params : list)
+					 {
+						 VerifierVO surveyVO = getMatchedVerifierVO(verifierVO.getVerifierVOList(),(Long)params[1]);
+						 
+						 if(surveyVO == null)
+						 {
+							 surveyVO = new VerifierVO();
+							 surveyVO.setId((Long)params[1]);
+							 surveyVO.setName(params[2] != null ? params[2].toString() :"");
+							 verifierVO.getVerifierVOList().add(surveyVO);
+						 }
+						 VerifierVO roundVO = getMatchedVerifierVO(surveyVO.getVerifierVOList(),(Long)params[3]);
+						 
+						 if(roundVO == null)
+						 {
+							 roundVO = new VerifierVO();
+							 roundVO.setId((Long)params[3]);
+							 roundVO.setName(params[4] != null ? params[4].toString() :"");
+							 surveyVO.getVerifierVOList().add(roundVO);
+						 }
+						 
+						 VerifierVO questionVO = getMatchedVerifierVO(roundVO.getVerifierVOList(),(Long)params[5]);
+						 
+						 if(questionVO == null)
+						 {
+							 questionVO = new VerifierVO();
+							 questionVO.setId((Long)params[5]);
+							 questionVO.setName(params[6] != null ? params[6].toString() :"");
+							
+							 questionVO.setVerifierVOList(setStaticLocationTypes((Long)params[9]));
+							 roundVO.getVerifierVOList().add(questionVO);
+						 }
+						 VerifierVO locTypeVo = getMatchedVerifierVOForType(questionVO.getVerifierVOList(),locType);
+						 
+						 if(locTypeVo != null)
+						 {
+							 locTypeVo.setCount(params[0] != null ? (Long)params[0] + locTypeVo.getCount() : 0l);
+							 VerifierVO optionVO = getMatchedVerifierVO(locTypeVo.getVerifierVOList(),(Long)params[7]);
+							 if(optionVO != null)
+							 {
+								 
+								 optionVO.setCount(params[0] != null ? (Long)params[0] + optionVO.getCount() : 0l);
+								 optionVO.setPercentage("0.0"); 
+								
+							 }
+						 }
+					 }
+					
+					
+				}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public List<VerifierVO> setOptionsForQuestion(Long SurveyquestionId)
+	{
+		List<VerifierVO> optionsList = new ArrayList<VerifierVO>();
+		 List<Object[]> list = ivrSurveyQuestionOptionDAO.getOptionsForSurveyQuestion(SurveyquestionId);
+		 if(list != null && list.size() > 0)
+		 {
+			 for(Object[] params : list)
+			 {
+				 VerifierVO vo = new VerifierVO();
+				 vo.setId((Long)params[0]);
+				 vo.setName(params[1] != null ? params[1].toString() : "");
+				 optionsList.add(vo);
+			 }
+		 }
+		return optionsList;
+		 
+		 
+	}
+	public List<VerifierVO> setStaticLocationTypes(Long SurveyquestionId)
+	{
+		List<VerifierVO> list = new ArrayList<VerifierVO>();
+		VerifierVO vo = new VerifierVO();
+		vo.setName(IConstants.MANDAL);
+		vo.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		list.add(vo);
+		/*VerifierVO vo4 = new VerifierVO();
+		vo4.setName(IConstants.LOCALELECTIONBODY);
+		vo4.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		list.add(vo4);*/
+		VerifierVO vo1 = new VerifierVO();
+		vo1.setName(IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
+		vo1.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		list.add(vo1);
+		VerifierVO vo2 = new VerifierVO();
+		vo2.setName(IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
+		vo2.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		list.add(vo2);
+		VerifierVO vo3 = new VerifierVO();
+		vo3.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		vo3.setName(IConstants.DISTRICT);
+		list.add(vo3);
+		return list;
+	}
+	
+	public VerifierVO getMatchedVerifierVOForType(List<VerifierVO> returnList,String type)
+	{
+		try{
+			if(returnList == null || returnList.size() == 0)
+				return null;
+			for(VerifierVO vo : returnList)
+			{
+				if(type.equalsIgnoreCase(vo.getName()))
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

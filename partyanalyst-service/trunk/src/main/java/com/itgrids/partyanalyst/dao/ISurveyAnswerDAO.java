@@ -21,4 +21,5 @@ public List<Object[]> getSurveyAnalyseData(List<Long> surveyId);
 	public List<Object[]> getGenderWiseSurveyAnalysis(List<Long> questionIds,String gender);
 	
 	public List<Object[]> getOptionWiseSurveyAnalysis(List<Long> questionIds);
+	
 }
