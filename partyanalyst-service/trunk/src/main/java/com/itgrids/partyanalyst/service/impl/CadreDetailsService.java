@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
-import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -80,18 +79,18 @@ import com.itgrids.partyanalyst.dto.CadreOverviewVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
-import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
-import com.itgrids.partyanalyst.dto.LabelStatusVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
+import com.itgrids.partyanalyst.dto.SimpleVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -109,11 +108,11 @@ import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.org.apache.xml.internal.serializer.ToUnknownStream;
 
 
 public class CadreDetailsService implements ICadreDetailsService{
@@ -177,6 +176,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private ICadreHealthStatusDAO cadreHealthStatusDAO;
 	private AppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
 	private IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO;
+	
 	
 	public IIvrSurveyCandidateQuestionDAO getIvrSurveyCandidateQuestionDAO() {
 		return ivrSurveyCandidateQuestionDAO;
@@ -7489,5 +7489,530 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		}
 		return stausMap;
 		
+	}
+	
+	/*public List<GrievanceDetailsVO> getAllStatusDetailsForComplaint(Long complaintId)
+	{
+		List<GrievanceDetailsVO> resultList = new ArrayList<GrievanceDetailsVO>(0);
+		try{
+			//0.complaintTrackingId, 1.date
+			List<Object[]> reqRaisedTime = cadreHealthStatusDAO.getRequestRaisedTimeDetails(complaintId);
+			//0.complaintTrackingId, 1.status, 2.date
+			List<Object[]> allStatusDetails = cadreHealthStatusDAO.getAllStatusDetails(complaintId);
+			
+			if(reqRaisedTime != null && reqRaisedTime.size() > 0){
+				for (Object[] objects : reqRaisedTime) {
+					
+					GrievanceDetailsVO reqRaisedvo = new GrievanceDetailsVO();
+					Long complaintTrackingId = (Long)objects[0];
+					String requestRaisedTime = objects[1] != null?objects[1].toString():"";
+					reqRaisedvo.setDateStr(requestRaisedTime);
+					resultList.add(reqRaisedvo);
+				}
+			}
+			
+			if(allStatusDetails != null && allStatusDetails.size() > 0){
+				for (Object[] param : allStatusDetails) {
+					
+					GrievanceDetailsVO statsDtlsvo = new GrievanceDetailsVO();
+					String status = param[1] != null ? param[1].toString():"";
+					String dateStr = param[2] != null ? param[2].toString():"";
+					statsDtlsvo.setComment(status);
+					statsDtlsvo.setDateStr(dateStr);
+					resultList.add(statsDtlsvo);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error(" Exception Occured in getAllStatusDetailsForComplaint() method, Exception - ",e);
+		}
+		return resultList;
+	}*/
+	
+	public List<GrievanceSimpleVO> getGrievanceInsuranceStatusList(Map<String,GrievanceSimpleVO> insuranceStatusMap){
+		
+		List<GrievanceSimpleVO> finalList = new ArrayList<GrievanceSimpleVO>();
+		try{
+			
+			List<Object[]> insurancestatusList = cadreHealthStatusDAO.getAllGrievanceInsuranceStatus();
+			if(insurancestatusList != null && insurancestatusList.size() > 0)
+			{
+				for(Object[] obj :insurancestatusList )
+				{
+				GrievanceSimpleVO vo = new GrievanceSimpleVO();
+			    
+			    vo.setId(Long.valueOf(obj[0] !=null ? obj[0].toString():"0"));//statusId
+				vo.setName(obj[1] !=null ?  obj[1].toString():"");//status
+				
+				insuranceStatusMap.put(vo.getName(),vo);
+				finalList.add(vo);
+				}
+			}
+			
+			return finalList;
+		}catch(Exception e){
+			LOG.error("Exception Occured in () getGrievanceInsuranceStatusList method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public GrievanceSimpleVO getStatusTrackingDetailsOfInsuranceByComplaint(Long complaintId){
+		
+		GrievanceSimpleVO finalVO = new GrievanceSimpleVO(); 
+		try{
+			//Long complaintId =21337l;
+			
+			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+			Map<String,GrievanceSimpleVO> firstMap = new LinkedHashMap<String, GrievanceSimpleVO>(); 
+			List<GrievanceSimpleVO> statusList=getGrievanceInsuranceStatusList(firstMap);
+			
+			//0.id,1.statusId,2.comment(status),3.inserted time,4.name
+			List<Object[]> complaintDetails=cadreHealthStatusDAO.getAllStatusDetailsByComplaint(complaintId,"insurance");
+			if(complaintDetails !=null && complaintDetails.size()>0){
+				
+				//boolean multiStatus=checkMultiStatusForInsurance(complaintDetails);
+				boolean multiStatus = true;
+				if(multiStatus){
+					
+					finalVO.setSimpleVOList2(new ArrayList<GrievanceSimpleVO>());
+					for(int i=0;i<complaintDetails.size();i++){
+						
+						Object[] obj=complaintDetails.get(i);
+						
+						
+						if((Long)obj[1]==1l){
+							//first map
+							String dateString = "";
+							//GrievanceSimpleVO notVerifiedVO=firstMap.get("Applied");
+							GrievanceSimpleVO notVerifiedVO=firstMap.get("Waiting For Documents");
+							if(obj[3] != null && !obj[3].toString().isEmpty())
+							 dateString=sdf.format((Date)obj[3]);
+							notVerifiedVO.setDateString(dateString);
+							notVerifiedVO.setDate((Date)obj[3]);
+							//total list
+							GrievanceSimpleVO simpleVO=new GrievanceSimpleVO();
+							//simpleVO.setName("Applied");
+							simpleVO.setName("Waiting For Documents");
+							simpleVO.setDate((Date)obj[3]);
+							simpleVO.setDateString(dateString);
+							simpleVO.setUsername(obj[4] !=null ? obj[4].toString():"");
+							
+							if(i==(complaintDetails.size()-1)){
+								notVerifiedVO.setStatus("current");
+								simpleVO.setStatus("current");
+								//firstMap.get("Applied").setCurrent(obj[2].toString().toLowerCase());
+								firstMap.get("Waiting For Documents").setCurrent(obj[2].toString().toLowerCase());
+								
+							}
+							finalVO.getSimpleVOList2().add(simpleVO);
+						}else{
+							//first map
+							GrievanceSimpleVO VO=firstMap.get(obj[2].toString());
+							String dateString=sdf.format((Date)obj[3]);
+							VO.setDateString(dateString);
+							VO.setDate((Date)obj[3]);
+							
+							//total list
+							GrievanceSimpleVO simpleVO=new GrievanceSimpleVO();
+							simpleVO.setName(obj[2].toString());
+							simpleVO.setDate((Date)obj[3]);
+							simpleVO.setDateString(dateString);
+							simpleVO.setUsername(obj[4] !=null ? obj[4].toString():"");
+							
+							if(i==(complaintDetails.size()-1)){
+								VO.setStatus("current");//to show current Status
+								simpleVO.setStatus("current");//to show current Status
+								//firstMap.get("Applied").setCurrent(obj[2].toString());
+								firstMap.get("Waiting For Documents").setCurrent(obj[2].toString());
+								
+							}
+							finalVO.getSimpleVOList2().add(simpleVO);
+						}
+					}
+					finalVO.setSimpleVOList1(new ArrayList<GrievanceSimpleVO>(firstMap.values()));
+					//diffreneceBetweenDates(finalVO.getSimpleVOList2());
+				}
+				else{
+					
+					for(int i=0;i<complaintDetails.size();i++){  
+						Object[] obj=complaintDetails.get(i);
+						
+						if((Long)obj[1]==1l){
+							//GrievanceSimpleVO notVerifiedVO=firstMap.get("Applied");
+							GrievanceSimpleVO notVerifiedVO=firstMap.get("Waiting For Documents");
+							
+							notVerifiedVO.setDateString(sdf.format((Date)obj[3]));
+							notVerifiedVO.setDate((Date)obj[3]);
+							if(i==(complaintDetails.size()-1)){
+								notVerifiedVO.setStatus("current");
+								//firstMap.get("Applied").setCurrent("Applied");
+								firstMap.get("Waiting For Documents").setCurrent("Waiting For Documents");
+								
+							}
+						}else{
+							GrievanceSimpleVO VO=firstMap.get(obj[2].toString());
+							if(obj[3] != null && !obj[3].toString().isEmpty())
+							{
+								VO.setDateString(sdf.format((Date)obj[3]));
+								VO.setDate((Date)obj[3]);
+							}
+							if(i==(complaintDetails.size()-1)){
+								VO.setStatus("current");
+								//firstMap.get("Applied").setCurrent(obj[2].toString());
+								firstMap.get("Waiting For Documents").setCurrent(obj[2].toString());
+							}
+						}
+					}
+					finalVO.setSimpleVOList1(new ArrayList<GrievanceSimpleVO>(firstMap.values()));
+				}
+				
+				
+				List<GrievanceSimpleVO> finalDateVos=new ArrayList<GrievanceSimpleVO>();
+				
+				//Applied,Intimated Status Scenario
+				if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Waiting For Documents") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Documents Submitted In Party") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Forwarded to Insurance") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Approved - Compensated")){
+					for(int i=0;i<finalVO.getSimpleVOList1().size();i++){
+						 if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Waiting For Documents") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Documents Submitted In Party")|| finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Forwarded to Insurance") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Approved - Compensated")){
+							 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+						 }
+					}
+				}
+				// Document Status Scenario
+				else if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Waiting for Documents") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Documents Submitted In Party") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Forwarded to Insurance")){
+					for(int i=0;i<finalVO.getSimpleVOList1().size();i++){
+						
+						if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Waiting for Documents")){
+							 if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Waiting for Documents") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Documents Submitted In Party")|| finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Forwarded to Insurance") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Approved - Compensated")){
+								 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+							 }
+						}
+						else if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Documents Submitted In Party")){
+							 if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Waiting for Documents") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Documents Submitted In Party")|| finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Forwarded to Insurance") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Approved - Compensated")){
+								 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+							 }
+						}else{
+							 if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Waiting for Documents") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Documents Submitted In Party")|| finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Forwarded to Insurance") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Approved - Compensated")){
+								 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+							 }
+						}
+						
+						/* if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Applied") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Intimated")|| finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Documents Submitted") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Approved") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Cheque Received") ){
+							 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+						 }*/
+					}
+				}
+				
+				//Rejected and Not Eligible
+				else if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Rejected") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Not Eligible")){
+					for(int i=0;i<finalVO.getSimpleVOList1().size();i++){
+						
+						if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Rejected")){
+							if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Waiting for Documents") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Documents Submitted In Party") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Rejected")){
+								 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+							 }
+						}else if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("Not Eligible")){
+							if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Waiting for Documents") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Documents Submitted In Party") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("Not Eligible")){
+								 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+							 }
+						}
+						
+					}
+				}
+				finalVO.setSimpleVOList1(finalDateVos);
+				
+				List<GrievanceSimpleVO> newStatusList = new ArrayList<GrievanceSimpleVO>();
+				if(finalVO.getSimpleVOList1() !=null && finalVO.getSimpleVOList1().size()>0){
+					
+					
+					int index = getIndexByCurrent(finalVO.getSimpleVOList1());
+					
+					for(int i=0;i<finalVO.getSimpleVOList1().size();i++){
+						if(i<index){
+							GrievanceSimpleVO vo = finalVO.getSimpleVOList1().get(i);
+							if(vo.getDateString() !=null){
+								newStatusList.add(vo);
+							}
+						}
+						else{
+							GrievanceSimpleVO vo1 = finalVO.getSimpleVOList1().get(i);
+							newStatusList.add(vo1);
+						}
+					}
+				}
+				
+				if(newStatusList !=null && newStatusList.size()>0){
+					finalVO.setSimpleVOList1(newStatusList);
+				}
+				
+				diffreneceBetweenDates(finalVO.getSimpleVOList1());
+			
+			}
+			else{
+				List<String> status=cadreHealthStatusDAO.getStatusBycomplaintIdForInsurance(complaintId);
+				if(status!=null && status.size()>0){
+					finalVO.setOnlystatus(status.get(0));
+				}
+			}
+			
+			
+		return finalVO;
+		
+		}catch (Exception e) {
+			LOG.error("Exception Occured in () getStatusTrackingDetailsOfInsuranceByComplaint method, Exception - ",e);
+		}
+		
+		return finalVO;
+	
+	}
+	
+	public int getIndexByCurrent(List<GrievanceSimpleVO> simpleVoList){
+		
+		int k=0;
+		try{
+			for(int i=0;i<simpleVoList.size();i++){
+				GrievanceSimpleVO vo = simpleVoList.get(i);
+				if(vo.getStatus() !=null && !vo.getStatus().isEmpty() && vo.getStatus().equalsIgnoreCase("current")){
+					k=i;
+				}
+			}
+			return k;
+		}catch(Exception e){
+			LOG.error("Exception Occured in () getIndexByCurrent method, Exception - ",e);
+		}
+		return k;
+	}
+	
+	public GrievanceSimpleVO getAllStatusDetailsByComplaint(Long complaintId){
+		
+		GrievanceSimpleVO finalVO=new GrievanceSimpleVO();
+		try{
+			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+			Map<String,GrievanceSimpleVO> firstMap=new LinkedHashMap<String,GrievanceSimpleVO>();  
+			
+			
+			GrievanceSimpleVO vo=new GrievanceSimpleVO();
+			vo.setName("not verified");
+			firstMap.put("not verified",vo);
+			
+			GrievanceSimpleVO vo1=new GrievanceSimpleVO();
+			vo1.setName("in progress");
+			firstMap.put("in progress",vo1);
+			
+			GrievanceSimpleVO vo2=new GrievanceSimpleVO();
+			vo2.setName("not eligible");
+			firstMap.put("not eligible",vo2);
+			
+			GrievanceSimpleVO vo3=new GrievanceSimpleVO();
+			vo3.setName("not possible");
+			firstMap.put("not possible",vo3);
+			
+			GrievanceSimpleVO vo4=new GrievanceSimpleVO();
+			vo4.setName("approved");
+			firstMap.put("approved",vo4);
+			
+			GrievanceSimpleVO vo5=new GrievanceSimpleVO();
+			vo5.setName("completed");
+			firstMap.put("completed",vo5);
+			List<Object[]> complaintDetails=cadreHealthStatusDAO.getAllStatusDetailsByComplaint(complaintId,"grievance");
+			if(complaintDetails!=null && complaintDetails.size()>0){
+				//boolean multiStatus=checkMultiStatus(complaintDetails);
+				boolean multiStatus= true;
+				if(multiStatus){
+					
+					finalVO.setSimpleVOList2(new ArrayList<GrievanceSimpleVO>());
+					for(int i=0;i<complaintDetails.size();i++){
+						
+						Object[] obj=complaintDetails.get(i);
+						
+						if((Long)obj[1]==1l){
+							//first map
+							String dateString = "";
+							GrievanceSimpleVO notVerifiedVO=firstMap.get("not verified");
+							if(obj[3] != null && !obj[3].toString().isEmpty())
+							 dateString=sdf.format((Date)obj[3]);
+							notVerifiedVO.setDateString(dateString);
+							notVerifiedVO.setDate((Date)obj[3]);
+							//total list
+							GrievanceSimpleVO simpleVO=new GrievanceSimpleVO();
+							simpleVO.setName("not verified");
+							simpleVO.setDate((Date)obj[3]);
+							simpleVO.setDateString(dateString);
+							/*String firstName=obj[4] != null ? obj[4].toString() : "";
+							String lastName=obj[5] != null ? obj[5].toString() : "";
+							simpleVO.setUsername(firstName +" " + lastName);*/
+							
+							simpleVO.setUsername(obj[4] !=null ? obj[4].toString():"");
+							
+							if(i==(complaintDetails.size()-1)){
+								notVerifiedVO.setStatus("current");
+								simpleVO.setStatus("current");
+								firstMap.get("not verified").setCurrent(obj[2]!= null?obj[2].toString().toLowerCase():"NOT VERIFIED");
+							}
+							finalVO.getSimpleVOList2().add(simpleVO);
+						}else{
+							//first map
+							GrievanceSimpleVO VO=firstMap.get(obj[2].toString().toLowerCase());
+							String dateString=sdf.format((Date)obj[3]);
+							VO.setDateString(dateString);
+							VO.setDate((Date)obj[3]);
+							//total list
+							GrievanceSimpleVO simpleVO=new GrievanceSimpleVO();
+							simpleVO.setName(obj[2].toString());
+							simpleVO.setDate((Date)obj[3]);
+							simpleVO.setDateString(dateString);
+							/*String firstName=obj[4] != null ? obj[4].toString() : "";
+							String lastName=obj[5] != null ? obj[5].toString() : "";
+							simpleVO.setUsername(firstName +" " + lastName);*/
+							
+							simpleVO.setUsername(obj[4] !=null ? obj[4].toString():"");
+							
+							if(i==(complaintDetails.size()-1)){
+								VO.setStatus("current");
+								simpleVO.setStatus("current");
+								firstMap.get("not verified").setCurrent(obj[2]!= null?obj[2].toString().toLowerCase():"NOT VERIFIED");
+							}
+							finalVO.getSimpleVOList2().add(simpleVO);
+						}
+					}
+					finalVO.setSimpleVOList1(new ArrayList<GrievanceSimpleVO>(firstMap.values()));
+					diffreneceBetweenDates(finalVO.getSimpleVOList2());
+				}else{
+					
+					for(int i=0;i<complaintDetails.size();i++){
+						
+						Object[] obj=complaintDetails.get(i);
+						if((Long)obj[1]==1l){
+							GrievanceSimpleVO notVerifiedVO=firstMap.get("not verified");
+							notVerifiedVO.setDateString(sdf.format((Date)obj[3]));
+							notVerifiedVO.setDate((Date)obj[3]);
+							if(i==(complaintDetails.size()-1)){
+								notVerifiedVO.setStatus("current");
+								firstMap.get("not verified").setCurrent("not verified");
+							}
+						}else{
+							GrievanceSimpleVO VO=firstMap.get(obj[2].toString().toLowerCase());
+							if(obj[3] != null && !obj[3].toString().isEmpty())
+							{
+							VO.setDateString(sdf.format((Date)obj[3]));
+							VO.setDate((Date)obj[3]);
+							}
+							if(i==(complaintDetails.size()-1)){
+								VO.setStatus("current");
+								firstMap.get("not verified").setCurrent(obj[2]!= null?obj[2].toString().toLowerCase():"NOT VERIFIED");
+							}
+						}
+					}
+					if(firstMap.get("not verified").getCurrent().equalsIgnoreCase("completed")){
+						firstMap.remove("approved");   
+					}
+					finalVO.setSimpleVOList1(new ArrayList<GrievanceSimpleVO>(firstMap.values()));
+				}	
+					
+					List<GrievanceSimpleVO> finalDateVos=new ArrayList<GrievanceSimpleVO>();
+					
+					if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("not verified") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("in progress")){
+						for(int i=0;i<finalVO.getSimpleVOList1().size();i++){
+							 if( finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("not verified") ||finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("in progress") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("approved") || finalVO.getSimpleVOList1().get(i).getName().equalsIgnoreCase("completed")){
+								 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+							 }
+						}
+					}
+					else if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("approved") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("completed")){
+						for(int i=0;i<finalVO.getSimpleVOList1().size();i++){
+							if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("approved")){
+								 if(finalVO.getSimpleVOList1().get(i).dateString!=null){
+									 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+								 }
+							}else if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("completed")){
+								 if(finalVO.getSimpleVOList1().get(i).dateString!=null){
+									 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+								 }
+							}
+						}
+					}
+					else if(finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("not possible") || finalVO.getSimpleVOList1().get(0).getCurrent().equalsIgnoreCase("not eligible")){
+						for(int i=0;i<finalVO.getSimpleVOList1().size();i++){
+								 if(finalVO.getSimpleVOList1().get(i).dateString!=null){
+									 finalDateVos.add(finalVO.getSimpleVOList1().get(i));
+								 }
+							}
+					}
+					finalVO.setSimpleVOList1(finalDateVos);
+					//findinig differnce between dates.
+					
+					diffreneceBetweenDates(finalVO.getSimpleVOList1());
+					
+				}else{
+					List<String> status=cadreHealthStatusDAO.getCompletedStatusBycomplaintId(complaintId);
+					if(status!=null && status.size()>0){
+						finalVO.setOnlystatus(status.get(0));
+					}
+				}
+			
+		
+		}catch(Exception e){
+			LOG.error(" Exception Occured in getAllStatusDetailsByComplaint() method, Exception - ",e);
+		}
+		return finalVO;
+	}
+	
+	public void diffreneceBetweenDates(List<GrievanceSimpleVO> list){
+		try{
+			for(int i=0;i<list.size();i++){
+				
+				Date d2=null;
+				Date d1=null;
+				if(list.get(i).getStatus()!=null &&list.get(i).getStatus().equalsIgnoreCase("current")){
+					d2=new DateUtilService().getCurrentDateAndTime();  
+					d1=list.get(i).getDate();
+				}else{
+					if(i!=(list.size()-1)){
+						d2=list.get(i+1).getDate();
+						d1=list.get(i).getDate();
+					}
+				}
+				if(d2!=null && d1!=null){
+				 long diff = d2.getTime() - d1.getTime();
+				 long diffDays = diff / (24 * 60 * 60 * 1000);
+				 list.get(i).setType(diffDays+" days");
+				}
+		}
+		}catch(Exception e){
+			LOG.error(" Exception Occured in diffreneceBetweenDates() method, Exception - ",e);
+		}
+	}
+	
+	public List<GrievanceDetailsVO> getComplaintsDetailsForGrievanceByLocationAndStatus(Long locationId,String locationType,String status,String issueType){
+		List<GrievanceDetailsVO> returnList = new ArrayList<GrievanceDetailsVO>();
+		try {
+			
+			List<Object[]> list = cadreHealthStatusDAO.getComplaintsDetailsForGrievanceByLocationAndStatus(locationId, locationType, status, issueType);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					vo.setFirstName(obj[0] != null ? obj[0].toString():"");
+					//vo.setMembershipNo(obj[1] != null ? obj[1].toString():"");
+					vo.setMobileNo(obj[1] != null ? obj[1].toString():"");
+					//vo.setSubject(obj[3] != null ? obj[3].toString():"");
+					//vo.setDescription(obj[4] != null ? obj[4].toString():"");
+					vo.setComplaintId(Long.valueOf(obj[2] != null ? obj[2].toString():""));
+					vo.setRaisedDate(obj[3] != null ? obj[3].toString():"");
+					vo.setTypeOfIssue(obj[4] != null ? obj[4].toString():"");
+					//vo.setStatusId(Long.valueOf(obj[6] != null ? obj[6].toString():""));
+					vo.setStatus(obj[5] != null ? obj[5].toString():"");
+					vo.setUpdatedDate(obj[6] != null ? obj[6].toString():"");
+					//vo.setTdpCadreId(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
+					vo.setSubject(obj[7] != null ? obj[7].toString():"");
+					vo.setDescription(obj[8] != null ? obj[8].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getComplaintsDetailsByLocationAndStatus() method, Exception - ",e);
+		}
+		return returnList;
 	}
 }

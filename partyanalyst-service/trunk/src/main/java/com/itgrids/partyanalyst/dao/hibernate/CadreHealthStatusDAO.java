@@ -88,7 +88,9 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     
     public List<Object[]> getAllGrievanceInsuranceStatus(){
     	Query query = getSession().createSQLQuery("select grievance_insurance_status_id," +
-    							" status from grievance_insurance_status" +
+    							" status," +
+    							" order_no" +
+    							" from grievance_insurance_status" +
     							" order by order_no");
     	return query.list();
     }
@@ -172,4 +174,125 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     			"(CM.Subject != '' OR CM.Subject IS NOT NULL) AND UA.tehsil_id = 1102").list();
     	
     }*/
+    
+   /* public List<Object[]> getRequestRaisedTimeDetails(Long complaintId)
+	{
+		Query query = getSession().createSQLQuery("select CT.complaint_tracking_id," +
+    										" date(CT.inserted_time) as inserted_time" +
+    										" from complaint_tracking CT" +
+    										" where CT.complaint_progress_status_id = 1" +
+    										" and CT.Complaint_id = :complaintId").addScalar("complaint_tracking_id",Hibernate.LONG).addScalar("inserted_time",Hibernate.DATE);
+    	
+		query.setParameter("complaintId", complaintId);	
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getAllStatusDetails(Long complaintId)
+	{
+		Query query = getSession().createSQLQuery("select CT.complaint_tracking_id," +
+											" CT.comment," +
+											" date(CT.inserted_time) as inserted_time" +
+											" from complaint_tracking CT" +
+											" where CT.complaint_progress_status_id = 5" +
+											" and CT.Complaint_id = :complaintId" +
+											" group by CT.complaint_progress_status_id,CT.comment" +
+											" order by CT.complaint_tracking_id").addScalar("complaint_tracking_id",Hibernate.LONG)
+											.addScalar("comment",Hibernate.STRING).addScalar("inserted_time",Hibernate.DATE);
+		
+		query.setParameter("complaintId", complaintId);
+		
+		return query.list();
+	}*/
+	
+	public List<Object[]> getAllStatusDetailsByComplaint(Long complaintId,String type)
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select distinct model.complaint_tracking_id," +
+						" model.complaint_progress_status_id," +
+						" model.comment," +
+						" date(model.inserted_time) as inserted_time," +
+						" model.name" +
+						" from complaint_tracking model" +
+						" where model.Complaint_id =:complaintId");
+		
+		if(type.equalsIgnoreCase("grievance")){
+			sb.append(" and model.complaint_progress_status_id in (1,5) " );
+		}
+		else if(type.equalsIgnoreCase("insurance")){
+			sb.append(" and model.complaint_progress_status_id in (1,11) " );
+		}
+		sb.append(" order by model.complaint_tracking_id asc ");
+		
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("complaint_tracking_id",Hibernate.LONG).addScalar("complaint_progress_status_id",Hibernate.LONG)
+																.addScalar("comment",Hibernate.STRING).addScalar("inserted_time",Hibernate.DATE).addScalar("name",Hibernate.STRING);
+		
+		query.setParameter("complaintId", complaintId);
+		return query.list();
+	}
+	
+	public List<String> getCompletedStatusBycomplaintId(Long complaintId){
+	
+		Query query = getSession().createQuery("select model.Completed_Status" +
+									" from complaint_master model" +
+									" where (model.delete_status !='0' or model.delete_status is null)" +
+									" and model.Subject !='' and model.Complaint_id=:complaintId");
+		
+		query.setParameter("complaintId", complaintId);
+		
+		return query.list();
+	}
+	
+	public List<String> getStatusBycomplaintIdForInsurance(Long complaintId){
+		
+		Query query = getSession().createQuery("select model1.status" +
+									" from complaint_master model,grievance_insurance_status model1" +
+									" where model.grievance_insurance_status_id = model1.grievance_insurance_status_id" +
+									" and (model.delete_status !='0' or model.delete_status is null)" +
+									" and model.Subject !=''" +
+									" and model.Complaint_id=:complaintId");
+		
+		query.setParameter("complaintId", complaintId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getComplaintsDetailsForGrievanceByLocationAndStatus(Long locationId,String locationType,String status,String issueType){
+    	
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("select CM.name," +
+    					" CM.mobile_no," +
+    					" CM.Complaint_id," +
+    					" date(CM.Raised_Date) as Raised_Date," +
+    					" CM.type_of_issue," +
+    					" CM.Completed_Status," +
+    					" date(CM.updated_date) as updated_date," +
+    					" CM.Subject," +
+    					" CM.description" +
+    					" from" +
+    					" complaint_master CM" +
+    					" where CM.type_of_issue = :issueType" +
+    					" and CM.Completed_Status = :status");
+    	
+    	if(locationType.equalsIgnoreCase("assembly"))
+    		sb.append(" AND CM.assembly_id = :locationId");
+    	else if(locationType.equalsIgnoreCase("parliament"))
+    		sb.append(" AND CM.parliament_id = :locationId");
+    	else if(locationType.equalsIgnoreCase("district"))
+    		sb.append(" AND CM.district_id = :locationId");
+    	
+    	Query query = getSession().createSQLQuery(sb.toString()).addScalar("name",Hibernate.STRING).addScalar("mobile_no",Hibernate.STRING)
+    			.addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE)
+    			.addScalar("type_of_issue",Hibernate.STRING).addScalar("Completed_Status",Hibernate.STRING)
+    			.addScalar("updated_date",Hibernate.DATE).addScalar("Subject",Hibernate.STRING).addScalar("description",Hibernate.STRING);
+    			
+    	if(locationType != "" && locationType != null)
+    		query.setParameter("locationId", locationId);
+    	
+    	query.setParameter("status", status);
+    	query.setParameter("issueType", issueType);
+    	
+    	return query.list();
+    }
 }
