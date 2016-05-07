@@ -25,6 +25,7 @@ var cb = function(start, end, label) {
 		 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 		 },
 		 opens: 'left',
+		 "parentEl": ".advancedBlock",
 		 buttonClasses: ['btn btn-default'],
 		 applyClass: 'btn-sm btn-success btn-custom newsSubmitBtn',
 		 cancelClass: 'btn-sm btn-cancel',
@@ -58,11 +59,10 @@ var cb = function(start, end, label) {
 		 
 		
 }
-
-		$(".ranges").find("ul").prepend('<li class="activeCls">Total</li>');
-		$(".ranges").find("ul li").removeClass("active");
-
-
+$(document).on("click",".getDate",function(){
+	$(".advancedBlock").find(".daterangepicker").css("display","block");	
+	}); 
+		
 	$(document).on("click",".advnceDashboardCls",function(){
 		
 		getTotalAppointmentStatus();
@@ -96,17 +96,7 @@ $(document).on("click",".applyBtn",function(){
 	getCandidCountsByStatesAction();
 	getCandiCountsByLocations();
 });
-	 $(".ranges li:nth-child(1)").addClass("active");
-	$(document).on("click",".activeCls",function(){
-	$(".daterangepicker").css("display","none");
-	
-	}); 
-
-	 $(document).on("click",".getDate",function(){
-	$(".daterangepicker").css("display","block");	
-	$(".show-calendar").css("display","none");	
-	
-	}); 
+	 
 
 function getCandidCountsByStatesAction(){
 		
