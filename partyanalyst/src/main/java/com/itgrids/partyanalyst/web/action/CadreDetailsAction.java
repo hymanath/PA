@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
@@ -90,8 +91,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	
 	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
 	private GrievanceDetailsVO gerGrievanceDetailsVO;
+	private GrievanceSimpleVO grievanceSampleVO;
 	
 	
+	public GrievanceSimpleVO getGrievanceSampleVO() {
+		return grievanceSampleVO;
+	}
+	public void setGrievanceSampleVO(GrievanceSimpleVO grievanceSampleVO) {
+		this.grievanceSampleVO = grievanceSampleVO;
+	}
 	public GrievanceDetailsVO getGerGrievanceDetailsVO() {
 		return gerGrievanceDetailsVO;
 	}
@@ -1042,7 +1050,6 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 	}
 	
-	
 	public String getComplaintsDetailsByLocationAndStatus(){
 		try{
 			jObj=new JSONObject(getTask());
@@ -1108,4 +1115,52 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 	}
 	
+	public String getAllStatusDetailsByComplaint(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long complaintId = jObj.getLong("complaintId");
+			
+			grievanceSampleVO = cadreDetailsService.getAllStatusDetailsByComplaint(complaintId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getAllStatusDetailsByComplaint() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getStatusTrackingDetailsOfInsuranceByComplaint(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long complaintId = jObj.getLong("complaintId");
+			
+			grievanceSampleVO = cadreDetailsService.getStatusTrackingDetailsOfInsuranceByComplaint(complaintId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getStatusTrackingDetailsOfInsuranceByComplaint() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getComplaintsDetailsForGrievanceByLocationAndStatus(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long locationId = jObj.getLong("locationId");
+			String locationType = jObj.getString("locationType");
+			//Long statusId = jObj.getLong("statusId");
+			String statusName = jObj.getString("statusName");
+			String issueType = jObj.getString("issueType");
+			
+			grievDetailsVOList = cadreDetailsService.getComplaintsDetailsForGrievanceByLocationAndStatus(locationId,locationType,statusName,issueType);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getDeathAndHospitalizationDetails() method, Exception - ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
