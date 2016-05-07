@@ -35,7 +35,6 @@ public class GrievanceDetailsVO implements Serializable{
 	private String welfarePerc;
 	private Long benifitCount=0l;
 	
-	
 	private String firstName;
 	private String membershipNo;
 	private String mobileNo;
@@ -48,6 +47,22 @@ public class GrievanceDetailsVO implements Serializable{
 	private Long statusId;
 	private Long tdpCadreId;
 	
+	private String dateStr;
+	private String comment;
+	
+	
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	public Long getBenifitCount() {
 		return benifitCount;
 	}

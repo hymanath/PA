@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.ComplaintStatusCountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceAmountVO;
 import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
+import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
@@ -84,4 +85,8 @@ public interface ICadreDetailsService {
 	public VerifierVO getSurveysOnCandidateCount(Long candidateId);
 	public List<CadreDetailsVO> getAppointmentsUserDetails(List<Long> appointmentUserIds, Long tdpcadreId);
 	public List<QuestionAnswerVO> getSurveysOnCandidateDetails(Long candidateId);
+	//public List<GrievanceDetailsVO> getAllStatusDetailsForComplaint(Long complaintId);
+	public GrievanceSimpleVO getAllStatusDetailsByComplaint(Long complaintId);
+	public GrievanceSimpleVO getStatusTrackingDetailsOfInsuranceByComplaint(Long complaintId);
+	public List<GrievanceDetailsVO> getComplaintsDetailsForGrievanceByLocationAndStatus(Long locationId,String locationType,String status,String issueType);
 }
