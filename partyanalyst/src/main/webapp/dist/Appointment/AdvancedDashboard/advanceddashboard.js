@@ -132,22 +132,41 @@ function getCandidCountsByStatesAction(){
 		str+='<div class="col-md-3 pad_5">';
 			str+='<table class="table table-condensed" style="margin-top:60px;">';
 				str+='<tr class="bg_f2">';
-					str+='<td style="padding:20px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">TOTAL <br/>REQUESTED MEMBERS</h5></td>';
+					str+='<td style="padding:25px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">TOTAL <br/>REQUESTED MEMBERS</h5></td>';
 				str+='</tr>';
 				str+='<tr class="bg_f2">';
-					str+='<td style="padding:20px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">TOTAL <br/> APPOINTMENT MEMBERS SCHEDULED</h5></td>';
+					str+='<td style="padding:20px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">TOTAL <br/> APPOINTMENT MEMBERS SCHEDULED <i class="glyphicon glyphicon-plus-sign pull-right expandListClass" style="top:-16px;cursor:pointer"></i></h5></td>';
 				str+='</tr>';
+				if(result.scheduledStatusCountsVOList != null && result.scheduledStatusCountsVOList.length>0)
+				{
+					for(var i in result.scheduledStatusCountsVOList){
+						str+='<tr style="background:#f9f9f9;display:none;" class="internalShowClass">';
+							str+='<td style="padding:32px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">'+result.scheduledStatusCountsVOList[i].name+'</h5></td>';
+						str+='</tr>';
+					}
+				}
+				
 				str+='<tr class="bg_f2">';
-					str+='<td style="padding:20px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">TOTAL <br/> APPOINTMENT MEMBERS WAITING </h5></td>';
+					str+='<td style="padding:20px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">TOTAL <br/> APPOINTMENT MEMBERS WAITING <i class="glyphicon glyphicon-plus-sign pull-right expandTotalListClass" style="top:-16px;cursor:pointer"></i></h5></td>';
 				str+='</tr>';
+				if(result.waitingStatusCountsVOList != null && result.waitingStatusCountsVOList.length>0)
+				{
+					for(var i in result.waitingStatusCountsVOList){
+						str+='<tr style="background:#f9f9f9;display:none;" class="internalTotalShowClass">';
+							str+='<td style="padding:32px;border:5px solid #fff;" colspan="2"><h5 class="text-capitalize">'+result.waitingStatusCountsVOList[i].name+'</h5></td>';
+						str+='</tr>';
+					}
+				}else{
+					
+				}
 				
 			str+='</table>';
 		str+='</div>';
 		
 		if(result.totalCountsVOList !=null && result.totalCountsVOList.length>0){
 			for(var i in result.totalCountsVOList){
-				str+='<div class="col-md-2 pad_5" style="width: 205px;">';
-				str+='<table class="table table-condensed">';
+			str+='<div class="col-md-2" style="width: 205px;padding:2px;">';
+			str+='<table class="table table-condensed">';
 			str+='<tr class="bg_f2">';
 				str+='<td colspan="4" class="text-center text-capitalize"><b>'+result.totalCountsVOList[i].name+'</b></td>';
 			str+='</tr>';
@@ -199,7 +218,7 @@ function getCandidCountsByStatesAction(){
 		
 		 if(result.scheduledCountsVOList !=null && result.scheduledCountsVOList.length>0){
 			for(var i in result.scheduledCountsVOList){
-				str+='<div class="col-md-2 pad_5" style="width: 205px;">';
+				str+='<div class="col-md-2" style="width: 205px;padding:2px;">';
 				str+='<table class="table table-condensed" >';	
 			str+='<tr class="bg_e6">';
 			if(result.scheduledCountsVOList[i].count !=null && result.scheduledCountsVOList[i].count != 0){
@@ -240,9 +259,66 @@ function getCandidCountsByStatesAction(){
 			str+='</div>';
 			}
 		}
+		
+		
+		/**COPY**/
+		 if(result.scheduledStatusCountsVOList !=null && result.scheduledStatusCountsVOList.length>0){
+				for(var i in result.scheduledStatusCountsVOList){
+					if(result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList !=null && result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList.length>0){
+						for(var j in result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList){
+						str+='<div class="col-md-2 internalShowClass" style="width: 205px;display:none;padding:2px;">';
+						str+='<table class="table table-condensed" >';	
+						str+='<tr style="background:#f9f9f9">';
+						if(result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].count !=null && result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].count != 0){
+							str+='<td colspan="2" class="pad_10 text-center"><h4>'+result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].count+'</h4></td>';
+						}else{
+							str+='<td colspan="2" class="pad_10 text-center"><h4> - </h4></td>';
+						}
+						if(result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueCount !=null && result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueCount != 0){
+							str+='<td colspan="2" class="pad_10 text-center"><h4>'+result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueCount+'</h4></td>';
+						}else{
+							str+='<td colspan="2" class="pad_10 text-center"><h4> - </h4></td>';
+						}
+						str+='</tr>';
+						str+='<tr style="background:#f9f9f9">';
+							if(result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].apCount !=null && result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].apCount != 0){
+									str+='<td class="font10 pad_10 text-center">AP<br/>'+result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].apCount+'</td>';
+							}else{
+								str+='<td class="font10 pad_10 text-center">AP<br/> - </td>';
+							}
+							if(result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].tsCount !=null && result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].tsCount != 0){
+									str+='<td class="font10 pad_10 text-center">TS<br/>'+result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].tsCount+'</td>';
+							}else{
+								str+='<td class="font10 pad_10 text-center">TS<br/> - </td>';
+							}
+							if(result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueApCount !=null && result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueApCount != 0){
+									str+='<td class="font10 pad_10 text-center">AP<br/>'+result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueApCount+'</td>';;
+							}else{
+								str+='<td class="font10 pad_10 text-center">AP<br/> - </td>';
+							}
+							if(result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueTsCount !=null && result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueTsCount != 0){
+									str+='<td class="font10 pad_10 text-center">TS<br/>'+result.scheduledStatusCountsVOList[i].scheduledStatusCountsVOList[j].uniqueTsCount+'</td>';
+							}else{
+								str+='<td class="font10 pad_10 text-center">TS<br/> - </td>';
+							}
+							
+							str+='</tr>';
+							str+='</table>';
+							str+='</div>';
+						 }
+					}
+					
+				}
+		}
+		
+		/**COPY**/
+		
+		
+		
+		
 		if(result.waitingCountsVOList !=null && result.waitingCountsVOList.length>0){
 			for(var i in result.waitingCountsVOList){
-				str+='<div class="col-md-2 pad_5" style="width: 205px;">';
+				str+='<div class="col-md-2" style="width: 205px;padding:2px;">';
 				str+='<table class="table table-condensed" >';	
 			str+='<tr class="bg_e6">';
 				if(result.waitingCountsVOList[i].count !=null && result.waitingCountsVOList[i].count !=0 ){
@@ -284,10 +360,74 @@ function getCandidCountsByStatesAction(){
 			str+='</div>';
 		
 			}
-		} 
+		}
+
+		/**COPY**/
+		 if(result.waitingStatusCountsVOList !=null && result.waitingStatusCountsVOList.length>0){
+				for(var i in result.waitingStatusCountsVOList){
+					if(result.waitingStatusCountsVOList[i].waitingStatusCountsVOList !=null && result.waitingStatusCountsVOList[i].waitingStatusCountsVOList.length>0){
+						for(var j in result.waitingStatusCountsVOList[i].waitingStatusCountsVOList){
+						str+='<div class="col-md-2 internalTotalShowClass" style="width: 205px;display:none;padding:2px;">';
+						str+='<table class="table table-condensed" >';	
+						str+='<tr style="background:#f9f9f9">';
+						if(result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].count !=null && result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].count != 0){
+							str+='<td colspan="2" class="pad_10 text-center"><h4>'+result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].count+'</h4></td>';
+						}else{
+							str+='<td colspan="2" class="pad_10 text-center"><h4> - </h4></td>';
+						}
+						if(result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueCount !=null && result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueCount != 0){
+							str+='<td colspan="2" class="pad_10 text-center"><h4>'+result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueCount+'</h4></td>';
+						}else{
+							str+='<td colspan="2" class="pad_10 text-center"><h4> - </h4></td>';
+						}
+						str+='</tr>';
+						str+='<tr style="background:#f9f9f9">';
+							if(result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].apCount !=null && result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].apCount != 0){
+									str+='<td class="font10 pad_10 text-center">AP<br/>'+result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].apCount+'</td>';
+							}else{
+								str+='<td class="font10 pad_10 text-center">AP<br/> - </td>';
+							}
+							if(result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].tsCount !=null && result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].tsCount != 0){
+									str+='<td class="font10 pad_10 text-center">TS<br/>'+result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].tsCount+'</td>';
+							}else{
+								str+='<td class="font10 pad_10 text-center">TS<br/> - </td>';
+							}
+							if(result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueApCount !=null && result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueApCount != 0){
+									str+='<td class="font10 pad_10 text-center">AP<br/>'+result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueApCount+'</td>';;
+							}else{
+								str+='<td class="font10 pad_10 text-center">AP<br/> - </td>';
+							}
+							if(result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueTsCount !=null && result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueTsCount != 0){
+									str+='<td class="font10 pad_10 text-center">TS<br/>'+result.waitingStatusCountsVOList[i].waitingStatusCountsVOList[j].uniqueTsCount+'</td>';
+							}else{
+								str+='<td class="font10 pad_10 text-center">TS<br/> - </td>';
+							}
+							
+							str+='</tr>';
+							str+='</table>';
+							str+='</div>';
+						 }
+					}
+					
+				}
+		}
+		
+		/**COPY**/
+
+
+
+		
 		$("#candidateWiseCounts").html(str);
+		
 	}
-	
+	$(document).on("click",".expandListClass",function(){
+		$(document).find(".internalShowClass").toggle();
+		$(this).toggleClass("glyphicon-minus-sign");
+	});
+	$(document).on("click",".expandTotalListClass",function(){
+		$(document).find(".internalTotalShowClass").toggle();
+		$(this).toggleClass("glyphicon-minus-sign");
+	});
 	$(document).on("click","#locationWiseDetailsDiv",function(){
 		getCandiCountsByLocations();
     });
