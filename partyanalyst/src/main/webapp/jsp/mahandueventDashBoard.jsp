@@ -675,15 +675,34 @@ function buildStartingPrograms(result){
 			colorsarr.push('#A54423');
 		}
 		colorsarr.push(color);
-		str+=' <span class="pull-left">'+result[i].name+'</span>';
 		var count = result[i].invitees + result[i].nonInvitees;
+		var entryName = result[i].name;
 		
-		if(count >0 && result[i].id !=null){		
-		str+='  <span class="pull-right label-custom"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';	
+		if(entryName == "Pre Entry"){
+			  
+			  var validCount   = result[i].validCount;
+			  var invalidCount = result[i].inValidCount;
+			  
+			  str+=' <span class="pull-left">'+result[i].name+'</span>  <br/><span style="font-size:16px;"> [ Valid  - '+validCount+' ] [ Invalid  - '+invalidCount+' ]</span>';
+			  if(count >0 && result[i].id !=null){    
+			     //str+='  <span class="pull-right label-custom" style="margin-top: -15px;"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
+			     str+='  <span class="pull-right label-custom" style="margin-top: -15px;">'+count+'</span>';
+			  }
+			  else{
+			     str+='  <span class="pull-right label-custom" style="margin-top: -15px;">'+count+'</span>';
+			  }
+			  
+		}else{
+			
+			  str+=' <span class="pull-left">'+result[i].name+'</span>';
+			  if(count >0 && result[i].id !=null){    
+			  str+='  <span class="pull-right label-custom"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
+			  }
+			  else{
+			  str+='  <span class="pull-right label-custom">'+count+'</span>';
+			  }
 		}
-		else{
-		str+='  <span class="pull-right label-custom">'+count+'</span>';
-		}
+		
 		str+=' <br/>';
 		str+=' <hr class="m_top10"/>';
 		str+=' <br/>';
