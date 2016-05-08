@@ -1061,4 +1061,5 @@ public interface IConstants {
 	public static final Long[] APPOINTMENT_SCHEDULED_LIST= {3L,4L,10L};
 	public static final String GRIEVANCE_REQUESTS_STATUS_LIST ="Not Verified,In Progress,Not Possible,Not Eligible,approved,completed";
 	
+	public static final String EVENT_PRE_ENTRY = "Pre Entry";
 }

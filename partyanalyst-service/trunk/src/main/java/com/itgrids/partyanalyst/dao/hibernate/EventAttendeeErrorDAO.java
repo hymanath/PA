@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -7,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IEventAttendeeErrorDAO;
 import com.itgrids.partyanalyst.model.EventAttendeeError;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class EventAttendeeErrorDAO extends GenericDaoHibernate<EventAttendeeError, Long> implements IEventAttendeeErrorDAO{
 
@@ -26,4 +28,32 @@ public class EventAttendeeErrorDAO extends GenericDaoHibernate<EventAttendeeErro
 		queryStr.setParameter("uniqueKey", uniqueKey);
 		return queryStr.list();
 	}
+	
+	
+	public Long getPreEntryInvalidCount(Long preEnytryEventId,Date startDate,Date endDate)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("  select count(model.eventAttendeeErrorId) " +
+				   "  from   EventAttendeeError model " +
+				   "  where  model.event.eventId =:preEnytryEventId " +
+				   "         and  model.event.isActive =:isActive ");
+		
+		if((startDate != null && endDate != null)){
+			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if((startDate != null && endDate != null)){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);	
+		}
+		
+		query.setParameter("preEnytryEventId", preEnytryEventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		return (Long)query.uniqueResult();
+	}
+	
+	
 }

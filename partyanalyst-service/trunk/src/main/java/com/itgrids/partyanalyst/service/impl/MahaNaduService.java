@@ -12,11 +12,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.HashSet;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventAttendeeErrorDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
@@ -113,7 +114,7 @@ public class MahaNaduService implements IMahaNaduService{
 	private IEventDAO eventDAO;
 	private ISurveyUserAuthDAO surveyUserAuthDAO;
 	private IMahanaduDashBoardService mahanaduDashBoardService;
-	
+	private IEventAttendeeErrorDAO eventAttendeeErrorDAO;
 	
 	public IEventDAO getEventDAO() {
 		return eventDAO;
@@ -359,6 +360,15 @@ public void setSurveyUserAuthDAO(ISurveyUserAuthDAO surveyUserAuthDAO) {
 public void setMahanaduDashBoardService(
 		IMahanaduDashBoardService mahanaduDashBoardService) {
 	this.mahanaduDashBoardService = mahanaduDashBoardService;
+}
+
+public IEventAttendeeErrorDAO getEventAttendeeErrorDAO() {
+	return eventAttendeeErrorDAO;
+}
+
+public void setEventAttendeeErrorDAO(
+		IEventAttendeeErrorDAO eventAttendeeErrorDAO) {
+	this.eventAttendeeErrorDAO = eventAttendeeErrorDAO;
 }
 
 public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
@@ -1426,17 +1436,28 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
  public List<MahanaduEventVO> getSubEventCount(Long parentId,List<Long> subEventIds,String startDate,String endDate)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
+	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	 DateUtilService date = new DateUtilService();
+	 
 	 Date eventStrDate = null;
 	 Date eventEndDate = null;
 	 try{
-		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		 if(startDate != null && !startDate.isEmpty())
-		 eventStrDate = format.parse(startDate);
-		 if(endDate != null && !endDate.isEmpty())
-		 eventEndDate = format.parse(endDate);
+		 
+		 
+		 if(startDate != null && !startDate.isEmpty()){
+			 eventStrDate = format.parse(startDate);
+		 }
+		 
+		 if(endDate != null && !endDate.isEmpty()){
+			 eventEndDate = format.parse(endDate); 
+		 }
+		 
 		 List<Long> parentEventIds = new ArrayList<Long>();
 		 parentEventIds.add(parentId);
-		 DateUtilService date = new DateUtilService();
+		 
+		 boolean preEntrySubEventExist = false; 
+		 Long preEntrySubEventId = null;
+		 
 		  List<Object[]> list = eventDAO.getEventNames(subEventIds);
 		  if(list != null && list.size() > 0)
 		  {
@@ -1445,6 +1466,11 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				  MahanaduEventVO vo = new MahanaduEventVO();
 					 vo.setId((Long)params[0]);
 					 vo.setName(params[1] != null ? params[1].toString() : "");
+					 
+					 if(vo.getName().trim().equalsIgnoreCase(IConstants.EVENT_PRE_ENTRY)){
+						 preEntrySubEventExist = true;
+						 preEntrySubEventId = vo.getId();
+					 }
 				  resultList.add(vo);
 				 }
 		  }
@@ -1475,14 +1501,44 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					 	MahanaduEventVO eventVO = getMatchedVO(resultList,(Long)params[0]);
 					 	if(eventVO != null)
 					 	{
-					 		if(params[1] != null)
-					 		eventVO.setInvitees(eventVO.getInvitees() + (Long)params[1]);
+					 		if(params[1] != null){
+					 			
+					 			eventVO.setInvitees(eventVO.getInvitees() + (Long)params[1]);
+					 			
+					 			if( preEntrySubEventId != null && preEntrySubEventId.longValue() == ((Long)params[0]).longValue()){
+					 				//valid count
+					 				eventVO.setValidCount(eventVO.getInvitees());
+					 			}
+					 			
+					 		}
+					 		
 					 		/*if(params[2] != null)
 					 		eventVO.setNonInvitees(eventVO.getNonInvitees() + (Long)params[2]);*/
 					 	}
 					 	
 					}
 			 }
+		     
+		     if(preEntrySubEventExist){
+		    	
+		    	 Long invalidCount =  eventAttendeeErrorDAO.getPreEntryInvalidCount(preEntrySubEventId,eventStrDate,eventEndDate);
+		    	 if( invalidCount != null && invalidCount.longValue() > 0l){
+		    		 
+		    		 MahanaduEventVO eventVO = getMatchedVO(resultList,preEntrySubEventId);
+		    		 if(eventVO != null){
+					 	eventVO.setInvitees(eventVO.getInvitees() + invalidCount);
+					 	
+					 	//invalid count
+					 	eventVO.setInValidCount(invalidCount);
+					 }
+		    	 }
+		    	 
+		     }
+		     
+		     
+		     
+		     
+		     
 			 List<Object[]> totalUniqueVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,eventStrDate,eventEndDate,subEventIds);
 			 if(totalUniqueVisits != null && resultList.size() > 0)
 			 {

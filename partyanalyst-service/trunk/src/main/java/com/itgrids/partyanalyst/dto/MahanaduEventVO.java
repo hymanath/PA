@@ -41,7 +41,8 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private Long revisitCount;
 	private int newCount;
 	
-	
+	private Long validCount=0l;
+	private Long inValidCount=0l;
 	
 	public Long getRevisitCount() {
 		return revisitCount;
@@ -212,6 +213,18 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	public void setNewCount(int newCount) {
 		this.newCount = newCount;
 	}
+	public Long getValidCount() {
+		return validCount;
+	}
+	public void setValidCount(Long validCount) {
+		this.validCount = validCount;
+	}
+	public Long getInValidCount() {
+		return inValidCount;
+	}
+	public void setInValidCount(Long inValidCount) {
+		this.inValidCount = inValidCount;
+	}
 
-
+	
 }
