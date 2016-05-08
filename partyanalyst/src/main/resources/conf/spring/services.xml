@@ -2325,6 +2325,7 @@
 		  <property name="eventDAO" ref="eventDAO" />	
          	<property name="surveyUserAuthDAO" ref="surveyUserAuthDAO" />	
          <property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
+         <property name="eventAttendeeErrorDAO" ref="eventAttendeeErrorDAO" />
    </bean>
   
    <bean name="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient" lazy-init="true" >
