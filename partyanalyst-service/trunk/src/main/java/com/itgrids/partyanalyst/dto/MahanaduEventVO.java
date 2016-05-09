@@ -44,6 +44,8 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private Long validCount=0l;
 	private Long inValidCount=0l;
 	
+	private boolean isMahanaduEvent;
+	
 	public Long getRevisitCount() {
 		return revisitCount;
 	}
@@ -225,6 +227,12 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	public void setInValidCount(Long inValidCount) {
 		this.inValidCount = inValidCount;
 	}
-
+	public boolean isMahanaduEvent() {
+		return isMahanaduEvent;
+	}
+	public void setMahanaduEvent(boolean isMahanaduEvent) {
+		this.isMahanaduEvent = isMahanaduEvent;
+	}
+	
 	
 }
