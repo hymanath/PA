@@ -723,8 +723,14 @@ public class CadreDetailsService implements ICadreDetailsService{
     				queryStr.append(" and model.userAddress.district.districtId between 11 and 23 ");
     				else if(locationValue.longValue() == 2l)
     					queryStr.append(" and model.userAddress.district.districtId between 1 and 10 ");	
-    				else
-    					queryStr.append(" and model.userAddress.district.districtId between 1 and 23 ");	
+    				else{
+    					if(memberShipCardNo.endsWith("HIDE") || mobileNo.endsWith("HIDE")){
+    						queryStr.append(" and model.userAddress.district.districtId between 11 and 23 ");
+    						
+    					}else{
+    						queryStr.append(" and model.userAddress.district.districtId between 1 and 23 ");
+    					}
+    				}
     				locationValue = 0l;
     			}
     			
@@ -826,11 +832,23 @@ public class CadreDetailsService implements ICadreDetailsService{
     		
 			if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
+				if(memberShipCardNo.endsWith("HIDE")){
+					String[] memberShipCardNoStrArr = memberShipCardNo.split("-");
+					memberShipCardNo = memberShipCardNoStrArr[0].trim();
+					queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
+				}else{
+					queryStr.append(" and (model.memberShipNo = '"+memberShipCardNo.trim()+"') ");
+				}
 			}
 			if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
-			{							
-				queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
+			{	
+				if(mobileNo.endsWith("HIDE")){
+					String[] mobileNoStrArr = mobileNo.split("-");
+					mobileNo = mobileNoStrArr[0].trim();
+					queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
+				}else{
+					queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
+				}
 			}
 			
 			
