@@ -1069,47 +1069,11 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		String status = null;
 		try {
 				List<Object[]> userList = smsOtpDetailsDAO.checkForExpire(mobileNo);
-				Date currentTime = dateUtilService.getCurrentDateAndTime();
-		    	Calendar calendar = Calendar.getInstance();
-		    	calendar.setTime(currentTime);
-		    	calendar.add(Calendar.HOUR, 1);// adding next once hour.
-		    	 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-		    	 int hours = calendar.get(Calendar.HOUR_OF_DAY);
-		    	// int minutes = calendar.get(Calendar.MINUTE);
-		    	// int seconds = calendar.get(Calendar.SECOND);
-		    	 String timeFormat ="AM";
-		    	 if(hours > 11 && hours <24)
-		    		 timeFormat ="PM";
-		    	 
+				Calendar calendar = Calendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 				if(userList == null || userList.size() == 0 ){
-					Random random=new Random();
-				    int number= 0;
-				    String otp = "";
-				    do{
-				      number = Math.abs(random.nextInt());
-				      otp = String.valueOf(number);
-				    }while(otp.trim().length()<=6);
-				    
-				    otp = String.valueOf(number).substring(0,6);
-				    if(otp != null && !otp.isEmpty()){
-				    /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
-				    String messageStr = " TNGF Registration OTP number: "+otp+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
-				    SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
-				    
-				    smsOtpDetails.setOtpReferenceId(refNo);
-				    smsOtpDetails.setOtpNo(otp);
-				    smsOtpDetails.setIsDeleted("N");
-				    smsOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				    smsOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				    smsOtpDetails.setMobileNo(mobileNo);
-				    smsOtpDetails.setGenerateTime(dateUtilService.getCurrentDateAndTime());
-				    smsOtpDetails.setUserId(userId);
-				    smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
-				      
-				   smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
-				      
-				    status = IConstants.SUCCESS;
-				    }
+					status = getAndSaveOtp(userId,mobileNo,refNo);
+					
 				}else{
 					String lastDate = userList.get(0)[1].toString();
 					DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -1118,50 +1082,17 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					long interval = 1l;
 					boolean valid = commonMethodsUtilService.isActiveForSomeHours(lstlDate, unit, interval);
 					if(valid==true){
-						
-						calendar = Calendar.getInstance();
 				    	calendar.setTime(lstlDate);
 				    	calendar.add(Calendar.HOUR, 1);// adding next once hour.
-				    	 hours = calendar.get(Calendar.HOUR_OF_DAY);
-				    	// int minutes = calendar.get(Calendar.MINUTE);
-				    	// int seconds = calendar.get(Calendar.SECOND);
-				    	 timeFormat ="AM";
+				    	int hours = calendar.get(Calendar.HOUR_OF_DAY);
+				    	String timeFormat ="AM";
 				    	 if(hours > 11 && hours <24)
 				    		 timeFormat ="PM";
-				    	 
-						//String messageStr = " Cadre Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto next one Hour.";
 						String messageStr = " TNGF Registration OTP number: "+userList.get(0)[2].toString()+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
-						smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+						//smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
 						status = IConstants.SUCCESS;
 					}else{
-						Random random=new Random();
-					    int number= 0;
-					    String otp = "";
-					    do{
-					      number = Math.abs(random.nextInt());
-					      otp = String.valueOf(number);
-					    }while(otp.trim().length()<=6);
-					    
-					    otp = String.valueOf(number).substring(0,6);
-					    if(otp != null && !otp.isEmpty()){
-					    /* String messageStr = " Cadre Registration OTP number: "+otp+" for ref no: "+refNo;*/
-					    String messageStr = " TNGF Registration OTP number: "+otp+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
-					    SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
-					    
-					    smsOtpDetails.setOtpReferenceId(refNo);
-					    smsOtpDetails.setOtpNo(otp);
-					    smsOtpDetails.setIsDeleted("N");
-					    smsOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					    smsOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					    smsOtpDetails.setMobileNo(mobileNo);
-					    smsOtpDetails.setGenerateTime(dateUtilService.getCurrentDateAndTime());
-					    smsOtpDetails.setUserId(userId);
-					    smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
-					      
-					    SmsHistory smsHistory = smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
-					      
-					    status = IConstants.SUCCESS;
-					    }
+						status = getAndSaveOtp(userId,mobileNo,refNo);
 					}
 					
 				}
@@ -1186,8 +1117,55 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		      
 		} catch (Exception e) {
 			status = IConstants.FAILURE;
-			LOG.error("Exception occured in generateOTPForMobileNumber() in CadreVoterSearchService ",e);
+			LOG.error("Exception occured in validateOTP() in CadreVoterSearchService ",e);
 		}
 		return status;
+	}
+	public String getAndSaveOtp(Long userId,String mobileNo,String refNo){
+		String status = null;
+		try{
+			Date currentTime = dateUtilService.getCurrentDateAndTime();
+	    	Calendar calendar = Calendar.getInstance();
+	    	calendar.setTime(currentTime);
+	    	calendar.add(Calendar.HOUR, 1);// adding next once hour.
+	    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	    	int hours = calendar.get(Calendar.HOUR_OF_DAY);
+	    	String timeFormat ="AM";
+	    	if(hours > 11 && hours <24)
+	    		 timeFormat ="PM";
+			Random random=new Random();
+		    int number= 0;
+		    String otp = "";
+		    do{
+		      number = Math.abs(random.nextInt());
+		      otp = String.valueOf(number);
+		    }while(otp.trim().length()<=6);
+		    
+		    otp = String.valueOf(number).substring(0,6);
+		    if(otp != null && !otp.isEmpty()){
+		    String messageStr = " TNGF Registration OTP number: "+otp+". This OTP is valid upto "+sdf.format(calendar.getTime())+" "+timeFormat+".";
+		    SmsOtpDetails smsOtpDetails = new SmsOtpDetails();
+		    
+		    smsOtpDetails.setOtpReferenceId(refNo);
+		    smsOtpDetails.setOtpNo(otp);
+		    smsOtpDetails.setIsDeleted("N");
+		    smsOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		    smsOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		    smsOtpDetails.setMobileNo(mobileNo);
+		    smsOtpDetails.setGenerateTime(dateUtilService.getCurrentDateAndTime());
+		    smsOtpDetails.setUserId(userId);
+		    smsOtpDetails = smsOtpDetailsDAO.save(smsOtpDetails);
+		      
+		    //smsSenderService.sendSMS(userId,IConstants.SMS_AFFILIATED_GRADUATES_ENROLLMENT_MODULE, true, messageStr, mobileNo);
+		      
+		    status = IConstants.SUCCESS;
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			status = IConstants.FAILURE;
+		}
+		 return status;
+	
 	}
 }
