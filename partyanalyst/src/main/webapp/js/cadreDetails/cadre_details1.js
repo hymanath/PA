@@ -171,12 +171,14 @@ function getIVRSurveysOnCandidateAreaCount(){
 			});
 }
 function buildIVRSurveysOnCandidateAreaCount(result){
+
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
+		
 	//$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
 	$("#IvrcandiAreaId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >'+result.totalCount+'</a>');
 	}
-	//$('#ivrsurveyDataLoadoing').hide();
+	$('#ivrsurveyDataLoadoing').hide();
 }
 
 function getIVRSurveysOnCandidateAreaDetails(){
