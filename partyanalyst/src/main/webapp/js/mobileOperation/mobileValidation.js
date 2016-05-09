@@ -35,7 +35,7 @@ function validateFieldUnionRegistrion(){
        $(".querySuggErrCls").html(errorStr);
 	   flag=false;
 	}
-	
+
 	if(!flag){
 		return;	
 	}
@@ -54,7 +54,7 @@ function validateFieldUnionRegistrion(){
 	}).done(function(result){
 		if(result != null){
 			if(result.resultCode == 0){
-				$(".querySuggErrCls").html("Your Feedback Submitted Successfully...");
+				$(".querySuggErrCls").html(" <span style='color:green;'> <br> Your Feedback Submitted Successfully...</span>");
 			}
 		}
 	});
