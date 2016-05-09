@@ -51,4 +51,7 @@ public interface IAppointmentCandidateRelationDAO extends GenericDao<Appointment
 	public List<Object[]> getCandidateAppointmentDetails(List<Long> appointmentUserIds,Long tdpcadreId);
 	public List<Object[]> getCandidateCountsOfStatesByStatuses(Long appointmentUserId,List<Long> apptStatusIds,Date startDate,Date endDate);
 	
+	public List<Object[]> getTotalAppointmentsForCandiates(List<Long> appointmentCandidateIds,Long appointmentUserId,Long appStatusId);
+	public List<Object[]> getCandidateLastVisitedDtl(List<Long> appointmentCandidateIds,Long appointmentUserId,Long appStatusId);
+	
 }

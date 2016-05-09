@@ -5740,6 +5740,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
  public void setAppointmentMembersData(List<Object[]> list,List<AppointmentMembersDataVO> returnList,AppointmentMemberInputVO inputVO)
  {
 	 List<Long> cadreIds = new ArrayList<Long>();
+	 List<Long> appointmentCandidateIdsList=new ArrayList<Long>(0);
 	 try{
 		 if(list != null && list.size() > 0)
 		 {
@@ -5758,6 +5759,7 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 					 vo.setLocation(locationService.getLocationForDesignation(vo.getTdpCadreId(), vo.getDesignationId()));
 				 }
 				 cadreIds.add(vo.getTdpCadreId());
+				 appointmentCandidateIdsList.add(params[6] != null ?(Long)params[6]:null);
 				 returnList.add(vo);
 			 }
 			 if(inputVO.getMemberType().equalsIgnoreCase("CommitteeMember"))
@@ -5770,11 +5772,70 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 				 }
 			 }
 		 }
+		 //Total requested appointment counts by appointment candidates;
+		List<Object[]> rtrnTtlAppntmntsCuntLst=appointmentCandidateRelationDAO.getTotalAppointmentsForCandiates(appointmentCandidateIdsList, inputVO.getAptUserId(),null);
+		
+		if(rtrnTtlAppntmntsCuntLst!=null && rtrnTtlAppntmntsCuntLst.size()>0){
+			
+			for (Object[] objects : rtrnTtlAppntmntsCuntLst) {
+				AppointmentMembersDataVO membersDataVO=getAppCandidateMatchVO(returnList,(Long)objects[0]);
+				  if(membersDataVO!=null){
+					  membersDataVO.setTotalRequestedAppCount(objects[1]!=null ? (Long)objects[1]: 0l);
+				  }
+			}
+		}
+		 //Total completed appointment counts by appointment candidates;
+		List<Object[]> rtrnTtlCmpltdAppCntLst=appointmentCandidateRelationDAO.getTotalAppointmentsForCandiates(appointmentCandidateIdsList, inputVO.getAptUserId(),4l);
+		
+		if(rtrnTtlCmpltdAppCntLst!=null && rtrnTtlCmpltdAppCntLst.size()>0){
+			for (Object[] objects : rtrnTtlCmpltdAppCntLst) {
+				AppointmentMembersDataVO membersDataVO=getAppCandidateMatchVO(returnList,(Long)objects[0]);
+				  if(membersDataVO!=null){
+					  membersDataVO.setTotalCompletedAppCount(objects[1]!=null ? (Long)objects[1]: 0l);
+				  }
+			}
+		}
+	   //Candidates last visit date 
+		List<Object[]> rtrnCnddtLstSttsLst=appointmentCandidateRelationDAO.getCandidateLastVisitedDtl(appointmentCandidateIdsList, inputVO.getAptUserId(),4l);
+		
+		if(rtrnCnddtLstSttsLst!=null && rtrnCnddtLstSttsLst.size()>0){
+			for (Object[] objects : rtrnCnddtLstSttsLst) {
+				 AppointmentMembersDataVO membersDataVO=getAppCandidateMatchVO(returnList,(Long)objects[0]);
+				 if(membersDataVO!=null){
+					 membersDataVO.setCandidateLastVisitDate(objects[3]!=null ? objects[3].toString(): " ");
+				 }
+			}
+		}
+		//Candidates last status
+		 List<Object[]> rtrnCnddtLstVstList=appointmentCandidateRelationDAO.getCandidateLastVisitedDtl(appointmentCandidateIdsList, inputVO.getAptUserId(),null);
+		 
+		 if(rtrnCnddtLstVstList!=null && rtrnCnddtLstVstList.size()>0){
+			 for (Object[] objects : rtrnCnddtLstVstList) {
+				 AppointmentMembersDataVO membersDataVO=getAppCandidateMatchVO(returnList,(Long)objects[0]);
+				 if(membersDataVO!=null){
+					 membersDataVO.setCandidateLastUpdatedStatus(objects[2]!=null ? objects[2].toString(): " ");
+				 }
+			}
+		 }
 	 }
 	 catch(Exception e)
 	 {
 		e.printStackTrace(); 
 	 }
+ }
+ 
+ public AppointmentMembersDataVO getAppCandidateMatchVO(List<AppointmentMembersDataVO> returnList,Long appCandidateId){
+	 
+	 if(returnList!=null && returnList.size()>0){
+		 for (AppointmentMembersDataVO vo : returnList) {
+			  if(vo.getId().equals(appCandidateId)){
+				  return vo;
+			  }else{
+				  return null;
+			  }
+		}
+	 }
+	 return null;
  }
  
  public void setLocationForCadre(List<Object[]> constlist,List<AppointmentMembersDataVO> returnList,AppointmentMemberInputVO inputVO)

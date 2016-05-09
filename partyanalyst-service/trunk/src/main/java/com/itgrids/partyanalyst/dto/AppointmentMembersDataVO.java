@@ -14,10 +14,37 @@ public class AppointmentMembersDataVO {
 	private String constituency;
 	private String mandal;
 	private String village;
+	private Long totalRequestedAppCount;
+	private Long totalCompletedAppCount;
+	private String candidateLastVisitDate;
+	private String candidateLastUpdatedStatus;
 	
 	
-	
-	
+
+	public String getCandidateLastVisitDate() {
+		return candidateLastVisitDate;
+	}
+	public void setCandidateLastVisitDate(String candidateLastVisitDate) {
+		this.candidateLastVisitDate = candidateLastVisitDate;
+	}
+	public String getCandidateLastUpdatedStatus() {
+		return candidateLastUpdatedStatus;
+	}
+	public void setCandidateLastUpdatedStatus(String candidateLastUpdatedStatus) {
+		this.candidateLastUpdatedStatus = candidateLastUpdatedStatus;
+	}
+	public Long getTotalRequestedAppCount() {
+		return totalRequestedAppCount;
+	}
+	public void setTotalRequestedAppCount(Long totalRequestedAppCount) {
+		this.totalRequestedAppCount = totalRequestedAppCount;
+	}
+	public Long getTotalCompletedAppCount() {
+		return totalCompletedAppCount;
+	}
+	public void setTotalCompletedAppCount(Long totalCompletedAppCount) {
+		this.totalCompletedAppCount = totalCompletedAppCount;
+	}
 	public String getState() {
 		return state;
 	}

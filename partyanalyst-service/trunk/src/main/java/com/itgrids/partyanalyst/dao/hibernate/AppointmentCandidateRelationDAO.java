@@ -1020,7 +1020,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		query.setParameter("tdpcadreId", tdpcadreId);
 		return query.list();
 	}
-	
+
 	public List<Object[]> getCandidateCountsOfStatesByStatuses(Long appointmentUserId,List<Long> apptStatusIds,Date startDate,Date endDate){
 		
 		StringBuilder sb = new StringBuilder();
@@ -1057,5 +1057,76 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 		return query.list();
 	}
+    public List<Object[]> getTotalAppointmentsForCandiates(List<Long> appointmentCandidateIds,Long appointmentUserId,Long appStatusId){
+		
+		StringBuilder queryStr=new StringBuilder();
+		
+		queryStr.append(" select ACR.appointmentCandidate.appointmentCandidateId,count(distinct ACR.appointment.appointmentId)" +
+				"  from AppointmentCandidateRelation ACR where  ACR.appointment.isDeleted='N' ");
+		
+		if(appointmentUserId!=null && appointmentUserId>0l){
+			queryStr.append(" and ACR.appointment.appointmentUserId=:appointmentUserId");
+		}
+		if(appointmentCandidateIds!=null && appointmentCandidateIds.size()>0){
+		  queryStr.append(" and ACR.appointmentCandidateId in(:appointmentCandidateIds) ");
+		}
 	
+		if(appStatusId!=null && appStatusId==4l){
+			queryStr.append(" and ACR.appointment.appointmentStatusId=:appStatusId");
+		}
+		
+		
+		queryStr.append(" group by ACR.appointmentCandidate.appointmentCandidateId");
+		
+		Query query=getSession().createQuery(queryStr.toString());
+		
+		if(appointmentUserId!=null && appointmentUserId>0l){
+			query.setParameter("appointmentUserId", appointmentUserId);
+		}
+		if(appStatusId!=null && appStatusId==4l){
+		  query.setParameter("appStatusId", appStatusId);	
+		}
+
+		if(appointmentCandidateIds!=null && appointmentCandidateIds.size()>0){
+		   query.setParameterList("appointmentCandidateIds", appointmentCandidateIds);	
+		}
+		return query.list();
+	}
+    
+    public List<Object[]> getCandidateLastVisitedDtl(List<Long> appointmentCandidateIds,Long appointmentUserId,Long appStatusId){
+    	
+    	StringBuilder queryStr=new StringBuilder();
+    	
+    	queryStr.append(" select ACR.appointmentCandidate.appointmentCandidateId," + //0
+    			" ACR.appointment.appointmentStatus.appointmentStatusId," + //1
+    			" ACR.appointment.appointmentStatus.status, " + //2
+    			" max(date(ACR.appointment.insertedTime)) " + //3
+    			" from AppointmentCandidateRelation ACR where ACR.appointment.isDeleted='N'");
+    	
+    	if(appointmentUserId!=null && appointmentUserId>0l){
+    		queryStr.append(" and ACR.appointment.appointmentUserId=:appointmentUserId");
+    	}
+    	if(appStatusId!=null && appStatusId==4l){
+			queryStr.append(" and ACR.appointment.appointmentStatusId=:appStatusId");
+		}
+    	if(appointmentCandidateIds!=null && appointmentCandidateIds.size()>0){
+  		  queryStr.append(" and ACR.appointmentCandidateId in(:appointmentCandidateIds) ");
+  		}
+    	 
+    	queryStr.append(" group by ACR.appointmentCandidate.appointmentCandidateId,ACR.appointment.appointmentId");
+    	
+         Query query=getSession().createQuery(queryStr.toString());
+		
+		if(appointmentUserId!=null && appointmentUserId>0l){
+			query.setParameter("appointmentUserId", appointmentUserId);
+		}
+		if(appStatusId!=null && appStatusId==4l){
+		  query.setParameter("appStatusId", appStatusId);	
+		}
+
+		if(appointmentCandidateIds!=null && appointmentCandidateIds.size()>0){
+		   query.setParameterList("appointmentCandidateIds", appointmentCandidateIds);	
+		}
+		return query.list();
+    }
 }
