@@ -701,9 +701,9 @@ function getCandidCountsByStatesAction(){
     dataType : 'json',
     data : {task:JSON.stringify(jsObj)}  
     }).done(function(result){ 
-	
-	
+	 if(result!=null && result!=0){
        buildAppointmentMembersData(result);
+	  }
        });   
   }
 
@@ -728,10 +728,10 @@ function getCandidCountsByStatesAction(){
     dataType : 'json',
     data : {task:JSON.stringify(jsObj)}  
     }).done(function(result){ 
-	
-	
-       buildAppointmentMembersData(result);
-       });   
+	  if(result!=null && result!=0){
+		  buildAppointmentMembersData(result);
+       }
+	   });   
   }
 function buildAppointmentMembersData(result)
  {
@@ -743,10 +743,15 @@ function buildAppointmentMembersData(result)
             str+='<tr>';
 			str+='<th class="text-capitalize">Image</th>';				
 			str+='<th class="text-capitalize">NAME</th>';
-			str+='<th class="text-capitalize">Location</th>';
+			//str+='<th class="text-capitalize">Location</th>';
 			str+='<th class="text-capitalize">Designation</th>';
+			str+='<th class="text-capitalize">Last Visit</th>';
+			str+='<th class="text-capitalize">Last Status</th>';
+			str+='<th class="text-capitalize">Total Requested Appointment</th>';
+		    str+='<th class="text-capitalize">Total Attended Appointment</th>';
+		
 			
-			str+='<th class="text-capitalize">Mobile</th>';
+			//str+='<th class="text-capitalize">Mobile</th>';
 								
 			str+='</tr>';
 						str+='</thead>';
@@ -756,8 +761,9 @@ function buildAppointmentMembersData(result)
 		str +='<tr>';
 			str+='<td><img src="'+result[i].imageUrl+'" class="img-responsive img-border img-circle" style="height:40px;width:40px"></td>';
             str +='<td ><div class="col-md-1"><a attr-mobile="'+result[i].mobile+'" attr-designation="'+result[i].designation+'" attr-name="'+result[i].name+'" attr-id="'+result[i].id+'" style="cursor:pointer;" class="historyShowModalBtn" data-placement="top" data-toggle="tooltip" title="" data-original-title="Click here to View '+result[i].name+' History"><i style="color: rgb(142, 142, 142); font-size: 16px;" class="glyphicon glyphicon-time"></i></a></div>&nbsp;&nbsp;'+result[i].name+'</td>';
-			if(result[i].location != null && result[i].location.length > 0)
-			str+='<td >'+result[i].location+'</td>';
+			/* if(result[i].location != null && result[i].location.length > 0){
+			  //str+='<td >'+result[i].location+'</td>';
+			}
 			else{
 			str+='<td>';
 			if(result[i].state != null && result[i].state.length > 0)
@@ -771,12 +777,32 @@ function buildAppointmentMembersData(result)
 			if(result[i].village != null && result[i].village.length > 0)
 			str+='<br>V :'+result[i].village+'';
 			str+='</td>';		
-			}
+			} */
 			
 			str +='<td>'+result[i].designation+'</td>';
 			
+			if(result[i].candidateLastVisitDate!=null){
+			str +='<td>'+result[i].candidateLastVisitDate+'</td>';
+			}else{
+			 str +='<td>-</td>'; 	
+			}
+			if(result[i].candidateLastUpdatedStatus!=null){
+			str +='<td>'+result[i].candidateLastUpdatedStatus+'</td>';
+			}else{
+			 str +='<td>-</td>'; 	
+			}
+		 	if(result[i].totalRequestedAppCount!=null && result[i].totalRequestedAppCount >0){
+				str +='<td>'+result[i].totalRequestedAppCount+'</td>';
+			}else{
+				str +='<td>0</td>';
+			} 
+			 if(result[i].totalCompletedAppCount!=null && result[i].totalCompletedAppCount>0){
+				str +='<td>'+result[i].totalCompletedAppCount+'</td>';
+			}else{
+				str +='<td>-</td>';
+			} 
            
-			str +='<td>'+result[i].mobile+'</td>';
+			//str +='<td>'+result[i].mobile+'</td>';
             
 			str +=' </tr>';
 	}
