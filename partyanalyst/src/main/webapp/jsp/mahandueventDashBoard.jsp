@@ -599,21 +599,16 @@ $("#myonoffswitch").click(function(){
 	$("#distEventId").val(0);
 	if($('#myonoffswitch').is(":checked")){
 	$('#myonoffswitch1').prop('checked', true);
-	
 	$("#districtHeading").html("AP DISTRICT WISE");
 	$("#constiHeading").html("AP CONSTITUENCY WISE");
-	
-	getLocationWiseVisitorsCount(parentEventId,1,3);
+	getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
 	getLocationWiseVisitorsCount(parentEventId,1,4);
-	
-	
 	}else{
 	$('#myonoffswitch1').prop('checked', false);
 	$("#districtHeading").html("TS DISTRICT WISE");	
 	$("#constiHeading").html("TS CONSTITUENCY WISE");
-	getLocationWiseVisitorsCount(parentEventId,36,3);
+	getLocationWiseVisitorsCountForDistrict(parentEventId,36,3);
 	getLocationWiseVisitorsCount(parentEventId,36,4);
-
 	}
 });
 $("#myonoffswitch1").click(function(){
@@ -842,13 +837,14 @@ if(errStr.length == 0)
 $(".themeControll").removeClass("active");
 setcolorsForEvents();
 
-if($('#myonoffswitch').is(":checked")){
-getLocationWiseVisitorsCount(parentEventId,1,3);
+ if($('#myonoffswitch').is(":checked")){
+getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
 getLocationWiseVisitorsCount(parentEventId,1,4);
 }else{
-getLocationWiseVisitorsCount(parentEventId,36,3);
-getLocationWiseVisitorsCount(parentEventId,36,4);
-}
+	$('#myonoffswitch').trigger("click");
+getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
+getLocationWiseVisitorsCount(parentEventId,1,4);
+} 
 getSubEventDetails(parentEventId);
 getSubEventDetailsHourWise(parentEventId);
 getEventMemberCount(parentEventId);
@@ -885,10 +881,10 @@ ajaxProcessing();
 			 getSubEventDetailsHourWise(parentEventId);
 			 getEventMemberCount(parentEventId);
 			 if($('#myonoffswitch').is(":checked")){
-			getLocationWiseVisitorsCount(parentEventId,1,3);
+			getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
 			getLocationWiseVisitorsCount(parentEventId,1,4);
 			}else{
-			getLocationWiseVisitorsCount(parentEventId,36,3);
+			getLocationWiseVisitorsCountForDistrict(parentEventId,36,3);
 			getLocationWiseVisitorsCount(parentEventId,36,4);
 			}
          },
@@ -1650,9 +1646,37 @@ function showHide()
 			$(".slimScrollBar").css("top","127px !important");
 			showConst=true;	
 		}
-	
 }
-
+function getLocationWiseVisitorsCountForDistrict(eventId,stateId,reportLevelId)
+{
+if(reportLevelId == 3){
+	$("#distAjax").show();
+	$("#districtTableId").html("");
+	}else{
+	$("#constAjax").show();
+	$("#constiTableId").html("");
+	}
+	var jObj = {
+			eventId:eventId,			
+			stateId:stateId,
+			reportLevelId:reportLevelId,
+			subEvents : subEvents,
+			startDate : startDate,
+			endDate : endDate
+		
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getLocationWiseVisitorsCountForDistrictAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{				
+				buildDistrictTable(result,reportLevelId)	
+			}
+	});
+}
 </script>
 </body>
 </html>
