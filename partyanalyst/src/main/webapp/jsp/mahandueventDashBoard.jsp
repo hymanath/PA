@@ -111,7 +111,7 @@
                </div>
         </div>
 		<div class="col-md-1">
-			<a class="btn btn-md btn-success btn-block" onclick="insertIntermediateData();">
+			<a class="btn btn-md btn-success btn-block" onclick="callingDefaultCalls();">
 				<span class="glyphicon glyphicon-refresh"></span>
 			</a>
 		</div>
@@ -167,6 +167,15 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="row">
+	<div class="col-md-1 pull-right">
+			<a  onclick="insertIntermediateData();" class="btn btn-md btn-success btn-block">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</a>
+		</div>
+	</div>
+	
         <div class="row m_top10">
         <div class="col-md-6">
         	<!--<div class="panel panel-default panel-custom-default">
@@ -471,8 +480,8 @@ function myTimer() {
 }*/
 
  $(document).on('click','.applyBtn',function(){
-eventUpdate();
-});
+	eventUpdate();
+ });
 function checkParent(eventId,subEventId)
 {
 
@@ -598,12 +607,14 @@ function buildDistrictTable(result,reportLevelId){
 $("#myonoffswitch").click(function(){
 	$("#distEventId").val(0);
 	if($('#myonoffswitch').is(":checked")){
+		
 	$('#myonoffswitch1').prop('checked', true);
 	$("#districtHeading").html("AP DISTRICT WISE");
 	$("#constiHeading").html("AP CONSTITUENCY WISE");
 	getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
 	getLocationWiseVisitorsCount(parentEventId,1,4);
 	}else{
+		
 	$('#myonoffswitch1').prop('checked', false);
 	$("#districtHeading").html("TS DISTRICT WISE");	
 	$("#constiHeading").html("TS CONSTITUENCY WISE");
@@ -792,45 +803,40 @@ $('#donutchart').removeClass("errorDiv");
  
 });
 }
-function eventUpdate()
-{
+ function eventUpdate(){
 
-$("#errorDiv").html("");
+     $("#errorDiv").html("");
      subEvents = [];
 	 var flag = true;
 	 var errStr ='';
 	 
 	$(".maineventCls").each(function(){
     
-	if($(this).is(":checked"))
-	{
-		flag = false;
-		parentEventId = $(this).val();
-		$(".subeventCls").each(function(){
-		if($(this).is(":checked"))
-		subEvents.push($(this).val());
-		})
-	}
+		if($(this).is(":checked")){
+			flag = false;
+			parentEventId = $(this).val();
+			$(".subeventCls").each(function(){
+			if($(this).is(":checked"))
+			subEvents.push($(this).val());
+			})
+		}
+    });
 	
-	
+	var evntName = $("#eventText"+parentEventId).text();
+	var title = (evntName + ' Event').toUpperCase();
+	var url = "eventDashboardAction.action?eventId="+parentEventId+"";
+	ChangeUrl(''+title+'', ''+url+'');
 
-});
-var evntName = $("#eventText"+parentEventId).text();
-var title = (evntName + ' Event').toUpperCase();
-var url = "eventDashboardAction.action?eventId="+parentEventId+"";
-ChangeUrl(''+title+'', ''+url+'');
-
-
-$("#mainheading").html(''+title+'');
+    $("#mainheading").html(''+title+'');
 	if(subEvents.length == 0){
 		errStr +='<br/>Select atleast one event';
-
-	$("#errormsg").html(errStr);
+	    $("#errormsg").html(errStr);
 	}
 	startDate = $(".dp_startDate").val();
 	endDate = $(".dp_endDate").val();
 	getSubEvents();
-if(errStr.length == 0)
+
+	if(errStr.length == 0)
 {
 
 
@@ -838,22 +844,47 @@ $(".themeControll").removeClass("active");
 setcolorsForEvents();
 
  if($('#myonoffswitch').is(":checked")){
-getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
-getLocationWiseVisitorsCount(parentEventId,1,4);
-}else{
+	getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
+	getLocationWiseVisitorsCount(parentEventId,1,4);
+ }else{
 	$('#myonoffswitch').trigger("click");
-getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
-getLocationWiseVisitorsCount(parentEventId,1,4);
-} 
-getSubEventDetails(parentEventId);
-getSubEventDetailsHourWise(parentEventId);
-getEventMemberCount(parentEventId);
+    getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
+    getLocationWiseVisitorsCount(parentEventId,1,4);
+}
+ countDetailsCalls();
+
+
 showConst = true;
 showHide();
 //getRegistrationsCnt();
 }
 
 }
+	function locationWiseCalls(){
+		
+		if($('#myonoffswitch').is(":checked")){
+			getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
+			getLocationWiseVisitorsCount(parentEventId,1,4);
+	    }else{
+			getLocationWiseVisitorsCountForDistrict(parentEventId,36,3);
+			getLocationWiseVisitorsCount(parentEventId,36,4);
+		}
+	}
+	 
+	function countDetailsCalls(){
+		
+		getSubEventDetails(parentEventId);
+		getSubEventDetailsHourWise(parentEventId);
+		getEventMemberCount(parentEventId);
+	}
+
+    function  callingDefaultCalls(){
+		setcolorsForEvents();
+		countDetailsCalls();
+		locationWiseCalls();
+	}
+	
+	
  function ChangeUrl(title, url) {
     if (typeof (history.pushState) != "undefined") {
         var obj = { Title: title, Url: url };
@@ -862,10 +893,11 @@ showHide();
         alert("Browser does not support HTML5.");
     }
 }
+
+
 function insertIntermediateData()
 {
-
-ajaxProcessing();
+	ajaxProcessing();
 	$.ajax({
           type:'POST',
           url: 'insertDataintoEventInfoAction.action',
@@ -873,20 +905,9 @@ ajaxProcessing();
           data: {},
 
           success: function(result){ 
-			 //location.reload(); 
+			 
 			 closeDialogue();
-			 setcolorsForEvents();
-			
-			 getSubEventDetails(parentEventId);
-			 getSubEventDetailsHourWise(parentEventId);
-			 getEventMemberCount(parentEventId);
-			 if($('#myonoffswitch').is(":checked")){
-			getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
-			getLocationWiseVisitorsCount(parentEventId,1,4);
-			}else{
-			getLocationWiseVisitorsCountForDistrict(parentEventId,36,3);
-			getLocationWiseVisitorsCount(parentEventId,36,4);
-			}
+			 locationWiseCalls();
          },
           error:function() { 
 		  closeDialogue();
