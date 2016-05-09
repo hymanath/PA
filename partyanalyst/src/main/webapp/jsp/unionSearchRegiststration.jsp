@@ -77,7 +77,7 @@
                         	<!--<label class="memberCls">Search By Membership Id/Mobile No/Voter Id</label>
 							<label class="nonMemberCls" style="display:none;">Search By VoterCard Number</label>-->
 							
-                            <input type="text" id="searchBy" class="form-control onlyDigit" maxLength="8" placeholder="Search By Membership Id/Mobile No/Voter Id"/>
+                            <input type="text" id="searchBy" class="form-control onlyDigit" placeholder="Search By Membership Id/Mobile No/Voter Id"/>
 							<div id="searchErrDiv" style="color:red;"></div>
                         </div>   
 						<div class="col-md-2">

@@ -36,7 +36,8 @@ $(".searchCls").click(function(){
 		if(id.trim() == 'membershipId')
 	{
 		$("#searchBy").removeClass("txtNumeric");
-		$("#searchBy").attr("maxLength","8"); 
+		//$("#searchBy").attr("maxLength","8"); 
+		$("#searchBy").removeAttr("maxLength"); 
 		$("#searchBy").addClass("onlyDigit");  
 		initializeNumber();
 		$('#cadreSearchType').val('membershipId');
@@ -50,7 +51,7 @@ $(".searchCls").click(function(){
 		initializeTextNumber();
 		$('#cadreSearchType').val('voterId');
 	}
-	if(id.trim() == 'mobileNo')
+	if(id.trim() == 'mobileNo')   
 	{
 		$("#searchBy").removeClass("txtNumeric");
 		$("#searchBy").unbind('keydown');
@@ -89,7 +90,8 @@ $(".searchTypeCls").click(function(){
 	if(id.trim() == 'membershipId')
 	{
 		$("#searchBy").removeClass("txtNumeric");
-		$("#searchBy").attr("maxLength","8"); 
+		//$("#searchBy").attr("maxLength","8"); 
+		$("#searchBy").removeAttr("maxLength"); 
 		$("#searchBy").addClass("onlyDigit");  
 		initializeNumber();
 		$('#cadreSearchType').val('membershipId');
@@ -301,6 +303,9 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			$('#searchErrDiv').html('Please Enter Membership Card No.');
 			return;       
 		}
+		if(constituencyId==0){
+			memberShipCardNo+="-HIDE";
+		}
 	}			
 	if(searchRadioType == 'voterId')  
 	{
@@ -336,7 +341,7 @@ function getCadreDetailsBySearchCriteria(startIndex){
 		{
 			$('#searchErrDiv').html('Invalid Mobile No.');
 			return;				
-		}
+		}  
 		
 		var mobileNoLen = mobileNo.length;
 		if(mobileNoLen==12 && mobileNo.substr(0,2)=="91"){
@@ -345,11 +350,14 @@ function getCadreDetailsBySearchCriteria(startIndex){
 			$('#searchErrDiv').html('Invalid Mobile No.');
 			return;
 		}
+		if(constituencyId==0){
+			mobileNo+="-HIDE";
+		}
 	}
 	
-	$("#searchDataImg").show();  
+	$("#searchDataImg").show(); 
 	if(constituencyId==0){
-		var jsObj =
+		var jsObj =  
 		{  
 			locationLevel :2,
 			locationValue:3,
@@ -474,7 +482,7 @@ function buildCadreDetails(result,jsObj){
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
-				str+='<div>';
+				str+='<div>';  
 				
 				str+='</div>';*/
 				
@@ -540,7 +548,7 @@ function generateOTPForMobileNo(currentButton){
 			var jsObj =
 			{    
 				mobileNo : mobileNo,
-				refNo : refNo
+				refNo : refNo        
 				//prevRefNo : prevRefNo
 			}
 			//console.log(mobileNo);
