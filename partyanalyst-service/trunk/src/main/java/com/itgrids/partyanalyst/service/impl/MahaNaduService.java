@@ -1474,6 +1474,20 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				  resultList.add(vo);
 				 }
 		  }
+		  
+		  
+		  //CHECK EVENT IS MAHANDU EVENT OR NOT.
+	     boolean isMahanaduEvent = false;
+		 String parentEventName = eventDAO.getEventName(parentId);
+		 if( parentEventName != null && parentEventName.trim().length() > 0){
+			 if(parentEventName.contains("Mahanadu")){
+				 isMahanaduEvent = true;
+			 }
+		 }
+	    if( resultList != null && resultList.size() > 0){
+		  resultList.get(0).setMahanaduEvent(isMahanaduEvent);
+	    }
+		  
 		 	/*List<Object[]> attendeeInfo = eventInfoDAO.getEventDataByReportLevelId(2l,subEventIds,0l,eventStrDate,eventEndDate);
 			 if(attendeeInfo != null && attendeeInfo.size() > 0)
 			 {
