@@ -8190,10 +8190,10 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		}
 	}
 	
-	public List<VerifierVO> setOptionsForQuestion(Long SurveyquestionId)
+	public List<VerifierVO> setOptionsForQuestion(List<Object[]> list)
 	{
 		List<VerifierVO> optionsList = new ArrayList<VerifierVO>();
-		 List<Object[]> list = ivrSurveyQuestionOptionDAO.getOptionsForSurveyQuestion(SurveyquestionId);
+		
 		 if(list != null && list.size() > 0)
 		 {
 			 for(Object[] params : list)
@@ -8211,24 +8211,23 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 	public List<VerifierVO> setStaticLocationTypes(Long SurveyquestionId)
 	{
 		List<VerifierVO> list = new ArrayList<VerifierVO>();
+		 List<Object[]> list1 = ivrSurveyQuestionOptionDAO.getOptionsForSurveyQuestion(SurveyquestionId);
+		
 		VerifierVO vo = new VerifierVO();
 		vo.setName(IConstants.MANDAL);
-		vo.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		vo.setVerifierVOList(setOptionsForQuestion(list1));
 		list.add(vo);
-		/*VerifierVO vo4 = new VerifierVO();
-		vo4.setName(IConstants.LOCALELECTIONBODY);
-		vo4.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
-		list.add(vo4);*/
+		
 		VerifierVO vo1 = new VerifierVO();
 		vo1.setName(IConstants.ASSEMBLY_CONSTITUENCY_TYPE);
-		vo1.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		vo1.setVerifierVOList(setOptionsForQuestion(list1));
 		list.add(vo1);
 		VerifierVO vo2 = new VerifierVO();
 		vo2.setName(IConstants.PARLIAMENT_CONSTITUENCY_TYPE);
-		vo2.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		vo2.setVerifierVOList(setOptionsForQuestion(list1));
 		list.add(vo2);
 		VerifierVO vo3 = new VerifierVO();
-		vo3.setVerifierVOList(setOptionsForQuestion(SurveyquestionId));
+		vo3.setVerifierVOList(setOptionsForQuestion(list1));
 		vo3.setName(IConstants.DISTRICT);
 		list.add(vo3);
 		return list;
