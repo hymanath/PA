@@ -89,10 +89,10 @@ function buildAnsweredIvrSurveys(result)
 } */
  
 function getCandidateParticipatedSurveyCnt(){
-	//$("#ivrSurvysCandtCntId").html("");
+	/*$("#ivrSurvysCandtCntId").html("");
 	$('#ivrSurvysCandtCntId ul li').remove();
 	$("#ivrTypeDetailsDivId").html("");
-	$('.ivrSurveyCandtDetailsCls').html("");
+	$('.ivrSurveyCandtDetailsCls').html("");*/
 	var jsObj={
 		cadreId:globalCadreId
 	}
@@ -109,16 +109,19 @@ function buildIVRSurveyTabs(result){
 	
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top:0px;padding:0px;"><a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();" style="cursor:pointer;" >CANDIDATE PARTICIPATED SURVEYS&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
-	}else{	
+
+		$("#IvrcandiParticipatedId").html('<a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();" style="cursor:pointer;" >'+result.totalCount+'</a>');
+	//$("#ivrSurvysCandtCntId ul").append('<li style="margin-top:0px;padding:0px;"><a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();" style="cursor:pointer;" >CANDIDATE PARTICIPATED SURVEYS&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
+	}
+	/*else{	
 	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
 	}
-	$('#ivrsurveyDataLoadoing').hide();
+	$('#ivrsurveyDataLoadoing').hide();*/
 }
 function getSurveysOnCandidateCount(){
-	$('#ivrSurvysCandtCntId ul li').remove();
+	/*$('#ivrSurvysCandtCntId ul li').remove();
 	$('.ivrSurveyCandtDetailsCls').html("");
-	$("#ivrTypeDetailsDivId").html("");
+	$("#ivrTypeDetailsDivId").html("");*/
 	var jsObj={
 	//globalCandidateId
 		candidateId:globalCandidateId
@@ -136,19 +139,21 @@ function buildIVRSurveysOnCandidateCount(result){
 	
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;" >SURVEYS ON CANDIDATE&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
-	}else{	
+		$("#IvrSurveyOnCandiId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;" '+result.totalCount+'</a>');
+	//$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;" >SURVEYS ON CANDIDATE&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
+	}
+	/*else{	
 	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">SURVEYS ON CANDIDATE&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
 	}
-	$('#ivrsurveyDataLoadoing').hide();
+	$('#ivrsurveyDataLoadoing').hide();*/
 }
 
 
 function getIVRSurveysOnCandidateAreaCount(){
 
-	$('#ivrSurvysCandtCntId ul li').remove();
+	/*$('#ivrSurvysCandtCntId ul li').remove();
 	$('.ivrSurveyCandtDetailsCls').html("");
-	$("#ivrTypeDetailsDivId").html("");
+	$("#ivrTypeDetailsDivId").html("");*/
 	var districtId=0;
 	if($('#cadreDistrictId').val().length > 0)
 	 districtId = $("#cadreDistrictId").val();
@@ -166,14 +171,12 @@ function getIVRSurveysOnCandidateAreaCount(){
 			});
 }
 function buildIVRSurveysOnCandidateAreaCount(result){
-	
 	var str = '';
 	if(result != null && result.totalCount != null && result.totalCount > 0){
-	$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
-	}else{	
-	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
+	//$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
+	$("#IvrcandiAreaId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >'+result.totalCount+'</a>');
 	}
-	$('#ivrsurveyDataLoadoing').hide();
+	//$('#ivrsurveyDataLoadoing').hide();
 }
 
 function getIVRSurveysOnCandidateAreaDetails(){
