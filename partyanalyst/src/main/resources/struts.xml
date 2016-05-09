@@ -12100,5 +12100,10 @@
 			<param name="root">verifierVO</param>
 		</result>
 	</action>
+	<action name="getLocationWiseVisitorsCountForDistrictAction" class="eventDetailsAction" method="getLocationWiseVisitorsCount">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
 </package>
 </struts>      
