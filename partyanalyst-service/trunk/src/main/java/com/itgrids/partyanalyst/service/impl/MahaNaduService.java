@@ -1222,16 +1222,20 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 }
 				 else
 				 {
-					 eventInfo = eventInfoDAO.get(eventActionPlanVO.getId()); 
-					 if(type.equalsIgnoreCase("attendee"))
-						 eventInfo.setTotalAttendes((Long)params[1]);
-					 else if(type.equalsIgnoreCase("invitee"))
-					 {
-						 eventInfo.setInvitees((Long)params[1]);
-						 eventInfo.setNoninvitees(eventInfo.getTotalAttendes() - (Long)params[1]);
-					 }
-					 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
-					 eventInfoDAO.save(eventInfo);
+					 try {
+						 eventInfo = eventInfoDAO.get(eventActionPlanVO.getId()); 
+						 if(type.equalsIgnoreCase("attendee"))
+							 eventInfo.setTotalAttendes((Long)params[1]);
+						 else if(type.equalsIgnoreCase("invitee"))
+						 {
+							 eventInfo.setInvitees((Long)params[1]);
+							 eventInfo.setNoninvitees(eventInfo.getTotalAttendes() - (Long)params[1]);
+						 }
+						 eventInfo.setInsertedTime(date.getCurrentDateAndTime());
+						 eventInfoDAO.save(eventInfo);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				 }
 				 voterDAO.flushAndclearSession(); 
 			 }
