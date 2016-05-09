@@ -361,7 +361,7 @@ public class MailService implements IMailService{
 		            	quickRequestVO.setFromEmailId(IConstants.FROMEMAILID);
 		            	rs = sendMailFromServer(quickRequestVO);
 		            }
-		            text="ThankYou for your interest we will get back to you as soon as possible";
+		            text="Thank you for your interest we will get back to you as soon as possible";
 		    		subject= " Articles On Party Analyst"; 
 
 		            quickRequestVO.setText(text);
@@ -423,8 +423,8 @@ public class MailService implements IMailService{
 			  try{
 				MimeMessage message = new MimeMessage(session);
 				message.setSubject(emailDetailsVO.getSubject());
-			    message.setFrom(new InternetAddress(IConstants.FROMEMAILID));
-			    message.setHeader("Return-Path", IConstants.FROMEMAILID);
+			    message.setFrom(new InternetAddress(IConstants.LOCALFROMEMAILID));
+			    message.setHeader("Return-Path", IConstants.LOCALFROMEMAILID);
 			    message.setSentDate(dateUtilService.getCurrentDateAndTime());
 			    message.setContent(emailDetailsVO.getContent(), "text/html");
 			    message.setRecipient(Message.RecipientType.TO, new InternetAddress(emailDetailsVO.getToAddress()));
@@ -438,12 +438,14 @@ public class MailService implements IMailService{
 				}
 			    else
 			    	 Transport.send(message);
+			    resultStatus.setMessage(IConstants.SUCCESS);
+			    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			  }catch(Exception e){
 				  log.error("Exception in sending mail : ",e);
+				  resultStatus.setMessage(IConstants.FAILURE);
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			  }
 			}
-			
-			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}catch (Exception e) {
 			resultStatus.setExceptionEncountered(e);
@@ -460,7 +462,7 @@ public class MailService implements IMailService{
 			Session session = null;
 			Properties props = null;
 			
-			if(host.equalsIgnoreCase(IConstants.LOCALHOST))
+			if(host.equalsIgnoreCase(IConstants.SERVER))
 			{
 		        props = new Properties();
 		 
