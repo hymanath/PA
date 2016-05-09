@@ -683,10 +683,17 @@ function buildStartingPrograms(result){
 			  var validCount   = result[i].validCount;
 			  var invalidCount = result[i].inValidCount;
 			  
-			  str+=' <span class="pull-left">'+result[i].name+'</span>  <br/><span style="font-size:16px;"> [ Valid  - '+validCount+' ] [ Invalid  - '+invalidCount+' ]</span>';
+			  str+=' <span class="pull-left">'+result[i].name+'</span>  <br/><span style="font-size:16px;">';
+			    if(validCount != null && validCount > 0){
+					 str+='[ Valid  - <a style="cursor:pointer;color:#fff;text-decoration:none" title="Click To See Valid Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+validCount+'</a> ]';
+				}else{
+					 str+='[ Valid  - '+validCount+' ]';
+				}
+			    str+='[ Invalid  - '+invalidCount+' ]';
+			  str+='</span>';
+			  
 			  if(count >0 && result[i].id !=null){    
-			     //str+='  <span class="pull-right label-custom" style="margin-top: -15px;"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
-			     str+='  <span class="pull-right label-custom" style="margin-top: -15px;">'+count+'</span>';
+			      str+='  <span class="pull-right label-custom" style="margin-top: -15px;"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';
 			  }
 			  else{
 			     str+='  <span class="pull-right label-custom" style="margin-top: -15px;">'+count+'</span>';
@@ -712,12 +719,16 @@ function buildStartingPrograms(result){
 		dataArr.push(arr);
 		 }
 	}
-	 <c:if test="${eventId == 7}">
-	str+='<div id="registrationDiv"   style="background: rgb(0, 176, 125) none repeat scroll 0% 0%; margin-top: -5px;" >';
-		str+='<button   type="button" class="btn btn-info btn-block" onclick="showHide();" id="registrationbtn">Show Registraion Details</button>';
-		str+='<div id="RegistrationCntDiv" style="display:none;margin-top: 10px; color: rgb(255, 255, 255); padding: 10px 20px;"></div>';
-			str+='</div>';
-			</c:if>
+	  if( result != null && result.length > 0 ){
+		 var isMahanaduEvent = result[0].mahanaduEvent;
+		 if(isMahanaduEvent){
+			  str+='<div id="registrationDiv"   style="background: rgb(0, 176, 125) none repeat scroll 0% 0%; margin-top: -5px;" >';
+		       str+='<button   type="button" class="btn btn-info btn-block" onclick="showHide();" id="registrationbtn">Show Registraion Details</button>';
+		       str+='<div id="RegistrationCntDiv" style="display:none;margin-top: 10px; color: rgb(255, 255, 255); padding: 10px 20px;"></div>';
+		      str+='</div>';
+		 }
+	  } 
+	 
 	$("#overAllEventDiv").html(str);
 
 		
@@ -1623,16 +1634,17 @@ function getRegistrationsCnt()
 
 var showConst=false;
 function showHide()
-{
+{	
 		if(showConst) {
+			
 			$("#RegistrationCntDiv").hide();
 			$(".slimScrollBar").css("top","0px !important");
 			$("#registrationbtn").html('Show Registration Details'); 
 			showConst=false;
 		}
 		else {
-			$("#RegistrationCntDiv").css("display","block");
 			
+			$("#RegistrationCntDiv").css("display","block");
 			getRegistrationsCnt();
 			$("#registrationbtn").html('Hide Registration Details');
 			$(".slimScrollBar").css("top","127px !important");
