@@ -233,7 +233,7 @@ var result = resultList.verifierVOList;
 					
 					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
 						str+='<div class="panel-body">';
-						str+='<div>';
+						
 				for(var j in result[i].verifierVOList)
 					{
 
@@ -248,18 +248,18 @@ var result = resultList.verifierVOList;
 								str+='<table class="table table-bordered">';
 
 								str+='<thead>';
-													str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
-														str+=' Location ';
-													str+='</th>';
+								str+='<th style="text-align:center;background-color:lightgrey;width:60px;">';
+									str+=' Location ';
+								str+='</th>';
 
-										for(var  l in result[i].verifierVOList[j].verifierVOList[k].verifierVOList[0].verifierVOList)
-													{	
-														str+='<th style="background-color:lightgrey;">';
-														str+=''+result[i].verifierVOList[j].verifierVOList[k].verifierVOList[0].verifierVOList[l].name+'';
-														str+='</th>';
-													}
-													str+='</thead>';
-												str+='<tbody>';
+					for(var  l in result[i].verifierVOList[j].verifierVOList[k].verifierVOList[0].verifierVOList)
+								{	
+									str+='<th style="background-color:lightgrey;">';
+									str+=''+result[i].verifierVOList[j].verifierVOList[k].verifierVOList[0].verifierVOList[l].name+'';
+									str+='</th>';
+								}
+								str+='</thead>';
+							   str+='<tbody>';
 							for(var l in result[i].verifierVOList[j].verifierVOList[k].verifierVOList){
 										str+='<tr>';
 											str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].verifierVOList[l].name+'</td>';
@@ -271,16 +271,15 @@ var result = resultList.verifierVOList;
 							}
 								str+='</tbody>';
 								str+='</table>';
+								str+='</div>';
 							}
 					}
 
 
-						str+='</div>';
+						
 						str+='</div>';
 					 str+='</div>';
 					str+='</div>';
-				  str+='</div>';
-			
 			}
 			str+='</div>';
 			$('.ivrSurveyCandtDetailsCls').html(str);
