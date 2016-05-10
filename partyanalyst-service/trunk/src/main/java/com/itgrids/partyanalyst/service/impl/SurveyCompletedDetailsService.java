@@ -1923,7 +1923,8 @@ public class SurveyCompletedDetailsService implements
 			for(Object[] obj:casteDetails)
 			{
 				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
-				booth.getDcDetails().setCasteCount((Long)obj[0]);
+				if(booth != null)
+				booth.getDcDetails().setCasteCount(obj[0] != null ? (Long)obj[0] : 0l);
 			}
 			
 			hamletDetails = surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(constituencyId, IConstants.DATA_COLLECTOR_ROLE_ID, "hamlet");
@@ -1931,7 +1932,8 @@ public class SurveyCompletedDetailsService implements
 			for(Object[] obj:hamletDetails)
 			{
 				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
-				booth.getDcDetails().setHamletCount((Long)obj[0]);
+				if(booth != null)
+				booth.getDcDetails().setHamletCount(obj[0] != null ? (Long)obj[0] : 0l);
 			}
 			
 			mobileDetails = surveyDetailsInfoDAO.getBoothWiseCollectedDetailsForConstituencyByUserTypeAndCollectedType(constituencyId, IConstants.DATA_COLLECTOR_ROLE_ID, "mobileNumber");
@@ -1939,7 +1941,8 @@ public class SurveyCompletedDetailsService implements
 			for(Object[] obj:mobileDetails)
 			{
 				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
-				booth.getDcDetails().setMobileNUmbersCount((Long)obj[0]);
+				if(booth != null)
+				booth.getDcDetails().setMobileNUmbersCount(obj[0] != null ? (Long)obj[0] : 0l);
 			}
 			
 			
@@ -1948,7 +1951,8 @@ public class SurveyCompletedDetailsService implements
 			for(Object[] obj:wardDetails)
 			{
 				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
-				booth.getDcDetails().setWardCount((Long)obj[0]);
+				if(booth != null)
+				booth.getDcDetails().setWardCount(obj[0] != null ? (Long)obj[0] : 0l);
 			}
 			
 			
@@ -1959,7 +1963,8 @@ public class SurveyCompletedDetailsService implements
 			{
 				for (Object[] obj : newlyCasteList) {
 					SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
-					booth.getWmDcDetails().setNewlyCollectedCount((Long)obj[0]);
+					if(booth != null)
+					booth.getWmDcDetails().setNewlyCollectedCount(obj[0] != null ? (Long)obj[0] : 0l);
 				}
 				
 			}
@@ -1973,7 +1978,8 @@ public class SurveyCompletedDetailsService implements
 				
 				/*if(obj[2] == null)
 					booth.getWmDcDetails().setNewlyCollectedCount((Long)obj[0]);*/
-				if(obj[2] != null)
+				
+				if(obj[2] != null && booth!= null)
 				{
 					if(obj[2].toString().equalsIgnoreCase("Y"))
 						booth.getWmDcDetails().setCasteMatchedCount((Long)obj[0]);
@@ -1991,7 +1997,7 @@ public class SurveyCompletedDetailsService implements
 			{
 				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
 				
-				if(obj[2] != null)
+				if(obj[2] != null && booth != null)
 				{
 					 if(obj[2].toString().equalsIgnoreCase("Y"))
 						booth.getWmDcDetails().setMobileMatchedCount((Long)obj[0]);
@@ -2027,7 +2033,7 @@ public class SurveyCompletedDetailsService implements
 			for(Object[] obj:casteDetails)
 			{
 				SurveyReportVO booth = getMatchedBoothVO(resultList,(Long)obj[1]);
-				if(obj[2] != null)
+				if(obj[2] != null && booth != null)
 				{
 					 if(obj[2].toString().equalsIgnoreCase("Y"))
 						booth.getWmDvDetails().setCasteMatchedCount((Long)obj[0]);
