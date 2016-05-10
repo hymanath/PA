@@ -234,7 +234,7 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 	
 	public List<String> getCompletedStatusBycomplaintId(Long complaintId){
 	
-		Query query = getSession().createQuery("select model.Completed_Status" +
+		Query query = getSession().createSQLQuery("select model.Completed_Status" +
 									" from complaint_master model" +
 									" where (model.delete_status !='0' or model.delete_status is null)" +
 									" and model.Subject !='' and model.Complaint_id=:complaintId");
@@ -246,7 +246,7 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 	
 	public List<String> getStatusBycomplaintIdForInsurance(Long complaintId){
 		
-		Query query = getSession().createQuery("select model1.status" +
+		Query query = getSession().createSQLQuery("select model1.status" +
 									" from complaint_master model,grievance_insurance_status model1" +
 									" where model.grievance_insurance_status_id = model1.grievance_insurance_status_id" +
 									" and (model.delete_status !='0' or model.delete_status is null)" +
