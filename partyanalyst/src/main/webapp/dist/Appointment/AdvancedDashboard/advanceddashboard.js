@@ -811,7 +811,7 @@ function buildAppointmentMembersData(result)
 			$("#appointmentMembersDiv").html(str);
 	}
 
-function buildTtlAppntmntSttsFrAdncDshBrd(result){
+/* function buildTtlAppntmntSttsFrAdncDshBrd(result){
 	var str='';
 	var totalAppts =0;
 	$.each(result.statusList,function(index,value){
@@ -858,5 +858,5 @@ function buildTtlAppntmntSttsFrAdncDshBrd(result){
 		}
 	});
 	$("#todayApptsForAdvancedDashBrd").html(str);
-}	
+} */	
 	
