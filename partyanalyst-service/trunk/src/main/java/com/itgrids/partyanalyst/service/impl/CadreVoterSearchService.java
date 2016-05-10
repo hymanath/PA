@@ -34,8 +34,8 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsOtpDetails;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
@@ -1005,57 +1005,70 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		VoterDetailsVO voterDetailsvo = new VoterDetailsVO();
 		
 		try {
+			VoterDetailsVO vo=null;
 			List<VoterDetailsVO> voterDetailsList = new ArrayList<VoterDetailsVO>();
 			Map<String,String> voterCheckMap = new LinkedHashMap<String, String>();
-			
+			List<Object[]> list =  null;
 			List<Object[]> list1 = tdpCadreDAO.checkVoterCardNumberRegistration(voterIDCardNo);
+			Long tdpCadreId = 0L;
+			String registeredVoter = "";
 			if(list1 != null && list1.size() > 0){
 				for (Object[] obj : list1) {
-					String registeredVoter = obj[0] != null ? obj[0].toString():"";
+					registeredVoter = obj[0] != null ? obj[0].toString():"";
 					String paymentStatus = commonMethodsUtilService.getStringValueForObject(obj[2]);
 					if(paymentStatus != null && paymentStatus.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS))
 						voterCheckMap.put(registeredVoter, "Payment is Pending");
 					else
 						voterCheckMap.put(registeredVoter, "Already Registered");
+					tdpCadreId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+					break;
 				}
+				
+				list = tdpCadreDAO.getRegisteredMemberDetails(tdpCadreId);
 			}
+			else
+				list = boothPublicationVoterDAO.getVoterDetailsByVoterCardNumber(voterIDCardNo,constId);
+				
 			
-			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsByVoterCardNumber(voterIDCardNo,constId);
-			if(list != null && list.size() > 0){
-				for (Object[] obj : list) {
-					VoterDetailsVO vo = new VoterDetailsVO();
-					
-					vo.setVoterId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setVoterName(obj[1] != null ? obj[1].toString():"");
-					vo.setRelativeName(obj[2] != null ? obj[2].toString():"");
-					String voterCardNo = obj[3] != null ? obj[3].toString():"";
-					vo.setVoterIDCardNo(voterCardNo);
-					String check = voterCheckMap.get(voterCardNo);
-					if(check != null && check.contains("Payment")){
-						vo.setPaymentStatus("PAY NOW");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						vo = new VoterDetailsVO();
+						
+						vo.setVoterId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo.setVoterName(obj[1] != null ? obj[1].toString():"");
+						vo.setRelativeName(obj[2] != null ? obj[2].toString():"");
+						String voterCardNo = obj[3] != null ? obj[3].toString():"";
+						vo.setVoterIDCardNo(voterCardNo);
+						String check = voterCheckMap.get(voterCardNo);
+						if(check != null && check.contains("Payment")){
+							vo.setPaymentStatus("PAY NOW");
+						}
+						if(check != null){
+							vo.setAlreadyRegistered(check);
+						}
+						vo.setGender(obj[4] != null ? obj[4].toString():"");
+						vo.setAge(obj[5] != null ? obj[5].toString():"");
+						vo.setDateOfBirth(obj[6] != null ? obj[6].toString():"");
+						vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
+						vo.setHouseNo(obj[8] != null ? obj[8].toString():""); //model.address.houseNo
+						vo.setBoothId(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));//model.address.booth.boothId
+						vo.setPartNo(obj[10] != null ? obj[10].toString():"");//model.address.booth.partNo
+						vo.setDistrictId(Long.valueOf(obj[11] != null ? obj[11].toString():"0"));//model.address.district.distractid
+						vo.setDistrictName(obj[12] != null ? obj[12].toString():"");
+						vo.setConstituencyId(Long.valueOf(obj[13] != null ? obj[13].toString():"0"));
+						vo.setConstituencyName(obj[14] != null ? obj[14].toString():"");
+						vo.setTehsilId(Long.valueOf(obj[15] != null ? obj[15].toString():"0"));
+						vo.setTehsil(obj[16] != null ? obj[16].toString():"");
+						vo.setLocalElectionBodyId(Long.valueOf(obj[17] != null ? obj[17].toString():"0"));
+						vo.setLeb(obj[18] != null ? obj[18].toString():"");
+						if(obj.length>19)
+							vo.setImage(obj[19] != null ? obj[18].toString():"");
+						voterDetailsList.add(vo);
 					}
-					if(check != null){
-						vo.setAlreadyRegistered(check);
-					}
-					vo.setGender(obj[4] != null ? obj[4].toString():"");
-					vo.setAge(obj[5] != null ? obj[5].toString():"");
-					vo.setDateOfBirth(obj[6] != null ? obj[6].toString():"");
-					vo.setMobileNo(obj[7] != null ? obj[7].toString():"");
-					vo.setHouseNo(obj[8] != null ? obj[8].toString():"");
-					vo.setBoothId(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
-					vo.setPartNo(obj[10] != null ? obj[10].toString():"");
-					vo.setDistrictId(Long.valueOf(obj[11] != null ? obj[11].toString():"0"));
-					vo.setDistrictName(obj[12] != null ? obj[12].toString():"");
-					vo.setConstituencyId(Long.valueOf(obj[13] != null ? obj[13].toString():"0"));
-					vo.setConstituencyName(obj[14] != null ? obj[14].toString():"");
-					vo.setTehsilId(Long.valueOf(obj[15] != null ? obj[15].toString():"0"));
-					vo.setTehsil(obj[16] != null ? obj[16].toString():"");
-					vo.setLocalElectionBodyId(Long.valueOf(obj[17] != null ? obj[17].toString():"0"));
-					vo.setLeb(obj[18] != null ? obj[18].toString():"");
-					
-					voterDetailsList.add(vo);
 				}
-			}
+			
+			
+			
 			
 			voterDetailsvo.setSubList(voterDetailsList);
 			
