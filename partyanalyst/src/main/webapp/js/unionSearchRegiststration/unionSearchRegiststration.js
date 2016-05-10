@@ -194,9 +194,9 @@ function buildVoterDetails(result){
 	if(result != null){
 		for(var i in result){
 			str+='<div class="media " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border:1px solid #ddd;padding:8px;background:#f8f8f8">';
-			if(result[i].alreadyRegistered=="Already Registered"){
+			if(result[i].alreadyRegistered=="Already Registered" || result[i].alreadyRegistered == "Payment is Pending"){
 					str+='<span href="#" class="media-left">';
-					str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/result[i].image" />';
+					str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].image+'" />';
 					str+='</span>';
 				}
 				str+='<div class="media-body">';
