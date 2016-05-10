@@ -17,6 +17,7 @@ public class TdpCommitteeLevel {
 	private Long tdpCommitteeLevelId;
 	private String tdpCommitteeLevel;
 	private Long orderNo;
+	private Long appointmentOrder;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,6 +46,14 @@ public class TdpCommitteeLevel {
 
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+    @Column(name = "appointment_order")
+	public Long getAppointmentOrder() {
+		return appointmentOrder;
+	}
+
+	public void setAppointmentOrder(Long appointmentOrder) {
+		this.appointmentOrder = appointmentOrder;
 	}
 	
 }

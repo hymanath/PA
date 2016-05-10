@@ -533,7 +533,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		if(aptUserId !=null)
 			str.append( " and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
 		str.append(" group by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId " +
-				" order by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.orderNo ");
+				" order by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.appointmentOrder");
 		
 		 Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
