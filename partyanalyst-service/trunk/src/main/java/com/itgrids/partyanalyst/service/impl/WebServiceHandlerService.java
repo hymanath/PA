@@ -2304,13 +2304,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 	String memberShipNumber = "AP14"+inputVo.getMemberShipNo();
 			String memberShipNumber1 = "TS14"+inputVo.getMemberShipNo();
+			
 		 	StringBuilder queryStr = new StringBuilder();
-		 	if(inputVo.getMemberShipNo() != null && !inputVo.getMemberShipNo().isEmpty())
-		 	queryStr.append(" (model.memberShipNo ='"+inputVo.getMemberShipNo().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
-		 	else
+		 	if(inputVo.getMemberShipNo() != null && !inputVo.getMemberShipNo().isEmpty()){
+		 		queryStr.append(" (model.memberShipNo ='"+inputVo.getMemberShipNo().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+		 	}
+		 	/*else
 		 	{
 		 		queryStr.append(" model.cardNumber = '"+inputVo.getRFID()+"' ");
-		 	}
+		 	}*/
+		 	
 		 	EventAttendee eventAttendee = new EventAttendee();
 		 	List cadreList= tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
 		 	if(cadreList != null && cadreList.size() > 0)

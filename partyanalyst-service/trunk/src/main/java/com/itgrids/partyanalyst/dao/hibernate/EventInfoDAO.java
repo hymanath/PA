@@ -48,7 +48,7 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 			str.append(",Constituency model2 " );
 		
 		str.append(" where model.reportLevelId = :reportLevelId " +
-				" and model.event.parentEventId = :eventId and model.event.eventId in(:subeventIds)");
+				" and model.event.parentEventId = :eventId and model.event.eventId in(:subeventIds) and model.event.isVisible = 'Y' ");
 		
 		if(stateId == 1l && reportLevelId == 3)
 		str.append(" and model.locationValue between 11 and 23 ");
