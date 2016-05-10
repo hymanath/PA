@@ -7,4 +7,5 @@ import com.itgrids.paymentgateway.dto.PamentGatewayVO;
 public interface IPaymentGatewayService {
 	public List<Object[]> getAllPaymentMethodIds();
 	public PamentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId);
+	public Long addPaymentMethod(String method);
 }
