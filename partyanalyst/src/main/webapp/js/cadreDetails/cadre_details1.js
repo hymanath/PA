@@ -155,10 +155,16 @@ function getIVRSurveysOnCandidateAreaCount(){
 	$('.ivrSurveyCandtDetailsCls').html("");
 	$("#ivrTypeDetailsDivId").html("");*/
 	var districtId=0;
-	if($('#cadreDistrictId').val().length > 0)
+
+	if($('#cadreParticipatedDistrictId').val().length > 0)
+		 districtId = $("#cadreParticipatedDistrictId").val();
+	else 
+	{
+		if($('#cadreDistrictId').val().length > 0)
 	 districtId = $("#cadreDistrictId").val();
+	}
+		
 	var jsObj={
-	
 		districtId:districtId
 	}
 	$('#ivrsurveyDataLoadoing').show();
@@ -190,14 +196,28 @@ function getIVRSurveysOnCandidateAreaDetails(){
 	var constituencyId=0;
 	var districtId=0;
 	var parliamentId=0;
-	if($('#cadreBoothId').val().length > 0)
-	 boothId = $("#cadreBoothId").val();
-	if($('#cadreConstituencyId').val().length > 0)
-	 constituencyId = $("#cadreConstituencyId").val();
-	if($('#cadreDistrictId').val().length > 0)
-	 districtId = $("#cadreDistrictId").val();
-	if($('#cadrePConstituencyId').val().length > 0)
-	 parliamentId = $('#cadrePConstituencyId').val();
+	if($('#cadreParticipatedDistrictId').val().length > 0)
+	 {
+		if($('#cadreParticipatedDistrictId').val().length > 0)
+		 districtId = $("#cadreParticipatedDistrictId").val();
+	 	if($('#cadreParticipatedConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreParticipatedConstituencyId").val();
+	 	if($('#cadreParticipatedPConstituencyId').val().length > 0)
+		 parliamentId = $('#cadreParticipatedPConstituencyId').val();
+		 boothId =0;
+	}
+	else 
+	{
+		if($('#cadreDistrictId').val().length > 0)
+		districtId = $("#cadreDistrictId").val();
+		if($('#cadrePConstituencyId').val().length > 0)
+		parliamentId = $('#cadrePConstituencyId').val();
+		 if($('#cadreBoothId').val().length > 0)
+		 boothId = $("#cadreBoothId").val();
+		if($('#cadreConstituencyId').val().length > 0)
+		 constituencyId = $("#cadreConstituencyId").val();
+	}
+	
 	var jsObj={
 			districtId:districtId,
 			constiId:constituencyId,
