@@ -4604,8 +4604,8 @@ function getTypeWiseIvrDetailsOFCadre(){
 					str+='<table class="table table-bordered text-center">';
 						str+='<tr>';
 							str+='<td colspan="2">';
-							if(totalCount != 0){
-								str+='<h3 class="m_0"><span class="ivrAnsweredCls" attr_event_name="'+result[i].name+'" attr_searchType="total" style="cursor:pointer;" attr_event_type_id='+result[i].id+'>'+totalCount+'</span></h3>';
+							if(result[i].count != 0){
+								str+='<h3 class="m_0"><span class="ivrAnsweredCls" attr_event_name="'+result[i].name+'" attr_searchType="total" style="cursor:pointer;" attr_event_type_id='+result[i].id+'>'+result[i].count+'</span></h3>';
 							}else{
 								str+='<h3 class="m_0">0</h3>';
 							}
