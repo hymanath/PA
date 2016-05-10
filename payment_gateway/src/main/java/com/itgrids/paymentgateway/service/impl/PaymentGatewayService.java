@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.paymentgateway.dao.IPaymentMethodDAO;
 import com.itgrids.paymentgateway.dto.PamentGatewayVO;
+import com.itgrids.paymentgateway.model.PaymentMethod;
 import com.itgrids.paymentgateway.service.IPaymentGatewayService;
 import com.itgrids.paymentgateway.utils.IConstants;
 import com.itgrids.paymentgateway.utils.MD5Algoritm;
@@ -65,5 +66,19 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 			LOG.error(e);
 		}
 		return null;
+	}
+	
+	public Long addPaymentMethod(String method)
+	{
+		try{
+			PaymentMethod paymentMethod = new PaymentMethod();
+			paymentMethod.setMethod(method);
+			paymentMethod = paymentMethodDAO.save(paymentMethod);
+			return paymentMethod.getPaymentMethodId();
+		}catch(Exception e)
+		{
+			LOG.error(e);
+			return null;
+		}
 	}
 }
