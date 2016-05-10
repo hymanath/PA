@@ -1880,7 +1880,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				List<MahanaduEventVO> returnList = new ArrayList<MahanaduEventVO>();
 				try{
 					List<Long> parentIds = new ArrayList<Long>();
-					List<Object[]> parentEvent = eventDAO.getParentEvents(date.getCurrentDateAndTime());
+					List<Object[]> parentEvent = eventDAO.getVisibleParentEvents(date.getCurrentDateAndTime());
 					if(parentEvent != null && parentEvent.size() > 0)
 					{
 						
@@ -1892,7 +1892,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 							returnList.add(eventVo);
 							parentIds.add((Long)params[0]);
 						}
-						List<Object[]> events = eventDAO.getEventsByUserAndParentIds(date.getCurrentDateAndTime(),parentIds);
+						List<Object[]> events = eventDAO.getVisibleEventsByUserAndParentIds(date.getCurrentDateAndTime(),parentIds);
 						if(events != null && events.size() > 0)
 						{
 							for(Object[] params : events)
@@ -1926,7 +1926,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		
 	List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();
 	try{
-		List<Object[]> list = eventDAO.getSubEventsByParentEvent(eventId);
+		List<Object[]> list = eventDAO.getVisibleSubEventsByParentEvent(eventId);
 		if(list != null && list.size() > 0){
 			  for(Object[] params : list){
 				  MahanaduEventVO vo = new MahanaduEventVO();
