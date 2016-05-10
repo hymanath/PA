@@ -93,6 +93,8 @@ function getCandidateParticipatedSurveyCnt(){
 	$('#ivrSurvysCandtCntId ul li').remove();
 	$("#ivrTypeDetailsDivId").html("");
 	$('.ivrSurveyCandtDetailsCls').html("");*/
+	
+	$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
 		cadreId:globalCadreId
 	}
@@ -113,15 +115,17 @@ function buildIVRSurveyTabs(result){
 		$("#IvrcandiParticipatedId").html('<a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();" style="cursor:pointer;" >'+result.totalCount+'</a>');
 	//$("#ivrSurvysCandtCntId ul").append('<li style="margin-top:0px;padding:0px;"><a class="text-bold" onclick="getTypeWiseIvrDetailsOFCadre();" style="cursor:pointer;" >CANDIDATE PARTICIPATED SURVEYS&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
 	}
-	/*else{	
-	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
+	else{	
+	/*$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">CANDIDATE PARTICIPATED SURVEYS&nbsp;&nbsp;&nbsp;&nbsp;0</li>');*/
+	$("#IvrcandiParticipatedId").html('0');
 	}
-	$('#ivrsurveyDataLoadoing').hide();*/
+	//$('#ivrsurveyDataLoadoing').hide();
 }
 function getSurveysOnCandidateCount(){
 	/*$('#ivrSurvysCandtCntId ul li').remove();
 	$('.ivrSurveyCandtDetailsCls').html("");
 	$("#ivrTypeDetailsDivId").html("");*/
+	$("#IvrSurveyOnCandiId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
 	//globalCandidateId
 		candidateId:globalCandidateId
@@ -132,6 +136,7 @@ function getSurveysOnCandidateCount(){
 			 url: 'getSurveysOnCandidateCountAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				
 				buildIVRSurveysOnCandidateCount(result);
 			});
 }
@@ -142,10 +147,11 @@ function buildIVRSurveysOnCandidateCount(result){
 		$("#IvrSurveyOnCandiId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;" '+result.totalCount+'</a>');
 	//$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateDetails();" style="cursor:pointer;" >SURVEYS ON CANDIDATE&nbsp&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
 	}
-	/*else{	
-	$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">SURVEYS ON CANDIDATE&nbsp;&nbsp;&nbsp;&nbsp;0</li>');
+	else{	
+	/*$("#ivrSurvysCandtCntId ul").append('<li style="padding:10px 15px;">SURVEYS ON CANDIDATE&nbsp;&nbsp;&nbsp;&nbsp;0</li>');*/
+	$("#IvrSurveyOnCandiId").html('0');
 	}
-	$('#ivrsurveyDataLoadoing').hide();*/
+	//$('#ivrsurveyDataLoadoing').hide();
 }
 
 
@@ -154,6 +160,7 @@ function getIVRSurveysOnCandidateAreaCount(){
 	/*$('#ivrSurvysCandtCntId ul li').remove();
 	$('.ivrSurveyCandtDetailsCls').html("");
 	$("#ivrTypeDetailsDivId").html("");*/
+		$("#IvrcandiAreaId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var districtId=0;
 
 	if($('#cadreParticipatedDistrictId').val().length > 0)
@@ -173,6 +180,7 @@ function getIVRSurveysOnCandidateAreaCount(){
 			 url: 'getIVRSurveysOnCandidateAreaCountAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				
 				buildIVRSurveysOnCandidateAreaCount(result);
 			});
 }
@@ -184,7 +192,9 @@ function buildIVRSurveysOnCandidateAreaCount(result){
 	//$("#ivrSurvysCandtCntId ul").append('<li style="margin-top: 0px;padding:0px; left: 10px;" class="active li_arr"><a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >SURVEYS IN CANDIDATE AREA&nbsp;&nbsp;&nbsp;&nbsp;'+result.totalCount+'</a></li>');
 	$("#IvrcandiAreaId").html('<a class="text-bold" onclick="getIVRSurveysOnCandidateAreaDetails();" style="cursor:pointer;" >'+result.totalCount+'</a>');
 	}
-	$('#ivrsurveyDataLoadoing').hide();
+	else
+		$("#IvrSurveyOnCandiId").html('0');
+	//$('#ivrsurveyDataLoadoing').hide();
 }
 
 function getIVRSurveysOnCandidateAreaDetails(){
