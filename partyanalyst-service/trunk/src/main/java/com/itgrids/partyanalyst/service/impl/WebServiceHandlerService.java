@@ -2315,140 +2315,64 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	}*/
 		 	
 		 	EventAttendee eventAttendee = new EventAttendee();
-		 	List cadreList= tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
-		 	if(cadreList != null && cadreList.size() > 0)
-		 	{
-		 	eventAttendee.setTdpCadreId((Long)cadreList.get(0));
-		 	eventAttendee.setImei(inputVo.getIMEI());
-		 	if(inputVo.getRFID() != null) 
-		 	eventAttendee.setRfid(inputVo.getRFID());
 		 	
-		 	eventAttendee.setInsertedBy(inputVo.getId());
-		 	eventAttendee.setEventId(inputVo.getEventId());
-		 	eventAttendee.setAttendedTime(formatter.parse(inputVo.getLoginTimeStamp().toString()));
-		 	eventAttendee.setInsertedTime(date.getCurrentDateAndTime());
+		 	String queryString = queryStr.toString();
 		 	
-		 	if(inputVo.getStatus() != null)
-		 	eventAttendee.setUniqueKey(inputVo.getStatus());
-		 	
-		 	
-		 	eventAttendee.setLatitude(inputVo.getLatituede());
-		 	eventAttendee.setLongitude(inputVo.getLongitude());
-		 	eventAttendee.setTabUserId(inputVo.getId());
-		 	eventAttendee.setCurrentTabUserId(inputVo.getUserId());
-		 	eventAttendee.setSyncSource(inputVo.getSyncSource() != null ? inputVo.getSyncSource() : "WS");
-		 	
-		 	/*
-		 	Event event = eventDAO.get(eventAttendee.getEventId());		 	
-		 	if(event != null)
-		 	{
-		 		Date currentDate = eventAttendee.getInsertedTime();
-		 		Date attendeeDate = eventAttendee.getAttendedTime();
+		 	if( queryString != null && queryString.trim().length() > 0){
 		 		
-		 		if(attendeeDate.after(currentDate))
-			 	{
-			 		eventAttendee.setUnModifiedAttendeeTime(attendeeDate);
-
-			 		String startTime1 = event.getStartTime();;
-			    	String endTime1 = event.getEndTime();
-			    	 
-			    	 String[] time1Arr = startTime1.split(":");
-			    			  
-			    	 String hour1 = time1Arr[0];
-			    	 String minut1 = time1Arr[1];
-			    	 
-			    	 String[] time2Arr = endTime1.split(":");
-					  
-			    	 String hour2 = time2Arr[0];
-			    	 String minut2 = time2Arr[1];
-			    	 
-			    	 String startTime = "";
-			    	 String endTime ="";
-			    	 
-			    	 if(Integer.valueOf(hour1) >=0 && Integer.valueOf(hour1)<12)
-			    	 {
-			    		 startTime = hour1+":"+minut1+"AM";
-			    	 }
-			    	 else
-			    	 {
-			    		 hour1 = String.valueOf(Integer.valueOf(hour1)-12);
-			    		 if(Integer.valueOf(hour1) == 0)
-			    		 {
-			    			 startTime="12:"+minut1+"AM";
-			    		 }
-			    		 else
-			    		 {
-			    			 hour1 = String.valueOf(Integer.valueOf(hour1)+12);
-			    			 startTime = hour1+":"+minut1+"PM";// 24 hours format
-			    		 }
-			    	 }
-			    	
-			    	 if(Integer.valueOf(hour2) >=0 && Integer.valueOf(hour2)<12)
-			    	 {
-			    		 endTime = hour2+":"+minut2+"AM";
-			    	 }
-			    	 else
-			    	 {
-			    		 hour2 = String.valueOf(Integer.valueOf(hour2)-12);
-			    		 if(Integer.valueOf(hour2) == 0)
-			    		 {
-			    			 endTime="12:"+minut2+"AM";
-			    		 }
-			    		 else
-			    		 {
-			    			 hour2 = String.valueOf(Integer.valueOf(hour2)+12);
-			    			 endTime = hour2+":"+minut2+"PM";// 24 hours format
-			    		 }
-			    	 }
-			    	 
-			    	 String avarageTime = "";
-			    	 try {
-			    		 	SimpleDateFormat sdf = new SimpleDateFormat("HH:mma");
-			 		    	Date date1=sdf.parse(startTime);
-			 		    	Date date2=sdf.parse(endTime);
-			 		    	long date1InMilSec=date1.getTime();
-			 		    	long date2InMilSec=date2.getTime();
-			 		    	//System.out.println("Average "+sdf.format((date1InMilSec+date2InMilSec)/2));
-			 		    	avarageTime = sdf.format((date1InMilSec+date2InMilSec)/2);
-					} catch (Exception e) {}  
-			    	 
-			    	 
-			    	 ;
-			    	 String[] avrgTimeArr = avarageTime.split(":");		    	
-			    	 
-					 Calendar cal = Calendar.getInstance();
-					 cal.set(Calendar.DAY_OF_MONTH, attendeeDate.getDay());
-					 cal.set(Calendar.MONTH,attendeeDate.getMonth());
-					 cal.set(Calendar.YEAR,attendeeDate.getYear());
-			    	 cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(avrgTimeArr[0])); // Your hour
-			    	 cal.set(Calendar.MINUTE, Integer.valueOf(avrgTimeArr[1])); // Your Mintue
-			    	 cal.set(Calendar.SECOND, 00); // Your second
-			    	 
-			    	 eventAttendee.setAttendedTime(cal.getTime());
+		 	 	List cadreList= tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
+			 	
+			 	if(cadreList != null && cadreList.size() > 0){
+			 		
+				 	eventAttendee.setTdpCadreId((Long)cadreList.get(0));
+				 	eventAttendee.setImei(inputVo.getIMEI());
+				 	if(inputVo.getRFID() != null) 
+				 	eventAttendee.setRfid(inputVo.getRFID());
+				 	
+				 	eventAttendee.setInsertedBy(inputVo.getId());
+				 	eventAttendee.setEventId(inputVo.getEventId());
+				 	eventAttendee.setAttendedTime(formatter.parse(inputVo.getLoginTimeStamp().toString()));
+				 	eventAttendee.setInsertedTime(date.getCurrentDateAndTime());
+				 	
+				 	if(inputVo.getStatus() != null)
+				 	eventAttendee.setUniqueKey(inputVo.getStatus());
+				 	
+				 	
+				 	eventAttendee.setLatitude(inputVo.getLatituede());
+				 	eventAttendee.setLongitude(inputVo.getLongitude());
+				 	eventAttendee.setTabUserId(inputVo.getId());
+				 	eventAttendee.setCurrentTabUserId(inputVo.getUserId());
+				 	eventAttendee.setSyncSource(inputVo.getSyncSource() != null ? inputVo.getSyncSource() : "WS");
+				 	
+				
+				 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
+				 	voterDAO.flushAndclearSession();
+				 	returnVo.setId(eventAttendee.getEventAttendeeId());
+				 	returnVo.setStatus("success");
+				 	returnVo.setUserId(inputVo.getId());
+				 
+				 	returnVo.setTabPrimaryKey(inputVo.getTabPrimaryKey());
+				 	if(cadreList != null){
+				 		returnVo.setMemberShipNo(cadreList.get(0).toString());
+				 	}
+			 		
+			 	}else{
+			 		
+			 		errorDesc = "Invalid Membership";
+			 		returnVo.setErrorDesc(errorDesc);
+			 		setEventErrorData(inputVo,errorDesc);
+			 		returnVo.setStatus("fail");	
+			 		
 			 	}
 		 	}
+		 	else{
 		 	
-		 	*/
-		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
-		 	voterDAO.flushAndclearSession();
-		 	returnVo.setId(eventAttendee.getEventAttendeeId());
-		 	returnVo.setStatus("success");
-		 	returnVo.setUserId(inputVo.getId());
-		 
-		 	returnVo.setTabPrimaryKey(inputVo.getTabPrimaryKey());
-		 	if(cadreList != null)
-		 		returnVo.setMemberShipNo(cadreList.get(0).toString());
-		 	}
-		 	else
-		 	{
 		 		errorDesc = "Invalid Membership";
 		 		returnVo.setErrorDesc(errorDesc);
 		 		setEventErrorData(inputVo,errorDesc);
-		 		
 		 		returnVo.setStatus("fail");	
 		 	}
-		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-		 	resultStatus.setMessage("success");*/
+		 	
 		 }
 		 catch(Exception e)
 		 {
