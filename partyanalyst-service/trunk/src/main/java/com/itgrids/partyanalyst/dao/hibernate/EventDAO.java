@@ -107,4 +107,12 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		return query.list();
 	}
 	
+	public Object[] getEventDates(Long eventId){
+		
+		Query query = getSession().createQuery(" select date(model.eventStartTime),date(model.eventEndDate) from Event model" +
+				" where model.eventId =:eventId ");		
+		query.setParameter("eventId", eventId);
+		
+		return (Object[])query.uniqueResult();		
+	}	
 }

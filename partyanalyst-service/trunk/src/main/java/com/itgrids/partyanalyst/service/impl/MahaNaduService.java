@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -2976,6 +2977,69 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return returnVO;
 	}
+	
+	public List<MahanaduEventVO> getAttendeeSummaryForEventsList(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds){		
+		List<MahanaduEventVO> returnList = new ArrayList<MahanaduEventVO>();		
+		try{
+			
+			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");			
+			Date fromDate = null;
+			Date toDate	  = null;
+			
+			String startDate=null;
+			String endDate = null;
+			
+			Object[] datesList =  eventDAO.getEventDates(eventId);
+			
+			if(datesList !=null && datesList.length>0){
+				fromDate = datesList[0] !=null ? (Date)datesList[0]:null;
+				toDate	 = datesList[1] !=null ? (Date)datesList[1]:null;
+				
+				startDate = form.format(fromDate);
+				endDate =  form.format(toDate);			
+			}
+			returnList = getAttendeeSummaryForEvents(eventId,stateId,reportLevelId,subEventIds,startDate,endDate);
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getAttendeeSummaryForEventsList ",e);
+		}
+		
+		return returnList; 
+		
+	}
+	
+	public List<IdNameVO> getSubEventsOfEvent(Long eventId){
+		List<IdNameVO> idNameList = new ArrayList<IdNameVO>();
+		try{
+			
+			Long mainEntryId = 0l; 
+			List<Object[]> list = eventDAO.getSubEventsByParentEvent(eventId);
+			if(list !=null && list.size()>0){
+				setToIdNameVoList(list,idNameList);
+			}
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getAttendeeSummaryForEventsList ",e);
+		}
+		return idNameList;
+		
+	}
+	
+	public void setToIdNameVoList(List<Object[]> list,List<IdNameVO> idNameList){
+		try{			
+			if(list !=null && list.size()>0){				
+				for (Object[] idNameVO : list) {					
+					IdNameVO VO = new IdNameVO();
+					VO.setId(idNameVO[0] !=null ? (Long)idNameVO[0]:0l);
+					VO.setName(idNameVO[1] !=null ? idNameVO[1].toString():"");	
+					idNameList.add(VO);
+				}				
+			}			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in setToIdNameVoList ",e);
+		}		
+	}
+	
 }
 
 

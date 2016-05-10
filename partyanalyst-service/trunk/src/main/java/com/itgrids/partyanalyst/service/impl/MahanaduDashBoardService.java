@@ -18,6 +18,8 @@ import com.itgrids.partyanalyst.dao.ICadreMahanaduVisitDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreMahanaduVisitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEntryExitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.hibernate.EventDAO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitInfo;
@@ -32,6 +34,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	private ICadreMahanaduVisitInfoDAO cadreMahanaduVisitInfoDAO;
 	private TransactionTemplate transactionTemplate;
 	private IEntryExitInfoDAO entryExitInfoDAO;
+	private IEventDAO	eventDAO;
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
@@ -56,6 +59,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 
 	public void setEntryExitInfoDAO(IEntryExitInfoDAO entryExitInfoDAO) {
 		this.entryExitInfoDAO = entryExitInfoDAO;
+	}
+
+	
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
 	}
 
 	public void getTodayTotalVisitorsForWeb(){
@@ -441,6 +449,130 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 
 		}catch(Exception e){
 			LOG.error("Exception rised in getTodayTotalAndCurrentUsersInfo()",e);
+		}
+		if(returnList.size() > 0){
+			returnList.get(0).setTotalVisitors(totalVisitors);
+			returnList.get(0).setCurrentVisitors(currentVisitors);
+			returnList.get(0).setCurrentInviteeVisitors(currentInviteeVisitors);
+			returnList.get(0).setParentEventId(reqParentEventId);
+		}else{
+			MahanaduVisitVO returnVo = new MahanaduVisitVO();
+			returnList.add(returnVo);
+			returnList.get(0).setTotalVisitors(totalVisitors);
+			returnList.get(0).setCurrentVisitors(currentVisitors);
+			returnList.get(0).setCurrentInviteeVisitors(currentInviteeVisitors);
+			returnList.get(0).setParentEventId(reqParentEventId);
+		}
+		return returnList;
+	}
+	
+	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId){
+		List<MahanaduVisitVO> returnList = new ArrayList<MahanaduVisitVO>();
+		Long totalVisitors = 0l;
+		Long currentVisitors = 0l;
+		Long currentInviteeVisitors = 0l;
+		Long reqParentEventId = null;
+		try{
+			
+			Date fromDate = null;
+			Date toDate	  = null;
+			Object[] datesList =  eventDAO.getEventDates(eventId);
+			
+			int year = 0;
+			int month = 0;
+			if(datesList !=null && datesList.length>0){
+				fromDate = datesList[0] !=null ? (Date)datesList[0]:null;
+				toDate	 = datesList[1] !=null ? (Date)datesList[1]:null;
+				
+				year = Integer.parseInt(datesList[0].toString().split("-")[0]);
+				month = Integer.parseInt(datesList[0].toString().split("-")[1]);
+			}
+			
+			
+		EntryExitInfo entryExitInfo = entryExitInfoDAO.getAll().get(0);
+		Long entryEventId = entryExitInfo.getEntryId();
+		Long exitEventId = entryExitInfo.getExitId();
+		Long parentEventId = entryExitInfo.getParentEventId();
+		reqParentEventId = parentEventId;
+		
+		Calendar fromDateCal = Calendar.getInstance();
+		fromDateCal.setTime(fromDate);
+		
+		Calendar toDateCal = Calendar.getInstance();
+		toDateCal.setTime(toDate);
+		
+		Date todayDate = dateUtilService.getCurrentDateAndTime();
+		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId);
+		currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
+		currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
+		
+		
+			if(!(toDate.before(fromDate))){
+			    int from = fromDateCal.get(Calendar.DAY_OF_MONTH);
+			    int to   = toDateCal.get(Calendar.DAY_OF_MONTH);
+			    Map<Integer,Date> reqDates = new HashMap<Integer,Date>();
+			    List<Integer> keys = new ArrayList<Integer>();
+			    for(int i=from;i<=to;i++){
+			    	Calendar cal = Calendar.getInstance();
+			    	if(year >0 && month>0){
+			    		cal.set(year, month-1, i);
+			    	}	
+			    	reqDates.put(i, cal.getTime());
+			    	if(!keys.contains(i)){
+			    	    keys.add(i);
+			    	}
+			    }
+			   for(Integer key:keys){ 
+				//0id,1date
+				List<Object[]> latestRecord = cadreMahanaduVisitDetailsDAO.getLatestInfoRecord(reqDates.get(key),parentEventId);
+				if(latestRecord.size() > 0 && latestRecord.get(0)[0] != null){
+					//0type 1count
+					List<Object[]> visitDetailsList = cadreMahanaduVisitDetailsDAO.getLatestRecords((Long)latestRecord.get(0)[0]);
+					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+					MahanaduVisitVO returnVo = new MahanaduVisitVO();
+					returnVo.setLastUpdated(sdf.format((Date)latestRecord.get(0)[1]));
+					for(Object[] visitDetail:visitDetailsList){
+						if(visitDetail[0].toString().equalsIgnoreCase("above8hrs")){
+							returnVo.setAbove8hrs((Long)visitDetail[1]);
+							returnVo.setAbove8hrsInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("seventoeight")){
+							returnVo.setSeventoeight((Long)visitDetail[1]);
+							returnVo.setSeventoeightInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("sixtoseven")){
+							returnVo.setSixtoseven((Long)visitDetail[1]);
+							returnVo.setSixtosevenInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("fivetosix")){
+							returnVo.setFivetosix((Long)visitDetail[1]);
+							returnVo.setFivetosixInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("fourtofive")){
+							returnVo.setFourtofive((Long)visitDetail[1]);
+							returnVo.setFourtofiveInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("threetofour")){
+							returnVo.setThreetofour((Long)visitDetail[1]);
+							returnVo.setThreetofourInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("twotothree")){
+							returnVo.setTwotothree((Long)visitDetail[1]);
+							returnVo.setTwotothreeInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("onetotwo")){
+							returnVo.setOnetotwo((Long)visitDetail[1]);
+							returnVo.setOnetotwoInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("halfanhour")){
+							returnVo.setHalfanhour((Long)visitDetail[1]);
+							returnVo.setHalfanhourInv((Long)visitDetail[2]);
+						}else if(visitDetail[0].toString().equalsIgnoreCase("belowhalfanhour")){
+							returnVo.setBelowhalfanhour((Long)visitDetail[1]);
+							returnVo.setBelowhalfanhourInv((Long)visitDetail[2]);
+						}
+						
+					}
+					returnList.add(returnVo);
+				}
+			 }
+			}
+			
+
+		}catch(Exception e){
+			LOG.error("Exception rised in getTodayTotalAndCurrentUsersInfoList()",e);
 		}
 		if(returnList.size() > 0){
 			returnList.get(0).setTotalVisitors(totalVisitors);

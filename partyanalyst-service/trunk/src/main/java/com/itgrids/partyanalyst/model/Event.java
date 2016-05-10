@@ -49,6 +49,7 @@ public class Event implements java.io.Serializable{
 	private String syncType;
 	private Long eventTypeId;
 	private EventType eventType;
+	private Date eventEndDate;
 	
 	private String isVisible;
 	
@@ -223,6 +224,15 @@ public class Event implements java.io.Serializable{
 	public void setIsVisible(String isVisible) {
 		this.isVisible = isVisible;
 	}
+	
+	@Column(name="event_end_date")
+	public Date getEventEndDate() {
+		return eventEndDate;
+	}
+	public void setEventEndDate(Date eventEndDate) {
+		this.eventEndDate = eventEndDate;
+	}
+	
 	
 	
 }

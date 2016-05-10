@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -46,5 +47,7 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getOtherStateDeligatesCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate);
 	 public List<MahanaduEventVO> getStatewiseCount(Long eventId,String startDate,String endDate);
 	 public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId);
+	 public List<MahanaduEventVO> getAttendeeSummaryForEventsList(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
+	 public List<IdNameVO> getSubEventsOfEvent(Long eventId);
 }
 
