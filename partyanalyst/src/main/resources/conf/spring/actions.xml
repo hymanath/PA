@@ -1640,5 +1640,8 @@
 				
 	</bean>	
 		
+	<bean id="paymentGatewayAction" class="com.itgrids.partyanalyst.web.action.PaymentGatewayAction" singleton="false">
+				
+	</bean>	
 </beans>	
 	
