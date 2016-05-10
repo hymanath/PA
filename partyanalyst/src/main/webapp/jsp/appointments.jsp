@@ -6638,7 +6638,7 @@ function getCommitteeRoles(){
 		str+='<th>PURPOSE</th>';
 		str+='<th>CREATED ON</th>';
 		str+='<th>PREFERED DATE</th>';
-		str+='<th>CONFIRMED DATE</th>';
+		str+='<th>SCHEDULED DATE</th>';
 		str+='<th>STATUS</th>';
 		str+='<th></th>';
 		str+='</thead>';
