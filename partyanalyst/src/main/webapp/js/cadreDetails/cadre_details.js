@@ -2916,7 +2916,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 							str+='</td>';
 							str+='<td><input type="button" value="View" class="btn btn-sm btn-primary complaintTrackingCla" onclick="getComplaintTrackingDetails('+result[i].complaintId+',\'statusDivIdForInsurance'+i+'\')"/></td>';
 						str+='</tr>';
-						str+='<tr id="trstatusDivIdForInsurance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForInsurance'+i+'"</td></tr>';
+						str+='<tr id="trstatusDivIdForInsurance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForInsurance'+i+'"></div></td></tr>';
 					}
 					str+='</tbody>'
 				str+='</table>';
@@ -5424,9 +5424,9 @@ var str='';
                     str+='<td>'+result.subList[i].name+'</td>';
                     if(result.subList[i].subList != null && result.subList[i].subList.length>0){
                       for(var k in result.subList[i].subList){
-						   if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0 && (k==3 ||k==7 || k==11))
+						   /*if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0 && (k==3 ||k==7 || k==11))
                             str+='<td style="text-align:center;" >'+result.subList[i].subList[k].count+'</td>';						
-                          else if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0)
+                          else*/ if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0)
                             str+='<td style="text-align:center;" ><a class="grievanceStatusWiseDetailsCls" style="cursor:pointer;" attr_status_name="'+result.subList[i].name+'" attr_location_type="'+result.subList[i].subList[k].locationName+'" attr_issue_type="'+result.subList[i].subList[k].name+'" >'+result.subList[i].subList[k].count+'</a></td>';
                           else
                             str+='<td style="text-align:center;"> - </td>';
@@ -5492,6 +5492,8 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 							str+='<th> Complaint Info </th>';
 							str+='<th> Issue Type </th>';
 							str+='<th> Present Status </th>';
+							if(issueType == "Benefit")
+								str+='<th> Approved Amount </th>';
 							str+='<th> View Details </th>';
 						str+='</tr>';
 					str+='</thead>';
@@ -5514,9 +5516,21 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 							if(result[i].updatedDate.length > 0)
 								str+='<p>Last Updated Date : '+result[i].updatedDate+'</p>';
 							str+='</td>';
+							if(issueType == "Benefit"){
+								if(result[i].approvedAmount != null)
+									str+='<td>'+result[i].approvedAmount+'</td>';
+								else
+									str+='<td> - </td>';
+							}
+								
 							str+='<td><input type="button" value="View" class="btn btn-sm btn-primary" onclick="getComplaintTrackingDetailsForGrievance('+result[i].complaintId+',\'statusDivIdForGrievance'+i+'\')"/></td>';
 						str+='</tr>';
-						str+='<tr id="trstatusDivIdForGrievance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForGrievance'+i+'"</td></tr>';
+						str+='<tr id="trstatusDivIdForGrievance'+i+'" style="display:none;">';
+						if(issueType == "Benefit")
+							str+='<td colspan="7"><div id="statusDivIdForGrievance'+i+'"></div></td>';
+						else
+							str+='<td colspan="6"><div id="statusDivIdForGrievance'+i+'"></div></td>';
+						str+='</tr>';
 					}
 					str+='</tbody>'
 				str+='</table>';
