@@ -2780,7 +2780,8 @@
 	    <property name="cadreMahanaduVisitDetailsDAO" ref="cadreMahanaduVisitDetailsDAO" />
 	    <property name="cadreMahanaduVisitInfoDAO" ref="cadreMahanaduVisitInfoDAO" />
 	    <property name="transactionTemplate" ref="transactionTemplate" />
-	    <property name="entryExitInfoDAO" ref="entryExitInfoDAO" />    
+	    <property name="entryExitInfoDAO" ref="entryExitInfoDAO" />  
+	    <property name="eventDAO" ref="eventDAO" />   
 	</bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">

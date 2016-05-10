@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -31,7 +32,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	List<MahanaduEventVO> resultList;
 	private HttpSession session;
 	private Long eventId;
-	
+	private List<IdNameVO> idnameVOList;
 
 	
 	
@@ -95,6 +96,12 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	}
 	public void setMahaNaduService(IMahaNaduService mahaNaduService) {
 		this.mahaNaduService = mahaNaduService;
+	}
+	public List<IdNameVO> getIdnameVOList() {
+		return idnameVOList;
+	}
+	public void setIdnameVOList(List<IdNameVO> idnameVOList) {
+		this.idnameVOList = idnameVOList;
 	}
 	public String execute()
 	{
@@ -303,6 +310,39 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		catch (Exception e) {
 			LOG.error(" Entered Into getOtherStateDeligatesCount",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getEventAttendeeSummaryList(){
+		try{
+			LOG.debug(" Entered Into getEventAttendeeSummary");
+			
+			
+			jObj = new JSONObject(getTask());
+			List<Long> subEventIds = new ArrayList<Long>();
+			Long eventId = jObj.getLong("eventId");
+			Long stateId = jObj.getLong("stateId");
+			Long reportLevelId = jObj.getLong("reportLevelId");
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			resultList =  mahaNaduService.getAttendeeSummaryForEventsList(eventId,stateId,reportLevelId,subEventIds);
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Entered Into getEventAttendeeSummaryList",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSubEventsOfEvent(){
+		try{			
+			jObj = new JSONObject(getTask());			
+			idnameVOList = mahaNaduService.getSubEventsOfEvent(jObj.getLong("eventId"));
+		}catch (Exception e) {
+			LOG.error(" Entered Into getMainEntryOfEvent",e);
 		}
 		return Action.SUCCESS;
 	}

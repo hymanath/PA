@@ -12104,6 +12104,16 @@
 				<result type="json" name="success">
 				<param name="root">resultList</param>
 			</result>
-		</action>
+	</action>
+	<action name="getEventAttendeeSummaryListAction" class="eventDetailsAction" method="getEventAttendeeSummaryList">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+	</action>
+	<action name="getSubEventsOfEventAction" class="eventDetailsAction" method="getSubEventsOfEvent">
+				<result type="json" name="success">
+				<param name="root">idnameVOList</param>
+			</result>
+	</action>
 </package>
 </struts>      

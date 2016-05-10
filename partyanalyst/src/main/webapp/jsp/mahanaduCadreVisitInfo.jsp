@@ -71,6 +71,14 @@
 </head>
 <body>
 <section class="container">
+
+	<div class="row col-md-3 pull-right">
+		<select id="mainEventSelectId" class="form-control mainEventSelectCls">
+			<option value="0">select event</option>
+			<option value="7" >Mahanadu 2015</option>
+			<option value="30" selected>Mahanadu 2016</option>
+		</select>
+	</div>
 	<div class="row">
     	<div class="col-md-12" style="margin-top:40px;">
         	<div class="panel panel-default box-shadow-css">
@@ -80,10 +88,10 @@
 				<div><input style="display:none;" type="button" onclick="populate();" value="Update Latest Info"/></div>
                 <div class="panel-body" style="padding:0px 15px">
                 	<div class="col-md-6 m_0">
-                    	<h4 class="pull-right">Total Visitors: <span id="totalVisitors" >0</span></h4>
+                    	<h4 class="pull-right">Today Total Visitors: <span id="totalVisitors" >0</span></h4>
                     </div>
                     <div class="col-md-6 m_0" style="border-left:1px solid #ccc">
-                    	<h4 class="pull-left">Visitors in Campus: <span id="currentVisitors">0</span>
+                    	<h4 class="pull-left">Today Visitors in Campus: <span id="currentVisitors">0</span>
 						<span style="font-size:14px;color:#ccc;display:none;" class="inviteesSpanCls">[ Invitees:<span id="currentinvVisitors">0</span>
 						Non Invitees:<span id="currentnoninvVisitors">0</span> ]</span></h4>
 						
@@ -216,14 +224,44 @@
 	<script type="text/javascript">
 	  $(".dropdown-menu").html('<li><a href="eventDashboardAction.action?eventId=1">EVENTS DASHBOARD</a></li><li><a href="dashBoardAction.action">DASHBOARD</a></li><li><a href="newlogoutAction.action">LOGOUT</a></li>');
 	  
+	  $(document).ready(function(){		  
+		  getDetails();		  
+		  setTimeout(function(){
+			 getLocationWiseAttendeeSummaryCount(1,3,false);
+			getLocationWiseAttendeeSummaryCount(1,4,false);
+			}, 2000);
+	  });
+	  
+	  getSubEventsOfEvent();
+	  var globalMainEntryId = 0 ;
+	  function getSubEventsOfEvent(){
+		  
+		  eventId = $("#mainEventSelectId").val();
+		  var jsObj={
+			  eventId : eventId
+		  }
+		   $.ajax({
+			  type:'GET',
+			  url: 'getSubEventsOfEventAction.action',
+			  data :{task:JSON.stringify(jsObj)}
+          }).done(function(result){			  
+			  if(result !=null && result.length>0){
+				  for(var i in result){
+					  if(result[i].name == "Main Entry"){
+						 globalMainEntryId = result[i].id;
+					  }
+				  }
+			  }			  
+		  });
+	  }
+	  
 	  $('input.inviteesCkbCls').removeAttr('checked');
 	  
 	  $(".inviteesCkbCls").click(function(){
 		  
 		  var inviteeId = $(this).attr("id");
 		  //var isChecked = $("#"+inviteeId).is(':checked');
-		  
-		  
+		 
 		  if(inviteeId == "inviteesCkbCls_a"){
 			  if(needInvitees_a){
 				  needInvitees_a = false;
@@ -265,10 +303,14 @@
 	  function getDetails(){
            $("#resultTableDivAjax").show();
 		   $("#resultTableDiv").html("");
+		   eventId = $("#mainEventSelectId").val();
+		   var jsObj={
+			   eventId:eventId
+		   }
 		  $.ajax({
 			  type:'GET',
 			  url: 'getTodayTotalAndCurrentUsersInfo.action',
-			  data :{fromDate:'27-05-2015',toDate:'29-05-2015'}
+			  data :{task:JSON.stringify(jsObj)}
           }).done(function(result){
 			  $("#resultTableDivAjax").hide();
 		       var str ="";
@@ -712,7 +754,7 @@
 					});
 	      });
 	  }
-	  getDetails();
+	  //getDetails();
 	  function populate(){
 		  $.ajax({
 			  type:'GET',
@@ -748,9 +790,16 @@ $("#myonoffswitchSummary1").click(function(){
 });
 
 
-getLocationWiseAttendeeSummaryCount(1,3,false);
-getLocationWiseAttendeeSummaryCount(1,4,false);
+//getLocationWiseAttendeeSummaryCount(1,3,false);
+//getLocationWiseAttendeeSummaryCount(1,4,false);
 function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId,fromChecked){
+	
+	//Fields Clearing
+	$("#ovrAlSummaryId").html("");
+	$("#daysSummaryId").html("");
+	$("#districtTableSummaryId").html("");
+	$("#constiTableSummaryId").html("");
+	
 	var subEvents1 = [];
 	var stateId =0;
 	
@@ -768,29 +817,29 @@ function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId,fromChecked){
 		$("#daysSummaryId").html("");
 		$("#ovrAlSummaryId").html("");
 	}
-	
-
-	subEvents1 = [8]; //8 -- MAHANADU MAIN ENTRY
-	 
 	if($('#myonoffswitchSummary1').is(":checked")){
 		stateId = 1;
 	}else{
 		stateId = 36;
 	}
- 
+	
+	 eventId = $("#mainEventSelectId").val();
+	 if(globalMainEntryId !=null && globalMainEntryId>0){
+		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
+	 }
 	var jObj = {
-			eventId:0,			
+			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:reportLevelId,
 			subEvents : subEvents1,
-			startDate : "27/05/2015",
-			endDate : "29/05/2015"
+			//startDate : "27/05/2015",
+			//endDate : "29/05/2015"
 		
 		}	
 		
 		$.ajax({
           type:'GET',
-          url: 'getEventAttendeeSummaryAction.action',
+          url: 'getEventAttendeeSummaryListAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			buildLocationSummary(result,reportLevelId,fromChecked);
@@ -976,9 +1025,21 @@ function buildLocationSummary(result,reportLevelId,fromChecked){
 	}*/
 	
 }
+
+$( "#mainEventSelectId" ).change(function() {
+ getmainEventsChange();
+}); 
+  function getmainEventsChange(){	 
+		getSubEventsOfEvent();		
+		  setTimeout(function(){
+				getDetails();
+				getLocationWiseAttendeeSummaryCount(1,3,false);
+				getLocationWiseAttendeeSummaryCount(1,4,false);
+			}, 3000);
+   } 
 	</script>
 	<script type="text/javascript">
-               $(document).ready(function() {
+               /* $(document).ready(function() {
 var stDate = 
                  $('.reservation').daterangepicker({ 
 				       startDate:'27-05-2015',
@@ -990,10 +1051,8 @@ var stDate =
 					  showWeekNumbers: false
 					}, function(start, end, label) {
 					});
-               });
-               </script>
-
-<script>
+               }); */
+               
 $(".tbtn").click(function(){
     $(".themeControll").toggleClass("active");
 });
