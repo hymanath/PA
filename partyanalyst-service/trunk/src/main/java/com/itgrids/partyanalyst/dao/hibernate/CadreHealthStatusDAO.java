@@ -295,4 +295,55 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     	
     	return query.list();
     }
+	
+	public List<Object[]> getGrievanceRequestDetailsForBenifits(Long id,String searchType,String status){
+		  
+		  StringBuilder str = new StringBuilder();
+		  
+		  str.append("select CM.name," +
+					" CM.mobile_no," +
+					" CM.Complaint_id," +
+					" date(CM.Raised_Date) as Raised_Date," +
+					" CM.type_of_issue," +
+					" CM.Completed_Status," +
+					" date(CM.updated_date) as updated_date," +
+					" CM.Subject," +
+					" CM.description," +
+					" CM.approved_amount," +
+					" CM.actual_approved_amount" +
+					" from" +
+					" complaint_master CM" +
+					" where ");
+		  
+		  if(searchType.equalsIgnoreCase("district"))
+			   str.append(" CM.district_id =:id and  ");
+		   
+		   else if(searchType.equalsIgnoreCase("assembly"))
+			   str.append(" CM.assembly_id = :id  and ");
+		   
+		   else if(searchType.equalsIgnoreCase("parliament"))
+			   str.append(" CM.parliament_id= :id and ");
+		  
+		  str.append(" CM.type_of_issue != 'Insurance'");
+		  str.append(" and (CM.delete_status !='0' or CM.delete_status is null )" +
+		  		" and CM.state_id_cmp in(1,2) and ");
+		  str.append(" CM.Subject != '' ");
+		  str.append(" and ((CM.issue_type ='Personal' and  CM.expected_amount is not null and CM.expected_amount !='' )" +
+		  		" or (CM.issue_type ='CM Relief' and CM.expected_amount is not null and CM.expected_amount != '') or " +
+		  		" (CM.issue_type ='Health' and CM.health_amount is not null and CM.health_amount != '') or " +
+		  		" (CM.issue_type ='Financial Support' and CM.expected_amount is not null and CM.expected_amount !=''))" +
+		  		" and CM.Completed_Status = :status ");
+		  //str.append(" group by model.Completed_Status ");
+			   Query query = getSession().createSQLQuery(str.toString()).addScalar("name",Hibernate.STRING).addScalar("mobile_no",Hibernate.STRING)
+		    			.addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE)
+		    			.addScalar("type_of_issue",Hibernate.STRING).addScalar("Completed_Status",Hibernate.STRING)
+		    			.addScalar("updated_date",Hibernate.DATE).addScalar("Subject",Hibernate.STRING).addScalar("description",Hibernate.STRING)
+		    			.addScalar("approved_amount",Hibernate.STRING).addScalar("actual_approved_amount",Hibernate.STRING);
+			   
+			   query.setParameter("id", id);
+			   query.setParameter("status", status);
+		  
+		return query.list();
+		  
+	  }
 }

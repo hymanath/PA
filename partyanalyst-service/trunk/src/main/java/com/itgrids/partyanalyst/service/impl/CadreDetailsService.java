@@ -8001,8 +8001,13 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 	public List<GrievanceDetailsVO> getComplaintsDetailsForGrievanceByLocationAndStatus(Long locationId,String locationType,String status,String issueType){
 		List<GrievanceDetailsVO> returnList = new ArrayList<GrievanceDetailsVO>();
 		try {
+			List<Object[]> list = null;
 			
-			List<Object[]> list = cadreHealthStatusDAO.getComplaintsDetailsForGrievanceByLocationAndStatus(locationId, locationType, status, issueType);
+			if(issueType != null && issueType.equalsIgnoreCase("Benefit"))
+				list = cadreHealthStatusDAO.getGrievanceRequestDetailsForBenifits(locationId, locationType, status);
+			else
+				list = cadreHealthStatusDAO.getComplaintsDetailsForGrievanceByLocationAndStatus(locationId, locationType, status, issueType);
+			
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
 					GrievanceDetailsVO vo = new GrievanceDetailsVO();
@@ -8021,6 +8026,8 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 					//vo.setTdpCadreId(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
 					vo.setSubject(obj[7] != null ? obj[7].toString():"");
 					vo.setDescription(obj[8] != null ? obj[8].toString():"");
+					if(issueType != null && issueType.equalsIgnoreCase("Benefit"))
+						vo.setApprovedAmount(obj[9] != null ? obj[9].toString():"0");
 					
 					returnList.add(vo);
 				}
