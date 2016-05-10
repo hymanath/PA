@@ -18,7 +18,7 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 	
 	public List<Long> getIvrSurveyIdsByRespondantId(Long ivrRespondantId){
 		
-		Query query= getSession().createQuery("select model.ivrSurveyId from IvrSurveyAnswer model " +
+		Query query= getSession().createQuery("select distinct model.ivrSurveyId from IvrSurveyAnswer model " +
 				"  where model.ivrRespondentId  = :ivrRespondantId " +
 				" and model.isDeleted = 'false' " +
 				" and model.ivrSurvey.isDeleted ='false'" +

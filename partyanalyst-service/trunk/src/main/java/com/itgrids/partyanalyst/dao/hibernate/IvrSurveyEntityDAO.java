@@ -47,6 +47,24 @@ public class IvrSurveyEntityDAO extends GenericDaoHibernate<IvrSurveyEntity, Lon
 		query.setParameter("ivrRespondentId",ivrRespondentId);
 		return query.list();		
 	}
+	
+	
+	public List<Object[]> getSurveyCountforEntityType(List<Long> surveyIds,Long ivrRespondentId){
+		
+		Query query = getSession().createQuery("select model.ivrSurveyEntityType.ivrSurveyEntityTypeId,model.ivrSurveyEntityType.type,count(distinct model.ivrSurveyId)" +
+			" from IvrSurveyEntity model,IvrSurveyAnswer model1 " +
+				" where " +
+				" model.ivrSurveyId = model1.ivrSurveyId " +
+				" and model.ivrSurveyId  in (:surveyIds) " +
+				" and model1.ivrRespondentId =:ivrRespondentId " +
+				" and model.isDeleted='false'" +
+				" and model1.isDeleted = 'false' " +
+				" and model1.isValid = 'Y' " +
+				" group by model.ivrSurveyEntityType.ivrSurveyEntityTypeId ");
+		query.setParameterList("surveyIds", surveyIds);    
+		query.setParameter("ivrRespondentId",ivrRespondentId);
+		return query.list();		
+	}
 
 	public List<Object[]> getSurveyListByEntityType(Long entityTypeId){
 		
