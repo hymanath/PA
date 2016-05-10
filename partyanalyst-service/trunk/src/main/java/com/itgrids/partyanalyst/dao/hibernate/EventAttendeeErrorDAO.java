@@ -37,7 +37,8 @@ public class EventAttendeeErrorDAO extends GenericDaoHibernate<EventAttendeeErro
 		str.append("  select count(model.eventAttendeeErrorId) " +
 				   "  from   EventAttendeeError model " +
 				   "  where  model.event.eventId =:preEnytryEventId " +
-				   "         and  model.event.isActive =:isActive ");
+				   "         and  model.event.isActive =:isActive " +
+				   "         and  model.event.isVisible =:isVisible");
 		
 		if((startDate != null && endDate != null)){
 			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
@@ -52,6 +53,7 @@ public class EventAttendeeErrorDAO extends GenericDaoHibernate<EventAttendeeErro
 		
 		query.setParameter("preEnytryEventId", preEnytryEventId);
 		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameter("isVisible", IConstants.IS_VISIBLE);
 		return (Long)query.uniqueResult();
 	}
 	

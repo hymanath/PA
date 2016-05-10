@@ -95,6 +95,16 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		
 		return (String) query.uniqueResult();
 	}
-	
+	public List<Object[]> getVisibleEventNames(List<Long> eventIds)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.eventId, model.name from Event model where  model.eventId in(:eventIds)  and model.isActive =:isActive and model.isVisible=:isVisible  order by model.orderId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("eventIds", eventIds);
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameter("isVisible", IConstants.IS_VISIBLE);
+		return query.list();
+	}
 	
 }

@@ -50,6 +50,7 @@ public class Event implements java.io.Serializable{
 	private Long eventTypeId;
 	private EventType eventType;
 	
+	private String isVisible;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -213,6 +214,14 @@ public class Event implements java.io.Serializable{
 	
 	public void setEventType(EventType eventType) {
 		this.eventType = eventType;
+	}
+	
+	@Column(name="is_visible")
+	public String getIsVisible() {
+		return isVisible;
+	}
+	public void setIsVisible(String isVisible) {
+		this.isVisible = isVisible;
 	}
 	
 	

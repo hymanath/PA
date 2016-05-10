@@ -1462,7 +1462,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 boolean preEntrySubEventExist = false; 
 		 Long preEntrySubEventId = null;
 		 
-		  List<Object[]> list = eventDAO.getEventNames(subEventIds);
+		  List<Object[]> list = eventDAO.getVisibleEventNames(subEventIds);
 		  if(list != null && list.size() > 0)
 		  {
 			  for(Object[] params : list)
@@ -1552,9 +1552,6 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		    	 }
 		    	 
 		     }
-		     
-		     
-		     
 		     
 		     
 			 List<Object[]> totalUniqueVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,eventStrDate,eventEndDate,subEventIds);
