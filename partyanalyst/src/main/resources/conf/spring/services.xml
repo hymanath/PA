@@ -3095,5 +3095,8 @@
 	  	<property name="targetMethod" value="runTheBatchJobForEveryDayChangeApptStatus" />
 	</bean> -->
 	
+	<bean id="paymentGatewayService" class="com.itgrids.partyanalyst.service.impl.PaymentGatewayService">
+	</bean>
+	
 </beans>		
 	
