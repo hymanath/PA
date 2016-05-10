@@ -1946,7 +1946,7 @@
 					<div class="m_top20">
 						<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span> --></h5>
 						<!-- <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode" onkeyup="isPresentPincodeNumber('prsntAddrsPincodeId','PinCodeNO')" value="${voterInfoVOList[0].pincode}" style="width:200px" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>-->
-						 <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode"  value="${voterInfoVOList[0].pincode}" style="width:200px" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>
+						 <input type="text" class="onlyDigit form-control border-radius-0" maxlength="6" placeholder="Pin Code" id="prsntAddrsPincodeId" name="cadreRegistrationVO.prsntAddrsPincode"  value="${voterInfoVOList[0].pincode}" style="width:200px" ></input><br/><span id="errprsttAddpinId" style="color:red;font-size:12px;"></span>
 					</div> 
 				    </div>
 					 <!--  WORKING ADDRESS LOCATION. -->
@@ -2008,9 +2008,9 @@
 						<div class="m_top20">
 							<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span>--> </h5>
 							<!-- <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode" onkeyup="isWorkerPincodeNumber('workAddrsPincodeId','PinCodeNO')"></input><br/><span id="errWrkAddpinId" style="color:red;font-size:12px;"></span>-->
-						     <input type="text" class="form-control border-radius-0 " maxlength="6" placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode"></input><br/><span id="errWrkAddpinId" style="color:red;font-size:12px;"></span>
+						     <input type="text" class="form-control border-radius-0 onlyDigit" maxlength="6" placeholder="Pin Code" id="workAddrsPincodeId" name="cadreRegistrationVO.workAddrsPincode"></input><br/><span id="errWrkAddpinId" style="color:red;font-size:12px;"></span>
 						</div> 
-				    </div>
+				    </div>  
 					</div>	
 					
 					</s:if>
@@ -2146,7 +2146,7 @@
 					   <div class="span4">
 						<div class="m_top20">
 							<h5 class="text-align1">Pin Code <!--<span class="mandatory">*</span>--> </h5>
-							<input type="text" class="form-control border-radius-0 " placeholder="Pin Code" id="" name="" value=""></input>
+							<input type="text" class="form-control border-radius-0 onlyDigit" placeholder="Pin Code" id="" name="" value=""></input>
 						</div> 
 				    </div>
 				</div>	
@@ -4538,12 +4538,13 @@ function getDistricts(district,populateConstituency,populateMandal,populateVilla
 		}
 			return numberFlag;
 	}
+	
 </script> 
 
 <script>
 var userip = "";
 $('.onlyText').keydown(function (e) {
-	if (e.shiftKey || e.ctrlKey || e.altKey){
+	if (e.shiftKey || e.ctrlKey || e.altKey){         
 		e.preventDefault();
 	} else {
 		var key = e.keyCode; 
@@ -4552,6 +4553,7 @@ $('.onlyText').keydown(function (e) {
 		}
 	}
 });
+
 $(".onlyDigit").keydown(function (e) {
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
             (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
