@@ -13108,8 +13108,8 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId){
 		PaymentGatewayVO pamentGatewayVO = new PaymentGatewayVO();
 		try {
-				String encryptedCodeMN = md5Algoritm.generateMD5Encrypt(randomNo);
-				String encryptedCodeEN = md5Algoritm.generateMD5Encrypt(enrollId);
+				String encryptedCodeMN = randomNo;//md5Algoritm.generateMD5Encrypt(randomNo);
+				String encryptedCodeEN = enrollId;//md5Algoritm.generateMD5Encrypt(enrollId);
 				
 				String WorkingKey =IConstants.TGNF_ENROLLMENT_WORKING_KEY;
 		        String MerchantId =IConstants.TGNF_ENROLLMENT_MERCHANT_ID;
