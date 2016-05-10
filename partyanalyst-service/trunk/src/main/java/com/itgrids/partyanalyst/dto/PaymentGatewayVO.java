@@ -18,6 +18,7 @@ public class PaymentGatewayVO extends BaseModel implements java.io.Serializable{
 	private String merchantId;
 	private String amount;
 	private List<PaymentGatewayVO> responsePropertyFiledsVOLIst = new ArrayList<PaymentGatewayVO>(0);
+	private List<PaymentGatewayVO> subList = new ArrayList<PaymentGatewayVO>();
 	
 	
 	public PaymentGatewayVO(){}
@@ -97,13 +98,16 @@ public class PaymentGatewayVO extends BaseModel implements java.io.Serializable{
 	public void setMerchantId(String merchantId) {
 		this.merchantId = merchantId;
 	}
-
-	
-	
 	public String getAmount() {
 		return amount;
 	}
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+	public List<PaymentGatewayVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<PaymentGatewayVO> subList) {
+		this.subList = subList;
 	}
 }
