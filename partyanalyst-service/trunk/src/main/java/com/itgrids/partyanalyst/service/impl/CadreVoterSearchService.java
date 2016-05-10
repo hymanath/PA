@@ -1062,7 +1062,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						vo.setLocalElectionBodyId(Long.valueOf(obj[17] != null ? obj[17].toString():"0"));
 						vo.setLeb(obj[18] != null ? obj[18].toString():"");
 						if(obj.length>19)
-							vo.setImage(obj[19] != null ? obj[18].toString():"");
+							vo.setImage(commonMethodsUtilService.getStringValueForObject(obj[19]));
 						voterDetailsList.add(vo);
 					}
 				}
