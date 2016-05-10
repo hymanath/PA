@@ -5830,10 +5830,9 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 		 for (AppointmentMembersDataVO vo : returnList) {
 			  if(vo.getId().equals(appCandidateId)){
 				  return vo;
-			  }else{
-				  return null;
 			  }
 		}
+		 return null;
 	 }
 	 return null;
  }
