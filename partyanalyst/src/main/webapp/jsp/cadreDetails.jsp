@@ -578,6 +578,12 @@ var globalCadreId = '${cadreId}';
 			<input type="hidden" value="" id="cadreVoterCardNo" />
 			<input type="hidden" value="" id="cadreMemberShipId" />
 			
+			
+			<input type="hidden" value="" id="cadreParticipatedDistrictId" />
+			<input type="hidden" value="" id="cadreParticipatedConstituencyId" />
+			<input type="hidden" value="" id="cadreParticipatedPConstituencyId" />
+			
+			
             	<table class="table table-bordered">
                 	<tr>
                     	<td class="text-bold"><i class="glyphicon glyphicon-user"></i> PERSONAL DETAILS</td>

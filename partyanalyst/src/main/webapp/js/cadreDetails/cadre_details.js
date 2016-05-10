@@ -138,6 +138,13 @@ function getParticipatedConstituencyId(cadreId){
 				}).done(function(result){
 					if(result !=null){
 						//alert(1);
+						
+						if(result.districtId != null && result.districtId > 0)
+						$("#cadreParticipatedDistrictId").val(''+result.districtId+'');
+						if(result.id != null && result.id > 0)
+							$("#cadreParticipatedConstituencyId").val(''+result.id+'');
+						if(result.parlimentId != null && result.parlimentId > 0)
+						$("#cadreParticipatedPConstituencyId").val(''+result.parlimentId+'');
 						participatedConstituencyId =result.id;
 						participatedConstituencyType = result.electionType;
 						participatedParliamentId = result.parlimentId;
@@ -146,6 +153,7 @@ function getParticipatedConstituencyId(cadreId){
 						participatedConstName = result.name;
 						participatedParlName = result.parliament;
 						participatedDistName = result.district;
+						
 						//alert(participatedConstituencyId);
 						if(participatedConstituencyId != null && participatedConstituencyId > 0){
 						//alert(1);
@@ -296,7 +304,7 @@ function getParticipatedConstituencyId(cadreId){
 					$('#cadremandalId').val(result.tehsilId);	
 					$('#cadreRuralORUrbanId').val(result.localElectionBody);						
 					$('#cadreConstituencyId').val(result.constituencyId);	
-					$('#cadrePConstituencyId').val(result.pconstituencyId);						
+					$('#cadrePConstituencyId').val(result.pConstituencyId);						
 					$('#cadreDistrictId').val(result.districtId);
 					$('#cadreVoterCardNo').val(result.voterIdCardNo);
 					$('#cadreMemberShipId').val(result.membershipNo);
