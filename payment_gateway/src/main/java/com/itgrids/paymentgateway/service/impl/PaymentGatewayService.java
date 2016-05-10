@@ -4,10 +4,16 @@ import java.util.List;
 import java.util.zip.Adler32;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.paymentgateway.dao.IPaymentMethodDAO;
+import com.itgrids.paymentgateway.dao.IPaymentTransactionDAO;
 import com.itgrids.paymentgateway.dto.PamentGatewayVO;
+import com.itgrids.paymentgateway.dto.PaymentTransactionVO;
 import com.itgrids.paymentgateway.model.PaymentMethod;
+import com.itgrids.paymentgateway.model.PaymentTransaction;
 import com.itgrids.paymentgateway.service.IPaymentGatewayService;
 import com.itgrids.paymentgateway.utils.IConstants;
 import com.itgrids.paymentgateway.utils.MD5Algoritm;
@@ -17,8 +23,31 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 	private static final Logger LOG = Logger.getLogger(PaymentGatewayService.class);
 	
 	private IPaymentMethodDAO paymentMethodDAO;
+	private IPaymentTransactionDAO paymentTransactionDAO;
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
-	
+	private TransactionTemplate transactionTemplate;
+		
+	public IPaymentMethodDAO getPaymentMethodDAO() {
+		return paymentMethodDAO;
+	}
+
+	public IPaymentTransactionDAO getPaymentTransactionDAO() {
+		return paymentTransactionDAO;
+	}
+
+	public void setPaymentTransactionDAO(
+			IPaymentTransactionDAO paymentTransactionDAO) {
+		this.paymentTransactionDAO = paymentTransactionDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	public void setPaymentMethodDAO(IPaymentMethodDAO paymentMethodDAO) {
 		this.paymentMethodDAO = paymentMethodDAO;
 	}
@@ -80,5 +109,36 @@ public class PaymentGatewayService implements IPaymentGatewayService{
 			LOG.error(e);
 			return null;
 		}
+	}
+	public String savePaymenyTransactionDetails(final PaymentTransactionVO paymentTransactionVO){
+		try{
+			if(paymentTransactionVO != null)
+			{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						PaymentTransaction paymentTransaction = new PaymentTransaction();
+						paymentTransaction.setPaymentModuleGatewayMerchantDetailsId(paymentTransactionVO.getPaymentModuleGatewayMerchantDetailsId());
+						paymentTransaction.setPaymentGatewayId(paymentTransactionVO.getPaymentGatewayId());
+						paymentTransaction.setPaymentMethodId(paymentTransactionVO.getPaymentMethodId());
+						paymentTransaction.setTransactionId(paymentTransactionVO.getTransactionId());
+						paymentTransaction.setTransactionStatusId(paymentTransactionVO.getTransactionStatusId());
+						paymentTransaction.setTransactionTime(paymentTransactionVO.getTransactionTime());
+						paymentTransaction.setUuid(paymentTransactionVO.getUuid());
+						paymentTransaction.setAmount(paymentTransactionVO.getAmount());
+						paymentTransaction.setIpAddress(paymentTransactionVO.getIpAddress());
+						paymentTransaction.setStatusCode(paymentTransactionVO.getStatusCode());
+						paymentTransaction.setPreUrl(paymentTransactionVO.getPreUrl());
+						paymentTransaction.setPostUrl(paymentTransactionVO.getPostUrl());
+						paymentTransaction.setRedirectUrl(paymentTransactionVO.getRedirectUrl());
+						paymentTransaction.setReferenceUserId(paymentTransactionVO.getReferenceUserId());
+						paymentTransaction.setPaymentModuleId(paymentTransactionVO.getPaymentModuleId());
+						paymentTransactionDAO.save(paymentTransaction);
+					}});
+				return "success";
+			}
+		}catch(Exception e){
+			LOG.error("error occured while saving payment transaction details.");
+		}
+		return "failure";
 	}
 }
