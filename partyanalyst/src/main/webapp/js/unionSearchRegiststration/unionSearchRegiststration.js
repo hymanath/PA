@@ -194,9 +194,11 @@ function buildVoterDetails(result){
 	if(result != null){
 		for(var i in result){
 			str+='<div class="media " id="main'+result[i].voterId+'" attr_voterId='+result[i].voterId+' style="border:1px solid #ddd;padding:8px;background:#f8f8f8">';
-				//str+='<span href="#" class="media-left">';
-				//str+='<img style="width: 64px; height: 64px;" src="images/Member_thamb_image.png" />';
-				//str+='</span>';
+			if(result[i].alreadyRegistered=="Already Registered"){
+					str+='<span href="#" class="media-left">';
+					str+='<img style="width: 64px; height: 64px;" src="images/cadre_images/result[i].image" />';
+					str+='</span>';
+				}
 				str+='<div class="media-body">';
 				str+='<div class="row">';
 				str+='<div class="col-md-8">';
