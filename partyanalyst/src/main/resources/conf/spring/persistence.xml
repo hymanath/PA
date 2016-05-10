@@ -828,6 +828,15 @@
 				 <value>com.itgrids.partyanalyst.model.UserFeedback</value>
 				 <value>com.itgrids.partyanalyst.model.UserFeedbackModule</value>
 				  <value>com.itgrids.partyanalyst.model.IvrRespondentLocation</value>
+				  
+				  <value>com.itgrids.partyanalyst.model.PaymentMethod</value>
+				   	<value>com.itgrids.partyanalyst.model.PaymentModuleSubType</value>
+				   	<value>com.itgrids.partyanalyst.model.PaymentAmount</value>
+			       	<value>com.itgrids.partyanalyst.model.PaymentGateway</value>
+			       	<value>com.itgrids.partyanalyst.model.PaymentModuleGatewayMerchantDetails</value>
+			       	<value>com.itgrids.partyanalyst.model.TransactionStatus</value>
+			      	<value>com.itgrids.partyanalyst.model.PaymentModule</value>
+			       	<value>com.itgrids.partyanalyst.model.PaymentTransaction</value>
 				   
 				 </list>
 			
