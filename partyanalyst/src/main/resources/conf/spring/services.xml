@@ -3085,10 +3085,6 @@
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
 	</bean>
 	
-	<bean name="paymentGatewayService" class="com.itgrids.partyanalyst.service.impl.PaymentGatewayService">
-	    <property name="paymentAmountDAO" ref="paymentAmountDAO" />
-	    <property name="paymentModuleGatewayMerchantDetailsDAO" ref="paymentModuleGatewayMerchantDetailsDAO" />
-	</bean>
 	<!-- <bean name="insertTriggerForEveryDayChangeApptStatus" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayChangeApptStatus" />
     	<property name="cronExpression" value="0 0 18 * * ?" />
@@ -3099,8 +3095,10 @@
 	  	<property name="targetMethod" value="runTheBatchJobForEveryDayChangeApptStatus" />
 	</bean> -->
 	
-	<!--<bean id="paymentGatewayService" class="com.itgrids.partyanalyst.service.impl.PaymentGatewayService">
-	</bean>-->
+	<bean id="paymentGatewayService" class="com.itgrids.partyanalyst.service.impl.PaymentGatewayService">
+		<property name="paymentAmountDAO" ref="paymentAmountDAO" />
+	    <property name="paymentModuleGatewayMerchantDetailsDAO" ref="paymentModuleGatewayMerchantDetailsDAO" />
+	</bean>
 	
 </beans>		
 	
