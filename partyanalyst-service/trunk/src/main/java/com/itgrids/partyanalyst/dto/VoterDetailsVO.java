@@ -26,6 +26,7 @@ public class VoterDetailsVO {
 	private String mobileNo;
 	private String houseNo;
 	private String wardName;
+	private String image;
 	//private Long mobileUserId;
 	
 	private Long casteStateId;
@@ -49,7 +50,12 @@ public class VoterDetailsVO {
 	private String alreadyRegistered;
 	private String paymentStatus;
 	
-	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public String getPaymentStatus() {
 		return paymentStatus;
 	}

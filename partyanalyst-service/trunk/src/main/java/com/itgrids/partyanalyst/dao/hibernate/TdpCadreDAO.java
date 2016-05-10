@@ -3628,7 +3628,43 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return query.list();
 		}
-	  
+	  public List<Object[]> getRegisteredMemberDetails(Long tdpCadreId){
+		  StringBuilder queryStr = new StringBuilder();
+		  queryStr.append(""+
+			  " select model.voter.voterId, "+
+			  " model.voter.name, "+
+			  " model.voter.relativeName, "+
+			  " model.voter.voterIDCardNo, "+
+			  " model.voter.gender, "+
+			  " model.voter.age, "+
+			  " model.voter.dateOfBirth, "+
+			  " model.voter.mobileNo, "+
+			  " model.voter.houseNo, "+
+			  " booth.boothId, "+
+			  " booth.partNo, "+
+			  " district.districtId, "+
+			  " district.districtName, "+
+			  " constituency.constituencyId, "+
+			  " constituency.name, "+
+			  " tehsil.tehsilId, "+
+			  " tehsil.tehsilName, "+
+			  " localElectionBody.localElectionBodyId,"+
+			  " localElectionBody.name,"+
+			  " model.image "+
+			  " from " +
+			  " TdpCadre model " +
+			  " left join model.userAddress.constituency.district district "+
+			  " left join model.userAddress.constituency constituency "+
+			  " left join model.userAddress.booth booth "+
+			  " left join model.userAddress.tehsil tehsil "+
+			  " left join model.userAddress.localElectionBody localElectionBody "+
+			  " where model.tdpCadreId = :tdpCadreId and model.isDeleted='N' and" +
+			  " model.tdpMemberType.tdpMemberTypeId = 5 and model.enrollmentYear=:enrollmentYear ");
+		  Query query = getSession().createQuery(queryStr.toString());
+		  query.setParameter("tdpCadreId", tdpCadreId);
+		  query.setParameter("enrollmentYear", IConstants.UNIONS_REGISTRATION_YEAR);
+		  return query.list();
+	  }
 	  
 	  public List<Object[]> tdpCadreCasteCountDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString)
 		{
@@ -6735,7 +6771,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	public List<Object[]> checkVoterCardNumberRegistration(String voterIDCardNo){
 		
 		Query query = getSession().createQuery("select model.voter.voterIDCardNo," +
-									" model.tdpCadreId, model.payMentStatus " +
+									" model.tdpCadreId, model.payMentStatus, model.tdpCadreId" +
 									" from TdpCadre model" +
 									" where model.voter.voterIDCardNo = :voterIDCardNo" +
 									" and model.isDeleted = 'N'" +
