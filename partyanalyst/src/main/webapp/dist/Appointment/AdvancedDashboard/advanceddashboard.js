@@ -794,7 +794,7 @@ function buildAppointmentMembersData(result)
 		 	if(result[i].totalRequestedAppCount!=null && result[i].totalRequestedAppCount >0){
 				str +='<td>'+result[i].totalRequestedAppCount+'</td>';
 			}else{
-				str +='<td>0</td>';
+				str +='<td>-</td>';
 			} 
 			 if(result[i].totalCompletedAppCount!=null && result[i].totalCompletedAppCount>0){
 				str +='<td>'+result[i].totalCompletedAppCount+'</td>';
