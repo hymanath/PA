@@ -2695,6 +2695,11 @@ $(document).on("click",".openmodalshow",function(){
 	var divId=$(this).attr("attr_divId");
 	$("#"+divId).show();
 });
+
+$(document).on("click",".openmodalshowGrievance",function(){
+	var divId=$(this).attr("attr_div_id");
+	$("#"+divId).show();
+});
 	
 function getComplaintTrackingDetails(complaintId,divId){
 	//alert(divId);
@@ -5479,7 +5484,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 							str+='<th> Complaint Info </th>';
 							str+='<th> Issue Type </th>';
 							str+='<th> Present Status </th>';
-							//str+='<th> View Details </th>';
+							str+='<th> View Details </th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>'
@@ -5501,9 +5506,9 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 							if(result[i].updatedDate.length > 0)
 								str+='<p>Last Updated Date : '+result[i].updatedDate+'</p>';
 							str+='</td>';
-							//str+='<td><input type="button" value="View" class="btn btn-sm btn-primary complaintTrackingCla" onclick="getComplaintTrackingDetails('+result[i].complaintId+',\'statusDivIdForInsurance'+i+'\')"/></td>';
+							str+='<td><input type="button" value="View" class="btn btn-sm btn-primary" onclick="getComplaintTrackingDetailsForGrievance('+result[i].complaintId+',\'statusDivIdForGrievance'+i+'\')"/></td>';
 						str+='</tr>';
-						//str+='<tr id="trstatusDivIdForInsurance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForInsurance'+i+'"</td></tr>';
+						str+='<tr id="trstatusDivIdForGrievance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForGrievance'+i+'"</td></tr>';
 					}
 					str+='</tbody>'
 				str+='</table>';
@@ -5513,3 +5518,157 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 			}
 		});
 });
+
+function getComplaintTrackingDetailsForGrievance(complaintId,divId){
+	//alert(divId);
+	$("#tr"+divId).show();
+	var jsobj={
+		complaintId : complaintId
+	}
+	$.ajax({
+		 type:'POST',
+		 url: 'getAllStatusDetailsByComplaintAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result!=null && result.onlystatus!=null && result.onlystatus.trim().length>0){
+			 var str='';
+			 str+='<div class="ui-steps-border">';
+			 str+='<div class="ui small steps" style="width:100%">';
+			 str+='<div class="active step" style="padding:20px 8px">';
+			    str+='<div class="content">';
+			        str+='<div class="title">'+result.onlystatus.toUpperCase() +'</div>';
+			     str+='</div>';
+			 str+='</div>';
+			 str+='</div>';
+             str+='</div>';
+			  $('#'+divId).html(str);
+		}else if(result!=null && result.simpleVOList1!=null && result.simpleVOList2!=null){
+			 var str='';
+			 str+='<div class="ui-steps-border">';
+			 str+='<div class="ui small steps" style="width:100%">';
+			 for(var i in result.simpleVOList1){
+				 
+				 if(result.simpleVOList1[i].dateString==null)
+				    str+='<div class="disabled step"  style="padding:20px 8px">';
+			     else{
+					  if(result.simpleVOList1[i].status=='current')
+				         str+='<div class="active step"  style="padding:20px 8px">';
+					  else
+					     str+='<div class="step" style="padding:20px 8px">';
+				 }
+				 str+='<div class="content">';
+				      str+='<div class="title" style="font-size:15px">'+result.simpleVOList1[i].name.toUpperCase() +'</div>';
+					  if(result.simpleVOList1[i].name=='not verified'){
+						  if(result.simpleVOList1[i].dateString!=null)
+						   str+='<div class="description" style="font-size:11px;">Requested on  '+result.simpleVOList1[i].dateString+'</div>';
+					  } 
+					  else{
+						  if(result.simpleVOList1[i].dateString!=null){
+							  str+='<div class="description" style="font-size:11px;">'+result.simpleVOList1[i].dateString+'</div>';
+						  } 
+					  }
+				 str+='</div>';
+				 if( result.simpleVOList1[i].name!='completed' && result.simpleVOList1[i].name!='not eligible' && result.simpleVOList1[i].name!='not possible')
+				   if(result.simpleVOList1[i].type!=null)
+				     str+='<span class="days">'+result.simpleVOList1[i].type+'</span>';
+				 str+='</div>';
+			 }
+			 
+			str+='</div>';
+            str+='</div>';
+			if(result.simpleVOList2!=null){
+				
+				str+='<div class="pull-right">';
+				str+='<button type="button"  class="btn btn-default btn-sm openmodalshowGrievance" attr_div_id="totalGriedivId'+complaintId+'" style="margin-top:5px"><i class="glyphicon glyphicon-eye-open"></i> &nbsp; Total Flow</span>';
+				str+='</div>';
+				 
+				 str+='<div id="totalGriedivId'+complaintId+'" style="display:none;">';
+					str+='<table class="table table-bordered">';
+				   str+='<th>USERNAME</th>';
+				   str+='<th>STATUS</th>';
+				   str+='<th>DATE</th>';
+				   for(var i in result.simpleVOList2){
+					   str+='<tr>';
+					   str+='<td>'+result.simpleVOList2[i].username+'</td>';
+					   str+='<td>'+result.simpleVOList2[i].name.toUpperCase()+'</td>';
+					   str+='<td>'+result.simpleVOList2[i].dateString+'</td>';
+					   str+='</tr>';
+				   }
+				   str+='<tr>';
+				  
+				   str+='</tr>';
+				   str+='</table>';
+				   str+='</div>';
+				/*str+='<div id="totaldivId">';
+				
+				str+='<div class="modal fade" id="myModalTotalFlow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">';
+				  str+='<div class="modal-dialog" role="document">';
+					str+='<div class="modal-content">';
+					  str+='<div class="modal-header">';
+						str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+						str+='<h4 class="modal-title" id="myModalLabel">Complaint Status</h4>';
+					  str+='</div>';
+					  str+='<div class="modal-body">';
+						str+='<table class="table table-bordered">';
+					   str+='<th>USERNAME</th>';
+					   str+='<th>STATUS</th>';
+					   str+='<th>DATE</th>';
+					   for(var i in result.simpleVOList2){
+						   str+='<tr>';
+						   str+='<td>'+result.simpleVOList2[i].username+'</td>';
+						   str+='<td>'+result.simpleVOList2[i].name.toUpperCase()+'</td>';
+						   str+='<td>'+result.simpleVOList2[i].dateString+'</td>';
+						   str+='</tr>';
+					   }
+					   str+='<tr>';
+					   
+					   str+='</tr>';
+					   str+='</table>';
+					  str+='</div>';
+					str+='</div>';
+				  str+='</div>';
+				str+='</div>';
+				
+			   str+='</div>';*/
+			}
+			 $('#'+divId).html(str);
+		 }else{
+			 
+			 var str='';
+			 str+='<div class="ui-steps-border">';
+			 str+='<div class="ui small steps" style="width:100%">';
+			 for(var i in result.simpleVOList1){
+				 
+				 if(result.simpleVOList1[i].dateString==null)
+				    str+='<div class="disabled step">';
+			     else{
+					  if(result.simpleVOList1[i].status=='current')
+				         str+='<div class="active step">';
+					  else
+					     str+='<div class="step">';
+				 }
+				 str+='<div class="content">';
+				      str+='<div class="title">'+result.simpleVOList1[i].name.toUpperCase() +'</div>';
+					  if(result.simpleVOList1[i].name=='not verified'){
+						  if(result.simpleVOList1[i].dateString!=null)
+						  str+='<div class="description">Requested on  '+result.simpleVOList1[i].dateString+'</div>';
+					  } 
+					  else{
+						  if(result.simpleVOList1[i].dateString!=null){
+							  str+='<div class="description">'+result.simpleVOList1[i].dateString+'</div>';
+						  } 
+					  }
+				 str+='</div>';
+				 
+				 if( result.simpleVOList1[i].name!='completed' && result.simpleVOList1[i].name!='not eligible' && result.simpleVOList1[i].name!='not possible')
+				   if(result.simpleVOList1[i].type!=null)
+				     str+='<span class="days">'+result.simpleVOList1[i].type+'</span>';
+				 str+='</div>';
+			 }
+			 
+			str+='</div>';
+            str+='</div>';
+			 $('#'+divId).html(str);
+		 }
+	});
+}
