@@ -77,7 +77,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	
     public void getTodayTotalVisitorsForSchedular(){
     	try{
-    	EntryExitInfo entryExitInfo = entryExitInfoDAO.getAll().get(0);
+    	EntryExitInfo entryExitInfo = entryExitInfoDAO.getAll().get(1);
     	if(entryExitInfo.getServiceRunReq().equalsIgnoreCase("true")){
     	  getTodayTotalVisitors(entryExitInfo.getEntryId(),entryExitInfo.getExitId(),entryExitInfo.getParentEventId());
     	}
@@ -489,7 +489,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			}
 			
 			
-		EntryExitInfo entryExitInfo = entryExitInfoDAO.getAll().get(0);
+		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 		Long entryEventId = entryExitInfo.getEntryId();
 		Long exitEventId = entryExitInfo.getExitId();
 		Long parentEventId = entryExitInfo.getParentEventId();

@@ -18,8 +18,12 @@ public class CadreMahanaduVisitDetailsDAO extends GenericDaoHibernate<CadreMahan
 	
 	public List<Object[]> getLatestInfoRecord(Date currentDate,Long parentEventId){
 		//0id,1date
-		Query query = getSession().createQuery("select model.cadreMahanaduVisitInfoId,model.insertedTime from CadreMahanaduVisitInfo model where model.cadreMahanaduVisitInfoId " +
-				" in (select max(model1.cadreMahanaduVisitInfoId) from CadreMahanaduVisitInfo model1 where date(model1.insertedTime) = :currentDate and model.parentEventId=:parentEventId)");
+		Query query = getSession().createQuery("select model.cadreMahanaduVisitInfoId,model.insertedTime from CadreMahanaduVisitInfo model " +
+				"                               where model.cadreMahanaduVisitInfoId " +
+				" in ( select max(model1.cadreMahanaduVisitInfoId) from CadreMahanaduVisitInfo model1 " +
+				"      where date(model1.insertedTime) = :currentDate and model1.parentEventId=:parentEventId" +
+				"     )"
+				);
 		query.setDate("currentDate", currentDate);
 		query.setParameter("parentEventId", parentEventId);
 		return query.list();
