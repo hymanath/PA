@@ -499,7 +499,7 @@
 		var presentMandalId = $('#presentManTowDivId').val();
 		var presentVillageId = $('#presentVillWardId').val();
 		var prsntAddrsPincode = $("#prsntAddrsPincodeId").val(); 
-		
+		var otherDesignationStr = $("#othersId").val();
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
 		$('#relativeTypeErr').html('');
@@ -1826,12 +1826,14 @@
 			<div class="row">
 			<div class="span12">
 				
-				<!--<div class="span" id="designDivId">
-					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>-->
+				<div class="span4" id="designDivId">
+					<h5 class="text-align1">DESIGNATION<span class="mandatory">*</span> </h5>
 					<!--<select class="form-control" id="desigId" name="cadreRegistrationVO.designationId">-->
-					<!--	<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="desigId" list="unionTabUserList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
+						<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="desigId" list="unionTabUserList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Designation " style="width:260px;" name="cadreRegistrationVO.designationId" value="%{voterInfoVOList[0].designationId}"/>
 					<span id="desigErr" style="color:red;font-size:12px;margin-right: 10px;"></span>
-				</div>	-->
+				</div>	
+				<div class="span4" id="othersDivId"><input id="othersId" class="form-control" style="display:none;margin-top:40px;margin-left:-30px;" placeholder="Enter The Designation" name="cadreRegistrationVO.otherDesignationStr"></input>
+				</div>
 				<div class="span3" id="schoolNameDiv" style="display:none">
 					<h5 class="text-align1">SCHOOL NAME<span class="mandatory">*</span> </h5>
 						<input type="text" id="schoolId" placeholder="SchoolName" name="cadreRegistrationVO.schoolName" value="${voterInfoVOList[0].schoolName}"></input>
@@ -3573,6 +3575,16 @@ function showNewTakenImg(){
 	
 </script>
 <script>
+$("#desigId").change(function(){
+	var designation = $(this).val();
+	if(designation == 8){
+		$("#othersId").show();
+	}
+	else {
+		$("#othersId").val('');
+		$("#othersId").hide();
+		}
+	});
 function getExistingCadreInfo1(){
     var errDivId = "#errorDiv1";
 	$('#searchDetailsDiv1').html('');
