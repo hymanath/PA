@@ -50,4 +50,13 @@
 	<bean id="paymentMethodDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentMethodDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="paymentGatewayService" class="com.itgrids.paymentgateway.service.impl.PaymentGatewayService">
+		<property name="paymentMethodDAO" ref="paymentMethodDAO" />
+	</bean>
+	
+	<bean id="paymentGatewayServiceTest" class="com.itgrids.paymentgateway.service.PaymentGatewayServiceTest">
+		<property name="paymentGatewayService" ref="paymentGatewayService" />
+	</bean>
+	
 </beans>
