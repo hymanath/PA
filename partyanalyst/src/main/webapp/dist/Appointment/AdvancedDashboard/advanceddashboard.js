@@ -701,9 +701,7 @@ function getCandidCountsByStatesAction(){
     dataType : 'json',
     data : {task:JSON.stringify(jsObj)}  
     }).done(function(result){ 
-	 if(result!=null && result!=0){
        buildAppointmentMembersData(result);
-	  }
        });   
   }
 
@@ -728,10 +726,8 @@ function getCandidCountsByStatesAction(){
     dataType : 'json',
     data : {task:JSON.stringify(jsObj)}  
     }).done(function(result){ 
-	  if(result!=null && result!=0){
 		  buildAppointmentMembersData(result);
-       }
-	   });   
+      });   
   }
 function buildAppointmentMembersData(result)
  {
