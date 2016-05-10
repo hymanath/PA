@@ -2,12 +2,12 @@
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<table class="table table-bordered bg_ff m_top10">
 				<tr>
-					<td>
+					<!--<td>
 						<h4 class="panel-title m_top10 text-success text-capitalize">TODAY APPOINTMENTS</h4>
 						<table class="table table-condensed tableAppointment" id="todayApptsForAdvancedDashBrd">
 							<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayForAdvancedDashBrdAjaxId"></center></div>
 						</table>
-					</td>
+					</td>-->
 					<td>
 						<table class="table removetopborder">
 							<tr>
@@ -171,7 +171,7 @@ function getCommitteeLevelCount(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
-			buildCommitteeLvlAppntmnts(result,jsObj);
+	       buildCommitteeLvlAppntmnts(result,jsObj);
 	});     
 }
 function buildCommitteeLvlAppntmnts(result,jsObj){
@@ -201,7 +201,7 @@ function buildCommitteeLvlAppntmnts(result,jsObj){
             str+='<tbody>';
        
     for(var i in result){
-            str +='<tr>';
+	        str +='<tr>';
 		str +='<td id='+result[i].roleId+'><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getLevelWiseCount(\''+result[i].roleId+'\',\''+result[i].role+'\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].role+'</a></td>';
         
         if(result[i].total>0)
@@ -250,7 +250,12 @@ function buildCommitteeLvlAppntmnts(result,jsObj){
   }
       $("#committeeLvlAppntId").html(str);
       
-      $("#dataTableCommiteeId").DataTable({    
+      $("#dataTableCommiteeId").DataTable({
+							"aaSorting": [[ -1, "desc" ]],
+							"iDisplayLength" : 10	,
+							 "bDestroy": true,
+							 "bFilter": false,
+							"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
       }); 
 }
 

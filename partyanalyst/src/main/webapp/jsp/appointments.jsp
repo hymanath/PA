@@ -1048,7 +1048,7 @@
 function getTotalAppointmentStatus(){
 	
 	$("#todayAppointmentsId").html('');
-	$("#todayApptsForAdvancedDashBrd").html('');
+	//$("#todayApptsForAdvancedDashBrd").html('');
 	
 	$("#todayAptLoadingId").show();
 	$("#todayForAdvancedDashBrdAjaxId").show();
@@ -1067,7 +1067,7 @@ function getTotalAppointmentStatus(){
 	$("#todayForAdvancedDashBrdAjaxId").hide();
 		if(result != null){
 			buildTotalAppointmentStatusForToday(result);
-			buildTtlAppntmntSttsFrAdncDshBrd(result);
+			//buildTtlAppntmntSttsFrAdncDshBrd(result);
 			//buildJSONForAppStatus(result);
 			//buildTotalAppointmentStatus(result);
 		}
