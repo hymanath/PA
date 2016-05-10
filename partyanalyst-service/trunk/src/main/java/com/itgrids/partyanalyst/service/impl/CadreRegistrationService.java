@@ -11394,7 +11394,8 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						}
 						if(cadreRegistrationVO.getDesignationId() != null){
 							tdpCadre.setDesignationId(cadreRegistrationVO.getDesignationId());
-							if(cadreRegistrationVO.getOtherDesignationStr() != null && cadreRegistrationVO.getOtherDesignationStr().trim().length()>0)
+							if(cadreRegistrationVO.getDesignationId() != null && cadreRegistrationVO.getDesignationId().longValue() == 8L && 
+									 cadreRegistrationVO.getOtherDesignationStr() != null && cadreRegistrationVO.getOtherDesignationStr().trim().length()>0)//if others
 								tdpCadre.setDesignationName(cadreRegistrationVO.getOtherDesignationStr().trim());
 						}
 						
