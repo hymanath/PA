@@ -6,7 +6,7 @@
 <beans>
 	
 	<bean id="paymentMethodDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentMethodDAO" >
-		<property name="sessionFactory" ref="sessionFactoryPG" />
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 		<bean id="paymentModuleSubTypeDAO" class="com.itgrids.paymentgateway.dao.hibernate.PaymentModuleSubTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
