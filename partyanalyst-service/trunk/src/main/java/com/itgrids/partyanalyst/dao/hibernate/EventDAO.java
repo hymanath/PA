@@ -54,7 +54,19 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
-	
+	public List<Object[]> getVisibleSubEventsByParentEvent(Long eventId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.eventId, model.name from Event model " +
+				        " where  model.parentEventId = :eventId  and model.isActive =:isActive and model.isVisible =:isVisible " +
+				        " order by model.orderId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("eventId", eventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameter("isVisible", IConstants.IS_VISIBLE);
+		return query.list();
+	}
 	public List<Object[]> getParentEvents(Date currentDate)
 	{
 		Query query = getSession().createQuery("select model.eventId,model.name,model.eventStartTime,model.eventEndTime," +
@@ -114,5 +126,31 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		query.setParameter("eventId", eventId);
 		
 		return (Object[])query.uniqueResult();		
-	}	
+	}
+	
+	public List<Object[]> getVisibleParentEvents(Date currentDate)
+	{
+		Query query = getSession().createQuery("select model.eventId,model.name,model.eventStartTime,model.eventEndTime," +
+				" model.startTime, model.endTime  from Event model where date(:currentDate) between date(model.eventStartTime) and date(model.eventEndTime) and  model.parentEventId is null " +
+				" and model.isActive =:isActive and model.isVisible =:isVisible order by model.orderId asc ");
+		query.setDate("currentDate", currentDate);
+		
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameter("isVisible", IConstants.IS_VISIBLE);
+		
+		return query.list();
+	}
+	public List<Object[]> getVisibleEventsByUserAndParentIds(Date currentDate,List<Long> parentEventIds)
+	{
+		Query query = getSession().createQuery("select model.eventId,model.name,model.parentEventId,model.description,model.startTime,model.endTime,model.isInviteeExist," +
+				" model.entryLimit, model.serverWorkMode, model.tabWorkMode,date(model.eventStartTime),date(model.eventEndTime),model.orderId,model.isActive from Event model where  " +
+				" date(:currentDate) between date(model.eventStartTime) and date(model.eventEndTime) and  model.parentEventId in(:parentEventIds)  and model.isActive =:isActive " +
+				" and  model.isVisible =:isVisible order by model.orderId asc ");
+		query.setDate("currentDate", currentDate);
+		
+		query.setParameterList("parentEventIds", parentEventIds);
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameter("isVisible", IConstants.IS_VISIBLE);
+		return query.list();
+	}
 }

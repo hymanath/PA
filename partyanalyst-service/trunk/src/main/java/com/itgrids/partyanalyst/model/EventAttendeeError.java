@@ -127,7 +127,7 @@ public class EventAttendeeError {
 	@Column(name="attended_time")
 	public Date getAttendedTime() {
 		return attendedTime;
-	}
+	} 
 	public void setAttendedTime(Date attendedTime) {
 		this.attendedTime = attendedTime;
 	}
