@@ -5746,8 +5746,19 @@ public class CadreDetailsService implements ICadreDetailsService{
 		//Default Values For Entity Types For Assigned Surveys		
 		
 		Map<Long,IvrOptionsVO> optionsMap = new HashMap<Long, IvrOptionsVO>();
-
+			Map<Long,Long> surveyCnt = new HashMap<Long, Long>();
 		if(surveyIds !=null && surveyIds.size()>0){
+			 List<Object[]> list = ivrSurveyEntityDAO.getSurveyCountforEntityType(surveyIds, ivrRespondantId);
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 Long cnt =0l;
+					 if(surveyCnt.get((Long)params[0]) != null)
+					  cnt = surveyCnt.get((Long)params[0]);
+					 surveyCnt.put((Long)params[0], (Long)params[2] + cnt);
+				 }
+			 }
 			List<Object[]> entityTypeObjResult =  ivrSurveyEntityDAO.getSurveyEntityTypeAndCountDetails(surveyIds,ivrRespondantId);			
 			if(entityTypeObjResult !=null && entityTypeObjResult.size()>0){				
 				for (Object[] entityType : entityTypeObjResult) {
@@ -5755,7 +5766,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					IvrOptionsVO vo = optionsMap.get((Long)entityType[0]);
 					
 					if(vo ==null){
-						vo = new IvrOptionsVO();	
+						vo = new IvrOptionsVO();
+						vo.setCount(surveyCnt.get((Long)entityType[0]));
 						optionsMap.put((Long)entityType[0], vo);
 					}
 					
