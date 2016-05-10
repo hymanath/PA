@@ -2319,9 +2319,11 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	}
 	public String registrationSuccess(){
 		try {
-			enrollMentNO = md5Algoritm.generateMD5Decrypt(en.toString().trim());
+			//enrollMentNO = md5Algoritm.generateMD5Decrypt(en.toString().trim());
+			enrollMentNO = en.toString().trim();
 			if(AuthDesc != null && AuthDesc.trim().equalsIgnoreCase("Y")){
-				membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
+				//membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
+				membershipNo = mn.toString().trim();
 				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo);
 				if(resultStatus != null && resultStatus.getResultCode()==0)
 					status="success";
