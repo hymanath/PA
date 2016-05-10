@@ -18,4 +18,5 @@ public interface ICadreHealthStatusDAO extends GenericDao<CadreHealthStatus, Lon
 	  public List<String> getCompletedStatusBycomplaintId(Long complaintId);
 	  public List<String> getStatusBycomplaintIdForInsurance(Long complaintId);
 	  public List<Object[]> getComplaintsDetailsForGrievanceByLocationAndStatus(Long locationId,String locationType,String status,String issueType);
+	  public List<Object[]> getGrievanceRequestDetailsForBenifits(Long id,String searchType,String status);
 }

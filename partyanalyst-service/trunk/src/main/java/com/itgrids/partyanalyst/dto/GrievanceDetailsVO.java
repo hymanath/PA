@@ -49,8 +49,15 @@ public class GrievanceDetailsVO implements Serializable{
 	
 	private String dateStr;
 	private String comment;
+	private String approvedAmount;
 	
 	
+	public String getApprovedAmount() {
+		return approvedAmount;
+	}
+	public void setApprovedAmount(String approvedAmount) {
+		this.approvedAmount = approvedAmount;
+	}
 	public String getDateStr() {
 		return dateStr;
 	}
