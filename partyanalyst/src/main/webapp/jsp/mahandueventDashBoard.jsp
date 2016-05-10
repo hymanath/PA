@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+
 <title>Event</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 <link href="dist/eventDashboard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -102,19 +103,28 @@
 
 <section>
 	<div class="container">	
+	
 	<div class="row" style="padding:5px;">
 		
-		<div class="col-md-3 col-md-offset-8">
+		<div class="col-md-3 col-xs-offset-7">
         	   <div id="reportrange" class="pull-right calendar-style">
                   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                   <span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
                </div>
         </div>
-		<div class="col-md-1">
-			<a class="btn btn-md btn-success btn-block" onclick="callingDefaultCalls();">
+		
+		<div class="col-xs-1 pull-right">
+		     <a onclick="insertIntermediateData();" class="btn btn-xs btn-success btn-block">
+				<span class="" style="font-size: 15px;"> Sync</span>
+			 </a>
+		</div>
+		
+		<div class="col-xs-1 pull-right">
+		     <a class="btn btn-md btn-success btn-block" onclick="callingDefaultCalls();">
 				<span class="glyphicon glyphicon-refresh"></span>
 			</a>
 		</div>
+	
     </div>
 		
 		
@@ -168,13 +178,7 @@
 		</div>
 	</div>
 	
-	<div class="row">
-	<div class="col-md-1 pull-right">
-			<a  onclick="insertIntermediateData();" class="btn btn-md btn-success btn-block">
-				<span class="glyphicon glyphicon-refresh"></span>
-			</a>
-		</div>
-	</div>
+	
 	
         <div class="row m_top10">
         <div class="col-md-6">
@@ -907,6 +911,7 @@ function insertIntermediateData()
           success: function(result){ 
 			 
 			 closeDialogue();
+			 callingDefaultCalls();
 			 locationWiseCalls();
          },
           error:function() { 
