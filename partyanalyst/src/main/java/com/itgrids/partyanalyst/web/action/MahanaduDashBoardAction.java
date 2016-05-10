@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -21,6 +22,11 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	private List<MahanaduVisitVO> mahanaduVisitList;
 	private String status;
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardAction.class); 
+
+	private String task;
+	private JSONObject jObj;
+	
+	
 	
 	public void setServletRequest(HttpServletRequest request) {		
 		this.request = request;
@@ -45,6 +51,21 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
 	}
 
 	public String execute(){
@@ -83,7 +104,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	
 	public String getTodayTotalAndCurrentUsersInfo(){
 		try{
-			String fromDateStr = request.getParameter("fromDate");
+			/*String fromDateStr = request.getParameter("fromDate");
 			String toDateStr = request.getParameter("toDate");
 			Date fromDate = null;
 			Date toDate = null;
@@ -91,8 +112,11 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
-			}
-			mahanaduVisitList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfo(fromDate,toDate);
+			}*/
+			
+			jObj = new JSONObject(getTask());
+			
+			mahanaduVisitList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoList(jObj.getLong("eventId"));
 		}catch(Exception e){
 			LOG.error("Exception rised in getTodayTotalAndCurrentUsersInfo()",e);
 		}
