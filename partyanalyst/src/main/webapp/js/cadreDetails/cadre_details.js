@@ -418,7 +418,7 @@ function getParticipatedConstituencyId(cadreId){
 					 if(result.imagePath !=null && result.imagePath !=""){
 						 $("#imagePathId").html('<img src="'+result.imagePath+'" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">'); 
 					 }else{
-						 $("#imagePathId").html('<img src="images/search_details_member_imahe.png" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">');
+						 $("#imagePathId").html('<img src="images/User.png" class="media-object img-circle" style="border:1px solid #ccc;margin-top:10px;" width="80px" height="80px;">');
 					 }
 					 
 					 //assigning radio ButtonIds for News 
@@ -1107,7 +1107,7 @@ function getParticipatedConstituencyId(cadreId){
 			});
 		}
 	function getTotalMemberShipRegistrationsInCadreLocation(){
-			$("#memberShipCountDiv").html('<img alt="Processing Image" src="./images/icons/search.gif">');
+			$("#memberShipCountDiv").html('<center><img alt="Processing Image" src="images/icons/loading.gif"></center>');
 			var pcId=0;
 			//pcId:participatedConstituencyId,pcType:participatedConstituencyType
 			//alert(participatedParliamentId);
@@ -5108,7 +5108,7 @@ function getAppointmentsUserDetails()
 				$("#candidateAppointmentImg").hide();
 				var str='';
 				if(result != null){
-						str+='<table class="table table-bordered">';
+						str+='<table class="table table-bordered m_0">';
 						str+='<thead style="background-color:#f2f2f2;">';
 						str+='<th>CANDIDATE USER</th>';
 						str+='<th>COUNT</th>';
