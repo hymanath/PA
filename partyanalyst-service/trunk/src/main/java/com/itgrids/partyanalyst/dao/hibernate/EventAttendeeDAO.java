@@ -42,7 +42,43 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
-
+	public List<Object[]> getRequiredEventAttendeeInfo(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" model.tdpCadre.userAddress.constituency.district.districtId");
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" model.tdpCadre.userAddress.constituency.constituencyId");
+		if(inviteeType.equalsIgnoreCase("attendee"))
+			str.append(" ,date(model.attendedTime) from EventAttendee model where ");
+		if(inviteeType.equalsIgnoreCase("invitee"))
+			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");	
+		
+		
+		str.append("  date(model.attendedTime) between :startDate and :endDate ");
+		if(eventIds != null && eventIds.size() > 0){
+			str.append(" and model.event.eventId in  (:eventIds)");
+		}
+		
+		str.append(" and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId,date(model.attendedTime) order by model.tdpCadre.userAddress.constituency.district.districtId");
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime) order by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId,date(model.attendedTime)");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
 	
 	public List checkUserExist(Long tdpCadreId,Long eventId,Date date)
 	{
@@ -105,7 +141,41 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
+	public List<Object[]> getRequiredStateWiseEventAttendeeInfo(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) ");
 	
+		if(inviteeType.equalsIgnoreCase("attendee"))
+			str.append(" ,date(model.attendedTime) from EventAttendee model where ");
+		else if(inviteeType.equalsIgnoreCase("invitee"))
+			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y'  and model.event.parentEventId = model1.event.parentEventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and");	
+		
+		str.append(" date(model.attendedTime) between :startDate and :endDate  ");
+		
+		if(stateId == 1)
+			str.append(" and ( model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ) ");
+		else 
+			str.append(" and (model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10)  ");
+		
+		if(eventIds != null && eventIds.size() > 0){
+			str.append(" and model.event.eventId in  (:eventIds)");
+		}
+		
+		str.append("   and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' " +
+				   "  group by model.event.eventId,date(model.attendedTime) ");
+		
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
 	public List<Object[]> getTotlaVisitsCount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds)
 	{
 		

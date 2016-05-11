@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.notification.service.impl;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -288,10 +289,15 @@ public class Scheduler {
 	public ResultStatus insertMahanaduEventInfo()
 	{
 		ResultStatus rs = new ResultStatus();
-		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
 			return rs;
+		}
+			
 		try{
-			 rs = mahaNaduService.insertDataintoEventInfo();
+			 DateUtilService dateUtilService = new DateUtilService();
+			 Date currentDate = dateUtilService.getCurrentDateAndTime();
+			 
+			 rs = mahaNaduService.insertDataintoEventInfo(currentDate,currentDate,null);
 		}
 		catch(Exception e)
 		{

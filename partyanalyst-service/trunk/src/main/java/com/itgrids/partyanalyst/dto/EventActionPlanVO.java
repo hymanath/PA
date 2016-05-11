@@ -17,7 +17,9 @@ public class EventActionPlanVO extends ResultStatus implements Comparable<EventA
 	private Long eventId;
 	private Long locationValue;
 	
-	
+	private Long inviteeCount =0l;
+	private Long attendeeCount =0l;
+	private Long totalAttendeescount = 0l;
 	
 	public Long getId() {
 		return id;
@@ -71,6 +73,24 @@ public class EventActionPlanVO extends ResultStatus implements Comparable<EventA
 	public int compareTo(EventActionPlanVO obj) {
 		int result = this.getTargetDate().compareTo(obj.getTargetDate());
 		return result;
+	}
+	public Long getInviteeCount() {
+		return inviteeCount;
+	}
+	public void setInviteeCount(Long inviteeCount) {
+		this.inviteeCount = inviteeCount;
+	}
+	public Long getAttendeeCount() {
+		return attendeeCount;
+	}
+	public void setAttendeeCount(Long attendeeCount) {
+		this.attendeeCount = attendeeCount;
+	}
+	public Long getTotalAttendeescount() {
+		return totalAttendeescount;
+	}
+	public void setTotalAttendeescount(Long totalAttendeescount) {
+		this.totalAttendeescount = totalAttendeescount;
 	}
 	
 }
