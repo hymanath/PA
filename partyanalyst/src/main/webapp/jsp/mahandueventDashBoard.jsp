@@ -115,7 +115,9 @@
 		
 		<div class="col-xs-1 pull-right">
 		     <a onclick="insertIntermediateData();" class="btn btn-xs btn-success btn-block">
-				<span class="" style="font-size: 15px;"> Sync</span>
+				<span class="" style="font-size: 15px;"> Sync
+					<img src="images/ajaxImg2.gif" id="syncAjaxImage" style="height:20px;width:20px;display:none;"/>
+				</span>
 			 </a>
 		</div>
 		
@@ -179,73 +181,73 @@
 	</div>
 	
 	
-	
-        <div class="row m_top10">
-        <div class="col-md-6">
-        	<!--<div class="panel panel-default panel-custom-default">
-            	<div class="panel-heading">
-                	Today Starting soon Programmes
-                </div>
-                <div class="panel-body ScrollDiv1">
-                	<p class="m_0 text-bold">NTR PHOTO GALLERY</p>
-                    <p>Short Description of photo gallery</p>
-                    <p class="text-danger">Programme Time: 9:00 am To 5:00 pm</p>
-                    <hr class="m_top10"/>
-                    <p class="m_0 text-bold">BLOOD DONATION</p>
-                    <p>Short Description of photo gallery</p>
-                    <p class="text-danger">Programme Time: 9:00 am To 5:00 pm</p>
-                    <hr class="m_top10"/>
-                    <p class="m_0 text-bold">CHANDRABABU NAIDU SPEECH</p>
-                    <p>Short Description of photo gallery</p>
-                    <p class="text-danger">Programme Time: 9:00 am To 5:00 pm</p>
-                    <hr class="m_top10"/>
-                    <p class="m_0 text-bold">CHANDRABABU NAIDU SPEECH</p>
-                    <p>Short Description of photo gallery</p>
-                    <p class="text-danger m_bottom0">Programme Time: 9:00 am To 5:00 pm</p>
-                </div>
-            </div>-->
-			<div class="panel panel-default panel-custom-default">
-            	<div class="panel-heading">
-                <p class="m_0 display-style" id="districtHeading">AP DISTRICT WISE</p>
-                <div class="onoffswitch pull-right">
-                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-                    <label class="onoffswitch-label" for="myonoffswitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                    </label>
-                </div>
-                
-                </div>
-                <div class="panel-body" style="min-height:400px;">				
-						<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3);getLocationWiseCountBySubEvents(4);"><option value="0"> All Events</option></select>
-						<center><img id="distAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
-                     <div id="districtTableId" style="margin-top: 10px;"> </div>
-                </div>
-            </div>
-			
-        </div>
-        <div class="col-md-6">
-        	<div class="panel panel-default panel-custom-default">
-            	<div class="panel-heading">
-                <p class="m_0 display-style" id="constiHeading">AP CONSTITUENCY WISE</p>
-                <div class="onoffswitch pull-right" style="display:none;">
-                    <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
-                    <label class="onoffswitch-label" for="myonoffswitch1">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                    </label>
-                </div>
-                
-                </div>
-                <div class="panel-body" style="min-height:430px;">
-				<!--<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>-->
-				<center><img id="constAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
-					
-                   <div id="constiTableId" style="margin-top:10px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default panel-custom-default m_0">
+					<div class="panel-heading">
+						
+						<div class="row">
+							<div class="col-md-4">
+								<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3);getLocationWiseCountBySubEvents(4);">
+									<option value="0"> All Events</option>
+								</select>
+							</div>
+							<div class="col-md-2 col-md-offset-2">
+								<div class="onoffswitch pull-right">
+									<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+									<label class="onoffswitch-label" for="myonoffswitch">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="panel-body" style="background-color:#f2f2f2">
+						
+						<div class="row m_top6">
+							<div class="col-md-6">
+								<div class="panel panel-default m_0">
+									<div class="panel-heading">
+									<p class="m_0 display-style" id="districtHeading">AP DISTRICT WISE</p>
+									
+									
+									</div>
+									<div class="panel-body pad_5" style="min-height:300px;">				
+											
+											<center><img id="distAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+										 <div id="districtTableId"> </div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="col-md-6">
+								<div class="panel panel-default m_0">
+									<div class="panel-heading">
+									<p class="m_0 display-style" id="constiHeading">AP CONSTITUENCY WISE</p>
+									<div class="onoffswitch pull-right" style="display:none;">
+										<input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
+										<label class="onoffswitch-label" for="myonoffswitch1">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+									</div>
+									<div class="panel-body pad_5" style="min-height:400px;">
+									<!--<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>-->
+									<center><img id="constAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+										
+									   <div id="constiTableId"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+        
     <!--<div class="row">
     	<div class="col-md-12">
         	<div class="panel panel-default panel-custom-default">
@@ -285,6 +287,17 @@
 	<div id="processingDialogue"></div>
 	</div>
 </section>
+
+<div class="modal fade" id="syncModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        Sync in Processing Please Wait...
+      </div>
+    </div>
+  </div>
+</div>
+
 <script  src="js/eventDashboard.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -566,18 +579,27 @@ function buildDistrictTable(result,reportLevelId){
 	str+='<th>CONSTITUENCY</th>';
 	}
 	str+='<th>VOTERS</th>';
-    str+='<th>CADRES</th>';
+    str+='<th>CADERS</th>';
 	str+='<th>INVITEES</th>';
-	str+='<th>NON INVITEES</th>';
+	str+='<th>NON <br/>INVITEES</th>';
+	str+='<th>Total<br/> Attendences</th>';
     str+='</tr></thead>';
     str+='<tbody>';
 	for(var i in result){
+		
 		str+='<tr>';
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].voterCount+'</td>';
 		str+='<td>'+result[i].cadreCount+'</td>';
-		str+='<td>'+result[i].invitees+'</td>';
-		str+='<td>'+result[i].nonInvitees+'</td>';
+		
+		var inviteesCount = result[i].invitees;
+		var nonInviteesCount = result[i].nonInvitees;
+		var totalAttendees = inviteesCount + nonInviteesCount;
+		
+		
+		str+='<td>'+inviteesCount+'</td>';
+		str+='<td>'+nonInviteesCount+'</td>';
+		str+='<td>'+totalAttendees+'</td>';
 		str+='</tr>';
     }                               
 	str+='</tbody></table></div>';
@@ -587,15 +609,15 @@ function buildDistrictTable(result,reportLevelId){
 	else{
 	$("#constiTableId").html(str);
 	}
-	$('#table'+reportLevelId).DataTable( {
+	$('#table'+reportLevelId).DataTable({
         responsive: true,
 		"paging":   false,
         "info":     false,
 		"searching": false,
 		"sDom": '<"top"i>rt<"bottom"flp><"clear">',
 		"columnDefs": [
-	    { "width": "30%", "targets": 0 }]
-    } );
+	    { "width": "24%", "targets": 0 }]
+    });
 	if(reportLevelId == 3){
 	$('.scrollDiv').slimScroll({
 	height: '350px'
@@ -603,7 +625,7 @@ function buildDistrictTable(result,reportLevelId){
 	}
 	else{
 	$('.scrollDiv1').slimScroll({
-	height: '370px'
+	height: '350px'
 	});
 	}
 	
@@ -900,8 +922,12 @@ showHide();
 
 
 function insertIntermediateData()
-{
+{   
+
+    $("#syncAjaxImage").show();
 	ajaxProcessing();
+	
+	
 	$.ajax({
           type:'POST',
           url: 'insertDataintoEventInfoAction.action',
@@ -909,10 +935,11 @@ function insertIntermediateData()
           data: {},
 
           success: function(result){ 
-			 
+			 $("#syncAjaxImage").hide();
 			 closeDialogue();
 			 callingDefaultCalls();
 			 locationWiseCalls();
+			 
          },
           error:function() { 
 		  closeDialogue();
@@ -1596,8 +1623,12 @@ function getStateWiseOverview(eventId){
 
 function ajaxProcessing()
 {
-	
-$("#processingDialogue").dialog({
+$("#syncModal").modal("show");
+setTimeout(function(){
+	$("#syncModal").modal("hide");
+},2000)
+
+/*$("#processingDialogue").dialog({
 	  
 		//width:300,
 		//height:100,
@@ -1619,6 +1650,7 @@ $('#processingDialogue').removeClass("ui-widget-content ui-dialog-content");
 $('.ui-dialog').css({left:378 ,width:512});
 $('#processingDialogue').closest('.ui-icon').css("display","none");
  $("#processingDialogue").dialog('open').html("<div style='margin-top:330px;'><img src='images/icons/loading.gif' style=''/></div>");
+ */
 }
 function closeDialogue()
 {
