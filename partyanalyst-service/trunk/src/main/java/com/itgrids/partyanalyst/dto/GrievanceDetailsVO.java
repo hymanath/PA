@@ -50,8 +50,30 @@ public class GrievanceDetailsVO implements Serializable{
 	private String dateStr;
 	private String comment;
 	private String approvedAmount;
+	private String constituency;
+	private String villageName;
+	private String mandalName;
 	
 	
+	
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	public String getVillageName() {
+		return villageName;
+	}
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
 	public String getApprovedAmount() {
 		return approvedAmount;
 	}
