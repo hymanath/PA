@@ -308,7 +308,7 @@ function buildRoleWiseCount(result,level,jsObj){
 		      str +='<td id='+result[i].roleId+'>'+result[i].role+'</td>';
 		  if(result[i].total>0)
 		    {
-            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'total\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].total+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'unique\',\'total\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].total+'</a></td>';
 		    }else{
 			   str+='<td style="text-align:center">'+result[i].total+'</td>';
 		    }
@@ -320,7 +320,7 @@ function buildRoleWiseCount(result,level,jsObj){
 		   }
 		  if(result[i].requestedCnt)
 		  {
-            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'Request\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].requestedCnt+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'unique\',\'Request\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].requestedCnt+'</a></td>';
 		  }else{
 			  str+='<td style="text-align:center">'+result[i].requestedCnt+'</td>';
 		  }
@@ -332,7 +332,7 @@ function buildRoleWiseCount(result,level,jsObj){
 		  }
 		  if(result[i].scheduledCnt>0)
 		   {
-            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'total\',\'Schedule\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].scheduledCnt+'</a></td>';
+            str +='<td style="text-align:center"><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleTypeForRole(\''+result[i].roleId+'\',\'CommitteeMemberRole\',\'unique\',\'Schedule\',\''+jsObj.aptUserId+'\',\''+jsObj.levelId+'\');">'+result[i].scheduledCnt+'</a></td>';
 		   }else{
 			    str+='<td style="text-align:center">'+result[i].scheduledCnt+'</td>';
 		   }
