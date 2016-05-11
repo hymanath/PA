@@ -926,13 +926,18 @@ function insertIntermediateData()
 
     $("#syncAjaxImage").show();
 	ajaxProcessing();
-	
+	var jObj = {
+			
+			subEvents : subEvents,
+			startDate : startDate,
+			endDate : endDate
+		}
 	
 	$.ajax({
           type:'POST',
           url: 'insertDataintoEventInfoAction.action',
           dataType: 'json',
-          data: {},
+          data: {task:JSON.stringify(jObj)},
 
           success: function(result){ 
 			 $("#syncAjaxImage").hide();

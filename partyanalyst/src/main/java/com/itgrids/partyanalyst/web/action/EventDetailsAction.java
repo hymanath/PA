@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -116,11 +118,34 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	public String insertEventInfo()
 	{
 		try{
-			resultStatus = mahaNaduService.insertDataintoEventInfo();
+			
+			jObj = new JSONObject(getTask());
+			
+			List<Long> subEventIds = new ArrayList<Long>();
+			
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			 Date eventStrDate = null;
+			 Date eventEndDate = null;
+			 if(startDate != null && !startDate.isEmpty()){
+				 eventStrDate = format.parse(startDate);
+			 }
+			 
+			 if(endDate != null && !endDate.isEmpty()){
+				 eventEndDate = format.parse(endDate); 
+			 }
+			
+			resultStatus = mahaNaduService.insertDataintoEventInfo(eventStrDate,eventEndDate,subEventIds);
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error(" Entered Into insertEventInfo",e);
 		}
 		return Action.SUCCESS;
 	}
