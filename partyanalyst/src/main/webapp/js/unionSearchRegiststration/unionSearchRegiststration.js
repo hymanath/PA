@@ -167,6 +167,7 @@ function getVoterDetailsBySearch(){
 		$('#searchErrDiv').html('Please Enter Voter ID /Voter Card No.');
 		return;
 	}
+	$("#searchDataImg").show(); 
 	var jsObj =
 			{   
 				constId : constituencyId,
@@ -177,6 +178,7 @@ function getVoterDetailsBySearch(){
 		url : "getVoterDetailsByVoterCardNumberAction.action",
 		data : {task:JSON.stringify(jsObj)} ,   
 	}).done(function(result){
+		$("#searchDataImg").hide(); 
 		if(result.subList != null && result.subList.length > 0){
 			buildVoterDetails(result.subList);
 		}else{
