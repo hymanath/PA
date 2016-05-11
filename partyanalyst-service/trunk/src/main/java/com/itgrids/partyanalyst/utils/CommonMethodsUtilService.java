@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.text.DateFormat;
+import java.lang.reflect.Field;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
+
 
 public class CommonMethodsUtilService {
 	private static Logger LOG = Logger.getLogger(CommonMethodsUtilService.class);
@@ -534,4 +535,20 @@ public class CommonMethodsUtilService {
 		        adl.update(str.getBytes());
 		        return (Long.valueOf(adl.getValue()).toString());
 		      }
+		  
+		  public <T> T setValueToModel(Object destinationModel, Object sourceVO){
+			    try{
+			    Field[] fields = sourceVO.getClass().getDeclaredFields();
+			    for(Field sourceField: fields){
+			      sourceField.setAccessible(true);
+			      Object value = sourceField.get(sourceVO);
+			      Field destinationField = destinationModel.getClass().getDeclaredField(sourceField.getName());
+			      destinationField.setAccessible(true);
+			      destinationField.set(destinationModel,value);
+			    }
+			    }catch(Exception e){
+			      e.printStackTrace();
+			    }
+			    return (T) destinationModel;
+			  }
 }
