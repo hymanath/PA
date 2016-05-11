@@ -251,7 +251,7 @@ var result = resultList.verifierVOList;
 	if(result != null && result.length >0){
 	str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
 			str+='<table id="ivrStatusDataTable">';
-			str+='<thead><th></th></thead>';
+			str+='<thead><th style="text-align:right;">sort by date<i style="background: rgb(221, 221, 221) none repeat scroll 0% 0%; border-radius: 50%; padding: 9px; float: right;" class="glyphicon glyphicon-sort-by-attributes"></i></th></thead>';
 			for(var i in result){
 			str+='<tr>';
 			str+='<td>';
@@ -259,7 +259,7 @@ var result = resultList.verifierVOList;
 					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
 						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 							str+='<h4 class="panel-title">';
-								str+=''+result[i].name+'('+result[i].date+')';
+								str+=''+result[i].date+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+result[i].name+'';
 							str+='</h4>';
 						str+='</a>';
 					str+='</div>';
@@ -325,7 +325,7 @@ var result = resultList.verifierVOList;
 			"paging":   false,
 				   "info":     false,
 			"searching": false,
-			"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+			"sDom": '<"top"fl>rt<"bottom"i><"clear"p>',
 			"columnDefs": [
 			   { "width": "25%", "targets": 0 }]
 			   } );
