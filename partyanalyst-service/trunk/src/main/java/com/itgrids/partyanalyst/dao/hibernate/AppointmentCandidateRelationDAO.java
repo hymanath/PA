@@ -527,7 +527,9 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 			str.append("count(model.appointmentCandidate.tdpCadreId),");
 		str.append(" TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId, TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel " + 
 		"from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
-		" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
+		" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId " +
+		" AND TCM.isActive = 'Y'" +
+		" AND model.appointmentCandidate.appointmentCandidateTypeId = 2 ");
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		if(aptUserId !=null)
@@ -551,7 +553,8 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 			str.append("count(model.appointmentCandidate.tdpCadreId),");
 		str.append(" TCM.tdpCommitteeRole.tdpRoles.tdpRolesId, TCM.tdpCommitteeRole.tdpRoles.role " + 
 		"from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
-		" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId ");
+		" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId" +
+		" AND TCM.isActive = 'Y' AND model.appointmentCandidate.appointmentCandidateTypeId = 2 ");
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		if(aptUserId !=null)
