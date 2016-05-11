@@ -10,8 +10,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title> Cadre Details</title>
-	<!-- custom CSS-->
-	<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">
 	<!-- Bootstrap -->
     <link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<!--Bootstrap DatePicker-->
@@ -27,516 +25,11 @@
 	<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 	     <!--   server side pagination CSS-->
     <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
-	 <link rel="stylesheet" type="text/css" href="styles/CadreDetails/cadre_details.css"/>
-
-<style>
-.prev,.next{
-  width:auto !important;
-}
-</style>
+		<!-- custom CSS-->
+	<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">
 <script>
 var globalCadreId = '${cadreId}';
 </script>
-
-<style>
-.alignDiv{
-	padding:5px;
-	border-radius:10px;
-	border:1px solid #ccc;
-	margin-top:5px;
-}	
-.ui.small.step,
-.ui.small.steps .step {
-  font-size: 0.92857143rem;
-}
-.ui.step,
-.ui.steps .step {
-  font-size: 1rem;
-}
-.ui.large.step,
-.ui.large.steps .step {
-  font-size: 1.14285714rem;
-}
-.ui.steps {
-	display: -webkit-inline-box;
-	display: -webkit-inline-flex;
-	display: -ms-inline-flexbox;
-	display: inline-flex;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: row;
-	-ms-flex-direction: row;
-	flex-direction: row;
-	-webkit-box-align: stretch;
-	-webkit-align-items: stretch;
-	-ms-flex-align: stretch;
-	align-items: stretch;
-	margin: 1em 0;
-	background: 0 0;
-	box-shadow: none;
-	line-height: 1.14285714em;
-	border-radius: .28571429rem;
-	border: 1px solid rgba(34,36,38,.15)
-}
-.ui.steps:first-child {
-	margin-top: 0
-}
-.ui.steps:last-child {
-	margin-bottom: 0
-}
-.ui.steps .step {
-	position: relative;
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-flex: 1;
-	-webkit-flex: 1 0 auto;
-	-ms-flex: 1 0 auto;
-	flex: 1 0 auto;
-	-webkit-flex-wrap: wrap;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: row;
-	-ms-flex-direction: row;
-	flex-direction: row;
-	vertical-align: middle;
-	-webkit-box-align: center;
-	-webkit-align-items: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: center;
-	-webkit-justify-content: center;
-	-ms-flex-pack: center;
-	justify-content: center;
-	margin: 0;
-	padding: 1.14285714em 2em;
-	background: #fff;
-	color: rgba(0,0,0,.87);
-	box-shadow: none;
-	border-radius: 0;
-	border: none;
-	border-right: 1px solid rgba(34,36,38,.15);
-	-webkit-transition: background-color .1s ease, opacity .1s ease, color .1s ease, box-shadow .1s ease;
-	transition: background-color .1s ease, opacity .1s ease, color .1s ease, box-shadow .1s ease
-}
-.ui.steps .step:after {
-	position: absolute;
-	z-index: 2;
-	content: '';
-	top: 50%;
-	right: 0;
-	border: solid;
-	background-color: #fff;
-	width: 1.14285714em;
-	height: 1.14285714em;
-	border-color: rgba(34,36,38,.15);
-	border-width: 0 1px 1px 0;
-	-webkit-transition: background-color .1s ease, opacity .1s ease, color .1s ease, box-shadow .1s ease;
-	transition: background-color .1s ease, opacity .1s ease, color .1s ease, box-shadow .1s ease;
-	-webkit-transform: translateY(-50%) translateX(50%) rotate(-45deg);
-	-ms-transform: translateY(-50%) translateX(50%) rotate(-45deg);
-	transform: translateY(-50%) translateX(50%) rotate(-45deg)
-}
-.ui.steps .step:first-child {
-	padding-left: 2em;
-	border-radius: .28571429rem 0 0 .28571429rem
-}
-.ui.steps .step:only-child {
-	border-radius: .28571429rem
-}
-.ui.steps .step:last-child {
-	border-radius: 0 .28571429rem .28571429rem 0;
-	border-right: none;
-	margin-right: 0
-}
-.ui.steps .step .title {
-	font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-	font-size: 18px;
-	font-weight: 400;
-	color:#666 !important
-}
-.ui.steps .step>.title {
-	width: 100%
-}
-.ui.steps .step .description {
-	font-weight: 400;
-	font-size: 12px;
-	color: #666 !important
-}
-.ui.steps .step>.description {
-	width: 100%
-}
-.ui.steps .step .title~.description {
-	margin-top: .25em
-}
-.ui.steps .step>.icon {
-	line-height: 1;
-	font-size: 2.5em;
-	margin: 0 1rem 0 0
-}
-.ui.steps .step>.icon, .ui.steps .step>.icon~.content {
-	display: block;
-	-webkit-box-flex: 0;
-	-webkit-flex: 0 1 auto;
-	-ms-flex: 0 1 auto;
-	flex: 0 1 auto;
-	-webkit-align-self: middle;
-	-ms-flex-item-align: middle;
-	align-self: middle
-}
-.ui.steps .step>.icon~.content {
-	-webkit-box-flex: 1 0 auto;
-	-webkit-flex-grow: 1 0 auto;
-	-ms-flex-positive: 1 0 auto;
-	flex-grow: 1 0 auto
-}
-.ui.steps:not(.vertical) .step>.icon {
-	width: auto
-}
-.ui.steps .link.step, .ui.steps a.step {
-	cursor: pointer
-}
-.ui.ordered.steps {
-	counter-reset: ordered
-}
-.ui.ordered.steps .step:before {
-	display: block;
-	position: static;
-	text-align: center;
-	content: counters(ordered, ".");
-	-webkit-align-self: middle;
-	-ms-flex-item-align: middle;
-	align-self: middle;
-	margin-right: 1rem;
-	font-size: 2.5em;
-	counter-increment: ordered;
-	font-family: inherit;
-	font-weight: 700
-}
-.ui.ordered.steps .step>* {
-	display: block;
-	-webkit-align-self: middle;
-	-ms-flex-item-align: middle;
-	align-self: middle
-}
-.ui.vertical.steps {
-	display: -webkit-inline-box;
-	display: -webkit-inline-flex;
-	display: -ms-inline-flexbox;
-	display: inline-flex;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: column;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	overflow: visible
-}
-.ui.vertical.steps .step {
-	-webkit-box-pack: start;
-	-webkit-justify-content: flex-start;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
-	border-radius: 0;
-	padding: 1.14285714em 2em;
-	border-right: none;
-	border-bottom: 1px solid rgba(34,36,38,.15)
-}
-.ui.vertical.steps .step:first-child {
-	padding: 1.14285714em 2em;
-	border-radius: .28571429rem .28571429rem 0 0
-}
-.ui.vertical.steps .step:last-child {
-	border-bottom: none;
-	border-radius: 0 0 .28571429rem .28571429rem
-}
-.ui.vertical.steps .step:after {
-	top: 50%;
-	right: 0;
-	border-width: 0 1px 1px 0;
-	display: none
-}
-.ui.vertical.steps .active.step:after {
-	display: block
-}
-.ui.vertical.steps .step:last-child:after {
-	display: none
-}
-.ui.vertical.steps .active.step:last-child:after {
-	display: block
-}
-
-@media only screen and (max-width:767px) {
-.ui.steps {
-	display: -webkit-inline-box;
-	display: -webkit-inline-flex;
-	display: -ms-inline-flexbox;
-	display: inline-flex;
-	overflow: visible;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: column;
-	-ms-flex-direction: column;
-	flex-direction: column
-}
-.ui.steps .step {
-	width: 100%!important;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: column;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	border-radius: 0;
-	padding: 2em 2.25em
-}
-.ui.steps .step:first-child {
-	padding: 1.14285714em 2em;
-	border-radius: .28571429rem .28571429rem 0 0
-}
-.ui.steps .step:last-child {
-	border-radius: 0 0 .28571429rem .28571429rem
-}
-.ui.steps .step:after {
-	display: none!important
-}
-.ui.steps .step .content {
-	text-align: center
-}
-.ui.ordered.steps .step:before, .ui.steps .step>.icon {
-	margin: 0 0 1rem
-}
-}
-.ui.steps .link.step:hover, .ui.steps .link.step:hover::after, .ui.steps a.step:hover, .ui.steps a.step:hover::after {
-	background: #f9fafb;
-	color: rgba(0,0,0,.8)
-}
-.ui.steps .link.step:active, .ui.steps .link.step:active::after, .ui.steps a.step:active, .ui.steps a.step:active::after {
-	background: #f3f4f5;
-	color: rgba(0,0,0,.9)
-}
-.ui.steps .step.active {
-	cursor: auto;
-	background: #f3f4f5
-}
-.ui.steps .step.active:after {
-	background: #f3f4f5
-}
-.ui.steps .step.active .title {
-	color: #4183c4
-}
-.ui.ordered.steps .step.active:before, .ui.steps .active.step .icon {
-	color: rgba(0,0,0,.85)
-}
-.ui.steps .active.step:after, .ui.steps .step:after {
-	display: block
-}
-.ui.steps .active.step:last-child:after, .ui.steps .step:last-child:after {
-	display: none
-}
-.ui.steps .link.active.step:hover, .ui.steps .link.active.step:hover::after, .ui.steps a.active.step:hover, .ui.steps a.active.step:hover::after {
-	cursor: pointer;
-	background: #dcddde;
-	color: rgba(0,0,0,.87)
-}
-.ui.ordered.steps .step.completed:before, .ui.steps .step.completed>.icon:before {
-	color: #21ba45;
-	font-family: Step;
-	content: '\e800'
-}
-.ui.steps .disabled.step {
-	cursor: auto;
-	background: #fff;
-	pointer-events: none
-}
-.ui.steps .disabled.step, .ui.steps .disabled.step .description, .ui.steps .disabled.step .title {
-	color: rgba(40,40,40,.3) !important
-}
-.ui.steps .disabled.step:after {
-	background: #fff
-}
-
-@media only screen and (max-width:992px) {
-.ui[class*="tablet stackable"].steps {
-	display: -webkit-inline-box;
-	display: -webkit-inline-flex;
-	display: -ms-inline-flexbox;
-	display: inline-flex;
-	overflow: visible;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: column;
-	-ms-flex-direction: column;
-	flex-direction: column
-}
-.ui[class*="tablet stackable"].steps .step {
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: column;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	border-radius: 0;
-	padding: 1.14285714em 2em
-}
-.ui[class*="tablet stackable"].steps .step:first-child {
-	padding: 1.14285714em 2em;
-	border-radius: .28571429rem .28571429rem 0 0
-}
-.ui[class*="tablet stackable"].steps .step:last-child {
-	border-radius: 0 0 .28571429rem .28571429rem
-}
-.ui[class*="tablet stackable"].steps .step:after {
-	display: none!important
-}
-.ui[class*="tablet stackable"].steps .step .content {
-	text-align: center
-}
-.ui[class*="tablet stackable"].ordered.steps .step:before, .ui[class*="tablet stackable"].steps .step>.icon {
-	margin: 0 0 1rem
-}
-}
-.ui.fluid.steps {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	width: 100%
-}
-.ui.attached.steps {
-	width: calc(100% + 2px)!important;
-	margin: 0 -1px -1px;
-	max-width: calc(100% + 2px);
-	border-radius: .28571429rem .28571429rem 0 0
-}
-.ui.attached.steps .step:first-child {
-	border-radius: .28571429rem 0 0
-}
-.ui.attached.steps .step:last-child {
-	border-radius: 0 .28571429rem 0 0
-}
-.ui.bottom.attached.steps {
-	margin: -1px -1px 0;
-	border-radius: 0 0 .28571429rem .28571429rem
-}
-.ui.bottom.attached.steps .step:first-child {
-	border-radius: 0 0 0 .28571429rem
-}
-.ui.bottom.attached.steps .step:last-child {
-	border-radius: 0 0 .28571429rem
-}
-.ui.eight.steps, .ui.five.steps, .ui.four.steps, .ui.one.steps, .ui.seven.steps, .ui.six.steps, .ui.three.steps, .ui.two.steps {
-	width: 100%
-}
-.ui.eight.steps>.step, .ui.five.steps>.step, .ui.four.steps>.step, .ui.one.steps>.step, .ui.seven.steps>.step, .ui.six.steps>.step, .ui.three.steps>.step, .ui.two.steps>.step {
-	-webkit-flex-wrap: nowrap;
-	-ms-flex-wrap: nowrap;
-	flex-wrap: nowrap
-}
-.ui.one.steps>.step {
-	width: 100%
-}
-.ui.two.steps>.step {
-	width: 50%
-}
-.ui.three.steps>.step {
-	width: 33.333%
-}
-.ui.four.steps>.step {
-	width: 25%
-}
-.ui.five.steps>.step {
-	width: 20%
-}
-.ui.six.steps>.step {
-	width: 16.666%
-}
-.ui.seven.steps>.step {
-	width: 14.285%
-}
-.ui.eight.steps>.step {
-	width: 12.5%
-}
-.ui.small.step, .ui.small.steps .step {
-	font-size: .92857143rem
-}
-.ui.step, .ui.steps .step {
-	font-size: 1rem
-}
-.ui.large.step, .ui.large.steps .step {
-	font-size: 1.14285714rem
-}
-.ui-steps-border
-{
-	background-color:#B0D5E8;
-	padding:10px;
-}
-.ui.steps .step .days
-{
-	position:absolute;
-	bottom:0px;
-	right:-35px;
-	z-index:99;
-	height:20px;
-	width: 60px;
-	content:' ';
-	background-color:#B0D5E8;
-	color:#333;
-	padding:4px;
-	text-align:center;
-	font-weight:bold;
-}
-.ui.small.steps .step
-{
-	padding:15px 20px
-}
-.onoffswitch {
-    position: relative; width: 130px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-.onoffswitch-checkbox {
-    display: none;
-}
-.onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #449D44; border-radius: 20px;
-}
-.onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    box-sizing: border-box;
-}
-.onoffswitch-inner:before {
-    content: "GRIEVANCE";
-    padding-left: 10px;
-    background-color: #449D44; color: #FFFFFF;
-}
-.onoffswitch-inner:after {
-    content: "INSURANCE";
-    padding-right: 10px;
-    background-color: #449D44; color: #FFFFFF;
-    text-align: right;
-}
-.onoffswitch-switch {
-    display: block; width: 19px; margin: 5.5px;
-    background: #FFFFFF;
-    position: absolute; top: 0; bottom: 0;
-    right: 96px;
-    border: 2px solid #449D44; border-radius: 20px;
-    transition: all 0.3s ease-in 0s; 
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
-}
-</style>
-
 </head>
 <body>
 <div class="modal fade" id="myModalForTableGrieId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -643,35 +136,50 @@ var globalCadreId = '${cadreId}';
 						 </ul>
 					  </td>
 					</tr>
-					<tr>
-                    	<td class="text-bold" id="identityHeaderId" style="cursor:pointer;background: rgb(204, 204, 204) none repeat scroll 0% 0%;"><i class="icon-articles"></i> IDENTITY <span class="pull-right" id="identityHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="identityShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></td>
-                    </tr>
-                    <tr >
-                    	<td id="identityBodyId">
-                        	<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
-                            <p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
-                            <p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
-                            <p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
-							<!-- <div id="participatedDivId" style="display:none"><p class="m_0"> PARTICIPATED CONSTITUENCY : <span id="participatedConstId"></span></p></div> -->
-                        </td>
-                    </tr>
-					<tr>
-                    	<td class="text-bold" id="addressHeaderId" style="cursor:pointer;background: rgb(204, 204, 204) none repeat scroll 0% 0%;"><i class="glyphicon glyphicon-map-marker"></i> ADDRESS<span class="pull-right" id="addressHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="addressShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></td>
-                    </tr>
-                    <tr>
-                    	<td id="addressBodyId">
-                        	<p class="m_0">H NO :<span id="houseNoId"></span></p>
-                            <p class="m_0">PANCHAYAT : <span id="panchayatId"></span></p>
-                            <p class="m_0">MANDAL : <span id="mandalId"></span></p>
-                            <p class="m_0">CONSTITUENCY : <span id="constituencyId"></span></p>
-                            <p class="m_0">DISTRICT : <span id="districtNoId"></span></p>
-                            <p class="m_0">STATE : <span id="stateNoId"></span></p>
-                        </td>
-                    </tr>
                 </table>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title pointer" id="identityHeaderId">
+							<i class="icon-articles"></i> IDENTITY 
+							<span class="pull-right" id="identityHideId" style="display:none;">
+								<i class="glyphicon glyphicon-chevron-up"></i>
+							</span>
+							<span class="pull-right" id="identityShowId">
+								<i class="glyphicon glyphicon-chevron-down"></i>
+							</span>
+						</h4>
+					</div>
+					<div class="panel-body"  id="identityBodyId">
+						<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
+						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
+						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
+						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
+					</div>
+				</div>
+				<div class="panel panel-default arrowChangeIcon">
+					<div class="panel-heading">
+						<h4 class="panel-title pointer " id="addressHeaderId">
+							<i class="glyphicon glyphicon-map-marker"></i> ADDRESS
+							<span class="pull-right" id="addressHideId" style="display:none;">
+								<i class="glyphicon glyphicon-chevron-up"></i>
+							</span>
+							<span class="pull-right" id="addressShowId">
+								<i class="glyphicon glyphicon-chevron-down"></i>
+							</span>
+						</h4>
+					</div>
+					<div class="panel-body" id="addressBodyId">
+						<p class="m_0">H NO :<span id="houseNoId"></span></p>
+						<p class="m_0">PANCHAYAT : <span id="panchayatId"></span></p>
+						<p class="m_0">MANDAL : <span id="mandalId"></span></p>
+						<p class="m_0">CONSTITUENCY : <span id="constituencyId"></span></p>
+						<p class="m_0">DISTRICT : <span id="districtNoId"></span></p>
+						<p class="m_0">STATE : <span id="stateNoId"></span></p>
+					</div>
+				</div>
 				<div class="panel panel-default" id="participatedDivId" style="display:none">
                 	<div class="panel-heading" id="participatedConstHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY <span class="pull-right" id="participatedConstHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY <span class="pull-right" id="participatedConstHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="participatedConstShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
 					<div class="panel-body" id="participatedConstBodyId">
@@ -679,27 +187,25 @@ var globalCadreId = '${cadreId}';
                      </div> 
                 </div>
 				<div class="panel panel-default" id="candidateapptID" style="display:none">
-				<div class="panel-heading" id="candidateAppointmentId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="fa fa-calendar-plus-o"></i> CANDIDATE APPOINTMENT <span class="pull-right" id="candidateAppointmentHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+					<div class="panel-heading" id="candidateAppointmentId">
+                    	<h4 class="panel-title text-bold pointer"><i class="fa fa-calendar-plus-o"></i> CANDIDATE APPOINTMENT <span class="pull-right" id="candidateAppointmentHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="candidateAppointmentShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-                    </div>
+					</div>
 					<div class="panel-body" id="candidateAppointmentBodyId">
-					<img id="candidateAppointmentImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
-					<div id="buildCandidateAppointmentUser"></div>
-                     </div> 
-					 
+						<img id="candidateAppointmentImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
+						<div id="buildCandidateAppointmentUser"></div>
+                    </div> 
 				</div>
-				
             	<div class="panel panel-default">
                 	<div class="panel-heading" role="tab" id="headingTwo12">
-								<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#comaplaintCountInmgMainDivid" aria-expanded="false" aria-controls="comaplaintCountInmgMainDivid">	
-								<h4 class="panel-title text-bold" style="cursor:pointer;">
-									<i class="glyphicon glyphicon-user"></i>
-										CANDIDATE GRIEVANCE DETAILS
-									<span class="pull-right"><span class="count-style" id="candidateTotalComplaintsDiv">0</span></span>
-								</h4>
-								</a>
-							</div>
+						<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#comaplaintCountInmgMainDivid" aria-expanded="false" aria-controls="comaplaintCountInmgMainDivid">	
+							<h4 class="panel-title text-bold pointer">
+								<i class="glyphicon glyphicon-user"></i>
+									CANDIDATE GRIEVANCE DETAILS
+								<span class="pull-right"><span class="count-style" id="candidateTotalComplaintsDiv">0</span></span>
+							</h4>
+						</a>
+					</div>
 					<!-- <center><strong>Grievance Details Not Available.</strong></center> -->
                     <div class="panel-body pad_0" id="comaplaintCountInmgMainDivid">
 						<img id="complaintCountImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
@@ -719,7 +225,7 @@ var globalCadreId = '${cadreId}';
 				<!--swadhin-->
 				<div class="panel panel-default">
 				<div class="panel-heading" id="cadreBenefitsHeadingId">
-					<h4 class="panel-title text-bold" style="cursor:pointer;">
+					<h4 class="panel-title text-bold pointer">
 						<img src="images/User_icon_BLACK-01.png"> 
 						CANDIDATE BENEFITS <span class="pull-right" id="cadreBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="cadreBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -756,8 +262,8 @@ var globalCadreId = '${cadreId}';
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading" id="familyMemberHeadingId">
-						<h4 class="panel-title text-bold" style="cursor:pointer;">
-							<img src="dist/img/family-icon.png">&nbsp;&nbsp;&nbsp;FAMILY MEMBERS<span class="pull-right" id="familyMemberHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="familyMemberShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						<h4 class="panel-title text-bold pointer">
+							<img src="dist/img/family-icon.png">&nbsp;FAMILY MEMBERS<span class="pull-right" id="familyMemberHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="familyMemberShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
 					</div>
 					<div class="panel-body" id="familyMemberBodyId">
@@ -767,7 +273,7 @@ var globalCadreId = '${cadreId}';
 				</div>
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="familyGrievanceDtlsHeaderId">
-					  <h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS<span class="pull-right" id="fmlyGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span>
+					  <h4 class="panel-title text-bold pointer"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS<span class="pull-right" id="fmlyGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span>
 						 <span class="pull-right"><span class="count-style" id="totalFamilyComplaints">0</span></span>
 						</h4>
 					</div>
@@ -786,7 +292,7 @@ var globalCadreId = '${cadreId}';
 				<!--SWADHIN-->
 				<div class="panel panel-default">
 				<div class="panel-heading" id="familyBenefitsHeadingId">
-					<h4 class="panel-title text-bold" style="cursor:pointer;">
+					<h4 class="panel-title text-bold pointer">
 					<img src="images/family_icon.png">
 						FAMILY BENEFITS<span class="pull-right" id="familyBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="familyBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -823,16 +329,14 @@ var globalCadreId = '${cadreId}';
 				<!--swadhin-->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#referralGrievanceDetailsId" aria-expanded="false" aria-controls="referralGrievanceDetailsId">
-					
-					  <h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/icon.png">&nbsp REFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
-					  </a>
+						<a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion12" href="#referralGrievanceDetailsId" aria-expanded="false" aria-controls="referralGrievanceDetailsId">
+							<h4 class="panel-title text-bold pointer"><img src="images/icon.png">&nbspREFERRAL GRIEVANCE DETAILS<span class="pull-right" id="referralGrvncDtlsSpanId"></span><span class="pull-right"><span class="count-style" id="refferelTotalCountId">0</span></span></h4>
+						</a>
 					</div> 
 					<div class="panel-body pad_0" id="referralGrievanceDetailsId" >
-					<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none">
-					  
+						<img id="referralGrievanceLoadingImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%;display:none"/>
 					</div>
-				  </div>
+				</div>
             	
 				<!--SWADHIN-->
 				
@@ -885,7 +389,7 @@ var globalCadreId = '${cadreId}';
             <div class="col-md-8">
             	<div class="panel panel-default">
                 	<div class="panel-heading" id="cadrMmbrBthHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE <span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE <span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadrMmbrBthBodyId">
                     	<div class="panel-group electionPerformanceDiv" id="accordion" role="tablist" aria-multiselectable="true">
@@ -895,7 +399,7 @@ var globalCadreId = '${cadreId}';
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading" id="cadreEnrolmentStatsHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS <span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS <span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadreEnrolmentStatsBodyId" style="padding:0px 15px;">
                     	<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
@@ -913,7 +417,7 @@ var globalCadreId = '${cadreId}';
 				<!-- IVR SUMMARY  END ----> 
                 <div class="panel panel-default">
                 	<div class="panel-heading" id="cadreActivitiesHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES <span class="pull-right" id="cadreActivitiesHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreActivitiesShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES <span class="pull-right" id="cadreActivitiesHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreActivitiesShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadreActivitiesBodyId">
                     	<div class="row">
@@ -1016,7 +520,7 @@ var globalCadreId = '${cadreId}';
 				
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading" id="cadreElectionProfileHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE <span class="pull-right" id="cadreElectionProfileShowId"  style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreElectionProfileHideId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE <span class="pull-right" id="cadreElectionProfileShowId"  style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreElectionProfileHideId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadreElectionProfileBodyId">
                     	<div class="cadre-election" >
@@ -1028,13 +532,13 @@ var globalCadreId = '${cadreId}';
 				
 				<!-- Meetings Start -->
                 <div class="panel panel-default" id="commitMeetingDiv" style="display:none;" >
-                	<div class="panel-heading" id="committeeMetingsHeaderId" style="cursor:pointer;">
+                	<div class="panel-heading" id="committeeMetingsHeaderId pointer">
                     	<h4 class="panel-title text-bold"><img src="dist/img/photo.png" > COMMITTEE MEETINGS
 							<span class="pull-right" style="margin-top:-8px">
 							
 								<div class="input-group">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>	</span>
-									<input type="text" class="form-control" id="meetingDatePicker" style="width: 170px; padding-left: 0px; padding-right: 0px;"><span class="pull-right" id="committeeMetingsShowId" style="display:none;"><i style="padding-top: 9px;cursor:pointer;" class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="committeeMetingsHideId"><i class="glyphicon glyphicon-chevron-down" style="padding-top: 9px;cursor:pointer;"></i></span>
+									<input type="text" class="form-control" id="meetingDatePicker" style="width: 170px; padding-left: 0px; padding-right: 0px;"><span class="pull-right" id="committeeMetingsShowId" style="display:none;"><i style="padding-top: 9px;" class="glyphicon glyphicon-chevron-up pointer"></i></span><span class="pull-right" id="committeeMetingsHideId"><i class="glyphicon glyphicon-chevron-down pointer" style="padding-top: 9px;"></i></span>
 								</div>
 							
 							</span>
@@ -1050,7 +554,7 @@ var globalCadreId = '${cadreId}';
 				 
 				 <div class="panel panel-default">
                 	<div class="panel-heading" id="deathHospitalDivHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION INSURANCE DETAILS <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                    	<h4 class="panel-title text-bold pointer"><i class="fa fa fa-hospital-o"></i> DEATHS AND HOSPITALIZATION INSURANCE DETAILS <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
@@ -1062,7 +566,7 @@ var globalCadreId = '${cadreId}';
 				
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="StatusCountsDivId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE REQUESTS STATUS DETAILS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                    	<h4 class="panel-title text-bold pointer"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE REQUESTS STATUS DETAILS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
@@ -1073,7 +577,7 @@ var globalCadreId = '${cadreId}';
 				
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><img src="images/training.png" style="width:30px"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -2027,7 +1531,7 @@ function buildingAllCadresDetails(result){
 				 
 				str+='</div>';
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
-				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].cadreId+' attr_membership_id='+result[i].membershipNo+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"/></div>';
+				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls pointer" attr_cadre_id='+result[i].cadreId+' attr_membership_id='+result[i].membershipNo+'><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"/></div>';
 				</c:if>
 			str+='</div>';
 			
