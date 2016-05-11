@@ -2683,6 +2683,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
        approvedlist.add(IConstants.APPOINTMENT_STATUS_RESCHEDULED);
        
        
+       
        Map<Long,AppointmentStatusVO> finalMap = new LinkedHashMap<Long,AppointmentStatusVO>();
        Map<Long,AppointmentStatusVO> approvedMap = new LinkedHashMap<Long,AppointmentStatusVO>();
        
@@ -2691,7 +2692,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
            
         	Long statusId = obj[0]!=null?(Long)obj[0]:0l;
         	
-        	if( statusId.longValue() != IConstants.APPOINTMENT_STATUS_WITHDRAWN.longValue()){
+        	//if( statusId.longValue() != IConstants.APPOINTMENT_STATUS_WITHDRAWN.longValue()){
         		
         		if( approvedlist.contains(statusId) ){
         			
@@ -2717,7 +2718,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	   	             VO.getClickIds().add(statusId);
 	   	             finalMap.put(statusId,VO);
         		}
-        	}
+       // }
         }
        }
        
