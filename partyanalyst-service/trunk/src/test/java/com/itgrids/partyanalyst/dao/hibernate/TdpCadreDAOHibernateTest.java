@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -850,9 +849,14 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetTdpCadreIdByMembershipId()
+	/*public void testGetTdpCadreIdByMembershipId()
 	{
 		List<Long> list = tdpCadreDAO.getTdpCadreIdByMembershipId("12345678");
 		System.out.println(list.get(0));
+	}*/
+	
+	public void testGetAffliatedCadreCountDetails()
+	{
+		tdpCadreDAO.getAffliatedCadreCountDetails("web",new Date());
 	}
 }
