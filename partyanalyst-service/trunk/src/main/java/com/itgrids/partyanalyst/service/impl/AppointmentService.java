@@ -5705,15 +5705,21 @@ public AppointmentDetailsVO setPreferebleDatesToAppointment(List<Long> aptmnts,A
 	{
 		List<AppointmentMembersDataVO> returnList = new ArrayList<AppointmentMembersDataVO>();
 		List<Long> statusIds = new ArrayList<Long>();
-		 Long[] longArr;
+		 Long[] longArr = null;
 		 List<Object[]> list= null;
 		try{
 			
 			if(inputVO.getScheduleType() != null && inputVO.getScheduleType().toString().equalsIgnoreCase("Schedule"))
+			{
 				longArr =IConstants.APPOINTMENT_STATUS_SCHEDULED_LIST;
+				statusIds =Arrays.asList(longArr);
+			}
 			
 			else if(inputVO.getScheduleType() != null && inputVO.getScheduleType().toString().equalsIgnoreCase("Request"))
+			{
 				longArr =IConstants.APPOINTMENT_STATUS_WAITING_LIST;
+				statusIds =Arrays.asList(longArr);
+			}
 			else
 				statusIds = null;
 			if(inputVO.getMemberType().equalsIgnoreCase("PR"))
