@@ -5,8 +5,8 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.paymentgateway.dao.IPaymentMethodDAO;
-import com.itgrids.paymentgateway.model.PaymentMethod;
+import com.itgrids.partyanalyst.dao.IPaymentMethodDAO;
+import com.itgrids.partyanalyst.model.PaymentMethod;
 
 public class PaymentMethodDAO extends GenericDaoHibernate<PaymentMethod,Long> implements IPaymentMethodDAO{
 	
