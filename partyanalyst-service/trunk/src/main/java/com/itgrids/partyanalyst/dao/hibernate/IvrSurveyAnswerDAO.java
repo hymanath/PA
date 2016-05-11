@@ -158,14 +158,13 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 	
 	
 	public List<Object[]> getOptionsCountByQuestionIdsForLocation(String locType,Long locationId)
-	{
-		StringBuilder str = new StringBuilder();
+	{		StringBuilder str = new StringBuilder();
 		str.append("select count(model.ivrSurveyAnswerId),model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId," +
 				"model.ivrSurveyQuestion.ivrSurvey.surveyName," );
 		str.append(" model.ivrSurveyRound.ivrSurveyRoundId," +
 						" model.ivrSurveyRound.roundName," );
 		str.append("model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId,model.ivrSurveyQuestion.ivrQuestion.question," +
-				" model.ivrOption.ivrOptionId,model.ivrOption.option,model.ivrSurveyQuestion.ivrSurveyQuestionId" +
+				" model.ivrOption.ivrOptionId,model.ivrOption.option,model.ivrSurveyQuestion.ivrSurveyQuestionId,date(model.ivrSurveyQuestion.ivrSurvey.startDate)" +
 				" from IvrSurveyAnswer model,IvrRespondentLocation model1 where model.ivrRespondent.ivrRespondentId = model1.ivrRespondent.ivrRespondentId and" +
 				" model.isDeleted = 'false' and model.isValid = 'Y'" +
 				" and model.ivrOption.isDeleted = 'false' and model.ivrSurveyQuestion.ivrQuestion.isDeleted = 'false'");
@@ -179,7 +178,8 @@ public class IvrSurveyAnswerDAO extends GenericDaoHibernate<IvrSurveyAnswer, Lon
 			str.append(" and model1.userAddress.tehsil.tehsilId = :locationId");
 		if(locType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
 			str.append(" and model1.userAddress.localElectionBody.localElectionBodyId = :locationId");
-		str.append(" group by model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId,model.ivrSurveyRound.ivrSurveyRoundId,model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId, model.ivrOption.ivrOptionId");
+		str.append(" group by model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId,model.ivrSurveyQuestion.ivrQuestion.ivrQuestionId, model.ivrOption.ivrOptionId");
+		str.append(" order by model.ivrSurveyQuestion.ivrSurvey.ivrSurveyId desc");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("locationId", locationId);
 		return query.list();

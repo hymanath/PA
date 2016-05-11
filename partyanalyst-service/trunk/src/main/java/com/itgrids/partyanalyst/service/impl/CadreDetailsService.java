@@ -8123,14 +8123,14 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 			if(verifierVO.getVerifierVOList() != null && verifierVO.getVerifierVOList().size() > 0)
 			for(VerifierVO vo : verifierVO.getVerifierVOList())//Survey
 			{
-				if(vo.getVerifierVOList() != null && vo.getVerifierVOList().size() > 0)
+				/*if(vo.getVerifierVOList() != null && vo.getVerifierVOList().size() > 0)
 				for(VerifierVO questionVO : vo.getVerifierVOList())//Round
-				{
-					if(questionVO.getVerifierVOList() != null && questionVO.getVerifierVOList().size() > 0)
-					for(VerifierVO roundVO : questionVO.getVerifierVOList())//Question
+				{*/
+					if(vo.getVerifierVOList() != null && vo.getVerifierVOList().size() > 0)
+					for(VerifierVO questionVO : vo.getVerifierVOList())//Question
 					{
-						if(roundVO.getVerifierVOList() != null && roundVO.getVerifierVOList().size() > 0)
-						for(VerifierVO location : roundVO.getVerifierVOList())//location
+						if(questionVO.getVerifierVOList() != null && questionVO.getVerifierVOList().size() > 0)
+						for(VerifierVO location : questionVO.getVerifierVOList())//location
 						{
 							if(location.getVerifierVOList() != null && location.getVerifierVOList().size() > 0)
 							for(VerifierVO optionVO : location.getVerifierVOList())//option
@@ -8145,7 +8145,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 							}
 						}
 					}
-				}
+				//}
 			}
 		return verifierVO;
 	}
@@ -8164,9 +8164,10 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 							 surveyVO = new VerifierVO();
 							 surveyVO.setId((Long)params[1]);
 							 surveyVO.setName(params[2] != null ? params[2].toString() :"");
+							 surveyVO.setDate(params[10] != null ? params[10].toString() :"");
 							 verifierVO.getVerifierVOList().add(surveyVO);
 						 }
-						 VerifierVO roundVO = getMatchedVerifierVO(surveyVO.getVerifierVOList(),(Long)params[3]);
+						 /*VerifierVO roundVO = getMatchedVerifierVO(surveyVO.getVerifierVOList(),(Long)params[3]);
 						 
 						 if(roundVO == null)
 						 {
@@ -8174,9 +8175,9 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 							 roundVO.setId((Long)params[3]);
 							 roundVO.setName(params[4] != null ? params[4].toString() :"");
 							 surveyVO.getVerifierVOList().add(roundVO);
-						 }
+						 }*/
 						 
-						 VerifierVO questionVO = getMatchedVerifierVO(roundVO.getVerifierVOList(),(Long)params[5]);
+						 VerifierVO questionVO = getMatchedVerifierVO(surveyVO.getVerifierVOList(),(Long)params[5]);
 						 
 						 if(questionVO == null)
 						 {
@@ -8185,7 +8186,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 							 questionVO.setName(params[6] != null ? params[6].toString() :"");
 							
 							 questionVO.setVerifierVOList(setStaticLocationTypes((Long)params[9], boothId));
-							 roundVO.getVerifierVOList().add(questionVO);
+							 surveyVO.getVerifierVOList().add(questionVO);
 						 }
 						 VerifierVO locTypeVo = getMatchedVerifierVOForType(questionVO.getVerifierVOList(),locType);
 						 
