@@ -12115,5 +12115,15 @@
 				<param name="root">idnameVOList</param>
 			</result>
 	</action>
+	<action name="getApprovedAmountDetailsByLocationAction" class="cadreDetailsAction" method="getApprovedAmountDetailsByLocation">
+		<result type="json" name="success">
+			<param name="root">grievanceSimplevoList</param>
+		</result>
+	</action>
+	<action name="getApprovedAmountDetailsForGovtAndWilfareByLocationAction" class="cadreDetailsAction" method="getApprovedAmountDetailsForGovtAndWilfareByLocation">
+		<result type="json" name="success">
+			<param name="root">grievanceSimplevoList</param>
+		</result>
+	</action>
 </package>
 </struts>      

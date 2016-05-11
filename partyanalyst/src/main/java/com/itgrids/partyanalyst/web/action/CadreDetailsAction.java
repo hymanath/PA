@@ -92,8 +92,16 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
 	private GrievanceDetailsVO gerGrievanceDetailsVO;
 	private GrievanceSimpleVO grievanceSampleVO;
+	private List<GrievanceSimpleVO> grievanceSimplevoList;
 	
 	
+	public List<GrievanceSimpleVO> getGrievanceSimplevoList() {
+		return grievanceSimplevoList;
+	}
+	public void setGrievanceSimplevoList(
+			List<GrievanceSimpleVO> grievanceSimplevoList) {
+		this.grievanceSimplevoList = grievanceSimplevoList;
+	}
 	public GrievanceSimpleVO getGrievanceSampleVO() {
 		return grievanceSampleVO;
 	}
@@ -1188,4 +1196,35 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 	}
 	
+	public String getApprovedAmountDetailsByLocation(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long districtId=jObj.getLong("districtId");
+			Long constiId=jObj.getLong("constiId");
+			Long parliamentId=jObj.getLong("parliamentId");
+			
+			grievanceSimplevoList = cadreDetailsService.getApprovedAmountDetailsByLocation(constiId,parliamentId,districtId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getApprovedAmountDetailsByLocation() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getApprovedAmountDetailsForGovtAndWilfareByLocation(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long districtId=jObj.getLong("districtId");
+			Long constiId=jObj.getLong("constiId");
+			Long parliamentId=jObj.getLong("parliamentId");
+			
+			grievanceSimplevoList = cadreDetailsService.getApprovedAmountDetailsForGovtAndWilfareByLocation(constiId,parliamentId,districtId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getApprovedAmountDetailsForGovtAndWilfareByLocation() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

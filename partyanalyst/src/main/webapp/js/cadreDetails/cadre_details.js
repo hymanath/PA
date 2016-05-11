@@ -501,6 +501,7 @@ function getParticipatedConstituencyId(cadreId){
 					getTrainingCampAttendenceInfoInCadreLocation();
 					//getGrievanceStatusDetails();
 					getStatusCountsForGrievanceDetails();
+					getApprovedAmountsForGrievance();
 				}
 			});
 		}
@@ -5693,4 +5694,241 @@ function getComplaintTrackingDetailsForGrievance(complaintId,divId){
 			 $('#'+divId).html(str);
 		 }
 	});
+}
+/*function getApprovedAmountsForGrievance(){
+	//$("#statusCountsMainDivId").html('');
+	
+	var constituencyId = 0;
+	var parliamentid = 0;
+	var districtId = 0;
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		constituencyId = participatedConstituencyId;
+		parliamentid = participatedParliamentId;
+		districtId = participatedDistrictId;
+	}
+	else{
+		constituencyId = globalConstituencyId;
+		parliamentid = globalParliamentId;
+		districtId = globalDistrictId;
+	}
+	var jsobj={
+		constiId : constituencyId,
+		parliamentId : parliamentid,
+		districtId : districtId
+		}
+	$.ajax({
+		type:'GET',
+		 url: 'getApprovedAmountDetailsByLocationAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result != null){
+			//buildStatusCountsForGrievanceDetails(result);
+			buildGrievanceRequests(result)
+		}
+	});
+}*/
+
+function getApprovedAmountsForGrievance(){
+	//$("#statusCountsMainDivId").html('');
+	$("#dataLoadingsImgForGrievanceRequests").show();
+	var constituencyId = 0;
+	var parliamentid = 0;
+	var districtId = 0;
+	if(participatedConstituencyId != null && participatedConstituencyId > 0){
+		constituencyId = participatedConstituencyId;
+		parliamentid = participatedParliamentId;
+		districtId = participatedDistrictId;
+	}
+	else{
+		constituencyId = globalConstituencyId;
+		parliamentid = globalParliamentId;
+		districtId = globalDistrictId;
+	}
+	var jsobj={
+		constiId : constituencyId,
+		parliamentId : parliamentid,
+		districtId : districtId
+		}
+	$.ajax({
+		type:'GET',
+		 url: 'getApprovedAmountDetailsForGovtAndWilfareByLocationAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result != null){
+			//buildStatusCountsForGrievanceDetails(result);
+			buildGrievanceAmountDetails(result);
+		}
+	});
+}
+
+function buildGrievanceAmountDetails(result){
+	var str='';
+	
+	str+='<table class="table m_0 table-bordered m_0">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th rowspan="2"></th>';
+				str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Govt.</th>';
+				str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Welfare</th>';
+				//str+='<th colspan="3">District</th>';
+			str+='</tr>';
+			str+='<tr>';
+					str+='<th style="text-transform:uppercase">Total Complaints</th>';
+					str+='<th style="text-transform:uppercase">Approved Amount</th>';
+					str+='<th style="text-transform:uppercase">Other Benifits</th>';
+					str+='<th style="text-transform:uppercase">Total Complaints</th>';
+					str+='<th style="text-transform:uppercase">Approved Amount</th>';
+					str+='<th style="text-transform:uppercase">Other Benifits</th>';
+				str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result){
+				str+='<tr>';
+				str+='<td class="text-bold" style="text-transform:uppercase">'+result[i].name+'</td>';
+				for(var j in result[i].simpleVOList1){
+					if(result[i].simpleVOList1[j].count != null)
+						str+='<td>'+result[i].simpleVOList1[j].count+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].simpleVOList1[j].approvedAmount != null)
+						str+='<td>'+result[i].simpleVOList1[j].approvedAmount+'</td>';
+					else
+						str+='<td> - </td>';
+					if(result[i].simpleVOList1[j].otherBenifitCount != null)
+						str+='<td>'+result[i].simpleVOList1[j].otherBenifitCount+'</td>';
+					else
+						str+='<td> - </td>';
+				}
+				str+='</tr>';
+			}
+		str+='</tbody>';
+	str+='<table>';
+	
+	$("#dataLoadingsImgForGrievanceRequests").hide();
+	$("#grievanceRequestsId").html(str);
+}
+function buildGrievanceRequests(result)
+{
+	var str = '';
+	str+='';
+	str+='';
+	  str+='<ul class="nav nav-tabs" role="tablist">';
+		str+='<li role="presentation" class="active"><a href="#govtGrievance" aria-controls="govtGrievance" role="tab" data-toggle="tab">Govenment</a></li>';
+		str+='<li role="presentation"><a href="#welfareGrievance" aria-controls="welfareGrievance" role="tab" data-toggle="tab">Welfare</a></li>';
+		str+='<li role="presentation"><a href="#partyGrievance" aria-controls="partyGrievance" role="tab" data-toggle="tab">Party</a></li>';
+	  str+='</ul>';
+	  str+='<div class="tab-content">';
+		str+='<div role="tabpanel" class="tab-pane active" id="govtGrievance">';
+			str+='<table>';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th colspan="3">Assembly</th>';
+					str+='<th colspan="3">Parliament</th>';
+					str+='<th colspan="3">District</th>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				str+='<tr>';
+					for(var i in result){
+						for(var j in result[i].simpleVOList1){
+							if(result[i].simpleVOList1[j].name == 'Govt'){
+								for(var k in result[i].simpleVOList1[j].simpleVOList1){
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].issueType+'</td>';
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].count+'</td>';
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].approvedAmount+'</td>';
+								}
+							}
+						}
+					}
+				str+='</tr>';
+			str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		str+='<div role="tabpanel" class="tab-pane" id="welfareGrievance">';
+			str+='<table>';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th colspan="3">Assembly</th>';
+					str+='<th colspan="3">Parliament</th>';
+					str+='<th colspan="3">District</th>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				str+='<tr>';
+					for(var i in result){
+						for(var j in result[i].simpleVOList1){
+							if(result[i].simpleVOList1[j].name == 'Welfare'){
+								for(var k in result[i].simpleVOList1[j].simpleVOList1){
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].issueType+'</td>';
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].count+'</td>';
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].approvedAmount+'</td>';
+								}
+							}
+						}
+					}
+				str+='</tr>';
+			str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		str+='<div role="tabpanel" class="tab-pane" id="partyGrievance">';
+			str+='<table>';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th colspan="3">Assembly</th>';
+					str+='<th colspan="3">Parliament</th>';
+					str+='<th colspan="3">District</th>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+					str+='<th>Category</th>';
+					str+='<th>Count</th>';
+					str+='<th>Amount</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				str+='<tr>';
+					for(var i in result){
+						for(var j in result[i].simpleVOList1){
+							if(result[i].simpleVOList1[j].name == 'Party'){
+								for(var k in result[i].simpleVOList1[j].simpleVOList1){
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].issueType+'</td>';
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].count+'</td>';
+									str+='<td>'+result[i].simpleVOList1[j].simpleVOList1[k].approvedAmount+'</td>';
+								}
+							}
+						}
+					}
+				str+='</tr>';
+			str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+	  str+='</div>';
+	$("#grievanceRequestsId").html(str)
 }
