@@ -6379,7 +6379,12 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					statusMap.put(id, vo);
 				}
+				/*GrievanceDetailsVO totalVo =new GrievanceDetailsVO();
 				
+				totalVo.setId(10l);
+				totalVo.setName("TOTAL");
+				
+				statusMap.put(10l, totalVo);*/
 				if(statusMap != null && statusMap.size()>0)
 					issueTypeMap.put(issueTypeStr, statusMap);
 			}
@@ -6414,13 +6419,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 			Map<String,Map<String,Map<Long,GrievanceDetailsVO>>> locationsMap = new LinkedHashMap<String, Map<String,Map<Long,GrievanceDetailsVO>>>();
 			if(panchayatId != null && panchayatId.longValue() > 0l){
 				//locationsMap.put("panchayat", issueTypeMap);
-				IdNameVO vo = new IdNameVO();
-				vo.setId(panchayatId);
-				vo.setName("Panchayat");
-				locationsList.add(vo);
+				
 				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
 				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(panchayatId, "panchayat");
 				if(list != null && list.size() > 0){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(panchayatId);
+					vo.setName("Panchayat");
+					locationsList.add(vo);
 					for (Object[] obj : list) {
 						String issueType = obj[0] != null ? obj[0].toString():"";
 						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
@@ -6445,13 +6451,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 			if(mandalId != null && mandalId.longValue() > 0l){
 				//locationsMap.put("mandal", issueTypeMap);
-				IdNameVO vo = new IdNameVO();
-				vo.setId(mandalId);
-				vo.setName("Mandal");
-				locationsList.add(vo);
+				
 				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
 				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(mandalId, "mandal");
 				if(list != null && list.size() > 0){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(mandalId);
+					vo.setName("Mandal");
+					locationsList.add(vo);
 					for (Object[] obj : list) {
 						String issueType = obj[0] != null ? obj[0].toString():"";
 						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
@@ -6475,13 +6482,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			else if(lebId != null && lebId.longValue() > 0l){
 				//locationsMap.put("muncipality", issueTypeMap);
-				IdNameVO vo = new IdNameVO();
-				vo.setId(lebId);
-				vo.setName("Muncipality");
-				locationsList.add(vo);
+				
 				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
 				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(lebId, "leb");
 				if(list != null && list.size() > 0){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(lebId);
+					vo.setName("Muncipality");
+					locationsList.add(vo);
 					for (Object[] obj : list) {
 						String issueType = obj[0] != null ? obj[0].toString():"";
 						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
@@ -6506,13 +6514,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 			if(constituencyId != null && constituencyId.longValue() > 0l){
 				//locationsMap.put("assembly", issueTypeMap);
-				IdNameVO vo = new IdNameVO();
-				vo.setId(constituencyId);
-				vo.setName("Constituency");
-				locationsList.add(vo);
+				
 				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
 				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(constituencyId, "constituency");
 				if(list != null && list.size() > 0){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(constituencyId);
+					vo.setName("Constituency");
+					locationsList.add(vo);
 					for (Object[] obj : list) {
 						String issueType = obj[0] != null ? obj[0].toString():"";
 						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
@@ -6536,14 +6545,15 @@ public class CadreDetailsService implements ICadreDetailsService{
 				
 			if(parliamentId != null && parliamentId.longValue() > 0l){
 				//locationsMap.put("parliament", issueTypeMap);
-				IdNameVO vo = new IdNameVO();
-				vo.setId(parliamentId);
-				vo.setName("Paliament");
-				locationsList.add(vo);
+				
 				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
 				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(parliamentId, "parliament");
 				
 				if(list != null && list.size() > 0){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(parliamentId);
+					vo.setName("Paliament");
+					locationsList.add(vo);
 					for (Object[] obj : list) {
 						String issueType = obj[0] != null ? obj[0].toString():"";
 						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
@@ -6561,19 +6571,21 @@ public class CadreDetailsService implements ICadreDetailsService{
 						Map<Long,GrievanceDetailsVO> parStaMap = parIssTypeMap.get(issueType);
 						GrievanceDetailsVO parvo = parStaMap.get(statusId);
 						parvo.setCount(count);
+						//parvo.setWelfareCount(parvo.getWelfareCount() + parvo.getCount());
 					}
 				}
 			}
 				
 			if(districtId != null && districtId.longValue() > 0l){
 				//locationsMap.put("district", issueTypeMap);
-				IdNameVO vo = new IdNameVO();
-				vo.setId(districtId);
-				vo.setName("District");
-				locationsList.add(vo);
+				
 				//0.issue_type,1.grievance_insurance_status_id,2.status,3.COUNT.
 				List<Object[]> list = cadreHealthStatusDAO.getDeathsAndHospitalizationStatusWiseDetails(districtId, "district");
 				if(list != null && list.size() > 0){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(districtId);
+					vo.setName("District");
+					locationsList.add(vo);
 					for (Object[] obj : list) {
 						String issueType = obj[0] != null ? obj[0].toString():"";
 						Long statusId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
@@ -6617,6 +6629,47 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 			}
 			
+			if(grievanDetailsVO != null && grievanDetailsVO.getSubList() != null && grievanDetailsVO.getSubList().size()>0){
+				Map<String,Map<String,Long>> locationWiseStatusMap = new LinkedHashMap<String, Map<String,Long>>(0);
+				for (GrievanceDetailsVO grievanceDetailsVO : grievanDetailsVO.getSubList()) {
+					List<GrievanceDetailsVO> statusVOList = grievanceDetailsVO.getSubList();
+				
+					if(statusVOList != null && statusVOList.size()>0){
+						for (GrievanceDetailsVO statusVO : statusVOList) {
+							Map<String,Long> insuranceTypeMap = new LinkedHashMap<String, Long>(0);
+							Long totalCount =statusVO.getCount() != null ?statusVO.getCount():0L;
+							Long existingCount =0L;
+							if(locationWiseStatusMap.get(statusVO.getLocationName().trim()) != null){
+								insuranceTypeMap = locationWiseStatusMap.get(statusVO.getLocationName().trim());
+								existingCount = insuranceTypeMap.get(statusVO.getName().trim()) != null ? insuranceTypeMap.get(statusVO.getName().trim()) :0L;
+							}
+							totalCount = totalCount+existingCount;
+							insuranceTypeMap.put(statusVO.getName().trim(), totalCount);
+							locationWiseStatusMap.put(statusVO.getLocationName().trim(), insuranceTypeMap);
+						}
+					}
+				}
+				
+				if(locationWiseStatusMap != null && locationWiseStatusMap.size()>0){
+					GrievanceDetailsVO locationVO =new GrievanceDetailsVO();
+					locationVO.setName("TOTAL");
+					for (String locationName : locationWiseStatusMap.keySet()) {
+						Map<String,Long> insuranceTypeMap = locationWiseStatusMap.get(locationName);
+						
+						if(insuranceTypeMap != null && insuranceTypeMap.size()>0){
+							for (String insuranceTypeStr : insuranceTypeMap.keySet()) {
+								GrievanceDetailsVO insuranceTypeVO =new GrievanceDetailsVO();
+								insuranceTypeVO.setName(insuranceTypeStr);
+								insuranceTypeVO.setLocationName(locationName);
+								insuranceTypeVO.setId(0L);
+								insuranceTypeVO.setCount(insuranceTypeMap.get(insuranceTypeStr));									
+								locationVO.getSubList().add(insuranceTypeVO);
+							}
+						}
+					}
+					grievanDetailsVO.getSubList().add(locationVO);
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("Exception occured in getDeathsAndHospitalizationStatusWiseDetailsInCadreLocation() Method ",e);
 		}
@@ -6906,7 +6959,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 					vo.setTdpCadreId(Long.valueOf(obj[9] != null ? obj[9].toString():"0"));
 					vo.setSubject(obj[10] != null ? obj[10].toString():"");
 					vo.setDescription(obj[11] != null ? obj[11].toString():"");
-					
+					vo.setLocationName(obj[12] != null ? obj[12].toString():"");
+					vo.setConstituency(obj[13] != null ? obj[13].toString():"");
+					vo.setVillageName(obj[14] != null ? obj[14].toString():"");
+					vo.setMandalName(obj[15] != null ? obj[15].toString():"");
 					returnList.add(vo);
 				}
 			}
