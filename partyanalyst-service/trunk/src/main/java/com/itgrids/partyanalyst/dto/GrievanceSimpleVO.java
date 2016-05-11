@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,14 @@ public class GrievanceSimpleVO implements Serializable{
 	public String current;
 	public String onlystatus;
 	
-	public List<GrievanceSimpleVO> simpleVOList1;
-	public List<GrievanceSimpleVO> simpleVOList2;
+	public String typeOfIssue;
+	public String issueType;
+	public Long count;
+	public String approvedAmount;
+	private Long otherBenifitCount = 0l;
+	
+	public List<GrievanceSimpleVO> simpleVOList1 = new ArrayList<GrievanceSimpleVO>(0);
+	public List<GrievanceSimpleVO> simpleVOList2 = new ArrayList<GrievanceSimpleVO>(0);
 	
 	
 	public Long getId() {
@@ -85,5 +92,35 @@ public class GrievanceSimpleVO implements Serializable{
 	}
 	public void setSimpleVOList2(List<GrievanceSimpleVO> simpleVOList2) {
 		this.simpleVOList2 = simpleVOList2;
+	}
+	public String getTypeOfIssue() {
+		return typeOfIssue;
+	}
+	public void setTypeOfIssue(String typeOfIssue) {
+		this.typeOfIssue = typeOfIssue;
+	}
+	public String getIssueType() {
+		return issueType;
+	}
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public String getApprovedAmount() {
+		return approvedAmount;
+	}
+	public void setApprovedAmount(String approvedAmount) {
+		this.approvedAmount = approvedAmount;
+	}
+	public Long getOtherBenifitCount() {
+		return otherBenifitCount;
+	}
+	public void setOtherBenifitCount(Long otherBenifitCount) {
+		this.otherBenifitCount = otherBenifitCount;
 	}
 }
