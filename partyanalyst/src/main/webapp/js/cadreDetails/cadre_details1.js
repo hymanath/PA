@@ -250,13 +250,16 @@ var result = resultList.verifierVOList;
 		var str = '';
 	if(result != null && result.length >0){
 	str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
+			str+='<table id="ivrStatusDataTable">';
+			str+='<thead><th></th></thead>';
 			for(var i in result){
-				
+			str+='<tr>';
+			str+='<td>';
 			 str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
 						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 							str+='<h4 class="panel-title">';
-								str+=''+result[i].name+'';
+								str+=''+result[i].name+'('+result[i].date+')';
 							str+='</h4>';
 						str+='</a>';
 					str+='</div>';
@@ -264,16 +267,16 @@ var result = resultList.verifierVOList;
 					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
 						str+='<div class="panel-body">';
 						
-				for(var j in result[i].verifierVOList)
+				/*for(var j in result[i].verifierVOList)
 					{
 
-						str+='<h4>'+result[i].verifierVOList[j].name+'</h4>';
+						str+='<h4>'+result[i].verifierVOList[j].name+'</h4>';*/
 
 						
-							for(var k in result[i].verifierVOList[j].verifierVOList)
+							for(var k in result[i].verifierVOList)
 							{
 
-								str+='<h4>'+result[i].verifierVOList[j].verifierVOList[k].name+'</h4>';
+								str+='<h4>'+result[i].verifierVOList[k].name+'</h4>';
 								str+='<div class="table-responsive">';
 								str+='<table class="table table-bordered">';
 
@@ -282,19 +285,19 @@ var result = resultList.verifierVOList;
 									str+=' Location ';
 								str+='</th>';
 
-					for(var  l in result[i].verifierVOList[j].verifierVOList[k].verifierVOList[0].verifierVOList)
+								for(var  l in result[i].verifierVOList[k].verifierVOList[0].verifierVOList)
 								{	
 									str+='<th style="background-color:lightgrey;">';
-									str+=''+result[i].verifierVOList[j].verifierVOList[k].verifierVOList[0].verifierVOList[l].name+'';
+									str+=''+result[i].verifierVOList[k].verifierVOList[0].verifierVOList[l].name+'';
 									str+='</th>';
 								}
 								str+='</thead>';
 							   str+='<tbody>';
-							for(var l in result[i].verifierVOList[j].verifierVOList[k].verifierVOList){
+							for(var l in result[i].verifierVOList[k].verifierVOList){
 										str+='<tr>';
-											str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].verifierVOList[l].name+'</td>';
-									for(var m in result[i].verifierVOList[j].verifierVOList[k].verifierVOList[l].verifierVOList){
-											str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].verifierVOList[l].verifierVOList[m].percentage+'</td>';
+											str+='<td>'+result[i].verifierVOList[k].verifierVOList[l].name+'</td>';
+									for(var m in result[i].verifierVOList[k].verifierVOList[l].verifierVOList){
+											str+='<td>'+result[i].verifierVOList[k].verifierVOList[l].verifierVOList[m].percentage+'</td>';
 											//str+='<td>'+result[i].verifierVOList[j].verifierVOList[k].verifierVOList[l].percentage+'</td>';
 									}
 										str+='</tr>';
@@ -303,17 +306,23 @@ var result = resultList.verifierVOList;
 								str+='</table>';
 								str+='</div>';
 							}
-					}
+					//}
 
 
 						
 						str+='</div>';
 					 str+='</div>';
 					str+='</div>';
+					str+='</tr>';
+					str+='</td>';
 			}
+			str+='</table>';
 			str+='</div>';
 			$('.ivrSurveyCandtDetailsCls').html(str);
 			$('#ivrsurveyDataLoadoing').hide();
+			$("#ivrStatusDataTable").dataTable()
+			$("#ivrStatusDataTable").removeClass("dataTable")
+			$("#ivrStatusDataTable").css("clear","both")
 	}else{
 		$('#ivrsurveyDataLoadoing').hide();
 		$('.ivrSurveyCandtDetailsCls').html("NO DATA AVAILABLE");
