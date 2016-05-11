@@ -773,7 +773,7 @@
 										</h4>
 										<div class="row">
 											<div class="col-md-12">
-												 <div class="confirmAppointmentBlock">
+												<div class="confirmAppointmentBlock">
 													<div class="row">
 														<div class="col-md-12">
 															<div class="drophere">
@@ -1015,15 +1015,18 @@
 		//$("#confirmAppointmentBlockDropId").css("height","");
 	
 	   var oldBlock = $('#confirmAppointmentBlockDropId > :not(.newClass)').html().trim();
-	   var appointmentId=$('#confirmAppointmentBlockDropId > :not(.newClass)').attr("attr_appointment_id");
+	  // var appointmentId=$(oldBlock).find(".appointmentCls").attr("attr_appointment_id");
+		
+	/*    var appointmentId=$('#confirmAppointmentBlockDropId > :not(.newClass)').attr("attr_appointment_id"); */
+
 		$('#confirmAppointmentBlockDropId > :not(.newClass)').remove();
 		$("#confirmAppointmentBlockDropId").find(".manageAppViewPanelClass").removeClass("newClass");
 		
 		if(oldBlock!="DROP HERE"){
 			 var str='';
-			  str+='<div class="panel panel-default manageAppViewPanelClass newClass" attr_appointment_id="'+appointmentId+'" draggable="false" style="">';
+			  str+='<tr class="newClass manageAppViewPanelClass" role="row">';
 			  str+=oldBlock;
-			  str+='</div>';
+			  str+='</tr>';
 			  $("#dragId").append(str);
 		}
 		//Set Button disabling and Enabling when drag and Drop
@@ -4325,9 +4328,9 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 			str+='</thead>';
 			str+='<tbody id="dragId" >';
 		for(var i in result){
-			str+='<tr class="newClass" >';
+			str+='<tr class="newClass manageAppViewPanelClass" >';
 			str+='<td>';
-				str+='<div class="panel panel-default manageAppViewPanelClass " attr_appointment_id='+result[i].appointmentId+'>';
+				str+='<div class="panel panel-default appointmentCls" attr_appointment_id='+result[i].appointmentId+'>';//manageAppViewPanelClass
 				str+='<div class="panel-heading">';
 				    str+='<div class="row">';
 						str+='<div class="col-md-12">';
@@ -6875,7 +6878,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result,jsObj)
               str+='<td>'+result[i].role+'</td>';
               if(result[i].total>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'total\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].total+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'total\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].total+'</a></td>';
               }
               else
               {
@@ -6891,7 +6894,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result,jsObj)
               }
               if(result[i].requestedCnt>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Request\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].requestedCnt+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Request\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].requestedCnt+'</a></td>';
               }
               else
               {
@@ -6907,7 +6910,7 @@ function buildPublicRepresentativeWiseAppointmentCnt(result,jsObj)
               }
               if(result[i].scheduledCnt>0)
               {
-              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'total\',\'Schedule\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].scheduledCnt+'</a></td>';
+              str+='<td><a target="_blank" data-toggle="tooltip" data-placement="top" title="Click here to View '+result[i].role+' Wise Appointments" style="cursor:pointer;" onclick="getMemebersByScheduleType(\''+result[i].roleId+'\',\'PR\',\'unique\',\'Schedule\',\''+jsObj.appointmentCndiateId+'\');">'+result[i].scheduledCnt+'</a></td>';
               }
               else
               {
@@ -7687,7 +7690,7 @@ $(document).on("click",".btnClassChange",function(){
 			str+='<table class="table table-bordered text-center b_border" style="font-size: 18px; text-transform: uppercase; color: rgb(255, 255, 255);">';
 			str+='<tbody>';
 			str+='<tr>';
-				str+='<td colspan="6" style="background: rgba(10, 37, 63,0.5) none repeat scroll 0px 0px;">TOTAL APPOINTMENTS- '+totalApptCount+'</td>';
+				str+='<td colspan="7" style="background: rgba(10, 37, 63,0.5) none repeat scroll 0px 0px;">TOTAL APPOINTMENTS- '+totalApptCount+'</td>';
 			str+='</tr>';
 			str+='<tr></tr>';
 			str+='<tr>';
