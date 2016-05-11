@@ -123,7 +123,11 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     					" date(CM.updated_date) as updated_date," +
     					" TC.tdp_cadre_id," +
     					" CM.Subject," +
-    					" CM.description" +
+    					" CM.description," +
+    					" CM.Location," +
+    					" CM.constituency," +
+    					" CM.village_name," +
+    					" CM.mandal_name" +
     					" from grievance_insurance_status GIS," +
     					" complaint_master CM" +
     					" left join tdp_cadre TC on CM.membership_id = TC.membership_id," +
@@ -153,7 +157,8 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     			.addScalar("mobile_no",Hibernate.STRING).addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE)
     			.addScalar("type_of_issue",Hibernate.STRING).addScalar("grievance_insurance_status_id",Hibernate.LONG).addScalar("status",Hibernate.STRING)
     			.addScalar("updated_date",Hibernate.DATE).addScalar("tdp_cadre_id",Hibernate.LONG)
-    			.addScalar("Subject",Hibernate.STRING).addScalar("description",Hibernate.STRING);
+    			.addScalar("Subject",Hibernate.STRING).addScalar("description",Hibernate.STRING).addScalar("Location",Hibernate.STRING)
+    			.addScalar("constituency",Hibernate.STRING).addScalar("village_name",Hibernate.STRING).addScalar("mandal_name",Hibernate.STRING);
     			
     	if(locationType != "" && locationType != null)
     		query.setParameter("locationId", locationId);
