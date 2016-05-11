@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dao.IAppointmentCandidateRelationDAO;
 public class AppointmentCandidateRelationDAOHibernateTest extends BaseDaoTestCase {
 	private IAppointmentCandidateRelationDAO appointmentCandidateRelationDAO;
 	public void test(){
-		
+		//List<Object[]> list = appointmentCandidateRelationDAO.getAllAppointmentDetails();
+		//System.out.println(list);
 	}
 }
