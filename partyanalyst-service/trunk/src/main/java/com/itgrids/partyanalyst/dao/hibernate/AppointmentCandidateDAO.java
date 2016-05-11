@@ -466,24 +466,43 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		}
 	
 	
-	public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){
-		
-		
-		/*SELECT  distinct AC.tdp_cadre_id
-		FROM appointment_candidate_relation ACR,appointment_candidate AC,appointment_candidate_designation ACD WHERE
-		ACR.appointment_candidate_id = AC.appointment_candidate_id AND
-		AC.designation_id = ACD.appointment_candidate_designation_id AND
-		ACD.appointment_candidate_type_id = 1
-		AND AC.designation_id = 6 and AC.tdp_cadre_id is not null
-		ORDER BY ACD.order_no;SELECT  distinct AC.tdp_cadre_id
-		FROM appointment_candidate_relation ACR,appointment_candidate AC,appointment_candidate_designation ACD WHERE
-		ACR.appointment_candidate_id = AC.appointment_candidate_id AND
-		AC.designation_id = ACD.appointment_candidate_designation_id AND
-		ACD.appointment_candidate_type_id = 1
-		AND AC.designation_id = 6 and AC.tdp_cadre_id is not null
-		ORDER BY ACD.order_no;*/
+	public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){	
 		
 		StringBuilder str=new StringBuilder();
+		str.append("SELECT ");
+		if(type.equalsIgnoreCase("unique"))
+		str.append(" DISTINCT model.appointmentCandidate.tdpCadreId,");
+		else
+			str.append("model.appointmentCandidate.tdpCadreId,");
+		str.append("model.appointmentCandidate.name,model.appointmentCandidate.candidateDesignation.appointmentCandidateDesignationId," +
+				" model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
+				" model.appointmentCandidate.imageURL,model.appointmentCandidateId,0,0 ");
+		
+		str.append(" FROM AppointmentCandidateRelation model " +
+				" WHERE model.appointment.isDeleted = 'N'" +
+				" AND  model.appointmentCandidate.tdpCadreId is NOT NULL" +
+				" AND  model.appointmentCandidate.appointmentCandidateType.appointmentCandidateTypeId = 1 ");
+		
+		if(statusIds != null && statusIds.size() > 0)
+			str.append(" AND model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
+		if(roleId != null && roleId > 0)
+			str.append(" AND model.appointmentCandidate.candidateDesignation.appointmentCandidateDesignationId =:roleId ");
+		
+		if(aptUserId != null && aptUserId > 0)
+			str.append(" AND model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
+		
+		str.append(" ORDER BY model.appointmentCandidate.name ");
+		
+		Query query = getSession().createQuery(str.toString());
+		 if(statusIds != null && statusIds.size() > 0)
+			 query.setParameterList("statusIds", statusIds);
+		 if(roleId != null && roleId > 0)
+			 query.setParameter("roleId", roleId);
+		 if(aptUserId != null && aptUserId > 0)
+			 query.setParameter("appointmenUserId", aptUserId);
+		 return query.list();
+		
+		/*StringBuilder str=new StringBuilder();
 		str.append("select ");
 		if(type.equalsIgnoreCase("unique"))
 		str.append(" distinct model.appointmentCandidate.tdpCadreId,");
@@ -493,7 +512,8 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 				"model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
 				"model.appointmentCandidate.imageURL,model.appointmentCandidateId");
 		str.append(",model2.publicRepresentativeType.publicRepresentativeTypeId,"
-				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model ");
+				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1," +
+				" AppointmentCandidateRelation model ");
 		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.appointmentCandidate.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
@@ -508,7 +528,7 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 			 query.setParameter("roleId", roleId);
 		 if(aptUserId != null && aptUserId > 0)
 			 query.setParameter("appointmenUserId", aptUserId);
-		 return query.list();
+		 return query.list();*/	
 		}
 	
 	
