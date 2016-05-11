@@ -346,4 +346,84 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 		return query.list();
 		  
 	  }
+	
+	public List<Object[]> getApprovedAmountDetailsByLocation(Long locationId,String locationType){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select CM.type_of_issue," +
+							" CM.issue_type," +
+							" count(CM.Complaint_id)," +
+							" sum(CM.approved_amount)" +
+							" from complaint_master CM" +
+							" where CM.Completed_Status = 'completed'" +
+							" and (CM.delete_status !='0' or CM.delete_status is null)" +
+							" and (CM.Subject != '' or CM.Subject is not null)" +
+							" and CM.state_id_cmp in (1,2)");
+		if(locationType.equalsIgnoreCase("assembly"))
+			sb.append(" and CM.assembly_id = :locationId");
+		else if(locationType.equalsIgnoreCase("parliament"))
+			sb.append(" and CM.parliament_id = :locationId");
+		else if(locationType.equalsIgnoreCase("district"))
+			sb.append(" and CM.district_id = :locationId");
+		
+		sb.append(" group by CM.type_of_issue,CM.issue_type");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		if(locationType != null)
+			query.setParameter("locationId", locationId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getApprovedAmountDetailsForGovtAndWilfareByLocation(Long locationId,String locationType){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select CM.type_of_issue," +
+							" count(CM.Complaint_id)," +
+							" sum(CM.approved_amount)" +
+							" from complaint_master CM" +
+							" where CM.Completed_Status = 'completed'" +
+							" and (CM.delete_status !='0' or CM.delete_status is null)" +
+							" and (CM.Subject != '' or CM.Subject is not null)" +
+							" and CM.state_id_cmp in (1,2)" +
+							" and CM.approved_amount is not null and CM.approved_amount > 0");
+		if(locationType.equalsIgnoreCase("assembly"))
+			sb.append(" and CM.assembly_id = :locationId");
+		else if(locationType.equalsIgnoreCase("parliament"))
+			sb.append(" and CM.parliament_id = :locationId");
+		else if(locationType.equalsIgnoreCase("district"))
+			sb.append(" and CM.district_id = :locationId");
+		
+		sb.append(" group by CM.type_of_issue");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		if(locationType != null)
+			query.setParameter("locationId", locationId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getApprovedAmountDetailsForWilfareByLocation(Long locationId,String locationType){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select CM.type_of_issue," +
+							" count(CM.Complaint_id)" +
+							" from complaint_master CM" +
+							" where CM.Completed_Status = 'completed'" +
+							" and (CM.delete_status !='0' or CM.delete_status is null)" +
+							" and (CM.Subject != '' or CM.Subject is not null)" +
+							" and CM.state_id_cmp in (1,2)" +
+							" and CM.support_purpose = 'Seat'");
+		if(locationType.equalsIgnoreCase("assembly"))
+			sb.append(" and CM.assembly_id = :locationId");
+		else if(locationType.equalsIgnoreCase("parliament"))
+			sb.append(" and CM.parliament_id = :locationId");
+		else if(locationType.equalsIgnoreCase("district"))
+			sb.append(" and CM.district_id = :locationId");
+		
+		sb.append(" group by CM.type_of_issue");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		if(locationType != null)
+			query.setParameter("locationId", locationId);
+		
+		return query.list();
+	}
 }

@@ -8276,4 +8276,209 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		return null;
 	}
 	
+	public List<GrievanceSimpleVO> getApprovedAmountDetailsByLocation(Long assemblyId,Long parliamentId,Long districtId){
+		List<GrievanceSimpleVO> returnvoList = new ArrayList<GrievanceSimpleVO>(0);
+		
+		try {
+			if(assemblyId != null && assemblyId.longValue() > 0l){
+				Map<String,GrievanceSimpleVO> typeOfIssueMap = new LinkedHashMap<String, GrievanceSimpleVO>();
+				List<Object[]> list = cadreHealthStatusDAO.getApprovedAmountDetailsByLocation(assemblyId, "assembly");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String typeOfIssue = obj[0] != null ? obj[0].toString():"";
+						GrievanceSimpleVO vo = new GrievanceSimpleVO();
+						
+						vo.setTypeOfIssue(typeOfIssue);
+						vo.setIssueType(obj[1] != null ? obj[1].toString():"");
+						vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setApprovedAmount(obj[3] != null ? obj[3].toString():"0");
+						
+						GrievanceSimpleVO issuevo = typeOfIssueMap.get(typeOfIssue);
+						if(issuevo != null){
+							issuevo.getSimpleVOList1().add(vo);
+						}
+						else{
+							issuevo = new GrievanceSimpleVO();
+							issuevo.setName(typeOfIssue);
+							issuevo.getSimpleVOList1().add(vo);
+							typeOfIssueMap.put(typeOfIssue, issuevo);
+						}
+					}
+				}
+				GrievanceSimpleVO assemblyvo = new GrievanceSimpleVO();
+				assemblyvo.setName("assembly");
+				assemblyvo.setId(assemblyId);
+				assemblyvo.getSimpleVOList1().addAll(typeOfIssueMap.values());
+				returnvoList.add(assemblyvo);
+			}
+			
+			if(parliamentId != null && parliamentId.longValue() > 0l){
+				Map<String,GrievanceSimpleVO> typeOfIssueMap = new LinkedHashMap<String, GrievanceSimpleVO>();
+				List<Object[]> list = cadreHealthStatusDAO.getApprovedAmountDetailsByLocation(parliamentId, "parliament");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String typeOfIssue = obj[0] != null ? obj[0].toString():"";
+						GrievanceSimpleVO vo = new GrievanceSimpleVO();
+						
+						vo.setTypeOfIssue(typeOfIssue);
+						vo.setIssueType(obj[1] != null ? obj[1].toString():"");
+						vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setApprovedAmount(obj[3] != null ? obj[3].toString():"0");
+						
+						GrievanceSimpleVO issuevo = typeOfIssueMap.get(typeOfIssue);
+						if(issuevo != null){
+							issuevo.getSimpleVOList1().add(vo);
+						}
+						else{
+							issuevo = new GrievanceSimpleVO();
+							issuevo.setName(typeOfIssue);
+							issuevo.getSimpleVOList1().add(vo);
+							typeOfIssueMap.put(typeOfIssue, issuevo);
+						}
+					}
+				}
+				GrievanceSimpleVO parlivo = new GrievanceSimpleVO();
+				parlivo.setName("parliament");
+				parlivo.setId(parliamentId);
+				parlivo.getSimpleVOList1().addAll(typeOfIssueMap.values());
+				returnvoList.add(parlivo);
+			}
+			
+			if(districtId != null && districtId.longValue() > 0l){
+				Map<String,GrievanceSimpleVO> typeOfIssueMap = new LinkedHashMap<String, GrievanceSimpleVO>();
+				List<Object[]> list = cadreHealthStatusDAO.getApprovedAmountDetailsByLocation(districtId, "district");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String typeOfIssue = obj[0] != null ? obj[0].toString():"";
+						GrievanceSimpleVO vo = new GrievanceSimpleVO();
+						
+						vo.setTypeOfIssue(typeOfIssue);
+						vo.setIssueType(obj[1] != null ? obj[1].toString():"");
+						vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setApprovedAmount(obj[3] != null ? obj[3].toString():"0");
+						
+						GrievanceSimpleVO issuevo = typeOfIssueMap.get(typeOfIssue);
+						if(issuevo != null){
+							issuevo.getSimpleVOList1().add(vo);
+						}
+						else{
+							issuevo = new GrievanceSimpleVO();
+							issuevo.setName(typeOfIssue);
+							issuevo.getSimpleVOList1().add(vo);
+							typeOfIssueMap.put(typeOfIssue, issuevo);
+						}
+					}
+				}
+				GrievanceSimpleVO distvo = new GrievanceSimpleVO();
+				distvo.setName("district");
+				distvo.setId(districtId);
+				distvo.getSimpleVOList1().addAll(typeOfIssueMap.values());
+				returnvoList.add(distvo);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getApprovedAmountDetailsByLocation  method in CadreDetailsService.",e);
+		}
+		return returnvoList;
+	}
+	
+	public List<GrievanceSimpleVO> getApprovedAmountDetailsForGovtAndWilfareByLocation(Long assemblyId,Long parliamentId,Long districtId){
+		List<GrievanceSimpleVO> returnList = new ArrayList<GrievanceSimpleVO>();
+		try {
+			if(assemblyId != null && assemblyId.longValue() > 0l){
+				GrievanceSimpleVO assemblyVo = new GrievanceSimpleVO();
+				assemblyVo.setName("assembly");
+				assemblyVo.setId(assemblyId);
+				
+				Map<String,Long> otherBenifitMap = new LinkedHashMap<String, Long>();
+				List<Object[]> otherBenifit = cadreHealthStatusDAO.getApprovedAmountDetailsForWilfareByLocation(assemblyId, "assembly");
+				if(otherBenifit != null && otherBenifit.size() > 0){
+					for (Object[] obj : otherBenifit) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						otherBenifitMap.put(issueType, count);
+					}
+				}
+				List<Object[]> list = cadreHealthStatusDAO.getApprovedAmountDetailsForGovtAndWilfareByLocation(assemblyId, "assembly");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						GrievanceSimpleVO vo = new GrievanceSimpleVO();
+						String issType = obj[0] != null ? obj[0].toString():"";
+						
+						vo.setName(issType);
+						vo.setCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+						vo.setApprovedAmount(obj[2] != null ? obj[2].toString():"");
+						vo.setOtherBenifitCount(otherBenifitMap.get(issType));
+						
+						assemblyVo.getSimpleVOList1().add(vo);
+					}
+				}
+				returnList.add(assemblyVo);
+			}
+			
+			if(parliamentId != null && parliamentId.longValue() > 0l){
+				GrievanceSimpleVO parlVo = new GrievanceSimpleVO();
+				parlVo.setName("parliament");
+				parlVo.setId(parliamentId);
+				
+				Map<String,Long> otherBenifitMap = new LinkedHashMap<String, Long>();
+				List<Object[]> otherBenifit = cadreHealthStatusDAO.getApprovedAmountDetailsForWilfareByLocation(parliamentId, "parliament");
+				if(otherBenifit != null && otherBenifit.size() > 0){
+					for (Object[] obj : otherBenifit) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						otherBenifitMap.put(issueType, count);
+					}
+				}
+				List<Object[]> list = cadreHealthStatusDAO.getApprovedAmountDetailsForGovtAndWilfareByLocation(parliamentId, "parliament");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						GrievanceSimpleVO vo = new GrievanceSimpleVO();
+						String issType = obj[0] != null ? obj[0].toString():"";
+						
+						vo.setName(issType);
+						vo.setCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+						vo.setApprovedAmount(obj[2] != null ? obj[2].toString():"");
+						vo.setOtherBenifitCount(otherBenifitMap.get(issType));
+						
+						parlVo.getSimpleVOList1().add(vo);
+					}
+				}
+				returnList.add(parlVo);
+			}
+			
+			if(districtId != null && districtId.longValue() > 0l){
+				GrievanceSimpleVO distVo = new GrievanceSimpleVO();
+				distVo.setName("district");
+				distVo.setId(districtId);
+				
+				Map<String,Long> otherBenifitMap = new LinkedHashMap<String, Long>();
+				List<Object[]> otherBenifit = cadreHealthStatusDAO.getApprovedAmountDetailsForWilfareByLocation(parliamentId, "parliament");
+				if(otherBenifit != null && otherBenifit.size() > 0){
+					for (Object[] obj : otherBenifit) {
+						String issueType = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						otherBenifitMap.put(issueType, count);
+					}
+				}
+				List<Object[]> list = cadreHealthStatusDAO.getApprovedAmountDetailsForGovtAndWilfareByLocation(districtId, "district");
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						GrievanceSimpleVO vo = new GrievanceSimpleVO();
+						String issType = obj[0] != null ? obj[0].toString():"";
+						
+						vo.setName(issType);
+						vo.setCount(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+						vo.setApprovedAmount(obj[2] != null ? obj[2].toString():"");
+						vo.setOtherBenifitCount(otherBenifitMap.get(issType));
+						
+						distVo.getSimpleVOList1().add(vo);
+					}
+				}
+				returnList.add(distVo);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getApprovedAmountDetailsForGovtAndWilfareByLocation  method in CadreDetailsService.",e);
+		}
+		return returnList;
+	}
 }
