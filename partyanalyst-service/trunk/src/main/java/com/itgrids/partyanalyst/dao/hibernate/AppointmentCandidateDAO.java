@@ -421,20 +421,40 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	}
 	
 	public List<Object[]>  getPublicRepresentativeWiseAppointmentCnt(List<Long> statusIds,String type,Long aptUserId){
+			
 		StringBuilder str=new StringBuilder();
-		str.append("select ");
+		
+		str.append("SELECT ");
 		if(type.equalsIgnoreCase("unique"))
-		str.append("count(distinct model.appointmentCandidate.tdpCadreId),");
+		str.append(" COUNT(DISTINCT model.appointmentCandidate.tdpCadreId),");
 		else
-			str.append("count(model.appointmentCandidate.tdpCadreId),");	
-		str.append("model2.publicRepresentativeType.publicRepresentativeTypeId,"
+			str.append(" COUNT(model.appointmentCandidate.tdpCadreId),");
+		
+		str.append(" model.appointmentCandidate.candidateDesignation.appointmentCandidateDesignationId," +
+				"  model.appointmentCandidate.candidateDesignation.designation " +
+				" ");
+		
+		str.append(" FROM AppointmentCandidateRelation model " +
+				" WHERE model.appointment.isDeleted = 'N' " +
+				" AND	model.appointmentCandidate.appointmentCandidateType.appointmentCandidateTypeId = 1 AND model.appointmentCandidate.tdpCadreId is NOT NULL " );
+		
+		if(statusIds != null && statusIds.size() > 0)
+			str.append(" AND model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
+		if(aptUserId !=null)
+			str.append(" AND model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
+		
+		str.append(" GROUP BY " +
+				"		   model.appointmentCandidate.candidateDesignation.appointmentCandidateDesignationId " +
+				" ORDER BY model.appointmentCandidate.candidateDesignation.orderNo ");
+		
+		/*str.append("model2.publicRepresentativeType.publicRepresentativeTypeId,"
 				+ "model2.publicRepresentativeType.type  from PublicRepresentative model2,TdpCadreCandidate model1,AppointmentCandidateRelation model ");
 		str.append(" where model2.candidate.candidateId = model1.candidate.candidateId and model.appointmentCandidate.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId ");
 		if(statusIds != null && statusIds.size() > 0)
 			str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 		if(aptUserId !=null)
 			str.append(" and model.appointment.appointmentUser.appointmenUserId = :appointmenUserId ");
-		str.append(" group by model2.publicRepresentativeType.type ");
+		str.append(" group by model2.publicRepresentativeType.type ");*/
 		
 		 Query query = getSession().createQuery(str.toString());
 		 if(statusIds != null && statusIds.size() > 0)
@@ -447,6 +467,22 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 	
 	
 	public List<Object[]>  getPublicRepresentativeWiseAppointmentMembers(List<Long> statusIds,String type,Long roleId,Long aptUserId){
+		
+		
+		/*SELECT  distinct AC.tdp_cadre_id
+		FROM appointment_candidate_relation ACR,appointment_candidate AC,appointment_candidate_designation ACD WHERE
+		ACR.appointment_candidate_id = AC.appointment_candidate_id AND
+		AC.designation_id = ACD.appointment_candidate_designation_id AND
+		ACD.appointment_candidate_type_id = 1
+		AND AC.designation_id = 6 and AC.tdp_cadre_id is not null
+		ORDER BY ACD.order_no;SELECT  distinct AC.tdp_cadre_id
+		FROM appointment_candidate_relation ACR,appointment_candidate AC,appointment_candidate_designation ACD WHERE
+		ACR.appointment_candidate_id = AC.appointment_candidate_id AND
+		AC.designation_id = ACD.appointment_candidate_designation_id AND
+		ACD.appointment_candidate_type_id = 1
+		AND AC.designation_id = 6 and AC.tdp_cadre_id is not null
+		ORDER BY ACD.order_no;*/
+		
 		StringBuilder str=new StringBuilder();
 		str.append("select ");
 		if(type.equalsIgnoreCase("unique"))
