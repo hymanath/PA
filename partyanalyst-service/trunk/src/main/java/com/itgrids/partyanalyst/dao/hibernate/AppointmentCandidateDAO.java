@@ -523,7 +523,8 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 				"model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
 				"model.appointmentCandidate.imageURL,model.appointmentCandidateId");
 		str.append(" from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
-				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId ");
+				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId" +
+				" and TCM.isActive = 'Y' ");
 				if(statusIds != null && statusIds.size() > 0)
 					str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 				if(roleId != null && roleId > 0)
@@ -550,7 +551,9 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 				"model.appointmentCandidate.candidateDesignation.designation,model.appointmentCandidate.mobileNo," +
 				"model.appointmentCandidate.imageURL,model.appointmentCandidateId");
 		str.append(" from TdpCommitteeMember TCM, AppointmentCandidateRelation model " +
-				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId");
+				" where  model.appointmentCandidate.tdpCadre.tdpCadreId = TCM.tdpCadre.tdpCadreId and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId " +
+				" AND TCM.isActive = 'Y'" +
+				" AND model.appointmentCandidate.appointmentCandidateTypeId = 2 ");
 				if(statusIds != null && statusIds.size() > 0)
 					str.append(" and model.appointment.appointmentStatus.appointmentStatusId in(:statusIds) ");
 				if(roleId != null && roleId > 0)
