@@ -8210,7 +8210,8 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		
 		try{
 			if(list != null && list.size() > 0)
-			{
+			{		
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 					for(Object[] params : list)
 					 {
 						 VerifierVO surveyVO = getMatchedVerifierVO(verifierVO.getVerifierVOList(),(Long)params[1]);
@@ -8220,7 +8221,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 							 surveyVO = new VerifierVO();
 							 surveyVO.setId((Long)params[1]);
 							 surveyVO.setName(params[2] != null ? params[2].toString() :"");
-							 surveyVO.setDate(params[10] != null ? params[10].toString() :"");
+							 surveyVO.setDate(params[10] != null ? sdf.format((Date)(params[10])) :"");
 							 verifierVO.getVerifierVOList().add(surveyVO);
 						 }
 						 /*VerifierVO roundVO = getMatchedVerifierVO(surveyVO.getVerifierVOList(),(Long)params[3]);
