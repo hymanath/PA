@@ -36,4 +36,7 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getEventDetailsOfCadre(Long cadreId);
 	public List checkEventsyncData(String rfid,String imei,Long eventId,String uniqueKey);
 	public List<Object[]> getAttendedEventsCountforCandidate(Long tdpCadreId);
+	
+	public List<Object[]> getRequiredStateWiseEventAttendeeInfo(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId);
+	public List<Object[]> getRequiredEventAttendeeInfo(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
 }

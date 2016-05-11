@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1006,53 +1007,76 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 return "fail";
  }
  
- public ResultStatus insertDataintoEventInfo()
+ public ResultStatus insertDataintoEventInfo(Date startDate,Date endDate,List<Long> eventIds)
  {
 	 ResultStatus result = new ResultStatus();
 	 List<Object[]> list = null;
 	 List<Object[]> list1 = null;
 	 List<Object[]> list2 = null;
-	 List<Long> events  = null;
+	 List<Long> eventInfoIds  = null;
 	 List<Object[]> statewise = null;
 	 List<Object[]> statewise1 = null;
 	 try{
+		 
+		 
 		 DateUtilService date = new DateUtilService();
-		events = eventInfoDAO.getEventIds(2l,date.getCurrentDateAndTime());
-		 if(events != null && events.size() > 0)
-		 eventInfoDAO.deleteEventInfo(2l,events) ;
+		 
+		 //STATE WISE
+		 eventInfoIds = eventInfoDAO.getRequiredEventInfoIds(2l,startDate,endDate,eventIds);
+		 
+		 if(eventInfoIds != null && eventInfoIds.size() > 0){
+			 eventInfoDAO.deleteEventInfoRecords(eventInfoIds);
+		 }
+		 
 		 voterDAO.flushAndclearSession();
-		 statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("attendee",date.getCurrentDateAndTime(),1l);
-		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),1l);
-		setInviteeInfoForState(statewise1,2l,"attendee",1l);
-		setInviteeInfoForState(statewise,2l,"invitee",1l);
-		
-		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("attendee",date.getCurrentDateAndTime(),36l);
-		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),36l);
-		setInviteeInfoForState(statewise1,2l,"attendee",36l);
-		setInviteeInfoForState(statewise,2l,"invitee",36l);
-		 events = eventInfoDAO.getEventIds(3l,date.getCurrentDateAndTime());
-		    if(events != null && events.size() > 0)
-			 eventInfoDAO.deleteEventInfo(3l,events) ;
-			 voterDAO.flushAndclearSession();
+			 
+		 statewise1= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("attendee",startDate,endDate,eventIds,1l);
+		 statewise= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("invitee",startDate,endDate,eventIds,1l);
+		 setInviteeInfoForState(statewise1,2l,"attendee",1l);
+		 setInviteeInfoForState(statewise,2l,"invitee",1l);
 			
-		 
-		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"attendee",date.getCurrentDateAndTime());
-		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"invitee",date.getCurrentDateAndTime());
-		 
-		 	setInviteeInfo(list2,3l,"attendee");
-	      setInviteeInfo(list1,3l,"invitee");
-		  
-		 events = eventInfoDAO.getEventIds(4l,date.getCurrentDateAndTime());
-		 if(events != null && events.size() > 0)
-		 eventInfoDAO.deleteEventInfo(4l,events) ;
+		 statewise1= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("attendee",startDate,endDate,eventIds,36l);
+		 statewise= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("invitee",startDate,endDate,eventIds,36l);
+		 setInviteeInfoForState(statewise1,2l,"attendee",36l);
+		 setInviteeInfoForState(statewise,2l,"invitee",36l);
+		
+		
+		//DISTRICT WISE
+		 eventInfoIds = eventInfoDAO.getRequiredEventInfoIds(3l,startDate,endDate,eventIds);
+	     if(eventInfoIds != null && eventInfoIds.size() > 0){
+	    	 eventInfoDAO.deleteEventInfoRecords(eventInfoIds); 
+	     } 
 		 voterDAO.flushAndclearSession();
-		
-		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"attendee",date.getCurrentDateAndTime());
-		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"invitee",date.getCurrentDateAndTime());
-		
-		 setInviteeInfo(list2,4l,"attendee");
-		 setInviteeInfo(list1,4l,"invitee");
 		 
+		 List<Object[]> distAttendeeList= eventAttendeeDAO.getRequiredEventAttendeeInfo(IConstants.DISTRICT,"attendee",startDate,endDate,eventIds);
+		 List<Object[]> distInviteeList = eventAttendeeDAO.getRequiredEventAttendeeInfo(IConstants.DISTRICT,"invitee",startDate,endDate,eventIds);
+		 
+		 //setInviteeInfo(list2,3l,"attendee");
+		 //setInviteeInfo(list1,3l,"invitee");
+		 
+		 Map<Long,Map<Long,Map<String,EventActionPlanVO>>> distEventMap = new HashMap<Long,Map<Long,Map<String,EventActionPlanVO>>>(0);
+		 getFinalData(distAttendeeList,"attendee",distEventMap);
+		 getFinalData(distInviteeList,"invitee",distEventMap);
+		 
+		 setFinalData(distEventMap,3l);
+		 
+	     //CONSTITUENCY WISE
+		 eventInfoIds = eventInfoDAO.getRequiredEventInfoIds(4l,startDate,endDate,eventIds);
+		 
+		 if(eventInfoIds != null && eventInfoIds.size() > 0){
+			 eventInfoDAO.deleteEventInfoRecords(eventInfoIds) ;
+		 }
+		 voterDAO.flushAndclearSession();
+		 
+		 List<Object[]> constAttendeeList= eventAttendeeDAO.getRequiredEventAttendeeInfo(IConstants.CONSTITUENCY,"attendee",startDate,endDate,eventIds);
+		 List<Object[]> constInviteeList= eventAttendeeDAO.getRequiredEventAttendeeInfo(IConstants.CONSTITUENCY,"invitee",startDate,endDate,eventIds);
+		
+		 //setInviteeInfo(list2,4l,"attendee");
+		 //setInviteeInfo(list1,4l,"invitee");
+		 Map<Long,Map<Long,Map<String,EventActionPlanVO>>> constEventMap = new HashMap<Long,Map<Long,Map<String,EventActionPlanVO>>>(0);
+		 getFinalData(constAttendeeList,"attendee",constEventMap);
+		 getFinalData(constInviteeList,"invitee",constEventMap);
+		 setFinalData(constEventMap,4l);
 		 
 	 }
 	 catch(Exception e)
@@ -1063,7 +1087,168 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return result;
  }
  
-
+ 
+ public void getFinalData(List<Object[]> constAttendeeList,String type,Map<Long,Map<Long,Map<String,EventActionPlanVO>>> eventMap){
+	 
+	 try{
+		   
+		   
+		   if( constAttendeeList != null && constAttendeeList.size() > 0){
+			   
+			   for( Object[] obj : constAttendeeList){
+				 
+				  
+				  Map<Long,Map<String,EventActionPlanVO>> locationMap = eventMap.get((Long)obj[0]);
+				  
+				  boolean isEventExist = true;
+				  if( locationMap == null){
+					  isEventExist = false;
+					  locationMap =new HashMap<Long,Map<String,EventActionPlanVO> >();
+					  
+				  }
+				  
+				  boolean isLocationExist = true;
+				  Map<String,EventActionPlanVO>    dateMap = locationMap.get((Long)obj[2]);
+				  if( dateMap == null){
+					  isLocationExist = false;
+					  dateMap = new HashMap<String, EventActionPlanVO>();
+				  }
+				   
+				  boolean isDateExist = true;
+				  EventActionPlanVO    dateVO = dateMap.get(obj[3].toString());
+				  if( dateVO == null){
+					  isDateExist = false;
+					  dateVO = new EventActionPlanVO();
+				  }
+				  
+				  if(type.equalsIgnoreCase("invitee")){
+					  dateVO.setInviteeCount( (Long)obj[1] ); 
+				  }
+				  else if(type.equalsIgnoreCase("attendee")) {
+					  dateVO.setAttendeeCount((Long)obj[1]);
+				  }	 
+				  dateVO.setTotalAttendeescount( dateVO.getTotalAttendeescount() + ((Long)obj[1]));	
+				  
+				  if(!isDateExist){
+					  dateMap.put(obj[3].toString(), dateVO);
+				  }
+				  if(!isLocationExist){
+					  locationMap.put((Long)obj[2], dateMap);
+				  }
+				  if(!isEventExist){
+					  eventMap.put((Long)obj[0], locationMap);
+				  }
+				  
+			   }
+		   }
+		   
+	 }catch(Exception e){
+		 Log.error("Exception rised in insertDataintoEventInfo() while closing write operation",e);
+	}
+ }
+ 
+ 
+ 
+ 
+ public void setFinalData(Map<Long,Map<Long,Map<String,EventActionPlanVO>>> eventMap,Long reportLevelId){
+	 
+	 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	 DateUtilService dts = new DateUtilService();
+	 List<Long> locationValues = new ArrayList<Long>();
+	 try{
+		
+		if( eventMap != null && eventMap.size() > 0){
+			
+			for (Map.Entry<Long, Map<Long,Map<String,EventActionPlanVO> >> eventEntry : eventMap.entrySet()) {
+				
+				if(eventEntry.getValue().entrySet() != null && eventEntry.getValue().entrySet().size() > 0){
+					
+				       Long eventId = eventEntry.getKey();
+				
+					   for(  Map.Entry<Long,Map<String,EventActionPlanVO> > locationEntry  :  eventEntry.getValue().entrySet()){
+						   
+						   
+						   if( locationEntry.getValue().entrySet() != null && locationEntry.getValue().entrySet().size() > 0){
+							   
+							   Long locationId = locationEntry.getKey();
+							   for(  Map.Entry<String,EventActionPlanVO > dateEntry :  locationEntry.getValue().entrySet()){
+								   
+								   String dateString = dateEntry.getKey();
+								   
+								   EventActionPlanVO finalVO = dateEntry.getValue();
+								     
+								     //Saving Logic.
+								     EventInfo eventInfo = new EventInfo();
+									 eventInfo.setEventId(eventId);
+									 eventInfo.setReportLevelId(reportLevelId);
+									 eventInfo.setLocationValue(locationId);
+									 eventInfo.setDate(format.parse(dateString));
+									 eventInfo.setNoninvitees(finalVO.getAttendeeCount());
+									 eventInfo.setInvitees(finalVO.getInviteeCount());
+									 eventInfo.setTotalAttendes(finalVO.getTotalAttendeescount());
+									 eventInfo.setInsertedTime(dts.getCurrentDateAndTime());
+									 eventInfoDAO.save(eventInfo);
+									 
+									 if(!locationValues.contains(locationId)){
+										 locationValues.add(locationId); 
+									 } 
+									 voterDAO.flushAndclearSession();
+							   }
+					       } 
+						   
+					   }
+			     }  
+			}
+			
+			//UPDATING STATE VALUES.
+			 List<Object[]>  districts = eventInfoDAO.getDistricts(locationValues,reportLevelId) ;
+			 Map<Long,List<Long>> stateMap = new HashMap<Long,List<Long>>();
+			 if(districts != null && districts.size() > 0)
+			 {
+				 for(Object[] params : districts)
+				 {
+					if((Long)params[1] < 11)
+					{
+						List<Long> values =stateMap.get(36l);
+						if(values == null)
+						{
+							values = new ArrayList<Long>();
+						}
+						values.add((Long)params[0]);
+						stateMap.put(36l, values);
+					}
+					
+					if((Long)params[1] > 10)
+					{
+						List<Long> values =stateMap.get(1l);
+						if(values == null)
+						{
+							values = new ArrayList<Long>();
+						}
+						values.add((Long)params[0]);
+						stateMap.put(1l, values);
+					}
+						
+				 }
+				 List<Long> apValues = stateMap.get(1l);
+				 List<Long> tsValues = stateMap.get(36l);
+				 if(apValues != null && apValues.size() > 0)
+					 eventInfoDAO.updateState(apValues,reportLevelId,1l);
+				 if(tsValues != null && tsValues.size() > 0)
+					 eventInfoDAO.updateState(tsValues,reportLevelId,36l);
+				 voterDAO.flushAndclearSession();
+			 }
+			 
+		}
+		 
+	 }catch(Exception e){
+		 Log.error("Exception rised in insertDataintoEventInfo() while closing write operation",e); 
+	}
+ }
+ 
+ 
+ 
+ 
  
  public void setInviteeInfo(List<Object[]> list,Long reportLevelId,String type)
  {

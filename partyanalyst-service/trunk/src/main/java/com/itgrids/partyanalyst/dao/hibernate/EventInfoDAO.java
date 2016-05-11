@@ -31,11 +31,41 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 		return query.list();
 	}
 	
+	public List<Long> getRequiredEventInfoIds(Long reportLevelId,Date startDate,Date endDate,List<Long> eventIds)
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select model.eventInfoId " +
+				"   from   EventInfo model " +
+				"   where  model.reportLevelId = :reportLevelId and " +
+				"          model.date between :startDate and :endDate");
+		
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("reportLevelId",reportLevelId );
+		query.setDate("startDate",startDate );
+		query.setDate("endDate",endDate );
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds",eventIds );
+		}
+		return query.list();
+	}
+	
 	public Integer deleteEventInfo(Long reportLevelId,List<Long> eventIds)
 	{
 		Query query = getSession().createQuery("delete from EventInfo model where model.reportLevelId = :reportLevelId and model.event.eventId in(:eventIds) ");
 		query.setParameter("reportLevelId", reportLevelId);
 		query.setParameterList("eventIds", eventIds);
+		return query.executeUpdate();
+	}
+	
+	public Integer deleteEventInfoRecords(List<Long> eventInfoIds)
+	{
+		Query query = getSession().createQuery("delete from EventInfo model where  model.eventInfoId in(:eventInfoIds) ");
+		query.setParameterList("eventInfoIds", eventInfoIds);
 		return query.executeUpdate();
 	}
 	

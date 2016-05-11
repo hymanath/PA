@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
@@ -29,7 +30,8 @@ public interface IMahaNaduService {
 	 public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId);
 	 
 	 public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,String searchType,String sort,String sortBy,int startIndex,int maxResult);
-	 public ResultStatus insertDataintoEventInfo();
+	 //public ResultStatus insertDataintoEventInfo();
+	 public ResultStatus insertDataintoEventInfo(Date startDate,Date endDate,List<Long> eventIds);
 
 	// public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId);
 	// public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
