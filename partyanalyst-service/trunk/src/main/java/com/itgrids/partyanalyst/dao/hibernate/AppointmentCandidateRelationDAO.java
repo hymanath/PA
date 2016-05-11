@@ -1113,7 +1113,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
   		  queryStr.append(" and ACR.appointmentCandidateId in(:appointmentCandidateIds) ");
   		}
     	 
-    	queryStr.append(" group by ACR.appointmentCandidate.appointmentCandidateId,ACR.appointment.appointmentId");
+    	queryStr.append(" group by ACR.appointmentCandidate.appointmentCandidateId");
     	
          Query query=getSession().createQuery(queryStr.toString());
 		
