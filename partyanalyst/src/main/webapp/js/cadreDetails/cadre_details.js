@@ -2673,9 +2673,12 @@ function getDeathsAndHospitalizationDetails(){
 										if(result.subList[i].subList != null && result.subList[i].subList.length>0){
 											for(var k in result.subList[i].subList){
 													if(result.subList[i].subList[k].count != null)
-														str+='<td style="text-align:center;"><a class="statusWiseDetailsCls" style="cursor:pointer;" attr_status_id="'+result.subList[i].subList[k].id+'" attr_statusName="'+result.subList[i].name+'" attr_issue_type="'+result.subList[i].subList[k].name+'" attr_locationStr="'+result.subList[i].subList[k].locationName+'" >'+result.subList[i].subList[k].count+'</a></td>';
+														if(result.subList[i].name != 'TOTAL')
+															str+='<td style="text-align:center;"><a class="statusWiseDetailsCls" style="cursor:pointer;" attr_status_id="'+result.subList[i].subList[k].id+'" attr_statusName="'+result.subList[i].name+'" attr_issue_type="'+result.subList[i].subList[k].name+'" attr_locationStr="'+result.subList[i].subList[k].locationName+'" >'+result.subList[i].subList[k].count+'</a></td>';
+														else
+															str+='<td style="text-align:center;">'+result.subList[i].subList[k].count+'</td>';
 													else
-														str+='<td style="text-align:center;"> - </td>';
+														str+='<td style="text-align:center;"> 0 </td>';
 											}											
 										}
 										str+='</tr>';
@@ -2888,43 +2891,64 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 				str+='<table class="table m_0 table-bordered m_0" id="deathHospLifeCycleTableId">';
 					str+='<thead>';
 						str+='<tr>';
-							str+='<th> Name </th>';
+							str+='<th>Complaint Id</th>';
+							str+='<th>Complaint Person Details</th>';
+							str+='<th>Subject</th>';
+							str+='<th>Description</th>';
+							str+='<th>Status</th>';
+							str+='<th>Posted Date</th>';
+							str+='<th>Last Updated Date</th>';
+							/*str+='<th> Name </th>';
 							str+='<th> Issue Description </th>';
 							str+='<th> Complaint Info </th>';
 							str+='<th> Issue Type </th>';
 							str+='<th> Present Status </th>';
-							str+='<th> View Details </th>';
+							str+='<th> View Details </th>';*/
 						str+='</tr>';
 					str+='</thead>';
-					str+='<tbody>'
+					str+='<tbody style="background:#f3f3f3">'
 					for(var i in result){
 						str+='<tr>';
-							str+='<td><p>Name : '+result[i].firstName+'</p>';
-							str+='<p>MemberShip No : <a class="tdpCandidatePageCls" style="cursor:pointer;" attr_tdpCadreId="'+result[i].tdpCadreId+'">'+result[i].membershipNo+'</a></p>';
-							str+='<p>Mobile No : '+result[i].mobileNo+'</p>';
+							str+='<td>'+result[i].complaintId+'</td>';
+							str+='<td>';
+							str+='<p>N:'+result[i].firstName+'</p>';
+							str+='<p>D:'+result[i].locationName+'</p>';
+							str+='<p>C:'+result[i].constituency+'</p>';
+							str+='<p>M:'+result[i].mandalName+'</p>';
+							str+='<p>V:'+result[i].villageName+'</p>';
 							str+='</td>';
-							str+='<td><p>Subject : '+result[i].subject+'</p>';
-							str+='<p>Description : '+result[i].description+'</p>';
-							str+='</td>';
-							str+='</td>';
-							str+='<td><p>Complaint Id : '+result[i].complaintId+'</p>';
-							str+='<p>Posted Date : '+result[i].raisedDate+'</p>';
-							str+='</td>';
-							str+='<td>'+result[i].typeOfIssue+'</td>';
-							str+='<td><p>Status : '+result[i].status+'</p>';
+							str+='<td>'+result[i].subject+'</td>';
+							str+='<td>'+result[i].description+'</td>';
+							str+='<td>'+result[i].status+'</td>';
+							str+='<td>'+result[i].raisedDate+'</td>';
+							str+='<td>';
 							if(result[i].updatedDate.length > 0)
-								str+='<p>Last Updated Date : '+result[i].updatedDate+'</p>';
-							str+='</td>';
-							str+='<td><input type="button" value="View" class="btn btn-sm btn-primary complaintTrackingCla" onclick="getComplaintTrackingDetails('+result[i].complaintId+',\'statusDivIdForInsurance'+i+'\')"/></td>';
-						str+='</tr>';
-						str+='<tr id="trstatusDivIdForInsurance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForInsurance'+i+'"></div></td></tr>';
+								str+=''+result[i].updatedDate+'</td>';
+							//str+='<td><p>'+result[i].firstName+'</p>';
+							//str+='<p>MemberShip No : <a class="tdpCandidatePageCls" style="cursor:pointer;" attr_tdpCadreId="'+result[i].tdpCadreId+'">'+result[i].membershipNo+'</a></p>';
+							//str+='<p>Mobile No : '+result[i].mobileNo+'</p>';
+							//str+='</td>';
+							//str+='<td><p>Subject : </p>';
+							//str+='<p>Description : </p>';
+							//str+='</td>';
+							//str+='</td>';
+							//str+='<td><p>Complaint Id : </p>';
+							//str+='<p>Posted Date : </p>';
+							//str+='</td>';
+							//str+='<td>'+result[i].typeOfIssue+'</td>';
+							//str+='<td><p></p>';
+							
+							//str+='</td>';
+							//str+='<td><input type="button" value="View" class="btn btn-sm btn-primary complaintTrackingCla" onclick="getComplaintTrackingDetails('+result[i].complaintId+',\'statusDivIdForInsurance'+i+'\')"/></td>';
+						//str+='</tr>';
+						//str+='<tr id="trstatusDivIdForInsurance'+i+'" style="display:none;"><td colspan="6"><div id="statusDivIdForInsurance'+i+'"></div></td></tr>';
 					}
 					str+='</tbody>'
 				str+='</table>';
 				
 				$("#dataLoadingsImgForDeathHospDetails").hide();
 				$("#deathHospModalBodyId").html(str);
-				//$("#deathHospLifeCycleTableId").dataTable();
+				$("#deathHospLifeCycleTableId").dataTable();
 			}
 		});
 });
