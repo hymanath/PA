@@ -768,7 +768,7 @@ var globalCadreId = '${cadreId}';
 								<div id="surveyDetailsMainDivId" class=""></div>
 							</div>
 							<div role="tabpanel" class="tab-pane" id="ivrsurvey">
-								<div id="ivrSurveysMainDivId">
+								<div id="ivrSurveysMainDivId"></div>
 								<!--<div class="ivrcandtSurvysCntId"></div>-->
 								<div id="ivrSurvysCandtCntId">
 								<ul role="tablist" class="nav nav-tabs tab-list display-style" >
@@ -785,7 +785,6 @@ var globalCadreId = '${cadreId}';
 								<div class="ivrSurvysDetls"></div>
 								<div class="ivrDetailsCls" id="ivrsurveyDetailsId"></div>
 								<center><img id="ivrsurveyDataLoadoing" src="images/icons/survey-details.gif" style="width:250px;height:200px;display:none;"/></center>
-								</div>
 							</div>
 						  </div>
 						</div>
