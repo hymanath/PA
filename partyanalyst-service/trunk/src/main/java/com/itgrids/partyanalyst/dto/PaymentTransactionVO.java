@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class PaymentTransactionVO implements Serializable {
 	
@@ -12,17 +13,17 @@ public class PaymentTransactionVO implements Serializable {
 	private Long paymentModuleGatewayMerchantDetailsId;
 	private Long paymentGatewayId;
 	private Long paymentMethodId;
-	private Long transactionId;
+	private String  transactionId;
 	private Long transactionStatusId;
-	private String transactionTime;
-	private Long uuid;
+	private Date transactionTime;
+	private String uuid;
 	private String amount;
 	private String ipAddress;
 	private String  statusCode;
 	private String preUrl;
 	private String postUrl;
 	private String redirectUrl;
-	private Long  referenceUserId;
+	private String  referenceUserId;
 	private Long paymentModuleId;
 	public Long getPaymentTransactionId() {
 		return paymentTransactionId;
@@ -49,28 +50,25 @@ public class PaymentTransactionVO implements Serializable {
 	public void setPaymentMethodId(Long paymentMethodId) {
 		this.paymentMethodId = paymentMethodId;
 	}
-	public Long getTransactionId() {
-		return transactionId;
-	}
-	public void setTransactionId(Long transactionId) {
-		this.transactionId = transactionId;
-	}
+	
 	public Long getTransactionStatusId() {
 		return transactionStatusId;
 	}
 	public void setTransactionStatusId(Long transactionStatusId) {
 		this.transactionStatusId = transactionStatusId;
 	}
-	public String getTransactionTime() {
+	public Date getTransactionTime() {
 		return transactionTime;
 	}
-	public void setTransactionTime(String transactionTime) {
+	public void setTransactionTime(Date transactionTime) {
 		this.transactionTime = transactionTime;
 	}
-	public Long getUuid() {
+	
+	
+	public String getUuid() {
 		return uuid;
 	}
-	public void setUuid(Long uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 	public String getAmount() {
@@ -109,17 +107,24 @@ public class PaymentTransactionVO implements Serializable {
 	public void setRedirectUrl(String redirectUrl) {
 		this.redirectUrl = redirectUrl;
 	}
-	public Long getReferenceUserId() {
-		return referenceUserId;
-	}
-	public void setReferenceUserId(Long referenceUserId) {
-		this.referenceUserId = referenceUserId;
-	}
+	
 	public Long getPaymentModuleId() {
 		return paymentModuleId;
 	}
 	public void setPaymentModuleId(Long paymentModuleId) {
 		this.paymentModuleId = paymentModuleId;
+	}
+	public String getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+	public String getReferenceUserId() {
+		return referenceUserId;
+	}
+	public void setReferenceUserId(String referenceUserId) {
+		this.referenceUserId = referenceUserId;
 	}
 	
 	
