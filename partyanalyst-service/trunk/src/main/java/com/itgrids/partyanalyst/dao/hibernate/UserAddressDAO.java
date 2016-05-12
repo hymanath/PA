@@ -104,7 +104,8 @@ public List<Object[]> getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(Long id
 			   else if(searchType.equalsIgnoreCase("parliament"))
 				   str.append(" model.parliament_id= :id and ");
 			   
-			   str.append(" type_of_issue != 'Insurance' group by model.type_of_issue,model.Completed_Status ");
+			   str.append(" type_of_issue != 'Insurance' and  model.subject !='' and " +
+				" (model.delete_status !='0' or model.delete_status is null) group by model.type_of_issue,model.Completed_Status ");
 			   Query query = getSession().createSQLQuery(str.toString());
 			   query.setParameter("id", id);
 		  
