@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,17 +29,17 @@ public class PaymentTransaction extends BaseModel implements Serializable{
 	private Long paymentModuleGatewayMerchantDetailsId;
 	private Long paymentGatewayId;
 	private Long paymentMethodId;
-	private Long transactionId;
+	private String transactionId;
 	private Long transactionStatusId;
-	private String transactionTime;
-	private Long uuid;
+	private Date transactionTime;
+	private String uuid;
 	private String amount;
 	private String ipAddress;
 	private String  statusCode;
 	private String preUrl;
 	private String postUrl;
 	private String redirectUrl;
-	private Long  referenceUserId;
+	private String  referenceUserId;
 	private Long paymentModuleId;
 	
 	private PaymentGateway paymentGateway;
@@ -79,10 +80,10 @@ public class PaymentTransaction extends BaseModel implements Serializable{
 		this.paymentMethodId = paymentMethodId;
 	}
 	@Column(name="transaction_id")
-	public Long getTransactionId() {
+	public String getTransactionId() {
 		return transactionId;
 	}
-	public void setTransactionId(Long transactionId) {
+	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
 	@Column(name="transaction_status_id")
@@ -93,17 +94,17 @@ public class PaymentTransaction extends BaseModel implements Serializable{
 		this.transactionStatusId = transactionStatusId;
 	}
 	@Column(name="transaction_time")
-	public String getTransactionTime() {
+	public Date getTransactionTime() {
 		return transactionTime;
 	}
-	public void setTransactionTime(String transactionTime) {
+	public void setTransactionTime(Date transactionTime) {
 		this.transactionTime = transactionTime;
 	}
 	@Column(name="uuid")
-	public Long getUuid() {
+	public String getUuid() {
 		return uuid;
 	}
-	public void setUuid(Long uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 	@Column(name="amount")
@@ -149,10 +150,10 @@ public class PaymentTransaction extends BaseModel implements Serializable{
 		this.redirectUrl = redirectUrl;
 	}
 	@Column(name="reference_user_id")
-	public Long getReferenceUserId() {
+	public String getReferenceUserId() {
 		return referenceUserId;
 	}
-	public void setReferenceUserId(Long referenceUserId) {
+	public void setReferenceUserId(String referenceUserId) {
 		this.referenceUserId = referenceUserId;
 	}
 	@Column(name="payment_module_id")

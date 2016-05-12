@@ -32,6 +32,9 @@ public class PaymentModuleGatewayMerchantDetails extends BaseModel implements Se
 	private String workingKey;
 	private String isDeleted;
 	private String isActive;
+	private String preURL;
+	private String postURL;
+	private String redirectURL;
 	
 	private PaymentModule paymentModule;
 	private PaymentModuleSubType paymentModuleSubType;
@@ -125,4 +128,30 @@ public class PaymentModuleGatewayMerchantDetails extends BaseModel implements Se
 	public void setPaymentGateway(PaymentGateway paymentGateway) {
 		this.paymentGateway = paymentGateway;
 	}
+	
+	@Column(name = "pre_url")
+	public String getPreURL() {
+		return preURL;
+	}
+	public void setPreURL(String preURL) {
+		this.preURL = preURL;
+	}
+	
+	@Column(name = "post_url")
+	public String getPostURL() {
+		return postURL;
+	}
+	public void setPostURL(String postURL) {
+		this.postURL = postURL;
+	}
+	
+	@Column(name = "redirect_url")
+	public String getRedirectURL() {
+		return redirectURL;
+	}
+	public void setRedirectURL(String redirectURL) {
+		this.redirectURL = redirectURL;
+	}
+	
+	
 }
