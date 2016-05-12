@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -130,7 +131,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String Merchant_Id;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
+	private IPaymentGatewayService paymentGatewayService;
 	
+	
+	public IPaymentGatewayService getPaymentGatewayService() {
+		return paymentGatewayService;
+	}
+	public void setPaymentGatewayService(
+			IPaymentGatewayService paymentGatewayService) {
+		this.paymentGatewayService = paymentGatewayService;
+	}
 	public String getEnrollMentNO() {
 		return enrollMentNO;
 	}
@@ -2244,7 +2254,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			                ""+checkSumDetails+"," +//4
 			                ""+"http://www.mytdp.com/registrationSuccessAction.action?membershipNo="+surveyCadreResponceVO.getMembershipNo()+"&enrollMentNO="+surveyCadreResponceVO.getEnrollmentNumber()+"&status=success"+"," +//5
 			                "100,");//6*/
-					PaymentGatewayVO pamentGateWayVO = cadreRegistrationService.getPaymentBasicInfoByPaymentGateWayType(1L,surveyCadreResponceVO.getMembershipNo().trim(),surveyCadreResponceVO.getEnrollmentNumber().trim());			            
+					PaymentGatewayVO pamentGateWayVO = paymentGatewayService.getPaymentBasicInfoByPaymentGateWayType(1L,surveyCadreResponceVO.getMembershipNo().trim(),surveyCadreResponceVO.getEnrollmentNumber().trim(),"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION");			            
 					inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()+"," +//1
 			                ""+surveyCadreResponceVO.getMembershipNo().trim()+"," +//2
 			                ""+pamentGateWayVO.getOrderNo().trim()+"," +//3
@@ -2321,10 +2331,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		try {
 			//enrollMentNO = md5Algoritm.generateMD5Decrypt(en.toString().trim());
 			enrollMentNO = en.toString().trim();
-			if(AuthDesc != null && AuthDesc.trim().equalsIgnoreCase("Y")){
+			if(AuthDesc != null){
 				//membershipNo = md5Algoritm.generateMD5Decrypt(mn.toString().trim());
 				membershipNo = mn.toString().trim();
-				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo);
+				resultStatus = cadreRegistrationService.updatePaymenntStatus(1L,membershipNo,AuthDesc,"AFFILIATED CADRE REGISTRATION","NORMAL REGISTRATION");
 				if(resultStatus != null && resultStatus.getResultCode()==0)
 					status="success";
 				else
