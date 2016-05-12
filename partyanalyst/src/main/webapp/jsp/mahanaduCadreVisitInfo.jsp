@@ -695,7 +695,7 @@
 				  
 				  str+="</tr>";
 				  str+="<tr>";
-				  str+="   <td class='back-white'> < Hour</td>";
+				  str+="   <td class='back-white'> < 1/2 Hour</td>";
 				  for(var i in result){
 				
 					   if(i == 0){str+="   <td class='table-color1'>";}
