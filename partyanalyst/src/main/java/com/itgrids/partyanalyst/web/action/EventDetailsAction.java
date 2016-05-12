@@ -31,7 +31,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	private IMahaNaduService mahaNaduService;
 	private ResultStatus resultStatus;
 	private List<UserEventDetailsVO> subEvents;
-	List<MahanaduEventVO> resultList;
+	public List<MahanaduEventVO> resultList;
 	private HttpSession session;
 	private Long eventId;
 	private List<IdNameVO> idnameVOList;
