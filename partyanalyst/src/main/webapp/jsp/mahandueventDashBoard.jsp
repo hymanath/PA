@@ -18,6 +18,7 @@
 
 
 <style>
+.tableC thead th {padding:3px !important;}
 .errorDiv{}
  #slider label {
 
@@ -114,7 +115,7 @@
         </div>
 		
 		<div class="col-xs-1 pull-right">
-		     <a onclick="insertIntermediateData();" class="btn btn-xs btn-success btn-block">
+		     <a onclick="insertIntermediateData();" class="btn btn-xs btn-success btn-block" title=" Data Synch..">
 				<span class="" style="font-size: 15px;"> Sync
 					<img src="images/ajaxImg2.gif" id="syncAjaxImage" style="height:20px;width:20px;display:none;"/>
 				</span>
@@ -122,7 +123,7 @@
 		</div>
 		
 		<div class="col-xs-1 pull-right">
-		     <a class="btn btn-md btn-success btn-block" onclick="callingDefaultCalls();">
+		     <a class="btn btn-md btn-success btn-block" onclick="callingDefaultCalls();"  title=" Page Refresh">
 				<span class="glyphicon glyphicon-refresh"></span>
 			</a>
 		</div>
@@ -187,12 +188,7 @@
 					<div class="panel-heading">
 						
 						<div class="row">
-							<div class="col-md-4">
-								<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3);getLocationWiseCountBySubEvents(4);">
-									<option value="0"> All Events</option>
-								</select>
-							</div>
-							<div class="col-md-2 col-md-offset-2">
+						<div class="col-md-2 col-md-offset-7" style="margin-top: 6px;">
 								<div class="onoffswitch pull-right">
 									<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
 									<label class="onoffswitch-label" for="myonoffswitch">
@@ -201,6 +197,12 @@
 									</label>
 								</div>
 							</div>
+							<div class="col-md-3 pull-right" style="padding: 5px;">
+								<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3);getLocationWiseCountBySubEvents(4);">
+									<option value="0"> All Events</option>
+								</select>
+							</div>
+							
 						</div>
 						
 					</div>
@@ -480,8 +482,9 @@ var formatedDpCurentDate;
                   });
 				startDate = $(".dp_startDate").val();
 				endDate = $(".dp_endDate").val();
-				dpCurentDate = moment().format('D MMMM,YYYY')
-				formatedDpCurentDate = moment().format('DD/MM/YYYY')
+				dpCurentDate = moment().format('D MMMM,YYYY');
+				formatedDpCurentDate = moment().format('DD/MM/YYYY');
+				 $('[data-toggle="tooltip"]').tooltip()
 			   });
 
 	function handalClick(eventId)
@@ -570,23 +573,23 @@ function buildDistrictTable(result,reportLevelId){
 	}
 	var str='';
 	if(reportLevelId == 3){
-    str+='<div class="scrollDiv"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
+    str+='<div class="scrollDiv"><table  class="display tableC" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
 	}else{
-	str+='<div class="scrollDiv1"><table  class="display" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
+	str+='<div class="scrollDiv1"><table  class="display tableC" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
 	}
 	
 
 	str+='<tr>';
 	if(reportLevelId == 3){
-    str+='<th>DISTRICT</th>';
+    str+='<th>District</th>';
 	}else{
-	str+='<th>CONSTITUENCY</th>';
+	str+='<th>Constituency</th>';
 	}
-	str+='<th>VOTERS</th>';
-    str+='<th>CADERS</th>';
-	str+='<th>INVITEES</th>';
-	str+='<th>NON <br/>INVITEES</th>';
-	str+='<th>Total<br/> Attendences</th>';
+	str+='<th>Voters</th>';
+    str+='<th>Cadres</th>';
+	str+='<th style="width: 68px;">Invitees</th>';
+	str+='<th>Non <br/>Invitees</th>';
+	str+='<th>Total<br/> Attended</th>';
     str+='</tr></thead>';
     str+='<tbody>';
 	for(var i in result){
@@ -988,6 +991,7 @@ function insertIntermediateData()
 			 //closeDialogue();
 			 callingDefaultCalls();
 			 locationWiseCalls();
+			
 			 
          },
           error:function() { 
@@ -1794,7 +1798,7 @@ $(document).on('click','#mahanaduLinkId',function(){
 		}
 	});
 	
-	var value =  window.open("http://mytdp.com/mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
+	var value =  window.open("mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
 	//var value =  window.open("http://localhost:8080/PartyAnalyst/mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
 	
 }); 
