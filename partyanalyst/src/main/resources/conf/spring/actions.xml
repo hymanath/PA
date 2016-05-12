@@ -1480,6 +1480,7 @@
 	 	<property name="cadreRegistrationForOtherStatesService" ref="cadreRegistrationForOtherStatesService" />
 	 	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />		
 	 	<property name="constituencyDAO" ref="constituencyDAO" />	
+	 		<property name="paymentGatewayService" ref="paymentGatewayService" />	
 	  </bean>
 	 
 	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
