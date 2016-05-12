@@ -991,7 +991,7 @@ var globalCadreId = '${cadreId}';
 		</div><!-- /.modal -->
 		
 		<div class="modal fade" id="deathHospModelDivId">
-		  <div class="modal-dialog modal-lg">
+		  <div class="modal-dialog modal-lg" style="width:90%">
 			<div class="modal-content">
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -1045,6 +1045,26 @@ var globalCadreId = '${cadreId}';
 				</div>
 			  </div>
 		</div>
+		
+		<div class="modal fade" id="grievanceBenifitsDetailsModalDivId">
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center"><span id="grievanceBenifitsDetailsModalHeadingId"></span></h4>
+			  </div>
+			  <div class="modal-body">
+				<div id="grievanceBenifitsDetailsModalBodyId">
+				</div>
+				<!--<div id="statusDivIdForGrievance" class="m_top20"></div>-->
+				<center><img id="dataLoadingsImgForGrievanceBenifitsStatusDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

@@ -12125,6 +12125,11 @@
 			<param name="root">grievanceSimplevoList</param>
 		</result>
 	</action>
+	<action name="getGrievanceBenifitsComplaintsInfoByLocationAction" class="cadreDetailsAction" method="getGrievanceBenifitsComplaintsInfoByLocation">
+		<result type="json" name="success">
+			<param name="root">grievanceDetailsVoList</param>
+		</result>
+	</action>
 	<action name="getDaysUniqueAndRevisitSummaryAction" class="eventDetailsAction" method="getDaysUniqueAndRevisitSummary">
 			<result type="json" name="success">
 				<param name="root">resultList</param>
