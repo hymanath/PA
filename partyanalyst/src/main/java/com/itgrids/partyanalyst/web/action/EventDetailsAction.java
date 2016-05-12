@@ -372,4 +372,43 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	public String getDaysUniqueAndRevisitSummary(){
+		
+		try{			
+			jObj = new JSONObject(getTask());
+			List<Long> subEventIds = new ArrayList<Long>();
+			Long eventId = jObj.getLong("eventId");
+			Long stateId = jObj.getLong("stateId");
+			Long reportLevelId = jObj.getLong("reportLevelId");
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}			
+			resultList = mahaNaduService.getDaysUniqueAndRevisitSummary(eventId,stateId,reportLevelId,subEventIds);
+						
+		}catch (Exception e) {
+			LOG.error(" Entered Into getDaysUniqueAndRevisitSummary",e);
+		}
+		return Action.SUCCESS;		
+	}
+	
+	public String getDayWiseVisitSummary(){
+		try{
+			jObj = new JSONObject(getTask());
+			List<Long> subEventIds = new ArrayList<Long>();
+			Long eventId = jObj.getLong("eventId");
+			Long stateId = jObj.getLong("stateId");
+			Long reportLevelId = jObj.getLong("reportLevelId");
+			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}			
+			resultList = mahaNaduService.getDayWiseVisitSummary(eventId,stateId,reportLevelId,subEventIds);
+			
+		}catch (Exception e) {
+			LOG.error(" Entered Into getDayWiseVisitSummary",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
