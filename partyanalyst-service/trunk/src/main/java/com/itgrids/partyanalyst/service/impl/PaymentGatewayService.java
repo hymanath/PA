@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.zip.Adler32;
 
 import org.apache.log4j.Logger;
@@ -17,11 +19,12 @@ import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
 import com.itgrids.partyanalyst.dto.PaymentTransactionVO;
 import com.itgrids.partyanalyst.model.PaymentMethod;
 import com.itgrids.partyanalyst.model.PaymentTransaction;
-import com.itgrids.partyanalyst.service.IPaymenyGatewayService;
+import com.itgrids.partyanalyst.service.IPaymentGatewayService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.MD5Algoritm;
 
-public class PaymentGatewayService implements IPaymenyGatewayService{
+public class PaymentGatewayService implements IPaymentGatewayService{
 	
 	private static final Logger LOG = Logger.getLogger(PaymentGatewayService.class);
 	
@@ -31,7 +34,7 @@ public class PaymentGatewayService implements IPaymenyGatewayService{
 	private TransactionTemplate transactionTemplate;
 	private IPaymentAmountDAO paymentAmountDAO;
 	private IPaymentModuleGatewayMerchantDetailsDAO paymentModuleGatewayMerchantDetailsDAO;
-	
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
 	public IPaymentModuleGatewayMerchantDetailsDAO getPaymentModuleGatewayMerchantDetailsDAO() {
 		return paymentModuleGatewayMerchantDetailsDAO;
@@ -72,15 +75,31 @@ public class PaymentGatewayService implements IPaymenyGatewayService{
 	}
 	
 	
-	public Long getPaymentAmountByRegistrationType(String moduleStr,String subTypeStr){
-		Long amount = 0l;
+	/* (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IPaymentGatewayService#getPaymentAmountByRegistrationType(java.lang.String, java.lang.String)
+	 */
+	public PaymentGatewayVO getPaymentAmountByRegistrationType(String moduleStr,String subTypeStr){
+		PaymentGatewayVO paymentGatewayVO = new PaymentGatewayVO();
 		try {
-			amount = paymentAmountDAO.getPaymentAmountByRegistrationType(moduleStr, subTypeStr);
+			Long amount = paymentAmountDAO.getPaymentAmountByRegistrationType(moduleStr, subTypeStr);
+			List<Object[]> paymemtGatwayDtls = paymentModuleGatewayMerchantDetailsDAO.getTransactionMerchantDetailsByRegistrationType(moduleStr, subTypeStr);
+			UUID uuidStr = UUID.randomUUID();
+			 if(paymemtGatwayDtls != null && paymemtGatwayDtls.size()>0){
+				 for (Object[] param : paymemtGatwayDtls) {
+					 paymentGatewayVO.setAmount(amount.toString());
+					 paymentGatewayVO.setPreURL(commonMethodsUtilService.getStringValueForObject(param[4]));
+					 paymentGatewayVO.setPostURL(commonMethodsUtilService.getStringValueForObject(param[5]));
+					 paymentGatewayVO.setRedirectURL(commonMethodsUtilService.getStringValueForObject(param[6]));
+					 paymentGatewayVO.setId(commonMethodsUtilService.getLongValueForObject(param[7]));
+					 paymentGatewayVO.setGatewayId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 paymentGatewayVO.setUuid(String.valueOf(uuidStr).substring(0, 33));
+				}
+			 }
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getPaymentAmountByRegistrationType  method in PaymentGatewayService.",e);
 		}
-		return amount;
+		return paymentGatewayVO;
 	}
 	
 	public PaymentGatewayVO getTransactionMerchantDetailsByRegistrationType(String moduleStr,String subTypeStr){
@@ -95,7 +114,7 @@ public class PaymentGatewayService implements IPaymenyGatewayService{
 					PaymentGatewayVO vo = new PaymentGatewayVO();
 					
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setPostURL(obj[1] != null ? obj[1].toString():"");
+					vo.setPostURL(obj[5] != null ? obj[5].toString():"");
 					vo.setMerchantId(obj[2] != null ? obj[2].toString() : "");
 					vo.setWorkingKey(obj[3] != null ? obj[3].toString():"");
 					
@@ -110,17 +129,33 @@ public class PaymentGatewayService implements IPaymenyGatewayService{
 		return returnVo;
 	}
 
-	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId){
+	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId,String moduleStr,String subTypeStr){
 		PaymentGatewayVO pamentGatewayVO = new PaymentGatewayVO();
 		try {
-				String encryptedCodeMN = md5Algoritm.generateMD5Encrypt(randomNo);
-				String encryptedCodeEN = md5Algoritm.generateMD5Encrypt(enrollId);
+				String encryptedCodeMN = randomNo;//md5Algoritm.generateMD5Encrypt(randomNo);
+				String encryptedCodeEN = enrollId;//md5Algoritm.generateMD5Encrypt(enrollId);
+				List<Object[]> paymemtGatwayDtls = paymentModuleGatewayMerchantDetailsDAO.getTransactionMerchantDetailsByRegistrationType(moduleStr, subTypeStr);
 				
-				String WorkingKey =IConstants.TGNF_ENROLLMENT_WORKING_KEY;
-		        String MerchantId =IConstants.TGNF_ENROLLMENT_MERCHANT_ID;
-		        String Amount = IConstants.TGNF_ENROLLMENT_AMOUNT;
-		        String redirectUrl = IConstants.TGNF_REGISTRATION_REDIRECTURL+"?mn="+encryptedCodeMN.trim()+"&en="+encryptedCodeEN.trim()+"";
-		        String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNo;
+				String WorkingKey ="";//IConstants.TGNF_ENROLLMENT_WORKING_KEY;
+		        String MerchantId ="";//IConstants.TGNF_ENROLLMENT_MERCHANT_ID;
+		        String Amount = paymentAmountDAO.getPaymentAmountByRegistrationType(moduleStr, subTypeStr).toString();//IConstants.TGNF_ENROLLMENT_AMOUNT;
+		        String redirectUrl = "";//IConstants.TGNF_REGISTRATION_REDIRECTURL
+		        		
+				if(paymemtGatwayDtls != null && paymemtGatwayDtls.size()>0)
+					 for (Object[] param : paymemtGatwayDtls) {
+						 redirectUrl = commonMethodsUtilService.getStringValueForObject(param[6]);
+						 WorkingKey =commonMethodsUtilService.getStringValueForObject(param[3]);
+						 MerchantId=commonMethodsUtilService.getStringValueForObject(param[2]);
+					}
+				
+				redirectUrl = redirectUrl+"?mn="+encryptedCodeMN.trim()+"&en="+encryptedCodeEN.trim()+"";
+				Random random = new Random();
+				Long randomNum = 0L;
+				do{
+					randomNum = random.nextLong();
+				}while(randomNum>0 && randomNum.toString().length()>7);
+				randomNum = Long.valueOf(randomNum.toString().substring(0, 7));
+		        String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNum;
 		        String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
 		        Adler32  adl = new Adler32();
 		        adl.update(str.getBytes());
@@ -181,7 +216,7 @@ public class PaymentGatewayService implements IPaymenyGatewayService{
 						paymentTransaction.setTransactionId(paymentTransactionVO.getTransactionId());
 						paymentTransaction.setTransactionStatusId(paymentTransactionVO.getTransactionStatusId());
 						paymentTransaction.setTransactionTime(paymentTransactionVO.getTransactionTime());
-						paymentTransaction.setUuid(paymentTransactionVO.getUuid());
+						paymentTransaction.setUuid(String.valueOf(UUID.randomUUID()));
 						paymentTransaction.setAmount(paymentTransactionVO.getAmount());
 						paymentTransaction.setIpAddress(paymentTransactionVO.getIpAddress());
 						paymentTransaction.setStatusCode(paymentTransactionVO.getStatusCode());
