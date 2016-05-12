@@ -80,6 +80,20 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		return query.list();
 	}
 	
+	public List<Object[]> getEventAttendeeInfoByLocation(String queryString,Date startDate,Date endDate,List<Long> eventIds)
+	{	
+		
+		Query query = getSession().createQuery(queryString);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+	
+	
 	public List checkUserExist(Long tdpCadreId,Long eventId,Date date)
 	{
 		
