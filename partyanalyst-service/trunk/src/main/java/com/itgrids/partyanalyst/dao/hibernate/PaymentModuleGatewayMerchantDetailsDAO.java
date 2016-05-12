@@ -19,7 +19,11 @@ public class PaymentModuleGatewayMerchantDetailsDAO extends GenericDaoHibernate<
 		Query query = getSession().createQuery("select model.paymentGateway.paymentGatewayId," +
 									" model.paymentGateway.url," +
 									" model.marchantNo," +
-									" model.workingKey" +
+									" model.workingKey," +
+									"model.preURL," +
+									"model.postURL," +
+									"model.redirectURL," +
+									"model.paymentModuleGatewayMerchantDetailsId " +
 									" from PaymentModuleGatewayMerchantDetails model" +
 									" where model.paymentModule.paymentModule = :moduleStr" +
 									" and model.paymentModuleSubType.subType = :subTypeStr" +
