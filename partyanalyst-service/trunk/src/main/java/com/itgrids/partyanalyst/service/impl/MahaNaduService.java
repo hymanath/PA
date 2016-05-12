@@ -2488,9 +2488,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			
 			
 			
-			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates(locationType, eventStrDate, subEventIds);
+			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates(locationType, eventStrDate,eventEndDate,subEventIds);
 			
-			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate, subEventIds);
+			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate,eventEndDate,subEventIds);
 			
 			
 			//DISTRICTS
@@ -2525,7 +2525,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				}
 			}
 			
-			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate, subEventIds);
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
 			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
 			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
 			if(Rsltlist!=null && Rsltlist.size()>0){
@@ -2553,6 +2553,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				}
 			}
 			
+			//DAY'S UNIQUE AND REVISIT SUMMARY Block
 			if(list_temp!=null){
 				if(finalList!=null && finalList.size()>0){
 					List<MahanaduEventVO> mv = finalList.get(0).getDatesList();
@@ -2623,7 +2624,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 			
 			
-			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummary(locationType, eventStrDate, subEventIds);
+			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummary(locationType, eventStrDate,eventEndDate,subEventIds);
 			Map<Long,List<Long>> locationCadreMap = new HashMap<Long, List<Long>>();
 			if(locationRslt!=null && locationRslt.size()>0){
 				for(Object[] obj:locationRslt){
@@ -2655,7 +2656,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			
 			
 			
-			
+			//getDay Wise Visit Summary Block
 			if(locationType.equalsIgnoreCase("DISTRICT") || locationType.equalsIgnoreCase("CONSTITUENCY"))
 			if(finalList!=null && finalList.size()>0){
 				List<MahanaduEventVO> mvLst = finalList.get(0).getHoursList();
@@ -2877,9 +2878,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			
 			
 			
-			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDatesForInvities(locationType, eventStrDate, subEventIds);
+			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDatesForInvities(locationType, eventStrDate,eventEndDate,subEventIds);
 			
-			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDatesForInvities("ALL", eventStrDate, subEventIds);
+			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDatesForInvities("ALL", eventStrDate,eventEndDate,subEventIds);
 			
 			
 			//DISTRICTS
@@ -2914,7 +2915,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				}
 			}
 			
-			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummaryForInvities("ALL", eventStrDate, subEventIds);
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummaryForInvities("ALL", eventStrDate,eventEndDate,subEventIds);
 			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
 			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
 			if(Rsltlist!=null && Rsltlist.size()>0){
@@ -3012,7 +3013,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 			
 			
-			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummaryForInvities(locationType, eventStrDate, subEventIds);
+			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummaryForInvities(locationType, eventStrDate,eventEndDate,subEventIds);
 			Map<Long,List<Long>> locationCadreMap = new HashMap<Long, List<Long>>();
 			if(locationRslt!=null && locationRslt.size()>0){
 				for(Object[] obj:locationRslt){
@@ -3225,8 +3226,167 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}		
 	}
 	
+	public List<MahanaduEventVO> getDaysUniqueAndRevisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds){
+		
+		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
+		
+		try{
+			
+
+			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");			
+			Date eventStrDate = null;
+			Date eventEndDate	  = null;
+		
+			Object[] datesList =  eventDAO.getEventDates(eventId);
+			
+			if(datesList !=null && datesList.length>0){
+				eventStrDate = datesList[0] !=null ? (Date)datesList[0]:null;
+				eventEndDate	 = datesList[1] !=null ? (Date)datesList[1]:null;			
+			}
+							
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
+			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
+			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
+			if(Rsltlist!=null && Rsltlist.size()>0){
+				for(Object[] tmp:Rsltlist){
+					Long count = cadreAttendedCntMap.get(Long.valueOf(tmp[0].toString()));
+					if(count==null){count = 0l;}
+					count = count + 1;
+					cadreAttendedCntMap.put(Long.valueOf(tmp[0].toString()), count);
+					
+					String dt = form.format((Date)tmp[2]);
+					List<Long> cadreList  = datesAttendedCadreMap.get(dt);
+					if(cadreList==null){cadreList = new ArrayList<Long>();}
+					cadreList.add(Long.valueOf(tmp[0].toString()));
+					datesAttendedCadreMap.put(dt, cadreList); // DATE WISE ATTENDED CADRE TOTAL
+				}
+			}
+			
+			//DAY'S UNIQUE AND REVISIT SUMMARY Block
+			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate,eventEndDate,subEventIds);
+			if(list_temp!=null && list_temp.size()>0){			
+					for(Object[] obj:list_temp){
+						MahanaduEventVO temp = new MahanaduEventVO();
+						String dt = form.format((Date)obj[2]);
+						temp.setStartTime(dt);
+						temp.setTotal(Long.valueOf(obj[1].toString()));
+						
+						List<Long> cadresAttended = datesAttendedCadreMap.get(dt);
+						temp.setAttendedCadres(cadresAttended);
+						
+						finalList.add(temp);
+					}
+					Collections.sort(finalList,datesSort);
+					
+					if(finalList!=null){
+						for(int i=0;i<finalList.size();i++){
+							int oneDayCount = 0;
+							List<Long> cadres = finalList.get(i).getAttendedCadres();
+							
+							Set<Long> tempList = new HashSet<Long>();
+							
+							if(i==0){
+								if(finalList.get(i)!=null && finalList.get(i).getAttendedCadres()!=null){
+									finalList.get(i).setOneDayCount(finalList.get(i).getAttendedCadres().size());
+									oneDayCount = finalList.get(i).getAttendedCadres().size();
+								}
+							}
+							
+							for(int j=i;j>0;j--){
+								if(finalList.get(j-1).getAttendedCadres()!=null){
+									tempList.addAll(finalList.get(j-1).getAttendedCadres());
+								}
+							}
+							
+							if(cadres!=null && cadres.size()>0 && tempList.size()>0){
+								for(Long cd:cadres){
+									if(!tempList.contains(cd)){
+										oneDayCount = oneDayCount + 1;
+									}
+								}
+							}
+							
+							finalList.get(i).setOneDayCount(oneDayCount);
+							finalList.get(i).setRevisitCount(finalList.get(i).getTotal()-Long.valueOf(finalList.get(i).getOneDayCount()));
+						}
+						
+					}
+				}
+
+		}catch (Exception e) {
+				LOG.error(" Exception Raised in getDaysUniqueAndRevisitSummary ",e);
+		}
+		return finalList;
+	}
+	
+	
+	public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds){
+		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
+		try{
+			
+			//getDay Wise Visit Summary Block
+			
+			
+			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");			
+			Date eventStrDate = null;
+			Date eventEndDate	  = null;
+			
+			//String startDate=null;
+			//String endDate = null;
+			
+			Object[] datesList =  eventDAO.getEventDates(eventId);
+			
+			if(datesList !=null && datesList.length>0){
+				eventStrDate = datesList[0] !=null ? (Date)datesList[0]:null;
+				eventEndDate	 = datesList[1] !=null ? (Date)datesList[1]:null;						
+			}
+			
+			
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
+			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
+			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
+			if(Rsltlist!=null && Rsltlist.size()>0){
+				for(Object[] tmp:Rsltlist){
+					Long count = cadreAttendedCntMap.get(Long.valueOf(tmp[0].toString()));
+					if(count==null){count = 0l;}
+					count = count + 1;
+					cadreAttendedCntMap.put(Long.valueOf(tmp[0].toString()), count);
+					
+					String dt = form.format((Date)tmp[2]);
+					List<Long> cadreList  = datesAttendedCadreMap.get(dt);
+					if(cadreList==null){cadreList = new ArrayList<Long>();}
+					cadreList.add(Long.valueOf(tmp[0].toString()));
+					datesAttendedCadreMap.put(dt, cadreList); // DATE WISE ATTENDED CADRE TOTAL
+				}
+			}
+			
+			Map<Long,Long> visitTimesMap = new HashMap<Long, Long>(); // 1 - 1454, 2 - 1254 etc
+			Map<Long,List<Long>> visitTimesCadre = new HashMap<Long, List<Long>>(); // 1 - [25485,24588], 2 - [---] etc
+			for (Entry<Long, Long> entry : cadreAttendedCntMap.entrySet()){
+				Long total = visitTimesMap.get(entry.getValue());
+				if(total==null){total =0l;}
+				total = total + 1;
+				visitTimesMap.put(entry.getValue(), total);// 1 - 1454, 2 - 1254 etc
+				
+				List<Long> cadresLst = visitTimesCadre.get(entry.getValue());
+				if(cadresLst==null){cadresLst = new ArrayList<Long>();}
+				cadresLst.add(entry.getKey());
+				visitTimesCadre.put(entry.getValue(), cadresLst);// 1 - [25485,24588], 2 - [---] etc
+			}
+			for (Entry<Long, Long> entryInner : visitTimesMap.entrySet()){				
+				MahanaduEventVO obj = new MahanaduEventVO();
+				obj.setId(entryInner.getKey());
+				obj.setTotal(entryInner.getValue());
+				
+				finalList.add(obj);
+			}
+			Collections.sort(finalList,idSort);
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getDayWiseVisitSummary ",e);
+		}
+		return finalList;
+	}
+	
+	
 }
-
-
-
-
