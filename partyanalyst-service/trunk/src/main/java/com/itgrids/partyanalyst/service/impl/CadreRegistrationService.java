@@ -27,9 +27,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.Adler32;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -142,7 +142,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
-import com.itgrids.partyanalyst.dto.PaymentGatewayVO;
+import com.itgrids.partyanalyst.dto.PaymentTransactionVO;
 import com.itgrids.partyanalyst.dto.RegistrationQueriesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -206,6 +206,7 @@ import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IMailService;
+import com.itgrids.partyanalyst.service.IPaymentGatewayService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IRtcUnionService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
@@ -314,7 +315,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IMailService mailService;
 	private ISmsSenderService smsSenderService;
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
-	
+	private IPaymentGatewayService paymentGatewayService;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -330,6 +331,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ISmsSenderService getSmsSenderService() {
 		return smsSenderService;
+	}
+
+	public IPaymentGatewayService getPaymentGatewayService() {
+		return paymentGatewayService;
+	}
+
+	public void setPaymentGatewayService(
+			IPaymentGatewayService paymentGatewayService) {
+		this.paymentGatewayService = paymentGatewayService;
 	}
 
 	public void setSmsSenderService(ISmsSenderService smsSenderService) {
@@ -13105,67 +13115,62 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
  		return header;
  	}
 	
-	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId){
-		PaymentGatewayVO pamentGatewayVO = new PaymentGatewayVO();
-		try {
-				String encryptedCodeMN = randomNo;//md5Algoritm.generateMD5Encrypt(randomNo);
-				String encryptedCodeEN = enrollId;//md5Algoritm.generateMD5Encrypt(enrollId);
-				
-				String WorkingKey =IConstants.TGNF_ENROLLMENT_WORKING_KEY;
-		        String MerchantId =IConstants.TGNF_ENROLLMENT_MERCHANT_ID;
-		        String Amount = IConstants.TGNF_ENROLLMENT_AMOUNT;
-		        String redirectUrl = IConstants.TGNF_REGISTRATION_REDIRECTURL+"?mn="+encryptedCodeMN.trim()+"&en="+encryptedCodeEN.trim()+"";
-		        String OrderId =IConstants.TGNF_ENROLLMENT_RANDOMNUMBERCODE+randomNo;
-		        String str = MerchantId + "|" + OrderId + "|" + Amount + "|" + redirectUrl + "|" + WorkingKey;
-		        Adler32  adl = new Adler32();
-		        adl.update(str.getBytes());
-		        //return (Long.valueOf(adl.getValue()).toString());
-
-		        pamentGatewayVO.setCheckSum(Long.valueOf(adl.getValue()).toString());
-		        pamentGatewayVO.setWorkingKey(WorkingKey);
-		        pamentGatewayVO.setAmount(Amount);
-		        pamentGatewayVO.setMerchantId(MerchantId);
-		        pamentGatewayVO.setRedirectURL(redirectUrl);
-		        pamentGatewayVO.setOrderNo(OrderId);
-		        
-		} catch (Exception e) {
-			LOG.error("error occured while generating payment gateway basic details.");
-		}
-		return pamentGatewayVO;
-	}
-	
-	public ResultStatus updatePaymenntStatus(final Long userId,final String memberShipNo){
+	public ResultStatus updatePaymenntStatus(final Long userId,final String memberShipNo,final String AuthDesc, final String moduleStr,final String subTypeStr){
 		ResultStatus status = new ResultStatus();
 		try {
 			
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
+					Long tdpCadreId = 0L;
 					List<Object[]> tdpCadreList = tdpCadreDAO.checkMemberPaymentExistsByTypeId(memberShipNo,IConstants.TGNF_REGISTRATION_CADRE_TYPE_ID,IConstants.UNIONS_REGISTRATION_YEAR);
 					if(tdpCadreList != null && tdpCadreList.size()>0){
 						Object[] tdpCadrEObj = tdpCadreList.get(0);
+						tdpCadreId = commonMethodsUtilService.getLongValueForObject(tdpCadrEObj[0]);
 						String paymentStatusStr = commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[2]);
-						if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.PAID_STATUS))
+						if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.PAID_STATUS)){
 							sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
-						else if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS)){
-							TdpCadre tdpCadre = tdpCadreDAO.get(commonMethodsUtilService.getLongValueForObject(tdpCadrEObj[0]));
+						}
+						else if(paymentStatusStr != null && paymentStatusStr.trim().equalsIgnoreCase(IConstants.NOT_PAID_STATUS)  && AuthDesc.equalsIgnoreCase("Y")){
+							TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
 							if(tdpCadre != null){
 								saveDataToHistoryTable(tdpCadre);
 								tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
 								tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 								tdpCadre.setUpdatedUserId(userId);
 								tdpCadreDAO.save(tdpCadre);
-								String smsSentStatus= sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
-								System.out.println("TNGF Registration sms sent status :"+smsSentStatus);
+								sendSMSForAffliatedCadre(userId,commonMethodsUtilService.getStringValueForObject(tdpCadrEObj[1]).trim(), "Thanks for TNGF registration, your Membership ID  :"+memberShipNo);
+								//System.out.println("TNGF Registration sms sent status :"+smsSentStatus);
 							}
 						}
 					}
-				}
+					
+					PaymentTransactionVO paymentTransactionVO = new PaymentTransactionVO();
+					paymentTransactionVO.setPaymentModuleGatewayMerchantDetailsId(1L);
+					paymentTransactionVO.setPaymentGatewayId(1L);
+					paymentTransactionVO.setPaymentMethodId(1L);
+					paymentTransactionVO.setTransactionId("TGNF2016"+memberShipNo);
+					paymentTransactionVO.setTransactionStatusId(2L);
+					paymentTransactionVO.setTransactionTime(dateUtilService.getCurrentDateAndTime());
+					paymentTransactionVO.setUuid(String.valueOf(UUID.randomUUID()));
+					paymentTransactionVO.setAmount(IConstants.TGNF_ENROLLMENT_AMOUNT);
+					paymentTransactionVO.setIpAddress(paymentTransactionVO.getIpAddress());
+					if(AuthDesc.equalsIgnoreCase("Y"))
+						paymentTransactionVO.setStatusCode("SUCCESS");
+					else
+						paymentTransactionVO.setStatusCode("FAILURE");
+				//	paymentTransactionVO.setPreUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+				//	paymentTransactionVO.setPostUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+					paymentTransactionVO.setRedirectUrl(IConstants.TGNF_REGISTRATION_REDIRECTURL);
+					paymentTransactionVO.setReferenceUserId("TGNF2016"+tdpCadreId);
+					paymentTransactionVO.setPaymentModuleId(1L);
+					paymentGatewayService.savePaymenyTransactionDetails(paymentTransactionVO);
+				}				
 			});
 			
 			status.setResultCode(0);
 			status.setMessage(IConstants.SUCCESS);
 		} catch (Exception e) {
-			LOG.error("error occured while generating payment gateway basic details in updatePaymentStatus() .");
+			LOG.error("error occured while generating payment gateway basic details in updatePaymenntStatus() .");
 			status.setResultCode(1);
 			status.setMessage(IConstants.FAILURE);
 		}
@@ -13183,19 +13188,25 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 			
 		} catch (Exception e) {
 			status =IConstants.FAILURE;
-			LOG.error("Exception riased at updatePaymentStatus in RtcUnionService Service class", e);
+			LOG.error("Exception riased at checkPaymentStatus in RtcUnionService Service class", e);
 		}
 		return status;
 	}
 	
-	public String  updatePaymentStatus(Long tdpCadreId){
+	public String  updatePaymentStatus(final Long tdpCadreId){
 		String status = "";
 		try {
-			TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
-			saveDataToHistoryTable(tdpCadre);
-			tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
-			tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-			tdpCadreDAO.save(tdpCadre);
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					
+					TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
+					saveDataToHistoryTable(tdpCadre);
+					tdpCadre.setPayMentStatus(IConstants.PAID_STATUS);
+					tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					tdpCadreDAO.save(tdpCadre);
+				}
+			});
+			
 			status =IConstants.SUCCESS;
 		} catch (Exception e) {
 			status =IConstants.FAILURE;
@@ -13203,4 +13214,5 @@ public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(
 		}
 		return status;
 	}
+
 }
