@@ -985,7 +985,7 @@ function insertIntermediateData()
 
           success: function(result){ 
 			 $("#syncAjaxImage").hide();
-			 closeDialogue();
+			 //closeDialogue();
 			 callingDefaultCalls();
 			 locationWiseCalls();
 			 
