@@ -27,7 +27,7 @@ public class PaymentAmount extends BaseModel implements Serializable{
 	private Long paymentAmountId;
 	private Long paymentModuleId;
 	private Long paymentModuleSubTypeId;
-	private String amount;
+	private Long amount;
 	private String isDeleted;
 	private String isActive;
 	
@@ -58,10 +58,10 @@ public class PaymentAmount extends BaseModel implements Serializable{
 		this.paymentModuleSubTypeId = paymentModuleSubTypeId;
 	}
 	@Column(name = "amount")
-	public String getAmount() {
+	public Long getAmount() {
 		return amount;
 	}
-	public void setAmount(String amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
 	@Column(name = "is_deleted")
