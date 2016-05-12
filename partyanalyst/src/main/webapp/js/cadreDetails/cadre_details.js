@@ -2715,7 +2715,7 @@ $(document).on("click",".openmodalshowGrievance",function(){
 	
 function getComplaintTrackingDetails(complaintId,divId){
 	//alert(divId);
-	$("#tr"+divId).show();
+	$("#viewGrievanceStatusFlow").modal("show")
 	var jsobj={
 		complaintId : complaintId
 	}
@@ -2735,7 +2735,7 @@ function getComplaintTrackingDetails(complaintId,divId){
 			 str+='</div>';
 			 str+='</div>';
 			 str+='</div>';
-			 $('#'+divId).html(str);
+			 $('#grievanceStatusFlowModalBodyId').html(str);
 		}
 		else if(result!=null && result.simpleVOList1!=null && result.simpleVOList2!=null){
 		 var str='';
@@ -2796,7 +2796,7 @@ function getComplaintTrackingDetails(complaintId,divId){
 		   str+='</div>';
 		   str+='</div>';
 		}
-		$('#'+divId).html(str);
+		$('#grievanceStatusFlowModalBodyId').html(str);
 	 }else{
 	 
 		 var str='';
@@ -2833,7 +2833,7 @@ function getComplaintTrackingDetails(complaintId,divId){
 		 
 		str+='</div>';
 		str+='</div>';
-		 $('#'+divId).html(str);
+		 $('#grievanceStatusFlowModalBodyId').html(str);
          }
 	});
 }
@@ -2898,6 +2898,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 							str+='<th>Status</th>';
 							str+='<th>Posted Date</th>';
 							str+='<th>Last Updated Date</th>';
+							str+='<th>View Details</th>';
 							/*str+='<th> Name </th>';
 							str+='<th> Issue Description </th>';
 							str+='<th> Complaint Info </th>';
@@ -2924,6 +2925,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 							str+='<td>';
 							if(result[i].updatedDate.length > 0)
 								str+=''+result[i].updatedDate+'</td>';
+							str+='<td><input type="button" value="View" class="btn btn-sm btn-primary complaintTrackingCla" onclick="getComplaintTrackingDetails('+result[i].complaintId+',\'statusDivIdForInsurance'+i+'\')"/></td>';
 							//str+='<td><p>'+result[i].firstName+'</p>';
 							//str+='<p>MemberShip No : <a class="tdpCandidatePageCls" style="cursor:pointer;" attr_tdpCadreId="'+result[i].tdpCadreId+'">'+result[i].membershipNo+'</a></p>';
 							//str+='<p>Mobile No : '+result[i].mobileNo+'</p>';
@@ -5521,6 +5523,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 						str+='<th>Status</th>';
 						str+='<th>Posted Date</th>';
 						str+='<th>Last Updated Date</th>';
+						str+='<th>Details</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
@@ -5541,6 +5544,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 						str+='<td>';
 						if(result[i].updatedDate.length > 0)
 							str+=''+result[i].updatedDate+'</td>';
+						str+='<td><input type="button" value="View" class="btn btn-sm btn-primary" onclick="getComplaintTrackingDetailsForGrievance('+result[i].complaintId+',\'statusDivIdForGrievance'+i+'\')"/></td>';
 					}
 				str+='</tbody>'
 			str+='</table>';
@@ -5598,14 +5602,19 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 				
 				$("#dataLoadingsImgForGrievanceStatusDetails").hide();
 				$("#grievanceDetailsModalBodyId").html(str);
-				$("#grievanceStatusWiseTableId").dataTable();
+				//$("#grievanceStatusWiseTableId").dataTable();
 			}
 		});
 });
-
+$(document).on("click",".statusFlowCloseCls",function(){
+	$("#viewGrievanceStatusFlow").modal("hide")
+	setTimeout(function(){
+		$("body").addClass("modal-open")
+	},800)
+})
 function getComplaintTrackingDetailsForGrievance(complaintId,divId){
 	//alert(divId);
-	$("#tr"+divId).show();
+	$("#viewGrievanceStatusFlow").modal("show")
 	var jsobj={
 		complaintId : complaintId
 	}
@@ -5625,7 +5634,7 @@ function getComplaintTrackingDetailsForGrievance(complaintId,divId){
 			 str+='</div>';
 			 str+='</div>';
              str+='</div>';
-			  $('#'+divId).html(str);
+			  $('#grievanceStatusFlowModalBodyId').html(str);
 		}else if(result!=null && result.simpleVOList1!=null && result.simpleVOList2!=null){
 			 var str='';
 			 str+='<div class="ui-steps-border">';
@@ -5715,7 +5724,7 @@ function getComplaintTrackingDetailsForGrievance(complaintId,divId){
 				
 			   str+='</div>';*/
 			}
-			 $('#'+divId).html(str);
+			 $('#grievanceStatusFlowModalBodyId').html(str);
 		 }else{
 			 
 			 var str='';
@@ -5752,7 +5761,7 @@ function getComplaintTrackingDetailsForGrievance(complaintId,divId){
 			 
 			str+='</div>';
             str+='</div>';
-			 $('#'+divId).html(str);
+			 $('#grievanceStatusFlowModalBodyId').html(str);
 		 }
 	});
 }
