@@ -274,7 +274,11 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     					" CM.Completed_Status," +
     					" date(CM.updated_date) as updated_date," +
     					" CM.Subject," +
-    					" CM.description" +
+    					" CM.description," +
+    					" CM.Location," +
+    					" CM.constituency," +
+    					" CM.village_name," +
+    					" CM.mandal_name" +
     					" from" +
     					" complaint_master CM" +
     					" where CM.type_of_issue = :issueType" +
@@ -288,9 +292,10 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     		sb.append(" AND CM.district_id = :locationId");
     	
     	Query query = getSession().createSQLQuery(sb.toString()).addScalar("name",Hibernate.STRING).addScalar("mobile_no",Hibernate.STRING)
-    			.addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE)
-    			.addScalar("type_of_issue",Hibernate.STRING).addScalar("Completed_Status",Hibernate.STRING)
-    			.addScalar("updated_date",Hibernate.DATE).addScalar("Subject",Hibernate.STRING).addScalar("description",Hibernate.STRING);
+    			.addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE).addScalar("type_of_issue",Hibernate.STRING)
+    			.addScalar("Completed_Status",Hibernate.STRING).addScalar("updated_date",Hibernate.DATE).addScalar("Subject",Hibernate.STRING)
+    			.addScalar("description",Hibernate.STRING).addScalar("Location",Hibernate.STRING).addScalar("constituency",Hibernate.STRING)
+    			.addScalar("village_name",Hibernate.STRING).addScalar("mandal_name",Hibernate.STRING);
     			
     	if(locationType != "" && locationType != null)
     		query.setParameter("locationId", locationId);
@@ -428,6 +433,53 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 		Query query = getSession().createSQLQuery(sb.toString());
 		if(locationType != null)
 			query.setParameter("locationId", locationId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getGrievanceBenifitsDetailsByLocation(Long locationId,String locationType,String typeOfIssue,String otherBenifit){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select CM.name," +
+    					" CM.mobile_no," +
+    					" CM.Complaint_id," +
+    					" date(CM.Raised_Date) as Raised_Date," +
+    					" CM.type_of_issue," +
+    					" date(CM.updated_date) as updated_date," +
+    					" CM.Subject," +
+    					" CM.description," +
+    					" CM.Location," +
+    					" CM.constituency," +
+    					" CM.village_name," +
+    					" CM.mandal_name," +
+    					" CM.support_purpose," +
+    					" CM.approved_amount");
+    					
+    	sb.append(" from complaint_master CM" +
+						" where CM.Completed_Status = 'completed'" +
+						" and (CM.delete_status !='0' or CM.delete_status is null)" +
+						" and (CM.Subject != '' or CM.Subject is not null)" +
+						" and CM.state_id_cmp in (1,2)" +
+						" and CM.type_of_issue = :typeOfIssue");
+		if(locationType.equalsIgnoreCase("assembly"))
+			sb.append(" and CM.assembly_id = :locationId");
+		else if(locationType.equalsIgnoreCase("parliament"))
+			sb.append(" and CM.parliament_id = :locationId");
+		else if(locationType.equalsIgnoreCase("district"))
+			sb.append(" and CM.district_id = :locationId");
+		
+		if(otherBenifit.equalsIgnoreCase("other"))
+			sb.append(" and CM.support_purpose = 'Seat'");
+		else if(otherBenifit.equalsIgnoreCase("total"))
+			sb.append(" and CM.approved_amount is not null and CM.approved_amount > 0");
+		
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("name",Hibernate.STRING).addScalar("mobile_no",Hibernate.STRING)
+				.addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE).addScalar("type_of_issue",Hibernate.STRING)
+				.addScalar("updated_date",Hibernate.DATE).addScalar("Subject",Hibernate.STRING).addScalar("description",Hibernate.STRING)
+				.addScalar("Location",Hibernate.STRING).addScalar("constituency",Hibernate.STRING).addScalar("village_name",Hibernate.STRING)
+				.addScalar("mandal_name",Hibernate.STRING).addScalar("support_purpose",Hibernate.STRING).addScalar("approved_amount",Hibernate.STRING);
+		
+		query.setParameter("locationId", locationId);
+		query.setParameter("typeOfIssue", typeOfIssue);
 		
 		return query.list();
 	}

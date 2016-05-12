@@ -93,4 +93,5 @@ public interface ICadreDetailsService {
 	public VerifierVO getIVRSurveysOnCandidateAreaDetails(Long districtId,Long constiId,Long parliamentId,Long boothId);
 	public List<GrievanceSimpleVO> getApprovedAmountDetailsByLocation(Long assemblyId,Long parliamentId,Long districtId);
 	public List<GrievanceSimpleVO> getApprovedAmountDetailsForGovtAndWilfareByLocation(Long assemblyId,Long parliamentId,Long districtId);
+	public List<GrievanceDetailsVO> getGrievanceBenifitsComplaintsInfoByLocation(Long locationId,String locationType,String typeOfIssue,String otherBenifit);
 }
