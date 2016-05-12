@@ -192,8 +192,9 @@ public interface ICadreRegistrationService {
 	public AffiliatedCadreVO getAllTotalCountsForAll(String searchType);
 	public List<TdpCadreVO> getLocationwiseCadreRegistraionDetailsForAffliatedCadre(List<Long> membereTypeIdsList,String searchTypeStr,String startDate,String toDate);
 	public ResultStatus saveRegistrationQueriesForm(final RegistrationQueriesVO regQueriesVO);
-	public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId);
-	public ResultStatus updatePaymenntStatus(Long userId,String memberShipNo);
+	//public PaymentGatewayVO getPaymentBasicInfoByPaymentGateWayType(Long gateWayId,String randomNo,String enrollId);
+	//public ResultStatus updatePaymenntStatus(Long userId,String memberShipNo);
+	public ResultStatus updatePaymenntStatus(final Long userId,final String memberShipNo,final String AuthDesc, final String moduleStr,final String subTypeStr);
 	public String  checkPaymentStatus(String memberShipNo);
 	public String  updatePaymentStatus(Long tdpCadreId);
 	public List<PartyMeetingWSVO> getRegistrationCadreDetailsSourceWise(RtcUnionInputVO inputVO);
