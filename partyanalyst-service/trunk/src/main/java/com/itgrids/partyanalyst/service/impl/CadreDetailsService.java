@@ -8096,6 +8096,10 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 					vo.setDescription(obj[8] != null ? obj[8].toString():"");
 					if(issueType != null && issueType.equalsIgnoreCase("Benefit"))
 						vo.setApprovedAmount(obj[9] != null ? obj[9].toString():"0");
+					vo.setLocationName(obj[9] != null ? obj[9].toString():"");
+					vo.setConstituency(obj[10] != null ? obj[10].toString():"");
+					vo.setMandalName(obj[11] != null ? obj[11].toString():"");
+					vo.setVillageName(obj[12] != null ? obj[12].toString():"");
 					
 					returnList.add(vo);
 				}
@@ -8535,6 +8539,38 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in getApprovedAmountDetailsForGovtAndWilfareByLocation  method in CadreDetailsService.",e);
+		}
+		return returnList;
+	}
+	
+	public List<GrievanceDetailsVO> getGrievanceBenifitsComplaintsInfoByLocation(Long locationId,String locationType,String typeOfIssue,String otherBenifit){
+		List<GrievanceDetailsVO> returnList = new ArrayList<GrievanceDetailsVO>();
+		try {
+			List<Object[]> list = cadreHealthStatusDAO.getGrievanceBenifitsDetailsByLocation(locationId, locationType, typeOfIssue, otherBenifit);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					GrievanceDetailsVO vo = new GrievanceDetailsVO();
+					
+					vo.setFirstName(obj[0] != null ? obj[0].toString():"");
+					vo.setMobileNo(obj[1] != null ? obj[1].toString():"");
+					vo.setComplaintId(Long.valueOf(obj[2] != null ? obj[2].toString():""));
+					vo.setRaisedDate(obj[3] != null ? obj[3].toString():"");
+					vo.setTypeOfIssue(obj[4] != null ? obj[4].toString():"");
+					vo.setUpdatedDate(obj[5] != null ? obj[5].toString():"");
+					vo.setSubject(obj[6] != null ? obj[6].toString():"");
+					vo.setDescription(obj[7] != null ? obj[7].toString():"");
+					vo.setLocationName(obj[8] != null ? obj[8].toString():"");
+					vo.setConstituency(obj[9] != null ? obj[9].toString():"");
+					vo.setVillageName(obj[10] != null ? obj[10].toString():"");
+					vo.setMandalName(obj[11] != null ? obj[11].toString():"");
+					vo.setSupportPurpose(obj[12] != null ? obj[12].toString():"");
+					vo.setApprovedAmount(obj[13] != null ? obj[13].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getGrievanceBenifitsComplaintsInfoByLocation  method in CadreDetailsService.",e);
 		}
 		return returnList;
 	}
