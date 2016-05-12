@@ -452,7 +452,8 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     					" CM.village_name," +
     					" CM.mandal_name," +
     					" CM.support_purpose," +
-    					" CM.approved_amount");
+    					" CM.approved_amount," +
+    					" CM.issue_type");
     					
     	sb.append(" from complaint_master CM" +
 						" where CM.Completed_Status = 'completed'" +
@@ -476,7 +477,8 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
 				.addScalar("Complaint_id",Hibernate.LONG).addScalar("Raised_Date",Hibernate.DATE).addScalar("type_of_issue",Hibernate.STRING)
 				.addScalar("updated_date",Hibernate.DATE).addScalar("Subject",Hibernate.STRING).addScalar("description",Hibernate.STRING)
 				.addScalar("Location",Hibernate.STRING).addScalar("constituency",Hibernate.STRING).addScalar("village_name",Hibernate.STRING)
-				.addScalar("mandal_name",Hibernate.STRING).addScalar("support_purpose",Hibernate.STRING).addScalar("approved_amount",Hibernate.STRING);
+				.addScalar("mandal_name",Hibernate.STRING).addScalar("support_purpose",Hibernate.STRING).addScalar("approved_amount",Hibernate.STRING)
+				.addScalar("issue_type",Hibernate.STRING);
 		
 		query.setParameter("locationId", locationId);
 		query.setParameter("typeOfIssue", typeOfIssue);

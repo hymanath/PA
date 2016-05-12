@@ -54,8 +54,15 @@ public class GrievanceDetailsVO implements Serializable{
 	private String villageName;
 	private String mandalName;
 	private String supportPurpose;
+	private String issueType;
 	
 	
+	public String getIssueType() {
+		return issueType;
+	}
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
+	}
 	public String getSupportPurpose() {
 		return supportPurpose;
 	}
