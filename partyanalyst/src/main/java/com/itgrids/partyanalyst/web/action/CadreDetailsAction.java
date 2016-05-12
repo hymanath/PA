@@ -1227,4 +1227,21 @@ public String updateLeaderShip(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getGrievanceBenifitsComplaintsInfoByLocation(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			Long locationId=jObj.getLong("locationId");
+			String locationType = jObj.getString("locationType");
+			String typeOfIssue = jObj.getString("typeOfIssue");
+			String benifitType = jObj.getString("benifitType");
+			
+			grievanceDetailsVoList = cadreDetailsService.getGrievanceBenifitsComplaintsInfoByLocation(locationId, locationType, typeOfIssue, benifitType);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getApprovedAmountDetailsForGovtAndWilfareByLocation() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

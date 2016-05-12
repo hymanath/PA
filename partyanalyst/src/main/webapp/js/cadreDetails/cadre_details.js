@@ -2888,7 +2888,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 			if(result != null){
 				var str='';
 				
-				str+='<table class="table m_0 table-bordered m_0" id="deathHospLifeCycleTableId">';
+				str+='<table class="table m_0 table-bordered m_0" style="font-size:13px;" id="deathHospLifeCycleTableId">';
 					str+='<thead>';
 						str+='<tr>';
 							str+='<th>Complaint Id</th>';
@@ -2906,16 +2906,16 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 							str+='<th> View Details </th>';*/
 						str+='</tr>';
 					str+='</thead>';
-					str+='<tbody style="background:#f3f3f3">'
+					str+='<tbody style="background:#f3f3f3;font-size:13px;">'
 					for(var i in result){
 						str+='<tr>';
 							str+='<td>'+result[i].complaintId+'</td>';
 							str+='<td>';
-							str+='<p>N:'+result[i].firstName+'</p>';
-							str+='<p>D:'+result[i].locationName+'</p>';
-							str+='<p>C:'+result[i].constituency+'</p>';
-							str+='<p>M:'+result[i].mandalName+'</p>';
-							str+='<p>V:'+result[i].villageName+'</p>';
+							str+='<p class="m_0">N:'+result[i].firstName+'</p>';
+							str+='<p class="m_0">D:'+result[i].locationName+'</p>';
+							str+='<p class="m_0">C:'+result[i].constituency+'</p>';
+							str+='<p class="m_0">M:'+result[i].mandalName+'</p>';
+							str+='<p class="m_0">V:'+result[i].villageName+'</p>';
 							str+='</td>';
 							str+='<td>'+result[i].subject+'</td>';
 							str+='<td>'+result[i].description+'</td>';
@@ -2949,6 +2949,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 				$("#dataLoadingsImgForDeathHospDetails").hide();
 				$("#deathHospModalBodyId").html(str);
 				$("#deathHospLifeCycleTableId").dataTable();
+				$("#deathHospLifeCycleTableId").removeClass("dataTable");
 			}
 		});
 });
@@ -5421,9 +5422,9 @@ var str='';
                   str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
                  // for(var i in result){
                    // str+='<th colspan="2" style="text-align:center;"> '+result.locationList[i].name+' </th>';
-                    str+='<th colspan="4" style="text-align:center;"> ASSEMBLY </th>';
-                    str+='<th colspan="4" style="text-align:center;"> PARLIAMENT </th>';
-                    str+='<th colspan="4" style="text-align:center;"> DISTRICT </th>';
+                    str+='<th colspan="3" style="text-align:center;"> ASSEMBLY </th>';
+                    str+='<th colspan="3" style="text-align:center;"> PARLIAMENT </th>';
+                    str+='<th colspan="3" style="text-align:center;"> DISTRICT </th>';
                   //}
                 str+='</tr>';
                 str+='<tr>';
@@ -5431,15 +5432,15 @@ var str='';
                   str+='<th style="text-align:center;">Party</th>';
                   str+='<th style="text-align:center;">Govt</th>';
                   str+='<th style="text-align:center;">Welfare</th>';
-                  str+='<th style="text-align:center;">Benifit</th>';
+                  //str+='<th style="text-align:center;">Benifit</th>';
 				  str+='<th style="text-align:center;">Party</th>';
                   str+='<th style="text-align:center;">Govt</th>';
                   str+='<th style="text-align:center;">Welfare</th>';
-                  str+='<th style="text-align:center;">Benifit</th>';
+                  //str+='<th style="text-align:center;">Benifit</th>';
 				  str+='<th style="text-align:center;">Party</th>';
                   str+='<th style="text-align:center;">Govt</th>';
                   str+='<th style="text-align:center;">Welfare</th>';
-                  str+='<th style="text-align:center;">Benifit</th>';
+                  //str+='<th style="text-align:center;">Benifit</th>';
               //  }
                 str+='</tr>';
                 str+='</thead>';
@@ -5449,12 +5450,13 @@ var str='';
                     str+='<td>'+result.subList[i].name+'</td>';
                     if(result.subList[i].subList != null && result.subList[i].subList.length>0){
                       for(var k in result.subList[i].subList){
-						   /*if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0 && (k==3 ||k==7 || k==11))
-                            str+='<td style="text-align:center;" >'+result.subList[i].subList[k].count+'</td>';						
-                          else*/ if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0)
-                            str+='<td style="text-align:center;" ><a class="grievanceStatusWiseDetailsCls" style="cursor:pointer;" attr_status_name="'+result.subList[i].name+'" attr_location_type="'+result.subList[i].subList[k].locationName+'" attr_issue_type="'+result.subList[i].subList[k].name+'" >'+result.subList[i].subList[k].count+'</a></td>';
-                          else
-                            str+='<td style="text-align:center;"> - </td>';
+						   if(k!=3 && k!=7 && k!=11){
+							   /*str+='<td style="text-align:center;" >'+result.subList[i].subList[k].count+'</td>';						
+							  else*/ if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0)
+								str+='<td style="text-align:center;" ><a class="grievanceStatusWiseDetailsCls" style="cursor:pointer;" attr_status_name="'+result.subList[i].name+'" attr_location_type="'+result.subList[i].subList[k].locationName+'" attr_issue_type="'+result.subList[i].subList[k].name+'" >'+result.subList[i].subList[k].count+'</a></td>';
+							  else
+								str+='<td style="text-align:center;"> - </td>';
+						   }
                       }                      
                     }
                     str+='</tr>';
@@ -5508,8 +5510,42 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 		}).done(function(result){
 			if(result != null){
 				var str='';
+
+				str+='<table class="table m_0 table-bordered m_0" id="grievanceStatusWiseTableId" style="font-size:13px !important;">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>Complaint Id</th>';
+						str+='<th>Complaint Person Details</th>';
+						str+='<th>Subject</th>';
+						str+='<th>Description</th>';
+						str+='<th>Status</th>';
+						str+='<th>Posted Date</th>';
+						str+='<th>Last Updated Date</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].complaintId+'</td>';
+						str+='<td>';
+						str+='<p class="m_0">N:'+result[i].firstName+'</p>';
+						str+='<p class="m_0">D:'+result[i].locationName+'</p>';
+						str+='<p class="m_0">C:'+result[i].constituency+'</p>';
+						str+='<p class="m_0">M:'+result[i].mandalName+'</p>';
+						str+='<p class="m_0">V:'+result[i].villageName+'</p>';
+						str+='</td>';
+						str+='<td>'+result[i].subject+'</td>';
+						str+='<td>'+result[i].description+'</td>';
+						str+='<td>'+result[i].status+'</td>';
+						str+='<td>'+result[i].raisedDate+'</td>';
+						str+='<td>';
+						if(result[i].updatedDate.length > 0)
+							str+=''+result[i].updatedDate+'</td>';
+					}
+				str+='</tbody>'
+			str+='</table>';
 				
-				str+='<table class="table m_0 table-bordered m_0">';
+				/*str+='<table class="table m_0 table-bordered m_0">';
 					str+='<thead>';
 						str+='<tr>';
 							str+='<th> Name </th>';
@@ -5558,10 +5594,11 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 						str+='</tr>';
 					}
 					str+='</tbody>'
-				str+='</table>';
+				str+='</table>';*/
 				
 				$("#dataLoadingsImgForGrievanceStatusDetails").hide();
 				$("#grievanceDetailsModalBodyId").html(str);
+				$("#grievanceStatusWiseTableId").dataTable();
 			}
 		});
 });
@@ -5811,7 +5848,7 @@ function buildGrievanceAmountDetails(result){
 				str+='<td class="text-bold" style="text-transform:uppercase">'+result[i].name+'</td>';
 				for(var j in result[i].simpleVOList1){
 					if(result[i].simpleVOList1[j].count != null)
-						str+='<td>'+result[i].simpleVOList1[j].count+'</td>';
+						str+='<td><a class="grievanceBenifitsStatusWiseDetailsCls" style="cursor:pointer;" attr_issueType="'+result[i].simpleVOList1[j].name+'" attr_location_type="'+result[i].name+'" attr_benifit_type="total">'+result[i].simpleVOList1[j].count+'</a></td>';
 					else
 						str+='<td> - </td>';
 					if(result[i].simpleVOList1[j].approvedAmount != null)
@@ -5819,7 +5856,7 @@ function buildGrievanceAmountDetails(result){
 					else
 						str+='<td> - </td>';
 					if(result[i].simpleVOList1[j].otherBenifitCount != null)
-						str+='<td>'+result[i].simpleVOList1[j].otherBenifitCount+'</td>';
+						str+='<td><a class="grievanceBenifitsStatusWiseDetailsCls" style="cursor:pointer;" attr_issueType="'+result[i].simpleVOList1[j].name+'" attr_location_type="'+result[i].name+'" attr_benifit_type="other">'+result[i].simpleVOList1[j].otherBenifitCount+'</a></td>';
 					else
 						str+='<td> - </td>';
 				}
@@ -5831,6 +5868,97 @@ function buildGrievanceAmountDetails(result){
 	$("#dataLoadingsImgForGrievanceRequests").hide();
 	$("#grievanceRequestsId").html(str);
 }
+
+$(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
+	$("#grievanceBenifitsDetailsModalBodyId").html('');
+	$("#grievanceBenifitsDetailsModalDivId").modal("show");
+	$("#dataLoadingsImgForGrievanceBenifitsStatusDetails").show();
+	
+	var locationId = 0;
+	var locationType = $(this).attr("attr_location_type");
+	var issueType = $(this).attr("attr_issueType");
+	var benifitType = $(this).attr("attr_benifit_type");
+	
+	$("#grievanceBenifitsDetailsModalHeadingId").html("<span style='text-transform:uppercase'>"+locationType+" Wise "+issueType+" Type Complaint Details </span>");
+	
+	if(locationType == "assembly")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedConstituencyId;
+		else
+			locationId = globalConstituencyId;
+	else if(locationType == "parliament")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedParliamentId;
+		else
+			locationId = globalParliamentId;
+	else if(locationType == "district")
+		if(participatedConstituencyId != null && participatedConstituencyId > 0)
+			locationId = participatedDistrictId;
+		else
+			locationId = globalDistrictId;
+		
+	var jsobj={
+		locationId : locationId,
+		locationType : locationType,
+		typeOfIssue : issueType,
+		benifitType : benifitType
+	}
+	$.ajax({
+		 type:'POST',
+		 url: 'getGrievanceBenifitsComplaintsInfoByLocationAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result != null){
+			var str='';
+			
+			str+='<table class="table m_0 table-bordered m_0" id="grievanceBenifitsTableId" style="font-size:13px !important;">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>Complaint Id</th>';
+						str+='<th>Complaint Person Details</th>';
+						str+='<th>Subject</th>';
+						str+='<th>Description</th>';
+						if(benifitType == 'total')
+							str+='<th>Approved Amount</th>';
+						else if(benifitType == 'other')
+							str+='<th>Support Purpose</th>';
+						str+='<th>Posted Date</th>';
+						str+='<th>Last Updated Date</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].complaintId+'</td>';
+						str+='<td>';
+						str+='<p class="m_0">N:'+result[i].firstName+'</p>';
+						str+='<p class="m_0">D:'+result[i].locationName+'</p>';
+						str+='<p class="m_0">C:'+result[i].constituency+'</p>';
+						str+='<p class="m_0">M:'+result[i].mandalName+'</p>';
+						str+='<p class="m_0">V:'+result[i].villageName+'</p>';
+						str+='</td>';
+						str+='<td>'+result[i].subject+'</td>';
+						str+='<td>'+result[i].description+'</td>';
+						if(benifitType == 'total')
+							str+='<td>'+result[i].approvedAmount+'</td>';
+						else if(benifitType == 'other')
+							str+='<td>'+result[i].supportPurpose+'</td>';
+						str+='<td>'+result[i].raisedDate+'</td>';
+						str+='<td>';
+						if(result[i].updatedDate.length > 0)
+							str+=''+result[i].updatedDate+'</td>';
+					}
+				str+='</tbody>'
+			str+='</table>';
+			
+			$("#dataLoadingsImgForGrievanceBenifitsStatusDetails").hide();
+			$("#grievanceBenifitsDetailsModalBodyId").html(str);
+			$("#grievanceBenifitsTableId").dataTable();
+			$("#grievanceBenifitsTableId").removeClass("dataTable");
+		}
+	});
+});
+
 function buildGrievanceRequests(result)
 {
 	var str = '';
