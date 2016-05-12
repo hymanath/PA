@@ -2450,7 +2450,7 @@
 		<property name="tdpMemberTypeDAO" ref="tdpMemberTypeDAO" />
 		<property name="userFeedbackDAO" ref="userFeedbackDAO" />
 		<property name="mailService" ref="mailService" />
-		<property name="smsSenderService" ref="smsSenderService" />
+		<property name="paymentGatewayService" ref="paymentGatewayService" />
 	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
@@ -3096,8 +3096,11 @@
 	</bean> -->
 	
 	<bean id="paymentGatewayService" class="com.itgrids.partyanalyst.service.impl.PaymentGatewayService">
+		<property name="paymentTransactionDAO" ref="paymentTransactionDAO" />
+		<property name="paymentMethodDAO" ref="paymentMethodDAO" />
 		<property name="paymentAmountDAO" ref="paymentAmountDAO" />
 	    <property name="paymentModuleGatewayMerchantDetailsDAO" ref="paymentModuleGatewayMerchantDetailsDAO" />
+	    <property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
 </beans>		
