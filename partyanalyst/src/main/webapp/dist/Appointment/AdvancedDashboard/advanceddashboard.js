@@ -734,23 +734,20 @@ function buildAppointmentMembersData(result)
 	
    var str='';
   if(result != null){
-			str +='<table class="table table-bordered">';
+			str +='<table class="table table-bordered" id="appntmntMmbrsTbId">';
             str +='<thead>';
-            str+='<tr>';
-			str+='<th class="text-capitalize">Image</th>';				
-			str+='<th class="text-capitalize">NAME</th>';
-			//str+='<th class="text-capitalize">Location</th>';
-			str+='<th class="text-capitalize">Designation</th>';
-			str+='<th class="text-capitalize">Last Visit</th>';
-			str+='<th class="text-capitalize">Last Status</th>';
-			str+='<th class="text-capitalize">Total Requested Appointment</th>';
-		    str+='<th class="text-capitalize">Total Attended Appointment</th>';
-		
-			
-			//str+='<th class="text-capitalize">Mobile</th>';
-								
-			str+='</tr>';
-						str+='</thead>';
+				str+='<tr>';
+					str+='<th class="text-capitalize">Image</th>';				
+					str+='<th class="text-capitalize">NAME</th>';
+					//str+='<th class="text-capitalize">Location</th>';
+					str+='<th class="text-capitalize">Designation</th>';
+					str+='<th class="text-capitalize">Last Visit</th>';
+					str+='<th class="text-capitalize">Last Status</th>';
+					str+='<th class="text-capitalize">Total Requested Appointment</th>';
+					str+='<th class="text-capitalize">Total Attended Appointment</th>';
+					//str+='<th class="text-capitalize">Mobile</th>';
+				str+='</tr>';
+			str+='</thead>';
 						str+='<tbody>';
 	for(var i in result)
 	{
@@ -809,7 +806,9 @@ function buildAppointmentMembersData(result)
 	  str+='No Data Available';
   }
 			$("#appointmentMembersDiv").html(str);
+			$("#appntmntMmbrsTbId").dataTable();
 	}
+	
 
 /* function buildTtlAppntmntSttsFrAdncDshBrd(result){
 	var str='';

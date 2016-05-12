@@ -178,7 +178,7 @@ function buildCommitteeLvlAppntmnts(result,jsObj){
 	
    $("#committeeLvlAppntId").html("");
   var str = '';
-  if(result != null){
+  if(result != null && result.length>0){
       str +='<table class="table table-bordered" id="dataTableCommiteeId">';
             str +='<thead>';
            str+='<tr>';
@@ -248,15 +248,17 @@ function buildCommitteeLvlAppntmnts(result,jsObj){
   }else{
     str +='No Data Available.';
   }
-      $("#committeeLvlAppntId").html(str);
-      
-      $("#dataTableCommiteeId").DataTable({
-							"aaSorting": [[ -1, "desc" ]],
-							"iDisplayLength" : 10	,
-							 "bDestroy": true,
-							 "bFilter": false,
-							"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
-      }); 
+     $("#committeeLvlAppntId").html(str);
+     /*    $("#dataTableCommiteeId").DataTable({
+		"aaSorting": [],
+		//"aaSorting": [[ -1, "desc" ]],
+		   //"order": [[ 3, "desc" ]]
+		"aaSorting": [[ 0, "desc" ]],
+		"iDisplayLength" : 10	,
+		"bDestroy": true,
+		"bFilter": false,
+		"aLengthMenu": [[10,20,50, 100, -1], [10,20,50, 100, "All"]]
+      }); */ 
 }
 
 function getLevelWiseCount(levelId,level,aptUserId){
