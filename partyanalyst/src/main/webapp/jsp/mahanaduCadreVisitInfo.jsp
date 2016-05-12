@@ -17,6 +17,7 @@
 <script src="dist/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="dist/js/dataTables.responsive.js" type="text/javascript"></script>
 	 
+<link href="dist/eventDashboard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
 <link href="dist/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
@@ -91,7 +92,7 @@
                     	<h4 class="pull-right">Today Total Visitors: <span id="totalVisitors" >0</span></h4>
                     </div>
                     <div class="col-md-6 m_0" style="border-left:1px solid #ccc">
-                    	<h4 class="pull-left">Today Visitors in Campus: <span id="currentVisitors">0</span>
+                    	<h4 class="pull-left">Present Visitors in Campus: <span id="currentVisitors">0</span>
 						<span style="font-size:14px;color:#ccc;display:none;" class="inviteesSpanCls">[ Invitees:<span id="currentinvVisitors">0</span>
 						Non Invitees:<span id="currentnoninvVisitors">0</span> ]</span></h4>
 						
@@ -131,7 +132,7 @@
         <div class="col-md-4">
         	<div class="panel panel-default box-shadow-css" style="min-height: 220px;">
             	<div class="panel-heading m_bottom10" style="background:#00B07D;color:#ffffff;">
-                	<span  style='font-size:14px;font-weight:bold;'>DAY'S UNIQUE AND REVISIT SUMMARY</span>
+                	<span  style='font-size:14px;font-weight:bold;'>DAY'S UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#fff;cursor: pointer;" id="refreshUnqueRevisitId"></i></span>
                 </div>
                 <div class="panel panel-body" style="padding:0px;">
 						<center><img id="daysSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
@@ -139,9 +140,9 @@
 					   <div id="daysSummaryId"></div>
 					</div>
             </div>
-            <div class="panel panel-default box-shadow-css m_top10" style="min-height: 200px;">
+            <div class="panel panel-default box-shadow-css m_top10" style="min-height: 190px;">
             	<div class="panel-heading" style="background:#00B07D;color:#ffffff;">
-                	<span  style='font-size:14px;font-weight:bold;'>DAY WISE VISIT SUMMARY</span>
+                	<span  style='font-size:14px;font-weight:bold;'>DAY WISE VISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#fff;cursor: pointer;" id="refreshDayWiseId"></i></span>
                 </div>
 				<div class="panel-body" style="padding:0px;">
 							<center><img id="ovrAlSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
@@ -228,7 +229,9 @@
 		  getDetails();		  
 		  setTimeout(function(){
 			 getLocationWiseAttendeeSummaryCount(1,3,false);
-			getLocationWiseAttendeeSummaryCount(1,4,false);
+			 getLocationWiseAttendeeSummaryCount(1,4,false);	
+			 getDaysUniqueAndRevisitSummary();
+			 getDayWiseVisitSummary();
 			}, 2000);
 	  });
 	  
@@ -647,7 +650,7 @@
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
-				  str+="   <td class='back-white'>Half An Hour To One Hours</td>";
+				  str+="   <td class='back-white'>1/2 to 1 Hours</td>";
 				  for(var i in result){
 					
 					  if(i == 0){str+="   <td class='table-color1'>";}
@@ -688,7 +691,7 @@
 				  
 				  str+="</tr>";
 				  str+="<tr>";
-				  str+="   <td class='back-white'>Below Half An Hour</td>";
+				  str+="   <td class='back-white'> < Hour</td>";
 				  for(var i in result){
 				
 					   if(i == 0){str+="   <td class='table-color1'>";}
@@ -794,28 +797,24 @@ $("#myonoffswitchSummary1").click(function(){
 //getLocationWiseAttendeeSummaryCount(1,4,false);
 function getLocationWiseAttendeeSummaryCount(stateId,reportLevelId,fromChecked){
 	
-	//Fields Clearing
-	$("#ovrAlSummaryId").html("");
-	$("#daysSummaryId").html("");
-	$("#districtTableSummaryId").html("");
-	$("#constiTableSummaryId").html("");
-	
 	var subEvents1 = [];
 	var stateId =0;
 	
-	if(reportLevelId == 3){
+	if(reportLevelId == 3){		
+		$("#districtTableSummaryId").html("");//Clearing the District Div		
 		$("#distAjaxSummaryId").show();
 		$("#districtTableSummaryId").html("");
 	}else{
+		$("#constiTableSummaryId").html("");//Clearing the constituency Div
 		$("#constAjaxSummaryId").show();
 		$("#constiTableSummaryId").html("");
 	}
 	
 	if(!fromChecked){
-		$("#daysSummaryIdAjax").show();
-		$("#ovrAlSummaryIdAjax").show();
-		$("#daysSummaryId").html("");
-		$("#ovrAlSummaryId").html("");
+		//$("#daysSummaryIdAjax").show();
+		//$("#ovrAlSummaryIdAjax").show();
+		//$("#daysSummaryId").html("");
+		//$("#ovrAlSummaryId").html("");
 	}
 	if($('#myonoffswitchSummary1').is(":checked")){
 		stateId = 1;
@@ -862,8 +861,8 @@ function buildLocationSummary(result,reportLevelId,fromChecked){
 	}
 	
 	if(!fromChecked){
-		$("#daysSummaryIdAjax").hide();
-		$("#ovrAlSummaryIdAjax").hide();
+		//$("#daysSummaryIdAjax").hide();
+		//$("#ovrAlSummaryIdAjax").hide();
 		
 		var str_a = "";
 		str_a += "<table class='table'>";
@@ -886,7 +885,7 @@ function buildLocationSummary(result,reportLevelId,fromChecked){
 				}
 			str_a +="</tbody>";
 		str_a += "</table>";
-		$("#daysSummaryId").html(str_a);
+		//$("#daysSummaryId").html(str_a);
 		
 		var str_b = "";
 		str_b += "<table class='table'>";
@@ -905,7 +904,7 @@ function buildLocationSummary(result,reportLevelId,fromChecked){
 				}
 			str_b +="</thead>";
 		str_b += "</table>";
-		$("#ovrAlSummaryId").html(str_b);
+		//$("#ovrAlSummaryId").html(str_b);
 	}
 	var str='';
 	if(reportLevelId == 3){
@@ -1056,6 +1055,118 @@ var stDate =
 $(".tbtn").click(function(){
     $(".themeControll").toggleClass("active");
 });
+function getDaysUniqueAndRevisitSummary(){
+	var subEvents1 = [];
+	var stateId =0;
+	 eventId = $("#mainEventSelectId").val();
+	 if(globalMainEntryId !=null && globalMainEntryId>0){
+		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
+	 }
+	 $("#daysSummaryId").html('');
+	 $("#daysSummaryIdAjax").show();
+	 
+	 var jObj = {
+			eventId:eventId,			
+			stateId:stateId,
+			reportLevelId:0,
+			subEvents : subEvents1,			
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getDaysUniqueAndRevisitSummaryAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			$("#daysSummaryIdAjax").hide();
+			buildDaysUniqueAndRevisitSummary(result);
+		});
+}
+function buildDaysUniqueAndRevisitSummary(result){
+	var str_a = "";
+	if(result !=null && result.length>0){
+		
+		str_a += "<table class='table'>";
+			str_a +="<thead>";
+				str_a +="<tr style='background:#F0F0F0'>";
+					str_a+="<th style='width:20%'></th>";
+					str_a+="<th>TOTAL UNIQUE VISITS</th>";
+					str_a+="<th>ONLY ONE DAY VISITS</th>";
+					str_a+="<th>REVISITS</th>";
+				str_a +="</tr>";
+			str_a +="</thead>";
+			str_a +="<tbody>";
+				for(var i in result){
+					str_a +="<tr>";
+						str_a+="<td style='width:20%'> DAY-"+(parseInt(i)+1)+"</td>";
+						str_a+="<td>"+result[i].total+"</td>";
+						str_a+="<td>"+result[i].oneDayCount+"</td>";
+						str_a+="<td>"+result[i].revisitCount+"</td>";
+					str_a +="</tr>";
+				}
+			str_a +="</tbody>";
+		str_a += "</table>";
+	}
+	$("#daysSummaryId").html(str_a);
+	
+}
+
+function getDayWiseVisitSummary(){
+	var subEvents1 = [];
+	var stateId =0;
+	 eventId = $("#mainEventSelectId").val();
+	 if(globalMainEntryId !=null && globalMainEntryId>0){
+		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
+	 }
+	 $("#ovrAlSummaryId").html('');
+	$("#ovrAlSummaryIdAjax").show();
+	 
+	 var jObj = {
+			eventId:eventId,			
+			stateId:stateId,
+			reportLevelId:0,
+			subEvents : subEvents1,			
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getDayWiseVisitSummaryAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			$("#ovrAlSummaryIdAjax").hide();
+			buildDayWiseVisitSummary(result);
+		});
+}
+function buildDayWiseVisitSummary(result){
+	var str_b = "";
+	if(result !=null && result.length>0){
+				
+		str_b += "<table class='table'>";
+			str_b +="<thead>";
+				for(var i in result){
+					str_b +="<tr>";
+						var number = parseInt(i)+1;
+						if(number>1){
+							str_b+="<th>"+(parseInt(i)+1)+" DAY'S VISITORS</th>";
+						}else{
+							str_b+="<th>"+(parseInt(i)+1)+" DAY VISITORS</th>";
+						}
+						
+						str_b+="<th>"+result[i].total+"</th>"
+					str_b +="</tr>";
+				}
+			str_b +="</thead>";
+		str_b += "</table>";		
+	}
+	$("#ovrAlSummaryId").html(str_b);	
+}
+$(document).on('click','#refreshUnqueRevisitId',function(){
+	getDaysUniqueAndRevisitSummary();
+});
+$(document).on('click','#refreshDayWiseId',function(){
+	getDayWiseVisitSummary();
+});
+ 
+
 </script>
 </body>
 </html>
