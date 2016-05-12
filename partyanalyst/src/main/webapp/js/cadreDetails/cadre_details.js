@@ -2661,7 +2661,7 @@ function getDeathsAndHospitalizationDetails(){
 								str+='</tr>';
 								str+='<tr>';
 								for(var i in result.locationList){
-									str+='<th style="text-align:center;">DEATH.</th>';
+									str+='<th style="text-align:center;">DEATH</th>';
 									str+='<th style="text-align:center;">HOSP.</th>';
 								}
 								str+='</tr>';
@@ -5843,10 +5843,10 @@ function buildGrievanceAmountDetails(result){
 				//str+='<th colspan="3">District</th>';
 			str+='</tr>';
 			str+='<tr>';
-					str+='<th style="text-transform:uppercase">Total Complaints</th>';
+					str+='<th style="text-transform:uppercase">No. of Beneficiaries</th>';
 					str+='<th style="text-transform:uppercase">Approved Amount</th>';
 					str+='<th style="text-transform:uppercase">Other Benifits</th>';
-					str+='<th style="text-transform:uppercase">Total Complaints</th>';
+					str+='<th style="text-transform:uppercase">No. of Beneficiaries</th>';
 					str+='<th style="text-transform:uppercase">Approved Amount</th>';
 					str+='<th style="text-transform:uppercase">Other Benifits</th>';
 				str+='</tr>';
@@ -5927,12 +5927,14 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 						str+='<th>Complaint Person Details</th>';
 						str+='<th>Subject</th>';
 						str+='<th>Description</th>';
+						str+='<th>Issue Type</th>';
 						if(benifitType == 'total')
 							str+='<th>Approved Amount</th>';
 						else if(benifitType == 'other')
 							str+='<th>Support Purpose</th>';
 						str+='<th>Posted Date</th>';
 						str+='<th>Last Updated Date</th>';
+						str+='<th>View Details</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody style="background:#f3f3f3;font-size:12px;">'
@@ -5948,6 +5950,7 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 						str+='</td>';
 						str+='<td>'+result[i].subject+'</td>';
 						str+='<td>'+result[i].description+'</td>';
+						str+='<td>'+result[i].issueType+'</td>';
 						if(benifitType == 'total')
 							str+='<td>'+result[i].approvedAmount+'</td>';
 						else if(benifitType == 'other')
@@ -5956,6 +5959,7 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 						str+='<td>';
 						if(result[i].updatedDate.length > 0)
 							str+=''+result[i].updatedDate+'</td>';
+						str+='<td><input type="button" value="View" class="btn btn-sm btn-primary" onclick="getComplaintTrackingDetailsForGrievance('+result[i].complaintId+',\'statusDivIdForGrievance'+i+'\')"/></td>';
 					}
 				str+='</tbody>'
 			str+='</table>';

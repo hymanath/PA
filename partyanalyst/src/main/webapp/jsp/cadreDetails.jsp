@@ -1028,25 +1028,7 @@ var globalCadreId = '${cadreId}';
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		<div class="modal fade" id="viewGrievanceStatusFlow">
-		  <div class="modal-dialog modal-sm" style="width:75%">
-			<div class="modal-content">
-			  <div class="modal-header">
-				<button type="button" class="close statusFlowCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title text-center"><span id="grievanceDetailsModalHeadingId"></span></h4>
-			  </div>
-			  <div class="modal-body">
-				<div id="grievanceStatusFlowModalBodyId">
-				</div>
-				<div id="statusDivIdForGrievance" class="m_top20"></div>
-				<center><img id="dataLoadingsImgForGrievanceStatusDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
-			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-default statusFlowCloseCls" data-dismiss="modal">Close</button>
-			  </div>
-			</div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+		
 		<div class="modal fade bs-example-modal-sm historyShowModal"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">	  
 			<div class="modal-dialog modal-lg">
 			<div class="modal-content ">
@@ -1082,7 +1064,25 @@ var globalCadreId = '${cadreId}';
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-	
+	<div class="modal fade" id="viewGrievanceStatusFlow">
+		  <div class="modal-dialog modal-sm" style="width:75%">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close statusFlowCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center"><span id="grievanceDetailsModalHeadingId"></span></h4>
+			  </div>
+			  <div class="modal-body">
+				<div id="grievanceStatusFlowModalBodyId">
+				</div>
+				<div id="statusDivIdForGrievance" class="m_top20"></div>
+				<center><img id="dataLoadingsImgForGrievanceStatusDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default statusFlowCloseCls" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
