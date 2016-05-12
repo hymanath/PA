@@ -72,27 +72,32 @@
 </head>
 <body>
 <section class="container">
-
-	<div class="row col-md-3 pull-right">
-		<select id="mainEventSelectId" class="form-control mainEventSelectCls">
-			<option value="0">select event</option>
-			<option value="7" >Mahanadu 2015</option>
-			<option value="30" selected>Mahanadu 2016</option>
-		</select>
-	</div>
+	
 	<div class="row">
     	<div class="col-md-12" style="margin-top:40px;">
         	<div class="panel panel-default box-shadow-css">
             	<div class="panel-heading" style="background:#00B07D;color:#ffffff;">
-        			<h3 class="text-center m_0">MAHANADU VISITORS INFO</h3>
+        			
+					<div class="row">
+						<div class="col-md-8">
+							<h3 class="text-right m_0" style="color:#fff !important">MAHANADU VISITORS INFO</h3>
+						</div>
+						<div class="  col-md-2 col-md-offset-2">
+						<select id="mainEventSelectId" class="form-control mainEventSelectCls pull-right">
+							<option value="0">Select Event</option>
+							<option value="7" >Mahanadu 2015</option>
+							<option value="30" selected>Mahanadu 2016</option>
+						</select>
+						</div>
+					</div>
                 </div>
 				<div><input style="display:none;" type="button" onclick="populate();" value="Update Latest Info"/></div>
                 <div class="panel-body" style="padding:0px 15px">
                 	<div class="col-md-6 m_0">
-                    	<h4 class="pull-right">Today Total Visitors: <span id="totalVisitors" >0</span></h4>
+                    	<h4 class="pull-right">Today Total Visitors Attended : <span id="totalVisitors" >0</span></h4>
                     </div>
                     <div class="col-md-6 m_0" style="border-left:1px solid #ccc">
-                    	<h4 class="pull-left">Present Visitors in Campus: <span id="currentVisitors">0</span>
+                    	<h4 class="pull-left">Present Visitors in Campus : <span id="currentVisitors">0</span>
 						<span style="font-size:14px;color:#ccc;display:none;" class="inviteesSpanCls">[ Invitees:<span id="currentinvVisitors">0</span>
 						Non Invitees:<span id="currentnoninvVisitors">0</span> ]</span></h4>
 						
@@ -104,11 +109,11 @@
     <div class="row">
     	<div class="col-md-8">
         	<div class="panel panel-default box-shadow-css">
-            	<div class="panel-heading " style=" min-height:38px; background:#CCCCCC">
+            	<div class="panel-heading " style=" min-height:38px; background:#00B07D">
                 <p class="m_0 display-style"><i class="glyphicon glyphicon-calendar reservation" style="color:#ccc; font-size:18px;display:none;"></i></p>
                 <div class="pull-left">
-                    <span style="font-size:14px; font-weight:bold; background:#CCCCCC;color:#6A6A6A;">Last Updated On:<span id="lasteUpdtOn"> </span></span>
-                    &nbsp;<i class="glyphicon glyphicon-refresh" onclick="getDetails();" style="color:#00B07D;cursor: pointer;"></i>
+                    <span style="font-size:14px; font-weight:bold; background:#00B07D;color:#fff;">Last Updated On:<span id="lasteUpdtOn"> </span></span>
+                    &nbsp;<i class="glyphicon glyphicon-refresh" onclick="getDetails();" style="color:#fff;cursor: pointer;"></i>
                 </div>
                <!-- <div class="pull-right"><input type="checkbox" id="inviteesCkbCls_a" class="inviteesCkbCls"/> <span>Show Invitees & Non-Invitees</span></div>-->
 				
@@ -130,7 +135,7 @@
             </div>
         </div>
         <div class="col-md-4">
-        	<div class="panel panel-default box-shadow-css" style="min-height: 240px;">
+        	<div class="panel panel-default box-shadow-css" style="min-height: 245px;">
             	<div class="panel-heading m_bottom10" style="background:#00B07D;color:#ffffff;">
                 	<span  style='font-size:14px;font-weight:bold;'>DAY'S UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#fff;cursor: pointer;" id="refreshUnqueRevisitId"></i></span>
                 </div>
@@ -346,7 +351,7 @@
                                 str+=' <tr>';
                                 str+=' 	<th class="back-white"></th>';
 									for(var i in result){
-                                    str+='<th class="color-black table-color2">COUNT</th>';
+                                    str+='<th class="color-black table-color2">ATTENDED</th>';
 										if(needInvitees_a){
 											str+='<th class="color-black table-color2">INVITEES</th>';
 											str+='<th class="color-black table-color2">NON INVITEES</th>';
@@ -954,13 +959,13 @@ function buildLocationSummary(result,reportLevelId,fromChecked){
     str+='</tr>';
 	  str+='<tr>';
    	  str+=' <th class="color-black"></th>';
-	  str+='<th class="color-black table-color1">COUNT</th>';
+	  str+='<th class="color-black table-color1">ATTENDED</th>';
 	  if(checkVar){
 		str+='<th class="color-black table-color1 inviteesCls">INVITEES</th>';
 		str+='<th class="color-black table-color1">NON INVITEES</th>';
 	  }
 	  for(var i in result[0].hoursList){
-       str+='<th class="color-black table-color1">COUNT</th>';
+       str+='<th class="color-black table-color1">ATTENDED</th>';
 	   if(checkVar){
 		str+='<th class="color-black table-color1 inviteesCls">INVITEES</th>';
 		str+='<th class="color-black table-color1">NON INVITEES</th>';
