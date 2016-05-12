@@ -352,11 +352,11 @@ str+='<form class="me-select display-style">';
 str+='<ul id="me-select-list" style="list-style:none;">';
 if(parentEventId == result[i].id)
 {
-str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'" checked>';
+str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" attr_formatedStartDate="'+result[i].formateEventStartDate+'" attr_formatedEndDate="'+result[i].formateEventEndDate+'" attr_startDate="'+result[i].eventStartDate+'" attr_endDate="'+result[i].eventEndDate+'" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'" checked>';
 }
 else
 {
-str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'">';
+str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" attr_formatedStartDate="'+result[i].formateEventStartDate+'" attr_formatedEndDate="'+result[i].formateEventEndDate+'" attr_startDate="'+result[i].eventStartDate+'" attr_endDate="'+result[i].eventEndDate+'"  type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'">';
 }
 str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head " id="eventText'+result[i].id+'">'+result[i].name+'</a></span></label></li>';
 str+=' </ul>';
@@ -394,16 +394,19 @@ str+=' </div>';
 str+=' </div>';
 }
 str+='<span id="errormsg" class="errorDiv"></span>';
-str+='<button class="btn btn-block btn-default btn-custom" onclick="eventUpdate();">UPDATE</button>';
+str+='<button class="btn btn-block btn-default btn-custom"   onclick="eventUpdate()">UPDATE</button>';
 $("#accordion").html(str);
 eventUpdate();
 }
 
+var dpCurentDate;
+var formatedDpCurentDate;
  $(document).ready(function() {
 
                   var cb = function(start, end, label) {
-                    console.log(start.toISOString(), end.toISOString(), label);
-                    $('#reportrange span').html(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
+                    alert(start.toISOString(), end.toISOString(), label);
+                    $('#reportrange span').html(start.format('D MMMM,YYYY') + ' - ' + end.format('D MMMM,YYYY'));
+					
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
@@ -449,7 +452,7 @@ eventUpdate();
                     }
                   };
 
-                  $('#reportrange span').html(moment().format('D MMMM, YYYY') + ' - ' + moment().format('D MMMM, YYYY'));
+                  $('#reportrange span').html(moment().format('D MMMM,YYYY') + ' - ' + moment().format('D MMMM,YYYY'));
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
@@ -477,8 +480,9 @@ eventUpdate();
                   });
 				startDate = $(".dp_startDate").val();
 				endDate = $(".dp_endDate").val();
-				
-               });
+				dpCurentDate = moment().format('D MMMM,YYYY')
+				formatedDpCurentDate = moment().format('DD/MM/YYYY')
+			   });
 
 	function handalClick(eventId)
 	{
@@ -833,8 +837,12 @@ $('#donutchart').removeClass("errorDiv");
  
 });
 }
- function eventUpdate(){
 
+ function eventUpdate(){
+	 
+	 
+	 updateDatesButton();
+	 
      $("#errorDiv").html("");
      subEvents = [];
 	 var flag = true;
@@ -890,6 +898,38 @@ showHide();
 }
 
 }
+ function updateDatesButton(){
+	
+   $( ".maineventCls").each(function( index ){
+	  
+     if($(this).prop('checked')){
+		 
+          var startDate = $(this).attr("attr_startDate");
+		  var endDate = $(this).attr("attr_endDate");
+		  
+		   var formatedStartDate = $(this).attr("attr_formatedStartDate");
+			var formatedEndDate = $(this).attr("attr_formatedEndDate");
+		 
+		 if( startDate != null && startDate.trim().length > 0 && 
+		     endDate != null && endDate.trim().length > 0 )
+		  {
+			//start.format('D/MM/YYYY') + ' - ' + end.format('D/MM/YYYY')
+			  $('#reportrange span').html(''+formatedStartDate+' - '+formatedEndDate+' ');	
+			  $('#reportrange').data('daterangepicker').setStartDate(startDate);
+			  $('#reportrange').data('daterangepicker').setEndDate(endDate);
+			  
+		  }else{
+				$('#reportrange span').html(''+dpCurentDate+' - '+dpCurentDate+' ');	
+			    $('#reportrange').data('daterangepicker').setStartDate(formatedDpCurentDate);
+				$('#reportrange').data('daterangepicker').setEndDate(formatedDpCurentDate);
+				
+			  
+		  }
+      }
+  }); 
+ } 
+
+
 	function locationWiseCalls(){
 		
 		if($('#myonoffswitch').is(":checked")){
