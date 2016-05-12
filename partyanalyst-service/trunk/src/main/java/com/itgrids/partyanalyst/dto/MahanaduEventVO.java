@@ -46,6 +46,12 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	
 	private boolean isMahanaduEvent;
 	
+	private String eventStartDate;
+	private String eventEndDate;
+	
+	private String formateEventStartDate;
+	private String formateEventEndDate;
+	
 	public Long getRevisitCount() {
 		return revisitCount;
 	}
@@ -232,6 +238,30 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setMahanaduEvent(boolean isMahanaduEvent) {
 		this.isMahanaduEvent = isMahanaduEvent;
+	}
+	public String getEventStartDate() {
+		return eventStartDate;
+	}
+	public void setEventStartDate(String eventStartDate) {
+		this.eventStartDate = eventStartDate;
+	}
+	public String getEventEndDate() {
+		return eventEndDate;
+	}
+	public void setEventEndDate(String eventEndDate) {
+		this.eventEndDate = eventEndDate;
+	}
+	public String getFormateEventStartDate() {
+		return formateEventStartDate;
+	}
+	public void setFormateEventStartDate(String formateEventStartDate) {
+		this.formateEventStartDate = formateEventStartDate;
+	}
+	public String getFormateEventEndDate() {
+		return formateEventEndDate;
+	}
+	public void setFormateEventEndDate(String formateEventEndDate) {
+		this.formateEventEndDate = formateEventEndDate;
 	}
 	
 	

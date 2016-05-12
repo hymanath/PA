@@ -2062,6 +2062,8 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			public List<MahanaduEventVO> getEventsForUser(Long userId)
 			{
 				DateUtilService date = new DateUtilService();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat sdf1 = new SimpleDateFormat("dd MMM,yyyy");
 				List<MahanaduEventVO> returnList = new ArrayList<MahanaduEventVO>();
 				try{
 					List<Long> parentIds = new ArrayList<Long>();
@@ -2074,6 +2076,19 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 							MahanaduEventVO eventVo = new MahanaduEventVO();
 							eventVo.setId((Long)params[0]);
 							eventVo.setName(params[1] != null ? params[1].toString() : "");
+							
+							/*Date date1=null;
+							if(params[2] != null){
+								date1 = (Date)params[2];
+								sdf.format(date1);
+							}*/
+							
+							eventVo.setEventStartDate(params[2] != null ? sdf.format((Date)params[2]) : "");
+							eventVo.setEventEndDate(params[6] != null ? sdf.format((Date)params[6]).toString() : "");
+							
+							eventVo.setFormateEventStartDate(params[2] != null ? sdf1.format((Date)params[2]) : "");
+							eventVo.setFormateEventEndDate(params[6] != null ? sdf1.format((Date)params[6]).toString() : "");
+							
 							returnList.add(eventVo);
 							parentIds.add((Long)params[0]);
 						}
