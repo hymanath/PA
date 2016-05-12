@@ -482,7 +482,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	
 	
 	
-	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,List<Long> subEventIds){
+	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds){
 		StringBuilder str = new StringBuilder();
 		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
@@ -494,7 +494,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		str.append(" date(model.attendedTime)");
 		str.append(" from EventAttendee model ");
 		str.append(" where model.event.eventId in(:subEventIds) ");
-		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and (date(model.attendedTime) between :eventStartDate  and :eventEndDate) ");
 		str.append(" and model.event.isActive =:isActive " +
 				   " and model.tdpCadre.isDeleted = 'N' ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
@@ -513,12 +513,13 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		}
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("eventStartDate", eventStartDate);
+		query.setDate("eventEndDate",eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
 		query.setParameterList("subEventIds", subEventIds);
 		return query.list();
 	}
 	
-	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,List<Long> subEventIds){
+	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds){
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCadre.tdpCadreId," +
@@ -533,7 +534,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		
 		str.append(" from EventAttendee model ");
 		str.append(" where model.event.eventId in(:subEventIds) ");
-		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and date(model.attendedTime) between :eventStartDate and :eventEndDate ");
 		str.append(" and model.event.isActive =:isActive " +
 				   " and model.tdpCadre.isDeleted = 'N' ");
 		
@@ -555,6 +556,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		}
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("eventStartDate", eventStartDate);
+		query.setDate("eventEndDate", eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
 		query.setParameterList("subEventIds", subEventIds);
 		return query.list();
@@ -653,7 +655,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 	}
 		
-	public List<Object[]> getEventAttendeeInfoDynamicIndiDatesForInvities(String locationType,Date eventStartDate,List<Long> subEventIds){
+	public List<Object[]> getEventAttendeeInfoDynamicIndiDatesForInvities(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds){
 		StringBuilder str = new StringBuilder();
 		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
@@ -665,7 +667,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		str.append(" date(model.attendedTime)");
 		str.append(" from EventAttendee model,EventInvitee model1 ");
 		str.append(" where model.event.eventId in(:subEventIds) and model.tdpCadreId = model1.tdpCadreId ");
-		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and date(model.attendedTime) between :eventStartDate and  :eventEndDate ");
 		str.append(" and model.event.isActive =:isActive " +
 				   " and model.tdpCadre.isDeleted = 'N' ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
@@ -684,12 +686,13 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		}
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("eventStartDate", eventStartDate);
+		query.setDate("eventEndDate", eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
 		query.setParameterList("subEventIds", subEventIds);
 		return query.list();
 	}
 	
-public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Date eventStartDate,List<Long> subEventIds){
+public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds){
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCadre.tdpCadreId," +
@@ -704,7 +707,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		str.append(" from EventAttendee model,EventInvitee model1  ");
 		str.append(" where model.event.eventId in(:subEventIds)  and model.tdpCadreId = model1.tdpCadreId ");
-		str.append(" and date(model.attendedTime) >= :eventStartDate ");
+		str.append(" and date(model.attendedTime) between :eventStartDate and :eventEndDate ");
 		str.append(" and model.event.isActive =:isActive " +
 				   " and model.tdpCadre.isDeleted = 'N' ");
 		
@@ -726,6 +729,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		}
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("eventStartDate", eventStartDate);
+		query.setDate("eventEndDate", eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
 		query.setParameterList("subEventIds", subEventIds);
 		return query.list();
