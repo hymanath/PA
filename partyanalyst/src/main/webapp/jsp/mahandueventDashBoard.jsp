@@ -103,7 +103,7 @@
 
 <section>
 	<div class="container">	
-	
+	<div id="mahanaduEventDashBoardLinkId" class="row" style="display:none"> <a id="mahanaduLinkId" class="puu-right" style="cursor:pointer">MAHANADU ENTRY/EXIT DASHBOARD</a></div>
 	<div class="row" style="padding:5px;">
 		
 		<div class="col-md-3 col-xs-offset-7">
@@ -758,6 +758,10 @@ function buildStartingPrograms(result){
 		       str+='<button   type="button" class="btn btn-info btn-block" onclick="showHide();" id="registrationbtn">Show Registraion Details</button>';
 		       str+='<div id="RegistrationCntDiv" style="display:none;margin-top: 10px; color: rgb(255, 255, 255); padding: 10px 20px;"></div>';
 		      str+='</div>';
+			  
+			  $("#mahanaduEventDashBoardLinkId").show();
+		 }else{
+			  $("#mahanaduEventDashBoardLinkId").hide();			 
 		 }
 	  } 
 	 
@@ -1740,6 +1744,21 @@ if(reportLevelId == 3){
 			}
 	});
 }
+
+$(document).on('click','#mahanaduLinkId',function(){
+	
+	var eventId = 0;
+	$(".maineventCls").each(function(){
+		if($(this).is(":checked")){
+			eventId = $(this).val();
+		}
+	});
+	
+	var value =  window.open("http://mytdp.com/mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
+	//var value =  window.open("http://localhost:8080/PartyAnalyst/mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
+	
+}); 
+
 </script>
 </body>
 </html>
