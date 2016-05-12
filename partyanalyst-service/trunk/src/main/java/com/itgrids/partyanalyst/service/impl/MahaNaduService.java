@@ -1457,66 +1457,117 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return null;
  }
  
+ public void setDataToMap(List<Object[]> list,Map<Long,MahanaduEventVO>  finalMap,String type,Set<Long> locationIds){
+	 
+	 try{
+		
+		   if( list != null && list.size() >0 ){
+			   
+			   for(Object[] obj : list){
+				   
+				   boolean isDistrictexist = true;
+				   MahanaduEventVO distVO = finalMap.get((Long)obj[0]);
+				   
+				   if( distVO == null){
+					   isDistrictexist = false;
+					   distVO = new MahanaduEventVO();
+					   distVO.setName( obj[1]!=null ? obj[1].toString() :"");
+				   }
+				   
+				   if(type.equalsIgnoreCase("attendee")){
+					   distVO.setNonInvitees(obj[2]!=null ?(Long)obj[2]:0l);	
+				   }
+				   	if(type.equalsIgnoreCase("invitee")){
+				   		distVO.setInvitees(obj[2]!=null ?(Long)obj[2]:0l);
+				   }		 
+				   	distVO.setAttendees( distVO.getAttendees() + (obj[2]!=null ?(Long)obj[2]:0l) );		
+				   	
+				   	if(!isDistrictexist){
+				   		finalMap.put((Long)obj[0], distVO);
+				   	}
+				   	
+				    //locationIds
+						 locationIds.add( (Long)obj[0] );
+					   
+			   }
+			   
+		   }
+		 
+		 
+	 }catch(Exception e) {
+		 Log.error("Exception rised in setDataToMap()",e); 
+	}
+ }
+ 
  public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate)
  {
 	 List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
-	 Date eventStrDate = null;
-	 Date eventEndDate = null;
+	 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
+	 DateUtilService date = new DateUtilService();
+	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	 try{
-		 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		 if(startDate != null && !startDate.isEmpty())
-		 eventStrDate = format.parse(startDate);
-		 if(endDate != null && !endDate.isEmpty())
-		 eventEndDate = format.parse(endDate);
-		 String locationType = "";
-		 if(reportLevelId == 2l)
-			 locationType = "State";
-		 else if(reportLevelId == 3l)
-			 locationType = "District";
-		 else if(reportLevelId == 4l)
-			 locationType = "Constituency";
-		 DateUtilService date = new DateUtilService();
-		  List<Object[]> list = eventInfoDAO.getEventDataByReportLevelId(reportLevelId,eventId,stateId,subEventIds,eventStrDate,eventEndDate);
-		  Set<Long> reportLevelValues = new java.util.HashSet<Long>();
-		  if(list != null && list.size() > 0)
-		  {
-			  for(Object[] params : list)
-			  {
-				  MahanaduEventVO eventVo = new MahanaduEventVO();
-				  eventVo.setId((Long)params[0]);
-				  if(reportLevelId != 2l){
-					  eventVo.setName(getLocationName(reportLevelId,(Long)params[0]));
-				  }
-				 
-				  eventVo.setInvitees(params[1] != null ? (Long)params[1] : 0l);
-				  eventVo.setNonInvitees(params[2] != null ? (Long)params[2] : 0l);			 
-				  eventVo.setAttendees(eventVo.getInvitees() + eventVo.getNonInvitees());				
-				  resultList.add(eventVo);
-				  reportLevelValues.add((Long)params[0]);
-			  }
+		 
+			 Date eventStrDate = null;
+			 Date eventEndDate = null;
+			 if(startDate != null && !startDate.isEmpty()){
+				 eventStrDate = format.parse(startDate);
+			 }
+			 if(endDate != null && !endDate.isEmpty()){
+				 eventEndDate = format.parse(endDate); 
+			 }
+		 
+			 
+			 String locationType = "";
+			 if(reportLevelId == 2l){
+				 locationType = "State"; 
+			 }
+			 else if(reportLevelId == 3l){
+				 locationType = "District";
+			 } 
+			 else if(reportLevelId == 4l){
+				 locationType = "Constituency"; 
+			 }
+			 
+			 String attendeeQuery = getEventAttendeeInfoByLocationQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,stateId);
+			 List<Object[]> attendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(attendeeQuery,eventStrDate,eventEndDate,subEventIds);
+			 
+			 
+			 String inviteeQuery = getEventAttendeeInfoByLocationQuery(locationType,"invitee",eventStrDate,eventEndDate,subEventIds,stateId);
+			 List<Object[]> inviteeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(inviteeQuery,eventStrDate,eventEndDate,subEventIds);
+			 
+			 Set<Long> locationIds = new HashSet<Long>();
+			 
+			 setDataToMap(attendeeList,finalMap,"attendee",locationIds);
+			 setDataToMap(inviteeList,finalMap,"invitee",locationIds);
+		
+		 
+		  if(locationIds != null && locationIds.size() > 0)
+		  { 
+			  
 			  if(reportLevelId != 2l){
-			  List<Object[]> votersCount  = null;
+				  
+			     List<Object[]> votersCount  = null;
 				 if(reportLevelId == 3l){
-					 votersCount = voterInfoDAO.getVotersCountForDistrict(reportLevelValues, 11l);
+					 votersCount = voterInfoDAO.getVotersCountForDistrict(locationIds, 11l);
 				 }
 				 else if(reportLevelId == 4l){
-					 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, reportLevelValues, 11l,null);
+					 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, locationIds, 11l,null);
 				 }
 				 
-			 List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(reportLevelValues,locationType,null,"Registered");
+			     List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIds,locationType,null,"Registered");
 			 
-			 if(votersCount != null && votersCount.size() > 0){
-				 for(Object[] obj :votersCount){
-					 MahanaduEventVO vo = getMatchedVO(resultList, (Long)obj[0]);
-					 if(vo != null){
-						 vo.setVoterCount((Long)obj[1]);
-					 }
-				 }				 
-			 }
+			    if(votersCount != null && votersCount.size() > 0){
+					 for(Object[] obj :votersCount){
+						 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
+						 if(vo != null){
+							 vo.setVoterCount((Long)obj[1]);
+						 }
+					 }				 
+			   }
 			 
 			 if(cadreCount != null && cadreCount.size() > 0){
 				 for(Object[] obj :cadreCount){
-					 MahanaduEventVO vo = getMatchedVO(resultList, (Long)obj[0]);
+					 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
 					 if(vo != null){
 						 vo.setCadreCount((Long)obj[1]);
 					 }
@@ -1542,13 +1593,70 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			  */
 			  
 		  }
+		  
+		  if( finalMap!= null && finalMap.size() > 0){
+			  resultList.addAll(finalMap.values());
+		  }
+		  
 	 }
 	 catch(Exception e)
 	 {
 		 Log.error("Exception rised in getEventInfoByReportType() while closing write operation",e); 
-		 e.printStackTrace();
 	 }
 	return resultList;
+ }
+ 
+ public String getEventAttendeeInfoByLocationQuery(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId){
+	 
+	 StringBuilder sq = new StringBuilder();
+	try{
+		
+		StringBuilder sbS =  new StringBuilder();
+		StringBuilder sbM =  new StringBuilder();
+		StringBuilder sbE =  new StringBuilder();
+		
+		sbS.append("select ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			sbS.append("  model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName ");
+			
+			sbE.append("  group by model.tdpCadre.userAddress.constituency.district.districtId" +
+					   "  order by model.tdpCadre.userAddress.constituency.district.districtName");
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			sbS.append("  model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name ");
+			
+			sbE.append("  group by model.tdpCadre.userAddress.constituency.constituencyId " +
+					   "  order by model.tdpCadre.userAddress.constituency.name ");
+		}
+		sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId) ");
+		
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sbM.append(" from EventAttendee model where ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sbM.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		
+		sbM.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
+		if(eventIds != null && eventIds.size() > 0){
+			sbM.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sbM.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		
+		if( stateId.longValue() == 1l ){
+			sbM.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
+		}else if(stateId.longValue() == 36l){
+			sbM.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
+		}
+		
+        sq.append(sbS.toString()).append(sbM.toString()).append(sbE.toString());
+     
+	}catch(Exception e) {
+		LOG.error("Exception raised at getQuery() method of AppointmentReportDashBoardService", e);
+	}
+	return sq.toString();
  }
  
  public String getLocationName(Long LocationTypeId,Long locationValue){
