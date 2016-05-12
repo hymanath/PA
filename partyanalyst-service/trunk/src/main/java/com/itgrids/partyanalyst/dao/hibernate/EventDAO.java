@@ -130,8 +130,8 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 	
 	public List<Object[]> getVisibleParentEvents(Date currentDate)
 	{
-		Query query = getSession().createQuery("select model.eventId,model.name,model.eventStartTime,model.eventEndTime," +
-				" model.startTime, model.endTime  from Event model where date(:currentDate) between date(model.eventStartTime) and date(model.eventEndTime) and  model.parentEventId is null " +
+		Query query = getSession().createQuery("select model.eventId,model.name,date(model.eventStartTime),model.eventEndTime," +
+				" model.startTime, model.endTime,date(model.eventEndDate)  from Event model where date(:currentDate) between date(model.eventStartTime) and date(model.eventEndTime) and  model.parentEventId is null " +
 				" and model.isActive =:isActive and model.isVisible =:isVisible order by model.orderId asc ");
 		query.setDate("currentDate", currentDate);
 		
