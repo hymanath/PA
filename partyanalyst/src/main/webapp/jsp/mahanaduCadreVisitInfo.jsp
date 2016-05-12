@@ -130,11 +130,11 @@
             </div>
         </div>
         <div class="col-md-4">
-        	<div class="panel panel-default box-shadow-css" style="min-height: 220px;">
+        	<div class="panel panel-default box-shadow-css" style="min-height: 240px;">
             	<div class="panel-heading m_bottom10" style="background:#00B07D;color:#ffffff;">
                 	<span  style='font-size:14px;font-weight:bold;'>DAY'S UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#fff;cursor: pointer;" id="refreshUnqueRevisitId"></i></span>
                 </div>
-                <div class="panel panel-body" style="padding:0px;">
+                <div class="panel-body" style="padding:0px;">
 						<center><img id="daysSummaryIdAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 						
 					   <div id="daysSummaryId"></div>
@@ -225,6 +225,10 @@
 	<script type="text/javascript">
 	  $(".dropdown-menu").html('<li><a href="eventDashboardAction.action?eventId=1">EVENTS DASHBOARD</a></li><li><a href="dashBoardAction.action">DASHBOARD</a></li><li><a href="newlogoutAction.action">LOGOUT</a></li>');
 	  
+	  var globalEventId = '${param.eventId}'
+		if(globalEventId !=null && globalEventId>0){
+			$("#mainEventSelectId").val(globalEventId);
+		}
 	  $(document).ready(function(){		  
 		  getDetails();		  
 		  setTimeout(function(){
@@ -1034,6 +1038,8 @@ $( "#mainEventSelectId" ).change(function() {
 				getDetails();
 				getLocationWiseAttendeeSummaryCount(1,3,false);
 				getLocationWiseAttendeeSummaryCount(1,4,false);
+				getDaysUniqueAndRevisitSummary();
+				getDayWiseVisitSummary();
 			}, 3000);
    } 
 	</script>
@@ -1085,7 +1091,7 @@ function buildDaysUniqueAndRevisitSummary(result){
 	var str_a = "";
 	if(result !=null && result.length>0){
 		
-		str_a += "<table class='table'>";
+		str_a += "<table class='table m_0'>";
 			str_a +="<thead>";
 				str_a +="<tr style='background:#F0F0F0'>";
 					str_a+="<th style='width:20%'></th>";
