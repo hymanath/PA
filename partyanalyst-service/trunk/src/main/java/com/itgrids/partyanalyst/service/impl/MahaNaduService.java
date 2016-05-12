@@ -1192,7 +1192,6 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 									 if(!locationValues.contains(locationId)){
 										 locationValues.add(locationId); 
 									 } 
-									 voterDAO.flushAndclearSession();
 							   }
 					       } 
 						   
@@ -1200,6 +1199,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			     }  
 			}
 			
+			voterDAO.flushAndclearSession();
 			//UPDATING STATE VALUES.
 			 List<Object[]>  districts = eventInfoDAO.getDistricts(locationValues,reportLevelId) ;
 			 Map<Long,List<Long>> stateMap = new HashMap<Long,List<Long>>();
