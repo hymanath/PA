@@ -6520,7 +6520,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 				if(list != null && list.size() > 0){
 					IdNameVO vo = new IdNameVO();
 					vo.setId(constituencyId);
-					vo.setName("Constituency");
+					vo.setName("assembly");
 					locationsList.add(vo);
 					for (Object[] obj : list) {
 						String issueType = obj[0] != null ? obj[0].toString():"";
@@ -8565,6 +8565,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 					vo.setMandalName(obj[11] != null ? obj[11].toString():"");
 					vo.setSupportPurpose(obj[12] != null ? obj[12].toString():"");
 					vo.setApprovedAmount(obj[13] != null ? obj[13].toString():"");
+					vo.setIssueType(obj[14] != null ? obj[14].toString():"");
 					
 					returnList.add(vo);
 				}
