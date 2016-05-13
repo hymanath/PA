@@ -482,7 +482,7 @@ var globalCadreId = '${cadreId}';
 									<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
 									  <div class="panel-body">
 										<table class="table table-bordered">
-											<thead>
+											<thead style="background:#f2f2f2">
 												<th>Program Name</th>
 												<th>INVITED</th>
 												<th>ATTENDED</th>
@@ -555,7 +555,7 @@ var globalCadreId = '${cadreId}';
                     <div class="panel-body pad_5" id="committeeMetingsBodyId">
                     	<div id="committeMeetingDivId">
                         </div>
-						<div id="paginationId" style ="margin-left:267px;"></div>
+						<div id="paginationId" class="col-md-4 m_top10" style="margin-left:20%;"></div>
                     </div>
                 </div>
                  <!-- Meetings End -->
@@ -1022,7 +1022,7 @@ var globalCadreId = '${cadreId}';
 			<div class="modal-content">
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title text-center"><span id="grievanceDetailsModalHeadingId"></span></h4>
+				<h4 class="modal-title" id="grievanceDetailsModalHeadingId"></h4>
 			  </div>
 			  <div class="modal-body">
 				<div id="grievanceDetailsModalBodyId">
@@ -1645,7 +1645,7 @@ function hideAndShowSurvey(typeId)
 {	
 	if(typeId == 1)
 	{
-		getIVRDetails();
+		//getIVRDetails();
 		$('#surveyDetailsId').show();
 		$('#surveyshowId').hide();
 		$('#surveyhideId').show();
@@ -1660,9 +1660,10 @@ function hideAndShowSurvey(typeId)
 
 function hideAndShowIVRSurvey(typeId)
 {	
+
 	if(typeId == 1)
 	{
-		getIVRDetails();
+		//getIVRDetails();
 		$('#ivrsurveyDetailsId').show();
 		$('#ivrsurveyshowId').hide();
 		$('#ivrsurveyhideId').show();
@@ -1945,47 +1946,37 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
 {
 		var str='';
 		if(result != null){
-		str+='<table class="table table-condensed m_0" style="border:1px solid #ddd">';
+		str+='<table class="table table-condensed" style="border:1px solid #ddd;margin-top:10px;">';
 		str+='<tr>';
 		str+='<td class="pad_10" style="background-color:#CCCCCC;">';
-		str+='<h4 class="m_0">';
-		str+=''+meetingLevel+' Level<br/> Meeting Details';
-		str+='</h4>';
+		str+=''+meetingLevel+' Level Meeting Details';
 		str+='</td>';
 		str+='<td  class="pad_10" style="border-left:1px solid #ddd;background-color:#CCCCCC;">';
-		str+='<ul class="list-inline">';
+		str+='<ul class="list-inline m_0">';
 		str+='<li>';
-		str+='<h2 class="m_0">';
+		str+='Total Planned Meetings';
+		str+='</li>';
+		str+='<li>';
 		if(result.totalCount != null)
 			str+=''+result.totalCount+'';
 		else 
 			str+='0';
-		str+='</h2>';
-		str+='</li>';
-		str+='<li>';
-		str+='<h4 class="m_0">';
-		str+='Total Planned <br/> Meetings';
-		str+='</h4>';
 		str+='</li>';
 		str+='</ul>';
 		str+='</td>';
-			str+='<td  class="pad_10" style="border-left:1px solid #ddd;background-color:#CCCCCC;">';
-				str+='<ul class="list-inline">';
-					str+='<li>';
-						str+='<h2 class="m_0">';
-						if(result.actualCount != null)
-							str+=''+result.actualCount+'';
-						else 
-							str+='0';
-						str+='</h2>';
-					str+='</li>';
-					str+='<li>';
-						str+='<h4 class="m_0">';
-						str+='Total Conducted <br/> Meetings';
-					str+='</h4>';
-					str+='</li>';
-				str+='</ul>';
-			str+='</td>';
+		str+='<td  class="pad_10" style="border-left:1px solid #ddd;background-color:#CCCCCC;">';
+			str+='<ul class="list-inline m_0">';
+				str+='<li>';
+					str+='Total Conducted Meetings';
+				str+='</li>';
+				str+='<li>';
+					if(result.actualCount != null)
+						str+=''+result.actualCount+'';
+					else 
+						str+='0';
+				str+='</li>';
+			str+='</ul>';
+		str+='</td>';
 		str+='</tr>';
 		if(result.meetingTrackingVOList != null && result.meetingTrackingVOList.length>0)
 		{
@@ -1999,15 +1990,17 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
 			}		
 		}
 		
-		str+='<td colspan="3" style="background-color:#ccc">';
 		if(result.totalCount >6)
 		{
+			str+='</tr>';
+			str+='<td colspan="3" style="background-color:#ccc">';
 			str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/></p>';
 			//str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/><a href="javascript:{getConductedPartyMeetingDetails(\''+divId+'\',\''+searchTypeStr+'\',\'false\',\'0\')}"></a></p>';
+			str+='</td>';
+			str+='</tr>';
 		}
 			
-		str+='</td>';
-		str+='</tr>';
+		
 		str+='</table>';
 		
 	}

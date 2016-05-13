@@ -600,9 +600,9 @@ function getParticipatedConstituencyId(cadreId){
 				var str='';
 				for(var k in myresult)
 				{
-					str+='<h4 class="m_top10">'+myresult[k].eventTypeStr.toUpperCase()+'</h4>';
+					str+='<h4>'+myresult[k].eventTypeStr.toUpperCase()+'</h4>';
 					str+='<table class="table m_0 table-bordered table-responsive" style="margin-top: 10px">';
-					str+='<thead>';
+					str+='<thead style="background:#f2f2f2">';
 					str+='<tr>';
 					/* str+='<th colspan="5" style="background-color:#CCCCCC;text-align:center;"> '+myresult[k].eventTypeStr.toUpperCase()+' PARTICIPATION DETAILS </th>';		 */	
 
@@ -1240,7 +1240,7 @@ function getCadreFamilyDetailsByCadreId(){
 			imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
 		 }
 		  str += '<div class="media-left ">';
-		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 50px;width:35px;" >';
+		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 45px;width:45px;border:1px solid #ddd;" >';
 		  str += '</div>';
 		 /*if(result[i].tdpCadreId != null ){
 			 str += '<div class="media-left ">';
@@ -2531,6 +2531,7 @@ function buildLocationwiseCommitteesCount(result)
 {
 	var str = '';
 	str += '<table class="table m_0 table-bordered">';
+	str += '<thead style="background:#f2f2f2">';
 	str += '<tr>';
 	str += '<th></th>';
     str += '<th class="text-center" colspan="5">Main Committees</th>';
@@ -2551,7 +2552,7 @@ function buildLocationwiseCommitteesCount(result)
 	
     str += '<th>Members</th>';
     str += '</tr>';
-	
+	str += '</thead>';
 	if(result[0].areaType !=null && result[0].areaType !=""){
 		globalAreaType=result[0].areaType;
 	}
@@ -2658,11 +2659,11 @@ function getDeathsAndHospitalizationDetails(){
 			}).done(function(result){
 				var str='';
 				if(result != null){
-					str+='<div> NOTE : DEATH - DEATH INSURANCE ,  HOSP. - HOSPITALIZATION INSURANCE</div>';
 					str+='<div class="panel-body pad_0">';
+					str+='<p class="text-center m_0" style="font-size:12px;margin-top:10px;"> NOTE : DEATH - DEATH INSURANCE ,  HOSP. - HOSPITALIZATION INSURANCE</p>';
 					str+='<div class="table-responsive">';
-						str+='<table class="table m_0 table-bordered m_0"  style="margin-top:20px">';
-							str+='<thead>';
+						str+='<table class="table m_0 table-bordered m_0">';
+							str+='<thead class="background:#f2f2f2;">';
 								str+='<tr>';
 									str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
 									for(var i in result.locationList){
@@ -4544,7 +4545,7 @@ $(document).on('click', '.activityLvlCls', function(){
 			var str='';
 			
 			str+='<table class="table table-bordered">';
-				str+='<thead>';
+				str+='<thead style="background:#f2f2f2">';
 					str+='<th class="text-center">Activity Name</th>';
 					str+='<th class="text-center">Activity Level</th>';
 					str+='<th class="text-center">Status</th>';
@@ -5095,7 +5096,7 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 					}	
 					
 				str+'</table>';
-				str+='<span style="margin-left:15px">IA:INVITEE ATTENDED  ,<b></b> NIA:NON-INVITEE ATTENDED</span>';
+				str+='<p style="margin-left:15px;text-align:center">IA:INVITEE ATTENDED  ,<b></b> NIA:NON-INVITEE ATTENDED</p>';
 			str+='</div>';
 		
 		$("#trainingCampParticipationDivId").html(str);
@@ -5430,7 +5431,7 @@ var str='';
           str+'<div class="panel-body pad_0">';
           str+'<div class="table-responsive">';
             str+='<table class="table m_0 table-bordered table-condensed m_0" style="font-size:12px">';
-              str+='<thead>';
+              str+='<thead style="background:#f4f4f4">';
                 str+='<tr>';
                   str+='<th rowspan="2" style="text-align:center;">STATUS</th>';
                  // for(var i in result){
@@ -5845,8 +5846,8 @@ function getApprovedAmountsForGrievance(){
 function buildGrievanceAmountDetails(result){
 	var str='';
 	
-	str+='<table class="table m_0 table-bordered m_0">';
-		str+='<thead>';
+	str+='<table class="table m_0 table-bordered m_0" style="font-size:13px;">';
+		str+='<thead style="background:#f2f2f2">';
 			str+='<tr>';
 				str+='<th rowspan="2"></th>';
 				str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Govt.</th>';
