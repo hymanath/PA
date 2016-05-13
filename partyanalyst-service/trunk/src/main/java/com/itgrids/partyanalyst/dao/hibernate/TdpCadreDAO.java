@@ -5159,7 +5159,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 		
 		
-		public List<String> getCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+		public List<String> getCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId,Long townId){
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.memberShipNo from TdpCadre model " +
@@ -5187,11 +5187,15 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			if(surveyDate!=null){
 				qry.setDate("surveyDate", surveyDate);
 			}
+			if(townId != null)
+			{
+				qry.setParameter("townId",townId);
+			}
 			
 			return qry.list();
 		}
 		
-		public List<String> getOtherSttateCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+		public List<String> getOtherSttateCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId,Long townId){
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.memberShipNo from TdpCadre model " +
@@ -5219,12 +5223,15 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			if(surveyDate!=null){
 				qry.setDate("surveyDate", surveyDate);
 			}
-			
+			if(townId != null)
+			{
+				qry.setParameter("townId",townId);
+			}
 			return qry.list();
 		}
 		
 		
-		public List<String> getNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+		public List<String> getNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId,Long townId){
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.memberShipNo from TdpCadre model " +
@@ -5253,10 +5260,14 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				qry.setDate("surveyDate", surveyDate);
 			}
 			
+			if(townId != null)
+			{
+				qry.setParameter("townId",townId);
+			}
 			return qry.list();
 		}
 		
-		public List<String> getOtherSttateNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId){
+		public List<String> getOtherSttateNonVoterCardNumbersForSearch(String query,Long constiId,String mobileNo,String trNo,Date surveyDate,Long distId,Long mandalId,Long townId){
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.memberShipNo from TdpCadre model " +
@@ -5283,6 +5294,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			if(surveyDate!=null){
 				qry.setDate("surveyDate", surveyDate);
+			}
+			if(townId != null)
+			{
+				qry.setParameter("townId",townId);
 			}
 			
 			return qry.list();

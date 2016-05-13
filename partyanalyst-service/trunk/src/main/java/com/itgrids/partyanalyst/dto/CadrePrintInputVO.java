@@ -12,6 +12,7 @@ public class CadrePrintInputVO {
 	private Long panchayatId;
 	private Long boothId;
 	private Long localBodyId;
+	private Long townId;
 	
 	private String regType;
 	
@@ -28,9 +29,21 @@ public class CadrePrintInputVO {
 	private String uname;
 	private String pwd;
 	private String isOtherState;
+	private String relativeName;
+	private String voterIdCardNo;
 	
-	
-
+	public String getVoterIdCardNo() {
+		return voterIdCardNo;
+	}
+	public void setVoterIdCardNo(String voterIdCardNo) {
+		this.voterIdCardNo = voterIdCardNo;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
 	public String getIsOtherState() {
 		return isOtherState;
 	}
@@ -178,7 +191,11 @@ public class CadrePrintInputVO {
 	public void setRegType(String regType) {
 		this.regType = regType;
 	}
-	
-	
+	public Long getTownId() {
+		return townId;
+	}
+	public void setTownId(Long townId) {
+		this.townId = townId;
+	}
 	
 }
