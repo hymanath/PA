@@ -541,6 +541,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	  try{
 		session = request.getSession();
 		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"EVENTS_DASHBOARD_ENTITLEMENT")){
+			return "eventDashboard";
+		}
+		
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"CADRE_FAMILY_DETAILS_UPDATION")){
 			return "cadreFamilyDetailsUpdation";
 		}		

@@ -448,12 +448,18 @@ footer
 									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Events Dashoard</span></a>
 									<h2><i class="fa fa-dashboard ico-white line_heightDiv"></i> Events Dashoard</h2>
 									<ul>
-									 <li>
-									<a href="mahanaduCadreVisitInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
-									</li>
-									<li>
-									<a href="eventDashboardAction.action?eventId=1"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
-									</li>
+									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'MAHANADU_MAIN_DASHBOARD_ENTITLEMENT') ||
+									fn:contains(sessionScope.USER.entitlements, 'MAHANADU_MAIN_DASHBOARD_ADMIN_ENTITLEMENT') }">									  
+										<li>
+											<a href="mahanaduCadreVisitInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
+										</li>
+									</c:if>
+									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'EVENTS_DASHBOARD_ENTITLEMENT') ||
+									fn:contains(sessionScope.USER.entitlements, 'EVENTS_DASHBOARD_ADMIN_ENTITLEMENT') }">									  
+										<li>
+											<a href="eventDashboardAction.action?eventId=1"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
+										</li>
+									</c:if>
 									</ul>
 									</li>
 									</c:if>
@@ -638,6 +644,15 @@ footer
 							<a href="appointmentsAction.action"><i class="fa fa-calendar-plus-o"></i><span>&nbsp;&nbsp;Appointments</span></a>
 						</li>	
 					</c:if>
+					
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'EVENTS_DASHBOARD_ENTITLEMENT' )}">
+					 <li>
+						<a href="mahanaduCadreVisitInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
+					</li>
+					<li>
+						<a href="eventDashboardAction.action?eventId=30"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
+					</li>
+				</c:if>				
 
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>

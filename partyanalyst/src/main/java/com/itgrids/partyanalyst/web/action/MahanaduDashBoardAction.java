@@ -13,7 +13,9 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
 public class MahanaduDashBoardAction implements ServletRequestAware {
@@ -25,9 +27,23 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 
 	private String task;
 	private JSONObject jObj;
+	private Long eventId;
+	private HttpSession session;
+	private EntitlementsHelper entitlementsHelper;
 	
 	
-	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+	public HttpSession getSession() {
+		return session;
+	}
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
 	public void setServletRequest(HttpServletRequest request) {		
 		this.request = request;
 	}
@@ -68,12 +84,25 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		this.jObj = jObj;
 	}
 
+	public Long getEventId() {
+		return eventId;
+	}
+
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
+	}
+
 	public String execute(){
+		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		if(regVO==null){
 			return "input";
 		}
-	    if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU_MAIN_DASHBOARD_ENTITLEMENT") ||
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU_MAIN_DASHBOARD_ADMIN_ENTITLEMENT") ){
+			return Action.SUCCESS;
+		}
+		else if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 	    	 return Action.SUCCESS;
 		}else{
 			return "error";
