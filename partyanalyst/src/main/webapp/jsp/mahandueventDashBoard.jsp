@@ -406,7 +406,7 @@ var formatedDpCurentDate;
  $(document).ready(function() {
 
                   var cb = function(start, end, label) {
-                    alert(start.toISOString(), end.toISOString(), label);
+                    //alert(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('D MMMM,YYYY') + ' - ' + end.format('D MMMM,YYYY'));
 					
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
@@ -504,7 +504,7 @@ function myTimer() {
 }*/
 
  $(document).on('click','.applyBtn',function(){
-	eventUpdate();
+	eventUpdate('dateChange');
  });
 function checkParent(eventId,subEventId)
 {
@@ -841,9 +841,9 @@ $('#donutchart').removeClass("errorDiv");
 });
 }
 
- function eventUpdate(){
+ function eventUpdate(checkDateChange){
 	 
-	 
+	 if(checkDateChange != 'dateChange')
 	 updateDatesButton();
 	 
      $("#errorDiv").html("");
