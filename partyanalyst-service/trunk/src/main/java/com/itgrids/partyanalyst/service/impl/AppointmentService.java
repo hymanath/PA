@@ -2959,6 +2959,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	public List<AppointmentScheduleVO> getAppointmentSearchDetails(AppointmentInputVO inputVo)
 	{
 		List<AppointmentScheduleVO> resultList = null;
+		List<Long> candidateList=new ArrayList<Long>(0);
 		try{
 			
 			SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
@@ -3060,7 +3061,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						Long apptcanditype = params[19] !=null ?(Long)params[19]:null;
 						Long tdpcadreId =    params[21] !=null ?(Long)params[21]:null;
 						
-						
+						candidateList.add(params[0] != null ? Long.valueOf(params[0].toString()) :0l);
 						 //candidates designation based on appt cand type
 						if(apptcanditype != null){
 							candidateVo.setApptCandiTypeId(apptcanditype);
@@ -3094,12 +3095,73 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					setPublicRepresenativeLocations(resultList,publicRepresLocaMap);
 				}
 				
+				//FOR EXPORT TO EXCEL BLOCK 
+				if(resultList !=null && resultList.size()>0){
+					 //Candidates last visit date 
+					List<Object[]> rtrnCnddtLstSttsLst=appointmentCandidateRelationDAO.getCandidateLastVisitedDtl(candidateList,inputVo.getUserId(),4l);
+					if(rtrnCnddtLstSttsLst!=null && rtrnCnddtLstSttsLst.size()>0){
+						for (Object[] objects : rtrnCnddtLstSttsLst) {
+							AppointmentScheduleVO candidateVO=getCandidateMatchVO(resultList,(Long)objects[0]);
+							 if(candidateVO!=null){
+								 candidateVO.setCandidateLastVisitDate(objects[3]!=null ? objects[3].toString(): " ");
+							 }
+						}
+					}
+					
+					//Candidates last status
+					 List<Object[]> rtrnCnddtLstVstList=appointmentCandidateRelationDAO.getCandidateLastVisitedDtl(candidateList, inputVo.getUserId(),null);
+					 
+					 if(rtrnCnddtLstVstList!=null && rtrnCnddtLstVstList.size()>0){
+						 for (Object[] objects : rtrnCnddtLstVstList) {
+							 AppointmentScheduleVO candidateVO=getCandidateMatchVO(resultList,(Long)objects[0]);
+							 if(candidateVO!=null){
+								 candidateVO.setCandidateLastUpdatedStatus(objects[2]!=null ? objects[2].toString(): " ");
+							 }
+						}
+					 }
+					 //Total requested appointment counts by appointment candidates;
+						List<Object[]> rtrnTtlAppntmntsCuntLst=appointmentCandidateRelationDAO.getTotalAppointmentsForCandiates(candidateList, inputVo.getUserId(),null);
+						
+						if(rtrnTtlAppntmntsCuntLst!=null && rtrnTtlAppntmntsCuntLst.size()>0){
+							
+							for (Object[] objects : rtrnTtlAppntmntsCuntLst) {
+								 AppointmentScheduleVO candidateVO=getCandidateMatchVO(resultList,(Long)objects[0]);
+								  if(candidateVO!=null){
+									  candidateVO.setTotalRequestedAppCount(objects[1]!=null ? (Long)objects[1]: 0l);
+								  }
+							}
+						}
+						 //Total completed appointment counts by appointment candidates;
+						List<Object[]> rtrnTtlCmpltdAppCntLst=appointmentCandidateRelationDAO.getTotalAppointmentsForCandiates(candidateList, inputVo.getUserId(),4l);
+						
+						if(rtrnTtlCmpltdAppCntLst!=null && rtrnTtlCmpltdAppCntLst.size()>0){
+							for (Object[] objects : rtrnTtlCmpltdAppCntLst) {
+								 AppointmentScheduleVO candidateVO=getCandidateMatchVO(resultList,(Long)objects[0]);
+								  if(candidateVO!=null){
+									  candidateVO.setTotalCompletedAppCount(objects[1]!=null ? (Long)objects[1]: 0l);
+								  }
+							}
+						}
+				}
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentSearchDetails", e);
 			
 		}
 		return resultList;
 		
+	}
+	public AppointmentScheduleVO getCandidateMatchVO(List<AppointmentScheduleVO> resultList,Long candidateId){
+		
+		if(resultList!=null && resultList.size()>0){
+			for (AppointmentScheduleVO appointmentScheduleVO : resultList) {
+				for(AppointmentScheduleVO vo:appointmentScheduleVO.getSubList()){
+					if(vo.getId().equals(candidateId)){
+					   return vo;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	public void setPublicRepresenativeLocations(List<AppointmentScheduleVO> resultList,Map<Long,String> publicRepresLocaMap){
 		
