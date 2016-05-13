@@ -547,8 +547,8 @@ if(reportLevelId == 3){
 			reportLevelId:reportLevelId,
 			subEvents : subEvents,
 			startDate : startDate,
-			endDate : endDate
-		
+			endDate : endDate,
+		    dataRetrievingType : "dynamic" // intermediate
 		}	
 		
 		$.ajax({
@@ -1522,8 +1522,8 @@ var jObj = {
 			reportLevelId:reportLevelId,
 			subEvents : subEvents1,
 			startDate : startDate,
-			endDate : endDate
-		
+			endDate : endDate,
+		    dataRetrievingType : "dynamic" // intermediate
 		}	
 		
 		$.ajax({
@@ -1773,8 +1773,8 @@ if(reportLevelId == 3){
 			reportLevelId:reportLevelId,
 			subEvents : subEvents,
 			startDate : startDate,
-			endDate : endDate
-		
+			endDate : endDate,
+		    dataRetrievingType : "dynamic" // intermediate     
 		}	
 		
 		$.ajax({

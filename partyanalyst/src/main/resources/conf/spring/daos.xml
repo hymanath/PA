@@ -2761,5 +2761,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="eventAttendeeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventAttendeeInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	<!--  end -->
 </beans>		

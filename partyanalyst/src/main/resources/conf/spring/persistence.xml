@@ -838,6 +838,8 @@
 			      	<value>com.itgrids.partyanalyst.model.PaymentModule</value>
 			       	<value>com.itgrids.partyanalyst.model.PaymentTransaction</value>
 				   
+				   
+				   <value>com.itgrids.partyanalyst.model.EventAttendeeInfo</value>
 				 </list>
 			
 		</property>

@@ -177,10 +177,16 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long eventId = jObj.getLong("eventId");
 			Long stateId = jObj.getLong("stateId");
 			Long reportLevelId = jObj.getLong("reportLevelId");
+			
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++)
-			subEventIds.add(new Long(arr.get(i).toString()));
-			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			String dataRetrievingType = jObj.getString("dataRetrievingType");
+			
+			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId,subEventIds,startDate,endDate,dataRetrievingType);
 			
 		}
 		catch(Exception e)
