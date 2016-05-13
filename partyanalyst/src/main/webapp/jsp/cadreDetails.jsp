@@ -532,17 +532,22 @@ var globalCadreId = '${cadreId}';
 				
 				<!-- Meetings Start -->
                 <div class="panel panel-default" id="commitMeetingDiv" style="display:none;" >
-                	<div class="panel-heading" id="committeeMetingsHeaderId pointer">
-                    	<h4 class="panel-title text-bold"><img src="dist/img/photo.png" > COMMITTEE MEETINGS
-							<span class="pull-right" style="margin-top:-8px">
-							
-								<div class="input-group">
+                	<div class="panel-heading  pointer" id="committeeMetingsHeaderId" style="padding-top:0px;padding-bottom:0px;">
+						<div class="row">
+							<div class="col-md-4" style="margin-top:6px">
+								<h4 class="panel-title text-bold"><img src="dist/img/photo.png" > COMMITTEE MEETINGS</h4>
+							</div>
+							<div class="col-md-offset-3 col-md-5">
+								<div class="input-group pull-right">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>	</span>
-									<input type="text" class="form-control" id="meetingDatePicker" style="width: 170px; padding-left: 0px; padding-right: 0px;"><span class="pull-right" id="committeeMetingsShowId" style="display:none;"><i style="padding-top: 9px;" class="glyphicon glyphicon-chevron-up pointer"></i></span><span class="pull-right" id="committeeMetingsHideId"><i class="glyphicon glyphicon-chevron-down pointer" style="padding-top: 9px;"></i></span>
+									<input type="text" class="form-control" id="meetingDatePicker" style="width: 170px; padding-left: 0px; padding-right: 0px;">
+									<span class="pull-right" id="committeeMetingsShowId" style="display:none;"><i style="padding-top: 9px;" class="glyphicon glyphicon-chevron-up pointer"></i></span><span class="pull-right" id="committeeMetingsHideId"><i class="glyphicon glyphicon-chevron-down pointer" style="padding-top: 9px;"></i></span>
 								</div>
+							</div>
+						</div>
+                    	
 							
-							</span>
-						</h4>
+						
                     </div>
                     <div class="panel-body pad_5" id="committeeMetingsBodyId">
                     	<div id="committeMeetingDivId">

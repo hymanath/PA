@@ -3873,10 +3873,11 @@ function getIVRDetails()
 	$.ajax({
 		url: "http://mytdp.com/Survey/WebService/getCandidateIVRResult/"+candidateId+""
 	}).then(function(result) {
+		$("#ivrsurveyDataLoadoing").hide();
 		if(result != null && result.length > 0){
 			buildPublicScoreTable(result);
 		}else{
-			$("#ivrsurveyDataLoadoing").hide();
+			
 			$("#ivrSurveysMainDivId").hide();			
 			$(".ivrDetailsCls").html("NO DATA AVAILABLE");
 		}
