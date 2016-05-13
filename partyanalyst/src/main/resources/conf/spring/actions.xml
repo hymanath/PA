@@ -1582,7 +1582,7 @@
 	</bean>
 	<bean id="mahanaduDashBoardAction" class="com.itgrids.partyanalyst.web.action.MahanaduDashBoardAction" singleton="false">
 		<property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
-		
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	<bean id="tdpCadreOccasionAction" class="com.itgrids.partyanalyst.web.action.TdpCadreOccasionAction" singleton="false">
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />

@@ -5658,6 +5658,7 @@
 		    <result type="redirect" name="activitiesUpdatedPage">updateActivityAction.action</result>    
 		    <result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
 		    <result type="redirect" name="appointmentsManagmentPage">appointmentsAction.action</result>
+			<result type="redirect" name="eventDashboard">eventDashboardAction.action?eventId=30</result>
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
