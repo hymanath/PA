@@ -189,7 +189,9 @@ var globalCadreId = '${cadreId}';
 				<div class="panel panel-default" id="candidateapptID" style="display:none">
 					<div class="panel-heading" id="candidateAppointmentId">
                     	<h4 class="panel-title text-bold pointer"><i class="fa fa-calendar-plus-o"></i> CANDIDATE APPOINTMENT <span class="pull-right" id="candidateAppointmentHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
-						<span class="pull-right" id="candidateAppointmentShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+						<span class="pull-right" id="candidateAppointmentShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						<span class="pull-right"><span class="count-style" id="totalAptId">0</span></span>
+						</h4>
 					</div>
 					<div class="panel-body" id="candidateAppointmentBodyId">
 						<img id="candidateAppointmentImg" src="images/icons/loading.gif" style="width:45px;height:45px;margin-left:45%">
