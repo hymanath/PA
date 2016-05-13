@@ -288,21 +288,21 @@ position:absolute;
 }
 .tab-list li
 {
-	border:1px solid #f0f0f0;
+	border:1px solid #ddd;
 }
 .tab-list li a
 {
 	color:#666 !important;
 	border-radius:0px;
 	margin-right:0px !important;
-	border-color:#f0f0f0 !important;
+	border-color:#ddd !important;
 }
 .tab-list li:last-child{padding:10px 15px;border:0px}
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
 {
-	background:#f0f0f0 !important;
+	background:#ddd !important;
 	color:#666 !important;
-	border-color:#f0f0f0 !important
+	border-color:#ddd !important
 }
 
 .bg_f9
@@ -320,8 +320,8 @@ a .panel-title
 }
 .li_arr {
 	position: relative;
-	background: #f0f0f0;
-	border: 1px solid #f0f0f0;
+	background: #ddd;
+	border: 1px solid #ddd;
 }
 .li_arr:after, .li_arr:before {
 	top: 100%;
@@ -336,13 +336,13 @@ a .panel-title
 
 .li_arr:after {
 	border-color: rgba(240, 240, 240, 0);
-	border-top-color: #f0f0f0;
+	border-top-color: #ddd;
 	border-width: 8px;
 	margin-left: -8px;
 }
 .li_arr:before {
 	border-color: rgba(240, 240, 240, 0);
-	border-top-color: #f0f0f0;
+	border-top-color: #ddd;
 	border-width: 9px;
 	margin-left: -9px;
 }
