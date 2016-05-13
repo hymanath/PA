@@ -5130,6 +5130,7 @@ getAppointmentsUserDetails();
 function getAppointmentsUserDetails()
 {
 	$("#buildCandidateAppointmentUser").html('');
+	$("#totalAptId").html(0);
 	$("#candidateapptID").show();
 	$("#candidateAppointmentImg").show();
 	var appointmentUserIdsArray=[];
@@ -5146,6 +5147,7 @@ function getAppointmentsUserDetails()
 				 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				$("#candidateAppointmentImg").hide();
+				var totalCount = 0;
 				var str='';
 				if(result != null){
 						str+='<table class="table table-bordered m_0">';
@@ -5159,11 +5161,13 @@ function getAppointmentsUserDetails()
 						str+='<td style="text-transform: uppercase;">'+result[i].name+'</td>';
 						str+='<td attr_apptcandName="'+result[i].apptcandidateName+'" attr_apptUserId='+result[i].apptUserId+' attr_apptcandId="'+result[i].apptcandidateId+'"  class="text-bold historyShowModalBtn" style="font-size: 18px;cursor:pointer;text-align:center;" >'+result[i].apptCount+'</td>';
 						str+='</tr>';
+						totalCount = totalCount + result[i].apptCount ; 
 						
 					}	
 					str+='</tbody>';
 					str+='</table>';
 					$("#buildCandidateAppointmentUser").html(str);
+					$("#totalAptId").html(totalCount);
 				}else{
 				    $("#buildCandidateAppointmentUser").html("No Data Available");	
 				}
