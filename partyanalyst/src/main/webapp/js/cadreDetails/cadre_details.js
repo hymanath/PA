@@ -1204,6 +1204,8 @@ function getCadreFamilyDetailsByCadreId(){
  var familycadreIdsArrayGlobal=[];
  function buildCadreFamilyDetails(result){ 
  //console.log(result.familyMembersList)
+	var familyCount = result.length;
+	$("#totalFamilymembersCount").html(''+familyCount+'');
 	  familyInfoArr=[];
 	 var constId = $('#cadreConstituencyId').val();
 	 var partNo = $('#cadrePartNo').val();
@@ -1398,6 +1400,7 @@ function getTotalComplaintsForCandidate(){
 	str += '</ul>';
 	$("#complaintCountDiv").html(str);
 	var comp1='';
+	var totalCounts = 0;
 	if(result[0].amountVO != null){
 	if(result[0].amountVO.cmRefiedFund == null)
 	result[0].amountVO.cmRefiedFund =0;
@@ -1406,12 +1409,15 @@ function getTotalComplaintsForCandidate(){
 	if(result[0].amountVO.requested > 0){
 		$("#candidaterequestedDiv").show();
 		$("#candidateRequestAmount").html(''+result[0].amountVO.requested+'/-');
+		totalCounts = parseInt(totalCounts)+parseInt(result[0].amountVO.requested);
 	}if(result[0].amountVO.approved  >0){
 		$("#candidateApprovedAmount").html(''+result[0].amountVO.approved+'/-');
 		$("#candidateapprovedDiv").show();
+		totalCounts = parseInt(totalCounts)+parseInt(result[0].amountVO.approved);
 		}else{
 		$("#candidateapprovedDiv").hide();
 		}
+		$("#candidateBenifitsCountsId").html(totalCounts);
 	}
 	var comp = '';
 	comp += '<ul class="inbox-messages custom-scroll-ins" style="margin-bottom:0px;">';
@@ -1552,6 +1558,7 @@ function buildFamilyMemberComplaint(result,jobj){
 		 }
 	}		  
 	var comp = '';
+	var totalFamCount = 0;
 	if(result[0].amountVO != null){
 	if(result[0].amountVO.cmRefiedFund == null)
 	result[0].amountVO.cmRefiedFund =0;
@@ -1569,14 +1576,17 @@ function buildFamilyMemberComplaint(result,jobj){
    if(result[0].amountVO.requested > 0 ){
 	$("#familyrequestedDiv").show();
 	$("#familyRequestAmount").html(''+result[0].amountVO.requested+'/-');
+	totalFamCount = parseInt(totalFamCount)+parseInt(result[0].amountVO.requested);
 	}
 	$("#familyapprovedDiv").show();
 	$("#familyApprovedAmount").html(''+result[0].amountVO.approved+'/-');
+	totalFamCount = parseInt(totalFamCount)+parseInt(result[0].amountVO.approved);
 	}
 	else
 	{
 	$("#familyapprovedDiv").hide();
 	}
+	$("#familyBenifitsCountsId").html(totalFamCount);
 	$("#totalFamilyComplaints").html(''+cnt+'');
 	//comp+='</div>';
 	//comp+='</div>';

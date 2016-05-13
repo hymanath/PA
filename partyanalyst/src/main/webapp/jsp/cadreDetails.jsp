@@ -229,6 +229,7 @@ var globalCadreId = '${cadreId}';
 						<img src="images/User_icon_BLACK-01.png"> 
 						CANDIDATE BENEFITS <span class="pull-right" id="cadreBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="cadreBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						<span class="pull-right"><span class="count-style" id="candidateBenifitsCountsId">0</span></span>
 					</h4>
 				</div>
 				<div class="panel-body pad_0" id="cadreBenefitsBodyId">
@@ -264,6 +265,7 @@ var globalCadreId = '${cadreId}';
 					<div class="panel-heading" id="familyMemberHeadingId">
 						<h4 class="panel-title text-bold pointer">
 							<img src="dist/img/family-icon.png">&nbsp;FAMILY MEMBERS<span class="pull-right" id="familyMemberHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="familyMemberShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+							<span class="pull-right"><span class="count-style" id="totalFamilymembersCount">0</span></span>
 						</h4>
 					</div>
 					<div class="panel-body" id="familyMemberBodyId">
@@ -296,6 +298,7 @@ var globalCadreId = '${cadreId}';
 					<img src="images/family_icon.png">
 						FAMILY BENEFITS<span class="pull-right" id="familyBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
 						<span class="pull-right" id="familyBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
+						<span class="pull-right"><span class="count-style" id="familyBenifitsCountsId">0</span></span>
 					</h4>
 				</div>
 				<div class="panel-body pad_0" id="familyBenefitsBodyId">
