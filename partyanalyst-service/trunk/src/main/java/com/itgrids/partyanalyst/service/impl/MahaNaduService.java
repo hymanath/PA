@@ -1475,12 +1475,14 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				   }
 				   
 				   if(type.equalsIgnoreCase("attendee")){
+					   distVO.setAttendees(obj[2]!=null ?(Long)obj[2]:0l );
 					   distVO.setNonInvitees(obj[2]!=null ?(Long)obj[2]:0l);	
 				   }
 				   	if(type.equalsIgnoreCase("invitee")){
 				   		distVO.setInvitees(obj[2]!=null ?(Long)obj[2]:0l);
+				   	    distVO.setNonInvitees(distVO.getAttendees() - (obj[2]!=null ?(Long)obj[2]:0l));	
 				   }		 
-				   	distVO.setAttendees( distVO.getAttendees() + (obj[2]!=null ?(Long)obj[2]:0l) );		
+				   			
 				   	
 				   	if(!isDistrictexist){
 				   		finalMap.put((Long)obj[0], distVO);
@@ -1499,10 +1501,10 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
  }
  
- public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate)
+ public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate,String dataRetrievingType)
  {
 	 List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
-	 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
+	 
 	 DateUtilService date = new DateUtilService();
 	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	 try{
@@ -1528,75 +1530,14 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 locationType = "Constituency"; 
 			 }
 			 
-			 String attendeeQuery = getEventAttendeeInfoByLocationQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,stateId);
-			 List<Object[]> attendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(attendeeQuery,eventStrDate,eventEndDate,subEventIds);
 			 
-			 
-			 String inviteeQuery = getEventAttendeeInfoByLocationQuery(locationType,"invitee",eventStrDate,eventEndDate,subEventIds,stateId);
-			 List<Object[]> inviteeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(inviteeQuery,eventStrDate,eventEndDate,subEventIds);
-			 
-			 Set<Long> locationIds = new HashSet<Long>();
-			 
-			 setDataToMap(attendeeList,finalMap,"attendee",locationIds);
-			 setDataToMap(inviteeList,finalMap,"invitee",locationIds);
-		
-		 
-		  if(locationIds != null && locationIds.size() > 0)
-		  { 
-			  
-			  if(reportLevelId != 2l){
-				  
-			     List<Object[]> votersCount  = null;
-				 if(reportLevelId == 3l){
-					 votersCount = voterInfoDAO.getVotersCountForDistrict(locationIds, 11l);
-				 }
-				 else if(reportLevelId == 4l){
-					 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, locationIds, 11l,null);
-				 }
+			 if(dataRetrievingType.equalsIgnoreCase("dynamic")){
 				 
-			     List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIds,locationType,null,"Registered");
-			 
-			    if(votersCount != null && votersCount.size() > 0){
-					 for(Object[] obj :votersCount){
-						 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
-						 if(vo != null){
-							 vo.setVoterCount((Long)obj[1]);
-						 }
-					 }				 
-			   }
-			 
-			 if(cadreCount != null && cadreCount.size() > 0){
-				 for(Object[] obj :cadreCount){
-					 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
-					 if(vo != null){
-						 vo.setCadreCount((Long)obj[1]);
-					 }
-				 }				 
+				 return getDataDynamically(locationType,reportLevelId,eventStrDate,eventEndDate,subEventIds,stateId,resultList);
+				 
+			 }else if(dataRetrievingType.equalsIgnoreCase("intermediate")){
+				 
 			 }
-			
-			/* List<Object[]>  inviteesCnt = eventInviteeDAO.getEventInviteesCountByLocationTypeAndEvent(locationType,date.getCurrentDateAndTime(),eventId);
-			 if(inviteesCnt != null && inviteesCnt.size() > 0){
-				 for(Object[] obj :inviteesCnt){
-					 MahanaduEventVO vo = getMatchedVO(resultList, (Long)obj[1]);
-					 if(vo != null){
-						 vo.setTotal((Long)obj[0]);
-					 }
-				 }				 
-			 }*/
-		  }/*else{
-			  Long totalCnt = eventInviteeDAO.getEventInviteesCountByState(stateId,date.getCurrentDateAndTime(),eventId);				
-						 MahanaduEventVO vo = getMatchedVO(resultList,stateId);
-						 if(vo != null){
-							 vo.setTotal(totalCnt);
-						 }					 
-		  }
-			  */
-			  
-		  }
-		  
-		  if( finalMap!= null && finalMap.size() > 0){
-			  resultList.addAll(finalMap.values());
-		  }
 		  
 	 }
 	 catch(Exception e)
@@ -1604,6 +1545,65 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 Log.error("Exception rised in getEventInfoByReportType() while closing write operation",e); 
 	 }
 	return resultList;
+ }
+ 
+ public List<MahanaduEventVO> getDataDynamically(String locationType,Long reportLevelId,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,Long stateId,List<MahanaduEventVO>  resultList){
+	 
+	 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
+	 try{
+		 String attendeeQuery = getEventAttendeeInfoByLocationQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,stateId);
+		 List<Object[]> attendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(attendeeQuery,eventStrDate,eventEndDate,subEventIds);
+		 
+		 
+		 String inviteeQuery = getEventAttendeeInfoByLocationQuery(locationType,"invitee",eventStrDate,eventEndDate,subEventIds,stateId);
+		 List<Object[]> inviteeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(inviteeQuery,eventStrDate,eventEndDate,subEventIds);
+		 
+		 Set<Long> locationIds = new HashSet<Long>();
+		 
+		 setDataToMap(attendeeList,finalMap,"attendee",locationIds);
+		 setDataToMap(inviteeList,finalMap,"invitee",locationIds);
+		 
+		 if(locationIds != null && locationIds.size() > 0){ 
+			  
+			  if(reportLevelId != 2l){
+				  
+				     List<Object[]> votersCount  = null;
+					 if(reportLevelId == 3l){
+						 votersCount = voterInfoDAO.getVotersCountForDistrict(locationIds, 11l);
+					 }
+					 else if(reportLevelId == 4l){
+						 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, locationIds, 11l,null);
+					 }
+					 
+				     List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIds,locationType,null,"Registered");
+				 
+				    if(votersCount != null && votersCount.size() > 0){ 
+						 for(Object[] obj :votersCount){
+							 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
+							 if(vo != null){
+								 vo.setVoterCount((Long)obj[1]);
+							 }
+						 }				 
+				    }
+				 
+					if(cadreCount != null && cadreCount.size() > 0){
+						 for(Object[] obj :cadreCount){
+							 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
+							 if(vo != null){
+								 vo.setCadreCount((Long)obj[1]);
+							 }
+						 }				 
+					 }
+		       }
+		  }
+		  if( finalMap!= null && finalMap.size() > 0){
+			  resultList.addAll(finalMap.values());
+		  }
+		 
+	 }catch(Exception e){
+		 LOG.error("Exception raised at getDataDynamically() method", e);
+	}
+	 return resultList;
  }
  
  public String getEventAttendeeInfoByLocationQuery(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId){
@@ -1639,7 +1639,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			sbM.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		
-		sbM.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
+		sbM.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
 		if(eventIds != null && eventIds.size() > 0){
 			sbM.append(" and model.event.eventId in  (:eventIds)");
 		}
