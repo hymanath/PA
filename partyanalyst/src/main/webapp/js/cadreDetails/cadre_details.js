@@ -4715,7 +4715,7 @@ function getTypeWiseIvrDetailsOFCadre(){
 function getIvrSurveyDetails(searchType,eventTypeId,eventName){
 	$("#ivrDetailsBodyId").html("");
 	$("#dataLoadingsImgForIVRDetails").show();
-	
+	$('.ivrSurveyCandtDetailsCls').html("");
 	var jsObj={
 		tdpCadreId : globalCadreId,
 		entityTypeId : eventTypeId,

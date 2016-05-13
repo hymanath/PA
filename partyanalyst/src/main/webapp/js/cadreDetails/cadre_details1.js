@@ -243,6 +243,7 @@ function getIVRSurveysOnCandidateDetails()
 {
 	$("#ivrTypeDetailsDivId").html("");
 	$('.ivrSurveyCandtDetailsCls').html("");
+	
 	$("#ivrDetailsBodyId").html("");
 	var jsObj={
 			candidateId:globalCandidateId,
