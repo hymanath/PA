@@ -5981,6 +5981,7 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		Long constiId = input.getConstituencyId();
 		Long distId = input.getDistrictId();
 		Long mandalId = input.getMandalId();
+		Long townId = input.getTownId();
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String isOtherState = input.getIsOtherState();
@@ -6000,25 +6001,42 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 			sb.append(" and model.mobileNo = :mobileNo");
 		}
 
-		if(constiNo!=null){
+		if(constiNo != null && constiNo > 0){
 			sb.append(" and model.userAddress.constituency.constituencyId =:constituencyId");
 		}
-		if(distId!=null){
-			sb.append(" and model.userAddress.district.districtId =:districtId");
+		if(distId != null && distId > 0){
+			sb.append(" and model.userAddress.constituency.district.districtId =:districtId");
 		}
-		if(mandalId!=null){
+		if(mandalId != null && mandalId > 0){
 			sb.append(" and model.userAddress.tehsil.tehsilId =:tehsilId");
 		}
+		
+		if(townId != null && townId > 0){
+			sb.append(" and model.userAddress.localElectionBody.localElectionBodyId = :townId ");
+		}
+		else
+			townId = null;
+		
 		if(input.getMemberShipNumber() != null && input.getMemberShipNumber().trim().length() > 0)
 		{
-		String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
-		String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
-	 	StringBuilder queryStr = new StringBuilder();
-	 	sb.append(" and (model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+			String memberShipNumber = "AP14"+input.getMemberShipNumber() ;
+			String memberShipNumber1 = "TS14"+input.getMemberShipNumber() ;
+		 	sb.append(" and (model.memberShipNo ='"+input.getMemberShipNumber().trim()+"' OR model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 		}
+		
 		if(input.getName() != null && input.getName().trim().length() > 0)
 		{
-			sb.append(" and model.firstname like '"+input.getName().trim()+"'");
+			sb.append(" and model.firstname like '%"+input.getName().trim()+"%' ");
+		}
+		
+		if(input.getRelativeName() != null && input.getRelativeName().trim().length() > 0)
+		{
+			sb.append(" and model.relativename like '%"+input.getRelativeName().trim()+"%' ");
+		}
+		
+		if(input.getVoterIdCardNo() != null && input.getVoterIdCardNo().trim().length() > 0)
+		{
+			sb.append(" and model.voter.voterIDCardNo = '"+input.getVoterIdCardNo().trim()+"' ");
 		}
 		Set<String> voterMemberCards = new HashSet<String>();
 		Set<String> nonVoterMemberCards = new HashSet<String>();
@@ -6030,13 +6048,13 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		
 		if(isOtherState.equalsIgnoreCase("false"))
 		{
-			 memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId);
-			 memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId);
+			 memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
+			 memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
 		}
 		else if(isOtherState.equalsIgnoreCase("true"))
 		{
-			 memberCards = tdpCadreDAO.getOtherSttateCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId);
-			 memberCardsForNonVoters = tdpCadreDAO.getOtherSttateNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId);
+			 memberCards = tdpCadreDAO.getOtherSttateCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
+			 memberCardsForNonVoters = tdpCadreDAO.getOtherSttateNonVoterCardNumbersForSearch(sb.toString(), constiNo, mobileNo, trNo, srvyDt,distId,mandalId,townId);
 		}
 			
 		
@@ -6287,13 +6305,13 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		
 		if(isOtherState.equalsIgnoreCase("false"))
 		{
-			 memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(),  null, null, null, null,null,null);
-			 memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
+			 memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(),  null, null, null, null,null,null,null);
+			 memberCardsForNonVoters = tdpCadreDAO.getNonVoterCardNumbersForSearch(sb.toString(), null, null, null, null,null,null,null);
 		}
 		else if(isOtherState.equalsIgnoreCase("true"))
 		{
-			 memberCards = tdpCadreDAO.getOtherSttateCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
-			 memberCardsForNonVoters = tdpCadreDAO.getOtherSttateNonVoterCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
+			 memberCards = tdpCadreDAO.getOtherSttateCardNumbersForSearch(sb.toString(), null, null, null, null,null,null,null);
+			 memberCardsForNonVoters = tdpCadreDAO.getOtherSttateNonVoterCardNumbersForSearch(sb.toString(), null, null, null, null,null,null,null);
 		}
 		
 		//List<String> memberCards = tdpCadreDAO.getCardNumbersForSearch(sb.toString(), null, null, null, null,null,null);
