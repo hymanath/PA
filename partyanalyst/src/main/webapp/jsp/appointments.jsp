@@ -144,6 +144,8 @@
 											</div>
 										</div>
 									</div>
+									<!-- EXPORT TO EXCEL TABLE ID-->
+									<div style='display:none' id="appntmntCnddtDtlsTblId"></div>
 									
 									<table class="table table-bordered bg_ff m_top10">
 										<tr>
@@ -218,8 +220,6 @@
 											<div  class="col-md-1 m_top25" style="border-left:1px solid #ddd;">
                                             	<button id="" class="btn btn-success btn-block showTimeSlotsCls btnNewCustom1" onclick="getSearchDetails('false');">VIEW</button>
                                             </div>
-											
-											
 										</div>
 									</div>
 									</div>
@@ -3913,18 +3913,19 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 	
 	function buildAppointmentSearchResult(result,statusId,statusType)
 	{
+		exportToExcel(result,statusId,statusType);
 	    setcolorsForStatus();
 		var str = '';
 		var flag = false;
 		str+='<div class="upcomingAppointments heightAdjust">';
 		if(statusType=="singleStatus"){
 			if(result[0].appointmentStatus!=null){
-			str+='<h4 class="text-success">'+result[0].appointmentStatus.toUpperCase() +' APPOINTMENTS  </h4>';	
+			str+='<h4 class="text-success">'+result[0].appointmentStatus.toUpperCase() +' APPOINTMENTS <span class="exportToExcelCls btn-xs btn-info col-md-offset-6" style="padding: 6px;">EXPORT EXCEL</span> </h4>';	
 			}
 		}else if(statusType=="totalApproved"){
-			 str+='<h4 class="text-success">TOTAL APPROVED APPOINTMENTS</h4>';
+			 str+='<h4 class="text-success">TOTAL APPROVED APPOINTMENTS <span class="exportToExcelCls btn-xs btn-info col-md-offset-6" style="padding: 6px;">EXPORT EXCEL</span></h4>';
 		}else{
-			str+='<h4 class="text-success">TOTAL APPOINTMENTS</h4>';
+			str+='<h4 class="text-success">TOTAL APPOINTMENTS <span class="exportToExcelCls btn btn-xs btn-info col-md-offset-6" style="padding: 6px;">EXPORT EXCEL</span></h4>';
 		}
 		
 		str+='<div class="updateAppointment arrow_box">';
@@ -7978,7 +7979,86 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 		    $(".appntmntRsnCls").val(reason);
 		}
     });
-	
+
+ function exportToExcel(result,statusId,statusType){
+	 var str='';
+	 if(result!=null && result.length>0){
+		 str+='<table class="table table-bordered text-center b_border" id="ExprtTExclappntmntCnddtDtlsTblId">';
+				 str+='<thead>';
+					 str+='<th>Candidate Name</th>';
+					 str+='<th>Contact No</th>';
+					 str+='<th>Designation</th>';
+					 str+='<th>Constituency</th>';
+					 str+='<th>Last Appointment Status</th>';
+					 str+='<th>Last Visit Date</th>';
+					 str+='<th>Total Appointments Requested</th>';
+					 str+='<th>Total Completed Appointments</th>';
+				 str+='</thead>'; 
+				str+='<tbody>';
+		 for(var i in result){
+			 var candidateList=result[i].subList;
+			 if(candidateList!=null && candidateList.length>0){
+				 for(var i in candidateList){
+				 str+='<tr>';
+					  if(candidateList[i].name!=null && candidateList[i].name.length>0){
+							str+='<td>'+candidateList[i].name+'</td>';
+					  }else{
+						  str+='<td>-</td>';
+					  }
+					 if(candidateList[i].mobileNo!=null && candidateList[i].mobileNo.length>0){
+							 str+='<td>'+candidateList[i].mobileNo+'</td>';
+					}else{
+							 str+='<td>-</td>';
+					}
+					 if(candidateList[i].designation!=null && candidateList[i].designation.length>0){
+						  str+='<td>'+candidateList[i].designation+'</td>';
+					 }else{
+						  str+='<td>-</td>';
+					 }
+					 if(candidateList[i].constituency!=null && candidateList[i].constituency.length>0){
+						  str+='<td>'+candidateList[i].constituency+'</td>';
+					 }else{
+						  str+='<td>-</td>';
+					 }
+					 if(candidateList[i].candidateLastUpdatedStatus!=null && candidateList[i].candidateLastUpdatedStatus.length>0){
+						   str+='<td>'+candidateList[i].candidateLastUpdatedStatus+'</td>';
+					 }else{
+						   str+='<td>-</td>';
+					 } 
+					if(candidateList[i].candidateLastVisitDate!=null && candidateList[i].candidateLastVisitDate.length>0){
+						  str+='<td>'+candidateList[i].candidateLastVisitDate+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					if(candidateList[i].totalRequestedAppCount!=null && candidateList[i].totalRequestedAppCount.length>0){
+						 str+='<td>'+candidateList[i].totalRequestedAppCount+'</td>';
+					}else{
+						 str+='<td>-</td>';
+					}
+					if(candidateList[i].totalCompletedAppCount!=null && candidateList[i].totalCompletedAppCount.length>0){
+						  str+='<td>'+candidateList[i].totalCompletedAppCount+'</td>';
+					}else{
+						  str+='<td>-</td>';
+					}
+				str+='</tr>';
+				}
+			
+			 }
+		 }
+		  str+='</tbody>';
+		str+='</table>';
+	 }
+	 $("#appntmntCnddtDtlsTblId").html(str);
+ }	
+
+
+ $(document).on('click', '.exportToExcelCls', function(){
+ generateAppntmntCnddtDtlsToExcel();
+ });
+  function generateAppntmntCnddtDtlsToExcel()
+  {	
+		tableToExcel('ExprtTExclappntmntCnddtDtlsTblId', 'Appointment Candidates Report');
+  }
 </script>
 
 </body>
