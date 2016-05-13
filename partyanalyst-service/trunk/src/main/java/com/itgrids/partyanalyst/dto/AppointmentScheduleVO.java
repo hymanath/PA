@@ -41,6 +41,35 @@ private Long   apptCandiTypeId;
 private String candDesignation;
 private String constituency;
 
+private Long totalRequestedAppCount;
+private Long totalCompletedAppCount;
+private String candidateLastVisitDate;
+private String candidateLastUpdatedStatus;
+
+public Long getTotalRequestedAppCount() {
+	return totalRequestedAppCount;
+}
+public void setTotalRequestedAppCount(Long totalRequestedAppCount) {
+	this.totalRequestedAppCount = totalRequestedAppCount;
+}
+public Long getTotalCompletedAppCount() {
+	return totalCompletedAppCount;
+}
+public void setTotalCompletedAppCount(Long totalCompletedAppCount) {
+	this.totalCompletedAppCount = totalCompletedAppCount;
+}
+public String getCandidateLastVisitDate() {
+	return candidateLastVisitDate;
+}
+public void setCandidateLastVisitDate(String candidateLastVisitDate) {
+	this.candidateLastVisitDate = candidateLastVisitDate;
+}
+public String getCandidateLastUpdatedStatus() {
+	return candidateLastUpdatedStatus;
+}
+public void setCandidateLastUpdatedStatus(String candidateLastUpdatedStatus) {
+	this.candidateLastUpdatedStatus = candidateLastUpdatedStatus;
+}
 public String getDate() {
 	return date;
 }

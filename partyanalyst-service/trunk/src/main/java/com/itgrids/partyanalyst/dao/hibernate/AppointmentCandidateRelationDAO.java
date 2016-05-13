@@ -722,8 +722,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 			str.append(" and asts.appointment_status_id in (:statusIds) ");
 		}
 		
-		
-		str.append(" group by a.appointment_id,ac.appointment_candidate_id order by a.updated_time desc");
+		str.append(" group by a.appointment_id,ac.appointment_candidate_id order by a.inserted_time asc");
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("apptCandId",Hibernate.LONG)
 				.addScalar("name",Hibernate.STRING)
