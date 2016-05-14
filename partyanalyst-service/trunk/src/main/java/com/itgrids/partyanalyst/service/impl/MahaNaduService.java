@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeErrorDAO;
+import com.itgrids.partyanalyst.dao.IEventAttendeeInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
@@ -75,6 +76,7 @@ import com.itgrids.partyanalyst.model.CadreGovtDesignation;
 import com.itgrids.partyanalyst.model.CadrePartyDesignation;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.EventAttendeeInfo;
 import com.itgrids.partyanalyst.model.EventInfo;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -117,6 +119,7 @@ public class MahaNaduService implements IMahaNaduService{
 	private ISurveyUserAuthDAO surveyUserAuthDAO;
 	private IMahanaduDashBoardService mahanaduDashBoardService;
 	private IEventAttendeeErrorDAO eventAttendeeErrorDAO;
+	private IEventAttendeeInfoDAO eventAttendeeInfoDAO;
 	
 	public IEventDAO getEventDAO() {
 		return eventDAO;
@@ -371,6 +374,14 @@ public IEventAttendeeErrorDAO getEventAttendeeErrorDAO() {
 public void setEventAttendeeErrorDAO(
 		IEventAttendeeErrorDAO eventAttendeeErrorDAO) {
 	this.eventAttendeeErrorDAO = eventAttendeeErrorDAO;
+}
+
+public IEventAttendeeInfoDAO getEventAttendeeInfoDAO() {
+	return eventAttendeeInfoDAO;
+}
+
+public void setEventAttendeeInfoDAO(IEventAttendeeInfoDAO eventAttendeeInfoDAO) {
+	this.eventAttendeeInfoDAO = eventAttendeeInfoDAO;
 }
 
 public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
@@ -1007,6 +1018,559 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 return "fail";
  }
  
+ 
+ public ResultStatus insertDataintoEventInfo1(Date startDate,Date endDate,Long parentEventId,List<Long> subEventIds){
+	
+	 ResultStatus result = new ResultStatus();
+	 try{
+		 
+		   //DELETE OPERATION.
+		   List<Long> allEventIds = new ArrayList<Long>();
+		   
+		   if(parentEventId != null && parentEventId > 0l){
+			   allEventIds.add(parentEventId);
+		   }
+		   
+		   if(subEventIds != null && subEventIds.size() > 0){
+			   allEventIds.addAll(subEventIds);
+		   }
+		   
+		   eventAttendeeInfoDAO.deleteEventAttendeeInfoRecords(startDate,endDate,allEventIds);
+		   voterDAO.flushAndclearSession();
+		   
+		   //PARENT EVENTS DATA PUSHING
+		    boolean pushedData =  parentEventsPushing(startDate,endDate,parentEventId,subEventIds);
+		    
+		    if(pushedData){
+		    	//CHILD EVENTS DATA PUSHING
+				 childEventsPushing(startDate,endDate,subEventIds);
+		    }
+		   
+	}catch(Exception e){
+		Log.error("Exception rised in insertDataintoEventInfo1() ",e);
+	}
+	 return result;
+ }
+ public boolean parentEventsPushing(Date startDate,Date endDate,Long parentEventId,List<Long> subEventIds){
+	 
+	 boolean isDataAvailToPush = false;
+	 
+	 if(parentEventId!= null && parentEventId > 0l){
+		 isDataAvailToPush = singleParentPushing(startDate,endDate,parentEventId,subEventIds);
+		 return isDataAvailToPush;
+	 }
+	 else{
+		 List<Object[]> list = eventDAO.getParentEventsAndItsChildEvents();
+		 Map<Long,List<Long>> parentMap = new HashMap<Long, List<Long>>();
+		 
+		 if( list!= null && list.size() >0){
+			 
+			 for(Object[] obj : list){
+				 
+				 if(obj[1]!=null){
+					 List<Long> subEventsList = parentMap.get((Long)obj[1]);
+					 if(subEventsList == null){
+						 subEventsList = new ArrayList<Long>();
+						 subEventsList.add((Long)obj[0]);
+						 parentMap.put((Long)obj[1],subEventsList);
+					 }else{
+						 subEventsList.add((Long)obj[0]);
+					 }
+				 }
+			 }
+			 
+			 for( Map.Entry<Long,List<Long>>  parentEntry  :  parentMap.entrySet()){
+				 boolean pushedData = singleParentPushing(startDate,endDate,parentEntry.getKey(),parentEntry.getValue());
+				 if(pushedData){
+					 isDataAvailToPush = true;
+				 }
+			 }
+		 }
+		 return isDataAvailToPush;
+	 }
+ }
+ public boolean singleParentPushing(Date startDate,Date endDate,Long parentEventId,List<Long> subEventIds){
+	 
+	 boolean isDataAvailToPush = false;
+	 try{
+		 
+		//DISTRICT WISE
+		 String distAttendeeQuery = getParentEventWiseAttendeeInfo(IConstants.DISTRICT,"attendee",startDate,endDate,subEventIds);
+		 List<Object[]> distAttendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(distAttendeeQuery,startDate,endDate,subEventIds);
+		 
+		 if( distAttendeeList!= null && distAttendeeList.size() > 0){
+			 
+			 isDataAvailToPush = true;
+			 
+			 String distInviteeQuery  = getParentEventWiseAttendeeInfo(IConstants.DISTRICT,"invitee",startDate,endDate,subEventIds);
+			 List<Object[]> distInviteeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(distInviteeQuery,startDate,endDate,subEventIds);
+			 
+			 Map<Long,EventActionPlanVO> distMap = new HashMap<Long,EventActionPlanVO>(0);
+			 getFinalDataForPushingLocWise(distAttendeeList,"attendee",distMap);
+			 getFinalDataForPushingLocWise(distInviteeList,"invitee",distMap);
+			 
+			 PushingDataLocWise(distMap,3l,startDate,endDate,parentEventId);
+		 
+		 
+			//CONSTITUENCY WISE
+			 
+			 String constAttendeeQuery = getParentEventWiseAttendeeInfo(IConstants.CONSTITUENCY,"attendee",startDate,endDate,subEventIds);
+			 List<Object[]> constAttendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(constAttendeeQuery,startDate,endDate,subEventIds);
+			 
+			 if( constAttendeeList!= null && constAttendeeList.size() > 0){
+				 
+				 String constInviteeQuery  = getParentEventWiseAttendeeInfo(IConstants.CONSTITUENCY,"invitee",startDate,endDate,subEventIds);
+				 List<Object[]> constInviteeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(constInviteeQuery,startDate,endDate,subEventIds);
+				 
+				 Map<Long,EventActionPlanVO> constituencyMap = new HashMap<Long,EventActionPlanVO>(0);
+				 getFinalDataForPushingLocWise(constAttendeeList,"attendee",constituencyMap);
+				 getFinalDataForPushingLocWise(constInviteeList,"invitee",constituencyMap);
+				 
+				 PushingDataLocWise(constituencyMap,4l,startDate,endDate,parentEventId);
+			 }
+		 } 
+		 
+	}catch(Exception e) {
+		Log.error("Exception rised in singleParentPushing()"+e);
+	}
+	 return isDataAvailToPush;
+ }
+ 
+ 
+ public boolean childEventsPushing(Date startDate,Date endDate,List<Long> subEventIds){
+	 
+	 boolean isDataAvailToPush = false;
+	 
+	 try{
+		 
+		 //STATE WISE
+		 
+		 /*List<Object[]> statewise1= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("attendee",startDate,endDate,subEventIds,1l);
+		 List<Object[]> statewise= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("invitee",startDate,endDate,subEventIds,1l);
+		 Map<Long,EventActionPlanVO> stateMap = new HashMap<Long,EventActionPlanVO>();
+		 getFinalDataForPushingLocWise(statewise1,"attendee",stateMap);
+		 getFinalDataForPushingLocWise(statewise,"invitee",stateMap);
+		 PushingDataStateWise(stateMap,2l,startDate,endDate,1l);
+		 
+		 statewise1= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("attendee",startDate,endDate,subEventIds,36l);
+		 statewise= eventAttendeeDAO.getRequiredStateWiseEventAttendeeInfo("invitee",startDate,endDate,subEventIds,36l);
+		 Map<Long,EventActionPlanVO> eventMap = new HashMap<Long,EventActionPlanVO>();
+		 getFinalDataForPushingLocWise(statewise1,"attendee",eventMap);
+		 getFinalDataForPushingLocWise(statewise,"invitee",eventMap);
+		 PushingDataStateWise(stateMap,2l,startDate,endDate,36l);*/
+		 
+		
+		 
+		 //DISTRICT WISE
+		 String distAttendeeQuery = getSubEventWiseAttendeeInfo(IConstants.DISTRICT,"attendee",startDate,endDate,subEventIds);
+		 List<Object[]> distAttendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(distAttendeeQuery,startDate,endDate,subEventIds);
+		 
+		 if( distAttendeeList!= null && distAttendeeList.size() > 0){
+			 	
+			     isDataAvailToPush = true;
+			     
+				 String distInviteeQuery  = getSubEventWiseAttendeeInfo(IConstants.DISTRICT,"invitee",startDate,endDate,subEventIds);
+				 List<Object[]> distInviteeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(distInviteeQuery,startDate,endDate,subEventIds);
+				 
+				 Map<Long,Map<Long,EventActionPlanVO>> distEventMap = new HashMap<Long,Map<Long,EventActionPlanVO>>(0);
+				 getFinalDataForPushing(distAttendeeList,"attendee",distEventMap);
+				 getFinalDataForPushing(distInviteeList,"invitee",distEventMap);
+				 
+				 PushingData(distEventMap,3l,startDate,endDate);
+			 
+			 
+			 
+				//CONSTITUENCY WISE
+				 String constAttendeeQuery = getSubEventWiseAttendeeInfo(IConstants.CONSTITUENCY,"attendee",startDate,endDate,subEventIds);
+				 List<Object[]> constAttendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(constAttendeeQuery,startDate,endDate,subEventIds);
+				 
+				 if( constAttendeeList != null && constAttendeeList.size() > 0){
+					 
+					 String constInviteeQuery  = getSubEventWiseAttendeeInfo(IConstants.CONSTITUENCY,"invitee",startDate,endDate,subEventIds);
+					 List<Object[]> constInviteeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(constInviteeQuery,startDate,endDate,subEventIds);
+					 
+					 Map<Long,Map<Long,EventActionPlanVO>> constEventMap = new HashMap<Long,Map<Long,EventActionPlanVO>>(0);
+					 getFinalDataForPushing(constAttendeeList,"attendee",constEventMap);
+					 getFinalDataForPushing(constInviteeList,"invitee",constEventMap);
+					 PushingData(constEventMap,4l,startDate,endDate);
+				 }
+		  }	
+	}catch(Exception e){
+		Log.error("Exception rised in childEventsPushing "+e);
+	}
+	 return isDataAvailToPush;
+ }
+ 
+ public void getFinalDataForPushingLocWise(List<Object[]> list,String type,Map<Long,EventActionPlanVO> finalMap){
+	 
+	 try{ 
+		   
+		   if( list != null && list.size() > 0){
+			   
+			   for( Object[] obj : list){
+				 
+				  boolean isExist = true;
+				  EventActionPlanVO eventActionPlanVO = finalMap.get((Long)obj[0]);
+				  if(eventActionPlanVO == null){
+					  isExist = false;
+					  eventActionPlanVO = new EventActionPlanVO();
+				  }
+				  
+				  if(type.equalsIgnoreCase("attendee")) {
+					  eventActionPlanVO.setTotalAttendeescount( (Long)obj[1]);	
+					  eventActionPlanVO.setAttendeeCount((Long)obj[1]);
+				  }
+				  
+				  if(type.equalsIgnoreCase("invitee")){
+					  eventActionPlanVO.setInviteeCount( (Long)obj[1] ); 
+					  eventActionPlanVO.setAttendeeCount(eventActionPlanVO.getTotalAttendeescount() - (Long)obj[1]);
+				  }
+				  
+				  if(!isExist){
+					  finalMap.put((Long)obj[0], eventActionPlanVO);
+				  }
+				  
+			   }
+		   }
+		   
+	 }catch(Exception e){
+		 Log.error("Exception rised in insertDataintoEventInfo() while closing write operation",e);
+	}
+ }
+  public void getFinalDataForPushing(List<Object[]> list,String type,Map<Long,Map<Long,EventActionPlanVO>> finalMap){
+	 
+	 try{
+		   
+		   
+		   if( list != null && list.size() > 0){
+			   
+			   for( Object[] obj : list){
+				 
+				  
+				  Map<Long,EventActionPlanVO> eventMap = finalMap.get((Long)obj[0]);
+				  
+				  boolean isEventExist = true;
+				  if( eventMap == null){
+					  isEventExist = false;
+					  eventMap =new HashMap<Long,EventActionPlanVO>();
+				  }
+				  
+				  boolean isLocationExist = true;
+				  EventActionPlanVO    locationVO = eventMap.get((Long)obj[1]);
+				  
+				  if( locationVO == null){
+					  isLocationExist = false;
+					  locationVO = new EventActionPlanVO();
+				  }
+				  
+				  if(type.equalsIgnoreCase("attendee")) {
+					  locationVO.setTotalAttendeescount( (Long)obj[2]);	
+					  locationVO.setAttendeeCount((Long)obj[2]);
+				  }
+				  
+				  if(type.equalsIgnoreCase("invitee")){
+					  locationVO.setInviteeCount( (Long)obj[2] ); 
+					  locationVO.setAttendeeCount(locationVO.getTotalAttendeescount() - (Long)obj[2]);
+				  }
+				
+				  if(!isLocationExist){
+					  eventMap.put((Long)obj[1], locationVO);
+				  }
+				  if(!isEventExist){
+					  finalMap.put((Long)obj[0], eventMap);
+				  }
+				  
+			   }
+		   }
+		   
+	 }catch(Exception e){
+		 Log.error("Exception rised in insertDataintoEventInfo() while closing write operation",e);
+	}
+ }
+  public void PushingDataStateWise(Map<Long,EventActionPlanVO> eventMap,Long reportLevelId,Date startDate,Date endDate,Long stateId) {
+ 
+	  DateUtilService date = new DateUtilService();
+ 	 try{
+ 		
+ 		if(eventMap != null && eventMap.size() > 0){
+		
+			   for(  Map.Entry<Long,EventActionPlanVO>  eventEntry  :  eventMap.entrySet()){
+				   
+				  
+				   EventActionPlanVO finalVO = eventEntry.getValue();
+				     //Saving Logic.
+				     EventAttendeeInfo eventAttendeeInfo = new EventAttendeeInfo();
+				     eventAttendeeInfo.setEventId(eventEntry.getKey());
+				     eventAttendeeInfo.setReportLevelId(reportLevelId);
+				     eventAttendeeInfo.setLocationValue(stateId);
+				     eventAttendeeInfo.setInvitees(finalVO.getInviteeCount());
+				     eventAttendeeInfo.setNoninvitees(finalVO.getAttendeeCount());
+				     eventAttendeeInfo.setTotalAttendes(finalVO.getTotalAttendeescount());
+				     eventAttendeeInfo.setInsertedTime(date.getCurrentDateAndTime());
+				     eventAttendeeInfo.setFromDate(startDate);
+				     eventAttendeeInfo.setToDate(endDate);
+					 
+				     eventAttendeeInfoDAO.save(eventAttendeeInfo);
+			   }
+			   voterDAO.flushAndclearSession(); 
+	     } 
+ 		 
+ 	 }
+ 	 catch(Exception e){
+ 		 Log.error("Exception rised in PushingDataStateWise()",e);
+ 	 }
+  }
+  public void PushingDataLocWise(Map<Long,EventActionPlanVO> finalMap,Long reportLevelId,Date startDate,Date endDate,Long eventId) {
+	  
+	  DateUtilService date = new DateUtilService();
+ 	 try{
+ 		    Set<Long> eventIds = new HashSet<Long>();
+ 		   List<Long> locationValues = new ArrayList<Long>();
+ 		   
+ 		    if(finalMap != null && finalMap.size() > 0){
+		
+			   for(  Map.Entry<Long,EventActionPlanVO>  locationEntry  :  finalMap.entrySet()){
+				   
+				   Long locationId = locationEntry.getKey();
+				   
+				   EventActionPlanVO finalVO = locationEntry.getValue();
+				     //Saving Logic.
+				     EventAttendeeInfo eventAttendeeInfo = new EventAttendeeInfo();
+				     eventAttendeeInfo.setEventId(eventId);
+				     eventAttendeeInfo.setReportLevelId(reportLevelId);
+				     eventAttendeeInfo.setLocationValue(locationId);
+				     eventAttendeeInfo.setInvitees(finalVO.getInviteeCount());
+				     eventAttendeeInfo.setNoninvitees(finalVO.getAttendeeCount());
+				     eventAttendeeInfo.setTotalAttendes(finalVO.getTotalAttendeescount());
+				     eventAttendeeInfo.setInsertedTime(date.getCurrentDateAndTime());
+				     eventAttendeeInfo.setFromDate(startDate);
+				     eventAttendeeInfo.setToDate(endDate);
+					 
+				     eventAttendeeInfoDAO.save(eventAttendeeInfo);
+				     
+				     eventIds.add(eventId);
+				     
+				     if(!locationValues.contains(locationId)){
+						 locationValues.add(locationId); 
+					 }
+				     
+			   }
+			   voterDAO.flushAndclearSession(); 
+			   updatingStateValues(locationValues,reportLevelId,startDate,endDate,eventIds);
+	     } 
+ 		 
+ 	 }
+ 	 catch(Exception e){
+ 		 Log.error("Exception rised in PushingDataLocWise()"+e);
+ 	 }
+  }
+  public void PushingData(Map<Long,Map<Long,EventActionPlanVO>> eventMap,Long reportLevelId,Date startDate,Date endDate){
+		 
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		 DateUtilService dts = new DateUtilService();
+		 List<Long> locationValues = new ArrayList<Long>();
+		 Set<Long> eventIds = new HashSet<Long>();
+		 
+		 
+		 try{
+			
+			if( eventMap != null && eventMap.size() > 0){
+				
+				for (Map.Entry<Long, Map<Long,EventActionPlanVO >> eventEntry : eventMap.entrySet()) {
+					
+					if(eventEntry.getValue().entrySet() != null && eventEntry.getValue().entrySet().size() > 0){
+						
+					       Long eventId = eventEntry.getKey();
+					
+						   for(  Map.Entry<Long,EventActionPlanVO>  locationEntry  :  eventEntry.getValue().entrySet()){
+							   
+							   Long locationId = locationEntry.getKey();
+							   
+									   
+							   EventActionPlanVO finalVO = locationEntry.getValue();
+							     
+							     //Saving Logic.
+							     EventAttendeeInfo eventAttendeeInfo = new EventAttendeeInfo();
+							     eventAttendeeInfo.setEventId(eventId);
+							     eventAttendeeInfo.setReportLevelId(reportLevelId);
+							     eventAttendeeInfo.setLocationValue(locationId);
+							     eventAttendeeInfo.setInvitees(finalVO.getInviteeCount());
+							     eventAttendeeInfo.setNoninvitees(finalVO.getAttendeeCount());
+							     eventAttendeeInfo.setTotalAttendes(finalVO.getTotalAttendeescount());
+							     eventAttendeeInfo.setInsertedTime(dts.getCurrentDateAndTime());
+							     eventAttendeeInfo.setFromDate(startDate);
+							     eventAttendeeInfo.setToDate(endDate);
+								 
+							     eventAttendeeInfoDAO.save(eventAttendeeInfo);
+								 
+							     eventIds.add(eventId);
+							     
+								 if(!locationValues.contains(locationId)){
+									 locationValues.add(locationId); 
+								 } 
+						   }
+				     }  
+				}
+				
+				voterDAO.flushAndclearSession();
+				updatingStateValues(locationValues,reportLevelId,startDate,endDate,eventIds);
+			}
+			 
+		 }catch(Exception e){
+			 Log.error("Exception rised in PushingData()",e); 
+		}
+	 }
+     public void updatingStateValues(List<Long> locationValues,Long reportLevelId,Date startDate,Date endDate,Set<Long> eventIds){
+    	 
+    	//UPDATING STATE VALUES.
+		 List<Object[]>  districts = eventAttendeeInfoDAO.getDistricts(locationValues,reportLevelId,startDate,endDate,eventIds) ;
+		 Map<Long,List<Long>> stateMap = new HashMap<Long,List<Long>>();
+		 if(districts != null && districts.size() > 0)
+		 {
+			 for(Object[] params : districts)
+			 {
+				if((Long)params[1] < 11)
+				{
+					List<Long> values =stateMap.get(36l);
+					if(values == null)
+					{
+						values = new ArrayList<Long>();
+					}
+					values.add((Long)params[0]);
+					stateMap.put(36l, values);
+				}
+				
+				if((Long)params[1] > 10)
+				{
+					List<Long> values =stateMap.get(1l);
+					if(values == null)
+					{
+						values = new ArrayList<Long>();
+					}
+					values.add((Long)params[0]);
+					stateMap.put(1l, values);
+				}
+					
+			 }
+			 List<Long> apValues = stateMap.get(1l);
+			 List<Long> tsValues = stateMap.get(36l);
+			 if(apValues != null && apValues.size() > 0){
+				 eventAttendeeInfoDAO.updateState(apValues,reportLevelId,1l);
+			 }	 
+			 if(tsValues != null && tsValues.size() > 0){
+				 eventAttendeeInfoDAO.updateState(tsValues,reportLevelId,36l);
+			 } 
+			 voterDAO.flushAndclearSession();
+		 }
+    	 
+     }
+     
+     
+     
+     
+     
+ public String getSubEventWiseAttendeeInfo(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> subEventIds){
+	 
+	 StringBuilder sq = new StringBuilder();
+	try{
+		
+		StringBuilder sbS =  new StringBuilder();
+		StringBuilder sbM =  new StringBuilder();
+		StringBuilder sbE =  new StringBuilder();
+		
+		sbS.append("select model.event.eventId");
+		
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			sbS.append("  ,model.tdpCadre.userAddress.constituency.district.districtId ");
+			
+			sbE.append("  group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId " );
+					   
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			sbS.append("  ,model.tdpCadre.userAddress.constituency.constituencyId");
+			
+			sbE.append("  group by model.event.eventId,model.tdpCadre.userAddress.constituency.constituencyId ");
+					  
+		}
+		sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId) ");
+		
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sbM.append(" from EventAttendee model where ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sbM.append(" from   EventAttendee model,EventInvitee model1 " +
+					"    where  model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and " +
+					"           model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		
+		sbM.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		
+		if(subEventIds != null && subEventIds.size() > 0){
+			sbM.append(" and model.event.eventId in  (:eventIds)");
+		}
+		
+		sbM.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		
+        sq.append(sbS.toString()).append(sbM.toString()).append(sbE.toString());
+     
+	}catch(Exception e) {
+		LOG.error("Exception raised at getSubEventWiseAttendeeInfo() method ", e);
+	}
+	return sq.toString();
+ }
+ 
+  public String getParentEventWiseAttendeeInfo(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> subEventIds){
+	 
+	 StringBuilder sq = new StringBuilder();
+	try{
+		
+		StringBuilder sbS =  new StringBuilder();
+		StringBuilder sbM =  new StringBuilder();
+		StringBuilder sbE =  new StringBuilder();
+		
+		sbS.append("select ");
+		
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			sbS.append("  model.tdpCadre.userAddress.constituency.district.districtId ");
+			
+			sbE.append("  group by model.tdpCadre.userAddress.constituency.district.districtId " );
+					   
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			sbS.append("  model.tdpCadre.userAddress.constituency.constituencyId");
+			
+			sbE.append("  group by model.tdpCadre.userAddress.constituency.constituencyId ");
+					  
+		}
+		sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId) ");
+		
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sbM.append(" from EventAttendee model where ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sbM.append(" from   EventAttendee model,EventInvitee model1 " +
+					"    where  model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and " +
+					"           model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		
+		sbM.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		
+		if(subEventIds != null && subEventIds.size() > 0){
+			sbM.append(" and model.event.eventId in  (:eventIds)");
+		}
+		
+		sbM.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		
+        sq.append(sbS.toString()).append(sbM.toString()).append(sbE.toString());
+     
+	}catch(Exception e) {
+		LOG.error("Exception raised at getParentEventWiseAttendeeInfo() method", e);
+	}
+	return sq.toString();
+ }
+ 
  public ResultStatus insertDataintoEventInfo(Date startDate,Date endDate,List<Long> eventIds)
  {
 	 ResultStatus result = new ResultStatus();
@@ -1501,12 +2065,14 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
  }
  
- public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate,String dataRetrievingType)
+ public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate,String dataRetrievingType,Long parentEventId,String eventType)
  {
 	 List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
 	 
 	 DateUtilService date = new DateUtilService();
 	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	 SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
+	 
 	 try{
 		 
 			 Date eventStrDate = null;
@@ -1533,10 +2099,28 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 
 			 if(dataRetrievingType.equalsIgnoreCase("dynamic")){
 				 
-				 return getDataDynamically(locationType,reportLevelId,eventStrDate,eventEndDate,subEventIds,stateId,resultList);
+				 resultList = getDataDynamically(locationType,reportLevelId,eventStrDate,eventEndDate,subEventIds,stateId,resultList);
+				 if(resultList != null && resultList.size() > 0){
+					 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+				 }else{
+					 MahanaduEventVO vo = new MahanaduEventVO();
+					 vo.setLocationName("NO DATA");
+					 vo.setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+					 resultList.add(vo);
+				 }
 				 
+				 return resultList;
+				  
 			 }else if(dataRetrievingType.equalsIgnoreCase("intermediate")){
 				 
+				 resultList = getDataByIntermediateTables(locationType,reportLevelId,eventStrDate,eventEndDate,subEventIds,stateId,parentEventId,eventType,resultList);
+				 if(resultList == null || resultList.size() <= 0){
+					 MahanaduEventVO vo = new MahanaduEventVO();
+					 vo.setLocationName("NO DATA");
+					 vo.setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+					 resultList.add(vo);
+				 }
+				 return resultList;
 			 }
 		  
 	 }
@@ -1546,10 +2130,85 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 }
 	return resultList;
  }
+ public List<MahanaduEventVO> getDataByIntermediateTables(String locationType,Long reportLevelId,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,Long stateId,Long parentEventId,String eventType,List<MahanaduEventVO>  resultList){
+	 
+	 try{
+		 
+		   List<Long> finalEventIds = new ArrayList<Long>();
+		   if(eventType.equalsIgnoreCase("parentEvent")){
+			  finalEventIds.add(parentEventId);
+		   }else if(eventType.equalsIgnoreCase("childEvent")){
+			  finalEventIds.addAll(subEventIds);
+		   }
+		   
+		   resultList = getDataByLocation(locationType,reportLevelId,eventStrDate,eventEndDate,subEventIds,stateId,parentEventId,eventType,resultList,finalEventIds);
+		   
+		   if( resultList != null && resultList.size() > 0){
+			   return resultList;
+		   }else{
+			   
+			   boolean pushedData = singleParentPushing(eventStrDate,eventEndDate,parentEventId,subEventIds);
+			   if(pushedData){
+				   
+				   childEventsPushing(eventStrDate,eventEndDate,subEventIds);
+				   
+				   resultList = getDataByLocation(locationType,reportLevelId,eventStrDate,eventEndDate,subEventIds,stateId,parentEventId,eventType,resultList,finalEventIds);
+				   return resultList;
+			   }
+		   } 
+			  
+	} catch (Exception e) {
+		Log.error("Exception rised in getDataByIntermediateTables() ",e); 
+	}
+	 return resultList;
+ }
+ 
+ public List<MahanaduEventVO> getDataByLocation(String locationType,Long reportLevelId,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,Long stateId,Long parentEventId,String eventType,List<MahanaduEventVO>  resultList,List<Long> finalEventIds){
+	 SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
+	 try{ 
+		 
+		  Map<Long,MahanaduEventVO> finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
+		  
+		  List<Object[]> list =eventAttendeeInfoDAO.getEventDataByReportLevelId(reportLevelId,stateId,finalEventIds,eventStrDate,eventEndDate);
+		  
+		  if( list!= null && list.size() >0)
+		  {  
+			  Set<Long> locationIds = new HashSet<Long>();
+			  for(Object[] obj : list)
+			  {
+				  
+				  MahanaduEventVO eventVo = new MahanaduEventVO();
+				  eventVo.setId((Long)obj[0]);
+				  eventVo.setName(obj[3]!=null ?obj[3].toString() :"");
+				  eventVo.setInvitees(obj[1] != null ? (Long)obj[1] : 0l);
+				  eventVo.setNonInvitees(obj[2] != null ? (Long)obj[2] : 0l);			 
+				  eventVo.setAttendees(eventVo.getInvitees() + eventVo.getNonInvitees());
+				  eventVo.setLastUpdatedDate(obj[4] != null ? sdf1.format((Date)obj[4]) : "");
+				  finalMap.put((Long)obj[0],eventVo);
+				  
+				  locationIds.add((Long)obj[0]);
+			  }
+			  if(locationIds != null && locationIds.size() > 0)
+			  {
+				  setVoterAndCadreInfoByLocation(locationIds,locationType,finalMap,reportLevelId);
+			  }
+		  }
+		  
+		  if( finalMap!= null && finalMap.size() > 0){
+			  resultList.addAll(finalMap.values());
+		  }
+		 
+	}catch(Exception e){
+		Log.error("Exception rised in getDataByIntermediateTables()"+e); 
+	}
+	 return resultList;
+ }
+ 
  
  public List<MahanaduEventVO> getDataDynamically(String locationType,Long reportLevelId,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,Long stateId,List<MahanaduEventVO>  resultList){
 	 
 	 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
+	 SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
 	 try{
 		 String attendeeQuery = getEventAttendeeInfoByLocationQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,stateId);
 		 List<Object[]> attendeeList = eventAttendeeDAO.getEventAttendeeInfoByLocation(attendeeQuery,eventStrDate,eventEndDate,subEventIds);
@@ -1563,41 +2222,12 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 setDataToMap(attendeeList,finalMap,"attendee",locationIds);
 		 setDataToMap(inviteeList,finalMap,"invitee",locationIds);
 		 
-		 if(locationIds != null && locationIds.size() > 0){ 
-			  
-			  if(reportLevelId != 2l){
-				  
-				     List<Object[]> votersCount  = null;
-					 if(reportLevelId == 3l){
-						 votersCount = voterInfoDAO.getVotersCountForDistrict(locationIds, 11l);
-					 }
-					 else if(reportLevelId == 4l){
-						 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, locationIds, 11l,null);
-					 }
-					 
-				     List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIds,locationType,null,"Registered");
-				 
-				    if(votersCount != null && votersCount.size() > 0){ 
-						 for(Object[] obj :votersCount){
-							 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
-							 if(vo != null){
-								 vo.setVoterCount((Long)obj[1]);
-							 }
-						 }				 
-				    }
-				 
-					if(cadreCount != null && cadreCount.size() > 0){
-						 for(Object[] obj :cadreCount){
-							 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
-							 if(vo != null){
-								 vo.setCadreCount((Long)obj[1]);
-							 }
-						 }				 
-					 }
-		       }
+		 if(locationIds != null && locationIds.size() > 0){
+			 setVoterAndCadreInfoByLocation(locationIds,locationType,finalMap,reportLevelId);
 		  }
 		  if( finalMap!= null && finalMap.size() > 0){
 			  resultList.addAll(finalMap.values());
+			  
 		  }
 		 
 	 }catch(Exception e){
@@ -1605,6 +2235,42 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
 	 return resultList;
  }
+ 
+ public void setVoterAndCadreInfoByLocation(Set<Long> locationIds,String locationType,Map<Long,MahanaduEventVO>  finalMap,Long reportLevelId){
+	 
+	 if(reportLevelId != 2l){
+		  
+	     List<Object[]> votersCount  = null;
+		 if(reportLevelId == 3l){
+			 votersCount = voterInfoDAO.getVotersCountForDistrict(locationIds, 11l);
+		 }
+		 else if(reportLevelId == 4l){
+			 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, locationIds, 11l,null);
+		 }
+		 
+	     List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIds,locationType,null,"Registered");
+	 
+	    if(votersCount != null && votersCount.size() > 0){ 
+			 for(Object[] obj :votersCount){
+				 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
+				 if(vo != null){
+					 vo.setVoterCount((Long)obj[1]);
+				 }
+			 }				 
+	    }
+	 
+		if(cadreCount != null && cadreCount.size() > 0){
+			 for(Object[] obj :cadreCount){
+				 MahanaduEventVO vo = finalMap.get((Long)obj[0]);
+				 if(vo != null){
+					 vo.setCadreCount((Long)obj[1]);
+				 }
+			 }				 
+		 }
+   }
+	 
+ }
+
  
  public String getEventAttendeeInfoByLocationQuery(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId){
 	 
@@ -1659,6 +2325,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return sq.toString();
  }
  
+
  public String getLocationName(Long LocationTypeId,Long locationValue){
 		String location ="";
 		if(LocationTypeId.longValue() == 3L){
@@ -1671,7 +2338,6 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	
 		return location;
 	}
- 
 /* public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
@@ -3510,6 +4176,5 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return finalList;
 	}
-	
 	
 }

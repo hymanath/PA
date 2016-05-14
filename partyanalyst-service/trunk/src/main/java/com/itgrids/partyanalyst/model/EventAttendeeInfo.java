@@ -34,7 +34,7 @@ public class EventAttendeeInfo extends BaseModel implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "event_info_id", unique = true , nullable = false)
+	@Column(name = "event_attendee_info_id", unique = true , nullable = false)
 	public Long getEventAttendeeInfoId() {
 		return eventAttendeeInfoId;
 	}

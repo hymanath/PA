@@ -297,7 +297,7 @@ public class Scheduler {
 			 DateUtilService dateUtilService = new DateUtilService();
 			 Date currentDate = dateUtilService.getCurrentDateAndTime();
 			 
-			 rs = mahaNaduService.insertDataintoEventInfo(currentDate,currentDate,null);
+			 rs = mahaNaduService.insertDataintoEventInfo1(currentDate,currentDate,null,null);
 		}
 		catch(Exception e)
 		{

@@ -162,9 +162,9 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) ");
 	
 		if(inviteeType.equalsIgnoreCase("attendee"))
-			str.append(" ,date(model.attendedTime) from EventAttendee model where ");
+			str.append(" from EventAttendee model where ");
 		else if(inviteeType.equalsIgnoreCase("invitee"))
-			str.append(" ,date(model.attendedTime) from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y'  and model.event.parentEventId = model1.event.parentEventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and");	
+			str.append("  from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y'  and model.event.parentEventId = model1.event.parentEventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and");	
 		
 		str.append(" date(model.attendedTime) between :startDate and :endDate  ");
 		
@@ -177,8 +177,8 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 			str.append(" and model.event.eventId in  (:eventIds)");
 		}
 		
-		str.append("   and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' " +
-				   "  group by model.event.eventId,date(model.attendedTime) ");
+		str.append("   and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
+				   "  group by model.event.eventId");
 		
 		
 		Query query = getSession().createQuery(str.toString());
