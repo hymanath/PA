@@ -141,7 +141,9 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 				 eventEndDate = format.parse(endDate); 
 			 }
 			
-			resultStatus = mahaNaduService.insertDataintoEventInfo(eventStrDate,eventEndDate,subEventIds);
+			 Long parentEventId = jObj.getLong("parentEventId");
+			 
+			resultStatus = mahaNaduService.insertDataintoEventInfo1(eventStrDate,eventEndDate,parentEventId,subEventIds);
 		}
 		catch(Exception e)
 		{
@@ -186,7 +188,9 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			String endDate = jObj.getString("endDate");
 			String dataRetrievingType = jObj.getString("dataRetrievingType");
 			
-			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId,subEventIds,startDate,endDate,dataRetrievingType);
+			Long parentEventId = jObj.getLong("parentEventId");
+			String eventType = jObj.getString("eventType");
+			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId,subEventIds,startDate,endDate,dataRetrievingType,parentEventId,eventType);
 			
 		}
 		catch(Exception e)
