@@ -52,6 +52,8 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private String formateEventStartDate;
 	private String formateEventEndDate;
 	
+	private String lastUpdatedDate;
+	
 	public Long getRevisitCount() {
 		return revisitCount;
 	}
@@ -262,6 +264,12 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setFormateEventEndDate(String formateEventEndDate) {
 		this.formateEventEndDate = formateEventEndDate;
+	}
+	public String getLastUpdatedDate() {
+		return lastUpdatedDate;
+	}
+	public void setLastUpdatedDate(String lastUpdatedDate) {
+		this.lastUpdatedDate = lastUpdatedDate;
 	}
 	
 	
