@@ -115,9 +115,9 @@
         </div>
 		
 		<div class="col-xs-1 pull-right">
-		     <a onclick="insertIntermediateData();" class="btn btn-xs btn-success btn-block" title=" Data Synch..">
+		     <a  class="btn btn-xs btn-success btn-block dataSynchClass" title=" Data Synch..">
 				<span class="" style="font-size: 15px;"> Sync
-					<img src="images/ajaxImg2.gif" id="syncAjaxImage" style="height:20px;width:20px;display:none;"/>
+					<img src="images/ajaxImg2.gif" id="syncAjaxImage1" style="height:20px;width:20px;display:none;"/>
 				</span>
 			 </a>
 		</div>
@@ -188,7 +188,7 @@
 					<div class="panel-heading">
 						
 						<div class="row">
-						<div class="col-md-2 col-md-offset-7" style="margin-top: 6px;">
+						<div class="col-md-1 " style="margin-top: 6px;">
 								<div class="onoffswitch pull-right">
 									<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
 									<label class="onoffswitch-label" for="myonoffswitch">
@@ -197,10 +197,22 @@
 									</label>
 								</div>
 							</div>
-							<div class="col-md-3 pull-right" style="padding: 5px;">
+							<div class="col-md-3 " style="padding: 5px;">
 								<select id="distEventId" style="margin-top:-5px;" class="eventCls form-control" onChange="getLocationWiseCountBySubEvents(3);getLocationWiseCountBySubEvents(4);">
 									<option value="0"> All Events</option>
 								</select>
+							</div>
+							
+							<div class="col-xs-4 col-md-offset-3" style="margin-top: 9px;">
+							  <span style="font-size: 12px;">Last Updated Time: &nbsp;&nbsp;<span id="lastUpdatedTimeId" style="padding: 5px; font-size: 11px;" class="label label-primary"></span></span>
+							</div> 
+							
+							<div id="updateDataDivId" style="margin-top: 5px; margin-left: -83px;display:none;" class="col-xs-1 ">
+								<a style="" title="Click Here To Get Updated Data" class="btn btn-xs btn-success dataSynchClass" >
+									<span style="font-size: 13px; margin-top: 0px;" class="">Update Data
+										<img style="height:20px;width:20px;display:none;" id="syncAjaxImage" src="images/ajaxImg2.gif">
+									</span>
+								</a>
 							</div>
 							
 						</div>
@@ -322,6 +334,9 @@ var parentEventId = '${eventId}';
 var subEvents = [];
 var startDate;
 var endDate;
+var dataRetrievingType = "dynamic"; // intermediate dynamic
+
+
 function getEvents()
 {
 var jObj = {
@@ -548,7 +563,9 @@ if(reportLevelId == 3){
 			subEvents : subEvents,
 			startDate : startDate,
 			endDate : endDate,
-		    dataRetrievingType : "dynamic" // intermediate
+		    dataRetrievingType : dataRetrievingType,
+			parentEventId:parentEventId,
+			eventType : "parentEvent"
 		}	
 		
 		$.ajax({
@@ -562,6 +579,39 @@ if(reportLevelId == 3){
 			}
 	});
 }
+function getLocationWiseVisitorsCountForDistrict(eventId,stateId,reportLevelId)
+{
+if(reportLevelId == 3){
+	$("#distAjax").show();
+	$("#districtTableId").html("");
+	}else{
+	$("#constAjax").show();
+	$("#constiTableId").html("");
+	}
+	var jObj = {
+			eventId:eventId,			
+			stateId:stateId,
+			reportLevelId:reportLevelId,
+			subEvents : subEvents,
+			startDate : startDate,
+			endDate : endDate,
+		    dataRetrievingType : dataRetrievingType, 
+            parentEventId:parentEventId,
+			eventType : "parentEvent"			
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getLocationWiseVisitorsCountForDistrictAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{				
+				buildDistrictTable(result,reportLevelId)	
+			}
+	});
+}
+
 function buildDistrictTable(result,reportLevelId){
 	if(reportLevelId == 3)
 	{
@@ -571,6 +621,15 @@ function buildDistrictTable(result,reportLevelId){
 	{
 		$("#constAjax").hide();
 	}
+	
+	$('#lastUpdatedTimeId').html(result[0].lastUpdatedDate);
+	
+	if( dataRetrievingType == "intermediate"){
+	   $('#updateDataDivId').show();
+	}else{
+		$('#updateDataDivId').hide();
+	}
+	
 	var str='';
 	if(reportLevelId == 3){
     str+='<div class="scrollDiv"><table  class="display tableC" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
@@ -585,6 +644,7 @@ function buildDistrictTable(result,reportLevelId){
 	}else{
 	str+='<th>Constituency</th>';
 	}
+	
 	str+='<th>Voters</th>';
     str+='<th>Cadres</th>';
 	str+='<th style="width: 68px;">Invitees</th>';
@@ -592,29 +652,33 @@ function buildDistrictTable(result,reportLevelId){
 	str+='<th>Total<br/> Attended</th>';
     str+='</tr></thead>';
     str+='<tbody>';
-	for(var i in result){
+	
+	if(result[0].locationName != "NO DATA"){
+		for(var i in result){
 		
-		str+='<tr>';
-		str+='<td>'+result[i].name+'</td>';
-		str+='<td>'+result[i].voterCount+'</td>';
-		str+='<td>'+result[i].cadreCount+'</td>';
-		
-		var inviteesCount = result[i].invitees;
-		var nonInviteesCount = result[i].nonInvitees;
-		var totalAttendees = inviteesCount + nonInviteesCount;
-		
-		
-		str+='<td>'+inviteesCount+'</td>';
-		str+='<td>'+nonInviteesCount+'</td>';
-		str+='<td>'+totalAttendees+'</td>';
-		str+='</tr>';
-    }                               
+			str+='<tr>';
+			str+='<td>'+result[i].name+'</td>';
+			str+='<td>'+result[i].voterCount+'</td>';
+			str+='<td>'+result[i].cadreCount+'</td>';
+			
+			var inviteesCount = result[i].invitees;
+			var nonInviteesCount = result[i].nonInvitees;
+			var totalAttendees = inviteesCount + nonInviteesCount;
+			
+			
+			str+='<td>'+inviteesCount+'</td>';
+			str+='<td>'+nonInviteesCount+'</td>';
+			str+='<td>'+totalAttendees+'</td>';
+			str+='</tr>';
+      }   
+  }
+	                            
 	str+='</tbody></table></div>';
 	if(reportLevelId == 3){
-	$("#districtTableId").html(str);
+	  $("#districtTableId").html(str);
 	}
 	else{
-	$("#constiTableId").html(str);
+	  $("#constiTableId").html(str);
 	}
 	$('#table'+reportLevelId).DataTable({
         responsive: true,
@@ -967,14 +1031,15 @@ showHide();
     }
 }
 
-
-function insertIntermediateData()
-{   
-
-    $("#syncAjaxImage").show();
+$(document).on("click",".dataSynchClass",function(){
+	 
+	 var ajaxImg = $(this).find('img').attr("id");
+	 
+	$("#"+ajaxImg).show();
+	
 	ajaxProcessing();
 	var jObj = {
-			
+			parentEventId:parentEventId,
 			subEvents : subEvents,
 			startDate : startDate,
 			endDate : endDate
@@ -987,9 +1052,9 @@ function insertIntermediateData()
           data: {task:JSON.stringify(jObj)},
 
           success: function(result){ 
-			 $("#syncAjaxImage").hide();
+			 $("#"+ajaxImg).hide();
 			 //closeDialogue();
-			 callingDefaultCalls();
+			 //callingDefaultCalls();
 			 locationWiseCalls();
 			
 			 
@@ -999,8 +1064,9 @@ function insertIntermediateData()
            console.log('error', arguments);
          }
     });
+	   
+ });
 
-}
 var areaChartDataArr  = [];
 var areaChartNamesArr =[];
 var dayWiseArr =[];
@@ -1504,10 +1570,13 @@ if(reportLevelId == 3){
 	$("#constiTableId").html("");
 	}
 
+ var eventType;
  if(subIds == 0){
- subEvents1 = subEvents;
+	subEvents1 = subEvents;
+	eventType ="parentEvent";
  }else{
- subEvents1.push(subIds);
+	subEvents1.push(subIds);
+	eventType ="childEvent";
  }
  if($('#myonoffswitch').is(":checked"))
  {
@@ -1523,7 +1592,9 @@ var jObj = {
 			subEvents : subEvents1,
 			startDate : startDate,
 			endDate : endDate,
-		    dataRetrievingType : "dynamic" // intermediate
+		    dataRetrievingType : dataRetrievingType, 
+			eventType : eventType,
+			parentEventId:parentEventId
 		}	
 		
 		$.ajax({
@@ -1758,36 +1829,7 @@ function showHide()
 			showConst=true;	
 		}
 }
-function getLocationWiseVisitorsCountForDistrict(eventId,stateId,reportLevelId)
-{
-if(reportLevelId == 3){
-	$("#distAjax").show();
-	$("#districtTableId").html("");
-	}else{
-	$("#constAjax").show();
-	$("#constiTableId").html("");
-	}
-	var jObj = {
-			eventId:eventId,			
-			stateId:stateId,
-			reportLevelId:reportLevelId,
-			subEvents : subEvents,
-			startDate : startDate,
-			endDate : endDate,
-		    dataRetrievingType : "dynamic" // intermediate     
-		}	
-		
-		$.ajax({
-          type:'GET',
-          url: 'getLocationWiseVisitorsCountForDistrictAction.action',
-		  data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			if(result != null)
-			{				
-				buildDistrictTable(result,reportLevelId)	
-			}
-	});
-}
+
 
 $(document).on('click','#mahanaduLinkId',function(){
 	
