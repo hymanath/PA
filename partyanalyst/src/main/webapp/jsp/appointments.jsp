@@ -8030,12 +8030,12 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 					}else{
 						str+='<td>-</td>';
 					}
-					if(candidateList[i].totalRequestedAppCount!=null && candidateList[i].totalRequestedAppCount.length>0){
+					if(candidateList[i].totalRequestedAppCount!=null && candidateList[i].totalRequestedAppCount>0){
 						 str+='<td>'+candidateList[i].totalRequestedAppCount+'</td>';
 					}else{
 						 str+='<td>-</td>';
 					}
-					if(candidateList[i].totalCompletedAppCount!=null && candidateList[i].totalCompletedAppCount.length>0){
+					if(candidateList[i].totalCompletedAppCount!=null && candidateList[i].totalCompletedAppCount>0){
 						  str+='<td>'+candidateList[i].totalCompletedAppCount+'</td>';
 					}else{
 						  str+='<td>-</td>';
