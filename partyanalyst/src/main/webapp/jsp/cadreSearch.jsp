@@ -1076,12 +1076,14 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			$(".allcls").hide();
 		     
 			var mandalId=$("#mandalList").val();
+			var constituencyId = $('#constituencyId').val();
 			
 			$("#panchaytList  option").remove();
 			$("#panchaytList").append('<option value="0">Select Panchayat</option>');
 			
 			var jsObj={
-				mandalId:mandalId
+				mandalId:mandalId,
+				constituencyId : constituencyId
 			}
 			$.ajax({
 				type : "POST",
@@ -1640,5 +1642,4 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 </script>
 			
 </body>
-</html>
-			
+</html>	
