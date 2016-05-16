@@ -504,9 +504,7 @@ public class LocationService {
 						if((Long)userAddress[14] !=null){							
 							designationId = designationMap.get((Long)userAddress[14]);						
 						}
-						else{
-							return null;
-						}	
+							
 						
 						if(Arrays.asList(IConstants.PR_STATE_DESG_IDS).contains(designationId))
 						  {
