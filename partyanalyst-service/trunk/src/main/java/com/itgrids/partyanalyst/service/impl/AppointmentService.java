@@ -3085,6 +3085,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								
 								candidateVo.setCandDesignation(params[20] !=null ?params[20].toString():"");
 								candidateVo.setConstituency(params[22] !=null ?WordUtils.capitalize(params[22].toString().toLowerCase())+" Constituency":"");
+								candidateVo.setAddressConstituency(params[22] !=null ? params[22].toString().trim():"");
 								
 							}else if(apptcanditype.longValue() == 3l){
 								candidateVo.setCandDesignation(params[20] !=null ?params[20].toString():"");
@@ -3173,20 +3174,6 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 							 }
 						}
 					}
-					List<Object[]> rtrnothrCnddtCnsttuncyLst=null;
-					if(otherTypeCandidateIdList!=null && otherTypeCandidateIdList.size()>0){
-					 rtrnothrCnddtCnsttuncyLst=appointmentCandidateDAO.getCandidatesConstituency(otherTypeCandidateIdList);
-					}
-					 if(rtrnothrCnddtCnsttuncyLst!=null && rtrnothrCnddtCnsttuncyLst.size()>0){
-						 for (Object[] obj : rtrnothrCnddtCnsttuncyLst) {
-							 AppointmentScheduleVO candidateVO=getCandidateMatchVO(resultList,(Long)obj[0]);
-							  if(candidateVO!=null){
-								  if(obj[2]!=null){
-									 candidateVO.setAddressConstituency(obj[2].toString());
-								  }
-							  }
-						}
-					 }
 				}
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentSearchDetails", e);
