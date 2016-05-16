@@ -6852,5 +6852,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		query.setParameterList("cadreIds", cadreIds);
 		return query.list();
 	}
-	
+public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
+		
+		Query query=getSession().createQuery(" select model.tdpCadreId,model.userAddress.constituency.constituencyId,model.userAddress.constituency.name from TdpCadre model where model.tdpCadreId in (:tdpCadreIds)");
+		   query.setParameterList("tdpCadreIds", tdpCadreIds);
+		 return query.list();
+	}
 }

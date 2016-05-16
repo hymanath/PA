@@ -590,4 +590,16 @@ public List<Object[]> advancedSearchAppointmentMembersForCadreCommittee(String s
 		 query.setParameter("levelId",levelId);
 		 return query.list();
 		}	
+	public List<Object[]> getCandidatesConstituency(List<Long> candidateIds){
+		
+            StringBuilder queryStr=new StringBuilder();
+		    queryStr.append(" select model.appointmentCandidateId,C.constituencyId,C.name  " +
+	  		" from AppointmentCandidate model left join model.userAddress UA " +
+	  		" left join UA.constituency C " +
+	  		" where model.appointmentCandidateId in (:candidateIds)");
+		    Query query=getSession().createQuery(queryStr.toString());
+			query.setParameterList("candidateIds", candidateIds);
+			
+		return query.list();
+	}
 }

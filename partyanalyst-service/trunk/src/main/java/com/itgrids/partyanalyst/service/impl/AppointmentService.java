@@ -2960,6 +2960,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 	{
 		List<AppointmentScheduleVO> resultList = null;
 		List<Long> candidateList=new ArrayList<Long>(0);
+		List<Long> tdpCadreIdList=new ArrayList<Long>(0);
+		List<Long> otherTypeCandidateIdList=new ArrayList<Long>(0);
 		try{
 			
 			SimpleDateFormat prefer = new SimpleDateFormat("dd MMM yyyy");
@@ -3060,6 +3062,18 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 						
 						Long apptcanditype = params[19] !=null ?(Long)params[19]:null;
 						Long tdpcadreId =    params[21] !=null ?(Long)params[21]:null;
+					
+					
+						if(apptcanditype!=null){
+							if(apptcanditype.longValue()==1l || apptcanditype.longValue()==2l || apptcanditype.longValue()==3l){
+								if(tdpcadreId!=null && tdpcadreId>0l){
+									candidateVo.setTdpCadreId(tdpcadreId);
+									tdpCadreIdList.add(tdpcadreId);
+								}
+							}else{
+								otherTypeCandidateIdList.add(params[0] != null ? Long.valueOf(params[0].toString()) :0l);
+							}
+						}
 						
 						candidateList.add(params[0] != null ? Long.valueOf(params[0].toString()) :0l);
 						 //candidates designation based on appt cand type
@@ -3095,7 +3109,7 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 					setPublicRepresenativeLocations(resultList,publicRepresLocaMap);
 				}
 				
-				//FOR EXPORT TO EXCEL BLOCK 
+				//FOR EXPORT TO EXCEL BLOCK REQUIRED FIELDS
 				if(resultList !=null && resultList.size()>0){
 					 //Candidates last visit date 
 					List<Object[]> rtrnCnddtLstSttsLst=appointmentCandidateRelationDAO.getCandidateLastVisitedDtl(candidateList,inputVo.getUserId(),4l);
@@ -3142,10 +3156,33 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								  }
 							}
 						}
+					List<Object[]> rtrncnddtCnsttuncyLst=tdpCadreDAO.getCandidatesConstituency(tdpCadreIdList);
+						
+					if(rtrncnddtCnsttuncyLst!=null && rtrncnddtCnsttuncyLst.size()>0){
+						for (Object[] obj : rtrncnddtCnsttuncyLst) {
+							 AppointmentScheduleVO candidateVO=getTdpCadreMatchVO(resultList,(Long)obj[0]);
+							 if(candidateVO!=null){
+								 candidateVO.setAddressConstituency(obj[2]!=null?obj[2].toString():" ");
+							 }
+						}
+					}
+					List<Object[]> rtrnothrCnddtCnsttuncyLst=null;
+					if(otherTypeCandidateIdList!=null && otherTypeCandidateIdList.size()>0){
+					 rtrnothrCnddtCnsttuncyLst=appointmentCandidateDAO.getCandidatesConstituency(otherTypeCandidateIdList);
+					}
+					 if(rtrnothrCnddtCnsttuncyLst!=null && rtrnothrCnddtCnsttuncyLst.size()>0){
+						 for (Object[] obj : rtrnothrCnddtCnsttuncyLst) {
+							 AppointmentScheduleVO candidateVO=getCandidateMatchVO(resultList,(Long)obj[0]);
+							  if(candidateVO!=null){
+								  if(obj[2]!=null){
+									 candidateVO.setAddressConstituency(obj[2].toString());
+								  }
+							  }
+						}
+					 }
 				}
 		}catch(Exception e){
 			LOG.error("Exception raised at getAppointmentSearchDetails", e);
-			
 		}
 		return resultList;
 		
@@ -3157,6 +3194,21 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				for(AppointmentScheduleVO vo:appointmentScheduleVO.getSubList()){
 					if(vo.getId().equals(candidateId)){
 					   return vo;
+					}
+				}
+			}
+		}
+		return null;
+	}
+public AppointmentScheduleVO getTdpCadreMatchVO(List<AppointmentScheduleVO> resultList,Long tdpCadreId){
+		
+		if(resultList!=null && resultList.size()>0){
+			for (AppointmentScheduleVO appointmentScheduleVO : resultList) {
+				for(AppointmentScheduleVO vo:appointmentScheduleVO.getSubList()){
+					if(vo.getTdpCadreId()!=null){
+						if(vo.getTdpCadreId().equals(tdpCadreId)){
+							   return vo;
+							}
 					}
 				}
 			}
