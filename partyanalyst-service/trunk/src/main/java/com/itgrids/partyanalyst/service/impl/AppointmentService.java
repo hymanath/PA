@@ -2996,6 +2996,8 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 				List<Long> partyCommiteeDesigCadreIds = new ArrayList<Long>();
 				List<Long> cadreIds = new ArrayList<Long>();
 				Map<Long,String> publicRepresLocaMap = new HashMap<Long,String>();
+				Map<Long,Long> designationMap = new HashMap<Long, Long>();
+				List<Long> PrCadreIds = new ArrayList<Long>();
 				
 				List<Object[]> list = appointmentCandidateRelationDAO.getAppointmentSearchDetailsForStatus(strDate,endDate,inputVo,searchType);
 				if(list != null && list.size() > 0){
@@ -3091,12 +3093,17 @@ public void setDataMembersForCadre(List<Object[]> membersList, List<AppointmentC
 								partyCommiteeDesigCadreIds.add(tdpcadreId);
 							}else if(apptcanditype.longValue() == 1l && tdpcadreId!=null && params[23]!=null){
 								candidateVo.setCandDesignation(params[3] != null ? params[3].toString() : "");
-								publicRepresLocaMap.put(tdpcadreId,locationService.getLocationForDesignation(tdpcadreId,(Long)params[23]));
+								
+								designationMap.put(tdpcadreId, (Long)params[23]);
+								PrCadreIds.add(tdpcadreId);								
 							}
 						}
 						
 						vo.getSubList().add(candidateVo);
 					}
+					publicRepresLocaMap = locationService.getLocationMapForDesignation(designationMap,PrCadreIds);
+					
+					
 				}
 				
 				if(cadreIds!=null && cadreIds.size()>0){

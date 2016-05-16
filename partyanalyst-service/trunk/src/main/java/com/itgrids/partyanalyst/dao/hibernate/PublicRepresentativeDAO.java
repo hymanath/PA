@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
@@ -131,5 +132,57 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		return query.list();
 		
 		
+	}
+	
+	public List<Object[]> getUserAddressForCadre1(List<Long> tdpCadreIds)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select ST.state_id as stateId,ST.state_name as stateName, DT.district_id as districtId,DT.district_name as districtName" +
+				",C.constituency_id as constituencyId,C.name as constName," +
+				"PC.constituency_id as pcConId,PC.name as pcName,T.tehsil_id as tehsilId,T.tehsil_name as tehsilName," +
+				"LEB.local_election_body_id as localBodyId,LEB.name as localBodyName,WC.constituency_id as wardId" +
+				",WC.name as wardName,TCC.tdp_cadre_id as tdpCadreId" +
+				" from public_representative PR " +
+				"join tdp_cadre_candidate TCC on PR.candidate_id = TCC.candidate_id " +
+				"join user_address UA on PR.address_id = UA.user_address_id " +
+				"left join state ST on UA.state_id = ST.state_id " +
+				"left join district DT on UA.district_id = DT.district_id " +
+				"left join constituency C on UA.constituency_id = C.constituency_id " +
+				"left join tehsil T on UA.tehsil_id = T.tehsil_id " +
+				"left join constituency PC on UA.parliament_constituency_id = PC.constituency_id " +
+				"left join local_election_body LEB on UA.local_election_body = LEB.local_election_body_id " +
+				"left join constituency WC on UA.ward = WC.constituency_id " +
+				" where PR.candidate_id = TCC.candidate_id " +
+				" AND PR.address_id = UA.user_address_id " +
+				"  " );
+		if(tdpCadreIds !=null && tdpCadreIds.size()>0){
+			str.append(" AND TCC.tdp_cadre_id in (:tdpCadreIds) ");
+		}
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				 .addScalar("stateId",Hibernate.LONG)
+				 .addScalar("stateName",Hibernate.STRING)
+				 .addScalar("districtId",Hibernate.LONG)
+				 .addScalar("districtName",Hibernate.STRING)
+				 .addScalar("constituencyId",Hibernate.LONG)
+				 .addScalar("constName",Hibernate.STRING)
+				 .addScalar("pcConId",Hibernate.LONG)
+				 .addScalar("pcName",Hibernate.STRING)
+				 .addScalar("tehsilId",Hibernate.LONG)
+				 .addScalar("tehsilName",Hibernate.STRING)
+				 .addScalar("localBodyId",Hibernate.LONG)
+				 .addScalar("localBodyName",Hibernate.STRING)
+				 .addScalar("wardId",Hibernate.LONG)
+				 .addScalar("wardName",Hibernate.STRING)
+				 .addScalar("tdpCadreId",Hibernate.LONG);
+		
+		query.setParameterList("tdpCadreIds",tdpCadreIds);
+		
+		/*Query query = getSession().createQuery("select distinct model.userAddress " +
+				"from PublicRepresentative model,TdpCadreCandidate model1 where model.candidate.candidateId = model1.candidate.candidateId" +
+				" and model1.tdpCadreId = :tdpCadreId and  model1.tdpCadre.isDeleted='N' and  model1.tdpCadre.enrollmentYear ="+IConstants.CADRE_ENROLLMENT_NUMBER+"");
+		query.setParameter("tdpCadreId",tdpCadreId);*/
+		return query.list();		
 	}
  }

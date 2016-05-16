@@ -2,10 +2,11 @@ package com.itgrids.partyanalyst.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang.WordUtils;
+import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -19,7 +20,7 @@ public class LocationService {
 	private IDistrictDAO districtDAO;
 	private ITehsilDAO tehsilDAO;
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
-	
+	private static Logger LOG = Logger.getLogger(LocationService.class);
 	
 	
 	
@@ -480,5 +481,88 @@ public class LocationService {
 				e.printStackTrace();
 			}
 			return location;
+		}
+		
+		public Map<Long,String> getLocationMapForDesignation(Map<Long,Long> designationMap , List<Long> tdpCadreIds)
+		{
+			
+			Map<Long,String> publicRepresLocaMap = new HashMap<Long, String>();
+			
+			String location = "";
+			try{
+				//0.stateId,1.state,2.districtId,3.district,4.constituencyId,5.name,6.parlaimentId,7.parliament,8.tehsilId,9.tehsil,10.localBodyId,11.localBody,
+				//12.wardId,13.ward
+				List<Object[]> userAddressList = publicRepresentativeDAO.getUserAddressForCadre1(tdpCadreIds);
+				
+				if(userAddressList != null && userAddressList.size() > 0)
+				{   
+					//Object[] userAddress = userAddressList.get(0);
+					
+					for(Object[]  userAddress: userAddressList){
+						
+						Long designationId = 0l;
+						if((Long)userAddress[14] !=null){							
+							designationId = designationMap.get((Long)userAddress[14]);						
+						}
+						else{
+							return null;
+						}	
+						
+						if(Arrays.asList(IConstants.PR_STATE_DESG_IDS).contains(designationId))
+						  {
+							  if(userAddress[0] !=null && (Long)userAddress[0] >0){
+								  location = userAddress[1] != null ? userAddress[1].toString().trim()+" State" : "";
+							  }							  
+						  }
+						  else if(Arrays.asList(IConstants.PR_DISTRICT_DESG_IDS).contains(designationId))
+						  {
+							  if(userAddress[2] !=null && (Long)userAddress[2] >0){
+								  location = userAddress[3] != null ? userAddress[3].toString().trim() +" District": "";
+							  }									  
+						  }
+						  else  if(Arrays.asList(IConstants.PR_AC_DESG_IDS).contains(designationId)){
+							  if(userAddress[4] !=null && (Long)userAddress[4] >0){							  
+								  location = userAddress[5] != null ? userAddress[5].toString().trim()+" Constituency" : "";
+							  }
+						  }
+						
+						  else if(Arrays.asList(IConstants.PR_PC_DESG_IDS).contains(designationId))
+						  {
+							  if(userAddress[6] !=null && (Long)userAddress[6] >0){
+								  location = userAddress[7] != null ? userAddress[7].toString().trim() +" Parliament" : "";
+							  }
+							  
+						  }
+						  else if(Arrays.asList(IConstants.PR_MANDAL_DESG_IDS).contains(designationId))
+						  {
+							  if(userAddress[8] !=null && (Long)userAddress[8] >0){
+								  location = userAddress[9] != null ? userAddress[9].toString().trim() +" Mandal": "";
+							  }
+						  }
+						  else if(Arrays.asList(IConstants.PR_TOWN_DESG_IDS).contains(designationId))
+						  {
+							  if(userAddress[10] !=null && (Long)userAddress[10] >0){
+								  location = userAddress[11] != null ? userAddress[11].toString().trim() +" Town": "";
+							  }
+						  }
+						  else if(Arrays.asList(IConstants.PR_WARD_DESG_IDS).contains(designationId))
+						  {
+							  if(userAddress[12] !=null && (Long)userAddress[12] >0){
+								  location = userAddress[13] != null ? userAddress[13].toString().trim(): "";
+							  }
+						  }
+						  else
+							  location = userAddress[1] != null ? userAddress[1].toString().trim()+" State" : ""; 
+						
+						publicRepresLocaMap.put((Long)userAddress[14], location);
+					}
+					
+				}
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception occured in getLocationMapForDesignation() - ",e);
+			}
+			return publicRepresLocaMap;
 		}
 }
