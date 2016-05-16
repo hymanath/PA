@@ -125,7 +125,7 @@ public Long getAppointmentStatusId(Long appointmentId){
 		sb.append(" select model.appointmentStatusId,model.appointmentStatus.status,count(distinct model.appointmentId)" +
 				"   from   Appointment model where model.isDeleted='N' ");
 		if(date!=null){
-			sb.append(" and date(model.updatedTime) = :date ");
+			sb.append(" and date(model.insertedTime) = :date ");
 		}
 		if(apptUserId!=null && apptUserId>0l){
 			sb.append(" and model.appointmentUserId = :apptUserId ");
