@@ -715,7 +715,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 		if(fromDate != null && toDate !=null)
 		{
-			str.append(" and date(a.updated_time) between :fromDate and :toDate  ");
+			str.append(" and date(a.inserted_time) between :fromDate and :toDate  ");
 		}
 		
 		if(inputVo.getStatusIds() !=null && inputVo.getStatusIds().size()>0){
