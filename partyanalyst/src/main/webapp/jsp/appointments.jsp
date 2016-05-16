@@ -7985,11 +7985,12 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 		 if(result!=null && result.length>0){
 			 str+='<table class="table table-bordered text-center b_border" id="ExprtTExclappntmntCnddtDtlsTblId">';
 					 str+='<thead>';
+					     str+='<th>Appointment Unique Id</th>';
 						 str+='<th>Candidate Name</th>';
 						 str+='<th>Contact No</th>';
 						 str+='<th>Designation</th>';
-						 str+='<th>Constituency</th>';
 						 str+='<th>Location</th>';
+						 str+='<th>Constituency</th>';						 
 						 str+='<th>Last Appointment Status</th>';
 						 str+='<th>Last Visit Date</th>';
 						 str+='<th>Total Appointments Requested</th>';
@@ -8000,7 +8001,12 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 				 var candidateList=result[i].subList;
 				 if(candidateList!=null && candidateList.length>0){
 					 for(var i in candidateList){
-					 str+='<tr>';
+					 str+='<tr>';//AppointmentUniqueId
+					   if(candidateList[i].appointmentUniqueId!=null && candidateList[i].appointmentUniqueId.length>0){
+						str+='<td>'+candidateList[i].appointmentUniqueId+'</td>';
+						}else{
+							str+='<td> - </td>';
+						}
 						  if(candidateList[i].name!=null && candidateList[i].name.length>0){
 								str+='<td>'+candidateList[i].name+'</td>';
 						  }else{
@@ -8016,12 +8022,7 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 						 }else{
 							  str+='<td>-</td>';
 						 }
-						 if(candidateList[i].addressConstituency!=null && candidateList[i].addressConstituency.length>0){
-							  str+='<td>'+candidateList[i].addressConstituency+'</td>';
-						 }else{
-							  str+='<td>-</td>';
-						 }
-					    if(candidateList[i].apptCandiTypeId!=null && candidateList[i].apptCandiTypeId==1){
+						 if(candidateList[i].apptCandiTypeId!=null && candidateList[i].apptCandiTypeId==1){
 						  if(candidateList[i].constituency!=null && candidateList[i].constituency.length>0){
 							  str+='<td>'+candidateList[i].constituency+'</td>';
 						   }else{
@@ -8030,6 +8031,12 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 						 }else{
 							  str+='<td>-</td>';
 						 }
+						 
+						 if(candidateList[i].addressConstituency!=null && candidateList[i].addressConstituency.length>0){
+							  str+='<td>'+candidateList[i].addressConstituency+'</td>';
+						 }else{
+							  str+='<td>-</td>';
+						 }					    
 						 if(candidateList[i].candidateLastUpdatedStatus!=null && candidateList[i].candidateLastUpdatedStatus.length>0){
 							   str+='<td>'+candidateList[i].candidateLastUpdatedStatus+'</td>';
 						 }else{
