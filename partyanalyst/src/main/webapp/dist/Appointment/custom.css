@@ -682,3 +682,41 @@ body
 	.tableC thead th , .tableC tr td{font-size:9px !important;padding:2px !important;}
 	#candidateWiseCounts .table tr td{font-size:12px}
 }
+
+.tableC thead th , .tableC tr td{font-size:11px;padding:4px !important;}
+.tablepaddingremove thead th , .tablepaddingremove tr td{padding:0px !important;}
+.SelectPosition li{padding:5px;width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;list-style:none;cursor:pointer;}
+.daterangepicker_end_input{padding:0px !important;}
+.SelectPosition li:last-child{border-bottom:1px solid #ccc;}
+.SelectPositionScroll{width: 100%;height: 140px;overflow: auto;}
+.SelectPosition{padding:0px;margin-top:10px;}
+.m_left16{margin-left: 16px !important;}
+.validateClr{color:red;}
+.ui-widget-header{background:#fff !important;border:1px solid #fff !important;color:#333;font-weight:400;}
+.m_top5{margin-top:5px;}
+.closeIcon{background:#ccc;color:#666;padding:5px;position:absolute;right:0px;top:0px;cursor:pointer;}
+.block{position:relative;}
+.m_top10{margin-top:10px;}
+.prev,.next{width:60px !important;}
+#upcomingAppointments,#inprogreessAppointMentId,#completedAppointMentId {height:36px;}
+.tableAppointment thead th{background: #f2f2f2 none repeat scroll 0 0;border: 1px solid #fff !important;padding-left: 8px !important;font-weight: normal;}
+.removetopborder td{border-top: none !important;}
+.addwidth{width:250px !important;}
+.advanceNameCls{heigth:30px;}
+.displayrow ul li{display: inline;padding:7px !important;}
+.alignmentprefrabledates{border: 1px solid rgb(221, 221, 221) !important;padding: 8px !important;margin-right: -3px !important;}
+
+.tableCol tr td
+{
+	border-right:5px solid #fff !important;
+	background:#ddd
+}
+.tableCol tr:nth-child(3) td
+{
+	border-bottom:5px solid #fff !important;
+}
+.bg_f2{background:#f2f2f2}
+.bg_e6{background:#e6e6e6}
+.pad_5{padding:2px 5px;}
+.pad_10{padding:8px !important;}
+.font10{font-size:10px;}

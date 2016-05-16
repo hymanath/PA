@@ -58,51 +58,10 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<!-- YUI Dependency files (End) -->
-<style type="text/css">
-.tableC thead th , .tableC tr td{font-size:11px;padding:4px !important;}
-.tablepaddingremove thead th , .tablepaddingremove tr td{padding:0px !important;}
-.SelectPosition li{padding:5px;width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;list-style:none;cursor:pointer;}
-.daterangepicker_end_input{padding:0px !important;}
-.SelectPosition li:last-child{border-bottom:1px solid #ccc;}
-.SelectPositionScroll{width: 100%;height: 140px;overflow: auto;}
-.SelectPosition{padding:0px;margin-top:10px;}
-.m_left16{margin-left: 16px !important;}
-.validateClr{color:red;}
-.ui-widget-header{background:#fff !important;border:1px solid #fff !important;color:#333;font-weight:400;}
-.m_top5{margin-top:5px;}
-.closeIcon{background:#ccc;color:#666;padding:5px;position:absolute;right:0px;top:0px;cursor:pointer;}
-.block{position:relative;}
-.m_top10{margin-top:10px;}
-.prev,.next{width:60px !important;}
-#upcomingAppointments,#inprogreessAppointMentId,#completedAppointMentId {height:36px;}
-.tableAppointment thead th{background: #f2f2f2 none repeat scroll 0 0;border: 1px solid #fff !important;padding-left: 8px !important;font-weight: normal;}
-.removetopborder td{border-top: none !important;}
-.addwidth{width:250px !important;}
-.advanceNameCls{heigth:30px;}
-.displayrow ul li{display: inline;padding:7px !important;}
-.alignmentprefrabledates{border: 1px solid rgb(221, 221, 221) !important;padding: 8px !important;margin-right: -3px !important;}
-
-.tableCol tr td
-{
-	border-right:5px solid #fff !important;
-	background:#ddd
-}
-.tableCol tr:nth-child(3) td
-{
-	border-bottom:5px solid #fff !important;
-}
-.bg_f2{background:#f2f2f2}
-.bg_e6{background:#e6e6e6}
-.pad_5{padding:2px 5px;}
-.pad_10{padding:8px !important;}
-.font10{font-size:10px;}
-
-</style>
 </head>
 <body>
 <div class="container">
 <div class="row">
-
   <div class="col-md-12 col-xs-12 col-sm-12">
 	<div class="panel panel-default panelCustom1">
 				<div class="panel-heading">
@@ -119,9 +78,7 @@
 					<div>
 					  <ul class="nav nav-tabs navTabsCustom" role="tablist">
 						<li role="presentation"  class="active refreshBlockDiv"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><img src="dist/Appointment/img/dashboard.png">Dashboard</a></li>
-						
 						<li role="presentation"><a style="padding-left:0px;padding-right:0px" href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="createAppReqCls"><img src="dist/Appointment/img/createappointment.png">Create Appointment Request</a></li>
-						
 						<li role="presentation"><a href="#settings" style="cursor:pointer;" aria-controls="settings" role="tab" data-toggle="tab" class="cnfrmaptsCls"><img src="dist/Appointment/img/confirmappointments.png">Confirm Appointments</a></li>
 						<li role="presentation"><a href="#advncdDashboard" aria-controls="advnceDashboard" role="tab" data-toggle="tab" class="advnceDashboardCls"><img src="dist/Appointment/img/AdvanceDashboard.png">Advance Dashboard</a></li>
 					  </ul>
@@ -146,24 +103,14 @@
 									</div>
 									<!-- EXPORT TO EXCEL TABLE ID-->
 									<div style='display:none' id="appntmntCnddtDtlsTblId"></div>
-									
 									<table class="table table-bordered bg_ff m_top10">
-										<tr>
+										<tr><td></td>
 											<td>
-												
-											</td>
-											<td>
-												<table class="table removetopborder">
-													<tr>
-														
-														<td>
-															
-														</td>
-													</tr>
+												<table class="table removetopborder">	
+													<tr><td></td></tr>	
 												</table>
-                                            	
-                                            </td>
-										</tr>
+											</td>
+										</tr>		
 									</table>
 								</div>
 							</div>
@@ -173,7 +120,6 @@
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="newStatusBuildingId"></div>
-												
 											</div>
 										</div>
 									</div>
@@ -184,13 +130,11 @@
 								<div class="col-md-12">
 									<div class="todayBlock ">
 										<div class="row">
-											
 											<div class="col-md-3">
                                             	<label>Appointment Status</label>
                                                 <select class="dropkickClass" id="selectStatusId">
                                                 	<option value="0">All</option>
-													
-                                                </select>
+											    </select>
 											</div>
 											<div class="col-md-2">
                                             	<label>Appointment Created By</label>
@@ -224,15 +168,12 @@
 									</div>
 									</div>
 							</div>
-							
-                            <div class="row">
-								
+						    <div class="row">
 								<div class="col-md-12 ">
 									<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="srhPrcssngImgId"></center></div>
                                 	<div id="searchApptmntDivId"></div>
                                 </div>
-								
-                            </div>
+						    </div>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="profile">
 							<div class="row">
@@ -247,8 +188,6 @@
 												  <button type="button" attr_val="1" class="btn btnClassChange btnNewCustom btnActive">SEARCH</button>
 												  <button type="button" attr_val="2" class="btn btnClassChange btnNewCustom">ADVANCED SEARCH</button>
 												</div>
-												
-												
 											</div>
 										</div>
                                         <div class="row m_top20">
@@ -266,7 +205,6 @@
                                                 <input type="text" class="form-control clearCls" id="searchValueId">
 												<span id="errDigitsId" class="full-right" style="color:red;"></span>
                                             </div>
-											
 											<div class="col-md-3 advanceSearchCls">
 												<label>Search Type</label>
                                                 <select class="dropkickClass"  id="advanceSearchTypeId" onchange="showHideBySearchType();buildLevels();">
@@ -284,8 +222,7 @@
 													<option value="0">Select Designation</option>
 												</select>
 												<span id="advanceErrDigitsId" class="full-right" style="color:red;"></span>
-												
-                                            </div>
+						                    </div>
 											<div id="OtherSelectlocationsDiv">
 												<div>
 													<div class="col-md-2 levelShowCls" style="display:none;">
@@ -406,18 +343,13 @@
 													<!--<div class="errorSpdCls validateClr"></div>-->
 												</div>
 												<div class="col-md-6 m_top10">
-													
-													
 												</div>
 												<div class="col-md-12 m_top10">
 													<label>Appointment Purpose</label>
 													<textarea class="form-control" id="appointmentReasonId" name="appointmentVO.reason"></textarea>
 													<!--<div class="errorArCls validateClr"></div>-->
 												</div>
-												
-												
 											</div>
-											
 										</div>
 										<div><img id="checkboxMemberAjax" src="images/icons/loading.gif" style="display:none;margin-top: 50px;"/></div>
 										<div class="errorCandidateMainDivCls validateClr"></div>
@@ -443,7 +375,6 @@
 										<input type="hidden" id="uniqueCode" name="appointmentVO.uniqueCode">
 										<input type="hidden" id="appointmentUserId" name="appointmentVO.appointmentUserId">
 									</form>
-									
 									<div class="block cloneBlock addattrid" style="display:none;">
 										<input type="hidden" class="cloneCandidateIdCls"/>
 										<input type="hidden" class="cloneCandiImageUrlCls"/>
@@ -505,7 +436,6 @@
 											</div>
 										</div>
 										<div class="row m_top10">
-											
 											<div class="col-md-4 cloneDistDivCls" style="display:none;">
 												<label>Select District</label>
 												<!--<span style='color:red'> &nbsp * </span>-->
@@ -542,7 +472,6 @@
 												</div>
 											</div>
 									</div>
-									
 								</div>
 							</div>
 						</div>
@@ -574,12 +503,9 @@
 											<div id="bldCnfrmtnMdlBoxId"></div>
 											<div id="buildAppntmntLblTblId"></div>  
 											<div id="buildAppntmntStsTblId"></div>  
-											 
 											</div>
-										
 										</div>
-										 
-                                  </div>
+						          </div>
 								<div class="panel panel-default m_top10 panelWhite" id="appointmentReqBlock">
 									<div class="panel-heading b_bottom0">
 										<h4 class="text-success">ALL APPOINTMENT REQUEST MEMBER
@@ -622,7 +548,6 @@
 											</div>
 										</div>
                                     	<div class="row m_top10">
-										
 											<div class="col-md-3">
 												<label>Date Range</label>
 												<div class="input-group inputSearch">
@@ -649,8 +574,7 @@
 												</select>
 												<span style='color:red' id="appDesigErrId"></span>
 											</div>
-											
-                                            <div class="col-md-3">
+						                    <div class="col-md-3">
                                             	<label>Appointment Priority Type<span style='color:red'> &nbsp * </span></label>
                                                 <select class="manageAppTypeCls errClearCls" id="manageAppTypeId"></select>
 												<span style='color:red' id="appPrrtyErrTypId"></span>
@@ -938,25 +862,12 @@
  <!--   MODAL POPUP FOR APPOINTMENT DETAILS  STRAT-->
 <div class="modal fade " id="appointmentAllDetailsDiv" tabindex="-1" role="dialog">
   <div class="modal-dialog  modal-lg">
-  
     <div class="modal-content" >
-	
 	<div id="buildAppointmentAllDetailsDiv"> </div>
-	
-  
-	  
-    </div>
-	
-	
-	
+	</div>
   </div>
 </div>
  <!--   MODAL POPUP FOR APPOINTMENT DETAILS  END-->
- 
- 
- 
- 
- 
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
 <script src="dist/2016DashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -976,6 +887,7 @@
 <script src="dist/Appointment/AdvancedDashboard/advanceddashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/Appointment/statusColorAppointment.js" type="text/javascript"></script>
+<script src="dist/Appointment/AppointmentJS/appointment.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* Drag and Drop */
 
@@ -7680,402 +7592,7 @@ $(document).on("click",".btnClassChange",function(){
 	$(".btnClassChange").removeClass("btnActive");
 	$(this).addClass("btnActive");
 });
-	function buildTotalAppointmentStatusForNew(result){
-			var str='';
-		   var totalApptCount =0;
-			if(result!=null && result.length>0){
-				for(var i in result){
-					totalApptCount = totalApptCount + result[i].statusCount;
-				}
-			}
-			str+='<table class="table table-bordered text-center b_border" style="font-size: 18px; text-transform: uppercase; color: rgb(255, 255, 255);">';
-			str+='<tbody>';
-			str+='<tr>';
-				str+='<td colspan="7" style="background: rgba(10, 37, 63,0.5) none repeat scroll 0px 0px;">TOTAL APPOINTMENTS- '+totalApptCount+'</td>';
-			str+='</tr>';
-			str+='<tr></tr>';
-			str+='<tr>';
-			if(result !=null){
-				for(var i in result){
-					var color = getColorCodeByStatus(result[i].status);
-					if(result[i].appointmentStatusId !=2){
-						if(result[i].statusCount == 0){
-						str+='<td><span style="color: '+color+'">'+result[i].status+' <br><span style="font-weight: bold; font-size: 28px ! important;">'+result[i].statusCount+'</span></span></td>';
-						}else{
-						 var statusArr= result[i].clickIds;
-						 str+='<td class="appointmentStatusCls" attr_statusArrId ="'+statusArr+'"><span style="color: '+color+';cursor:pointer">'+result[i].status+' <br><span style="font-weight: bold; font-size: 28px ! important;">'+result[i].statusCount+'</span></span></td>';
-					  }
-					
-					}else if(result[i].appointmentStatusId ==2){
-						var statusArr= result[i].clickIds;
-						 str+='<td><span style="color: '+color+';cursor:pointer">'+result[i].status+' - <span style="font-weight: bold; font-size: 28px ! important;"><span class="appointmentStatusCls" attr_status_type="totalApproved" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</span></span>';
-						
-						str+='<table style="font-size: 12px; color: rgb(51, 51, 51);" class="table table-border"><tbody>';
-						str+='<tr>';
-						
-						if(result[i].subList !=null && result[i].subList.length>0){
-							for(var j in result[i].subList){
-							var internalColor = getColorCodeByStatus(result[i].subList[j].status)		
-								if(result[i].subList[j].statusCount == 0){
-								str+='<td style="background: '+internalColor+'"> '+result[i].subList[j].status+' - '+result[i].subList[j].statusCount+'</td>';
-								}else{
-								var statusArr= result[i].subList[j].clickIds;
-								 str+='<td class="appointmentStatusCls" attr_statusArrId ="'+statusArr+'" style="background: '+internalColor+';cursor:pointer"> '+result[i].subList[j].status+' - '+result[i].subList[j].statusCount+'</td>';	
-								}					
-							}						
-						}
-						str+='</tr>';
-						str+='</tbody></table></span></td>';
-					}
-				}			
-			}
-			str+='</tr>';
-		str+='</tbody>';
-		str+='</table>';
-			
-			$("#newStatusBuildingId").html(str);
-			
-	}
 	
-
-
-
-$(document).on("click",".appointmentAllDetailsModel",function(e){
-	
-	$("#buildAppointmentAllDetailsDiv").html('');
-	$("#appointmentAllDetailsDiv").modal("show");
-	$("#buildAppointmentAllDetailsDiv").html('<img class="col-xs-offset-6" src="images/search.gif" style="width: 30px; height: 30px;"/>');
-	
-	var appointmentId = $(this).attr("attr_appt_id");
-		
-		var jsObj={
-			appointmentId:appointmentId
-		}
-		
-		$.ajax({
-			type : 'POST',
-			url : 'getTotalAppointmentDetailsAction.action',
-			dataType : 'json',
-			data: {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-			$("#buildAppointmentAllDetailsDiv").html('');
-			buildappointmentAllDetails(result);
-		});	
- })
-	
-	
-	function emptyCheck(value){
-		if(value != null && value.trim().length>0){
-			return true;
-		}
-		return false;
-	}
-	
-	function buildappointmentAllDetails(result){
-		
-		 setcolorsForStatus();
-	var str='';
-	
-	//Header
-	
-	str+='<div class="modal-header" style="background:#CCCCCC;padding-bottom:0px;">';
-		str+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-			str+='<div class="row">';
-			
-			  str+='<div class="col-md-7">';
-				 str+='<h4 class="modal-title text-capitalize text-success text-capitalize" ><img style="width: 30px; height: 31px;" src="dist/Appointment/img/i_icon.png"/> appointment request information</h4>';
-			  str+='</div>';
-			  var color = getColorCodeByStatus(result.status);
-			  str+='<div class="col-md-4" style="background:url(dist/Appointment/img/apptDetailsStrip.png) no-repeat; padding:11px;margin-top:-21px">';
-				  str+='<p style="margin-top: 5px;text-align: center;">Appointment Status: <span  style="color:'+color+'">'+result.status+'</span></p>';
-				  if(result.statusId==3){
-					  var dateTime = result.date //+"  "+result.fromTime+" to "+result.toTime;
-					  str+='<p class="text-success" style="text-align:center;"><i class="glyphicon glyphicon-time"></i>'+ dateTime   +'</p>';
-				  }
-			  str+='</div>';
-			  
-		str+='</div>';
-      str+='</div>';
-	  
-	  //body
-      str+='<div class="modal-body">';
-		  str+='<div class="row">';
-		  
-		   str+=' <div class="col-md-12">';
-			  str+='<div class="row" style="background:#8BA4A9;margin-top:-15px;padding:10px">';
-			  
-				str+='<div class="col-md-4">';
-				 str+=' <label> ID : <b>'+result.uniqueId+'</b></label>';
-				str+='</div>';
-				
-			   str+=' <div class="col-md-4">';
-			   if( emptyCheck(result.priority) ){
-				 str+='  <label>Priority Type : <b>'+result.priority+'</b></label>';  
-			   }
-			   str+=' </div>';
-			   
-			   str+=' <div class="col-md-4">';
-				str+='  <label>Created Date : <b>'+result.createdDate+'</b></label>';
-				str+='</div>';
-				
-			  str+='</div>';
-			str+='</div>';
-			
-			var requestedDates;
-			if(result.appointmentScheduleVO.apptpreferableDates!= null){
-				requestedDates = result.appointmentScheduleVO.apptpreferableDates;
-			}else if(result.appointmentScheduleVO.dateType != null && result.appointmentScheduleVO.dateType.trim()!="" && result.appointmentScheduleVO.maxDate != null && result.appointmentScheduleVO.minDate != null){
-				requestedDates = result.appointmentScheduleVO.dateType+'('+result.appointmentScheduleVO.minDate+' to '+result.appointmentScheduleVO.maxDate+')';
-			}
-			if(emptyCheck(requestedDates)){
-				str+='<div class="col-md-12 m_top10">';
-			      str+=' <label>Requested Dates : <b> '+requestedDates+'</b></label>';
-		        str+=' </div>';
-			}
-		 
-			 str+='<div class="col-md-12 m_top10">';
-			// str+=' <p class="text-success"  style="font-weight: bold;">APPOINTMENT PURPOSE</p>';
-			 str+='<h5 class="text-success" style="font-weight: bold;">APPOINTMENT PURPOSE<label class="pull-right" style="border-radius:20px;" data-toggle="tooltip" data-placement="top" title="Check to edit appointment purpose"><input type="checkbox" id="editCheckBoxId"/></label></h5>';
-			 str+='<textarea class="form-control appntmntRsnCls" rows="2" attr_reason=\''+result.reason+'\' readonly>'+result.reason+'</textarea>';
-			 str+='</div>';
-			 str+='<div style="text-center;margin-left:20px" id="updateReasonStatus"></div>';
-		     str+='<div class="col-md-offset-10 col-md-2 m_top10">';
-			 str+='<button type="button" class="btn btn-success" style="border-radius:20px;" attr_apppointment_id='+result.appointmentId+' id="updateAppBtnReasonId" disabled>Update</button>';
-			str+='</div>';
-			
-			str+='<div class="col-xs-12  m_top10">';
-			str+='<h4 class="panel-title text-success "  style="font-weight: bold;">';
-				str+='<span style=" margin-left: 15px;"">PROFILE DETAILS</span>';
-				str+='<span class="col-xs-offset-4">LOCATION DETAILS</span>';
-			str+='</h4>';
-			
-			if(result.subList !=null && result.subList.length > 0){
-				
-				for( var i in result.subList){
-					str+='<div class="row">';
-					str+='<div class="col-md-6 m_top10">';
-					str+=' <div class="media">';
-					
-						 str+='<div class="media-left">';
-							str+='<img class="media-object thumbnail" src="'+result.subList[i].imageURL+'" style="height:80px;" onerror="setDefaultImage(this);" alt="Candidate Image" >';
-						 str+='</div>';
-						 
-						 str+='<div class="media-body">';
-							  str+='<p><span>'+result.subList[i].candidateName+'</span> </p>';
-							  
-							  var candDesignation = result.subList[i].candDesignation;
-							  var location = result.subList[i].location;
-							  var candiDesignationBuild = "";
-
-								if(candDesignation!=null && candDesignation.length>0){
-									candiDesignationBuild =  candDesignation;
-									if(location!=null && location.length>0){
-										candiDesignationBuild = candiDesignationBuild + " - " + location ;
-									}
-								}
-								if(emptyCheck(candiDesignationBuild)){
-									str+='<span>'+candiDesignationBuild+'</span>'
-								}
-							  
-							  if( emptyCheck(result.subList[i].mobileNo) ){
-								 str+='<p>Phone : <span>'+result.subList[i].mobileNo+'</span></p>'; 
-							  }
-							   if( emptyCheck(result.subList[i].memberShipId) ){
-								 str+='<p>Membership Id : <span>'+result.subList[i].memberShipId+'</span></p>'; 
-							  }
-							  
-							  if( emptyCheck(result.subList[i].voterCardNo) ){
-								  if(emptyCheck(result.subList[i].voterConstituency)){
-									str+='<p>Voter Card No : <span>'+result.subList[i].voterCardNo+' ('+result.subList[i].voterConstituency +' )</span></p>';   
-								  }else{
-									  str+='<p>Voter Card No : <span>'+result.subList[i].voterCardNo+'</span></p>'; 
-								  }
-								 
-							  }
-						 str+='</div>';
-				  str+='</div>';
-				 str+='</div>';
-			 
-				   str+='<div class=" col-md-6 m_top10">';
-					
-						str+='<div class="m_top10">';
-						     if( emptyCheck(result.subList[i].state) ){
-								 str+='<p>State : <span>'+result.subList[i].state+'</span></p>'; 
-							  }
-							   if( emptyCheck(result.subList[i].district) ){
-								 str+='<p>District : <span>'+result.subList[i].district+'</span></p>'; 
-							  }
-							   if( emptyCheck(result.subList[i].constituency) ){
-								 str+='<p>Constituency : <span>'+result.subList[i].constituency+'</span></p>'; 
-							  }
-							   if( emptyCheck(result.subList[i].tehsil) ){
-								 str+='<p>Mandal : <span>'+result.subList[i].tehsil+'</span></p>'; 
-							  }
-							   if( emptyCheck(result.subList[i].localElectionBody) ){
-								 str+='<p>Muncipality : <span>'+result.subList[i].localElectionBody+'</span></p>'; 
-							  }
-							   if( emptyCheck(result.subList[i].village) ){
-								 str+='<p>Village : <span>'+result.subList[i].village+'</span></p>'; 
-							  }
-							  if( emptyCheck(result.subList[i].ward) ){
-								 str+='<p>Ward : <span>'+result.subList[i].ward+'</span></p>'; 
-							  }
-							
-						str+='</div>';
-				  str+='</div>';
-				  str+='</div>';
-				}
-			}
-			
-		 str+=' </div>';
-		 
-		 str+='</div>';
-     str+=' </div>';
-     str+=' <div class="modal-footer">';
-     str+=' <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
-     str+=' </div>';
-	
-	    $("#buildAppointmentAllDetailsDiv").html(str);
-	}
-	
-	$(document).on("click","#updateAppBtnReasonId",function(){
-		var appointmentId=$(this).attr("attr_apppointment_id");
-		var updatedReason=$(".appntmntRsnCls").val();
-		
-		var jsObj={
-			appointmentId:appointmentId,
-			updatedReason:updatedReason
-		}
-		 $.ajax({
-			 type:'POST',
-			 url :'updateAppointmentReasonAction.action',
-			 dataType:'json',
-			 data: {task:JSON.stringify(jsObj)}
-		 }).done(function(result){
-			 if(result!=null && result!=0){
-				 if(result.exceptionMsg="success"){
-					$("#updateReasonStatus").html("<p style='color:green'>Appointment purpose updated successfully.");  
-					setTimeout(function(){$("#updateReasonStatus").html("");},2000);
-					  //clear fields after updating
-					  $('#editCheckBoxId').attr('checked', false);
-					  $(".appntmntRsnCls").attr("readonly",true);
-		              $("#updateAppBtnReasonId").attr("disabled",true);
-					  $(".appntmntRsnCls").attr("attr_reason",updatedReason);
-				 }else{
-					 $("#updateReasonStatus").html("<p style='color:red'>Error occured ...Try again.");  
-				 }
-			 }
-		 })
-	});
-	$(document).on("click","#editCheckBoxId",function(){
-		 var reason=$(".appntmntRsnCls").attr("attr_reason");
-		if($(this).is(':checked')){
-			$(".appntmntRsnCls").removeAttr("readonly");
-	        $("#updateAppBtnReasonId").removeAttr("disabled");
-		}else{
-		    $(".appntmntRsnCls").attr("readonly",true);
-		    $("#updateAppBtnReasonId").attr("disabled",true);
-		    $(".appntmntRsnCls").val(' ');
-		    $(".appntmntRsnCls").val(reason);
-		}
-    });
-
-	 function exportToExcel(result,statusId,statusType){
-		 var str='';
-		 if(result!=null && result.length>0){
-			 str+='<table class="table table-bordered text-center b_border" id="ExprtTExclappntmntCnddtDtlsTblId">';
-					 str+='<thead>';
-					     str+='<th>Appointment Unique Id</th>';
-						 str+='<th>Candidate Name</th>';
-						 str+='<th>Contact No</th>';
-						 str+='<th>Designation</th>';
-						 str+='<th>Location</th>';
-						 str+='<th>Constituency</th>';						 
-						 str+='<th>Last Appointment Status</th>';
-						 str+='<th>Last Visit Date</th>';
-						 str+='<th>Total Appointments Requested</th>';
-						 str+='<th>Total Completed Appointments</th>';
-					 str+='</thead>'; 
-					str+='<tbody>';
-			 for(var i in result){
-				 var candidateList=result[i].subList;
-				 if(candidateList!=null && candidateList.length>0){
-					 for(var i in candidateList){
-					 str+='<tr>';//AppointmentUniqueId
-					   if(candidateList[i].appointmentUniqueId!=null && candidateList[i].appointmentUniqueId.length>0){
-						str+='<td>'+candidateList[i].appointmentUniqueId+'</td>';
-						}else{
-							str+='<td> - </td>';
-						}
-						  if(candidateList[i].name!=null && candidateList[i].name.length>0){
-								str+='<td>'+candidateList[i].name+'</td>';
-						  }else{
-							  str+='<td>-</td>';
-						  }
-						 if(candidateList[i].mobileNo!=null && candidateList[i].mobileNo.length>0){
-								 str+='<td>'+candidateList[i].mobileNo+'</td>';
-						}else{
-								 str+='<td>-</td>';
-						}
-						 if(candidateList[i].designation!=null && candidateList[i].designation.length>0){
-							  str+='<td>'+candidateList[i].designation+'</td>';
-						 }else{
-							  str+='<td>-</td>';
-						 }
-						 if(candidateList[i].apptCandiTypeId!=null && candidateList[i].apptCandiTypeId==1){
-						  if(candidateList[i].constituency!=null && candidateList[i].constituency.length>0){
-							  str+='<td>'+candidateList[i].constituency+'</td>';
-						   }else{
-							  str+='<td>-</td>';
-						   }
-						 }else{
-							  str+='<td>-</td>';
-						 }
-						 
-						 if(candidateList[i].addressConstituency!=null && candidateList[i].addressConstituency.length>0){
-							  str+='<td>'+candidateList[i].addressConstituency+'</td>';
-						 }else{
-							  str+='<td>-</td>';
-						 }					    
-						 if(candidateList[i].candidateLastUpdatedStatus!=null && candidateList[i].candidateLastUpdatedStatus.length>0){
-							   str+='<td>'+candidateList[i].candidateLastUpdatedStatus+'</td>';
-						 }else{
-							   str+='<td>-</td>';
-						 } 
-						if(candidateList[i].candidateLastVisitDate!=null && candidateList[i].candidateLastVisitDate.length>0){
-							  str+='<td>'+candidateList[i].candidateLastVisitDate+'</td>';
-						}else{
-							str+='<td>-</td>';
-						}
-						if(candidateList[i].totalRequestedAppCount!=null && candidateList[i].totalRequestedAppCount>0){
-							 str+='<td>'+candidateList[i].totalRequestedAppCount+'</td>';
-						}else{
-							 str+='<td>-</td>';
-						}
-						if(candidateList[i].totalCompletedAppCount!=null && candidateList[i].totalCompletedAppCount>0){
-							  str+='<td>'+candidateList[i].totalCompletedAppCount+'</td>';
-						}else{
-							  str+='<td>-</td>';
-						}
-					str+='</tr>';
-					}
-				
-				 }
-			 }
-			  str+='</tbody>';
-			str+='</table>';
-		 }
-		 $("#appntmntCnddtDtlsTblId").html(str);
-	 }	 
-
-
- $(document).on('click', '.exportToExcelCls', function(){
-   generateAppntmntCnddtDtlsToExcel();
- });
-  function generateAppntmntCnddtDtlsToExcel()
-  {	
-		tableToExcel('ExprtTExclappntmntCnddtDtlsTblId', 'Appointment Candidates Report');
-  }
 </script>
 
 </body>
