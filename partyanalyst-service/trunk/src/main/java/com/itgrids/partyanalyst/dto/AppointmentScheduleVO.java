@@ -45,7 +45,16 @@ private Long totalRequestedAppCount;
 private Long totalCompletedAppCount;
 private String candidateLastVisitDate;
 private String candidateLastUpdatedStatus;
+private String addressConstituency;
 
+private List<AppointmentScheduleVO> subList = new ArrayList<AppointmentScheduleVO>();
+
+public String getAddressConstituency() {
+	return addressConstituency;
+}
+public void setAddressConstituency(String addressConstituency) {
+	this.addressConstituency = addressConstituency;
+}
 public Long getTotalRequestedAppCount() {
 	return totalRequestedAppCount;
 }
@@ -101,11 +110,6 @@ public Long getAppointmentId() {
 public void setAppointmentId(Long appointmentId) {
 	this.appointmentId = appointmentId;
 }
-private List<AppointmentScheduleVO> subList = new ArrayList<AppointmentScheduleVO>();
-
-
-
-
 
 public List<AppointmentScheduleVO> getSubList() {
 	return subList;
