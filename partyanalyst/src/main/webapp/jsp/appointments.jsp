@@ -8015,8 +8015,8 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 					 }else{
 						  str+='<td>-</td>';
 					 }
-					 if(candidateList[i].constituency!=null && candidateList[i].constituency.length>0){
-						  str+='<td>'+candidateList[i].constituency+'</td>';
+					 if(candidateList[i].addressConstituency!=null && candidateList[i].addressConstituency.length>0){
+						  str+='<td>'+candidateList[i].addressConstituency+'</td>';
 					 }else{
 						  str+='<td>-</td>';
 					 }
