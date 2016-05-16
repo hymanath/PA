@@ -3920,12 +3920,12 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		str+='<div class="upcomingAppointments heightAdjust">';
 		if(statusType=="singleStatus"){
 			if(result[0].appointmentStatus!=null){
-			str+='<h4 class="text-success">'+result[0].appointmentStatus.toUpperCase() +' APPOINTMENTS <span class="exportToExcelCls btn-xs btn-info col-md-offset-6" style="padding: 6px;">EXPORT EXCEL</span> </h4>';	
+			str+='<h4 class="text-success">'+result[0].appointmentStatus.toUpperCase() +' APPOINTMENTS <input type="button"  value ="EXPORT EXCEL" class="exportToExcelCls btn btn-xs btn-info col-md-offset-6" style="padding: 6px;"></input></h4>';	
 			}
 		}else if(statusType=="totalApproved"){
-			 str+='<h4 class="text-success">TOTAL APPROVED APPOINTMENTS <span class="exportToExcelCls btn-xs btn-info col-md-offset-6" style="padding: 6px;">EXPORT EXCEL</span></h4>';
+			 str+='<h4 class="text-success">TOTAL APPROVED APPOINTMENTS <input type="button"  value ="EXPORT EXCEL" class="exportToExcelCls btn btn-xs btn-info col-md-offset-6" style="padding: 6px;"></input></h4>';
 		}else{
-			str+='<h4 class="text-success">TOTAL APPOINTMENTS <span class="exportToExcelCls btn btn-xs btn-info col-md-offset-6" style="padding: 6px;">EXPORT EXCEL</span></h4>';
+			str+='<h4 class="text-success">TOTAL APPOINTMENTS<input type="button"  value ="EXPORT EXCEL" class="exportToExcelCls btn btn-xs btn-info col-md-offset-6" style="padding: 6px;"></input></h4>';
 		}
 		
 		str+='<div class="updateAppointment arrow_box">';
@@ -8053,7 +8053,7 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 
 
  $(document).on('click', '.exportToExcelCls', function(){
- generateAppntmntCnddtDtlsToExcel();
+   generateAppntmntCnddtDtlsToExcel();
  });
   function generateAppntmntCnddtDtlsToExcel()
   {	
