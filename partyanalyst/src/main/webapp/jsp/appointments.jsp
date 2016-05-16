@@ -7980,76 +7980,86 @@ $(document).on("click",".appointmentAllDetailsModel",function(e){
 		}
     });
 
- function exportToExcel(result,statusId,statusType){
-	 var str='';
-	 if(result!=null && result.length>0){
-		 str+='<table class="table table-bordered text-center b_border" id="ExprtTExclappntmntCnddtDtlsTblId">';
-				 str+='<thead>';
-					 str+='<th>Candidate Name</th>';
-					 str+='<th>Contact No</th>';
-					 str+='<th>Designation</th>';
-					 str+='<th>Constituency</th>';
-					 str+='<th>Last Appointment Status</th>';
-					 str+='<th>Last Visit Date</th>';
-					 str+='<th>Total Appointments Requested</th>';
-					 str+='<th>Total Completed Appointments</th>';
-				 str+='</thead>'; 
-				str+='<tbody>';
-		 for(var i in result){
-			 var candidateList=result[i].subList;
-			 if(candidateList!=null && candidateList.length>0){
-				 for(var i in candidateList){
-				 str+='<tr>';
-					  if(candidateList[i].name!=null && candidateList[i].name.length>0){
-							str+='<td>'+candidateList[i].name+'</td>';
-					  }else{
-						  str+='<td>-</td>';
-					  }
-					 if(candidateList[i].mobileNo!=null && candidateList[i].mobileNo.length>0){
-							 str+='<td>'+candidateList[i].mobileNo+'</td>';
-					}else{
+	 function exportToExcel(result,statusId,statusType){
+		 var str='';
+		 if(result!=null && result.length>0){
+			 str+='<table class="table table-bordered text-center b_border" id="ExprtTExclappntmntCnddtDtlsTblId">';
+					 str+='<thead>';
+						 str+='<th>Candidate Name</th>';
+						 str+='<th>Contact No</th>';
+						 str+='<th>Designation</th>';
+						 str+='<th>Constituency</th>';
+						 str+='<th>Location</th>';
+						 str+='<th>Last Appointment Status</th>';
+						 str+='<th>Last Visit Date</th>';
+						 str+='<th>Total Appointments Requested</th>';
+						 str+='<th>Total Completed Appointments</th>';
+					 str+='</thead>'; 
+					str+='<tbody>';
+			 for(var i in result){
+				 var candidateList=result[i].subList;
+				 if(candidateList!=null && candidateList.length>0){
+					 for(var i in candidateList){
+					 str+='<tr>';
+						  if(candidateList[i].name!=null && candidateList[i].name.length>0){
+								str+='<td>'+candidateList[i].name+'</td>';
+						  }else{
+							  str+='<td>-</td>';
+						  }
+						 if(candidateList[i].mobileNo!=null && candidateList[i].mobileNo.length>0){
+								 str+='<td>'+candidateList[i].mobileNo+'</td>';
+						}else{
+								 str+='<td>-</td>';
+						}
+						 if(candidateList[i].designation!=null && candidateList[i].designation.length>0){
+							  str+='<td>'+candidateList[i].designation+'</td>';
+						 }else{
+							  str+='<td>-</td>';
+						 }
+						 if(candidateList[i].addressConstituency!=null && candidateList[i].addressConstituency.length>0){
+							  str+='<td>'+candidateList[i].addressConstituency+'</td>';
+						 }else{
+							  str+='<td>-</td>';
+						 }
+					    if(candidateList[i].apptCandiTypeId!=null && candidateList[i].apptCandiTypeId==1){
+						  if(candidateList[i].constituency!=null && candidateList[i].constituency.length>0){
+							  str+='<td>'+candidateList[i].constituency+'</td>';
+						   }else{
+							  str+='<td>-</td>';
+						   }
+						 }else{
+							  str+='<td>-</td>';
+						 }
+						 if(candidateList[i].candidateLastUpdatedStatus!=null && candidateList[i].candidateLastUpdatedStatus.length>0){
+							   str+='<td>'+candidateList[i].candidateLastUpdatedStatus+'</td>';
+						 }else{
+							   str+='<td>-</td>';
+						 } 
+						if(candidateList[i].candidateLastVisitDate!=null && candidateList[i].candidateLastVisitDate.length>0){
+							  str+='<td>'+candidateList[i].candidateLastVisitDate+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(candidateList[i].totalRequestedAppCount!=null && candidateList[i].totalRequestedAppCount>0){
+							 str+='<td>'+candidateList[i].totalRequestedAppCount+'</td>';
+						}else{
 							 str+='<td>-</td>';
+						}
+						if(candidateList[i].totalCompletedAppCount!=null && candidateList[i].totalCompletedAppCount>0){
+							  str+='<td>'+candidateList[i].totalCompletedAppCount+'</td>';
+						}else{
+							  str+='<td>-</td>';
+						}
+					str+='</tr>';
 					}
-					 if(candidateList[i].designation!=null && candidateList[i].designation.length>0){
-						  str+='<td>'+candidateList[i].designation+'</td>';
-					 }else{
-						  str+='<td>-</td>';
-					 }
-					 if(candidateList[i].addressConstituency!=null && candidateList[i].addressConstituency.length>0){
-						  str+='<td>'+candidateList[i].addressConstituency+'</td>';
-					 }else{
-						  str+='<td>-</td>';
-					 }
-					 if(candidateList[i].candidateLastUpdatedStatus!=null && candidateList[i].candidateLastUpdatedStatus.length>0){
-						   str+='<td>'+candidateList[i].candidateLastUpdatedStatus+'</td>';
-					 }else{
-						   str+='<td>-</td>';
-					 } 
-					if(candidateList[i].candidateLastVisitDate!=null && candidateList[i].candidateLastVisitDate.length>0){
-						  str+='<td>'+candidateList[i].candidateLastVisitDate+'</td>';
-					}else{
-						str+='<td>-</td>';
-					}
-					if(candidateList[i].totalRequestedAppCount!=null && candidateList[i].totalRequestedAppCount>0){
-						 str+='<td>'+candidateList[i].totalRequestedAppCount+'</td>';
-					}else{
-						 str+='<td>-</td>';
-					}
-					if(candidateList[i].totalCompletedAppCount!=null && candidateList[i].totalCompletedAppCount>0){
-						  str+='<td>'+candidateList[i].totalCompletedAppCount+'</td>';
-					}else{
-						  str+='<td>-</td>';
-					}
-				str+='</tr>';
-				}
-			
+				
+				 }
 			 }
+			  str+='</tbody>';
+			str+='</table>';
 		 }
-		  str+='</tbody>';
-		str+='</table>';
-	 }
-	 $("#appntmntCnddtDtlsTblId").html(str);
- }	
+		 $("#appntmntCnddtDtlsTblId").html(str);
+	 }	 
 
 
  $(document).on('click', '.exportToExcelCls', function(){
