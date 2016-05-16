@@ -13,4 +13,5 @@ public interface IPublicRepresentativeDAO extends GenericDao<PublicRepresentativ
 	public List<Object[]> getCandidateDetailsByCandidateId(List<Long> candidateIds);
 	public List<Long> getCandidateCadreDetils(Long candidateId);
 	public List<UserAddress> getUserAddressForCadre(Long tdpCadreId);
+	public List<Object[]> getUserAddressForCadre1(List<Long> tdpCadreIds);
 }
