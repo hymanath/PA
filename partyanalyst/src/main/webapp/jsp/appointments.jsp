@@ -4152,7 +4152,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 		}
 		$("#searchApptmntDivId").html(str);
 		$('#searchApptmntdatatable').dataTable({
-							"aaSorting": [[ 1, "desc" ]],
+							"aaSorting": [],
 							"iDisplayLength" : 10	,
 							 "bDestroy": true,
 							 "bFilter": false,
