@@ -584,6 +584,15 @@ var globalCadreId = '${cadreId}';
 					<div id="statusCountsMainDivId" class="table-responsive">
 					</div>
 				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" id="grievencyBenefitHeaderId">
+						<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE BENIFIT REQUESTS <span class="pull-right" id="grievencyBenefitHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"  ></i></span><span class="pull-right" id="grievencyBenefitShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+					</div>
+					<div class="panel-body" id="grievencyBenefitBodyId">
+						<center><img id="dataLoadingsImgForGrievanceRequests" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
+						<div id="grievanceRequestsId"></div>
+					</div>
+				</div>
 				
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
@@ -685,18 +694,7 @@ var globalCadreId = '${cadreId}';
 					</div>
                     </div>
                 </div>
-				<div class="panel panel-default">
-					<div class="panel-heading" id="grievencyBenefitHeaderId">
-						<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE BENIFIT REQUESTS <span class="pull-right" id="grievencyBenefitHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"  ></i></span><span class="pull-right" id="grievencyBenefitShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
-					</div>
-					<div class="panel-body" id="grievencyBenefitBodyId">
-						<center><img id="dataLoadingsImgForGrievanceRequests" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
-						<div id="grievanceRequestsId"></div>
-					</div>
-				</div>
-				
-				
-            </div>
+			</div>
         </div>
 		<div class="row m_top20">
         	<div class="col-md-12 col-xs-12">
