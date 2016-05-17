@@ -648,22 +648,22 @@
 								<div id="confirmAppointmentsDivId"></div>
 								
 								<!-- Hide show Divs -->
-								<div class="col-md-12">
-									 <h4 class="text-capitalize text-success">Select Date To View Scheduled Appointment
-									 <span class="pull-right timeSlotHideShowMainCls">
+								<!--<div class="col-md-12">
+								<h4 class="text-capitalize text-success">Select Date To View Scheduled Appointment
+									
+								</h4>
+								</div>-->
+								 <span class="pull-right timeSlotHideShowMainCls">
 													<i class="glyphicon glyphicon-plus-sign timeSlotHideShowCls" title="View TimeSlot" style="margin-right:17px;cursor:pointer;font-size:20px;color:#333;"></i>
 									</span>
-								</h4>
-								</div>
-								
 								
 								  <!--  TIME SLOT --> 
 									<div class="col-md-12 changeClass changeTimeSlotClass" style="display:none">
 										<div class="block">
 											<div class="row">
-												<!--<div class="col-md-12">
+												<div class="col-md-12">
 													<h4 class="text-capitalize text-success">Select Date To View Appointment Time Slot</h4>
-												</div>-->
+												</div>
 												
 												<div class="col-md-6 m_top10">
 													<div class="form-inline">
