@@ -1199,7 +1199,7 @@ function buildTotalAppointmentStatusForToday(result){
 			if(value.totalCount == 0){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="todayappointmentStatusCls text-center" attr_status_type="totalApproved" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+'</td>';
+				str+='<td class="todayappointmentStatusCls text-center" attr_appntmnt_status_id='+value.statusId+' attr_status_type="totalApproved" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer;">'+value.totalCount+' <div><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="tdyAppntmntPrcssngImgId'+value.statusId+'"></center></div></td>';
 			}
 			str+='</tr>';
 			
@@ -1211,7 +1211,7 @@ function buildTotalAppointmentStatusForToday(result){
 				if(value.subList[i].totalCount == 0){
 					str+='<td class="text-center" style="background:#f8f8f8"> - </td>';
 				}else{
-					str+='<td style="background:#f8f8f8;cursor:pointer;" class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+clickAray+'" >'+value.subList[i].totalCount+'</td>';
+					str+='<td style="background:#f8f8f8;cursor:pointer;" attr_appntmnt_status_id='+value.subList[i].statusId+' class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+clickAray+'" >'+value.subList[i].totalCount+' <div><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="tdyAppntmntPrcssngImgId'+value.subList[i].statusId+'"></center></div></td></td>';
 				} 
 				str+='</tr>';
 			 }
@@ -1225,11 +1225,10 @@ function buildTotalAppointmentStatusForToday(result){
 			if(value.totalCount == 0){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="todayappointmentStatusCls text-center" attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer">'+value.totalCount+'</td>';
+				str+='<td class="todayappointmentStatusCls text-center"  attr_appntmnt_status_id='+value.statusId+' attr_todayStatusArr= "'+todayStatusArr+'" style="cursor:pointer">'+value.totalCount+' <div><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="tdyAppntmntPrcssngImgId'+value.statusId+'"></center></div></td></td>';
 			}
 			str+='</tr>';
 		}
-			
 	});
 	$("#todayAppointmentsId").html(str);
 	//$("#todayApptsForAdvancedDashBrd").html(str);
