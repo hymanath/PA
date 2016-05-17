@@ -1905,7 +1905,7 @@ public class ActivityService implements IActivityService{
 				Long totalCount = 0L;
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 					totalCount = returnVO.getTotalCount();
-					if(totalCount.longValue()>0L)
+					if(totalCount != null && totalCount.longValue()>0L)
 						for (ActivityVO activityVO : returnVO.getActivityVoList()) {
 							
 							double perc = (activityVO.getIvrTotal() * 100.0)/totalCount;

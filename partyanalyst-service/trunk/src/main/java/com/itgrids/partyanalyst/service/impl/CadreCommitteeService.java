@@ -17085,7 +17085,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 									locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
 								
 								//To show Only Already Upload Images 
-								if(locatnValList.contains(locationsId)){
+								if(locatnValList != null && locatnValList.contains(locationsId)){
 									 vo.setIsAlreadyImageUpload("true");
 								 }else{
 									 vo.setIsAlreadyImageUpload("false"); 
@@ -17118,7 +17118,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 								if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
 									locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
 								
-								if(locatnValList.contains(locationsId)){
+								if(locatnValList != null && locatnValList.contains(locationsId)){
 									 vo.setIsAlreadyImageUpload("true");
 								 }else{
 									 vo.setIsAlreadyImageUpload("false"); 
@@ -17150,7 +17150,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							if(Arrays.asList(levelIdsArr).contains(activityLevelId.toString().trim()))
 								locationsId = Long.valueOf(vo.getLocationId().toString().trim().substring(1));
 							
-							if(locatnValList.contains(locationsId)){
+							if(locatnValList != null && locatnValList.contains(locationsId)){
 								 vo.setIsAlreadyImageUpload("true");
 							 }else{
 								 vo.setIsAlreadyImageUpload("false"); 
