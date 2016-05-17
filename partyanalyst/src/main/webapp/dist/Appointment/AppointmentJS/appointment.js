@@ -4222,7 +4222,7 @@ function timeSlotTableBuilding(result,dateStr){
 			
 			for(var i in result)
 			{ 
-			if( xindex % 3 == 0)
+			if( xindex % 2 == 0)
 			{
 				str+='<div class="row m_top10">';
 			}
@@ -4287,7 +4287,7 @@ function timeSlotTableBuilding(result,dateStr){
 				str+='</div>';
 				str+='</div>';
 				//}
-				if(xindex % 3 == 2)
+				if(xindex % 2 == 1)
 				{
 					str+='</div>';
 				}
