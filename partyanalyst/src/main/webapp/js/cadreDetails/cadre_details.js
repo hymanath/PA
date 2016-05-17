@@ -2660,7 +2660,7 @@ function getDeathsAndHospitalizationDetails(){
 				var str='';
 				if(result != null){
 					str+='<div class="panel-body pad_0">';
-					str+='<p class="text-center m_0" style="font-size:12px;margin-top:10px;"> NOTE : DEATH - DEATH INSURANCE ,  HOSP. - HOSPITALIZATION INSURANCE</p>';
+					//str+='<p class="text-center m_0" style="font-size:12px;margin-top:10px;"> NOTE : DEATH - DEATH INSURANCE ,  HOSP. - HOSPITALIZATION INSURANCE</p>';
 					str+='<div class="table-responsive">';
 						str+='<table class="table m_0 table-bordered m_0">';
 							str+='<thead class="background:#f2f2f2;">';
@@ -2673,7 +2673,7 @@ function getDeathsAndHospitalizationDetails(){
 								str+='<tr>';
 								for(var i in result.locationList){
 									str+='<th style="text-align:center;">DEATH</th>';
-									str+='<th style="text-align:center;">HOSP.</th>';
+									str+='<th style="text-align:center;">HOSPITALIZATION</th>';
 								}
 								str+='</tr>';
 								str+='</thead>';
@@ -5470,8 +5470,12 @@ var str='';
                       for(var k in result.subList[i].subList){
 						   if(k!=3 && k!=7 && k!=11){
 							   /*str+='<td style="text-align:center;" >'+result.subList[i].subList[k].count+'</td>';						
-							  else*/ if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0)
+							  else*/ //if(result.subList[i].subList[k].count != null && result.subList[i].subList[k].count > 0) 
+							  if(result.subList[i].subList[k].count != null)
+								  if(result.subList[i].name != 'TOTAL')
 								str+='<td style="text-align:center;" ><a class="grievanceStatusWiseDetailsCls" style="cursor:pointer;" attr_status_name="'+result.subList[i].name+'" attr_location_type="'+result.subList[i].subList[k].locationName+'" attr_issue_type="'+result.subList[i].subList[k].name+'" >'+result.subList[i].subList[k].count+'</a></td>';
+							else
+								str+='<td style="text-align:center;">'+result.subList[i].subList[k].count+'</a></td>';
 							  else
 								str+='<td style="text-align:center;"> - </td>';
 						   }
@@ -5849,6 +5853,12 @@ function getApprovedAmountsForGrievance(){
 
 function buildGrievanceAmountDetails(result){
 	var str='';
+	var noOfBenForTotGovtCount=0;
+	var approvedAmtForTotGovtCount=0;
+	var otherBenForTotGovtCount=0;
+	var noOfBenForTotWelfareCount=0;
+	var approvedAmtForTotWelfareCount=0;
+	var otherBenForTotWelfareCount=0;
 	
 	str+='<table class="table m_0 table-bordered m_0" style="font-size:13px;">';
 		str+='<thead style="background:#f2f2f2">';
@@ -5872,21 +5882,45 @@ function buildGrievanceAmountDetails(result){
 				str+='<tr>';
 				str+='<td class="text-bold" style="text-transform:uppercase">'+result[i].name+'</td>';
 				for(var j in result[i].simpleVOList1){
-					if(result[i].simpleVOList1[j].count != null)
+					if(result[i].simpleVOList1[j].count != null){
 						str+='<td><a class="grievanceBenifitsStatusWiseDetailsCls" style="cursor:pointer;" attr_issueType="'+result[i].simpleVOList1[j].name+'" attr_location_type="'+result[i].name+'" attr_benifit_type="total">'+result[i].simpleVOList1[j].count+'</a></td>';
+						if(result[i].simpleVOList1[j].name == 'Govt')
+						noOfBenForTotGovtCount = parseInt(noOfBenForTotGovtCount) + parseInt(result[i].simpleVOList1[j].count);
+						else if(result[i].simpleVOList1[j].name == 'Welfare')
+						noOfBenForTotWelfareCount = parseInt(noOfBenForTotWelfareCount) + parseInt(result[i].simpleVOList1[j].count);
+					}
 					else
 						str+='<td> - </td>';
-					if(result[i].simpleVOList1[j].approvedAmount != null)
+					if(result[i].simpleVOList1[j].approvedAmount != null){
 						str+='<td>'+result[i].simpleVOList1[j].approvedAmount+'</td>';
+					if(result[i].simpleVOList1[j].name == 'Govt')
+					 approvedAmtForTotGovtCount = parseInt(approvedAmtForTotGovtCount) + parseInt(result[i].simpleVOList1[j].approvedAmount);
+					else if(result[i].simpleVOList1[j].name == 'Welfare')
+					 approvedAmtForTotWelfareCount = parseInt(approvedAmtForTotWelfareCount) + parseInt(result[i].simpleVOList1[j].approvedAmount);
+					}
 					else
 						str+='<td> - </td>';
-					if(result[i].simpleVOList1[j].otherBenifitCount != null)
+					if(result[i].simpleVOList1[j].otherBenifitCount != null){
 						str+='<td><a class="grievanceBenifitsStatusWiseDetailsCls" style="cursor:pointer;" attr_issueType="'+result[i].simpleVOList1[j].name+'" attr_location_type="'+result[i].name+'" attr_benifit_type="other">'+result[i].simpleVOList1[j].otherBenifitCount+'</a></td>';
+						if(result[i].simpleVOList1[j].name == 'Govt')
+						otherBenForTotGovtCount = parseInt(otherBenForTotGovtCount) + parseInt(result[i].simpleVOList1[j].otherBenifitCount);
+						else if(result[i].simpleVOList1[j].name == 'Welfare')
+						otherBenForTotWelfareCount = parseInt(otherBenForTotWelfareCount) + parseInt(result[i].simpleVOList1[j].otherBenifitCount);
+					}
 					else
 						str+='<td> - </td>';
 				}
 				str+='</tr>';
 			}
+			 str+='<tr>';
+			str+='<td class="text-bold" style="text-transform:uppercase"> Total </td>';
+			str+='<td class="text-bold">'+noOfBenForTotGovtCount+'</td>';
+			str+='<td class="text-bold">'+approvedAmtForTotGovtCount+'</td>';
+			str+='<td class="text-bold">'+otherBenForTotGovtCount+'</td>';
+			str+='<td class="text-bold">'+noOfBenForTotWelfareCount+'</td>';
+			str+='<td class="text-bold">'+approvedAmtForTotWelfareCount+'</td>';
+			str+='<td class="text-bold">'+otherBenForTotWelfareCount+'</td>';
+			str+='</tr>'; 
 		str+='</tbody>';
 	str+='<table>';
 	
