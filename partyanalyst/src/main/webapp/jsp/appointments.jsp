@@ -648,17 +648,22 @@
 								<div id="confirmAppointmentsDivId"></div>
 								
 								<!-- Hide show Divs -->
-								<span class="pull-right timeSlotHideShowMainCls">
-													<i class="glyphicon glyphicon-plus-sign timeSlotHideShowCls" title="view TimeSlot" style="margin-right:17px;cursor:pointer;font-size:20px;"></i>
-								</span>
+								<div class="col-md-12">
+									 <h4 class="text-capitalize text-success">Select Date To View Scheduled Appointment
+									 <span class="pull-right timeSlotHideShowMainCls">
+													<i class="glyphicon glyphicon-plus-sign timeSlotHideShowCls" title="View TimeSlot" style="margin-right:17px;cursor:pointer;font-size:20px;color:#333;"></i>
+									</span>
+								</h4>
+								</div>
+								
 								
 								  <!--  TIME SLOT --> 
 									<div class="col-md-12 changeClass changeTimeSlotClass" style="display:none">
 										<div class="block">
 											<div class="row">
-												<div class="col-md-12">
+												<!--<div class="col-md-12">
 													<h4 class="text-capitalize text-success">Select Date To View Appointment Time Slot</h4>
-												</div>
+												</div>-->
 												
 												<div class="col-md-6 m_top10">
 													<div class="form-inline">
@@ -675,8 +680,8 @@
 												</div>
 												
 												<div class="col-md-2 m_top10">
-													<input class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId();getAllScheduledApptsByDate()"/>
-												<img src="images/search.gif" style="display:none;" id="ajaxImgFortimeSlotButtonId"/>
+											<input class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId();getAllScheduledApptsByDate(this)"/>
+											<img src="images/search.gif" style="display:none;" id="ajaxImgFortimeSlotButtonId"/>
 												</div>
 												<div class="col-md-4 m_top10" style="color:red;font-size:16px;" id="timeSlotErrMsgId">
 												</div>
