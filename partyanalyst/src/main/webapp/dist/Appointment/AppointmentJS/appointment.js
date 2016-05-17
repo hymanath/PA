@@ -4173,12 +4173,16 @@ function timeSlotTableBuilding(result,dateStr){
 				}
 		    }
 	}
-	
-	function getAllScheduledApptsByDate(){
-	
-		var  dateStr       = $('#appointmentDateSlotHeadingId').val();
+	function getAllScheduledApptsByDate(param){
+	 
+	    var  dateStr       = $('#appointmentDateSlotHeadingId').val();
 		var  apptUserId   =  $("#appointmentUserSelectBoxId option:selected").val();
-	
+		//scrolling page 
+		 if(param!=null && param!=undefined){
+			 if($(param).attr("id")=="timeSlotButtonId"){
+				$('html,body').animate({scrollTop: $("#appointmentMembersDivId").offset().top}, 2000);
+			 }
+		} 
 	var jsObj={
 			dateStr : dateStr,
 			apptUserId:apptUserId
