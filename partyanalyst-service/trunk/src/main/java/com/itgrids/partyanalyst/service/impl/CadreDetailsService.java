@@ -7385,10 +7385,51 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 			
 			
 			if(stausMap != null && stausMap.size()>0){
-		        for (String status : stausMap.keySet()) {
-		          grievanDetailsVO.getSubList().add(stausMap.get(status.toUpperCase()));
+		        for (String statusId : stausMap.keySet()) {
+		          grievanDetailsVO.getSubList().add(statusMap.get(statusId));
 		        }
-		      }
+		     }
+			if(grievanDetailsVO != null && grievanDetailsVO.getSubList() != null && grievanDetailsVO.getSubList().size()>0){
+				Map<String,Map<String,Long>> locationWiseStatusMap = new LinkedHashMap<String, Map<String,Long>>(0);
+				for (GrievanceDetailsVO grievanceDetailsVO : grievanDetailsVO.getSubList()) {
+					List<GrievanceDetailsVO> statusVOList = grievanceDetailsVO.getSubList();
+				
+					if(statusVOList != null && statusVOList.size()>0){
+						for (GrievanceDetailsVO statusVO : statusVOList) {
+							Map<String,Long> grievanceReqTypeMap = new LinkedHashMap<String, Long>(0);
+							Long totalCount =statusVO.getCount() != null ?statusVO.getCount():0L;
+							Long existingCount =0L;
+							if(locationWiseStatusMap.get(statusVO.getLocationName().trim()) != null){
+								grievanceReqTypeMap = locationWiseStatusMap.get(statusVO.getLocationName().trim());
+								existingCount = grievanceReqTypeMap.get(statusVO.getName().trim()) != null ? grievanceReqTypeMap.get(statusVO.getName().trim()) :0L;
+							}
+							totalCount = totalCount+existingCount;
+							grievanceReqTypeMap.put(statusVO.getName().trim(), totalCount);
+							locationWiseStatusMap.put(statusVO.getLocationName().trim(), grievanceReqTypeMap);
+						}
+					}
+				}
+				
+				if(locationWiseStatusMap != null && locationWiseStatusMap.size()>0){
+					GrievanceDetailsVO locationVO =new GrievanceDetailsVO();
+					locationVO.setName("TOTAL");
+					for (String locationName : locationWiseStatusMap.keySet()) {
+						Map<String,Long> grievanceReqTypeMap = locationWiseStatusMap.get(locationName);
+						
+						if(grievanceReqTypeMap != null && grievanceReqTypeMap.size()>0){
+							for (String insuranceTypeStr : grievanceReqTypeMap.keySet()) {
+								GrievanceDetailsVO insuranceTypeVO =new GrievanceDetailsVO();
+								insuranceTypeVO.setName(insuranceTypeStr);
+								insuranceTypeVO.setLocationName(locationName);
+								insuranceTypeVO.setId(0L);
+								insuranceTypeVO.setCount(grievanceReqTypeMap.get(insuranceTypeStr));									
+								locationVO.getSubList().add(insuranceTypeVO);
+							}
+						}
+					}
+					grievanDetailsVO.getSubList().add(locationVO);
+				}
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails() Method ",e);
@@ -8537,6 +8578,8 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				}
 				returnList.add(distVo);
 			}
+			
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getApprovedAmountDetailsForGovtAndWilfareByLocation  method in CadreDetailsService.",e);
 		}
