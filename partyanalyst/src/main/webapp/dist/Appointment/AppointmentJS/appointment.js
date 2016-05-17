@@ -3987,6 +3987,10 @@ function getPanchayatsForReferPopup(){
 	}
 	$(document).on("click",".appointmentStatusCls",function(){
 	
+		 var statusId=$(this).attr("attr_appntmnt_status_id");
+         //display processing img
+	    $("#appntmntPrcssngImgId"+statusId).show();
+	     
 		 var statusType=$(this).attr("attr_status_type");
 		  if(statusType==undefined || statusType==" " || statusType==null){
 			  statusType='singleStatus';
@@ -4005,13 +4009,13 @@ function getPanchayatsForReferPopup(){
 			 }	
 		 });
 		
-		getappointmentStatusDetails(statusArray,null,statusType);			
+		getappointmentStatusDetails(statusArray,null,statusType,statusId);			
 	
 	});
 
-	function  getappointmentStatusDetails(statusArray,type,statusType){
-		
-		if(type ==null){
+	function  getappointmentStatusDetails(statusArray,type,statusType,statusId){
+	
+	if(type ==null){
 			type='';
 		}
 		//clearing the searchAppointment div
@@ -4034,12 +4038,18 @@ function getPanchayatsForReferPopup(){
 					data: {task:JSON.stringify(jsObj)}
 				}).done(function(result){
 					$("#srhPrcssngImgId").hide();
+					$("#appntmntPrcssngImgId"+statusId).hide();
+					$("#tdyAppntmntPrcssngImgId"+statusId).hide();
 					buildAppointmentSearchResult(result," ",statusType);		
 				})
 	}
 
   $(document).on("click",".todayappointmentStatusCls",function(){
 		
+	   var statusId=$(this).attr("attr_appntmnt_status_id");
+      //display processing img
+	  $("#tdyAppntmntPrcssngImgId"+statusId).show();
+	  
 		 var statusType=$(this).attr("attr_status_type");
 		  if(statusType==undefined || statusType==" " || statusType==null){
 			  statusType='singleStatus';
@@ -4057,7 +4067,7 @@ function getPanchayatsForReferPopup(){
 				 statusArray.push( statusIds );
 			 }	
 		 });
-		getappointmentStatusDetails(statusArray,"today",statusType);			
+		getappointmentStatusDetails(statusArray,"today",statusType,statusId);			
 	
 	}); 
 
@@ -4561,12 +4571,12 @@ function buildTotalAppointmentStatusForNew(result){
 						str+='<td><span style="color: '+color+'">'+result[i].status+' <br><span style="font-weight: bold; font-size: 28px ! important;">'+result[i].statusCount+'</span></span></td>';
 						}else{
 						 var statusArr= result[i].clickIds;
-						 str+='<td class="appointmentStatusCls" attr_statusArrId ="'+statusArr+'"><span style="color: '+color+';cursor:pointer">'+result[i].status+' <br><span style="font-weight: bold; font-size: 28px ! important;">'+result[i].statusCount+'</span></span></td>';
+						 str+='<td class="appointmentStatusCls" attr_appntmnt_status_id='+result[i].appointmentStatusId+' attr_statusArrId ="'+statusArr+'"><span style="color: '+color+';cursor:pointer">'+result[i].status+' <br><span style="font-weight: bold; font-size: 28px ! important;">'+result[i].statusCount+'</span></span><div><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="appntmntPrcssngImgId'+result[i].appointmentStatusId+'"></center></div></td>';
 					  }
 					
 					}else if(result[i].appointmentStatusId ==2){
 						var statusArr= result[i].clickIds;
-						 str+='<td><span style="color: '+color+';cursor:pointer">'+result[i].status+' - <span style="font-weight: bold; font-size: 28px ! important;"><span class="appointmentStatusCls" attr_status_type="totalApproved" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</span></span>';
+						 str+='<td><span style="color: '+color+';cursor:pointer">'+result[i].status+' - <span style="font-weight: bold; font-size: 28px ! important;"><span class="appointmentStatusCls" attr_appntmnt_status_id='+result[i].appointmentStatusId+' attr_status_type="totalApproved" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</span><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="appntmntPrcssngImgId'+result[i].appointmentStatusId+'"></center></span>';
 						
 						str+='<table style="font-size: 12px; color: rgb(51, 51, 51);" class="table table-border"><tbody>';
 						str+='<tr>';
@@ -4578,7 +4588,7 @@ function buildTotalAppointmentStatusForNew(result){
 								str+='<td style="background: '+internalColor+'"> '+result[i].subList[j].status+' - '+result[i].subList[j].statusCount+'</td>';
 								}else{
 								var statusArr= result[i].subList[j].clickIds;
-								 str+='<td class="appointmentStatusCls" attr_statusArrId ="'+statusArr+'" style="background: '+internalColor+';cursor:pointer"> '+result[i].subList[j].status+' - '+result[i].subList[j].statusCount+'</td>';	
+								 str+='<td class="appointmentStatusCls" attr_appntmnt_status_id='+result[i].subList[j].appointmentStatusId+' attr_statusArrId ="'+statusArr+'" style="background: '+internalColor+';cursor:pointer"> '+result[i].subList[j].status+' - '+result[i].subList[j].statusCount+'   <div><center><img style="display: none;height:20px"    src="images/icons/loading.gif" id="appntmntPrcssngImgId'+result[i].subList[j].appointmentStatusId+'"></center></div></td>';	
 								}					
 							}						
 						}
@@ -4590,11 +4600,8 @@ function buildTotalAppointmentStatusForNew(result){
 			str+='</tr>';
 		str+='</tbody>';
 		str+='</table>';
-			
-			$("#newStatusBuildingId").html(str);
-			
+	  $("#newStatusBuildingId").html(str);
 	}
-
 
 $(document).on("click",".appointmentAllDetailsModel",function(e){
 	
