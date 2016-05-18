@@ -1645,5 +1645,9 @@
 	<bean id="paymentGatewayAction" class="com.itgrids.partyanalyst.web.action.PaymentGatewayAction" singleton="false">
 				
 	</bean>	
+	
+	<bean id="eventDetailsAction1" class="com.itgrids.partyanalyst.web.action.EventDetailsAction1" singleton="false">
+				
+	</bean>	
 </beans>	
 	
