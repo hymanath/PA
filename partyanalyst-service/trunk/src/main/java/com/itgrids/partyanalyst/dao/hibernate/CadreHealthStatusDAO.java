@@ -50,7 +50,7 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     					" GIS.status," +
     					" COUNT(CM.Complaint_id)" +
     					" FROM grievance_insurance_status GIS,complaint_master CM" +
-    					" LEFT JOIN tdp_cadre TC ON CM.membership_id = TC.membership_id,user_address UA" +
+    					" LEFT JOIN tdp_cadre TC ON CM.User_Id = TC.tdp_cadre_id,user_address UA" +
     					" WHERE CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id" +
     					" AND CM.delete_status IS NULL" +
     					" AND CM.type_of_issue = 'Insurance'" +
@@ -70,11 +70,11 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     	else if(searchType.equalsIgnoreCase("leb"))
     		sb.append(" AND UA.local_election_body = :locationValue");
     	else if(searchType.equalsIgnoreCase("constituency"))
-    		sb.append(" AND UA.constituency_id = :locationValue");
+    		sb.append(" AND CM.assembly_id = :locationValue");
     	else if(searchType.equalsIgnoreCase("parliament"))
-    		sb.append(" AND UA.parliament_constituency_id = :locationValue");
+    		sb.append(" AND CM.parliament_id = :locationValue");
     	else if(searchType.equalsIgnoreCase("district"))
-    		sb.append(" AND UA.district_id = :locationValue");
+    		sb.append(" AND CM.district_id = :locationValue");
     	
     	sb.append(" GROUP BY CM.issue_type,GIS.grievance_insurance_status_id");
     	
