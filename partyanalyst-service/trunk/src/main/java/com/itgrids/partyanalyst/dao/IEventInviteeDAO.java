@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -15,4 +16,5 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	public List<Object[]> checkInvitees(List<Long> tdpCadreIds,Long eventId);
 	public List<Object[]> getInvitationCountforCandidate(Long tdpCadreId);
 	public List<String> getTdpCadreMemberShipsIdsByEvent(Long eventId);
+	public List<Object[]> getEventInviteesCountByLocation(String locationType,Set<Long> locationIds,Long eventId);
 }

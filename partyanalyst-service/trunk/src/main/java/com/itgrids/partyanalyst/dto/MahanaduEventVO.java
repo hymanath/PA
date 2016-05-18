@@ -1,9 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.io.Serializable;
+import java.util.Map;
 
 
 public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO> {
@@ -27,6 +27,7 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	
 	private List<MahanaduEventVO> datesList = new ArrayList<MahanaduEventVO>(0);
 	
+	private Map<String,MahanaduEventVO> subMap;
 	private String mobileNo;
 	
 	private List<String> dates = new ArrayList<String>(0);
@@ -54,7 +55,16 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	
 	private String lastUpdatedDate;
 		
-	public Long getRevisitCount() {
+	private Long uniqueInviteeVisitorsAttended = 0l;
+	private Long uniqueNonInviteeVisitorsAttended = 0l;
+	
+	private Long inviteesCalled;
+	private String dateStr;
+	private boolean isDataExist;
+	private String districtName;
+	private Long   locationNo;
+	
+		public Long getRevisitCount() {
 		return revisitCount;
 	}
 	public void setRevisitCount(Long revisitCount) {
@@ -270,6 +280,55 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setLastUpdatedDate(String lastUpdatedDate) {
 		this.lastUpdatedDate = lastUpdatedDate;
+	}
+	public Long getUniqueInviteeVisitorsAttended() {
+		return uniqueInviteeVisitorsAttended;
+	}
+	public void setUniqueInviteeVisitorsAttended(Long uniqueInviteeVisitorsAttended) {
+		this.uniqueInviteeVisitorsAttended = uniqueInviteeVisitorsAttended;
+	}
+	public Long getUniqueNonInviteeVisitorsAttended() {
+		return uniqueNonInviteeVisitorsAttended;
+	}
+	public void setUniqueNonInviteeVisitorsAttended(
+			Long uniqueNonInviteeVisitorsAttended) {
+		this.uniqueNonInviteeVisitorsAttended = uniqueNonInviteeVisitorsAttended;
+	}
+	public Long getInviteesCalled() {
+		return inviteesCalled;
+	}
+	public void setInviteesCalled(Long inviteesCalled) {
+		this.inviteesCalled = inviteesCalled;
+	}
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	public boolean isDataExist() {
+		return isDataExist;
+	}
+	public void setDataExist(boolean isDataExist) {
+		this.isDataExist = isDataExist;
+	}
+	public Map<String, MahanaduEventVO> getSubMap() {
+		return subMap;
+	}
+	public void setSubMap(Map<String, MahanaduEventVO> subMap) {
+		this.subMap = subMap;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getLocationNo() {
+		return locationNo;
+	}
+	public void setLocationNo(Long locationNo) {
+		this.locationNo = locationNo;
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -141,6 +142,32 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
 		 
 		 query.setParameter("eventId", eventId);
 		 return query.list();
-		 }
+	}
 	
+	public List<Object[]> getEventInviteesCountByLocation(String locationType,Set<Long> locationIds,Long eventId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" model.tdpCadre.userAddress.constituency.district.districtId");	
+		}
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" model.tdpCadre.userAddress.constituency.constituencyId");
+		}
+		str.append(",count(distinct model.tdpCadre.tdpCadreId) ");
+			
+		str.append(" from EventInvitee model where model.event.eventId = :eventId ");
+		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
+			str.append(" and model.tdpCadre.userAddress.constituency.district.districtId in (:locationIds)");
+			str.append(" group by model.tdpCadre.userAddress.constituency.district.districtId");
+		}	
+		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId in (:locationIds)");
+			str.append(" group by model.tdpCadre.userAddress.constituency.constituencyId");
+		}	
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId",eventId);
+		query.setParameterList("locationIds",locationIds);
+		return query.list();
+	}
 }
