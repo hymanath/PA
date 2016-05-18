@@ -55,5 +55,6 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
 	 
 	 public ResultStatus insertDataintoEventInfo1(Date startDate,Date endDate,Long parentEventId,List<Long> subEventIds);
+	 public List<IdNameVO> getSubEventsOfNewEvent(Long eventId);
 }
 

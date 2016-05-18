@@ -4176,5 +4176,36 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return finalList;
 	}
+	public List<IdNameVO> getSubEventsOfNewEvent(Long eventId){
+		List<IdNameVO> idNameList = new ArrayList<IdNameVO>();
+		try{
+			
+			Long mainEntryId = 0l; 
+			List<Object[]> list = eventDAO.getSubEventsByParentNewEvent(eventId);
+			if(list !=null && list.size()>0){
+				setToIdNameVoNewList(list,idNameList);
+			}
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getAttendeeSummaryForEventsList ",e);
+		}
+		return idNameList;
+		
+	}
+	
+	public void setToIdNameVoNewList(List<Object[]> list,List<IdNameVO> idNameList){
+		try{			
+			if(list !=null && list.size()>0){				
+				for (Object[] idNameVO : list) {					
+					IdNameVO VO = new IdNameVO();
+					VO.setId(idNameVO[0] !=null ? (Long)idNameVO[0]:0l);
+					VO.setName(idNameVO[1] !=null ? idNameVO[1].toString():"");	
+					idNameList.add(VO);
+				}				
+			}			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in setToIdNameVoList ",e);
+		}		
+	}
 	
 }
