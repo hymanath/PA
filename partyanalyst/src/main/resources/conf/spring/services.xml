@@ -3104,5 +3104,9 @@
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
+	<bean id="mahanaduDashBoardService1" class="com.itgrids.partyanalyst.service.impl.MahanaduDashBoardService1">
+		
+	</bean>
+	
 </beans>		
 	
