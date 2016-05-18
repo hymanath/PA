@@ -420,5 +420,16 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	//mahanaduCadreVisitNewInfo.jsp  ajax call
+	public String getSubEventsOfNewEvent(){
+		try{			
+			jObj = new JSONObject(getTask());			
+			idnameVOList = mahaNaduService.getSubEventsOfNewEvent(jObj.getLong("eventId"));
+		}catch (Exception e) {
+			LOG.error(" Entered Into getSubEventsOfNewEvent",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }
