@@ -6,6 +6,9 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Sravanth
  * @date May 18, 2016
@@ -23,6 +26,43 @@ public class ActivityResponseVO {
 	private Long desAPCount = 0l;
 	private Long desTSCount = 0l;
 	
+	private Long called=0L;
+	private Long pending=0L;
+	private Long sumcount=0L;
+	private List<ActivityResponseVO> sublist1 = new ArrayList<ActivityResponseVO>(0);
+	private List<ActivityResponseVO> sublist2 = new ArrayList<ActivityResponseVO>(0);
+	
+	
+	public Long getCalled() {
+		return called;
+	}
+	public void setCalled(Long called) {
+		this.called = called;
+	}
+	public Long getPending() {
+		return pending;
+	}
+	public void setPending(Long pending) {
+		this.pending = pending;
+	}
+	public Long getSumcount() {
+		return sumcount;
+	}
+	public void setSumcount(Long sumcount) {
+		this.sumcount = sumcount;
+	}
+	public List<ActivityResponseVO> getSublist1() {
+		return sublist1;
+	}
+	public void setSublist1(List<ActivityResponseVO> sublist1) {
+		this.sublist1 = sublist1;
+	}
+	public List<ActivityResponseVO> getSublist2() {
+		return sublist2;
+	}
+	public void setSublist2(List<ActivityResponseVO> sublist2) {
+		this.sublist2 = sublist2;
+	}
 	public Long getId() {
 		return id;
 	}
