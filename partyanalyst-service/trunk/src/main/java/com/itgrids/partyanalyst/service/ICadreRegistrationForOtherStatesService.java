@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -25,4 +26,5 @@ public interface ICadreRegistrationForOtherStatesService {
 	public List<GenericVO> getBoothsByConstiteuncy(Long constituencyId);
 	public List<SelectOptionVO> getCasteDetailsByCasteCategoryId(Long casteCategoryGroupId,Long stateId);
 	public void tdpTempararyCadreSavingLogic(final AddressVO addressVO,final CadreRegistrationVO cadreRegistrationVO,final SurveyCadreResponceVO surveyCadreResponceVO,final String insertType, final boolean statusVar,final String registrationType);
+	public List<IdNameVO> getConstituencyByState(Long stateId);
 }

@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
@@ -1535,5 +1536,23 @@ public class CadreRegistrationForOtherStatesService implements
 		  LOG.error("Exception Rised in tdpTempararyCadreSavingLogic",e);
 		  surveyCadreResponceVO.setStatus("error");
 	  }
+	}
+	
+public List<IdNameVO> getConstituencyByState(Long stateId){
+		
+		// STATE - 1, DISTRICT - 2, MANDAL - 5, PANCHAYAT - 7,  MUNCIPAL-CORP-GHMC - 6, WARD - 9, INCHARGE - 10, DIVISION - 11
+		
+		List<IdNameVO> resultList = new ArrayList<IdNameVO>();
+			List<Object[]> asslyList = constituencyDAO.getConstituencyByState(stateId);
+			if(asslyList!=null && asslyList.size()>0){
+				for(Object[] obj:asslyList){
+					IdNameVO vo = new IdNameVO(Long.valueOf(obj[0].toString()), obj[1].toString());
+					
+					resultList.add(vo);
+				}
+			}
+		
+		
+		return resultList;
 	}
 }
