@@ -1226,7 +1226,7 @@ public class ActivityService implements IActivityService{
 						{
 							searchAttributeVO.getLocationTypeIdsList().add(5L);
 							searchAttributeVO.getLocationTypeIdsList().add(7L);
-							//searchAttributeVO.getLocationTypeIdsList().add(9L);
+							searchAttributeVO.getLocationTypeIdsList().add(9L);
 						}
 						else if(activityLevelId.longValue() == 3L)
 						{
@@ -3462,8 +3462,14 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			List<Object[]> objList = null;
 			if(requiredAttributeId == null || requiredAttributeId == 0l){
 				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId,questionId,optionId);	
+				List<Object[]> textBoxObjList = activityQuestionnaireOptionDAO.getTextboxQuestionaireForScope(scopeId,questionId,optionId);	
+				if(objList != null)
+					objList.addAll(textBoxObjList);
 			}else{
 				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId);
+				List<Object[]> textBoxObjList = activityQuestionnaireOptionDAO.getTextBoxQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId);
+				if(objList != null)
+					objList.addAll(textBoxObjList);
 			}
 			if(objList != null && objList.size() > 0){
 				int number=0;
@@ -3472,17 +3478,18 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					number = number+1;
 					if(matchedVO == null){
 						matchedVO = new ActivityVO();
-						matchedVO.setQuestionId((Long)objects[0]);
-						matchedVO.setQuestion(number+") "+objects[1].toString());
-						matchedVO.setOptionTypeId((Long)objects[2]);
-						matchedVO.setOptionType(objects[3].toString());
+						matchedVO.setQuestionId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						matchedVO.setQuestion(number+") "+commonMethodsUtilService.getStringValueForObject(objects[1]));
+						matchedVO.setOptionTypeId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+						matchedVO.setOptionType(commonMethodsUtilService.getStringValueForObject(objects[3]));
 						matchedVO.setRemarks(objects[6]!=null ? objects[6].toString():" ");
+						matchedVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(objects[7]));
 						finalVO.getActivityVoList().add(matchedVO);
 					}
 					
 					ActivityVO optionVO = new ActivityVO();
-					optionVO.setOptionId((Long)objects[4]);
-					optionVO.setOption(objects[5].toString());
+					optionVO.setOptionId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+					optionVO.setOption(commonMethodsUtilService.getStringValueForObject(objects[5].toString()));
 					matchedVO.getOptionsList().add(optionVO);
 					
 				}
@@ -4580,7 +4587,8 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		 List<IdNameVO> returnList =new ArrayList<IdNameVO>(0);
 		try {
 			//List<Long> activityStatusQuestionnaireIdsList = activityStatusQuestionnaireDAO.getActivityStatusQuestionsListByActivityScopeId(activityScopeId);
-			List<Long> activityStatusQuestionnaireIdsList = activityQuestionnaireDAO.getActivityQuestionnaireIdByQuestionId(activityScopeId,activityQuestionId);
+			List<Long> activityStatusQuestionnaireIdsList = new ArrayList<Long>(0); //activityQuestionnaireDAO.getActivityQuestionnaireIdByQuestionId(activityScopeId,activityQuestionId);
+			activityStatusQuestionnaireIdsList.add(activityQuestionId);
 			if(activityStatusQuestionnaireIdsList != null && activityStatusQuestionnaireIdsList.size()>0){
 				Long questionId = activityStatusQuestionnaireIdsList.get(0);
 				List<Object[]>  statusList = activityQuestionnaireDAO.getQuestionnareOptionsDetails(questionId);
