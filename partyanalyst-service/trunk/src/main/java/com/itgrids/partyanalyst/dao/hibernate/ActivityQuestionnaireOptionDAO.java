@@ -15,16 +15,50 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		
 	}
 	
+	public List<Object[]> getTextboxQuestionaireForScope(Long scopeId,Long questionId,Long optionId){
+		
+		  StringBuilder sb=new StringBuilder();
+		  sb.append(" select model.activityQuestionnaire.activityQuestionnaireId, " +//question id
+				    " model.activityQuestionnaire.activityQuestion.question, " +//question
+				    " optionType.activityOptionTypeId, " +//option type id
+				    " optionType.type, " +//option type
+				    " '', " +//option id
+				    " '', " +//option
+				    " model.activityQuestionnaire.hasRemark , model.activityQuestionnaire.orderNo " + //remarks
+				    " from ActivityQuestionnaireOption model " +
+				    " left join model.activityQuestionnaire.activityOptionType optionType " +
+				    " where model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId and model.activityOptionId is null ");
+		  if(questionId == null || questionId.longValue()<=0){
+			  sb.append(" and model.activityQuestionnaire.parentActivityQuestionnaireId is null");
+		  }
+		  else if(questionId!=null && questionId>0l && optionId!=null && optionId>0l){
+			    sb.append(" and model.activityQuestionnaire.parentActivityQuestionnaireId=:questionId");
+			    sb.append(" and model.activityQuestionnaire.parentActivityOptionId=:optionId");
+		  }
+		  sb.append(" order by model.activityQuestionnaire.orderNo");
+		  
+		  Query query=getSession().createQuery(sb.toString());
+		  
+		  query.setParameter("scopeId", scopeId);
+		  
+		  if(questionId!=null && questionId>0l && optionId!=null && optionId>0l){
+			  query.setParameter("questionId", questionId);
+			  query.setParameter("optionId", optionId);
+		  }
+		  return query.list();
+		
+	}
+	
 	public List<Object[]> getQuestionnaireForScope(Long scopeId,Long questionId,Long optionId){
 		
 		  StringBuilder sb=new StringBuilder();
-		  sb.append(" select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
+		  sb.append(" select model.activityQuestionnaire.activityQuestionnaireId, " +//question id
 				    " model.activityQuestionnaire.activityQuestion.question, " +//question
 				    " model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
 				    " model.activityQuestionnaire.activityOptionType.type, " +//option type
 				    " model.activityOption.activityOptionId, " +//option id
 				    " model.activityOption.option, " +//option
-				    " model.activityQuestionnaire.hasRemark " + //remarks
+				    " model.activityQuestionnaire.hasRemark , model.activityQuestionnaire.orderNo" + //remarks
 				    " from ActivityQuestionnaireOption model " +
 				    " where model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId ");
 		  if(questionId == null || questionId.longValue()<=0){
@@ -88,9 +122,26 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 				" model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
 				" model.activityQuestionnaire.activityOptionType.type, " +//option type
 				" model.activityOption.activityOptionId, " +//option id
-				" model.activityOption.option " +//option
+				" model.activityOption.option,  model.activityQuestionnaire.orderNo " +//option
 				" from ActivityQuestionnaireOption model,RequiredAttributeRespondentType model2  " +
 				" where model.isDeleted='N' " +
+				" and model.activityQuestionnaire.activityScopeId=:scopeId and " +
+				" model.activityQuestionnaire.respondentTypeId = model2.respondentTypeId and model2.requiredAttributeId =:requiredAttributeId " +
+				" order by model.activityQuestionnaire.orderNo ");
+		query.setParameter("scopeId", scopeId);
+		query.setParameter("requiredAttributeId", requiredAttributeId);
+		return query.list();
+	}
+	
+	public List<Object[]> getTextBoxQuestionnaireForScopeAndRespondentTypeIds(Long scopeId,Long requiredAttributeId){
+		Query query = getSession().createQuery(" select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
+				" model.activityQuestionnaire.activityQuestion.question, " +//question
+				" model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
+				" model.activityQuestionnaire.activityOptionType.type, " +//option type
+				" '', " +//option id
+				" '', model.activityQuestionnaire.orderNo  " +//option
+				" from ActivityQuestionnaireOption model,RequiredAttributeRespondentType model2  " +
+				" where model.isDeleted='N' and model.activityOptionId is null " +
 				" and model.activityQuestionnaire.activityScopeId=:scopeId and " +
 				" model.activityQuestionnaire.respondentTypeId = model2.respondentTypeId and model2.requiredAttributeId =:requiredAttributeId " +
 				" order by model.activityQuestionnaire.orderNo ");
