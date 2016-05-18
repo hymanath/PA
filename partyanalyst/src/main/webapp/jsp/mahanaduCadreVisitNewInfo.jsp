@@ -254,7 +254,7 @@
 		  }
 		   $.ajax({
 			  type:'GET',
-			  url: 'getSubEventsOfEventAction.action',
+			  url: 'getSubEventsOfEventNewAction.action',
 			  data :{task:JSON.stringify(jsObj)}
           }).done(function(result){			  
 			  if(result !=null && result.length>0){

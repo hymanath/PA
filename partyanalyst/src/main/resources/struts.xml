@@ -12141,8 +12141,14 @@
 				<param name="root">resultList</param>
 			</result>
 	</action>
-		<action name="mahanaduCadreVisitNewInfoAction" class="mahanaduDashBoardAction" method="getMahanaduCadreVisitNewInfo">
-			<result name="success">/jsp/mahanaduCadreVisitNewInfo.jsp</result>
-		</action>
+	<action name="mahanaduCadreVisitNewInfoAction" class="mahanaduDashBoardAction" method="getMahanaduCadreVisitNewInfo">
+		<result name="success">/jsp/mahanaduCadreVisitNewInfo.jsp</result>
+	</action>
+	<!-- MahanaduCadreVisitNewInfo.jsp action -->
+	<action name="getSubEventsOfEventNewAction" class="eventDetailsAction" method="getSubEventsOfNewEvent">
+				<result type="json" name="success">
+				<param name="root">idnameVOList</param>
+			</result>
+	</action>
 </package>
 </struts>      
