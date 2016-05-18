@@ -12157,5 +12157,10 @@
 				<param name="root">idNameVoList</param>
 			</result>
 	</action>
+	<action name="getActivityQuestionnnairWiseReportAction" class="activityAction" method="getActivityQuestionnnaireWiseReport">
+			<result type="json" name="success">
+				<param name="root">responseVO</param>
+			</result>
+	</action>
 </package>
 </struts>      
