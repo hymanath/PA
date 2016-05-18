@@ -3105,7 +3105,10 @@
 	</bean>
 	
 	<bean id="mahanaduDashBoardService1" class="com.itgrids.partyanalyst.service.impl.MahanaduDashBoardService1">
-		
+		<property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
+		<property name="eventInviteeDAO" ref="eventInviteeDAO" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 	</bean>
 	
 </beans>		
