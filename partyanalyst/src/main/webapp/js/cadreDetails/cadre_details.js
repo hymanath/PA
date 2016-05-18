@@ -4975,7 +4975,7 @@ function getRefferelDetailsStatusWise(){
 							value += '<p class="m_0">C ID - '+result[i].complaintId+'</p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p>';
 						value += '</div>';
 						value += '<div class="col-sm-6">';
-							value +='<button class="referalGrievenceCls btn btn-success btn-xs pull-right"  style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;cursor:pointer;" class="btn btn-success m_top25" attr_status="'+statusArr[i]+'">Show More</button>';
+							value +='<button class="referalGrievenceCls btn btn-success btn-xs pull-right"  style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;cursor:pointer;" class="btn btn-success m_top25" attr_status="'+statusArr[i]+'">View More</button>';
 						value += '</div>';
 					value += '</div>';		
 					value+='</li>';
