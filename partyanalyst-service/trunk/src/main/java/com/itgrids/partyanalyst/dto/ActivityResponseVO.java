@@ -29,10 +29,31 @@ public class ActivityResponseVO {
 	private Long called=0L;
 	private Long pending=0L;
 	private Long sumcount=0L;
+	private Long levelId;
+	private String levelStr;
+	private List<ActivityResponseVO> sublist = new ArrayList<ActivityResponseVO>(0);
 	private List<ActivityResponseVO> sublist1 = new ArrayList<ActivityResponseVO>(0);
 	private List<ActivityResponseVO> sublist2 = new ArrayList<ActivityResponseVO>(0);
 	
 	
+	public List<ActivityResponseVO> getSublist() {
+		return sublist;
+	}
+	public void setSublist(List<ActivityResponseVO> sublist) {
+		this.sublist = sublist;
+	}
+	public String getLevelStr() {
+		return levelStr;
+	}
+	public void setLevelStr(String levelStr) {
+		this.levelStr = levelStr;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
 	public Long getCalled() {
 		return called;
 	}
