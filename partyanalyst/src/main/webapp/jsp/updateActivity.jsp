@@ -191,7 +191,7 @@
 			<div id="buildAssConsActivity" ></div>
 		   </div>
 		
-		</div>
+		</div><!--
 		<div class="row" id="activityresponsesDiv" style="display:none;">
 			<div class="col-md-12">
 				<div class="panel panel-default panel-custom">
@@ -226,7 +226,7 @@
 			</div>
 		</div>
 		
-		
+		-->
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		<div style="margin-bottom:35px;margin-top:5px;margin-right:5px">
 		<span class="btn-success btn btn-xs pull-right" style="font-weight:bold;">
@@ -506,8 +506,8 @@ var globalLctnInfoId = null;
 $(document).ready(function(){
 	//$('.searchDateCls').daterangepicker();
 	$('#activityTypeList').val(1);
-	$('#activityLevelList').val(1);
-	getActivityNames(1);
+	$('#activityLevelList').val(2);
+	getActivityNames(2);
 	$('.applyBtn').click(function(){
 		
 		/*var startDate = $("input[name=daterangepicker_start]").val();
@@ -679,9 +679,8 @@ function getActivityNames(id)
 				for(var i in result)
 					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 				
-				$('#ActivityList').val(12);
-				//$('#ActivityList').trigger('change');
-				getQuestions();
+				$('#ActivityList').val(16);
+				$('#ActivityList').trigger('change');
 			}
 		});
 		
@@ -1023,7 +1022,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 						else if(activityLevelId == 5)
 							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';							
 						//str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
-						str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
+						//str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 						//str+='<th>PRESIDENT</th>';
 						//str+='<th>GENERAL SECRETARY</th>';
 						str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
@@ -1049,7 +1048,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 								
 								str+='</div>  <i class="glyphicon glyphicon-ok updateDateDetls"></i> </td>';*/
-								str+='<td  style="text-align:center;width:180px">';
+								/*str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 									if(result.result[i].conductedDate != null)
@@ -1060,7 +1059,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								str+='</div>';
 								
 								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div> </td>';
-								
+								*/
 								/*
 								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
 								{
@@ -1079,13 +1078,13 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
 								if(result.result[i].conductedDate != null){
 									if(result.result[i].isAlreadyImageUpload == "true"){								
-										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+										//str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 									}else{
-										str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+										//str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 									} 
 								}
 								else{
-									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;display:none;" class="img'+result.result[i].locationId+'" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+									//str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;display:none;" class="img'+result.result[i].locationId+'" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
 								}
 							   
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
@@ -1263,7 +1262,7 @@ getUserAccessDistrictList();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
 	var districtId =$('#districtList').val();
-	
+	getQuestions();
 	getActivityDatesByScopeId();
 	
 	//$('#ErrDiv').html("");
@@ -1491,7 +1490,7 @@ $("#hideAsmblyData").click(function(){
 						if(divId!="questionsDivBodyId"){
 							str+='<label>'+serialNoTypeId[i]+''+result.activityVoList[i].question+' ? </label><br/>';
 						}else{
-							str+='<label>'+result.activityVoList[i].question+' ? </label><br/>';
+							str+='<label>'+result.activityVoList[i].question+'  </label><br/>';
 						}
 						str+='</div>';
 						str+='<div class="col-md-4">';
@@ -1520,7 +1519,7 @@ $("#hideAsmblyData").click(function(){
 							}
 						} 
 						if(result.activityVoList[i].remarks=="true"){
-							   str+='&nbsp;&nbsp;<br><textarea rows="2" cols="10" maxlength="200" name="result'+result.activityVoList[i].questionId+'" placeholder="Enter Remarks" class="remarksCls form-control" attr_qid="'+result.activityVoList[i].questionId+'" id="remark'+result.activityVoList[i].questionId+'"/>';
+							   str+='&nbsp;&nbsp;<br><input type="text" rows="2" cols="10" maxlength="200" name="result'+result.activityVoList[i].questionId+'" placeholder="Enter total count " class="remarksCls form-control" attr_qid="'+result.activityVoList[i].questionId+'" id="remark'+result.activityVoList[i].questionId+'"/>';
 						    }
 						str+='</div>';
 							str+='<div id="questionId'+result.activityVoList[i].questionId+'" ></div>';
@@ -1540,7 +1539,7 @@ $("#hideAsmblyData").click(function(){
 	$(document).on("click","#saveResult",function(){
 		var resultArr=[];
 		$(".selectedVal").each(function(){
-		var value='';
+		var value = '';
 		var remarks='0';
 		if($(this).attr("attr_type")=="selectbox" && $(this).val()>0){
 			var key=$(this).attr("attr_qid");
@@ -1549,19 +1548,20 @@ $("#hideAsmblyData").click(function(){
 			if(ramarkFieldKey != 0)
 				remarks = $("#remark"+key+"").val();			
 		}
-			/* if($(this).attr("attr_type")=="ckeckBox"){
+			/*if($(this).attr("attr_type")=="ckeckBox"){
 				if(this.checked)
 					value = this.value;			
-			}
-			else{
-				remarks = $(this).val();
-				value = "3";
-			} */
+			}*/
+		else{
+			remarks = $(this).val();
+			value = "3";
+		} 
 		     if(remarks==undefined || remarks==" "){
 				 remarks='0';
 			 }
 			if(value != null && value.length>0)
 			{
+				
 				var obj={
 				questionId : $(this).attr("attr_qid"),
 				optionId : value,
@@ -1581,7 +1581,8 @@ $("#hideAsmblyData").click(function(){
 				 activityLevelId : $("#activityLevelList").val(),
 				 activityLevelValue : $(this).attr("attr_location_Value"),
 				 responseArray : resultArr,
-				 conductedDate : $("#"+dateFieldId+"").val()
+				 //conductedDate : $("#"+dateFieldId+"").val()
+				 conductedDate:''
 		       };
 			  
 			 $.ajax({
@@ -2444,6 +2445,8 @@ $(document).on("click",".updateDateDetls",function(){
 	function getQuestions(){
 		
 	var scopeId = $("#ActivityList").val();
+	$('#questionsId').find('option').remove();
+	//$('#questionsId').append('<option value="0"> Select Question </option>');	
 	var jsObj={	
 			scopeId :scopeId		 
 		}
@@ -2455,8 +2458,12 @@ $(document).on("click",".updateDateDetls",function(){
 		   }).done(function(result){
 			   if(result != null && result.length >0)
 			{
-				for(var i in result)
+				
+				for(var i in result){
+					console.log(result[i].id);
 					$('#questionsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+				}
+					
 			}
 			   
 		   });
