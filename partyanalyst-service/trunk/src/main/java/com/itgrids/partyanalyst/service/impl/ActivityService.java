@@ -4921,10 +4921,14 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						locationVO.setId(commonMethodsUtilService.getLongValueForObject(location[0]));
 						locationVO.setName(commonMethodsUtilService.getStringValueForObject(location[1]));
 						
-						if(searchVO.getAttributesIdsList().contains(2L)){responseVO.setName("MANDAL/TOWN/DIVISION");
-							updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());}
-						else if(searchVO.getAttributesIdsList().contains(1L)){responseVO.setName("VILLAGE/WARD");
-							updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());}
+						if(searchVO.getAttributesIdsList().contains(2L)){
+							responseVO.setName("MANDAL/TOWN/DIVISION");
+							updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());
+						}
+						else if(searchVO.getAttributesIdsList().contains(1L)){
+							responseVO.setName("VILLAGE/WARD");
+							updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());
+						}
 						
 						if(commonMethodsUtilService.isListOrSetValid(questionDetls))
 							for (Object[] question : questionDetls) {
@@ -4944,10 +4948,14 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						locationVO.setId(commonMethodsUtilService.getLongValueForObject(location[0]));
 						locationVO.setName(commonMethodsUtilService.getStringValueForObject(location[1]));
 						
-						if(searchVO.getAttributesIdsList().contains(2L))
+						if(searchVO.getAttributesIdsList().contains(2L)){
+							responseVO.setName("MANDAL/TOWN/DIVISION");
 							updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());
-						else if(searchVO.getAttributesIdsList().contains(1L))
+						}
+						else if(searchVO.getAttributesIdsList().contains(1L)){
+							responseVO.setName("VILLAGE/WARD");
 							updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());
+						}
 						
 						if(commonMethodsUtilService.isListOrSetValid(questionDetls))
 							for (Object[] question : questionDetls) {
