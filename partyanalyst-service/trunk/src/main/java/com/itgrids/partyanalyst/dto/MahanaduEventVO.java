@@ -22,21 +22,21 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private String desc;
 	private String inviteeExists;
 	
-	private List<MahanaduEventVO> subList = new ArrayList<MahanaduEventVO>();
-	private List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
+	private List<MahanaduEventVO> subList = new ArrayList<MahanaduEventVO>(0);
+	private List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>(0);
 	
-	private List<MahanaduEventVO> datesList = new ArrayList<MahanaduEventVO>();
+	private List<MahanaduEventVO> datesList = new ArrayList<MahanaduEventVO>(0);
 	
 	private String mobileNo;
 	
-	private List<String> dates;
-	private List<String> dateCombinations;
+	private List<String> dates = new ArrayList<String>(0);
+	private List<String> dateCombinations = new ArrayList<String>(0);;
 	private Long locationId;
 	private String locationName;
 	private String locationType;
 	private int count;
 	
-	private List<Long> attendedCadres;
+	private List<Long> attendedCadres = new ArrayList<Long>(0);
 	private int oneDayCount;
 	private Long revisitCount;
 	private int newCount;
@@ -53,7 +53,7 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private String formateEventEndDate;
 	
 	private String lastUpdatedDate;
-	
+		
 	public Long getRevisitCount() {
 		return revisitCount;
 	}
@@ -271,6 +271,5 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	public void setLastUpdatedDate(String lastUpdatedDate) {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
-	
 	
 }

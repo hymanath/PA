@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IEntryExitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.hibernate.EventDAO;
+import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitInfo;
@@ -589,4 +590,127 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		}
 		return returnList;
 	}
+	
+	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId){		
+		
+		MahanaduVisitVO finalVo = new MahanaduVisitVO();
+		
+		try{
+						
+			Long toDaytotalVisitors = 0l;
+			Long toDaytotalInviteeVisitors = 0l;
+			Long currentVisitors = 0l;
+			Long currentInviteeVisitors = 0l;			
+												
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			Long entryEventId = entryExitInfo.getEntryId();
+			Long exitEventId = entryExitInfo.getExitId();
+			Long parentEventId = entryExitInfo.getParentEventId();
+			
+			Date todayDate = dateUtilService.getCurrentDateAndTime();
+			
+			toDaytotalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId);			
+			toDaytotalInviteeVisitors=eventAttendeeDAO.getTodayTotalInviteeVisitors(todayDate,parentEventId);			
+			currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
+			currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
+			
+			
+			finalVo.setTotalVisitors(toDaytotalVisitors);
+			finalVo.setTotalInviteeVisitors(toDaytotalInviteeVisitors);
+			if(toDaytotalVisitors !=null && toDaytotalInviteeVisitors !=null){
+				finalVo.setTotalNonInviteeVisitors(toDaytotalVisitors - toDaytotalInviteeVisitors);
+			}
+				
+			finalVo.setCurrentVisitors(currentVisitors);
+			finalVo.setCurrentInviteeVisitors(currentInviteeVisitors);
+			if(currentVisitors !=null && currentInviteeVisitors !=null){
+				finalVo.setCurrentNonInviteeVisitors(currentVisitors - currentInviteeVisitors);
+			}
+			
+			List<MahanaduEventVO>  totalHourVisitors= getHourWiseTotalVisitorsCount(parentEventId,todayDate,null);//total Visitors Hours wise For Today
+			//getHourWiseTotalVisitorsCount(parentEventId,todayDate,"Invitee");//total Invited Visitors Hours wise Flow For Today
+			
+			//getHourWiseCurrentVisitorsCount(todayDate,entryEventId,exitEventId,null);
+			//getHourWiseCurrentVisitorsCount(todayDate,entryEventId,exitEventId,"Invitee");
+			
+			finalVo.setEventVOList(totalHourVisitors);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return finalVo;
+		
+	}
+	public List<MahanaduEventVO> getHourWiseTotalVisitorsCount(Long parentEventId,Date startDate,String type )
+	 {	
+		 try{
+			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			// if(startDate != null && !startDate.isEmpty())
+			// eventStrDate = format.parse(startDate);
+			 List<Long> eventIds = new ArrayList<Long>(0);
+			 List<Long> subEventIds = new ArrayList<Long>(0);
+			 
+			 //0.total,1.invited count,2.non-invited count,3.hour
+			 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseTotalVisitorsCount(parentEventId,startDate,subEventIds,type);
+			 List<MahanaduEventVO> defaultHoursList =  setHoursList();
+			 if(hourWiseResult != null && hourWiseResult.size() > 0){
+				 for(Object[] obj :hourWiseResult){														
+					MahanaduEventVO resultVO = getMatchedVO(defaultHoursList,(Long)obj[3]);								
+					if(resultVO !=null)
+					{
+						resultVO.setTotal((Long)obj[0]);
+						resultVO.setInvitees((Long)obj[1]);
+						resultVO.setNonInvitees((Long)obj[2]);
+					}											
+				 }
+				 
+			 }	 
+			 return defaultHoursList;
+		 }
+		 catch(Exception e)
+		 {
+			 //LOG.error("Exception Occured in getHourWiseSubEventsCount()", e);
+			 e.printStackTrace();
+		 }
+		return null;
+	 }
+	
+	public List<MahanaduEventVO> setHoursList(){
+	 	 
+	  	 List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
+		 for(int i=8;i<=21;i++){
+			 	MahanaduEventVO vo = new MahanaduEventVO();
+				vo.setId(new Long(i));
+				if(i<12){
+					if(i==0)
+						vo.setName(12 +"AM");
+					else
+						vo.setName(i +"AM");					
+				}else if(i >= 12){
+					if(i==12)
+						vo.setName(12 +"PM");
+					else
+						vo.setName(i - 12 +"PM");
+				}
+				hoursList.add(vo);			
+		}
+	    return hoursList;
+	}
+	
+	 public MahanaduEventVO getMatchedVO(List<MahanaduEventVO> list,Long id)
+	 {		
+			if(list != null && list.size()>0)
+			{
+				for (MahanaduEventVO vo : list)
+				{
+					if(vo.getId().longValue() == id.longValue())
+					{
+						return vo;
+					}
+				}
+			}
+
+		return null;
+	 }
 }
