@@ -5008,8 +5008,8 @@ $(document).on('click','.referalGrievenceCls',function(){
 	
 	$.ajax({
 		type:'POST',
-		//url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
-		url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 			 dataType: "json",
 			 data: JSON.stringify(obj),
 			 contentType: "application/json; charset=utf-8",
