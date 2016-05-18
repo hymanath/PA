@@ -6,6 +6,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
+import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -62,4 +63,5 @@ public interface IActivityService {
 	public List<OptionsCountVo> getOptionDetailsForQuestion(Long activityScopeId,Long reportType, Long qstnId);
 	public List<IdNameVO> getActivityStatusDetailsByScopeId(Long activityScopeId,Long questionsId);
 	public List<OptionsCountVo> getCommentDetails(Long activityScopeId,Long reportType, Long qstnId, Long levelId, Long reportTypeId);
+	public List<ActivityResponseVO> getActivityLocationInfoDetailsByActivityScope(Long activityLevel,Long activityScope,List<Long> questionIds);
 }

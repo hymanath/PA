@@ -21,4 +21,5 @@ public interface IActivityQuestionAnswerDAO extends GenericDao<ActivityQuestionA
 	public int updateActivityQuestionnaireAnswerIdsList(Long activityScopeId,Long locationValue,Long constituencyId);
 	public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Long reportType,Long questionId);
 	public List<Object[]> getCommentDetails(Long activityScopeId,Long reportType,Long questnId, Long levelId, Long reportTypeId,String locationLevelStr);
+	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityScope,Long questionId,String optionType);
 }

@@ -78,6 +78,7 @@ import com.itgrids.partyanalyst.dto.ActivityQuestionVO;
 import com.itgrids.partyanalyst.dto.ActivityQuestionnairOptionVO;
 import com.itgrids.partyanalyst.dto.ActivityQuestionnairVO;
 import com.itgrids.partyanalyst.dto.ActivityReqAttributesVO;
+import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityScopeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -4869,5 +4870,57 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    returnList.add(vo);
 			}
 		}
+	}
+	
+	public List<ActivityResponseVO> getActivityLocationInfoDetailsByActivityScope(Long activityLevel,Long activityScope,List<Long> questionIds){
+		List<ActivityResponseVO> returnList = null;
+		try {
+			Map<Long,ActivityResponseVO> questionMap = new LinkedHashMap<Long, ActivityResponseVO>();
+			List<Object[]> optionTypeList = activityQuestionnaireDAO.getActivityQuestionOptionTypeList(questionIds);
+			if(optionTypeList != null && optionTypeList.size() > 0){
+				for (Object[] obje : optionTypeList) {
+					Long questId = Long.valueOf(obje[0] != null ? obje[0].toString():"0");
+					String optionType = obje[2] != null ? obje[2].toString():"";
+					
+					List<Object[]> list = activityQuestionAnswerDAO.getActivityLocationInfoByScope(activityLevel, activityScope, questId, optionType);
+					if(list != null && list.size() > 0){
+						for (Object[] obj : list) {
+							Long quesId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+							Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+							Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+								
+							ActivityResponseVO vo = questionMap.get(quesId);
+							if(vo != null){
+								if(districtId.longValue() >= 1l && districtId.longValue() <= 10l){   //ts
+									vo.setTSCount(vo.getTSCount()+count);
+									vo.setTotalCount(vo.getTotalCount()+count);
+								}
+								else if(districtId.longValue() >= 11l && districtId.longValue() <= 23l){   //ap
+									vo.setAPCount(vo.getAPCount()+count);
+									vo.setTotalCount(vo.getTotalCount()+count);
+								}
+							}
+							else{
+								vo.setQuestionId(quesId);
+								if(districtId.longValue() >= 1l && districtId.longValue() <= 10l){   //ts
+									vo.setTSCount(vo.getTSCount()+count);
+									vo.setTotalCount(vo.getTotalCount()+count);
+								}
+								else if(districtId.longValue() >= 11l && districtId.longValue() <= 23l){   //ap
+									vo.setAPCount(vo.getAPCount()+count);
+									vo.setTotalCount(vo.getTotalCount()+count);
+								}
+								questionMap.put(quesId, vo);
+							}
+						}
+					}
+				}
+			}
+			if(questionMap != null)
+				returnList = new ArrayList<ActivityResponseVO>(questionMap.values());
+		} catch (Exception e) {
+			Log.error("Exception Occured in getActivityLocationInfoDetailsByActivityScope method in ActivityService ",e);
+		}
+		return returnList;
 	}
 }
