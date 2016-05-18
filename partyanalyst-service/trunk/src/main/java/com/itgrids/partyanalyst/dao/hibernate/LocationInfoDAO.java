@@ -15,15 +15,16 @@ public class LocationInfoDAO extends GenericDaoHibernate<LocationInfo, Long> imp
 		super(LocationInfo.class);
 	}
     
-	public List<Object[]> getAssemblyWiseTotalCounts(List<Long> levelIds,List<Long> constIds){
+	public List<Object[]> getLocationWiseTotalCounts(List<Long> levelIds,List<Long> locationIds,Long scopeId){
 	
 		Query query=getSession().createQuery(" " +
-				  " select   model.scopeValue,sum(model.count) " +
+				  " select   model.scopeValue,sum(model.count) ,model.levelId,model.regionScopes.scope " +
 				  " from     LocationInfo model " +
-				  " where    model.scopeId =4 and model.scopeValue in (:constIds) and model.levelId in (:levelIds)" +
-				  " group by model.scopeValue ");
-		query.setParameterList("constIds",constIds);
+				  " where    model.scopeId =:scopeId and model.scopeValue in (:locationIds) and model.levelId in (:levelIds)" +
+				  " group by model.scopeValue order by model.levelId ");
+		query.setParameterList("locationIds",locationIds);
 		query.setParameterList("levelIds",levelIds);
+		query.setParameter("scopeId",scopeId);
 		return query.list();
 	}
 	

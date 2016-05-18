@@ -9,6 +9,7 @@ import com.google.gdata.data.IContent;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.ActivityQuestionAnswer;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ActivityQuestionAnswerDAO extends GenericDaoHibernate<ActivityQuestionAnswer, Long> implements IActivityQuestionAnswerDAO{
@@ -959,6 +960,30 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		query.setParameter("activityScopeId", activityScopeId);
 		query.setParameter("questnId", questnId);
 		return query.list();
+	}
+	
+	public List<Object[]> getLocationWiseResponseDetails(SearchAttributeVO searchVO){
+		StringBuilder queryStr = new StringBuilder();
+		CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+		if(commonMethodsUtilService.isTextEmpty(searchVO.getSearchType())){
+			if(searchVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY))
+				queryStr.append(" select   model.activityLocationInfo.constituencyId, ");
+			else if(searchVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT))
+				queryStr.append("  select  model.activityLocationInfo.constituency.district.districtId, ");
+		}
+		queryStr.append(" model.activityQuestionnaireId,count(distinct model.activityLocationInfoId)");
+		queryStr.append(" from ActivityQuestionAnswer model where model.activityQuestionnaireId in (:activityQuestionnaireIdsList) and " +
+				" model.isDeleted ='N'  ");
+		if(commonMethodsUtilService.isTextEmpty(searchVO.getSearchType())){
+			if(searchVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY))
+				queryStr.append(" group by  model.activityLocationInfo.constituencyId,model.activityQuestionnaireId ");
+			else if(searchVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT))
+				queryStr.append(" group by  model.activityLocationInfo.constituency.district.districtId,model.activityQuestionnaireId ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("activityQuestionnaireIdsList", searchVO.getQuestionnaireIdsList());
+		return query.list();
+		
 	}
 	
 	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityScope,Long questionId,String optionType){

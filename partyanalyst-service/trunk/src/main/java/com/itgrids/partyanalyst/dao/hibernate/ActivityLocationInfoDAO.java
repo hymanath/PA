@@ -197,18 +197,21 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 					queryStr.append(" where model.plannedDate is not null ");
 				}
 				else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("infocell")){
-					queryStr.append(" where model.plannedDate is not null and  model.conductedDate is not null ");
+					//queryStr.append(" where model.plannedDate is not null and  model.conductedDate is not null ");
+					queryStr.append(" where  model.conductedDate is not null ");
 				}
 				else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("ivr")){
-					queryStr.append(" where  model.plannedDate is not null and model.ivrStatus = 'Y' ");
+					//queryStr.append(" where  model.plannedDate is not null and model.ivrStatus = 'Y' ");
+					queryStr.append(" where model.ivrStatus = 'Y' ");
 				}
 				
 				if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
 					queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIdsList) ");
 				
 				if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
-					queryStr.append(" and ( date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
+					queryStr.append(" and ( date(model.conductedDate) >= :startDate and date(model.conductedDate) <= :endDate ) ");
 				}
+				
 				
 				if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
 				{
@@ -973,4 +976,23 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 	}
 	
 	
+	public List<Object[]> getLocationWiseUpdatedCountDetails(SearchAttributeVO searchVO){
+		
+		StringBuilder sb=new StringBuilder();
+		sb.append("select  ");
+		if(searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+			sb.append("  model.constituency.constituencyId, ");
+		else if(searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.DISTRICT))
+			sb.append("  model.constituency.district.districtId, ");
+		sb.append(" model.locationLevel, count(model.activityLocationInfoId) from     ActivityLocationInfo model " +
+			"  where    model.activityScopeId =:activityScopeId   ");
+		if(searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+			sb.append(" and model.constituency.constituencyId in (:locationIds) group by model.constituency.constituencyId,model.locationLevel ");
+		else if(searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.DISTRICT))
+			sb.append(" and model.constituency.district.districtId in (:locationIds) group by model.constituency.district.districtId,model.locationLevel ");
+		Query query=getSession().createQuery(sb.toString());
+		query.setParameter("activityScopeId", searchVO.getScopeId());
+		query.setParameterList("locationIds",searchVO.getLocationIdsList());
+		return query.list();
+	}
 }
