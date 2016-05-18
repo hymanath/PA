@@ -158,6 +158,29 @@
 						</div>
 					</div>
 				</span>	
+				<div class=" m_top10">
+						<div class="row-fluid">
+						
+							<div class="span6 " >
+							<h5 class="text-align1">Select State</h5>
+								<select id="stateLocationId" style="margin-top:-5px;" class=" form-control" >
+									<option value="0"> Select State</option>
+									<option value="24"> Tamil Nadu</option>
+									<option value="12"> Karnataka</option>
+									<option value="29"> Andaman and Nicobar</option>
+									<option value="20"> Orissa</option>
+								</select>
+							</div>
+							
+							<div class="span6">
+							<h5 class="text-align1">Select Constituency</h5>
+								<select id="consituenctDetailsId" style="margin-top:-5px;" class=" form-control">
+								<option value="0"> Select Constituency</option>
+									
+								</select>
+							</div>
+						</div>
+					</div>
 					<div class="pad-10b">
 					<h5 class="text-align1"  style="margin-left: -10px">CANDIDATE NAME</h5>
 							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;margin-left: -10px;border-radius: 5px ;height: 30px">
@@ -1117,8 +1140,48 @@
 	
 	getAllRelationDetails();
 		</script>
-		 <script>$('#yourElement').addClass('animated fadeInDown');</script>
+		 <script>$('#yourElement').addClass('animated fadeInDown');
+		 
+$( "#stateLocationId" ).change(function() {
+	var stateId= $(this).val();
+	getConstituenciesOfState();
+	if(stateId == 0){
+		setTimeout(function(){
+			$('#consituenctDetailsId').append('<option value="0"> Select Constituency </option>');
+		}, 600);
+		
+		
+	}
+	});
+	function getConstituenciesOfState(){
+		
+		
+		var stateId= $("#stateLocationId").val();
+		var jsObj = 
+		   {
+			 stateId : stateId            
+		   }	
+			$.ajax({
+				type : "POST",
+				url : "getConstituencyByStateAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				var str='';
+				if(result != null && result.length > 0){
+					str+='<option value="0">Select Constituency</option>';
+				   for(var i in result){
+						str+='<option value='+result[i].id+'>'+result[i].name+'</option>';
+					}
+				  }
+				
+				$("#consituenctDetailsId").html(str);
+			});
+	}
+
+	
+</script>
 	<!----->
 	
+
   </body>
 </html>
