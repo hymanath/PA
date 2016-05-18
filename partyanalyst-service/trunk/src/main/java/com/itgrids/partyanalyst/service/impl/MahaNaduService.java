@@ -2227,7 +2227,6 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		  }
 		  if( finalMap!= null && finalMap.size() > 0){
 			  resultList.addAll(finalMap.values());
-			  
 		  }
 		 
 	 }catch(Exception e){
@@ -2401,6 +2400,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
 	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	 SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
 	 DateUtilService date = new DateUtilService();
 	 
 	 Date eventStrDate = null;
@@ -2452,24 +2452,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		  resultList.get(0).setMahanaduEvent(isMahanaduEvent);
 	    }
 		  
-		 	/*List<Object[]> attendeeInfo = eventInfoDAO.getEventDataByReportLevelId(2l,subEventIds,0l,eventStrDate,eventEndDate);
-			 if(attendeeInfo != null && attendeeInfo.size() > 0)
-			 {
-				
-				 for(Object[] params : attendeeInfo)
-					{
-					 	MahanaduEventVO eventVO = getMatchedVO(resultList,(Long)params[0]);
-					 	if(eventVO != null)
-					 	{
-					 		
-					 		if(params[1] != null)
-					 		eventVO.setInvitees(eventVO.getInvitees() + (Long)params[1]);
-					 		if(params[2] != null)
-					 		eventVO.setNonInvitees(eventVO.getNonInvitees() + (Long)params[2]);
-					 	}
-					 	
-					}
-			 }*/
+		 	
 		  
 		     List<Object[]> attendeeInfo =eventAttendeeDAO.getStateWiseEventAttendeeCounts(parentId,eventStrDate,eventEndDate,subEventIds);
 		     if(attendeeInfo != null && attendeeInfo.size() > 0)
@@ -2513,17 +2496,22 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		    	 
 		     }
 		     
-		     
-			 List<Object[]> totalUniqueVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,eventStrDate,eventEndDate,subEventIds);
-			 if(totalUniqueVisits != null && resultList.size() > 0)
-			 {
-				 Long uniqueMemberInday = 0l;
-				 for(Object[] params : totalUniqueVisits)
-				 {
-					 uniqueMemberInday = uniqueMemberInday + (Long)params[1];
+		     //TOTAL UNIQUE VISITORS ATTENDED.
+			 Long totalUniqueVisitorsAttended= eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentId,eventStrDate,eventEndDate,subEventIds);
+			 
+			 if(totalUniqueVisitorsAttended != null && totalUniqueVisitorsAttended > 0){
+				 
+				 resultList.get(0).setTotal(totalUniqueVisitorsAttended);
+				 resultList.get(0).setUniqueNonInviteeVisitorsAttended(totalUniqueVisitorsAttended);
+				 
+				//TOTAL UNIQUE INVITEE AND NON INVITEE VISITORS.
+				 Long  uniqueInviteeVisitorsAttended= eventAttendeeDAO.getUniqueInviteeVisitorsAttendedcount(parentId,eventStrDate,eventEndDate,subEventIds);
+				 if( uniqueInviteeVisitorsAttended != null && uniqueInviteeVisitorsAttended > 0l){
+					 resultList.get(0).setUniqueInviteeVisitorsAttended(uniqueInviteeVisitorsAttended);
+					 resultList.get(0).setUniqueNonInviteeVisitorsAttended(totalUniqueVisitorsAttended - uniqueInviteeVisitorsAttended);
 				 }
-				 resultList.get(0).setTotal(uniqueMemberInday);
 			 }
+			 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
 			
 		 try{
 			 if(parentId.longValue() == 7l && eventStrDate != null && eventEndDate !=null && eventStrDate.equals(eventEndDate)){

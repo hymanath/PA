@@ -551,4 +551,19 @@ public class CommonMethodsUtilService {
 			    }
 			    return (T) destinationModel;
 			  }
+		  
+		  public List<Date> getBetweenDates(Date fromDate,Date toDate){
+				
+				List<Date> dates = new ArrayList<Date>(0);
+				
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(fromDate);
+				cal.add(Calendar.DATE, -1);
+				
+				while (cal.getTime().before(toDate)) {
+				    cal.add(Calendar.DATE, 1);
+				    dates.add(cal.getTime());
+				}
+				return dates;
+			}
 }
