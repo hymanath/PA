@@ -151,4 +151,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	public String getMahanaduCadreVisitNewInfo(){
+		return Action.SUCCESS;
+	}
 }

@@ -12141,5 +12141,8 @@
 				<param name="root">resultList</param>
 			</result>
 	</action>
+		<action name="mahanaduCadreVisitNewInfoAction" class="mahanaduDashBoardAction" method="getMahanaduCadreVisitNewInfo">
+			<result name="success">/jsp/mahanaduCadreVisitNewInfo.jsp</result>
+		</action>
 </package>
 </struts>      
