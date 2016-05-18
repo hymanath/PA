@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
+import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
@@ -73,9 +74,15 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private MobileUserVO 			mobileUserVO;
 	private Long divisonId;
 	private List<OptionsCountVo> 		optnsCountVOList;
+	private ActivityResponseVO responseVO;
 	
 	
-	
+	public ActivityResponseVO getResponseVO() {
+		return responseVO;
+	}
+	public void setResponseVO(ActivityResponseVO responseVO) {
+		this.responseVO = responseVO;
+	}
 	public List<OptionsCountVo> getOptnsCountVOList() {
 		return optnsCountVOList;
 	}
@@ -963,4 +970,41 @@ public String getCommentDetails(){
 	}
 	return Action.SUCCESS;
 }
+
+ public String getActivityQuestionnnaireWiseReport(){
+	 try {
+
+			jObj = new JSONObject(getTask());
+			
+			Long stateId = jObj.getLong("stateId");
+
+			Long activityScopeId = jObj.getLong("activityScopeId");
+			String searchType = jObj.getString("searchType");
+			
+			SearchAttributeVO searchvo = new SearchAttributeVO();
+			searchvo.setScopeId(activityScopeId);
+			searchvo.setSearchType(searchType);
+			searchvo.setScopeValue(stateId);
+			
+			JSONArray activityLevelIdsArr = jObj.getJSONArray("activityLevelIdsArr");
+			if(activityLevelIdsArr != null && activityLevelIdsArr.length() > 0){
+				for (int i = 0; i < activityLevelIdsArr.length(); i++) {
+					searchvo.getAttributesIdsList().add(Long.valueOf(activityLevelIdsArr.get(i).toString()));
+				}
+			}
+			
+			JSONArray questionArr = jObj.getJSONArray("questionArr");
+			if(questionArr != null && questionArr.length() > 0){
+				for (int i = 0; i < questionArr.length(); i++) {
+					searchvo.getQuestionnaireIdsList().add(Long.valueOf(questionArr.get(i).toString()));
+				}
+			}
+			
+			responseVO = activityService.getActivityQuestionnnaireWiseReport(searchvo);
+			
+	} catch (Exception e) {
+		LOG.error("Exception raised at getActivityQuestionnnaireWiseReport()", e);
+	}
+	 return Action.SUCCESS;
+ }
 }
