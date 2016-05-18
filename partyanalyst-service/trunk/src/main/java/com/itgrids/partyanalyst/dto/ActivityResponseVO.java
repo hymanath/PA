@@ -16,12 +16,12 @@ public class ActivityResponseVO {
 	private String name;
 	
 	private Long questionId;
-	private Long totalCount;
-	private Long APCount;
-	private Long TSCount;
-	private Long desTotalCount;
-	private Long desAPCount;
-	private Long desTSCount;
+	private Long totalCount = 0l;
+	private Long APCount = 0l;
+	private Long TSCount = 0l;
+	private Long desTotalCount = 0l;
+	private Long desAPCount = 0l;
+	private Long desTSCount = 0l;
 	
 	public Long getId() {
 		return id;
