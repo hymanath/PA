@@ -809,6 +809,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		 return (Long)query.uniqueResult();
 	}
 	
+	//Only For Today Total Visitors
 	public List<Object[]> getHourWiseTotalVisitorsCount1(Long parentEventId,Date date,List<Long> subeventIds,String type){
 		
 		StringBuilder str = new StringBuilder();
@@ -835,19 +836,6 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 		
 	}
-	
-	/*public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId){
-		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event_attendee ea1 inner join " +
-				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
-						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
-						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time where " +
-				        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId order by tdp_cadre_id;");
-		query.setDate("todayDate", todayDate);
-		query.setParameter("exitEventId", exitEventId);
-		query.setParameter("entryEventId", entryEventId);
-		
-		return (BigInteger)query.uniqueResult();
-	}*/
 	
 	public List<Object[]> getHourWiseCurrentVisitorsCount(Date todayDate,Long entryEventId,Long exitEventId,String type){
 		
@@ -880,7 +868,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
-	
+	//Invited,non-invited and Total for Today Visitors
 	public List<Object[]> getHourWiseTotalVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds,String type){
 		
 		StringBuilder str = new StringBuilder();
