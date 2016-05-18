@@ -656,5 +656,6 @@
 	<pattern>/appointmentsReportDashBoardAction*</pattern>
 	<pattern>/registrationSuccessAction*</pattern>
 	<pattern>/activitiesQuestionResponcesAction*</pattern>
+	 <pattern>/mahanaduCadreVisitNewInfoAction*</pattern>
 	</decorator> 
 </decorators>
