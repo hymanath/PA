@@ -614,7 +614,7 @@ $('#optnsCntDiv').html('');
 	var questionArr=[];
 	
 	if($('#questnsListId').val() != 0)
-		questionArr.push($('#questionId').val());
+		questionArr.push($('#questnsListId').val());
 	  else
 	  {
 		$('#questnsListId option').each(function(){
