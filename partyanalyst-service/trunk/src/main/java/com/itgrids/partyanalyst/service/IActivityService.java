@@ -63,5 +63,6 @@ public interface IActivityService {
 	public List<OptionsCountVo> getOptionDetailsForQuestion(Long activityScopeId,Long reportType, Long qstnId);
 	public List<IdNameVO> getActivityStatusDetailsByScopeId(Long activityScopeId,Long questionsId);
 	public List<OptionsCountVo> getCommentDetails(Long activityScopeId,Long reportType, Long qstnId, Long levelId, Long reportTypeId);
+	public ActivityResponseVO getActivityQuestionnnaireWiseReport(SearchAttributeVO searchVO);
 	public List<ActivityResponseVO> getActivityLocationInfoDetailsByActivityScope(Long activityLevel,Long activityScope,List<Long> questionIds);
 }
