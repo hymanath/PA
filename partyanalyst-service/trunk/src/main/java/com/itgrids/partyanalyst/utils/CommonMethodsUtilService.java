@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.LinkedHashMap;
@@ -30,6 +31,18 @@ import com.itgrids.partyanalyst.dto.ActivityVO;
 public class CommonMethodsUtilService {
 	private static Logger LOG = Logger.getLogger(CommonMethodsUtilService.class);
 	
+	  public boolean isListOrSetValid(Collection t){
+		  return t != null && t.size()>0;
+		}
+	  
+	  public boolean isMapValid(Map<?,?> t){
+		  return t != null && t.size()>0;
+		}
+	  public boolean isTextEmpty(String value){
+		  return value != null && value.trim().length()>0;
+		}
+	  
+	  
 	public String getStringValueForObject(Object param)
 	{
 		try {
