@@ -1603,8 +1603,8 @@ function buildFamilyMemberComplaint(result,jobj){
 			comp += '<img src="'+result[0].subList[j].image+'" style="height:35px;width:35px;"  class="media-object img-border img-circle">';
 			comp += '</div>';
 			comp += '<div class="media-body">';
-			comp += '<ul class="list-inline">';
-			comp += '<li style="width:85%">';
+			comp += '<ul class="list-inline">'; 
+			comp += '<li style="width:100%">';
 			comp += '<p class="m_0">Name- '+result[0].subList[j].name+'</p>';
 			comp += '<p class="m_0">Relation- '+result[0].subList[j].relation+' - '+result[0].subList[j].status+' </p>';
 			if(result[0].subList[j].membershipId == null)
@@ -1612,11 +1612,14 @@ function buildFamilyMemberComplaint(result,jobj){
 			else
 			comp += '<p class="m_0">MemberShipID- <a target="_blank" title="Click here to View '+result[0].subList[j].name+' Cadre Details " href="http://mytdp.com/cadreDetailsAction.action?memberShipId='+result[0].subList[j].membershipId+'">'+result[0].subList[j].membershipId+'</p></a>';
 			
-			comp += '</li>';
-			comp += '<li>';
+			comp += '</li>'; 
+			/* comp += '<li>';  
 			comp += '<span class="countStyleSpan">'+result[0].subList[j].subList.length+'</span>';
-			comp += '</li>';
+			comp += '</li>'; */
 			comp += '</ul>';
+			comp += '</div>';
+			comp += '<div class="media-right m_top10" >';
+			comp += '<span class="countStyleSpan" style="top: 5px;">'+result[0].subList[j].subList.length+'</span>';
 			comp += '</div>';
 			comp += '</div>';
 			//comp += '</div>';
@@ -4918,7 +4921,7 @@ function getRefferelDetailsStatusWise(){
 	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	var cadreId = globalCadreId;
-	$("#referralGrievanceLoadingImg").show();
+	$("#referralGrievanceLoadingImg").show();  
 	$.ajax({
 		type:'GET',
 		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
@@ -4935,21 +4938,54 @@ function getRefferelDetailsStatusWise(){
 		var totalApprovetAmt = result[0].totalApprovedAmount;
 			value+='<h3 class="text-center" style="margin-top:10px;margin-bottom:0px"><img src="images/IndianRupee.png" style="display:inline-block;height:15px;margin:0px;"/>'+totalApprovetAmt+'/-</h3>';
 			value+='<h5 class="text-center">TOTAL FINANCIAL SUPPORT</h5>';
-			value+='<ul class="referralGrievanceDetails" >';		
+			/* value+='<ul class="referralGrievanceDetails" >';		
 				for(var i in result){
 					value+='<li>'+result[i].name.toUpperCase()+'<span class="pull-right"><a onclick="getReferealComplaintDetails(\''+result[i].name+'\');" href="#">'+result[i].count+'</a></span></li>';
 				}
 				
 			value+='</ul>';	
+			 */
+				var obj={
+					 cadreId : globalCadreId,
+					 status :"All",
+					 referTypeId:0
+				}
+				$.ajax({
+					type:'POST',
+					url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+					//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+						 dataType: "json",
+						 data: JSON.stringify(obj),
+						 contentType: "application/json; charset=utf-8",
+						 username: "grievance",
+						 password: "grievance@!tG"
+				}).done(function(result){
+					
+					value += '<div class="panel-body pad_0">';
+					value+='<ul style="margin-bottom:0px;box-shadow:none" class="inbox-messages custom-scroll-ins">';
+					for(var i in result)
+					{
+					var color = getColorCodeByStatus(result[i].status);
+					value += '<li style="background:'+color+'">';
+					
+					value+=' <p class="m_0">C ID - '+result[i].complaintId+'</p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p></li>';
+					}
+					value+='</ul>';  
+				  
+					value += '</div>';   
+					$("#referralGrievanceDetailsId").html(value);
+					//$("#refferelTotalCountId").html('<a style="cursor:pointer;" onclick="getReferealComplaintDetails(\'All\');" href="#">'+result[0].totalCount+'</a>');
+					
+				});
 			
 		}
-		$("#referralGrievanceDetailsId").html(value);
-		$("#refferelTotalCountId").html('<a style="cursor:pointer;" onclick="getReferealComplaintDetails(\'All\');" href="#">'+result[0].totalCount+'</a>');
+		$("#refferelTotalCountId").html('<a style="" onclick="" href="#">'+result[0].totalCount+'</a>');
+		$(".custom-scroll-ins").mCustomScrollbar();
 	});
 }
 
 
-function getReferealComplaintDetails(status) {
+/* function getReferealComplaintDetails(status) {
 	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	var obj={
@@ -4960,8 +4996,8 @@ function getReferealComplaintDetails(status) {
 	
 	$.ajax({
 		type:'POST',
-		url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
-		//url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		//url: wurl+"/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
+		url: "http://localhost:8080/Grievance/WebService/getRefferelComplaintDetailsForCandidate",
 			 dataType: "json",
 			 data: JSON.stringify(obj),
 			 contentType: "application/json; charset=utf-8",
@@ -4971,7 +5007,7 @@ function getReferealComplaintDetails(status) {
 		buildPopupComplaintInfo1(result);
 		
 	});
-}
+} */
 
 function buildPopupComplaintInfo1(result) {
 	$("#myModalForTableGrieId").modal("show");
