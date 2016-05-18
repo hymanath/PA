@@ -73,4 +73,28 @@ public class ActivityQuestionnaireDAO extends GenericDaoHibernate<ActivityQuesti
 		query.setParameter("activityScopeId", activityScopeId);
 		return query.list();
 	}
+	
+	public List<Object[]> getActivityQuestionListByScope(Long activityScope){
+		Query query = getSession().createQuery("select model.activityQuestion.activityQuestionId," +
+									" model.activityOptionType.activityOptionTypeId," +
+									" model.activityOptionType.type" +
+									" from ActivityQuestionnaire model" +
+									" where model.activityScope.activityScopeId = :activityScope" +
+									" and model.isDeleted = 'N'");
+		query.setParameter("activityScope", activityScope);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getActivityQuestionOptionTypeList(List<Long> questionIds){
+		Query query = getSession().createQuery("select model.activityQuestion.activityQuestionId," +
+									" model.activityOptionType.activityOptionTypeId," +
+									" model.activityOptionType.type" +
+									" from ActivityQuestionnaire model" +
+									" where model.activityQuestion.activityQuestionId in (:questionIds)" +
+									" and model.isDeleted = 'N'");
+		query.setParameterList("questionIds", questionIds);
+		
+		return query.list();
+	}
 }

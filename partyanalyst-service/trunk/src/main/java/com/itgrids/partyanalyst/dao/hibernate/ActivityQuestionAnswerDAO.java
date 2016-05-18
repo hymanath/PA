@@ -960,4 +960,50 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		query.setParameter("questnId", questnId);
 		return query.list();
 	}
+	
+	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityScope,Long questionId,String optionType){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select model.activityQuestionnaire.activityQuestion.activityQuestionId," +
+						" model.activityLocationInfo.constituency.district.districtId," +
+						" count(distinct model.activityLocationInfoId)");
+		if(optionType != null && optionType.toString().equalsIgnoreCase("Count Description Box"))
+			sb.append(" ,sum(count)");
+		
+		sb.append(" from ActivityQuestionAnswer model" +
+					" where model.activityLocationInfo.activityScope.activityScopeId = :activityScope");
+		if(activityLevel.longValue() == 1l)
+			sb.append(" and model.activityLocationInfo.locationLevel in (6,8)");
+		else if(activityLevel.longValue() == 2l)
+			sb.append(" and model.activityLocationInfo.locationLevel in (5,7,9)");
+		else if(activityLevel.longValue() == 3l)
+			sb.append(" and model.activityLocationInfo.locationLevel in (11)");
+		else if(activityLevel.longValue() == 4l)
+			sb.append(" and model.activityLocationInfo.locationLevel in (10)");
+		else if(activityLevel.longValue() == 5l)
+			sb.append(" and model.activityLocationInfo.locationLevel in (13)");
+		
+		if(questionId != null && questionId.longValue() > 0l)
+			sb.append(" and model.activityQuestionnaire.activityQuestion.activityQuestionId = :questionId");
+		
+		if(optionType != null && optionType.toString().equalsIgnoreCase("selectBox"))
+			sb.append(" and model.activityQuestionnaire.activityOptionType.activityOptionTypeId = 1");
+		else if(optionType != null && optionType.toString().equalsIgnoreCase("checkBox"))
+			sb.append(" and model.activityQuestionnaire.activityOptionType.activityOptionTypeId = 2");
+		else if(optionType != null && optionType.toString().equalsIgnoreCase("Text Description Box"))
+			sb.append(" and model.activityQuestionnaire.activityOptionType.activityOptionTypeId = 3");
+		else if(optionType != null && optionType.toString().equalsIgnoreCase("Count Description Box"))
+			sb.append(" and model.activityQuestionnaire.activityOptionType.activityOptionTypeId = 4");
+		
+		sb.append(" and model.isDeleted = 'N' and model.activityQuestionnaire.isDeleted ='N'" +
+						" and model.activityLocationInfo.activityScope.isDeleted = 'N'" +
+						" group by model.activityLocationInfo.constituency.district.districtId,model.activityQuestionnaire.activityQuestion.activityQuestionId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameter("activityScope", activityScope);
+		if(questionId != null && questionId.longValue() > 0l)
+			query.setParameter("questionId", questionId);
+		
+		return query.list();
+	}
 }
