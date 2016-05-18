@@ -17555,7 +17555,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					 levelIds.add(4l);
 				 }
 				 
-				 List<Object[]> totalCounts=locationInfoDAO.getAssemblyWiseTotalCounts(levelIds,constIds);
+				 List<Object[]> totalCounts=locationInfoDAO.getLocationWiseTotalCounts(levelIds,constIds,4L);
 				 if(totalCounts!=null && totalCounts.size()>0){
 					 for(Object[] obj:totalCounts){
 						 Long constId=(Long)obj[0];
