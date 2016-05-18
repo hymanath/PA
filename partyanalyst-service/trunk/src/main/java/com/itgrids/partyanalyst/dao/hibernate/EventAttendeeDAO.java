@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
@@ -797,5 +798,117 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return  query.list(); 	
 	}
+	
+	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId){
+		Query query=getSession().createQuery("select count(distinct model.tdpCadreId) from EventAttendee model,EventInvitee model1 where date(model.attendedTime) =:todayDate " +
+				" and model.event.parentEventId =:parentEventId" +
+				" and model1.tdpCadreId = model.tdpCadreId ");
+		query.setDate("todayDate", todayDate);
+		query.setParameter("parentEventId", parentEventId);
+		
+		 return (Long)query.uniqueResult();
+	}
+	
+	public List<Object[]> getHourWiseTotalVisitorsCount1(Long parentEventId,Date date,List<Long> subeventIds,String type){
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select  count(distinct model.tdpCadre.tdpCadreId),max(hour(model.attendedTime)) from EventAttendee model " );
+		
+		if(type !=null && type.equalsIgnoreCase("Invitee")){//For Invited Count
+			str.append(" ,EventInvitee model1 ");
+		}
+		
+		str.append(" where " +
+				" model.event.parentEventId = :parentEventId and date(model.attendedTime) = :date");
+		
+		if(type !=null && type.equalsIgnoreCase("Invitee")){//For Invited Count
+			str.append(" and model.tdpCadreId = model1.tdpCadreId ");
+		}
+		
+		str.append(" and model.tdpCadre.isDeleted = 'N'" +
+				" group by hour(model.attendedTime) ");
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("date", date);			
+		query.setParameter("parentEventId",parentEventId);
+	//	query.setParameter("isActive", IConstants.TRUE);
+	//	query.setParameter("isVisible", IConstants.IS_VISIBLE);
+		return query.list();
+		
+	}
+	
+	/*public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId){
+		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event_attendee ea1 inner join " +
+				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
+						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time where " +
+				        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId order by tdp_cadre_id;");
+		query.setDate("todayDate", todayDate);
+		query.setParameter("exitEventId", exitEventId);
+		query.setParameter("entryEventId", entryEventId);
+		
+		return (BigInteger)query.uniqueResult();
+	}*/
+	
+	public List<Object[]> getHourWiseCurrentVisitorsCount(Date todayDate,Long entryEventId,Long exitEventId,String type){
+		
+			StringBuilder str = new StringBuilder();
+		
+			str.append("select count(distinct ea1.tdp_cadre_id) as count,max(hour(ea1.attended_time)) as hour from event_attendee ea1 inner join " +
+				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
+						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time ");
+		
+			if(type !=null && type.equalsIgnoreCase("Invitee")){
+				str.append(" ,event_invitee ei ");
+			}	
+			str.append(" where " +
+			        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId" );
+			
+			if(type !=null && type.equalsIgnoreCase("Invitee")){
+				str.append(" and ea1.tdp_cadre_id = ei.tdp_cadre_id  ");
+			}
+			str.append(" group by hour(ea1.attended_time) ");
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("count",Hibernate.LONG)
+				.addScalar("hour",Hibernate.LONG);
+		
+		query.setDate("todayDate", todayDate);
+		query.setParameter("exitEventId", exitEventId);
+		query.setParameter("entryEventId", entryEventId);
+		
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getHourWiseTotalVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(distinct EA.tdp_cadre_id) as TOTAL,count(distinct EI.tdp_cadre_id) as INVITES ," +
+				" (count(distinct EA.tdp_cadre_id)-count(distinct EI.tdp_cadre_id)) as NONINVITEES " +
+				" ,hour(EA.attended_time)  as HOUR from  event E, " +
+				" event_attendee EA left outer join event_invitee EI " +
+				" on EA.tdp_cadre_id = EI.tdp_cadre_id " +
+				" and EI.event_id=:parentEventId " +
+				" where" +
+				" EA.event_id = E.event_id" +
+				" and date(EA.attended_time) = :date " +
+				" and E.parent_event_id = :parentEventId " +
+				" group by  hour(EA.attended_time);");
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("TOTAL",Hibernate.LONG)
+				.addScalar("INVITES",Hibernate.LONG)
+				.addScalar("NONINVITEES",Hibernate.LONG)
+				.addScalar("HOUR",Hibernate.LONG);
+		
+		query.setDate("date", date);			
+		query.setParameter("parentEventId",parentEventId);
+		
+		return query.list();
+		
+	}
+	
 	
 }

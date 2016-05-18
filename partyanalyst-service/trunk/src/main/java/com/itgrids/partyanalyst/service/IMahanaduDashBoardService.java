@@ -10,4 +10,5 @@ public interface IMahanaduDashBoardService {
 	public void getTodayTotalVisitorsForWeb();
 	public void getTodayTotalVisitorsForSchedular();
 	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId);
+	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId);
 }

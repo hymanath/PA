@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MahanaduVisitVO {
 
 	private Long above8hrs;
@@ -28,6 +31,12 @@ public class MahanaduVisitVO {
 	private Long onetotwoInv;
 	private Long halfanhourInv;
 	private Long belowhalfanhourInv;
+	
+	private Long totalInviteeVisitors=0l;
+	private Long totalNonInviteeVisitors=0l;
+	private Long currentNonInviteeVisitors=0l;
+	
+	private List<MahanaduEventVO> eventVOList = new ArrayList<MahanaduEventVO>();
 	
 	
 	public Long getAbove8hrs() {
@@ -180,5 +189,22 @@ public class MahanaduVisitVO {
 	public void setParentEventId(Long parentEventId) {
 		this.parentEventId = parentEventId;
 	}
+	public void setTotalInviteeVisitors(Long totalInviteeVisitors) {
+		this.totalInviteeVisitors = totalInviteeVisitors;
+	}
+	public void setTotalNonInviteeVisitors(Long totalNonInviteeVisitors) {
+		this.totalNonInviteeVisitors = totalNonInviteeVisitors;
+	}
+	public void setCurrentNonInviteeVisitors(Long currentNonInviteeVisitors) {
+		this.currentNonInviteeVisitors = currentNonInviteeVisitors;
+	}
+	public List<MahanaduEventVO> getEventVOList() {
+		return eventVOList;
+	}
+	public void setEventVOList(List<MahanaduEventVO> eventVOList) {
+		this.eventVOList = eventVOList;
+	}
+	
+	
 	
 }
