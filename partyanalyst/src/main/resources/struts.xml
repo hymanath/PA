@@ -10058,8 +10058,8 @@
 			</result>
 		</action> 
 		<action name="eventDashboardAction" class="eventDetailsAction">
-			 <result name="success">/jsp/mahandueventDashBoard.jsp</result>
-			<!--<result name="success">/jsp/mahandueventDashBoard1.jsp</result>-->
+			 <!--  <result name="success">/jsp/mahandueventDashBoard.jsp</result>-->
+			<result name="success">/jsp/mahandueventDashBoard1.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=eventDashboardAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 
