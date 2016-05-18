@@ -173,7 +173,7 @@
 								<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getOptionDetailsForQuestion();">GET REPORT</button>
 							</div>
 							<div class="col-md-12">
-							<button class="btn btn-success pull-right" id="lcnExcelBtn" onclick="generateExcel('actvtyQstnOptnExclId')" style="display:none;">Export Excel</button>
+							<button class="btn btn-success pull-right" id="lcnExcelBtn" onclick="generateExcel('responseTab')" style="display:none;">Export Excel</button>
 							</div>
 							</div>
 						<div class="row  m_top10" id="optnsCntDiv" style="display:none;">
@@ -375,9 +375,14 @@ $(document).on("change","#activityTypeList",function(){
 		}
 		getActivityNames(0);
 	});
-	
+
+	$('#ActivityList').change(function(){
+		getQuestionsForReportTypeAction();
+	});
 function getQuestionsForReportTypeAction(){
 var activityScopeId = $("#ActivityList").val();
+$('#questnsListId').find('option').remove();
+$('#questnsListId').append('<option value="0"> All </option>');
 	 var jsObj=
 	   {				
 		  scopeId:activityScopeId,
@@ -395,7 +400,7 @@ var activityScopeId = $("#ActivityList").val();
 		   });
 	}
 	
-function getOptionDetailsForQuestion(){
+function getOptionDetailsForQuestionn(){
 	$('#optnsCntDiv').hide();
      var activityScopeId = $("#ActivityList").val();
 	 var reportType = $("#reportList").val();
@@ -598,6 +603,117 @@ function excelCommentDetails(result){
 		str+='No Data Available';
 	}
 	$("#excelData").html(str);
+}
+
+
+function getOptionDetailsForQuestion(){
+
+$('#optnsCntDiv').html('');
+	var activityLevelIdsArr=[];
+	activityLevelIdsArr.push($('#activityLevelList').val());
+	var questionArr=[];
+	
+	if($('#questnsListId').val() != 0)
+		questionArr.push($('#questionId').val());
+	  else
+	  {
+		$('#questnsListId option').each(function(){
+				   questionArr.push(this.value);
+		});
+
+	  }
+  
+		var jObj = {
+				stateId:1,
+				activityScopeId:$('#ActivityList').val(),
+				searchType:$('#reportList option:selected').text().trim(),
+				activityLevelIdsArr:activityLevelIdsArr,
+				questionArr:questionArr
+			};		
+			$.ajax({
+				  type:'GET',
+				  url: 'getActivityQuestionnnairWiseReportAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){	
+				console.log(result);
+				buildQuestionResponseTable(result);
+				//$("#buildActivityReasonReportTableId").show();
+			 });
+}
+
+function buildQuestionResponseTable(result){
+	
+	if(result != null && result.sublist1 != null && result.sublist1.length>0){
+		var colspancount=2;
+		if(result.sublist1[0].sublist1 != null && result.sublist1[0].sublist1.length>0){
+			colspancount = colspancount+parseInt(1)*2;
+		}
+		if(result.sublist1[0].sublist2 != null && result.sublist1[0].sublist2.length>0){
+			colspancount = colspancount+parseInt(result.sublist1[0].sublist2.length);
+		}	
+		
+		var str='';
+		str+='<table id="responseTab" class="table table-condensed table-bordered">';
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th colspan="'+colspancount+'" style="text-align:center;"> '+result.name+'</th>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<th rowspan="2" style="text-align:center;"> LOCATION  </th>';
+		str+='<th rowspan="2" style="text-align:center;"> TOTAL  </th>';
+		if(result.sublist1[0].sublist1 != null && result.sublist1[0].sublist1.length>0)
+			for(var i in result.sublist1[0].sublist1){
+				if(i==0)
+					str+='<th colspan="2" style="text-align:center;"> '+result.sublist1[0].sublist1[i].name+' </th>';
+			}
+		
+		if(result.sublist1[0].sublist2 != null && result.sublist1[0].sublist2.length>0)
+			for(var i in result.sublist1[0].sublist2){
+				str+='<th rowspan="2" style="text-align:center;"> '+result.sublist1[0].sublist2[i].name+' </th>';
+			}
+			
+		str+='</tr>';
+		str+='<tr>';
+		//str+='<th rowspan="2"> LOCATION NAME  </th>';
+		if(result.sublist1[0].sublist1 != null && result.sublist1[0].sublist1.length>0)
+			for(var i in result.sublist1[0].sublist1){
+				if(i==0){
+					str+='<th style="text-align:center;"> CALLED </th>';
+					str+='<th style="text-align:center;"> PENDING </th>';
+				}
+			}			
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+			for(var i in result.sublist1){
+				str+='<tr>';
+				str+='<td>'+result.sublist1[i].name+'</td>';
+				str+='<td>'+result.sublist1[i].totalCount+'</td>';
+				for(var j in result.sublist1[i].sublist1){
+					//str+='<td>'+result.sublist1[i].sublist1[j].totalCount+'</td>';
+					if(j==0){
+					str+='<td style="text-align:center;">'+result.sublist1[i].sublist1[j].called+'</td>';
+					str+='<td style="text-align:center;">'+result.sublist1[i].sublist1[j].pending+'</td>';
+					}
+				}
+				for(var j in result.sublist1[i].sublist2){
+					//str+='<td>'+result.sublist1[i].sublist1[j].totalCount+'</td>';
+					str+='<td style="text-align:center;">'+result.sublist1[i].sublist2[j].totalCount+'</td>';
+				}
+				str+='</tr>';
+			}
+		str+='</tbody>';
+	str+='</table>';
+	$('#optnsCntDiv').html(str);
+	
+	$('#responseTab').dataTable({
+		"iDisplayLength": 20,
+		"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		
+	});
+	 $('#optnsCntDiv').show();
+	  $("#lcnExcelBtn").show();
+	}	
 }
 </script>
 </body>
