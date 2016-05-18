@@ -4936,15 +4936,17 @@ function getRefferelDetailsStatusWise(){
 		if(result !=null && result.length>0){
 		
 		var totalApprovetAmt = result[0].totalApprovedAmount;
+		var statusArr = [];
 			value+='<h3 class="text-center" style="margin-top:10px;margin-bottom:0px"><img src="images/IndianRupee.png" style="display:inline-block;height:15px;margin:0px;"/>'+totalApprovetAmt+'/-</h3>';
 			value+='<h5 class="text-center">TOTAL FINANCIAL SUPPORT</h5>';
-			/* value+='<ul class="referralGrievanceDetails" >';		
+			//value+='<ul class="referralGrievanceDetails" >';		
 				for(var i in result){
-					value+='<li>'+result[i].name.toUpperCase()+'<span class="pull-right"><a onclick="getReferealComplaintDetails(\''+result[i].name+'\');" href="#">'+result[i].count+'</a></span></li>';
+					//value+='<li>'+result[i].name.toUpperCase()+'<span class="pull-right"><a onclick="getReferealComplaintDetails(\''+result[i].name+'\');" href="#">'+result[i].count+'</a></span></li>';
+					statusArr.push(result[i].name);
 				}
 				
-			value+='</ul>';	
-			 */
+			//value+='</ul>';	
+			
 				var obj={
 					 cadreId : globalCadreId,
 					 status :"All",
@@ -4966,9 +4968,17 @@ function getRefferelDetailsStatusWise(){
 					for(var i in result)
 					{
 					var color = getColorCodeByStatus(result[i].status);
-					value += '<li style="background:'+color+'">';
 					
-					value+=' <p class="m_0">C ID - '+result[i].complaintId+'</p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p></li>';
+					value += '<li style="background:'+color+'">';
+					value += '<div class="row">';
+						value += '<div class="col-sm-6">';
+							value += '<p class="m_0">C ID - '+result[i].complaintId+'</p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p>';
+						value += '</div>';
+						value += '<div class="col-sm-6">';
+							value +='<button class="referalGrievenceCls btn btn-success btn-xs pull-right"  style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;cursor:pointer;" class="btn btn-success m_top25" attr_status="'+statusArr[i]+'">Show More</button>';
+						value += '</div>';
+					value += '</div>';		
+					value+='</li>';
 					}
 					value+='</ul>';  
 				  
@@ -4984,15 +4994,17 @@ function getRefferelDetailsStatusWise(){
 	});
 }
 
+$(document).on('click','.referalGrievenceCls',function(){
+	$this = $(this);
+	var status = $($this).attr("attr_status");
 
-/* function getReferealComplaintDetails(status) {
 	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	var obj={
 		 cadreId : globalCadreId,
 		 status :status,
 		 referTypeId:0
-	}
+	}  
 	
 	$.ajax({
 		type:'POST',
@@ -5007,7 +5019,7 @@ function getRefferelDetailsStatusWise(){
 		buildPopupComplaintInfo1(result);
 		
 	});
-} */
+});
 
 function buildPopupComplaintInfo1(result) {
 	$("#myModalForTableGrieId").modal("show");
