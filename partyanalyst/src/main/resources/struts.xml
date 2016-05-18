@@ -10058,7 +10058,8 @@
 			</result>
 		</action> 
 		<action name="eventDashboardAction" class="eventDetailsAction">
-			<result name="success">/jsp/mahandueventDashBoard.jsp</result>
+			 <result name="success">/jsp/mahandueventDashBoard.jsp</result>
+			<!--<result name="success">/jsp/mahandueventDashBoard1.jsp</result>-->
 			<result name="input">/jsp/loginForm.jsp?src=eventDashboardAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 
@@ -12148,6 +12149,12 @@
 	<action name="getSubEventsOfEventNewAction" class="eventDetailsAction" method="getSubEventsOfNewEvent">
 				<result type="json" name="success">
 				<param name="root">idnameVOList</param>
+			</result>
+	</action>
+	
+	<action name="getConstituencyByStateAction" class="cadreDetailsAction" method="getConstituencyByState">
+			<result type="json" name="success">
+				<param name="root">idNameVoList</param>
 			</result>
 	</action>
 </package>

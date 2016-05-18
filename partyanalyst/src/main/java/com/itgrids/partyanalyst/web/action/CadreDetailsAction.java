@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -87,6 +88,7 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<GrievanceDetailsVO> grievDetailsVOList;
 	private GrievanceDetailsVO grievanceDetailsvo;
 	private List<CadreDetailsVO> cadreDetailsVO;
+	private ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService;
 	
 	
 	private List<GrievanceDetailsVO> grievanceDetailsVoList ;
@@ -468,6 +470,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	}
 	public void setCadreDetlsLst(List<LocationVO> cadreDetlsLst) {
 		this.cadreDetlsLst = cadreDetlsLst;
+	}
+	
+	
+	public ICadreRegistrationForOtherStatesService getCadreRegistrationForOtherStatesService() {
+		return cadreRegistrationForOtherStatesService;
+	}
+	public void setCadreRegistrationForOtherStatesService(
+			ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService) {
+		this.cadreRegistrationForOtherStatesService = cadreRegistrationForOtherStatesService;
 	}
 	public String execute(){
 		
@@ -1243,5 +1254,20 @@ public String updateLeaderShip(){
 			LOG.error("Exception Occured in getApprovedAmountDetailsForGovtAndWilfareByLocation() in CadreDetailsAction ",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getConstituencyByState(){
+		
+		try{
+			
+			jObj = new JSONObject(getTask());
+			idNameVoList=cadreRegistrationForOtherStatesService.getConstituencyByState(jObj.getLong("stateId"));
+			
+		}catch(Exception e){
+			LOG.error(" Entered Into getConstituencyByState",e);
+		}
+		
+		return Action.SUCCESS;
+		
 	}
 }

@@ -1594,7 +1594,8 @@
 			<property name="cadreDetailsService" ref="cadreDetailsService" />
 			<property name="entitlementsHelper" ref="entitlementsHelper" />
 			<property name="cadreRegistrationService" ref="cadreRegistrationService" />
-			<property name="trainingCampService" ref="trainingCampService" />			
+			<property name="trainingCampService" ref="trainingCampService" />
+			<property name="cadreRegistrationForOtherStatesService" ref="cadreRegistrationForOtherStatesService" />			
 	</bean>
 	<bean id="trainingCampAction" class="com.itgrids.partyanalyst.web.action.TrainingCampAction" singleton="false"> 
 		<property name="trainingCampService" ref="trainingCampService" />
