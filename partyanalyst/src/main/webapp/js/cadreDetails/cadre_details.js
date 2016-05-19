@@ -336,11 +336,18 @@ function getParticipatedConstituencyId(cadreId){
 					 }else if(result.isFamilyVoterId == "true"){
 						 $("#isFamilyId").html('<b>Family VoterCard</b>');
 					 }
-					 
-					 $("#panchayatId").html(result.panchayatName);
-					 $("#mandalId").html(result.tehsilName);
-					 $("#constituencyId").html(result.constituencyName);
+					 if(result.panchayatName != null && result.panchayatName != "-"){
+						$("#panchayatId").html(result.panchayatName);
+					 }
+					 else{
+						$("#panchayatId").html(result.wName); 	 
+					 }
+					$("#mandalId").html(result.tehsilName);
+					$("#constituencyId").html(result.constituencyName);
+					 if(result.partyPosition != null)
 					 $("#positionId").html(result.partyPosition);
+					else 
+					 $("#positionId").html('N/A');
 					 $("#representativeId").html(result.representativeType);
 					 $("#mobileNoId").html(result.mobileNo);
 					 $("#memberShipNoId").html(result.membershipNo);
@@ -2902,8 +2909,9 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 			if(result != null){
 				var str='';
 				
-				str+='<table class="table m_0 table-bordered m_0" style="font-size:13px;" id="deathHospLifeCycleTableId">';
-					str+='<thead>';
+				str+='<div class="row"><div class="col-md-12"><button type="button" class="pull-right btn btn-primary" id="exportToExcelId" onclick="generateExcel()"> Export To Excel </button></div></div>';
+				str+='<table class="table table-bordered m_0" style="font-size:13px;" id="deathHospLifeCycleTableId">';
+				str+='<thead>';
 						str+='<tr>';
 							str+='<th>Complaint Id</th>';
 							str+='<th>Complaint Person Details</th>';
@@ -2966,6 +2974,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 				$("#deathHospModalBodyId").html(str);
 				$("#deathHospLifeCycleTableId").dataTable();
 				$("#deathHospLifeCycleTableId").removeClass("dataTable");
+				$("#deathHospLifeCycleTableId_wrapper").css("margin-top","5px");
 			}
 		});
 });
@@ -5580,7 +5589,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 		}).done(function(result){
 			if(result != null){
 				var str='';
-
+			str+='<div class="row"><div class="col-md-12"><button type="button" class="pull-right btn btn-primary" id="exportId" onclick="generateExcel1()"> Export To Excel </button></div></div>';
 				str+='<table class="table m_0 table-bordered m_0" id="grievanceStatusWiseTableId" style="font-size:13px !important;">';
 				str+='<thead>';
 					str+='<tr>';
@@ -5670,7 +5679,8 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 				
 				$("#dataLoadingsImgForGrievanceStatusDetails").hide();
 				$("#grievanceDetailsModalBodyId").html(str);
-				//$("#grievanceStatusWiseTableId").dataTable();
+				$("#grievanceStatusWiseTableId").dataTable();
+				$("#grievanceStatusWiseTableId_wrapper").css("margin-top","5px");
 			}
 		});
 });
