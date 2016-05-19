@@ -914,6 +914,76 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 	}
 	
+	public List<Object[]> getDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String districtQueryStr){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,d.district_id as districtId " +
+				" from " +
+				" tdp_cadre TC,user_address UA,district d,event_attendee EA inner join " +
+				" (select tdp_cadre_id as cadre_id, max(attended_time) as max_time" +
+				" from event_attendee " +
+				" where " +
+				" date(attended_time) =:todayDate " +
+				" and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as EA2" +
+				" ON EA.tdp_cadre_id =  EA2.cadre_id and EA.attended_time = EA2.max_time" +
+				" where " +
+				" date(EA.attended_time) =:todayDate and EA.event_id =:entryEventId " +
+				" and EA.tdp_cadre_id = TC.tdp_cadre_id" +
+				" and TC.address_id = UA.user_address_id " +
+				" and UA.district_id = d.district_id " );
+		
+			if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
+				str.append(districtQueryStr);
+			}
+		
+				str.append(" group by UA.district_id"); 
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("currentCadre",Hibernate.LONG)
+				.addScalar("districtId",Hibernate.LONG);
+		
+		query.setParameter("entryEventId", entryEventId);
+		query.setParameter("exitEventId", exitEventId);
+		query.setDate("todayDate", todayDate);
+		
+				
+		return query.list();
+	}
+	
+	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String districtQueryStr){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select count(distinct EA.tdp_cadre_id) as total,count(distinct EI.tdp_cadre_id) as invitees," +
+				"(count(distinct EA.tdp_cadre_id)-count(distinct EI.tdp_cadre_id)) as NonInvitees,d.district_id as districtId,d.district_name as districtName" +
+				" from " +
+				" tdp_cadre TC,user_address UA,district d ,event E,event_attendee EA left outer join" +
+				" event_invitee EI on EA.tdp_cadre_id = EI.tdp_cadre_id and EI.event_id = :eventId " +
+				" where " +
+				" EA.event_id = E.event_id " +
+				" and EA.tdp_cadre_id = TC.tdp_cadre_id " +
+				" and TC.address_id = UA.user_address_id " +
+				" and UA.district_id = d.district_id " +
+				" and E.parent_event_id = :eventId " );
+		
+		if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
+			str.append(districtQueryStr);
+		}
+		
+		str.append(" group by d.district_id");
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("total",Hibernate.LONG)
+				.addScalar("invitees",Hibernate.LONG)
+				.addScalar("NonInvitees",Hibernate.LONG)
+				.addScalar("districtId",Hibernate.LONG)
+				.addScalar("districtName",Hibernate.STRING);
+		
+		query.setParameter("eventId", eventId);
+		
+		return query.list();
+	}
 	public List<Object[]>  locationWiseEventAttendeeCountsQuery(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds,String queryString){
 		
 		StringBuilder sbS =  new StringBuilder();
