@@ -174,6 +174,35 @@ public Long getAppointmentStatusId(Long appointmentId){
 		
 		return query.executeUpdate();
 	}
+	
+	public List<Object[]> eachStatusApptCountByDateAndApptUserNew(Long apptUserId,List<Long> statusIds,Date date){
+		StringBuilder sb= new StringBuilder();
+		sb.append(" select model.appointmentStatusId,model.appointmentStatus.status,count(distinct model.appointmentId)" +
+				"   from   Appointment model,AppointmentTimeSlot ATS where model.isDeleted='N'" +
+				" and model.appointmentId = ATS.appointmentId ");
+		if(date!=null){
+			sb.append(" and ATS.date = :date ");
+		}
+		if(apptUserId!=null && apptUserId>0l){
+			sb.append(" and model.appointmentUserId = :apptUserId ");
+		}
+		if(statusIds!=null && statusIds.size()>0){
+			sb.append(" and model.appointmentStatusId in (:statusIds)  ");
+		}
+		sb.append(" group by model.appointmentStatusId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(date!=null){
+			query.setDate("date",date);
+		}
+		if(apptUserId!=null && apptUserId>0l){
+			query.setParameter("apptUserId",apptUserId);
+		}
+		if(statusIds!=null && statusIds.size()>0){
+			query.setParameterList("statusIds",statusIds);
+		}
+		return query.list();
+	}
 }
 	
 

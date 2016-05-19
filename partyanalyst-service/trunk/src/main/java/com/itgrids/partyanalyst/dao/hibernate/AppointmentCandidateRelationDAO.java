@@ -715,7 +715,11 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		
 		if(fromDate != null && toDate !=null)
 		{
-			str.append(" and date(a.inserted_time) between :fromDate and :toDate  ");
+			if(inputVo.getType() !=null && !inputVo.getType().isEmpty() && inputVo.getType().equalsIgnoreCase("Today")){
+				str.append(" and ats.date between :fromDate and :toDate  ");
+			}else{
+				str.append(" and date(a.inserted_time) between :fromDate and :toDate  ");
+			}			
 		}
 		
 		if(inputVo.getStatusIds() !=null && inputVo.getStatusIds().size()>0){
@@ -772,7 +776,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		StringBuilder sb =new StringBuilder();
 		
 		sb.append(" select   distinct ACR.appointmentCandidate.appointmentCandidateId, ACR.appointmentCandidate.name," +
-				"            ACR.appointmentCandidate.mobileNo,ACR.appointmentCandidate.candidateDesignation.designation," +
+				"            ACR.appointmentCandidate.mobileNo,0," +
 				"            ACR.appointment.reason,ACR.appointment.createdUser.userId,ACR.appointment.createdUser.firstName,ACR.appointment.createdUser.lastName," +
 				"            ATS.fromDate," +
 				"            ACR.appointment.appointmentStatusId,ACR.appointment.appointmentStatus.status,ACR.appointment.appointmentId," +
