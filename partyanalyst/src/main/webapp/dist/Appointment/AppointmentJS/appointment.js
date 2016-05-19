@@ -5054,7 +5054,7 @@ $("#appointmentDashboardDateSlotHeadingId").val(moment().format('MM/DD/YYYY'));
 						str+='</ul>';
 						if(result[i].subject!=null && result[i].subject.length>35){
 							  str+='<p class="" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].subject+'" >Purpose: '+result[i].subject.substring(0,35)+'...</p>';
-							}else{
+							}else if(result[i].subject!=null && result[i].subject.length>0){
 							  str+='<p class="" style="margin-left: 52px; margin-top: -6px;">Purpose:'+result[i].subject+' </p>';
 							}
 					str+='<p class="m_top10">';
