@@ -448,6 +448,7 @@ $(".panelDefault").height(maxHeight);
 			reportLevelId:0,
 			subEvents : subEvents1,			
 		}	
+		$("#daysSummaryUniqueTableId").html(' ');
 		$("#dayWsUnquVstrsPrcssngImgId").show();
 		$.ajax({
           type:'GET',
@@ -502,7 +503,9 @@ $(".panelDefault").height(maxHeight);
 		});
   }
     function getDetails(){
-		 
+		  
+		  $("#visitorsTableId").html(' ');
+		  $("#hoursWiseVisitors").html(' ');
 		  $("#hrWiseVstrsPrcssngImgId").show();
 		  $("#hrWiseVstrsHghChrtPrcssngImgId").show();
     	 var  eventId = $("#mainEventSelectId").val();
@@ -929,6 +932,7 @@ $(".panelDefault").height(maxHeight);
 	 if(globalMainEntryId !=null && globalMainEntryId>0){
 		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
 	 }
+	 $("#totalVisitorsDtlsId").html(' ');
      $("#dayWsVstrsPrcssngImgId").show();
 	 var jObj = {
 			eventId:eventId,			
