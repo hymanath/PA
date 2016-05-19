@@ -12181,5 +12181,10 @@
 				<param name="root">responsevoList</param>
 			</result>
 	</action>
+	<action name="stateWiseEventAttendeeCountsAction" class="eventDetailsAction1" method="stateWiseEventAttendeeCounts">
+			<result type="json" name="success">
+				<param name="root">statesEventVO</param>
+			</result>
+	</action>
 </package>
 </struts>      

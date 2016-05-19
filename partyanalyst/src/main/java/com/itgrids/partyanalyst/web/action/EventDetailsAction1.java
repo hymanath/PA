@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
+import com.itgrids.partyanalyst.dto.StatesEventVO;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,6 +22,7 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 	private String task;
 	private List<MahanaduEventVO> resultList;
 	private IMahanaduDashBoardService1 mahanaduDashBoardService1;
+	private StatesEventVO statesEventVO;
 	
 	public JSONObject getjObj() {
 		return jObj;
@@ -52,6 +54,13 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		this.mahanaduDashBoardService1 = mahanaduDashBoardService1;
 	}
 	
+	
+	public StatesEventVO getStatesEventVO() {
+		return statesEventVO;
+	}
+	public void setStatesEventVO(StatesEventVO statesEventVO) {
+		this.statesEventVO = statesEventVO;
+	}
 	
 	public String getLocationWiseVisitorsCount()
 	{
@@ -90,8 +99,27 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String stateWiseEventAttendeeCounts(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			
+			//String startDate,String endDate,Long parenteventId,List<Long> subEventIds
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			Long parenteventId = jObj.getLong("parentEventId");
+			
+			List<Long> subEventIds = new ArrayList<Long>();
+			JSONArray arr = jObj.getJSONArray("subEventIds");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			
+			statesEventVO =  mahanaduDashBoardService1.stateWiseEventAttendeeCounts(startDate,endDate,parenteventId,subEventIds);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 	
-	
-	
-   
 }
