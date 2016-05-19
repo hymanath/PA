@@ -81,6 +81,7 @@ import com.itgrids.partyanalyst.model.EventInfo;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -120,6 +121,7 @@ public class MahaNaduService implements IMahaNaduService{
 	private IMahanaduDashBoardService mahanaduDashBoardService;
 	private IEventAttendeeErrorDAO eventAttendeeErrorDAO;
 	private IEventAttendeeInfoDAO eventAttendeeInfoDAO;
+	private CommonMethodsUtilService commonMethodsUtilService;
 	
 	public IEventDAO getEventDAO() {
 		return eventDAO;
@@ -382,6 +384,15 @@ public IEventAttendeeInfoDAO getEventAttendeeInfoDAO() {
 
 public void setEventAttendeeInfoDAO(IEventAttendeeInfoDAO eventAttendeeInfoDAO) {
 	this.eventAttendeeInfoDAO = eventAttendeeInfoDAO;
+}
+
+public CommonMethodsUtilService getCommonMethodsUtilService() {
+	return commonMethodsUtilService;
+}
+
+public void setCommonMethodsUtilService(
+		CommonMethodsUtilService commonMethodsUtilService) {
+	this.commonMethodsUtilService = commonMethodsUtilService;
 }
 
 public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId){
@@ -2402,7 +2413,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	 SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
 	 DateUtilService date = new DateUtilService();
-	 
+	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	 Date eventStrDate = null;
 	 Date eventEndDate = null;
 	 try{
@@ -2422,21 +2433,38 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 boolean preEntrySubEventExist = false; 
 		 Long preEntrySubEventId = null;
 		 
+		 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
+		 
 		  List<Object[]> list = eventDAO.getVisibleEventNames(subEventIds);
 		  if(list != null && list.size() > 0)
 		  {
 			  for(Object[] params : list)
-				 {
-				  MahanaduEventVO vo = new MahanaduEventVO();
-					 vo.setId((Long)params[0]);
-					 vo.setName(params[1] != null ? params[1].toString() : "");
-					 
-					 if(vo.getName().trim().equalsIgnoreCase(IConstants.EVENT_PRE_ENTRY)){
-						 preEntrySubEventExist = true;
-						 preEntrySubEventId = vo.getId();
-					 }
-				  resultList.add(vo);
+			  {
+			     MahanaduEventVO vo = new MahanaduEventVO();
+				 vo.setId((Long)params[0]);
+				 vo.setName(params[1] != null ? params[1].toString() : "");
+				 
+				 if(betweenDates != null && betweenDates.size() > 0){
+					   for(int i=0;i<betweenDates.size();i++){
+						   MahanaduEventVO dateVO = new MahanaduEventVO();
+						   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
+						   dateVO.setDataExist(false);
+						   int dayCount = i+1;
+						   dateVO.setName("Day- "+dayCount);
+						   if(vo.getSubMap() == null){
+							   vo.setSubMap(new LinkedHashMap<String, MahanaduEventVO>());
+						   }
+						   vo.getSubMap().put(dateVO.getDateStr(),dateVO);
+					   }
+				   }
+				 
+				 
+				 if(vo.getName().trim().equalsIgnoreCase(IConstants.EVENT_PRE_ENTRY)){
+					 preEntrySubEventExist = true;
+					 preEntrySubEventId = vo.getId();
 				 }
+			     resultList.add(vo);
+			  }
 		  }
 		  
 		  
@@ -2458,25 +2486,28 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		     if(attendeeInfo != null && attendeeInfo.size() > 0)
 			 {
 		    	  for(Object[] params : attendeeInfo)
-					{
+				  {
 					 	MahanaduEventVO eventVO = getMatchedVO(resultList,(Long)params[0]);
 					 	if(eventVO != null)
 					 	{
-					 		if(params[1] != null){
-					 			
-					 			eventVO.setInvitees(eventVO.getInvitees() + (Long)params[1]);
-					 			
+					 		if(params[2] != null){
+					 		
+					 			eventVO.setInvitees(eventVO.getInvitees() + (Long)params[2]);
 					 			if( preEntrySubEventId != null && preEntrySubEventId.longValue() == ((Long)params[0]).longValue()){
 					 				//valid count
 					 				eventVO.setValidCount(eventVO.getInvitees());
 					 			}
 					 			
+					 			//date wise.
+					 			String dateStr = params[1]!=null?params[1].toString():"";
+					 			MahanaduEventVO dateVO = eventVO.getSubMap().get(dateStr);
+					 			if(dateVO!=null){
+					 				dateVO.setAttendees((Long)params[2]);
+					 			}
 					 		}
 					 		
-					 		/*if(params[2] != null)
-					 		eventVO.setNonInvitees(eventVO.getNonInvitees() + (Long)params[2]);*/
+					 		
 					 	}
-					 	
 					}
 			 }
 		     
@@ -2512,8 +2543,8 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 }
 			 }
 			 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
-			
-		 try{
+			 
+			 /* try{
 			 if(parentId.longValue() == 7l && eventStrDate != null && eventEndDate !=null && eventStrDate.equals(eventEndDate)){
 				 Calendar cal = Calendar.getInstance();
 				 cal.setTime(eventStrDate);
@@ -2534,12 +2565,11 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 }
 		 }catch(Exception e){
 			 LOG.error(e);
-		 }
+		 }*/
+		
 	 }
-	 catch(Exception e)
-	 {
-		 LOG.error("Exception Occured in getSubEventInfo()", e);
-		 e.printStackTrace();
+	 catch(Exception e){
+		 LOG.error("Exception Occured in getSubEventCount()", e);
 	 }
 	return resultList;
  }
