@@ -24,7 +24,9 @@ public class StatesEventVO implements Serializable{
 	
 	private String calcPercantage;
 	private String highOrlow;
-	private String calcString;
+	
+	private String dateString1;
+	private String dateString2;
 	
 	public Long getAttendees() {
 		return attendees;
@@ -111,11 +113,18 @@ public class StatesEventVO implements Serializable{
 	public void setHighOrlow(String highOrlow) {
 		this.highOrlow = highOrlow;
 	}
-	public String getCalcString() {
-		return calcString;
+	public String getDateString1() {
+		return dateString1;
 	}
-	public void setCalcString(String calcString) {
-		this.calcString = calcString;
+	public void setDateString1(String dateString1) {
+		this.dateString1 = dateString1;
 	}
+	public String getDateString2() {
+		return dateString2;
+	}
+	public void setDateString2(String dateString2) {
+		this.dateString2 = dateString2;
+	}
+	
 	
 }
