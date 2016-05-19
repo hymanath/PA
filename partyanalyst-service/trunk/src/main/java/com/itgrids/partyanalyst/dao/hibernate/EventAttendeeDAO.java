@@ -362,7 +362,8 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select e2.name , count(distinct model.tdp_cadre_id), date(model.attended_time) from event_attendee model, event_attendee model1, event e2, event e3 where model1.event_id=e2.event_id and model.event_id=e3.event_id and model.event_id=:eventId and model1.event_id=:compareEventId and model.tdp_cadre_id=model1.tdp_cadre_id and e3.is_active=:isActive");
+		str.append("select e2.name , count(distinct model.tdp_cadre_id), date(model.attended_time) " +
+				"   from   event_attendee model, event_attendee model1, event e2, event e3 where model1.event_id=e2.event_id and model.event_id=e3.event_id and model.event_id=:eventId and model1.event_id=:compareEventId and model.tdp_cadre_id=model1.tdp_cadre_id and e3.is_active=:isActive");
 	
 		if((startDate != null && endDate != null))
 		{
@@ -391,26 +392,20 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId and model.event.eventId in(:subeventIds)");
+		str.append("select  model.event.eventId,date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) " +
+				"   from    EventAttendee model " +
+				"   where   model.event.parentEventId =:parentEventId and model.event.eventId in(:subeventIds)");
 		
-		if((startDate != null && endDate != null))
-		{
-			if(startDate.equals(endDate))
-			str.append(" and date(model.attendedTime) = :startDate "); 
-			else
+		if((startDate != null && endDate != null)){	
 			str.append(" and date(model.attendedTime) >= :startDate and date(model.attendedTime) <= :endDate "); 
 		}
-		str.append(" and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.event.isVisible=:isVisible  group by model.event.eventId,date(model.attendedTime) ");
+		str.append("     and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.event.isVisible=:isVisible  " +
+				  " group by model.event.eventId,date(model.attendedTime) ");
+		
 		Query query = getSession().createQuery(str.toString());
-		if((startDate != null && endDate != null))
-		{
-			if(startDate.equals(endDate))
+		if((startDate != null && endDate != null)){	
 			query.setDate("startDate", startDate);
-			else
-			{
-				query.setDate("startDate", startDate);
-				query.setDate("endDate", endDate);	
-			}
+			query.setDate("endDate", endDate);
 		}
 		query.setParameterList("subeventIds", subeventIds);
 		query.setParameter("parentEventId", parentEventId);
