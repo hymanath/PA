@@ -148,7 +148,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">HOUR WISE VISITORS</h4>
@@ -175,7 +175,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">HOUR WISE VISITORS</h4>
@@ -323,7 +323,17 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 	
 <script type="text/javascript">
-		$(function () {
+ 
+ function buildVisitorsDtlsGraph(result){
+	  var finalDataArr=[];
+	  var daysArr=["Day - 1","Day - 2","Day - 3"];
+	  for(var i in result){
+		   var jsonObj={name:daysArr[i],data:[result[i].above8hrs,result[i].seventoeight,result[i].sixtoseven,result[i].fivetosix,result[i].fourtofive,result[i].threetofour,result[i].twotothree,result[i].onetotwo,result[i].halfanhour,result[i].belowhalfanhour]};
+		   finalDataArr.push(jsonObj);
+	  }
+	  buildHighChart(finalDataArr);
+  }
+  	function buildHighChart(finalDataArr){
 			$('#hoursWiseVisitors').highcharts({
 				chart: {
 					type: 'area'
@@ -335,7 +345,7 @@
 					text: ' '
 				},
 				xAxis: {
-					categories: ['8 am', '9 am ', '10 am ', '11 am', '12 pm', '1 pm', '2 pm'],
+					categories: ['Above 8 Hours', '7 to 8 Hours', '6 to 7 Hours', '5 to 6 Hours', '4 to 5 Hours', '3 to 4 Hours', '2 to 3 Hours','1 to 2 Hours','1/2 to 1 Hours','< 1/2 Hour'],
 					tickmarkPlacement: 'on',
 					title: {
 						enabled: false
@@ -343,17 +353,17 @@
 				},
 				yAxis: {
 					title: {
-						text: 'Billions'
+						text: ''
 					},
 					labels: {
 						formatter: function () {
-							return this.value / 1000;
+							return ((this.value / 1000)+" K");
 						}
 					}
 				},
 				tooltip: {
 					shared: true,
-					valueSuffix: ' millions'
+					valueSuffix: ' '
 				},
 				plotOptions: {
 					area: {
@@ -366,24 +376,10 @@
 						}
 					}
 				},
-				series: [{
-					name: 'Asia',
-					data: [502, 635, 809, 947, 1402, 3634, 5268]
-				}, {
-					name: 'Africa',
-					data: [106, 107, 111, 133, 221, 767, 1766]
-				}, {
-					name: 'Europe',
-					data: [163, 203, 276, 408, 547, 729, 628]
-				}, {
-					name: 'America',
-					data: [18, 31, 54, 156, 339, 818, 1201]
-				}, {
-					name: 'Oceania',
-					data: [2, 2, 2, 6, 13, 30, 46]
-				}]
+				series:finalDataArr
 			});
-		});
+		}
+		
 	/* $(function () {
 		/**
 		 * Create a constructor for sparklines that takes some sensible defaults and merges in the individual
@@ -544,6 +540,19 @@
 	</script>
   <script type="text/javascript">
    
+   $( "#mainEventSelectId" ).change(function() {
+	  getmainEventsChange();
+	   
+   });
+    function getmainEventsChange(){	 
+		getSubEventsOfEvent();		
+		  setTimeout(function(){
+			getDaysUniqueAndRevisitSummary();	
+            getTodayTotalVisitors(); 
+            getDetails();		
+            getDayWiseVisitSummary();	
+			}, 2000);
+    } 
     $(document).ready(function(){
 		 setTimeout(function(){
 			getDaysUniqueAndRevisitSummary();	
@@ -650,6 +659,7 @@
           }).done(function(result){
 			  if(result!=null && result.length>0){
 				  buildVisitorsResultByTime(result);
+				  buildVisitorsDtlsGraph(result);
 			  }
 	      });
 	
@@ -672,7 +682,7 @@
                                 str+=' <tr>';
                                 str+=' 	<th class="back-white"></th>';
 									for(var i in result){
-                                    str+='<th class="color-black table-color2">ATTENDED</th>';
+                                    //str+='<th class="color-black table-color2">ATTENDED</th>';
 										if(needInvitees_a){
 											str+='<th class="color-black table-color2">INVITEES</th>';
 											str+='<th class="color-black table-color2">NON INVITEES</th>';
