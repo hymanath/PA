@@ -383,7 +383,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					 eventEndDate = format.parse(endDate); 
 					}
 					
-					List<Date>  betweenDates= new CommonMethodsUtilService().getBetweenDates(eventStrDate,eventEndDate);
+					List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
 					
 					//AP  DATA
 					StatesEventVO apStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,1l,"particular");
