@@ -508,10 +508,11 @@ public List<Object[]> getInvitedDetailsForCenterAndProgram(Date fromDate,Date to
 	   else if(searchType.equalsIgnoreCase("parliament"))
 		   str.append(" model.tdpCadre.userAddress.parliamentConstituency.constituencyId = :id and");
 	   else if(searchType.equalsIgnoreCase("district"))
-		   str.append(" model.tdpCadre.userAddress.district.districtId = :id and");
+		   str.append(" model.tdpCadre.userAddress.district.districtId = :id " +
+		   		" and model.tdpCadre.isDeleted = 'N'" +
+		   		" and model.tdpCadre.enrollmentYear = '2014' and ");
 	   
 	   str.append(" model.isDeleted = 'false'");
-	   
 	   Query query = getSession().createQuery(str.toString());
 	   
 	   if(searchType != null)
