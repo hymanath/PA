@@ -80,9 +80,8 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body panelDefault">
 					<h4 class="m_0">TOTAL VISITORS</h4>
-					<!--<div data-sparkline="71, 78, 39, 66 " class="m_top10"></div>-->
 					<h3 id="totalVisitorsId">0</h3>
 				</div>
 			</div>
@@ -92,9 +91,8 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body panelDefault">
 					<h4 class="m_0">INVITEES AS VISITORS</h4>
-					<!--<div data-sparkline="71, 78, 39, 66 " class="m_top10"></div>-->
 					<h3 id="inviteesAsVisitorsId">0</h3>
 				</div>
 			</div>
@@ -104,9 +102,8 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body panelDefault">
 					<h4 class="m_0">NOT INVITEES AS VISITORS</h4>
-					<!--<div data-sparkline="71, 78, 39, 66 " class="m_top10"></div>-->
 					<h3 id="nonInviteesAsVisitorsId">0</h3>
 				</div>
 			</div>
@@ -116,9 +113,8 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body panelDefault">
 					<h4 class="m_0">VISITORS PRESENT IN CAMPUS</h4>
-					<!--<div data-sparkline="71, 78, 39, 66 " class="m_top10"></div>-->
 					<h3 id="visitorsPresentInCampusId">0</h3>
 				</div>
 			</div>
@@ -128,7 +124,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body panelDefault">
 					<h4 class="m_0">INVITEES PRESENT IN  VISITORS</h4>
 					<!--<div data-sparkline="71, 78, 39, 66 " class="m_top10"></div>-->
 					<h3 id="inviteesPresentInVisitorsId">0</h3>
@@ -140,7 +136,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body panelDefault">
 					<h4 class="m_0">NON INVITEES PRESENT IN  VISITORS</h4>
 					<h3 id="nonInviteesPresentInVisitorsId">0</h3>
 				</div>
@@ -193,7 +189,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">DAY WISE UNIQUE AND REVISIT SUMMARY</h4>
 				</div>
-				<div class="panel-body pad_8" style="height:167px">
+				<div class="panel-body pad_8 panelDefault">
 				 <div id="daysSummaryUniqueTableId"></div>
 					<!--<table class="table tableDayWiseRevisit table-condensed">
 						<tr>
@@ -223,7 +219,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">DAY WISE VISIT SUMMARY</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body panelDefault">
 				<div id="totalVisitorsDtlsId"></div>
 					<!--<p class="m_0">1 DAY VISITORS<span class="pull-right" id="frstDyVstrsId">100%</span></p>
 					<div class="progress progressNewCustom">
@@ -323,7 +319,14 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 	
 <script type="text/javascript">
- 
+
+ var maxHeight = 0;
+$(".panelDefault").each(function(){
+   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+});
+$(".panelDefault").height(maxHeight);	
+
+
  function buildVisitorsDtlsGraph(result){
 	  var finalDataArr=[];
 	  var daysArr=["Day - 1","Day - 2","Day - 3"];
@@ -550,7 +553,7 @@
 			getDaysUniqueAndRevisitSummary();	
             getTodayTotalVisitors(); 
             getDetails();		
-            getDayWiseVisitSummary();	
+            getDayWiseVisitSummary();
 			}, 2000);
     } 
     $(document).ready(function(){
