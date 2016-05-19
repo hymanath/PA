@@ -726,7 +726,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		MahanaduEventVO finalVO = new MahanaduEventVO();
 		
 		try{
-		
+			boolean otherStatesExist = false;
+			
 			List<Long> twoStateIds = new ArrayList<Long>(0);
 			twoStateIds.add(1l);
 			twoStateIds.add(36l);
@@ -741,6 +742,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				districtQueryStr.append(" and d.district_id between 1 and 10 ");
 			}
 			
+			StringBuilder otherStatesLocationQueryString = new StringBuilder();
+			if(stateIds.contains(0l)){//for other states
+				otherStatesExist = true;
+				otherStatesLocationQueryString.append(" and UA.state_id not in (1) and UA.state_id is not null ");
+			}
+			
+			
 			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 			Long entryEventId = entryExitInfo.getEntryId();
 			Long exitEventId = entryExitInfo.getExitId();		
@@ -751,7 +759,17 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			List<MahanaduEventVO> defaultDistList = new ArrayList<MahanaduEventVO>(0);
 			
-			List<Object[]> allDistrictList  = districtDAO.getAllDistrictDetails(1l);		
+			List<Object[]> allDistrictList = null;
+			
+			if(stateIds.containsAll(twoStateIds)){				
+				allDistrictList = districtDAO.getDistrictIdAndNameByStateForRegion(1l,"Both");				
+			}else if(stateIds.contains(1l)){				
+				allDistrictList = districtDAO.getDistrictIdAndNameByStateForRegion(1l,"Andhra Pradesh");			
+			}else if(stateIds.contains(36l)){
+				allDistrictList = districtDAO.getDistrictIdAndNameByStateForRegion(1l,"Telangana");
+			}
+			
+					
 			if(allDistrictList !=null && allDistrictList.size()>0){
 				
 				for (Object[] objects : allDistrictList) {
@@ -801,6 +819,38 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  if(defaultDistList !=null && defaultDistList.size()>0){
 				  finalVO.setSubList(defaultDistList);
+			  }
+			  
+			  if(otherStatesExist){
+				  List<MahanaduEventVO> otherStatesfinalRslt = new ArrayList<MahanaduEventVO>(0);
+				  
+				  Map<Long,Long> distWiseCountsMap = new HashMap<Long, Long>(0);
+				  List<Object[]> otherStateRslt = eventAttendeeDAO.getOtherStateDistrictWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,otherStatesLocationQueryString.toString());
+				  
+				  if(otherStateRslt != null && otherStateRslt.size() > 0){
+					  for (Object[] objects : otherStateRslt) {
+						  distWiseCountsMap.put((Long)objects[1], (Long)objects[0]);
+					  }
+				  }
+				  
+				  /*Total,Invited and Non invited Cadre for other states*/		  
+				  //0.total,1.invitees,2.NonInvitees,3.districtId,4.districtName
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString.toString());
+				  
+				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
+					  for (Object[] obj : otherStatesTotalCountList) {
+						  MahanaduEventVO vo = new MahanaduEventVO();
+						  vo.setId((Long)obj[3]);
+						  vo.setName(obj[4].toString());
+						  vo.setCadreCount(distWiseCountsMap.get((Long)obj[3]) != null ? distWiseCountsMap.get((Long)obj[3]) : 0l);
+						  vo.setTotal((Long)obj[0]);
+						  vo.setInvitees(obj[1] !=null ? (Long)obj[1]:0l);
+						  vo.setNonInvitees(obj[2] !=null ? (Long)obj[2]:0l);
+						  otherStatesfinalRslt.add(vo);
+					  }
+				  }
+				  
+				  finalVO.getSubList().addAll(otherStatesfinalRslt);
 			  }
 			  
 		}catch (Exception e) {
