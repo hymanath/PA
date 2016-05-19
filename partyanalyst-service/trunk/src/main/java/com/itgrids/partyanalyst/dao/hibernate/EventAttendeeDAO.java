@@ -1099,4 +1099,83 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			query.setParameter("isActive", IConstants.TRUE);
 			return query.list();
 	   }
+	
+	 public Long stateWiseEventAttendeeCounts(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId ,String statesType){
+		
+		StringBuilder sb =  new StringBuilder();
+		
+		sb.append("select count(distinct model.tdpCadre.tdpCadreId) ");
+				
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sb.append(" from EventAttendee model where ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		
+		if( statesType.equalsIgnoreCase("overall")){
+			sb.append(" and model.tdpCadre.userAddress.state.stateId is not null ");
+		}else{
+			if(stateId.longValue() == 1l){
+				sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
+			}else if(stateId.longValue() == 36l){
+				sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
+			}else if(stateId.longValue() == 0l){
+				sb.append(" and model.tdpCadre.userAddress.state.stateId !=1 and model.tdpCadre.userAddress.state.stateId is not null ");
+			}
+		}
+        
+        Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return (Long)query.uniqueResult();
+	}
+	 public List<Object[]> stateWiseEventAttendeeCountsByDates(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId ,String statesType){
+			
+			StringBuilder sb =  new StringBuilder();
+			
+			sb.append("select date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId)");
+			if(inviteeType.equalsIgnoreCase("attendee")){
+				sb.append(" from EventAttendee model where ");
+			}
+			if(inviteeType.equalsIgnoreCase("invitee")){
+				sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			}
+			sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+			if(eventIds != null && eventIds.size() > 0){
+				sb.append(" and model.event.eventId in  (:eventIds)");
+			}
+			sb.append(" and date(model.attendedTime) between :startDate and :endDate ");
+			
+			if( statesType.equalsIgnoreCase("overall")){
+				sb.append(" and model.tdpCadre.userAddress.state.stateId is not null ");
+			}else{
+				if(stateId.longValue() == 1l){
+					sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");
+				}else if(stateId.longValue() == 36l){
+					sb.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
+				}else if(stateId.longValue() == 0l){
+					sb.append(" and model.tdpCadre.userAddress.state.stateId !=1 and model.tdpCadre.userAddress.state.stateId is not null ");
+				}
+			}	
+			sb.append(" group by date(model.attendedTime) order by date(model.attendedTime)" );
+	        
+	        Query query = getSession().createQuery(sb.toString());
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+			if(eventIds != null && eventIds.size() > 0){
+				query.setParameterList("eventIds", eventIds);
+			}
+			query.setParameter("isActive", IConstants.TRUE);
+			return query.list();
+	   }
 }
