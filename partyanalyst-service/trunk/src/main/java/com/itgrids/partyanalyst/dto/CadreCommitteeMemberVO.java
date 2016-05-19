@@ -130,8 +130,15 @@ public class CadreCommitteeMemberVO {
 	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap1 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
 	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap2 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
 	private Map<Long,Map<Long,CadreCommitteeMemberVO>> genericMap3 = new HashMap<Long, Map<Long,CadreCommitteeMemberVO>>(0);
+	private String wName;
 	
 	
+	public String getwName() {
+		return wName;
+	}
+	public void setwName(String wName) {
+		this.wName = wName;
+	}
 	public String getRelativeType() {
 		return relativeType;
 	}
