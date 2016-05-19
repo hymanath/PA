@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +17,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
 public class MahanaduDashBoardAction implements ServletRequestAware {
+	
 	private HttpServletRequest request;
 	private IMahanaduDashBoardService mahanaduDashBoardService;
 	private List<MahanaduVisitVO> mahanaduVisitList;
@@ -30,7 +29,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	private Long eventId;
 	private HttpSession session;
 	private EntitlementsHelper entitlementsHelper;
-	
+	private MahanaduVisitVO mahanaduVisitVO;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -91,7 +90,13 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	public void setEventId(Long eventId) {
 		this.eventId = eventId;
 	}
-
+   
+	public MahanaduVisitVO getMahanaduVisitVO() {
+		return mahanaduVisitVO;
+	}
+	public void setMahanaduVisitVO(MahanaduVisitVO mahanaduVisitVO) {
+		this.mahanaduVisitVO = mahanaduVisitVO;
+	}
 	public String execute(){
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -152,6 +157,20 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	public String getMahanaduCadreVisitNewInfo(){
+		return Action.SUCCESS;
+	}
+	public String getTodayTotalVisitorsInfo(){
+		
+		try
+		{
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			Long eventId = jObj.getLong("eventId");
+			mahanaduVisitVO=mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(eventId);
+		}catch(Exception e){
+			LOG.info("Error occured in getTodayTotalVisitorsInfo()",e);
+		}
 		return Action.SUCCESS;
 	}
 }
