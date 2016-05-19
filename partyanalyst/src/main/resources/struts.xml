@@ -12176,5 +12176,10 @@
 				<param name="root">responseVO</param>
 			</result>
 	</action>
+	<action name="getActivityLocationInfoDetailsByActivityScopeAction" class="activityAction" method="getActivityLocationInfoDetailsByActivityScope">
+			<result type="json" name="success">
+				<param name="root">responsevoList</param>
+			</result>
+	</action>
 </package>
 </struts>      

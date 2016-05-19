@@ -75,8 +75,15 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private Long divisonId;
 	private List<OptionsCountVo> 		optnsCountVOList;
 	private ActivityResponseVO responseVO;
+	private List<ActivityResponseVO> responsevoList;
 	
 	
+	public List<ActivityResponseVO> getResponsevoList() {
+		return responsevoList;
+	}
+	public void setResponsevoList(List<ActivityResponseVO> responsevoList) {
+		this.responsevoList = responsevoList;
+	}
 	public ActivityResponseVO getResponseVO() {
 		return responseVO;
 	}
@@ -1004,6 +1011,30 @@ public String getCommentDetails(){
 			
 	} catch (Exception e) {
 		LOG.error("Exception raised at getActivityQuestionnnaireWiseReport()", e);
+	}
+	 return Action.SUCCESS;
+ }
+ 
+ public String getActivityLocationInfoDetailsByActivityScope(){
+	 try {
+
+			jObj = new JSONObject(getTask());
+			
+			Long activityLvl = jObj.getLong("activityLevelId");
+			Long activityScopeId = jObj.getLong("activityScopeId");
+			
+			JSONArray questionIdsArr = jObj.getJSONArray("questionIds");
+			List<Long> questionIds = new ArrayList<Long>(0);
+			if(questionIdsArr != null && questionIdsArr.length() > 0){
+				for (int i = 0; i < questionIdsArr.length(); i++) {
+					questionIds.add(Long.valueOf(questionIdsArr.get(i).toString()));
+				}
+			}
+			
+			responsevoList = activityService.getActivityLocationInfoDetailsByActivityScope(activityLvl, activityScopeId, questionIds);
+			
+	} catch (Exception e) {
+		LOG.error("Exception raised at getActivityLocationInfoDetailsByActivityScope()", e);
 	}
 	 return Action.SUCCESS;
  }

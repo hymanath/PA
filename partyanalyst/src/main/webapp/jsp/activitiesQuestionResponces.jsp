@@ -176,6 +176,16 @@
 							<button class="btn btn-success pull-right" id="lcnExcelBtn" onclick="generateExcel('responseTab')" style="display:none;">Export Excel</button>
 							</div>
 							</div>
+							
+							<div class="panel panel-default m_top10" id="questionDetailsDivId" style="display:none;">
+							  <div class="panel-heading">
+								<h4 class="panel-title"> QUESTION WISE REPORT </h4>
+							  </div>
+							  <div class="panel-body">
+								<div id="questionWiseDetailsDiv"></div>
+							  </div>
+							</div>
+							
 						<div class="row  m_top10" id="optnsCntDiv" style="display:none;">
 							<div class="col-md-12">
 								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
@@ -607,7 +617,7 @@ function excelCommentDetails(result){
 
 
 function getOptionDetailsForQuestion(){
-
+getActivityQuestionInfo();
 $('#optnsCntDiv').html('');
 	var activityLevelIdsArr=[];
 	activityLevelIdsArr.push($('#activityLevelList').val());
@@ -714,6 +724,64 @@ function buildQuestionResponseTable(result){
 	 $('#optnsCntDiv').show();
 	  $("#lcnExcelBtn").show();
 	}	
+}
+
+function getActivityQuestionInfo(){
+	$("#questionWiseDetailsDiv").html("");
+	
+	var questionArr=[];
+	if($('#questnsListId').val() != 0)
+		questionArr.push($('#questnsListId').val());
+	  else
+	  {
+		$('#questnsListId option').each(function(){
+				   questionArr.push(this.value);
+		});
+	  }
+  
+	var jObj = {
+		activityScopeId:$('#ActivityList').val(),
+		activityLevelId:$('#activityLevelList').val(),
+		questionIds:questionArr
+	};		
+	$.ajax({
+		  type:'GET',
+		  url: 'getActivityLocationInfoDetailsByActivityScopeAction.action',
+		 data : {task:JSON.stringify(jObj)} ,
+	 }).done(function(result){
+		if(result != null && result.length > 0)
+			buildQuestionsDetails(result);
+		else{
+			$("#questionDetailsDivId").show();
+			$("#questionWiseDetailsDiv").html("NO DATA AVAILABLE...");
+		}	
+	});
+}
+
+function buildQuestionsDetails(result){
+	var str='';
+	
+	str+='<table class="table table-condensed table-bordered">';
+		str+='<thead>'
+			str+='<th> QUESTION </th>'
+			str+='<th> TOTAL </th>'
+			str+='<th> AP </th>'
+			str+='<th> TS </th>'
+		str+='</thead>'
+		str+='<tbody>'
+			for(var i in result){
+				str+='<tr>'
+					str+='<td>'+result[i].question+'</td>';
+					str+='<td>'+result[i].totalCount+'</td>';
+					str+='<td>'+result[i].APCount+'</td>';
+					str+='<td>'+result[i].TSCount+'</td>';
+				str+='</tr>'
+			}
+		str+='</tbody>'
+	str+='</table>'
+	
+	$("#questionDetailsDivId").show();
+	$("#questionWiseDetailsDiv").html(str);
 }
 </script>
 </body>

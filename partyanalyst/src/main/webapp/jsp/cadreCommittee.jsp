@@ -1316,7 +1316,8 @@
 			  reqLocationType ="mandal";
 			}
 			var jsObj={
-				mandalId:mandalId
+				mandalId:mandalId,
+				constituencyId:'${locationId}'
 			}
 			$.ajax({
 				type : "POST",
