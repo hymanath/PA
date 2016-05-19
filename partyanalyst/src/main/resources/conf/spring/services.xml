@@ -2783,6 +2783,7 @@
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	    <property name="entryExitInfoDAO" ref="entryExitInfoDAO" />  
 	    <property name="eventDAO" ref="eventDAO" />   
+	    <property name="districtDAO" ref="districtDAO" />   
 	</bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">
