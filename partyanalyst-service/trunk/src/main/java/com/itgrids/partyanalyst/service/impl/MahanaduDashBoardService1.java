@@ -400,7 +400,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					//Other States DATA
 					StatesEventVO otherStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,0l,"particular");
 					calcLowHighPercantage(otherStateVO);
-					finalVO.setTsStateVO(otherStateVO);
+					finalVO.setOtherStatesVO(otherStateVO);
 					
 					
 					//OverAll Data
@@ -533,12 +533,14 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 									Double percantage = present - previous;
 									stateVO.setCalcPercantage(percantage.toString());
 									stateVO.setHighOrlow("Higher");
-									stateVO.setCalcString(stateVO.getSubList().get(i).getName());
+									stateVO.setDateString1(stateVO.getSubList().get(i).getName());
+									stateVO.setDateString2(stateVO.getSubList().get(i-1).getName());
 								}else{
 									Double percantage = previous - present;
 									stateVO.setCalcPercantage(decimalFormat .format(percantage));
 									stateVO.setHighOrlow("Lower");
-									stateVO.setCalcString(stateVO.getSubList().get(i).getName());
+									stateVO.setDateString1(stateVO.getSubList().get(i).getName());
+									stateVO.setDateString2(stateVO.getSubList().get(i-1).getName());
 								}
 								break;
 						}
