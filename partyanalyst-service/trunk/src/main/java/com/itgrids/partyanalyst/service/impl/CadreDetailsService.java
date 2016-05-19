@@ -1205,7 +1205,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 					cadreDetailsVO.setVoterId(cadreFormalDetails[8] !=null ? cadreFormalDetails[8].toString() :"" );
 					
 					cadreDetailsVO.setPanchayatName(cadreFormalDetails[9] !=null ? cadreFormalDetails[9].toString() : "-" );
-					
 					cadreDetailsVO.setTehsilName(cadreFormalDetails[10] !=null ? cadreFormalDetails[10].toString() : "" );
 					
 					cadreDetailsVO.setConstituencyName(cadreFormalDetails[11] !=null ? cadreFormalDetails[11].toString() : "" );
@@ -1216,7 +1215,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					
 					cadreDetailsVO.setRelativeName(cadreFormalDetails[40] !=null ? cadreFormalDetails[40].toString() : "");
 					cadreDetailsVO.setRelativeType(cadreFormalDetails[41] !=null ? cadreFormalDetails[41].toString() : "");
-					
+					cadreDetailsVO.setwName(cadreFormalDetails[44] != null ? cadreFormalDetails[44].toString() : "" );
 					if(cadreFormalDetails[15] !=null){
 						String image=cadreFormalDetails[15].toString();
 						String imagePath="http://mytdp.com/images/"+IConstants.CADRE_IMAGES+"/"+image+"";
