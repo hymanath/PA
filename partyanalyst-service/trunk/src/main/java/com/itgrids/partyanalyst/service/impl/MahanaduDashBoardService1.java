@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
+import com.itgrids.partyanalyst.dto.StatesEventVO;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -25,6 +27,8 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService1.class);
+	
+	DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	
 	private IEventAttendeeDAO eventAttendeeDAO;
 	private IEventInviteeDAO eventInviteeDAO;
@@ -352,5 +356,212 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	 }
 	
 	
+		/**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to get the State Wise event attendees and event invitees count By Days.
+		   *   inputs: startDate,endDate,parenteventId,subEventIds
+		   *   output: StatesEventVO
+		   *   
+		  */
 	
-}
+		public StatesEventVO stateWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+				
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				
+				StatesEventVO finalVO = new StatesEventVO();
+				
+				try{
+					
+					Date eventStrDate = null;
+					Date eventEndDate = null;
+					
+					if(startDate != null && !startDate.isEmpty()){
+					 eventStrDate = format.parse(startDate);
+					}
+					
+					if(endDate != null && !endDate.isEmpty()){
+					 eventEndDate = format.parse(endDate); 
+					}
+					
+					List<Date>  betweenDates= new CommonMethodsUtilService().getBetweenDates(eventStrDate,eventEndDate);
+					
+					//AP  DATA
+					StatesEventVO apStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,1l,"particular");
+					calcLowHighPercantage(apStateVO);
+					finalVO.setApStateVO(apStateVO);
+					
+					
+					//TS  DATA
+					StatesEventVO tsStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,36l,"particular");
+					calcLowHighPercantage(tsStateVO);
+					finalVO.setTsStateVO(tsStateVO);
+					
+					
+					//Other States DATA
+					StatesEventVO otherStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,0l,"particular");
+					calcLowHighPercantage(otherStateVO);
+					finalVO.setTsStateVO(otherStateVO);
+					
+					
+					//OverAll Data
+					StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall");
+					calcLowHighPercantage(allStatesVO);
+					finalVO.setAllStatesVO(allStatesVO);
+					
+					
+				}catch(Exception e){
+					Log.error("Exception rised in stateWiseEventAttendeeCounts()",e); 
+				}
+				return finalVO;
+			}
+			
+		public StatesEventVO getDataToAState(Date eventStrDate,Date eventEndDate,List<Long> subEventIds,List<Date>  betweenDates,Long stateId,String statesType){
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			StatesEventVO stateVO = new StatesEventVO();
+			try{
+				
+				Long attendeedCount = eventAttendeeDAO.stateWiseEventAttendeeCounts("attendee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+				
+				if(attendeedCount != null && attendeedCount > 0l){
+					
+					stateVO.setAttendees(attendeedCount);
+					stateVO.setNonInvitees(attendeedCount);
+					
+					Long inviteedCount = eventAttendeeDAO.stateWiseEventAttendeeCounts("invitee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+					if( inviteedCount != null && inviteedCount > 0l){
+						stateVO.setInvitees(inviteedCount);
+						stateVO.setNonInvitees(attendeedCount - stateVO.getInvitees());
+					}
+					
+					
+					//day wise
+					if(betweenDates != null && betweenDates.size() > 0){
+						   for(int i=0;i<betweenDates.size();i++){
+							   StatesEventVO dateVO = new StatesEventVO();
+							   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
+							   dateVO.setDataExist(false);
+							   int dayCount = i+1;
+							   dateVO.setName("Day"+dayCount);
+							   if(stateVO.getSubMap() == null){
+								   stateVO.setSubMap(new LinkedHashMap<String, StatesEventVO>());
+							   }
+							   stateVO.getSubMap().put(dateVO.getDateStr(),dateVO);
+						   }
+					 }
+					
+					
+					List<Object[]> dayWiseAttendeedCountList = eventAttendeeDAO.stateWiseEventAttendeeCountsByDates("attendee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+					
+					if(dayWiseAttendeedCountList != null && dayWiseAttendeedCountList.size() > 0){
+						
+						List<Object[]> dayWiseInviteeCountList = eventAttendeeDAO.stateWiseEventAttendeeCountsByDates("invitee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+						
+						setDateDataToCorrespondingState(dayWiseAttendeedCountList,stateVO,"attendee");
+						setDateDataToCorrespondingState(dayWiseInviteeCountList,stateVO,"invitee");
+					}
+					
+					if(stateVO.getSubMap() != null && stateVO.getSubMap().size() > 0){
+						stateVO.setSubList(new ArrayList<StatesEventVO>(stateVO.getSubMap().values()));
+						stateVO.getSubMap().clear();
+					}
+					
+				}
+			}catch(Exception e){
+				Log.error("Exception rised in getDataToAState()",e); 
+			}
+			return stateVO;
+		}
+		
+		public void setDateDataToCorrespondingState(List<Object[]> list,StatesEventVO stateVO,String type){
+			
+			 try{
+				
+				   if( list != null && list.size() >0 )
+				   {   
+					   for(Object[] obj : list)
+					   {  
+						   String dateStr = obj[0]!=null?obj[0].toString():"";
+						   StatesEventVO dateVO = stateVO.getSubMap().get(dateStr);
+						   if(dateVO!=null)
+						   {  
+							   dateVO.setDataExist(true);
+							   
+							   if(type.equalsIgnoreCase("attendee"))
+							   {
+								   dateVO.setAttendees(obj[1]!=null ?(Long)obj[1]:0l );
+								   dateVO.setNonInvitees(obj[1]!=null ?(Long)obj[1]:0l);	
+							   }
+							   if(type.equalsIgnoreCase("invitee"))
+							   {
+							   		dateVO.setInvitees(obj[1]!=null ?(Long)obj[1]:0l);
+							   		dateVO.setNonInvitees(dateVO.getAttendees() - dateVO.getInvitees());	
+							   }	
+						   }
+						    
+					    }
+				   }
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in setDateDataToCorrespondingState()",e); 
+			}
+		 }
+		public void calcLowHighPercantage(StatesEventVO stateVO){
+			
+			try{
+				
+				if( stateVO.getSubList() != null && stateVO.getSubList().size() > 0)
+				{	
+					for(int i = stateVO.getSubList().size()-1; i >= 1; i--)
+					{	
+						if (stateVO.getSubList().get(i).isDataExist() && stateVO.getSubList().get(i-1).isDataExist())
+						{
+							
+								Long presentDayCount  = stateVO.getSubList().get(i).getAttendees();
+								Long previousDayCount = stateVO.getSubList().get(i-1).getAttendees();
+								
+								Long totalcount = presentDayCount + previousDayCount;
+								
+								String presentDayPercantage  = calcPercantage(totalcount,presentDayCount);
+								String previousDayPercantage = calcPercantage(totalcount,previousDayCount);
+								
+								Double present = Double.parseDouble(presentDayPercantage);
+								Double previous = Double.parseDouble(previousDayPercantage);
+								
+								if( present > previous){
+									Double percantage = present - previous;
+									stateVO.setCalcPercantage(percantage.toString());
+									stateVO.setHighOrlow("Higher");
+									stateVO.setCalcString(stateVO.getSubList().get(i).getName());
+								}else{
+									Double percantage = previous - present;
+									stateVO.setCalcPercantage(decimalFormat .format(percantage));
+									stateVO.setHighOrlow("Lower");
+									stateVO.setCalcString(stateVO.getSubList().get(i).getName());
+								}
+								break;
+						}
+						
+					}
+				}
+			}catch(Exception e){
+				Log.error("Exception rised in calcLowHighPercantage()",e); 
+			}
+		}
+		
+		public String calcPercantage(Long totalValue,Long subValue){
+		    
+		    String percentage=null;
+		    if( (totalValue!=null && totalValue>0l) && (subValue!=null && subValue>0l)){
+		      
+		        Double percent=(Double)(subValue*100.00)/totalValue;
+		        percentage=decimalFormat .format(percent);
+		    }
+		    return percentage;
+		 }
+		
+		
+		
+  }
+
