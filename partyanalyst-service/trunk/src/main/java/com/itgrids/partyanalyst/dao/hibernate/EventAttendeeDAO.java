@@ -913,6 +913,15 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 		
 	}
+	public Long getTotalAttendedCountOfEvent(Long eventId){
+	    Query query = getSession().createQuery("select count(distinct model.tdpCadreId) from EventAttendee model" +
+	        " where" +
+	        " model.event.parentEventId = :eventId " );
+	    
+	    query.setParameter("eventId",eventId);
+	    
+	    return (Long)query.uniqueResult();
+	  }
 	
 	public List<Object[]> getDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String districtQueryStr){
 		

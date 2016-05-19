@@ -4159,6 +4159,10 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 			Collections.sort(finalList,idSort);
 			
+			Long totalVisitorsCount=eventAttendeeDAO.getTotalAttendedCountOfEvent(eventId);
+			if(finalList!=null && finalList.size()>0){
+				finalList.get(0).setTotalVisitorsCount(totalVisitorsCount);
+			}
 		}catch (Exception e) {
 			LOG.error(" Exception Raised in getDayWiseVisitSummary ",e);
 		}

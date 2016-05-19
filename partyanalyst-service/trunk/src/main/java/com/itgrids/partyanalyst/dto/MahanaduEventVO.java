@@ -54,7 +54,14 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private String formateEventEndDate;
 	
 	private String lastUpdatedDate;
+	private Long totalVisitorsCount;
 		
+	public Long getTotalVisitorsCount() {
+		return totalVisitorsCount;
+	}
+	public void setTotalVisitorsCount(Long totalVisitorsCount) {
+		this.totalVisitorsCount = totalVisitorsCount;
+	}
 	private Long uniqueInviteeVisitorsAttended = 0l;
 	private Long uniqueNonInviteeVisitorsAttended = 0l;
 	
