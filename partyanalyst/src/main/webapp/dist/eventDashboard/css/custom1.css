@@ -82,6 +82,10 @@ body
 	margin-top:10px;
 }
 
+.m_top16
+{
+	margin-top:16px;
+}
 /* panel styles */
 
 .panel-custom-green
@@ -842,13 +846,13 @@ footer
 }
 .f_10{font-size:10px;}
 .f_11{font-size:11px;}
-.f_12{font-size:12px;}
+.f_12{font-size:12px;font-weight:bold;}
 .f_13{font-size:13px;}
 .f_14{font-size:14px;}
 .dayCount
 {
   padding:3px 4px;
-  border:1px solid #333;
+  border:1px solid #656567;
   border-radius:50%;
   font-size:18px;
   position:relative;
@@ -865,7 +869,7 @@ footer
 .progressWhite
 {
   background-color:rgba(0,0,0,0.3);
-  height:6px;
+  height:5px;
   border-radius:0px;
   margin:0px;
 }
@@ -875,7 +879,7 @@ footer
 }
 .colorBlack
 {
-  color:#333
+  color:#656567;
 }
 /* ADD CSS NEW DASHBOARD PAGE */
 

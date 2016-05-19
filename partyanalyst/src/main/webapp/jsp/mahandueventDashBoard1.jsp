@@ -188,39 +188,10 @@
               <div class="panel-heading">
                   <h4 class="panel-title">overall<span class=" text-italic f_11 colorBlack">[ap,ts,other states]</span></h4>
                 </div>
-                <div class="panel-body">
-                  <h3 class="m_0 text-center">546454</h3>
-                  <h4 class="m_0 text-center">TOTAL UNIQUE VISITORS</h4>
-                    <table class="table table-condensed tableStatus m_top10">
-                      <tr>
-                          <td colspan="4" class="f_14 colorBlack">DAYWISE</td>
-                        </tr>
-                      <tr>
-                          <td><span class="dayCount">01</span></td>
-                            <td>TOTAL<br/>6308</td>
-                            <td>Invitees<br/>465654</td>
-                            <td>Non-Invitees<br/>4455</td>
-                        </tr>
-                        <tr>
-                          <td><span class="dayCount">01</span></td>
-                            <td>TOTAL<br/>6308</td>
-                            <td>Invitees<br/>465654</td>
-                            <td>Non-Invitees<br/>4455</td>
-                        </tr>
-                        <tr>
-                          <td><span class="dayCount">01</span></td>
-                            <td>TOTAL<br/>6308</td>
-                            <td>Invitees<br/>465654</td>
-                            <td>Non-Invitees<br/>4455</td>
-                        </tr>
-                    </table>
-                    <div class="progress progressWhite">
-                      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div>
-                    <p class="text-center m_top10">10% higher <span class="colorBlack">than yesterday</span></p>
-                </div>
+				<div class="panel-body">
+				<center><img id="allStatesAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+					<div id="allStateDetails"></div>
+				</div>
             </div>
         </div>
         <div class="col-md-3">
@@ -229,41 +200,9 @@
                   <h4 class="panel-title">andhra pradesh</h4>
                 </div>
                 <div class="panel-body">
-                  <table class="table table-condensed tableStatus m_0" style="border-top:0px;">
-                      <tr>
-                          <td><p class="f_12 m_0">Total Visits</p><h4 class="m_0">5463</h4></td>
-                            <td><p class="f_12 m_0">Invitees</p><h4 class="m_0">5463</h4></td>
-                            <td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">5463</h4></td>
-                        </tr>
-                    </table>
-                    <table class="table table-condensed tableStatus m_top10">
-                      <tr>
-                          <td colspan="4" class="f_14 colorBlack">DAYWISE</td>
-                        </tr>
-                      <tr>
-                          <td><span class="dayCount">01</span></td>
-                            <td>TOTAL<br/>6308</td>
-                            <td>Invitees<br/>465654</td>
-                            <td>Non-Invitees<br/>4455</td>
-                        </tr>
-                        <tr>
-                          <td><span class="dayCount">01</span></td>
-                            <td>TOTAL<br/>6308</td>
-                            <td>Invitees<br/>465654</td>
-                            <td>Non-Invitees<br/>4455</td>
-                        </tr>
-                        <tr>
-                          <td><span class="dayCount">01</span></td>
-                            <td>TOTAL<br/>6308</td>
-                            <td>Invitees<br/>465654</td>
-                            <td>Non-Invitees<br/>4455</td>
-                        </tr>
-                    </table>
-                    <div class="progress progressWhite"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div>
-                    <p class="text-center m_top10">10% higher <span class="colorBlack">than yesterday</span></p>
+					<center><img id="apStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+					<div id="apStateDetails"></div>
+                 
                 </div>
             </div>
         </div>
@@ -273,42 +212,8 @@
 				  <h4 class="panel-title">telangana</h4>
 				</div>
 				<div class="panel-body">
-				  <table class="table table-condensed tableStatus m_0" style="border-top:0px;">
-					  <tr>
-						  <td><p class="f_12 m_0">Total Visits</p><h4 class="m_0">5463</h4></td>
-							<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">5463</h4></td>
-							<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">5463</h4></td>
-						</tr>
-					</table>
-					<table class="table table-condensed tableStatus m_top10">
-					  <tr>
-						  <td colspan="4" class="f_14 colorBlack">DAYWISE</td>
-						</tr>
-					  <tr>
-						  <td><span class="dayCount">01</span></td>
-							<td>TOTAL<br/>6308</td>
-							<td>Invitees<br/>465654</td>
-							<td>Non-Invitees<br/>4455</td>
-						</tr>
-						<tr>
-						  <td><span class="dayCount">01</span></td>
-							<td>TOTAL<br/>6308</td>
-							<td>Invitees<br/>465654</td>
-							<td>Non-Invitees<br/>4455</td>
-						</tr>
-						<tr>
-						  <td><span class="dayCount">01</span></td>
-							<td>TOTAL<br/>6308</td>
-							<td>Invitees<br/>465654</td>
-							<td>Non-Invitees<br/>4455</td>
-						</tr>
-					</table>
-					<div class="progress progressWhite">
-					  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-						<span class="sr-only">60% Complete</span>
-					  </div>
-					</div>
-					<p class="text-center m_top10">10% higher <span class="colorBlack">than yesterday</span></p>
+					<center><img id="tsStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+						<div id="tsStateDetails"></div>
 				</div>
 			</div>
 		</div>
@@ -318,42 +223,8 @@
 				  <h4 class="panel-title">other states</h4>
 				</div>
 				<div class="panel-body">
-				  <table class="table table-condensed tableStatus m_0" style="border-top:0px;">
-					  <tr>
-						  <td><p class="f_12 m_0">Total Visits</p><h4 class="m_0">5463</h4></td>
-							<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">5463</h4></td>
-							<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">5463</h4></td>
-						</tr>
-					</table>
-					<table class="table table-condensed tableStatus m_top10">
-					  <tr>
-						  <td colspan="4" class="f_14 colorBlack">DAYWISE</td>
-						</tr>
-					  <tr>
-						  <td><span class="dayCount">01</span></td>
-							<td>TOTAL<br/>6308</td>
-							<td>Invitees<br/>465654</td>
-							<td>Non-Invitees<br/>4455</td>
-						</tr>
-						<tr>
-						  <td><span class="dayCount">01</span></td>
-							<td>TOTAL<br/>6308</td>
-							<td>Invitees<br/>465654</td>
-							<td>Non-Invitees<br/>4455</td>
-						</tr>
-						<tr>
-						  <td><span class="dayCount">01</span></td>
-							<td>TOTAL<br/>6308</td>
-							<td>Invitees<br/>465654</td>
-							<td>Non-Invitees<br/>4455</td>
-						</tr>
-					</table>
-					<div class="progress progressWhite">
-					  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-						<span class="sr-only">60% Complete</span>
-					  </div>
-					</div>
-					<p class="text-center m_top10">10% higher <span class="colorBlack">than yesterday</span></p>
+					<center><img id="otherStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+						<div id="otherStateDetails"></div>
 				</div>
 			</div>
 		</div>
@@ -797,9 +668,293 @@ $(".maineventCls").each(function(){
 	});
 }
 
+	function stateWiseEventAttendeeCounts(){
+		
+		$("#allStatesAjax").show();
+		$("#apStateAjax").show();
+		$("#tsStateAjax").show();
+		$("#otherStateAjax").show();
+			var jsObj = {
+				startDate    :startDate,
+				endDate      :endDate,
+				parentEventId:parentEventId,
+				subEventIds : subEvents
+			}
+			$.ajax({
+			type : 'GET',
+			url : 'stateWiseEventAttendeeCountsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+			}).done(function(result){ 
+			$("#allStatesAjax").hide();
+			$("#apStateAjax").hide();
+			$("#tsStateAjax").hide();
+			$("#otherStateAjax").hide();
+				buildAllStateDetails(result);
+				buildApStateDetails(result);
+				buildTsStateDetails(result);
+				buildOtherStateDetails(result);
+			});   
+	}
 
-
-
+	function buildAllStateDetails(result){
+		var str='';
+		if(result.allStatesVO !=null ){
+			if(result.allStatesVO.attendees ==0 || result.allStatesVO.attendees == null){
+				 str+='<h3 class="m_0 text-center"> - </h3>';
+			}else{
+				 str+='<h3 class="m_0 text-center">'+result.allStatesVO.attendees+'</h3>';
+			}
+			 
+			  str+='<h4 class="m_0 text-center">TOTAL UNIQUE VISITORS</h4>';
+				str+='<table class="table table-condensed tableStatus m_top16">';
+				  str+='<tr>';
+					  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
+					str+='</tr>';
+				 
+				  for( var i = 0; i < result.allStatesVO.subList.length; i++){
+					  var dayCount = '0'+(i+1);
+					   str+='<tr>';
+					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+					  if(result.allStatesVO.subList[i].attendees == 0 || result.allStatesVO.subList[i].attendees == null ){
+							str+='<td class="f_12">TOTAL<br/> - </td>';
+						}else{
+							str+='<td class="f_12">TOTAL<br/>'+result.allStatesVO.subList[i].attendees+'</td>';
+						}
+						if(result.allStatesVO.subList[i].invitees == 0 || result.allStatesVO.subList[i].invitees == null ){
+							str+='<td class="f_12">Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Invitees<br/>'+result.allStatesVO.subList[i].invitees+'</td>';
+						}
+						if(result.allStatesVO.subList[i].nonInvitees == 0 || result.allStatesVO.subList[i].nonInvitees == null ){
+							str+='<td class="f_12">Non-Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Non-Invitees<br/>'+result.allStatesVO.subList[i].nonInvitees+'</td>';
+						}
+					  str+='</tr>';
+				  }
+				
+				str+='</table>';
+				if( result.allStatesVO.calcPercantage != null && result.allStatesVO.calcPercantage.trim().length>0){
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:'+result.allStatesVO.calcPercantage+'%;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10 ">'+result.allStatesVO.dateString1+' Count is <span class="f_13 " style="font-weight:bold">'+result.allStatesVO.calcPercantage+' % </span>'+result.allStatesVO.highOrlow+' than '+result.allStatesVO.dateString2+'</p>';
+				}else{
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10"> - </p>';
+				}
+		
+		}
+		
+		$("#allStateDetails").html(str)
+		$(".heightApply").css("height","320px");
+	}
+	function buildApStateDetails(result){
+		
+		var str='';
+		if(result.apStateVO !=null ){
+			str+='<table class="table table-condensed tableStatus m_0" style="border-top:0px;">';
+			  str+='<tr>';
+					if(result.apStateVO.attendees == 0 || result.apStateVO.attendees == null){
+					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0">'+result.apStateVO.attendees+'</h4></td>';
+					  }
+					  if(result.apStateVO.invitees == 0 || result.apStateVO.invitees == null){
+						 str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">'+result.tsStateVO.invitees+'</h4></td>';
+					  }
+					  if(result.apStateVO.nonInvitees == 0 || result.apStateVO.nonInvitees == null){
+						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">'+result.apStateVO.nonInvitees+'</h4></td>';
+					  }
+				str+='</tr>';
+			str+='</table>';
+			str+='<table class="table table-condensed tableStatus ">';
+			  str+='<tr>';
+				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
+				str+='</tr>';
+				 for( var i = 0; i < result.apStateVO.subList.length; i++){
+					  var dayCount = '0'+(i+1);
+				  str+='<tr>';
+					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+						if(result.apStateVO.subList[i].attendees == 0 || result.apStateVO.subList[i].attendees == null ){
+							str+='<td class="f_12">TOTAL<br/> - </td>';
+						}else{
+							str+='<td class="f_12">TOTAL<br/>'+result.apStateVO.subList[i].attendees+'</td>';
+						}
+						if(result.apStateVO.subList[i].invitees == 0 || result.apStateVO.subList[i].invitees == null ){
+							str+='<td class="f_12">Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Invitees<br/>'+result.apStateVO.subList[i].invitees+'</td>';
+						}
+						if(result.apStateVO.subList[i].nonInvitees == 0 || result.apStateVO.subList[i].nonInvitees == null ){
+							str+='<td class="f_12">Non-Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Non-Invitees<br/>'+result.apStateVO.subList[i].nonInvitees+'</td>';
+						}
+					str+='</tr>';
+				} 
+			str+='</table>';
+			if( result.apStateVO.calcPercantage != null && result.apStateVO.calcPercantage.trim().length>0){
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+result.apStateVO.calcPercantage+'%;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10 ">'+result.apStateVO.dateString1+' Count is <span class="f_13" style="font-weight:bold">'+result.apStateVO.calcPercantage+' % </span>'+result.apStateVO.highOrlow+' than '+result.apStateVO.dateString2+'</p>';
+				}else{
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10"> - </p>';
+				
+				}
+		}				
+		
+		$("#apStateDetails").html(str);
+	}
+	function buildTsStateDetails(result){
+		
+		var str='';
+		if(result.tsStateVO !=null ){
+			str+='<table class="table table-condensed tableStatus m_0" style="border-top:0px;">';
+			  str+='<tr>';
+					if(result.tsStateVO.attendees == 0 || result.tsStateVO.attendees == null){
+					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0">'+result.tsStateVO.attendees+'</h4></td>';
+					  }
+					  if(result.tsStateVO.invitees == 0 || result.tsStateVO.invitees == null){
+						 str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">'+result.tsStateVO.invitees+'</h4></td>';
+					  }
+					  if(result.tsStateVO.nonInvitees == 0 || result.tsStateVO.nonInvitees == null){
+						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">'+result.tsStateVO.nonInvitees+'</h4></td>';
+					  }
+				str+='</tr>';
+			str+='</table>';
+			str+='<table class="table table-condensed tableStatus ">';
+			  str+='<tr>';
+				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
+				str+='</tr>';
+				 for( var i = 0; i < result.tsStateVO.subList.length; i++){
+					  var dayCount = '0'+(i+1);
+				  str+='<tr>';
+					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+						if(result.tsStateVO.subList[i].attendees == 0 || result.tsStateVO.subList[i].attendees == null ){
+							str+='<td class="f_12">TOTAL<br/> - </td>';
+						}else{
+							str+='<td class="f_12">TOTAL<br/>'+result.tsStateVO.subList[i].attendees+'</td>';
+						}
+						if(result.tsStateVO.subList[i].invitees == 0 || result.tsStateVO.subList[i].invitees == null ){
+							str+='<td class="f_12">Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Invitees<br/>'+result.tsStateVO.subList[i].invitees+'</td>';
+						}
+						if(result.tsStateVO.subList[i].nonInvitees == 0 || result.tsStateVO.subList[i].nonInvitees == null ){
+							str+='<td class="f_12">Non-Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Non-Invitees<br/>'+result.tsStateVO.subList[i].nonInvitees+'</td>';
+						}
+					str+='</tr>';
+				} 
+			str+='</table>';
+			if( result.tsStateVO.calcPercantage != null && result.tsStateVO.calcPercantage.trim().length>0){
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+result.tsStateVO.calcPercantage+'%;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10 ">'+result.tsStateVO.dateString1+' Count is <span class="f_13" style="font-weight:bold">'+result.tsStateVO.calcPercantage+' % </span>'+result.tsStateVO.highOrlow+' than '+result.tsStateVO.dateString2+'</p>';
+				}else{
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10"> - </p>';
+				}
+		}				
+		
+		$("#tsStateDetails").html(str);
+	}
+	function buildOtherStateDetails(result){
+		
+		var str='';
+		if(result.otherStatesVO !=null ){
+			str+='<table class="table table-condensed tableStatus m_0" style="border-top:0px;">';
+			  str+='<tr>';
+				  if(result.otherStatesVO.attendees == 0 || result.otherStatesVO.attendees == null){
+					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0"> - </h4></td>';
+				  }else{
+					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0">'+result.otherStatesVO.attendees+'</h4></td>';
+				  }
+				  if(result.otherStatesVO.invitees == 0 || result.otherStatesVO.invitees == null){
+					 str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0"> - </h4></td>';
+				  }else{
+					str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">'+result.otherStatesVO.invitees+'</h4></td>';
+				  }
+				  if(result.otherStatesVO.nonInvitees == 0 || result.otherStatesVO.nonInvitees == null){
+					str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0"> - </h4></td>';
+				  }else{
+					str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">'+result.otherStatesVO.nonInvitees+'</h4></td>';
+				  }
+				
+				str+='</tr>';
+			str+='</table>';
+			str+='<table class="table table-condensed tableStatus ">';
+			  str+='<tr>';
+				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
+				str+='</tr>';
+				 for( var i = 0; i < result.otherStatesVO.subList.length; i++){
+					  var dayCount = '0'+(i+1);
+				  str+='<tr>';
+					    str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+						if(result.otherStatesVO.subList[i].attendees == 0 || result.otherStatesVO.subList[i].attendees == null ){
+							str+='<td class="f_12">TOTAL<br/> - </td>';
+						}else{
+							str+='<td class="f_12">TOTAL<br/>'+result.otherStatesVO.subList[i].attendees+'</td>';
+						}
+						if(result.otherStatesVO.subList[i].invitees == 0 || result.otherStatesVO.subList[i].invitees == null ){
+							str+='<td class="f_12">Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Invitees<br/>'+result.otherStatesVO.subList[i].invitees+'</td>';
+						}
+						if(result.otherStatesVO.subList[i].nonInvitees == 0 || result.otherStatesVO.subList[i].nonInvitees == null ){
+							str+='<td class="f_12">Non-Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Non-Invitees<br/>'+result.otherStatesVO.subList[i].nonInvitees+'</td>';
+						}
+						
+					str+='</tr>';
+				} 
+			str+='</table>';
+			if(result.otherStatesVO.calcPercantage != null && result.otherStatesVO.calcPercantage.trim().length>0){
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+result.otherStatesVO.calcPercantage+'%;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10">'+result.otherStatesVO.dateString1+' Count is <span class="f_13" style="font-weight:bold">'+result.otherStatesVO.calcPercantage+' % </span>'+result.otherStatesVO.highOrlow+' than '+result.otherStatesVO.dateString2+'</p>';
+			}else{
+				str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10"> - </p>';
+			}
+		}				
+		
+		$("#otherStateDetails").html(str);
+	}
 
 function getLocationWiseVisitorsCount(eventId,reportLevelId)
 {
@@ -1684,7 +1839,7 @@ setcolorsForEvents();
  locationWiseCalls();
  
  countDetailsCalls();
-
+stateWiseEventAttendeeCounts();
 
 showConst = true;
 showHide();
@@ -2528,6 +2683,8 @@ $(document).on('click','#mahanaduLinkId',function(){
 	}
 	
 }); 
+
+
 </script>
 </body>
 </html>
