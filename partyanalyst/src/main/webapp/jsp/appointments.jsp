@@ -102,15 +102,36 @@
 									</div>
 									<!-- EXPORT TO EXCEL TABLE ID-->
 									<div style='display:none' id="appntmntCnddtDtlsTblId"></div>
-									<table class="table table-bordered bg_ff m_top10">
-										<tr><td></td>
-											<td>
-												<table class="table removetopborder">	
-													<tr><td></td></tr>	
-												</table>
-											</td>
-										</tr>		
-									</table>
+									<div class="panel panel-default m_top20">
+										<div class="panel-heading bg_ff" style="background:#fff">
+											<h4 class="panel-title text-capitalize text-success dashboardPanelCollapse" >Select Date To View Scheduled Appointment Time Slot
+												<span class="pull-right">
+													<i class="glyphicon glyphicon-plus-sign" style="cursor:pointer"></i>
+												</span>
+											</h4>
+										</div>
+										<div class="panel-body pad_0 dashboardPanelCollapseBody">
+											<div class="block m_0">
+												<div class="row">
+													<div class="col-md-6 m_top10">
+														<div class="form-inline">
+														  <div class="form-group">
+															<label>Date<span style="color:red;">*</span> </label>
+															<div class="input-group inputSearch">
+																<span class="input-group-addon">
+																	<i class="glyphicon glyphicon-calendar"></i>
+																</span>
+																<input class="form-control" type="text" id="appointmentDashboardDateSlotHeadingId"/>
+															</div>
+														  </div>
+														  <input style="margin-left:8px" class="btn btn-success" type="button" value="Submit" id="dashboardSubmitBtn"/>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="row">
@@ -647,52 +668,6 @@
 								<img id="confirmAppointmentsAjaxImg" src="images/icons/loading.gif" style="display:none; height: 50px; width: 50px;"/>
 								<div id="confirmAppointmentsDivId"></div>
 								
-								<!-- Hide show Divs -->
-								<!--<div class="col-md-12">
-								<h4 class="text-capitalize text-success">Select Date To View Scheduled Appointment
-									
-								</h4>
-								</div>-->
-								 <span class="pull-right timeSlotHideShowMainCls">
-													<i class="glyphicon glyphicon-plus-sign timeSlotHideShowCls" title="View TimeSlot" style="margin-right:17px;cursor:pointer;font-size:20px;color:#333;"></i>
-									</span>
-								
-								  <!--  TIME SLOT --> 
-									<div class="col-md-12 changeClass changeTimeSlotClass" style="display:none">
-										<div class="block">
-											<div class="row">
-												<div class="col-md-12">
-													<h4 class="text-capitalize text-success">Select Date To View Appointment Time Slot</h4>
-												</div>
-												
-												<div class="col-md-6 m_top10">
-													<div class="form-inline">
-													  <div class="form-group">
-														<label>Date<span style="color:red;">*</span> </label>
-														<div class="input-group inputSearch">
-															<span class="input-group-addon">
-																<i class="glyphicon glyphicon-calendar"></i>
-															</span>
-															<input class="form-control" type="text" id="appointmentDateSlotHeadingId"/>
-														</div>
-													  </div>
-													</div>
-												</div>
-												
-												<div class="col-md-2 m_top10">
-											<input class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId();getAllScheduledApptsByDate(this)"/>
-											<img src="images/search.gif" style="display:none;" id="ajaxImgFortimeSlotButtonId"/>
-												</div>
-												<div class="col-md-4 m_top10" style="color:red;font-size:16px;" id="timeSlotErrMsgId">
-												</div>
-												<div class="col-md-12 m_top10" id="timeSlotDatesBuildId">
-												</div>
-												
-												
-											</div>
-										</div>
-									</div>
-																	
 								<div class="col-md-12 changeClass" >
 									<div class="block">
 										<h4 class="text-success">
@@ -759,6 +734,59 @@
 												</div>
 											</div>
 										</div>
+								<div class="row">
+									<div class="col-md-12 m_top20">
+										<div class="panel panel-default">
+											<div class="panel-heading" style="background:#fff">
+												<div class="row">
+													<div class="col-md-8">
+														<h4 class="panel-title text-capitalize text-success">Select Date To View Scheduled Appointment Time Slot
+														</h4>
+													</div>
+													<div class="col-md-4">
+														<span class="pull-right timeSlotHideShowMainCls">
+															<i class="glyphicon glyphicon-plus-sign timeSlotHideShowCls" title="View TimeSlot"  data-toggle="tooltip" data-placement="top" style="margin-right:17px;cursor:pointer;font-size:20px;color:#333;"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class="panel-body pad_0">
+												 <!--  TIME SLOT --> 
+												 <div class="row">
+													<div class="col-md-12 changeTimeSlotClass" style="display:none">
+														<div class="block m_0">
+															<div class="row">
+																<div class="col-md-6 m_top10">
+																	<div class="form-inline">
+																	  <div class="form-group">
+																		<label>Date<span style="color:red;">*</span> </label>
+																		<div class="input-group inputSearch">
+																			<span class="input-group-addon">
+																				<i class="glyphicon glyphicon-calendar"></i>
+																			</span>
+																			<input class="form-control" type="text" id="appointmentDateSlotHeadingId"/>
+																		</div>
+																	  </div>
+																	  <input style="margin-left:8px" class="btn btn-success" type="button" value="Submit" id="timeSlotButtonId" onClick="getTimeSlotsForADayByAppytUserId();getAllScheduledApptsByDate(this)"/>
+																	  <img src="images/search.gif" style="display:none;" id="ajaxImgFortimeSlotButtonId"/>
+																	</div>
+																</div>
+																<div class="col-md-4 m_top10" style="color:red;font-size:16px;" id="timeSlotErrMsgId">
+																</div>
+																<div class="col-md-12 m_top10" id="timeSlotDatesBuildId">
+																</div>
+																
+																
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								
+								 
+								</div>	
 										<div class="row">
 											<div class="col-md-12 m_top20" id="appointmentMembersDivId"></div>
 										</div>
@@ -777,23 +805,14 @@
 	</div>
 </div>
 
-<div class="modal fade bs-example-modal-sm" id="createLabelModelId" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm">
+<div class="modal fade bs-example-modal-sm" id="viewTimeSlotModelId" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body" style="padding:25px;">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<label>Enter New Label Name</label>
-		<input type="text" class="form-control" id="labelNameId">
-		<div id="errLabelName"></div>
-		<label class="m_top10">Select Date</label>
-		<div class="input-group inputSearch">
-			<span class="input-group-addon">
-				<i class="glyphicon glyphicon-calendar"></i>
-			</span>
-			<input class="form-control" class="text" id="modalDateId">
-		</div>
-		<button class="btn btn-success btn-block m_top10" id="createNewLabelId">CREATE NEW LABEL</button>
-		<div id="successDiv"></div>
+		<label id="labelNameId">APPOINTMENT TIMESLOT UPDATION</label>
+			
+		<div id="dashBoardScheduleDivId"></div>
 	  </div>
     </div>
   </div>
@@ -827,7 +846,7 @@
       </div>
       <div class="modal-footer">
 	  <div id="updateTimeSlotMsgShow"  class="col-xs-10"></div>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default closeForExtraTimeSlotCls" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -893,8 +912,9 @@
 <script src="dist/Appointment/statusColorAppointment.js" type="text/javascript"></script>
 <script src="dist/Appointment/AppointmentJS/appointment.js" type="text/javascript"></script>
 <script type="text/javascript">
+$('[data-toggle="tooltip"]').tooltip()
 /* Drag and Drop */
-
+	
   Sortable.create(confirmAppointmentBlockDropId,{
       filter: '.hidelabel',
       onFilter: function (evt) {
@@ -1777,6 +1797,8 @@ $(document).on("click",".rangesDashboard ul li",function(){
 //$("#appointmentDateSlotId").daterangepicker({singleDatePicker:true,minDate:new Date()});
 //$('#appointmentDateSlotId').val(moment().format('MM/DD/YYYY'));
 //$("#appointmentDateSlotHeadingId").daterangepicker({singleDatePicker:true});
+
+
 //$('#appointmentDateSlotHeadingId').val(moment().format('MM/DD/YYYY'));
 $("#addMembersFromDateId").daterangepicker({singleDatePicker:false});
 $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().format('MM/DD/YYYY'));
@@ -2696,7 +2718,7 @@ $('#addMembersFromDateId').val(moment().format('MM/DD/YYYY') + ' - ' + moment().
 							str+='<label class="checkbox-inline" style="margin-left: 0px;">';
 							str+='<input type="checkbox" attr_cmmnt_chckbx_id='+result[i].appointmentId+' value="2"  name="upcomeRadio" id="comentChkId'+result[i].appointmentId+'" class="comment'+result[i].appointmentId+' status showCmmtBox">Add Comment &nbsp;&nbsp;';
 							str+='</label>';
-							str+='<textarea  placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+'" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
+							str+='<textarea placeholder="Please Enter Comment..." cols="35" rows="2" class="commentTextCls'+result[i].appointmentId+' form-control" id="commentTxtId'+result[i].appointmentId+'" style="display:none;padding:8px;"></textarea>';
 							str+='</div>';
 							
 							if (getCorrespondingEnablingStatusByStatusId(result[i].statusId) == "Y" ){
@@ -3016,6 +3038,10 @@ function getUpdatedStatusForaAppointment(currentStatusId,apptSelectBoxId){
 		
 		
 }
+$(document).on("click",".dashboardPanelCollapse",function(){
+	$(".dashboardPanelCollapseBody").collapse("toggle");
+	$(this).find("i").toggleClass("glyphicon-minus-sign");
+});
 </script>
 </body>
 </html>
