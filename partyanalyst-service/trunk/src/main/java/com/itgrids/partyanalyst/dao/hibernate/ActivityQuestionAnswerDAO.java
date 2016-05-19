@@ -990,7 +990,8 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.activityQuestionnaire.activityQuestion.activityQuestionId," +
 						" model.activityLocationInfo.constituency.district.districtId," +
-						" count(distinct model.activityLocationInfoId)");
+						" count(distinct model.activityLocationInfoId)," +
+						" model.activityQuestionnaire.activityQuestion.question");
 		if(optionType != null && optionType.toString().equalsIgnoreCase("Count Description Box"))
 			sb.append(" ,sum(count)");
 		

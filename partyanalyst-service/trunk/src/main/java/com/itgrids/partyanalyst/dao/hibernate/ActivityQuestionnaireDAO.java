@@ -100,7 +100,7 @@ public List<Object[]> getQuestionnareDetails(List<Long> questionnairIdsList){
 									" model.activityOptionType.activityOptionTypeId," +
 									" model.activityOptionType.type" +
 									" from ActivityQuestionnaire model" +
-									" where model.activityQuestion.activityQuestionId in (:questionIds)" +
+									" where model.activityQuestionnaireId in (:questionIds)" +
 									" and model.isDeleted = 'N'");
 		query.setParameterList("questionIds", questionIds);
 		
