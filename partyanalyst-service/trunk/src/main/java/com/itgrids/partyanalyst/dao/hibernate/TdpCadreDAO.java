@@ -5517,7 +5517,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" cadreDeleteReason.reason," +
 					"voter.gender," +
 					"model.relativename," +//40
-					"model.relativeType " +
+					"model.relativeType," +
+					"ward.name "  +
 					" from TdpCadre model " );
 			queryStr.append(" left join model.educationalQualifications eduQualification ");
 			queryStr.append(" left join model.occupation occupation ");
@@ -5528,6 +5529,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" left join model.userAddress.ward ward ");
 			queryStr.append(" left join model.userAddress.tehsil tehsil ");
 			queryStr.append(" left join model.userAddress.constituency constituency ");
+			//queryStr.append(" left join model.userAddress.ward constituency1 ");
 			queryStr.append(" left join model.userAddress userAddress1 ");
 			queryStr.append(" left join model.userAddress.district  district");
 			queryStr.append(" left join model.userAddress.state state ");
