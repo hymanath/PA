@@ -195,6 +195,15 @@ public class MahanaduVisitVO {
 	public void setTotalNonInviteeVisitors(Long totalNonInviteeVisitors) {
 		this.totalNonInviteeVisitors = totalNonInviteeVisitors;
 	}
+	public Long getTotalInviteeVisitors() {
+		return totalInviteeVisitors;
+	}
+	public Long getTotalNonInviteeVisitors() {
+		return totalNonInviteeVisitors;
+	}
+	public Long getCurrentNonInviteeVisitors() {
+		return currentNonInviteeVisitors;
+	}
 	public void setCurrentNonInviteeVisitors(Long currentNonInviteeVisitors) {
 		this.currentNonInviteeVisitors = currentNonInviteeVisitors;
 	}
