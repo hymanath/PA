@@ -104,7 +104,7 @@
 									<div style='display:none' id="appntmntCnddtDtlsTblId"></div>
 									<div class="panel panel-default m_top20">
 										<div class="panel-heading bg_ff" style="background:#fff">
-											<h4 class="panel-title text-capitalize text-success dashboardPanelCollapse" >Select Date To View Scheduled Appointment Time Slot
+											<h4 class="panel-title text-capitalize text-success dashboardPanelCollapse" >Select Date To View Scheduled Appointment
 												<span class="pull-right">
 													<i class="glyphicon glyphicon-plus-sign" style="cursor:pointer"></i>
 												</span>
@@ -740,7 +740,7 @@
 											<div class="panel-heading" style="background:#fff">
 												<div class="row">
 													<div class="col-md-8">
-														<h4 class="panel-title text-capitalize text-success">Select Date To View Scheduled Appointment Time Slot
+														<h4 class="panel-title text-capitalize text-success">Select Date To View Scheduled Appointment
 														</h4>
 													</div>
 													<div class="col-md-4">
