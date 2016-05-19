@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 
 public interface IMahanaduDashBoardService {
@@ -11,4 +12,5 @@ public interface IMahanaduDashBoardService {
 	public void getTodayTotalVisitorsForSchedular();
 	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId);
 	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId);
+	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds);
 }

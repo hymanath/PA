@@ -16,6 +16,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreMahanaduVisitDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreMahanaduVisitInfoDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEntryExitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
@@ -36,6 +37,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	private TransactionTemplate transactionTemplate;
 	private IEntryExitInfoDAO entryExitInfoDAO;
 	private IEventDAO	eventDAO;
+	private IDistrictDAO districtDAO;
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
@@ -65,6 +67,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	
 	public void setEventDAO(IEventDAO eventDAO) {
 		this.eventDAO = eventDAO;
+	}
+
+	
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 
 	public void getTodayTotalVisitorsForWeb(){
@@ -713,4 +720,94 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 
 		return null;
 	 }
+	 
+	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds){
+		
+		MahanaduEventVO finalVO = new MahanaduEventVO();
+		
+		try{
+		
+			List<Long> twoStateIds = new ArrayList<Long>(0);
+			twoStateIds.add(1l);
+			twoStateIds.add(36l);
+			
+			StringBuilder districtQueryStr = new StringBuilder();
+			
+			if(stateIds.containsAll(twoStateIds)){				
+				districtQueryStr.append(" and d.district_id between 1 and 23 ");				
+			}else if(stateIds.contains(1l)){				
+				districtQueryStr.append(" and d.district_id between 11 and 23 ");				
+			}else if(stateIds.contains(36l)){
+				districtQueryStr.append(" and d.district_id between 1 and 10 ");
+			}
+			
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			Long entryEventId = entryExitInfo.getEntryId();
+			Long exitEventId = entryExitInfo.getExitId();		
+			Date todayDate = dateUtilService.getCurrentDateAndTime();
+			
+			
+			//Default District Values
+			
+			List<MahanaduEventVO> defaultDistList = new ArrayList<MahanaduEventVO>(0);
+			
+			List<Object[]> allDistrictList  = districtDAO.getAllDistrictDetails(1l);		
+			if(allDistrictList !=null && allDistrictList.size()>0){
+				
+				for (Object[] objects : allDistrictList) {
+					MahanaduEventVO VO = new MahanaduEventVO();
+					
+					VO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					VO.setName(objects[1] !=null ? objects[1].toString():"");
+					defaultDistList.add(VO);
+				}
+			}
+			
+			/*Current Cadre In Campus*/
+				
+			//0.current Cadre Count,1.districtId
+			  List<Object[]> currentCountList = eventAttendeeDAO.getDistrictWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,districtQueryStr.toString());
+			  
+			  if(currentCountList !=null && currentCountList.size()>0){
+				  for(Object[] objects : currentCountList) {				
+					  MahanaduEventVO VO = getMatchedVO(defaultDistList,(Long)objects[1]);				  
+					  if(VO !=null){					  
+						  VO.setCadreCount(objects[0] !=null ? (Long)objects[0]:0l);//current in Campus					  
+					  }else{
+						  MahanaduEventVO vo = new MahanaduEventVO();
+						  defaultDistList.add(vo);
+					  }
+				  }
+			  }
+			  
+			  
+			  /*Total,Invited and Non invited Cadre*/		  
+			  //0.total,1.invitees,2.NonInvitees,3.districtId,4.districtName
+			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(eventId,districtQueryStr.toString());
+			  
+			  if(totalCountList !=null && totalCountList.size()>0){				  
+				  for(Object[] obj : totalCountList) {							  
+					  MahanaduEventVO VO  = getMatchedVO(defaultDistList,(Long)obj[3]);
+					  if(VO !=null){					  
+						  VO.setTotal(obj[0] !=null ? (Long)obj[0]:0l);//current in Campus	
+						  VO.setInvitees(obj[1] !=null ? (Long)obj[1]:0l);
+						  VO.setNonInvitees(obj[2] !=null ? (Long)obj[2]:0l);
+					  }else{
+						  MahanaduEventVO vo = new MahanaduEventVO();
+						  defaultDistList.add(vo);
+					  }					  
+				  }
+			  }
+			  
+			  if(defaultDistList !=null && defaultDistList.size()>0){
+				  finalVO.setSubList(defaultDistList);
+			  }
+			  
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return finalVO;
+		
+	}
 }
