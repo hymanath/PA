@@ -10058,8 +10058,8 @@
 			</result>
 		</action> 
 		<action name="eventDashboardAction" class="eventDetailsAction">
-			  <result name="success">/jsp/mahandueventDashBoard.jsp</result>
-			 <!-- <result name="success">/jsp/mahandueventDashBoard1.jsp</result>-->
+			   <result name="success">/jsp/mahandueventDashBoard.jsp</result>
+			<!-- <result name="success">/jsp/mahandueventDashBoard1.jsp</result>-->
 			<result name="input">/jsp/loginForm.jsp?src=eventDashboardAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 
@@ -10080,7 +10080,11 @@
 				<param name="root">resultList</param>
 			</result>
 		</action>
-		
+		<action name="getLocationWiseVisitorsCountAction1" class="eventDetailsAction1" method="getLocationWiseVisitorsCount">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
 		<action name="getSubEventDetailsAction" class="eventDetailsAction" method="getSubEventDetails">
 				<result type="json" name="success">
 				<param name="root">resultList</param>
@@ -12103,6 +12107,11 @@
 		</result>
 	</action>
 	<action name="getLocationWiseVisitorsCountForDistrictAction" class="eventDetailsAction" method="getLocationWiseVisitorsCount">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+	</action>
+	<action name="getLocationWiseVisitorsCountForDistrictAction1" class="eventDetailsAction1" method="getLocationWiseVisitorsCount">
 				<result type="json" name="success">
 				<param name="root">resultList</param>
 			</result>

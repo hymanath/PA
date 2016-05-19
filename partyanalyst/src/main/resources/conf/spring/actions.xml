@@ -1647,7 +1647,7 @@
 	</bean>	
 	
 	<bean id="eventDetailsAction1" class="com.itgrids.partyanalyst.web.action.EventDetailsAction1" singleton="false">
-				
+	<property name="mahanaduDashBoardService1" ref="mahanaduDashBoardService1" />
 	</bean>	
 </beans>	
 	
