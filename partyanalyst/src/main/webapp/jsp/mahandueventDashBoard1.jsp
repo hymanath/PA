@@ -18,7 +18,7 @@
 
 
 <style>
-.tableC thead th {padding:3px !important;color:#00B17D !important;font-size: 12px !important;}
+.tableC thead th {color:#00B17D !important;font-size: 12px !important;}
 .tableC tr:nth-child(odd) td
 {
 	background:#F1F6F9 !important
@@ -92,7 +92,8 @@
 	background:#00B17D;
 	border:1px solid #00B17D;
 }
-
+.errorColorAppy{ color: rgb(255, 0, 0);font-size: 12px;font-weight: bold;margin-left: -70px;text-shadow: none}
+.text-capitalize{text-transform: uppercase;}
 </style>
 </head>
 
@@ -411,8 +412,17 @@
 							</div>
 						
 							<div class="col-md-1 " style="margin-top: 6px;">
+								<!--<div class="col-md-1 " style="margin-top: 6px;">
+									<div class="onoffswitch pull-right">
+										<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+										<label class="onoffswitch-label" for="myonoffswitch">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>-->
 								<div class="apSwitch">
-									<input type="checkbox" name="apSwitch" class="apSwitch-checkbox" id="apSwitch" checked>
+									<input type="checkbox" name="apSwitch" class="apSwitch-checkbox checkedSwitch" value="1" id="apSwitch" checked >
 									<label class="apSwitch-label" for="apSwitch">
 										<span class="apSwitch-inner"></span>
 										<span class="apSwitch-switch"></span>
@@ -421,7 +431,7 @@
 							</div>
 							<div class="col-md-1 " style="margin-top: 6px;">
 								<div class="tsSwitch">
-									<input type="checkbox" name="tsSwitch" class="tsSwitch-checkbox" id="tsSwitch" >
+									<input type="checkbox" name="tsSwitch" class="tsSwitch-checkbox checkedSwitch" value="36" id="tsSwitch" >
 									<label class="tsSwitch-label" for="tsSwitch">
 										<span class="tsSwitch-inner"></span>
 										<span class="tsSwitch-switch"></span>
@@ -430,11 +440,12 @@
 							</div>
 							<div class="col-md-1 " style="margin-top: 6px;">
 								<div class="otherStates">
-									<input type="checkbox" name="otherStates" class="otherStates-checkbox" id="otherStates" >
+									<input type="checkbox" name="otherStates" class="otherStates-checkbox checkedSwitch" value="0" id="otherStates" >
 									<label class="otherStates-label" for="otherStates">
 										<span class="otherStates-inner"></span>
 										<span class="otherStates-switch"></span>
 									</label>
+									<span class="errorColorAppy" id="showErrorMsg"></span>
 								</div>
 
 							</div>
@@ -445,17 +456,20 @@
 								</select>
 							</div>
 							
+							<div class="refreshButton">
+								<span  class="text" style="border-right:none;text-shadow:none;">Last Updated Time <br/><span id="lastUpdatedTimeId"></span>&nbsp;&nbsp;&nbsp;</span>
+							</div>
 							<!--<div class="col-xs-4">
 							  <span style="font-size: 12px;">Last Updated Time: &nbsp;&nbsp;<span id="lastUpdatedTimeId" style="padding: 5px; font-size: 11px;" class="label label-primary"></span></span>
 							</div> -->
 							
-							<div id="updateDataDivId" style="margin-top: 5px; margin-left: -83px;display:none;" class="col-xs-1 ">
+							<!--<div id="updateDataDivId" style="margin-top: 5px; margin-left: -83px;display:none;" class="col-xs-1 ">
 								<a style="" title="Click Here To Get Updated Data" class="btn btn-xs btn-success dataSynchClass" >
 									<span style="font-size: 13px; margin-top: 0px;" class="">Update Data
 										<img style="height:20px;width:20px;display:none;" id="syncAjaxImage" src="images/ajaxImg2.gif">
 									</span>
 								</a>
-							</div>
+							</div>-->
 							
 						</div>
 						
@@ -466,7 +480,7 @@
 							<div class="col-md-12">
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
-									<p class="m_0 display-style" id="districtHeading">AP DISTRICT WISE</p>
+									<p class="m_0 display-style" id="districtHeading">DISTRICT WISE</p>
 									
 									
 									</div>
@@ -481,7 +495,7 @@
 							<div class="col-md-12 m_top20">
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
-									<p class="m_0 display-style" id="constiHeading">AP CONSTITUENCY WISE</p>
+									<p class="m_0 display-style" id="constiHeading">CONSTITUENCY WISE</p>
 									<div class="onoffswitch pull-right" style="display:none;">
 										<input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
 										<label class="onoffswitch-label" for="myonoffswitch1">
@@ -679,7 +693,7 @@ var formatedDpCurentDate;
                     timePicker: false,
                     timePickerIncrement: 1,
                     timePicker12Hour: true,
-                    opens: 'left',
+                    opens: 'right',
                     buttonClasses: ['btn btn-default btn-custom'],
                     applyClass: 'btn-small btn-primary',
                     cancelClass: 'btn-small',
@@ -700,7 +714,7 @@ var formatedDpCurentDate;
                   var optionSet2 = {
                     startDate: moment(),
                     endDate: moment(),
-                    opens: 'left',
+                    opens: 'right',
                     ranges: {
                        'Today': [moment(), moment()],
                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -787,20 +801,28 @@ $(".maineventCls").each(function(){
 
 
 
-function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
+function getLocationWiseVisitorsCount(eventId,reportLevelId)
 {
-
-if(reportLevelId == 3){
-	$("#distAjax").show();
-	$("#districtTableId").html("");
-	}
-	else{
 	$("#constAjax").show();
 	$("#constiTableId").html("");
+	
+	var statesSelectedArray = [];
+	$( ".checkedSwitch").each(function( index ){
+		if($(this).prop('checked')){
+			var stateChecked=$(this).val();
+			statesSelectedArray.push(stateChecked);
+		}
+	});
+	var stateType;
+	if( statesSelectedArray!=null && statesSelectedArray.length == 3){
+		stateType = 'All';
+	}else{
+		stateType='particular';
 	}
 	var jObj = {
 			eventId:eventId,			
-			stateId:stateId,
+			stateIds:statesSelectedArray,
+			stateType : stateType,
 			reportLevelId:reportLevelId,
 			subEvents : subEvents,
 			startDate : startDate,
@@ -812,7 +834,7 @@ if(reportLevelId == 3){
 		
 		$.ajax({
           type:'GET',
-          url: 'getLocationWiseVisitorsCountAction.action',
+          url: 'getLocationWiseVisitorsCountAction1.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			if(result != null)
@@ -821,18 +843,30 @@ if(reportLevelId == 3){
 			}
 	});
 }
-function getLocationWiseVisitorsCountForDistrict(eventId,stateId,reportLevelId)
+function getLocationWiseVisitorsCountForDistrict(eventId,reportLevelId)
 {
-if(reportLevelId == 3){
+    
 	$("#distAjax").show();
 	$("#districtTableId").html("");
+	
+	var statesSelectedArray = [];
+	$( ".checkedSwitch").each(function( index ){
+		if($(this).prop('checked')){
+			var stateChecked=$(this).val();
+			statesSelectedArray.push(stateChecked);
+		}
+	});
+	
+	var stateType;
+	if( statesSelectedArray!=null && statesSelectedArray.length == 3){
+		stateType = 'All';
 	}else{
-	$("#constAjax").show();
-	$("#constiTableId").html("");
+		stateType='particular';
 	}
 	var jObj = {
 			eventId:eventId,			
-			stateId:stateId,
+			stateIds:statesSelectedArray,
+			stateType : stateType,
 			reportLevelId:reportLevelId,
 			subEvents : subEvents,
 			startDate : startDate,
@@ -844,7 +878,7 @@ if(reportLevelId == 3){
 		
 		$.ajax({
           type:'GET',
-          url: 'getLocationWiseVisitorsCountForDistrictAction.action',
+          url: 'getLocationWiseVisitorsCountForDistrictAction1.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			if(result != null)
@@ -853,253 +887,212 @@ if(reportLevelId == 3){
 			}
 	});
 }
+function getLocationWiseCountBySubEvents(reportLevelId){
+var subEvents1 = [];
+var stateId =0;
+var subIds =0;
+subIds = $("#distEventId").val();
+$("#showErrorMsg").html('');
+/*if(reportLevelId ==3){
+  subIds = $("#distEventId").val();
+ }
+ else{
+  subIds = $("#constiEventId").val();
+ }*/
 
+if(reportLevelId == 3){
+	$("#distAjax").show();
+	$("#districtTableId").html("");
+	}
+	else{
+	$("#constAjax").show();
+	$("#constiTableId").html("");
+	}
+
+ var eventType;
+ if(subIds == 0){
+	subEvents1 = subEvents;
+	eventType ="parentEvent";
+ }else{
+	subEvents1.push(subIds);
+	eventType ="childEvent";
+ }
+   /* if($('#myonoffswitch').is(":checked"))
+ {
+ stateId = 1;
+ }else{
+ stateId = 36;
+ }  */
+ 
+ //validation
+ 
+ var statesSelectedArray = [];
+	$( ".checkedSwitch").each(function( index ){
+		if($(this).prop('checked')){
+			var stateChecked=$(this).val();
+			statesSelectedArray.push(stateChecked);
+		}
+	});
+	var length = statesSelectedArray.length;
+	if(length == 0){
+		$("#showErrorMsg").html("Please Select State")
+	}
+	var stateType;
+	if( statesSelectedArray!=null && statesSelectedArray.length == 3){
+		stateType = 'All';
+	}else{
+		stateType='particular';
+	}
+ 
+ 
+ 
+ 
+var jObj = {
+			eventId:parentEventId,			
+			stateIds:statesSelectedArray,
+			stateType : stateType,
+			reportLevelId:reportLevelId,
+			subEvents : subEvents1,
+			startDate : startDate,
+			endDate : endDate,
+		    dataRetrievingType : dataRetrievingType, 
+			eventType : eventType,
+			parentEventId:parentEventId
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getLocationWiseVisitorsCountAction1.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			
+			if(reportLevelId == 3){
+			     $("#distAjax").show();
+				 	buildDistrictTable(result,reportLevelId) 
+			}
+			else{
+			   $("#constAjax").show();
+			  	buildConstTable(result,reportLevelId);
+			}
+			
+	});
+
+}
 function buildDistrictTable(result,reportLevelId){
 	$("#distAjax").hide();
+	
+	$('#lastUpdatedTimeId').html(result[0].lastUpdatedDate);
+	
+	
 	var str='';
 	str+='<div class="scrollLength">';
-	str+='<table class="table tableC table-condensed table-bordered " id="datatableId" >';
-	str+='<thead style="background:#EFF3F4">';
-	str+='<tr>';
-	str+='<th rowspan="2" style="vertical-align:middle">ID</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">DISTRICT NAME</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
-	str+='<th colspan="3" class="text-center">DAY 1 ATTENDED</th>';
-	str+='<th colspan="3" class="text-center">DAY 2 ATTENDED</th>';
-	str+='<th colspan="3" class="text-center">DAY 3 ATTENDED</th>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<th>Total</th>';
-	str+='<th>Invitees</th>';
-	str+='<th>Non Invitees</th>';
-	str+='<th>Total</th>';
-	str+='<th>Invitees</th>';
-	str+='<th>Non Invitees</th>';
-	str+='<th>Total</th>';
-	str+='<th>Invitees</th>';
-	str+='<th>Non Invitees</th>';
-	str+='</tr>';
-	str+='</thead>';
-	str+='<tbody class="fixed-table-body">';
-	
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>PRAKASAM</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>19</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='<td>533582</td>';
-	str+='</tr>';
-	
-	
-	str+='</tbody>';
-	str+='</table>';
-	str+='</div>';
-	$("#districtTableId").html(str);
-	
+	if(result[0].locationName != "NO DATA"){
+			str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="datatableId" >';
+			str+='<thead style="background:#EFF3F4">';
+			str+='<tr>';
+			str+='<th rowspan="2" style="vertical-align:middle" width="50px !important;"># ID</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">DISTRICT NAME</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
+		
+			for(var i in result[0].subList){
+				str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
+			}
+			
+		str+='</tr>';
+		str+='<tr>';
+			for(var j in result[0].subList){
+				str+='<th>Total</th>';
+				str+='<th>Invitees</th>';
+				str+='<th>Non Invitees</th>';
+			}
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody class="fixed-table-body">';
+		for(var j in result){
+			str+='<tr>';
+			if(result[j].id ==0 || result[j].id == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center" >'+result[j].id+'</td>';
+			}
+			if(result[j].name == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td >'+result[j].name+'</td>';
+			}
+			if(result[j].attendees == 0 || result[j].attendees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendees+'</td>';
+			}
+			if(result[j].inviteesCalled == 0 || result[j].inviteesCalled == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
+			}
+			if(result[j].invitees == 0 || result[j].invitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].invitees+'</td>';
+			}
+			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].nonInvitees+'</td>';
+			}
+			for(var l in result[j].subList){
+				if(result[j].subList[l].dataExist == true){
+					if(result[j].attendees ==0 || result[j].attendees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[j].subList[l].attendees+'</td>';
+					}
+					if(result[j].invitees ==0 || result[j].invitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						 str+='<td class="text-center">'+result[j].subList[l].invitees+'</td>';
+					}
+				   if(result[j].nonInvitees ==0 || result[j].nonInvitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
+					}
+				}else{
+					str+='<td class="text-center"></td>';
+					str+='<td class="text-center"></td>';
+					str+='<td class="text-center"></td>';
+				}
+			}
+			str+='</tr>';
+		}
+
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		$("#districtTableId").html(str);
+	}else{
+		$("#districtTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
+	}
 	$('#datatableId').DataTable({
-        responsive: true,
-		"paging":   false,
+        "paging":   false,
         "info":     false,
 		"searching": true,
-		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"columnDefs": [
-	    { "width": "24%", "targets": 0 }]
+		"autoWidth": true,
+		"sDom": '<"top"iflp>rt<"bottom"><"clear">'
+		
     });
 	
-	// $('.fixed-table-body').slimScroll();
+	
 	var Scrollerlength = $(".scrollLength").find("tr").length;
 	
-	if(Scrollerlength >=6){
+	if(Scrollerlength >=7){
 		$("#datatableId").css("display","block");
-		$("#datatableId").css("height","350px");
+		$("#datatableId").css("height","383px");
 		$("#datatableId").css("overflow-y","scroll");
-		$("#datatableId").css("overflow-x","hidden");
+		$("#datatableId").css("overflow-x","scroll");
 	}else{
 		
 		$("#datatableId").css("height","auto");
@@ -1195,155 +1188,127 @@ function buildDistrictTable(result,reportLevelId){
 }
 function buildConstTable(result,reportLevelId){
 	$("#constAjax").hide();
+	$('#lastUpdatedTimeId').html(result[0].lastUpdatedDate);
 	var str='';
 	str+='<div class="scrollLength">';
-	str+='<table class="table tableC table-condensed table-bordered" id="constituencyDataTableId">';
-	str+='<thead style="background:#EFF3F4">';
-	str+='<tr>';
-	str+='<th rowspan="2" style="vertical-align:middle">ID</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">DISTRICT NAME</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">CONSTITUENCY NAME</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
-	str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
-	str+='<th colspan="3" class="text-center">DAY 1 ATTENDED</th>';
-	str+='<th colspan="3" class="text-center">DAY 2 ATTENDED</th>';
-	str+='<th colspan="3" class="text-center">DAY 3 ATTENDED</th>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<th>Total</th>';
-	str+='<th>Invitees</th>';
-	str+='<th>Non Invitees</th>';
-	str+='<th>Total</th>';
-	str+='<th>Invitees</th>';
-	str+='<th>Non Invitees</th>';
-	str+='<th>Total</th>';
-	str+='<th>Invitees</th>';
-	str+='<th>Non Invitees</th>';
-	str+='</tr>';
-	str+='</thead>';
-	str+='<tbody>';
+	if(result[0].locationName != "NO DATA"){
+		str+='<table class="table tableC table-condensed table-bordered" style="border-bottom:none" id="constituencyDataTableId">';
+		str+='<thead style="background:#EFF3F4">';
+		str+='<tr>';
+		str+='<th rowspan="2" style="vertical-align:middle;font-size:11px !important;"># ID</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;font-size:11px !important;">DISTRICT</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;font-size:11px !important;">CONSTITUENCY</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;">TOTAL ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;">TOTAL INVITEES</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;">INVITEES ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;;">NON INVITEES ATTENDED</th>';
 	
-	str+='<tr>';
-	str+='<td>232</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>KAVALI</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>535288</td>';
-	str+='<td>53528</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='</tr>';
+			for(var i in result[0].subList){
+				str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
+			}
+		str+='</tr>';
+		str+='<tr>';
+			for(var j in result[0].subList){
+				str+='<th>Total</th>';
+				str+='<th>Invitees</th>';
+				str+='<th>Non Invitees</th>';
+			}
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		
+		for(var j in result){
+			str+='<tr>';
+			if(result[j].id == 0 || result[j].id == null){
+				str+='<td class="text-center" > - </td>';
+			}else{
+				str+='<td class="text-center" >'+result[j].id+'</td>';
+			}
+			if(result[j].districtName == null){
+				str+='<td > - </td>';
+			}else{
+				str+='<td >'+result[j].districtName+'</td>';
+			}
+			if(result[j].name == null ){
+				str+='<td width="60px !important"> - </td>';
+			}else{
+				str+='<td width="60px !important">'+result[j].name+'</td>';
+			}
+			if(result[j].attendees ==0 || result[j].attendees == null){
+				str+='<td class="text-center">-</td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendees+'</td>';
+			}
+			if(result[j].inviteesCalled ==0 || result[j].inviteesCalled == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
+			}
+			if(result[j].invitees ==0 || result[j].invitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].invitees+'</td>';
+			}
+			if(result[j].nonInvitees ==0 || result[j].nonInvitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].nonInvitees+'</td>';
+			}
+			
+			for(var l in result[j].subList){
+				
+				if(result[j].subList[l].dataExist == true){
+					if(result[j].attendees ==0 || result[j].attendees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[j].subList[l].attendees+'</td>';
+					}
+					if(result[j].invitees ==0 || result[j].invitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						 str+='<td class="text-center">'+result[j].subList[l].invitees+'</td>';
+					}
+		 	       if(result[j].nonInvitees ==0 || result[j].nonInvitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
+					}
+			    }else{
+					str+='<td class="text-center"></td>';
+					str+='<td class="text-center"></td>';
+					str+='<td class="text-center"></td>';
+				}
+			}
+			
+			str+='</tr>';
+		}
 	
-	str+='<tr>';
-	str+='<td>232</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>KAVALI</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>535288</td>';
-	str+='<td>53528</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>232</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>KAVALI</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>53526</td>';
-	str+='<td>535288</td>';
-	str+='<td>53528</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>232</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>KAVALI</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>535288</td>';
-	str+='<td>53528</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='</tr>';
-	str+='<tr>';
-	str+='<td>232</td>';
-	str+='<td>NELLORE</td>';
-	str+='<td>KAVALI</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>53522</td>';
-	str+='<td>53526</td>';
-	str+='<td>535288</td>';
-	str+='<td>53528</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='<td>53522</td>';
-	str+='</tr>';
-	
-	
-	
-	str+='</tbody>';
-	str+='</table>';
-	str+='</div>';
-	$("#constiTableId").html(str);
-	
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		$("#constiTableId").html(str);
+	}else{
+		$("#constiTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
+	}
 	$('#constituencyDataTableId').DataTable({
-        responsive: true,
-		"paging":   false,
-        "info":     false,
-		"searching": true,
-		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"columnDefs": [
-	    { "width": "24%", "targets": 0 }]
+		 "paging":   false,
+		 "info":     false,
+		 "searching": true,
+		 "autoWidth": true,
+		"sDom": '<"top"iflp>rt<"bottom"><"clear">'
+		
     });
 	var Scrollerlength = $(".scrollLength").find("tr").length;
-	
-	if(Scrollerlength >=6){
-		$("#constiTableId").css("display","block");
-		$("#constiTableId").css("height","350px");
-		$("#constiTableId").css("overflow-y","scroll");
-		$("#constiTableId").css("overflow-x","hidden");
+
+	if(Scrollerlength >=7){
+		
+		$("#constituencyDataTableId").css("display","block");
+		$("#constituencyDataTableId").css("height","383px");
+		$("#constituencyDataTableId").css("overflow-y","scroll");
+		$("#constituencyDataTableId").css("overflow-x","scroll");
 		
 	}else{
-		
-		$("#constiTableId").css("height","auto");
+		$("#constituencyDataTableId").css("height","auto");
 		
 	}
 	/* if(reportLevelId == 3)
@@ -1434,28 +1399,24 @@ function buildConstTable(result,reportLevelId){
 	} */
 	
 }
-	$("#apSwitch").click(function(){
+	$("#myonoffswitch").click(function(){
 		$("#distEventId").val(0);
-		if($('#apSwitch').is(":checked")){
+		if($('#myonoffswitch').is(":checked")){
 			
 		$('#myonoffswitch1').prop('checked', true);
 		$("#districtHeading").html("AP DISTRICT WISE");
 		$("#constiHeading").html("AP CONSTITUENCY WISE");
 		getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
 		getLocationWiseVisitorsCount(parentEventId,1,4);
-		}
-	});
-	$("#tsSwitch").click(function(){
-		$("#distEventId").val(0);
-		if($('#tsSwitch').is(":checked")){
-			$('#myonoffswitch1').prop('checked', false);
-			$("#districtHeading").html("TS DISTRICT WISE");	
-			$("#constiHeading").html("TS CONSTITUENCY WISE");
-			getLocationWiseVisitorsCountForDistrict(parentEventId,36,3);
-			getLocationWiseVisitorsCount(parentEventId,36,4);
-		}
+		}else{
 			
-	});	
+		$('#myonoffswitch1').prop('checked', false);
+		$("#districtHeading").html("TS DISTRICT WISE");	
+		$("#constiHeading").html("TS CONSTITUENCY WISE");
+		getLocationWiseVisitorsCountForDistrict(parentEventId,36,3);
+		getLocationWiseVisitorsCount(parentEventId,36,4);
+		}
+});
 $("#myonoffswitch1").click(function(){
 	if($('#myonoffswitch1').is(":checked")){
 	getLocationWiseVisitorsCount(parentEventId,1,4);
@@ -1704,14 +1665,24 @@ $('#donutchart').removeClass("errorDiv");
 $(".themeControll").removeClass("active");
 setcolorsForEvents();
 
- if($('#apSwitch').is(":checked")){
+/*  if($('#myonoffswitch').is(":checked")){
 	getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
 	getLocationWiseVisitorsCount(parentEventId,1,4);
- }if($('#tsSwitch').is(":checked")){
-	$('#tsSwitch').trigger("click");
+ }else{
+	$('#myonoffswitch').trigger("click");
     getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
     getLocationWiseVisitorsCount(parentEventId,1,4);
-}
+
+} */
+   /*  var statesSelectedArray = [];
+	$( ".checkedSwitch").each(function( index ){
+		if($(this).prop('checked')){
+			var stateChecked=$(this).val();
+			statesSelectedArray.push(stateChecked);
+		}
+	}); */
+ locationWiseCalls();
+ 
  countDetailsCalls();
 
 
@@ -1755,13 +1726,15 @@ showHide();
 
 	function locationWiseCalls(){
 		
-		if($('#apSwitch').is(":checked")){
+		/* if($('#myonoffswitch').is(":checked")){
 			getLocationWiseVisitorsCountForDistrict(parentEventId,1,3);
 			getLocationWiseVisitorsCount(parentEventId,1,4);
-	    } if($('#tsSwitch').is(":checked")){
+	    }else{
 			getLocationWiseVisitorsCountForDistrict(parentEventId,36,3);
 			getLocationWiseVisitorsCount(parentEventId,36,4);
-		}
+		} */
+		getLocationWiseVisitorsCountForDistrict(parentEventId,3);
+		getLocationWiseVisitorsCount(parentEventId,4);
 	}
 	 
 	function countDetailsCalls(){
@@ -2305,76 +2278,7 @@ function getSubEvents()
 	});
 
 }
-function getLocationWiseCountBySubEvents(reportLevelId){
-var subEvents1 = [];
-var stateId =0;
-var subIds =0;
-subIds = $("#distEventId").val();
-/*if(reportLevelId ==3){
-  subIds = $("#distEventId").val();
- }
- else{
-  subIds = $("#constiEventId").val();
- }*/
 
-if(reportLevelId == 3){
-	$("#distAjax").show();
-	$("#districtTableId").html("");
-	}
-	else{
-	$("#constAjax").show();
-	$("#constiTableId").html("");
-	}
-
- var eventType;
- if(subIds == 0){
-	subEvents1 = subEvents;
-	eventType ="parentEvent";
- }else{
-	subEvents1.push(subIds);
-	eventType ="childEvent";
- }
- if($('#apSwitch').is(":checked"))
- {
- stateId = 1;
- }if($('#tsSwitch').is(":checked")){
- stateId = 36;
- }
- 
-var jObj = {
-			eventId:parentEventId,			
-			stateId:stateId,
-			reportLevelId:reportLevelId,
-			subEvents : subEvents1,
-			startDate : startDate,
-			endDate : endDate,
-		    dataRetrievingType : dataRetrievingType, 
-			eventType : eventType,
-			parentEventId:parentEventId
-		}	
-		
-		$.ajax({
-          type:'GET',
-          url: 'getLocationWiseVisitorsCountAction.action',
-		  data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			if(reportLevelId == 3){
-			$("#distAjax").show();
-			
-			}
-			else{
-			$("#constAjax").show();
-			
-			}
-
-			if(result != null)
-			{	
-				
-				buildDistrictTable(result,reportLevelId)	
-			}
-	});
-
-}
 
 function getSubEventMembers(eventId,startIndex,count,name){
 
@@ -2600,8 +2504,30 @@ $(document).on('click','#mahanaduLinkId',function(){
 	var value =  window.open("mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
 	//var value =  window.open("http://localhost:8080/PartyAnalyst/mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
 	
-}); 
+});
 
+
+ $(document).on('click','.checkedSwitch',function(){
+	 $("#showErrorMsg").html("")
+		var statesArray =[];
+		 $( ".checkedSwitch").each(function( index ){
+			if($(this).prop('checked')){
+				var stateChecked=$(this).val();
+				statesArray.push(stateChecked);
+			}
+		});	 
+	
+	var statesArrayLength = statesArray.length;
+	
+	if(statesArrayLength == 0){
+		$("#showErrorMsg").html("Please Select State")
+		return;
+		
+	}else{
+		locationWiseCalls();
+	}
+	
+}); 
 </script>
 </body>
 </html>
