@@ -105,6 +105,7 @@
 				<div class="panel-body panelDefault">
 					<h4 class="m_0">NOT INVITEES AS VISITORS</h4>
 					<h3 id="nonInviteesAsVisitorsId">0</h3>
+					 <center><img id="tdyVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 				</div>
 			</div>
 		</div>
@@ -132,7 +133,7 @@
 			</div>
 		</div>
 		<div class="col-md-2">
-			<div class="panel panel-default panel-custom-default">
+			<div class="panel panel-default panel-custom-default"><i class="glyphicon glyphicon-refresh pull-right" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="ttlTdyVstrsId"></i>
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
@@ -147,10 +148,11 @@
 		<div class="col-md-4">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS</h4>
+					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="hrWiseVstrsId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: 29-05-2016 03:00 AM</p>
 				</div>
-				<div class="panel-body pad_0" style="height:440px">
+				<div class="panel-body pad_0" style="height:335px">
+				<div><center><img id="hrWiseVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 				 <div id="visitorsTableId"></div>
 					<!--<table class="table table-condensed tableHourWise">
 						<thead>
@@ -174,10 +176,11 @@
 		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS</h4>
+					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: 29-05-2016 03:00 AM</p>
 				</div>
 				<div class="panel-body">
+				  <div><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 					<div id="hoursWiseVisitors" style="height:400px;width:100%;"></div>
 				</div>
 			</div>
@@ -187,9 +190,10 @@
 		<div class="col-md-4">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">DAY WISE UNIQUE AND REVISIT SUMMARY</h4>
-				</div>
+					<h4 class="panel-title">DAY WISE UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="refreshDaysWiseRevisitId"></i></h4>
+				</div><!--style="height:167px"-->
 				<div class="panel-body pad_8 panelDefault">
+				<div><center><img id="dayWsUnquVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 				 <div id="daysSummaryUniqueTableId"></div>
 					<!--<table class="table tableDayWiseRevisit table-condensed">
 						<tr>
@@ -217,9 +221,10 @@
 		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">DAY WISE VISIT SUMMARY</h4>
+					<h4 class="panel-title">DAY WISE VISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="rfrshDyWsPrgrssRvstId"></i></h4>
 				</div>
 				<div class="panel-body panelDefault">
+				<div><center><img id="dayWsVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 				<div id="totalVisitorsDtlsId"></div>
 					<!--<p class="m_0">1 DAY VISITORS<span class="pull-right" id="frstDyVstrsId">100%</span></p>
 					<div class="progress progressNewCustom">
@@ -382,164 +387,6 @@ $(".panelDefault").height(maxHeight);
 				series:finalDataArr
 			});
 		}
-		
-	/* $(function () {
-		/**
-		 * Create a constructor for sparklines that takes some sensible defaults and merges in the individual
-		 * chart options. This function is also available from the jQuery plugin as $(element).highcharts('SparkLine').
-		 */
-		/*Highcharts.SparkLine = function (a, b, c) {
-			var hasRenderToArg = typeof a === 'string' || a.nodeName,
-				options = arguments[hasRenderToArg ? 1 : 0],
-				defaultOptions = {
-					chart: {
-						renderTo: (options.chart && options.chart.renderTo) || this,
-						backgroundColor: null,
-						borderWidth: 0,
-						type: 'area',
-						margin: [2, 0, 2, 0],
-						width: 120,
-						height: 20,
-						style: {
-							overflow: 'visible'
-						},
-						skipClone: true
-					},
-					title: {
-						text: ''
-					},
-					credits: {
-						enabled: false
-					},
-					xAxis: {
-						labels: {
-							enabled: false
-						},
-						title: {
-							text: null
-						},
-						startOnTick: false,
-						endOnTick: false,
-						tickPositions: []
-					},
-					yAxis: {
-						endOnTick: false,
-						startOnTick: false,
-						labels: {
-							enabled: false
-						},
-						title: {
-							text: null
-						},
-						tickPositions: [0]
-					},
-					legend: {
-						enabled: false
-					},
-					tooltip: {
-						backgroundColor: null,
-						borderWidth: 0,
-						shadow: false,
-						useHTML: true,
-						hideDelay: 0,
-						shared: true,
-						padding: 0,
-						positioner: function (w, h, point) {
-							return { x: point.plotX - w / 2, y: point.plotY - h };
-						}
-					},
-					plotOptions: {
-						series: {
-							animation: false,
-							lineWidth: 1,
-							shadow: false,
-							states: {
-								hover: {
-									lineWidth: 1
-								}
-							},
-							marker: {
-								radius: 1,
-								states: {
-									hover: {
-										radius: 2
-									}
-								}
-							},
-							fillOpacity: 0.25
-						},
-						column: {
-							negativeColor: '#910000',
-							borderColor: 'silver'
-						}
-					}
-				};
-
-			options = Highcharts.merge(defaultOptions, options);
-
-			return hasRenderToArg ?
-				new Highcharts.Chart(a, options, c) :
-				new Highcharts.Chart(options, b);
-		};
-
-		var start = +new Date(),
-			$tds = $('div[data-sparkline]'),
-			fullLen = $tds.length,
-			n = 0;
-
-		// Creating 153 sparkline charts is quite fast in modern browsers, but IE8 and mobile
-		// can take some seconds, so we split the input into chunks and apply them in timeouts
-		// in order avoid locking up the browser process and allow interaction.
-		function doChunk() {
-			var time = +new Date(),
-				i,
-				len = $tds.length,
-				$td,
-				stringdata,
-				arr,
-				data,
-				chart;
-
-			for (i = 0; i < len; i += 1) {
-				$td = $($tds[i]);
-				stringdata = $td.data('sparkline');
-				arr = stringdata.split('; ');
-				data = $.map(arr[0].split(', '), parseFloat);
-				chart = {};
-
-				if (arr[1]) {
-					chart.type = arr[1];
-				}
-				$td.highcharts('SparkLine', {
-					series: [{
-						data: data,
-						pointStart: 1
-					}],
-					tooltip: {
-						headerFormat: '<span style="font-size: 10px">' + $td.parent().find('th').html() + ', Q{point.x}:</span><br/>',
-						pointFormat: '<b>{point.y}.000</b> USD'
-					},
-					chart: chart
-				});
-
-				n += 1;
-
-				// If the process takes too much time, run a timeout to allow interaction with the browser
-				if (new Date() - time > 500) {
-					$tds.splice(0, i + 1);
-					setTimeout(doChunk, 0);
-					break;
-				}
-
-				// Print a feedback on the performance
-				if (n === fullLen) {
-					$('#result').html('Generated ' + fullLen + ' sparklines in ' + (new Date() - start) + ' ms');
-				}
-			}
-		}
-		doChunk();
-
-	}); */
 	</script>
   <script type="text/javascript">
    
@@ -601,12 +448,13 @@ $(".panelDefault").height(maxHeight);
 			reportLevelId:0,
 			subEvents : subEvents1,			
 		}	
-		
+		$("#dayWsUnquVstrsPrcssngImgId").show();
 		$.ajax({
           type:'GET',
           url: 'getDaysUniqueAndRevisitSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			$("#dayWsUnquVstrsPrcssngImgId").hide();
 			if(result!=null && result.length>0){
 				buildDaysUniqueAndRevisitSummary(result);
 			}
@@ -629,17 +477,20 @@ $(".panelDefault").height(maxHeight);
 	 $("#daysSummaryUniqueTableId").html(str);
   }
   function getTodayTotalVisitors(){
-	  
-	  var eventId = $("#mainEventSelectId").val();
+	  	
+	$("#tdyVstrsPrcssngImgId").show();
+
+   	var eventId = $("#mainEventSelectId").val();
 	   var jObj = {
 			eventId:eventId
-		}	
+		}
 		
 		$.ajax({
           type:'GET',
           url: 'getTodayTotalVisitorsInfoAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			$("#tdyVstrsPrcssngImgId").hide();
 			if(result!=null){
 				  $("#totalVisitorsId").html(result.totalVisitors);
 				  $("#inviteesAsVisitorsId").html(result.totalInviteeVisitors);
@@ -651,6 +502,9 @@ $(".panelDefault").height(maxHeight);
 		});
   }
     function getDetails(){
+		 
+		  $("#hrWiseVstrsPrcssngImgId").show();
+		  $("#hrWiseVstrsHghChrtPrcssngImgId").show();
     	 var  eventId = $("#mainEventSelectId").val();
 		   var jsObj={
 			   eventId:eventId
@@ -660,6 +514,8 @@ $(".panelDefault").height(maxHeight);
 			  url: 'getTodayTotalAndCurrentUsersInfo.action',
 			  data :{task:JSON.stringify(jsObj)}
           }).done(function(result){
+			    $("#hrWiseVstrsPrcssngImgId").hide();
+				$("#hrWiseVstrsHghChrtPrcssngImgId").hide();
 			  if(result!=null && result.length>0){
 				  buildVisitorsResultByTime(result);
 				  buildVisitorsDtlsGraph(result);
@@ -1073,7 +929,7 @@ $(".panelDefault").height(maxHeight);
 	 if(globalMainEntryId !=null && globalMainEntryId>0){
 		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
 	 }
-
+     $("#dayWsVstrsPrcssngImgId").show();
 	 var jObj = {
 			eventId:eventId,			
 			stateId:stateId,
@@ -1086,6 +942,7 @@ $(".panelDefault").height(maxHeight);
           url: 'getDayWiseVisitSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+		  $("#dayWsVstrsPrcssngImgId").hide();
 		  if(result!=null && result.length>0){
 			buildTotalVisitorsResult(result);
 		  }
@@ -1095,26 +952,39 @@ var progressBarClsArr=["progress-bar-info","progress-bar-success","progress-bar-
 function buildTotalVisitorsResult(result){
 	
 	  var totalVisitorsCount=0;
-	  if(result[0].totalVisitorsCount!=null && result[0].totalVisitorsCount>0){
-		  totalVisitorsCount=result[0].totalVisitorsCount;
+	  for(var i in result){
+		  totalVisitorsCount=totalVisitorsCount+result[i].total;
 	  }
 	 var str='';
 	for(var i in result){
 		 var number = parseInt(i)+1;
 		 var prcntgCmpltd=(result[i].total)*100/totalVisitorsCount;
 			if(number>1){
-			str+="<p class='m_0'>"+(parseInt(i)+1)+" DAY'S VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+" <span class='pull-right'>"+prcntgCmpltd+"%</span></p>";
+			str+="<p class='m_0'>"+(parseInt(i)+1)+" DAY'S VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+" <span class='pull-right'>"+prcntgCmpltd.toFixed(2)+"%</span></p>";
 			}else{
-		    str+="<p class='m_0'>"+(parseInt(i)+1)+" DAY VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+"<span class='pull-right'>"+prcntgCmpltd+"%</span></p>";
+		    str+="<p class='m_0'>"+(parseInt(i)+1)+" DAY VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+"<span class='pull-right'>"+prcntgCmpltd.toFixed(2)+"%</span></p>";
 			}
 			str+="<div class='progress progressNewCustom'>";
-			   str+="<div class='progress-bar "+progressBarClsArr[i]+"' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width:"+prcntgCmpltd+"% '>";
+			   str+="<div class='progress-bar "+progressBarClsArr[i]+"' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width:"+prcntgCmpltd.toFixed(2)+"% '>";
 				 str+="<span class='sr-only'>"+result[i].total+" Complete</span>";
 			  str+=" </div>";
 			str+="</div>";
 	 } 
 	 $("#totalVisitorsDtlsId").html(str);
 }
+  $(document).on("click",".hrWseVstrsCls",function(){
+	 getDetails();
+  });
+  $(document).on("click","#rfrshDyWsPrgrssRvstId",function(){
+	  getDayWiseVisitSummary();
+  });
+  $(document).on("click","#refreshDaysWiseRevisitId",function(){
+	  getDaysUniqueAndRevisitSummary();
+  });
+  $(document).on("click","#ttlTdyVstrsId",function(){
+	  getTodayTotalVisitors();
+  });
+ 
    </script>
 </body>
 </html>
