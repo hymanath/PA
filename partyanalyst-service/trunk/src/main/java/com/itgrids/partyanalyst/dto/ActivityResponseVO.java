@@ -25,6 +25,7 @@ public class ActivityResponseVO {
 	private Long desTotalCount = 0l;
 	private Long desAPCount = 0l;
 	private Long desTSCount = 0l;
+	private String question;
 	
 	private Long called=0L;
 	private Long pending=0L;
@@ -36,6 +37,12 @@ public class ActivityResponseVO {
 	private List<ActivityResponseVO> sublist2 = new ArrayList<ActivityResponseVO>(0);
 	
 	
+	public String getQuestion() {
+		return question;
+	}
+	public void setQuestion(String question) {
+		this.question = question;
+	}
 	public List<ActivityResponseVO> getSublist() {
 		return sublist;
 	}

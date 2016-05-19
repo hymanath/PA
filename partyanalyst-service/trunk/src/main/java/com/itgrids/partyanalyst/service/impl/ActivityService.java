@@ -5050,27 +5050,49 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							Long quesId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 							Long districtId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 							Long count = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
-								
+							String questionStr = obj[3] != null ? obj[3].toString():"";
+							Long sumCount = 0l;
+							if(optionType.equalsIgnoreCase("Count Description Box"))
+								sumCount = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+							
 							ActivityResponseVO vo = questionMap.get(quesId);
 							if(vo != null){
 								if(districtId.longValue() >= 1l && districtId.longValue() <= 10l){   //ts
 									vo.setTSCount(vo.getTSCount()+count);
 									vo.setTotalCount(vo.getTotalCount()+count);
+									if(optionType.equalsIgnoreCase("Count Description Box")){
+										vo.setDesTSCount(vo.getDesTSCount()+sumCount);
+										vo.setDesTotalCount(vo.getDesTotalCount()+sumCount);
+									}
 								}
 								else if(districtId.longValue() >= 11l && districtId.longValue() <= 23l){   //ap
 									vo.setAPCount(vo.getAPCount()+count);
 									vo.setTotalCount(vo.getTotalCount()+count);
+									if(optionType.equalsIgnoreCase("Count Description Box")){
+										vo.setDesAPCount(vo.getDesAPCount()+sumCount);
+										vo.setDesTotalCount(vo.getDesTotalCount()+sumCount);
+									}
 								}
 							}
 							else{
+								vo = new ActivityResponseVO();
 								vo.setQuestionId(quesId);
+								vo.setQuestion(questionStr);
 								if(districtId.longValue() >= 1l && districtId.longValue() <= 10l){   //ts
 									vo.setTSCount(vo.getTSCount()+count);
 									vo.setTotalCount(vo.getTotalCount()+count);
+									if(optionType.equalsIgnoreCase("Count Description Box")){
+										vo.setDesTSCount(vo.getDesTSCount()+sumCount);
+										vo.setDesTotalCount(vo.getDesTotalCount()+sumCount);
+									}
 								}
 								else if(districtId.longValue() >= 11l && districtId.longValue() <= 23l){   //ap
 									vo.setAPCount(vo.getAPCount()+count);
 									vo.setTotalCount(vo.getTotalCount()+count);
+									if(optionType.equalsIgnoreCase("Count Description Box")){
+										vo.setDesAPCount(vo.getDesAPCount()+sumCount);
+										vo.setDesTotalCount(vo.getDesTotalCount()+sumCount);
+									}
 								}
 								questionMap.put(quesId, vo);
 							}
