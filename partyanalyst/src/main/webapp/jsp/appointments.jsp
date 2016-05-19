@@ -1212,7 +1212,11 @@ function buildTotalAppointmentStatusForToday(result){
 	$.each(result.statusList,function(index,value){
 	    totalAppts = totalAppts + value.totalCount;
 	});
-	str+='<tr class= "text-center" style="font-weight:bold;"><td>Today Appointments</td><td>'+totalAppts+'</td></tr>';	
+	if(totalAppts>0){
+			str+='<tr class= "text-center todayTotalAppointmentStatusCls" style="font-weight:bold;cursor:pointer"><td>Today Appointments</td><td>'+totalAppts+'<div><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="tdyAppntmntPrcssngImgId0"></center></div></td></tr>';	
+	}else{
+		str+='<tr class= "text-center" style="font-weight:bold;"><td>Today Appointments</td><td>'+totalAppts+'</td></tr>';
+	}
 	$.each(result.statusList,function(index,value){	
 	var color = getColorCodeByStatus(value.status);
 		if(value.subList !=null && value.subList.length >0 ){

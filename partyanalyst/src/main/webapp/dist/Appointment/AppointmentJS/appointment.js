@@ -4047,6 +4047,7 @@ function getPanchayatsForReferPopup(){
 					$("#srhPrcssngImgId").hide();
 					$("#appntmntPrcssngImgId"+statusId).hide();
 					$("#tdyAppntmntPrcssngImgId"+statusId).hide();
+					$("#tdyAppntmntPrcssngImgId0").hide();
 					buildAppointmentSearchResult(result," ",statusType);		
 				})
 	}
@@ -4588,7 +4589,7 @@ function buildTotalAppointmentStatusForNew(result){
 					
 					}else if(result[i].appointmentStatusId ==2){
 						var statusArr= result[i].clickIds;
-						 str+='<td><span style="color: '+color+';cursor:pointer">'+result[i].status+' - <span style="font-weight: bold; font-size: 28px ! important;"><span class="appointmentStatusCls" attr_appntmnt_status_id='+result[i].appointmentStatusId+' attr_status_type="totalApproved" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</span><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="appntmntPrcssngImgId'+result[i].appointmentStatusId+'"></center></span>';
+						 str+='<td><span style="color: '+color+';cursor:pointer">'+result[i].status+' - <span style="font-weight: bold; font-size: 28px ! important;"><span class="appointmentStatusCls" attr_appntmnt_status_id='+result[i].appointmentStatusId+' attr_status_type="todayTotal" attr_statusArrId ="'+statusArr+'">'+result[i].statusCount+'</span><center><img style="display:none;height:20px" src="images/icons/loading.gif" id="appntmntPrcssngImgId'+result[i].appointmentStatusId+'"></center></span>';
 						
 						str+='<table style="font-size: 12px; color: rgb(51, 51, 51);" class="table table-border"><tbody>';
 						str+='<tr>';
@@ -5106,4 +5107,18 @@ $("#appointmentDashboardDateSlotHeadingId").val(moment().format('MM/DD/YYYY'));
 	}
 $(document).on("click",".closeForExtraTimeSlotCls",function(){
 	setTimeout('$("body").addClass("modal-open")', 3000);	
-})
+});
+
+$(document).on("click",".todayTotalAppointmentStatusCls",function(){
+	$("#tdyAppntmntPrcssngImgId0").show();
+	var statusArray=[];
+	statusArray.push(3);
+	statusArray.push(4);
+	statusArray.push(10);
+	$('html,body').animate({scrollTop: $("#searchApptmntDivId").offset().top}, 2000);
+	getappointmentStatusDetails(statusArray,"Today","",0);
+});
+
+
+
+
