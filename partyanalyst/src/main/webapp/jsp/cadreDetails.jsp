@@ -170,8 +170,8 @@ var globalCadreId = '${cadreId}';
 					</div>
 					<div class="panel-body" id="addressBodyId">
 						<p class="m_0">H NO :<span id="houseNoId"></span></p>
-						<p class="m_0">PANCHAYAT : <span id="panchayatId"></span></p>
-						<p class="m_0">MANDAL : <span id="mandalId"></span></p>
+						<p class="m_0">PANCHAYAT/WARD : <span id="panchayatId"></span></p>
+						<p class="m_0">MANDAL/MUNICIPALITY : <span id="mandalId"></span></p>
 						<p class="m_0">CONSTITUENCY : <span id="constituencyId"></span></p>
 						<p class="m_0">DISTRICT : <span id="districtNoId"></span></p>
 						<p class="m_0">STATE : <span id="stateNoId"></span></p>
@@ -1016,7 +1016,6 @@ var globalCadreId = '${cadreId}';
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		
 		<div class="modal fade" id="grievanceDetailsModalDivId">
 		  <div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -2023,6 +2022,26 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
         });
 	}
 		
+}
+</script>
+<script>
+var tableToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+	, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+	, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+	, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+	if (!table.nodeType) table = document.getElementById(table)
+	var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+	window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+function generateExcel()
+{
+ tableToExcel('deathHospLifeCycleTableId', 'Death And Hospitalization Insurance Details Report');
+}
+function generateExcel1(){
+	 tableToExcel('grievanceStatusWiseTableId', 'Grievance Request Status Details Report');
 }
 </script>
 
