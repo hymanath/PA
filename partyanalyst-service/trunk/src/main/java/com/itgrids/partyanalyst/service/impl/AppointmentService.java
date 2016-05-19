@@ -6977,7 +6977,7 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 						candidateVo.setMobileNo(params[2] != null ? params[2].toString() : "");
 						candidateVo.setImageUrl(params[15]!=null?params[15].toString():"");
 						
-						candidateVo.setDesignation(params[3] != null ? params[3].toString() : "");
+						//candidateVo.setDesignation(params[3] != null ? params[3].toString() : "");
 						String fname = params[6] != null ? params[6].toString() : "";
 						String lname = params[7] != null ?params[7].toString() : "";
 						candidateVo.setCreatedBy(fname+" "+lname);
@@ -7170,8 +7170,10 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 					  
 			  }
 			  
-			  
-			  List<Object[]> countsList = appointmentDAO.eachStatusApptCountByDateAndApptUser(aptUserId,apptStatusList,new DateUtilService().getCurrentDateAndTime());
+			  //By Created Date
+			  //List<Object[]> countsList = appointmentDAO.eachStatusApptCountByDateAndApptUser(aptUserId,apptStatusList,new DateUtilService().getCurrentDateAndTime());
+			  //By Scheduled Date
+			  List<Object[]> countsList = appointmentDAO.eachStatusApptCountByDateAndApptUserNew(aptUserId,apptStatusList,new DateUtilService().getCurrentDateAndTime());
 			  
 			  if( countsList != null  && countsList.size() >0){
 				  
