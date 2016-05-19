@@ -53,7 +53,7 @@
 			  <button id="mahanaduLinkId" type="button" class="btn btn-primary pull-right">ENTRY/EXIT DASHBOARD</button>
 			</div>
 			<div class="refreshButton">
-			  <span  class="text">Last Updated Time <br/><span id="timeUpdationId"></span>&nbsp;&nbsp;&nbsp;</span>
+			  <span  class="text">Last Updated Time <br/><span id="timeUpdationId"></span></span>
 			  <a onclick="" title=" Page Refresh" class="refreshIcon" style="cursor:pointer">
 				<span class="glyphicon glyphicon-refresh"></span>
 			  </a>
@@ -149,7 +149,7 @@
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="hrWiseVstrsId"></i></h4>
-					<p class="font-10 fontColor">Last updated On: 29-05-2016 03:00 AM</p>
+					<p class="font-10 fontColor">Last updated On: <span id="hourWiseTableTimeId"></span></p>
 				</div>
 				<div class="panel-body pad_0" style="height:335px">
 				<div><center><img id="hrWiseVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
@@ -177,7 +177,7 @@
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
-					<p class="font-10 fontColor">Last updated On: 29-05-2016 03:00 AM</p>
+					<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>
 				</div>
 				<div class="panel-body">
 				  <div><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
@@ -257,35 +257,36 @@
 							<h4 class="panel-title">DISTRICT WISE MEMBERS IN CAMPUS NOW & DAY WISE COUNT</h4>
 						</div>
 						<div class="col-md-4">
+							<div class="apSwitch">
+								<input type="checkbox" value="1" name="apSwitch" class="apSwitch-checkbox" id="apSwitch" checked>
+								<label class="apSwitch-label" for="apSwitch">
+									<span class="apSwitch-inner"></span>
+									<span class="apSwitch-switch"></span>
+								</label>
+							</div>
 							<div class="tsSwitch">
-								<input type="checkbox" name="tsSwitch" class="tsSwitch-checkbox" id="tsSwitch" checked>
+								<input type="checkbox" value="36" name="tsSwitch" class="tsSwitch-checkbox" id="tsSwitch" checked>
 								<label class="tsSwitch-label" for="tsSwitch">
 									<span class="tsSwitch-inner"></span>
 									<span class="tsSwitch-switch"></span>
 								</label>
 							</div>
 							<div class="otherStates">
-								<input type="checkbox" name="otherStates" class="otherStates-checkbox" id="otherStates" checked>
+								<input type="checkbox" value="0" name="otherStates" class="otherStates-checkbox" id="otherStates" >
 								<label class="otherStates-label" for="otherStates">
 									<span class="otherStates-inner"></span>
 									<span class="otherStates-switch"></span>
 								</label>
 							</div>
-							<div class="apSwitch">
-								<input type="checkbox" name="apSwitch" class="apSwitch-checkbox" id="apSwitch" checked>
-								<label class="apSwitch-label" for="apSwitch">
-									<span class="apSwitch-inner"></span>
-									<span class="apSwitch-switch"></span>
-								</label>
-							</div>
+							
 						</div>
 					</div>
 					
 				</div>
 				<div class="panel-body">
 					<div class="table-responsive">
-						<table class="table table-condensed tableNewDistWise">
-							<thead>
+						<table class="table table-condensed tableNewDistWise" id="distWiseTableId">
+							<!--<thead>
 								<tr>
 									<th>DISTRICT NAME</th>
 									<th>NOW IN CAMPUS</th>
@@ -308,11 +309,10 @@
 							</tr>
 							<tr>
 								<td>Ananthapur</td>
-								<!--<td>300<div style="display:inline-block" data-sparkline="71, 78, 39, 66 "></div></td>-->
 								<td>500</td>
 								<td>100</td>
 								<td>100</td>
-							</tr>
+							</tr>-->
 						</table>
 					</div>
 				</div>
@@ -401,14 +401,46 @@ $(".panelDefault").height(maxHeight);
             getTodayTotalVisitors(); 
             getDetails();		
             getDayWiseVisitSummary();
+			getDistrictWiseMembersCountInCampus();
 			}, 2000);
     } 
+	
+	$(document).on("click",".refreshButton",function(){
+		var currentdate = new Date(); 
+		var datetime = currentdate.getDate() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getFullYear() + " "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() ;
+
+		$("#timeUpdationId").html(datetime);
+		getSubEventsOfEvent();		
+		  setTimeout(function(){
+			getDaysUniqueAndRevisitSummary();	
+            getTodayTotalVisitors(); 
+            getDetails();		
+            getDayWiseVisitSummary();
+			getDistrictWiseMembersCountInCampus();
+			}, 2000);
+	});
+	
     $(document).ready(function(){
+		
+		var currentdate = new Date(); 
+		var datetime = currentdate.getDate() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getFullYear() + " "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() ;
+
+		$("#timeUpdationId").html(datetime);
+
 		 setTimeout(function(){
 			getDaysUniqueAndRevisitSummary();	
             getTodayTotalVisitors(); 
             getDetails();		
             getDayWiseVisitSummary();			
+			getDistrictWiseMembersCountInCampus();
 		}, 2000);
 	});
 	
@@ -508,6 +540,17 @@ $(".panelDefault").height(maxHeight);
 		  $("#hoursWiseVisitors").html(' ');
 		  $("#hrWiseVstrsPrcssngImgId").show();
 		  $("#hrWiseVstrsHghChrtPrcssngImgId").show();
+		  var currentdate = new Date(); 
+		
+		var datetime = currentdate.getDate() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getFullYear() + " "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() ;
+
+		$("#hourWiseTableTimeId").html(datetime);
+		$("#hourWiseGraphTimeId").html(datetime);
+		
     	 var  eventId = $("#mainEventSelectId").val();
 		   var jsObj={
 			   eventId:eventId
@@ -542,7 +585,7 @@ $(".panelDefault").height(maxHeight);
 								  }
                                 str+='</tr>';
                                 str+=' <tr>';
-                                str+=' 	<th class="back-white"></th>';
+                               // str+=' 	<th class="back-white"></th>';
 									for(var i in result){
                                     //str+='<th class="color-black table-color2">ATTENDED</th>';
 										if(needInvitees_a){
@@ -976,19 +1019,89 @@ function buildTotalVisitorsResult(result){
 	 } 
 	 $("#totalVisitorsDtlsId").html(str);
 }
-  $(document).on("click",".hrWseVstrsCls",function(){
-	 getDetails();
-  });
-  $(document).on("click","#rfrshDyWsPrgrssRvstId",function(){
-	  getDayWiseVisitSummary();
-  });
-  $(document).on("click","#refreshDaysWiseRevisitId",function(){
+	
+	$(document).on("click",".hrWseVstrsCls",function(){
+	 	getDetails();
+  	});
+  	$(document).on("click","#rfrshDyWsPrgrssRvstId",function(){
+		 getDayWiseVisitSummary();
+  	});
+  	$(document).on("click","#refreshDaysWiseRevisitId",function(){
 	  getDaysUniqueAndRevisitSummary();
-  });
-  $(document).on("click","#ttlTdyVstrsId",function(){
+  	});
+  	$(document).on("click","#ttlTdyVstrsId",function(){
 	  getTodayTotalVisitors();
-  });
- 
+  	});
+  
+	$(document).on("click","#tsSwitch",function(){
+		getDistrictWiseMembersCountInCampus();
+	});
+	
+	$(document).on("click","#otherStates",function(){
+		getDistrictWiseMembersCountInCampus();
+	});
+	
+	$(document).on("click","#apSwitch",function(){
+		getDistrictWiseMembersCountInCampus();
+	});
+	
+	function getDistrictWiseMembersCountInCampus(){
+		var stateIds = [];
+		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
+		if($("#tsSwitch").is(":checked")){
+			stateIds.push($("#tsSwitch").val());
+		}
+		
+		if($("#otherStates").is(":checked")){
+			stateIds.push($("#otherStates").val());
+		}
+		
+		if($("#apSwitch").is(":checked")){
+			stateIds.push($("#apSwitch").val());
+		}
+		
+		if(stateIds.length > 0){
+			var jObj = {
+				eventId:30,			
+				stateIds:stateIds
+			}	
+			
+			$.ajax({
+			  type:'GET',
+			  url: 'getDistrictWiseMembersCountInCampusAction.action',
+			  data : {task:JSON.stringify(jObj)} ,
+			}).done(function(result){
+				var str = '';
+				str+='<thead>';
+				str+='<th>District Id</th>';
+				str+='<th>Name</th>';
+				str+='<th>Now In Campus</th>';
+				str+='<th>Total</th>';
+				str+='</thead>';
+				if(result != null && result.subList != null && result.subList.length > 0){
+					str+='<tbody>';
+					for( var  i in result.subList ){
+						if(result.subList[i].total != null && result.subList[i].total > 0 && result.subList[i].cadreCount != null && result.subList[i].cadreCount > 0){
+							str+='<tr>';
+							str+='<td>'+result.subList[i].id+'</td>';
+							str+='<td>'+result.subList[i].name+'</td>';
+							str+='<td>'+result.subList[i].cadreCount+'</td>';
+							str+='<td>'+result.subList[i].total+'</td>';
+							str+='</tr>';
+						}
+					}
+					str+='</tbody>';
+				}else{
+					str+='<tr><td colespan="4">No Data Available.</td></tr>';
+				}
+				$("#distWiseTableId").html(str);
+			});
+		}else{
+			$("#distWiseTableId").html("<h5> No Data Availabel.</h5>");
+		}
+		
+	}
+
    </script>
 </body>
 </html>

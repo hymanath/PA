@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,12 +8,15 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
+import com.itgrids.partyanalyst.service.impl.MahaNaduService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -30,6 +34,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	private HttpSession session;
 	private EntitlementsHelper entitlementsHelper;
 	private MahanaduVisitVO mahanaduVisitVO;
+	private MahanaduEventVO mahanaduEventVO;
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -97,6 +102,13 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	public void setMahanaduVisitVO(MahanaduVisitVO mahanaduVisitVO) {
 		this.mahanaduVisitVO = mahanaduVisitVO;
 	}
+	public MahanaduEventVO getMahanaduEventVO() {
+		return mahanaduEventVO;
+	}
+	public void setMahanaduEventVO(MahanaduEventVO mahanaduEventVO) {
+		this.mahanaduEventVO = mahanaduEventVO;
+	}
+	
 	public String execute(){
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -163,13 +175,31 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		
 		try
 		{
-			String param;
-			param = getTask();
-			jObj = new JSONObject(param);
-			Long eventId = jObj.getLong("eventId");
-			mahanaduVisitVO=mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(eventId);
+			jObj = new JSONObject(getTask());
+			mahanaduVisitVO=mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(jObj.getLong("eventId"));
 		}catch(Exception e){
 			LOG.info("Error occured in getTodayTotalVisitorsInfo()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDistrictWiseMembersCountInCampus(){
+		try {
+			LOG.info("Entered into getDistrictWiseMembersCountInCampus");
+			
+			jObj = new JSONObject(getTask());
+			List<Long> statesList = new ArrayList<Long>(0);
+			JSONArray arr = jObj.getJSONArray("stateIds");
+			
+			if(arr != null && arr.length() > 0){
+				for (int i=0;i<arr.length();i++) {
+					statesList.add(Long.parseLong(arr.getInt(i)+""));
+				}
+			}
+			
+			mahanaduEventVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(jObj.getLong("eventId"),statesList);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDistrictWiseMembersCountInCampus", e);
 		}
 		return Action.SUCCESS;
 	}
