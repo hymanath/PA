@@ -4710,15 +4710,17 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	 */
 	public List<IdNameVO> getQuestionsForReportType(Long activityScopeId){
 		List<IdNameVO> returnList =new ArrayList<IdNameVO>();
-		try {
-		List<Object[]> qstns = activityQuestionnaireDAO.getQuestionIdsByScopeId(activityScopeId);
-		if(qstns != null && qstns.size() >0){
-			for(Object[] astn : qstns){
-				IdNameVO vo = new IdNameVO();
-				vo.setId(astn[0] != null ? Long.valueOf((Long)astn[0]) : 0l);
-				vo.setName(astn[1] != null ? astn[1].toString() : "");
-				returnList.add(vo);
-			}
+		try { 
+			Long activityId = activityScopeDAO.get(activityScopeId).getActivityId();
+			//List<Object[]> qstns = activityQuestionnaireDAO.getQuestionIdsByScopeId(activityScopeId);
+			List<Object[]> qstns = activityQuestionnaireDAO.getQuestionIdsByActivityId(activityId);
+			if(qstns != null && qstns.size() >0){
+				for(Object[] astn : qstns){
+					IdNameVO vo = new IdNameVO();
+					vo.setId(astn[0] != null ? Long.valueOf((Long)astn[0]) : 0l);
+					vo.setName(astn[1] != null ? astn[1].toString() : "");
+					returnList.add(vo);
+				}
 		}
 		} catch (Exception e) {
 			Log.error("Exception Occured in getQuestionsForReportType method in ActivityService ",e);
@@ -4893,129 +4895,187 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	public ActivityResponseVO getActivityQuestionnnaireWiseReport(SearchAttributeVO searchVO){
 		ActivityResponseVO responseVO = new ActivityResponseVO();
 		try {
-			
-			List<Long> activityLevelIds = new ArrayList<Long>(0);
-			if(commonMethodsUtilService.isListOrSetValid(searchVO.getAttributesIdsList())){
-				activityLevelIds.addAll(searchVO.getAttributesIdsList());
-				
-				List<Long> locationTypeIds =new ArrayList<Long>(0);
-				if(activityLevelIds.contains(1L)){
-					locationTypeIds.add(6L);
-					locationTypeIds.add(8L);
+			//List<Long> activityLevelIds = new ArrayList<Long>(0);
+			Map<Long,Long> activityMap = new HashMap<Long, Long>(0);
+			//if(commonMethodsUtilService.isListOrSetValid(searchVO.getAttributesIdsList())){
+			//	activityLevelIds.add(searchVO.getScopeId());
+				Long activityId = activityScopeDAO.get(searchVO.getScopeId()).getActivityId();
+				List<Object[]> activityScopDtls = activityScopeDAO.getActivityScopeIdByActivityAndLevelId(activityId);
+				if(commonMethodsUtilService.isListOrSetValid(activityScopDtls)){
+					for (Object[] actibity : activityScopDtls) {
+						activityMap.put(commonMethodsUtilService.getLongValueForObject(actibity[0]), commonMethodsUtilService.getLongValueForObject(actibity[1]));
+					}
 				}
-				if(activityLevelIds.contains(2L)){
-					locationTypeIds.add(5L);
-					locationTypeIds.add(7L);
-				}
-				searchVO.setLocationTypeIdsList(locationTypeIds);
-			}
+			//}
 			Long searchTypeId = 3L;
-			Map<Long,ActivityResponseVO> LocationWiseMap = new HashMap<Long, ActivityResponseVO>(0);
-			List<Object[]> questionDetls = activityQuestionnaireDAO.getQuestionnareDetails(searchVO.getQuestionnaireIdsList());
-			if(searchVO.getSearchType() != null && searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.DISTRICT)){
-				 searchTypeId = 3L;
-				List<Object[]> locationsdtls = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L, searchVO.getScopeValue());
-				if(commonMethodsUtilService.isListOrSetValid(locationsdtls))
-					for (Object[] location : locationsdtls) {
-						ActivityResponseVO locationVO = new ActivityResponseVO();
-						locationVO.setId(commonMethodsUtilService.getLongValueForObject(location[0]));
-						locationVO.setName(commonMethodsUtilService.getStringValueForObject(location[1]));
-						
-						if(searchVO.getAttributesIdsList().contains(2L)){
-							responseVO.setName("MANDAL/TOWN/DIVISION");
-							updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());
-						}
-						else if(searchVO.getAttributesIdsList().contains(1L)){
-							responseVO.setName("VILLAGE/WARD");
-							updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());
-						}
-						
-						if(commonMethodsUtilService.isListOrSetValid(questionDetls))
-							for (Object[] question : questionDetls) {
-								ActivityResponseVO questionVO = new ActivityResponseVO();
-								questionVO.setId(commonMethodsUtilService.getLongValueForObject(question[0]));
-								questionVO.setName(commonMethodsUtilService.getStringValueForObject(question[1]));
-								locationVO.getSublist2().add(questionVO);
-							}
-						LocationWiseMap.put(locationVO.getId(),locationVO);
+
+			List<Map<Long,ActivityResponseVO>> activityLevelwiseList = new ArrayList<Map<Long,ActivityResponseVO>>(0);
+			if(commonMethodsUtilService.isMapValid(activityMap)){
+				for (Long actibityScopeId : activityMap.keySet()) {
+					searchVO.setScopeId(actibityScopeId);
+					Long activityLevelId = activityMap.get(actibityScopeId);
+					Map<Long,ActivityResponseVO> LocationWiseMap = new HashMap<Long, ActivityResponseVO>(0);
+					List<Long> locationTypeIds =new ArrayList<Long>(0);
+					if(activityLevelId.longValue() == 1L){
+						locationTypeIds.add(6L);
+						locationTypeIds.add(8L);
 					}
-			}else if(searchVO.getSearchType() != null && searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-				 searchTypeId = 4L;
-				List<Object[]> locationsdtls = constituencyDAO.getConstituenciesByStateId(1L, searchVO.getScopeValue());
-				if(commonMethodsUtilService.isListOrSetValid(locationsdtls))
-					for (Object[] location : locationsdtls) {
-						ActivityResponseVO locationVO = new ActivityResponseVO();
-						locationVO.setId(commonMethodsUtilService.getLongValueForObject(location[0]));
-						locationVO.setName(commonMethodsUtilService.getStringValueForObject(location[1]));
-						
-						if(searchVO.getAttributesIdsList().contains(2L)){
-							responseVO.setName("MANDAL/TOWN/DIVISION");
-							updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());
-						}
-						else if(searchVO.getAttributesIdsList().contains(1L)){
-							responseVO.setName("VILLAGE/WARD");
-							updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());
-						}
-						
-						if(commonMethodsUtilService.isListOrSetValid(questionDetls))
-							for (Object[] question : questionDetls) {
-								ActivityResponseVO questionVO = new ActivityResponseVO();
-								questionVO.setId(commonMethodsUtilService.getLongValueForObject(question[0]));
-								questionVO.setName(commonMethodsUtilService.getStringValueForObject(question[1]));
-								locationVO.getSublist2().add(questionVO);
-							}
-						LocationWiseMap.put(locationVO.getId(),locationVO);
+					else if(activityLevelId.longValue() == 2L){
+						locationTypeIds.add(5L);
+						locationTypeIds.add(7L);
 					}
+					
+					searchVO.setLocationTypeIdsList(locationTypeIds);
+					List<Object[]> questionDetls = activityQuestionnaireDAO.getActivityQuestionListByScope(actibityScopeId);
+					searchVO.getQuestionnaireIdsList().clear();
+					
+					//List<Object[]> questionDetls = activityQuestionnaireDAO.getQuestionnareDetails(searchVO.getQuestionnaireIdsList());
+					if(searchVO.getSearchType() != null && searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.DISTRICT)){
+						 searchTypeId = 3L;
+						List<Object[]> locationsdtls = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L, searchVO.getScopeValue());
+						if(commonMethodsUtilService.isListOrSetValid(locationsdtls))
+							for (Object[] location : locationsdtls) {
+								ActivityResponseVO locationVO = new ActivityResponseVO();
+								locationVO.setId(commonMethodsUtilService.getLongValueForObject(location[0]));
+								locationVO.setName(commonMethodsUtilService.getStringValueForObject(location[1]));
+								
+								if(activityLevelId.longValue() == 2L){//responseVO.setName("MANDAL/TOWN/DIVISION");
+									updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());}
+								else if(activityLevelId.longValue() == 1L){//responseVO.setName("VILLAGE/WARD");
+									updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());}
+								else if(activityLevelId.longValue() == 13L){updateAreasList("13CONSTITUENCY",locationVO.getSublist1());}
+								if(commonMethodsUtilService.isListOrSetValid(questionDetls))
+									for (Object[] question : questionDetls) {
+										ActivityResponseVO questionVO = new ActivityResponseVO();
+										questionVO.setId(commonMethodsUtilService.getLongValueForObject(question[0]));
+										questionVO.setName(commonMethodsUtilService.getStringValueForObject(question[3]));
+										if(searchVO.getQuestionnaireIdsList().contains(questionVO.getId())){
+											locationVO.getSublist2().add(questionVO);
+											searchVO.getQuestionnaireIdsList().add(questionVO.getId());
+										}
+									}
+								LocationWiseMap.put(locationVO.getId(),locationVO);
+							}
+					}else if(searchVO.getSearchType() != null && searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+						 searchTypeId = 4L;
+						List<Object[]> locationsdtls = constituencyDAO.getConstituenciesByStateId(1L, searchVO.getScopeValue());
+						if(commonMethodsUtilService.isListOrSetValid(locationsdtls))
+							for (Object[] location : locationsdtls) {
+								ActivityResponseVO locationVO = new ActivityResponseVO();
+								locationVO.setId(commonMethodsUtilService.getLongValueForObject(location[0]));
+								locationVO.setName(commonMethodsUtilService.getStringValueForObject(location[1]));
+								
+								if(activityLevelId.longValue() == 2L){//responseVO.setName("MANDAL/TOWN/DIVISION");
+									updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());}
+								else if(activityLevelId.longValue() == 1L){//responseVO.setName("VILLAGE/WARD");
+									updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());}
+								else if(activityLevelId.longValue() == 13L){updateAreasList("13CONSTITUENCY",locationVO.getSublist1());}
+								if(commonMethodsUtilService.isListOrSetValid(questionDetls))
+									for (Object[] question : questionDetls) {
+										ActivityResponseVO questionVO = new ActivityResponseVO();
+										questionVO.setId(commonMethodsUtilService.getLongValueForObject(question[0]));
+										questionVO.setName(commonMethodsUtilService.getStringValueForObject(question[3]));
+										if(searchVO.getQuestionnaireIdsList().contains(questionVO.getId())){
+											locationVO.getSublist2().add(questionVO);
+											searchVO.getQuestionnaireIdsList().add(questionVO.getId());
+										}
+									}
+								LocationWiseMap.put(locationVO.getId(),locationVO);
+							}
+					}
+					/*if(commonMethodsUtilService.isListOrSetValid(LocationWiseMap.keySet()))
+						responseVO.getSublist1().addAll(LocationWiseMap.values());*/
+					if(commonMethodsUtilService.isListOrSetValid(LocationWiseMap.keySet())){
+						searchVO.setLocationIdsList(new ArrayList<Long>(LocationWiseMap.keySet()));
+						List<Object[]> locatinsAreasCount = locationInfoDAO.getLocationWiseTotalCounts(searchVO.getLocationTypeIdsList(),searchVO.getLocationIdsList(),searchTypeId);
+						if(commonMethodsUtilService.isListOrSetValid(locatinsAreasCount))
+							for (Object[] areaObj : locatinsAreasCount){
+								Long locationId = commonMethodsUtilService.getLongValueForObject(areaObj[0]);
+								ActivityResponseVO vo = LocationWiseMap.get(locationId);
+								if(vo != null){
+									ActivityResponseVO areaVO = getActivityResponseVOById(vo.getSublist1(),commonMethodsUtilService.getLongValueForObject(areaObj[2]));
+									if(areaVO != null){
+										areaVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(areaObj[1])); // total mandals counts in locationId (districtId)
+										areaVO.setPending(areaVO.getTotalCount());
+										vo.setTotalCount(vo.getTotalCount()+areaVO.getTotalCount());
+									}
+								}
+							}
+					}
+						
+						List<Object[]> areaWiseUpdatedLocationsList = activityLocationInfoDAO.getLocationWiseUpdatedCountDetails(searchVO);
+						if(commonMethodsUtilService.isListOrSetValid(areaWiseUpdatedLocationsList))
+							 for (Object[] updatdObj : areaWiseUpdatedLocationsList){
+								 Long locationId = commonMethodsUtilService.getLongValueForObject(updatdObj[0]);
+								 Long levelId = commonMethodsUtilService.getLongValueForObject(updatdObj[1]);
+								 ActivityResponseVO vo = LocationWiseMap.get(locationId);
+									if(vo != null && commonMethodsUtilService.isListOrSetValid(vo.getSublist1())){
+										 ActivityResponseVO areaVO = getActivityResponseVOById(vo.getSublist1(),levelId);
+										 if(areaVO != null){
+											 areaVO.setCalled(commonMethodsUtilService.getLongValueForObject(updatdObj[2]));
+											 areaVO.setPending(Math.abs(areaVO.getTotalCount() - areaVO.getCalled()));
+										 }
+									}
+							}
+						
+						List<Object[]> responseInfoList = activityQuestionAnswerDAO.getLocationWiseResponseDetails(searchVO);
+						if(commonMethodsUtilService.isListOrSetValid(responseInfoList)){
+							for (Object[] updatdObj : responseInfoList){
+								 Long locationId = commonMethodsUtilService.getLongValueForObject(updatdObj[0]);
+								 Long questionId = commonMethodsUtilService.getLongValueForObject(updatdObj[1]);
+								 ActivityResponseVO vo = LocationWiseMap.get(locationId);
+									if(vo != null && commonMethodsUtilService.isListOrSetValid(vo.getSublist2())){
+										 ActivityResponseVO questionVO = getActivityResponseVOById(vo.getSublist2(),questionId);
+										 if(questionVO != null){
+											 questionVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(updatdObj[2]));
+										 }
+									}
+							}
+						}
+						
+						activityLevelwiseList.add(LocationWiseMap);
+				}
 			}
-			if(commonMethodsUtilService.isListOrSetValid(LocationWiseMap.keySet()))
-				responseVO.getSublist1().addAll(LocationWiseMap.values());
-			if(commonMethodsUtilService.isListOrSetValid(LocationWiseMap.keySet())){
-				searchVO.setLocationIdsList(new ArrayList<Long>(LocationWiseMap.keySet()));
-				List<Object[]> locatinsAreasCount = locationInfoDAO.getLocationWiseTotalCounts(searchVO.getLocationTypeIdsList(),searchVO.getLocationIdsList(),searchTypeId);
-				if(commonMethodsUtilService.isListOrSetValid(locatinsAreasCount))
-					for (Object[] areaObj : locatinsAreasCount){
-						Long locationId = commonMethodsUtilService.getLongValueForObject(areaObj[0]);
-						ActivityResponseVO vo = LocationWiseMap.get(locationId);
-						if(vo != null){
-							ActivityResponseVO areaVO = getActivityResponseVOById(vo.getSublist1(),commonMethodsUtilService.getLongValueForObject(areaObj[2]));
-							if(areaVO != null){
-								areaVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(areaObj[1])); // total mandals counts in locationId (districtId)
-								areaVO.setPending(areaVO.getTotalCount());
-								vo.setTotalCount(vo.getTotalCount()+areaVO.getTotalCount());
+			
+			if(commonMethodsUtilService.isListOrSetValid(activityLevelwiseList)){
+				Map<Long,List<ActivityResponseVO>> returnMap = new LinkedHashMap<Long, List<ActivityResponseVO>>(0);
+				for (Map<Long, ActivityResponseVO> map : activityLevelwiseList) {
+					if(commonMethodsUtilService.isMapValid(map)){
+						for (Long locationId : map.keySet()) {
+							List<ActivityResponseVO> list = new ArrayList<ActivityResponseVO>(0);
+							if(returnMap.get(locationId) != null){
+								list = returnMap.get(locationId);
+								if(commonMethodsUtilService.isListOrSetValid(list)){
+									list.add(map.get(locationId));
+								}
+							}else{
+								list.add(map.get(locationId));
+								returnMap.put(locationId, list);
 							}
 						}
-					}
-			}
-				
-				List<Object[]> areaWiseUpdatedLocationsList = activityLocationInfoDAO.getLocationWiseUpdatedCountDetails(searchVO);
-				if(commonMethodsUtilService.isListOrSetValid(areaWiseUpdatedLocationsList))
-					 for (Object[] updatdObj : areaWiseUpdatedLocationsList){
-						 Long locationId = commonMethodsUtilService.getLongValueForObject(updatdObj[0]);
-						 Long levelId = commonMethodsUtilService.getLongValueForObject(updatdObj[1]);
-						 ActivityResponseVO vo = LocationWiseMap.get(locationId);
-							if(vo != null && commonMethodsUtilService.isListOrSetValid(vo.getSublist1())){
-								 ActivityResponseVO areaVO = getActivityResponseVOById(vo.getSublist1(),levelId);
-								 if(areaVO != null){
-									 areaVO.setCalled(commonMethodsUtilService.getLongValueForObject(updatdObj[2]));
-									 areaVO.setPending(Math.abs(areaVO.getTotalCount() - areaVO.getCalled()));
-								 }
-							}
-					}
-				
-				List<Object[]> responseInfoList = activityQuestionAnswerDAO.getLocationWiseResponseDetails(searchVO);
-				if(commonMethodsUtilService.isListOrSetValid(responseInfoList)){
-					for (Object[] updatdObj : responseInfoList){
-						 Long locationId = commonMethodsUtilService.getLongValueForObject(updatdObj[0]);
-						 Long questionId = commonMethodsUtilService.getLongValueForObject(updatdObj[1]);
-						 ActivityResponseVO vo = LocationWiseMap.get(locationId);
-							if(vo != null && commonMethodsUtilService.isListOrSetValid(vo.getSublist2())){
-								 ActivityResponseVO questionVO = getActivityResponseVOById(vo.getSublist2(),questionId);
-								 if(questionVO != null){
-									 questionVO.setTotalCount(commonMethodsUtilService.getLongValueForObject(updatdObj[2]));
-								 }
-							}
 					}
 				}
+				if(commonMethodsUtilService.isMapValid(returnMap)){
+					Map<Long,ActivityResponseVO> finalMap = new LinkedHashMap<Long, ActivityResponseVO>(0);
+					for (Long locationId : returnMap.keySet()) {
+						ActivityResponseVO returnVO = new ActivityResponseVO();
+						List<ActivityResponseVO> list = returnMap.get(locationId);
+						if(commonMethodsUtilService.isListOrSetValid(list)){
+							for (ActivityResponseVO activityResponseVO : list) {
+								if(activityResponseVO.getSublist1().get(0).getName().equalsIgnoreCase("VILLAGE")){
+									activityResponseVO.setLevelStr("VILLAGE/WARD");
+								}
+								else if(activityResponseVO.getSublist1().get(0).getName().equalsIgnoreCase("MANDAL")){
+									activityResponseVO.setLevelStr("MANDAL/TOWN/DIVISION");
+								}
+							}
+								returnVO.getSublist().addAll(list);
+						}
+						finalMap.put(locationId, returnVO);
+					}
+					responseVO.getSublist().addAll(finalMap.values());
+				}
+			}
 		} catch (Exception e) {
 			Log.error("Exception Occured in getActivityQuestionnnaireWiseReport method in ActivityService ",e);
 		}
@@ -5043,8 +5103,8 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				for (Object[] obje : optionTypeList) {
 					Long questId = Long.valueOf(obje[0] != null ? obje[0].toString():"0");
 					String optionType = obje[2] != null ? obje[2].toString():"";
-					
-					List<Object[]> list = activityQuestionAnswerDAO.getActivityLocationInfoByScope(activityLevel, activityScope, questId, optionType);
+					Long activityId = activityScopeDAO.get(activityScope).getActivityId();
+					List<Object[]> list = activityQuestionAnswerDAO.getActivityLocationInfoByScope(activityLevel, activityId, questId, optionType);
 					if(list != null && list.size() > 0){
 						for (Object[] obj : list) {
 							Long quesId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");

@@ -8109,7 +8109,7 @@ return constiLst;
 		   if(localBodyIds.size() > 0){
 			   List<Object[]> localBodyList = new ArrayList<Object[]>();
 			   //0wardId,1pwardName,2localBdyName
-			   if(constituencyId == null)
+			   if(constituencyId == null || constituencyId.longValue() == 0L)
 				   localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
 			   else
 				   localBodyList = assemblyLocalElectionBodyWardDAO.getWardsInLocalElectionBody(localBodyIds, constituencyId);
