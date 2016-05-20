@@ -657,5 +657,8 @@
 	<pattern>/registrationSuccessAction*</pattern>
 	<pattern>/activitiesQuestionResponcesAction*</pattern>
 	 <pattern>/mahanaduCadreVisitNewInfoAction*</pattern>
+	 <pattern>/bloodBankRegistrationAction*</pattern>
+	 <pattern>/bloodBankDashBoardAction*</pattern>
+	 <pattern>/bloodBankBleadingAction*</pattern>
 	</decorator> 
 </decorators>

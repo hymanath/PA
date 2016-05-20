@@ -1647,7 +1647,11 @@
 	</bean>	
 	
 	<bean id="eventDetailsAction1" class="com.itgrids.partyanalyst.web.action.EventDetailsAction1" singleton="false">
-	<property name="mahanaduDashBoardService1" ref="mahanaduDashBoardService1" />
+		<property name="mahanaduDashBoardService1" ref="mahanaduDashBoardService1" />
+	</bean>	
+	
+	<bean id="bloodBankAction" class="com.itgrids.partyanalyst.web.action.BloodBankAction" singleton="false">
+		<property name="bloodBankService" ref="bloodBankService" />
 	</bean>	
 </beans>	
 	
