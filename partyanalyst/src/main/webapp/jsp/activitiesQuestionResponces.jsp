@@ -186,7 +186,7 @@
 							  </div>
 							</div>
 							
-						<div class="row  m_top10" id="optnsCntDiv" style="display:none;">
+						<div class="row  m_top10" id="optnsCntDiv" style="display:none;padding: 5px;">
 							<div class="col-md-12">
 								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
 									<h4 class="panel-title" id="actvtyQstnOptnHdng" style="font-weight:bold;display:none;">ACTIVITY QUESTION OPTION RESPONCE</h4>
@@ -299,8 +299,8 @@
 $(document).ready(function(){
 	//$('.searchDateCls').daterangepicker();
 	$('#activityTypeList').val(1);
-	$('#activityLevelList').val(1);
-	getActivityNames(1);
+	$('#activityLevelList').val(2);
+	getActivityNames(2);
 	$('.applyBtn').click(function(){
 		
 		/*var startDate = $("input[name=daterangepicker_start]").val();
@@ -370,7 +370,7 @@ function getActivityNames(id)
 				for(var i in result)
 					$('#ActivityList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
 				
-				$('#ActivityList').val(12);
+				$('#ActivityList').val(16);
 				//$('#ActivityList').trigger('change');
 			}
 			getQuestionsForReportTypeAction();
@@ -412,7 +412,7 @@ $('#questnsListId').append('<option value="0"> All </option>');
 	
 function getOptionDetailsForQuestionn(){
 	$('#optnsCntDiv').hide();
-	$('#optionsCntId').html('<img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;" id="procesingImg">');
+	$('#optionsCntId').html('<div > <div class="col-md-12" style="text-align:center;margin-top:15px;"><img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;" id="procesingImg"></div></div>');
      var activityScopeId = $("#ActivityList").val();
 	 var reportType = $("#reportList").val();
 	 var reportText = $("#reportList option:selected").text();
@@ -621,7 +621,7 @@ function excelCommentDetails(result){
 function getOptionDetailsForQuestion(){
 getActivityQuestionInfo();
  $('#optnsCntDiv').show();
-$('#optnsCntDiv').html('<img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;" id="procesingImg">');
+$('#optnsCntDiv').html('<div > <div class="col-md-12" style="text-align:center;margin-top:15px;"><img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;" id="procesingImg"></div></div>');
 	var activityLevelIdsArr=[];
 	activityLevelIdsArr.push($('#activityLevelList').val());
 	var questionArr=[];
@@ -901,7 +901,7 @@ function buildQuestionResponseTable(myResult){
 										}
 									}
 									for(var n in result.sublist[k].sublist2)
-											str+='<td>'+result.sublist[k].sublist2[n].totalCount+'</td>';
+											str+='<td>'+result.sublist[k].sublist2[n].totalCount+' ('+result.sublist[k].sublist2[n].sumcount+')</td>';
 										
 									if(result.sublist.length>1){	
 									//str+='<td>'+result.sublist[1].name+'</td>';
@@ -913,7 +913,7 @@ function buildQuestionResponseTable(myResult){
 										}
 									}
 									for(var n in result.sublist[k].sublist2)
-											str+='<td>'+result.sublist[1].sublist2[n].totalCount+'</td>';
+											str+='<td>'+result.sublist[1].sublist2[n].totalCount+' ('+result.sublist[1].sublist2[n].sumcount+')</td>';
 									}
 									str+='</tr>';
 								}
