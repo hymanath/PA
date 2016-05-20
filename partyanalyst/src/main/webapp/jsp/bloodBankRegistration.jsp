@@ -38,9 +38,13 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                </div>
+                <div class="row">
+                    <div class="col-md-12 m_top20">
                     	<h4>SHOWING DETAILS</h4>
                     </div>
+                </div>
+                <div class="row m_top20">
                     <div class="col-md-3">
                     	<label>Name</label>
                         <input type="text" class="form-control"/>
@@ -141,6 +145,8 @@
                         	<option>Yes</option>
                         </select>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3 m_top10">
                     	<button class="btn btn-success">SUBMIT</button>
                     </div>
