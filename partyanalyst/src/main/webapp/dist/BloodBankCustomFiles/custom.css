@@ -1,0 +1,74 @@
+body
+{
+	font-family: 'Roboto', sans-serif;
+	background:#C3C7C8;
+	color:#666
+}
+.block
+{
+	background:#fff;
+	box-shadow:0px 2px 8px rgba(0,0,0,0.4);
+	border-radius:5px;
+	padding:10px;
+}
+h1,h2,h3,h4,h5,h6,p,ul
+{
+	margin:0px;
+	color:#666
+}
+.m_top10{margin-top:10px;}
+.m_top20{margin-top:20px;}
+.m_top30{margin-top:30px;}
+.m_top40{margin-top:40px;}
+.form-control , .btn
+{
+	border-radius:0px;
+}
+.inputWithButton .form-control
+{
+	border-radius:0px;
+}
+.inputWithButton .input-group-addon
+{
+	padding:0px;
+	border-radius:0px;
+}
+.inputWithButton .input-group-addon .btn
+{
+	border-radius:0px;
+	line-height:19px;
+}
+.pad_0
+{
+	padding:0px;
+}
+.bg_cc
+{
+	background:#CCCCCC !important
+}
+.tableHealthHistory
+{
+	margin:0px
+}
+.tableHealthHistory tr td
+{
+	background:#EBEBEB;
+	border-top:1px solid #fff !important;
+}
+.tableHealthHistory tr td:nth-child(3)
+{
+	border-right:1px solid #fff;
+}
+.textItalic
+{
+	font-style:italic
+}
+.text-capitalise
+{
+	text-transform:uppercase
+}
+.dataSubmittingModal , .dataSubmittingModal .modal-content
+{
+	 text-align:center;
+	 border-radius:0px;
+}
