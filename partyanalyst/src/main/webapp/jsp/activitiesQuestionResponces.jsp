@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Update Activity</title>
+<title> Activities Response Reports </title>
 	<link href="dist/activity/css/bootstrap.min.css" rel="stylesheet"/>
 	<link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -412,6 +412,7 @@ $('#questnsListId').append('<option value="0"> All </option>');
 	
 function getOptionDetailsForQuestionn(){
 	$('#optnsCntDiv').hide();
+	$('#optionsCntId').html('<img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;" id="procesingImg">');
      var activityScopeId = $("#ActivityList").val();
 	 var reportType = $("#reportList").val();
 	 var reportText = $("#reportList option:selected").text();
@@ -429,6 +430,7 @@ function getOptionDetailsForQuestionn(){
 				  dataType: 'json',
 				  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
+			   	$('#optionsCntId').html('');
 			   if(result != null && result.length >0){
 				   $("#lcnExcelBtn").show();
 			   buildOptionsCount(result,reportText);
@@ -618,19 +620,19 @@ function excelCommentDetails(result){
 
 function getOptionDetailsForQuestion(){
 getActivityQuestionInfo();
-$('#optnsCntDiv').html('');
+ $('#optnsCntDiv').show();
+$('#optnsCntDiv').html('<img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;" id="procesingImg">');
 	var activityLevelIdsArr=[];
 	activityLevelIdsArr.push($('#activityLevelList').val());
 	var questionArr=[];
 	
-	if($('#questnsListId').val() != 0)
+	  if($('#questnsListId').val() != 0)
 		questionArr.push($('#questnsListId').val());
 	  else
 	  {
 		$('#questnsListId option').each(function(){
-				   questionArr.push(this.value);
+			questionArr.push(this.value);
 		});
-
 	  }
   
 		var jObj = {
@@ -645,13 +647,14 @@ $('#optnsCntDiv').html('');
 				  url: 'getActivityQuestionnnairWiseReportAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){	
-				console.log(result);
 				buildQuestionResponseTable(result);
 				//$("#buildActivityReasonReportTableId").show();
 			 });
 }
 
-function buildQuestionResponseTable(result){
+
+
+function buildQuestionsResponseTable(result){
 	
 	if(result != null && result.sublist1 != null && result.sublist1.length>0){
 		var colspancount=2;
@@ -790,6 +793,154 @@ function buildQuestionsDetails(result){
 	$("#questionDetailsDivId").show();
 	$("#questionWiseDetailsDiv").html(str);
 }
+
+
+function buildQuestionResponseTable(myResult){
+	
+	if(myResult != null && myResult.sublist != null && myResult.sublist.length>0){
+		var str='';
+		str+='<table id="responseTab" class="table table-condensed table-bordered">';
+		str+='<thead>';
+		for(var i in myResult.sublist){
+			
+			if(myResult.sublist[0].sublist != null && myResult.sublist[0].sublist.length>0){
+				for(var j in myResult.sublist[i].sublist){
+					if(i==0){
+					var result = myResult.sublist[0]
+				
+						if(result != null && result.sublist != null && result.sublist.length>0){
+							
+							var colspancount1=1;
+							if(result.sublist[0].sublist1 != null && result.sublist[0].sublist1.length>0)
+								colspancount1 = colspancount1+parseInt(1)*2;							
+							if(result.sublist[0].sublist2 != null && result.sublist[0].sublist2.length>0)
+								colspancount1 = colspancount1+parseInt(result.sublist[0].sublist2.length);							
+							
+							var colspancount2=2;
+							if(result.sublist.length>1){
+									if(result.sublist[1].sublist1 != null && result.sublist[1].sublist1.length>0)
+										colspancount2 = colspancount2+parseInt(1)*2;							
+									if(result.sublist[1].sublist2 != null && result.sublist[1].sublist2.length>0)
+										colspancount2 = colspancount2+parseInt(result.sublist[1].sublist2.length);	
+							}
+							str+='<tr>';
+							str+='<th rowspan="3" style="text-align:center;"> LOCATION  </th>';
+							str+='<th colspan="'+colspancount1+'" style="text-align:center;"> '+result.sublist[0].levelStr+'</th>';
+							if(result.sublist.length>1)
+								str+='<th colspan="'+(colspancount2-1)+'" style="text-align:center;"> '+result.sublist[1].levelStr+'</th>';							
+							str+='</tr>';
+							str+='<tr>';
+							
+							str+='<th rowspan="2" style="text-align:center;"> TOTAL  </th>';							
+							if(result.sublist[0].sublist1 != null && result.sublist[0].sublist1.length>0){
+								for(var i in result.sublist[0].sublist1){
+									if(i==0)
+										str+='<th colspan="2" style="text-align:center;"> '+result.sublist[0].sublist1[i].name+' </th>';
+								}
+							}
+							if(result.sublist[0].sublist2 != null && result.sublist[0].sublist2.length>0){
+								for(var i in result.sublist[0].sublist2){
+									str+='<th rowspan="2" style="text-align:center;"> '+result.sublist[0].sublist2[i].name+' </th>';
+								}
+							}
+							
+							if(result.sublist.length>1){								
+								str+='<th rowspan="2" style="text-align:center;"> TOTAL  </th>';
+								
+								if(result.sublist[1].sublist1 != null && result.sublist[1].sublist1.length>0){
+									for(var i in result.sublist[1].sublist1){
+										if(i==0)
+											str+='<th colspan="2" style="text-align:center;"> '+result.sublist[1].sublist1[i].name+' </th>';
+									}
+								}
+								if(result.sublist[1].sublist2 != null && result.sublist[1].sublist2.length>0){
+									for(var i in result.sublist[1].sublist2){
+										str+='<th rowspan="2" style="text-align:center;"> '+result.sublist[1].sublist2[i].name+' </th>';
+									}
+								}								
+							}
+							str+='</tr>';
+							str+='<tr>';
+							//str+='<th rowspan="2"> LOCATION NAME  </th>';
+							if(result.sublist[0].sublist1 != null && result.sublist[0].sublist1.length>0)
+								for(var i in result.sublist[0].sublist1){
+									if(i==0){
+										str+='<th style="text-align:center;"> CALLED </th>';
+										str+='<th style="text-align:center;"> PENDING </th>';
+									}
+									if(result.sublist.length>1){
+										if(i==0){
+											str+='<th style="text-align:center;"> CALLED </th>';
+											str+='<th style="text-align:center;"> PENDING </th>';
+										}
+									}									
+								}			
+							str+='</tr>';
+							str+='</thead>';
+						}
+					}
+				}
+			}
+		}
+		str+='<tbody>';
+		for(var i in myResult.sublist){
+			if(myResult.sublist[i].sublist != null && myResult.sublist[i].sublist.length>0){
+				//for(var j in myResult.sublist[i].sublist){
+					var result = myResult.sublist[i];				
+						if(result != null && result.sublist != null && result.sublist.length>0){
+								
+							for(var k in result.sublist){
+								if(k==0){
+								str+='<tr>';
+									str+='<td>'+result.sublist[k].name+'</td>';
+									str+='<td>'+result.sublist[k].totalCount+'</td>';
+									for(var n in result.sublist[k].sublist1){										
+										if(n==0){
+											str+='<td>'+result.sublist[k].sublist1[n].called+'</td>';
+											str+='<td>'+result.sublist[k].sublist1[n].pending+'</td>';
+										}
+									}
+									for(var n in result.sublist[k].sublist2)
+											str+='<td>'+result.sublist[k].sublist2[n].totalCount+'</td>';
+										
+									if(result.sublist.length>1){	
+									//str+='<td>'+result.sublist[1].name+'</td>';
+									str+='<td>'+result.sublist[1].totalCount+'</td>';
+									for(var n in result.sublist[1].sublist1){										
+										if(n==0){
+											str+='<td>'+result.sublist[1].sublist1[n].called+'</td>';
+											str+='<td>'+result.sublist[1].sublist1[n].pending+'</td>';
+										}
+									}
+									for(var n in result.sublist[k].sublist2)
+											str+='<td>'+result.sublist[1].sublist2[n].totalCount+'</td>';
+									}
+									str+='</tr>';
+								}
+							}
+							
+						
+						}
+				//}
+			}
+		}
+		
+		str+='</tbody>';
+		str+='</table>';
+		$('#optnsCntDiv').html(str);
+			//console.log(str);
+		$('#responseTab').dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			
+		});
+		 $('#optnsCntDiv').show();
+		  $("#lcnExcelBtn").show();
+	}
+	
+		
+}
+
 </script>
 </body>
 </html>
