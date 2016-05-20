@@ -986,7 +986,7 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		
 	}
 	
-	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityScope,Long questionId,String optionType){
+	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityId,Long questionId,String optionType){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.activityQuestionnaire.activityQuestion.activityQuestionId," +
 						" model.activityLocationInfo.constituency.district.districtId," +
@@ -996,8 +996,8 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 			sb.append(" ,sum(model.count)");
 		
 		sb.append(" from ActivityQuestionAnswer model" +
-					" where model.activityLocationInfo.activityScope.activityScopeId = :activityScope");
-		if(activityLevel.longValue() == 1l)
+					" where model.activityLocationInfo.activityScope.activity.activityId = :activityId");
+	/*	if(activityLevel.longValue() == 1l)
 			sb.append(" and model.activityLocationInfo.locationLevel in (6,8)");
 		else if(activityLevel.longValue() == 2l)
 			sb.append(" and model.activityLocationInfo.locationLevel in (5,7,9)");
@@ -1007,7 +1007,7 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 			sb.append(" and model.activityLocationInfo.locationLevel in (10)");
 		else if(activityLevel.longValue() == 5l)
 			sb.append(" and model.activityLocationInfo.locationLevel in (13)");
-		
+		*/
 		if(questionId != null && questionId.longValue() > 0l)
 			sb.append(" and model.activityQuestionnaire.activityQuestion.activityQuestionId = :questionId");
 		
@@ -1026,7 +1026,7 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		
 		Query query = getSession().createQuery(sb.toString());
 		
-		query.setParameter("activityScope", activityScope);
+		query.setParameter("activityId", activityId);
 		if(questionId != null && questionId.longValue() > 0l)
 			query.setParameter("questionId", questionId);
 		

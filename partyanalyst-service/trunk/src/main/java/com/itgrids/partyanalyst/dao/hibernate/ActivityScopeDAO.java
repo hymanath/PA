@@ -29,14 +29,13 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		
 		return query.list();
 	}
-	public List<Object[]> getActivityScopeIdByActivityAndLevelId(Long activityId,Long  activityLevelId)
+	public List<Object[]> getActivityScopeIdByActivityAndLevelId(Long activityId)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.activityScopeId,model.activity.activityName from ActivityScope model where model.activityLevelId =:activityLevelId and " +
-				" model.activity.activityId=:activityId and model.activity.isActive = 'Y' order by model.activity.activityId asc");
+		queryStr.append(" select distinct model.activityScopeId,model.activityLevelId from ActivityScope model where " +
+				" model.activity.activityId=:activityId and model.isDeleted = 'N' order by model.activityScopeId asc");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("activityLevelId", activityLevelId);
 		query.setParameter("activityId", activityId);
 		
 		return query.list();
