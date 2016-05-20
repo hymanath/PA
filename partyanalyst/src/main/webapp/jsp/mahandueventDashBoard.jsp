@@ -929,7 +929,7 @@ $('#donutchart').removeClass("errorDiv");
 	
 	var evntName = $("#eventText"+parentEventId).text();
 	var title = (evntName + ' Event').toUpperCase();
-	var url = "eventDashboardAction.action?eventId="+parentEventId+"";
+	var url = "eventDashboardAction2.action?eventId="+parentEventId+"";
 	ChangeUrl(''+title+'', ''+url+'');
 
     $("#mainheading").html(''+title+'');
