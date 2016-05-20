@@ -16945,10 +16945,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 
 						 list.add(vo);
 						 activityMap.put(locationValue, list);
-						 if(conductedDate != null )
+						// if(conductedDate != null )
 			               updatedLocationIdsList.add(locationValue);
-			             else
-			               notUpdatedLocationIdsList.add(locationValue);
+			             //else
+			             //  notUpdatedLocationIdsList.add(locationValue);
 						 //updatedLocationIdsList.add(locationValue);
 					}
 				 }

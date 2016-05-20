@@ -5032,7 +5032,23 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 									}
 							}
 						}
-						
+						searchVO.setLevelId(activityLevelId);
+						searchVO.setId(activityId);
+						List<Object[]> questionWiseCountList = activityQuestionAnswerDAO.getActivityLocationInfoByScope(searchVO,"Count Description Box");
+						if(commonMethodsUtilService.isListOrSetValid(questionWiseCountList)){
+							for (Object[] param : questionWiseCountList) {
+									Long locationId = commonMethodsUtilService.getLongValueForObject(param[1]);
+									Long questionId = commonMethodsUtilService.getLongValueForObject(param[0]);
+									Long count = commonMethodsUtilService.getLongValueForObject(param[4]);
+									ActivityResponseVO vo = LocationWiseMap.get(locationId);
+									if(vo != null && commonMethodsUtilService.isListOrSetValid(vo.getSublist2())){
+										 ActivityResponseVO questionVO = getActivityResponseVOById(vo.getSublist2(),questionId);
+										 if(questionVO != null){
+											 questionVO.setSumcount(count);
+										 }
+									}
+							}
+						}
 						activityLevelwiseList.add(LocationWiseMap);
 				}
 			}
