@@ -772,9 +772,16 @@ function buildQuestionsDetails(result){
 			for(var i in result){
 				str+='<tr>'
 					str+='<td>'+result[i].question+'</td>';
-					str+='<td>'+result[i].totalCount+'</td>';
-					str+='<td>'+result[i].APCount+'</td>';
-					str+='<td>'+result[i].TSCount+'</td>';
+					if(result[i].desTotalCount > 0){
+						str+='<td>'+result[i].totalCount+' ('+result[i].desTotalCount+')</td>';
+						str+='<td>'+result[i].APCount+' ('+result[i].desAPCount+')</td>';
+						str+='<td>'+result[i].TSCount+' ('+result[i].desTSCount+')</td>';
+					}
+					else{
+						str+='<td>'+result[i].totalCount+'</td>';
+						str+='<td>'+result[i].APCount+'</td>';
+						str+='<td>'+result[i].TSCount+'</td>';
+					}
 				str+='</tr>'
 			}
 		str+='</tbody>'
