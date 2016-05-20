@@ -2544,6 +2544,16 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 }
 			 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
 			 
+			 if( resultList != null && resultList.size() >0){
+				 for(MahanaduEventVO VO : resultList){
+					 
+					 if(VO.getSubMap()!=null && VO.getSubMap().size()>0){
+						 VO.setSubList(new ArrayList<MahanaduEventVO>(VO.getSubMap().values()));
+						 VO.getSubMap().clear();
+					 }
+				 }
+			 }
+			 
 			 /* try{
 			 if(parentId.longValue() == 7l && eventStrDate != null && eventEndDate !=null && eventStrDate.equals(eventEndDate)){
 				 Calendar cal = Calendar.getInstance();
