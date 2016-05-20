@@ -1035,5 +1035,25 @@ footer
 .m_top20{
 margin-top:20px;
 }
-   
+.spanBorderRight
+{
+	padding:0px;
+	margin:0px;
+}
+.spanBorderRight li:nth-child(1)
+{
+	padding-left:0px;
+}
+.spanBorderRight li:nth-child(1) , .spanBorderRight li:nth-child(2)
+{
+	border-right:1px solid rgba(255,255,255,0.6);
+}
+.spanBorderRight li
+{
+	padding:0px 9px;
+	color:rgba(255,255,255,0.6);
+	list-style:none;
+	display:inline-block
+}
+
 /* OTHER STATES SWITH CSS END */
