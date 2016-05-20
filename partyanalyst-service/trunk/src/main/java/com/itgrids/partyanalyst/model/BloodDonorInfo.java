@@ -31,7 +31,7 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	private String relativeName;
 	private String gender;
 	private Long age;
-	private Date dateOfBirth;
+	private String dateOfBirth;
 	private String maritalStatus;
 	private String mobileNo;
 	private String email;
@@ -98,12 +98,12 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	}
 	
 	@Column(name="date_of_birth")
-	public Date getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-	}
+	}	
 	
 	@Column(name="marital_status")
 	public String getMaritalStatus() {
