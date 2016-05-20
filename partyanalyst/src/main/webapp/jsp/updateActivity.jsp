@@ -665,7 +665,7 @@ function getActivityNames(id)
 	
 	var jObj = {
 			activityTypeId : $('#activityTypeList').val(),
-			activityLevelId:$('#activityLevelList').val(),
+			activityLevelId:id,//$('#activityLevelList').val(),
 			task:"activityDetails"
 		};
 		
@@ -1497,7 +1497,7 @@ $("#hideAsmblyData").click(function(){
 
 						if(result.activityVoList[i].optionsList!=null && result.activityVoList[i].optionsList.length>0){
 							if(result.activityVoList[i].optionTypeId==1){
-								str+='<select class="form-control selectedVal" attr_type="selectbox" attr_qid="'+result.activityVoList[i].questionId+'"';
+								str+='<select class="form-control selectedVal" attr_option_type_id="'+result.activityVoList[i].optionTypeId+'" attr_type="selectbox" attr_qid="'+result.activityVoList[i].questionId+'"';
 								if(result.activityVoList[i].remarks=="true")
 									str+=' ramarkFieldId="remark'+result.activityVoList[i].questionId+'" ';
 								else
@@ -1511,11 +1511,14 @@ $("#hideAsmblyData").click(function(){
 							}
 							else if(result.activityVoList[i].optionTypeId==2){
 								for(var j in result.activityVoList[i].optionsList){
-									str+='&nbsp;&nbsp;<label><input type="checkbox" attr_type="ckeckBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" value="'+result.activityVoList[i].optionsList[j].optionId+'" attr_location_Value="'+locationValue+'"/>&nbsp;&nbsp;'+result.activityVoList[i].optionsList[j].option+'</label>';
+									str+='&nbsp;&nbsp;<label><input type="checkbox" attr_type="checkBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal"  attr_option_type_id="'+result.activityVoList[i].optionTypeId+'" attr_qid="'+result.activityVoList[i].questionId+'" value="'+result.activityVoList[i].optionsList[j].optionId+'" attr_location_Value="'+locationValue+'"/>&nbsp;&nbsp;'+result.activityVoList[i].optionsList[j].option+'</label>';
 								}
 							}
 							else if(result.activityVoList[i].optionTypeId==3){
-									str+='&nbsp;&nbsp;<label><input type="text" name="result'+result.activityVoList[i].questionId+'" class="selectedVal" attr_qid="'+result.activityVoList[i].questionId+'" attr_location_Value="'+locationValue+'"/></label>';
+									str+='&nbsp;&nbsp;<label><input type="text" attr_type="textBox" name="result'+result.activityVoList[i].questionId+'" class="selectedVal"   attr_option_type_id="'+result.activityVoList[i].optionTypeId+'" attr_qid="'+result.activityVoList[i].questionId+'" attr_location_Value="'+locationValue+'"/></label>';
+							}
+							else if(result.activityVoList[i].optionTypeId==4){
+									str+='&nbsp;&nbsp;<label><input type="text" attr_type="countTextBox"  name="result'+result.activityVoList[i].questionId+'" class="selectedVal"   attr_option_type_id="'+result.activityVoList[i].optionTypeId+'" attr_qid="'+result.activityVoList[i].questionId+'" attr_location_Value="'+locationValue+'"/></label>';
 							}
 						} 
 						if(result.activityVoList[i].remarks=="true"){
@@ -1541,6 +1544,7 @@ $("#hideAsmblyData").click(function(){
 		$(".selectedVal").each(function(){
 		var value = '';
 		var remarks='0';
+		var count=0;
 		if($(this).attr("attr_type")=="selectbox" && $(this).val()>0){
 			var key=$(this).attr("attr_qid");
 			value=$(this).val();
@@ -1548,10 +1552,14 @@ $("#hideAsmblyData").click(function(){
 			if(ramarkFieldKey != 0)
 				remarks = $("#remark"+key+"").val();			
 		}
-			/*if($(this).attr("attr_type")=="ckeckBox"){
+			/*if($(this).attr("attr_type")=="checkBox"){
 				if(this.checked)
 					value = this.value;			
-			}*/
+			}*/		
+		else if($(this).attr("attr_type")=="countTextBox" && $(this).val()>0){
+			count = $(this).val();
+			value = "3";
+		}
 		else{
 			remarks = $(this).val();
 			value = "3";
@@ -1565,8 +1573,9 @@ $("#hideAsmblyData").click(function(){
 				var obj={
 				questionId : $(this).attr("attr_qid"),
 				optionId : value,
+				optionTypeId:$(this).attr("attr_option_type_id"),
 				remarks: remarks,
-				count:0,
+				count:count,
 				others:" "
 				};
 				resultArr.push(obj);
