@@ -18,7 +18,8 @@
 
 
 <style>
-.tableC thead th {color:#00B17D !important;font-size: 12px !important;}
+.tableC thead th {color:#00B17D !important;font-size: 11px !important;}
+.tableC tr td{font-size:12px !important;padding:4px !important;}
 .tableC tr:nth-child(odd) td
 {
 	background:#F1F6F9 !important
@@ -137,10 +138,10 @@
 		
 
 	<div class="row">
-    	<div class="col-md-4 col-sm-6 col-xs-12" style="">
-        	<div class="panel panel-default panel-custom-green" style="background:#00b07d">
+    	<div class="col-md-4 col-sm-6 col-xs-12 ">
+        	<div class="panel panel-default panel-custom-green firstBlock" style="background:#00b07d">
               <div class="panel-heading">overall events status </div>
-              <div id="overAllEventDiv" style="height: 395px;">    
+              <div id="overAllEventDiv">    
 			  
 
               </div>
@@ -148,16 +149,18 @@
             </div>
         </div>
 		
-        <div class="col-md-8 col-xs-12 col-sm-6">
-			<div id="rangeSliderDiv" style="display:none;">
-				<div id="slider"></div>
-				<p>
-					<input id="amount" type="text" style="border: none; font-weight: bold;background-color:transparent;" readonly>
-				</p>
+        <div class="col-md-8 col-xs-12 col-sm-6 ">
+			<div class="firstBlock">
+				<div id="rangeSliderDiv" style="display:none;">
+					<div id="slider"></div>
+					<p>
+						<input id="amount" type="text" style="border: none; font-weight: bold;background-color:transparent;" readonly>
+					</p>
+				</div>
+				<div id="hourWiseerrorDiv" style="width: 100%; height:382px; margin: 0px auto -66px;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;text-align:center;margin-top:10px;padding-top:165px;"></div>
+				<div id="hourWiseContainer" style="width: 100%; height:382px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:0px;display:none;"></div>
+				<div id="dayWiseContainer" style="width: 100%; height:382px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
 			</div>
-			<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0px auto -66px;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;text-align:center;margin-top:10px;padding-top:165px;"></div>
-        	<div id="hourWiseContainer" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:0px;display:none;"></div>
-			<div id="dayWiseContainer" style="width: 100%; height:382px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
         </div>
 
     </div>
@@ -188,18 +191,18 @@
               <div class="panel-heading">
                   <h4 class="panel-title">overall<span class=" text-italic f_11 colorBlack">[ap,ts,other states]</span></h4>
                 </div>
-				<div class="panel-body heightapply">
+				<div class="panel-body   panelBlocksHeightSet">
 				<center><img id="allStatesAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 					<div id="allStateDetails"></div>
 				</div>
             </div>
         </div>
         <div class="col-md-3">
-          <div class="panel panel-default panel-custom-red">
+          <div class="panel panel-default panel-custom-red ">
               <div class="panel-heading">
                   <h4 class="panel-title">andhra pradesh</h4>
                 </div>
-                <div class="panel-body heightapply">
+                <div class="panel-body   panelBlocksHeightSet">
 					<center><img id="apStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 					<div id="apStateDetails"></div>
                  
@@ -207,22 +210,22 @@
             </div>
         </div>
 	  <div class="col-md-3">
-		  <div class="panel panel-default panel-custom-coffee">
+		  <div class="panel panel-default panel-custom-coffee ">
 			  <div class="panel-heading ">
 				  <h4 class="panel-title">telangana</h4>
 				</div>
-				<div class="panel-body heightapply">
+				<div class="panel-body   panelBlocksHeightSet">
 					<center><img id="tsStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 						<div id="tsStateDetails"></div>
 				</div>
 			</div>
 		</div>
 	 <div class="col-md-3">
-		  <div class="panel panel-default panel-custom-other">
+		  <div class="panel panel-default panel-custom-other ">
 			  <div class="panel-heading">
 				  <h4 class="panel-title">other states</h4>
 				</div>
-				<div class="panel-body heightapply">
+				<div class="panel-body   panelBlocksHeightSet">
 					<center><img id="otherStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 						<div id="otherStateDetails"></div>
 				</div>
@@ -669,7 +672,7 @@ $(".maineventCls").each(function(){
 }
 
 	function stateWiseEventAttendeeCounts(){
-		
+		$(".panelBlocksHeightSet").removeAttr("style");
 		 clearAllStateDetails();
 		$("#allStatesAjax").show();
 		$("#apStateAjax").show();
@@ -691,12 +694,15 @@ $(".maineventCls").each(function(){
 			$("#apStateAjax").hide();
 			$("#tsStateAjax").hide();
 			$("#otherStateAjax").hide();
+				
 				buildAllStateDetails(result);
 				buildStateWiseBlocks(result.apStateVO,"apStateDetails");
                 buildStateWiseBlocks(result.tsStateVO,"tsStateDetails");
                 buildStateWiseBlocks(result.otherStatesVO,"otherStateDetails");
 				
+				panelBlocksHeightSet();
 			});   
+			
 	}
 
 	function buildAllStateDetails(result){
@@ -826,7 +832,7 @@ $(".maineventCls").each(function(){
 		$("#"+buildDivId).html(str);
 	}
 	else{
-		$("#"+buildDivId).html("<p style='margin-top: 30px; text-align: center;height:249px;'>NO DATA AVAILABLE</p>");
+		$("#"+buildDivId).html("<p style='text-align: center;margin-top:30px;'>NO DATA AVAILABLE</p>");
 	}
 	
 }
@@ -1027,7 +1033,7 @@ function buildDistrictTable(result,reportLevelId){
 			str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="datatableId" >';
 			str+='<thead style="background:#EFF3F4">';
 			str+='<tr>';
-			str+='<th rowspan="2" style="vertical-align:middle" width="50px !important;"># ID</th>';
+			str+='<th rowspan="2" style="vertical-align:middle" width="40px !important;"># ID</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">DISTRICT NAME</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
@@ -1118,8 +1124,8 @@ function buildDistrictTable(result,reportLevelId){
         "info":     false,
 		"searching": true,
 		"autoWidth": true,
-		"sDom": '<"top"iflp>rt<"bottom"><"clear">'
-		
+		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"order": [[ 1, "asc" ]]
     });
 	
 	
@@ -1232,13 +1238,13 @@ function buildConstTable(result,reportLevelId){
 		str+='<table class="table tableC table-condensed table-bordered" style="border-bottom:none" id="constituencyDataTableId">';
 		str+='<thead style="background:#EFF3F4">';
 		str+='<tr>';
-		str+='<th rowspan="2" style="vertical-align:middle;font-size:11px !important;"># ID</th>';
-		str+='<th rowspan="2" style="vertical-align:middle;font-size:11px !important;">DISTRICT</th>';
-		str+='<th rowspan="2" style="vertical-align:middle;font-size:11px !important;">CONSTITUENCY</th>';
-		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;">TOTAL ATTENDED</th>';
-		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;">TOTAL INVITEES</th>';
-		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;">INVITEES ATTENDED</th>';
-		str+='<th rowspan="2" style="vertical-align:middle;font-size:10px !important;;">NON INVITEES ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;" width="40px !important;"># ID</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;">DISTRICT</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;">CONSTITUENCY</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;">TOTAL ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;">INVITEES ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;">NON INVITEES ATTENDED</th>';
 	
 			for(var i in result[0].subList){
 				str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
@@ -1332,7 +1338,8 @@ function buildConstTable(result,reportLevelId){
 		 "info":     false,
 		 "searching": true,
 		 "autoWidth": true,
-		"sDom": '<"top"iflp>rt<"bottom"><"clear">'
+		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"order": [[ 1, "asc" ]]
 		
     });
 	var Scrollerlength = $(".scrollLength").find("tr").length;
@@ -1467,6 +1474,7 @@ $("#myonoffswitch1").click(function(){
 
 
 function getSubEventDetails(parentEventId){
+	
 	$('#overAllEventDiv').html('<center><img id="ajaxImage" src="images/Loading-data.gif" style="width:70px;height:60px;margin-top:100px;"/></center>');
 	$('#donutchart').html("");
 	$("#donutChartAjax").show();
@@ -1486,6 +1494,7 @@ function getSubEventDetails(parentEventId){
 		$("#donutChartAjax").hide();
 		
 		buildStartingPrograms(result);
+		
 	});
 }
 function buildStartingPrograms(result){
@@ -1614,7 +1623,7 @@ function buildStartingPrograms(result){
 	  } 
 	 str+='</div>'; 
 	$("#overAllEventDiv").html(str);
-
+	
 	if(elementsLength > 4)
 	{
 		$('.scrollDiv2').slimScroll({
@@ -1623,6 +1632,26 @@ function buildStartingPrograms(result){
 	}
 	
 	buildPieChart(dataArr,total,colorsarr);
+	
+	heightSet();
+}
+function heightSet()
+{
+	$(".firstBlock").removeAttr("style")
+	var maxHeight = 0;
+	$(".firstBlock").each(function(){
+	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+	});
+	$(".firstBlock	").height(maxHeight);
+}
+
+function panelBlocksHeightSet()
+{
+	var maxHeight = 0;
+	$(".panelBlocksHeightSet").each(function(){
+	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+	});
+	$(".panelBlocksHeightSet").height(maxHeight);
 }
 
 function buildPieChart(dataArr,total,colorsarr)
@@ -2500,6 +2529,7 @@ function getRegistrationsCnt()
           url: 'getCadreRegistrationsCnt.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			
 			 $("#RegistrationCntDiv").html('');
 			var str = '';
 			str+='<table class="table table-condensed m_0" style="margin-top:3px;">';
@@ -2511,6 +2541,7 @@ function getRegistrationsCnt()
 				str+='</tr>';
 			str+='</table>';
 			$("#RegistrationCntDiv").html(str);
+			heightSet();
 			});
 }
 
@@ -2532,6 +2563,7 @@ function showHide()
 			$(".slimScrollBar").css("top","127px !important");
 			showConst=true;	
 		}
+		heightSet();
 }
 
 
