@@ -12208,5 +12208,24 @@
 		<result name="success">/jsp/bloodBankBleading.jsp</result>
 	</action>
 	
+	<action name="getOccuationsAction" class="bloodBankAction" method="getOccuations">
+		<result type="json" name="success">
+			<param name="root">bloodBankVOList</param>
+		</result>
+	</action>
+	
+	<action name="getEducationQualificationsAction" class="bloodBankAction" method="getEducationQualifications">
+		<result type="json" name="success">
+			<param name="root">bloodBankVOList</param>
+		</result>
+	</action>
+	
+	<action name="getCadreDetailsAction" class="bloodBankAction" method="getCadreDetails">
+		<result type="json" name="success">
+			<param name="root">bloodBankVO</param>
+		</result>
+	</action>
+	
+	
 </package>
 </struts>      

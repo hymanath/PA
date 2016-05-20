@@ -3114,7 +3114,9 @@
 	</bean>
 	
 	<bean name="bloodBankService" class="com.itgrids.partyanalyst.service.impl.BloodBankService">
-	
+	   <property name="occupationDAO" ref="occupationDAO"></property>
+	   <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"></property>
+	   <property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
 	</bean>
 	
 </beans>		

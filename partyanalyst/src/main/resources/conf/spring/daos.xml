@@ -2768,5 +2768,28 @@
 	<bean id="activityRequiredAttributeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityRequiredAttributeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	
+	  <bean id="acceptanceStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AcceptanceStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+		<bean id="bloodBagTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodBagTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="bloodComponentDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodComponentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="bloodDonationDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodDonationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="bloodDonationAgeGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodDonationAgeGroupDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="bloodDonationCampDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodDonationCampDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="bloodDonorInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodDonorInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
