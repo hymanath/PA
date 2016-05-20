@@ -6860,4 +6860,35 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		   query.setParameterList("tdpCadreIds", tdpCadreIds);
 		 return query.list();
 	}
+
+	@Override
+	public Object[] getCadreDetailsByMmbrShpId(String memberShipNo) {
+		
+		StringBuilder queryString=new StringBuilder();
+		
+		queryString.append(" select model.tdpCadreId,model.firstname,model.lastname,model.relativename," +//4
+							" model.mobileNo,model.emailId,model.gender,model.age," + //8
+				            " model.dateOfBirth,model.educationalQualifications.qualification,model.occupation.occupation,"+ //11
+							" state.stateId,state.stateName,district.districtId,district.districtName,"+//15
+				            " constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,"+//19
+							" ward.constituencyId,ward.name,panchayat.panchayatId,panchayat.panchayatName,"+//23
+				            " localElectionBody.localElectionBodyId,localElectionBody.name"+ //25
+							" from  TdpCadre  model " +
+							" left join model.userAddress.state state" +
+							" left join model.userAddress.district district" +
+							" left join model.userAddress.constituency constituency" +
+							" left join model.userAddress.tehsil tehsil" +
+							" left join model.userAddress.ward ward" +
+							" left join model.userAddress.panchayat panchayat" +
+							" left join model.userAddress.localElectionBody localElectionBody  " +
+							" where " +
+							" model.isDeleted='N' and model.enrollmentYear=:enrollmentYear and model.memberShipNo=:memberShipNo ");
+		
+			Query query=getSession().createQuery(queryString.toString());
+			
+			query.setParameter("memberShipNo", memberShipNo);
+			query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		
+		return (Object[]) query.uniqueResult();
+}
 }

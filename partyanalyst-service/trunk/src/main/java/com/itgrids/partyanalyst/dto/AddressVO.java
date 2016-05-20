@@ -59,12 +59,33 @@ public class AddressVO implements Serializable {
 	private String landMarkStr;
 	private Long localElectionBodyId;
 	private Long wardId;
+
 	private String addressLane1;
 	private String addressLane2;
 	private Long typeId;
 	private String dateStr;
+	private String wardName;
+	private String panchayatName;
+	private String localElectionBodyName;
 	
-	
+	public String getLocalElectionBodyName() {
+		return localElectionBodyName;
+	}
+	public void setLocalElectionBodyName(String localElectionBodyName) {
+		this.localElectionBodyName = localElectionBodyName;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
+	}
 	public String getDateStr() {
 		return dateStr;
 	}
