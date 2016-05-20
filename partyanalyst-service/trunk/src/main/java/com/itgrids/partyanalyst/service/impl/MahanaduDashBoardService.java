@@ -800,16 +800,16 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  
 			  /*Total,Invited and Non invited Cadre*/		  
-			  //0.total,1.invitees,2.NonInvitees,3.districtId,4.districtName
+			  //0.total,1.districtId,2.districtName
 			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(eventId,districtQueryStr.toString());
 			  
 			  if(totalCountList !=null && totalCountList.size()>0){				  
 				  for(Object[] obj : totalCountList) {							  
-					  MahanaduEventVO VO  = getMatchedVO(defaultDistList,(Long)obj[3]);
+					  MahanaduEventVO VO  = getMatchedVO(defaultDistList,(Long)obj[1]);
 					  if(VO !=null){					  
 						  VO.setTotal(obj[0] !=null ? (Long)obj[0]:0l);//current in Campus	
-						  VO.setInvitees(obj[1] !=null ? (Long)obj[1]:0l);
-						  VO.setNonInvitees(obj[2] !=null ? (Long)obj[2]:0l);
+						 // VO.setInvitees(obj[1] !=null ? (Long)obj[1]:0l);
+						  //VO.setNonInvitees(obj[2] !=null ? (Long)obj[2]:0l);
 					  }else{
 						  MahanaduEventVO vo = new MahanaduEventVO();
 						  defaultDistList.add(vo);
@@ -834,18 +834,18 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  }
 				  
 				  /*Total,Invited and Non invited Cadre for other states*/		  
-				  //0.total,1.invitees,2.NonInvitees,3.districtId,4.districtName
+				  //0.total,1.districtId,2.districtName
 				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString.toString());
 				  
 				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
 					  for (Object[] obj : otherStatesTotalCountList) {
 						  MahanaduEventVO vo = new MahanaduEventVO();
-						  vo.setId((Long)obj[3]);
-						  vo.setName(obj[4].toString());
-						  vo.setCadreCount(distWiseCountsMap.get((Long)obj[3]) != null ? distWiseCountsMap.get((Long)obj[3]) : 0l);
+						  vo.setId((Long)obj[1]);
+						  vo.setName(obj[2].toString());
+						  vo.setCadreCount(distWiseCountsMap.get((Long)obj[1]) != null ? distWiseCountsMap.get((Long)obj[1]) : 0l);
 						  vo.setTotal((Long)obj[0]);
-						  vo.setInvitees(obj[1] !=null ? (Long)obj[1]:0l);
-						  vo.setNonInvitees(obj[2] !=null ? (Long)obj[2]:0l);
+						 // vo.setInvitees(obj[1] !=null ? (Long)obj[1]:0l);
+						  //vo.setNonInvitees(obj[2] !=null ? (Long)obj[2]:0l);
 						  otherStatesfinalRslt.add(vo);
 					  }
 				  }
