@@ -490,6 +490,8 @@ $(".panelDefault").height(maxHeight);
 			$("#dayWsUnquVstrsPrcssngImgId").hide();
 			if(result!=null && result.length>0){
 				buildDaysUniqueAndRevisitSummary(result);
+			}else{
+				$("#daysSummaryUniqueTableId").html("<h5> No Data Availabel.</h5>");
 			}
 		});
  }
@@ -565,6 +567,9 @@ $(".panelDefault").height(maxHeight);
 			  if(result!=null && result.length>0){
 				  buildVisitorsResultByTime(result);
 				  buildVisitorsDtlsGraph(result);
+			  }else{
+				  $("#visitorsTableId").html("<h5> No Data Availabel.</h5>");
+				  $("#hoursWiseVisitors").html("<h5> No Data Availabel.</h5>");
 			  }
 	      });
 	
@@ -992,6 +997,8 @@ $(".panelDefault").height(maxHeight);
 		  $("#dayWsVstrsPrcssngImgId").hide();
 		  if(result!=null && result.length>0){
 			buildTotalVisitorsResult(result);
+		  }else{
+			$("#totalVisitorsDtlsId").html("<h5> No Data Availabel.</h5>");
 		  }
 		});
 }
