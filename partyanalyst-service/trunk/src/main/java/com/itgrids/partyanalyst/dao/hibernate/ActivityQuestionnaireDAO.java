@@ -49,6 +49,15 @@ public class ActivityQuestionnaireDAO extends GenericDaoHibernate<ActivityQuesti
 		query.setParameter("scopeId", scopeId);
 		return query.list();
 	}
+   
+   public List<Object[]> getQuestionIdsByActivityId(Long activityId){
+		
+ 		Query query = getSession().createQuery(" select distinct model.activityQuestionnaireId , model.activityQuestion.question from ActivityQuestionnaire model " +
+ 							" where model.activityScope.activity.activityId = :activityId and model.isDeleted = 'N' ");
+ 		query.setParameter("activityId", activityId);
+ 		return query.list();
+ 	}
+   
 	public List<Long> getActivityQuestionnaireIdByQuestionId(Long scopeId,Long activityQuestionId){
 		Query query = getSession().createQuery(" select distinct model.activityQuestionnaireId from ActivityQuestionnaire model " +
 				" where model.activityScope.activityScopeId = :scopeId and model.isDeleted = 'N' and model.activityQuestionId =:activityQuestionId ");
@@ -84,9 +93,10 @@ public List<Object[]> getQuestionnareDetails(List<Long> questionnairIdsList){
 
 	
 	public List<Object[]> getActivityQuestionListByScope(Long activityScope){
-		Query query = getSession().createQuery("select model.activityQuestion.activityQuestionId," +
+		Query query = getSession().createQuery("select model.activityQuestionnaireId," +
 									" model.activityOptionType.activityOptionTypeId," +
-									" model.activityOptionType.type" +
+									" model.activityOptionType.type," +
+									"model.activityQuestion.question" +
 									" from ActivityQuestionnaire model" +
 									" where model.activityScope.activityScopeId = :activityScope" +
 									" and model.isDeleted = 'N'");
