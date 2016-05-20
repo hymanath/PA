@@ -9,7 +9,6 @@ public class BloodBankVO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
-	private String father;
 	private String sex;
 	private Long age;
 	private String dob;
@@ -19,6 +18,15 @@ public class BloodBankVO implements Serializable{
 	private String education;
 	private String occupation;
 	private String address;
+	
+	private AddressVO addressVO;
+	
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -31,11 +39,12 @@ public class BloodBankVO implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getFather() {
-		return father;
+	private String relativeName;
+	public String getRelativeName() {
+		return relativeName;
 	}
-	public void setFather(String fatherName) {
-		this.father = fatherName;
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
 	}
 	public String getSex() {
 		return sex;
