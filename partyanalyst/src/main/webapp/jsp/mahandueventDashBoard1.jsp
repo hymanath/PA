@@ -1883,34 +1883,38 @@ $("#hourWiseContainer").html("");
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 		//$("#hourWiseAjaxImage").hide();
-		
-				areaChartDataArr = new Array();
-				areaChartNamesArr = new Array();
+				
+				
 				dayWiseArr = new Array();
-				var colorsarr = new Array();
+				
+				//get chart dates or hours.
+				areaChartNamesArr = new Array();
 				if(result != null && result.length > 0)
 				{
 					dayWiseArr = result;
-				for(var j in result[0].subList){
-						if(startDate == endDate)				
-					    areaChartNamesArr.push(result[0].subList[j].name);	
+				    for(var j in result[0].subList){
+						if(startDate == endDate){
+							areaChartNamesArr.push(result[0].subList[j].name);	
+						}
 						else{
-						
-						var dateString = result[0].subList[j].name;
-						var date = new Date(result[0].subList[j].name);
-						var month       = monthNames[date.getMonth()];
-						var day         = dateString.substring(8,10);
-						areaChartNamesArr.push(month+"-" +day);	
+							var dateString = result[0].subList[j].name;
+							var date = new Date(result[0].subList[j].name);
+							var month       = monthNames[date.getMonth()];
+							var day         = dateString.substring(8,10);
+							areaChartNamesArr.push(month+"-" +day);	
 						}
-						}
+					}
 				}
+				
+				//get chart data values for date  or hour .
+				 areaChartDataArr = new Array();
+				 var colorsarr = new Array();
 				if(result != null && result.length > 0)		
 				for(var i in result)
 				{	
-				var color = getColorCodeByEvent(result[i].id);	
+				    var color = getColorCodeByEvent(result[i].id);	
 					var areaChartDataArrInner = new Array();
-					for(var j in result[i].subList){	
-					  //  areaChartNamesArr.push(result[0].subList[j].name);					
+					for(var j in result[i].subList){
 						areaChartDataArrInner.push(result[i].subList[j].cadreCount);
 					}
 					var obj1={
@@ -1922,101 +1926,80 @@ $("#hourWiseContainer").html("");
 					
 				}
 		
-		if(startDate == endDate)	
-		{
-		$( "#rangeSliderDiv" ).css("display","none");
-		buildHourWiseChart(colorsarr);
-		}
-		else{
-			sliderForDateRange();
-			$( "#rangeSliderDiv" ).css("display","block");
+		if(startDate == endDate){
+            $( "#rangeSliderDiv" ).css("display","none");
+		    buildHourWiseChart(colorsarr);
+		}else{
+			 sliderForDateRange();
+			 $( "#rangeSliderDiv" ).css("display","block");
 		}
 		});
 }
 var dateRange;	
 function sliderForDateRange()
 {
+	
+	//GET GIVEN DATES IN DATE RANGE PICKER
+	var newstartdate = startDate.split("/").reverse().join("-");
+	var newenddate = endDate.split("/").reverse().join("-");
+	var minDate = new Date(newstartdate);
+	var maxDate = new Date(newenddate);
+	
+	
+   var flag = false;
+ $( "#slider" ).slider({
+	
+	range: true,
+    max: Math.floor((maxDate.getTime() - minDate.getTime()) / 86400000),
+    step: 1,
+    slide: function( event, ui ) {
+        flag =true;
+        var date = new Date(minDate.getTime());
+        date.setDate(date.getDate() + ui.values[0]);
+		$('.startDate').val($.datepicker.formatDate('mm/dd/yy', date));
+		date = new Date(minDate.getTime());
+		date.setDate(date.getDate() + ui.values[1]);
+		$('.endDate').val($.datepicker.formatDate('mm/dd/yy', date));
+		
+	    var range = formatDate(date);
+	    var month       = monthNames[date.getMonth()];
+	    var day         = range.substring(8,10);			
+        $( "#amount" ).val( "date : " +month+"-" +day +"");
 
-var flag = false;
-var newstartdate = startDate.split("/").reverse().join("-");
-var newenddate = endDate.split("/").reverse().join("-");
-var minDate = new Date(newstartdate);
-var maxDate = new Date(newenddate);
-$( "#slider" ).slider({range: true,
-max: Math.floor((maxDate.getTime() - minDate.getTime()) / 86400000),
- step: 1,
-slide: function( event, ui ) {
-flag =true;
- var date = new Date(minDate.getTime());
-            date.setDate(date.getDate() + ui.values[0]);
-            $('.startDate').val($.datepicker.formatDate('mm/dd/yy', date));
-            date = new Date(minDate.getTime());
-            date.setDate(date.getDate() + ui.values[1]);
-            $('.endDate').val($.datepicker.formatDate('mm/dd/yy', date));
-	var range = formatDate(date);
-	var month       = monthNames[date.getMonth()];
-	var day         = range.substring(8,10);			
-$( "#amount" ).val( "date : " +month+"-" +day +"");
+		dateRange=date;
+        buildHourWiseChartforslider(dateRange);
+    },
+    change: function( event, ui ) {
 
-
-dateRange=date;
-buildHourWiseChartforslider(dateRange);
-},
-change: function( event, ui ) {
-
-
-flag =true;
-	   var date = new Date(minDate.getTime());
-            date.setDate(date.getDate() + ui.values[0]);
-            $('.startDate').val($.datepicker.formatDate('mm/dd/yy', date));
-            date = new Date(minDate.getTime());
-            date.setDate(date.getDate() + ui.values[1]);
-            $('.endDate').val($.datepicker.formatDate('mm/dd/yy', date));
-	var range = formatDate(date);
-	var month       = monthNames[date.getMonth()];
-	var day         = range.substring(8,10);			
-$( "#amount" ).val( "date : " +month+"-" +day +"");
-dateRange=date;
-buildHourWiseChartforslider(dateRange);
-}
-});
-if(!flag)
-	{
+		 flag =true;
+		 var date = new Date(minDate.getTime());
+		 date.setDate(date.getDate() + ui.values[0]);
+		 $('.startDate').val($.datepicker.formatDate('mm/dd/yy', date));
+		 date = new Date(minDate.getTime());
+		 date.setDate(date.getDate() + ui.values[1]);
+		 $('.endDate').val($.datepicker.formatDate('mm/dd/yy', date));
+		 
+		 var range = formatDate(date);
+		 var month       = monthNames[date.getMonth()];
+		 var day         = range.substring(8,10);			
+		 $( "#amount" ).val( "date : " +month+"-" +day +"");
+		 
+		dateRange=date;
+		buildHourWiseChartforslider(dateRange);
+    }
+  });
+  
+  if(!flag){
+	  
 	var range = formatDate(maxDate);
 	var month       = monthNames[maxDate.getMonth()];
 	var day         = range.substring(8,10);	
 	$( "#amount" ).val( "Date : " +month+"-" +day +"");
-	dateRange=maxDate
-	;
+	dateRange=maxDate;
 	buildHourWiseChartforslider(dateRange);
-	}
+  }
 
-$('.ui-slider-handle').tooltip();
-  //
-  // Add labels to slider whose values 
-  // are specified by min, max and whose
-  // step is set to 1
-  //
- /* var total = 0;
-  var startTime = minDate.getTime(), endTime = maxDate.getTime();
- for(loopTime = startTime; loopTime < endTime; loopTime += 86400000)
-{
-total = total + 1;
-}
-var i = 0;
-for(loopTime = startTime; loopTime < endTime; loopTime += 86400000)
-{
-       
-      var loopDay=new Date(loopTime)
-     //  minDate = new Date(newDate);
-	   var text = formatDate(loopDay);
-	    var el = $('<label>'+(text)+'</label>').css('left',(i/total*100)+'');
-		$( "#slider" ).append(el);
-		i++;
-    }
-*/
-
-
+  $('.ui-slider-handle').tooltip();
 }
 
 function formatDate(date) {
@@ -2033,74 +2016,71 @@ function formatDate(date) {
 
 function buildHourWiseChartforslider(dateRange){
 
-if(dayWiseArr == null || dayWiseArr.length == 0)
-{
-$("#hourWiseerrorDiv").css("display","block");
-$('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv").css("height","359px");;
-$('#dayWiseContainer').css("display","none");
-return;
-}
-$("#hourWiseerrorDiv").css("display","none");
-$('#hourWiseContainer').css("display","none");
-$('#dayWiseContainer').css("display","block");
-				var range = formatDate(dateRange);
-				var compareDate = new Date(range);
+	if(dayWiseArr == null || dayWiseArr.length == 0){
+	  $("#hourWiseerrorDiv").css("display","block");
+	  $('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv").css("height","359px");;
+	  $('#dayWiseContainer').css("display","none");
+	  return;
+	}
+	
+	$("#hourWiseerrorDiv").css("display","none");
+	$('#hourWiseContainer').css("display","none");
+	$('#dayWiseContainer').css("display","block");
+	
+    var range = formatDate(dateRange);
+	var compareDate = new Date(range);
+	
+	
+	//get chart dates.
+	areaChartNamesArr1 = new Array();
+	if(dayWiseArr != null && dayWiseArr.length > 0){
+	   for(var j in dayWiseArr[0].subList){
+		 var dateString = dayWiseArr[0].subList[j].name;
+		 var date = new Date(dayWiseArr[0].subList[j].name);
+			if(date<=compareDate){
+				var month       = monthNames[date.getMonth()];
+				var day         = dateString.substring(8,10);
+				areaChartNamesArr1.push(month+"-" +day);
+			}							
+	   }	
+	}
+	
+	//get chart data values for date.
+	var colorsarr = new Array();
+    areaChartDataArr1 = new Array();	
+	if(dayWiseArr != null && dayWiseArr.length > 0){
+		for(var i in dayWiseArr){
+			var color = getColorCodeByEvent(dayWiseArr[i].id);	
+			var areaChartDataArrInner = new Array();
+			for(var j in dayWiseArr[i].subList){	
+			   var date1 = new Date(dayWiseArr[i].subList[j].name);
+			   if(date1<=compareDate){
+				  areaChartDataArrInner.push(dayWiseArr[i].subList[j].cadreCount); 
+			   }
+			}
+			var obj1={
+				name:dayWiseArr[i].name,
+				data:areaChartDataArrInner
+			}
+			colorsarr.push(color);
+			areaChartDataArr1.push(obj1);
+		}
+	}		
 				
-				areaChartDataArr1 = new Array();
-				areaChartNamesArr1 = new Array();
-				
-				var colorsarr = new Array();
-				if(dayWiseArr != null && dayWiseArr.length > 0)
-				{
-				
-				for(var j in dayWiseArr[0].subList){
-						
-						//var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-						var dateString = dayWiseArr[0].subList[j].name;
-						var date = new Date(dayWiseArr[0].subList[j].name);
-								if(date<=compareDate)
-								{
-									var month       = monthNames[date.getMonth()];
-									var day         = dateString.substring(8,10);
-									areaChartNamesArr1.push(month+"-" +day);
-								}							
-						}
-						
-				}
-				
-				if(dayWiseArr != null && dayWiseArr.length > 0)		
-				for(var i in dayWiseArr)
-				{	
-				var color = getColorCodeByEvent(dayWiseArr[i].id);	
-					var areaChartDataArrInner = new Array();
-					for(var j in dayWiseArr[i].subList){	
-					 	var date1 = new Date(dayWiseArr[i].subList[j].name);
-					 if(date1<=compareDate)
-					areaChartDataArrInner.push(dayWiseArr[i].subList[j].cadreCount);
-					}
-					var obj1={
-						name:dayWiseArr[i].name,
-						data:areaChartDataArrInner
-					}
-					colorsarr.push(color);
-					
-					areaChartDataArr1.push(obj1);
-					
-				}
-				
-				
-if(areaChartDataArr1 == null || areaChartDataArr1.length == 0)
-{
-$("#hourWiseerrorDiv").css("display","block");
-$('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv");
-return;
-}
+    if(areaChartDataArr1 == null || areaChartDataArr1.length == 0){
 
-$("#hourWiseerrorDiv").css("display","none");
-Highcharts.setOptions({
-	 colors:colorsarr
-		 });
- $('#dayWiseContainer').highcharts({
+		$("#hourWiseerrorDiv").css("display","block");
+		$('#hourWiseerrorDiv').html("No Data Available").addClass("errorDiv");
+		return;
+     }
+
+     $("#hourWiseerrorDiv").css("display","none");
+	 
+     Highcharts.setOptions({
+	  colors:colorsarr
+	 });
+	 
+    $('#dayWiseContainer').highcharts({
 		chart: {
             type: 'area'
         },
@@ -2133,7 +2113,6 @@ Highcharts.setOptions({
             valueSuffix: ' Visits'
         },
         series:  areaChartDataArr1
-        
        
     });
 
