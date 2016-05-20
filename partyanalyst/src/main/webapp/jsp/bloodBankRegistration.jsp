@@ -105,6 +105,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row m_top10">
                     <div class="col-md-3">
                     	<label>No.of times Blood Donation in BB</label>
                         <input type="number" class="form-control"/>
@@ -123,6 +125,8 @@
                     	<label>Donation</label>
                     	<input type="text" class="form-control"/>
                     </div>
+                </div>
+                <div class="row m_top10">
                     <div class="col-md-3">
                     	<label>Willing to Donate in Emergency</label>
                     	<select>
