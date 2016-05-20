@@ -3418,7 +3418,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		try{
 		Long localElectionBody = 0l;
 		if(locationLevel == 5l){//For Mandal
-			 constituencyIds = boothDAO.getConstituencyIdByPanchayatId(
+			 constituencyIds = boothDAO.getConstituencyIdByTehsilId(
 					locationValue, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));	
 			
 			}
@@ -4927,7 +4927,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					
 					searchVO.setLocationTypeIdsList(locationTypeIds);
 					List<Object[]> questionDetls = activityQuestionnaireDAO.getActivityQuestionListByScope(actibityScopeId);
-					searchVO.getQuestionnaireIdsList().clear();
+					List<Long> activityScopeQuestionIdsLsit = new ArrayList<Long>(0);
 					
 					//List<Object[]> questionDetls = activityQuestionnaireDAO.getQuestionnareDetails(searchVO.getQuestionnaireIdsList());
 					if(searchVO.getSearchType() != null && searchVO.getSearchType().trim().equalsIgnoreCase(IConstants.DISTRICT)){
@@ -4943,7 +4943,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 									updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());}
 								else if(activityLevelId.longValue() == 1L){//responseVO.setName("VILLAGE/WARD");
 									updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());}
-								else if(activityLevelId.longValue() == 13L){updateAreasList("13CONSTITUENCY",locationVO.getSublist1());}
+								else if(activityLevelId.longValue() == 1L){updateAreasList("13CONSTITUENCY",locationVO.getSublist1());}
 								if(commonMethodsUtilService.isListOrSetValid(questionDetls))
 									for (Object[] question : questionDetls) {
 										ActivityResponseVO questionVO = new ActivityResponseVO();
@@ -4951,7 +4951,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 										questionVO.setName(commonMethodsUtilService.getStringValueForObject(question[3]));
 										if(searchVO.getQuestionnaireIdsList().contains(questionVO.getId())){
 											locationVO.getSublist2().add(questionVO);
-											searchVO.getQuestionnaireIdsList().add(questionVO.getId());
+											activityScopeQuestionIdsLsit.add(questionVO.getId());
 										}
 									}
 								LocationWiseMap.put(locationVO.getId(),locationVO);
@@ -4969,7 +4969,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 									updateAreasList("5MANDAL,7TOWN,9DIVISION",locationVO.getSublist1());}
 								else if(activityLevelId.longValue() == 1L){//responseVO.setName("VILLAGE/WARD");
 									updateAreasList("6VILLAGE,8WARD",locationVO.getSublist1());}
-								else if(activityLevelId.longValue() == 13L){updateAreasList("13CONSTITUENCY",locationVO.getSublist1());}
+								
 								if(commonMethodsUtilService.isListOrSetValid(questionDetls))
 									for (Object[] question : questionDetls) {
 										ActivityResponseVO questionVO = new ActivityResponseVO();
@@ -4977,7 +4977,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 										questionVO.setName(commonMethodsUtilService.getStringValueForObject(question[3]));
 										if(searchVO.getQuestionnaireIdsList().contains(questionVO.getId())){
 											locationVO.getSublist2().add(questionVO);
-											searchVO.getQuestionnaireIdsList().add(questionVO.getId());
+											activityScopeQuestionIdsLsit.add(questionVO.getId());
 										}
 									}
 								LocationWiseMap.put(locationVO.getId(),locationVO);
@@ -5018,7 +5018,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 									}
 							}
 						
-						List<Object[]> responseInfoList = activityQuestionAnswerDAO.getLocationWiseResponseDetails(searchVO);
+						List<Object[]> responseInfoList = activityQuestionAnswerDAO.getLocationWiseResponseDetails(searchVO,activityScopeQuestionIdsLsit);
 						if(commonMethodsUtilService.isListOrSetValid(responseInfoList)){
 							for (Object[] updatdObj : responseInfoList){
 								 Long locationId = commonMethodsUtilService.getLongValueForObject(updatdObj[0]);
