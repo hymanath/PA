@@ -138,9 +138,9 @@
 
 	<div class="row">
     	<div class="col-md-4 col-sm-6 col-xs-12" style="">
-        	<div class="panel panel-default panel-custom-green">
+        	<div class="panel panel-default panel-custom-green" style="background:#00b07d">
               <div class="panel-heading">overall events status </div>
-              <div class="panel-body"  id="overAllEventDiv" style="height: 371px;">    
+              <div id="overAllEventDiv" style="height: 395px;">    
 			  
 
               </div>
@@ -157,7 +157,7 @@
 			</div>
 			<div id="hourWiseerrorDiv" style="width: 100%; height: 400px; margin: 0px auto -66px;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;text-align:center;margin-top:10px;padding-top:165px;"></div>
         	<div id="hourWiseContainer" style="width: 100%; height: 400px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:0px;display:none;"></div>
-			<div id="dayWiseContainer" style="width: 100%; height:356px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
+			<div id="dayWiseContainer" style="width: 100%; height:382px; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;margin-top:10px;display:none;"></div>
         </div>
 
     </div>
@@ -188,7 +188,7 @@
               <div class="panel-heading">
                   <h4 class="panel-title">overall<span class=" text-italic f_11 colorBlack">[ap,ts,other states]</span></h4>
                 </div>
-				<div class="panel-body">
+				<div class="panel-body heightapply">
 				<center><img id="allStatesAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 					<div id="allStateDetails"></div>
 				</div>
@@ -199,7 +199,7 @@
               <div class="panel-heading">
                   <h4 class="panel-title">andhra pradesh</h4>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body heightapply">
 					<center><img id="apStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 					<div id="apStateDetails"></div>
                  
@@ -208,10 +208,10 @@
         </div>
 	  <div class="col-md-3">
 		  <div class="panel panel-default panel-custom-coffee">
-			  <div class="panel-heading">
+			  <div class="panel-heading ">
 				  <h4 class="panel-title">telangana</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body heightapply">
 					<center><img id="tsStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 						<div id="tsStateDetails"></div>
 				</div>
@@ -222,7 +222,7 @@
 			  <div class="panel-heading">
 				  <h4 class="panel-title">other states</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body heightapply">
 					<center><img id="otherStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 						<div id="otherStateDetails"></div>
 				</div>
@@ -670,6 +670,7 @@ $(".maineventCls").each(function(){
 
 	function stateWiseEventAttendeeCounts(){
 		
+		 clearAllStateDetails();
 		$("#allStatesAjax").show();
 		$("#apStateAjax").show();
 		$("#tsStateAjax").show();
@@ -691,15 +692,16 @@ $(".maineventCls").each(function(){
 			$("#tsStateAjax").hide();
 			$("#otherStateAjax").hide();
 				buildAllStateDetails(result);
-				buildApStateDetails(result);
-				buildTsStateDetails(result);
-				buildOtherStateDetails(result);
+				buildStateWiseBlocks(result.apStateVO,"apStateDetails");
+                buildStateWiseBlocks(result.tsStateVO,"tsStateDetails");
+                buildStateWiseBlocks(result.otherStatesVO,"otherStateDetails");
+				
 			});   
 	}
 
 	function buildAllStateDetails(result){
 		var str='';
-		if(result.allStatesVO !=null ){
+		if(result.allStatesVO !=null && result.allStatesVO.attendees !=null && result.allStatesVO.attendees > 0){
 			if(result.allStatesVO.attendees ==0 || result.allStatesVO.attendees == null){
 				 str+='<h3 class="m_0 text-center"> - </h3>';
 			}else{
@@ -746,216 +748,96 @@ $(".maineventCls").each(function(){
 					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
 					  str+='</div>';
 					str+='</div>';
-					str+='<p class="text-center m_top10"> - </p>';
+					str+='<p class="text-center"  style="margin-top: 37px;">  </p>';
 				}
 		
-		}
+		
 		
 		$("#allStateDetails").html(str)
-		$(".heightApply").css("height","320px");
 	}
-	function buildApStateDetails(result){
-		
-		var str='';
-		if(result.apStateVO !=null ){
-			str+='<table class="table table-condensed tableStatus m_0" style="border-top:0px;">';
-			  str+='<tr>';
-					if(result.apStateVO.attendees == 0 || result.apStateVO.attendees == null){
-					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0"> - </h4></td>';
-					  }else{
-						  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0">'+result.apStateVO.attendees+'</h4></td>';
-					  }
-					  if(result.apStateVO.invitees == 0 || result.apStateVO.invitees == null){
-						 str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0"> - </h4></td>';
-					  }else{
-						str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">'+result.tsStateVO.invitees+'</h4></td>';
-					  }
-					  if(result.apStateVO.nonInvitees == 0 || result.apStateVO.nonInvitees == null){
-						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0"> - </h4></td>';
-					  }else{
-						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">'+result.apStateVO.nonInvitees+'</h4></td>';
-					  }
-				str+='</tr>';
-			str+='</table>';
-			str+='<table class="table table-condensed tableStatus ">';
-			  str+='<tr>';
-				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
-				str+='</tr>';
-				 for( var i = 0; i < result.apStateVO.subList.length; i++){
-					  var dayCount = '0'+(i+1);
-				  str+='<tr>';
-					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
-						if(result.apStateVO.subList[i].attendees == 0 || result.apStateVO.subList[i].attendees == null ){
-							str+='<td class="f_12">TOTAL<br/> - </td>';
-						}else{
-							str+='<td class="f_12">TOTAL<br/>'+result.apStateVO.subList[i].attendees+'</td>';
-						}
-						if(result.apStateVO.subList[i].invitees == 0 || result.apStateVO.subList[i].invitees == null ){
-							str+='<td class="f_12">Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Invitees<br/>'+result.apStateVO.subList[i].invitees+'</td>';
-						}
-						if(result.apStateVO.subList[i].nonInvitees == 0 || result.apStateVO.subList[i].nonInvitees == null ){
-							str+='<td class="f_12">Non-Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Non-Invitees<br/>'+result.apStateVO.subList[i].nonInvitees+'</td>';
-						}
-					str+='</tr>';
-				} 
-			str+='</table>';
-			if( result.apStateVO.calcPercantage != null && result.apStateVO.calcPercantage.trim().length>0){
-					str+='<div class="progress progressWhite">';
-					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+result.apStateVO.calcPercantage+'%;">';
-					  str+='</div>';
-					str+='</div>';
-					str+='<p class="text-center m_top10 ">'+result.apStateVO.dateString1+' Count is <span class="f_13" style="font-weight:bold">'+result.apStateVO.calcPercantage+' % </span>'+result.apStateVO.highOrlow+' than '+result.apStateVO.dateString2+'</p>';
-				}else{
-					str+='<div class="progress progressWhite">';
-					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
-					  str+='</div>';
-					str+='</div>';
-					str+='<p class="text-center m_top10"> - </p>';
-				
-				}
-		}				
-		
-		$("#apStateDetails").html(str);
+	else{
+		$("#allStateDetails").html("<p style='margin-top: 30px; text-align: center;height:249px;'>NO DATA AVAILABLE</p>");
 	}
-	function buildTsStateDetails(result){
-		
-		var str='';
-		if(result.tsStateVO !=null ){
-			str+='<table class="table table-condensed tableStatus m_0" style="border-top:0px;">';
-			  str+='<tr>';
-					if(result.tsStateVO.attendees == 0 || result.tsStateVO.attendees == null){
-					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0"> - </h4></td>';
-					  }else{
-						  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0">'+result.tsStateVO.attendees+'</h4></td>';
-					  }
-					  if(result.tsStateVO.invitees == 0 || result.tsStateVO.invitees == null){
-						 str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0"> - </h4></td>';
-					  }else{
-						str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">'+result.tsStateVO.invitees+'</h4></td>';
-					  }
-					  if(result.tsStateVO.nonInvitees == 0 || result.tsStateVO.nonInvitees == null){
-						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0"> - </h4></td>';
-					  }else{
-						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">'+result.tsStateVO.nonInvitees+'</h4></td>';
-					  }
-				str+='</tr>';
-			str+='</table>';
-			str+='<table class="table table-condensed tableStatus ">';
-			  str+='<tr>';
-				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
-				str+='</tr>';
-				 for( var i = 0; i < result.tsStateVO.subList.length; i++){
-					  var dayCount = '0'+(i+1);
-				  str+='<tr>';
-					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
-						if(result.tsStateVO.subList[i].attendees == 0 || result.tsStateVO.subList[i].attendees == null ){
-							str+='<td class="f_12">TOTAL<br/> - </td>';
-						}else{
-							str+='<td class="f_12">TOTAL<br/>'+result.tsStateVO.subList[i].attendees+'</td>';
-						}
-						if(result.tsStateVO.subList[i].invitees == 0 || result.tsStateVO.subList[i].invitees == null ){
-							str+='<td class="f_12">Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Invitees<br/>'+result.tsStateVO.subList[i].invitees+'</td>';
-						}
-						if(result.tsStateVO.subList[i].nonInvitees == 0 || result.tsStateVO.subList[i].nonInvitees == null ){
-							str+='<td class="f_12">Non-Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Non-Invitees<br/>'+result.tsStateVO.subList[i].nonInvitees+'</td>';
-						}
-					str+='</tr>';
-				} 
-			str+='</table>';
-			if( result.tsStateVO.calcPercantage != null && result.tsStateVO.calcPercantage.trim().length>0){
-					str+='<div class="progress progressWhite">';
-					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+result.tsStateVO.calcPercantage+'%;">';
-					  str+='</div>';
-					str+='</div>';
-					str+='<p class="text-center m_top10 ">'+result.tsStateVO.dateString1+' Count is <span class="f_13" style="font-weight:bold">'+result.tsStateVO.calcPercantage+' % </span>'+result.tsStateVO.highOrlow+' than '+result.tsStateVO.dateString2+'</p>';
-				}else{
-					str+='<div class="progress progressWhite">';
-					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
-					  str+='</div>';
-					str+='</div>';
-					str+='<p class="text-center m_top10"> - </p>';
-				}
-		}				
-		
-		$("#tsStateDetails").html(str);
-	}
-	function buildOtherStateDetails(result){
-		
-		var str='';
-		if(result.otherStatesVO !=null ){
-			str+='<table class="table table-condensed tableStatus m_0" style="border-top:0px;">';
-			  str+='<tr>';
-				  if(result.otherStatesVO.attendees == 0 || result.otherStatesVO.attendees == null){
-					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0"> - </h4></td>';
-				  }else{
-					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0">'+result.otherStatesVO.attendees+'</h4></td>';
-				  }
-				  if(result.otherStatesVO.invitees == 0 || result.otherStatesVO.invitees == null){
-					 str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0"> - </h4></td>';
-				  }else{
-					str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">'+result.otherStatesVO.invitees+'</h4></td>';
-				  }
-				  if(result.otherStatesVO.nonInvitees == 0 || result.otherStatesVO.nonInvitees == null){
-					str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0"> - </h4></td>';
-				  }else{
-					str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">'+result.otherStatesVO.nonInvitees+'</h4></td>';
-				  }
-				
-				str+='</tr>';
-			str+='</table>';
-			str+='<table class="table table-condensed tableStatus ">';
-			  str+='<tr>';
-				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
-				str+='</tr>';
-				 for( var i = 0; i < result.otherStatesVO.subList.length; i++){
-					  var dayCount = '0'+(i+1);
-				  str+='<tr>';
-					    str+='<td><span class="dayCount">'+dayCount+'</span></td>';
-						if(result.otherStatesVO.subList[i].attendees == 0 || result.otherStatesVO.subList[i].attendees == null ){
-							str+='<td class="f_12">TOTAL<br/> - </td>';
-						}else{
-							str+='<td class="f_12">TOTAL<br/>'+result.otherStatesVO.subList[i].attendees+'</td>';
-						}
-						if(result.otherStatesVO.subList[i].invitees == 0 || result.otherStatesVO.subList[i].invitees == null ){
-							str+='<td class="f_12">Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Invitees<br/>'+result.otherStatesVO.subList[i].invitees+'</td>';
-						}
-						if(result.otherStatesVO.subList[i].nonInvitees == 0 || result.otherStatesVO.subList[i].nonInvitees == null ){
-							str+='<td class="f_12">Non-Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Non-Invitees<br/>'+result.otherStatesVO.subList[i].nonInvitees+'</td>';
-						}
-						
-					str+='</tr>';
-				} 
-			str+='</table>';
-			if(result.otherStatesVO.calcPercantage != null && result.otherStatesVO.calcPercantage.trim().length>0){
-					str+='<div class="progress progressWhite">';
-					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+result.otherStatesVO.calcPercantage+'%;">';
-					  str+='</div>';
-					str+='</div>';
-					str+='<p class="text-center m_top10">'+result.otherStatesVO.dateString1+' Count is <span class="f_13" style="font-weight:bold">'+result.otherStatesVO.calcPercantage+' % </span>'+result.otherStatesVO.highOrlow+' than '+result.otherStatesVO.dateString2+'</p>';
-			}else{
-				str+='<div class="progress progressWhite">';
-					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
-					  str+='</div>';
-					str+='</div>';
-					str+='<p class="text-center m_top10"> - </p>';
-			}
-		}				
-		
-		$("#otherStateDetails").html(str);
-	}
+}
 
+ function buildStateWiseBlocks(stateVO,buildDivId){
+	var str='';
+		if(stateVO !=null && stateVO.attendees != null && stateVO.attendees > 0 ){
+			str+='<table class="table table-condensed tableStatus m_0" style="border-top:0px;">';
+			  str+='<tr>';
+					if(stateVO.attendees == 0 || stateVO.attendees == null){
+					  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						  str+='<td style="width: 94px;"><p class="f_12 m_0">Total Unique Visitors</p><h4 class="m_0">'+stateVO.attendees+'</h4></td>';
+					  }
+					  if(stateVO.invitees == 0 || stateVO.invitees == null){
+						 str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						str+='<td><p class="f_12 m_0">Invitees</p><h4 class="m_0">'+stateVO.invitees+'</h4></td>';
+					  }
+					  if(stateVO.nonInvitees == 0 || stateVO.nonInvitees == null){
+						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0"> - </h4></td>';
+					  }else{
+						str+='<td><p class="f_12 m_0">Non Invitees</p><h4 class="m_0">'+stateVO.nonInvitees+'</h4></td>';
+					  }
+				str+='</tr>';
+			str+='</table>';
+			str+='<table class="table table-condensed tableStatus ">';
+			  str+='<tr>';
+				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
+				str+='</tr>';
+				 for( var i = 0; i < stateVO.subList.length; i++){
+					  var dayCount = '0'+(i+1);
+				  str+='<tr>';
+					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+						if(stateVO.subList[i].attendees == 0 || stateVO.subList[i].attendees == null ){
+							str+='<td class="f_12">TOTAL<br/> - </td>';
+						}else{
+							str+='<td class="f_12">TOTAL<br/>'+stateVO.subList[i].attendees+'</td>';
+						}
+						if(stateVO.subList[i].invitees == 0 || stateVO.subList[i].invitees == null ){
+							str+='<td class="f_12">Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Invitees<br/>'+stateVO.subList[i].invitees+'</td>';
+						}
+						if(stateVO.subList[i].nonInvitees == 0 || stateVO.subList[i].nonInvitees == null ){
+							str+='<td class="f_12">Non-Invitees<br/> - </td>';
+						}else{
+							str+='<td class="f_12">Non-Invitees<br/>'+stateVO.subList[i].nonInvitees+'</td>';
+						}
+					str+='</tr>';
+				} 
+			str+='</table>';
+			if( stateVO.calcPercantage != null && stateVO.calcPercantage.trim().length>0){
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+stateVO.calcPercantage+'%;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10 ">'+stateVO.dateString1+' Count is <span class="f_13" style="font-weight:bold">'+stateVO.calcPercantage+' % </span>'+stateVO.highOrlow+' than '+stateVO.dateString2+'</p>';
+				}else{
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center"  style="margin-top: 37px;">  </p>';
+				}
+						
+		
+		$("#"+buildDivId).html(str);
+	}
+	else{
+		$("#"+buildDivId).html("<p style='margin-top: 30px; text-align: center;height:249px;'>NO DATA AVAILABLE</p>");
+	}
+	
+}
+
+function clearAllStateDetails(){
+	$("#allStateDetails").html('');
+	$("#apStateDetails").html('');
+	$("#tsStateDetails").html('');
+	$("#otherStateDetails").html('');
+	
+}
 function getLocationWiseVisitorsCount(eventId,reportLevelId)
 {
 	$("#constAjax").show();
@@ -1243,7 +1125,7 @@ function buildDistrictTable(result,reportLevelId){
 	
 	var Scrollerlength = $(".scrollLength").find("tr").length;
 	
-	if(Scrollerlength >=7){
+	if(Scrollerlength >=5){
 		$("#datatableId").css("display","block");
 		$("#datatableId").css("height","383px");
 		$("#datatableId").css("overflow-y","scroll");
@@ -1455,7 +1337,7 @@ function buildConstTable(result,reportLevelId){
     });
 	var Scrollerlength = $(".scrollLength").find("tr").length;
 
-	if(Scrollerlength >=7){
+	if(Scrollerlength >=5){
 		
 		$("#constituencyDataTableId").css("display","block");
 		$("#constituencyDataTableId").css("height","383px");
@@ -1618,12 +1500,14 @@ function buildStartingPrograms(result){
 		  total = total + result[i].invitees + result[i].nonInvitees;
     }
 	var elementsLength = result.length;
-	
-	str+='<h5 style="font-weight:bold">TOTAL UNIQUE VISITORS -'+result[0].total +'</h5>';
-	str+='<h5 style="margin-top:2px;font-weight:bold">TOTAL UNIQUE INVITEES ATTENDED - '+result[0].uniqueInviteeVisitorsAttended+'</h5>';
-	str+='<h5 style="margin-top:2px;font-weight:bolder;font-size:13px;">TOTAL UNIQUE NON-INVITEES ATTENDED - '+result[0].uniqueNonInviteeVisitorsAttended+'</h5>';
-	str+='<h5 style="margin-top:2px;font-weight:bold">TOTAL VISITS - '+total+'</h5>';
-	str+=' <div class="scrollDiv2">';
+	str+='<div style="background:#00A064;padding:3px 7px;color:#fff;">';
+	str+='<h5 style="font-weight:bold">TOTAL UNIQUE VISITORS<span class="pull-right">'+result[0].total +'</span></h5>';
+	str+='<h5 style="margin-top:2px;font-weight:bold">TOTAL UNIQUE INVITEES ATTENDED<span class="pull-right">'+result[0].uniqueInviteeVisitorsAttended+'</span></h5>';
+	str+='<h5 style="margin-top:2px;font-weight:bolder;font-size:13px;">TOTAL UNIQUE NON-INVITEES ATTENDED <span class="pull-right">'+result[0].uniqueNonInviteeVisitorsAttended+'</span></h5>';
+	str+='<h5 style="margin-top:2px;font-weight:bold">TOTAL VISITS <span class="pull-right">'+total+'</span></h5>';
+	str+='</div>';
+	str+='<div class="panel-body" >';
+	str+=' <div class="scrollDiv2" style="background:rgba(0, 176, 125,0.4) ">';
 	//str+='<hr class="m_0"/>	';
 	var dataArr=[] ;
 	var colorsarr = new Array();
@@ -1646,28 +1530,51 @@ function buildStartingPrograms(result){
 			  var invalidCount = result[i].inValidCount;
 			  str+='<tr>';
 			  str+='<td>';
-			  str+=' <span class="pull-left">'+result[i].name+'</span>  <span style="font-size:12px;">(';
+			  str+=' <p>'+result[i].name+'<span style="font-size:12px;">(';
 			    if(validCount != null && validCount > 0){
 					 str+=' Valid  - <a style="cursor:pointer;color:#fff;text-decoration:none" title="Click To See Valid Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+validCount+'</a> |';
 				}else{
 					 str+=' Valid  - '+validCount+' ';
 				}
 			    str+=' Invalid  - '+invalidCount+' ';
-			  str+=')</span>';
-			  
+			  str+=')</span></p>';
+			  str+='<ul class="spanBorderRight">';
+				for(var j in result[i].subList){
+					if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
+						str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';  
+					}else{
+						str+='<li>'+result[i].subList[j].name+' : -  </li>'; 
+					}
+					
+				} 
+			  str+='</ul>';
+			  str+='</td>';
+			  str+='<td>';
 			  if(count >0 && result[i].id !=null){    
 			      str+='  <span class="pull-right label-custom" style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';
 			  }
 			  else{
 			     str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center">'+count+'</span>';
 			  }
-			  str+='</tr>';
 			  str+='</td>';
+			  str+='</tr>';
+			  
 			  
 		}else{
 			  str+='<tr>';
 			  str+='<td style="padding:7px 5px">';
-			  str+=' <span class="pull-left">'+result[i].name+'</span>';
+			  str+=' <p class="m_0">'+result[i].name+'</p>';
+			  str+='<ul class="spanBorderRight">';
+			    for(var j in result[i].subList){
+					if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
+						str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';  
+					}else{
+						str+='<li>'+result[i].subList[j].name+' : -  </li>'; 
+					}
+				} 
+			  str+='</ul>';
+			  str+='</td>';
+			  str+='<td>';
 			  if(count >0 && result[i].id !=null){    
 			  str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
 			  }
@@ -1690,6 +1597,7 @@ function buildStartingPrograms(result){
 	
 	str+='</table>';
 	str+='</div>';
+	
 	  if( result != null && result.length > 0 ){
 		 var isMahanaduEvent = result[0].mahanaduEvent;
 		 if(isMahanaduEvent){
@@ -1704,7 +1612,7 @@ function buildStartingPrograms(result){
 			  $("#mahanaduEventDashBoardLinkId").hide();			 
 		 }
 	  } 
-	  
+	 str+='</div>'; 
 	$("#overAllEventDiv").html(str);
 
 	if(elementsLength > 4)
@@ -1778,7 +1686,7 @@ $('#donutchart').removeClass("errorDiv");
 }
 
  function eventUpdate(checkDateChange){
-	 
+	
 	 if(checkDateChange != 'dateChange')
 	 updateDatesButton();
 	 
@@ -1903,6 +1811,7 @@ showHide();
 		setcolorsForEvents();
 		countDetailsCalls();
 		locationWiseCalls();
+		stateWiseEventAttendeeCounts();
 	}
 	
 	
