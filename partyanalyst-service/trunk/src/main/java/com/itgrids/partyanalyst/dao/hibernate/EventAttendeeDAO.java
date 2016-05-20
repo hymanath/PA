@@ -959,11 +959,20 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append("select count(distinct EA.tdp_cadre_id) as total,count(distinct EI.tdp_cadre_id) as invitees," +
+		/*str.append("select count(distinct EA.tdp_cadre_id) as total,count(distinct EI.tdp_cadre_id) as invitees," +
 				"(count(distinct EA.tdp_cadre_id)-count(distinct EI.tdp_cadre_id)) as NonInvitees,d.district_id as districtId,d.district_name as districtName" +
 				" from " +
 				" tdp_cadre TC,user_address UA,district d ,event E,event_attendee EA left outer join" +
 				" event_invitee EI on EA.tdp_cadre_id = EI.tdp_cadre_id and EI.event_id = :eventId " +
+				" where " +
+				" EA.event_id = E.event_id " +
+				" and EA.tdp_cadre_id = TC.tdp_cadre_id " +
+				" and TC.address_id = UA.user_address_id " +
+				" and UA.district_id = d.district_id " +
+				" and E.parent_event_id = :eventId " );*/
+		str.append("select count(distinct EA.tdp_cadre_id) as total,d.district_id as districtId,d.district_name as districtName" +
+				" from " +
+				" tdp_cadre TC,user_address UA,district d ,event E,event_attendee EA " +
 				" where " +
 				" EA.event_id = E.event_id " +
 				" and EA.tdp_cadre_id = TC.tdp_cadre_id " +
@@ -979,8 +988,6 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("total",Hibernate.LONG)
-				.addScalar("invitees",Hibernate.LONG)
-				.addScalar("NonInvitees",Hibernate.LONG)
 				.addScalar("districtId",Hibernate.LONG)
 				.addScalar("districtName",Hibernate.STRING);
 		
@@ -1216,11 +1223,21 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append("select count(distinct EA.tdp_cadre_id) as total,count(distinct EI.tdp_cadre_id) as invitees," +
+		/*str.append("select count(distinct EA.tdp_cadre_id) as total,count(distinct EI.tdp_cadre_id) as invitees," +
 				"(count(distinct EA.tdp_cadre_id)-count(distinct EI.tdp_cadre_id)) as NonInvitees,d.district_id as districtId,d.district_name as districtName" +
 				" from " +
 				" tdp_cadre TC,user_address UA,state state,constituency constituency,district d ,event E,event_attendee EA left outer join" +
 				" event_invitee EI on EA.tdp_cadre_id = EI.tdp_cadre_id and EI.event_id = :eventId " +
+				" where " +
+				" EA.event_id = E.event_id " +
+				" and EA.tdp_cadre_id = TC.tdp_cadre_id " +
+				" and TC.address_id = UA.user_address_id " +
+				" and UA.constituency_id = constituency.constituency_id " +
+				" and constituency.district_id = d.district_id " +
+				" and E.parent_event_id = :eventId " );*/
+		str.append("select count(distinct EA.tdp_cadre_id) as total,d.district_id as districtId,d.district_name as districtName" +
+				" from " +
+				" tdp_cadre TC,user_address UA,state state,constituency constituency,district d ,event E,event_attendee EA" +
 				" where " +
 				" EA.event_id = E.event_id " +
 				" and EA.tdp_cadre_id = TC.tdp_cadre_id " +
@@ -1237,8 +1254,6 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("total",Hibernate.LONG)
-				.addScalar("invitees",Hibernate.LONG)
-				.addScalar("NonInvitees",Hibernate.LONG)
 				.addScalar("districtId",Hibernate.LONG)
 				.addScalar("districtName",Hibernate.STRING);
 		
