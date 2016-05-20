@@ -3113,5 +3113,9 @@
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 	</bean>
 	
+	<bean name="bloodBankService" class="com.itgrids.partyanalyst.service.impl.BloodBankService">
+	
+	</bean>
+	
 </beans>		
 	

@@ -12195,5 +12195,18 @@
 			<param name="root">mahanaduEventVO</param>
 		</result>
 	</action>
+	
+	<action name="bloodBankRegistrationAction" class="bloodBankAction" method="bloodBankRegistration">
+		<result name="success">/jsp/bloodBankRegistration.jsp</result>
+	</action>
+	
+	<action name="bloodBankDashBoardAction" class="bloodBankAction" method="bloodBankDashBoard">
+		<result name="success">/jsp/bloodBankDashBoard.jsp</result>
+	</action>
+	
+	<action name="bloodBankBleadingAction" class="bloodBankAction" method="bloodBankBleading">
+		<result name="success">/jsp/bloodBankBleading.jsp</result>
+	</action>
+	
 </package>
 </struts>      
