@@ -217,7 +217,7 @@ body
 	color:#666666 !important;
 	font-size:18px;
 	text-transform:uppercase;
-	padding:5px 20px 2px 20px;
+	padding:10px 8px;
 	border-bottom:0px;
 	border-color:#cccccc;
 	color:#000;
@@ -860,7 +860,7 @@ footer
 }
 
 .otherStates {
-    position: relative; width: 125px;
+    position: relative; width: 135px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 	display:inline-block
 }
@@ -895,7 +895,7 @@ footer
     display: block; width: 18px; margin: 1.5px;
     background: #FFFFFF;
     position: absolute; top: 0; bottom: 0;
-    right: 100px;
+    right: 112px;
 	height:17px;
     border-radius: 20px;
     transition: all 0.3s ease-in 0s; 
@@ -1082,6 +1082,10 @@ footer
 		border-bottom:1px solid #333;
 		text-align:center;
 	}
+	.tableHourWise tr td
+	{
+		padding:8px 5px !important;
+	}
 	.tableHourWise tr td:nth-child(2) , .tableHourWise thead th:nth-child(2)
 	{
 		background-color:#CAD6E2 !important;
@@ -1109,24 +1113,25 @@ footer
 	  color:#fff; 
 	  border-radius: 5px; 
 	  padding:2px 6px;
-	  width: 160px;
+	  width: 285px;
 	  float:right;
 	  text-align:center
 	}
 	.refreshButton .text
 	{
-	  font-size: 11px; 
-	  line-height: 11px; 
+	  font-size: 14px; 
+	  line-height: 20px; 
 	  border-right: 1px solid rgb(51, 51, 51); 
 	  display: inline-block;
+	  padding-right:5px;
 	}
 	.refreshButton .refreshIcon
 	{
 	  padding:2px 8px;
 	  color:#fff !important;
 	  position:relative;
-	  top:-2px;
-	  font-size:15px;
+	  top:1px;
+	  font-size:13px;
 	}
 	.text-capitalise
 	{
@@ -1143,3 +1148,13 @@ footer
 	{
 		padding:8px;
 	}
+.refreshIconPanel
+{
+	background:rgb(0, 177, 127);
+	padding:5px 4px;
+	margin:1px;
+	color:#fff;
+	border-radius:4px;
+	cursor:pointer;
+	margin-top:-5px
+}

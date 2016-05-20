@@ -30,14 +30,10 @@
 <script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
 <style>
 	header.eventsheader {
-   
     background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
-
     background-origin: border-box;
     background-repeat: no-repeat;
- 
     height: 71px;
-	
 }
 </style>
 </head>
@@ -53,17 +49,11 @@
 			  <button id="mahanaduLinkId" type="button" class="btn btn-primary pull-right">ENTRY/EXIT DASHBOARD</button>
 			</div>
 			<div class="refreshButton">
-			  <span  class="text">Last Updated Time <br/><span id="timeUpdationId"></span></span>
+			  <span  class="text">Last Updated Time <span id="timeUpdationId"></span></span>
 			  <a onclick="" title=" Page Refresh" class="refreshIcon" style="cursor:pointer">
 				<span class="glyphicon glyphicon-refresh"></span>
 			  </a>
 			</div>
-			 
-			<!--<a  class="btn btn-xs btn-success btn-block dataSynchClass" title=" Data Synch..">
-			  <span class="" style="font-size: 15px;"> Sync
-				<img src="images/ajaxImg2.gif" id="syncAjaxImage1" style="height:20px;width:20px;display:none;"/>
-			  </span>
-			 </a>-->
 			</div>
 			<div class="col-md-2">
 				<select class="form-control" id="mainEventSelectId">
@@ -133,7 +123,7 @@
 			</div>
 		</div>
 		<div class="col-md-2">
-			<div class="panel panel-default panel-custom-default"><i class="glyphicon glyphicon-refresh pull-right" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="ttlTdyVstrsId"></i>
+			<div class="panel panel-default panel-custom-default"><!--<i class="glyphicon glyphicon-refresh pull-right refreshIconPanel" title="page refresh" id="ttlTdyVstrsId"></i>-->
 				<div class="panel-heading">
 					<h4 class="panel-title">TODAY</h4>
 				</div>
@@ -148,82 +138,46 @@
 		<div class="col-md-4">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="hrWiseVstrsId"></i></h4>
+					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: <span id="hourWiseTableTimeId"></span></p>
 				</div>
-				<div class="panel-body pad_0" style="height:335px">
+				<div class="panel-body pad_0" style="height:370px">
 				<div><center><img id="hrWiseVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 				 <div id="visitorsTableId"></div>
-					<!--<table class="table table-condensed tableHourWise">
-						<thead>
-							<th>TIME STATUS</th>
-							<th>DAY - 1</th>
-							<th>DAY - 2</th>
-							<th>DAY - 3</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Above 8 Hours</td>
-								<td>6461</td>
-								<td>1948</td>
-								<td>0</td>
-							</tr>
-						</tbody>
-					</table>-->
 				</div>
 			</div>
 		</div>
 		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
+					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>
 				</div>
 				<div class="panel-body">
 				  <div><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
-					<div id="hoursWiseVisitors" style="height:400px;width:100%;"></div>
+					<div id="hoursWiseVisitors" style="height:325px;width:100%;"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-4">
-			<div class="panel panel-default panel-custom-default">
+			<div class="panel panel-default panel-custom-default" style="height:230px;">
 				<div class="panel-heading">
-					<h4 class="panel-title">DAY WISE UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="refreshDaysWiseRevisitId"></i></h4>
-				</div><!--style="height:167px"-->
-				<div class="panel-body pad_8 panelDefault">
+					<h4 class="panel-title">DAY WISE UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right refreshIconPanel" title="page refresh" id="refreshDaysWiseRevisitId"></i></h4>
+				</div>
+				<div class="panel-body pad_8">
 				<div><center><img id="dayWsUnquVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 				 <div id="daysSummaryUniqueTableId"></div>
-					<!--<table class="table tableDayWiseRevisit table-condensed">
-						<tr>
-							<td><span class="countNo">1</span></td>
-							<td>Total Unique <br/>6734</td>
-							<td>Only 1st Day<br/>6265</td>
-							<td>Revisits<br/>-</td>
-						</tr>
-						<tr>
-							<td><span class="countNo">1</span></td>
-							<td>Total Unique <br/>6734</td>
-							<td>Only 1st Day<br/>6265</td>
-							<td>Revisits<br/>-</td>
-						</tr>
-						<tr>
-							<td><span class="countNo">1</span></td>
-							<td>Total Unique <br/>6734</td>
-							<td>Only 1st Day<br/>6265</td>
-							<td>Revisits<br/>-</td>
-						</tr>
-					</table>-->
 				</div>
 			</div>
 		</div>
 		<div class="col-md-8">
-			<div class="panel panel-default panel-custom-default">
+			<div class="panel panel-default panel-custom-default" style="height:230px;">
 				<div class="panel-heading">
-					<h4 class="panel-title">DAY WISE VISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right" style="color:#5CB85C;cursor: pointer;" title="page refresh" id="rfrshDyWsPrgrssRvstId"></i></h4>
+					<h4 class="panel-title">DAY WISE VISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right refreshIconPanel" title="page refresh" id="rfrshDyWsPrgrssRvstId"></i></h4>
 				</div>
-				<div class="panel-body panelDefault">
+				<div class="panel-body">
 				<div><center><img id="dayWsVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 				<div id="totalVisitorsDtlsId"></div>
 					<!--<p class="m_0">1 DAY VISITORS<span class="pull-right" id="frstDyVstrsId">100%</span></p>
@@ -330,8 +284,6 @@ $(".panelDefault").each(function(){
    if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 });
 $(".panelDefault").height(maxHeight);	
-
-
  function buildVisitorsDtlsGraph(result){
 	  var finalDataArr=[];
 	  var daysArr=["Day - 1","Day - 2","Day - 3"];
@@ -853,10 +805,6 @@ $(".panelDefault").height(maxHeight);
 							  str+="   0</td>";
 						  }
 					  }  
-					  
-					  
-					  
-					  
 				  }
 				  str+="</tr>";
 				  str+="<tr>";
@@ -1036,10 +984,10 @@ function buildTotalVisitorsResult(result){
   	$(document).on("click","#refreshDaysWiseRevisitId",function(){
 	  getDaysUniqueAndRevisitSummary();
   	});
-  	$(document).on("click","#ttlTdyVstrsId",function(){
+  	/* $(document).on("click","#ttlTdyVstrsId",function(){
 	  getTodayTotalVisitors();
   	});
-  
+   */
 	$(document).on("click","#tsSwitch",function(){
 		getDistrictWiseMembersCountInCampus();
 	});
@@ -1106,9 +1054,7 @@ function buildTotalVisitorsResult(result){
 		}else{
 			$("#distWiseTableId").html("<h5> No Data Availabel.</h5>");
 		}
-		
 	}
-
    </script>
 </body>
 </html>
