@@ -23,4 +23,5 @@ public interface IActivityQuestionAnswerDAO extends GenericDao<ActivityQuestionA
 	public List<Object[]> getCommentDetails(Long activityScopeId,Long reportType,Long questnId, Long levelId, Long reportTypeId,String locationLevelStr);
 	public List<Object[]> getLocationWiseResponseDetails(SearchAttributeVO searchVO,List<Long> activityScopeQuestionIdsLsit);
 	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityScope,Long questionId,String optionType);
+	public List<Object[]> getActivityLocationInfoByScope(SearchAttributeVO searchVO,String optionType);
 }
