@@ -377,6 +377,9 @@ $(".panelDefault").height(maxHeight);
 	});
 	
     $(document).ready(function(){
+		setInterval(function(){ 
+			$( ".refreshButton" ).trigger( "click" );
+		}, 600000);
 		
 		var currentdate = new Date(); 
 		var datetime = currentdate.getDate() + "-"
