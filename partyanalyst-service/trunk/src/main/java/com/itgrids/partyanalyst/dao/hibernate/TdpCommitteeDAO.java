@@ -421,12 +421,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) ");
 				
 			}
-			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			str.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		}else if(type.equalsIgnoreCase("completed")){
 			if(startDate != null && endDate !=null){
 				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
 			}
-			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y'");
+			str.append("and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y'");
 		}
 		
 		str.append(" group by model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
@@ -805,7 +805,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		  if(status.equalsIgnoreCase("Started"))
 			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 			else if(status.equalsIgnoreCase("completed"))
-			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			str.append(" and model.completedDate is not null and model.startedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 		  if(constituencyId != null && constituencyId > 0)
 			 str.append("and model.constituency.constituencyId =:constituencyId");
 		  
@@ -834,12 +834,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			if(startDate != null && endDate !=null){
 				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) ");
 			}
-			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			str.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		}else if(type.equalsIgnoreCase("completed")){
 			if(startDate != null && endDate !=null){
 				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y'  ");
 			}
-			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			str.append("and model.startedDate is not null  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 		}
 		
 		str.append(" group by model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId ");
@@ -872,12 +872,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 			if(startDate != null && endDate !=null){
 				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate)");
 			}
-			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			str.append(" and model.startedDate is not null and model.completedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		}else if(type.equalsIgnoreCase("completed")){
 			if(startDate != null && endDate !=null){
 				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  and model.completedDate is not null and model.isCommitteeConfirmed = 'Y'  ");
 			}
-			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			str.append("and model.startedDate is not null and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 		}
 		
 		str.append(" group by model.constituency.constituencyId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
@@ -904,9 +904,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId  ");
 		
 		  if(status.equalsIgnoreCase("Started"))
-			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
+			str.append(" and model.startedDate is not null and  model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 			else if(status.equalsIgnoreCase("completed"))
-			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			str.append(" and model.completedDate is not null and model.startedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 		  if(constituencyId != null && constituencyId > 0)
 			 str.append("and model.constituency.constituencyId =:constituencyId");
 		  if(tehsilId != null && tehsilId > 0)
@@ -931,7 +931,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		  if(status.equalsIgnoreCase("Started"))
 			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 			else if(status.equalsIgnoreCase("completed"))
-			str.append(" and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			str.append(" and model.completedDate is not null and model.startedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 		  if(constituencyId != null && constituencyId > 0)
 			 str.append("and model.constituency.constituencyId =:constituencyId");
 		  if(localElectionBody != null && localElectionBody > 0)
