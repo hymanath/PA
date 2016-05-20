@@ -298,5 +298,51 @@
 <script type="text/javascript">
 $('select').dropkick();
 </script>
+<script type="text/javascript">
+$(document).ready(function(){
+	 getOccuations();
+	 getEducationQualifications();
+	 getCadreDetails();
+});
+function getOccuations(){
+	
+	   var jObj = {
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getOccuationsAction.action',
+		  data : {} ,
+		}).done(function(result){
+			//console.log(result);
+		});
+}
+function getEducationQualifications(){
+		
+	   var jObj = {
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getEducationQualificationsAction.action',
+		  data : {} ,
+		}).done(function(result){
+			//console.log(result);
+		});
+}
+ function getCadreDetails(){
+		
+	   var jObj = {
+		   memberShipNo:12800104
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getCadreDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			//console.log(result);
+		});
+}
+
+</script>
+
 </body>
 </html>
