@@ -962,7 +962,7 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationWiseResponseDetails(SearchAttributeVO searchVO){
+	public List<Object[]> getLocationWiseResponseDetails(SearchAttributeVO searchVO,List<Long> activityScopeQuestionIdsLsit){
 		StringBuilder queryStr = new StringBuilder();
 		CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 		if(commonMethodsUtilService.isTextEmpty(searchVO.getSearchType())){
@@ -981,7 +981,7 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 				queryStr.append(" group by  model.activityLocationInfo.constituency.district.districtId,model.activityQuestionnaireId ");
 		}
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameterList("activityQuestionnaireIdsList", searchVO.getQuestionnaireIdsList());
+		query.setParameterList("activityQuestionnaireIdsList", activityScopeQuestionIdsLsit);
 		return query.list();
 		
 	}
