@@ -9,6 +9,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAcceptanceStatusDAO;
+import com.itgrids.partyanalyst.dao.IBloodBagQuantityDAO;
 import com.itgrids.partyanalyst.dao.IBloodBagTypeDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationAgeGroupDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationCampDAO;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AcceptanceStatus;
+import com.itgrids.partyanalyst.model.BloodBagQuantity;
 import com.itgrids.partyanalyst.model.BloodBagType;
 import com.itgrids.partyanalyst.model.BloodDonation;
 import com.itgrids.partyanalyst.model.BloodDonationAgeGroup;
@@ -45,6 +47,7 @@ public class BloodBankService implements IBloodBankService{
 	private IBloodDonationCampDAO bloodDonationCampDAO;
 	private IAcceptanceStatusDAO acceptanceStatusDAO;
 	private IBloodBagTypeDAO bloodBagTypeDAO;
+	private IBloodBagQuantityDAO bloodBagQuantityDAO;
 	
 	
 	
@@ -111,6 +114,15 @@ public class BloodBankService implements IBloodBankService{
 
 	public void setBloodBagTypeDAO(IBloodBagTypeDAO bloodBagTypeDAO) {
 		this.bloodBagTypeDAO = bloodBagTypeDAO;
+	}
+	
+
+	public IBloodBagQuantityDAO getBloodBagQuantityDAO() {
+		return bloodBagQuantityDAO;
+	}
+
+	public void setBloodBagQuantityDAO(IBloodBagQuantityDAO bloodBagQuantityDAO) {
+		this.bloodBagQuantityDAO = bloodBagQuantityDAO;
 	}
 
 	@Override
@@ -359,11 +371,8 @@ public class BloodBankService implements IBloodBankService{
 					idNameList.add(idNameVO);
 				}
 			}
-			
-			
 		}catch(Exception e){
 			LOG.error("Exception riased at getAcceptanceStatus() method of BloodBankService class", e);
-			
 		}
 		return idNameList;
 	}
@@ -382,10 +391,28 @@ public class BloodBankService implements IBloodBankService{
 					idNameList.add(idNameVO);
 				}
 			}
-			
 		}catch(Exception e){
 			LOG.error("Exception riased at getBloodBagType() method of BloodBankService class", e);
-			
+		}
+		return idNameList;
+	}
+	public List<IdNameVO> getBloodBagQuantity(){
+		List<BloodBagQuantity> bloodBagQuantityList = null;
+		List<IdNameVO> idNameList = new ArrayList<IdNameVO>();
+		IdNameVO idNameVO = null;
+		try{
+			LOG.info("Entered into getBloodBagQuantity() method of BloodBankService class");
+			bloodBagQuantityList = bloodBagQuantityDAO.getAll();
+			if(bloodBagQuantityList!=null && bloodBagQuantityList.size()>0){
+				for(BloodBagQuantity bloodBagQuantity:bloodBagQuantityList){
+					idNameVO = new IdNameVO();
+					idNameVO.setId(bloodBagQuantity.getBloodBagQuantityId());
+					idNameVO.setName(bloodBagQuantity.getType());
+					idNameList.add(idNameVO);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception riased at getBloodBagQuantity() method of BloodBankService class", e);
 		}
 		return idNameList;
 	}
