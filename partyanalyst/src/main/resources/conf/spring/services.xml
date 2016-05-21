@@ -3122,6 +3122,7 @@
 	   <property name="transactionTemplate" ref="transactionTemplate" />
 	   <property name="bloodDonorInfoDAO" ref="bloodDonorInfoDAO"></property>
 	   <property name="bloodDonationAgeGroupDAO" ref="bloodDonationAgeGroupDAO"></property>
+	   <property name="bloodDonationCampDAO" ref="bloodDonationCampDAO"></property>
 	</bean>
 	
 </beans>		
