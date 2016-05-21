@@ -416,4 +416,39 @@ public class BloodBankService implements IBloodBankService{
 		}
 		return idNameList;
 	}
+	public List<BloodBankVO> getBleedingCadreDetails(List<Long> statusIds,Long campId){
+		
+		List<BloodBankVO> finalList = new ArrayList<BloodBankVO>();
+		
+		try{
+			//0.tdpCadreId,1.memberShipNo,2.donorName,3.mobileNo,4.acceptanceStatusId,5.status,6.bagNo,
+			//7.bloodBagTypeId,8.bagType,9.bloodBagQuantityId,10.type,11.quantity,12.remarks
+			List<Object[]> cadreObjList = bloodDonationDAO.getBleedingCadreDetails(statusIds, campId);			
+			if(cadreObjList !=null && cadreObjList.size()>0){
+				for (Object[] obj : cadreObjList) {					
+					BloodBankVO vo = new BloodBankVO();					
+					vo.setId(obj[0] !=null ? (Long)obj[0]:0l);
+					vo.setMembershipNo(obj[1] !=null ? obj[1].toString():"");
+					vo.setName(obj[2] !=null ? obj[2].toString():"");
+					vo.setMobile(obj[3] !=null ? obj[3].toString():"");
+					vo.setStatusId(obj[4] !=null ? (Long)obj[4]:0l);
+					vo.setStatus(obj[5] !=null ? obj[5].toString():"");
+					vo.setBagNo(obj[6] !=null ? obj[6].toString():"");
+					vo.setBagTypeId(obj[7] !=null ? (Long)obj[7]:0l);
+					vo.setBagType(obj[8] !=null ? obj[8].toString():"");
+					vo.setBloodBankQuantityId(obj[9] !=null ? (Long)obj[9]:0l);
+					vo.setQuantityType(obj[10] !=null ? obj[10].toString():"");
+					vo.setQuantity(obj[11] !=null ? (Long)obj[11]:0l);
+					vo.setRemarks(obj[12] !=null ? obj[12].toString():"");
+					
+					finalList.add(vo);
+				}
+			}
+						
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalList;
+	}
+	
 }

@@ -35,6 +35,13 @@ public class BloodBankVO implements Serializable{
 	private String bagNo;
 	private Long quantity;
 	private boolean alreadyDonated;
+	private Long statusId;
+	private String status;
+	private Long bagTypeId;
+	private String bagType;
+	private Long bloodBankQuantityId;
+	private String quantityType;
+	
 	
 	private AddressVO addressVO;
 	
@@ -218,6 +225,42 @@ public class BloodBankVO implements Serializable{
 	}
 	public void setAlreadyDonated(boolean alreadyDonated) {
 		this.alreadyDonated = alreadyDonated;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getBagTypeId() {
+		return bagTypeId;
+	}
+	public void setBagTypeId(Long bagTypeId) {
+		this.bagTypeId = bagTypeId;
+	}
+	public String getBagType() {
+		return bagType;
+	}
+	public void setBagType(String bagType) {
+		this.bagType = bagType;
+	}
+	public Long getBloodBankQuantityId() {
+		return bloodBankQuantityId;
+	}
+	public void setBloodBankQuantityId(Long bloodBankQuantityId) {
+		this.bloodBankQuantityId = bloodBankQuantityId;
+	}
+	public String getQuantityType() {
+		return quantityType;
+	}
+	public void setQuantityType(String quantityType) {
+		this.quantityType = quantityType;
 	}
 	
 	
