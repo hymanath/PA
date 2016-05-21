@@ -12243,5 +12243,15 @@
 			<param name="root">mahanaduEventVOList</param>
 		</result>
 	</action>
+	<action name="getAcceptanceStatusAction" class="bloodBankAction" method="getAcceptanceStatus">
+		<result type="json" name="success">
+			<param name="root">idNameList</param>
+		</result>
+	</action>
+	<action name="getBloodBagTypeAction" class="bloodBankAction" method="getBloodBagType">
+		<result type="json" name="success">
+			<param name="root">idNameList</param>
+		</result>
+	</action>
 </package>
 </struts>      

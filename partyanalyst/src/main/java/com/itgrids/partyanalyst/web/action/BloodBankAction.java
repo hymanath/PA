@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BloodBankVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.service.IBloodBankService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -23,6 +24,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	private IBloodBankService                   bloodBankService;
 	private JSONObject							jObj;
 	private String 								task;
+	private List<IdNameVO>						idNameList;
 	
 	private List<BloodBankVO> bloodBankVOList;
 	private BloodBankVO bloodBankVO;
@@ -87,6 +89,13 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	public void setBloodBankVO(BloodBankVO bloodBankVO) {
 		this.bloodBankVO = bloodBankVO;
 	}
+	
+	public List<IdNameVO> getIdNameList() {
+		return idNameList;
+	}
+	public void setIdNameList(List<IdNameVO> idNameList) {
+		this.idNameList = idNameList;
+	}
 	public String getOccuations(){
 		try{
 			bloodBankVOList=bloodBankService.getOccupationList();
@@ -123,4 +132,21 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	public String getAcceptanceStatus(){
+		try {
+			idNameList = bloodBankService.getAcceptanceStatus();
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getBloodBagType(){
+		try {
+			idNameList = bloodBankService.getBloodBagType();
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
