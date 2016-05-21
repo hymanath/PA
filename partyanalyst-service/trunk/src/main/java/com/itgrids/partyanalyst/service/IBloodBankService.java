@@ -14,4 +14,5 @@ public interface IBloodBankService {
  public BloodBankDashBoardVO getBloodDonarsSummary(Long campId);
  public List<IdNameVO> getAcceptanceStatus();
  public List<IdNameVO> getBloodBagType();
+ public List<IdNameVO> getBloodBagQuantity();
 }
