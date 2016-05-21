@@ -20,6 +20,7 @@ h1,h2,h3,h4,h5,h6,p,ul
 .m_top20{margin-top:20px;}
 .m_top30{margin-top:30px;}
 .m_top40{margin-top:40px;}
+.m_0{margin:0px;}
 .form-control , .btn
 {
 	border-radius:0px;
@@ -71,4 +72,62 @@ h1,h2,h3,h4,h5,h6,p,ul
 {
 	 text-align:center;
 	 border-radius:0px;
+}
+.tableDonors tr td:nth-child(3)
+{
+	background:#FFA85B;
+	border-top:1px solid #FFA85B;
+}
+.tableDonors tr:first-child td h2 , .tableDonors tr:first-child td p
+{
+	color:#fff !important
+}
+.tableDonors
+{
+	margin:0px;
+}
+.tableDonors tr td:nth-child(2)
+{
+	background:#00B17D;
+	border-top:1px solid #00B17D;
+}
+.tableDonors tr td:nth-child(4)
+{
+	background:#663200;
+	border-top:1px solid #663200;
+}
+.tableDonors tr td:nth-child(1)
+{
+	background:#7CB7EF;
+	border-top:1px solid #7CB7EF;
+}
+.tableDonors tr:nth-child(2) td
+{
+	text-align:center
+}
+.tableDonors tr:first-child td
+{
+	position:relative;
+	height:60px;
+}
+.tdBack
+{
+	position:absolute;
+	background:rgba(0,0,0,0.3);
+	right:0px;
+	left:0px;
+	top:0px;
+	bottom:0px;
+	padding:6px;
+	text-align:center;
+	margin-bottom:-5px;
+}
+.panelDefaultCustom
+{
+	box-shadow:0px 0px 6px 2px rgba(0,0,0,0.4);
+	border-radius:0px;
+}
+.panelDefaultCustom .panel-heading
+{
+	background:#E5E5E5
 }
