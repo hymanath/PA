@@ -64,6 +64,7 @@
                                         <th>Registration Status</th>
                                         <th>Blood Bag No</th>
                                         <th>Blood Bag Type	</th>
+										<th>Blood Bag Quantity	</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </thead>
@@ -75,6 +76,7 @@
                                             <td>
                                             	<select class="form-control">
                                                 	<option>Approved</option>
+													<option>Rejected</option>
                                                 </select>
                                             </td>
                                             <td>
@@ -83,11 +85,19 @@
                                             <td>
                                             	<select class="form-control">
                                                 	<option>Approved</option>
+													
+                                                </select>
+                                            </td>
+											<td>
+                                            	<select class="form-control">
+                                                	<option>With Sagm 350ml</option>
+													<option>With Sagm 450ml</option>
                                                 </select>
                                             </td>
 											<td>
 												<select class="form-control">
                                                 	<option>350ml</option>
+													<option>450ml</option>
                                                 </select>
 											</td>
                                             <td>
@@ -100,17 +110,12 @@
                                             <td>9654894654</td>
                                             <td>
                                             	<select class="form-control">
-                                                	<option>Approved</option>
+													<option>Rejected</option>
                                                 </select>
                                             </td>
-                                            <td colspan="2">
-                                            	<input type="text" class="form-control"/>
+                                            <td colspan="4">
+                                            	<input type="text" placeholder="remarks" class="form-control"/>
                                             </td>
-                                            <td>
-												<select class="form-control">
-                                                	<option>350ml</option>
-                                                </select>
-											</td>
                                             <td>
                                             	<button class="btn btn-success btn-sm">SUBMIT</button>
                                             </td>
@@ -128,6 +133,48 @@
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script>
+getAcceptanceStatus();    
+getBloodBagType();
+getBloodBagQuantity();
+function getAcceptanceStatus(){
+	var jsObj = {};
+	$.ajax({
+		type : 'GET',
+		url : 'getAcceptanceStatusAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+		if(result != null){
+			console.log(result);
+		}
+	});
+}
+function getBloodBagType(){
+	var jsObj = {};
+	$.ajax({
+		type : 'GET',
+		url : 'getBloodBagTypeAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+		if(result != null){
+			console.log(result);
+		}
+	});
+}
+function getBloodBagQuantity(){   
+	var jsObj = {};
+	$.ajax({
+		type : 'GET',
+		url : 'getBloodBagQuantityAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+		if(result != null){
+			console.log(result);
+		}
+	});
+}
 
 </script>
 </body>

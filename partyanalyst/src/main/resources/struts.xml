@@ -12253,5 +12253,10 @@
 			<param name="root">idNameList</param>
 		</result>
 	</action>
+	<action name="getBloodBagQuantityAction" class="bloodBankAction" method="getBloodBagQuantity">
+		<result type="json" name="success">
+			<param name="root">idNameList</param>
+		</result>
+	</action>
 </package>
 </struts>      

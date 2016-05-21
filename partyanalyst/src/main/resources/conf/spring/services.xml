@@ -3125,6 +3125,7 @@
 	   <property name="bloodDonationCampDAO" ref="bloodDonationCampDAO"></property>
 	   <property name="acceptanceStatusDAO" ref="acceptanceStatusDAO"></property>
 	   <property name="bloodBagTypeDAO" ref="bloodBagTypeDAO"></property>
+	   <property name="bloodBagQuantityDAO" ref="bloodBagQuantityDAO"></property>
 	</bean>
 	
 </beans>		
