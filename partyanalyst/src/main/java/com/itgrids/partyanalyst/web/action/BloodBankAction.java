@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.service.IBloodBankService;
@@ -28,7 +29,14 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	
 	private List<BloodBankVO> bloodBankVOList;
 	private BloodBankVO bloodBankVO;
+	private BloodBankDashBoardVO bloodBankDashBoardVO;
 	
+	public BloodBankDashBoardVO getBloodBankDashBoardVO() {
+		return bloodBankDashBoardVO;
+	}
+	public void setBloodBankDashBoardVO(BloodBankDashBoardVO bloodBankDashBoardVO) {
+		this.bloodBankDashBoardVO = bloodBankDashBoardVO;
+	}
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -125,7 +133,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	public String getBloodDonarsSummary(){
 		try {
 			jObj = new JSONObject(getTask());
-			bloodBankService.getBloodDonarsSummary(jObj.getLong("campId"));
+			bloodBankDashBoardVO = bloodBankService.getBloodDonarsSummary(jObj.getLong("campId"));
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
 		}
