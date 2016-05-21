@@ -6865,10 +6865,11 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 	public Object[] getCadreDetailsByMmbrShpId(String memberShipNo) {
 		
 		StringBuilder queryString=new StringBuilder();
-		
+		//tdpCadreId,firstname,lastname,relativename,mobileNo,emailId,gender,age,dateOfBirth,qualification,occupation,stateId,
+		//stateName,districtId,districtName,constituencyId,name,tehsilId,tehsilName,constituencyId,name,panchayatId,panchayatName,localElectionBodyId,name
 		queryString.append(" select model.tdpCadreId,model.firstname,model.lastname,model.relativename," +//4
 							" model.mobileNo,model.emailId,model.gender,model.age," + //8
-				            " model.dateOfBirth,model.educationalQualifications.qualification,model.occupation.occupation,"+ //11
+				            " model.dateOfBirth,model.educationalQualifications.eduQualificationId,model.occupation.occupationId,"+ //11
 							" state.stateId,state.stateName,district.districtId,district.districtName,"+//15
 				            " constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,"+//19
 							" ward.constituencyId,ward.name,panchayat.panchayatId,panchayat.panchayatName,"+//23
@@ -6891,4 +6892,18 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		
 		return (Object[]) query.uniqueResult();
 }
+	
+ public Long getCadreIdByMemberShip(String memberShipNo){
+	 
+	 Query query = getSession().createQuery("select model.tdpCadreId from TdpCadre model" +
+	 		" where " +
+	 		" model.memberShipNo = :memberShipNo " +
+	 		" and model.isDeleted = 'N'" +
+	 		" and model.enrollmentYear = :enrollmentYear ");
+	 
+	 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
+	 
+	 return (Long) query.uniqueResult();
+ }
+	
 }
