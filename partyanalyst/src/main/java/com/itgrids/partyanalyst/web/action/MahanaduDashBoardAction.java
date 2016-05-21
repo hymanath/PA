@@ -16,7 +16,6 @@ import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
-import com.itgrids.partyanalyst.service.impl.MahaNaduService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -35,6 +34,8 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	private EntitlementsHelper entitlementsHelper;
 	private MahanaduVisitVO mahanaduVisitVO;
 	private MahanaduEventVO mahanaduEventVO;
+	private Long longVal;
+	private List<MahanaduEventVO> mahanaduEventVOList = new ArrayList<MahanaduEventVO>(0);
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -107,6 +108,19 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	}
 	public void setMahanaduEventVO(MahanaduEventVO mahanaduEventVO) {
 		this.mahanaduEventVO = mahanaduEventVO;
+	}
+	
+	public List<MahanaduEventVO> getMahanaduEventVOList() {
+		return mahanaduEventVOList;
+	}
+	public void setMahanaduEventVOList(List<MahanaduEventVO> mahanaduEventVOList) {
+		this.mahanaduEventVOList = mahanaduEventVOList;
+	}
+	public Long getLongVal() {
+		return longVal;
+	}
+	public void setLongVal(Long longVal) {
+		this.longVal = longVal;
 	}
 	
 	public String execute(){
@@ -200,6 +214,26 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 			mahanaduEventVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(jObj.getLong("eventId"),statesList);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseMembersCountInCampus", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTodayCount(){
+		try {
+			longVal = mahanaduDashBoardService.getTodayCount(Long.parseLong(request.getParameter("eventId").toString()));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTodayCount", e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getHourWiseNowInCampusCadresCount(){
+		try {
+			jObj = new JSONObject(getTask());
+			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getLong("dayVal"),jObj.getLong("eventId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getHourWiseNowInCampusCadresCount", e);
 		}
 		return Action.SUCCESS;
 	}
