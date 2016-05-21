@@ -10,6 +10,29 @@ public class BloodBankDashBoardVO {
 	private Long totalRejected;
 	private Long dayWiseCount;
 	private List<BloodBankDashBoardVO> bloodBankDashBoardVO = new ArrayList<BloodBankDashBoardVO>(0);
+	private Long totalCount;
+	private String DaySatus;
+	private Long id;
+	
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getDaySatus() {
+		return DaySatus;
+	}
+	public void setDaySatus(String daySatus) {
+		DaySatus = daySatus;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public Long getTotalApplicants() {
 		return totalApplicants;
 	}
