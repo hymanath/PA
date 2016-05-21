@@ -12232,6 +12232,16 @@
 		</result>
 	</action>
 	
+	<action name="getTodayCountAction" class="mahanaduDashBoardAction" method="getTodayCount">
+		<result type="json" name="success">
+			<param name="root">longVal</param>
+		</result>
+	</action>
 	
+	<action name="getHourWiseNowInCampusCadresCountAction" class="mahanaduDashBoardAction" method="getHourWiseNowInCampusCadresCount">
+		<result type="json" name="success">
+			<param name="root">mahanaduEventVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
