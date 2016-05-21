@@ -48,6 +48,7 @@ public class BloodDonation extends BaseModel implements Serializable{
 	private Long insertedBy;
 	private Date updatedTime;
 	private Long updatedBy;
+	private Long bloodBagQuantityId;
 	
 	private BloodDonationCamp bloodDonationCamp;
 	private BloodDonorInfo bloodDonorInfo;
@@ -55,6 +56,7 @@ public class BloodDonation extends BaseModel implements Serializable{
 	private BloodDonationAgeGroup bloodDonationAgeGroup;
 	private BloodComponent bloodComponent;
 	private AcceptanceStatus acceptanceStatus;
+	private BloodBagQuantity bloodBagQuantity;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -306,5 +308,24 @@ public class BloodDonation extends BaseModel implements Serializable{
 	}
 	public void setAcceptanceStatus(AcceptanceStatus acceptanceStatus) {
 		this.acceptanceStatus = acceptanceStatus;
+	}
+	
+	@Column(name="blood_bag_quantity_id")
+	public Long getBloodBagQuantityId() {
+		return bloodBagQuantityId;
+	}
+	public void setBloodBagQuantityId(Long bloodBagQuantityId) {
+		this.bloodBagQuantityId = bloodBagQuantityId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="blood_bag_quantity_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public BloodBagQuantity getBloodBagQuantity() {
+		return bloodBagQuantity;
+	}
+	public void setBloodBagQuantity(BloodBagQuantity bloodBagQuantity) {
+		this.bloodBagQuantity = bloodBagQuantity;
 	}
 }
