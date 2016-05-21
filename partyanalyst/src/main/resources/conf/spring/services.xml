@@ -3117,6 +3117,10 @@
 	   <property name="occupationDAO" ref="occupationDAO"></property>
 	   <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"></property>
 	   <property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
+	   <property name="bloodDonationDAO" ref="bloodDonationDAO"></property>
+	   <property name="transactionTemplate" ref="transactionTemplate" />
+	   <property name="bloodDonorInfoDAO" ref="bloodDonorInfoDAO"></property>
+	   <property name="bloodDonationAgeGroupDAO" ref="bloodDonationAgeGroupDAO"></property>
 	</bean>
 	
 </beans>		
