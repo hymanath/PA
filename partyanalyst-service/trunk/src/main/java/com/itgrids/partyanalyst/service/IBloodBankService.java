@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 
 public interface IBloodBankService {
 
@@ -11,4 +12,6 @@ public interface IBloodBankService {
  public List<BloodBankVO> getEducationalQualificationsList();
  public BloodBankVO getCadreDetails(String memberShipNO);
  public BloodBankDashBoardVO getBloodDonarsSummary(Long campId);
+ public List<IdNameVO> getAcceptanceStatus();
+ public List<IdNameVO> getBloodBagType();
 }
