@@ -122,7 +122,6 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String getBloodDonarsSummary(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -148,5 +147,12 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getBloodBagQuantity(){
+		try {
+			idNameList = bloodBankService.getBloodBagQuantity();
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+		}
+		return Action.SUCCESS;
+	}
 }
