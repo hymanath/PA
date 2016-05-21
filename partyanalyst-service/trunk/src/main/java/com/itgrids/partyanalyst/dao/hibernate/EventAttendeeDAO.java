@@ -852,7 +852,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 			StringBuilder str = new StringBuilder();
 		
-			str.append("select count(distinct ea1.tdp_cadre_id) as count,max(hour(ea1.attended_time)) as hour from event_attendee ea1 inner join " +
+			str.append("select count(distinct ea1.tdp_cadre_id) as count,hour(ea1.attended_time) as hour from event_attendee ea1 inner join " +
 				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
 						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
 						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time ");
@@ -955,7 +955,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
-	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String districtQueryStr){
+	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String districtQueryStr,Date toDayDate){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -978,7 +978,8 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" and EA.tdp_cadre_id = TC.tdp_cadre_id " +
 				" and TC.address_id = UA.user_address_id " +
 				" and UA.district_id = d.district_id " +
-				" and E.parent_event_id = :eventId " );
+				" and E.parent_event_id = :eventId " +
+				" and date(EA.attended_time) = :toDayDate " );
 		
 		if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
 			str.append(districtQueryStr);
@@ -992,6 +993,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				.addScalar("districtName",Hibernate.STRING);
 		
 		query.setParameter("eventId", eventId);
+		query.setDate("toDayDate", toDayDate);
 		
 		return query.list();
 	}
@@ -1219,7 +1221,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
-	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr){
+	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todateDate){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -1244,7 +1246,8 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" and TC.address_id = UA.user_address_id " +
 				" and UA.constituency_id = constituency.constituency_id " +
 				" and constituency.district_id = d.district_id " +
-				" and E.parent_event_id = :eventId " );
+				" and E.parent_event_id = :eventId " +
+				" and date(EA.attended_time)=:todateDate " );
 		
 		if(queryStr !=null && !queryStr.isEmpty()){
 			str.append(queryStr);
@@ -1258,6 +1261,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				.addScalar("districtName",Hibernate.STRING);
 		
 		query.setParameter("eventId", eventId);
+		query.setDate("todateDate", todateDate);
 		
 		return query.list();
 	}
