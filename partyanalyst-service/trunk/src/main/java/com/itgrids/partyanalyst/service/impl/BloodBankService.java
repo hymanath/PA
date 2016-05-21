@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -451,4 +452,57 @@ public class BloodBankService implements IBloodBankService{
 		return finalList;
 	}
 	
+	public BloodBankDashBoardVO getBloodDonarsCountsSummary(Long campId){
+		
+		BloodBankDashBoardVO bldDntnVO = new BloodBankDashBoardVO();
+		List<BloodBankDashBoardVO> mainList=new ArrayList<BloodBankDashBoardVO>();
+		bldDntnVO.setBloodBankDashBoardVO(mainList);
+		try {
+			Object[] campDates = bloodDonationCampDAO.getCampDates(campId);
+			if(campDates != null && campDates.length>0){
+					Date campFromDate = (Date)(campDates[0]);
+					Date campToDate = (Date)(campDates[1]);
+					
+				List<Object[]> bldDnrCntsList = bloodDonorInfoDAO.getBloodDonorCounts(campFromDate, campToDate);
+				if(bldDnrCntsList != null && bldDnrCntsList.size()>0){
+					for (Object[] obj : bldDnrCntsList) {
+						//if(Long.valueOf(obj[1].toString()) != 1l){
+							BloodBankDashBoardVO Vo = new BloodBankDashBoardVO();
+							Vo.setId(obj[1] != null ?(Long)obj[1]:0l);
+							Vo.setTotalCount(obj[0] != null ?(Long)obj[0]:0l);
+							mainList.add(Vo);
+						//}
+					}
+				}
+				List<Object[]> dayWiseList = bloodDonorInfoDAO.getBloodDonorDayWiseCounts(campFromDate, campToDate);
+				if(dayWiseList != null && dayWiseList.size()>0){
+					for (Object[] obj : dayWiseList) {
+							BloodBankDashBoardVO Vo = getMatchedVO(mainList,(Long)obj[2]);
+							if(Vo != null)
+							{
+								BloodBankDashBoardVO dayVO = new BloodBankDashBoardVO();
+								dayVO.setDaySatus(obj[1] != null ? obj[1].toString() : "");
+								dayVO.setTotalCount(obj[0] != null ?(Long)obj[0]:0l);
+								Vo.getBloodBankDashBoardVO().add(dayVO);
+							}
+					    }
+				    }
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getBloodDonarsSummary", e);
+		}
+		return bldDntnVO;
+	}
+	
+	public BloodBankDashBoardVO getMatchedVO(List<BloodBankDashBoardVO> resultList,Long id)
+	{
+		if(resultList != null && resultList.size() > 0){
+			for(BloodBankDashBoardVO vo : resultList){
+				if(vo.getId().equals(id)){
+					return vo;
+				}
+			}
+		 }
+		 return null;
+	}
 }
