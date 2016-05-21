@@ -849,7 +849,7 @@
 				   <value>com.itgrids.partyanalyst.model.BloodDonationAgeGroup</value>
 				   <value>com.itgrids.partyanalyst.model.BloodDonationCamp</value>
 				   <value>com.itgrids.partyanalyst.model.BloodDonorInfo</value>
-				   
+				   <value>com.itgrids.partyanalyst.model.BloodBagQuantity</value>
 				 </list>
 			
 		</property>
