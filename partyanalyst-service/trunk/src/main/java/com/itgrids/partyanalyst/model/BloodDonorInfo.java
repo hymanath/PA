@@ -47,8 +47,8 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	private TdpCadre tdpCadre;
 	private EducationalQualifications education;
 	private Occupation occupation;
-	private BloodDonation bloodDonation;
-	@Id
+/*	private BloodDonation bloodDonation;
+*/	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "blood_donor_info_id", unique = true, nullable = false)
 	public Long getBloodDonorInfoId() {
@@ -226,7 +226,7 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
+	/*
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="blood_donation_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -237,5 +237,5 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	public void setBloodDonation(BloodDonation bloodDonation) {
 		this.bloodDonation = bloodDonation;
 	}
-	
+	*/
 }
