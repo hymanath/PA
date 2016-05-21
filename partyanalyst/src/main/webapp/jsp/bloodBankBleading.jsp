@@ -14,11 +14,11 @@
     	<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
         	<div class="block">
             	<div class="row">
-                	<div class="col-md-2 col-xs-3">
+                	<div class="col-md-3 col-xs-3">
                     	<h3 class="m_top20">BLEADING DETAILS</h3>
                     </div>
                     <div class="col-md-1 col-xs-2">
-                  	  <img src="dist/img/logo.png" class="img-responsive" alt="Logo"/>
+                  	  <img src="dist/BloodBankCustomFiles/logo.png" class="img-responsive" alt="Logo"/>
                     </div>
                     <div class="col-md-8 col-xs-7">
                     	<h3 class="text-capitalise">ntr trust blood bank</h3>
@@ -30,7 +30,7 @@
                 <div class="row">
                 	<div class="col-md-3">
                     	<label>Showing</label>
-                        <select>
+                        <select class="form-control">
                         	<option>All Applications</option>
                         </select>
                     </div>
@@ -64,6 +64,7 @@
                                         <th>Registration Status</th>
                                         <th>Blood Bag No</th>
                                         <th>Blood Bag Type	</th>
+                                        <th>Quantity</th>
                                         <th></th>
                                     </thead>
                                     <tbody>
@@ -72,18 +73,23 @@
                                             <td>Santhosh</td>
                                             <td>9654894654</td>
                                             <td>
-                                            	<select>
+                                            	<select class="form-control">
                                                 	<option>Approved</option>
                                                 </select>
                                             </td>
                                             <td>
-                                            	<input type="text" class="form-control"/>
+                                            	<input type="text" class="form-control" style="width:100px"/>
                                             </td>
                                             <td>
-                                            	<select>
+                                            	<select class="form-control">
                                                 	<option>Approved</option>
                                                 </select>
                                             </td>
+											<td>
+												<select class="form-control">
+                                                	<option>350ml</option>
+                                                </select>
+											</td>
                                             <td>
                                             	<button class="btn btn-success btn-sm">SUBMIT</button>
                                             </td>
@@ -93,14 +99,18 @@
                                             <td>Santhosh</td>
                                             <td>9654894654</td>
                                             <td>
-                                            	<select>
+                                            	<select class="form-control">
                                                 	<option>Approved</option>
                                                 </select>
                                             </td>
                                             <td colspan="2">
                                             	<input type="text" class="form-control"/>
                                             </td>
-                                            
+                                            <td>
+												<select class="form-control">
+                                                	<option>350ml</option>
+                                                </select>
+											</td>
                                             <td>
                                             	<button class="btn btn-success btn-sm">SUBMIT</button>
                                             </td>
@@ -117,5 +127,8 @@
 </div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script>
+
+</script>
 </body>
 </html>
