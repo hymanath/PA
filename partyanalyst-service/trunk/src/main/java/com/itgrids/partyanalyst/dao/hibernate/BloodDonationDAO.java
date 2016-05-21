@@ -25,7 +25,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 						" WHERE  " +
 								" model.bloodDonorInfo.tdpCadre.memberShipNo = :memberShipId " +
 						" AND    model.bloodDonorInfo.tdpCadre.isDeleted ='N'" +
-						" AND    model.enrollmentYear = :enrollmentYear ");
+						" AND    model.bloodDonorInfo.tdpCadre.enrollmentYear = :enrollmentYear ");
 		
 		
 		Query query = getSession().createQuery(queryStr.toString());
