@@ -155,7 +155,20 @@
 				</div>
 				<div class="panel-body">
 				  <div><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
-					<div id="hoursWiseVisitors" style="height:325px;width:100%;"></div>
+				  <div class="row">
+					<div class="col-md-12">
+						<div class="pull-right">
+							<input type="radio" class="dayRadio" name="dayRadioName" checked value="1"/><label>Day - 1</label>
+							<input type="radio" class="dayRadio" name="dayRadioName" value="2"/><label>Day - 2</label>
+							<input type="radio" class="dayRadio" name="dayRadioName" value="3"/><label>Day - 3</label>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div id="hoursWiseVisitors" style="height:300px;width:100%;"></div>
+					</div>
+				  </div>
+					
+					
 				</div>
 			</div>
 		</div>
@@ -291,7 +304,7 @@ $(".panelDefault").height(maxHeight);
 		   var jsonObj={name:daysArr[i],data:[result[i].above8hrs,result[i].seventoeight,result[i].sixtoseven,result[i].fivetosix,result[i].fourtofive,result[i].threetofour,result[i].twotothree,result[i].onetotwo,result[i].halfanhour,result[i].belowhalfanhour]};
 		   finalDataArr.push(jsonObj);
 	  }
-	  buildHighChart(finalDataArr);
+	  //buildHighChart(finalDataArr);
   }
   	function buildHighChart(finalDataArr){
 			$('#hoursWiseVisitors').highcharts({
@@ -349,11 +362,7 @@ $(".panelDefault").height(maxHeight);
     function getmainEventsChange(){	 
 		getSubEventsOfEvent();		
 		  setTimeout(function(){
-			getDaysUniqueAndRevisitSummary();	
-            getTodayTotalVisitors(); 
-            getDetails();		
-            getDayWiseVisitSummary();
-			getDistrictWiseMembersCountInCampus();
+			allCalls();
 			}, 2000);
     } 
 	
@@ -368,11 +377,7 @@ $(".panelDefault").height(maxHeight);
 		$("#timeUpdationId").html(datetime);
 		getSubEventsOfEvent();		
 		  setTimeout(function(){
-			getDaysUniqueAndRevisitSummary();	
-            getTodayTotalVisitors(); 
-            getDetails();		
-            getDayWiseVisitSummary();
-			getDistrictWiseMembersCountInCampus();
+			allCalls();
 			}, 2000);
 	});
 	
@@ -391,13 +396,18 @@ $(".panelDefault").height(maxHeight);
 		$("#timeUpdationId").html(datetime);
 
 		 setTimeout(function(){
-			getDaysUniqueAndRevisitSummary();	
-            getTodayTotalVisitors(); 
-            getDetails();		
-            getDayWiseVisitSummary();			
-			getDistrictWiseMembersCountInCampus();
+			allCalls();
 		}, 2000);
 	});
+	
+	function allCalls(){
+		getDaysUniqueAndRevisitSummary();	
+        getTodayTotalVisitors(); 
+        getDetails();		
+        getDayWiseVisitSummary();			
+		getDistrictWiseMembersCountInCampus();
+		getTodayCount();
+	}
 	
 	getSubEventsOfEvent();
 	 var globalMainEntryId = 0 ;
@@ -521,7 +531,7 @@ $(".panelDefault").height(maxHeight);
 				$("#hrWiseVstrsHghChrtPrcssngImgId").hide();
 			  if(result!=null && result.length>0){
 				  buildVisitorsResultByTime(result);
-				  buildVisitorsDtlsGraph(result);
+				  //buildVisitorsDtlsGraph(result);
 			  }else{
 				  $("#visitorsTableId").html("<h5> No Data Availabel.</h5>");
 				  $("#hoursWiseVisitors").html("<h5> No Data Availabel.</h5>");
@@ -1033,8 +1043,9 @@ function buildTotalVisitorsResult(result){
 				str+='<thead>';
 				str+='<th>District Id</th>';
 				str+='<th>Name</th>';
-				str+='<th>Now In Campus</th>';
 				str+='<th>Total</th>';
+				str+='<th>Now In Campus</th>';
+				str+='<th>Now In Campus %</th>';
 				str+='</thead>';
 				if(result != null && result.subList != null && result.subList.length > 0){
 					str+='<tbody>';
@@ -1043,8 +1054,9 @@ function buildTotalVisitorsResult(result){
 							str+='<tr>';
 							str+='<td>'+result.subList[i].id+'</td>';
 							str+='<td>'+result.subList[i].name+'</td>';
-							str+='<td>'+result.subList[i].cadreCount+'</td>';
 							str+='<td>'+result.subList[i].total+'</td>';
+							str+='<td>'+result.subList[i].cadreCount+'</td>';
+							str+='<td>'+(result.subList[i].cadreCount*100)/result.subList[i].total+'%</td>';
 							str+='</tr>';
 						}
 					}
@@ -1058,6 +1070,102 @@ function buildTotalVisitorsResult(result){
 			$("#distWiseTableId").html("<h5> No Data Availabel.</h5>");
 		}
 	}
+	
+	function getTodayCount(){
+		var eventId = $("#mainEventSelectId").val(); 
+		$.ajax({
+			type:'GET',
+			url: 'getTodayCountAction.action',
+			data : {eventId:eventId} ,
+		}).done(function(result){
+			if(result != null && result > 0){
+				$("input[name=dayRadioName][value=" + result + "]").prop('checked', true);
+				$("input[name=dayRadioName][value=" + result + "]").trigger("click");
+			}
+		});
+	}
+	
+	$(document).on("click",".dayRadio",function(){
+		getHourWiseNowInCampusCadresCount();
+	});
+	
+	function getHourWiseNowInCampusCadresCount(){
+		var dayVal = $('input[name=dayRadioName]:checked').val();
+		var jObj = {
+				dayVal:dayVal,
+				eventId : $("#mainEventSelectId").val()
+			}	
+			
+			$.ajax({
+			  type:'GET',
+			  url: 'getHourWiseNowInCampusCadresCountAction.action',
+			  data : {task:JSON.stringify(jObj)} ,
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					
+					var categoriesArr=[];
+					var totalAttendedArr=[];
+					var nowInCampusArr=[];
+					
+					for(var i in result){
+						categoriesArr.push(result[i].invitees);
+						totalAttendedArr.push(parseInt(result[i].total));
+						nowInCampusArr.push(parseInt(result[i].cadreCount));
+					}
+					
+					
+					$(function () {
+						$('#hoursWiseVisitors').highcharts({
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: 'Hour Wise Counts'
+							},
+							subtitle: {
+								text: ''
+							},
+							xAxis: {
+								categories: categoriesArr,
+								crosshair: true
+							},
+							yAxis: {
+								min: 0,
+								title: {
+									text: 'Members Count'
+								}
+							},
+							tooltip: {
+								headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+								pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+									'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+								footerFormat: '</table>',
+								shared: true,
+								useHTML: true
+							},
+							plotOptions: {
+								column: {
+									pointPadding: 0.2,
+									borderWidth: 0
+								}
+							},
+							series: [{
+								name: 'Total',
+								data: totalAttendedArr
+
+							}, {
+								name: 'Now In Campus',
+								data: nowInCampusArr
+
+							}]
+						});
+					});
+				}else{
+					$('#hoursWiseVisitors').html("No Data Availabel.");
+				}
+			});
+	}
+	
    </script>
 </body>
 </html>
