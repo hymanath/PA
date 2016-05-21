@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -49,7 +51,6 @@ public class BloodBankService implements IBloodBankService{
 	private IAcceptanceStatusDAO acceptanceStatusDAO;
 	private IBloodBagTypeDAO bloodBagTypeDAO;
 	private IBloodBagQuantityDAO bloodBagQuantityDAO;
-	
 	
 	
 	public void setBloodDonationAgeGroupDAO(
@@ -356,6 +357,179 @@ public class BloodBankService implements IBloodBankService{
 			LOG.error("Exception riased at getBloodDonarsSummary", e);
 		}
 		return null;
+	}
+	
+	public BloodBankDashBoardVO gettotalCollectedBloodDetails(Long campId){
+		BloodBankDashBoardVO returnvo = new BloodBankDashBoardVO();
+		try {
+			Long totalBlood = 0l;
+			Object[] campDates = bloodDonationCampDAO.getCampDates(campId);
+			if(campDates != null){
+				
+				List<Object[]> list = bloodDonationDAO.gettotalCollectedBloodDetails((Date)campDates[0], (Date)campDates[1]);
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+						
+						Long collectedBlood = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						vo.setTotalBlood(collectedBlood);
+						vo.setDate(obj[1] != null ? obj[1].toString():"");
+						totalBlood = totalBlood+collectedBlood;
+						returnvo.getSubList().add(vo);
+					}
+				}
+				
+				returnvo.setTotalBlood(totalBlood);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception riased at gettotalCollectedBloodDetails", e);
+		}
+		return returnvo;
+	}
+	
+	public Long getBloodDonatedOtherThanBloodBank(){
+		Long donatedInOtherBanks = 0l;
+		try {
+			donatedInOtherBanks = bloodDonationDAO.getBloodDonatedOtherThanBloodBank();
+		} catch (Exception e) {
+			LOG.error("Exception riased at getBloodDonatedOtherThanBloodBank", e);
+		}
+		return donatedInOtherBanks;
+	}
+	
+	public Long getBloodDonorInEmergency(){
+		Long emergencyDonors = 0l;
+		try {
+			emergencyDonors = bloodDonationDAO.getBloodDonarCountInEmergency();
+		} catch (Exception e) {
+			LOG.error("Exception riased at getBloodDonorInEmergency", e);
+		}
+		return emergencyDonors;
+	}
+	
+	public Long getCalledForDonationCount(){
+		Long count = 0l;
+		try {
+			count = bloodDonationDAO.getCalledForDonationCount();
+		} catch (Exception e) {
+			LOG.error("Exception riased at getCalledForDonationCount", e);
+		}
+		return count;
+	}
+	
+	public BloodBankDashBoardVO gettotalCollectedBloodBagsInfo(Long campId){
+		BloodBankDashBoardVO returnvo = new BloodBankDashBoardVO();
+		try {
+			
+			Map<Long,Map<Long,BloodBankDashBoardVO>> finalMap = new LinkedHashMap<Long, Map<Long,BloodBankDashBoardVO>>(0);
+			//0.count,1.bloodBagTypeId,2.bagType,3.bloodBagQuantityId,4.quantityType,5.quantity
+			List<Object[]> list = bloodDonationDAO.gettotalCollectedBloodBagsInfo(campId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					Long bagTypeId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long bagQuantityId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Map<Long,BloodBankDashBoardVO> quantityMap = finalMap.get(bagTypeId);
+					if(quantityMap == null){
+						quantityMap = new LinkedHashMap<Long, BloodBankDashBoardVO>();
+						List<BloodBagQuantity> quantityList = bloodBagQuantityDAO.getAll();
+						if(quantityList != null && quantityList.size() > 0){
+							for (BloodBagQuantity bloodBagQuantity : quantityList) {
+								BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+								
+								vo.setBloodBagQuantityId(bloodBagQuantity.getBloodBagQuantityId());
+								vo.setQuantityType(bloodBagQuantity.getType());
+								
+								quantityMap.put(bloodBagQuantity.getBloodBagQuantityId(), vo);
+							}
+						}
+						
+						BloodBankDashBoardVO vo = quantityMap.get(bagQuantityId);
+						if(vo != null){
+							vo.setBloodBagTypeId(bagTypeId);
+							vo.setBagType(obj[2] != null ? obj[2].toString():"");
+							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						}
+						finalMap.put(bagTypeId, quantityMap);
+					}
+					else{
+						BloodBankDashBoardVO vo = quantityMap.get(bagQuantityId);
+						if(vo != null){
+							vo.setBloodBagTypeId(bagTypeId);
+							vo.setBagType(obj[2] != null ? obj[2].toString():"");
+							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						}
+					}
+				}
+			}
+			
+			if(finalMap != null && finalMap.size() > 0){
+				for (Long typeId : finalMap.keySet()){
+					Map<Long,BloodBankDashBoardVO> quanMap = finalMap.get(typeId);
+					List<BloodBankDashBoardVO> quanList = new ArrayList<BloodBankDashBoardVO>(quanMap.values());
+					if(typeId == 1l)
+						returnvo.getSingleBagList().addAll(quanList);
+					else if(typeId == 2l)
+						returnvo.getDoubleBagList().addAll(quanList);
+					else if(typeId == 1l)
+						returnvo.getTripleBagList().addAll(quanList);
+					else if(typeId == 1l)
+						returnvo.getQuadrupleList().addAll(quanList);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception riased at gettotalCollectedBloodBagsInfo", e);
+		}
+		return returnvo;
+	}
+	
+	public List<BloodBankDashBoardVO> getBloodDonorDetailsByAgeGroupingInfo(Long campId){
+		List<BloodBankDashBoardVO> returnList = new ArrayList<BloodBankDashBoardVO>();
+		try {
+			Map<String,List<BloodBankDashBoardVO>> dateMap = new LinkedHashMap<String, List<BloodBankDashBoardVO>>();
+			Object[] campDates = bloodDonationCampDAO.getCampDates(campId);
+			if(campDates != null){
+				//0.count,1.ageGroupId,2.ageGroup,3.date
+				List<Object[]> list = bloodDonationDAO.getBloodDonorDetailsByAgeGroupingInfo((Date)campDates[0], (Date)campDates[1]);
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String date = obj[3] != null ? obj[3].toString():"0";
+						List<BloodBankDashBoardVO> voList = dateMap.get(date);
+						if(voList == null){
+							voList = new ArrayList<BloodBankDashBoardVO>();
+							BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+							
+							vo.setAgeGroupId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+							vo.setAgeGroup(obj[2] != null ? obj[2].toString():"");
+							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+							
+							voList.add(vo);
+							dateMap.put(date, voList);
+						}
+						else{
+							BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+							
+							vo.setAgeGroupId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+							vo.setAgeGroup(obj[2] != null ? obj[2].toString():"");
+							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+							
+							voList.add(vo);
+						}
+					}
+				}
+				
+				if(dateMap != null && dateMap.size() > 0){
+					for (String dateStr : dateMap.keySet()){
+						BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+						vo.setDate(dateStr);
+						vo.setSubList(dateMap.get(dateStr));
+						returnList.add(vo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception riased at getBloodDonorDetailsByAgeGroupingInfo", e);
+		}
+		return returnList;
 	}
 	public List<IdNameVO> getAcceptanceStatus(){
 		List<AcceptanceStatus> acceptanceStatusList = null;
