@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -58,6 +59,85 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		if(statusIds !=null && statusIds.size()>0){
 			query.setParameterList("statusIds", statusIds);
 		}		
+		return query.list();
+	}
+	
+	public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
+		
+		Query query = getSession().createQuery("select sum(model.quantity)," +
+												" date(model.insertedTime)" +
+												" from BloodDonation model" +
+												" where (date(model.insertedTime) between :fromDate and :toDate)" +
+												" group by date(model.insertedTime)" +
+												" order by date(model.insertedTime)");
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		
+		return query.list();
+	}
+	
+	public Long getBloodDonatedOtherThanBloodBank(){
+		
+		Query query = getSession().createQuery("select count(distinct bdi.tdpCadreId)" +
+												" from BloodDonation bd,BloodDonorInfo bdi" +
+												" where bd.bloodDonorInfoId = bdi.bloodDonorInfoId" +
+												" and bd.donationsInOtherPlaces= 'Yes'" +
+												" and bdi.isDeleted = 'N'");
+												
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getBloodDonarCountInEmergency(){
+		
+		Query query = getSession().createQuery("select count(distinct bdi.tdpCadreId)" +
+												" from BloodDonation bd,BloodDonorInfo bdi" +
+												" where bd.bloodDonorInfoId = bdi.bloodDonorInfoId" +
+												" and bd.emergencyDonation= 'Yes'" +
+												" and bdi.isDeleted = 'N'");
+												
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getCalledForDonationCount(){
+		
+		Query query = getSession().createQuery("select count(distinct bdi.tdpCadreId)" +
+												" from BloodDonation bd,BloodDonorInfo bdi" +
+												" where bd.bloodDonorInfoId = bdi.bloodDonorInfoId" +
+												" and bd.willingToCallDonation= 'Yes'" +
+												" and bdi.isDeleted = 'N'");
+												
+		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> gettotalCollectedBloodBagsInfo(Long campId){
+		
+		Query query = getSession().createQuery("select count(BBT.bloodBagTypeId)," +
+												" BBT.bloodBagTypeId," +
+												" BBT.bagType," +
+												" BD.bloodBagQuantityId," +
+												" BD.bloodBagQuantity.type," +
+												" BD.quantity" +
+												" from BloodDonation BD,BloodBagType BBT" +
+												" where BD.bloodBagType.bloodBagTypeId = BBT.bloodBagTypeId" +
+												" and BD.bloodDonationCamp.bloodDonationCampId = :campId" +
+												" group by BBT.bloodBagTypeId,BD.bloodBagQuantityId,BD.quantity");
+		query.setParameter("campId", campId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getBloodDonorDetailsByAgeGroupingInfo(Date fromDate,Date toDate){
+		
+		Query query = getSession().createQuery("select count(distinct BD.bloodDonorInfo.tdpCadreId)," +
+												" BD.bloodDonationAgeGroup.bloodDonationAgeGroupId," +
+												" BD.bloodDonationAgeGroup.ageGroup," +
+												" date(BD.bloodDonorInfo.insertedTime)" +
+												" from BloodDonation BD" +
+												" where (date(BD.bloodDonorInfo.insertedTime) between :fromDate and :toDate)" +
+												" group by date(BD.bloodDonorInfo.insertedTime),BD.bloodDonationAgeGroupId");
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
+		
 		return query.list();
 	}
 	
