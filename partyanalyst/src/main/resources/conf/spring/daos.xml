@@ -2791,5 +2791,8 @@
 		<bean id="bloodDonorInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodDonorInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="bloodBagQuantityDAO" class="com.itgrids.partyanalyst.dao.hibernate.BloodBagQuantityDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
