@@ -149,7 +149,8 @@
                 </div>
                 <div class="panel-body">
                 	<h4 class="text-capitalise">total colleceted blood</h4>
-                    <table class="table table-condensed m_top10">
+					<div id="collectedBloodDiv"></div>
+                    <!--<table class="table table-condensed m_top10">
                     	<tr>
                         	<td>All Days</td>
                             <td>16,00000ml</td>
@@ -166,7 +167,7 @@
                         	<td>Day 1</td>
                             <td>16,00000ml</td>
                         </tr>
-                    </table>
+                    </table>-->
                 </div>
             </div>
         </div>
@@ -217,7 +218,7 @@
                             <h4 class="panel-title text-capitalise">blood donated other than blood bank</h4>
                         </div>
                         <div class="panel-body">
-                        	<h4>2000 - Members Donated</h4>
+                        	<h4><span id="otherBloodBankId">0</span> - Members Donated</h4>
                         </div>
                      </div>
                 </div>
@@ -227,7 +228,7 @@
                             <h4 class="panel-title text-capitalise">donate in emergency</h4>
                         </div>
                         <div class="panel-body">
-                        	<h4>2000 - willing to donate in emergency</h4>
+                        	<h4><span id="emergencyDonarsId">0</span> - willing to donate in emergency</h4>
                         </div>
                      </div>
                 </div>
@@ -237,7 +238,7 @@
                             <h4 class="panel-title text-capitalise">called for donation</h4>
                         </div>
                         <div class="panel-body">
-                        	<h4>2000 - willing to be called for donation</h4>
+                        	<h4><span id="donationCallerdDiv">0</span> - willing to be called for donation</h4>
                         </div>
                      </div>
                 </div>
@@ -245,14 +246,15 @@
         </div>
     </div>
     <div class="row">
-    	<div class="col-md-3">
-        	<div class="panel panel-default panelDefaultCustom">
+		<div class="col-md-3">
+			<div class="panel panel-default panelDefaultCustom">
             	<div class="panel-heading">
                 	<h4 class="panel-title text-capitalise">Single Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise">total single bags - 27</h4>
-                    <table class="table table-condensed  m_top10">
+                	<h4 class="text-capitalise">total single bags - <span id="totalSingleBags">0</span></h4>
+                    <div id="singleBagsDivId"></div>
+					<!--<table class="table table-condensed  m_top10">
                     	<tr>
                         	<td>With Sagm 350ml</td>
                             <td>10 Bags</td>
@@ -261,7 +263,7 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>
+                    </table>-->
                 </div>
             </div>
         </div>
@@ -271,8 +273,9 @@
                 	<h4 class="panel-title text-capitalise">double Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise">total single bags - 27</h4>
-                    <table class="table table-condensed m_top10">
+                	<h4 class="text-capitalise">total double bags - <span id="totalDoubleBags">0</span></h4>
+                    <div id="doubleBagsDivId"></div>
+					<!--<table class="table table-condensed m_top10">
                     	<tr>
                         	<td>With Sagm 350ml</td>
                             <td>10 Bags</td>
@@ -281,7 +284,7 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>
+                    </table>-->
                 </div>
             </div>
         </div>
@@ -291,8 +294,9 @@
                 	<h4 class="panel-title text-capitalise">triple Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise">total single bags - 27</h4>
-                    <table class="table table-condensed m_top10">
+                	<h4 class="text-capitalise">total triple bags - <span id="totalTripleBags"></span></h4>
+					<div id="tripleBagsDivId"></div>
+                    <!--<table class="table table-condensed m_top10">
                     	<tr>
                         	<td>With Sagm 350ml</td>
                             <td>10 Bags</td>
@@ -301,7 +305,7 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>
+                    </table>-->
                 </div>
             </div>
         </div>
@@ -311,8 +315,9 @@
                 	<h4 class="panel-title text-capitalise">Quadruple Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise">total single bags - 27</h4>
-                    <table class="table table-condensed m_top10">
+                	<h4 class="text-capitalise">total Quadruple bags - <span id="totalQuadrateBags"></span></h4>
+                    <div id="quadrateBagsDivId"></div>
+					<!--<table class="table table-condensed m_top10">
                     	<tr>
                         	<td>With Sagm 350ml</td>
                             <td>10 Bags</td>
@@ -321,7 +326,7 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>
+                    </table>-->
                 </div>
             </div>
         </div>
@@ -402,6 +407,194 @@ $(function () {
         }]
     });
 });
+gettotalCollectedBloodDetails();
+getBloodDonatedOtherThanBloodBank();
+getBloodDonorInEmergency();
+getCalledForDonationCount();
+gettotalCollectedBloodBagsInfo();
+
+function gettotalCollectedBloodDetails(){
+	var bloodBankCampId = 1;
+	
+	var jObj = {
+			bloodBankCampId : bloodBankCampId
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'gettotalCollectedBloodDetailsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null){
+				var str='';
+				str+='<table class="table table-condensed m_top10">';
+					str+='<tr>';
+						str+='<td>All Days</td>';
+						str+='<td>'+result.totalBlood+' ml</td>';
+					str+='</tr>';
+					for(var i in result.subList){
+						str+='<tr>';
+							str+='<td>'+result.subList[i].date+'</td>';
+							str+='<td>'+result.subList[i].totalBlood+' ml</td>';
+						str+='</tr>';
+					}
+				str+='</table>';
+				
+				$("#collectedBloodDiv").html(str);
+			}
+		});
+}
+
+function getBloodDonatedOtherThanBloodBank(){
+	var jObj = {
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'getBloodDonatedOtherThanBloodBankAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result > 0)
+				$("#otherBloodBankId").html(result);
+		});
+}
+
+function getBloodDonorInEmergency(){
+	var jObj = {
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'getBloodDonorInEmergencyAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result > 0)
+				$("#emergencyDonarsId").html(result);
+		});
+}
+
+function getCalledForDonationCount(){
+	var jObj = {
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'getCalledForDonationCountAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result > 0)
+				$("#donationCallerdDiv").html(result);
+		});
+}
+
+function gettotalCollectedBloodBagsInfo(){
+	var bloodBankCampId = 1;
+	
+	var jObj = {
+			bloodBankCampId : bloodBankCampId
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'gettotalCollectedBloodBagsInfoAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null){
+				if(result.singleBagList != null){
+					var str='';
+					var total = 0;
+					str+='<table class="table table-condensed  m_top10">';
+					for(var i in result.singleBagList){
+						str+='<tr>';
+							str+='<td>'+result.singleBagList[i].quantityType+'</td>';
+							if(result.singleBagList[i].count != null)
+								str+='<td>'+result.singleBagList[i].count+' Bags</td>';
+							else
+								str+='<td>0 Bags</td>';
+						str+='</tr>';
+						total = total+parseInt(result.singleBagList[i].count);
+					}
+					str+='</table>';
+					
+					$("#totalSingleBags").html(total);
+					$("#singleBagsDivId").html(str);
+				}
+				if(result.doubleBagList != null){
+					var str='';
+					var total = 0;
+					str+='<table class="table table-condensed  m_top10">';
+					for(var i in result.doubleBagList){
+						str+='<tr>';
+							str+='<td>'+result.doubleBagList[i].quantityType+'</td>';
+							if(result.doubleBagList[i].count != null)
+								str+='<td>'+result.doubleBagList[i].count+' Bags</td>';
+							else
+								str+='<td>0 Bags</td>';
+						str+='</tr>';
+						total = total+parseInt(result.doubleBagList[i].count);
+					}
+					str+='</table>';
+					
+					$("#totalDoubleBags").html(total);
+					$("#doubleBagsDivId").html(str);
+				}
+				if(result.tripleBagList != null){
+					var str='';
+					var total = 0;
+					str+='<table class="table table-condensed  m_top10">';
+					for(var i in result.tripleBagList){
+						str+='<tr>';
+							str+='<td>'+result.tripleBagList[i].quantityType+'</td>';
+							if(result.tripleBagList[i].count != null)
+								str+='<td>'+result.tripleBagList[i].count+' Bags</td>';
+							else
+								str+='<td>0 Bags</td>';
+						str+='</tr>';
+						total = total+parseInt(result.tripleBagList[i].count);
+					}
+					str+='</table>';
+					
+					$("#totalTripleBags").html(total);
+					$("#tripleBagsDivId").html(str);
+				}
+				if(result.quadrupleList != null){
+					var str='';
+					var total = 0;
+					str+='<table class="table table-condensed  m_top10">';
+					for(var i in result.quadrupleList){
+						str+='<tr>';
+							str+='<td>'+result.quadrupleList[i].quantityType+'</td>';
+							if(result.quadrupleList[i].count != null)
+								str+='<td>'+result.quadrupleList[i].count+' Bags</td>';
+							else
+								str+='<td>0 Bags</td>';
+						str+='</tr>';
+						total = total+parseInt(result.quadrupleList[i].count);
+					}
+					str+='</table>';
+					
+					$("#totalQuadrateBags").html(total);
+					$("#quadrateBagsDivId").html(str);
+				}
+			}
+		});
+}
+
+function getBloodDonorDetailsByAgeGroupingInfo(){
+	var bloodBankCampId = 1;
+	
+	var jObj = {
+			bloodBankCampId : bloodBankCampId
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'getBloodDonorDetailsByAgeGroupingInfoAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			
+		});
+}
 getBloodDonorsCountsSummary();
 function getBloodDonorsCountsSummary(){
 	//var campId = $("#").val();

@@ -12243,6 +12243,42 @@
 			<param name="root">mahanaduEventVOList</param>
 		</result>
 	</action>
+	
+	<action name="gettotalCollectedBloodDetailsAction" class="bloodBankAction" method="gettotalCollectedBloodDetails">
+		<result type="json" name="success">
+			<param name="root">bloodBankDashBoardVO</param>
+		</result>
+	</action>
+	
+	<action name="getBloodDonatedOtherThanBloodBankAction" class="bloodBankAction" method="getBloodDonatedOtherThanBloodBank">
+		<result type="json" name="success">
+			<param name="root">count</param>
+		</result>
+	</action>
+	
+	<action name="getBloodDonorInEmergencyAction" class="bloodBankAction" method="getBloodDonorInEmergency">
+		<result type="json" name="success">
+			<param name="root">count</param>
+		</result>
+	</action>
+	
+	<action name="getCalledForDonationCountAction" class="bloodBankAction" method="getCalledForDonationCount">
+		<result type="json" name="success">
+			<param name="root">count</param>
+		</result>
+	</action>
+	
+	<action name="gettotalCollectedBloodBagsInfoAction" class="bloodBankAction" method="gettotalCollectedBloodBagsInfo">
+		<result type="json" name="success">
+			<param name="root">bloodBankDashBoardVO</param>
+		</result>
+	</action>
+	
+	<action name="getBloodDonorDetailsByAgeGroupingInfoAction" class="bloodBankAction" method="getBloodDonorDetailsByAgeGroupingInfo">
+		<result type="json" name="success">
+			<param name="root">bloodBankDashBoardvoList</param>
+		</result>
+	</action>
 	<action name="getAcceptanceStatusAction" class="bloodBankAction" method="getAcceptanceStatus">
 		<result type="json" name="success">
 			<param name="root">idNameList</param>

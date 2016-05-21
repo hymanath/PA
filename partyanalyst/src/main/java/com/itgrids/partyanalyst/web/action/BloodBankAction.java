@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,23 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	private List<BloodBankVO> bloodBankVOList;
 	private BloodBankVO bloodBankVO;
 	private BloodBankDashBoardVO bloodBankDashBoardVO;
+	private Long count;
+	private List<BloodBankDashBoardVO> bloodBankDashBoardvoList = new ArrayList<BloodBankDashBoardVO>();
 	
+	
+	public List<BloodBankDashBoardVO> getBloodBankDashBoardvoList() {
+		return bloodBankDashBoardvoList;
+	}
+	public void setBloodBankDashBoardvoList(
+			List<BloodBankDashBoardVO> bloodBankDashBoardvoList) {
+		this.bloodBankDashBoardvoList = bloodBankDashBoardvoList;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	public BloodBankDashBoardVO getBloodBankDashBoardVO() {
 		return bloodBankDashBoardVO;
 	}
@@ -160,6 +177,72 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			idNameList = bloodBankService.getBloodBagQuantity();
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String gettotalCollectedBloodDetails(){
+		try {
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			
+			bloodBankDashBoardVO = bloodBankService.gettotalCollectedBloodDetails(campId);
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  gettotalCollectedBloodDetails", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBloodDonatedOtherThanBloodBank(){
+		try {
+			
+			count = bloodBankService.getBloodDonatedOtherThanBloodBank();
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getBloodDonatedOtherThanBloodBank", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBloodDonorInEmergency(){
+		try {
+			
+			count = bloodBankService.getBloodDonorInEmergency();
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getBloodDonorInEmergency", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCalledForDonationCount(){
+		try {
+			
+			count = bloodBankService.getCalledForDonationCount();
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getCalledForDonationCount", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String gettotalCollectedBloodBagsInfo(){
+		try {
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			
+			bloodBankDashBoardVO = bloodBankService.gettotalCollectedBloodBagsInfo(campId);
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  gettotalCollectedBloodBagsInfo", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBloodDonorDetailsByAgeGroupingInfo(){
+		try {
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			
+			bloodBankDashBoardvoList = bloodBankService.getBloodDonorDetailsByAgeGroupingInfo(campId);
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getBloodDonorDetailsByAgeGroupingInfo", e);
 		}
 		return Action.SUCCESS;
 	}
