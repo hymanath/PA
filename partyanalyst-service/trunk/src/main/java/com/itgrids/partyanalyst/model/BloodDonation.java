@@ -106,7 +106,7 @@ public class BloodDonation extends BaseModel implements Serializable{
 		this.donorAge = donorAge;
 	}
 	
-	@Column(name="blood_donation_age_group_id")
+	@Column(name="blood_donation_age_group_id", insertable=false, updatable = false)
 	public Long getBloodDonationAgeGroupId() {
 		return bloodDonationAgeGroupId;
 	}
@@ -276,7 +276,7 @@ public class BloodDonation extends BaseModel implements Serializable{
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="blood_donation_age_group_id", insertable=false, updatable = false)
+	@JoinColumn(name="blood_donation_age_group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public BloodDonationAgeGroup getBloodDonationAgeGroup() {

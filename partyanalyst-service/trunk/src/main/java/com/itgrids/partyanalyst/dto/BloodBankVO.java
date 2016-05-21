@@ -18,6 +18,23 @@ public class BloodBankVO implements Serializable{
 	private String education;
 	private String occupation;
 	private String address;
+	private Long educationId;
+	private Long occupationId;
+	private Long donationsInBloodBank;
+	private String donationsInOtherPlaces;
+	private String donationDate;
+	private String lastDonation;
+	private Long bloodComponentId;
+	private String bloodComponent;
+	private String willingEmergencyDonation;
+	private String willingToCallDonation;
+	private String remarks;
+	private Long donorAge;
+	private String membershipNo;
+	private Long bloodDonationCampId;
+	private String bagNo;
+	private Long quantity;
+	private boolean alreadyDonated;
 	
 	private AddressVO addressVO;
 	
@@ -99,5 +116,109 @@ public class BloodBankVO implements Serializable{
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}	
+	public Long getEducationId() {
+		return educationId;
 	}
+	public void setEducationId(Long educationId) {
+		this.educationId = educationId;
+	}
+	public Long getOccupationId() {
+		return occupationId;
+	}
+	public void setOccupationId(Long occupationId) {
+		this.occupationId = occupationId;
+	}
+	public Long getDonationsInBloodBank() {
+		return donationsInBloodBank;
+	}
+	public void setDonationsInBloodBank(Long donationsInBloodBank) {
+		this.donationsInBloodBank = donationsInBloodBank;
+	}
+	public String getDonationsInOtherPlaces() {
+		return donationsInOtherPlaces;
+	}
+	public void setDonationsInOtherPlaces(String donationsInOtherPlaces) {
+		this.donationsInOtherPlaces = donationsInOtherPlaces;
+	}
+	public String getDonationDate() {
+		return donationDate;
+	}
+	public void setDonationDate(String donationDate) {
+		this.donationDate = donationDate;
+	}
+	public String getLastDonation() {
+		return lastDonation;
+	}
+	public void setLastDonation(String lastDonation) {
+		this.lastDonation = lastDonation;
+	}
+	public Long getBloodComponentId() {
+		return bloodComponentId;
+	}
+	public void setBloodComponentId(Long bloodComponentId) {
+		this.bloodComponentId = bloodComponentId;
+	}
+	public String getBloodComponent() {
+		return bloodComponent;
+	}
+	public void setBloodComponent(String bloodComponent) {
+		this.bloodComponent = bloodComponent;
+	}
+	public String getWillingEmergencyDonation() {
+		return willingEmergencyDonation;
+	}
+	public void setWillingEmergencyDonation(String willingEmergencyDonation) {
+		this.willingEmergencyDonation = willingEmergencyDonation;
+	}
+	public String getWillingToCallDonation() {
+		return willingToCallDonation;
+	}
+	public void setWillingToCallDonation(String willingToCallDonation) {
+		this.willingToCallDonation = willingToCallDonation;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public Long getDonorAge() {
+		return donorAge;
+	}
+	public void setDonorAge(Long donorAge) {
+		this.donorAge = donorAge;
+	}
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
+	public Long getBloodDonationCampId() {
+		return bloodDonationCampId;
+	}
+	public void setBloodDonationCampId(Long bloodDonationCampId) {
+		this.bloodDonationCampId = bloodDonationCampId;
+	}
+	public String getBagNo() {
+		return bagNo;
+	}
+	public void setBagNo(String bagNo) {
+		this.bagNo = bagNo;
+	}
+	public Long getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+	public boolean isAlreadyDonated() {
+		return alreadyDonated;
+	}
+	public void setAlreadyDonated(boolean alreadyDonated) {
+		this.alreadyDonated = alreadyDonated;
+	}
+	
+	
 }
