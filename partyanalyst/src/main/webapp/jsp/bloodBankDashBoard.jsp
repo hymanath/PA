@@ -402,6 +402,20 @@ $(function () {
         }]
     });
 });
+getBloodDonorsCountsSummary();
+function getBloodDonorsCountsSummary(){
+	//var campId = $("#").val();
+	var jsObj={
+			campId : 1
+			}
+	$.ajax({
+			  type:'GET',
+			  url: 'getBloodDonorsCountsSummaryAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		 });
+}
 </script>
 </body>
 </html>
