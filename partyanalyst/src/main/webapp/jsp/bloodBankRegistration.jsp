@@ -32,9 +32,9 @@
                     <div class="col-md-6">
                     	<label>Enter Cadre Number To Prepopulate Details</label>
                         <div class="input-group inputWithButton">
-                        	<input placeholder="Ex: 56985617" type="text" class="form-control"/>
+                        	<input placeholder="Ex: 38324292" type="text" class="form-control" id="membershipInputId"/>
                             <span class="input-group-addon">
-                            	<button class="btn btn-success" type="button">POPULATE DETAILS</button>
+                            	<button class="btn btn-success" type="button" id="cadreDetailsId">POPULATE DETAILS</button>
                             </span>
                         </div>
                     </div>
@@ -300,14 +300,13 @@ $('select').dropkick();
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
+	 
+});
 	 getOccuations();
 	 getEducationQualifications();
 	 getCadreDetails();
-});
 function getOccuations(){
 	
-	   var jObj = {
-		}
 		$.ajax({
 		  type:'GET',
 		  url: 'getOccuationsAction.action',
@@ -317,9 +316,7 @@ function getOccuations(){
 		});
 }
 function getEducationQualifications(){
-		
-	   var jObj = {
-		}
+	
 		$.ajax({
 		  type:'GET',
 		  url: 'getEducationQualificationsAction.action',
@@ -328,17 +325,24 @@ function getEducationQualifications(){
 			//console.log(result);
 		});
 }
+
+$(document).on("click","#cadreDetailsId",function(){
+	getCadreDetails();
+});
+
  function getCadreDetails(){
 		
+		var membserShipId = $("#membershipInputId").val();
+		//12800104
 	   var jObj = {
-		   memberShipNo:12800104
+		   memberShipNo:membserShipId
 		}
 		$.ajax({
 		  type:'GET',
 		  url: 'getCadreDetailsAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
-			//console.log(result);
+			
 		});
 }
 
