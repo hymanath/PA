@@ -20,13 +20,13 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEntryExitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
-import com.itgrids.partyanalyst.dao.hibernate.EventDAO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitInfo;
 import com.itgrids.partyanalyst.model.EntryExitInfo;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class MahanaduDashBoardService implements IMahanaduDashBoardService {
@@ -38,6 +38,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	private IEntryExitInfoDAO entryExitInfoDAO;
 	private IEventDAO	eventDAO;
 	private IDistrictDAO districtDAO;
+	private CommonMethodsUtilService commonMethodsUtilService; 
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
@@ -69,9 +70,17 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		this.eventDAO = eventDAO;
 	}
 
-	
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
+	}
+	
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public void setCommonMethodsUtilService(
+			CommonMethodsUtilService commonMethodsUtilService) {
+		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
 
 	public void getTodayTotalVisitorsForWeb(){
@@ -710,8 +719,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(list != null && list.size()>0)
 			{
 				for (MahanaduEventVO vo : list)
-				{
-					if(vo.getId().longValue() == id.longValue())
+				{	
+					if(vo.getId() != null && vo.getId().longValue() == id.longValue())
 					{
 						return vo;
 					}
@@ -801,7 +810,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  /*Total,Invited and Non invited Cadre*/		  
 			  //0.total,1.districtId,2.districtName
-			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(eventId,districtQueryStr.toString());
+			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(eventId,districtQueryStr.toString(),todayDate);
 			  
 			  if(totalCountList !=null && totalCountList.size()>0){				  
 				  for(Object[] obj : totalCountList) {							  
@@ -835,7 +844,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  
 				  /*Total,Invited and Non invited Cadre for other states*/		  
 				  //0.total,1.districtId,2.districtName
-				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString.toString());
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString.toString(),todayDate);
 				  
 				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
 					  for (Object[] obj : otherStatesTotalCountList) {
@@ -859,5 +868,71 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		
 		return finalVO;
 		
+	}
+	
+	public Long getTodayCount(Long eventId){
+		int day = 0;
+		try {
+			Object[] dateObj = eventDAO.getEventDates(eventId);
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			 List<Date> betweenDates= commonMethodsUtilService.getBetweenDates(format.parse(dateObj[0].toString()),format.parse(dateObj[1].toString()));
+			 
+			 if(betweenDates != null && betweenDates.size() > 0){
+				 for (int i = 0; i < betweenDates.size(); i++) {
+					 if(format.format(betweenDates.get(i)).equals(format.format(dateUtilService.getCurrentDateAndTime()))){
+						 day = i+1;
+					 }
+				 }	
+			 }
+			 
+		} catch (Exception e) {
+			LOG.error("Exception riased at getTodayCount", e);
+		}
+		return Long.parseLong(day+"");
+	}
+	
+	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(Long dayCount,Long eventId){
+		List<MahanaduEventVO> mahanaduEventVOList = new ArrayList<MahanaduEventVO>(0);
+		try {
+			Object[] dateObj = eventDAO.getEventDates(eventId);
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			List<Date> betweenDates= commonMethodsUtilService.getBetweenDates(format.parse(dateObj[0].toString()),format.parse(dateObj[1].toString()));
+			
+			Date date = betweenDates.get(Integer.parseInt(dayCount.toString())-1);
+			
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			Long entryEventId = entryExitInfo.getEntryId();
+			Long exitEventId = entryExitInfo.getExitId();
+			
+			//get now in campus counts
+			//0-cadreids count,1-hour
+			List<Object[]> currentInCampusObjList = eventAttendeeDAO.getHourWiseCurrentVisitorsCount(date,entryEventId,exitEventId,null);
+			
+			Map<Long,Long> curentInCampusMap = new HashMap<Long, Long>(0);
+			if(currentInCampusObjList != null && currentInCampusObjList.size() > 0){
+				for (Object[] objects : currentInCampusObjList) {
+					curentInCampusMap.put((Long)objects[1],(Long)objects[0]);
+				}
+			}
+			
+			//get total counts
+			//0-total,1-invitees,2-non invitees,3-hour
+			List<Object[]> totalCountsObjList = eventAttendeeDAO.getHourWiseTotalVisitorsCount(eventId,date,null,null);
+			if(totalCountsObjList != null && totalCountsObjList.size() > 0){
+				for (Object[] objects : totalCountsObjList) {
+					MahanaduEventVO vo = new MahanaduEventVO();
+					vo.setTotal((Long)objects[0]);
+					vo.setCadreCount(curentInCampusMap.get((Long)objects[3]) != null ? curentInCampusMap.get((Long)objects[3]) : 0l);
+					vo.setInvitees((Long)objects[3]);
+					mahanaduEventVOList.add(vo);
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getHourWiseNowInCampusCadresCount", e);
+		}
+		
+		return mahanaduEventVOList;
 	}
 }

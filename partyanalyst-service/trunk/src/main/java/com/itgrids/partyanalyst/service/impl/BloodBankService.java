@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IBloodDonorInfoDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.BloodDonation;
@@ -302,6 +303,12 @@ public class BloodBankService implements IBloodBankService{
 		return resultStatus;
 	}
 	
-	
-	
+	public BloodBankDashBoardVO getBloodDonarsSummary(){
+		try {
+			
+		} catch (Exception e) {
+			LOG.error("Exception riased at getBloodDonarsSummary", e);
+		}
+		return null;
+	}
 }
