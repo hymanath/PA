@@ -2784,7 +2784,8 @@
 	    <property name="transactionTemplate" ref="transactionTemplate" />
 	    <property name="entryExitInfoDAO" ref="entryExitInfoDAO" />  
 	    <property name="eventDAO" ref="eventDAO" />   
-	    <property name="districtDAO" ref="districtDAO" />   
+	    <property name="districtDAO" ref="districtDAO" />
+	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />   
 	</bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">
