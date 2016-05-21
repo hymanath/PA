@@ -42,6 +42,7 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	private Long insertedBy;
 	private Date updatedTime;
 	private Long updatedBy;
+	private String isDeleted;
 	
 	private TdpCadre tdpCadre;
 	private EducationalQualifications education;
@@ -217,4 +218,13 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	public void setOccupation(Occupation occupation) {
 		this.occupation = occupation;
 	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 }
