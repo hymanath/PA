@@ -9,6 +9,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBloodDonationAgeGroupDAO;
+import com.itgrids.partyanalyst.dao.IBloodDonationCampDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonorInfoDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
@@ -36,6 +37,7 @@ public class BloodBankService implements IBloodBankService{
 	private TransactionTemplate transactionTemplate;
 	private IBloodDonorInfoDAO bloodDonorInfoDAO;
 	private IBloodDonationAgeGroupDAO bloodDonationAgeGroupDAO;
+	private IBloodDonationCampDAO bloodDonationCampDAO;
 	
 	
 	public void setBloodDonationAgeGroupDAO(
@@ -78,6 +80,14 @@ public class BloodBankService implements IBloodBankService{
 	public void setEducationalQualificationsDAO(
 			IEducationalQualificationsDAO educationalQualificationsDAO) {
 		this.educationalQualificationsDAO = educationalQualificationsDAO;
+	}
+	
+	public IBloodDonationCampDAO getBloodDonationCampDAO() {
+		return bloodDonationCampDAO;
+	}
+
+	public void setBloodDonationCampDAO(IBloodDonationCampDAO bloodDonationCampDAO) {
+		this.bloodDonationCampDAO = bloodDonationCampDAO;
 	}
 
 	@Override
@@ -303,9 +313,9 @@ public class BloodBankService implements IBloodBankService{
 		return resultStatus;
 	}
 	
-	public BloodBankDashBoardVO getBloodDonarsSummary(){
+	public BloodBankDashBoardVO getBloodDonarsSummary(Long campId){
 		try {
-			
+			bloodDonationCampDAO.getCampDates(campId);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getBloodDonarsSummary", e);
 		}

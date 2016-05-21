@@ -10,5 +10,5 @@ public interface IBloodBankService {
  public List<BloodBankVO> getOccupationList();
  public List<BloodBankVO> getEducationalQualificationsList();
  public BloodBankVO getCadreDetails(String memberShipNO);
- public BloodBankDashBoardVO getBloodDonarsSummary();
+ public BloodBankDashBoardVO getBloodDonarsSummary(Long campId);
 }
