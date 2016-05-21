@@ -13,4 +13,6 @@ public interface IMahanaduDashBoardService {
 	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId);
 	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId);
 	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds);
+	public Long getTodayCount(Long eventId);
+	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(Long dayCount,Long eventId);
 }
