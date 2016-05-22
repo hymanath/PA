@@ -2929,7 +2929,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    	levelValue = eventFileUploadVO.getLevelValue();
 		    activityInfoDocument.setLocationValueAddress(levelValue);
 		    
-		    List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
+		    List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), levelValue);
 			if(ids != null && ids.size()>0){
 				try {
 					 activityInfoDocument.setActivityLocationInfoId(ids.get(0));
@@ -2944,19 +2944,26 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					if(constituencyId != null && constituencyId.longValue()>0L)
 						activityLocationInfo.setConstituencyId(constituencyId);
 				}
-				else if(eventFileUploadVO.getLevelId() != null && eventFileUploadVO.getLevelId().longValue() == 13L)
-					activityLocationInfo.setConstituencyId( Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
-				
+				else if(eventFileUploadVO.getLevelId() != null && eventFileUploadVO.getLevelId().longValue() == 13L){
+					activityLocationInfo.setConstituencyId( Long.valueOf(eventFileUploadVO.getLevelValue().toString()));
+				}
 				activityLocationInfo.setActivityScopeId(eventFileUploadVO.getActivityScopeId());
 				activityLocationInfo.setLocationLevel(eventFileUploadVO.getLevelId());
-				activityLocationInfo.setLocationValue( Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
+				if(activityLocationInfo.getLocationLevel() !=null )
+				if(activityLocationInfo.getLocationLevel().longValue() == 6L || activityLocationInfo.getLocationLevel().longValue()== 8L || 
+				activityLocationInfo.getLocationLevel().longValue() == 7L || activityLocationInfo.getLocationLevel().longValue()== 5L || 
+				activityLocationInfo.getLocationLevel().longValue()== 9L )
+					activityLocationInfo.setLocationValue( Long.valueOf(eventFileUploadVO.getLevelValue().toString().substring(1)));
+				else
+					activityLocationInfo.setLocationValue( Long.valueOf(eventFileUploadVO.getLevelValue().toString().trim()));
+				
 				activityLocationInfo.setInsertedBy(eventFileUploadVO.getUpdatedBy());
 				activityLocationInfo.setUpdatedBy(eventFileUploadVO.getUpdatedBy());
 				activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
 				activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 				try {
-					activityLocationInfo.setConductedDate(formatter.parse(eventFileUploadVO.getEventDateStr() != null ? eventFileUploadVO.getEventDateStr().toString() : ""));
+					activityLocationInfo.setConductedDate(formatter.parse(eventFileUploadVO.getEventDateStr() != null && eventFileUploadVO.getEventDateStr().trim().length()>0? eventFileUploadVO.getEventDateStr().toString() : ""));
 				} catch (ParseException e) {
 					LOG.error("Exception rised in saveActivityQuestionnaireDetails()",e);
 				}
@@ -3449,6 +3456,10 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 								localElectionBody, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));	
 					}
 			 }
+		  }	else if(locationLevel == 13l){
+			  if(constituencyIds == null)
+				  constituencyIds = new ArrayList<Long>();
+			  	constituencyIds.add(locationValue);
 		  }
 		}catch (Exception e) {
 			LOG.error(" Exception Occured in getConstituencyId() method, Exception - ",e);
