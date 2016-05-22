@@ -190,6 +190,19 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		
 		return query.executeUpdate();		
 	}
+	public String isTdpCadreExistOrNot(String memberShipNO){
+		
+		Query query=getSession().createQuery("select model.bloodDonorInfo.tdpCadre.memberShipNo " +
+				 " from BloodDonation model " +
+				 " where model.bloodDonorInfo.tdpCadre.memberShipNo=:memberShipNO " +
+				 " and model.bloodDonorInfo.tdpCadre.isDeleted='N' " +
+				 " and model.bloodDonorInfo.tdpCadre.enrollmentYear=:enrollmentYear ");
+		
+		 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
+		 query.setParameter("memberShipNO", memberShipNO.trim());
+		
+		 return (String) query.uniqueResult();
+	}
 	
 	public List<Object[]> getNumberOfTimesCollectedBlood(Long campId){
 		
@@ -202,5 +215,4 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 			
 			return query.list();
 		}
-	
 }

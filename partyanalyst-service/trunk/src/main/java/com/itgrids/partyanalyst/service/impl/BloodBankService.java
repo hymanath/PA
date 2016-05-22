@@ -186,6 +186,13 @@ public class BloodBankService implements IBloodBankService{
           
 		BloodBankVO cadreDtlsVO=new BloodBankVO();
 		try {			
+			
+            //Checking tdpCadreId avilable or not
+		  Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(memberShipNO);
+		   if(tdpCadreId == null){
+			 cadreDtlsVO.setStatus("exist");
+			 return cadreDtlsVO;
+			}
 			//0.bloodDonorInfo,1.donationsInBloodBank,2.donationsInOtherPlaces,3.lastDonationDate,4.bloodComponentId,5.component
 			//,6.emergencyDonation,7.willingToCallDonation,8.remarks,9.donorAge
 			List<Object[]> cadreDetailsObj = bloodDonationDAO.getCadreDetailsOfRegistered(memberShipNO);
@@ -298,6 +305,11 @@ public class BloodBankService implements IBloodBankService{
 	public ResultStatus saveBloodBankCadreDetails(final BloodBankVO bloodBanKVO,final Long userId){
 		ResultStatus resultStatus = new ResultStatus();
 		try{
+			String memberShipId=bloodDonationDAO.isTdpCadreExistOrNot(bloodBanKVO.getMembershipNo());
+			      if(memberShipId!=null){
+			    	  resultStatus.setExceptionMsg("exist");
+			    	  return resultStatus;
+			      }
 			  final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			resultStatus = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
