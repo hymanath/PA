@@ -15,7 +15,7 @@ public class BloodDonorInfoDAO extends GenericDaoHibernate<BloodDonorInfo, Long>
 		super(BloodDonorInfo.class);
 	}
 	
-public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate ){
+/*public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate ){
 		
 		Query query = getSession().createQuery(" select count(model.tdpCadreId)," +
 				" model.bloodDonation.acceptanceStatusId " +
@@ -27,10 +27,10 @@ public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate ){
 		query.setDate("campFromDate",campFromDate);
 		query.setDate("campToDate",campToDate);
 		return query.list();
-	}
-public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate ){
+	}*/
+/*public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate ){
 	
-	Query query = getSession().createQuery(" select count(model.tdpCadreId)," +
+	Query query = getSession().createQuery(" select count(model.tdpCadre.tdpCadreId)," +
 			" date(model.insertedTime)," +
 			" model.bloodDonation.acceptanceStatusId " +
 			" from BloodDonorInfo model " +
@@ -40,5 +40,5 @@ public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDa
 	query.setDate("campFromDate",campFromDate);
 	query.setDate("campToDate",campToDate);
 	return query.list();
-   }
+   }*/
 }

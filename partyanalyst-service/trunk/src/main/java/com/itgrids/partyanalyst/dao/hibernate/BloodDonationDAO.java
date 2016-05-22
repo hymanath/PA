@@ -200,7 +200,7 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		
 		return query.executeUpdate();		
 	}
-	public String isTdpCadreExistOrNot(String memberShipNO){
+public String isTdpCadreExistOrNot(String memberShipNO){
 		
 		Query query=getSession().createQuery("select model.bloodDonorInfo.tdpCadre.memberShipNo " +
 				 " from BloodDonation model " +
@@ -225,4 +225,39 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 			
 			return query.list();
 		}
+	public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate ){
+		
+		Query query = getSession().createQuery(" select count(model.bloodDonorInfo.tdpCadre.tdpCadreId), " +
+				" date(model.bloodDonorInfo.insertedTime), " +
+				" model.acceptanceStatusId " +
+				" from BloodDonation model where " +
+				" date(model.bloodDonorInfo.insertedTime) between :campFromDate and :campToDate " +
+				" group by date(model.bloodDonorInfo.insertedTime),model.acceptanceStatusId ");
+		
+		query.setDate("campFromDate",campFromDate);
+		query.setDate("campToDate",campToDate);
+		return query.list();
+	   }
+	/*public Object[] getCampDates(Long campId){
+		Query query = getSession().createQuery(" select model.bloodDonationCamp.fromDate,model.bloodDonationCamp.toDate " +
+				" from BloodDonation model " +
+				" where model.bloodDonationCamp.bloodDonationCampId=:campId ");
+		query.setParameter("campId", campId);
+		return (Object[]) query.uniqueResult();
+	}*/
+	
+public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate ){
+		
+		Query query = getSession().createQuery(" select count(model.bloodDonorInfo.tdpCadre.tdpCadreId)," +
+				" model.acceptanceStatusId " +
+				" from BloodDonation model " +
+				" where " +
+				" date(model.bloodDonorInfo.insertedTime) between :campFromDate and :campToDate " +
+				" group by model.acceptanceStatusId ");
+		
+		query.setDate("campFromDate",campFromDate);
+		query.setDate("campToDate",campToDate);
+		return query.list();
+	}
+	
 }
