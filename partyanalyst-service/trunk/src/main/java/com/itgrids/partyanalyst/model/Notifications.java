@@ -28,6 +28,7 @@ public class Notifications extends BaseModel implements Serializable{
 	private Long notificationTypeId;
 	private String notification;
 	private String isActive;
+	private Long orderNo;
 
 	private NotificationType notificationType;
 
@@ -75,6 +76,14 @@ public class Notifications extends BaseModel implements Serializable{
 
 	public void setNotificationType(NotificationType notificationType) {
 		this.notificationType = notificationType;
+	}
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 }

@@ -20,6 +20,7 @@ public class NotificationType extends BaseModel implements Serializable{
 	private Long notificationTypeId;
 	private String notificationType;
 	private Long isActive;
+	private Long orderNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,6 +44,13 @@ public class NotificationType extends BaseModel implements Serializable{
 	}
 	public void setIsActive(Long isActive) {
 		this.isActive = isActive;
+	}
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 }
