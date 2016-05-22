@@ -679,4 +679,15 @@ public class BloodBankService implements IBloodBankService{
 		 }
 		 return null;
 	}
+	
+	public ResultStatus saveBleedingDetails(BloodBankVO bloodBankVO){
+		ResultStatus finalStatus = new ResultStatus();
+		try{			
+			int updatedCount = bloodDonationDAO.updateBloodDonationDetailsByMemberShip(bloodBankVO);						
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalStatus;
+	}
+	
 }

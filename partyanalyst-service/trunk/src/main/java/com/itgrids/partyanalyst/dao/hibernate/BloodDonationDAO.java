@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
+import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.model.BloodDonation;
 
 public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> implements IBloodDonationDAO {
@@ -62,7 +63,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
+public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		
 		Query query = getSession().createQuery("select sum(model.quantity)," +
 												" date(model.insertedTime)" +
@@ -139,6 +140,45 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		query.setParameter("toDate", toDate);
 		
 		return query.list();
+	}	
+	
+	public Integer updateBloodDonationDetailsByMemberShip(BloodBankVO bloodBankVO){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("update BloodDonation model set ");
+		
+		if(bloodBankVO !=null){
+			if(bloodBankVO.getStatusId() !=null && bloodBankVO.getStatusId()>0){
+				str.append(" model.acceptanceStatus.acceptanceStatusId = :statusId ");
+			}
+			if(bloodBankVO.getBagNo() !=null && !bloodBankVO.getBagNo().isEmpty()){
+				str.append(" ,model.bagNo =:bagNo ");
+			}
+			if(bloodBankVO.getBagTypeId() !=null && bloodBankVO.getBagTypeId()>0){
+				str.append(",model.bloodBagTypeId =:bloodBagTypeId ");
+			}
+			if(bloodBankVO.getBloodBankQuantityId() !=null && bloodBankVO.getBloodBankQuantityId() >0){
+				str.append(",model.bloodBagQuantityId =:bloodBagQuantityId ");
+			}
+			if(bloodBankVO.getQuantity() !=null && bloodBankVO.getQuantity()>0){
+				str.append(",model.quantity =:quantity ");
+			}
+			
+			str.append(" where model.tdpCadre.memberShipNo = :memberShipNo ");
+		}
+		
+		Query query=getSession().createQuery(str.toString());
+		query.setParameter("memberShipNo",bloodBankVO.getMembershipNo());
+		
+		if(bloodBankVO.getStatusId() !=null && bloodBankVO.getStatusId()>0){
+			query.setParameter("statusId",bloodBankVO.getStatusId());
+		}
+		if(bloodBankVO.getBagNo() !=null && !bloodBankVO.getBagNo().isEmpty()){
+			query.setParameter("bagNo",bloodBankVO.getBagNo());
+		}
+		
+		return query.executeUpdate();		
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.model.BloodDonation;
 
 public interface IBloodDonationDAO extends GenericDao<BloodDonation, Long> {
@@ -17,4 +18,5 @@ public interface IBloodDonationDAO extends GenericDao<BloodDonation, Long> {
 	public Long getCalledForDonationCount();
 	public List<Object[]> gettotalCollectedBloodBagsInfo(Long campId);
 	public List<Object[]> getBloodDonorDetailsByAgeGroupingInfo(Date fromDate,Date toDate);
+	public Integer updateBloodDonationDetailsByMemberShip(BloodBankVO bloodBankVO);
 }
