@@ -150,11 +150,10 @@
 		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
+					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>
 				</div>
 				<div class="panel-body">
-				  <div><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 				  <div class="row">
 					<div class="col-md-12">
 						<div class="pull-right">
@@ -163,6 +162,7 @@
 							<input type="radio" class="dayRadio" name="dayRadioName" value="3"/><label>Day - 3</label>
 						</div>
 					</div>
+					<div class="col-md-12"><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 					<div class="col-md-12">
 						<div id="hoursWiseVisitors" style="height:300px;width:100%;"></div>
 					</div>
@@ -251,9 +251,9 @@
 					
 				</div>
 				<div class="panel-body">
-					<div class="table-responsive">
-						<table class="table table-condensed tableNewDistWise" id="distWiseTableId">
-							<!--<thead>
+					<div class="table-responsive" id="distWiseTableDivId">
+						<!--<table class="table table-condensed tableNewDistWise" id="distWiseTableId">
+							<thead>
 								<tr>
 									<th>DISTRICT NAME</th>
 									<th>NOW IN CAMPUS</th>
@@ -279,8 +279,8 @@
 								<td>500</td>
 								<td>100</td>
 								<td>100</td>
-							</tr>-->
-						</table>
+							</tr>
+						</table>-->
 					</div>
 				</div>
 			</div>
@@ -504,9 +504,9 @@ $(".panelDefault").height(maxHeight);
     function getDetails(){
 		  
 		  $("#visitorsTableId").html(' ');
-		  $("#hoursWiseVisitors").html(' ');
+		  //$("#hoursWiseVisitors").html(' ');
 		  $("#hrWiseVstrsPrcssngImgId").show();
-		  $("#hrWiseVstrsHghChrtPrcssngImgId").show();
+		  //$("#hrWiseVstrsHghChrtPrcssngImgId").show();
 		  var currentdate = new Date(); 
 		
 		var datetime = currentdate.getDate() + "-"
@@ -528,13 +528,13 @@ $(".panelDefault").height(maxHeight);
 			  data :{task:JSON.stringify(jsObj)}
           }).done(function(result){
 			    $("#hrWiseVstrsPrcssngImgId").hide();
-				$("#hrWiseVstrsHghChrtPrcssngImgId").hide();
+				//$("#hrWiseVstrsHghChrtPrcssngImgId").hide();
 			  if(result!=null && result.length>0){
 				  buildVisitorsResultByTime(result);
 				  //buildVisitorsDtlsGraph(result);
 			  }else{
 				  $("#visitorsTableId").html("<h5> No Data Availabel.</h5>");
-				  $("#hoursWiseVisitors").html("<h5> No Data Availabel.</h5>");
+				  //$("#hoursWiseVisitors").html("<h5> No Data Availabel.</h5>");
 			  }
 	      });
 	
@@ -991,6 +991,9 @@ function buildTotalVisitorsResult(result){
 	$(document).on("click",".hrWseVstrsCls",function(){
 	 	getDetails();
   	});
+	$(document).on("click",".hrWseVstrsInCampCls",function(){
+	 	getHourWiseNowInCampusCadresCount();
+  	});
   	$(document).on("click","#rfrshDyWsPrgrssRvstId",function(){
 		 getDayWiseVisitSummary();
   	});
@@ -1030,7 +1033,7 @@ function buildTotalVisitorsResult(result){
 		
 		if(stateIds.length > 0){
 			var jObj = {
-				eventId:30,			
+				eventId:$("#mainEventSelectId").val(),			
 				stateIds:stateIds
 			}	
 			
@@ -1039,7 +1042,10 @@ function buildTotalVisitorsResult(result){
 			  url: 'getDistrictWiseMembersCountInCampusAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
 			}).done(function(result){
-				var str = '';
+				if(result != null && result.subList != null && result.subList.length > 0){
+					var str = '';
+					var flag=false;
+				str+='<table class="table table-condensed tableNewDistWise" id="distWiseTableId">';
 				str+='<thead>';
 				str+='<th>District Id</th>';
 				str+='<th>Name</th>';
@@ -1047,10 +1053,11 @@ function buildTotalVisitorsResult(result){
 				str+='<th>Now In Campus</th>';
 				str+='<th>Now In Campus %</th>';
 				str+='</thead>';
-				if(result != null && result.subList != null && result.subList.length > 0){
+				
 					str+='<tbody>';
 					for( var  i in result.subList ){
 						if(result.subList[i].total != null && result.subList[i].total > 0 && result.subList[i].cadreCount != null && result.subList[i].cadreCount > 0){
+							flag=true;
 							str+='<tr>';
 							str+='<td>'+result.subList[i].id+'</td>';
 							str+='<td>'+result.subList[i].name+'</td>';
@@ -1061,10 +1068,17 @@ function buildTotalVisitorsResult(result){
 						}
 					}
 					str+='</tbody>';
+					str+='</table>';
+					if(!flag){
+						$("#distWiseTableDivId").html('No Data Available.');
+					}else{
+						$("#distWiseTableDivId").html(str);
+					}
+					
 				}else{
-					str+='<tr><td colespan="4">No Data Available.</td></tr>';
+					$("#distWiseTableDivId").html('No Data Available.');
 				}
-				$("#distWiseTableId").html(str);
+				
 			});
 		}else{
 			$("#distWiseTableId").html("<h5> No Data Availabel.</h5>");
@@ -1081,6 +1095,8 @@ function buildTotalVisitorsResult(result){
 			if(result != null && result > 0){
 				$("input[name=dayRadioName][value=" + result + "]").prop('checked', true);
 				$("input[name=dayRadioName][value=" + result + "]").trigger("click");
+			}else if(result == 0){
+				$("input[name=dayRadioName][value=1]").trigger("click");
 			}
 		});
 	}
@@ -1090,6 +1106,8 @@ function buildTotalVisitorsResult(result){
 	});
 	
 	function getHourWiseNowInCampusCadresCount(){
+		$('#hoursWiseVisitors').html("");
+		$("#hrWiseVstrsHghChrtPrcssngImgId").show();
 		var dayVal = $('input[name=dayRadioName]:checked').val();
 		var jObj = {
 				dayVal:dayVal,
@@ -1101,6 +1119,8 @@ function buildTotalVisitorsResult(result){
 			  url: 'getHourWiseNowInCampusCadresCountAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
 			}).done(function(result){
+				$("#hrWiseVstrsHghChrtPrcssngImgId").hide();
+				
 				if(result != null && result.length > 0){
 					
 					var categoriesArr=[];
@@ -1108,7 +1128,7 @@ function buildTotalVisitorsResult(result){
 					var nowInCampusArr=[];
 					
 					for(var i in result){
-						categoriesArr.push(result[i].invitees);
+						categoriesArr.push(result[i].name);
 						totalAttendedArr.push(parseInt(result[i].total));
 						nowInCampusArr.push(parseInt(result[i].cadreCount));
 					}
