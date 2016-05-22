@@ -850,6 +850,10 @@
 				   <value>com.itgrids.partyanalyst.model.BloodDonationCamp</value>
 				   <value>com.itgrids.partyanalyst.model.BloodDonorInfo</value>
 				   <value>com.itgrids.partyanalyst.model.BloodBagQuantity</value>
+				   
+				   <value>com.itgrids.partyanalyst.model.NotificationDevice</value>
+				   <value>com.itgrids.partyanalyst.model.NotificationType</value>
+				   <value>com.itgrids.partyanalyst.model.Notifications</value>
 				 </list>
 			
 		</property>
