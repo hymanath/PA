@@ -893,7 +893,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" where" +
 				" EA.event_id = E.event_id" +
 				" and date(EA.attended_time) = :date " +
-				" and E.parent_event_id = :parentEventId " +
+				" and E.event_id = :parentEventId " +
 				" group by  hour(EA.attended_time);");
 		
 		Query query = getSession().createSQLQuery(str.toString())
