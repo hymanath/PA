@@ -160,15 +160,17 @@
                     </div>-->
                 </div>
                 <div class="row">
-                    <div class="col-md-1 m_top10">
-                    	<button class="btn btn-success" id="submitBtnId">SUBMIT</button>
-					     	
+                    <div class="col-md-3 m_top10">
+                    	<button class="btn btn-success" id="submitBtnId" onclick="printdocumentDetails()">SUBMIT</button>
+					     
                     </div>
+					
+					
 					<div class="col-xs-3  m_top10">
 					<span id="statusId"></span>
 					</div>
                 </div>
-                <div class="row m_top20">
+				<div class="row m_top20">
                 	<div class="col-md-12">
                     	<div class="panel panel-default">
                         	<div class="panel-heading bg_cc">
@@ -176,43 +178,115 @@
                             </div>
                             <div class="panel-body pad_0">
                             	<table class="table tableHealthHistory">
-                                    <tr>
-                                        <td>Heart Disease/Cadriovascular Diseases
-                                        </td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                        <td>Addiction to Alcohol/Drugs/Aspirin</td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Heart Disease/Cadriovascular Diseases
-                                        </td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                        <td>Addiction to Alcohol/Drugs/Aspirin</td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Heart Disease/Cadriovascular Diseases
-                                        </td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                        <td>Addiction to Alcohol/Drugs/Aspirin</td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Heart Disease/Cadriovascular Diseases
-                                        </td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                        <td>Addiction to Alcohol/Drugs/Aspirin</td>
-                                        <td>Yes</td>
-                                        <td>No</td>
-                                    </tr>
-                                </table>
+									<tr>
+										<td>Heart Disease/Cardiovascular Diseases
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Addiction to Alcohol / Drugs / Aspirin</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Fits of Epilepsy	
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Signs suggestive of AIDS / Unexpected weight loss</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Tuberculosis / Typhoid / malaria
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Evidence of Polycythemia Vera / bleeding disorders</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Kidney Problem	
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Evidence of Hepatitis’ B infection / Jaundice</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Diabetes controlled on Insulin
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Evidence of Leprosy infection</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Any surgeries / blood transfusions in the last 1 year
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Evidence of Schizophrenia</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Skin Rash / Tattoos
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Any Vaccination / immunization in last 1 year</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Bronchial Asthma
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Have taken antibiotics in last one month</td>
+										<td>Yes</td>
+										<td>No</td>
+									</tr>
+									<tr>
+										<td>Liver Disease / Dialysis/Rabies
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Women:</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Evidence of Cancer/Malignant disease
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Pregnancy / Lactation / Abortion</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Immunoglobulin / endocrine
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Periods / 10 Days</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Disorders/chronic nephritis
+										</td>
+										<td>Yes</td>
+										<td>No</td>
+										<td>Any Gynecological Disorders</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>
                             </div>
                         </div>
                     </div>
@@ -289,28 +363,276 @@
         </div>
     </div>
 </div>
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
-</button>
-<div class="modal fade dataSubmittingModal" id="myModal" tabindex="-1" role="dialog">
+<div class="modal fade myModalprintView " id="" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
-      <div class="modal-body">
-        <p class="text-capitalise">details are submitting</p>
-        <p>dou want to get print</p>
-        <button type="button" class="m_top20 btn btn-primary">PRINT</button>
-        <button type="button" class="btn btn-default m_top20" data-dismiss="modal">CANCEL</button>
+      <div class="modal-body" id="">
+		<div class="row">
+			<div class="col-md-12">
+				<p>Details are Submitting</p>
+			</div>	
+			<div class="col-md-12">
+				<!--<button type="button" class="m_top20 btn btn-primary printCls" id="printBloddBankId" >PRINT</button>-->
+				
+				<button type="button" class="btn btn-primary" id="printpriewBtn">Print Preview</button>	
+				<button type="button" class="btn btn-default m_top20" data-dismiss="modal">CANCEL</button>
+			</div>
+		</div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
+<div class="modal fade dataSubmittingModal" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" id="printarea">
+		<div class="row">
+			<div class="col-md-1 col-xs-1">
+			  <img src="dist/BloodBankCustomFiles/logo.png" class="img-responsive" alt="Logo"/>
+			</div>
+			<div class="col-md-11 col-xs-11">
+				<h3 class="text-capitalise">ntr trust blood bank</h3>
+				<p class="text-capitalise">ntr trust bhavan, road no-2, banjara hills, hyderabad - 34</p>
+				<p>Tel: 040 30799999 | E-Mail:hydbb@ntrtrust.org | Lic No: 01/HD/AP/2008/BB/CP</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="printDetails">
+					<li>Name: <span class='' id="printnameId"></span></li>
+					<li>Age: <span class='' id="printageId"></span></li>
+					<li>No Of times blood donated in Blood Bank: <span class='' id="printnoOfTmBldDntnId"></span></li>
+					<li>Membership No: <span class='' id="printmembershipInputId"></span></li>
+					<li>Date Of Birth: <span class=''id="printdobId"></span></li>
+					<li>Other than Blood Bank: <span class='' id="printslctBxBBId"></span></li>
+					<li>Father/ Spouse: <span class='' id="printspouseId"></span></li>
+					<li>Mobile No: <span class='' id="printmobileNoId"></span></li>
+					<li>Sex: <span class='' id="printseltBxSxId"></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row m_top20">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading bg_cc">
+						<h4 class="panel-title">HISTORY OF HEALTH</h4>
+					</div>
+					<div class="panel-body pad_0">
+						<table class="table tableHealthHistory">
+							<tr>
+								<td>Heart Disease/Cardiovascular Diseases
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Addiction to Alcohol / Drugs / Aspirin</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Fits of Epilepsy	
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Signs suggestive of AIDS / Unexpected weight loss</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Tuberculosis / Typhoid / malaria
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Evidence of Polycythemia Vera / bleeding disorders</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Kidney Problem	
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Evidence of Hepatitis’ B infection / Jaundice</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Diabetes controlled on Insulin
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Evidence of Leprosy infection</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Any surgeries / blood transfusions in the last 1 year
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Evidence of Schizophrenia</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Skin Rash / Tattoos
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Any Vaccination / immunization in last 1 year</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Bronchial Asthma
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Have taken antibiotics in last one month</td>
+								<td>Yes</td>
+								<td>No</td>
+							</tr>
+							<tr>
+								<td>Liver Disease / Dialysis/Rabies
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Women:</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Evidence of Cancer/Malignant disease
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Pregnancy / Lactation / Abortion</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Immunoglobulin / endocrine
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Periods / 10 Days</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Disorders/chronic nephritis
+								</td>
+								<td>Yes</td>
+								<td>No</td>
+								<td>Any Gynecological Disorders</td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading bg_cc">
+						<h4 class="panel-title">MEDICAL CHECKUP</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table">
+									<tr>
+										<td>
+											<label>Temp</label>
+											<input class="form-control" type="text"/>
+											<span class="textItalic pull-right">0C(98.40F)</span>
+										</td>
+										<td>
+											<label>HB</label>
+											<input class="form-control" type="text"/>
+											<span class="textItalic pull-right">0C(98.40F)</span>
+										</td>
+										<td>
+											<label>BP</label>
+											<input class="form-control" type="text"/>
+											<span class="textItalic pull-right">0C(98.40F)</span>
+										</td>
+										<td>
+											<label>Pulse</label>
+											<input class="form-control" type="text"/>
+											<span class="textItalic pull-right">0C(98.40F)</span>
+										</td>
+										<td>
+											<label>Weight</label>
+											<input class="form-control" type="text"/>
+											<span class="textItalic pull-right">Kgs(&gt;45 Kgs)</span>
+										</td>
+									</tr>
+								</table>
+								<table class="table">
+									<tr>
+										<td>
+											<label>Reasons for Rejecting Doctor</label>
+											<textarea class="form-control" rows='1'></textarea>
+										</td>
+										<td>
+											<label>Post Phlebotomy Reaction</label>
+											<textarea class="form-control" rows='1'></textarea>
+										</td>
+									</tr>
+								</table>
+								<table class="table">
+									<tr>
+										<td>
+											<p>Signature Of Medical Officer</p>
+											<p>Date:___________________</p>
+										</td>
+										<td>
+											<p>Signature Of Phlebotomy</p>
+											<p>Date:___________________</p>
+										</td>
+										<td>
+											<p>Signature Of Donor</p>
+											<p>Date:___________________</p>
+										</td>
+									</tr>
+								</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<div class="col-md-12">
+			<h4 class="text-capitalise">Donor Consent</h4>
+			<ul>
+				<li>I Have Accurately answered all questions and voluntary willing to donate 350/450 ml of blood</li>
+				<li>I understand that my blood will be tested for evidence of infections including HIV(AIDS),HBsAg,HCV and Syphilis</li>
+				<li>I understand that test results will be made known to health authorities only. I would like to be informed in case of Sero-Positive result.</li>
+			</ul>
+
+			<p class="text-capitalise">details are submitting</p>
+			<p>dou want to get print</p>
+			<button type="button" class="m_top20 btn btn-primary printCls" id="printBloddBankId" >PRINT</button>
+			<button type="button" class="btn btn-default m_top20" data-dismiss="modal">CANCEL</button>
+		</div>
         
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+
+
 $("#dobId").daterangepicker({singleDatePicker:true});
 $("#dtfDntnId").daterangepicker({singleDatePicker:true});
 $("#dtfDntnId").val(" ");
@@ -325,6 +647,7 @@ $(document).ready(function(){
 	 getBloodComponents();
 	 getEducationQualifications();
 function getOccuations(){
+
 	$.ajax({
 		  type:'GET',
 		  url: 'getOccuationsAction.action',
@@ -335,6 +658,23 @@ function getOccuations(){
 					$("#occptnSlctBxId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				  }	
 			}
+		});
+}
+
+function updatePrintStatus(id){
+		var jobj = {
+		bloodBankId : id
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'updatePrintstatusAction.action',
+		   data : {task:JSON.stringify(jobj)} ,
+		}).done(function(result){
+			/* if(result != null && result.length>0){
+				  for(var i in result){
+					$("#occptnSlctBxId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				  }	
+			}*/
 		});
 }
 function getEducationQualifications(){
@@ -380,7 +720,11 @@ $(document).on("click","#cadreDetailsId",function(){
 	 $(".cadreNoErrorCls").html('');
 	 getCadreDetails(membserShipId);
 });
-
+$(document).on("click",".printCls",function(){
+	 window.print();
+	 var value = $(this).attr("value");
+	 updatePrintStatus(value);
+})
  function getCadreDetails(membserShipId){
 	   
 	   
@@ -461,8 +805,21 @@ function populateCommonFields(result){
 			$("#occptnSlctBxId").val(result.occupationId);
 		}
 }
-$(document).on("click","#submitBtnId",function(){
+
+$(document).on("click","#printpriewBtn",function(){
+	$(".myModalprintView").modal("hide");
+	setTimeout(function(){
+		$("#myModal").modal("show");
+	},500)
 	
+});
+
+function printdocumentDetails(){
+	
+	$("#printpriewBtn").show();
+	$("body").addClass("modal-open")
+	$("body").css("padding-right","17px")
+	$("#printBloddBankId").removeAttr("value");
 		var membserShipId = $("#membershipInputId").val();
 		 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
 			 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
@@ -488,9 +845,11 @@ $(document).on("click","#submitBtnId",function(){
 		  cadreDtlsArr.push($("#wllngTBClldFrDntnId").val());
 		  cadreDtlsArr.push($("#rmrksId").val());
 		  cadreDtlsArr.push(membserShipId);
+		 
 	   var jObj = {
 		   cadreDtlsArr:cadreDtlsArr
 		}
+		
 		$.ajax({
 		  type:'POST',
 		  url: 'saveCadreDetailsAction.action',
@@ -498,10 +857,36 @@ $(document).on("click","#submitBtnId",function(){
 		}).done(function(result){
 			if(result!=null){
 				if(result.exceptionMsg=="success"){
+		//$("#printpriewBtn").show();
+		$("#printnameId").html(''+$("#nameId").val()+'');
+		$("#printageId").html(''+$("#ageId").val()+'');
+		$("#printnoOfTmBldDntnId").html(''+$("#noOfTmBldDntnId").val()+'');
+		$("#printmembershipInputId").html(''+$("#membershipInputId").val()+'');
+		$("#printdobId").html(''+$("#dobId").val()+'');
+	    $("#printseltBxSxId").html(''+$("#seltBxSxId").val()+'');
+		$("#printspouseId").html(''+$("#spouseId").val()+'');
+		$("#printmobileNoId").html(''+$("#mobileNoId").val()+'');
+		$("#printslctBxBBId").html(''+$("#slctBxBBId").val()+'');
+		 
+		// $("#printaddressId").html(''+$("#addressId").val()+'');
+		 // 
+		// $("#printemailId").html(''+$("#emailId").val()+'');
+		// $("#printedutnQlfctnSlctBxId").html(''+$("#edutnQlfctnSlctBxId").val()+'');
+		 // $("#printoccptnSlctBxId").html(''+$("#occptnSlctBxId").val()+'');
+		
+		 //  $("#printslctBxBBId").html(''+$("#slctBxBBId").val()+'');
+		//  $("#printdtfDntnId").html(''+$("#dtfDntnId").val()+'');
+		// $("#printdonationId").html(''+$("#donationId").val()+'');
+		//  $("#printwllngTdntEmrgncyId").html(''+$("#wllngTdntEmrgncyId").val()+'');
+		  //$("#printwllngTBClldFrDntnId").html(''+$("#wllngTBClldFrDntnId").val()+'');
+		 //  $("#printrmrksId").html(''+$("#rmrksId").val()+'');
+			
+					$("#printBloddBankId").attr("value",''+result.resultState+'');
 					 $("#statusId").html("<p style='color:green;font-size:15px;'>Saved Successfully</p>'");
 					 setTimeout(function(){
 					 $("#statusId").html("");
 					},2000);
+					$(".myModalprintView").modal("show");
 					clearFields();
 				}else if(result.exceptionMsg=="exist"){
 					 	$("#statusId").html("<p  style='color:red;font-size:15px;'>You have already donated blood.Please don't try.</p>'");
@@ -510,7 +895,7 @@ $(document).on("click","#submitBtnId",function(){
 				}
 			}
 		});
-});
+}
 function clearFields(){
 	$(".form-control").val(' ');
 	$("#seltBxSxId").val("M");

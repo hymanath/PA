@@ -70,7 +70,6 @@ h1,h2,h3,h4,h5,h6,p,ul
 }
 .dataSubmittingModal , .dataSubmittingModal .modal-content
 {
-	 text-align:center;
 	 border-radius:0px;
 }
 .tableDonors tr td:nth-child(3)
@@ -130,4 +129,53 @@ h1,h2,h3,h4,h5,h6,p,ul
 .panelDefaultCustom .panel-heading
 {
 	background:#E5E5E5
+}
+.printDetails
+{
+	background:#f4f4f4;
+	margin-top:10px;
+	padding:20px;
+}
+.printDetails li:nth-child(2)
+{
+	width:28%;
+}
+.printDetails li
+{
+	list-style:none;
+	width:32.3%;
+	display:inline-block
+}
+@media print
+{
+header,footer,.container,#printBloddBankId { visibility: hidden; }
+header,footer,.container ,#printBloddBankId{ display:none; }
+#printarea{visibility:shown}
+.tableHealthHistory tr td
+{
+	padding:2px !important;
+	background-color:#ccc;
+	font-size:10px !important;
+}
+.dataSubmittingModal,h1,h2,h3,h4,h5,h6,p,ul
+{
+	font-size:10px !important;
+}
+.form-control
+{
+	height:10px;
+}
+table
+{
+	margin:0px !important;
+}
+.panel-heading
+{
+	padding:5px;
+	background:#ccc;
+}
+.printDetails
+{
+	padding:5px;
+}
 }

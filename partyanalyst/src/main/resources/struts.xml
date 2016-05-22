@@ -12241,6 +12241,11 @@
 			<param name="root">bloodBankVOList</param>
 		</result>
 	</action>
+    <action name="updatePrintstatusAction" class="bloodBankAction" method="updatePrintstatus">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
 	
 	<action name="getTodayCountAction" class="mahanaduDashBoardAction" method="getTodayCount">
 		<result type="json" name="success">

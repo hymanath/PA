@@ -328,8 +328,6 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
-	
-	
 	public String getNumberOfTimesCollectedBlood(){
 		try {
 			jObj= new JSONObject(getTask());
@@ -364,4 +362,15 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	public String updatePrintstatus(){
+		try{
+			jObj = new JSONObject(getTask());
+			resultStatus=bloodBankService.updatePrintstatus(jObj.getLong("bloodBankId"));
+		}catch (Exception e) {
+			 LOG.info("Error raised at updatePrintstatus() in BloodBankAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
