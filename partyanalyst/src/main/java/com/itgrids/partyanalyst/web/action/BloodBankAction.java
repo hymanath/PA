@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
+import com.itgrids.partyanalyst.dto.DonationsInBloodBankVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -36,10 +37,17 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	private BloodBankDashBoardVO bloodBankDashBoardVO;
 	private Long count;
 	private List<BloodBankDashBoardVO> bloodBankDashBoardvoList = new ArrayList<BloodBankDashBoardVO>();
-
+	private DonationsInBloodBankVO donationsInBloodBankVO;
 	private ResultStatus resultStatus;
 	
 	
+	public DonationsInBloodBankVO getDonationsInBloodBankVO() {
+		return donationsInBloodBankVO;
+	}
+	public void setDonationsInBloodBankVO(
+			DonationsInBloodBankVO donationsInBloodBankVO) {
+		this.donationsInBloodBankVO = donationsInBloodBankVO;
+	}
 	public List<BloodBankDashBoardVO> getBloodBankDashBoardvoList() {
 		return bloodBankDashBoardvoList;
 	}
@@ -255,6 +263,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String getBleedingCadreDetails(){
 		List<Long> statusId = new ArrayList<Long>();
 		try {
@@ -317,6 +326,19 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			bloodBankVOList=bloodBankService.getBloodComponentList();
 		}catch (Exception e) {
 			 LOG.info("Error raised at getEducationsQualifications() in BloodBankAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getNumberOfTimesCollectedBlood(){
+		try {
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			
+			donationsInBloodBankVO = bloodBankService.getNumberOfTimesCollectedBlood(campId);
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getNumberOfTimesCollectedBlood", e);
 		}
 		return Action.SUCCESS;
 	}

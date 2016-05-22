@@ -12315,5 +12315,10 @@
 			<param name="root">bloodBankVOList</param>
 		</result>
 	</action>
+	<action name="getNumberOfTimesCollectedBloodAction" class="bloodBankAction" method="getNumberOfTimesCollectedBlood">
+		<result type="json" name="success">
+			<param name="root">donationsInBloodBankVO</param>
+		</result>
+	</action>
 </package>
 </struts>      
