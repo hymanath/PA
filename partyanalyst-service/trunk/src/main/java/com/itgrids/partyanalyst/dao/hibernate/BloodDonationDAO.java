@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.model.BloodDonation;
+import com.itgrids.partyanalyst.model.BloodDonorInfo;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> implements IBloodDonationDAO {
@@ -156,11 +157,11 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append("update BloodDonation model set ");
+		str.append(" update BloodDonation model set ");
 		
 		if(bloodBankVO !=null){
 			if(bloodBankVO.getStatusId() !=null && bloodBankVO.getStatusId()>0){
-				str.append(" model.acceptanceStatus.acceptanceStatusId = :statusId ");
+				str.append(" model.acceptanceStatusId = :statusId ");
 			}
 			if(bloodBankVO.getBagNo() !=null && !bloodBankVO.getBagNo().isEmpty()){
 				str.append(" ,model.bagNo =:bagNo ");
@@ -173,13 +174,12 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 			}
 			if(bloodBankVO.getQuantity() !=null && bloodBankVO.getQuantity()>0){
 				str.append(",model.quantity =:quantity ");
-			}
-			
-			str.append(" where model.bloodDonorInfo.tdpCadre.memberShipNo = :memberShipNo ");
+			}			
+			str.append(" where model.bloodDonationId= :bloodDonationId ");
 		}
 		
 		Query query=getSession().createQuery(str.toString());
-		query.setParameter("memberShipNo",bloodBankVO.getMembershipNo());
+		query.setParameter("bloodDonationId",bloodBankVO.getId());
 		
 		if(bloodBankVO.getStatusId() !=null && bloodBankVO.getStatusId()>0){
 			query.setParameter("statusId",bloodBankVO.getStatusId());
@@ -197,7 +197,6 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 			query.setParameter("quantity",bloodBankVO.getQuantity());
 		}
 		
-		
 		return query.executeUpdate();		
 	}
 public String isTdpCadreExistOrNot(String memberShipNO){
@@ -209,14 +208,13 @@ public String isTdpCadreExistOrNot(String memberShipNO){
 				 " and model.bloodDonorInfo.tdpCadre.enrollmentYear=:enrollmentYear ");
 		
 		 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
-		 query.setParameter("memberShipNO", memberShipNO.trim());
+		 query.setParameter("memberShipNO", memberShipNO);
 		
 		 return (String) query.uniqueResult();
 	}
 	
 	public List<Object[]> getNumberOfTimesCollectedBlood(Long campId){
 		
-			
 			Query query = getSession().createQuery("select model.bloodDonorInfo.tdpCadre.tdpCadreId,model.donationsInBloodBank"+
 													" from BloodDonation model" +
 													" where model.bloodDonationCamp.bloodDonationCampId = :campId" +
@@ -225,7 +223,15 @@ public String isTdpCadreExistOrNot(String memberShipNO){
 			
 			return query.list();
 		}
-	public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate ){
+	
+	public Long getBloodDonationIdByMemberShip(String memberShipNo){
+		
+		Query query=getSession().createQuery("select  model.bloodDonationId  from BloodDonation model  where model.bloodDonorInfo.tdpCadre.memberShipNo=:memberShipNo ");
+		      query.setParameter("memberShipNo", memberShipNo);
+		return (Long) query.uniqueResult();
+	}
+		
+public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate ){
 		
 		Query query = getSession().createQuery(" select count(model.bloodDonorInfo.tdpCadre.tdpCadreId), " +
 				" date(model.bloodDonorInfo.insertedTime), " +
