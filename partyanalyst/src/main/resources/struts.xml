@@ -12242,7 +12242,6 @@
 		</result>
 	</action>
 	
-	
 	<action name="getTodayCountAction" class="mahanaduDashBoardAction" method="getTodayCount">
 		<result type="json" name="success">
 			<param name="root">longVal</param>
@@ -12323,6 +12322,11 @@
 	<action name="saveBleedingDetailsAction" class="bloodBankAction" method="saveBleedingDetails">
 		<result type="json" name="success">
 			<param name="root">resultStatus</param>
+		</result>
+	</action>
+	<action name="getBloodDonorDetailsByAgeGroupingInfoAction" class="bloodBankAction" method="getBloodDonorDetailsByAgeGroupingInfo">
+		<result type="json" name="success">
+			<param name="root">bloodBankDashBoardvoList</param>
 		</result>
 	</action>
 </package>

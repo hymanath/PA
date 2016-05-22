@@ -3128,6 +3128,7 @@
 	   <property name="acceptanceStatusDAO" ref="acceptanceStatusDAO"></property>
 	   <property name="bloodBagTypeDAO" ref="bloodBagTypeDAO"></property>
 	   <property name="bloodBagQuantityDAO" ref="bloodBagQuantityDAO"></property>
+	   <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 	
 	</bean>
 	
