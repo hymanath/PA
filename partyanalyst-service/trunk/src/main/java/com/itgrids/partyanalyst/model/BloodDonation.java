@@ -36,7 +36,7 @@ public class BloodDonation extends BaseModel implements Serializable{
 	private Long bloodComponentId;
 	private Long donationsInBloodBank;
 	private String donationsInOtherPlaces;
-	private String lastDonationDate;
+	private Date lastDonationDate;
 	private String emergencyDonation;
 	private String willingToCallDonation;
 	private Date donationDate;
@@ -149,10 +149,10 @@ public class BloodDonation extends BaseModel implements Serializable{
 	}
 	
 	@Column(name="last_donation_date")
-	public String getLastDonationDate() {
+	public Date getLastDonationDate() {
 		return lastDonationDate;
 	}
-	public void setLastDonationDate(String lastDonationDate) {
+	public void setLastDonationDate(Date lastDonationDate) {
 		this.lastDonationDate = lastDonationDate;
 	}
 	
@@ -171,7 +171,6 @@ public class BloodDonation extends BaseModel implements Serializable{
 	public void setWillingToCallDonation(String willingToCallDonation) {
 		this.willingToCallDonation = willingToCallDonation;
 	}
-	
 	@Column(name="donation_date")
 	public Date getDonationDate() {
 		return donationDate;
@@ -179,11 +178,11 @@ public class BloodDonation extends BaseModel implements Serializable{
 	public void setDonationDate(Date donationDate) {
 		this.donationDate = donationDate;
 	}
-	
 	@Column(name="acceptance_status_id")
 	public Long getAcceptanceStatusId() {
 		return acceptanceStatusId;
 	}
+
 	public void setAcceptanceStatusId(Long acceptanceStatusId) {
 		this.acceptanceStatusId = acceptanceStatusId;
 	}

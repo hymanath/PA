@@ -1,9 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAcceptanceStatusDAO;
 import com.itgrids.partyanalyst.dao.IBloodBagQuantityDAO;
 import com.itgrids.partyanalyst.dao.IBloodBagTypeDAO;
+import com.itgrids.partyanalyst.dao.IBloodComponentDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationAgeGroupDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationCampDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
@@ -28,6 +31,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AcceptanceStatus;
 import com.itgrids.partyanalyst.model.BloodBagQuantity;
 import com.itgrids.partyanalyst.model.BloodBagType;
+import com.itgrids.partyanalyst.model.BloodComponent;
 import com.itgrids.partyanalyst.model.BloodDonation;
 import com.itgrids.partyanalyst.model.BloodDonationAgeGroup;
 import com.itgrids.partyanalyst.model.BloodDonorInfo;
@@ -51,6 +55,7 @@ public class BloodBankService implements IBloodBankService{
 	private IAcceptanceStatusDAO acceptanceStatusDAO;
 	private IBloodBagTypeDAO bloodBagTypeDAO;
 	private IBloodBagQuantityDAO bloodBagQuantityDAO;
+	private IBloodComponentDAO bloodComponentDAO;
 	
 	
 	public void setBloodDonationAgeGroupDAO(
@@ -94,6 +99,7 @@ public class BloodBankService implements IBloodBankService{
 			IEducationalQualificationsDAO educationalQualificationsDAO) {
 		this.educationalQualificationsDAO = educationalQualificationsDAO;
 	}
+	
 	public IBloodDonationCampDAO getBloodDonationCampDAO() {
 		return bloodDonationCampDAO;
 	}
@@ -126,6 +132,14 @@ public class BloodBankService implements IBloodBankService{
 	public void setBloodBagQuantityDAO(IBloodBagQuantityDAO bloodBagQuantityDAO) {
 		this.bloodBagQuantityDAO = bloodBagQuantityDAO;
 	}
+	
+   public IBloodComponentDAO getBloodComponentDAO() {
+		return bloodComponentDAO;
+	}
+
+	public void setBloodComponentDAO(IBloodComponentDAO bloodComponentDAO) {
+		this.bloodComponentDAO = bloodComponentDAO;
+	}
 
 	@Override
 	public List<BloodBankVO> getOccupationList() {
@@ -156,7 +170,7 @@ public class BloodBankService implements IBloodBankService{
 		 if(rtrnEdctnQulfctnList!=null && rtrnEdctnQulfctnList.size()>0){
 			 for (EducationalQualifications edctnlQlfctns : rtrnEdctnQulfctnList) {
 				 BloodBankVO edctnQulfctnVO=new BloodBankVO();
-				  edctnQulfctnVO.setId(edctnlQlfctns.getId());
+				  edctnQulfctnVO.setId(edctnlQlfctns.getEduQualificationId());
 				  edctnQulfctnVO.setName(edctnlQlfctns.getQualification());
 				  eductnQulfctnLst.add(edctnQulfctnVO);
 			}
@@ -173,15 +187,19 @@ public class BloodBankService implements IBloodBankService{
 		try {			
 			//0.bloodDonorInfo,1.donationsInBloodBank,2.donationsInOtherPlaces,3.lastDonationDate,4.bloodComponentId,5.component
 			//,6.emergencyDonation,7.willingToCallDonation,8.remarks,9.donorAge
-			Object[] cadreDetails = bloodDonationDAO.getCadreDetailsOfRegistered(memberShipNO);
+			List<Object[]> cadreDetailsObj = bloodDonationDAO.getCadreDetailsOfRegistered(memberShipNO);
 			
-			if(cadreDetails !=null && cadreDetails.length>0){				
+			if(cadreDetailsObj !=null && cadreDetailsObj.size()>0){			
+				Object[] cadreDetails=cadreDetailsObj.get(0);
 				setCadreDetailsOfDonor(cadreDetails,cadreDtlsVO);				
 			}else{
 				
 				Object[] obj=tdpCadreDAO.getCadreDetailsByMmbrShpId(memberShipNO);
 				
 				  if(obj!=null && obj.length>0){
+					  
+					  SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+					  
 					  cadreDtlsVO.setId((Long)obj[0]);
 					  String firstName=obj[1]!=null?obj[1].toString():" ";
 					  String lastName=obj[2]!=null?obj[2].toString():" ";
@@ -191,7 +209,9 @@ public class BloodBankService implements IBloodBankService{
 					  cadreDtlsVO.setEmail(obj[5]!=null?obj[5].toString():" ");
 					  cadreDtlsVO.setSex(obj[6]!=null?obj[6].toString():" ");
 					  cadreDtlsVO.setAge(obj[7]!=null?(Long)obj[7]:0l);
-					  cadreDtlsVO.setDob(obj[8]!=null?obj[8].toString():" ");
+					  if(obj[18]!=null){
+						  cadreDtlsVO.setDob(sdf.format((Date)obj[8]));
+					  }
 					  cadreDtlsVO.setEducationId(obj[9]!=null? (Long)obj[9]:0l);
 					  cadreDtlsVO.setOccupationId(obj[10]!=null? (Long)obj[10]:0l);
 					  
@@ -236,13 +256,18 @@ public class BloodBankService implements IBloodBankService{
 			//0.bloodDonorInfo,1.donationsInBloodBank,2.donationsInOtherPlaces,3.lastDonationDate,4.bloodComponentId,5.component
 			//,6.emergencyDonation,7.willingToCallDonation,8.remarks,9.donorAge
 						
-			if(cadre !=null && cadre.length>0){			
+			if(cadre !=null && cadre.length>0){
+			
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+				 
 				BloodDonorInfo bloodDonorInfo = (BloodDonorInfo)cadre[0];				
 				cadreDtlsVO.setName(bloodDonorInfo.getDonorName() !=null ? bloodDonorInfo.getDonorName().toString():"");
 				cadreDtlsVO.setRelativeName(bloodDonorInfo.getRelativeName() !=null ? bloodDonorInfo.getRelativeName().toString():"");
 				cadreDtlsVO.setSex(bloodDonorInfo.getGender() !=null ? bloodDonorInfo.getGender().toString():"");
 				cadreDtlsVO.setAge(bloodDonorInfo.getAge() !=null ? bloodDonorInfo.getAge():0l);
-				cadreDtlsVO.setDob(bloodDonorInfo.getDateOfBirth() !=null ? bloodDonorInfo.getDateOfBirth():"");
+				if(bloodDonorInfo.getDateOfBirth()!=null){
+					cadreDtlsVO.setDob(sdf.format(bloodDonorInfo.getDateOfBirth()));
+				}
 				cadreDtlsVO.setMarried(bloodDonorInfo.getMaritalStatus() !=null ? bloodDonorInfo.getMaritalStatus():"");
 				cadreDtlsVO.setMobile(bloodDonorInfo.getMobileNo() !=null ? bloodDonorInfo.getMobileNo():"");
 				cadreDtlsVO.setEmail(bloodDonorInfo.getEmail() !=null ? bloodDonorInfo.getEmail():"");
@@ -251,7 +276,9 @@ public class BloodBankService implements IBloodBankService{
 				cadreDtlsVO.setOccupationId(bloodDonorInfo.getOccupationId() !=null ? bloodDonorInfo.getOccupationId():0l);
 				cadreDtlsVO.setDonationsInBloodBank(cadre[1] !=null ? (Long)cadre[1]:0l);
 				cadreDtlsVO.setDonationsInOtherPlaces(cadre[2] !=null ? cadre[2].toString():"");
-				cadreDtlsVO.setLastDonation(cadre[3] !=null ? cadre[3].toString():"");
+				if(cadre[3].toString()!=null){
+					cadreDtlsVO.setLastDonation(sdf.format((Date)cadre[3]));
+				}
 				cadreDtlsVO.setBloodComponentId(cadre[4] !=null ? (Long)cadre[4]:0l);//Donation Block
 				cadreDtlsVO.setBloodComponent(cadre[5] !=null ? cadre[5].toString():"");//Donation Block
 				cadreDtlsVO.setWillingEmergencyDonation(cadre[6] !=null ? cadre[6].toString():"");
@@ -267,17 +294,17 @@ public class BloodBankService implements IBloodBankService{
 	}
 	
 	
-	private ResultStatus saveBloodBankCadreDetails(final BloodBankVO bloodBanKVO,final Long userId){
+	public ResultStatus saveBloodBankCadreDetails(final BloodBankVO bloodBanKVO,final Long userId){
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			
+			  final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			resultStatus = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
 				    ResultStatus rs = new ResultStatus();
-					
-				    DateUtilService presentDate = new DateUtilService();
 				    
+				    DateUtilService presentDate = new DateUtilService();
+			
 				    //Saving Donor Formal Information
 				    BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
 				    
@@ -285,12 +312,22 @@ public class BloodBankService implements IBloodBankService{
 				    bloodDonorInfo.setRelativeName(bloodBanKVO.getRelativeName());
 				    bloodDonorInfo.setGender(bloodBanKVO.getSex());
 				    bloodDonorInfo.setAge(bloodBanKVO.getAge());
-				    bloodDonorInfo.setDateOfBirth(bloodBanKVO.getDob());
+				    if(bloodBanKVO.getDob()!=null && !bloodBanKVO.getDob().isEmpty()){
+				    	  try {
+							bloodDonorInfo.setDateOfBirth(sdf.parse(bloodBanKVO.getDob()));
+						} catch (ParseException e) {
+							 e.printStackTrace();
+						}
+				    }
 				    bloodDonorInfo.setMaritalStatus(bloodBanKVO.getMarried());
 				    bloodDonorInfo.setMobileNo(bloodBanKVO.getMobile());
 				    bloodDonorInfo.setEmail(bloodBanKVO.getEmail());
-				    bloodDonorInfo.setEducationId(bloodBanKVO.getEducationId());
-				    bloodDonorInfo.setOccupationId(bloodBanKVO.getOccupationId());
+				    if(bloodBanKVO.getEducationId()!=null && bloodBanKVO.getEducationId()>0l){
+				    	  bloodDonorInfo.setEducationId(bloodBanKVO.getEducationId());
+				    }
+				    if(bloodBanKVO.getOccupationId()!=null && bloodBanKVO.getOccupationId()>0l){
+				    	  bloodDonorInfo.setOccupationId(bloodBanKVO.getOccupationId());
+				    }
 				    bloodDonorInfo.setAddress(bloodBanKVO.getAddress());				    
 				   Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(bloodBanKVO.getMembershipNo());				    
 				    bloodDonorInfo.setTdpCadreId(tdpCadreId);				    
@@ -298,7 +335,7 @@ public class BloodBankService implements IBloodBankService{
 				    bloodDonorInfo.setUpdatedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonorInfo.setInsertedBy(userId);
 				    bloodDonorInfo.setUpdatedBy(userId);
-				    
+				    bloodDonorInfo.setIsDeleted("N");
 				    BloodDonorInfo donorInfo = bloodDonorInfoDAO.save(bloodDonorInfo);
 				    
 				    //Saving Donor Blood Donation Details
@@ -306,7 +343,7 @@ public class BloodBankService implements IBloodBankService{
 				    BloodDonation bloodDonation = new BloodDonation();
 				    
 				    
-				    bloodDonation.setBloodDonationCampId(bloodBanKVO.getBloodDonationCampId());
+				    bloodDonation.setBloodDonationCampId(1l);
 				    bloodDonation.setBloodDonorInfoId(donorInfo.getBloodDonorInfoId());
 				    bloodDonation.setDonorAge(bloodBanKVO.getAge());
 				    
@@ -325,19 +362,39 @@ public class BloodBankService implements IBloodBankService{
 				 
 				    bloodDonation.setDonationsInBloodBank(bloodBanKVO.getDonationsInBloodBank());
 				    bloodDonation.setDonationsInOtherPlaces(bloodBanKVO.getDonationsInOtherPlaces());
-				    bloodDonation.setLastDonationDate(bloodBanKVO.getLastDonation());
-				    bloodDonation.setBloodComponentId(bloodBanKVO.getBloodComponentId());			
+				    if(bloodBanKVO.getLastDonation()!=null && !bloodBanKVO.getLastDonation().isEmpty()){
+				    	 try {
+							bloodDonation.setLastDonationDate(sdf.parse(bloodBanKVO.getLastDonation()));
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+				    }
+				    if(bloodBanKVO.getBloodComponentId()!=null && bloodBanKVO.getBloodComponentId()>0l){
+				    	  bloodDonation.setBloodComponentId(bloodBanKVO.getBloodComponentId());			
+				    }
 				    bloodDonation.setWillingToCallDonation(bloodBanKVO.getWillingToCallDonation());
 				    bloodDonation.setEmergencyDonation(bloodBanKVO.getWillingEmergencyDonation());
 				    bloodDonation.setRemarks(bloodBanKVO.getRemarks());
 				    bloodDonation.setAcceptanceStatusId(1l);
-				    bloodDonation.setInsertedTime(presentDate.getCurrentDateAndTime());
+				    String dateArr[]=presentDate.getCurrentDateInStringFormatYYYYMMDD().split("-");
+				    Long year = Long.valueOf(dateArr[0]);
+					Long month = Long.valueOf(dateArr[1]);
+					Long date = Long.valueOf(dateArr[2]);
+					 String dateFormat = month + "/" + date +"/"+year;
+				  	try {
+				  	bloodDonation.setDonationDate(sdf.parse(dateFormat));
+					} catch (ParseException e) {
+					    e.printStackTrace();
+					}
+				     bloodDonation.setInsertedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonation.setUpdatedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonation.setInsertedBy(userId);
 				    bloodDonation.setUpdatedBy(userId);
 				    
 				    bloodDonationDAO.save(bloodDonation);
-				    
+				   
+				    rs.setExceptionMsg("success");
+				    rs.setResultCode(0);
 					return rs;
 					 
 				 }
@@ -346,7 +403,6 @@ public class BloodBankService implements IBloodBankService{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return resultStatus;
 	}
 	
@@ -690,4 +746,23 @@ public class BloodBankService implements IBloodBankService{
 		return finalStatus;
 	}
 	
+	@Override
+	public List<BloodBankVO> getBloodComponentList() {
+		
+		List<BloodBankVO> bloodComponentList=new ArrayList<BloodBankVO>(0);
+		try{
+			List<BloodComponent> rtrnBldCmpnntLst=bloodComponentDAO.getAll();
+			if(rtrnBldCmpnntLst!=null && rtrnBldCmpnntLst.size()>0){
+				for (BloodComponent bloodComponent : rtrnBldCmpnntLst) {
+					 BloodBankVO vo=new BloodBankVO();
+					  vo.setId(bloodComponent.getBloodComponentId());
+					  vo.setName(bloodComponent.getComponent());
+					  bloodComponentList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			LOG.info("Error raised at getBloodComponentList() BloodBankService in ",e);	
+		}
+		return bloodComponentList;
+	}
 }

@@ -6902,7 +6902,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 	 		" and model.enrollmentYear = :enrollmentYear ");
 	 
 	 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
-	 
+	 query.setParameter("memberShipNo", memberShipNo);
 	 return (Long) query.uniqueResult();
  }
 	
