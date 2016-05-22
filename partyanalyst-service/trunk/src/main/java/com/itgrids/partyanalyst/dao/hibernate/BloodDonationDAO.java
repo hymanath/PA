@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.model.BloodDonation;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> implements IBloodDonationDAO {
  
@@ -16,7 +17,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 	   super(BloodDonation.class);
    }
 	
-	public Object[] getCadreDetailsOfRegistered(String memberShipId){
+	public List<Object[]> getCadreDetailsOfRegistered(String memberShipId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -29,8 +30,12 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 						" AND    model.bloodDonorInfo.tdpCadre.isDeleted ='N'" +
 						" AND    model.bloodDonorInfo.tdpCadre.enrollmentYear = :enrollmentYear ");
 		
-		Query query = getSession().createQuery(queryStr.toString());		
-		return (Object[]) query.uniqueResult();		
+		Query query = getSession().createQuery(queryStr.toString());	
+		
+		query.setParameter("memberShipId", memberShipId);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		
+		return  query.list();		
 	}
 	
 	public List<Object[]> getBleedingCadreDetails(List<Long> statusIds,Long campId)
