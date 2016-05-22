@@ -75,7 +75,7 @@
                             	<label>Married</label>
  		                        <select id="slctBxMrrdId" class="form-control">
                                 	<option value="Married">Married</option>
-									<option value="UnMarried">UnMarried</option>
+									<option value="Single">Single</option>
                                 </select>
                             </div>
                         </div>
@@ -313,6 +313,8 @@
 <script type="text/javascript">
 $("#dobId").daterangepicker({singleDatePicker:true});
 $("#dtfDntnId").daterangepicker({singleDatePicker:true});
+$("#dtfDntnId").val(" ");
+$("#dobId").val(" ");
 //$('select').dropkick();
 </script>
 <script type="text/javascript">
@@ -391,7 +393,11 @@ $(document).on("click","#cadreDetailsId",function(){
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
 			if(result != null){
-				populateCadreDetails(result);
+				if(result.status!=null && result.status=="exist"){
+				 $(".cadreNoErrorCls").html("This cadre number not available.");
+				}else{
+				 populateCadreDetails(result);
+				}
 			}
 		});
 }
@@ -492,16 +498,30 @@ $(document).on("click","#submitBtnId",function(){
 		}).done(function(result){
 			if(result!=null){
 				if(result.exceptionMsg=="success"){
-					 $("#statusId").html("<p style='color:green;font-size:22px;'>Saved Successfully</p>'");
+					 $("#statusId").html("<p style='color:green;font-size:15px;'>Saved Successfully</p>'");
 					 setTimeout(function(){
 					 $("#statusId").html("");
 					},2000);
+					clearFields();
+				}else if(result.exceptionMsg=="exist"){
+					 	$("#statusId").html("<p  style='color:red;font-size:15px;'>You have already donated blood.Please don't try.</p>'");
 				}else{
-					 $("#statusId").html("<p  style='color:red;font-size:22px;'>Error occured...Try again</p>'");
+					$("#statusId").html("<p  style='color:red;font-size:15px;'>Error occured...Try again</p>'");
 				}
 			}
 		});
 });
+function clearFields(){
+	$(".form-control").val(' ');
+	$("#seltBxSxId").val("M");
+	$("#Married").val("Married");
+	$("#edutnQlfctnSlctBxId").val(0);
+	$("#occptnSlctBxId").val(0);
+	$("#slctBxBBId").val("Yes");
+	$("#donationId").val(0);
+	$("#wllngTdntEmrgncyId").val("Yes");
+	$("#wllngTBClldFrDntnId").val("Yes");
+}
 </script>
 
 </body>
