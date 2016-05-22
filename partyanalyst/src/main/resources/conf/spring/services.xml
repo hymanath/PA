@@ -3122,10 +3122,12 @@
 	   <property name="transactionTemplate" ref="transactionTemplate" />
 	   <property name="bloodDonorInfoDAO" ref="bloodDonorInfoDAO"></property>
 	   <property name="bloodDonationAgeGroupDAO" ref="bloodDonationAgeGroupDAO"></property>
+	   <property name="bloodComponentDAO" ref="bloodComponentDAO"></property>
 	   <property name="bloodDonationCampDAO" ref="bloodDonationCampDAO"></property>
 	   <property name="acceptanceStatusDAO" ref="acceptanceStatusDAO"></property>
 	   <property name="bloodBagTypeDAO" ref="bloodBagTypeDAO"></property>
 	   <property name="bloodBagQuantityDAO" ref="bloodBagQuantityDAO"></property>
+	
 	</bean>
 	
 </beans>		

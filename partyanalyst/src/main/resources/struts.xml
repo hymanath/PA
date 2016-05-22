@@ -12231,6 +12231,17 @@
 			<param name="root">bloodBankVO</param>
 		</result>
 	</action>
+	<action name="saveCadreDetailsAction" class="bloodBankAction" method="saveCadreDetails">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
+	<action name="getBloodComponentsAction" class="bloodBankAction" method="getBloodComponents">
+		<result type="json" name="success">
+			<param name="root">bloodBankVOList</param>
+		</result>
+	</action>
+	
 	
 	<action name="getTodayCountAction" class="mahanaduDashBoardAction" method="getTodayCount">
 		<result type="json" name="success">

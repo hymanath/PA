@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IBloodBankService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,6 +36,8 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	private BloodBankDashBoardVO bloodBankDashBoardVO;
 	private Long count;
 	private List<BloodBankDashBoardVO> bloodBankDashBoardvoList = new ArrayList<BloodBankDashBoardVO>();
+
+	private ResultStatus resultStatus;
 	
 	
 	public List<BloodBankDashBoardVO> getBloodBankDashBoardvoList() {
@@ -115,12 +119,17 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	public void setBloodBankVO(BloodBankVO bloodBankVO) {
 		this.bloodBankVO = bloodBankVO;
 	}
-	
 	public List<IdNameVO> getIdNameList() {
 		return idNameList;
 	}
 	public void setIdNameList(List<IdNameVO> idNameList) {
 		this.idNameList = idNameList;
+	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 	public String getOccuations(){
 		try{
@@ -259,6 +268,55 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			bloodBankVOList = bloodBankService.getBleedingCadreDetails(statusId,campId);
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getBleedingCadreDetails() method of BloodBankAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String saveCadreDetails(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			jObj = new JSONObject(getTask());
+	    	JSONArray cadreDtlsArr = jObj.getJSONArray("cadreDtlsArr");
+	    	BloodBankVO bankVO=new BloodBankVO();
+	    	if(cadreDtlsArr!=null && cadreDtlsArr.length()>0){
+	    			bankVO.setName(cadreDtlsArr.getString(0));
+	    			bankVO.setRelativeName(cadreDtlsArr.getString(1));
+	    			bankVO.setSex(cadreDtlsArr.getString(2));
+	    			String age=cadreDtlsArr.getString(3);
+	    			if(age!=null && !age.isEmpty()){
+	    				bankVO.setAge(Long.valueOf(age));
+	    		  }
+	    			bankVO.setDob(cadreDtlsArr.getString(4));
+	    			bankVO.setMarried(cadreDtlsArr.getString(5));
+	    			bankVO.setAddress(cadreDtlsArr.getString(6));
+	    			bankVO.setMobile(cadreDtlsArr.getString(7));
+	    			bankVO.setEmail(cadreDtlsArr.getString(8));
+	    			bankVO.setEducationId(Long.valueOf(cadreDtlsArr.getString(9)));
+	    			bankVO.setOccupationId(Long.valueOf(cadreDtlsArr.getString(10)));
+	    			String donationsInBloodBankCount=cadreDtlsArr.getString(11);
+	    			if(donationsInBloodBankCount!=null && !donationsInBloodBankCount.isEmpty()){
+	    				bankVO.setDonationsInBloodBank(Long.valueOf(donationsInBloodBankCount));
+	    			}
+	    			bankVO.setDonationsInOtherPlaces(cadreDtlsArr.getString(12));
+	    			bankVO.setLastDonation(cadreDtlsArr.getString(13));
+	    			bankVO.setBloodComponentId(Long.valueOf(cadreDtlsArr.getString(14)));
+	    			bankVO.setWillingEmergencyDonation(cadreDtlsArr.getString(15));
+	    			bankVO.setWillingToCallDonation(cadreDtlsArr.getString(16));
+	    			bankVO.setRemarks(cadreDtlsArr.getString(17));
+	    			bankVO.setMembershipNo(cadreDtlsArr.getString(18));
+	   	}
+	   	resultStatus=bloodBankService.saveBloodBankCadreDetails(bankVO,regVO.getRegistrationID());
+		}catch(Exception e){
+			LOG.info("Error raised at saveCadreDetails() in BloodBankAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getBloodComponents(){
+		try{
+			bloodBankVOList=bloodBankService.getBloodComponentList();
+		}catch (Exception e) {
+			 LOG.info("Error raised at getEducationsQualifications() in BloodBankAction",e);
 		}
 		return Action.SUCCESS;
 	}
