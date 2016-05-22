@@ -19,4 +19,5 @@ public interface IBloodDonationDAO extends GenericDao<BloodDonation, Long> {
 	public List<Object[]> gettotalCollectedBloodBagsInfo(Long campId);
 	public List<Object[]> getBloodDonorDetailsByAgeGroupingInfo(Date fromDate,Date toDate);
 	public Integer updateBloodDonationDetailsByMemberShip(BloodBankVO bloodBankVO);
+	public List<Object[]> getNumberOfTimesCollectedBlood(Long campId);
 }
