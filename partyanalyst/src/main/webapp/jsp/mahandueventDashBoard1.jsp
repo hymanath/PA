@@ -525,12 +525,12 @@ str+='<ul id="me-select-list" style="list-style:none;">';
  {
 if(parentEventId == result[i].id)
 {
-str+='<li><input id="check'+result[i].subList[j].id+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" checked>';
+str+='<li><input id="check'+result[i].subList[j].id+'" attr_label="'+result[i].subList[j].name+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" checked>';
 str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
 }
 else
 {
-str+='<li><input id="check'+result[i].subList[j].id+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" ">';
+str+='<li><input id="check'+result[i].subList[j].id+'" attr_label="'+result[i].subList[j].name+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" ">';
 str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
 }
 }
@@ -862,12 +862,20 @@ function getLocationWiseVisitorsCount(eventId,reportLevelId)
 	}else{
 		stateType='particular';
 	}
+	
+	var subeventsLocal=[];
+	if($("#distEventId").val()==0){
+		subeventsLocal = subEvents;
+	}else{
+		subeventsLocal.push($("#distEventId").val());
+	}
+	
 	var jObj = {
 			eventId:eventId,			
 			stateIds:statesSelectedArray,
 			stateType : stateType,
 			reportLevelId:reportLevelId,
-			subEvents : subEvents,
+			subEvents : subeventsLocal,
 			startDate : startDate,
 			endDate : endDate,
 		    dataRetrievingType : dataRetrievingType,
@@ -906,12 +914,21 @@ function getLocationWiseVisitorsCountForDistrict(eventId,reportLevelId)
 	}else{
 		stateType='particular';
 	}
+	
+	var subEventsLocal = [];
+	
+	if($("#distEventId").val()==0){
+		subEventsLocal = subEvents;
+	}else{
+		subEventsLocal.push($("#distEventId").val());
+	}
+	
 	var jObj = {
 			eventId:eventId,			
 			stateIds:statesSelectedArray,
 			stateType : stateType,
 			reportLevelId:reportLevelId,
-			subEvents : subEvents,
+			subEvents : subEventsLocal,
 			startDate : startDate,
 			endDate : endDate,
 		    dataRetrievingType : dataRetrievingType, 
@@ -1028,7 +1045,7 @@ function buildDistrictTable(result,reportLevelId){
 	
 	
 	var str='';
-	str+='<div class="scrollLength">';
+	str+='<div >';
 	if(result[0].locationName != "NO DATA"){
 			str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="datatableId" >';
 			str+='<thead style="background:#EFF3F4">';
@@ -1053,7 +1070,7 @@ function buildDistrictTable(result,reportLevelId){
 			}
 		str+='</tr>';
 		str+='</thead>';
-		str+='<tbody class="fixed-table-body">';
+		str+='<tbody class="fixed-table-body ">';
 		for(var j in result){
 			str+='<tr>';
 			if(result[j].id ==0 || result[j].id == null){
@@ -1131,9 +1148,9 @@ function buildDistrictTable(result,reportLevelId){
 	
 	var Scrollerlength = $(".scrollLength").find("tr").length;
 	
-	if(Scrollerlength >=5){
+	if(Scrollerlength >=11){
 		$("#datatableId").css("display","block");
-		$("#datatableId").css("height","383px");
+		$("#datatableId").css("height","350px");
 		$("#datatableId").css("overflow-y","scroll");
 		$("#datatableId").css("overflow-x","scroll");
 	}else{
@@ -1233,7 +1250,7 @@ function buildConstTable(result,reportLevelId){
 	$("#constAjax").hide();
 	$('#lastUpdatedTimeId').html(result[0].lastUpdatedDate);
 	var str='';
-	str+='<div class="scrollLength">';
+	str+='<div class="">';
 	if(result[0].locationName != "NO DATA"){
 		str+='<table class="table tableC table-condensed table-bordered" style="border-bottom:none" id="constituencyDataTableId">';
 		str+='<thead style="background:#EFF3F4">';
@@ -1258,7 +1275,7 @@ function buildConstTable(result,reportLevelId){
 			}
 		str+='</tr>';
 		str+='</thead>';
-		str+='<tbody>';
+		str+='<tbody class="scrollLength">';
 		
 		for(var j in result){
 			str+='<tr>';
@@ -1343,11 +1360,10 @@ function buildConstTable(result,reportLevelId){
 		
     });
 	var Scrollerlength = $(".scrollLength").find("tr").length;
-
-	if(Scrollerlength >=5){
-		
+	
+	if(Scrollerlength >=11){
 		$("#constituencyDataTableId").css("display","block");
-		$("#constituencyDataTableId").css("height","383px");
+		$("#constituencyDataTableId").css("height","380px");
 		$("#constituencyDataTableId").css("overflow-y","scroll");
 		$("#constituencyDataTableId").css("overflow-x","scroll");
 		
@@ -2341,13 +2357,21 @@ function getSubEvents()
           url: 'getSubEventsByParentEventAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-				$(".eventCls").find('option').remove();
-				$(".eventCls").append('<option value="0">All Events</option>');	
-				for(var i in result){
+			$(".eventCls").find('option').remove();
+			$(".eventCls").append('<option value="0">All Events</option>');	
+				//for(var i in result){
+				//$(".eventCls").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');			
+				//}
 				
-				$(".eventCls").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');			
+			$(".maineventCls").each(function(){
+				if($(this).is(":checked")){
+					$(".subeventCls").each(function(){
+					if($(this).is(":checked"))
+						$(".eventCls").append('<option value="'+$(this).val()+'">'+$(this).attr("attr_label")+'</option>');
+					});
 				}
-	});
+			});
+		});
 
 }
 
@@ -2576,7 +2600,8 @@ $(document).on('click','#mahanaduLinkId',function(){
 		}
 	});
 	
-	var value =  window.open("mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
+	//var value =  window.open("mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
+	var value =  window.open("mahanaduCadreVisitNewInfoAction.action",'_blank');
 	//var value =  window.open("http://localhost:8080/PartyAnalyst/mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
 	
 });
