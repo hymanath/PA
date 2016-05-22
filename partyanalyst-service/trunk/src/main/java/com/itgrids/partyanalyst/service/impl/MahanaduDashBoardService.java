@@ -934,7 +934,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			//get total counts
 			//0-total,1-invitees,2-non invitees,3-hour
-			List<Object[]> totalCountsObjList = eventAttendeeDAO.getHourWiseTotalVisitorsCount(eventId,date,null,null);
+			List<Object[]> totalCountsObjList = eventAttendeeDAO.getHourWiseTotalVisitorsCount(entryEventId,date,null,null);
 			if(totalCountsObjList != null && totalCountsObjList.size() > 0){
 				for (Object[] objects : totalCountsObjList) {
 					MahanaduEventVO vo = new MahanaduEventVO();
