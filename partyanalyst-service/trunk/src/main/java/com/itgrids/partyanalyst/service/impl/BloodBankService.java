@@ -186,23 +186,23 @@ public class BloodBankService implements IBloodBankService{
           
 		BloodBankVO cadreDtlsVO=new BloodBankVO();
 		try {			
-			
+			String memberShipId=memberShipNO.trim();
             //Checking tdpCadreId avilable or not
-		  Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(memberShipNO);
+		  Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(memberShipId);
 		   if(tdpCadreId == null){
 			 cadreDtlsVO.setStatus("exist");
 			 return cadreDtlsVO;
 			}
 			//0.bloodDonorInfo,1.donationsInBloodBank,2.donationsInOtherPlaces,3.lastDonationDate,4.bloodComponentId,5.component
 			//,6.emergencyDonation,7.willingToCallDonation,8.remarks,9.donorAge
-			List<Object[]> cadreDetailsObj = bloodDonationDAO.getCadreDetailsOfRegistered(memberShipNO);
+			List<Object[]> cadreDetailsObj = bloodDonationDAO.getCadreDetailsOfRegistered(memberShipId);
 			
 			if(cadreDetailsObj !=null && cadreDetailsObj.size()>0){			
 				Object[] cadreDetails=cadreDetailsObj.get(0);
 				setCadreDetailsOfDonor(cadreDetails,cadreDtlsVO);				
 			}else{
 				
-				Object[] obj=tdpCadreDAO.getCadreDetailsByMmbrShpId(memberShipNO);
+				Object[] obj=tdpCadreDAO.getCadreDetailsByMmbrShpId(memberShipId);
 				
 				  if(obj!=null && obj.length>0){
 					  
