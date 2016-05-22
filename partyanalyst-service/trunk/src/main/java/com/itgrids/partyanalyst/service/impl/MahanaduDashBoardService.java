@@ -751,10 +751,26 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				districtQueryStr.append(" and d.district_id between 1 and 10 ");
 			}
 			
+			StringBuilder districtQueryStr1 = new StringBuilder();
+			
+			if(stateIds.containsAll(twoStateIds)){				
+				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 23 ");				
+			}else if(stateIds.contains(1l)){				
+				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");				
+			}else if(stateIds.contains(36l)){
+				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
+			}
+			
 			StringBuilder otherStatesLocationQueryString = new StringBuilder();
 			if(stateIds.contains(0l)){//for other states
 				otherStatesExist = true;
 				otherStatesLocationQueryString.append(" and UA.state_id not in (1) and UA.state_id is not null ");
+			}
+			
+			StringBuilder otherStatesLocationQueryString1 = new StringBuilder();
+			if(stateIds.contains(0l)){//for other states
+				otherStatesExist = true;
+				otherStatesLocationQueryString1.append(" and model.tdpCadre.userAddress.state.stateId not in (1) and model.tdpCadre.userAddress.state.stateId is not null ");
 			}
 			
 			
@@ -810,7 +826,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  /*Total,Invited and Non invited Cadre*/		  
 			  //0.total,1.districtId,2.districtName
-			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(eventId,districtQueryStr.toString(),todayDate);
+			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(eventId,districtQueryStr1.toString(),todayDate);
 			  
 			  if(totalCountList !=null && totalCountList.size()>0){				  
 				  for(Object[] obj : totalCountList) {							  
@@ -844,7 +860,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  
 				  /*Total,Invited and Non invited Cadre for other states*/		  
 				  //0.total,1.districtId,2.districtName
-				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString.toString(),todayDate);
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString1.toString(),todayDate);
 				  
 				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
 					  for (Object[] obj : otherStatesTotalCountList) {
@@ -893,6 +909,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	
 	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(Long dayCount,Long eventId){
 		List<MahanaduEventVO> mahanaduEventVOList = new ArrayList<MahanaduEventVO>(0);
+		List<MahanaduEventVO> defaultHoursList =  setHoursList();
 		try {
 			Object[] dateObj = eventDAO.getEventDates(eventId);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -928,11 +945,22 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				}
 			}
 			
+			//set final data to default hours list
+			if(mahanaduEventVOList != null && mahanaduEventVOList.size() > 0){
+				for (MahanaduEventVO mahanaduEventVO : mahanaduEventVOList) {
+					MahanaduEventVO resultVO = getMatchedVO(defaultHoursList,mahanaduEventVO.getInvitees());
+					if(resultVO != null){
+						resultVO.setTotal(mahanaduEventVO.getTotal());
+						resultVO.setCadreCount(mahanaduEventVO.getCadreCount());
+						resultVO.setInvitees(mahanaduEventVO.getInvitees());
+					}
+				}
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHourWiseNowInCampusCadresCount", e);
 		}
 		
-		return mahanaduEventVOList;
+		return defaultHoursList;
 	}
 }
