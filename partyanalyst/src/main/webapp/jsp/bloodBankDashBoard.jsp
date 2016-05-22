@@ -200,7 +200,7 @@
                             <h4 class="panel-title text-capitalise">donate in emergency</h4>
                         </div>
                         <div class="panel-body">
-                        	<h4><span id="emergencyDonarsId">0</span> - willing to donate in emergency</h4>
+                        	<h4><span id="emergencyDonarsId">0</span> - Willing to Donate in Emergency</h4>
                         </div>
                      </div>
                 </div>
@@ -210,7 +210,7 @@
                             <h4 class="panel-title text-capitalise">called for donation</h4>
                         </div>
                         <div class="panel-body">
-                        	<h4><span id="donationCallerdDiv">0</span> - willing to be called for donation</h4>
+                        	<h4><span id="donationCallerdDiv">0</span> - Willing to be Called for Donation</h4>
                         </div>
                      </div>
                 </div>
@@ -287,7 +287,7 @@
                 	<h4 class="panel-title text-capitalise">Quadruple Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise">total Quadruple bags - <span id="totalQuadrateBags"></span></h4>
+                	<h4 class="text-capitalise" style="font-size=17px;">total Quadruple bags - <span id="totalQuadrateBags"></span></h4>
                     <div id="quadrateBagsDivId"></div>
 					<!--<table class="table table-condensed m_top10">
                     	<tr>
