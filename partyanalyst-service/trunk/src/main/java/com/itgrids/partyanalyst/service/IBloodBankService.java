@@ -24,7 +24,7 @@ public interface IBloodBankService {
  public Long getCalledForDonationCount();
  public BloodBankDashBoardVO gettotalCollectedBloodBagsInfo(Long campId);
  public List<BloodBankDashBoardVO> getBloodDonorDetailsByAgeGroupingInfo(Long campId);
- public BloodBankDashBoardVO getBloodDonarsSummary(Long campId);
+// public BloodBankDashBoardVO getBloodDonarsSummary(Long campId);
  public  ResultStatus saveBloodBankCadreDetails(final BloodBankVO bloodBanKVO,final Long userId);
  public List<BloodBankVO> getBloodComponentList();
  public DonationsInBloodBankVO getNumberOfTimesCollectedBlood(Long campId);
