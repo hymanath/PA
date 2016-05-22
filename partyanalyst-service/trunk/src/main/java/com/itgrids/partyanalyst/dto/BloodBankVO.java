@@ -42,8 +42,7 @@ public class BloodBankVO implements Serializable{
 	private Long bloodBankQuantityId;
 	private String quantityType;
 	
-	
-	private AddressVO addressVO;
+	private AddressVO addressVO=new AddressVO();
 	
 	public AddressVO getAddressVO() {
 		return addressVO;

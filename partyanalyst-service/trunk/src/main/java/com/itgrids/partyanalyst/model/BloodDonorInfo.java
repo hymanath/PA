@@ -31,7 +31,7 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	private String relativeName;
 	private String gender;
 	private Long age;
-	private String dateOfBirth;
+	private Date dateOfBirth;
 	private String maritalStatus;
 	private String mobileNo;
 	private String email;
@@ -43,12 +43,10 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private Long updatedBy;
 	private String isDeleted;
-	
 	private TdpCadre tdpCadre;
 	private EducationalQualifications education;
 	private Occupation occupation;
-/*	private BloodDonation bloodDonation;
-*/	@Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "blood_donor_info_id", unique = true, nullable = false)
 	public Long getBloodDonorInfoId() {
@@ -99,10 +97,10 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	}
 	
 	@Column(name="date_of_birth")
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}	
 	
@@ -186,6 +184,13 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 		this.updatedBy = updatedBy;
 	}
 	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="tdp_cadre_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -218,24 +223,4 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	public void setOccupation(Occupation occupation) {
 		this.occupation = occupation;
 	}
-	
-	@Column(name="is_deleted")
-	public String getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-	/*
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="blood_donation_id", insertable=false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public BloodDonation getBloodDonation() {
-		return bloodDonation;
-	}
-	public void setBloodDonation(BloodDonation bloodDonation) {
-		this.bloodDonation = bloodDonation;
-	}
-	*/
 }
