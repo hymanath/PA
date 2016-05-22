@@ -72,9 +72,9 @@ function buildStatusList(result){
 	getBleedingCadreDetails(statusIdList,campId);
 }
 function getBleedingCadreDetails(statusIdList,campId){
-	console.log(statusIdList);
+/* 	console.log(statusIdList);
 	console.log(campId);
-	
+	 */
 	var jsObj = {
 		statusIdList	: statusIdList,      
 		campId			: campId     
@@ -96,6 +96,7 @@ function buildBleedingCadreDetails(result){
 	var accptStatusArr = [];
 	var bloodBagTypeArr = [];
 	var bloodBagQuantityArr = [];
+	var quantityArr=[];
 	str+='<thead style="background:#EBEBEB">';
 		str+='<th>Membership No</th>';
 		str+='<th>Name</th>';
@@ -112,12 +113,14 @@ function buildBleedingCadreDetails(result){
 		accptStatusArr.push(result[i].statusId);
 		bloodBagTypeArr.push(result[i].bagTypeId);
 		bloodBagQuantityArr.push(result[i].bloodBankQuantityId);
+		quantityArr.push(result[i].quantity);
+		
 		str+='<tr>';
 			str+='<td id="membershipNoId'+i+'">'+result[i].membershipNo+'</td>';
 			str+='<td>'+result[i].name+'</td>';
 			str+='<td>'+result[i].mobile+'</td>';
 			str+='<td>';
-				str+='<select id="registrationStatusId'+i+'" class="form-control registrationStatusCls">';
+			 	str+='<select id="registrationStatusId'+i+'" class="form-control registrationStatusCls">';
 				str+='<option>Approved</option>';
 				str+='</select>';
 			str+='</td>';
@@ -136,9 +139,9 @@ function buildBleedingCadreDetails(result){
 			str+='</td>';
 			str+='<td>';
 			str+='<select id="quantityId'+i+'" class="form-control">';
-				str+='<option>Select Quantity</option>';
-				str+='<option>350ml</option>';
-				str+='<option>450ml</option>';
+				str+='<option value="0">Select Quantity</option>';
+				str+='<option value="350">350ml</option>';
+				str+='<option value="450">450ml</option>';
 			str+='</select>';
 			str+='</td>';
 			str+='<td>';
@@ -169,8 +172,13 @@ function buildBleedingCadreDetails(result){
 	for(var i in result){ 
 	$("#bloodBagQuantityId"+i).val(bloodBagQuantityArr[i]);
 	}
+	for(var i in result){
+	 $("#quantityId"+i).val(quantityArr[i]);	
+	}
 }
+
 $(document).on('click','.submitCls',function(){
+
 	var position = $(this).attr("attr_position");
 	$("#submitId"+position).html($("#submitId"+position).attr("attr_button_submitting"));
 	//console.log(position);
@@ -202,4 +210,10 @@ $(document).on('click','.submitCls',function(){
 	});
 	
 });
-
+$(document).on("change","#totalStatusId",function(){
+	var statusIdList = [];
+	var campId=1;
+	 var statusId=$("#totalStatusId").val();
+	  statusIdList.push({"id":statusId});   
+	  getBleedingCadreDetails(statusIdList,campId);
+});
