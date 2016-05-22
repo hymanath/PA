@@ -150,7 +150,7 @@
 		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
+					<h4 class="panel-title">Hour Wise InCampus Counts<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>
 				</div>
 				<div class="panel-body">
@@ -1140,7 +1140,7 @@ function buildTotalVisitorsResult(result){
 								type: 'column'
 							},
 							title: {
-								text: 'Hour Wise Counts'
+								text: 'Hour Wise InCampus Counts'
 							},
 							subtitle: {
 								text: ''
