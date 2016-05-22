@@ -900,8 +900,13 @@ function buildQuestionResponseTable(myResult){
 											str+='<td>'+result.sublist[k].sublist1[n].pending+'</td>';
 										}
 									}
-									for(var n in result.sublist[k].sublist2)
+									for(var n in result.sublist[k].sublist2){
+										if(result.sublist[k].sublist2[n].sumcount>0)
 											str+='<td>'+result.sublist[k].sublist2[n].totalCount+' ('+result.sublist[k].sublist2[n].sumcount+')</td>';
+										else
+											str+='<td>'+result.sublist[k].sublist2[n].totalCount+' </td>';
+									}
+											
 										
 									if(result.sublist.length>1){	
 									//str+='<td>'+result.sublist[1].name+'</td>';
@@ -912,8 +917,12 @@ function buildQuestionResponseTable(myResult){
 											str+='<td>'+result.sublist[1].sublist1[n].pending+'</td>';
 										}
 									}
-									for(var n in result.sublist[k].sublist2)
+									for(var n in result.sublist[k].sublist2){
+										if(result.sublist[1].sublist2[n].sumcount>0)
 											str+='<td>'+result.sublist[1].sublist2[n].totalCount+' ('+result.sublist[1].sublist2[n].sumcount+')</td>';
+										else
+											str+='<td>'+result.sublist[1].sublist2[n].totalCount+' </td>';
+										}
 									}
 									str+='</tr>';
 								}
