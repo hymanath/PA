@@ -7,6 +7,7 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/BloodBankCustomFiles/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css"/>
+<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,300,500italic,400italic,300italic,700,900" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -30,7 +31,7 @@
                     	<hr style="border-color:#333;"/>
                     </div>
                     <div class="col-md-6">
-                    	<label>Enter Cadre Number To Prepopulate Details</label>
+                    	<label>Enter Cadre Number To Prepopulate Details<span class="cadreNoErrorCls" style='color:red'></span></label>
                         <div class="input-group inputWithButton">
                         	<input placeholder="Ex: 38324292" type="text" class="form-control" id="membershipInputId"/>
                             <span class="input-group-addon">
@@ -47,60 +48,62 @@
                 <div class="row m_top20">
                     <div class="col-md-3">
                     	<label>Name</label>
-                        <input type="text" class="form-control"/>
+                        <input type="text" id="nameId" class="form-control"/>
                     </div>
                     <div class="col-md-3">
                     	<label>Father/Spouse</label>
-                        <input type="text" class="form-control"/>
+                        <input type="text" id="spouseId" class="form-control"/>
                     </div>
                     <div class="col-md-6">
                     	<div class="row">
                         	<div class="col-md-3">
                             	<label>Sex</label>
- 		                        <select>
-                                	<option>Male</option>
+ 		                        <select id="seltBxSxId" class="form-control">
+                                	<option value="M">Male</option>
+									<option value="F">FeMale</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                             	<label>Age</label>
- 		                        <input type="number" class="form-control"/>
+ 		                        <input type="number" id="ageId" class="form-control"/>
                             </div>
                             <div class="col-md-3">
                             	<label>Date Of Birth</label>
- 		                        <input type="text" class="form-control"/>
+ 		                        <input type="text" id="dobId" class="form-control"/>
                             </div>
                             <div class="col-md-3">
                             	<label>Married</label>
- 		                        <select>
-                                	<option>Male</option>
+ 		                        <select id="slctBxMrrdId" class="form-control">
+                                	<option value="Married">Married</option>
+									<option value="UnMarried">UnMarried</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                     	<label>Address</label>
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" id="addressId" rows="4"></textarea>
                     </div>
                     <div class="col-md-6">
                     	<div class="row">
                         	<div class="col-md-6">
                             	<label>Mobile</label>
-                                <input type="tel" class="form-control"/>
+                                <input type="tel" id="mobileNoId" class="form-control"/>
                             </div>
                             <div class="col-md-6">
                             	<label>E-Mail</label>
-                                <input type="tel" class="form-control"/>
+                                <input type="tel" id="emailId" class="form-control"/>
                             </div>
                             <div class="col-md-6">
                             	<label>Education</label>
-                                <select>
-                                	<option>Graduation</option>
+                                <select class="selectBoxCls form-control" id="edutnQlfctnSlctBxId">
+                                	<option value="0">Select Education</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                             	<label>Occupation</label>
-                                <select>
-                                	<option>Farmer</option>
+                                <select class="selectBoxCls form-control" id="occptnSlctBxId">
+                                	<option value="0">Select Occupation</option>
                                 </select>
                             </div>
                         </div>
@@ -109,53 +112,63 @@
                 <div class="row m_top10">
                     <div class="col-md-3">
                     	<label>No.of times Blood Donation in BB</label>
-                        <input type="number" class="form-control"/>
+                        <input type="number" id="noOfTmBldDntnId" class="form-control"/>
                     </div>
                     <div class="col-md-3">
                     	<label>Other than BB</label>
-                    	<select>
-                        	<option>No</option>
+                    	<select id="slctBxBBId" class="form-control">
+                        	 <option value="Yes">Yes</option>
+							 <option value="No">No</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                     	<label>Date Of Last Donation</label>
-                    	<input type="text" class="form-control"/>
+                    	<input type="text" id="dtfDntnId" class="form-control"/>
                     </div>
                     <div class="col-md-3">
                     	<label>Donation</label>
-                    	<input type="text" class="form-control"/>
+                   	<select id="donationId"  class="form-control">
+                        	 <option value="0">Select Donation Type</option>
+					    </select>
                     </div>
                 </div>
                 <div class="row m_top10">
                     <div class="col-md-3">
                     	<label>Willing to Donate in Emergency</label>
-                    	<select>
-                        	<option>Yes</option>
+                    	<select id="wllngTdntEmrgncyId"  class="form-control">
+                        	 <option value="Yes">Yes</option>
+							 <option value="No">No</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                     	<label>Willing to be Called for Donation</label>
-                    	<select>
-                        	<option>Yes</option>
+                    	<select id="wllngTBClldFrDntnId"  class="form-control">
+                        	 <option value="Yes">Yes</option>
+							 <option value="No">No</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                     	<label>Remarks</label>
-                    	<input type="text" class="form-control"/>
+                    	<input type="text" id="rmrksId" class="form-control"/>
                     </div>
-                    <div class="col-md-3">
+                    <!--<div class="col-md-3">
                     	<label>Category</label>
-                    	<select>
-                        	<option>Yes</option>
+                    	<select id="slctBxCtgryId" class="form-control">
+                        	<option value="Yes">Yes</option>
+							 <option value="No">No</option>
                         </select>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="row">
-                    <div class="col-md-3 m_top10">
-                    	<button class="btn btn-success">SUBMIT</button>
+                    <div class="col-md-1 m_top10">
+                    	<button class="btn btn-success" id="submitBtnId">SUBMIT</button>
+					     	
                     </div>
+					<div class="col-xs-3  m_top10">
+					<span id="statusId"></span>
+					</div>
                 </div>
-                <div class="row m_top30">
+                <div class="row m_top20">
                 	<div class="col-md-12">
                     	<div class="panel panel-default">
                         	<div class="panel-heading bg_cc">
@@ -295,24 +308,31 @@
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
-$('select').dropkick();
+$("#dobId").daterangepicker({singleDatePicker:true});
+$("#dtfDntnId").daterangepicker({singleDatePicker:true});
+//$('select').dropkick();
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
 	 
 });
 	 getOccuations();
+	 getBloodComponents();
 	 getEducationQualifications();
-	 getCadreDetails();
 function getOccuations(){
-	
-		$.ajax({
+	$.ajax({
 		  type:'GET',
 		  url: 'getOccuationsAction.action',
 		  data : {} ,
 		}).done(function(result){
-			//console.log(result);
+			 if(result != null && result.length>0){
+				  for(var i in result){
+					$("#occptnSlctBxId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				  }	
+			}
 		});
 }
 function getEducationQualifications(){
@@ -322,18 +342,46 @@ function getEducationQualifications(){
 		  url: 'getEducationQualificationsAction.action',
 		  data : {} ,
 		}).done(function(result){
-			//console.log(result);
+			if(result != null && result.length>0){
+				  for(var i in result){
+					$("#edutnQlfctnSlctBxId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				  }	
+			}
 		});
 }
-
+ function getBloodComponents(){
+	   var jObj = {
+		 }
+		$.ajax({
+		  type:'GET',
+		  url: 'getBloodComponentsAction.action',
+		  data : {} ,
+		}).done(function(result){
+				if(result != null && result.length>0){
+				  for(var i in result){
+					$("#donationId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				  }	
+			}
+		});
+}
 $(document).on("click","#cadreDetailsId",function(){
-	getCadreDetails();
+	
+	
+	var membserShipId = $("#membershipInputId").val();
+	 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
+		 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
+		 return;
+	 }else if(membserShipId.trim().length!=8){
+		  $(".cadreNoErrorCls").html("Cadre Number Must Be 8 Digits.");
+		  return;
+	 }
+	 $(".cadreNoErrorCls").html('');
+	 getCadreDetails(membserShipId);
 });
 
- function getCadreDetails(){
-		
-		var membserShipId = $("#membershipInputId").val();
-		//12800104
+ function getCadreDetails(membserShipId){
+	   
+	   
 	   var jObj = {
 		   memberShipNo:membserShipId
 		}
@@ -342,10 +390,118 @@ $(document).on("click","#cadreDetailsId",function(){
 		  url: 'getCadreDetailsAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
-			
+			if(result != null){
+				populateCadreDetails(result);
+			}
 		});
 }
-
+function populateCadreDetails(result){
+	if(result.alreadyDonated!=null && result.alreadyDonated==false){
+		populateCommonFields(result);
+	}else if(result.alreadyDonated!=null && result.alreadyDonated==true){
+		 populateCommonFields(result);
+		 if(result.donationsInBloodBank!=null && result.donationsInBloodBank>0){
+			$("#noOfTmBldDntnId").val(result.donationsInBloodBank);
+		}
+		if(result.donationsInOtherPlaces!=null && result.donationsInOtherPlaces.length>0){
+			$("#slctBxBBId").val(result.donationsInOtherPlaces);
+		}
+		if(result.lastDonation!=null && result.lastDonation.length>0){
+			$("#dtfDntnId").val(result.lastDonation);
+		}
+		if(result.bloodComponentId!=null && result.bloodComponentId>0){
+			$("#donationId").val(result.bloodComponentId);
+		}
+		 if(result.willingEmergencyDonation!=null && result.willingEmergencyDonation.length>0){
+			$("#wllngTdntEmrgncyId").val(result.willingEmergencyDonation);
+		}
+		if(result.willingToCallDonation!=null && result.willingToCallDonation.length>0){
+			$("#wllngTBClldFrDntnId").val(result.willingToCallDonation);
+		}
+		if(result.remarks!=null && result.remarks.length>0){
+			$("#rmrksId").val(result.remarks);
+		}   
+	}
+}
+function populateCommonFields(result){
+	if(result.name!=null && result.name.length>0){
+			$("#nameId").val(result.name);
+		}
+		if(result.relativeName!=null && result.relativeName.length>0){
+			$("#spouseId").val(result.relativeName);
+		}
+		if(result.sex !=null && result.sex.length>0){
+			$("#seltBxSxId").val(result.sex);
+		}
+		if(result.age!=null && result.age>0){
+			$("#ageId").val(result.age);
+		}
+		if(result.dob!=null && result.dob.length>0){
+			$("#dobId").val(result.dob);
+		}
+		if(result.address!=null && result.address.length>0){
+			$("#addressId").val(result.address);
+		}
+		if(result.mobile!=null && result.mobile.length>0){
+			$("#mobileNoId").val(result.mobile);
+		}
+		if(result.email!=null && result.email.length>0){
+			$("#emailId").val(result.email);
+		}
+		if(result.educationId!=null && result.educationId>0){
+			$("#edutnQlfctnSlctBxId").val(result.educationId);
+	    }
+		if(result.occupationId!=null && result.occupationId>0){
+			$("#occptnSlctBxId").val(result.occupationId);
+		}
+}
+$(document).on("click","#submitBtnId",function(){
+	
+		var membserShipId = $("#membershipInputId").val();
+		 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
+			 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
+		     return;
+		 }
+        var cadreDtlsArr=[];
+		  cadreDtlsArr.push($("#nameId").val());
+		  cadreDtlsArr.push($("#spouseId").val());
+		  cadreDtlsArr.push($("#seltBxSxId").val());
+		  cadreDtlsArr.push($("#ageId").val());
+		  cadreDtlsArr.push($("#dobId").val());
+		  cadreDtlsArr.push($("#slctBxMrrdId").val());
+		  cadreDtlsArr.push($("#addressId").val());
+		  cadreDtlsArr.push($("#mobileNoId").val());
+		  cadreDtlsArr.push($("#emailId").val());
+		  cadreDtlsArr.push($("#edutnQlfctnSlctBxId").val());
+		  cadreDtlsArr.push($("#occptnSlctBxId").val());
+		  cadreDtlsArr.push($("#noOfTmBldDntnId").val());
+		  cadreDtlsArr.push($("#slctBxBBId").val());
+		  cadreDtlsArr.push($("#dtfDntnId").val());
+		  cadreDtlsArr.push($("#donationId").val());
+		  cadreDtlsArr.push($("#wllngTdntEmrgncyId").val());
+		  cadreDtlsArr.push($("#wllngTBClldFrDntnId").val());
+		  cadreDtlsArr.push($("#rmrksId").val());
+		  cadreDtlsArr.push(membserShipId);
+	   var jObj = {
+		   cadreDtlsArr:cadreDtlsArr
+		}
+		$.ajax({
+		  type:'POST',
+		  url: 'saveCadreDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			if(result!=null){
+				if(result.exceptionMsg=="success"){
+					 $("#statusId").html("<p style='color:green;font-size:22px;'>Saved Successfully</p>'");
+					 setTimeout(function(){
+					 $("#statusId").html("");
+					},2000);
+				}else{
+					 $("#statusId").html("<p  style='color:red;font-size:22px;'>Error occured...Try again</p>'");
+				}
+			}
+		});
+});
 </script>
 
 </body>
