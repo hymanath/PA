@@ -150,7 +150,7 @@
 		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">Hour Wise InCampus Counts<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
+					<h4 class="panel-title">Hour Wise In Campus Counts<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>
 				</div>
 				<div class="panel-body">
@@ -1127,12 +1127,21 @@ function buildTotalVisitorsResult(result){
 					var totalAttendedArr=[];
 					var nowInCampusArr=[];
 					
-					for(var i in result){
-						categoriesArr.push(result[i].name);
-						totalAttendedArr.push(parseInt(result[i].total));
-						nowInCampusArr.push(parseInt(result[i].cadreCount));
-					}
+					var d = new Date();
+					var n = d.getHours(); 
 					
+					for(var i in result){
+						
+						if(result[i].id <= n){
+							categoriesArr.push(result[i].name);
+							totalAttendedArr.push(parseInt(result[i].total));
+							nowInCampusArr.push(parseInt(result[i].cadreCount));
+						}else{
+							categoriesArr.push(result[i].name);
+							totalAttendedArr.push(0);
+							nowInCampusArr.push(0);
+						}
+					}
 					
 					$(function () {
 						$('#hoursWiseVisitors').highcharts({
@@ -1140,7 +1149,7 @@ function buildTotalVisitorsResult(result){
 								type: 'column'
 							},
 							title: {
-								text: 'Hour Wise InCampus Counts'
+								text: 'Hour Wise In Campus Counts'
 							},
 							subtitle: {
 								text: ''

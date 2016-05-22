@@ -451,7 +451,7 @@ footer
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'MAHANADU_MAIN_DASHBOARD_ENTITLEMENT') ||
 									fn:contains(sessionScope.USER.entitlements, 'MAHANADU_MAIN_DASHBOARD_ADMIN_ENTITLEMENT') }">									  
 										<li>
-											<a href="mahanaduCadreVisitInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
+											<a href=mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
 										</li>
 									</c:if>
 									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'EVENTS_DASHBOARD_ENTITLEMENT') ||
@@ -647,7 +647,7 @@ footer
 					
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'EVENTS_DASHBOARD_ENTITLEMENT' )}">
 					 <li>
-						<a href="mahanaduCadreVisitInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
+						<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
 					</li>
 					<li>
 						<a href="eventDashboardAction.action?eventId=30"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
