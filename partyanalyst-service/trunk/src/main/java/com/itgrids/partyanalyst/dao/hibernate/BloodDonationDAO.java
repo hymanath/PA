@@ -37,13 +37,18 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 	{		//0.tdpCadreId,1.memberShipNo,2.donorName,3.mobileNo,4.acceptanceStatusId,5.status,6.bagNo,
 		//7.bloodBagTypeId,8.bagType,9.bloodBagQuantityId,10.type,11.quantity,12.remarks
 		StringBuilder str = new StringBuilder();		
-		str.append(" SELECT model.bloodDonorInfo.tdpCadre.tdpCadreId,model.bloodDonorInfo.tdpCadre.memberShipNo,model.bloodDonorInfo.donorName," +
-							" model.bloodDonorInfo.mobileNo,model.acceptanceStatus.acceptanceStatusId,model.acceptanceStatus.status,model.bagNo," +
-							" model.bloodBagType.bloodBagTypeId,model.bloodBagType.bagType," +
-							" model.bloodBagQuantity.bloodBagQuantityId,model.bloodBagQuantity.type," +
+		str.append(" SELECT TC.tdpCadreId,TC.memberShipNo,BDI.donorName," +
+							" BDI.mobileNo,ACTS.acceptanceStatusId,ACTS.status,model.bagNo," +
+							" BBT.bloodBagTypeId,BBT.bagType," +
+							" BBQ.bloodBagQuantityId,BBQ.type," +
 							" model.quantity,model.remarks" +
 				   " FROM " +
-				   " 	BloodDonation model" +
+				   " 	BloodDonation model left join model.bloodDonorInfo BDI" +
+				   "    left join BDI.tdpCadre TC" +
+				   "    left join model.bloodDonorInfo BDI"+
+				   "    left join model.acceptanceStatus ACTS"+
+				   "	left join model.bloodBagType BBT"+
+				   "	left join model.bloodBagQuantity BBQ"+
 				   " WHERE" +
 				   " 		 model.bloodDonorInfo.isDeleted= 'N' ");
 		
@@ -52,7 +57,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		}
 		if(campId !=null && campId>0){
 			str.append(" AND model.bloodDonationCamp.bloodDonationCampId =:campId ");
-		}				
+		}
 		Query query = getSession().createQuery(str.toString());		
 		if(campId !=null && campId>0){
 			query.setParameter("campId", campId);
