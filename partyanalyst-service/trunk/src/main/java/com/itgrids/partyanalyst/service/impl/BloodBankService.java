@@ -318,10 +318,10 @@ public class BloodBankService implements IBloodBankService{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			String memberShipId=bloodDonationDAO.isTdpCadreExistOrNot(bloodBanKVO.getMembershipNo());
-			      if(memberShipId!=null){
-			    	  resultStatus.setExceptionMsg("exist");
-			    	  return resultStatus;
-			      }
+		      if(memberShipId!=null){
+		    	  resultStatus.setExceptionMsg("exist");
+		    	  return resultStatus;
+		      }
 			  final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			resultStatus = (ResultStatus)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
@@ -416,10 +416,11 @@ public class BloodBankService implements IBloodBankService{
 				    bloodDonation.setInsertedBy(userId);
 				    bloodDonation.setUpdatedBy(userId);
 				    
-				    bloodDonationDAO.save(bloodDonation);
+				   bloodDonation =  bloodDonationDAO.save(bloodDonation);
 				   
 				    rs.setExceptionMsg("success");
 				    rs.setResultCode(0);
+				    rs.setResultState(bloodDonation.getBloodDonationId());
 					return rs;
 					 
 				 }
@@ -429,6 +430,25 @@ public class BloodBankService implements IBloodBankService{
 			e.printStackTrace();
 		}
 		return resultStatus;
+	}
+	
+	public ResultStatus updatePrintstatus(Long id)
+	{
+		ResultStatus rs = new ResultStatus();
+		try{
+			DateUtilService presentDate = new DateUtilService();
+			BloodDonation bloodDonation = bloodDonationDAO.get(id);
+			bloodDonation.setPrintStatus("Y");
+			bloodDonation.setPrintTime(presentDate.getCurrentDateAndTime());
+			bloodDonationDAO.save(bloodDonation);
+			rs.setResultCode(0);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			rs.setResultCode(1);
+		}
+		return rs;
 	}
 	
 	/*public BloodBankDashBoardVO getBloodDonarsSummary(Long campId){
