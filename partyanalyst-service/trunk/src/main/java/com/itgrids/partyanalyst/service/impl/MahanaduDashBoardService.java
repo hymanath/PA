@@ -695,7 +695,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	public List<MahanaduEventVO> setHoursList(){
 	 	 
 	  	 List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
-		 for(int i=8;i<=21;i++){
+		 for(int i=8;i<=20;i++){
 			 	MahanaduEventVO vo = new MahanaduEventVO();
 				vo.setId(new Long(i));
 				if(i<12){
@@ -908,7 +908,6 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	}
 	
 	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(Long dayCount,Long eventId){
-		List<MahanaduEventVO> mahanaduEventVOList = new ArrayList<MahanaduEventVO>(0);
 		List<MahanaduEventVO> defaultHoursList =  setHoursList();
 		try {
 			Object[] dateObj = eventDAO.getEventDates(eventId);
@@ -925,34 +924,305 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			//0-cadreids count,1-hour
 			List<Object[]> currentInCampusObjList = eventAttendeeDAO.getHourWiseCurrentVisitorsCount(date,entryEventId,exitEventId,null);
 			
+			MahanaduEventVO vo = new MahanaduEventVO();
+			
 			Map<Long,Long> curentInCampusMap = new HashMap<Long, Long>(0);
 			if(currentInCampusObjList != null && currentInCampusObjList.size() > 0){
 				for (Object[] objects : currentInCampusObjList) {
-					curentInCampusMap.put((Long)objects[1],(Long)objects[0]);
+					if((Long)objects[1]<=8){
+						vo.setEightam(vo.getEightam()+(Long)objects[0]);
+						vo.setNineam(vo.getEightam());
+						vo.setTenam(vo.getEightam());
+						vo.setElevenam(vo.getEightam());
+						vo.setTwelvpm(vo.getEightam());
+						vo.setOnepm(vo.getEightam());
+						vo.setTwopm(vo.getEightam());
+						vo.setThreepm(vo.getEightam());
+						vo.setFourpm(vo.getEightam());
+						vo.setFivepm(vo.getEightam());
+						vo.setSixpm(vo.getEightam());
+						vo.setSevenpm(vo.getEightam());
+						vo.setEightpm(vo.getEightam());
+					}
+					if((Long)objects[1]==9){
+						vo.setNineam(vo.getEightam()+(Long)objects[0]);
+						vo.setTenam(vo.getNineam());
+						vo.setElevenam(vo.getNineam());
+						vo.setTwelvpm(vo.getNineam());
+						vo.setOnepm(vo.getNineam());
+						vo.setTwopm(vo.getNineam());
+						vo.setThreepm(vo.getNineam());
+						vo.setFourpm(vo.getNineam());
+						vo.setFivepm(vo.getNineam());
+						vo.setSixpm(vo.getNineam());
+						vo.setSevenpm(vo.getNineam());
+						vo.setEightpm(vo.getNineam());
+					}
+					if((Long)objects[1]==10){
+						vo.setTenam(vo.getNineam()+(Long)objects[0]);
+						vo.setElevenam(vo.getTenam());
+						vo.setTwelvpm(vo.getTenam());
+						vo.setOnepm(vo.getTenam());
+						vo.setTwopm(vo.getTenam());
+						vo.setThreepm(vo.getTenam());
+						vo.setFourpm(vo.getTenam());
+						vo.setFivepm(vo.getTenam());
+						vo.setSixpm(vo.getTenam());
+						vo.setSevenpm(vo.getTenam());
+						vo.setEightpm(vo.getTenam());
+					}
+					if((Long)objects[1]==11){
+						vo.setElevenam(vo.getTenam()+(Long)objects[0]);
+						vo.setTwelvpm(vo.getElevenam());
+						vo.setOnepm(vo.getElevenam());
+						vo.setTwopm(vo.getElevenam());
+						vo.setThreepm(vo.getElevenam());
+						vo.setFourpm(vo.getElevenam());
+						vo.setFivepm(vo.getElevenam());
+						vo.setSixpm(vo.getElevenam());
+						vo.setSevenpm(vo.getElevenam());
+						vo.setEightpm(vo.getElevenam());
+					}
+					if((Long)objects[1]==12){
+						vo.setTwelvpm(vo.getElevenam()+(Long)objects[0]);
+						vo.setOnepm(vo.getTwelvpm());
+						vo.setTwopm(vo.getTwelvpm());
+						vo.setThreepm(vo.getTwelvpm());
+						vo.setFourpm(vo.getTwelvpm());
+						vo.setFivepm(vo.getTwelvpm());
+						vo.setSixpm(vo.getTwelvpm());
+						vo.setSevenpm(vo.getTwelvpm());
+						vo.setEightpm(vo.getTwelvpm());
+					}
+					if((Long)objects[1]==13){
+						vo.setOnepm(vo.getTwelvpm()+(Long)objects[0]);
+						vo.setTwopm(vo.getOnepm());
+						vo.setThreepm(vo.getOnepm());
+						vo.setFourpm(vo.getOnepm());
+						vo.setFivepm(vo.getOnepm());
+						vo.setSixpm(vo.getOnepm());
+						vo.setSevenpm(vo.getOnepm());
+						vo.setEightpm(vo.getOnepm());
+					}
+					if((Long)objects[1]==14){
+						vo.setTwopm(vo.getOnepm()+(Long)objects[0]);
+						vo.setThreepm(vo.getTwopm());
+						vo.setFourpm(vo.getTwopm());
+						vo.setFivepm(vo.getTwopm());
+						vo.setSixpm(vo.getTwopm());
+						vo.setSevenpm(vo.getTwopm());
+						vo.setEightpm(vo.getTwopm());
+					}
+					if((Long)objects[1]==15){
+						vo.setThreepm(vo.getTwopm()+(Long)objects[0]);
+						vo.setFourpm(vo.getThreepm());
+						vo.setFivepm(vo.getThreepm());
+						vo.setSixpm(vo.getThreepm());
+						vo.setSevenpm(vo.getThreepm());
+						vo.setEightpm(vo.getThreepm());
+					}
+					if((Long)objects[1]==16){
+						vo.setFourpm(vo.getThreepm()+(Long)objects[0]);
+						vo.setFivepm(vo.getFourpm());
+						vo.setSixpm(vo.getFourpm());
+						vo.setSevenpm(vo.getFourpm());
+						vo.setEightpm(vo.getFourpm());
+					}
+					if((Long)objects[1]==17){
+						vo.setFivepm(vo.getFourpm()+(Long)objects[0]);
+						vo.setSixpm(vo.getFivepm());
+						vo.setSevenpm(vo.getFivepm());
+						vo.setEightpm(vo.getFivepm());
+					}
+					if((Long)objects[1]==18){
+						vo.setSixpm(vo.getFivepm()+(Long)objects[0]);
+						vo.setSevenpm(vo.getSixpm());
+						vo.setEightpm(vo.getSixpm());
+					}
+					if((Long)objects[1]==19){
+						vo.setSevenpm(vo.getSixpm()+(Long)objects[0]);
+						vo.setEightpm(vo.getSevenpm());
+					}
+					if((Long)objects[1]>=20 && (Long)objects[1]<=24){
+						vo.setEightpm(vo.getSevenpm()+(Long)objects[0]);
+					}
 				}
-			}
+			}		
+			
 			
 			//get total counts
 			//0-total,1-invitees,2-non invitees,3-hour
 			List<Object[]> totalCountsObjList = eventAttendeeDAO.getHourWiseTotalVisitorsCount(entryEventId,date,null,null);
+			MahanaduEventVO vo1 = new MahanaduEventVO();
 			if(totalCountsObjList != null && totalCountsObjList.size() > 0){
 				for (Object[] objects : totalCountsObjList) {
-					MahanaduEventVO vo = new MahanaduEventVO();
-					vo.setTotal((Long)objects[0]);
+					if((Long)objects[3]<=8){
+						vo1.setEightam(vo1.getEightam()+(Long)objects[0]);
+						vo1.setNineam(vo1.getEightam());
+						vo1.setTenam(vo1.getEightam());
+						vo1.setElevenam(vo1.getEightam());
+						vo1.setTwelvpm(vo1.getEightam());
+						vo1.setOnepm(vo1.getEightam());
+						vo1.setTwopm(vo1.getEightam());
+						vo1.setThreepm(vo1.getEightam());
+						vo1.setFourpm(vo1.getEightam());
+						vo1.setFivepm(vo1.getEightam());
+						vo1.setSixpm(vo1.getEightam());
+						vo1.setSevenpm(vo1.getEightam());
+						vo1.setEightpm(vo1.getEightam());
+					}
+					if((Long)objects[3]==9){
+						vo1.setNineam(vo1.getEightam()+(Long)objects[0]);
+						vo1.setTenam(vo1.getNineam());
+						vo1.setElevenam(vo1.getNineam());
+						vo1.setTwelvpm(vo1.getNineam());
+						vo1.setOnepm(vo1.getNineam());
+						vo1.setTwopm(vo1.getNineam());
+						vo1.setThreepm(vo1.getNineam());
+						vo1.setFourpm(vo1.getNineam());
+						vo1.setFivepm(vo1.getNineam());
+						vo1.setSixpm(vo1.getNineam());
+						vo1.setSevenpm(vo1.getNineam());
+						vo1.setEightpm(vo1.getNineam());
+					}
+					if((Long)objects[3]==10){
+						vo1.setTenam(vo1.getNineam()+(Long)objects[0]);
+						vo1.setElevenam(vo1.getTenam());
+						vo1.setTwelvpm(vo1.getTenam());
+						vo1.setOnepm(vo1.getTenam());
+						vo1.setTwopm(vo1.getTenam());
+						vo1.setThreepm(vo1.getTenam());
+						vo1.setFourpm(vo1.getTenam());
+						vo1.setFivepm(vo1.getTenam());
+						vo1.setSixpm(vo1.getTenam());
+						vo1.setSevenpm(vo1.getTenam());
+						vo1.setEightpm(vo1.getTenam());
+					}
+					if((Long)objects[3]==11){
+						vo1.setElevenam(vo1.getTenam()+(Long)objects[0]);
+						vo1.setTwelvpm(vo1.getElevenam());
+						vo1.setOnepm(vo1.getElevenam());
+						vo1.setTwopm(vo1.getElevenam());
+						vo1.setThreepm(vo1.getElevenam());
+						vo1.setFourpm(vo1.getElevenam());
+						vo1.setFivepm(vo1.getElevenam());
+						vo1.setSixpm(vo1.getElevenam());
+						vo1.setSevenpm(vo1.getElevenam());
+						vo1.setEightpm(vo1.getElevenam());
+					}
+					if((Long)objects[3]==12){
+						vo1.setTwelvpm(vo1.getElevenam()+(Long)objects[0]);
+						vo1.setOnepm(vo1.getTwelvpm());
+						vo1.setTwopm(vo1.getTwelvpm());
+						vo1.setThreepm(vo1.getTwelvpm());
+						vo1.setFourpm(vo1.getTwelvpm());
+						vo1.setFivepm(vo1.getTwelvpm());
+						vo1.setSixpm(vo1.getTwelvpm());
+						vo1.setSevenpm(vo1.getTwelvpm());
+						vo1.setEightpm(vo1.getTwelvpm());
+					}
+					if((Long)objects[3]==13){
+						vo1.setOnepm(vo1.getTwelvpm()+(Long)objects[0]);
+						vo1.setTwopm(vo1.getOnepm());
+						vo1.setThreepm(vo1.getOnepm());
+						vo1.setFourpm(vo1.getOnepm());
+						vo1.setFivepm(vo1.getOnepm());
+						vo1.setSixpm(vo1.getOnepm());
+						vo1.setSevenpm(vo1.getOnepm());
+						vo1.setEightpm(vo1.getOnepm());
+					}
+					if((Long)objects[3]==14){
+						vo1.setTwopm(vo1.getOnepm()+(Long)objects[0]);
+						vo1.setThreepm(vo1.getTwopm());
+						vo1.setFourpm(vo1.getTwopm());
+						vo1.setFivepm(vo1.getTwopm());
+						vo1.setSixpm(vo1.getTwopm());
+						vo1.setSevenpm(vo1.getTwopm());
+						vo1.setEightpm(vo1.getTwopm());
+					}
+					if((Long)objects[3]==15){
+						vo1.setThreepm(vo1.getTwopm()+(Long)objects[0]);
+						vo1.setFourpm(vo1.getThreepm());
+						vo1.setFivepm(vo1.getThreepm());
+						vo1.setSixpm(vo1.getThreepm());
+						vo1.setSevenpm(vo1.getThreepm());
+						vo1.setEightpm(vo1.getThreepm());
+					}
+					if((Long)objects[3]==16){
+						vo1.setFourpm(vo1.getThreepm()+(Long)objects[0]);
+						vo1.setFivepm(vo1.getFourpm());
+						vo1.setSixpm(vo1.getFourpm());
+						vo1.setSevenpm(vo1.getFourpm());
+						vo1.setEightpm(vo1.getFourpm());
+					}
+					if((Long)objects[3]==17){
+						vo1.setFivepm(vo1.getFourpm()+(Long)objects[0]);
+						vo1.setSixpm(vo1.getFivepm());
+						vo1.setSevenpm(vo1.getFivepm());
+						vo1.setEightpm(vo1.getFivepm());
+					}
+					if((Long)objects[3]==18){
+						vo1.setSixpm(vo1.getFivepm()+(Long)objects[0]);
+						vo1.setSevenpm(vo1.getSixpm());
+						vo1.setEightpm(vo1.getSixpm());
+						
+					}
+					if((Long)objects[3]==19){
+						vo1.setSevenpm(vo1.getSixpm()+(Long)objects[0]);
+						vo1.setEightpm(vo1.getSevenpm());
+					}
+					if((Long)objects[3]>=20 && (Long)objects[3]<=24){
+						vo1.setEightpm(vo1.getSevenpm()+(Long)objects[0]);
+					}
+					/*vo.setTotal((Long)objects[0]);
 					vo.setCadreCount(curentInCampusMap.get((Long)objects[3]) != null ? curentInCampusMap.get((Long)objects[3]) : 0l);
 					vo.setInvitees((Long)objects[3]);
-					mahanaduEventVOList.add(vo);
+					mahanaduEventVOList.add(vo);*/
 				}
 			}
 			
 			//set final data to default hours list
-			if(mahanaduEventVOList != null && mahanaduEventVOList.size() > 0){
-				for (MahanaduEventVO mahanaduEventVO : mahanaduEventVOList) {
-					MahanaduEventVO resultVO = getMatchedVO(defaultHoursList,mahanaduEventVO.getInvitees());
-					if(resultVO != null){
-						resultVO.setTotal(mahanaduEventVO.getTotal());
-						resultVO.setCadreCount(mahanaduEventVO.getCadreCount());
-						resultVO.setInvitees(mahanaduEventVO.getInvitees());
+			if(defaultHoursList != null && defaultHoursList.size() > 0){
+				for (MahanaduEventVO mevo : defaultHoursList) {
+					if(mevo.getId()==8){
+						mevo.setTotal(vo1.getEightam());
+						mevo.setCadreCount(vo.getEightam());
+					}else if(mevo.getId()==9){
+						mevo.setTotal(vo1.getNineam());
+						mevo.setCadreCount(vo.getNineam());
+					}else if(mevo.getId()==10){
+						mevo.setTotal(vo1.getTenam());
+						mevo.setCadreCount(vo.getTenam());
+					}else if(mevo.getId()==11){
+						mevo.setTotal(vo1.getElevenam());
+						mevo.setCadreCount(vo.getElevenam());
+					}else if(mevo.getId()==12){
+						mevo.setTotal(vo1.getTwelvpm());
+						mevo.setCadreCount(vo.getTwelvpm());
+					}else if(mevo.getId()==13){
+						mevo.setTotal(vo1.getOnepm());
+						mevo.setCadreCount(vo.getOnepm());
+					}else if(mevo.getId()==14){
+						mevo.setTotal(vo1.getTwopm());
+						mevo.setCadreCount(vo.getTwopm());
+					}else if(mevo.getId()==15){
+						mevo.setTotal(vo1.getThreepm());
+						mevo.setCadreCount(vo.getThreepm());
+					}else if(mevo.getId()==16){
+						mevo.setTotal(vo1.getFourpm());
+						mevo.setCadreCount(vo.getFourpm());
+					}else if(mevo.getId()==17){
+						mevo.setTotal(vo1.getFivepm());
+						mevo.setCadreCount(vo.getFivepm());
+					}else if(mevo.getId()==18){
+						mevo.setTotal(vo1.getSixpm());
+						mevo.setCadreCount(vo.getSixpm());
+					}else if(mevo.getId()==19){
+						mevo.setTotal(vo1.getSevenpm());
+						mevo.setCadreCount(vo.getSevenpm());
+					}else if(mevo.getId()==20){
+						mevo.setTotal(vo1.getEightpm());
+						mevo.setCadreCount(vo.getEightpm());
 					}
 				}
 			}

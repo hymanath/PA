@@ -866,7 +866,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			if(type !=null && type.equalsIgnoreCase("Invitee")){
 				str.append(" and ea1.tdp_cadre_id = ei.tdp_cadre_id  ");
 			}
-			str.append(" group by hour(ea1.attended_time) ");
+			str.append(" group by hour(ea1.attended_time) order by hour(ea1.attended_time) ");
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("count",Hibernate.LONG)
@@ -894,7 +894,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" EA.event_id = E.event_id" +
 				" and date(EA.attended_time) = :date " +
 				" and E.event_id = :parentEventId " +
-				" group by  hour(EA.attended_time);");
+				" group by  hour(EA.attended_time) order by hour(EA.attended_time);");
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("TOTAL",Hibernate.LONG)

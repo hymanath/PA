@@ -55,13 +55,7 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	
 	private String lastUpdatedDate;
 	private Long totalVisitorsCount;
-		
-	public Long getTotalVisitorsCount() {
-		return totalVisitorsCount;
-	}
-	public void setTotalVisitorsCount(Long totalVisitorsCount) {
-		this.totalVisitorsCount = totalVisitorsCount;
-	}
+	
 	private Long uniqueInviteeVisitorsAttended = 0l;
 	private Long uniqueNonInviteeVisitorsAttended = 0l;
 	
@@ -71,7 +65,28 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private String districtName;
 	private Long   locationNo;
 	
-		public Long getRevisitCount() {
+	private Long eightam=0l;
+	private Long nineam=0l;
+	private Long tenam=0l;
+	private Long elevenam=0l;
+	private Long twelvpm=0l;
+	private Long onepm=0l;
+	private Long twopm=0l;
+	private Long threepm=0l;
+	private Long fourpm=0l;
+	private Long fivepm=0l;
+	private Long sixpm=0l;
+	private Long sevenpm=0l;
+	private Long eightpm=0l;
+	
+	public Long getTotalVisitorsCount() {
+		return totalVisitorsCount;
+	}
+	public void setTotalVisitorsCount(Long totalVisitorsCount) {
+		this.totalVisitorsCount = totalVisitorsCount;
+	}
+	
+	public Long getRevisitCount() {
 		return revisitCount;
 	}
 	public void setRevisitCount(Long revisitCount) {
@@ -336,6 +351,84 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setLocationNo(Long locationNo) {
 		this.locationNo = locationNo;
+	}
+	public Long getEightam() {
+		return eightam;
+	}
+	public void setEightam(Long eightam) {
+		this.eightam = eightam;
+	}
+	public Long getNineam() {
+		return nineam;
+	}
+	public void setNineam(Long nineam) {
+		this.nineam = nineam;
+	}
+	public Long getTenam() {
+		return tenam;
+	}
+	public void setTenam(Long tenam) {
+		this.tenam = tenam;
+	}
+	public Long getElevenam() {
+		return elevenam;
+	}
+	public void setElevenam(Long elevenam) {
+		this.elevenam = elevenam;
+	}
+	public Long getTwelvpm() {
+		return twelvpm;
+	}
+	public void setTwelvpm(Long twelvpm) {
+		this.twelvpm = twelvpm;
+	}
+	public Long getOnepm() {
+		return onepm;
+	}
+	public void setOnepm(Long onepm) {
+		this.onepm = onepm;
+	}
+	public Long getTwopm() {
+		return twopm;
+	}
+	public void setTwopm(Long twopm) {
+		this.twopm = twopm;
+	}
+	public Long getThreepm() {
+		return threepm;
+	}
+	public void setThreepm(Long threepm) {
+		this.threepm = threepm;
+	}
+	public Long getFourpm() {
+		return fourpm;
+	}
+	public void setFourpm(Long fourpm) {
+		this.fourpm = fourpm;
+	}
+	public Long getFivepm() {
+		return fivepm;
+	}
+	public void setFivepm(Long fivepm) {
+		this.fivepm = fivepm;
+	}
+	public Long getSixpm() {
+		return sixpm;
+	}
+	public void setSixpm(Long sixpm) {
+		this.sixpm = sixpm;
+	}
+	public Long getSevenpm() {
+		return sevenpm;
+	}
+	public void setSevenpm(Long sevenpm) {
+		this.sevenpm = sevenpm;
+	}
+	public Long getEightpm() {
+		return eightpm;
+	}
+	public void setEightpm(Long eightpm) {
+		this.eightpm = eightpm;
 	}
 	
 }
