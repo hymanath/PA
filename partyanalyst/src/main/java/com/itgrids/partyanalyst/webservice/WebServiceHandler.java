@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
+import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingInviteeVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -60,6 +61,7 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
+import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
@@ -89,6 +91,8 @@ public class WebServiceHandler {
 	
 	@Autowired
 	private IAttendanceService attendanceService;
+	@Autowired
+	private INotificationService notificationService;
 	
 	
 	
@@ -1955,5 +1959,22 @@ public class WebServiceHandler {
 		@Produces(MediaType.APPLICATION_JSON)
 		public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(@PathParam("partyMeetingId") Long partyMeetingId,@PathParam("searchType") String searchType){
 		 return webServiceHandlerService.getTdpCadreDetailsForPartyMeeting(partyMeetingId,searchType);
+		}
+		
+		@POST
+		@Path("/getNotificationDetails")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public ResultStatus getNotificationDetailsBynotificationDeviceId(NotificationDeviceVO inputVo){
+			ResultStatus rs = new ResultStatus();
+			try{
+			return notificationService.saveUsersDataInNotificationDeviceTable(inputVo);
+		}
+		catch(Exception e){
+			LOG.error("Exception Occured in getNotificationDetailsBynotificationDeviceId() Method, Exception is ",e);
+			e.printStackTrace();	
+			rs.setMessage("Exception");
+		}
+			return rs;  
 		}
 }
