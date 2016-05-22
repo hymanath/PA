@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class NotificationDeviceVO {
 	
@@ -12,8 +14,59 @@ public class NotificationDeviceVO {
 	private String imeiNo;
 	private Date insertedTime;
 	private Date updatedTime;
+	private List<NotificationDeviceVO> activeNotofocations = new ArrayList<NotificationDeviceVO>(0);
+	private Long id;
+	private Long notificationTypeId;
+	private String notificationType;
+	private Long notificationId;
+	private String notification;
+	private Long lastNotificationId;
+	private String status;
 	
- 	public Date getInsertedTime() {
+	public NotificationDeviceVO(){
+		
+	}
+	public NotificationDeviceVO(String status){
+		this.status = status;
+	}
+	public Long getLastNotificationId() {
+		return lastNotificationId;
+	}
+	public void setLastNotificationId(Long lastNotificationId) {
+		this.lastNotificationId = lastNotificationId;
+	}
+	public Long getNotificationTypeId() {
+		return notificationTypeId;
+	}
+	public void setNotificationTypeId(Long notificationTypeId) {
+		this.notificationTypeId = notificationTypeId;
+	}
+	public String getNotificationType() {
+		return notificationType;
+	}
+	public void setNotificationType(String notificationType) {
+		this.notificationType = notificationType;
+	}
+	public Long getNotificationId() {
+		return notificationId;
+	}
+	public void setNotificationId(Long notificationId) {
+		this.notificationId = notificationId;
+	}
+	public String getNotification() {
+		return notification;
+	}
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getInsertedTime() {
 		return insertedTime;
 	}
 	public void setInsertedTime(Date insertedTime) {
@@ -61,6 +114,12 @@ public class NotificationDeviceVO {
 	public void setImeiNo(String imeiNo) {
 		this.imeiNo = imeiNo;
 	}
-	
+	public List<NotificationDeviceVO> getActiveNotofocations() {
+		return activeNotofocations;
+	}
+	public void setActiveNotofocations(
+			List<NotificationDeviceVO> activeNotofocations) {
+		this.activeNotofocations = activeNotofocations;
+	}
 	
 }
