@@ -175,7 +175,7 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 				str.append(",model.quantity =:quantity ");
 			}
 			
-			str.append(" where model.tdpCadre.memberShipNo = :memberShipNo ");
+			str.append(" where model.bloodDonorInfo.tdpCadre.memberShipNo = :memberShipNo ");
 		}
 		
 		Query query=getSession().createQuery(str.toString());
@@ -187,6 +187,16 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		if(bloodBankVO.getBagNo() !=null && !bloodBankVO.getBagNo().isEmpty()){
 			query.setParameter("bagNo",bloodBankVO.getBagNo());
 		}
+		if(bloodBankVO.getBagTypeId() !=null && bloodBankVO.getBagTypeId()>0){
+			query.setParameter("bloodBagTypeId",bloodBankVO.getBagTypeId());
+		}
+		if(bloodBankVO.getBloodBankQuantityId() !=null && bloodBankVO.getBloodBankQuantityId() >0){
+			query.setParameter("bloodBagQuantityId",bloodBankVO.getBloodBankQuantityId());
+		}
+		if(bloodBankVO.getQuantity() !=null && bloodBankVO.getQuantity()>0){
+			query.setParameter("quantity",bloodBankVO.getQuantity());
+		}
+		
 		
 		return query.executeUpdate();		
 	}
