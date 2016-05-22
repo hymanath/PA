@@ -970,7 +970,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" and TC.address_id = UA.user_address_id " +
 				" and UA.district_id = d.district_id " +
 				" and E.parent_event_id = :eventId " );*/
-		str.append("select count(distinct EA.tdp_cadre_id) as total,d.district_id as districtId,d.district_name as districtName" +
+		/*str.append("select count(distinct EA.tdp_cadre_id) as total,d.district_id as districtId,d.district_name as districtName" +
 				" from " +
 				" tdp_cadre TC,user_address UA,district d ,event E,event_attendee EA " +
 				" where " +
@@ -990,10 +990,19 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("total",Hibernate.LONG)
 				.addScalar("districtId",Hibernate.LONG)
-				.addScalar("districtName",Hibernate.STRING);
+				.addScalar("districtName",Hibernate.STRING);*/
 		
+		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName " +
+				" from EventAttendee model " +
+				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+			if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
+					str.append(districtQueryStr);
+			}
+		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.district.districtId");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("eventId", eventId);
 		query.setDate("toDayDate", toDayDate);
+		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		
 		return query.list();
 	}
@@ -1237,7 +1246,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" and UA.constituency_id = constituency.constituency_id " +
 				" and constituency.district_id = d.district_id " +
 				" and E.parent_event_id = :eventId " );*/
-		str.append("select count(distinct EA.tdp_cadre_id) as total,d.district_id as districtId,d.district_name as districtName" +
+		/*str.append("select count(distinct EA.tdp_cadre_id) as total,d.district_id as districtId,d.district_name as districtName" +
 				" from " +
 				" tdp_cadre TC,user_address UA,state state,constituency constituency,district d ,event E,event_attendee EA" +
 				" where " +
@@ -1258,10 +1267,18 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("total",Hibernate.LONG)
 				.addScalar("districtId",Hibernate.LONG)
-				.addScalar("districtName",Hibernate.STRING);
-		
+				.addScalar("districtName",Hibernate.STRING);*/
+		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName " +
+				"from event_attendee model " +
+				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+			if(queryStr !=null && !queryStr.isEmpty()){
+					str.append(queryStr);
+			}
+		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.district.districtId");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("eventId", eventId);
 		query.setDate("todateDate", todateDate);
+		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
 		return query.list();
 	}
