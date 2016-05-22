@@ -1063,7 +1063,7 @@ function buildTotalVisitorsResult(result){
 							str+='<td>'+result.subList[i].name+'</td>';
 							str+='<td>'+result.subList[i].total+'</td>';
 							str+='<td>'+result.subList[i].cadreCount+'</td>';
-							str+='<td>'+(result.subList[i].cadreCount*100)/result.subList[i].total+'%</td>';
+							str+='<td>'+((result.subList[i].cadreCount*100)/result.subList[i].total).toFixed(2)+'%</td>';
 							str+='</tr>';
 						}
 					}
