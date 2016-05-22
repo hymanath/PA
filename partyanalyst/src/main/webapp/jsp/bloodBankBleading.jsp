@@ -30,8 +30,8 @@
                 <div class="row">
                 	<div class="col-md-3">
                     	<label>Showing</label>
-                        <select class="form-control">
-                        	<option>All Applications</option>
+                        <select id="totalStatusId" class="form-control totalStatusCls">
+                        	<option value="0">All Applications</option>
                         </select>
                     </div>
                     <div class="col-md-3 col-md-offset-6">
@@ -56,7 +56,8 @@
                             	<h4 class="panel-title text-capitalise">all applications</h4>
                             </div>
                             <div class="panel-body pad_0">
-                            	<table class="table table-condensed">
+                            	<table id="BleedingCadreDetailsId" class="table table-condensed">
+								<!--swadhin
                                 	<thead style="background:#EBEBEB">
                                     	<th>Membership No</th>
                                         <th>Name</th>
@@ -75,8 +76,10 @@
                                             <td>9654894654</td>
                                             <td>
                                             	<select class="form-control">
+													
                                                 	<option>Approved</option>
 													<option>Rejected</option>
+													<option>pending</option>
                                                 </select>
                                             </td>
                                             <td>
@@ -113,7 +116,29 @@
 													<option>Rejected</option>
                                                 </select>
                                             </td>
-                                            <td colspan="4">
+											<td>
+                                            	<input type="text" class="form-control" style="width:100px"/>
+                                            </td>
+                                            <td colspan="3">
+                                            	<input type="text" placeholder="remarks" class="form-control"/>
+                                            </td>
+                                            <td>
+                                            	<button class="btn btn-success btn-sm">SUBMIT</button>
+                                            </td>
+                                        </tr>
+										<tr>
+                                        	<td>565654</td>
+                                            <td>Santhosh</td>
+                                            <td>9654894654</td>
+                                            <td>
+                                            	<select class="form-control">
+													<option>pending</option>
+                                                </select>
+                                            </td>
+											<td>
+                                            	<input type="text" class="form-control" style="width:100px"/>
+                                            </td>
+                                            <td colspan="3">
                                             	<input type="text" placeholder="remarks" class="form-control"/>
                                             </td>
                                             <td>
@@ -121,6 +146,7 @@
                                             </td>
                                         </tr>
                                     </tbody>
+									swadhin-->
                                 </table>
                             </div>
                         </div>
@@ -132,49 +158,8 @@
 </div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="js/bloodBankScript/bloodBankBleading.js" type="text/javascript"></script>
 <script>
-getAcceptanceStatus();    
-getBloodBagType();
-getBloodBagQuantity();
-function getAcceptanceStatus(){
-	var jsObj = {};
-	$.ajax({
-		type : 'GET',
-		url : 'getAcceptanceStatusAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}  
-	}).done(function(result){ 
-		if(result != null){
-			console.log(result);
-		}
-	});
-}
-function getBloodBagType(){
-	var jsObj = {};
-	$.ajax({
-		type : 'GET',
-		url : 'getBloodBagTypeAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}  
-	}).done(function(result){ 
-		if(result != null){
-			console.log(result);
-		}
-	});
-}
-function getBloodBagQuantity(){   
-	var jsObj = {};
-	$.ajax({
-		type : 'GET',
-		url : 'getBloodBagQuantityAction.action',
-		dataType : 'json',
-		data : {task:JSON.stringify(jsObj)}  
-	}).done(function(result){ 
-		if(result != null){
-			console.log(result);
-		}
-	});
-}
 
 </script>
 </body>

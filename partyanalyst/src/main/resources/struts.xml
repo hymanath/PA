@@ -12294,10 +12294,14 @@
 			<param name="root">idNameList</param>
 		</result>
 	</action>
-	
 	<action name="getBloodDonorsCountsSummaryAction" class="bloodBankAction" method="getBloodDonarsSummary">
 		<result type="json" name="success">
 			<param name="root">bloodBankDashBoardVO</param>
+		</result>
+	</action>
+	<action name="getBleedingCadreDetailsAction" class="bloodBankAction" method="getBleedingCadreDetails">
+		<result type="json" name="success">
+			<param name="root">bloodBankVOList</param>
 		</result>
 	</action>
 </package>
