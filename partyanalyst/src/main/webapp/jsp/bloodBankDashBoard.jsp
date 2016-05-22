@@ -287,7 +287,7 @@
                 	<h4 class="panel-title text-capitalise">Quadruple Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise" style="font-size=17px;">total Quadruple bags - <span id="totalQuadrateBags"></span></h4>
+                	<h4 class="text-capitalise" style="font-size:17px;">total Quadruple bags - <span id="totalQuadrateBags"></span></h4>
                     <div id="quadrateBagsDivId"></div>
 					<!--<table class="table table-condensed m_top10">
                     	<tr>
