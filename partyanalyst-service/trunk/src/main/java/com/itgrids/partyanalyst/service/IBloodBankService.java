@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
+import com.itgrids.partyanalyst.dto.DonationsInBloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
@@ -26,4 +27,5 @@ public interface IBloodBankService {
  public BloodBankDashBoardVO getBloodDonarsSummary(Long campId);
  public  ResultStatus saveBloodBankCadreDetails(final BloodBankVO bloodBanKVO,final Long userId);
  public List<BloodBankVO> getBloodComponentList();
+ public DonationsInBloodBankVO getNumberOfTimesCollectedBlood(Long campId);
 }

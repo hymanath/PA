@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
+import com.itgrids.partyanalyst.dto.DonationsInBloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AcceptanceStatus;
@@ -765,4 +766,38 @@ public class BloodBankService implements IBloodBankService{
 		}
 		return bloodComponentList;
 	}
+	
+	public DonationsInBloodBankVO getNumberOfTimesCollectedBlood(Long campId){
+		DonationsInBloodBankVO finalVO = new DonationsInBloodBankVO();
+		try{	
+			
+			List<Object[]> collectedBlood = bloodDonationDAO.getNumberOfTimesCollectedBlood(campId);
+			if(collectedBlood != null && collectedBlood.size() > 0){
+				for(Object[] obj : collectedBlood){
+					Long collectedcount = obj[1]!=null?(Long)obj[1]:0l;
+					
+					if(collectedcount >=0 && collectedcount<=2 ){
+						finalVO.setZerototwo(finalVO.getZerototwo()+1);
+					}else if (collectedcount >=3 && collectedcount<=5){
+						finalVO.setThreetofive(finalVO.getThreetofive()+1);
+					}else if(collectedcount >=6 && collectedcount<=10){
+						finalVO.setSixtoten(finalVO.getSixtoten()+1);
+					}else if(collectedcount >=11 && collectedcount<=15){
+						finalVO.setEleventofiftheen(finalVO.getEleventofiftheen()+1);
+					}else if(collectedcount >=16 && collectedcount<=30){
+						finalVO.setSixteentothirteen(finalVO.getSixteentothirteen()+1);
+					}else if(collectedcount >=31 && collectedcount<=50){
+						finalVO.setThirtyonetofifthy(finalVO.getThirtyonetofifthy()+1);
+					}
+					//finalVO.setTdpcadreId(obj[0]!=null?(Long)obj[0]:0l);
+				}
+				
+			}	
+					
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return finalVO;
+	}
+	
 }

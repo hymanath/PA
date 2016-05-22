@@ -191,5 +191,16 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		return query.executeUpdate();		
 	}
 	
+	public List<Object[]> getNumberOfTimesCollectedBlood(Long campId){
+		
+			
+			Query query = getSession().createQuery("select model.bloodDonorInfo.tdpCadre.tdpCadreId,model.donationsInBloodBank"+
+													" from BloodDonation model" +
+													" where model.bloodDonationCamp.bloodDonationCampId = :campId" +
+													" group by  model.bloodDonorInfo.tdpCadre.tdpCadreId");
+			query.setParameter("campId", campId);
+			
+			return query.list();
+		}
 	
 }
