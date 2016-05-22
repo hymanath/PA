@@ -16554,9 +16554,13 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 										 if((activityvo.getConductedDate() != null && activityvo.getConductedDate().trim().length() > 0) || 
 												( activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0 )){
 											
-											 
-											 String locationTypeflagId = activityvo.getLocationValue().toString().trim().substring(0, 1);										
 											 Long locationLevel = activityvo.getLocationLevel();
+											 String locationTypeflagId = "";
+											 if(locationLevel <5)
+												 locationTypeflagId = activityvo.getLocationValue().toString().trim().substring(0, 1);										
+											 else
+												 locationTypeflagId = activityvo.getLocationValue().toString().trim();
+											
 											 Long locationLevelId = null;
 											 if(locationLevel.longValue() == 1L)
 											 {
@@ -16915,18 +16919,18 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 Date planDateStr = planDate != null ? format1.parse(planDate):null;
 						 Date conductedDateStr = conductedDate != null ? format1.parse(conductedDate):null;
 
-						 Long locationLevelId = 0L;
+						 String locationLevelId = "";
 						 if(locationlevel.longValue() == 6L || locationlevel.longValue() == 7L)
 						 {
-							 locationLevelId = 1L;
+							 locationLevelId = "1";
 						 }
 						 else if(locationlevel.longValue() == 8L || locationlevel.longValue() == 5L)
 						 {
-							 locationLevelId = 2L;
+							 locationLevelId = "2";
 						 }
 						 else if(locationlevel.longValue() == 9L)
 						 {
-							 locationLevelId = 3L;
+							 locationLevelId = "3";
 						 }
 						 String finalIdStr = locationLevelId+""+locationValue;
 						 Long finalLocationId = Long.valueOf(finalIdStr);
