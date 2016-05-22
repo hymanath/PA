@@ -28,4 +28,5 @@ public interface IBloodBankService {
  public  ResultStatus saveBloodBankCadreDetails(final BloodBankVO bloodBanKVO,final Long userId);
  public List<BloodBankVO> getBloodComponentList();
  public DonationsInBloodBankVO getNumberOfTimesCollectedBlood(Long campId);
+ public ResultStatus saveBleedingDetails(BloodBankVO bloodBankVO);
 }
