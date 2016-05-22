@@ -984,7 +984,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 				value = "conducted";
 			}
 			
-			
+			var activityScopeId = $('#ActivityList').val();
 			var jObj = {
 				startDate:startDate,
 				endDate:endDate,
@@ -992,7 +992,6 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 				activityScopeId:$('#ActivityList').val(),
 				activityLevelId:activityLevelId,
 				searchBy:searchBy,
-				locationId:locationId,
 				locationId:locationId,
 				task:"getLocationDetailsForActivity",
 				constituencyId : constituencyId,
@@ -1022,7 +1021,8 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 						else if(activityLevelId == 5)
 							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';							
 						//str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
-						//str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
+						if(activityScopeId != 16)
+							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
 						//str+='<th>PRESIDENT</th>';
 						//str+='<th>GENERAL SECRETARY</th>';
 						str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
@@ -1048,18 +1048,20 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 								
 								str+='</div>  <i class="glyphicon glyphicon-ok updateDateDetls"></i> </td>';*/
-								/*str+='<td  style="text-align:center;width:180px">';
-								str+='<div class="input-g1 input-group">';
-									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
-									if(result.result[i].conductedDate != null)
-										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
-									else
-										str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
-									str+='<span class="input-group-addon" style="padding:6px 0px;" title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls" attr_location_Value="'+result.result[i].locationId+'" attr_date="dateId'+result.result[i].locationId+'"  style="cursor:pointer;" attr_img="img'+result.result[i].locationId+'"></i></span>';
-								str+='</div>';
-								
+								if(activityScopeId != 16){
+									str+='<td  style="text-align:center;width:180px">';
+									str+='<div class="input-g1 input-group">';
+										str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
+										if(result.result[i].conductedDate != null)
+											str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value="'+result.result[i].conductedDate+'"/>';
+										else
+											str+='<input type="text" id="dateId'+result.result[i].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+i+'].conductedDate" value=""/>';
+										str+='<span class="input-group-addon" style="padding:6px 0px;" title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls" attr_location_Value="'+result.result[i].locationId+'" attr_date="dateId'+result.result[i].locationId+'"  style="cursor:pointer;" attr_img="img'+result.result[i].locationId+'"></i></span>';
+									str+='</div>';
+								}
 								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div> </td>';
-								*/
+								
+								
 								/*
 								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
 								{
@@ -1076,16 +1078,14 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
-								if(result.result[i].conductedDate != null){
-									if(result.result[i].isAlreadyImageUpload == "true"){								
-										//str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
-									}else{
-										//str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
-									} 
-								}
-								else{
-									//str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;display:none;" class="img'+result.result[i].locationId+'" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
-								}
+								
+									if(activityScopeId != 16){
+										if(result.result[i].isAlreadyImageUpload == "true"){								
+											str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+										}else{
+											str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;" src="images/imageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+										} 
+									}								
 							   
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
@@ -1107,6 +1107,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 										str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+i+'].plannedDate" value=""/>';
 								
 								str+='</div>  <i class="glyphicon glyphicon-ok updateDateDetls"></i></td>';*/
+								if(activityScopeId != 16){
 								str+='<td  style="text-align:center;width:180px">';
 								str+='<div class="input-g1 input-group">';
 									str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
@@ -1118,7 +1119,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 									
 								str+='</div>';
 								str+='<div id="errdateId'+result.result[i].locationId+'" class="errCls"  style="color:red;"></div>   </td>';
-								
+								}
 								/*
 								if(result.result[i].hamletsOfTownship != null && result.result[i].hamletsOfTownship.length>0)
 								{
@@ -1131,13 +1132,19 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 									str+='<td  style="text-align:center;"> - </td>';
 								}
 								*/
+								
 								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
 								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
-								if(result.result[i].conductedDate != null)				
+								if(activityScopeId != 16){
+								if(result.result[i].isAlreadyImageUpload == "true")				
 									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
-							  
+								}
+								else
+								{
+									str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
+								}
 								/* str+='<input type="button" value="Upload Images" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="uploadImagesId" style="margin-left: 5px;"/>'; */
 								
 								str+='</td>';
