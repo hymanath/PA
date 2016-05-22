@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
@@ -180,7 +181,6 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String gettotalCollectedBloodDetails(){
 		try {
 			jObj= new JSONObject(getTask());
@@ -243,6 +243,22 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			bloodBankDashBoardvoList = bloodBankService.getBloodDonorDetailsByAgeGroupingInfo(campId);
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getBloodDonorDetailsByAgeGroupingInfo", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getBleedingCadreDetails(){
+		List<Long> statusId = new ArrayList<Long>();
+		try {
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("campId");
+			JSONArray statusIds = jObj.getJSONArray("statusIdList");
+			for(int i=0;i<statusIds.length();i++){
+					JSONObject jobj1 = new JSONObject(statusIds.get(i).toString());
+					statusId.add(jobj1.getLong("id"));
+				}
+			bloodBankVOList = bloodBankService.getBleedingCadreDetails(statusId,campId);
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getBleedingCadreDetails() method of BloodBankAction", e);
 		}
 		return Action.SUCCESS;
 	}
