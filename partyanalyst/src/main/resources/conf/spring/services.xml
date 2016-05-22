@@ -2161,6 +2161,7 @@
 	  <property name="unionTabUserDAO" ref="unionTabUserDAO"/> 
 	  <property name="tdpMemberUnionTabUserRelationDAO" ref="tdpMemberUnionTabUserRelationDAO"/> 
 	  <property name="unionTypeDesignationDAO" ref="unionTypeDesignationDAO"/> 
+	  
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -3128,6 +3129,12 @@
 	   <property name="bloodBagTypeDAO" ref="bloodBagTypeDAO"></property>
 	   <property name="bloodBagQuantityDAO" ref="bloodBagQuantityDAO"></property>
 	
+	</bean>
+	
+	<bean name="notificationService" class="com.itgrids.partyanalyst.service.impl.NotificationService">
+	   <property name="notificationDeviceDAO" ref="notificationDeviceDAO"></property> 
+	   <property name="transactionTemplate" ref="transactionTemplate" />
+	   <property name="dateUtilService" ref="dateUtilService" />
 	</bean>
 	
 </beans>		
