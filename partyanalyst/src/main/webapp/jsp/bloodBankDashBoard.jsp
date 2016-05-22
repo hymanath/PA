@@ -177,36 +177,8 @@
                 	<h4 class="panel-title text-capitalise">Blood donated in blood bank</h4>
                 </div>
                 <div class="panel-body pad_0">
-                	<table class="table table-bordered m_0">
-                    	<thead>
-                        	<th># Times</th>
-                            <th>Members</th>
-                        </thead>
-                    	<tr>
-                        	<td>0-2</td>
-                            <td>1500</td>
-                        </tr>
-                        <tr>
-                        	<td>0-2</td>
-                            <td>1500</td>
-                        </tr>
-                        <tr>
-                        	<td>0-2</td>
-                            <td>1500</td>
-                        </tr>
-                        <tr>
-                        	<td>0-2</td>
-                            <td>1500</td>
-                        </tr>
-                        <tr>
-                        	<td>0-2</td>
-                            <td>1500</td>
-                        </tr>
-                        <tr>
-                        	<td>0-2</td>
-                            <td>1500</td>
-                        </tr>
-                    </table>
+				<center><img id="numberOfTimesBloodajaxImage" src="images/Loading-data.gif" style="width:70px;height:60px"/></center>
+                	<div id="numberOfTimesBloodDiv"></div>
                 </div>
             </div>
         </div>
@@ -608,6 +580,85 @@ function getBloodDonorsCountsSummary(){
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
 		 });
+}
+getNumberOfTimesCollectedBlood();
+function getNumberOfTimesCollectedBlood(){
+	$("#numberOfTimesBloodajaxImage").show();
+	$("#numberOfTimesBloodDiv").html('');
+	//var campId = $("#").val();
+	var jsObj={
+			bloodBankCampId : 1
+			}
+	$.ajax({
+			  type:'GET',
+			  url: 'getNumberOfTimesCollectedBloodAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   $("#numberOfTimesBloodajaxImage").hide();
+		   buildCollectedBlood(result)
+		});
+}
+
+function buildCollectedBlood(result){
+	var str='';
+	if(result !=null)
+		str+='<table class="table table-bordered m_0">';
+			str+='<thead>';
+				str+='<th class="text-center"># Times</th>';
+				str+='<th class="text-center">Members</th>';
+			str+='</thead>';
+			str+='<tr>';
+				str+='<td class="text-center">0-2</td>';
+				if(result.zerototwo == null || result.zerototwo == 0){
+					str+='<td class="text-center"> - </td>';
+				}else{
+					str+='<td class="text-center">'+result.zerototwo+'</td>';
+				}
+			str+='</tr>';
+			str+='<tr>';
+				str+='<td class="text-center">3-5</td>';
+				if(result.threetofive == null || result.threetofive == 0){
+					str+='<td class="text-center"> - </td>';
+				}else{
+					str+='<td class="text-center">'+result.threetofive+'</td>';
+				}
+			str+='</tr>';
+			str+='<tr>';
+				str+='<td class="text-center">6-10</td>';
+				if(result.sixtoten == null || result.sixtoten == 0){
+					str+='<td class="text-center"> - </td>';
+				}else{
+					str+='<td class="text-center">'+result.sixtoten+'</td>';
+				}
+			str+='</tr>';
+			str+='<tr>';
+				str+='<td class="text-center">11-15</td>';
+				if(result.eleventofiftheen == null || result.eleventofiftheen == 0){
+					str+='<td class="text-center"> - </td>';
+				}else{
+					str+='<td class="text-center">'+result.eleventofiftheen+'</td>';
+				}
+			str+='</tr>';
+			str+='<tr>';
+				str+='<td class="text-center">16-30</td>';
+				if(result.sixteentothirteen == null || result.sixteentothirteen == 0){
+					str+='<td class="text-center"> - </td>';
+				}else{
+					str+='<td class="text-center">'+result.sixteentothirteen+'</td>';
+				}
+			str+='</tr>';
+			str+='<tr>';
+				str+='<td class="text-center">31-50</td>';
+				if(result.thirtyonetofifthy == null || result.thirtyonetofifthy == 0){
+					str+='<td class="text-center"> - </td>';
+				}else{
+					str+='<td class="text-center">'+result.thirtyonetofifthy+'</td>';
+				}
+			str+='</tr>';
+		str+='</table>';
+		
+		$("#numberOfTimesBloodDiv").html(str);
 }
 </script>
 </body>
