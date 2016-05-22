@@ -15,8 +15,8 @@ import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.DonationsInBloodBankVO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IBloodBankService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,7 +39,6 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	private List<BloodBankDashBoardVO> bloodBankDashBoardvoList = new ArrayList<BloodBankDashBoardVO>();
 	private DonationsInBloodBankVO donationsInBloodBankVO;
 	private ResultStatus resultStatus;
-	
 	
 	public DonationsInBloodBankVO getDonationsInBloodBankVO() {
 		return donationsInBloodBankVO;
@@ -339,6 +338,29 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			donationsInBloodBankVO = bloodBankService.getNumberOfTimesCollectedBlood(campId);
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getNumberOfTimesCollectedBlood", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String saveBleedingDetails(){
+		List<Long> statusId = new ArrayList<Long>();
+		BloodBankVO bloodBankVO = new BloodBankVO();
+		try {
+			jObj= new JSONObject(getTask());
+			String membershipNo = jObj.getString("membershipNo");
+			Long status = jObj.getLong("status");
+			String bloodBagNo = jObj.getString("bloodBagNo");
+			Long bloodBagTypeId = jObj.getLong("bloodBagTypeId");
+			Long bloodBagQuantityId = jObj.getLong("bloodBagQuantityId");
+			Long quantityId = jObj.getLong("quantityId");
+			bloodBankVO.setStatusId(status);
+			bloodBankVO.setBagNo(bloodBagNo);
+			bloodBankVO.setBagTypeId(bloodBagTypeId);
+			bloodBankVO.setBloodBankQuantityId(bloodBagQuantityId);
+			bloodBankVO.setQuantity(quantityId);
+			bloodBankVO.setMembershipNo(membershipNo);
+			resultStatus = bloodBankService.saveBleedingDetails(bloodBankVO);
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  saveBleedingDetails() method of BloodBankAction", e);
 		}
 		return Action.SUCCESS;
 	}

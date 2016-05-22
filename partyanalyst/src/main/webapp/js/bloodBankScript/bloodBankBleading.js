@@ -96,11 +96,7 @@ function buildBleedingCadreDetails(result){
 	var accptStatusArr = [];
 	var bloodBagTypeArr = [];
 	var bloodBagQuantityArr = [];
-	for(var i in result){ 
-		accptStatusArr.push(result[i].statusId);
-		bloodBagTypeArr.push(result[i].bagTypeId);
-		bloodBagQuantityArr.push(result[i].bloodBankQuantityId);
-		str+='<thead style="background:#EBEBEB">';
+	str+='<thead style="background:#EBEBEB">';
 		str+='<th>Membership No</th>';
 		str+='<th>Name</th>';
 		str+='<th>Mobile No</th>';
@@ -109,44 +105,48 @@ function buildBleedingCadreDetails(result){
 		str+='<th>Blood Bag Type	</th>';
 		str+='<th>Blood Bag Quantity	</th>';
 		str+='<th>Quantity</th>';
-		str+='<th></th>';
-		str+='</thead>';
-		str+='<tbody>';
+		str+='<th></th>'; 
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){   
+		accptStatusArr.push(result[i].statusId);
+		bloodBagTypeArr.push(result[i].bagTypeId);
+		bloodBagQuantityArr.push(result[i].bloodBankQuantityId);
 		str+='<tr>';
-		str+='<td>'+result[i].membershipNo+'</td>';
-		str+='<td>'+result[i].name+'</td>';
-		str+='<td>'+result[i].mobile+'</td>';
-		str+='<td>';
-		str+='<select id="registrationStatusId'+i+'" class="form-control registrationStatusCls">';
-		str+='<option>Approved</option>';
-		str+='</select>';
-		str+='</td>';
-		str+='<td>';
-		str+='<input type="text" class="form-control" style="width:100px"/>';
-		str+='</td>';
-		str+='<td>';
-		str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
-		str+='<option>Single Bag</option>';
-		str+='</select>';
-		str+='</td>';
-		str+='<td>';
-		str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
-		str+='<option>With Sagm 350ml</option>';
-		str+='</select>';
-		str+='</td>';
-		str+='<td>';
-		str+='<select class="form-control">';
-		str+='<option>Select Quantity</option>';
-		str+='<option>350ml</option>';
-		str+='<option>450ml</option>';
-		str+='</select>';
-		str+='</td>';
-		str+='<td>';
-		str+='<button class="btn btn-success btn-sm">SUBMIT</button>';
-		str+='</td>';
+			str+='<td id="membershipNoId'+i+'">'+result[i].membershipNo+'</td>';
+			str+='<td>'+result[i].name+'</td>';
+			str+='<td>'+result[i].mobile+'</td>';
+			str+='<td>';
+				str+='<select id="registrationStatusId'+i+'" class="form-control registrationStatusCls">';
+				str+='<option>Approved</option>';
+				str+='</select>';
+			str+='</td>';
+			str+='<td>';
+			str+='<input id="bloodBagNoId'+i+'" type="text" class="form-control" style="width:100px"/>';
+			str+='</td>';
+			str+='<td>';
+			str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
+			str+='<option>Single Bag</option>';
+			str+='</select>';
+			str+='</td>';
+			str+='<td>';
+			str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
+			str+='<option>With Sagm 350ml</option>';
+			str+='</select>';
+			str+='</td>';
+			str+='<td>';
+			str+='<select id="quantityId'+i+'" class="form-control">';
+				str+='<option>Select Quantity</option>';
+				str+='<option>350ml</option>';
+				str+='<option>450ml</option>';
+			str+='</select>';
+			str+='</td>';
+			str+='<td>';
+			str+='<button id="submitId'+i+'" class="btn btn-success btn-sm submitCls" attr_button_submitting="SUBMITTING..." attr_button_submitted="SUBMITTED" attr_position="'+i+'">SUBMIT</button>';
+			str+='</td>';
 		str+='</tr>';
-		str+='</tbody>';
 	}
+	str+='</tbody>';
 	$("#BleedingCadreDetailsId").html(str);
 	
 	$(".registrationStatusCls").find("option").remove();
@@ -170,4 +170,36 @@ function buildBleedingCadreDetails(result){
 	$("#bloodBagQuantityId"+i).val(bloodBagQuantityArr[i]);
 	}
 }
+$(document).on('click','.submitCls',function(){
+	var position = $(this).attr("attr_position");
+	$("#submitId"+position).html($("#submitId"+position).attr("attr_button_submitting"));
+	//console.log(position);
+	var membershipNo = $("#membershipNoId"+position).html();
+	var status = $("#registrationStatusId"+position).val();
+	var bloodBagNo = $("#bloodBagNoId"+position).val();
+	var bloodBagTypeId = $("#bloodBagTypeId"+position).val();
+	var bloodBagQuantityId = $("#bloodBagQuantityId"+position).val();
+	var quantityId = $("#quantityId"+position).val();  
+	quantityId = quantityId.substr(0,3);
+	//console.log(status+":"+bloodBagNo+":"+bloodBagTypeId+":"+bloodBagQuantityId+":"+quantityId+":"+membershipNo);
+	var jsObj = {
+		status				: status,      
+		bloodBagNo			: bloodBagNo,
+		bloodBagTypeId		: bloodBagTypeId,
+		bloodBagQuantityId	: bloodBagQuantityId,
+		quantityId			: quantityId,
+		membershipNo		: membershipNo
+	};  
+	$.ajax({
+		type : 'POST',
+		url : 'saveBleedingDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+		if(result != null){
+			$("#submitId"+position).html($("#submitId"+position).attr("attr_button_submitted"));
+		}
+	});
+	
+});
 
