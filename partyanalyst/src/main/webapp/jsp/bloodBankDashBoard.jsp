@@ -36,8 +36,8 @@
             	<div class="panel-heading">
                 	<h4 class="panel-title text-capitalise">blood donors</h4>
                 </div>
-                <div class="panel-body pad_0">
-                	<table class="table tableDonors">
+                <div class="panel-body pad_0" id="bldDonorCnts">
+                	<!--<table class="table tableDonors">
                     	<tr>
                         	<td>
                             	<div  class="tdBack">
@@ -48,16 +48,16 @@
                             <td>
                             	<div  class="tdBack">
                  	           		<h2>10000</h2>
-                                	<p class="text-capitalize">total applications</p>
+                                	<p class="text-capitalize">total accepted</p>
                                 </div>
                             </td>
                             <td>
                             	<div  class="tdBack">
                  	           		<h2>10000</h2>
-                                	<p class="text-capitalize">total applications</p>
+                                	<p class="text-capitalize">total rejected</p>
                                 </div>
                             </td>
-                            <td>
+                            <!--<td>
                             	<div  class="tdBack">
                  	           		<h2>10000</h2>
                                 	<p class="text-capitalize">total applications</p>
@@ -126,7 +126,7 @@
                             	<span class="pull-right">5000</span>
                             </td>
                         </tr>
-                    </table>
+                    </table>-->
                 </div>
             </div>
         </div>
@@ -320,15 +320,15 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Stacked column chart'
+            text: ' '
         },
         xAxis: {
-            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            categories: ['Day 1', 'Day 2', 'Day 3']
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'Total fruit consumption'
+                text: ' '
             },
             stackLabels: {
                 enabled: true,
@@ -365,16 +365,13 @@ $(function () {
             }
         },
         series: [{
-            name: 'John',
+            name: 'Day 1',
             data: [5, 3, 4, 7, 2]
         }, {
-            name: 'Jane',
+            name: 'Day 2',
             data: [2, 2, 3, 2, 1]
         }, {
-            name: 'Joe',
-            data: [3, 4, 4, 2, 5]
-        }, {
-            name: 'Joe',
+            name: 'Day 3',
             data: [3, 4, 4, 2, 5]
         }]
     });
@@ -551,7 +548,7 @@ function gettotalCollectedBloodBagsInfo(){
 			}
 		});
 }
-
+getBloodDonorDetailsByAgeGroupingInfo();
 function getBloodDonorDetailsByAgeGroupingInfo(){
 	var bloodBankCampId = 1;
 	
@@ -579,6 +576,8 @@ function getBloodDonorsCountsSummary(){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+		   console.log(result)
+		   buildBloodDonorsCountsSummary(result.bloodBankDashBoardVO);
 		 });
 }
 getNumberOfTimesCollectedBlood();
@@ -659,6 +658,96 @@ function buildCollectedBlood(result){
 		str+='</table>';
 		
 		$("#numberOfTimesBloodDiv").html(str);
+}
+function buildBloodDonorsCountsSummary(result){
+	var str = '';
+	var totalCount = 0;
+	
+	var day = 1;
+	str+='<table class="table tableDonors">';
+	for(var i in result){
+		
+		totalCount = result[i].totalCount+totalCount;
+    str+='<tr>';
+    str+='<td>';
+    str+='<div  class="tdBack">';
+    str+='<h2>'+totalCount+'</h2>';
+    str+='<p class="text-capitalize">total applications</p>';
+    str+='</div>';
+    str+='</td>';
+	if(result[i].id == 1){
+    str+='<td>';
+    str+='<div  class="tdBack">';
+    str+='<h2>'+result[i].totalCount+'</h2>';
+    str+='<p class="text-capitalize">total accepted</p>';
+    str+='</div>';
+    str+='</td>';
+	}else{
+		str+='<td>';
+    str+='<div  class="tdBack">';
+    str+='<h2>0</h2>';
+    str+='<p class="text-capitalize">total accepted</p>';
+    str+='</div>';
+    str+='</td>';
+	}
+	if(result[i].id == 2){
+	str+='<td>';
+    str+='<div  class="tdBack">';
+    str+='<h2>'+result[i].totalCount+'</h2>';
+    str+='<p class="text-capitalize">total rejected</p>';
+    str+='</div>';
+    str+='</td>';
+	}else{
+		str+='<td>';
+    str+='<div  class="tdBack">';
+    str+='<h2>0</h2>';
+    str+='<p class="text-capitalize">total rejected</p>';
+    str+='</div>';
+    str+='</td>';
+	}
+    str+='</tr>';
+    str+='<tr>';
+    str+='<td>DAY WISE</td>';
+    str+='<td>DAY WISE</td>';
+    str+='<td>DAY WISE</td>';
+	str+='</tr>';
+	for(var j in result[i].bloodBankDashBoardVO){
+		var dayWiseCount = 0;
+		dayWiseCount = result[i].bloodBankDashBoardVO[j].totalCount+dayWiseCount;
+    str+='<tr>';
+    str+='<td>DAY - '+day+'';
+    str+='<span class="pull-right">'+dayWiseCount+'</span>';
+    str+='</td>';
+	if(result[i].id == 1){
+    str+='<td>DAY - '+day+'';
+	if(result[i].bloodBankDashBoardVO[j].totalCount > 0){
+    str+='<span class="pull-right">'+result[i].bloodBankDashBoardVO[j].totalCount+'</span>';
+	}else{
+		 str+='<span class="pull-right">0</span>';
+	}
+    str+='</td>';
+	}
+	else{
+		 str+='<td>DAY - '+day+'';
+    str+='<span class="pull-right">0</span>';
+    str+='</td>';
+	}
+	if(result[i].id == 2){
+    str+='<td>DAY - '+day+'';
+    str+='<span class="pull-right">'+result[i].bloodBankDashBoardVO[j].totalCount+'</span>';
+    str+='</td>';
+	}else{
+		str+='<td>DAY - '+day+'';
+    str+='<span class="pull-right">0</span>';
+    str+='</td>';
+	}
+    str+='</tr>';
+	day++;
+	}
+	
+   }
+    str+='</table>';
+	$("#bldDonorCnts").html(str);
 }
 </script>
 </body>
