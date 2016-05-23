@@ -49,6 +49,7 @@ public class BloodDonation extends BaseModel implements Serializable{
 	private Date updatedTime;
 	private Long updatedBy;
 	private Long bloodBagQuantityId;
+	private String registrationNumber;
 	
 	private BloodDonationCamp bloodDonationCamp;
 	private BloodDonorInfo bloodDonorInfo;
@@ -243,6 +244,13 @@ public class BloodDonation extends BaseModel implements Serializable{
 		this.updatedBy = updatedBy;
 	}
 	
+	@Column(name="registration_number")
+	public String getRegistrationNumber() {
+		return registrationNumber;
+	}
+	public void setRegistrationNumber(String registrationNumber) {
+		this.registrationNumber = registrationNumber;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="blood_donation_camp_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)

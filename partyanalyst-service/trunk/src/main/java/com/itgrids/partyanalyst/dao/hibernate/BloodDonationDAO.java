@@ -174,7 +174,13 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 			}
 			if(bloodBankVO.getQuantity() !=null && bloodBankVO.getQuantity()>0){
 				str.append(",model.quantity =:quantity ");
-			}			
+			}		
+			if(bloodBankVO.getRegistrationNo()!=null && !bloodBankVO.getRegistrationNo().isEmpty()){
+				str.append(",model.registrationNumber =:registrationNumber ");
+			}
+			if(bloodBankVO.getRemarks()!=null && !bloodBankVO.getRemarks().isEmpty()){
+				str.append(",model.remarks =:remarks ");
+			}
 			str.append(" where model.bloodDonationId= :bloodDonationId ");
 		}
 		
@@ -196,7 +202,12 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		if(bloodBankVO.getQuantity() !=null && bloodBankVO.getQuantity()>0){
 			query.setParameter("quantity",bloodBankVO.getQuantity());
 		}
-		
+		if(bloodBankVO.getRegistrationNo()!=null && !bloodBankVO.getRegistrationNo().isEmpty()){
+			query.setParameter("registrationNumber", bloodBankVO.getRegistrationNo());
+		}
+		if(bloodBankVO.getRemarks()!=null && !bloodBankVO.getRemarks().isEmpty()){
+			query.setParameter("remarks", bloodBankVO.getRemarks());
+		}
 		return query.executeUpdate();		
 	}
 public String isTdpCadreExistOrNot(String memberShipNO){

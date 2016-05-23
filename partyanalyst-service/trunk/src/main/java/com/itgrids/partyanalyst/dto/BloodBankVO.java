@@ -41,6 +41,7 @@ public class BloodBankVO implements Serializable{
 	private String bagType;
 	private Long bloodBankQuantityId;
 	private String quantityType;
+	private String registrationNo;
 	
 	private AddressVO addressVO=new AddressVO();
 	
@@ -260,6 +261,12 @@ public class BloodBankVO implements Serializable{
 	}
 	public void setQuantityType(String quantityType) {
 		this.quantityType = quantityType;
+	}
+	public String getRegistrationNo() {
+		return registrationNo;
+	}
+	public void setRegistrationNo(String registrationNo) {
+		this.registrationNo = registrationNo;
 	}
 	
 	
