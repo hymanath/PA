@@ -47,7 +47,7 @@
                 <div class="row">
                 	<div class="col-md-12 m_top10">
                     	<div class="bg-info">
-                        	<p>Currently Showing Search Results - 40<span class="pull-right">Clear Search Results</span></p>	
+                        	<!--<p>Currently Showing Search Results - 40<span class="pull-right">Clear Search Results</span></p>-->	
                         </div>
                     </div>
                 	<div class="col-md-12 m_top10">
