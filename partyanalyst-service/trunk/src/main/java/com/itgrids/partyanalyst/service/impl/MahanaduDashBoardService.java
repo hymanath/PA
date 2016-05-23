@@ -608,12 +608,15 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return returnList;
 	}
 	
-	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId){		
+	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId,String eventCurrentDate){		
 		
 		MahanaduVisitVO finalVo = new MahanaduVisitVO();
 		
 		try{
 						
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
 			Long toDaytotalVisitors = 0l;
 			Long toDaytotalInviteeVisitors = 0l;
 			Long currentVisitors = 0l;
@@ -624,7 +627,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long exitEventId = entryExitInfo.getExitId();
 			Long parentEventId = entryExitInfo.getParentEventId();
 			
-			Date todayDate = dateUtilService.getCurrentDateAndTime();
+			Date todayDate =null;
+			if(eventCurrentDate !=null && !eventCurrentDate.isEmpty()){
+				todayDate = sdf.parse(eventCurrentDate); 
+			}else{
+				todayDate = dateUtilService.getCurrentDateAndTime();
+			}
+			
 			
 			toDaytotalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);			
 			toDaytotalInviteeVisitors=eventAttendeeDAO.getTodayTotalInviteeVisitors(todayDate,parentEventId,entryEventId);			
