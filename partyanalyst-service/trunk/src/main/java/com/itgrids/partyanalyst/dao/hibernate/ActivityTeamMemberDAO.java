@@ -17,11 +17,13 @@ public class ActivityTeamMemberDAO  extends GenericDaoHibernate<ActivityTeamMemb
 	
 	public List<Object[]> getTeamLeadersByActivityScope(List<Long> activityScopeIds){
 		
-		Query query = getSession().createQuery(" select model.activityTeamMemberId,model.tdpCadre.firstname from ActivityTeamMember model " +
+		/*Query query = getSession().createQuery(" select model.activityTeamMemberId,model.tdpCadre.firstname from ActivityTeamMember model " +
 							" where model.activityScope.activityScopeId in (:activityScopeIds) and model.teamLeadId is null and model.isActive = 'true' ");
 		
 		query.setParameterList("activityScopeIds", activityScopeIds);
-		
+		*/
+		Query query = getSession().createQuery(" select model.activityTeamMemberId,model.tdpCadre.firstname from ActivityTeamMember model " +
+				" where model.teamLeadId is null and model.isActive = 'true' ");
 		return query.list();
 	}
 	
