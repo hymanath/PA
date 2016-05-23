@@ -14,7 +14,6 @@ function getAcceptanceStatus(){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
 		if(result != null){
-			acceptanceStr+='<option value="0">select Status</option>';
 			for(var i in result){
 				acceptanceStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 			}
@@ -31,7 +30,7 @@ function getBloodBagType(){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
 		if(result != null){
-			bloodBagStr+='<option value="0">select BloodBagType</option>';
+			bloodBagStr+='<option value="0">Select BloodBagType</option>';
 			for(var i in result){
 				bloodBagStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 			}
@@ -47,7 +46,7 @@ function getBloodBagQuantity(){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
 		if(result != null){
-			bloodBagQuantityStr+='<option value="0">select BloodBagQuantity</option>';
+			bloodBagQuantityStr+='<option value="0">Select BloodBagQuantity</option>';
 			for(var i in result){
 				bloodBagQuantityStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 			}
