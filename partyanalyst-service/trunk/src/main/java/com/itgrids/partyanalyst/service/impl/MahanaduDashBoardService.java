@@ -484,7 +484,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return returnList;
 	}
 	
-	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId){
+	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId,String dateValues){
 		List<MahanaduVisitVO> returnList = new ArrayList<MahanaduVisitVO>();
 		Long totalVisitors = 0l;
 		Long currentVisitors = 0l;
@@ -588,6 +588,18 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			 }
 			}
 			
+			List<MahanaduVisitVO> finalList = new ArrayList<MahanaduVisitVO>();			
+			if(dateValues !=null && !dateValues.isEmpty()){				
+				int lnth = dateValues.split(",").length;				
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){					
+					for(int i=0;i<lnth;i++){						
+						finalList.add(returnList.get(i));	
+						
+					}					
+					returnList.clear();					
+					returnList = finalList;					
+				}				
+			}
 
 		}catch(Exception e){
 			LOG.error("Exception rised in getTodayTotalAndCurrentUsersInfoList()",e);
