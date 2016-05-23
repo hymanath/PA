@@ -646,14 +646,27 @@ footer
 					</c:if>
 					
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'EVENTS_DASHBOARD_ENTITLEMENT' )}">
-					 <li>
-						<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
-					</li>
 					<li>
 						<a href="eventDashboardAction.action?eventId=30"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
 					</li>
-				</c:if>				
-
+					 <li>
+						<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
+					</li>
+				</c:if>	
+				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+					<li>
+                        <a href="#"><i class="fa fa-wrench"></i><span>&nbsp;&nbsp;Mahanadu 2016</span></a>
+                        <h2><i class="fa fa-wrench line_heightDiv"></i>Mahanadu 2016</h2>
+                       <ul>
+							<li>
+								<a href="eventDashboardAction.action?eventId=30"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
+							</li>
+							<li>
+								<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
+							</li>
+					   </ul>
+					 </li>
+				</c:if>	
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
