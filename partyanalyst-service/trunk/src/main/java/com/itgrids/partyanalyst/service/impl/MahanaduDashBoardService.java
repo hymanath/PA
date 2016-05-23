@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEntryExitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails;
@@ -1232,5 +1233,46 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		}
 		
 		return defaultHoursList;
+	}
+	
+	public List<IdNameVO> getEventDates(Long eventId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);	
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Object[] objArr = eventDAO.getEventDates(eventId);
+			if(objArr != null && objArr.length > 0){
+				List<Date> datesList = commonMethodsUtilService.getBetweenDates((Date)objArr[0],(Date)objArr[1]);
+				if(datesList != null && datesList.size() > 0){
+					StringBuilder sb = new StringBuilder();
+					for (int i=0;i<datesList.size();i++) {
+						if(sdf.format(datesList.get(i)).split("-")[0].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0]) ){
+							if(sdf.format(datesList.get(i)).split("-")[2].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+								IdNameVO vo = new IdNameVO();
+								vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
+								vo.setPercentage("toDay");
+								voList.add(vo);
+							} 
+							else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[2])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+								IdNameVO vo = new IdNameVO();
+								vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
+								voList.add(vo);
+							}
+						}else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[0])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0])){
+							IdNameVO vo = new IdNameVO();
+							vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
+							if(i==0){
+								vo.setPercentage("toDay");
+							}
+							voList.add(vo);
+						}
+					}
+				}
+							
+			}			
+		} catch (Exception e) {
+			LOG.error("Exception riased at getEventDates", e);
+		}
+		
+		return voList;
 	}
 }

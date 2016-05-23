@@ -15,9 +15,9 @@ public class MahanaduVisitVO {
 	private Long onetotwo;
 	private Long halfanhour;
 	private Long belowhalfanhour;
-	private Long totalVisitors;
-	private Long currentVisitors;
-	private Long currentInviteeVisitors;
+	private Long totalVisitors=0l;
+	private Long currentVisitors=0l;
+	private Long currentInviteeVisitors=0l;
 	private Long parentEventId;
 	private String lastUpdated;
 	
