@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,16 +73,16 @@ public class NotificationService implements INotificationService{
 	
 	
 	
-	 public List<NotificationDeviceVO> saveUsersDataInNotificationDeviceTable(final NotificationDeviceVO notifyVO)
+	 public NotificationDeviceVO saveUsersDataInNotificationDeviceTable(final NotificationDeviceVO notifyVO)
 	  {
 		 log.info("Entered into saveVotersDataInVoterInfoTable() Method...");
-		 List<NotificationDeviceVO> returnList = null;
+		 NotificationDeviceVO returnVo = new NotificationDeviceVO();
 		  try{
 			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
 					{
-						List<Long> isExistValues = notificationDeviceDAO.getIsExist(notifyVO.getRegisteredId(),notifyVO.getProjectId(),notifyVO.getImeiNo());
-						if(isExistValues == null || isExistValues.size()==0){
+						//List<Long> isExistValues = notificationDeviceDAO.getIsExist(notifyVO.getRegisteredId(),notifyVO.getProjectId(),notifyVO.getImeiNo());
+						//if(isExistValues == null || isExistValues.size()==0){
 							NotificationDevice notificateDevice = new NotificationDevice();
 							notificateDevice.setNotificationDeviceId(notifyVO.getNotificationDeviceId());
 							notificateDevice.setRegisteredId(notifyVO.getRegisteredId());
@@ -90,26 +92,36 @@ public class NotificationService implements INotificationService{
 							notificateDevice.setImeiNo(notifyVO.getImeiNo());
 							notificateDevice.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							notificateDevice.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							notificateDevice.setDeviceName(notifyVO.getDeviceName());
 							notificationDeviceDAO.save(notificateDevice);	
-						}
+						//}
 					}
 				});
-			  returnList =  getActiveNotifications(notifyVO.getNotificationTypeId(),notifyVO.getLastNotificationId());
-			  return returnList;
+			  //returnList =  getActiveNotifications(notifyVO.getNotificationTypeId(),notifyVO.getLastNotificationId());
+			  return  new NotificationDeviceVO("SUCCESS");
 		  }catch (Exception e) {
 			  e.printStackTrace();
 			  log.error("Exception Occured in saveUsersDataInNotificationDeviceTable() Method, Exception - "+e);
-			  returnList= new ArrayList<NotificationDeviceVO>(0);
-			  returnList.add(new NotificationDeviceVO("FAILURE"));
-			  return null;
+			 
+			  return  new NotificationDeviceVO("FAILURE");
 		}
 	  }
-	 public List<NotificationDeviceVO> getActiveNotifications(Long notificationTypeId,Long lastNotificationId){
+	 public List<NotificationDeviceVO> getActiveNotifications(NotificationDeviceVO inputVo) {
 		 List<NotificationDeviceVO>  returnList = null;
 		 try {
+			 
 			 log.error("Entered in to getActiveNotifications() Method ");
+			 Long notificationTypeId =inputVo.getNotificationTypeId();
+			 Long lastNotificationId = inputVo.getNotificationId();
+			 String lastUpdatedServerTime = inputVo.getLastUpdatedTime();
+			 Date lastUpdatedDate = null;
+			 try {
+				 lastUpdatedDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(lastUpdatedServerTime);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			 Map<Long, NotificationDeviceVO> statusMap = new LinkedHashMap<Long, NotificationDeviceVO>(0);
-			 List<Object[]> notifyDetails = notificationsDAO.getNotificationsDetailsByNotification(notificationTypeId,lastNotificationId);
+			 List<Object[]> notifyDetails = notificationsDAO.getNotificationsDetailsByNotification(notificationTypeId,lastNotificationId,lastUpdatedDate);
 			 if(notifyDetails != null && notifyDetails.size()>0){
 				 for (Object[] status : notifyDetails) {
 					 NotificationDeviceVO notificationTypeVO= statusMap.get(commonMethodsUtilService.getLongValueForObject(status[0]));
@@ -120,16 +132,23 @@ public class NotificationService implements INotificationService{
 						 notificationTypeVO.setNotificationTypeId(commonMethodsUtilService.getLongValueForObject(status[0]));
 					 }
 					 NotificationDeviceVO notificationVo = new NotificationDeviceVO();
-					 notificationVo.setId(commonMethodsUtilService.getLongValueForObject(status[2]));
+					 notificationVo.setNotificationId(commonMethodsUtilService.getLongValueForObject(status[2]));
 					 notificationVo.setNotification(commonMethodsUtilService.getStringValueForObject(status[3]));
-					 notificationTypeVO.getActiveNotofocations().add(notificationVo) ;
+					 notificationVo.setOrderNo(commonMethodsUtilService.getLongValueForObject(status[4]));
+					 notificationVo.setLastUpdatedTime(commonMethodsUtilService.getStringValueForObject(status[5]));
+					 notificationTypeVO.getActiveNotifications().add(notificationVo) ;
 					 statusMap.put((Long)status[0], notificationTypeVO);
 				}
 				 
 				 if(commonMethodsUtilService.isMapValid(statusMap)){
 					 returnList= new ArrayList<NotificationDeviceVO>(0);
 					 returnList.addAll(statusMap.values());
+					 
+					 NotificationDeviceVO VO = returnList.get(0);
+					 VO.setLastUpdatedTime(dateUtilService.getCurrentDateAndTime().toString());
 				 }
+				 
+				 
 			 }
 		 }catch(Exception e){
 			 log.error("Exception occured in getActiveNotifications() Method ");

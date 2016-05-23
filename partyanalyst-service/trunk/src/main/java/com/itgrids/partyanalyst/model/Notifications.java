@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,6 +28,8 @@ public class Notifications extends BaseModel implements Serializable{
 	private Long notificationsId;
 	private Long notificationTypeId;
 	private String notification;
+	private Date insertedTime;
+	private Date updatedTime;
 	private String isActive;
 	private Long orderNo;
 
@@ -58,6 +61,23 @@ public class Notifications extends BaseModel implements Serializable{
 	public void setNotification(String notification) {
 		this.notification = notification;
 	}
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
 	@Column(name="is_active")
 	public String getIsActive() {
 		return isActive;
