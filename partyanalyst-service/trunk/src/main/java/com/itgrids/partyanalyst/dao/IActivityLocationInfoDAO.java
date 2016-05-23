@@ -26,4 +26,5 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getLocationDetailsByInfoIds(List<Long> activityInfoIds);
 	public List<Object[]> getActivityLocationNames(List<Long> activityInfoIds,Long locationlevel);
 	public List<Object[]> getLocationWiseUpdatedCountDetails(SearchAttributeVO searchVO);
+	public List<Object[]> getActivityNotPlannedDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId);
 }
