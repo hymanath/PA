@@ -159,10 +159,10 @@
 				<div class="panel-body">
 				  <div class="row">
 					<div class="col-md-12">
-						<div class="pull-right">
-							<input type="radio" class="dayRadio" name="dayRadioName" checked value="1"/><label>Day - 1</label>
+						<div class="pull-right" id="radioDivId">
+							<!-- <input type="radio" class="dayRadio" name="dayRadioName" checked value="1"/><label>Day - 1</label>
 							<input type="radio" class="dayRadio" name="dayRadioName" value="2"/><label>Day - 2</label>
-							<input type="radio" class="dayRadio" name="dayRadioName" value="3"/><label>Day - 3</label>
+							<input type="radio" class="dayRadio" name="dayRadioName" value="3"/><label>Day - 3</label> -->
 						</div>
 					</div>
 					<div class="col-md-12"><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
@@ -429,14 +429,10 @@ $(".panelDefault").height(maxHeight);
 		}, 2000); */
 	});
 	
-	function allCalls(){
-		getDaysUniqueAndRevisitSummary();	
-        getTodayTotalVisitors(); 
-        getDetails();		
-        getDayWiseVisitSummary();			
-		getDistrictWiseMembersCountInCampus();
-		getTodayCount();
-	}
+	$(document).on("change","#eventDatesSelectId",function(){
+		var t = $("#eventDatesSelectId").find("option:selected").attr("attr_dates").split(",");
+		getHourWiseNowInCampusCadresCount(t[parseInt(t.length)-2]);
+	});
 	
 	getEventDates();
 	function getEventDates(){
@@ -450,20 +446,38 @@ $(".panelDefault").height(maxHeight);
 			data :{task:JSON.stringify(jsObj)}
         }).done(function(result){	
 			$("#eventDatesSelectId").html("");
+			$("#radioDivId").html("");
 			if(result != null && result.length > 0){
+				var str='';
 				for(var i in result){
 					if(result[i].name != null){
+						var t = result[i].name.split(",");
 						if(result[i].percentage != null && result[i].percentage=="toDay"){
 							$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"' selected>Day - "+(parseInt(i)+1)+"</option>");
+							str+='<input type="radio" class="dayRadio" name="dayRadioName" checked value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
+							getHourWiseNowInCampusCadresCount(t[parseInt(t.length)-2]);
 						}else{
 							$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"'>Day - "+(parseInt(i)+1)+"</option>");
+							str+='<input type="radio" class="dayRadio" name="dayRadioName" value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
 						}
 					}
 				}
+				$("#radioDivId").html(str);
 				allCalls();
+				
 			}
 		});
 	}
+	
+	function allCalls(){
+		getDaysUniqueAndRevisitSummary();	
+        getTodayTotalVisitors(); 
+        getDetails();		
+        getDayWiseVisitSummary();			
+		getDistrictWiseMembersCountInCampus();
+		
+	}
+	
  
  function getDaysUniqueAndRevisitSummary(){
 
@@ -1030,7 +1044,7 @@ function buildTotalVisitorsResult(result){
 	 	getDetails();
   	});
 	$(document).on("click",".hrWseVstrsInCampCls",function(){
-	 	getHourWiseNowInCampusCadresCount();
+		getHourWiseNowInCampusCadresCount($('input[name=dayRadioName]:checked').val());
   	});
   	$(document).on("click","#rfrshDyWsPrgrssRvstId",function(){
 		 getDayWiseVisitSummary();
@@ -1123,7 +1137,7 @@ function buildTotalVisitorsResult(result){
 		}
 	}
 	
-	function getTodayCount(){
+	/* function getTodayCount(type){
 		var eventId = $("#mainEventSelectId").val(); 
 		$.ajax({
 			type:'GET',
@@ -1137,18 +1151,18 @@ function buildTotalVisitorsResult(result){
 				$("input[name=dayRadioName][value=1]").trigger("click");
 			}
 		});
-	}
+	} */
 	
 	$(document).on("click",".dayRadio",function(){
-		getHourWiseNowInCampusCadresCount();
+		getHourWiseNowInCampusCadresCount($(this).val());
 	});
 	
-	function getHourWiseNowInCampusCadresCount(){
+	function getHourWiseNowInCampusCadresCount(date){
 		$('#hoursWiseVisitors').html("");
 		$("#hrWiseVstrsHghChrtPrcssngImgId").show();
-		var dayVal = $('input[name=dayRadioName]:checked').val();
+		
 		var jObj = {
-				dayVal:dayVal,
+				dayVal:date,
 				eventId : $("#mainEventSelectId").val()
 			}	
 			
