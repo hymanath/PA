@@ -1282,7 +1282,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				.addScalar("districtId",Hibernate.LONG)
 				.addScalar("districtName",Hibernate.STRING);*/
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName " +
-				"from event_attendee model " +
+				"from EventAttendee model " +
 				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
 			if(queryStr !=null && !queryStr.isEmpty()){
 					str.append(queryStr);
