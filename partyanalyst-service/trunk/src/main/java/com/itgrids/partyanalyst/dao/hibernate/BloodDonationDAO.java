@@ -267,14 +267,32 @@ public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate ){
 	}
 	
 
-	public List<Object[]> getDistrictWiseBloodDonorCounts(Long campId){
-		
-		Query query = getSession().createQuery(" select model.bloodDonorInfo.tdpCadre.userAddress.district.districtId,model.bloodDonorInfo.tdpCadre.userAddress.district.districtName,count(distinct model.bloodDonorInfo.tdpCadre.tdpCadreId)" +
-				" from BloodDonation model " +
-				" where model.bloodDonationCamp.bloodDonationCampId = :campId" +
-				" group by  model.bloodDonorInfo.tdpCadre.userAddress.district.districtId order by model.bloodDonorInfo.tdpCadre.userAddress.district.districtId ");
-		
-		query.setParameter("campId",campId);
-		return query.list();
-	}
+public List<Object[]> getDistrictWiseBloodDonorCounts(Long campId){
+	
+	Query query = getSession().createQuery(" select model.bloodDonorInfo.tdpCadre.userAddress.district.districtId,model.bloodDonorInfo.tdpCadre.userAddress.district.districtName,count(distinct model.bloodDonorInfo.tdpCadre.tdpCadreId)" +
+			" from BloodDonation model " +
+			" where model.bloodDonationCamp.bloodDonationCampId = :campId" +
+			" group by  model.bloodDonorInfo.tdpCadre.userAddress.district.districtId order by model.bloodDonorInfo.tdpCadre.userAddress.district.districtId ");
+	
+	query.setParameter("campId",campId);
+	return query.list();
+}
+
+public List<Object[]> getThePrePopulateData(String searchType){
+	
+	Query query = getSession().createQuery("select model.bloodDonorInfo.tdpCadre.memberShipNo, " +
+			" model.bloodDonorInfo.donorName, " +
+			" model.bloodDonorInfo.mobileNo, " +
+			" model.acceptanceStatus.acceptanceStatusId, " +
+			" model.bagNo, " +
+			" model.bloodBagTypeId, " +
+			" model.bloodBagQuantity.bloodBagQuantityId, " +
+			" model.quantity " +
+			" from BloodDonation model " +
+			" where " +
+			" model.bloodDonorInfo.donorName like '%"+searchType+"%' or model.bloodDonorInfo.tdpCadre.memberShipNo=:searchType or model.bloodDonorInfo.mobileNo=:searchType ");
+	
+	query.setParameter("searchType",searchType);
+	return query.list();
+}
 }
