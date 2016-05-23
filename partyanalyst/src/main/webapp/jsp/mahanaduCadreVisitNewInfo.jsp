@@ -400,11 +400,11 @@ $(".panelDefault").height(maxHeight);
 
 		$("#timeUpdationId").html(datetime);
 		
-		getEventDates();
+		
 
-		 setTimeout(function(){
+		/*  setTimeout(function(){
 			allCalls();
-		}, 2000);
+		}, 2000); */
 	});
 	
 	function allCalls(){
@@ -416,6 +416,7 @@ $(".panelDefault").height(maxHeight);
 		getTodayCount();
 	}
 	
+	getEventDates();
 	function getEventDates(){
 		var jsObj={
 			eventId : $("#mainEventSelectId").val()
@@ -437,6 +438,7 @@ $(".panelDefault").height(maxHeight);
 						}
 					}
 				}
+				allCalls();
 			}
 		});
 	}
