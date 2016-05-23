@@ -1290,7 +1290,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.district.districtId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("eventId", eventId);
-		query.setDate("todateDate", todateDate);
+		query.setDate("toDayDate", todateDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
 		return query.list();
