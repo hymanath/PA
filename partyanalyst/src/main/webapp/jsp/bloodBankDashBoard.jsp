@@ -47,96 +47,7 @@
                 	<h4 class="panel-title text-capitalise">blood donors</h4>
                 </div>
                 <div class="panel-body pad_0" id="bldDonorCnts">
-                	<!--<table class="table tableDonors">
-                    	<tr>
-                        	<td>
-                            	<div  class="tdBack">
-                 	           		<h2>10000</h2>
-                                	<p class="text-capitalize">total applications</p>
-                                </div>
-                            </td>
-                            <td>
-                            	<div  class="tdBack">
-                 	           		<h2>10000</h2>
-                                	<p class="text-capitalize">total accepted</p>
-                                </div>
-                            </td>
-                            <td>
-                            	<div  class="tdBack">
-                 	           		<h2>10000</h2>
-                                	<p class="text-capitalize">total rejected</p>
-                                </div>
-                            </td>
-                            <!--<td>
-                            	<div  class="tdBack">
-                 	           		<h2>10000</h2>
-                                	<p class="text-capitalize">total applications</p>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                        	<td>DAY WISE</td>
-                            <td>DAY WISE</td>
-                            <td>DAY WISE</td>
-                            <td>DAY WISE</td>
-                        </tr>
-                        <tr>
-                        	<td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                        </tr>
-                        <tr>
-                        	<td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                        </tr>
-                        <tr>
-                        	<td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                        </tr>
-                        <tr>
-                        	<td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                            <td>DAY - 1
-                            	<span class="pull-right">5000</span>
-                            </td>
-                        </tr>
-                    </table>-->
+                	
                 </div>
             </div>
         </div>
@@ -342,74 +253,10 @@
 
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="training/dist/HighCharts/highcharts.js"></script>
 <script type="text/javascript">
 $(function () {
-	 Highcharts.setOptions({
-	colors: ['#FED501', '#D64D54', '#5C2D25', '#00B17D', '#7CB7EF', 
-   '#FFA85B', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1']
-	 });
-    $('#container').highcharts({
-		
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: ' '
-        },
-        xAxis: {
-            categories: ['Day 1', 'Day 2', 'Day 3']
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: ' '
-            },
-            stackLabels: {
-                enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }
-            }
-        },
-        legend: {
-            align: 'bottom',
-            x: 30,
-            verticalAlign: 'bottom',
-            y: 10,
-            floating: false,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-            borderColor: '#CCC',
-            shadow: false
-        },
-        tooltip: {
-            headerFormat: '<b>{point.x}</b><br/>',
-            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-        },
-        plotOptions: {
-            column: {
-                stacking: 'normal',
-                dataLabels: {
-                    enabled: true,
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                    style: {
-                        textShadow: '0 0 3px black'
-                    }
-                }
-            }
-        },
-        series: [{
-            name: 'Day 1',
-            data: [5, 3, 4, 7, 2]
-        }, {
-            name: 'Day 2',
-            data: [2, 2, 3, 2, 1]
-        }, {
-            name: 'Day 3',
-            data: [3, 4, 4, 2, 5]
-        }]
-    });
+	 
 });
 gettotalCollectedBloodDetails();
 getBloodDonatedOtherThanBloodBank();
@@ -438,8 +285,11 @@ function gettotalCollectedBloodDetails(){
 					str+='</tr>';
 					for(var i in result.subList){
 						str+='<tr>';
-							str+='<td>'+result.subList[i].date+'</td>';
-							str+='<td>'+result.subList[i].totalBlood+' ml</td>';
+							str+='<td>Day - '+(parseInt(i)+1)+'</td>';
+							if(result.subList[i].totalBlood != null)
+								str+='<td>'+result.subList[i].totalBlood+' ml</td>';
+							else
+								str+='<td>0 ml</td>';
 						str+='</tr>';
 					}
 				str+='</table>';
@@ -596,7 +446,79 @@ function getBloodDonorDetailsByAgeGroupingInfo(){
           url: 'getBloodDonorDetailsByAgeGroupingInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			
+			var finalArr= [];
+			if(result != null && result.length > 0){
+				for(var i in result){
+					var obj={};
+					//obj["name"]="Day - "+(parseInt(i)+1)+"";
+					obj["name"]= result[i].date;
+					var temp=[];
+					if(result[i].subList != null && result[i].subList.length > 0){
+						for(var j in result[i].subList){
+							temp.push(parseInt(result[i].subList[j].count));
+						}
+					}
+					obj["data"]=temp;
+					finalArr.push(obj);
+				}
+				Highcharts.setOptions({
+	colors: ['#FED501', '#D64D54', '#5C2D25', '#00B17D', '#7CB7EF', 
+   '#FFA85B', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1']
+	 });
+    $('#container').highcharts({
+		
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ' '
+        },
+        xAxis: {
+            categories: ['Day 1', 'Day 2', 'Day 3']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ' '
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        legend: {
+            align: 'bottom',
+            x: 30,
+            verticalAlign: 'bottom',
+            y: 20,
+            floating: false,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            borderColor: '#CCC',
+            shadow: false
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+        series: finalArr
+    });
+			}
+			//console.log(finalArr);
 		});
 }
 getBloodDonorsCountsSummary();
@@ -611,7 +533,7 @@ function getBloodDonorsCountsSummary(){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
-		   console.log(result)
+		   //console.log(result)
 		   buildBloodDonorsCountsSummary(result.bloodBankDashBoardVO);
 		 });
 }
@@ -694,7 +616,7 @@ function buildCollectedBlood(result){
 		
 		$("#numberOfTimesBloodDiv").html(str);
 }
-function buildBloodDonorsCountsSummary(result){
+/*function buildBloodDonorsCountsSummary(result){
 	var str = '';
 	var totalCount = 0;
 	
@@ -705,21 +627,21 @@ function buildBloodDonorsCountsSummary(result){
 		totalCount = result[i].totalCount+totalCount;
     str+='<tr>';
     str+='<td>';
-    str+='<div  class="tdBack">';
+    str+='<div  class="">';
     str+='<h2>'+totalCount+'</h2>';
     str+='<p class="text-capitalize">total applications</p>';
     str+='</div>';
     str+='</td>';
 	if(result[i].id == 1){
     str+='<td>';
-    str+='<div  class="tdBack">';
+    str+='<div  class="">';
     str+='<h2>'+result[i].totalCount+'</h2>';
     str+='<p class="text-capitalize">total accepted</p>';
     str+='</div>';
     str+='</td>';
 	}else{
 		str+='<td>';
-    str+='<div  class="tdBack">';
+    str+='<div  class="">';
     str+='<h2>0</h2>';
     str+='<p class="text-capitalize">total accepted</p>';
     str+='</div>';
@@ -727,14 +649,14 @@ function buildBloodDonorsCountsSummary(result){
 	}
 	if(result[i].id == 2){
 	str+='<td>';
-    str+='<div  class="tdBack">';
+    str+='<div  class="">';
     str+='<h2>'+result[i].totalCount+'</h2>';
     str+='<p class="text-capitalize">total rejected</p>';
     str+='</div>';
     str+='</td>';
 	}else{
 		str+='<td>';
-    str+='<div  class="tdBack">';
+    str+='<div  class="">';
     str+='<h2>0</h2>';
     str+='<p class="text-capitalize">total rejected</p>';
     str+='</div>';
@@ -783,6 +705,147 @@ function buildBloodDonorsCountsSummary(result){
    }
     str+='</table>';
 	$("#bldDonorCnts").html(str);
+}*/
+
+function buildBloodDonorsCountsSummary(result){
+	
+	var str='';
+	if(result !=null ){
+		
+	var totalcount1 = result[0].totalCount+result[1].totalCount+result[2].totalCount;
+	str+='<table class="table tableDonors">';
+                    	str+='<tr>';
+                        	str+='<td>';
+                            	str+='<div  class="tdBack">';
+								if(result[0].totalCount != null)
+                 	           		str+='<h2>'+result[0].totalCount+'</h2>';
+                                	str+='<p class="text-capitalize">total Pending</p>';
+                                str+='</div>';
+                            str+='</td>';
+                            str+='<td>';
+                            	str+='<div  class="tdBack">';
+								if(result[1].totalCount != null)
+                 	           		str+='<h2>'+result[1].totalCount+'</h2>';
+                                	str+='<p class="text-capitalize">total Approved</p>';
+                               str+=' </div>';
+                            str+='</td>';
+                            str+='<td>';
+                            	str+='<div  class="tdBack">';
+								if(result[2].totalCount != null)
+                 	           		str+='<h2>'+result[2].totalCount+'</h2>';
+                                	str+='<p class="text-capitalize">total rejected</p>';
+                                str+='</div>';
+                            str+='</td>';
+                            str+='<td>';
+                            	str+='<div  class="tdBack">';
+									str+='<h2>'+totalcount1+'</h2>';
+                                	str+='<p class="text-capitalize">total applications</p>';
+                                str+='</div>';
+                            str+='</td>';
+                        str+='</tr>';
+                        str+='<tr>';
+                        	str+='<td>DAY WISE</td>';
+                            str+='<td>DAY WISE</td>';
+                            str+='<td>DAY WISE</td>';
+                            str+='<td>DAY WISE</td>';
+                        str+='</tr>';
+						
+						str+='<tr>';
+							str+='<td>';
+								var rslt1 = result[0].bloodBankDashBoardVO;
+								for(var s in rslt1){
+									str+='<table class="table" style="margin:0px;">';
+									str+='<tr>';
+									str+='<td>Day - '+(parseInt(s)+1)+'';
+									if(rslt1[s].totalCount != null)
+										str+='<span class="pull-right">'+rslt1[s].totalCount+'</td>';
+									else
+										str+='<span class="pull-right"> 0 </td>';
+									str+='</tr>';
+									str+='</table>';
+								}
+							str+='</td>';
+						
+							str+='<td>';
+								var rslt1 = result[1].bloodBankDashBoardVO;
+								for(var s in rslt1){
+									str+='<table class="table" style="background:#00b17d !important;margin:0px;">';
+									str+='<tr>';
+									str+='<td  style="background:#00b17d !important;border-top:1px solid #00b17d !important;padding:0px;">Day - '+(parseInt(s)+1)+'';
+									if(rslt1[s].totalCount != null)
+										str+='<span class="pull-right">'+rslt1[s].totalCount+'</td>';
+									else
+										str+='<span class="pull-right"> 0 </td>';
+									str+='</tr>';
+									str+='</table>';
+								}
+							str+='</td>';
+						
+							str+='<td>';
+								var rslt1 = result[2].bloodBankDashBoardVO;
+								for(var s in rslt1){
+									str+='<table class="table" style="background:#ffa85b  !important;margin:0px;">';
+									str+='<tr>';
+									str+='<td  style="background:#ffa85b !important;border-top:1px solid #ffa85b !important;padding:0px;">Day - '+(parseInt(s)+1)+'';
+									if(rslt1[s].totalCount != null)
+										str+='<span class="pull-right">'+rslt1[s].totalCount+'</td>';
+									else
+										str+='<span class="pull-right"> 0 </td>';
+									str+='</tr>';
+									str+='</table>';
+								}
+							str+='</td>';
+							str+='<td>';
+							var day1=0,day2=0,day3=0;
+							for(var s in result){
+								for(var k  in result[s].bloodBankDashBoardVO){
+									if(k==0){
+										day1=day1+result[s].bloodBankDashBoardVO[k].totalCount;
+									}
+									if(k==1){
+										day2=day2+result[s].bloodBankDashBoardVO[k].totalCount;
+									}
+									if(k==2){
+										day3=day3+result[s].bloodBankDashBoardVO[k].totalCount;
+									}
+								}
+							} 
+							
+								str+='<table class="table"  style="background:#663200  !important;margin:0px;">';
+								str+='<tr>';
+								str+='<td style="background:#663200 !important;border-top:1px solid #663200 !important;padding:0px;">Day - 1';
+								str+='<span class="pull-right">'+day1+'</span></td>';
+								str+='</td></tr>';
+								str+='</table>';
+								str+='<table class="table"  style="background:#663200  !important;margin:0px;">';
+								str+='<tr>';
+								str+='<td style="background:#663200 !important;border-top:1px solid #663200 !important;padding:0px;">Day - 2';
+								str+='<span class="pull-right">'+day2+'</span>';
+								str+='</td></tr>';
+								str+='</table>';
+								str+='<table class="table"  style="background:#663200  !important;margin:0px;">';
+								str+='<tr>';
+								str+='<td style="background:#663200 !important;border-top:1px solid #663200 !important;padding:0px;">Day - 3';
+								str+='<span class="pull-right">'+day3+'</span>';
+								str+='</td></tr>';
+								str+='</table>';
+							str+='</td>';
+							
+						str+='</tr>';
+						/* for (var i in result){
+							  str+='<tr>';
+							for( var j = 0; j < result[i].bloodBankDashBoardVO.length; j++){
+									var dayCount = '0'+(j+1);
+								str+='<td>DAY - '+dayCount+'<span class="pull-right">'+result[i].bloodBankDashBoardVO[j].totalCount+'</span></td>';
+							}
+							str+='</tr>';
+						} */
+						
+						
+                       
+                   str+=' </table>';
+	}
+			$("#bldDonorCnts").html(str);	   
 }
 getApDistrictWiseBloodDonorCounts()
 function getApDistrictWiseBloodDonorCounts(){
