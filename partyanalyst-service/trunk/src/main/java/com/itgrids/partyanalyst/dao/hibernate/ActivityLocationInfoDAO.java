@@ -41,7 +41,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 		StringBuilder sb=new StringBuilder();
 		
 		sb.append("" +
-		" select   model.constituency.constituencyId,count(*),count(conductedDate)" +
+		" select   model.constituency.constituencyId,count(*),count(date(model.insertionTime))" +
 		" from     ActivityLocationInfo model " +
 		" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) ");
 		if(startDate!=null){
@@ -97,9 +97,9 @@ public List<Object[]> getNotPlannedCountForAssemblyConstWise(Long activityScopeI
 		StringBuilder sb=new StringBuilder();
 		
 		sb.append("" +
-			" select   model.constituency.constituencyId,count(model.conductedDate) " +
+			" select   model.constituency.constituencyId,count(date(model.insertionTime)) " +
 			" from     ActivityLocationInfo model " +
-			" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) and model.plannedDate is null and model.conductedDate is not null ");
+			" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) and model.plannedDate is null and model.insertionTime is not null ");
 		/*if(startDate!=null){
 			sb.append(" and date(model.plannedDate) >=:startDate ");
 		}
@@ -127,7 +127,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 	sb.append("" +
 		" select   model.constituency.constituencyId,count(model.plannedDate) " +
 		" from     ActivityLocationInfo model " +
-		" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) and model.plannedDate is not null and model.conductedDate is null ");
+		" where    model.activityScopeId =:activityScopeId and model.constituency.constituencyId in (:constIds) and model.plannedDate is not null and model.insertionTime is null ");
 	if(startDate!=null){
 		sb.append(" and date(model.plannedDate) >=:startDate ");
 	}
@@ -193,23 +193,23 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 					queryStr.append(" ,Constituency C ");
 				}
 				
-				if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("planned")){
+				if(searchAttributeVO.getConditionType().trim().trim().equalsIgnoreCase("planned")){
 					queryStr.append(" where model.plannedDate is not null ");
 				}
-				else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("infocell")){
+				else if(searchAttributeVO.getConditionType().trim().trim().equalsIgnoreCase("infocell")){
 					//queryStr.append(" where model.plannedDate is not null and  model.conductedDate is not null ");
-					queryStr.append(" where  model.conductedDate is not null ");
+					queryStr.append(" where  model.plannedDate is not null and model.insertionTime is not null ");
 				}
-				else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("ivr")){
+				else if(searchAttributeVO.getConditionType().trim().trim().equalsIgnoreCase("ivr")){
 					//queryStr.append(" where  model.plannedDate is not null and model.ivrStatus = 'Y' ");
-					queryStr.append(" where model.ivrStatus = 'Y' ");
+					queryStr.append(" where model.plannedDate is not null and model.ivrStatus = 'Y' ");
 				}
 				
 				if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
 					queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIdsList) ");
 				
 				if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
-					queryStr.append(" and ( date(model.conductedDate) >= :startDate and date(model.conductedDate) <= :endDate ) ");
+					queryStr.append(" and ( date(model.insertionTime) >= :startDate and date(model.insertionTime) <= :endDate ) ");
 				}
 				
 				
@@ -391,10 +391,10 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				queryStr.append(" ,Constituency C ");
 			}
 			
-			if(searchAttributeVO.getConditionType().equalsIgnoreCase("infocell")){
-				queryStr.append(" where model.conductedDate is not null ");
+			if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("infocell")){
+				queryStr.append(" where model.insertionTime is not null ");
 			}
-			else if(searchAttributeVO.getConditionType().equalsIgnoreCase("ivr")){
+			else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("ivr")){
 				queryStr.append(" where model.ivrStatus = 'Y' ");
 			}
 			
@@ -739,7 +739,7 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				queryStr.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
 			}
 			
-			queryStr.append(" model.locationLevel,date(model.conductedDate),count(distinct model.locationValue) from ActivityLocationInfo model " );
+			queryStr.append(" model.locationLevel,date(model.conductedDate),count(distinct model.locationValue),date(model.insertionTime) from ActivityLocationInfo model " );
 			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 				queryStr.append("  ,Tehsil T ,Panchayat P ");
@@ -754,14 +754,14 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				queryStr.append(" ,Constituency C ");
 			}
 			
-			if(searchAttributeVO.getConditionType().equalsIgnoreCase("planned")){
+			if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("planned")){
 				queryStr.append(" where model.plannedDate is not null ");
 			}
-			else if(searchAttributeVO.getConditionType().equalsIgnoreCase("infocell")){
-				queryStr.append(" where model.conductedDate is not null ");
+			else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("infocell")){
+				queryStr.append(" where model.plannedDate is not null and model.insertionTime is not null ");
 			}
-			else if(searchAttributeVO.getConditionType().equalsIgnoreCase("ivr")){
-				queryStr.append(" where model.ivrStatus = 'Y' ");
+			else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("ivr")){
+				queryStr.append(" where model.ivrStatus = 'Y' and model.plannedDate is not null ");
 			}
 			else {
 				queryStr.append(" where model.activityLocationInfoId is not null ");
@@ -838,24 +838,191 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 			
 			queryStr.append("   ");
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
-				queryStr.append(" group by model.constituency.district.districtId,date(model.conductedDate)  ");
+				queryStr.append(" group by model.constituency.district.districtId,date(model.insertionTime)  ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-				queryStr.append(" group by  model.constituency.constituencyId,date(model.conductedDate)");
+				queryStr.append(" group by  model.constituency.constituencyId,date(model.insertionTime)");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
-				queryStr.append("  group by  T.tehsilId,date(model.conductedDate) ");
+				queryStr.append("  group by  T.tehsilId,date(model.insertionTime) ");
 			}
 			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
-				queryStr.append("  group by  LEB.localElectionBodyId,date(model.conductedDate) ");
+				queryStr.append("  group by  LEB.localElectionBodyId,date(model.insertionTime) ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
-				queryStr.append("  group by  P.panchayatId,date(model.conductedDate) ");
+				queryStr.append("  group by  P.panchayatId,date(model.insertionTime) ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
-				queryStr.append(" group by   C.constituencyId,date(model.conductedDate) ");
+				queryStr.append(" group by   C.constituencyId,date(model.insertionTime) ");
 			}
-			queryStr.append(" order by  date(model.conductedDate) asc  ");
+			queryStr.append(" order by  date(model.insertionTime) asc  ");
+			query = getSession().createQuery(queryStr.toString());
+			
+			if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
+				query.setParameterList("activityScopeIdsList", searchAttributeVO.getAttributesIdsList());
+			
+			if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
+				query.setDate("startDate", searchAttributeVO.getStartDate());
+				query.setDate("endDate", searchAttributeVO.getEndDate());
+			}
+			if(searchAttributeVO.getLocationIdsList() != null && searchAttributeVO.getLocationIdsList().size()>0)
+				query.setParameterList("locationIdsList", searchAttributeVO.getLocationIdsList());
+			if(searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
+				query.setParameterList("locationTypeIdsList", searchAttributeVO.getLocationTypeIdsList());
+			return query.list();
+		}
+		else
+			return null;
+	
+	}
+
+public List<Object[]> getActivityNotPlannedDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		Query query = null;
+		if((searchAttributeVO.getLocationIdsList() != null && searchAttributeVO.getLocationIdsList().size()>0 ) && 
+				searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
+		{
+			queryStr.append(" select ");
+			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+				queryStr.append(" model.constituency.state.stateId,model.constituency.state.stateName, ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+				queryStr.append("  model.constituency.district.districtId, model.constituency.district.districtName, ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				queryStr.append(" model.constituency.constituencyId, model.constituency.name,");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+				queryStr.append(" T.tehsilId,T.tehsilName, ");
+			}
+			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+				queryStr.append(" LEB.localElectionBodyId, concat(LEB.name,' ',LEB.electionType.electionType), ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
+				queryStr.append(" P.panchayatId,P.panchayatName, ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+				queryStr.append("  C.constituencyId, concat(C.name,' (',C.localElectionBody.electionType.electionType,')') ,  ");
+			}
+			
+			queryStr.append(" model.locationLevel,date(model.conductedDate),count(distinct model.locationValue),date(model.insertionTime) from ActivityLocationInfo model " );
+			
+			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+				queryStr.append("  ,Tehsil T ,Panchayat P ");
+			}
+			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+				queryStr.append(" ,LocalElectionBody LEB, Constituency C  ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
+				queryStr.append(" , Panchayat P ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+				queryStr.append(" ,Constituency C ");
+			}
+			
+			 if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("infocell")){
+				queryStr.append(" where model.insertionTime is not null ");
+			}
+			else if(searchAttributeVO.getConditionType().trim().equalsIgnoreCase("ivr")){
+				queryStr.append(" where model.ivrStatus = 'Y'  ");
+			}
+			else {
+				queryStr.append(" where model.activityLocationInfoId is not null ");
+			}
+			 
+			 queryStr.append(" and model.plannedDate is null ");
+			 
+			if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
+				queryStr.append(" and model.activityScope.activityScopeId in (:activityScopeIdsList) ");
+			
+			if(searchAttributeVO.getStartDate() != null && searchAttributeVO.getEndDate() != null){
+				queryStr.append(" and ( date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
+			}
+			
+			if(searchAttributeVO.getTypeId().longValue() == 1L)// Village or Ward
+			{
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+					queryStr.append(" and P.tehsil.tehsilId = T.tehsilId and  model.locationValue = P.panchayatId and T.tehsilId in (:locationIdsList) ");
+					queryStr.append(" and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+					queryStr.append(" and LEB.localElectionBodyId = C.localElectionBody.localElectionBodyId and C.constituencyId = model.locationValue ");
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
+					queryStr.append(" and  model.locationValue = P.panchayatId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+					queryStr.append(" and model.locationValue = C.constituencyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+			}	
+			else if(searchAttributeVO.getTypeId().longValue() == 2L)// Mandal/Town/Division
+			{
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+					queryStr.append(" and   model.locationValue = T.tehsilId and T.tehsilId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else{
+					queryStr.append(" and model.locationValue = LEB.localElectionBodyId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+			}
+			else{
+				
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					queryStr.append(" and model.constituency.constituencyId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else
+					queryStr.append(" and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+			}
+			if(stateId != null && stateId.longValue() == 36L)
+				queryStr.append("   and model.constituency.district.districtId between 1 and 10  ");
+			else if(stateId != null && stateId.longValue() == 1L)
+				queryStr.append("   and model.constituency.district.districtId between 11 and 23  ");
+			
+			queryStr.append("   ");
+			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+				queryStr.append(" group by model.constituency.district.districtId,date(model.insertionTime)  ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
+				queryStr.append(" group by  model.constituency.constituencyId,date(model.insertionTime)");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+				queryStr.append("  group by  T.tehsilId,date(model.insertionTime) ");
+			}
+			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
+				queryStr.append("  group by  LEB.localElectionBodyId,date(model.insertionTime) ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.VILLAGE)){
+				queryStr.append("  group by  P.panchayatId,date(model.insertionTime) ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
+				queryStr.append(" group by   C.constituencyId,date(model.insertionTime) ");
+			}
+			queryStr.append(" order by  date(model.insertionTime) asc  ");
 			query = getSession().createQuery(queryStr.toString());
 			
 			if(searchAttributeVO.getAttributesIdsList() != null && searchAttributeVO.getAttributesIdsList().size()>0)
@@ -893,7 +1060,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		StringBuilder sb=new StringBuilder();
 		
 		sb.append("" +
-		" select   model.constituency.district.districtId,count(*),count(conductedDate),model.activityScope.activity.noOfTimes " +
+		" select   model.constituency.district.districtId,count(*),count(date(model.insertionTime)),model.activityScope.activity.noOfTimes " +
 		" from     ActivityLocationInfo model " +
 		" where    model.activityScopeId =:activityScopeId and model.constituency.district.districtId in (:distIds) ");
 		if(startDate!=null){
