@@ -12334,5 +12334,11 @@
 			<param name="root">bloodBankDashBoardvoList</param>
 		</result>
 	</action>
+	
+	<action name="getEventDatesAction" class="mahanaduDashBoardAction" method="getEventDates">
+		<result type="json" name="success">
+			<param name="root">idNameVoList</param>
+		</result>
+	</action>
 </package>
 </struts>      

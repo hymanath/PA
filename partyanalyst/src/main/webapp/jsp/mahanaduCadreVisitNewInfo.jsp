@@ -62,6 +62,9 @@
 					<option value="30" selected>Mahanadu 2016</option>
 				</select>
 			</div>
+			<div class="col-md-2">
+				<select class="form-control" id="eventDatesSelectId"></select>
+			</div>
 		</div>
 	</div>
 	<div class="row">
@@ -357,6 +360,7 @@ $(".panelDefault").height(maxHeight);
    
    $( "#mainEventSelectId" ).change(function() {
 	  getmainEventsChange();
+	  getEventDates();
 	   
    });
     function getmainEventsChange(){	 
@@ -382,6 +386,7 @@ $(".panelDefault").height(maxHeight);
 	});
 	
     $(document).ready(function(){
+		//page refreshing for each 10 mnts
 		setInterval(function(){ 
 			$( ".refreshButton" ).trigger( "click" );
 		}, 600000);
@@ -394,6 +399,8 @@ $(".panelDefault").height(maxHeight);
                 + currentdate.getMinutes() ;
 
 		$("#timeUpdationId").html(datetime);
+		
+		getEventDates();
 
 		 setTimeout(function(){
 			allCalls();
@@ -407,6 +414,31 @@ $(".panelDefault").height(maxHeight);
         getDayWiseVisitSummary();			
 		getDistrictWiseMembersCountInCampus();
 		getTodayCount();
+	}
+	
+	function getEventDates(){
+		var jsObj={
+			eventId : $("#mainEventSelectId").val()
+		}
+		  
+		$.ajax({
+			type:'GET',
+			url: 'getEventDatesAction.action',
+			data :{task:JSON.stringify(jsObj)}
+        }).done(function(result){	
+			$("#eventDatesSelectId").html("");
+			if(result != null && result.length > 0){
+				for(var i in result){
+					if(result[i].name != null){
+						if(result[i].percentage != null && result[i].percentage=="toDay"){
+							$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"' selected>Day - "+(parseInt(i)+1)+"</option>");
+						}else{
+							$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"'>Day - "+(parseInt(i)+1)+"</option>");
+						}
+					}
+				}
+			}
+		});
 	}
 	
 	getSubEventsOfEvent();

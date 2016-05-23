@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -36,6 +37,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	private MahanaduEventVO mahanaduEventVO;
 	private Long longVal;
 	private List<MahanaduEventVO> mahanaduEventVOList = new ArrayList<MahanaduEventVO>(0);
+	private List<IdNameVO> idNameVoList = new ArrayList<IdNameVO>(0);
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -121,6 +123,12 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	}
 	public void setLongVal(Long longVal) {
 		this.longVal = longVal;
+	}
+	public List<IdNameVO> getIdNameVoList() {
+		return idNameVoList;
+	}
+	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
+		this.idNameVoList = idNameVoList;
 	}
 	
 	public String execute(){
@@ -234,6 +242,16 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getLong("dayVal"),jObj.getLong("eventId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHourWiseNowInCampusCadresCount", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getEventDates(){
+		try {
+			jObj = new JSONObject(getTask());
+			idNameVoList = mahanaduDashBoardService.getEventDates(jObj.getLong("eventId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEventDates", e);
 		}
 		return Action.SUCCESS;
 	}
