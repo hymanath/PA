@@ -5,6 +5,7 @@ getBloodBagQuantity();
 var acceptanceStr = '';
 var bloodBagStr = '';
 var bloodBagQuantityStr = '';
+var acceptanceStatusJsonArr = [];
 function getAcceptanceStatus(){
 	var jsObj = {};
 	$.ajax({
@@ -16,6 +17,7 @@ function getAcceptanceStatus(){
 		if(result != null){
 			for(var i in result){
 				acceptanceStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				acceptanceStatusJsonArr.push({"id":result[i].id,"name":result[i].name});
 			}
 			buildStatusList(result);
 		}
@@ -93,6 +95,7 @@ function buildBleedingCadreDetails(result){
 	$("#BleedingCadreDetailsId").html('');
 	var str = '';
 	var accptStatusArr = [];
+	var accptStatusValuesArr = [];
 	var bloodBagTypeArr = [];
 	var bloodBagQuantityArr = [];
 	var quantityArr=[];
@@ -101,13 +104,21 @@ function buildBleedingCadreDetails(result){
 		str+='<th>Name</th>';
 		str+='<th>Mobile No</th>';
 		str+='<th>Registration Status</th>';
-		str+='<th>Blood Bag No</th>';
-		str+='<th>Blood Bag Type	</th>';
-		str+='<th>Blood Bag Quantity	</th>';
+		str+='<th>Segment No</th>';
+		str+='<th>Registration No</th>';
+		str+='<th>Bag Type	</th>';
+		str+='<th>Bag Quantity	</th>';
 		str+='<th>Quantity</th>';
 		str+='<th></th>'; 
 	str+='</thead>';
 	str+='<tbody>';
+	for(var i in result){  
+		for(var j in acceptanceStatusJsonArr){
+			if(result[i].statusId==acceptanceStatusJsonArr[j].id){
+				accptStatusValuesArr.push(acceptanceStatusJsonArr[j].name);
+			}
+		}
+	}
 	for(var i in result){   
 		accptStatusArr.push(result[i].statusId);
 		bloodBagTypeArr.push(result[i].bagTypeId);
@@ -124,25 +135,35 @@ function buildBleedingCadreDetails(result){
 				str+='</select>';
 			str+='</td>';
 			str+='<td>';
-			str+='<input id="bloodBagNoId'+i+'" type="text" class="form-control" style="width:100px"/>';
+			str+='<input id="bloodBagNoId'+i+'" placeholder="Segment No" type="text" value="'+result[i].bagNo+'" class="form-control" style="width:100px"/>';
 			str+='</td>';
 			str+='<td>';
-			str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
-			str+='<option>Single Bag</option>';
-			str+='</select>';
+			str+='<input id="regNoId'+i+'" placeholder="Registration No" type="text" class="form-control" style="width:100px"/>';
 			str+='</td>';
-			str+='<td>';
-			str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
-			str+='<option>With Sagm 350ml</option>';
-			str+='</select>';
-			str+='</td>';
-			str+='<td>';
-			str+='<select id="quantityId'+i+'" class="form-control">';
-				str+='<option value="0">Select Quantity</option>';
-				str+='<option value="350">350ml</option>';
-				str+='<option value="450">450ml</option>';
-			str+='</select>';
-			str+='</td>';
+			if(!(accptStatusValuesArr[i]=="Rejected")){
+				str+='<td>';
+				str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
+				str+='<option>Single Bag</option>';
+				str+='</select>';
+				str+='</td>';
+				str+='<td>';
+				str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
+				str+='<option>With Sagm 350ml</option>';
+				str+='</select>';
+				str+='</td>';
+				str+='<td>';
+				str+='<select id="quantityId'+i+'" class="form-control">';
+					str+='<option value="0">Select Quantity</option>';
+					str+='<option value="350">350ml</option>';
+					str+='<option value="450">450ml</option>';
+				str+='</select>';
+				str+='</td>';
+			}else{
+				str+='<td colspan="3">';
+                str+='<input id="remarkId'+i+'" type="text" placeholder="remarks" class="form-control"/>';
+                str+='</td>';
+			}
+			
 			str+='<td>';
 			str+='<button id="submitId'+i+'" class="btn btn-success btn-sm submitCls" attr_button_submitting="SUBMITTING..." attr_button_submitted="SUBMITTED" attr_position="'+i+'">SUBMIT</button>';
 			str+='</td>';
@@ -161,18 +182,27 @@ function buildBleedingCadreDetails(result){
 	$(".bloodBagQuantityCls").html(bloodBagQuantityStr);
 	
 	for(var i in result){ 
-	$("#registrationStatusId"+i).val(accptStatusArr[i]);
+		$("#registrationStatusId"+i).val(accptStatusArr[i]);
 	}
 	
 	for(var i in result){ 
-	$("#bloodBagTypeId"+i).val(bloodBagTypeArr[i]);
+		if((accptStatusValuesArr[i]=="Rejected")){		
+		}else{
+			$("#bloodBagTypeId"+i).val(bloodBagTypeArr[i]);
+		}
 	}
 	
 	for(var i in result){ 
-	$("#bloodBagQuantityId"+i).val(bloodBagQuantityArr[i]);
+		if((accptStatusValuesArr[i]=="Rejected")){
+		}else{
+			$("#bloodBagQuantityId"+i).val(bloodBagQuantityArr[i]);
+		}
 	}
 	for(var i in result){
-	 $("#quantityId"+i).val(quantityArr[i]);	
+		if((accptStatusValuesArr[i]=="Rejected")){
+		}else{
+			$("#quantityId"+i).val(quantityArr[i]);
+		}
 	}
 }
 
@@ -210,9 +240,11 @@ $(document).on('click','.submitCls',function(){
 	
 });
 $(document).on("change","#totalStatusId",function(){
-	var statusIdList = [];
+	var statusIdList = [];  
 	var campId=1;
-	 var statusId=$("#totalStatusId").val();
-	  statusIdList.push({"id":statusId});   
-	  getBleedingCadreDetails(statusIdList,campId);
+	var statusId=$("#totalStatusId").val();
+	if(statusId !=null && statusId>0){
+		statusIdList.push({"id":statusId});   
+	}
+	getBleedingCadreDetails(statusIdList,campId);
 });
