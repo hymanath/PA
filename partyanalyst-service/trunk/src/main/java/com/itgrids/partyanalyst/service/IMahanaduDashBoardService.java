@@ -13,7 +13,7 @@ public interface IMahanaduDashBoardService {
 	public void getTodayTotalVisitorsForSchedular();
 	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId,String dateValues);
 	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId,String eventDate);
-	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds);
+	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds,String date);
 	public Long getTodayCount(Long eventId);
 	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId);
 	public List<IdNameVO> getEventDates(Long eventId);
