@@ -1965,16 +1965,14 @@ public class WebServiceHandler {
 		@Path("/getNotificationDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public ResultStatus getNotificationDetailsBynotificationDeviceId(NotificationDeviceVO inputVo){
-			ResultStatus rs = new ResultStatus();
+		public List<NotificationDeviceVO> getNotificationDetailsBynotificationDeviceId(NotificationDeviceVO inputVo){
 			try{
 			return notificationService.saveUsersDataInNotificationDeviceTable(inputVo);
 		}
 		catch(Exception e){
 			LOG.error("Exception Occured in getNotificationDetailsBynotificationDeviceId() Method, Exception is ",e);
 			e.printStackTrace();	
-			rs.setMessage("Exception");
 		}
-			return rs;  
+			return null;  
 		}
 }
