@@ -475,22 +475,45 @@ public class BloodBankService implements IBloodBankService{
 		BloodBankDashBoardVO returnvo = new BloodBankDashBoardVO();
 		try {
 			Long totalBlood = 0l;
+			Map<String,BloodBankDashBoardVO> dateMap = new LinkedHashMap<String, BloodBankDashBoardVO>();
 			Object[] campDates = bloodDonationCampDAO.getCampDates(campId);
 			if(campDates != null){
 				
-				List<Object[]> list = bloodDonationDAO.gettotalCollectedBloodDetails((Date)campDates[0], (Date)campDates[1]);
-				if(list != null && list.size() > 0){
-					for (Object[] obj : list) {
-						BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
-						
-						Long collectedBlood = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-						vo.setTotalBlood(collectedBlood);
-						vo.setDate(obj[1] != null ? obj[1].toString():"");
-						totalBlood = totalBlood+collectedBlood;
-						returnvo.getSubList().add(vo);
+				List<Date> betweenDates= commonMethodsUtilService.getBetweenDates((Date)campDates[0], (Date)campDates[1]);
+				if(betweenDates != null){
+					for(Date date :betweenDates){
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						BloodBankDashBoardVO vo1 = new BloodBankDashBoardVO();
+						String dateStr = sdf.format(date);
+						vo1.setDate(dateStr);
+						dateMap.put(dateStr, vo1);
 					}
 				}
 				
+				//0.bloodCount,1.date
+				List<Object[]> list = bloodDonationDAO.gettotalCollectedBloodDetails((Date)campDates[0], (Date)campDates[1]);
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						Long collectedBlood = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						String date = obj[1] != null ? obj[1].toString():"";
+						
+						BloodBankDashBoardVO vo = dateMap.get(date);
+						if(vo == null){
+							vo = new BloodBankDashBoardVO();
+							vo.setTotalBlood(collectedBlood);
+							//vo.setDate(date);
+							//dateMap.put(date, vo);
+						}
+						else{
+							vo.setTotalBlood(collectedBlood);
+							//vo.setDate(date);
+						}
+						totalBlood = totalBlood+collectedBlood;
+						//returnvo.getSubList().add(vo);
+					}
+				}
+				
+				returnvo.getSubList().addAll(dateMap.values());
 				returnvo.setTotalBlood(totalBlood);
 			}
 		} catch (Exception e) {
@@ -529,11 +552,34 @@ public class BloodBankService implements IBloodBankService{
 		return count;
 	}
 	
+	public Map<Long,BloodBankDashBoardVO> getBloodBankQuantityMap(){
+		Map<Long,BloodBankDashBoardVO> quantityMap = new LinkedHashMap<Long, BloodBankDashBoardVO>();
+		List<BloodBagQuantity> quantityList = bloodBagQuantityDAO.getAll();
+		if(quantityList != null && quantityList.size() > 0){
+			for (BloodBagQuantity bloodBagQuantity : quantityList) {
+				BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+				
+				vo.setBloodBagQuantityId(bloodBagQuantity.getBloodBagQuantityId());
+				vo.setQuantityType(bloodBagQuantity.getType());
+				
+				quantityMap.put(bloodBagQuantity.getBloodBagQuantityId(), vo);
+			}
+		}
+		return quantityMap;
+	}
+	
 	public BloodBankDashBoardVO gettotalCollectedBloodBagsInfo(Long campId){
 		BloodBankDashBoardVO returnvo = new BloodBankDashBoardVO();
 		try {
 			
 			Map<Long,Map<Long,BloodBankDashBoardVO>> finalMap = new LinkedHashMap<Long, Map<Long,BloodBankDashBoardVO>>(0);
+			
+			List<BloodBagType> bagTypeList = bloodBagTypeDAO.getAll();
+			if(bagTypeList != null && bagTypeList.size() > 0){
+				for (BloodBagType bloodBagType : bagTypeList) {
+					finalMap.put(bloodBagType.getBloodBagTypeId(), getBloodBankQuantityMap());
+				}
+			}
 			//0.count,1.bloodBagTypeId,2.bagType,3.bloodBagQuantityId,4.quantityType,5.quantity
 			List<Object[]> list = bloodDonationDAO.gettotalCollectedBloodBagsInfo(campId);
 			if(list != null && list.size() > 0){
@@ -541,7 +587,7 @@ public class BloodBankService implements IBloodBankService{
 					Long bagTypeId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
 					Long bagQuantityId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 					Map<Long,BloodBankDashBoardVO> quantityMap = finalMap.get(bagTypeId);
-					if(quantityMap == null){
+					/*if(quantityMap == null){
 						quantityMap = new LinkedHashMap<Long, BloodBankDashBoardVO>();
 						List<BloodBagQuantity> quantityList = bloodBagQuantityDAO.getAll();
 						if(quantityList != null && quantityList.size() > 0){
@@ -562,8 +608,8 @@ public class BloodBankService implements IBloodBankService{
 							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 						}
 						finalMap.put(bagTypeId, quantityMap);
-					}
-					else{
+					}*/
+					if(quantityMap != null){
 						BloodBankDashBoardVO vo = quantityMap.get(bagQuantityId);
 						if(vo != null){
 							vo.setBloodBagTypeId(bagTypeId);
@@ -582,9 +628,9 @@ public class BloodBankService implements IBloodBankService{
 						returnvo.getSingleBagList().addAll(quanList);
 					else if(typeId == 2l)
 						returnvo.getDoubleBagList().addAll(quanList);
-					else if(typeId == 1l)
+					else if(typeId == 3l)
 						returnvo.getTripleBagList().addAll(quanList);
-					else if(typeId == 1l)
+					else if(typeId == 4l)
 						returnvo.getQuadrupleList().addAll(quanList);
 				}
 			}
@@ -594,29 +640,46 @@ public class BloodBankService implements IBloodBankService{
 		return returnvo;
 	}
 	
+	public List<BloodBankDashBoardVO> setDatesList(Date fromDate, Date toDate){
+		List<BloodBankDashBoardVO> datesList = new ArrayList<BloodBankDashBoardVO>();
+		List<Date> betweenDates= commonMethodsUtilService.getBetweenDates(fromDate, toDate);
+		if(betweenDates != null){
+			for(Date date :betweenDates){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+				vo.setDate(sdf.format(date));
+				datesList.add(vo);
+			}
+		}
+		return datesList;
+	}
+	
 	public List<BloodBankDashBoardVO> getBloodDonorDetailsByAgeGroupingInfo(Long campId){
 		List<BloodBankDashBoardVO> returnList = new ArrayList<BloodBankDashBoardVO>();
 		//List<BloodBankDashBoardVO> ageLst = new ArrayList<BloodBankDashBoardVO>();
 		try {
-			Map<String,List<BloodBankDashBoardVO>> dateMap = new LinkedHashMap<String, List<BloodBankDashBoardVO>>();
+			Map<String,List<BloodBankDashBoardVO>> ageGroupMap = new LinkedHashMap<String, List<BloodBankDashBoardVO>>();
 			Object[] campDates = bloodDonationCampDAO.getCampDates(campId);
-			/*List<BloodDonationAgeGroup> ageGrps = bloodDonationAgeGroupDAO.getAllAgeGroups();
+			List<BloodDonationAgeGroup> ageGrps = bloodDonationAgeGroupDAO.getAllAgeGroups();
 			if(ageGrps != null && ageGrps.size() >0){
 				for(BloodDonationAgeGroup agGrp : ageGrps){
-					BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
+					/*BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
 					vo.setAgeGroupId(agGrp != null ? agGrp.getBloodDonationAgeGroupId().longValue() : 0l);
 					vo.setAgeGroup(agGrp != null ? agGrp.getAgeGroup().toString() : "");
 					vo.setCount(0l);
-					ageLst.add(vo);
+					ageLst.add(vo);*/
+					//List<BloodBankDashBoardVO> voList = null;
+					ageGroupMap.put(agGrp.getAgeGroup(), setDatesList((Date)campDates[0], (Date)campDates[1]));
 				}
-			}*/
-			List<Date> betweenDates= commonMethodsUtilService.getBetweenDates((Date)campDates[0], (Date)campDates[1]);
+			}
+			/*List<Date> betweenDates= commonMethodsUtilService.getBetweenDates((Date)campDates[0], (Date)campDates[1]);
 			if(betweenDates != null){
 				for(Date date :betweenDates){
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					dateMap.put(sdf.format(date), setAgeList());
+					List<BloodBankDashBoardVO> voList = null;
+					dateMap.put(sdf.format(date), voList);
 				}
-			}
+			}*/
 			
 			if(campDates != null){
 				
@@ -624,9 +687,10 @@ public class BloodBankService implements IBloodBankService{
 				List<Object[]> list = bloodDonationDAO.getBloodDonorDetailsByAgeGroupingInfo((Date)campDates[0], (Date)campDates[1]);
 				if(list != null && list.size() > 0){
 					for (Object[] obj : list) {
+						String ageGroup = obj[2] != null ? obj[2].toString():"0";
 						String date = obj[3] != null ? obj[3].toString():"0";
-						List<BloodBankDashBoardVO> voList = dateMap.get(date);
-						BloodBankDashBoardVO vo = getMatchedVOForAgeGroup(voList,obj[1].toString());
+						List<BloodBankDashBoardVO> voList = ageGroupMap.get(ageGroup);
+						BloodBankDashBoardVO vo = getMatchedVOForAgeGroup(voList,date);
 						if(vo!=null){
 							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 							//returnList.add(vo);
@@ -635,30 +699,32 @@ public class BloodBankService implements IBloodBankService{
 							voList = new ArrayList<BloodBankDashBoardVO>();
 							BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
 							
-							//vo.setAgeGroupId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
-							//vo.setAgeGroup(obj[2] != null ? obj[2].toString():"");
+							vo.setAgeGroupId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+							vo.setAgeGroup(obj[2] != null ? obj[2].toString():"");
+							vo.setDate(date);
 							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 							
-							//voList.add(vo);
-							//dateMap.put(date, voList);
+							voList.add(vo);
+							ageGroupMap.put(ageGroup, voList);
 						}
 						else{
 							BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
 							
 							vo.setAgeGroupId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
 							vo.setAgeGroup(obj[2] != null ? obj[2].toString():"");
+							vo.setDate(date);
 							vo.setCount(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 							
-							//voList.add(vo);
+							voList.add(vo);
 						}*/
 					}
 				}
 				
-				if(dateMap != null && dateMap.size() > 0){
-					for (String dateStr : dateMap.keySet()){
+				if(ageGroupMap != null && ageGroupMap.size() > 0){
+					for (String ageGroupStr : ageGroupMap.keySet()){
 						BloodBankDashBoardVO vo = new BloodBankDashBoardVO();
-						vo.setDate(dateStr);
-						vo.setSubList(dateMap.get(dateStr));
+						vo.setDate(ageGroupStr);
+						vo.setSubList(ageGroupMap.get(ageGroupStr));
 						returnList.add(vo);
 					}
 				}
@@ -852,7 +918,7 @@ public class BloodBankService implements IBloodBankService{
 	{
 		if(resultList != null && resultList.size() > 0){
 			for(BloodBankDashBoardVO vo : resultList){
-				if(vo.getAgeGroupId().toString().equalsIgnoreCase(id.toString())){
+				if(vo.getDate().toString().equalsIgnoreCase(id.toString())){
 					return vo;
 				}
 			}
