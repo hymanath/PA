@@ -3129,7 +3129,7 @@
 	   <property name="bloodBagTypeDAO" ref="bloodBagTypeDAO"></property>
 	   <property name="bloodBagQuantityDAO" ref="bloodBagQuantityDAO"></property>
 	   <property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
-	
+	   <property name="districtDAO" ref="districtDAO"></property>
 	</bean>
 	
 	<bean name="notificationService" class="com.itgrids.partyanalyst.service.impl.NotificationService">

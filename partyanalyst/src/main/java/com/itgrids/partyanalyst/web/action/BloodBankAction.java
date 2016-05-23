@@ -372,5 +372,17 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getDistrictWiseBloodDonorCounts(){
+		try {
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			Long stateId = jObj.getLong("stateId");
+			String type = jObj.getString("type");
+			
+			bloodBankDashBoardVO = bloodBankService.getDistrictWiseBloodDonorCounts(campId,stateId,type);
+		} catch (Exception e) {
+			LOG.error("Exception eaised at  getDistrictWiseBloodDonorCounts", e);
+		}
+		return Action.SUCCESS;
+	}
 }
