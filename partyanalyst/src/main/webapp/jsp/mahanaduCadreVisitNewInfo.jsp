@@ -432,6 +432,10 @@ $(".panelDefault").height(maxHeight);
 	$(document).on("change","#eventDatesSelectId",function(){
 		var t = $("#eventDatesSelectId").find("option:selected").attr("attr_dates").split(",");
 		getHourWiseNowInCampusCadresCount(t[parseInt(t.length)-2]);
+		getDetails();
+		getTodayTotalVisitors();
+		getDaysUniqueAndRevisitSummary();
+		getDayWiseVisitSummary();
 	});
 	
 	getEventDates();
@@ -487,11 +491,15 @@ $(".panelDefault").height(maxHeight);
 	 if(globalMainEntryId !=null && globalMainEntryId>0){
 		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
 	 }
+	 
+	 var attrDateValue = $("#eventDatesSelectId option:selected").attr("attr_dates");
+	 
 	 var jObj = {
 			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:0,
-			subEvents : subEvents1,			
+			subEvents : subEvents1,	
+			dateValues : attrDateValue
 		}	
 		$("#daysSummaryUniqueTableId").html(' ');
 		$("#dayWsUnquVstrsPrcssngImgId").show();
@@ -570,9 +578,11 @@ $(".panelDefault").height(maxHeight);
 		$("#hourWiseTableTimeId").html(datetime);
 		$("#hourWiseGraphTimeId").html(datetime);
 		
+		var attrDateValue = $("#eventDatesSelectId option:selected").attr("attr_dates");
     	 var  eventId = $("#mainEventSelectId").val();
 		   var jsObj={
-			   eventId:eventId
+			   eventId:eventId,
+			   dateValues:attrDateValue
 		   }
 		  $.ajax({
 			  type:'GET',
@@ -999,7 +1009,8 @@ $(".panelDefault").height(maxHeight);
 			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:0,
-			subEvents : subEvents1,			
+			subEvents : subEvents1,
+			date:$("#eventDatesSelectId option:selected").attr("attr_dates")
 		}	
 		
 		$.ajax({

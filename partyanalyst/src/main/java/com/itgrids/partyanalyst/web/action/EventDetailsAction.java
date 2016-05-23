@@ -394,7 +394,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			for(int i=0;i<arr.length();i++){
 				subEventIds.add(new Long(arr.get(i).toString()));
 			}			
-			resultList = mahaNaduService.getDaysUniqueAndRevisitSummary(eventId,stateId,reportLevelId,subEventIds);
+			resultList = mahaNaduService.getDaysUniqueAndRevisitSummary(eventId,stateId,reportLevelId,subEventIds,jObj.getString("dateValues"));
 						
 		}catch (Exception e) {
 			LOG.error(" Entered Into getDaysUniqueAndRevisitSummary",e);
@@ -413,7 +413,8 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			for(int i=0;i<arr.length();i++){
 				subEventIds.add(new Long(arr.get(i).toString()));
 			}			
-			resultList = mahaNaduService.getDayWiseVisitSummary(eventId,stateId,reportLevelId,subEventIds);
+			String date = jObj.getString("date");
+			resultList = mahaNaduService.getDayWiseVisitSummary(eventId,stateId,reportLevelId,subEventIds,date);
 			
 		}catch (Exception e) {
 			LOG.error(" Entered Into getDayWiseVisitSummary",e);
