@@ -239,7 +239,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	public String getHourWiseNowInCampusCadresCount(){
 		try {
 			jObj = new JSONObject(getTask());
-			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getLong("dayVal"),jObj.getLong("eventId"));
+			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getString("dayVal"),jObj.getLong("eventId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHourWiseNowInCampusCadresCount", e);
 		}
