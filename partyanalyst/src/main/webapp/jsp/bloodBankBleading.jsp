@@ -34,12 +34,13 @@
                         	<option value="0">All Applications</option>
                         </select>
                     </div>
+					<div id="errorDiv" style="color:#ff0020;" class="pull-right"></div>
                     <div class="col-md-3 col-md-offset-6">
                     	<label>Search</label>
                     	<div class="input-group inputWithButton">
-                        	<input class="form-control" type="text"/>
+                        	<input class="form-control" type="text" id="searchInputId"/>
                             <span class="input-group-addon">
-                            	<button class="btn btn-success">SEARCH</button>
+                            	<button class="btn btn-success" id="serachButtonId" onclick="getPrePopulateTheDataDetails()">SEARCH</button>
                             </span>
                         </div>
                     </div>
@@ -160,7 +161,26 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="js/bloodBankScript/bloodBankBleading.js" type="text/javascript"></script>
 <script>
-
+function getPrePopulateTheDataDetails(){
+	$('#errorDiv').html("");
+	var search = $("#searchInputId").val();
+	if(search==0){
+		$('#errorDiv').html('Please Select Search');
+		return;
+	}
+	
+	var jObj={
+		searchType:search
+	};
+	$.ajax({
+		type:"GET",
+		url:'getPrePopulateTheDataDetailsAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		buildBleedingCadreDetails(result);
+	});
+}
 </script>
 </body>
 </html>
