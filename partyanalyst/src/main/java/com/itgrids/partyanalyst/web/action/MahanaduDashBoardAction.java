@@ -219,7 +219,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 				}
 			}
 			
-			mahanaduEventVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(jObj.getLong("eventId"),statesList);
+			mahanaduEventVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(jObj.getLong("eventId"),statesList,jObj.getString("date"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseMembersCountInCampus", e);
 		}

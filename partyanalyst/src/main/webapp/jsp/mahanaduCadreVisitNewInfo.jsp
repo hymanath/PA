@@ -35,6 +35,14 @@
     background-repeat: no-repeat;
     height: 71px;
 }
+.panel-heading .panel-title , .panel-title
+{
+	font-weight:bold
+}
+.pad_left0
+{
+	padding-left:0px;
+}
 </style>
 </head>
 <body>
@@ -42,9 +50,9 @@
 	<div class="well well-sm" style="background:#C0C0C0">
 		<div class="row">
 		  <div class="col-md-4" style="margin-top:5px;">
-			 <h4 class="m_0 text-capitalise">mahanadu visitors info dashboard</h4>
+			 <h4 class="m_0 panel-title text-capitalise">mahanadu visitors info dashboard</h4>
 		  </div>
-		  <div class="col-md-4 col-md-offset-2">
+		  <div class="col-md-4 col-md-offset-1">
 			<div id="mahanaduEventDashBoardLinkId" style="display:none">
 			  <button id="mahanaduLinkId" type="button" class="btn btn-primary pull-right">ENTRY/EXIT DASHBOARD</button>
 			</div>
@@ -55,15 +63,13 @@
 			  </a>
 			</div>
 			</div>
-			<div class="col-md-2">
-				<select class="form-control" id="mainEventSelectId">
+			<div class="col-md-3">
+				<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="mainEventSelectId">
 					<option value="0">Select Event</option>
 					<option value="7" >Mahanadu 2015</option>
 					<option value="30" selected>Mahanadu 2016</option>
 				</select>
-			</div>
-			<div class="col-md-2">
-				<select class="form-control" id="eventDatesSelectId"></select>
+				<select style="height:32px;display:inline-block;width:100px;" class="form-control" id="eventDatesSelectId"></select>
 			</div>
 		</div>
 	</div>
@@ -436,6 +442,7 @@ $(".panelDefault").height(maxHeight);
 		getTodayTotalVisitors();
 		getDaysUniqueAndRevisitSummary();
 		getDayWiseVisitSummary();
+		getDistrictWiseMembersCountInCampus();
 	});
 	
 	getEventDates();
@@ -1094,10 +1101,13 @@ function buildTotalVisitorsResult(result){
 			stateIds.push($("#apSwitch").val());
 		}
 		
+		var t = $("#eventDatesSelectId").find("option:selected").attr("attr_dates").split(",");
+		
 		if(stateIds.length > 0){
 			var jObj = {
 				eventId:$("#mainEventSelectId").val(),			
-				stateIds:stateIds
+				stateIds:stateIds,
+				date:t[t.length-2]
 			}	
 			
 			$.ajax({
