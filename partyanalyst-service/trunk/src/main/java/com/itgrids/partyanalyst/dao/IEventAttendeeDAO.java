@@ -22,7 +22,7 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getStateWiseEventAttendeeCounts(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
 	
 	public List<Object[]> getMembersDetailsBySubEvent(Long eventId,Date startDate,Date endDate,Integer startIndex,Integer maxIndex);
-	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId);
+	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId,Long entryId);
 	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId);
 	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId);
 	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds);
@@ -43,7 +43,7 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	
 	public Long getUniqueInviteeVisitorsAttendedcount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
 	
-	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId);
+	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId,Long entryEventId);
 	public List<Object[]> getHourWiseTotalVisitorsCount1(Long parentEventId,Date date,List<Long> subeventIds,String type);
 	public List<Object[]> getHourWiseCurrentVisitorsCount(Date todayDate,Long entryEventId,Long exitEventId,String type);
 	
