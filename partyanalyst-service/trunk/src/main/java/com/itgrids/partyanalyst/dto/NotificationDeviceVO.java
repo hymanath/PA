@@ -7,14 +7,15 @@ import java.util.List;
 public class NotificationDeviceVO {
 	
 	private Long notificationDeviceId;
-	private Long registeredId;
+	private String registeredId;
 	private Long projectId;
 	private String longitude;
 	private String latitude;
 	private String imeiNo;
 	private Date insertedTime;
 	private Date updatedTime;
-	private List<NotificationDeviceVO> activeNotofocations = new ArrayList<NotificationDeviceVO>(0);
+	private List<NotificationDeviceVO> activeNotifications = new ArrayList<NotificationDeviceVO>(0);
+	private List<Long> inActiviNotifications = new ArrayList<Long>(0);
 	private Long id;
 	private Long notificationTypeId;
 	private String notificationType;
@@ -22,11 +23,52 @@ public class NotificationDeviceVO {
 	private String notification;
 	private Long lastNotificationId;
 	private String status;
+	private String lastUpdatedTime;
+	private String deviceName;
+	private Long orderNo;
 	
 	public NotificationDeviceVO(){
 		
 	}
 	public NotificationDeviceVO(String status){
+		this.status = status;
+	}
+	
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	public List<NotificationDeviceVO> getActiveNotifications() {
+		return activeNotifications;
+	}
+	public void setActiveNotifications(
+			List<NotificationDeviceVO> activeNotifications) {
+		this.activeNotifications = activeNotifications;
+	}
+	public List<Long> getInActiviNotifications() {
+		return inActiviNotifications;
+	}
+	public void setInActiviNotifications(List<Long> inActiviNotifications) {
+		this.inActiviNotifications = inActiviNotifications;
+	}
+	public String getDeviceName() {
+		return deviceName;
+	}
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
+	public String getLastUpdatedTime() {
+		return lastUpdatedTime;
+	}
+	public void setLastUpdatedTime(String lastUpdatedTime) {
+		this.lastUpdatedTime = lastUpdatedTime;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public Long getLastNotificationId() {
@@ -84,10 +126,10 @@ public class NotificationDeviceVO {
 	public void setNotificationDeviceId(Long notificationDeviceId) {
 		this.notificationDeviceId = notificationDeviceId;
 	}
-	public Long getRegisteredId() {
+	public String getRegisteredId() {
 		return registeredId;
 	}
-	public void setRegisteredId(Long registeredId) {
+	public void setRegisteredId(String registeredId) {
 		this.registeredId = registeredId;
 	}
 	public Long getProjectId() {
@@ -114,12 +156,7 @@ public class NotificationDeviceVO {
 	public void setImeiNo(String imeiNo) {
 		this.imeiNo = imeiNo;
 	}
-	public List<NotificationDeviceVO> getActiveNotofocations() {
-		return activeNotofocations;
-	}
-	public void setActiveNotofocations(
-			List<NotificationDeviceVO> activeNotofocations) {
-		this.activeNotofocations = activeNotofocations;
-	}
+	
+	
 	
 }

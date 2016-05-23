@@ -19,13 +19,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class NotificationDevice extends BaseModel implements Serializable{
 	
 	private Long notificationDeviceId;
-	private Long registeredId;
+	private String registeredId;
 	private Long projectId;
 	private String longitude;
 	private String latitude;
 	private String imeiNo;
 	private Date insertedTime;
 	private Date updatedTime;
+	private String deviceName;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,11 +37,18 @@ public class NotificationDevice extends BaseModel implements Serializable{
 	public void setNotificationDeviceId(Long notificationDeviceId) {
 		this.notificationDeviceId = notificationDeviceId;
 	}
+	@Column(name="device_name")
+	public String getDeviceName() {
+		return deviceName;
+	}
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
 	@Column(name="registered_id")
-	public Long getRegisteredId() {
+	public String getRegisteredId() {
 		return registeredId;
 	}
-	public void setRegisteredId(Long registeredId) {
+	public void setRegisteredId(String registeredId) {
 		this.registeredId = registeredId;
 	}
 	@Column(name="project_id")
