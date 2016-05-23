@@ -1,12 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -22,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IBloodDonationAgeGroupDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationCampDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonorInfoDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -60,8 +60,19 @@ public class BloodBankService implements IBloodBankService{
 	private IBloodBagQuantityDAO bloodBagQuantityDAO;
 	private IBloodComponentDAO bloodComponentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService; 
+	private IDistrictDAO districtDAO;
 	
 	
+	
+	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -930,6 +941,52 @@ public class BloodBankService implements IBloodBankService{
 			}
 		}
 		return ageLst;
+	}
+	
+	public BloodBankDashBoardVO getDistrictWiseBloodDonorCounts(Long campId,Long stateId,String type){
+		BloodBankDashBoardVO finalResult = new BloodBankDashBoardVO();
+		
+		try{
+			List<BloodBankDashBoardVO> districtwisebloodcountlist = new ArrayList<BloodBankDashBoardVO>(0);
+			List<Object[]> allDistrictList = districtDAO.getDistrictIdAndNameByStateForRegion(stateId,type.toString());		
+						
+			if(allDistrictList !=null && allDistrictList.size()>0){
+				for (Object[] objects : allDistrictList) {
+					BloodBankDashBoardVO VO = new BloodBankDashBoardVO();
+					
+					VO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					VO.setName(objects[1] !=null ? objects[1].toString():"");
+					VO.setCount(0l);
+					districtwisebloodcountlist.add(VO);
+				}
+			}
+
+			List<Object[]> bloodCountList = bloodDonationDAO.getDistrictWiseBloodDonorCounts(campId);
+				if(bloodCountList !=null && bloodCountList.size()>0){
+					for (Object[] objects : bloodCountList) {
+						BloodBankDashBoardVO VO = getMatchedVO(districtwisebloodcountlist,(Long)objects[0]);
+						if(VO != null)
+						{	
+							VO.setCount(objects[2] !=null ? (Long)objects[2]:0l);
+						}
+						/*}else{
+							BloodBankDashBoardVO VO1 = new BloodBankDashBoardVO();							
+							VO1.setCount(objects[2] !=null ? (Long)objects[2]:0l);
+							districtwisebloodcountlist.add(VO1);
+						}*/
+						
+						
+					}
+					
+				}
+			
+				//finalResult.getSubList().addAll(districtwisebloodcountlist);
+				finalResult.setSubList(districtwisebloodcountlist);
+				
+		}catch (Exception e) {
+			LOG.info("Error raised at getDistrictWiseBloodDonorCounts() BloodBankService in ",e);	
+		}
+		return finalResult;
 	}
 	
 }

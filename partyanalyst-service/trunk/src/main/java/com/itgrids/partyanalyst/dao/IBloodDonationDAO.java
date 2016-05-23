@@ -26,4 +26,5 @@ public interface IBloodDonationDAO extends GenericDao<BloodDonation, Long> {
 	public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate );
 	//public Object[] getCampDates(Long campId);
 	public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate );
+	public List<Object[]> getDistrictWiseBloodDonorCounts(Long campId);
 }
