@@ -752,7 +752,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return null;
 	 }
 	 
-	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds){
+	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds,String date){
 		
 		MahanaduEventVO finalVO = new MahanaduEventVO();
 		
@@ -799,7 +799,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 			Long entryEventId = entryExitInfo.getEntryId();
 			Long exitEventId = entryExitInfo.getExitId();		
-			Date todayDate = dateUtilService.getCurrentDateAndTime();
+			//Date todayDate = dateUtilService.getCurrentDateAndTime();
+			Date todayDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 			
 			
 			//Default District Values
