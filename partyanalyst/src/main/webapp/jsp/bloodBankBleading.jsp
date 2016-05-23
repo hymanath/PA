@@ -54,6 +54,7 @@
                 	<div class="col-md-12 m_top10">
                     	<div class="panel panel-default">
                         	<div class="panel-heading bg_cc">
+							    <span style="color:red" class="errorCls"></span>
                             	<h4 class="panel-title text-capitalise">all applications</h4>
                             </div>
                             <div class="panel-body pad_0">
