@@ -60,7 +60,7 @@
                             	<label>Sex</label>
  		                        <select id="seltBxSxId" class="form-control">
                                 	<option value="M">Male</option>
-									<option value="F">FeMale</option>
+									<option value="F">Female</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -74,8 +74,8 @@
                             <div class="col-md-3">
                             	<label>Married</label>
  		                        <select id="slctBxMrrdId" class="form-control">
-                                	<option value="Married">Married</option>
 									<option value="Single">Single</option>
+                                	<option value="Married">Married</option>									
                                 </select>
                             </div>
                         </div>
@@ -116,9 +116,9 @@
                     </div>
                     <div class="col-md-3">
                     	<label>Other than BB</label>
-                    	<select id="slctBxBBId" class="form-control">
-                        	 <option value="Yes">Yes</option>
+                    	<select id="slctBxBBId" class="form-control">                        	
 							 <option value="No">No</option>
+							 <option value="Yes">Yes</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -135,16 +135,16 @@
                 <div class="row m_top10">
                     <div class="col-md-3">
                     	<label>Willing to Donate in Emergency</label>
-                    	<select id="wllngTdntEmrgncyId"  class="form-control">
-                        	 <option value="Yes">Yes</option>
+                    	<select id="wllngTdntEmrgncyId"  class="form-control">                        	
 							 <option value="No">No</option>
+							 <option value="Yes">Yes</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                     	<label>Willing to be Called for Donation</label>
                     	<select id="wllngTBClldFrDntnId"  class="form-control">
-                        	 <option value="Yes">Yes</option>
 							 <option value="No">No</option>
+                        	 <option value="Yes">Yes</option>							 
                         </select>
                     </div>
                     <div class="col-md-3">
