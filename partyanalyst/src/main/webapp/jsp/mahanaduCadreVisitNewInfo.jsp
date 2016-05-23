@@ -77,7 +77,7 @@
 		<div class="col-md-2">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">TODAY</h4>
+					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
 					<h4 class="m_0">TOTAL VISITORS</h4>
@@ -88,7 +88,7 @@
 		<div class="col-md-2">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">TODAY</h4>
+					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
 					<h4 class="m_0">INVITEES AS VISITORS</h4>
@@ -99,7 +99,7 @@
 		<div class="col-md-2">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">TODAY</h4>
+					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
 					<h4 class="m_0">NOT INVITEES AS VISITORS</h4>
@@ -111,7 +111,7 @@
 		<div class="col-md-2">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">TODAY</h4>
+					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
 					<h4 class="m_0">VISITORS PRESENT IN CAMPUS</h4>
@@ -122,7 +122,7 @@
 		<div class="col-md-2">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">TODAY</h4>
+					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
 					<h4 class="m_0">INVITEES PRESENT IN  VISITORS</h4>
@@ -134,7 +134,7 @@
 		<div class="col-md-2">
 			<div class="panel panel-default panel-custom-default"><!--<i class="glyphicon glyphicon-refresh pull-right refreshIconPanel" title="page refresh" id="ttlTdyVstrsId"></i>-->
 				<div class="panel-heading">
-					<h4 class="panel-title">TODAY</h4>
+					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
 					<h4 class="m_0">NON INVITEES PRESENT IN  VISITORS</h4>
@@ -542,7 +542,7 @@ $(".panelDefault").height(maxHeight);
   function getTodayTotalVisitors(){
 	  	
 	$("#tdyVstrsPrcssngImgId").show();
-	
+	$(".SelDay").text($("#eventDatesSelectId option:selected").text());
 	var attrDateValue = $("#eventDatesSelectId option:selected").attr("attr_dates");
 	var value = attrDateValue.split(",").length-2;
 	var presentDate= attrDateValue.split(",")[value];
