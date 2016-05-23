@@ -266,4 +266,15 @@ public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate ){
 		return query.list();
 	}
 	
+
+	public List<Object[]> getDistrictWiseBloodDonorCounts(Long campId){
+		
+		Query query = getSession().createQuery(" select model.bloodDonorInfo.tdpCadre.userAddress.district.districtId,model.bloodDonorInfo.tdpCadre.userAddress.district.districtName,count(distinct model.bloodDonorInfo.tdpCadre.tdpCadreId)" +
+				" from BloodDonation model " +
+				" where model.bloodDonationCamp.bloodDonationCampId = :campId" +
+				" group by  model.bloodDonorInfo.tdpCadre.userAddress.district.districtId order by model.bloodDonorInfo.tdpCadre.userAddress.district.districtId ");
+		
+		query.setParameter("campId",campId);
+		return query.list();
+	}
 }
