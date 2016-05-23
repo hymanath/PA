@@ -4043,23 +4043,27 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}		
 	}
 	
-	public List<MahanaduEventVO> getDaysUniqueAndRevisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds){
+	public List<MahanaduEventVO> getDaysUniqueAndRevisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String dateValues){
 		
 		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
 		
 		try{
 			
-
-			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");			
+			
+			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date eventStrDate = null;
 			Date eventEndDate	  = null;
-		
-			Object[] datesList =  eventDAO.getEventDates(eventId);
+			
+			String[] s = dateValues.split(",");
+			eventStrDate = sdf.parse(s[0]);
+			eventEndDate = sdf.parse(s[(s.length-1)]);
+			/*Object[] datesList =  eventDAO.getEventDates(eventId);
 			
 			if(datesList !=null && datesList.length>0){
 				eventStrDate = datesList[0] !=null ? (Date)datesList[0]:null;
 				eventEndDate	 = datesList[1] !=null ? (Date)datesList[1]:null;			
-			}
+			}*/
 							
 			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
 			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
@@ -4137,7 +4141,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
 	
 	
-	public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds){
+	public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String date){
 		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
 		try{
 			
@@ -4145,18 +4149,22 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			
 			
 			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date eventStrDate = null;
 			Date eventEndDate	  = null;
 			
 			//String startDate=null;
 			//String endDate = null;
 			
-			Object[] datesList =  eventDAO.getEventDates(eventId);
+			String[] s = date.split(",");
+			eventStrDate = sdf.parse(s[0]);
+			eventEndDate = sdf.parse(s[(s.length-1)]);
+			/*Object[] datesList =  eventDAO.getEventDates(eventId);
 			
 			if(datesList !=null && datesList.length>0){
 				eventStrDate = datesList[0] !=null ? (Date)datesList[0]:null;
 				eventEndDate	 = datesList[1] !=null ? (Date)datesList[1]:null;						
-			}
+			}*/
 			
 			
 			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
