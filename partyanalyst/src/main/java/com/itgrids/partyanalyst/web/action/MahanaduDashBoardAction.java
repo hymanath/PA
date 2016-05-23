@@ -197,8 +197,8 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		
 		try
 		{
-			jObj = new JSONObject(getTask());
-			mahanaduVisitVO=mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(jObj.getLong("eventId"));
+			jObj = new JSONObject(getTask());			
+			mahanaduVisitVO=mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(jObj.getLong("eventId"),jObj.getString("date"));
 		}catch(Exception e){
 			LOG.info("Error occured in getTodayTotalVisitorsInfo()",e);
 		}
