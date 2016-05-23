@@ -917,14 +917,15 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return Long.parseLong(day+"");
 	}
 	
-	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(Long dayCount,Long eventId){
+	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId){
 		List<MahanaduEventVO> defaultHoursList =  setHoursList();
 		try {
 			Object[] dateObj = eventDAO.getEventDates(eventId);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			List<Date> betweenDates= commonMethodsUtilService.getBetweenDates(format.parse(dateObj[0].toString()),format.parse(dateObj[1].toString()));
+			/*List<Date> betweenDates= commonMethodsUtilService.getBetweenDates(format.parse(dateObj[0].toString()),format.parse(dateObj[1].toString()));
 			
-			Date date = betweenDates.get(Integer.parseInt(dayCount.toString())-1);
+			Date date = betweenDates.get(Integer.parseInt(dayCount.toString())-1);*/
+			Date date = format.parse(dayCount);
 			
 			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 			Long entryEventId = entryExitInfo.getEntryId();
