@@ -936,9 +936,13 @@ public class BloodBankService implements IBloodBankService{
 			}
 			
 			int updatedCount = bloodDonationDAO.updateBloodDonationDetailsByMemberShip(bloodBankVO);	
+			 if(updatedCount>0){
+				 finalStatus.setMessage("success");
+			 }
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.info("Error raised at saveBleedingDetails() BloodBankService in ",e);	
+			finalStatus.setMessage("error");
 		}
 		return finalStatus;
 	}
