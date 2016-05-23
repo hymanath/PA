@@ -1752,11 +1752,13 @@ public class ActivityService implements IActivityService{
 						}
 						else if(activityLevelId.longValue() == 3L)
 						{
-							searchAttributeVO.getLocationTypeIdsList().add(10L);
-						}
-						else if(activityLevelId.longValue() == 4L)
-						{
 							searchAttributeVO.getLocationTypeIdsList().add(11L);
+						}
+						else if(activityLevelId.longValue() == 5L)
+						{
+							searchAttributeVO.getLocationTypeIdsList().add(13L);
+						}else if(activityLevelId.longValue() == 4L){
+							searchAttributeVO.getLocationTypeIdsList().add(10L);
 						}
 					}
 					
@@ -1777,6 +1779,10 @@ public class ActivityService implements IActivityService{
 							if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 								searchAttributeVO.setScopeId(3L);
 								activityVO.setName(activityVO.getName()+" District");
+								List<Long> locationTypeIdsList = new ArrayList<Long>(0);
+								locationTypeIdsList.addAll(searchAttributeVO.getLocationTypeIdsList());
+								searchAttributeVO.getLocationTypeIdsList().clear();
+								searchAttributeVO.getLocationTypeIdsList().add(4L);
 								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
 								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 								{
@@ -1785,11 +1791,18 @@ public class ActivityService implements IActivityService{
 									totalPlannedCount = activityVO.getPlannedCount();
 								}
 								
+								searchAttributeVO.getLocationTypeIdsList().clear();
+								searchAttributeVO.getLocationTypeIdsList().addAll(locationTypeIdsList);
 							}
 							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
-								searchAttributeVO.setScopeId(4L);
+								searchAttributeVO.setScopeId(5L);
 								activityVO.setName(activityVO.getName()+" Constituency");
 								List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
+								searchAttributeVO.setScopeId(7L);
+								List<BasicVO> localBodyAreaWiseCountList = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId);
+								if(commonMethodsUtilService.isListOrSetValid(localBodyAreaWiseCountList))
+									areaWiseCountLsit.addAll(localBodyAreaWiseCountList);
+								
 								if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 								{
 									totalAreasCount = totalAreasCount+getTotalAreaCountByList(areaWiseCountLsit);
@@ -2294,7 +2307,8 @@ public class ActivityService implements IActivityService{
 			{
 				ActivityVO vo = returnVO.getActivityVoList().get(0);
 				if(vo != null){
-					vo.setTotalCount(returnVO.getTotalCount());
+					if(!searchAttributeVO.getLocationTypeIdsList().contains(13L))//constituency Level
+						vo.setTotalCount(returnVO.getTotalCount());
 					if(apattendenceVO != null && apattendenceVO.getSubList() != null && apattendenceVO.getSubList().size()>0){
 						vo.getActivityAttendanceInfoVOList().addAll(apattendenceVO.getSubList());
 					}
@@ -2317,8 +2331,17 @@ public class ActivityService implements IActivityService{
 			if(searchAttributeVO.getEndDate() != null)
 			locationVo.setEndDate(searchAttributeVO.getEndDate().toString());
 			BasicVO countVO = cadreCommitteeService.getLocationsHierarchyForEvent(locationVo);
-			
-			setImagesCount(countVO.getLocationsList(),returnVO.getActivityVoList());
+			if(commonMethodsUtilService.isListOrSetValid(returnVO.getActivityVoList())){
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+					for(BasicVO vo1 : countVO.getLocationsList()){
+						ActivityVO vo = returnVO.getActivityVoList().get(0);
+						Long count = vo.getImagesCount() != null ? vo.getImagesCount():0L;
+						vo.setImagesCount(count+vo1.getCount());
+					}
+				}else{
+					setImagesCount(countVO.getLocationsList(),returnVO.getActivityVoList());
+				}
+			}
 			
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getActivityDetailsBySearchCriteria() ActivityService Class... ",e);
@@ -2349,18 +2372,18 @@ public class ActivityService implements IActivityService{
 			{
 				for(ActivityVO vo : activityVoList)
 				{
+					vo.setImagesCount(0L);
 					boolean flag = false;
 					if(countVOList != null && countVOList.size() > 0)
 					for(BasicVO vo1 : countVOList)
 					{
-						
 						if(vo1.getId().longValue() == vo.getId().longValue())
 						{
 							vo.setImagesCount(vo1.getCount());
 							flag = true;
 						}
 						if(flag == true)
-							break;
+								break;
 					}
 				}
 			}
@@ -2637,9 +2660,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				ivrconductedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId); 
 
 			searchAttributeVO.setConditionType("infocell");
-				infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId); 	
+				infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedDayWiseCountsByLocation(searchAttributeVO,stateId); 	
 			searchAttributeVO.setConditionType("ivr");
-				ivrNotPlannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId); 
+				ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedDayWiseCountsByLocation(searchAttributeVO,stateId); 
 				List<Object[]> questionnairesCount =activityQuestionAnswerDAO.getActivityQuestionnairesCountsByDayWise(searchAttributeVO,stateId);
 				List<Object[]> yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByDayWise(searchAttributeVO,1L,stateId);
 				 
@@ -2665,7 +2688,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					ActivityVO vo = datesMap.get(dateStr);
 					if(vo.getInfoCellcoveredPerc() == null)
 						vo.setInfoCellcoveredPerc("-");
-					if(vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue() > 0)
+					if(vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue() > 0 || 
+							vo.getInfoCellNotPlanned() != null && vo.getInfoCellNotPlanned().longValue()>0 ||
+							vo.getInfoCellTotal() != null && vo.getInfoCellTotal().longValue()>0)
 						finalList.add(vo);
 				}
 			}
@@ -2684,6 +2709,8 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				Map<String,ActivityVO> activityMap1 = null;
 				for (Object[] activity : activitiesList) {
 					String locationId = commonMethodsUtilService.getStringValueForObject(activity[3]);
+					if(locationId != null && locationId.trim().length()==0)
+						locationId = commonMethodsUtilService.getStringValueForObject(activity[5]);
 					//Long areaId = Long.valueOf(locationId.trim());
 				
 					ActivityVO vo = datesMap.get(locationId);
