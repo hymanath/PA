@@ -350,12 +350,17 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			Long bloodBagTypeId = jObj.getLong("bloodBagTypeId");
 			Long bloodBagQuantityId = jObj.getLong("bloodBagQuantityId");
 			Long quantityId = jObj.getLong("quantityId");
+			String registrationNo=jObj.getString("registrationNo");
+			String remarks=jObj.getString("remarks");
+			
 			bloodBankVO.setStatusId(status);
 			bloodBankVO.setBagNo(bloodBagNo);
 			bloodBankVO.setBagTypeId(bloodBagTypeId);
 			bloodBankVO.setBloodBankQuantityId(bloodBagQuantityId);
 			bloodBankVO.setQuantity(quantityId);
 			bloodBankVO.setMembershipNo(membershipNo);
+			bloodBankVO.setRegistrationNo(registrationNo);
+			bloodBankVO.setRemarks(remarks);
 			resultStatus = bloodBankService.saveBleedingDetails(bloodBankVO);
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  saveBleedingDetails() method of BloodBankAction", e);

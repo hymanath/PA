@@ -9,6 +9,12 @@
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css"/>
 <link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,300,500italic,400italic,300italic,700,900" rel="stylesheet" type="text/css">
+<style>
+.mandatoryFieldCls
+{
+ color:red;	
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -23,7 +29,6 @@
                     	<h3 class="text-capitalise">ntr trust blood bank</h3>
                         <p class="text-capitalise">ntr trust bhavan, road no-2, banjara hills, hyderabad - 34</p>
                         <p>Tel: 040 30799999 | E-Mail:hydbb@ntrtrust.org | Lic No: 01/HD/AP/2008/BB/CP</p>
-                        
                     </div>
                 </div>
                 <div class="row">
@@ -47,9 +52,9 @@
                 </div>
                 <div class="row m_top20">
                     <div class="col-md-3">
-                    	<label>Name</label>
+                    	<label>Name<span class="mandatoryFieldCls">*</span></label><span class="nameErrorCls mandatoryFieldCls"></span>
                         <input type="text" id="nameId" class="form-control"/>
-                    </div>
+				    </div>
                     <div class="col-md-3">
                     	<label>Father/Spouse</label>
                         <input type="text" id="spouseId" class="form-control"/>
@@ -57,26 +62,28 @@
                     <div class="col-md-6">
                     	<div class="row">
                         	<div class="col-md-3">
-                            	<label>Sex</label>
+                            	<label>Sex<span class="mandatoryFieldCls">*</span></label>
  		                        <select id="seltBxSxId" class="form-control">
                                 	<option value="M">Male</option>
 									<option value="F">Female</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                            	<label>Age</label>
- 		                        <input type="number" id="ageId" class="form-control"/>
-                            </div>
-                            <div class="col-md-3">
-                            	<label>Date Of Birth</label>
+							<div class="col-md-3">
+                            	<label>Date Of Birth<span class="mandatoryFieldCls">*</span></label>
  		                        <input type="text" id="dobId" class="form-control"/>
+								<span class="dobErrorCls mandatoryFieldCls"></span>
                             </div>
                             <div class="col-md-3">
-                            	<label>Married</label>
+                            	<label>Age<span class="mandatoryFieldCls">*</span></label>
+ 		                        <input type="number" id="ageId" class="form-control"/>
+								<span class="ageErrorCls mandatoryFieldCls"></span>
+                            </div>
+                            <div class="col-md-3">
+                            	<label>Married<span class="mandatoryFieldCls">*</span></label>
  		                        <select id="slctBxMrrdId" class="form-control">
 									<option value="Single">Single</option>
-                                	<option value="Married">Married</option>									
-                                </select>
+                                	<option value="Married">Married</option>	
+								</select>
                             </div>
                         </div>
                     </div>
@@ -87,7 +94,7 @@
                     <div class="col-md-6">
                     	<div class="row">
                         	<div class="col-md-6">
-                            	<label>Mobile</label>
+                            	<label>Mobile<span style='color:red'>*</span></label><span class="mobileNoErrorCls mandatoryFieldCls"></span>
                                 <input type="tel" id="mobileNoId" class="form-control"/>
                             </div>
                             <div class="col-md-6">
@@ -161,11 +168,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3 m_top10">
-                    	<button class="btn btn-success" id="submitBtnId" onclick="printdocumentDetails()">SUBMIT</button>
-					     
-                    </div>
-					
-					
+                    	<button class="btn btn-success" id="submitBtnId">SUBMIT</button>
+		            </div>
 					<div class="col-xs-3  m_top10">
 					<span id="statusId"></span>
 					</div>
@@ -210,7 +214,7 @@
 										</td>
 										<td>Yes</td>
 										<td>No</td>
-										<td>Evidence of Hepatitis’ B infection / Jaundice</td>
+										<td>Evidence of Hepatitis B infection / Jaundice</td>
 										<td>Yes</td>
 										<td>No</td>
 									</tr>
@@ -454,7 +458,7 @@
 								</td>
 								<td>Yes</td>
 								<td>No</td>
-								<td>Evidence of Hepatitis’ B infection / Jaundice</td>
+								<td>Evidence of Hepatitis B infection / Jaundice</td>
 								<td>Yes</td>
 								<td>No</td>
 							</tr>
@@ -816,13 +820,63 @@ $(document).on("click","#printpriewBtn",function(){
 	},500)
 	
 });
-
+function validateFields(){
+   
+   var name=$("#nameId").val();
+     var mobileNo=$("#mobileNoId").val();
+     var dob=$("#dobId").val();
+	 
+	if(name==null || name==undefined || name.trim().length==0){
+	   $(".nameErrorCls").html("Please enter name.");
+      return	 
+    }
+    $(".nameErrorCls").html('');
+   if(dob==null || dob ==undefined || dob.trim().length==0){
+	   $(".dobErrorCls").html("Please Enter DOB.");
+	   return;	  
+   }
+	 $(".dobErrorCls").html(' ');
+	 var dobArr=dob.split("/");	
+	 var year=(new Date().getFullYear())-(dobArr[2]);
+	 $("#ageId").val(year);
+	 var age=$("#ageId").val();
+	if(age==null && age==undefined || age.trim().length==0){
+	  $(".ageErrorCls").html('Please enter age.');
+       return;	  
+	}
+	$(".ageErrorCls").html(' ');
+   if(mobileNo==null || mobileNo==undefined || mobileNo.trim().length==0){
+	   $(".mobileNoErrorCls").html("Please enter mobile number"); 
+	   return;
+   }
+    var mobileValidateDigits= /^\d{10}$/;
+	 if(!mobileValidateDigits.test(mobileNo)) {
+		 $(".mobileNoErrorCls").html("Mobile Number Must be 10 digits");  
+		  return; 
+	 }
+	 $(".mobileNoErrorCls").html(''); 
+	 return true;
+}
+ $(document).on("blur","#dobId",function(){
+	var dob=$("#dobId").val();
+	if(dob!=null && dob!=undefined){
+	 var dobArr=dob.split("/");	
+	 var year=(new Date().getFullYear())-(dobArr[2]);
+	 $("#ageId").val(year);
+	}
+}); 
+$(document).on("click","#submitBtnId",function(){
+	var status=validateFields();
+	  if(status!=null && status!=undefined && status==true){
+		printdocumentDetails();
+	  }
+})
 function printdocumentDetails(){
 	
+	
 	$("#printpriewBtn").show();
-	$("body").addClass("modal-open")
-	$("body").css("padding-right","17px")
 	$("#printBloddBankId").removeAttr("value");
+	
 		var membserShipId = $("#membershipInputId").val();
 		 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
 			 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
@@ -861,15 +915,15 @@ function printdocumentDetails(){
 			if(result!=null){
 				if(result.exceptionMsg=="success"){
 		//$("#printpriewBtn").show();
-		$("#printnameId").html(''+$("#nameId").val()+'');
-		$("#printageId").html(''+$("#ageId").val()+'');
-		$("#printnoOfTmBldDntnId").html(''+$("#noOfTmBldDntnId").val()+'');
-		$("#printmembershipInputId").html(''+$("#membershipInputId").val()+'');
-		$("#printdobId").html(''+$("#dobId").val()+'');
-	    $("#printseltBxSxId").html(''+$("#seltBxSxId").val()+'');
-		$("#printspouseId").html(''+$("#spouseId").val()+'');
-		$("#printmobileNoId").html(''+$("#mobileNoId").val()+'');
-		$("#printslctBxBBId").html(''+$("#slctBxBBId").val()+'');
+			$("#printnameId").html(''+$("#nameId").val()+'');
+			$("#printageId").html(''+$("#ageId").val()+'');
+			$("#printnoOfTmBldDntnId").html(''+$("#noOfTmBldDntnId").val()+'');
+			$("#printmembershipInputId").html(''+$("#membershipInputId").val()+'');
+			$("#printdobId").html(''+$("#dobId").val()+'');
+			$("#printseltBxSxId").html(''+$("#seltBxSxId").val()+'');
+			$("#printspouseId").html(''+$("#spouseId").val()+'');
+			$("#printmobileNoId").html(''+$("#mobileNoId").val()+'');
+			$("#printslctBxBBId").html(''+$("#slctBxBBId").val()+'');
 		 
 		// $("#printaddressId").html(''+$("#addressId").val()+'');
 		 // 
