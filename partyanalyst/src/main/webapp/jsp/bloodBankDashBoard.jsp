@@ -7,6 +7,16 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/BloodBankCustomFiles/custom.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,300,500italic,400italic,300italic,700,900" rel="stylesheet" type="text/css">
+<style type='text/css'>
+.extraPadding tr td
+{
+	padding:9.3px 8px !important;
+}
+.extraPadding1 tr td
+{
+	padding:4.8px 8px !important;
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -141,6 +151,31 @@
             </div>
         </div>
     </div>
+	<div class="row">
+	<div class="col-xs-6">
+		<div class="panel panel-default panelDefaultCustom">
+            	<div class="panel-heading">
+                	<h4 class="panel-title text-capitalise">AP District Wise blood collection </h4>
+                </div>
+                <div class="panel-body pad_0">
+				<center><img id="ApdistrictWiseBloodCountajaxImage" src="images/Loading-data.gif" style="width:70px;height:60px"/></center>
+                	<div id="ApdistrictWiseBloodCountDiv"></div>
+                </div>
+            </div>
+	</div>
+	<div class="col-xs-6">
+	<div class="panel panel-default panelDefaultCustom">
+            	<div class="panel-heading">
+                	<h4 class="panel-title text-capitalise">TS District Wise blood collection </h4>
+                </div>
+                <div class="panel-body pad_0">
+				<center><img id="TsdistrictWiseBloodCountajaxImage" src="images/Loading-data.gif" style="width:70px;height:60px"/></center>
+                	<div id="TsdistrictWiseBloodCountDiv"></div>
+                </div>
+            </div>
+		
+	</div>
+	</div>
     <div class="row">
     	<div class="col-md-3">
         	<div class="panel panel-default panelDefaultCustom">
@@ -748,6 +783,107 @@ function buildBloodDonorsCountsSummary(result){
    }
     str+='</table>';
 	$("#bldDonorCnts").html(str);
+}
+getApDistrictWiseBloodDonorCounts()
+function getApDistrictWiseBloodDonorCounts(){
+	$("#districtWiseBloodCountDiv").html('');
+	$("#districtWiseBloodCountajaxImage").show();
+	var jObj={
+			bloodBankCampId : 1,
+			stateId : 1,
+			type :"Andhra Pradesh"
+			}
+	$.ajax({
+			  type:'GET',
+			  url: 'getDistrictWiseBloodDonorCountsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)}
+	   }).done(function(result){
+		   $("#ApdistrictWiseBloodCountajaxImage").hide();
+		  buildApDistrictWiseBloodDonorCounts(result);
+		});
+}
+
+function buildApDistrictWiseBloodDonorCounts(result){
+	
+	var str ='';
+	if(result.subList !=null ){
+		str+='<table class="table table-bordered m_0 extraPadding1">';
+			str+='<thead>';
+				str+='<th class="text-center text-capitalise">District Id</th>';
+				str+='<th class="text-center text-capitalise">District Name</th>';
+				str+='<th class="text-center text-capitalise">Count</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result.subList){
+				str+='<tr>';
+				str+='<td class="text-center">'+result.subList[i].id+'</td>';
+				str+='<td >'+result.subList[i].name+'</td>';
+				if( result.subList[i].count == null || result.subList[i].count == 0){
+					str+='<td class="text-center"> - </td>';
+				}else{
+					str+='<td class="text-center">'+result.subList[i].count+'</td>';
+				}
+				
+				str+='</tr>';
+			}
+			
+			str+='</tbody>';
+		str+='</table>';
+	}
+	
+		
+	$("#ApdistrictWiseBloodCountDiv").html(str);
+}
+getTsDistrictWiseBloodDonorCounts();
+function getTsDistrictWiseBloodDonorCounts(){
+	$("#TsdistrictWiseBloodCountDiv").html('');
+	$("#TsdistrictWiseBloodCountajaxImage").show();
+	var jObj={
+			bloodBankCampId : 1,
+			stateId : 1,
+			type :"Telangana"
+			}
+	$.ajax({
+			  type:'GET',
+			  url: 'getDistrictWiseBloodDonorCountsAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jObj)}
+	   }).done(function(result){
+		   $("#TsdistrictWiseBloodCountajaxImage").hide();
+		  buildTsDistrictWiseBloodDonorCounts(result);
+		});
+}
+
+function buildTsDistrictWiseBloodDonorCounts(result){
+	
+	var str ='';
+	if(result.subList !=null ){
+		str+='<table class="table table-bordered m_0 extraPadding">';
+			str+='<thead>';
+				str+='<th class="text-center text-capitalise">District Id</th>';
+				str+='<th class="text-center text-capitalise">District Name</th>';
+				str+='<th class="text-center text-capitalise">Count</th>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result.subList){
+				str+='<tr>';
+				str+='<td class="text-center">'+result.subList[i].id+'</td>';
+				str+='<td >'+result.subList[i].name+'</td>';
+				if( result.subList[i].count == null || result.subList[i].count == 0){
+						str+='<td class="text-center"> - </td>';
+				}else{
+				
+					str+='<td class="text-center">'+result.subList[i].count+'</td>';
+				}
+				
+				str+='</tr>';
+			}
+			
+			str+='</tbody>';
+		str+='</table>';
+	}
+	$("#TsdistrictWiseBloodCountDiv").html(str);
 }
 </script>
 </body>
