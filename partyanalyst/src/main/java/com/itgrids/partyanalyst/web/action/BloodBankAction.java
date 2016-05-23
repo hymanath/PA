@@ -385,4 +385,19 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPrePopulateTehDataDetails(){
+		try{
+			 LOG.info("Error raised at getPrePopulateTehDataDetails() in BloodBankAction");
+			 
+			jObj = new JSONObject(getTask());
+			String searchType = jObj.getString("searchType");
+			
+			bloodBankVOList = bloodBankService.getPrePopulateDataDetails(searchType);
+		}catch (Exception e) {
+			 LOG.info("Error raised at getPrePopulateTehDataDetails() in BloodBankAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
