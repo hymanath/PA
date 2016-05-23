@@ -81,8 +81,15 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String attendendLocation;
 	private Long imagesCnt =0l;
 	private Long orderNo;
+	private String status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public Long getOrderNo() {
 		return orderNo;
 	}
