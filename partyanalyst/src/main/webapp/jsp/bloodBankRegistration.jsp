@@ -374,7 +374,7 @@
 			<div class="col-md-12">
 				<!--<button type="button" class="m_top20 btn btn-primary printCls" id="printBloddBankId" >PRINT</button>-->
 				
-				<button type="button" class="btn btn-primary" id="printpriewBtn">Print Preview</button>	
+				<button type="button" class="btn btn-success m_top20" id="printpriewBtn">Print Preview</button>	
 				<button type="button" class="btn btn-default m_top20" data-dismiss="modal">CANCEL</button>
 			</div>
 		</div>
@@ -401,14 +401,17 @@
 				<ul class="printDetails">
 					<li>Name: <span class='' id="printnameId"></span></li>
 					<li>Age: <span class='' id="printageId"></span></li>
-					<li>No Of times blood donated in Blood Bank: <span class='' id="printnoOfTmBldDntnId"></span></li>
+				<!--<li>No Of times blood donated in Blood Bank: <span class='' id="printnoOfTmBldDntnId"></span></li>
+					<li>Other than Blood Bank: <span class='' id="printslctBxBBId"></span></li>-->
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Donor Registration Number: <span class='' id=""></span></li>
 					<li>Membership No: <span class='' id="printmembershipInputId"></span></li>
 					<li>Date Of Birth: <span class=''id="printdobId"></span></li>
-					<li>Other than Blood Bank: <span class='' id="printslctBxBBId"></span></li>
-					<li>Father/ Spouse: <span class='' id="printspouseId"></span></li>
+					<li>Segment Number: <span class='' id=""></span></li>
 					<li>Mobile No: <span class='' id="printmobileNoId"></span></li>
 					<li>Sex: <span class='' id="printseltBxSxId"></span></li>
-				</ul>
+					<li>Bag Type: <span class='' id=""></span></li>
+					<li>Father/ Spouse: <span class='' id="printspouseId"></span></li>
+			 </ul>
 			</div>
 		</div>
 		<div class="row m_top20">
