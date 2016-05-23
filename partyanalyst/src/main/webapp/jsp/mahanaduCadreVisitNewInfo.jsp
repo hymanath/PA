@@ -515,7 +515,6 @@ $(".panelDefault").height(maxHeight);
 	$("#tdyVstrsPrcssngImgId").show();
 	
 	var attrDateValue = $("#eventDatesSelectId option:selected").attr("attr_dates");
-	alert(attrDateValue.split(",").length+"balu");
 	var value = attrDateValue.split(",").length-2;
 	var presentDate= attrDateValue.split(",")[value];
    	var eventId = $("#mainEventSelectId").val();
