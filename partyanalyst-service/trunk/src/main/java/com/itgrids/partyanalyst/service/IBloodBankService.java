@@ -31,4 +31,5 @@ public interface IBloodBankService {
  public ResultStatus saveBleedingDetails(BloodBankVO bloodBankVO);
  public ResultStatus updatePrintstatus(Long id);
  public BloodBankDashBoardVO getDistrictWiseBloodDonorCounts(Long campId,Long stateId,String type);
+ public List<BloodBankVO> getPrePopulateDataDetails(String searchType);
 }

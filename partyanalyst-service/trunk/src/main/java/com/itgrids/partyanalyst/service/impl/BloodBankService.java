@@ -988,5 +988,34 @@ public class BloodBankService implements IBloodBankService{
 		}
 		return finalResult;
 	}
+public List<BloodBankVO> getPrePopulateDataDetails(String searchType){
+		
+		List<BloodBankVO> returnList = new ArrayList<BloodBankVO>();
+		
+		try{
+			LOG.info(" Enterd into  getPrePopulateDataDetails() BloodBankService in ");	
+		List<Object[]> prepopulateLst = bloodDonationDAO.getThePrePopulateData(searchType);
+			if(prepopulateLst != null && prepopulateLst.size()>0){
+				for (Object[] obj : prepopulateLst) {
+					BloodBankVO vo = new BloodBankVO();
+					vo.setMembershipNo(obj[0] !=null ? obj[0].toString():"");
+					vo.setName(obj[1] !=null ? obj[1].toString():"");
+					vo.setMobile(obj[2] !=null ? obj[2].toString():"");
+					vo.setStatusId(obj[3] !=null ? (Long)obj[3]:0l);
+					vo.setBagNo(obj[4] !=null ? obj[4].toString():"");
+					vo.setBagTypeId(obj[5] !=null ? (Long)obj[5]:0l);
+					vo.setBloodBankQuantityId(obj[6] !=null ? (Long)obj[6]:0l);
+					vo.setQuantity(obj[7] !=null ? (Long)obj[7]:0l);
+					returnList.add(vo);					
+				}
+			}
+						
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.info(" Exception raised at getPrePopulateDataDetails() BloodBankService in ",e);	
+		}
+		return returnList;
+	}
+	
 	
 }
