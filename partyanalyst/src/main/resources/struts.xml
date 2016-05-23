@@ -12345,5 +12345,11 @@
 			<param name="root">bloodBankDashBoardVO</param>
 		</result>
 	</action>
+	
+	<action name="getPrePopulateTheDataDetailsAction" class="bloodBankAction" method="getPrePopulateTehDataDetails">
+		<result type="json" name="success">
+			<param name="root">bloodBankVOList</param>
+		</result>
+	</action>
 </package>
 </struts>      
