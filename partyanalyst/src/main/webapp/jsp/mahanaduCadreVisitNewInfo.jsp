@@ -153,7 +153,7 @@
 		<div class="col-md-8">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">Hour Wise In Campus Counts<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
+					<h4 class="panel-title">Hour Wise Visitors Attended VS Visitors In Campus<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
 					<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>
 				</div>
 				<div class="panel-body">
@@ -358,6 +358,28 @@ $(".panelDefault").height(maxHeight);
 	</script>
   <script type="text/javascript">
    
+   getSubEventsOfEvent();
+	 var globalMainEntryId = 0 ;
+	  function getSubEventsOfEvent(){
+		 var eventId = $("#mainEventSelectId").val();
+		  var jsObj={
+			  eventId : eventId
+		  }
+		   $.ajax({
+			  type:'GET',
+			  url: 'getSubEventsOfEventAction.action',
+			  data :{task:JSON.stringify(jsObj)}
+          }).done(function(result){			  
+			  if(result !=null && result.length>0){
+				  for(var i in result){
+					  if(result[i].name == "Main Entry"){
+						 globalMainEntryId = result[i].id;
+					  }
+				  }
+			  }			  
+		  });
+	  }
+   
    $( "#mainEventSelectId" ).change(function() {
 	  getmainEventsChange();
 	  getEventDates();
@@ -442,28 +464,6 @@ $(".panelDefault").height(maxHeight);
 			}
 		});
 	}
-	
-	getSubEventsOfEvent();
-	 var globalMainEntryId = 0 ;
-	  function getSubEventsOfEvent(){
-		 var eventId = $("#mainEventSelectId").val();
-		  var jsObj={
-			  eventId : eventId
-		  }
-		   $.ajax({
-			  type:'GET',
-			  url: 'getSubEventsOfEventAction.action',
-			  data :{task:JSON.stringify(jsObj)}
-          }).done(function(result){			  
-			  if(result !=null && result.length>0){
-				  for(var i in result){
-					  if(result[i].name == "Main Entry"){
-						 globalMainEntryId = result[i].id;
-					  }
-				  }
-			  }			  
-		  });
-	  }
  
  function getDaysUniqueAndRevisitSummary(){
 
@@ -513,10 +513,15 @@ $(".panelDefault").height(maxHeight);
   function getTodayTotalVisitors(){
 	  	
 	$("#tdyVstrsPrcssngImgId").show();
-
+	
+	var attrDateValue = $("#eventDatesSelectId option:selected").attr("attr_dates");
+	alert(attrDateValue.split(",").length+"balu");
+	var value = attrDateValue.split(",").length-2;
+	var presentDate= attrDateValue.split(",")[value];
    	var eventId = $("#mainEventSelectId").val();
 	   var jObj = {
-			eventId:eventId
+			eventId:eventId,
+			date : presentDate
 		}
 		
 		$.ajax({
