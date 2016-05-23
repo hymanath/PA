@@ -398,7 +398,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		toDateCal.setTime(toDate);
 		
 		Date todayDate = dateUtilService.getCurrentDateAndTime();
-		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId);
+		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);
 		currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
 		currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
 		
@@ -520,7 +520,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		toDateCal.setTime(toDate);
 		
 		Date todayDate = dateUtilService.getCurrentDateAndTime();
-		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId);
+		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);
 		currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
 		currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
 		
@@ -626,8 +626,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			Date todayDate = dateUtilService.getCurrentDateAndTime();
 			
-			toDaytotalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId);			
-			toDaytotalInviteeVisitors=eventAttendeeDAO.getTodayTotalInviteeVisitors(todayDate,parentEventId);			
+			toDaytotalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);			
+			toDaytotalInviteeVisitors=eventAttendeeDAO.getTodayTotalInviteeVisitors(todayDate,parentEventId,entryEventId);			
 			currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
 			currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
 			

@@ -449,11 +449,13 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 	}
 		
-	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId){
+	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId,Long entryId){
 		Query query=getSession().createQuery("select count(distinct tdpCadreId) from EventAttendee model where date(model.attendedTime) =:todayDate " +
-				" and model.event.parentEventId =:parentEventId");
+				//" and model.event.parentEventId =:parentEventId " +
+				" and model.eventId = :entryId");
 		query.setDate("todayDate", todayDate);
-		query.setParameter("parentEventId", parentEventId);
+		//query.setParameter("parentEventId", parentEventId);
+		query.setParameter("entryId", entryId);
 		
 		 return (Long)query.uniqueResult();
 	}
@@ -472,11 +474,16 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	}
 	
 	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId){
-		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event_invitee ei,event_attendee ea1 inner join " +
+		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event e,event ee,event_invitee ei,event_attendee ea1 inner join " +
 				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
 						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
-						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time where " +
-				        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId and ea1.tdp_cadre_id = ei.tdp_cadre_id order by ei.tdp_cadre_id;");
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time " +
+						" where " +
+						" ea1.event_id = e.event_id " +
+						" and ei.event_id = ee.event_id " +
+						" and e.is_invitee_exist ='Y' " +
+						" and e.parent_event_id = ee.event_id " +
+				        " and date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId and ea1.tdp_cadre_id = ei.tdp_cadre_id order by ei.tdp_cadre_id;");
 		query.setDate("todayDate", todayDate);
 		query.setParameter("exitEventId", exitEventId);
 		query.setParameter("entryEventId", entryEventId);
@@ -810,12 +817,18 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return  query.list(); 	
 }
 	
-	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId){
+	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId,Long entryEventId){
 		Query query=getSession().createQuery("select count(distinct model.tdpCadreId) from EventAttendee model,EventInvitee model1 where date(model.attendedTime) =:todayDate " +
-				" and model.event.parentEventId =:parentEventId" +
-				" and model1.tdpCadreId = model.tdpCadreId ");
+				//" and model.event.parentEventId =:parentEventId " +
+				" and model.eventId =:entryEventId " +
+				" and model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId " +				
+				" and model1.tdpCadreId = model.tdpCadreId " +
+				" and model.tdpCadre.isDeleted = 'N' " +
+				" and model.tdpCadre.enrollmentYear =:enrollmentYear" );
 		query.setDate("todayDate", todayDate);
-		query.setParameter("parentEventId", parentEventId);
+		//query.setParameter("parentEventId", parentEventId);
+		query.setParameter("entryEventId", entryEventId);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
 		 return (Long)query.uniqueResult();
 	}
