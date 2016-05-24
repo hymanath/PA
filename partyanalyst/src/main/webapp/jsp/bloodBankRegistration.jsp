@@ -69,7 +69,7 @@
                                 </select>
                             </div>
 							<div class="col-md-3">
-                            	<label>Date Of Birth<span class="mandatoryFieldCls">*</span></label>
+                            	<label>Date Of Birth<!--<span class="mandatoryFieldCls">*</span>--></label>
  		                        <input type="text" id="dobId" class="form-control"/>
 								<span class="dobErrorCls mandatoryFieldCls"></span>
                             </div>
@@ -622,7 +622,7 @@
 			<p class="text-capitalise">details are submitting</p>
 			<p>dou want to get print</p>
 			<button type="button" class="m_top20 btn btn-primary printCls" id="printBloddBankId" >PRINT</button>
-			<button type="button" class="btn btn-default m_top20" data-dismiss="modal">CANCEL</button>
+			<button type="button" class="btn btn-default m_top20" id="printBloddBankCancelId" data-dismiss="modal">CANCEL</button>
 		</div>
         
       </div>
@@ -836,10 +836,10 @@ function validateFields(){
       return	 
     }
     $(".nameErrorCls").html('');
-   if(dob==null || dob ==undefined || dob.trim().length==0){
+ /*   if(dob==null || dob ==undefined || dob.trim().length==0){
 	   $(".dobErrorCls").html("Please Enter DOB.");
 	   return;	  
-   }
+   } */
 	 $(".dobErrorCls").html(' ');
 	 var dobArr=dob.split("/");	
 	 var year=(new Date().getFullYear())-(dobArr[2]);
@@ -881,6 +881,7 @@ function printdocumentDetails(){
 	
 	$("#printpriewBtn").show();
 	$("#printBloddBankId").removeAttr("value");
+	//$("#printBloddBankCancelId").removeAttr("value");
 	
 		var membserShipId = $("#membershipInputId").val();
 		 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
