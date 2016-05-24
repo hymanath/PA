@@ -745,7 +745,7 @@ $(document).on("click",".printCls",function(){
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
 			if(result != null){
-				if(result.status!=null && result.status=="exist"){
+				if(result.status!=null && result.status=="not exist"){
 				 $(".cadreNoErrorCls").html("This cadre number not available.");
 				}else{
 				 populateCadreDetails(result);
