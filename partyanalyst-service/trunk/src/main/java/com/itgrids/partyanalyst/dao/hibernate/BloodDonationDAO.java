@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
 import com.itgrids.partyanalyst.dto.BloodBankVO;
 import com.itgrids.partyanalyst.model.BloodDonation;
-import com.itgrids.partyanalyst.model.BloodDonorInfo;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> implements IBloodDonationDAO {
@@ -47,7 +46,8 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 							" BDI.mobileNo,ACTS.acceptanceStatusId,ACTS.status,model.bagNo," +
 							" BBT.bloodBagTypeId,BBT.bagType," +
 							" BBQ.bloodBagQuantityId,BBQ.type," +
-							" model.quantity,model.remarks" +
+							" model.quantity,model.remarks," +
+							"  model.registrationNumber "+
 				   " FROM " +
 				   " 	BloodDonation model left join model.bloodDonorInfo BDI" +
 				   "    left join BDI.tdpCadre TC" +
