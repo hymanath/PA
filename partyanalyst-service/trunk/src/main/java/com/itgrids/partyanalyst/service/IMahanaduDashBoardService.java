@@ -17,4 +17,5 @@ public interface IMahanaduDashBoardService {
 	public Long getTodayCount(Long eventId);
 	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId);
 	public List<IdNameVO> getEventDates(Long eventId);
+	public MahanaduEventVO getConstituencyWiseMembersCountInCampus(Long eventId,List<Long> stateIds,String date);
 }
