@@ -1075,4 +1075,6 @@ public interface IConstants {
 	public static final String MAHANADU_IMAGES_RETRIEVE_PATH = "http://mytdp.com/CommunityNewsPortal/images/mahanadu_images";
 	public static final String MAHANADU_IMAGES_2016 = "mahanadu_images";
 	
+	public static final String GOOGLE_SERVER_KEY = "AIzaSyAHpEk_L5Uv4-FJy_7P-mf_gmytlKU_1Bk";
+	public static final String GCM_SERVER_STATIC_MESSAGE = "Please Update Notifications";
 }
