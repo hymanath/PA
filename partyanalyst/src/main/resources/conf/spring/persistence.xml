@@ -854,6 +854,7 @@
 				   <value>com.itgrids.partyanalyst.model.NotificationDevice</value>
 				   <value>com.itgrids.partyanalyst.model.NotificationType</value>
 				   <value>com.itgrids.partyanalyst.model.Notifications</value>
+				   <value>com.itgrids.partyanalyst.model.AccommodationTracking</value>
 				 </list>
 			
 		</property>
