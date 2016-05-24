@@ -268,7 +268,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 				{
 					str.append(" select distinct model2.constituencyId,model.casteVoters  ");
 					str.append(" ,model2.name from VoterCastInfo model,Constituency model2 where model2.constituencyId = model.reportLevelValue and model.constituency.constituencyId = model2.constituencyId ");
-					str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = 11 ");
+					str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 					if(locationIdsList != null && locationIdsList.size() > 0)
 					{
 						str.append(" and model2.district.districtId in (:locationIdsList) ");
@@ -283,7 +283,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 				{
 					str.append(" select distinct model2.tehsilId,model.casteVoters  ");
 					str.append(" ,model2.tehsilName from VoterCastInfo model,Tehsil model2,Booth B where model2.tehsilId = model.reportLevelValue  and model2.tehsilId = B.tehsil.tehsilId ");
-					str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList) and B.localBody.localElectionBodyId is null " +
+					str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.constituency.constituencyId in (:locationIdsList) and B.localBody.localElectionBodyId is null " +
 							" and  model.voterReportLevel.voterReportLevelId = 2 ");
 					if(casteStateId != null && casteStateId.longValue() >0)
 					{
@@ -295,7 +295,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 				{
 					str.append(" select distinct model2.panchayatId,model.casteVoters  ");
 					str.append(" ,model2.panchayatName from VoterCastInfo model,Panchayat model2,Booth B where model2.panchayatId = model.reportLevelValue and model2.panchayatId = B.panchayat.panchayatId ");
-					str.append(" and B.publicationDate.publicationDateId = 11 and B.tehsil.tehsilId in (:locationIdsList) ");
+					str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.tehsil.tehsilId in (:locationIdsList) ");
 					if(casteStateId != null && casteStateId.longValue() >0)
 					{
 						str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -306,7 +306,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 				{
 					str.append(" select distinct model2.localElectionBodyId,model.casteVoters  ");
 					str.append(" ,model2.name from VoterCastInfo model,LocalElectionBody model2,Booth B where model2.localElectionBodyId = model.reportLevelValue and model2.localElectionBodyId = B.localBody.localElectionBodyId ");
-					str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList) and B.localBody.localElectionBodyId is not null ");
+					str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.localBody.localElectionBodyId in (:locationIdsList) and B.localBody.localElectionBodyId is not null ");
 					if(casteStateId != null && casteStateId.longValue() >0)
 					{
 						str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -317,7 +317,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 				{
 					str.append(" select distinct model2.constituencyId,model.casteVoters  ");
 					str.append(" ,model2.name from VoterCastInfo model,Constituency model2,Booth B where model2.constituencyId = B.constituency.constituencyId and model2.constituencyId = model.reportLevelValue and model2.localElectionBody.localElectionBodyId is not null ");
-					str.append(" and model.reportLevelValue in (:locationIdsList)  and model.publicationDateId = 11 ");			
+					str.append(" and model.reportLevelValue in (:locationIdsList)  and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");			
 					str.append("  and  model.voterReportLevel.voterReportLevelId = 6 group by model2.constituencyId order by model2.name ");
 				}
 				else if(stateId != null && stateId.longValue() == 0L) //AP & TS
@@ -325,7 +325,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 					isStateWise = true;
 					str.append(" select model2.district.districtId,sum(model.casteVoters)  ");
 					str.append(" ,model2.district.districtName from VoterCastInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-							" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 23)  and model.publicationDateId = 11 ");
+							" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 23)  and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 					if(casteStateId != null && casteStateId.longValue() >0)
 					{
 						str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -337,7 +337,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 					isStateWise = true;
 					str.append(" select model2.district.districtId,sum(model.casteVoters)  ");
 					str.append(" ,model2.district.districtName from VoterCastInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-							" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 11 and 23)  and model.publicationDateId = 11 ");
+							" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 11 and 23)  and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 					if(casteStateId != null && casteStateId.longValue() >0)
 					{
 						str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -349,7 +349,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 					isStateWise = true;
 					str.append(" select model2.district.districtId,sum(model.casteVoters)  ");
 					str.append(" ,model2.district.districtName from VoterCastInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-							" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 10)  and model.publicationDateId = 11  ");
+							" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 10)  and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  ");
 					if(casteStateId != null && casteStateId.longValue() >0)
 					{
 						str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -385,7 +385,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			if(locationIdsList != null && locationIdsList.size() > 0 && locationIdsList.get(0) != 0L && locationType != null && locationType.equalsIgnoreCase(IConstants.STATE))
 			{
 				str.append(" from VoterCastInfo model,Constituency model2 where model2.constituencyId = model.reportLevelValue and model.constituency.constituencyId = model2.constituencyId ");
-				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = 11 ");
+				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 				if(locationIdsList != null && locationIdsList.size() > 0)
 				{
 					str.append(" and model2.district.districtId in (:locationIdsList) ");
@@ -399,7 +399,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			{
 				str.append(" from VoterCastInfo model,Constituency model2 where model2.constituencyId = model.reportLevelValue and model.constituency.constituencyId = model2.constituencyId ");
-				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = 11 ");
+				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 				if(locationIdsList != null && locationIdsList.size() > 0)
 				{
 					str.append(" and model2.constituencyId in (:locationIdsList) ");
@@ -413,7 +413,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
 			{
 				str.append(" from VoterCastInfo model,Tehsil model2 where model.reportLevelValue = model2.tehsilId  ");
-				str.append(" and model.publicationDateId = 11 and model.reportLevelValue in (:locationIdsList) " +
+				str.append(" and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and model.reportLevelValue in (:locationIdsList) " +
 						" and  model.voterReportLevel.voterReportLevelId = 2 ");
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{
@@ -424,7 +424,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 			{
 				str.append(" from VoterCastInfo model,Panchayat model2 where model.reportLevelValue = model2.panchayatId  ");
-				str.append(" and model.publicationDateId = 11 and model.reportLevelValue in (:locationIdsList) ");
+				str.append(" and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and model.reportLevelValue in (:locationIdsList) ");
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{
 					str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -435,7 +435,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			{
 				str.append("  from VoterCastInfo model,LocalElectionBody model2 where model2.localElectionBodyId = model.reportLevelValue  ");
-				str.append(" and model.publicationDateId = 11 and model.reportLevelValue in (:locationIdsList) " );
+				str.append(" and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and model.reportLevelValue in (:locationIdsList) " );
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{
 					str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -446,7 +446,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
 			{
 				str.append("  from VoterCastInfo model,LocalElectionBody model2 where model2.localElectionBodyId = model.reportLevelValue  ");
-				str.append(" and model.publicationDateId = 11 and model.reportLevelValue in (:locationIdsList) " );
+				str.append(" and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and model.reportLevelValue in (:locationIdsList) " );
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{
 					str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -458,7 +458,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			{
 				isStateWise = true;
 				str.append(" from VoterCastInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 23)  and model.publicationDateId = 11 ");
+						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 23)  and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{
 					str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -469,7 +469,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			{
 				isStateWise = true;
 				str.append("  from VoterCastInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 11 and 23)  and model.publicationDateId = 11 ");
+						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 11 and 23)  and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{
 					str.append(" and model.casteState.casteStateId = :casteStateId ");
@@ -480,7 +480,7 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			{
 				isStateWise = true;
 				str.append("  from VoterCastInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 10)  and model.publicationDateId = 11  ");
+						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 10)  and model.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  ");
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{
 					str.append(" and model.casteState.casteStateId = :casteStateId ");
