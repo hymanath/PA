@@ -3137,6 +3137,7 @@
 	   <property name="notificationDeviceDAO" ref="notificationDeviceDAO"></property> 
 	   <property name="transactionTemplate" ref="transactionTemplate" />
 	   <property name="dateUtilService" ref="dateUtilService" />
+	    <property name="notificationsDAO" ref="notificationsDAO"></property> 
 	</bean>
 	
 </beans>		
