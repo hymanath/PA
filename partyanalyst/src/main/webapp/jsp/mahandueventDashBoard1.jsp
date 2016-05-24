@@ -1052,8 +1052,8 @@ function buildDistrictTable(result,reportLevelId){
 			str+='<tr>';
 			str+='<th rowspan="2" style="vertical-align:middle" width="40px !important;"># ID</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">DISTRICT NAME</th>';
-			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
 		
@@ -1083,25 +1083,26 @@ function buildDistrictTable(result,reportLevelId){
 			}else{
 				str+='<td >'+result[j].name+'</td>';
 			}
-			if(result[j].attendees == 0 || result[j].attendees == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].attendees+'</td>';
-			}
 			if(result[j].inviteesCalled == 0 || result[j].inviteesCalled == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
 				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
 			}
+			if(result[j].attendees == 0 || result[j].attendees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendees+' <span>('+result[j].attendeePercantage+'%)</span></td>';
+			}
+			
 			if(result[j].invitees == 0 || result[j].invitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].invitees+'</td>';
+				str+='<td class="text-center">'+result[j].invitees+' <span>('+result[j].inviteePercantage+'%)</span></td>';
 			}
 			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].nonInvitees+'</td>';
+				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
 			}
 			for(var l in result[j].subList){
 				if(result[j].subList[l].dataExist == true){
@@ -1258,8 +1259,8 @@ function buildConstTable(result,reportLevelId){
 		str+='<th rowspan="2" style="vertical-align:middle;" width="40px !important;"># ID</th>';
 		str+='<th rowspan="2" style="vertical-align:middle;">DISTRICT</th>';
 		str+='<th rowspan="2" style="vertical-align:middle;">CONSTITUENCY</th>';
-		str+='<th rowspan="2" style="vertical-align:middle;">TOTAL ATTENDED</th>';
 		str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;">TOTAL ATTENDED</th>';
 		str+='<th rowspan="2" style="vertical-align:middle;">INVITEES ATTENDED</th>';
 		str+='<th rowspan="2" style="vertical-align:middle;">NON INVITEES ATTENDED</th>';
 	
@@ -1294,25 +1295,26 @@ function buildConstTable(result,reportLevelId){
 			}else{
 				str+='<td width="60px !important">'+result[j].name+'</td>';
 			}
-			if(result[j].attendees ==0 || result[j].attendees == null){
-				str+='<td class="text-center">-</td>';
-			}else{
-				str+='<td class="text-center">'+result[j].attendees+'</td>';
-			}
 			if(result[j].inviteesCalled ==0 || result[j].inviteesCalled == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
 				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
 			}
+			if(result[j].attendees ==0 || result[j].attendees == null){
+				str+='<td class="text-center">-</td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendees+' <span>('+result[j].attendeePercantage+'%)</span></td>';
+			}
+			
 			if(result[j].invitees ==0 || result[j].invitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].invitees+'</td>';
+				str+='<td class="text-center">'+result[j].invitees+' <span>('+result[j].inviteePercantage+'%)</span></td>';
 			}
 			if(result[j].nonInvitees ==0 || result[j].nonInvitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].nonInvitees+'</td>';
+				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
 			}
 			
 			for(var l in result[j].subList){
