@@ -6045,6 +6045,12 @@ public List<CadrePrintVO> getTDPCadreDetailsForSearch(CadrePrintInputVO input){
 		
 		if(isOtherState == null)
 			isOtherState = "false";
+		else if(isOtherState != null && isOtherState.equalsIgnoreCase("true"))
+			isOtherState = "true";
+		else if(isOtherState != null && isOtherState.equalsIgnoreCase("yes"))
+			isOtherState = "true";
+		else 
+			isOtherState = "false";
 		
 		if(isOtherState.equalsIgnoreCase("false"))
 		{
@@ -6275,6 +6281,12 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		String isOtherState = input.getIsOtherState();
 		
 		if(isOtherState == null)
+			isOtherState = "false";
+		else if(isOtherState != null && isOtherState.equalsIgnoreCase("true"))
+			isOtherState = "true";
+		else if(isOtherState != null && isOtherState.equalsIgnoreCase("yes"))
+			isOtherState = "true";
+		else 
 			isOtherState = "false";
 		
 		if(isOtherState.trim().equalsIgnoreCase("false"))
