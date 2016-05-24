@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -1990,5 +1991,12 @@ public class WebServiceHandler {
 			e.printStackTrace();	
 		}
 			return null;  
+		}
+		
+		@GET
+		@Path("/getAccommodationTrackingInfoByNotificationType/{notificationType}/{locationType}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(@PathParam("notificationType") Long notificationType,@PathParam("locationType") Long locationType){
+		 return webServiceHandlerService.getAccommodationTrackingInfoByNotificationType(notificationType,locationType);
 		}
 }
