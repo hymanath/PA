@@ -116,7 +116,7 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 			NotificationDeviceVO notifyVO = new NotificationDeviceVO();
 			notifyVO.setRegisteredId(notifctionType);
 			notifyVO.setNotification(notificatonTxt);
-			status = notificationService.pushNotification(notifyVO);
+			notificationService.pushNotification(notifyVO);
 		}catch(Exception e){
 			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
 		}
