@@ -66,7 +66,7 @@ function buildStatusList(result){
 	$(".totalStatusCls").html(str);
 	var statusIdList = [];
 	var campId = 1;
-	var statusId = $(".totalStatusCls").val();     
+	var statusId = $(".totalStatusCls").val();   
 	if(statusId !=null && statusId>0){
 		statusIdList.push({"id":statusId});   
 	}
@@ -107,7 +107,7 @@ function buildBleedingCadreDetails(result){
 		str+='<th>Segment No</th>';
 		str+='<th>Registration No</th>';
 		str+='<th>Bag Type	</th>';
-		str+='<th>Bag Quantity	</th>';
+		str+='<th>Bag Quantity	Type</th>';
 		str+='<th>Quantity</th>';
 		str+='<th></th>'; 
 	str+='</thead>';
@@ -157,7 +157,11 @@ function buildBleedingCadreDetails(result){
 						str+='<td id="quantityTdId'+i+'">';
 						str+='<select id="quantityId'+i+'" class="form-control" disabled>';
 							str+='<option value="0">Select Quantity</option>';
+							str+='<option value="200">200ml</option>';
+							str+='<option value="250">250ml</option>';
+							str+='<option value="300">300ml</option>';
 							str+='<option value="350">350ml</option>';
+							str+='<option value="400">400ml</option>';
 							str+='<option value="450">450ml</option>';
 						str+='</select>';
 						str+='</td>';
@@ -175,9 +179,13 @@ function buildBleedingCadreDetails(result){
 						str+='</td>';
 						str+='<td style="display:none" id="quantityTdId'+i+'">';
 						str+='<select id="quantityId'+i+'" class="form-control">';
-						str+='<option value="0">Select Quantity</option>';
-						str+='<option value="350">350ml</option>';
-						str+='<option value="450">450ml</option>';
+						    str+='<option value="0">Select Quantity</option>';
+						    str+='<option value="200">200ml</option>';
+							str+='<option value="250">250ml</option>';
+							str+='<option value="300">300ml</option>';
+							str+='<option value="350">350ml</option>';
+							str+='<option value="400">400ml</option>';
+							str+='<option value="450">450ml</option>';
 						str+='</select>';
 						str+='</td>';
 					 }
@@ -205,9 +213,13 @@ function buildBleedingCadreDetails(result){
 					str+='</td>';
 					str+='<td id="quantityTdId'+i+'">';
 					str+='<select id="quantityId'+i+'" class="form-control">';
-						str+='<option value="0">Select Quantity</option>';
-						str+='<option value="350">350ml</option>';
-						str+='<option value="450">450ml</option>';
+						    str+='<option value="0">Select Quantity</option>';
+							str+='<option value="200">200ml</option>';
+							str+='<option value="250">250ml</option>';
+							str+='<option value="300">300ml</option>';
+							str+='<option value="350">350ml</option>';
+							str+='<option value="400">400ml</option>';
+							str+='<option value="450">450ml</option>';
 					str+='</select>';
 					str+='</td>';
 				}else{
@@ -224,9 +236,13 @@ function buildBleedingCadreDetails(result){
 					str+='</td>';
 					str+='<td style="display:none" id="quantityTdId'+i+'">';
 					str+='<select id="quantityId'+i+'" class="form-control">';
-					str+='<option value="0">Select Quantity</option>';
-					str+='<option value="350">350ml</option>';
-					str+='<option value="450">450ml</option>';
+					        str+='<option value="0">Select Quantity</option>';
+						    str+='<option value="200">200ml</option>';
+							str+='<option value="250">250ml</option>';
+							str+='<option value="300">300ml</option>';
+							str+='<option value="350">350ml</option>';
+							str+='<option value="400">400ml</option>';
+							str+='<option value="450">450ml</option>';
 					str+='</select>';
 					str+='</td>';
 				}
