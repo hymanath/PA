@@ -1965,7 +1965,7 @@ public class WebServiceHandler {
 		@Path("/getNotificationDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public List<NotificationDeviceVO> getNotificationDetailsBynotificationDeviceId(NotificationDeviceVO inputVo){
+		public NotificationDeviceVO getNotificationDetailsBynotificationDeviceId(NotificationDeviceVO inputVo){
 			try{
 			return notificationService.saveUsersDataInNotificationDeviceTable(inputVo);
 		}
