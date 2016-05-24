@@ -23,6 +23,8 @@ public class AccommodationVO implements Serializable{
 	private String 	latitude;
 	private String 	status;
 	private List<AccommodationVO> locationDetails = new ArrayList<AccommodationVO>(0);
+	private String locationName;
+	
 	
 	public Long getId() {
 		return id;
@@ -102,6 +104,10 @@ public class AccommodationVO implements Serializable{
 	public void setLocationDetails(List<AccommodationVO> locationDetails) {
 		this.locationDetails = locationDetails;
 	}
-	
-	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 }

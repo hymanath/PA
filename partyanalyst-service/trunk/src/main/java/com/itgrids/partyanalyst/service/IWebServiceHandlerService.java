@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -156,4 +157,5 @@ public interface IWebServiceHandlerService {
     public UnionTabUserVO checkLoginUnionTabUser(UnionTabUserVO inputVo);
     public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
     public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType);
+    public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType);
 }
