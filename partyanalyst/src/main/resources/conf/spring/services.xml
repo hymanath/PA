@@ -1331,6 +1331,8 @@
 		<property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO"/>
 		<property name="trainingCampBatchDAO" ref="trainingCampBatchDAO"/>
 		<property name="appointmentDAO" ref="appointmentDAO"/>
+		<property name="mahanaduDashBoardService1" ref="mahanaduDashBoardService1"/>
+		<property name="eventDAO" ref="eventDAO"/>
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1372,6 +1374,17 @@
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventInfo" />
     	<property name="cronExpression" value="0 0 * * * ?" />
 	</bean>
+	
+	<!-- scheduler for mail attachment -->
+	<bean name="mahanaduEventPdfReport" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="insertTriggerForMahanaduEventPdfReport" />
+    	<property name="cronExpression" value="0 0 0/1 * * ?" />
+	</bean>
+	<bean name="insertTriggerForMahanaduEventPdfReport" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="sendPdfReport" />
+    </bean>
+    
 			
 	<bean name="updateTrainingCampSpeakers" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="updateTrainingCampSpeakerDtls" />
@@ -1551,6 +1564,8 @@
 			<ref bean="mahanaduEventInfo" />
 			<ref bean="mahanaduVisitInfoTrig" />
 			<ref bean="updateTrainingCampSpeakers" />
+			<ref bean="mahanaduEventPdfReport" />
+			
 			<!--  <ref bean="insertTriggerForEveryDayChangeApptStatus" /> -->
 			
 			<!--<ref bean="schForSri" /> 
@@ -3115,6 +3130,8 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
 		<property name="mailService" ref="mailService" />
+		<property name="eventDAO" ref="eventDAO" />
+		<property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
 	</bean>
 	
 	<bean name="bloodBankService" class="com.itgrids.partyanalyst.service.impl.BloodBankService">
