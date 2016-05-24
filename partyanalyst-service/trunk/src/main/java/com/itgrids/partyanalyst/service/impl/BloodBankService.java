@@ -213,7 +213,7 @@ public class BloodBankService implements IBloodBankService{
             //Checking tdpCadreId avilable or not
 		  Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(memberShipId);
 		   if(tdpCadreId == null){
-			 cadreDtlsVO.setStatus("exist");
+			 cadreDtlsVO.setStatus("not exist");
 			 return cadreDtlsVO;
 			}
 			//0.bloodDonorInfo,1.donationsInBloodBank,2.donationsInOtherPlaces,3.lastDonationDate,4.bloodComponentId,5.component
