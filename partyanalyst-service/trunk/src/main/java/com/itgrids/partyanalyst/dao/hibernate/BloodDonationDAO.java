@@ -64,6 +64,8 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		if(campId !=null && campId>0){
 			str.append(" AND model.bloodDonationCamp.bloodDonationCampId =:campId ");
 		}
+		str.append(" order by model.insertedTime desc ");
+		
 		Query query = getSession().createQuery(str.toString());		
 		if(campId !=null && campId>0){
 			query.setParameter("campId", campId);
