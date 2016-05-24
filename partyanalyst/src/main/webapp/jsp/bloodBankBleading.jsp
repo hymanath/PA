@@ -34,7 +34,7 @@
                         	<option value="0">All Applications</option>
                         </select>
                     </div>
-					<div id="errorDiv" style="color:#ff0020;" class="pull-right"></div>
+					<div id="errorDiv" style="color:#ff0020;margin-right:20px;" class="pull-right"></div>
                     <div class="col-md-3 col-md-offset-6">
                     	<label>Search</label>
                     	<div class="input-group inputWithButton">
@@ -54,7 +54,7 @@
                 	<div class="col-md-12 m_top10">
                     	<div class="panel panel-default">
                         	<div class="panel-heading bg_cc">
-							    <span style="color:red" class="errorCls  pull-right"></span>
+							    <span style="color:red" class="errorCls"></span>
                             	<h4 class="panel-title text-capitalise">all applications</h4>
                             </div>
                             <div class="panel-body pad_0">
@@ -166,7 +166,7 @@ function getPrePopulateTheDataDetails(){
 	$('#errorDiv').html("");
 	var search = $("#searchInputId").val();
 	if(search==0){
-		$('#errorDiv').html('Please Select Search');
+		$('#errorDiv').html('Please Eneter Search');
 		return;
 	}
 	
@@ -182,6 +182,18 @@ function getPrePopulateTheDataDetails(){
 		buildBleedingCadreDetails(result);
 	});
 }
+$( "#searchInputId" ).blur(function() {
+	var value = $("#searchInputId" ).val();
+	if(value == "" || value ==undefined){
+		var statusId=$("#totalStatusId").val();
+		var statusIdList = [];  
+		if(statusId !=null && statusId>0){
+			statusIdList.push({"id":statusId});   
+		}
+		getBleedingCadreDetails(statusIdList,1);
+	}
+});
+
 </script>
 </body>
 </html>
