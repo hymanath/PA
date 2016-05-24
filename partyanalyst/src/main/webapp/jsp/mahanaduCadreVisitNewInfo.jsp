@@ -263,16 +263,20 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">DISTRICT WISE</h4>
+							<button class="btn btn-xs btn-success pull-right " style="margin-top: -20px;" id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>
 						</div>
 						<div class="panel-body">
+						 
 							<div class="table-responsive" id="distWiseTableDivId"></div>
 						</div>
 					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">CONSTITUENCY WISE</h4>
+							<button class="btn btn-xs btn-success pull-right " style="margin-top: -20px;" id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>
 						</div>
 						<div class="panel-body">
+						 
 							<div class="table-responsive" id="constWiseTableDivId"></div>
 						</div>
 					</div>					
@@ -1136,6 +1140,16 @@ function buildTotalVisitorsResult(result){
 						$("#distWiseTableDivId").html('No Data Available.');
 					}else{
 						$("#distWiseTableDivId").html(str);
+						$("#districtExcelBtnId").show();
+						$('#distWiseTableId').DataTable({
+							 "paging":   false,
+							 "info":     false,
+							 "searching": true,
+							 "autoWidth": true,
+							"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+							"order": [[ 1, "asc" ]]
+		
+						});
 					}
 					
 				}else{
@@ -1147,6 +1161,7 @@ function buildTotalVisitorsResult(result){
 			$("#distWiseTableDivId").html("<h5>Please Select State.</h5>");
 		}
 	}
+	
 	
 	function getConstituencyWiseMembersCountInCampus(){
 		var stateIds = [];
@@ -1180,7 +1195,7 @@ function buildTotalVisitorsResult(result){
 				if(result != null && result.subList != null && result.subList.length > 0){
 					var str = '';
 					var flag=false;
-				str+='<table class="table table-condensed tableNewDistWise" id="distWiseTableId">';
+				str+='<table class="table table-condensed tableNewDistWise" id="constWiseTableId">';
 				str+='<thead>';
 				str+='<th>Constituency Id</th>';
 				str+='<th>Name</th>';
@@ -1208,6 +1223,16 @@ function buildTotalVisitorsResult(result){
 						$("#constWiseTableDivId").html('No Data Available.');
 					}else{
 						$("#constWiseTableDivId").html(str);
+						$("#constituecnyExcelBtnId").show();
+						$('#constWiseTableId').DataTable({
+							 "paging":   false,
+							 "info":     false,
+							 "searching": true,
+							 "autoWidth": true,
+							"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+							"order": [[ 1, "asc" ]]
+		
+						});
 					}
 					
 				}else{
@@ -1218,6 +1243,7 @@ function buildTotalVisitorsResult(result){
 			$("#constWiseTableDivId").html("<h5> No Data Availabel.</h5>");
 		}
 	}
+	
 	/* function getTodayCount(type){
 		var eventId = $("#mainEventSelectId").val(); 
 		$.ajax({
@@ -1327,7 +1353,26 @@ function buildTotalVisitorsResult(result){
 				}
 			});
 	}
-	
-   </script>
+function generateExcel(){
+	tableToExcel(distWiseTableId, 'District Wise Report');
+}
+function generateExcel1(){
+	tableToExcel(constWiseTableId, 'Constituency Wise Report');
+}
+</script>
+<script>
+var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+</script>
 </body>
 </html>
