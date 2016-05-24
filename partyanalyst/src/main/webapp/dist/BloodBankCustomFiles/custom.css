@@ -77,7 +77,7 @@ h1,h2,h3,h4,h5,h6,p,ul
 	background:#FFA85B;
 	border-top:1px solid #FFA85B;
 }
-.tableDonors tr:first-child td h2 , .tableDonors tr:first-child td p
+.tableDonors tr:first-child td h3 , .tableDonors tr:first-child td p
 {
 	color:#fff !important
 }
