@@ -1815,6 +1815,15 @@ public List<Long> getConstituenciesByState(Long stateId) {
 			query.setParameterList("districtIds", districtIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getDefaultConstituencyAndDistrictForAState(Long stateId)
+	{
+		Query query = getSession().createQuery("SELECT model.constituencyId,model.district.districtId FROM Constituency model where model.state.stateId = :stateId and " +
+				" model.deformDate is null and model.electionScope.electionType.electionTypeId = 2");
+		query.setParameter("stateId",stateId);
+		query.setMaxResults(1);
+		return query.list();
+	}
 }
 
 
