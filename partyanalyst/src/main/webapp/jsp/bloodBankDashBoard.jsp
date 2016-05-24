@@ -719,29 +719,29 @@ function buildBloodDonorsCountsSummary(result){
 	str+='<table class="table tableDonors">';
                     	str+='<tr>';
                         	str+='<td>';
-                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
+                            	str+='<div  class="tdBack">';
 								if(result[0].totalCount != null)
-                 	           		str+='<h2>'+result[0].totalCount+'</h2>';
+                 	           		str+='<h3>'+result[0].totalCount+'</h3>';
                                 	str+='<p class="text-capitalize">total Pending</p>';
                                 str+='</div>';
                             str+='</td>';
                             str+='<td>';
-                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
+                            	str+='<div  class="tdBack">';
 								if(result[1].totalCount != null)
-                 	           		str+='<h2>'+result[1].totalCount+'</h2>';
+                 	           		str+='<h3>'+result[1].totalCount+'</h3>';
                                 	str+='<p class="text-capitalize">total Approved</p>';
                                str+=' </div>';
                             str+='</td>';
                             str+='<td>';
-                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
+                            	str+='<div  class="tdBack">';
 								if(result[2].totalCount != null)
-                 	           		str+='<h2>'+result[2].totalCount+'</h2>';
+                 	           		str+='<h3>'+result[2].totalCount+'</h3>';
                                 	str+='<p class="text-capitalize">total rejected</p>';
                                 str+='</div>';
                             str+='</td>';
                             str+='<td>';
-                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
-									str+='<h2>'+totalcount1+'</h2>';
+                            	str+='<div  class="tdBack">';
+									str+='<h3>'+totalcount1+'</h3>';
                                 	str+='<p class="text-capitalize">total applications</p>';
                                 str+='</div>';
                             str+='</td>';
