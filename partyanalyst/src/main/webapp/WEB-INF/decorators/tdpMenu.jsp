@@ -667,6 +667,24 @@ footer
 					   </ul>
 					 </li>
 				</c:if>	
+				
+					<li>
+                        <a href="#"><i class="fa fa-wrench"></i><span>&nbsp;&nbsp;BloodBank</span></a>
+                        <h2><i class="fa fa-wrench line_heightDiv"></i>BloodBank</h2>
+                       <ul>
+							<li>
+								<a href="bloodBankRegistrationAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;BloodBank Registration</span></a>
+							</li>
+							<li>
+								<a href="bloodBankDashBoardAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;BloodBank DashBoard</span></a>
+							</li>
+							<li>
+								<a href="bloodBankBleadingAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;BloodBank Bleading</span></a>
+							</li>
+					   </ul>
+					</li>
+				
+				
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
