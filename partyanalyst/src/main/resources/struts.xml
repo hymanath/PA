@@ -12351,5 +12351,11 @@
 			<param name="root">bloodBankVOList</param>
 		</result>
 	</action>
+	
+	<action name="getConstituencyWiseMembersCountInCampusAction" class="mahanaduDashBoardAction" method="getConstituencyWiseMembersCountInCampus">
+		<result type="json" name="success">
+			<param name="root">mahanaduEventVO</param>
+		</result>
+	</action>
 </package>
 </struts>      
