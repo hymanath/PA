@@ -54,7 +54,7 @@
                 <div class="row m_top20">
                     <div class="col-md-3">
                     	<label>Name<span class="mandatoryFieldCls">*</span></label><span class="nameErrorCls mandatoryFieldCls"></span>
-                        <input type="text" id="nameId" class="form-control"/>
+                        <input type="text" id="nameId" class="form-control" readonly />
 				    </div>
                     <div class="col-md-3">
                     	<label>Father/Spouse</label>
