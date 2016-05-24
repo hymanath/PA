@@ -742,11 +742,9 @@ public interface IConstants {
     public static final Long TDP_PARTY_ID=872l;
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
-
-     public static final String STATIC_CONTENT_FOLDER_URL = "D:\\Tomcat 7\\webapps\\PartyAnalyst\\";
     
      
-    //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
+    public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
    // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
     public static final String CADRE_REG_AMOUNT_FILES_FOLDER = "cadre_reg_amount_files";
     
@@ -1072,7 +1070,7 @@ public interface IConstants {
 	//LOCAL
 	public static final String GHOST_SCRIPT_PATH = "C:\\Program Files (x86)\\gs\\gs9.14\\bin\\gswin32c.exe";
 	
-	public static final String MAHANADU_IMAGES_RETRIEVE_PATH = "http://mytdp.com/CommunityNewsPortal/images/mahanadu_images";
+	public static final String MAHANADU_IMAGES_RETRIEVE_PATH = "http://mytdp.com/images/mahanadu_images";
 	public static final String MAHANADU_IMAGES_2016 = "mahanadu_images";
 	
 	public static final String GOOGLE_SERVER_KEY = "AIzaSyAHpEk_L5Uv4-FJy_7P-mf_gmytlKU_1Bk";
