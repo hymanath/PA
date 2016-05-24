@@ -73,9 +73,7 @@ function buildStatusList(result){
 	getBleedingCadreDetails(statusIdList,campId);
 }
 function getBleedingCadreDetails(statusIdList,campId){
-/* 	console.log(statusIdList);
-	console.log(campId);
-	 */
+	
 	var jsObj = {
 		statusIdList	: statusIdList,      
 		campId			: campId     
@@ -226,6 +224,7 @@ $(document).on("change",".registrationStatusCls",function(){
 	
 	var position=$(this).attr("attr_position");
 	var registrationStatus = $(this).find("option:selected").text();
+	$("#submitId"+position).html("SUBMIT");
 	  
 	 if(registrationStatus!=null && registrationStatus!=undefined && registrationStatus=="Rejected"){
 		$("#bloodBagTypeTdId"+position).hide();
@@ -250,37 +249,44 @@ function validateFields(position){
 		  var remarks=$("#remarkId"+position).val();
 			 if(remarks==null || remarks==undefined || remarks.trim().length==0){
 				$(".errorCls").html("Please Enter Remarks.");
+				 $('html,body').animate({scrollTop: $(".errorCls").offset().top}, 2000);
 				return;
 			 }
 	  }else{
 		if(registrationStatus!=null && registrationStatus!=undefined && registrationStatus=="Pending"){
 			  $(".errorCls").html("Please Change Status.");
+			  $('html,body').animate({scrollTop: $(".errorCls").offset().top}, 2000);
 			  return;
 		   }
 		   var bagTypeId=$("#bloodBagTypeId"+position).val();
 		  if(bagTypeId==null || bagTypeId==undefined || bagTypeId==0){
 			 $(".errorCls").html("Please Select Bag Type.");
+			  $('html,body').animate({scrollTop: $(".errorCls").offset().top}, 2000);
 			return;
 		 }
 		 var bagQuantity=$("#bloodBagQuantityId"+position).val();
 		  if(bagQuantity==null || bagQuantity==undefined || bagQuantity==0){
 			 $(".errorCls").html("Please Select Bag Quantity.");
+			  $('html,body').animate({scrollTop: $(".errorCls").offset().top}, 2000);
 			return;
 		 }
 		 var quantity=$("#quantityId"+position).val();
 		  if(quantity==null || quantity==undefined || quantity==0){
 			 $(".errorCls").html("Please Select Quantity.");
+			  $('html,body').animate({scrollTop: $(".errorCls").offset().top}, 2000);
 			  return;
 		 }
 	}
 	   var  segmentNo=$("#bloodBagNoId"+position).val();
 		if(segmentNo==null || segmentNo==undefined || segmentNo.trim().length==0){
 				 $(".errorCls").html("Please Enter Segment No.");
+				  $('html,body').animate({scrollTop: $(".errorCls").offset().top}, 2000);
 				return;
 		 }
 		  var registrationNo=$("#regNoId"+position).val();
 		  if(registrationNo==null || registrationNo==undefined || registrationNo.trim().length==0){
 			 $(".errorCls").html("Please Enter Registration No.");
+			  $('html,body').animate({scrollTop: $(".errorCls").offset().top}, 2000);
 			 return;
 		 }
 		$(".errorCls").html(' ');
@@ -296,7 +302,7 @@ $(document).on('click','.submitCls',function(){
 	if(status!=null && status!=undefined && status==true){
 	
 		$("#submitId"+position).html($("#submitId"+position).attr("attr_button_submitting"));
-		//console.log(position);
+		
 		var membershipNo = $("#membershipNoId"+position).html();
 		var status = $("#registrationStatusId"+position).val();
 		var bloodBagNo = $("#bloodBagNoId"+position).val();
@@ -317,7 +323,7 @@ $(document).on('click','.submitCls',function(){
 		if(status!=null && status==1 || status==2){
 			remarks=" ";
 		}
-	//console.log(status+":"+bloodBagNo+":"+bloodBagTypeId+":"+bloodBagQuantityId+":"+quantityId+":"+membershipNo);
+	
 		var jsObj = {
 			status				: status,      
 			bloodBagNo			: bloodBagNo,
@@ -342,6 +348,7 @@ $(document).on('click','.submitCls',function(){
 	}
 });
 $(document).on("change","#totalStatusId",function(){
+	$(".errorCls").html("");
 	var statusIdList = [];  
 	var campId=1;
 	var statusId=$("#totalStatusId").val();
