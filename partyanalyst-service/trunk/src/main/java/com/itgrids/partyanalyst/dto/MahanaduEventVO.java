@@ -79,6 +79,10 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private Long sevenpm=0l;
 	private Long eightpm=0l;
 	
+	private String attendeePercantage;
+	private String inviteePercantage;
+	private String nonInviteePercantage;
+	  
 	public Long getTotalVisitorsCount() {
 		return totalVisitorsCount;
 	}
@@ -429,6 +433,24 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setEightpm(Long eightpm) {
 		this.eightpm = eightpm;
+	}
+	public String getAttendeePercantage() {
+		return attendeePercantage;
+	}
+	public void setAttendeePercantage(String attendeePercantage) {
+		this.attendeePercantage = attendeePercantage;
+	}
+	public String getInviteePercantage() {
+		return inviteePercantage;
+	}
+	public void setInviteePercantage(String inviteePercantage) {
+		this.inviteePercantage = inviteePercantage;
+	}
+	public String getNonInviteePercantage() {
+		return nonInviteePercantage;
+	}
+	public void setNonInviteePercantage(String nonInviteePercantage) {
+		this.nonInviteePercantage = nonInviteePercantage;
 	}
 	
 }

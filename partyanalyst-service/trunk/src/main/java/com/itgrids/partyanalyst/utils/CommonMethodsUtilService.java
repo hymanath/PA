@@ -579,4 +579,31 @@ public class CommonMethodsUtilService {
 				}
 				return dates;
 			}
+		    
+		  public  String createFolder(String dir){
+			 	try {
+					File theDir = new File(dir);
+					  // if the directory does not exist, create it
+					  if (!theDir.exists()) {
+					    boolean result = false;
+					    try{
+					        theDir.mkdir();
+					        result = true;
+					     } catch(SecurityException se){
+					        //handle it
+					     }        
+					     if(result) {    
+					      LOG.debug("DIR With Name "+dir+" created");  
+					     }
+					  }else{
+						  LOG.debug("DIR With Name "+dir+" EXISTS");
+					  }
+					  return "SUCCESS";
+				} catch (Exception e) {
+					LOG.error(dir+" Failed to Create");
+					return "FAILED";
+				}
+			}
+		  
+		  
 }
