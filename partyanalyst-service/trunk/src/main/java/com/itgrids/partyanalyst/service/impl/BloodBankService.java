@@ -307,7 +307,7 @@ public class BloodBankService implements IBloodBankService{
 				cadreDtlsVO.setOccupationId(bloodDonorInfo.getOccupationId() !=null ? bloodDonorInfo.getOccupationId():0l);
 				cadreDtlsVO.setDonationsInBloodBank(cadre[1] !=null ? (Long)cadre[1]:0l);
 				cadreDtlsVO.setDonationsInOtherPlaces(cadre[2] !=null ? cadre[2].toString():"");
-				if(cadre[3].toString()!=null){
+				if(cadre[3] !=null){
 					cadreDtlsVO.setLastDonation(sdf.format((Date)cadre[3]));
 				}
 				cadreDtlsVO.setBloodComponentId(cadre[4] !=null ? (Long)cadre[4]:0l);//Donation Block
