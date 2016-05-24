@@ -185,7 +185,7 @@
 		</div>
 	</div>
 	<!--start-->
-	<div class="row">
+	<div class="row" id="stateDivsId" style="display:none;">
       <div class="col-md-3">
           <div class="panel panel-default panel-custom-green">
               <div class="panel-heading">
@@ -630,6 +630,13 @@ var formatedDpCurentDate;
 				dpCurentDate = moment().format('D MMMM,YYYY');
 				formatedDpCurentDate = moment().format('DD/MM/YYYY');
 				 $('[data-toggle="tooltip"]').tooltip()
+				
+				if(parentEventId == 7 || parentEventId == 30){
+					$("#stateDivsId").show();
+				}else{
+					$("#stateDivsId").hide();
+				}
+				 
 			   });
 
 	function handalClick(eventId)
@@ -1761,6 +1768,16 @@ $('#donutchart').removeClass("errorDiv");
 			})
 		}
     });
+	
+	$(".maineventCls").each(function(){
+		if($(this).is(":checked")){
+			if($(this).val()==7 || $(this).val()==30){
+				$("#stateDivsId").show();
+			}else{
+				$("#stateDivsId").hide();
+			}
+		}
+	});	
 	
 	var evntName = $("#eventText"+parentEventId).text();
 	var title = (evntName + ' Event').toUpperCase();
