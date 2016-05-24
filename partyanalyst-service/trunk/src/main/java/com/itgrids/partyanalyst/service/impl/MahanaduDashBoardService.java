@@ -16,6 +16,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreMahanaduVisitDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreMahanaduVisitInfoDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEntryExitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
@@ -39,7 +40,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	private IEntryExitInfoDAO entryExitInfoDAO;
 	private IEventDAO	eventDAO;
 	private IDistrictDAO districtDAO;
-	private CommonMethodsUtilService commonMethodsUtilService; 
+	private CommonMethodsUtilService commonMethodsUtilService;
+	private IConstituencyDAO constituencyDAO;
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
@@ -82,6 +84,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	public void setCommonMethodsUtilService(
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
 	}
 
 	public void getTodayTotalVisitorsForWeb(){
@@ -907,6 +916,154 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		
 		return finalVO;
 		
+	}
+	
+	public MahanaduEventVO getConstituencyWiseMembersCountInCampus(Long eventId,List<Long> stateIds,String date){
+		MahanaduEventVO finalVO = new MahanaduEventVO();
+		
+		try{
+			boolean otherStatesExist = false;
+			
+			List<Long> twoStateIds = new ArrayList<Long>(0);
+			twoStateIds.add(1l);
+			twoStateIds.add(36l);
+			
+			StringBuilder districtQueryStr = new StringBuilder();
+			
+			if(stateIds.containsAll(twoStateIds)){				
+				districtQueryStr.append(" and c.district_id between 1 and 23 ");				
+			}else if(stateIds.contains(1l)){				
+				districtQueryStr.append(" and c.district_id between 11 and 23 ");				
+			}else if(stateIds.contains(36l)){
+				districtQueryStr.append(" and c.district_id between 1 and 10 ");
+			}
+			
+			StringBuilder constituencyQueryStr1 = new StringBuilder();
+			
+			if(stateIds.containsAll(twoStateIds)){				
+				constituencyQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 23 ");				
+			}else if(stateIds.contains(1l)){				
+				constituencyQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");				
+			}else if(stateIds.contains(36l)){
+				constituencyQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
+			}
+			
+			StringBuilder otherStatesLocationQueryString = new StringBuilder();
+			if(stateIds.contains(0l)){//for other states
+				otherStatesExist = true;
+				otherStatesLocationQueryString.append(" and UA.state_id not in (1) and UA.state_id is not null ");
+			}
+			
+			StringBuilder otherStatesLocationQueryString1 = new StringBuilder();
+			if(stateIds.contains(0l)){//for other states
+				otherStatesExist = true;
+				otherStatesLocationQueryString1.append(" and model.tdpCadre.userAddress.state.stateId not in (1) and model.tdpCadre.userAddress.state.stateId is not null ");
+			}
+			
+			
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			Long entryEventId = entryExitInfo.getEntryId();
+			Long exitEventId = entryExitInfo.getExitId();		
+			//Date todayDate = dateUtilService.getCurrentDateAndTime();
+			Date todayDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+			
+			//Default Constituency Values
+			
+			List<MahanaduEventVO> defaultConstituencyList = new ArrayList<MahanaduEventVO>(0);
+			
+			List<Object[]> allConstituencyList = null;
+			
+			if(stateIds.containsAll(twoStateIds)){				
+				allConstituencyList = constituencyDAO.getConstituencyIdAndNameByStateForRegion(1l,"Both");
+			}else if(stateIds.contains(1l)){				
+				allConstituencyList = constituencyDAO.getConstituencyIdAndNameByStateForRegion(1l,"Andhra Pradesh");			
+			}else if(stateIds.contains(36l)){
+				allConstituencyList = constituencyDAO.getConstituencyIdAndNameByStateForRegion(1l,"Telangana");
+			}
+			
+			if(allConstituencyList !=null && allConstituencyList.size()>0){
+				for (Object[] objects : allConstituencyList) {
+					MahanaduEventVO VO = new MahanaduEventVO();
+					
+					VO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					VO.setName(objects[1] !=null ? objects[1].toString():"");
+					defaultConstituencyList.add(VO);
+				}
+			}
+			
+			/*Current Cadre In Campus*/
+			
+			//0.current Cadre Count,1.constituencyId
+			  List<Object[]> currentCountList = eventAttendeeDAO.getConstituencyWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,districtQueryStr.toString());
+			  
+			  if(currentCountList !=null && currentCountList.size()>0){
+				  for(Object[] objects : currentCountList) {				
+					  MahanaduEventVO VO = getMatchedVO(defaultConstituencyList,(Long)objects[1]);				  
+					  if(VO !=null){					  
+						  VO.setCadreCount(objects[0] !=null ? (Long)objects[0]:0l);//current in Campus					  
+					  }else{
+						  MahanaduEventVO vo = new MahanaduEventVO();
+						  defaultConstituencyList.add(vo);
+					  }
+				  }
+			  }
+			  
+			  /*Total,Invited and Non invited Cadre*/		  
+			  //0.total,1.contId,2.constName
+			  List<Object[]> totalCountList = eventAttendeeDAO.getConstituencyWiseTotalInvitedAndNonInvitedCount(eventId,constituencyQueryStr1.toString(),todayDate);
+			  
+			  if(totalCountList !=null && totalCountList.size()>0){				  
+				  for(Object[] obj : totalCountList) {							  
+					  MahanaduEventVO VO  = getMatchedVO(defaultConstituencyList,(Long)obj[1]);
+					  if(VO !=null){					  
+						  VO.setTotal(obj[0] !=null ? (Long)obj[0]:0l);//current in Campus	
+					  }else{
+						  MahanaduEventVO vo = new MahanaduEventVO();
+						  defaultConstituencyList.add(vo);
+					  }					  
+				  }
+			  }
+			  
+			  if(defaultConstituencyList !=null && defaultConstituencyList.size()>0){
+				  finalVO.setSubList(defaultConstituencyList);
+			  }
+			  
+			  if(otherStatesExist){
+				  List<MahanaduEventVO> otherStatesfinalRslt = new ArrayList<MahanaduEventVO>(0);
+				  
+				  Map<Long,Long> constWiseCountsMap = new HashMap<Long, Long>(0);
+				  List<Object[]> otherStateRslt = eventAttendeeDAO.getOtherStateConstituencyWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,otherStatesLocationQueryString.toString());
+				  
+				  if(otherStateRslt != null && otherStateRslt.size() > 0){
+					  for (Object[] objects : otherStateRslt) {
+						  constWiseCountsMap.put((Long)objects[1], (Long)objects[0]);
+					  }
+				  }
+				  
+				  /*Total,Invited and Non invited Cadre for other states*/		  
+				  //0.total,1.districtId,2.districtName
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString1.toString(),todayDate);
+				  
+				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
+					  for (Object[] obj : otherStatesTotalCountList) {
+						  MahanaduEventVO vo = new MahanaduEventVO();
+						  vo.setId((Long)obj[1]);
+						  vo.setName(obj[2].toString());
+						  vo.setCadreCount(constWiseCountsMap.get((Long)obj[1]) != null ? constWiseCountsMap.get((Long)obj[1]) : 0l);
+						  vo.setTotal((Long)obj[0]);
+						 // vo.setInvitees(obj[1] !=null ? (Long)obj[1]:0l);
+						  //vo.setNonInvitees(obj[2] !=null ? (Long)obj[2]:0l);
+						  otherStatesfinalRslt.add(vo);
+					  }
+				  }
+				  
+				  finalVO.getSubList().addAll(otherStatesfinalRslt);
+			
+			  }
+		}catch (Exception e) {
+			LOG.error("Exception riased at getConstituencyWiseMembersCountInCampus", e);
+		}
+		return finalVO;
 	}
 	
 	public Long getTodayCount(Long eventId){
