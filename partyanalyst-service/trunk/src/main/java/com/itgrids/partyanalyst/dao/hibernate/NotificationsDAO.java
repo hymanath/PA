@@ -51,11 +51,7 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 	}
 	
 	public List<Long> getInactiveNotificationsTypeDetails (){
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select distinct  model2.notificationsId ");
-		queryStr.append(" from NotificationType model2 where model2.isActive='false'");
-		Query query = getSession().createQuery(queryStr.toString());
-		
+		Query query = getSession().createQuery("select distinct  model2.notificationTypeId from NotificationType model2 where model2.isActive='false' ");
 		return query.list();
 	}
 }
