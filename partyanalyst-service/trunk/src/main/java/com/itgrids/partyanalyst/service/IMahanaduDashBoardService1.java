@@ -14,4 +14,7 @@ public interface IMahanaduDashBoardService1 {
 	
 	public ResultStatus sendEmailWithAttachment(EmailAttributesVO fileNamesVO);
 	public EmailAttributesVO createMainPdfFile(String buildString);
+	
+	public String calcPercantage(Long totalValue,Long subValue);
 }
+
