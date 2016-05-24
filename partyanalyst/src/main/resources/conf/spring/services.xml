@@ -1536,7 +1536,7 @@
 	
 	<bean name="mahanaduVisitInfoTrig" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="mahanaduVisitInfoInvok" />
-    	<property name="cronExpression" value="0 0 0/2 * * ?" />
+    	<property name="cronExpression" value="0 0 0/1 * * ?" />
 	</bean>
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="triggers">
@@ -2786,7 +2786,8 @@
 	    <property name="entryExitInfoDAO" ref="entryExitInfoDAO" />  
 	    <property name="eventDAO" ref="eventDAO" />   
 	    <property name="districtDAO" ref="districtDAO" />
-	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />   
+	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />  
+	    <property name="constituencyDAO" ref="constituencyDAO" /> 
 	</bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">

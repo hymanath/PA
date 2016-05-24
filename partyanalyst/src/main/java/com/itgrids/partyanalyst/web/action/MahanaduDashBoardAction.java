@@ -255,4 +255,23 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getConstituencyWiseMembersCountInCampus(){
+		try {
+			jObj = new JSONObject(getTask());
+			List<Long> statesList = new ArrayList<Long>(0);
+			JSONArray arr = jObj.getJSONArray("stateIds");
+			
+			if(arr != null && arr.length() > 0){
+				for (int i=0;i<arr.length();i++) {
+					statesList.add(Long.parseLong(arr.getInt(i)+""));
+				}
+			}
+			
+			mahanaduEventVO = mahanaduDashBoardService.getConstituencyWiseMembersCountInCampus(jObj.getLong("eventId"),statesList,jObj.getString("date"));
+		} catch (Exception e) {
+			LOG.error("Exception riased at getConstituencyWiseMembersCountInCampus ", e);
+		}
+		return Action.SUCCESS;
+	}
 }
