@@ -454,12 +454,19 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testgGtConstituencyIdsByStateIdForAElectionType()
+	/*public void testgGtConstituencyIdsByStateIdForAElectionType()
 	{
 		List<Long> dists = new ArrayList<Long>();
 		dists.add(28392l);
 		
 		List<Object[]> list = constituencyDAO.getWardDetailsById(dists);
 		System.out.println(list.size());
+	}*/
+	
+	public void testGetDefaultConstituencyAndDistrictForAState()
+	{
+		List<Object[]> list = constituencyDAO.getDefaultConstituencyAndDistrictForAState(12l);
+		System.out.println(list.get(0)[0]);
+		System.out.println(list.get(0)[1]);
 	}
 }
