@@ -12364,7 +12364,7 @@
 	
 	<action name="pushNotificationAction" class="notificationAction" method="PushNotificationDetails">
 		<result type="json" name="success">
-			<param name="root">status</param>
+			<param name="root"></param>
 		</result>
 	</action>
 </package>
