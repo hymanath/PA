@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
+import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMobileService;
@@ -30,7 +31,8 @@ public class Scheduler {
 	private IMailService mailService;
 	private ResultStatus rs;
     private IMahaNaduService mahaNaduService;
-	
+    
+    
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
 	}
@@ -102,6 +104,7 @@ public class Scheduler {
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
+	
 
 	public void runTheBatchJobForEveryDay()
 	{
@@ -305,7 +308,22 @@ public class Scheduler {
 		}
 		return rs;
 	}
-	
+	public ResultStatus sendPdfReport()
+	{
+		ResultStatus rs = new ResultStatus();
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return rs;
+		}
+			
+		try{
+			  rs = schedulerService.sendPdfReport();
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n Total sendPdfReport "); 
+		}
+		return rs;
+	}
 	public void updateTrainingCampSpeakersDetails()
 	  {
 	    try{

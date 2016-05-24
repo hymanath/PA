@@ -16,6 +16,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAppointmentDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.ISearchEngineIPAddressDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreAgerangeInfoDAO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
+import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -61,7 +63,8 @@ public class SchedulerService implements ISchedulerService{
 	private ITrainingCampBatchDAO trainingCampBatchDAO;
 	
 	private IAppointmentDAO appointmentDAO;
-	
+	private IEventDAO eventDAO;
+	private IMahanaduDashBoardService1 mahanaduDashBoardService1;
 	
 	public ITrainingCampBatchDAO getTrainingCampBatchDAO() {
 		return trainingCampBatchDAO;
@@ -166,6 +169,23 @@ public class SchedulerService implements ISchedulerService{
 
 	public void setAppointmentDAO(IAppointmentDAO appointmentDAO) {
 		this.appointmentDAO = appointmentDAO;
+	}
+	
+	public IEventDAO getEventDAO() {
+		return eventDAO;
+	}
+
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+	
+	public IMahanaduDashBoardService1 getMahanaduDashBoardService1() {
+		return mahanaduDashBoardService1;
+	}
+
+	public void setMahanaduDashBoardService1(
+			IMahanaduDashBoardService1 mahanaduDashBoardService1) {
+		this.mahanaduDashBoardService1 = mahanaduDashBoardService1;
 	}
 
 	public ResultStatus deleteSearchEngineAccessedURLsFromUserTracking(Date fromDate,Date toDate)
@@ -847,4 +867,26 @@ public class SchedulerService implements ISchedulerService{
 			LOG.error("Exception Occured in changeApptStatus() Method, Exception is - ",e);
 		}
 	}
+	public void sendPdfReport(){
+		
+		try{
+			
+			Long parenteventId = 30l;
+			
+			 String startDate="24/05/2016";
+		     String endDate = "26/05/2016";
+			 
+		     List<Long> stateIds = new ArrayList<Long>();
+			 stateIds.add(1l);
+			 stateIds.add(36l);
+			 stateIds.add(0l);
+			 
+			 List<Long> subeventIds = eventDAO.getSubEventsByParentEventId(parenteventId);
+			 
+			 mahanaduDashBoardService1.getAllImages(parenteventId,subeventIds,startDate,endDate,stateIds);
+		}catch(Exception e){
+			LOG.error("Exception Occured in sendPdfReport() Method",e);
+		}
+	}
+	
 }

@@ -1087,13 +1087,13 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			sbS.append("  model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName ");
 			
 			sbE.append("  group by model.tdpCadre.userAddress.constituency.district.districtId" +
-					   "  order by count(distinct model.tdpCadre.tdpCadreId)");
+					   "  order by count(distinct model.tdpCadre.tdpCadreId) desc");
 		}
 		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 			sbS.append("  model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name ");
 			
 			sbE.append("  group by model.tdpCadre.userAddress.constituency.constituencyId " +
-					   "  order by count(distinct model.tdpCadre.tdpCadreId) ");
+					   "  order by count(distinct model.tdpCadre.tdpCadreId) desc ");
 		}
 		sbS.append(" ,count(distinct model.tdpCadre.tdpCadreId) ");
 		if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY)){
