@@ -86,6 +86,8 @@ function getBleedingCadreDetails(statusIdList,campId){
 	}).done(function(result){ 
 		if(result != null && result.length>0){
 			buildBleedingCadreDetails(result);
+		}else{
+			$("#BleedingCadreDetailsId").html("<p style='font-size:18px;'>No Data Available.</p>");
 		}
 	});
 }
@@ -129,58 +131,109 @@ function buildBleedingCadreDetails(result){
 			str+='<td>'+result[i].mobile+'</td>';
 			str+='<td>';
 			 	str+='<select id="registrationStatusId'+i+'" attr_position="'+i+'" class="form-control registrationStatusCls">';
-				str+='<option>Approved</option>';
+				//str+='<option>Approved</option>';
 				str+='</select>';
 			str+='</td>';
-			str+='<td>';
-			str+='<input id="bloodBagNoId'+i+'" placeholder="Segment No" type="text" value="'+result[i].bagNo+'" class="form-control" style="width:100px"/>';
-			str+='</td>';
-			str+='<td>';
-			str+='<input id="regNoId'+i+'" value="'+result[i].registrationNo+'" placeholder="Reg No" type="text" class="form-control" style="width:100px"/>';
-			str+='</td>';
-			if(!(accptStatusValuesArr[i]=="Rejected")){
-				str+='<td id="bloodBagTypeTdId'+i+'">';
-				str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
-				//str+='<option>Single Bag</option>';
-				str+='</select>';
+			
+			if(result[i].statusId!=null && result[i].statusId==1){
+				   str+='<td>';
+					str+='<input id="bloodBagNoId'+i+'" placeholder="Segment No" type="text" value="'+result[i].bagNo+'" class="form-control" style="width:100px" disabled/>';
+					str+='</td>';
+					str+='<td>';
+					str+='<input id="regNoId'+i+'" value="'+result[i].registrationNo+'" placeholder="Reg No" type="text" class="form-control" style="width:100px" disabled/>';
+					str+='</td>';
+					if(!(accptStatusValuesArr[i]=="Rejected")){
+						str+='<td id="bloodBagTypeTdId'+i+'">';
+						str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls" disabled>';
+						//str+='<option>Single Bag</option>';
+						str+='</select>';
+						str+='</td>';
+						str+='<td id="bloodBagQuantityTdId'+i+'">';
+						str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls" disabled>';
+					//	str+='<option>With Sagm 350ml</option>';
+						str+='</select>';
+						 str+='<input id="remarkId'+i+'" style="display:none" type="text" placeholder="Enter Remarks" class="form-control"/>';
+						str+='</td>';
+						str+='<td id="quantityTdId'+i+'">';
+						str+='<select id="quantityId'+i+'" class="form-control" disabled>';
+							str+='<option value="0">Select Quantity</option>';
+							str+='<option value="350">350ml</option>';
+							str+='<option value="450">450ml</option>';
+						str+='</select>';
+						str+='</td>';
+					}else{
+						str+='<td style="display:none" id="bloodBagTypeTdId'+i+'">';
+						str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
+						//str+='<option>Single Bag</option>';
+						str+='</select>';
+						str+='</td>';
+						str+='<td  colspan="3" id="bloodBagQuantityTdId'+i+'">';
+						str+='<select style="display:none" id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
+						//str+='<option>With Sagm 350ml</option>';
+						str+='</select>';
+						str+='<input id="remarkId'+i+'" value="'+result[i].remarks+'"  type="text" placeholder="remarks" class="form-control"/>';
+						str+='</td>';
+						str+='<td style="display:none" id="quantityTdId'+i+'">';
+						str+='<select id="quantityId'+i+'" class="form-control">';
+						str+='<option value="0">Select Quantity</option>';
+						str+='<option value="350">350ml</option>';
+						str+='<option value="450">450ml</option>';
+						str+='</select>';
+						str+='</td>';
+					 }
+					str+='<td>';
+					str+='<button id="submitId'+i+'" class="btn btn-success btn-sm submitCls" attr_button_submitting="SUBMITTING..." attr_button_submitted="SUBMITTED" attr_position="'+i+'" disabled>SUBMIT</button>';
+					str+='</td>';
+			}else{
+				str+='<td>';
+				str+='<input id="bloodBagNoId'+i+'" placeholder="Segment No" type="text" value="'+result[i].bagNo+'" class="form-control" style="width:100px"/>';
 				str+='</td>';
-				str+='<td id="bloodBagQuantityTdId'+i+'">';
-				str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
-			//	str+='<option>With Sagm 350ml</option>';
-				str+='</select>';
-				 str+='<input id="remarkId'+i+'" style="display:none" type="text" placeholder="Enter Remarks" class="form-control"/>';
+				str+='<td>';
+				str+='<input id="regNoId'+i+'" value="'+result[i].registrationNo+'" placeholder="Reg No" type="text" class="form-control" style="width:100px"/>';
 				str+='</td>';
-				str+='<td id="quantityTdId'+i+'">';
-				str+='<select id="quantityId'+i+'" class="form-control">';
+				if(!(accptStatusValuesArr[i]=="Rejected")){
+					str+='<td id="bloodBagTypeTdId'+i+'">';
+					str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
+					//str+='<option>Single Bag</option>';
+					str+='</select>';
+					str+='</td>';
+					str+='<td id="bloodBagQuantityTdId'+i+'">';
+					str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
+				//	str+='<option>With Sagm 350ml</option>';
+					str+='</select>';
+					 str+='<input id="remarkId'+i+'" style="display:none" type="text" placeholder="Enter Remarks" class="form-control"/>';
+					str+='</td>';
+					str+='<td id="quantityTdId'+i+'">';
+					str+='<select id="quantityId'+i+'" class="form-control">';
+						str+='<option value="0">Select Quantity</option>';
+						str+='<option value="350">350ml</option>';
+						str+='<option value="450">450ml</option>';
+					str+='</select>';
+					str+='</td>';
+				}else{
+					str+='<td style="display:none" id="bloodBagTypeTdId'+i+'">';
+					str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
+					//str+='<option>Single Bag</option>';
+					str+='</select>';
+					str+='</td>';
+					str+='<td  colspan="3" id="bloodBagQuantityTdId'+i+'">';
+					str+='<select style="display:none" id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
+					//str+='<option>With Sagm 350ml</option>';
+					str+='</select>';
+					str+='<input id="remarkId'+i+'" value="'+result[i].remarks+'"  type="text" placeholder="remarks" class="form-control"/>';
+					str+='</td>';
+					str+='<td style="display:none" id="quantityTdId'+i+'">';
+					str+='<select id="quantityId'+i+'" class="form-control">';
 					str+='<option value="0">Select Quantity</option>';
 					str+='<option value="350">350ml</option>';
 					str+='<option value="450">450ml</option>';
-				str+='</select>';
-				str+='</td>';
-			}else{
-				str+='<td style="display:none" id="bloodBagTypeTdId'+i+'">';
-				str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
-				//str+='<option>Single Bag</option>';
-				str+='</select>';
-				str+='</td>';
-				str+='<td  colspan="3" id="bloodBagQuantityTdId'+i+'">';
-				str+='<select style="display:none" id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
-				//str+='<option>With Sagm 350ml</option>';
-				str+='</select>';
-                str+='<input id="remarkId'+i+'" value="'+result[i].remarks+'"  type="text" placeholder="remarks" class="form-control"/>';
-                str+='</td>';
-				str+='<td style="display:none" id="quantityTdId'+i+'">';
-				str+='<select id="quantityId'+i+'" class="form-control">';
-				str+='<option value="0">Select Quantity</option>';
-				str+='<option value="350">350ml</option>';
-				str+='<option value="450">450ml</option>';
-				str+='</select>';
+					str+='</select>';
+					str+='</td>';
+				}
+				str+='<td>';
+				str+='<button id="submitId'+i+'" class="btn btn-success btn-sm submitCls" attr_button_submitting="SUBMITTING..." attr_button_submitted="SUBMITTED" attr_position="'+i+'">SUBMIT</button>';
 				str+='</td>';
 			}
-			
-			str+='<td>';
-			str+='<button id="submitId'+i+'" class="btn btn-success btn-sm submitCls" attr_button_submitting="SUBMITTING..." attr_button_submitted="SUBMITTED" attr_position="'+i+'">SUBMIT</button>';
-			str+='</td>';
 		str+='</tr>';
 	}
 	str+='</tbody>';
@@ -224,7 +277,23 @@ $(document).on("change",".registrationStatusCls",function(){
 	
 	var position=$(this).attr("attr_position");
 	var registrationStatus = $(this).find("option:selected").text();
-	$("#submitId"+position).html("SUBMIT");
+	 $("#submitId"+position).html("SUBMIT");
+	  if(registrationStatus!=null && registrationStatus!=undefined && registrationStatus!="Pending"){
+		 $("#bloodBagNoId"+position).removeAttr("disabled");
+		 $("#regNoId"+position).removeAttr("disabled");
+		 $("#bloodBagTypeId"+position).removeAttr("disabled");
+		 $("#bloodBagQuantityId"+position).removeAttr("disabled");
+		 $("#quantityId"+position).removeAttr("disabled");
+		 $("#submitId"+position).removeAttr("disabled");
+	  }else{
+		  $("#bloodBagNoId"+position).attr("disabled","disabled");
+		  $("#regNoId"+position).attr("disabled","disabled");
+		  $("#bloodBagTypeId"+position).attr("disabled","disabled");
+		  $("#bloodBagQuantityId"+position).attr("disabled","disabled");
+		  $("#quantityId"+position).attr("disabled","disabled");
+		  $("#submitId"+position).attr("disabled","disabled");
+	  }
+	  
 	  
 	 if(registrationStatus!=null && registrationStatus!=undefined && registrationStatus=="Rejected"){
 		$("#bloodBagTypeTdId"+position).hide();

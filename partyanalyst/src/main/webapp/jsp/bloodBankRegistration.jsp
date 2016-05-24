@@ -732,7 +732,13 @@ $(document).on("click","#cadreDetailsId",function(){
 		  $(".cadreNoErrorCls").html("Cadre Number Must Be 8 Digits.");
 		  return;
 	 }
+	 //clearing error fields
 	 $(".cadreNoErrorCls").html('');
+	 $(".nameErrorCls").html(' ');
+     $(".ageErrorCls").html(' ');
+     $(".mobileNoErrorCls").html(''); 
+     $(".dobErrorCls").html(' ');
+	 
 	 getCadreDetails(membserShipId);
 });
 $(document).on("click",".printCls",function(){
@@ -765,6 +771,12 @@ function populateCadreDetails(result){
 		populateCommonFields(result);
 	}else if(result.alreadyDonated!=null && result.alreadyDonated==true){
 		 populateCommonFields(result);
+		 
+		 if(result.married!=null && result.married.length>0){
+			 $("#slctBxMrrdId").val(result.married);
+		 }else{
+			$("#slctBxMrrdId").val(0);
+		 }
 		 if(result.donationsInBloodBank!=null && result.donationsInBloodBank>0){
 			$("#noOfTmBldDntnId").val(result.donationsInBloodBank);
 		}
@@ -801,7 +813,6 @@ function populateCommonFields(result){
 			}else{
 				$("#seltBxSxId").val('F');
 			}
-			
 		}
 		if(result.age!=null && result.age>0){
 			$("#ageId").val(result.age);
@@ -838,9 +849,15 @@ function validateFields(){
    var name=$("#nameId").val();
      var mobileNo=$("#mobileNoId").val();
      var dob=$("#dobId").val();
+	 var membserShipId = $("#membershipInputId").val();
 	 
+	 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
+			 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
+		     return;
+		 }
+	 $(".cadreNoErrorCls").html(" ");
 	if(name==null || name==undefined || name.trim().length==0){
-	   $(".nameErrorCls").html("Please enter name.");
+	   $(".nameErrorCls").html("Please Enter Name.");
       return	 
     }
     $(".nameErrorCls").html('');
@@ -848,7 +865,7 @@ function validateFields(){
 	   $(".dobErrorCls").html("Please Enter DOB.");
 	   return;	  
    } */
-	 $(".dobErrorCls").html(' ');
+	 //$(".dobErrorCls").html(' ');
 	 if(dob !=null && dob !=undefined && dob.trim() !=""){
 		 var dobArr=dob.split("/");	
 		  var year=(new Date().getFullYear())-(dobArr[2]);
@@ -893,11 +910,6 @@ function printdocumentDetails(){
 	$("#printBloddBankId").removeAttr("value");
 	//$("#printBloddBankCancelId").removeAttr("value");
 	
-		var membserShipId = $("#membershipInputId").val();
-		 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
-			 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
-		     return;
-		 }
         var cadreDtlsArr=[];
 		  cadreDtlsArr.push($("#nameId").val());
 		  cadreDtlsArr.push($("#spouseId").val());
@@ -917,7 +929,7 @@ function printdocumentDetails(){
 		  cadreDtlsArr.push($("#wllngTdntEmrgncyId").val());
 		  cadreDtlsArr.push($("#wllngTBClldFrDntnId").val());
 		  cadreDtlsArr.push($("#rmrksId").val());
-		  cadreDtlsArr.push(membserShipId);
+		  cadreDtlsArr.push( $("#membershipInputId").val());
 		 
 	   var jObj = {
 		   cadreDtlsArr:cadreDtlsArr
