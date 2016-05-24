@@ -55,7 +55,11 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public Long stateWiseEventAttendeeCounts(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId ,String statesType);
 	public List<Object[]> stateWiseEventAttendeeCountsByDates(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId ,String statesType);
 	public List<Object[]> getDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
+	public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
 	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
+	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
 	public List<Object[]> getOtherStateDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
+	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
 	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
+	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
 }
