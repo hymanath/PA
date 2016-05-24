@@ -1056,21 +1056,27 @@ function buildDistrictTable(result,reportLevelId){
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
-		
+			
+			var dataExist = {};
+			
 			for(var i in result[0].subList){
-				str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
+				if(result[0].subList[i].totalDaydataExist == true){
+					str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
+				}
 			}
 			
 		str+='</tr>';
 		str+='<tr>';
 			for(var j in result[0].subList){
-				str+='<th>Total</th>';
-				str+='<th>Invitees</th>';
-				str+='<th>Non Invitees</th>';
+				if(result[0].subList[j].totalDaydataExist == true){
+					str+='<th>Total</th>';
+					str+='<th>Invitees</th>';
+					str+='<th>Non Invitees</th>';
+				}
 			}
 		str+='</tr>';
 		str+='</thead>';
-		str+='<tbody class="fixed-table-body ">';
+		str+='<tbody class="scrollLength">';
 		for(var j in result){
 			str+='<tr>';
 			if(result[j].id ==0 || result[j].id == null){
@@ -1104,27 +1110,26 @@ function buildDistrictTable(result,reportLevelId){
 			}else{
 				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
 			}
+			
 			for(var l in result[j].subList){
-				if(result[j].subList[l].dataExist == true){
-					if(result[j].attendees ==0 || result[j].attendees == null){
+				
+				if(result[0].subList[l].totalDaydataExist == true){
+					
+					if(result[j].subList[l].attendees ==0 || result[j].subList[l].attendees == null){
 						str+='<td class="text-center"> - </td>';
 					}else{
 						str+='<td class="text-center">'+result[j].subList[l].attendees+'</td>';
 					}
-					if(result[j].invitees ==0 || result[j].invitees == null){
+					if(result[j].subList[l].invitees ==0 || result[j].subList[l].invitees == null){
 						str+='<td class="text-center"> - </td>';
 					}else{
 						 str+='<td class="text-center">'+result[j].subList[l].invitees+'</td>';
 					}
-				   if(result[j].nonInvitees ==0 || result[j].nonInvitees == null){
+				   if(result[j].subList[l].nonInvitees ==0 || result[j].subList[l].nonInvitees == null){
 						str+='<td class="text-center"> - </td>';
 					}else{
 						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
 					}
-				}else{
-					str+='<td class="text-center"></td>';
-					str+='<td class="text-center"></td>';
-					str+='<td class="text-center"></td>';
 				}
 			}
 			str+='</tr>';
@@ -1265,14 +1270,19 @@ function buildConstTable(result,reportLevelId){
 		str+='<th rowspan="2" style="vertical-align:middle;">NON INVITEES ATTENDED</th>';
 	
 			for(var i in result[0].subList){
-				str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
+				if(result[0].subList[i].totalDaydataExist == true){
+					str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
+				}
+				
 			}
 		str+='</tr>';
 		str+='<tr>';
 			for(var j in result[0].subList){
-				str+='<th>Total</th>';
-				str+='<th>Invitees</th>';
-				str+='<th>Non Invitees</th>';
+				if(result[0].subList[j].totalDaydataExist == true){
+					str+='<th>Total</th>';
+					str+='<th>Invitees</th>';
+					str+='<th>Non Invitees</th>';
+				}
 			}
 		str+='</tr>';
 		str+='</thead>';
@@ -1319,27 +1329,25 @@ function buildConstTable(result,reportLevelId){
 			
 			for(var l in result[j].subList){
 				
-				if(result[j].subList[l].dataExist == true){
-					if(result[j].attendees ==0 || result[j].attendees == null){
+				if(result[0].subList[l].totalDaydataExist == true){
+					
+					if(parseInt(result[j].subList[l].attendees) == 0 || result[j].subList[l].attendees == null){
+						
 						str+='<td class="text-center"> - </td>';
 					}else{
 						str+='<td class="text-center">'+result[j].subList[l].attendees+'</td>';
 					}
-					if(result[j].invitees ==0 || result[j].invitees == null){
+					if(parseInt(result[j].subList[l].invitees) == 0 || result[j].subList[l].invitees == null){
 						str+='<td class="text-center"> - </td>';
 					}else{
 						 str+='<td class="text-center">'+result[j].subList[l].invitees+'</td>';
 					}
-		 	       if(result[j].nonInvitees ==0 || result[j].nonInvitees == null){
+		 	       if(parseInt(result[j].subList[l].nonInvitees) == 0 || result[j].subList[l].nonInvitees == null){
 						str+='<td class="text-center"> - </td>';
 					}else{
 						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
 					}
-			    }else{
-					str+='<td class="text-center"></td>';
-					str+='<td class="text-center"></td>';
-					str+='<td class="text-center"></td>';
-				}
+			    }
 			}
 			
 			str+='</tr>';
