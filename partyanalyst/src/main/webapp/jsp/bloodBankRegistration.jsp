@@ -87,11 +87,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 m_top10">
                     	<label>Address</label>
                         <textarea class="form-control" id="addressId" rows="4"></textarea>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 m_top10">
                     	<div class="row">
                         	<div class="col-md-6">
                             	<label>Mobile<span style='color:red'>*</span></label><span class="mobileNoErrorCls mandatoryFieldCls"></span>
