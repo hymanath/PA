@@ -172,6 +172,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 StringBuilder locationQueryString = new StringBuilder();
 				 locationQueryString.append(" and model.tdpCadre.userAddress.state.stateId is not null ");
 				 boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
+				 setTotalDayDataExist(finalMap);
 				 if(isDataAvailable){
 					 getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap); 
 				 }
@@ -207,12 +208,18 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						
 						if(apTsStatesExist){
 							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
+							setTotalDayDataExist(finalMap);
 							if(isDataAvailable){
 								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap);
 							}
 						}
 						if(otherStatesExist){
 							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
+							
+							if(!apTsStatesExist){
+								setTotalDayDataExist(finalMap);
+							}
+							
 							if(isDataAvailable){
 								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap);
 							}
@@ -253,6 +260,23 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			Log.error("Exception rised in getAttendeesAndinviteesCount()",e);
 		}
 		
+	}
+	
+	public MahanaduEventVO setTotalDayDataExist(Map<Long,MahanaduEventVO>  finalMap){
+		
+		MahanaduEventVO firstLocationVO = null;
+		
+		if(finalMap != null && finalMap.size() > 0){
+			
+			 Map.Entry<Long,MahanaduEventVO> firstEntry=finalMap.entrySet().iterator().next();
+			 firstLocationVO = firstEntry.getValue();
+			 if( firstLocationVO != null && firstLocationVO.getSubMap()!=null && firstLocationVO.getSubMap().size()>0){
+				 for(Map.Entry<String, MahanaduEventVO> entry : firstLocationVO.getSubMap().entrySet()){
+					 entry.getValue().setTotalDaydataExist(false);  
+				  }
+			 }
+		}
+		return firstLocationVO;
 	}
 	
 	public boolean getAttendeeAndinviteeCounts(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap,Set<Long> locationIds,List<Date> betweenDates,Long parentEventId){
@@ -321,7 +345,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 								   if(type.equalsIgnoreCase("attendee"))
 								   {
 									   dateVO.setAttendees(obj[3]!=null ?(Long)obj[3]:0l );
-									   dateVO.setNonInvitees(obj[3]!=null ?(Long)obj[3]:0l);	
+									   dateVO.setNonInvitees(obj[3]!=null ?(Long)obj[3]:0l);
+									   
+									   //set day data exist.
+									   if( dateVO.getAttendees() != null && dateVO.getAttendees().longValue() > 0l){
+										  finalMap.entrySet().iterator().next().getValue().getSubMap().get(dateStr).setTotalDaydataExist(true);
+									   }
+									  
 								   }
 								   if(type.equalsIgnoreCase("invitee"))
 								   {
