@@ -1824,6 +1824,26 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setMaxResults(1);
 		return query.list();
 	}
+	
+	public List<Object[]> getConstituencyIdAndNameByStateForRegion(Long stateId,String region){
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.constituencyId,model.name " +
+				" from Constituency model where model.state.stateId=:stateId and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 ");
+		
+		if(region.equalsIgnoreCase("Telangana")){
+			str.append("and model.district.districtId between 1 and 10 order by model.name");
+		}
+		else if(region.equalsIgnoreCase("Andhra Pradesh")){
+			str.append("and model.district.districtId between 11 and 23 order by model.name");	
+		}
+		else{
+			str.append("and model.district.districtId between 1 and 23 order by model.name");	
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("stateId", stateId);
+		return query.list();
+	}
 }
 
 
