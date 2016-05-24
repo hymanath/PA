@@ -79,8 +79,9 @@
 								<span class="ageErrorCls mandatoryFieldCls"></span>
                             </div>
                             <div class="col-md-3">
-                            	<label>Married<span class="mandatoryFieldCls">*</span></label>
+                            	<label>Married<!--<span class="mandatoryFieldCls">*</span>--></label>
  		                        <select id="slctBxMrrdId" class="form-control">
+									<option value="0">Select Status</option>
 									<option value="Single">Single</option>
                                 	<option value="Married">Married</option>	
 								</select>
