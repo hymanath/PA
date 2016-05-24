@@ -358,7 +358,7 @@
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
 									<p class="m_0 display-style" id="districtHeading">DISTRICT WISE </p>
-									<button class="btn btn-success btn btn-xs pointer" id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>
+									<!-- <button class="btn btn-success btn btn-xs pointer" id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>-->
 									
 									</div>
 									<div class="panel-body" style="padding:0px;">				
@@ -373,7 +373,7 @@
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
 									<p class="m_0 display-style" id="constiHeading">CONSTITUENCY WISE</p>
-									 <button class="btn btn-success btn btn-xs" id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>
+									 <!-- <button class="btn btn-success btn btn-xs" id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>-->
 									<div class="onoffswitch pull-right" style="display:none;">
 										<input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
 										<label class="onoffswitch-label" for="myonoffswitch1">
