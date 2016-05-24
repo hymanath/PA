@@ -1,9 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -11,29 +15,56 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
+import com.itgrids.partyanalyst.dto.EmailAttributesVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatesEventVO;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService1.class);
 	
 	DecimalFormat decimalFormat = new DecimalFormat("#.##");
+	DateUtilService dateUtilService = new DateUtilService();
+	SimpleDateFormat format = new SimpleDateFormat("MMM dd yyyy hh:mm a");
 	
 	private IEventAttendeeDAO eventAttendeeDAO;
 	private IEventInviteeDAO eventInviteeDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
+	private IMailService mailService;
 	
 	public IEventAttendeeDAO getEventAttendeeDAO() {
 		return eventAttendeeDAO;
@@ -61,8 +92,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-	
-	 /**
+	 public IMailService getMailService() {
+		return mailService;
+	}
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+	/**
 	   *   @author    : Sreedhar
 	   *   Description:This Service is used to get the Location Wise event attendees and event invitees count
 	   *   inputs: startDate,endDate,parenteventId,subEventIds,reportLevelId,stateIds,stateType
@@ -135,7 +171,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				 StringBuilder locationQueryString = new StringBuilder();
 				 locationQueryString.append(" and model.tdpCadre.userAddress.state.stateId is not null ");
-				 boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap,locationIds,betweenDates);
+				 boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
 				 if(isDataAvailable){
 					 getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap); 
 				 }
@@ -170,13 +206,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						
 						
 						if(apTsStatesExist){
-							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap,locationIds,betweenDates);
+							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
 							if(isDataAvailable){
 								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap);
 							}
 						}
 						if(otherStatesExist){
-							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap,locationIds,betweenDates);
+							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
 							if(isDataAvailable){
 								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap);
 							}
@@ -219,7 +255,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 	}
 	
-	public boolean getAttendeeAndinviteeCounts(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap,Set<Long> locationIds,List<Date> betweenDates){
+	public boolean getAttendeeAndinviteeCounts(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap,Set<Long> locationIds,List<Date> betweenDates,Long parentEventId){
 		 
 		 boolean isDataAvailable = false;
 		 List<Object[]> totalAttendeeList = eventAttendeeDAO.locationWiseEventAttendeeCountsQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,locationQueryString);
@@ -231,9 +267,25 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			 
 			 setDataToMap(totalAttendeeList,finalMap,"attendee",locationIds,betweenDates,locationType);
 			 setDataToMap(totalInviteeList,finalMap,"invitee",locationIds,betweenDates,locationType);
+			 
+			 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
+		     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
 		 }
 		 return  isDataAvailable;
 	}
+	
+	public void calCulatinginviteeNonInviteePercantage(Map<Long,MahanaduEventVO> finalMap,Long totalAttended){
+	    
+	    if( finalMap!= null && finalMap.size() > 0){
+	       for (Map.Entry<Long, MahanaduEventVO> entry : finalMap.entrySet()) {
+	        
+	         entry.getValue().setAttendeePercantage(calcPercantage(totalAttended, entry.getValue().getAttendees()));
+	         entry.getValue().setInviteePercantage(calcPercantage(entry.getValue().getAttendees(), entry.getValue().getInvitees()));
+	         entry.getValue().setNonInviteePercantage(calcPercantage(entry.getValue().getAttendees(), entry.getValue().getNonInvitees()));
+	       }
+	     }
+	    
+	  }
 	
 	public void getAttendeeAndinviteeCountsDateWise(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap){
 		 
@@ -562,6 +614,226 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    }
 		    return percentage;
 		 }
+		
+		
+		
+		/**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to send the mail with attachments using java mail api 
+		   *   inputs: emailAttributesVO
+		   *   output: ResultStatus
+		   *   
+		  */
+		public ResultStatus sendEmailWithAttachment(EmailAttributesVO emailAttributesVO)
+		{
+			
+			ResultStatus resultStatus = new ResultStatus();
+			String host = IConstants.DEFAULT_MAIL_SERVER;
+			try{
+				
+				if(emailAttributesVO.getEmailIds() == null || emailAttributesVO.getEmailIds().size() == 0)
+				{
+					LOG.warn("Empty Mailing List - Please Check Once");
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					return resultStatus;
+				}
+				
+				Session session = mailService.getSessionObject(host);
+				
+				if(session == null)
+				{
+					LOG.error("MimeMessage Object is Not Created");
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+					return resultStatus;
+				}
+				
+				for(String email : emailAttributesVO.getEmailIds())
+				{
+				  try{
+					  
+					 MimeMessage message = new MimeMessage(session);
+					
+					 message.setFrom(new InternetAddress(IConstants.LOCALFROMEMAILID));
+					 message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+					 message.setHeader("Return-Path", IConstants.LOCALFROMEMAILID);
+					 message.setSentDate(dateUtilService.getCurrentDateAndTime());
+					 message.setSubject(emailAttributesVO.getSubject());
+					
+					 Multipart multipart = new MimeMultipart();
+	        		 
+		        	 BodyPart htmlPart = new MimeBodyPart();
+		        	 String msgText="Please Find The Attached  Pdf Document For Mahanadu 2016 Event Dashboard on "+emailAttributesVO.getTime() ;
+		        	 //htmlPart.setContent(getContent(fileNamesVO.getImages()),"text/html");
+		             htmlPart.setContent(emailAttributesVO.getBodyText(),"text/html");
+		        	 multipart.addBodyPart(htmlPart);
+		        	 
+		        	 String pdfFileName = emailAttributesVO.getPdfName();
+		        	 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + "/" + IConstants.MAHANADU_IMAGES_2016 ;
+		        	 String pdfPath = staticPath + "/"+ pdfFileName;
+		        	 
+		             DataSource source = new FileDataSource(pdfPath);
+		        	 BodyPart  attachment  = new MimeBodyPart();
+		        	 attachment.setDataHandler(new DataHandler(source));
+		             attachment.setFileName("Mahanadu 2016.pdf");
+		             multipart.addBodyPart(attachment);
+		        		
+		        	 message.setContent(multipart);
+					
+				    
+				    if(host.equalsIgnoreCase(IConstants.LOCALHOST))
+					{
+				    	Transport transport = session.getTransport("smtp");
+			            transport.connect(IConstants.HOST,IConstants.LOCALFROMEMAILID,IConstants.PASSWORD);
+			            transport.sendMessage(message, message.getAllRecipients());
+			            transport.close();
+					}
+				    else{
+				    	Transport.send(message);
+				    }
+				    
+				    
+				    resultStatus.setMessage(IConstants.SUCCESS);
+				    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				  }catch(Exception e){
+					  LOG.error("Exception in sending mail : ",e);
+					  resultStatus.setMessage(IConstants.FAILURE);
+					  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				  }
+				}
+				return resultStatus;
+			}catch (Exception e) {
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setExceptionMsg(e.getMessage());
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+		}
+		
+		public String getContent(List<String> images){
+			
+			String content = "";
+			for(String img :images){
+				
+				String imgPath = IConstants.MAHANADU_IMAGES_RETRIEVE_PATH+"/"+img;
+				
+				content = content + "<img src='"+imgPath+"'  width='100%'/><br/> ";
+			}
+			return  content;
+		}
+		
+		/**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to create a pdf file the given string data.
+		   *   inputs: buildString
+		   *   output: EmailAttributesVO
+		   *   
+		  */
+		public EmailAttributesVO createMainPdfFile(String buildString){
+			
+			EmailAttributesVO fileNamesVO = new EmailAttributesVO();
+			
+			List<String> images = null;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+			try{
+				
+				String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + "/" + IConstants.MAHANADU_IMAGES_2016 ;
+				String folderCreation = commonMethodsUtilService.createFolder(staticPath);
+				
+				Date currentDate = dateUtilService.getCurrentDateAndTime();
+				String currentDateString = sdf.format(currentDate);
+				
+				String pdfName = currentDateString+"_"+RandomNumberGeneraion.randomGenerator(5)+".pdf";
+				String pdfFilePath = staticPath+"/"+pdfName;
+				
+				OutputStream file = new FileOutputStream(new File(pdfFilePath));
+				
+				Document document = new Document();
+				PdfWriter.getInstance(document, file);
+				document.open();
+				
+				HTMLWorker htmlWorker = new HTMLWorker(document);
+				htmlWorker.parse(new StringReader(buildString));
+				
+				document.close();
+				file.close();
+				
+				fileNamesVO.setPdfName(pdfName);
+				
+				images = splitMainPdfToSubPdfs(pdfFilePath,staticPath,currentDateString);
+				if(images != null && images.size() > 0){
+					fileNamesVO.setImages(images);
+				}
+			}catch(Exception e){
+				LOG.error("Exception in createMainPdfFile() : ",e);
+			}
+			return fileNamesVO;
+		}
+		
+		public List<String> splitMainPdfToSubPdfs(String pdfFilePath,String staticPath,String currentDateString){
+			
+			List<String> images = new ArrayList<String>();
+			
+	        try {
+	            //String inFile = "E:\\Hall Ticks\\GEST\\sree.pdf";
+	            
+	            PdfReader reader = new PdfReader(pdfFilePath);
+	            int n = reader.getNumberOfPages();
+	            System.out.println ("Number of pages : " + n);
+	            int i = 0;            
+	            while ( i < n ) {
+	            	
+	                //String outFile = pdfFilePath.substring(0, pdfFilePath.indexOf(".pdf")) + "-" + String.format("%03d", i + 1) + ".pdf"; 
+	            	int randomNumber = RandomNumberGeneraion.randomGenerator(5);
+	            	String pdfName = currentDateString+"_"+randomNumber+".pdf";
+	            	String outFile =  staticPath+"/"+pdfName;
+	            	
+	                System.out.println ("Writing " + outFile);
+	                Document document = new Document(reader.getPageSizeWithRotation(1));
+	                PdfCopy writer = new PdfCopy(document, new FileOutputStream(outFile));
+	                document.open();
+	                PdfImportedPage page = writer.getImportedPage(reader, ++i);
+	                writer.addPage(page);
+	                document.close();
+	                writer.close();
+	                
+	                //get All image names.
+	                String result = convertToImage(outFile);
+	                if( result != null && result.equalsIgnoreCase("success")){
+	                	images.add(currentDateString+"_"+randomNumber+".jpg");
+	                }
+	                
+	            }
+	        } 
+	        catch (Exception e) {
+	        	LOG.error("Exception in splitMainPdfToSubPdfs() : ",e);
+	        }
+			return  images;
+		}
+		
+		/**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to convert a pdf file to image
+		   *   inputs: buildString
+		   *   output: EmailAttributesVO
+		   *   
+		  */
+		public String convertToImage(String indiDEST){
+			
+			String output = indiDEST.replace(".pdf", ".jpg");
+			ProcessBuilder processBuilder = new ProcessBuilder(IConstants.GHOST_SCRIPT_PATH,"-dSAFER", "-dBATCH", "-dNOPAUSE", "-sDEVICE=jpeg","-r210","-dJPEGQ=80","-sOutputFile="+output+"",""+indiDEST+"");
+		
+			try{
+				processBuilder.start();
+				return "success";
+			}catch(IOException e){
+				LOG.error("Exception in splitMainPdfToSubPdfs() : ",e);
+				return "fail";
+			}
+		}
+		
+		
+		
 		
 		
 		
