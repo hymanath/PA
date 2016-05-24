@@ -119,7 +119,7 @@
 							</div>
 						</div>
 						<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12" style="display:none;">
 				<div class="panel panel-default panel-custom">
 					<div class="panel-heading ">
 						<h4 class="panel-title">ACTIVITY RESPONSES</h4>
@@ -127,7 +127,7 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-4" id="questionsDiv">
-								<select class="form-control" id="questionsId" selected>
+								<select class="form-control" id="questionsId" >
 									<!--<option value="0">Select Questions</option>-->
 								</select>	
 							</div>
