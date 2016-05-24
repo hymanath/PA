@@ -28,7 +28,7 @@ public class AccommodationTracking extends BaseModel implements Serializable{
 	private Long accommodationTrackingId;
 	private Long notificationTypeId;
 	private Long locationTypeId;
-	private String locationValue;
+	private Long locationValue;
 	private String locationName;
 	private String address;
 	private String contactPerson;
@@ -67,10 +67,10 @@ public class AccommodationTracking extends BaseModel implements Serializable{
 		this.locationTypeId = locationTypeId;
 	}
 	@Column(name = "location_value")
-	public String getLocationValue() {
+	public Long getLocationValue() {
 		return locationValue;
 	}
-	public void setLocationValue(String locationValue) {
+	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
 	}
 	@Column(name = "location_name")
@@ -137,7 +137,7 @@ public class AccommodationTracking extends BaseModel implements Serializable{
 		this.updatedTime = updatedTime;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="region_scopes_id", insertable=false, updatable = false)
+	@JoinColumn(name="location_type_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public RegionScopes getRegionScopes() {

@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.AccessLocationVO;
+import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceVO;
 import com.itgrids.partyanalyst.dto.ActivityLoginVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
@@ -129,6 +130,7 @@ import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ISmsGatewayService;
 import com.itgrids.partyanalyst.service.ISmsService;
@@ -220,8 +222,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ITdpMemberUnionTabUserRelationDAO tdpMemberUnionTabUserRelationDAO;
     private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
     private IUnionTypeDesignationDAO unionTypeDesignationDAO;
+    private INotificationService notificationService;
     
     
+	public INotificationService getNotificationService() {
+		return notificationService;
+	}
+
+	public void setNotificationService(INotificationService notificationService) {
+		this.notificationService = notificationService;
+	}
+
 	public IUnionTypeDesignationDAO getUnionTypeDesignationDAO() {
 		return unionTypeDesignationDAO;
 	}
@@ -3783,6 +3794,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 log.debug("Entered into the getTdpCadreDetailsForPartyMeeting  method in WebServiceHandlerService");
 		}
 		  return returnvo;
+	  }
+	  
+	  public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType)
+	  {
+		  List<AccommodationVO> returnList = null;
+		  try {
+			  returnList = notificationService.getAccommodationTrackingInfoByNotificationType(notificationType,locationType);
+		} catch (Exception e) {
+			 log.debug("Entered into the getAccommodationTrackingInfoByNotificationType  method in WebServiceHandlerService");
+		}
+		  return returnList;
 	  }
 }
 

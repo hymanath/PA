@@ -13,9 +13,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAccommodationTrackingDAO;
+import com.itgrids.partyanalyst.dao.INotificationTypeDAO;
 import com.itgrids.partyanalyst.GcmService.GcmService;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationDeviceDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO;
+import com.itgrids.partyanalyst.dto.AccommodationVO;
+import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.model.NotificationDevice;
 import com.itgrids.partyanalyst.service.INotificationService;
@@ -30,8 +34,27 @@ public class NotificationService implements INotificationService{
 	private DateUtilService dateUtilService = new DateUtilService();
 	private NotificationsDAO notificationsDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+	private IAccommodationTrackingDAO accommodationTrackingDAO;
+	private INotificationTypeDAO notificationTypeDAO;
 	
 	
+	public INotificationTypeDAO getNotificationTypeDAO() {
+		return notificationTypeDAO;
+	}
+
+	public void setNotificationTypeDAO(INotificationTypeDAO notificationTypeDAO) {
+		this.notificationTypeDAO = notificationTypeDAO;
+	}
+
+	public IAccommodationTrackingDAO getAccommodationTrackingDAO() {
+		return accommodationTrackingDAO;
+	}
+
+	public void setAccommodationTrackingDAO(
+			IAccommodationTrackingDAO accommodationTrackingDAO) {
+		this.accommodationTrackingDAO = accommodationTrackingDAO;
+	}
+
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -190,5 +213,78 @@ public class NotificationService implements INotificationService{
 		 
 	 }
 	 
+	 public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType){
+		 List<AccommodationVO> returnList = null;
+		 try {
+			 Map<Long,AccommodationVO> constMap = new LinkedHashMap<Long, AccommodationVO>();
+			 List<AccommodationVO> notificationTypeList = new ArrayList<AccommodationVO>();
+			 
+			 List<Object[]> notList = notificationTypeDAO.getNotificationTypes();
+			 if(notList != null && notList.size() > 0){
+				 for (Object[] obj : notList) {
+					AccommodationVO vo = new AccommodationVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					notificationTypeList.add(vo);
+				}
+			 }
+			List<Object[]> list = accommodationTrackingDAO.getAccommodationTrackingInfoByNotificationType(notificationType, locationType);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					Long constituencyId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					AccommodationVO vo = constMap.get(constituencyId);
+					if(vo == null){
+						vo = new AccommodationVO();
+						vo.setConstituencyId(constituencyId);
+						vo.setConstituencyName(obj[4] != null ? obj[4].toString():"");
+						vo.setDistrictId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+						vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
+						
+						vo.setLocationDetails(notificationTypeList);
+					}
+				}
+			}
+			
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					Long constituencyId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
+					Long notifTypeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					AccommodationVO vo = constMap.get(constituencyId);
+					if(vo != null){
+						AccommodationVO notiTypevo = getMatchedVO(vo.getLocationDetails(), notifTypeId);
+						if(notiTypevo != null){
+							notiTypevo.setLocationName(obj[7] != null ? obj[7].toString():"");
+							notiTypevo.setAddress(obj[8] != null ? obj[8].toString():"");
+							notiTypevo.setContactPerson(obj[9] != null ? obj[9].toString():"");
+							notiTypevo.setMobileNo(obj[10] != null ? obj[10].toString():"");
+							notiTypevo.setLongitude(obj[11] != null ? obj[11].toString():"");
+							notiTypevo.setLatitude(obj[12] != null ? obj[12].toString():"");
+						}
+					}
+				}
+			}
+			
+			if(constMap != null)
+				returnList = new ArrayList<AccommodationVO>(constMap.values());
+			
+		} catch (Exception e) {
+			 log.error("Exception occured in getActiveNotifications() Method ",e);
+		}
+		return returnList;
+	 }
+	 
+	 public AccommodationVO getMatchedVO(List<AccommodationVO> resultList,Long id)
+		{
+			if(resultList != null && resultList.size() > 0){
+				for(AccommodationVO vo : resultList){
+					if(vo.getId().equals(id)){
+						return vo;
+					}
+				}
+			 }
+			 return null;
+		}
 }
 
