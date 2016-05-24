@@ -25,4 +25,5 @@ public interface ISchedulerService {
 	public String updateTrainingCampSpeakersDetails();
 	
 	public void changeApptStatusToAttended(Date fromDate,Long attendedStatusId,Long fixedStatusId);
+	public void sendPdfReport();
 }

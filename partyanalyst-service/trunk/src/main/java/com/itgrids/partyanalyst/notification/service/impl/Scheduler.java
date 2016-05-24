@@ -316,7 +316,7 @@ public class Scheduler {
 		}
 			
 		try{
-			  rs = schedulerService.sendPdfReport();
+			   schedulerService.sendPdfReport();
 		}
 		catch(Exception e)
 		{
