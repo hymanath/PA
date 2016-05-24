@@ -7,7 +7,8 @@
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/BloodBankCustomFiles/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css"/>
-<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
+<!--<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>-->
+<link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,300,500italic,400italic,300italic,700,900" rel="stylesheet" type="text/css">
 <style>
 .mandatoryFieldCls
@@ -594,7 +595,7 @@
 										</td>
 									</tr>
 								</table>
-								<table class="table m_top30" >
+								<table class="table tableSignaturePrint m_top30" >
 									<tr>
 										<td>
 											<p>Signature Of Medical Officer</p>
@@ -639,13 +640,16 @@
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<!--<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>-->
+<script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 
 
-$("#dobId").daterangepicker({singleDatePicker:true});
-$("#dtfDntnId").daterangepicker({singleDatePicker:true});
+//$("#dobId").daterangepicker({singleDatePicker:true});
+$("#dobId").datetimepicker({format:'MM/DD/YYYY'});
+$("#dtfDntnId").datetimepicker({format:'MM/DD/YYYY'});
+//$("#dtfDntnId").daterangepicker({singleDatePicker:true});
 $("#dtfDntnId").val(" ");
 $("#dobId").val(" ");
 //$('select').dropkick();
@@ -845,9 +849,11 @@ function validateFields(){
 	   return;	  
    } */
 	 $(".dobErrorCls").html(' ');
-	 var dobArr=dob.split("/");	
-	 var year=(new Date().getFullYear())-(dobArr[2]);
-	//$("#ageId").val(year);
+	 if(dob !=null && dob !=undefined && dob !=""){
+		  var dobArr=dob.split("/");	
+		  var year=(new Date().getFullYear())-(dobArr[2]);
+		  $("#ageId").val(year);
+	 }	
 	 var age=$("#ageId").val();
 	if(age==null && age==undefined || age.trim().length==0){
 	  $(".ageErrorCls").html('Please enter age.');
