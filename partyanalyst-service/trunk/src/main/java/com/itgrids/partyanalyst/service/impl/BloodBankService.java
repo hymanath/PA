@@ -832,6 +832,18 @@ public class BloodBankService implements IBloodBankService{
 		return finalList;
 	}
 	
+	public BloodBankDashBoardVO getMatchedVOForAcceptanceStatus(List<BloodBankDashBoardVO> resultList,Long id)
+	{
+		if(resultList != null && resultList.size() > 0){
+			for(BloodBankDashBoardVO vo : resultList){
+				if(vo.getId().longValue() == id.longValue()){
+					return vo;
+				}
+			}
+		 }
+		 return null;
+	}
+	
 	public BloodBankDashBoardVO getBloodDonarsCountsSummary(Long campId){
 		
 		BloodBankDashBoardVO bldDntnVO = new BloodBankDashBoardVO();
@@ -843,16 +855,28 @@ public class BloodBankService implements IBloodBankService{
 					Date campFromDate = (Date)(campDates[0]);
 					Date campToDate = (Date)(campDates[1]);
 					List<Date> betweenDates= commonMethodsUtilService.getBetweenDates(campFromDate, campToDate);
+					List<AcceptanceStatus> accStatusList = acceptanceStatusDAO.getAll();
+					if(accStatusList != null && accStatusList.size() > 0){
+						for (AcceptanceStatus acceptanceStatus : accStatusList) {
+							BloodBankDashBoardVO Vo = new BloodBankDashBoardVO();
+							Vo.setId(acceptanceStatus.getAcceptanceStatusId());
+							Vo.setTotalCount(0l);
+							Vo.setBloodBankDashBoardVO(setCampDates(betweenDates));
+							mainList.add(Vo);
+						}
+					}
+					
 				List<Object[]> bldDnrCntsList = bloodDonationDAO.getBloodDonorCounts(campFromDate, campToDate);
 				if(bldDnrCntsList != null && bldDnrCntsList.size()>0){
 					for (Object[] obj : bldDnrCntsList) {
-						//if(Long.valueOf(obj[1].toString()) != 1l){
-							BloodBankDashBoardVO Vo = new BloodBankDashBoardVO();
-							Vo.setId(obj[1] != null ?(Long)obj[1]:0l);
-							Vo.setTotalCount(obj[0] != null ?(Long)obj[0]:0l);
-							Vo.setBloodBankDashBoardVO(setCampDates(betweenDates));
-							mainList.add(Vo);
-						//}
+						Long id = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						Long count = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						BloodBankDashBoardVO Vo = getMatchedVOForAcceptanceStatus(mainList, id);
+						if(Vo != null)
+							Vo.setTotalCount(count);
+						//Vo.setId(obj[1] != null ?(Long)obj[1]:0l);
+						//Vo.setBloodBankDashBoardVO(setCampDates(betweenDates));
+						//mainList.add(Vo);
 					}
 				}
 				
