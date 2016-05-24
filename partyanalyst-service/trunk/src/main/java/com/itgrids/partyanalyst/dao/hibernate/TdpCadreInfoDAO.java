@@ -178,19 +178,19 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
 			{
 				str.append(" ,model2.tehsilName from TdpCadreInfo model,Tehsil model2,Booth B where model2.tehsilId = model.locationId and model2.tehsilId = B.tehsil.tehsilId and model.locationType like '%Tehsil%' ");
-				str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList) and model.type like '%Registered%' ");
+				str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.constituency.constituencyId in (:locationIdsList) and model.type like '%Registered%' ");
 				str.append(" order by model2.tehsilName ");
 			}
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 			{
 				str.append(" ,model2.panchayatName from TdpCadreInfo model,Panchayat model2,Booth B where model2.panchayatId = model.locationId and model2.panchayatId = B.panchayat.panchayatId and model.locationType like '%Panchayat%' ");
-				str.append(" and B.publicationDate.publicationDateId = 11 and B.tehsil.tehsilId in (:locationIdsList) and model.type like '%Registered%' ");
+				str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.tehsil.tehsilId in (:locationIdsList) and model.type like '%Registered%' ");
 				str.append(" order by model2.panchayatName ");
 			}
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			{
 				str.append(" ,model2.name from TdpCadreInfo model,LocalElectionBody model2,Booth B where model2.localElectionBodyId = model.locationId and model2.localElectionBodyId = B.localBody.localElectionBodyId and model.locationType like '%LocalBody%' ");
-				str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList) and model.type like '%Registered%' ");
+				str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.localBody.localElectionBodyId in (:locationIdsList) and model.type like '%Registered%' ");
 				str.append(" order by model2.name ");
 			}
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
