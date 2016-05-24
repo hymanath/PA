@@ -16,6 +16,9 @@
 {
 	padding:4.8px 8px !important;
 }
+.bloodCollectionHeightCls tr td{
+	padding:12px !important;
+}
 </style>
 </head>
 <body>
@@ -140,7 +143,7 @@
                         </div>
                      </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="margin-top: -6px;">
                 	<div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title text-capitalise">donate in emergency</h4>
@@ -150,7 +153,7 @@
                         </div>
                      </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="margin-top: -5px;">
                 	<div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title text-capitalise">called for donation</h4>
@@ -278,7 +281,7 @@ function gettotalCollectedBloodDetails(){
         }).done(function(result){
 			if(result != null){
 				var str='';
-				str+='<table class="table table-condensed m_top10">';
+				str+='<table class="table table-condensed m_top10 bloodCollectionHeightCls">';
 					str+='<tr>';
 						str+='<td>All Days</td>';
 						str+='<td>'+result.totalBlood+' ml</td>';
@@ -716,28 +719,28 @@ function buildBloodDonorsCountsSummary(result){
 	str+='<table class="table tableDonors">';
                     	str+='<tr>';
                         	str+='<td>';
-                            	str+='<div  class="tdBack">';
+                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
 								if(result[0].totalCount != null)
                  	           		str+='<h2>'+result[0].totalCount+'</h2>';
                                 	str+='<p class="text-capitalize">total Pending</p>';
                                 str+='</div>';
                             str+='</td>';
                             str+='<td>';
-                            	str+='<div  class="tdBack">';
+                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
 								if(result[1].totalCount != null)
                  	           		str+='<h2>'+result[1].totalCount+'</h2>';
                                 	str+='<p class="text-capitalize">total Approved</p>';
                                str+=' </div>';
                             str+='</td>';
                             str+='<td>';
-                            	str+='<div  class="tdBack">';
+                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
 								if(result[2].totalCount != null)
                  	           		str+='<h2>'+result[2].totalCount+'</h2>';
                                 	str+='<p class="text-capitalize">total rejected</p>';
                                 str+='</div>';
                             str+='</td>';
                             str+='<td>';
-                            	str+='<div  class="tdBack">';
+                            	str+='<div  class="tdBack" style="margin-bottom: -12px;">';
 									str+='<h2>'+totalcount1+'</h2>';
                                 	str+='<p class="text-capitalize">total applications</p>';
                                 str+='</div>';
