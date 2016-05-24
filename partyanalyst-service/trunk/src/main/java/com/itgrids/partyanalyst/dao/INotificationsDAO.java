@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.Notifications;
 
 public interface INotificationsDAO extends GenericDao<Notifications,Long>{
 	public List<Object[]> getNotificationsDetailsByNotification (Long notificationTypeId,Long lastNotificationId,Date lastUpdatedDate);
+	public List<Object[]> getInactiveNotificationsDetails (Long notificationTypeId);
+	public List<Long> getInactiveNotificationsTypeDetails ();
 }

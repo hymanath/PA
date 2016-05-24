@@ -16,6 +16,7 @@ public class NotificationDeviceVO {
 	private Date updatedTime;
 	private List<NotificationDeviceVO> activeNotifications = new ArrayList<NotificationDeviceVO>(0);
 	private List<Long> inActiviNotifications = new ArrayList<Long>(0);
+	private List<Long> inActiviNotificationTypeIds = new ArrayList<Long>(0);
 	private Long id;
 	private Long notificationTypeId;
 	private String notificationType;
@@ -27,9 +28,17 @@ public class NotificationDeviceVO {
 	private String deviceName;
 	private Long orderNo;
 	
-	public NotificationDeviceVO(){
-		
+	public NotificationDeviceVO(){}
+	
+	public List<Long> getInActiviNotificationTypeIds() {
+		return inActiviNotificationTypeIds;
 	}
+
+	public void setInActiviNotificationTypeIds(
+			List<Long> inActiviNotificationTypeIds) {
+		this.inActiviNotificationTypeIds = inActiviNotificationTypeIds;
+	}
+
 	public NotificationDeviceVO(String status){
 		this.status = status;
 	}

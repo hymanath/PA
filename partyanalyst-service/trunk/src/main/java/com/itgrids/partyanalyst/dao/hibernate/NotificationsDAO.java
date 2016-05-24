@@ -24,7 +24,7 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 		if(lastNotificationId != null && lastNotificationId.longValue()>0L)
 			queryStr.append(" and model.notificationsId > :lastNotificationId ");
 		if(lastUpdatedDateTime != null)
-			queryStr.append(" and model.updatedTime >= :updatedTime ");
+			queryStr.append(" and model.updatedTime > :updatedTime ");
 		
 		queryStr.append(" order by model.notificationTypeId, model.notificationsId,model.orderNo ");
 		Query query = getSession().createQuery(queryStr.toString());
@@ -35,5 +35,27 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 		if(lastUpdatedDateTime != null)
 			query.setParameter("updatedTime", lastUpdatedDateTime);
 			return query.list();
+	}
+	
+	public List<Object[]> getInactiveNotificationsDetails (Long notificationTypeId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select distinct   model.notificationTypeId, model.notificationsId ");
+		queryStr.append(" from Notifications model where model.isActive='false'  ");
+		if(notificationTypeId != null && notificationTypeId.longValue()>0L)
+			queryStr.append(" and model.notificationTypeId=:notificationTypeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(notificationTypeId != null && notificationTypeId.longValue()>0L)
+			query.setParameter("notificationTypeId", notificationTypeId);
+			return query.list();
+	}
+	
+	public List<Long> getInactiveNotificationsTypeDetails (){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select distinct  model2.notificationsId ");
+		queryStr.append(" from NotificationType model2 where model2.isActive='false'");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		return query.list();
 	}
 }
