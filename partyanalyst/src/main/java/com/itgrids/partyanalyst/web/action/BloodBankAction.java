@@ -294,8 +294,12 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	    			if(age!=null && !age.isEmpty()){
 	    				bankVO.setAge(Long.valueOf(age));
 	    		  }
-	    			bankVO.setDob(cadreDtlsArr.getString(4));
-	    			bankVO.setMarried(cadreDtlsArr.getString(5));
+	    			if(cadreDtlsArr.getString(4) !=null && !cadreDtlsArr.getString(4).isEmpty()){
+	    				bankVO.setDob(cadreDtlsArr.getString(4));
+	    			}	    			
+	    			if(cadreDtlsArr.getString(5) !=null && !cadreDtlsArr.getString(5).isEmpty() && cadreDtlsArr.getString(5) !="0"){
+	    				bankVO.setMarried(cadreDtlsArr.getString(5));
+	    			}	    				    		
 	    			bankVO.setAddress(cadreDtlsArr.getString(6));
 	    			bankVO.setMobile(cadreDtlsArr.getString(7));
 	    			bankVO.setEmail(cadreDtlsArr.getString(8));
