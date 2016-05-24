@@ -820,6 +820,7 @@ public class BloodBankService implements IBloodBankService{
 					vo.setQuantityType(obj[10] !=null ? obj[10].toString():"");
 					vo.setQuantity(obj[11] !=null ? (Long)obj[11]:0l);
 					vo.setRemarks(obj[12] !=null ? obj[12].toString():"");
+					vo.setRegistrationNo(obj[13]!=null?obj[13].toString():"");
 					
 					finalList.add(vo);
 				}
