@@ -179,7 +179,9 @@ function getPrePopulateTheDataDetails(){
 		dataType:'json',
 		data:{task:JSON.stringify(jObj)}
 	}).done(function(result){
-		buildBleedingCadreDetails(result);
+		if(result!=null && result.length>0){
+			buildBleedingCadreDetails(result);
+		}
 	});
 }
 $( "#searchInputId" ).blur(function() {
