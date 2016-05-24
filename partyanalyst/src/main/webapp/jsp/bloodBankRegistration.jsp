@@ -306,48 +306,48 @@
                             	<div class="row">
                                 	<div class="col-md-2">
                                     	<label>Temp</label>
-                                        <input class="form-control" type="text"/>
+                                        <input class="form-control" type="text" readonly />
                                         <span class="textItalic pull-right">0C(98.40F)</span>
                                     </div>
                                     <div class="col-md-2">
                                     	<label>HB</label>
-                                        <input class="form-control" type="text"/>
+                                        <input class="form-control" type="text" readonly />
                                         <span class="textItalic pull-right">0C(98.40F)</span>
                                     </div>
                                     <div class="col-md-2">
                                     	<label>BP</label>
-                                        <input class="form-control" type="text"/>
+                                        <input class="form-control" type="text" readonly />
                                         <span class="textItalic pull-right">0C(98.40F)</span>
                                     </div>
                                     <div class="col-md-3">
                                     	<label>Pulse</label>
-                                        <input class="form-control" type="text"/>
+                                        <input class="form-control" type="text" readonly />
                                         <span class="textItalic pull-right">0C(98.40F)</span>
                                     </div>
                                     <div class="col-md-3">
                                     	<label>Weight</label>
-                                        <input class="form-control" type="text"/>
+                                        <input class="form-control" type="text" readonly />
                                         <span class="textItalic pull-right">Kgs(&gt;45 Kgs)</span>
                                     </div>
                                     <div class="col-md-6">
                                     	<label>Reasons for Rejecting Doctor</label>
-                                        <textarea class="form-control"></textarea>
+                                        <textarea class="form-control" readonly ></textarea>
                                     </div>
                                     <div class="col-md-6">
                                     	<label>Post Phlebotomy Reaction</label>
-                                        <textarea class="form-control"></textarea>
+                                        <textarea class="form-control" readonly ></textarea>
                                     </div>
-                                    <div class="col-md-3 m_top10">
+                                    <div class="col-md-3 m_top30">
                                     	<textarea class="form-control" disabled></textarea>
                                         <p>Signature Of Medical Officer</p>
                                         <p>Date:___________________</p>
                                     </div>
-                                    <div class="col-md-3 col-md-offset-1 m_top10">
+                                    <div class="col-md-3 col-md-offset-1 m_top30">
                                     	<textarea class="form-control" disabled></textarea>
                                         <p>Signature Of Phlebotomy</p>
                                         <p>Date:___________________</p>
                                     </div>
-                                    <div class="col-md-3 m_top10">
+                                    <div class="col-md-3 m_top30">
                                     	<textarea class="form-control" disabled></textarea>
                                         <p>Signature Of Donor</p>
                                         <p>Date:___________________</p>
@@ -375,6 +375,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<p>Details are Submitting</p>
+				<p class="dtsCls">dou want to get print</p>
 			</div>	
 			<div class="col-md-12">
 				<!--<button type="button" class="m_top20 btn btn-primary printCls" id="printBloddBankId" >PRINT</button>-->
@@ -400,6 +401,9 @@
 				<p class="text-capitalise">ntr trust bhavan, road no-2, banjara hills, hyderabad - 34</p>
 				<p>Tel: 040 30799999 | E-Mail:hydbb@ntrtrust.org | Lic No: 01/HD/AP/2008/BB/CP</p>
 			</div>
+			<div class="col-md-12">
+				<hr/>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
@@ -408,13 +412,13 @@
 					<li>Age: <span class='' id="printageId"></span></li>
 				<!--<li>No Of times blood donated in Blood Bank: <span class='' id="printnoOfTmBldDntnId"></span></li>
 					<li>Other than Blood Bank: <span class='' id="printslctBxBBId"></span></li>-->
-					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Donor Registration Number: <span class='' id=""></span></li>
+					<li>Donor Registration Number: ___________<span class='' id=""></span></li>
 					<li>Membership No: <span class='' id="printmembershipInputId"></span></li>
 					<li>Date Of Birth: <span class=''id="printdobId"></span></li>
-					<li>Segment Number: <span class='' id=""></span></li>
+					<li>Segment Number:______________ <span class='' id=""></span></li>
 					<li>Mobile No: <span class='' id="printmobileNoId"></span></li>
 					<li>Sex: <span class='' id="printseltBxSxId"></span></li>
-					<li>Bag Type: <span class='' id=""></span></li>
+					<li>Bag Type:___________ <span class='' id=""></span></li>
 					<li>Father/ Spouse: <span class='' id="printspouseId"></span></li>
 			 </ul>
 			</div>
@@ -553,27 +557,27 @@
 									<tr>
 										<td>
 											<label>Temp</label>
-											<input class="form-control" type="text"/>
+											<input class="form-control" type="text" readonly />
 											<span class="textItalic pull-right">0C(98.40F)</span>
 										</td>
 										<td>
 											<label>HB</label>
-											<input class="form-control" type="text"/>
+											<input class="form-control" type="text" readonly />
 											<span class="textItalic pull-right">0C(98.40F)</span>
 										</td>
 										<td>
 											<label>BP</label>
-											<input class="form-control" type="text"/>
+											<input class="form-control" type="text" readonly />
 											<span class="textItalic pull-right">0C(98.40F)</span>
 										</td>
 										<td>
 											<label>Pulse</label>
-											<input class="form-control" type="text"/>
+											<input class="form-control" type="text" readonly />
 											<span class="textItalic pull-right">0C(98.40F)</span>
 										</td>
 										<td>
 											<label>Weight</label>
-											<input class="form-control" type="text"/>
+											<input class="form-control" type="text" readonly />
 											<span class="textItalic pull-right">Kgs(&gt;45 Kgs)</span>
 										</td>
 									</tr>
@@ -582,15 +586,15 @@
 									<tr>
 										<td>
 											<label>Reasons for Rejecting Doctor</label>
-											<textarea class="form-control" rows='1'></textarea>
+											<textarea class="form-control" rows='3' readonly ></textarea>
 										</td>
 										<td>
 											<label>Post Phlebotomy Reaction</label>
-											<textarea class="form-control" rows='1'></textarea>
+											<textarea class="form-control" rows='3' readonly ></textarea>
 										</td>
 									</tr>
 								</table>
-								<table class="table">
+								<table class="table m_top30" >
 									<tr>
 										<td>
 											<p>Signature Of Medical Officer</p>
@@ -620,8 +624,7 @@
 				<li>I understand that test results will be made known to health authorities only. I would like to be informed in case of Sero-Positive result.</li>
 			</ul>
 
-			<p class="text-capitalise">details are submitting</p>
-			<p>dou want to get print</p>
+			
 			<button type="button" class="m_top20 btn btn-primary printCls" id="printBloddBankId" >PRINT</button>
 			<button type="button" class="btn btn-default m_top20" id="printBloddBankCancelId" data-dismiss="modal">CANCEL</button>
 		</div>
@@ -844,7 +847,7 @@ function validateFields(){
 	 $(".dobErrorCls").html(' ');
 	 var dobArr=dob.split("/");	
 	 var year=(new Date().getFullYear())-(dobArr[2]);
-	 $("#ageId").val(year);
+	//$("#ageId").val(year);
 	 var age=$("#ageId").val();
 	if(age==null && age==undefined || age.trim().length==0){
 	  $(".ageErrorCls").html('Please enter age.');
