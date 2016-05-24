@@ -36,7 +36,7 @@ function getActivityNames(type)
 				//getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
 				getDetails();
 			}
-			getQuestions(); 
+			//getQuestions(); 
 			//getActivityQuestionAnswerCountReasonWise();
 		});
 		
@@ -243,9 +243,9 @@ function buildResult(result)
 	//str+='<td class="bg_ef text-center">INFO CELL COVERED %</td>';
 	str+='<td class="bg_ef text-center">INFO CELL COVERED <small> (NOT-PLANNED)</small></td>';
 	
-	str+='<td class="bg_ef text-center">WHATSAPP IMAGES COVERED</td>';
+	str+='<td class="bg_ef text-center"> IMAGES COVERED</td>';
 	//str+='<td class="bg_ef text-center">WHATSAPP IMAGES COVERED %</td>';
-	str+='<td class="bg_ef text-center">NO OF WHATSAPP IMAGES RECIEVED</td>';
+	str+='<td class="bg_ef text-center">NO OF IMAGES RECIEVED</td>';
 	
 	
 	str+='</tr>';
@@ -350,7 +350,7 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId,teamSear
 				//console.log(result);
 				if(result != null)
 					if(searchType == 'state')
-						if(activityLevelId == 5)
+						if(activityLevelId == 5 && activityScopeId == 11 )
 							buildBDResult(result);
 						else
 							buildResult(result);
@@ -626,8 +626,8 @@ function buildVillageResult(result,divId,locationId,index)
 			str1+='<th class="getChildWidth6" style="color:#a94442;">INFO CELL TOTAL</th>';
 			str1+='<th class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></th>';
 			str1+='<th class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</th>';
-			str1+='<th class="getChildWidth9">WHATSAPP IMAGES COVERED</th>';
-			str1+='<th class="getChildWidth10">NO OF WHATSAPP IMAGES RECIEVED</th>';
+			str1+='<th class="getChildWidth9"> IMAGES COVERED</th>';
+			str1+='<th class="getChildWidth10">NO OF  IMAGES RECIEVED</th>';
 		str1+='</thead>';
 		str1+='<tbody>';
 		if(result.activityVoList != null && result.activityVoList.length>0)
@@ -819,8 +819,8 @@ function buildMandalResult(result,divId,locationId,teamSearchType)
 			str1+='<th class="getChildWidth6" style="color:#a94442;">INFO CELL TOTAL</th>';
 			str1+='<th class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></th>';
 			str1+='<th class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</th>';
-			str1+='<th class="getChildWidth9">WHATSAPP IMAGES COVERED</th>';
-			str1+='<th class="getChildWidth10">NO OF WHATSAPP IMAGES RECIEVED</th>';
+			str1+='<th class="getChildWidth9"> IMAGES COVERED</th>';
+			str1+='<th class="getChildWidth10">NO OF  IMAGES RECIEVED</th>';
 		str1+='</thead>';
 		str1+='<tbody>';
 		if(result.activityVoList != null && result.activityVoList.length>0)
@@ -1011,8 +1011,8 @@ function buildConstituencyResult(result,divId,locationId,teamSearchType)
 			str1+='<th class="getChildWidth6" style="color:#a94442;">INFO CELL TOTAL</th>';
 			str1+='<th class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></th>';
 			str1+='<th class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</th>';
-			str1+='<th class="getChildWidth9">WHATSAPP IMAGES COVERED</th>';
-			str1+='<th class="getChildWidth10">NO OF WHATSAPP IMAGES RECIEVED</th>';
+			str1+='<th class="getChildWidth9"> IMAGES COVERED</th>';
+			str1+='<th class="getChildWidth10">NO OF  IMAGES RECIEVED</th>';
 		str1+='</thead>';
 		str1+='<tbody>';
 		if(result.activityVoList != null && result.activityVoList.length>0)
@@ -1112,9 +1112,9 @@ function buildsLocationsResult(result,divId,teamSearchType){
 		str+='<td class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</td>';
 		
 		
-		str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED</td>';
+		str+='<td class="getChildWidth9"> IMAGES COVERED</td>';
 		//str+='<td class="getChildWidth9">WHATSAPP IMAGES COVERED %</td>';
-		str+='<td class="getChildWidth10">NO OF WHATSAPP IMAGES RECIEVED</td>';
+		str+='<td class="getChildWidth10">NO OF  IMAGES RECIEVED</td>';
 		
 		str+='</tr>';
 	}
@@ -1246,8 +1246,8 @@ function buildsLocationsResult(result,divId,teamSearchType){
 			str1+='<th class="getChildWidth6" style="color:#a94442;">INFO CELL TOTAL</th>';
 			str1+='<th class="getChildWidth7">INFO CELL COVERED  <span style="font-size: 11px;">(PLANNED) </span></th>';
 			str1+='<th class="getChildWidth8">INFO CELL COVERED (NOT-PLANNED)</th>';
-			str1+='<th class="getChildWidth9">WHATSAPP IMAGES COVERED</th>';
-			str1+='<th class="getChildWidth10">NO OF WHATSAPP IMAGES RECIEVED</th>';
+			str1+='<th class="getChildWidth9"> IMAGES COVERED</th>';
+			str1+='<th class="getChildWidth10">NO OF  IMAGES RECIEVED</th>';
 		str1+='</thead>';
 		str1+='<tbody>';
 		if(result.activityVoList != null && result.activityVoList.length>0)
@@ -1581,6 +1581,7 @@ function buildDayWiseResults(result,divId,jObj)
 }
 
 function getDetails(){
+	getQuestions();
 	if($("#activityTypeList").val()==4){
 		$("#locationWiseActivityDetailsDivId").show();
 		$("#excelBtn").show();
@@ -1678,7 +1679,7 @@ function buildDayWiseImages(result,divId)
 				}
 			
 			}
-		
+		//console.log("111 : "+"#"+divId+"slickDay-"+result[i].day+" ---- "+str);
 		$("#"+divId+"slickDay-"+result[i].day).html(str);
 		
 	}
@@ -2973,6 +2974,8 @@ function buildActivityReasonReport(result)
 function getQuestions(){
 		
 	var scopeId = $("#ActivityList").val();
+	$('#questionsId').find('option').remove();
+	//$('#questionsId').append('<option value="0">All</option>');
 	var jsObj={	
 			scopeId :scopeId		 
 		}
