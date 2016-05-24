@@ -240,7 +240,7 @@ public class BloodBankService implements IBloodBankService{
 					  cadreDtlsVO.setEmail(obj[5]!=null?obj[5].toString():" ");
 					  cadreDtlsVO.setSex(obj[6]!=null?obj[6].toString():" ");
 					  cadreDtlsVO.setAge(obj[7]!=null?(Long)obj[7]:0l);
-					  if(obj[18]!=null){
+					  if(obj[8]!=null){
 						  cadreDtlsVO.setDob(sdf.format((Date)obj[8]));
 					  }
 					  cadreDtlsVO.setEducationId(obj[9]!=null? (Long)obj[9]:0l);
