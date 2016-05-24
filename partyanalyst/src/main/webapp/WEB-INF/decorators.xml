@@ -660,5 +660,7 @@
 	 <pattern>/bloodBankRegistrationAction*</pattern>
 	 <pattern>/bloodBankDashBoardAction*</pattern>
 	 <pattern>/bloodBankBleadingAction*</pattern>
+	 
+	 <pattern>/notificationAction*</pattern>
 	</decorator> 
 </decorators>
