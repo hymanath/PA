@@ -788,7 +788,12 @@ function populateCommonFields(result){
 			$("#spouseId").val(result.relativeName);
 		}
 		if(result.sex !=null && result.sex.length>0){
-			$("#seltBxSxId").val(result.sex);
+			if(result.sex == "MALE"){
+				$("#seltBxSxId").val('M');
+			}else{
+				$("#seltBxSxId").val('F');
+			}
+			
 		}
 		if(result.age!=null && result.age>0){
 			$("#ageId").val(result.age);
