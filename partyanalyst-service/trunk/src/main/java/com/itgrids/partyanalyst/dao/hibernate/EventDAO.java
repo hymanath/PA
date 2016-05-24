@@ -174,4 +174,14 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
+	public List<Long> getSubEventsByParentEventId(Long eventId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.eventId from Event model where  model.parentEventId = :eventId  and model.isActive =:isActive and model.isVisible='N' order by model.orderId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("eventId", eventId);
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
 }

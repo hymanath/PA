@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,12 +41,15 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dto.EmailAttributesVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
+import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatesEventVO;
+import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -65,6 +70,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private IMailService mailService;
+	private IEventDAO eventDAO;
+	private IMahanaduDashBoardService mahanaduDashBoardService;
 	
 	public IEventAttendeeDAO getEventAttendeeDAO() {
 		return eventAttendeeDAO;
@@ -97,6 +104,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	}
 	public void setMailService(IMailService mailService) {
 		this.mailService = mailService;
+	}
+	
+	public IEventDAO getEventDAO() {
+		return eventDAO;
+	}
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+	
+	public IMahanaduDashBoardService getMahanaduDashBoardService() {
+		return mahanaduDashBoardService;
+	}
+	public void setMahanaduDashBoardService(
+			IMahanaduDashBoardService mahanaduDashBoardService) {
+		this.mahanaduDashBoardService = mahanaduDashBoardService;
 	}
 	/**
 	   *   @author    : Sreedhar
@@ -282,7 +304,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	public boolean getAttendeeAndinviteeCounts(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap,Set<Long> locationIds,List<Date> betweenDates,Long parentEventId){
 		 
 		 boolean isDataAvailable = false;
-		 List<Object[]> totalAttendeeList = eventAttendeeDAO.locationWiseEventAttendeeCountsQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,locationQueryString);
+		List<Object[]> totalAttendeeList = eventAttendeeDAO.locationWiseEventAttendeeCountsQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,locationQueryString);
 		 
 		 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
 			 
@@ -790,10 +812,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				fileNamesVO.setPdfName(pdfName);
 				
-				images = splitMainPdfToSubPdfs(pdfFilePath,staticPath,currentDateString);
+				/*images = splitMainPdfToSubPdfs(pdfFilePath,staticPath,currentDateString);
 				if(images != null && images.size() > 0){
 					fileNamesVO.setImages(images);
-				}
+				}*/
 			}catch(Exception e){
 				LOG.error("Exception in createMainPdfFile() : ",e);
 			}
@@ -862,10 +884,612 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			}
 		}
 		
+		/**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to send  pdf file attachments to mail.
+		   *   inputs: buildString
+		   *   output: EmailAttributesVO
+		   *   
+		  */
+		
+		public String getRequiredDates() throws ParseException{
+		    
+		    String dateStr = null;
+		    
+		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		    Date currentDate = sdf.parse(sdf.format(dateUtilService.getCurrentDateAndTime()));
+		    
+		    
+		    Object[] dates = eventDAO.getEventDates(30l);
+		    Date startDate = (Date)dates[0];
+		    Date endDate = (Date)dates[1];
+		    
+		     
+		    List<Date> datesList = new CommonMethodsUtilService().getBetweenDates(startDate,endDate);
+		    if(datesList != null && datesList.size() > 0){
+		      StringBuilder sb = new StringBuilder();
+		      for (int i=0;i<datesList.size();i++) {
+		        if(sdf.format(datesList.get(i)).split("-")[0].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0]) ){
+		          if(sdf.format(datesList.get(i)).split("-")[2].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+		            
+			            if(dateStr == null){
+			              dateStr = datesList.get(i).toString();
+			            }else{
+			              dateStr = dateStr + "," + datesList.get(i).toString();
+			            }
+		            
+		          } 
+		          else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[2])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+			            if(dateStr == null){
+			              dateStr = datesList.get(i).toString();
+			            }else{
+			              dateStr = dateStr + "," + datesList.get(i).toString();
+			            }
+		          }
+		        }else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[0])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0])){
+			          if(dateStr == null){
+			            dateStr = datesList.get(i).toString();
+			          }else{
+			            dateStr = dateStr + "," + datesList.get(i).toString();
+			          }
+		        }
+		      }
+		    }
+		    
+		    return dateStr;
+		  }
 		
 		
 		
+		public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try{
+				
+				Date currentDateAndTime = dateUtilService.getCurrentDateAndTime();
+				
+				String time = format.format(currentDateAndTime);
+				String currentDateStr = sdf.format(currentDateAndTime);
+				
+				String dateStr = getRequiredDates();
+				
+				StringBuffer finalStr = new StringBuffer();
+				
+				//Event Dashboard
+				
+				StatesEventVO  finalVO = stateWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds);
+				if( finalVO.getAllStatesVO() != null ){
+					StringBuffer allStatesStr = allStatesBlock(finalVO.getAllStatesVO(),time);
+					finalStr.append(allStatesStr);
+					finalStr.append("<br/>");
+				}
+				
+				List<MahanaduEventVO>  distList = LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,3l,null,"All");
+				StringBuffer distStr = constWiseCounts(distList,time,"District");
+				finalStr.append(distStr);
+				finalStr.append("<br/>");
+				
+				List<MahanaduEventVO>  constList = LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,4l,null,"All");
+				StringBuffer constStr = constWiseCounts(constList,time,"Constituency");
+				finalStr.append(constStr);
+				finalStr.append("<br/>");
+				
+				//ENTRY/EXIT DASHBOARD
+				
+				MahanaduVisitVO mahanaduVisitVO = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(parentId,currentDateStr);
+			      StringBuffer entryStr = entryExitBlock(mahanaduVisitVO,time);
+			      finalStr.append(entryStr);
+			      finalStr.append("<br/><br/><br/>");
+			      
+			      
+			      List<MahanaduVisitVO> hoursWiseVisitorsList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoList(parentId,dateStr);
+			      if( hoursWiseVisitorsList != null && hoursWiseVisitorsList.size() > 0){
+			        StringBuffer hoursVisitors = hoursWiseVisitors(hoursWiseVisitorsList,time);    
+			        finalStr.append(hoursVisitors);
+			        finalStr.append("<br/><br/>");
+			      }
+			      
+			      MahanaduEventVO distWiseVisitorsVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(parentId, stateIds,currentDateStr);
+			      StringBuffer distWiseVisitors = districtWiseUniqueCampusCount(distWiseVisitorsVO,time);
+			      finalStr.append(distWiseVisitors);
+			      
+			      MahanaduEventVO constWiseVisitorsVO = mahanaduDashBoardService.getConstituencyWiseMembersCountInCampus(parentId, stateIds,currentDateStr);
+			      StringBuffer constWiseVisitors = constWiseUniqueCampusCount(constWiseVisitorsVO,time);
+			      finalStr.append(constWiseVisitors);
+				
+				//MAIL RELATED
+				
+				EmailAttributesVO emailAttributesVO = createMainPdfFile(finalStr.toString());
+				
+				//statically add the images.
+				List<String> staticimages = new ArrayList<String>();
+				staticimages.add("2016-05-22_19-07-23_69101.jpg");
+				staticimages.add("2016-05-22_19-07-23_94118.jpg");
+				staticimages.add("2016-05-22_19-07-23_90378.jpg");
+				staticimages.add("2016-05-22_19-07-23_82305.jpg");
+				staticimages.add("2016-05-22_19-07-23_20984.jpg");
+				
+				List<String> emailIds = new ArrayList<String>();
+				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
+				
+				emailAttributesVO.setImages(staticimages);
+				emailAttributesVO.setEmailIds(emailIds);
+				emailAttributesVO.setTime(time);
+				emailAttributesVO.setSubject("Mahandu Event 2016 Dashboard");
+				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Document For Mahanadu 2016 Event Dashboard on "+time);
+				
+				if( emailAttributesVO.getPdfName() != null && !emailAttributesVO.getPdfName().isEmpty()){
+					sendEmailWithAttachment(emailAttributesVO);
+				}
+				
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
 		
 		
+		public StringBuffer allStatesBlock(StatesEventVO dataVO,String time){
+			
+			String stateColor = "#01AF7C";
+			String borderImagePath = "http://mytdp.com/images/borderImage.png";
+			
+			StringBuffer str = new StringBuffer();
+			
+			str.append("<table width='100%'>");
+			    str.append("<tr bgcolor='#fed501'>");
+			    	str.append("<td style='text-align:center;color:#fff'><font size='6'>MAHANADU 2016 ATTENDANCE SUMMARY</font></td>");
+			    str.append("</tr>");
+		    str.append("</table>");
+		    str.append("<br/>");
+		    str.append("<table width='100%'>");
+			    str.append("<tr bgcolor='#5c2d25'>");
+			    	str.append("<td style='text-align:center;color:#fff'><font size='4'>Last Updated Time : "+time+"</font></td>");
+			    str.append("</tr>");
+		    str.append("</table>");
+		    str.append("<br/>");
+			str.append("<table width='100%' style='margin:auto;'>");
+					
+					str.append("<tr>");
+						str.append("<td bgcolor='#C0C0C0' style='text-align:center;text-transform:uppercase;vertical-align:middle;color:#D64D54'><h3> OVERALL[AP,TS,OTHER STATES] </h3></td>");
+					str.append("</tr>");
+					
+					
+					if( dataVO.getAttendees() != null && dataVO.getAttendees() > 0l){
+						
+							String totalVisitors = dataVO.getAttendees() != null ? dataVO.getAttendees().toString() : "-";
+							str.append("<tr bgcolor='"+stateColor+"'>"); 
+								str.append("<td style='text-align:center;color:#fff'><font size='4'>TOTAL UNIQUE VISITORS "+totalVisitors+"</font></td>");
+							str.append("</tr>");
+						
+							str.append("<tr bgcolor='"+stateColor+"'>"); 
+								str.append("<td><img src='"+borderImagePath+"' width='600px'></td>");
+							str.append("</tr>");
+						
+						str.append("<tr bgcolor='"+stateColor+"'>"); 
+							str.append("<td style='padding:10px'>");
+								str.append("<p style='text-align:left'><font size='4'>DAY WISE</font></p>");
+								str.append("<table width='100%' height='900px' bgcolor='"+stateColor+"' style='color:#fff;'>");
+								
+								Long dayCount = 0l;
+								if( dataVO.getSubList() != null && dataVO.getSubList().size() > 0)
+								{	
+									for( StatesEventVO dayVO : dataVO.getSubList())
+									{	    
+									    dayCount++;
+									    if( dayVO.isDataExist())
+									    {
+									    	str.append("<tr>");
+											
+											str.append("<td style='text-align:center;'>");
+												str.append("<font size='6'>0"+dayCount+"</font>");
+											str.append("</td>");
+											
+											str.append("<td>");
+												str.append("<font size='5'>Total</font><br/>");
+												String attendeeCount = dayVO.getAttendees()!=null && dayVO.getAttendees() > 0l ?dayVO.getAttendees().toString() : "-";
+												str.append("<span><font size='5'>"+attendeeCount+"</font></span>");
+											str.append("</td>");
+											
+											str.append("<td>");
+												str.append("<font size='5'>Invitees</font><br/>");
+												String inviteeCount = dayVO.getInvitees()!=null && dayVO.getInvitees() > 0l ?dayVO.getInvitees().toString() : "-";
+												str.append("<span><font size='5'>"+inviteeCount+"</font></span>");
+											str.append("</td>");
+											
+											str.append("<td>");
+												str.append("<font size='5'>Non Invitees</font><br/>");
+												String nonInviteeCount = dayVO.getNonInvitees()!=null && dayVO.getNonInvitees() > 0l ?dayVO.getNonInvitees().toString() : "-";
+												str.append("<span><font size='5'>"+nonInviteeCount+"</font></span>");
+											str.append("</td>");
+											
+										str.append("</tr>");
+										
+										str.append("<tr>");
+											str.append("<td colspan='4'><img src='"+borderImagePath+"' width='600px'></td>");
+										str.append("</tr>");
+									    }
+									}
+								}
+								
+								str.append("</table>");
+							str.append("</td>");
+						str.append("</tr>");
+						
+						if(dataVO.getCalcPercantage() != null && dataVO.getCalcPercantage().trim().length() > 0){
+							str.append("<tr bgcolor='"+stateColor+"'>"); 
+							     str.append("<td style='color:#fff;text-align:center;'><font size='4'> "+dataVO.getDateString1()+" Count is "+dataVO.getCalcPercantage()+"% "+dataVO.getHighOrlow()+" than "+dataVO.getDateString2()+"</font></td>");
+						    str.append("</tr>");
+						}else{
+							str.append("<tr bgcolor='"+stateColor+"'>"); 
+						     str.append("<td style='color:#fff;text-align:center;'><font size='4'></font></td>");
+					        str.append("</tr>");
+						} 
+						
+					}else{
+						str.append("<tr bgcolor='"+stateColor+"'>");
+							str.append("<td>No Data Available</td>");
+						str.append("</tr>");
+						
+					}
+				
+				str.append("</table>");
+			
+			return str;
+		}
+		
+		public StringBuffer constWiseCounts(List<MahanaduEventVO> constList,String time,String reportType){
+			
+			String reportHeading = null;
+			if(reportType.equalsIgnoreCase("constituency")){
+				reportHeading = "Constituency Wise";
+			}else if(reportType.equalsIgnoreCase("district")){
+				reportHeading = "District Wise";
+			}
+			
+			StringBuffer str = new StringBuffer();
+			str.append("<table width='100%'>");
+				str.append("<tr>");
+					str.append("<td bgcolor='#C0C0C0' style='text-align:center;text-transform:uppercase;vertical-align:middle;color:#D64D54'><h3> "+reportHeading+" </h3></td>");
+				str.append("</tr>");
+		    str.append("</table>");
+		    str.append("<font size='1'>");
+			
+		    if( constList != null && constList.size() > 0){
+		    	
+		    	MahanaduEventVO firstLocation = constList.get(0);
+		    	
+		    	boolean dataExist = true;
+		    	if( firstLocation.getLocationName() != null && !firstLocation.getLocationName().equalsIgnoreCase("NO DATA")){
+		    		dataExist = false;
+		    	}
+		    	
+		    	if( dataExist){
+		    		
+		    		str.append("<table width='100%' border='1' bgcolor='#EFF3F4'>");
+		    		str.append("<thead >");
+		    		
+		    		str.append("<tr>");
+		    			str.append("<th rowspan='2' > "+reportType+" </th>");
+		    			str.append("<th rowspan='2' cellpadding='2' >Total Attended</th>");
+		    			str.append("<th rowspan='2' cellpadding='2' >%</th>");
+		    			str.append("<th rowspan='2' cellpadding='2'>Total Invitees</th>");
+		    			for(int i=0; i< firstLocation.getSubList().size() ; i++){
+		    				if( firstLocation.getSubList().get(i).isTotalDaydataExist() ){
+		    					str.append("<th colspan='3' >"+firstLocation.getSubList().get(i).getName()+" ATTENDED</th>");
+		    				}
+		    			}
+		    		str.append("</tr>");
+		    		
+		    		str.append("<tr>");
+			    		for(int i=0; i< firstLocation.getSubList().size() ; i++){
+		    				if( firstLocation.getSubList().get(i).isTotalDaydataExist() ){
+		    					str.append("<th>Total</th>");
+		    	    			str.append("<th>Invitees</th>");
+		    	    			str.append("<th>Non Invitees</th>");
+		    				}
+		    			}
+		    		str.append("</tr>");
+		    		
+		    		
+		    		str.append("</thead>");
+		    		str.append("<tbody >");
+		    		
+		    		for(int i=0; i<constList.size();i++){
+		    			
+		    			
+		    			str.append("<tr>");
+		    			
+			    		str.append("<td>"+constList.get(i).getName()+"</td>");
+			    		str.append("<td>"+constList.get(i).getAttendees()+"</td>");
+			    		str.append("<td>"+constList.get(i).getAttendeePercantage()+"%</td>");
+			    		
+			    		if( constList.get(i).getInviteesCalled()!= null && constList.get(i).getInviteesCalled().longValue() > 0l){
+			    			str.append("<td>"+constList.get(i).getInviteesCalled()+"</td>");
+			    		}else{
+			    			str.append("<td> - </td>");
+			    		}
+			    		
+			    		for(int j=0;j< constList.get(i).getSubList().size();j++){
+			    			
+			    			if( firstLocation.getSubList().get(j).isTotalDaydataExist()){
+			    				
+			    				if( constList.get(i).getSubList().get(j).getAttendees() != null && constList.get(i).getSubList().get(j).getAttendees().longValue() > 0l){
+			    					str.append("<td> "+constList.get(i).getSubList().get(j).getAttendees()+" </td>");
+			    				}else{
+			    					str.append("<td> - </td>");
+			    				}
+			    				
+			    				if( constList.get(i).getSubList().get(j).getInvitees() != null && constList.get(i).getSubList().get(j).getInvitees().longValue() > 0l){
+			    					str.append("<td> "+constList.get(i).getSubList().get(j).getInvitees()+" </td>");
+			    				}else{
+			    					str.append("<td> - </td>");
+			    				}
+			    				
+			    				if( constList.get(i).getSubList().get(j).getNonInvitees() != null && constList.get(i).getSubList().get(j).getNonInvitees().longValue() > 0l){
+			    					str.append("<td> "+constList.get(i).getSubList().get(j).getNonInvitees()+" </td>");
+			    				}else{
+			    					str.append("<td> - </td>");
+			    				}
+			    			}
+			    		}
+			    		str.append("</tr>");
+		    		}
+		    		
+		    		str.append("</tbody>");
+		    		str.append("</table>");
+		    	}
+		    }
+			
+			str.append("</font>");
+			str.append("<br/>");
+			return str;
+		}
+		
+		public StringBuffer entryExitBlock(MahanaduVisitVO result,String time){
+		    
+		    StringBuffer str = new StringBuffer();
+		    str.append("<table width='100%'>");
+		        str.append("<tr bgcolor='#5c2d25'>");
+		          str.append("<td style='text-align:center;color:#fff'><font size='5'>ENTRY/EXIT  DASHBOARD</font><font size='3'😠Updated On "+time+")</font></td>");
+		        str.append("</tr>");
+		      str.append("</table>");
+		      str.append("<br/>");
+		      str.append("<table width='100%'  cellspacing='5'>");
+		      
+		         str.append("<tr style='text-align:center'>");
+		          str.append("<td width='50%' border='1' >");
+		            str.append("<font size='4'>TODAY TOTAL VISITORS</font><br/>");
+		            String totalVisitors = result.getTotalVisitors() != null ? result.getTotalVisitors().toString() : "0";
+		            str.append("<font size='5'> "+totalVisitors+"</font>");
+		          str.append("</td>");
+		          
+		          
+		          str.append("<td width='50%' border='1' >");
+		            str.append("<font size='4'>TODAY VISITORS PRESENT IN CAMPUS</font><br/>");
+		            String currentVisitors = result.getCurrentVisitors() != null ? result.getCurrentVisitors().toString() : "0";
+		            str.append("<font size='5'>"+currentVisitors+"</font>");
+		          str.append("</td>");
+		        str.append("</tr>");
+		        
+		      str.append("</table>");
+		    return str;
+		  }
+		
+		
+		public StringBuffer hoursWiseVisitors(List<MahanaduVisitVO> hoursWiseVisitorsList,String time){
+		    
+		    Map<Long,String> colorsMap = new HashMap<Long,String>();
+		    colorsMap.put(1l,"#DAEEF7");
+		    colorsMap.put(2l,"#C2ECE0");
+		    colorsMap.put(3l,"#F2EBD9");
+		    
+		    int dayscount = hoursWiseVisitorsList.size();
+		    
+		    StringBuffer str = new StringBuffer();
+		    str.append("<font size='4'>");
+		    str.append("<table width='100%' border='1'>");
+		    str.append("<tr bgcolor='#ccc'>");
+		    int colspan = dayscount + 1;
+		    str.append("<td colspan='"+colspan+"' style='text-align:center;color:#D64D54'><font size='4'>HOURS WISE VISITORS</font></td>");
+		    str.append("</tr>");
+		    
+		    str.append("<tr bgcolor='#eaeaea' style='text-align:center;color:#01AF7C'>");
+		    str.append("<td>TIME STATUS</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		       Long dayCount = i+1l;
+		       str.append("<td bgcolor='"+colorsMap.get(dayCount)+"'>DAY "+dayCount+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>Above 8 hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getAbove8hrs()!=null ? hoursWiseVisitorsList.get(i).getAbove8hrs().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>7 to 8 Hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getSeventoeight()!=null ? hoursWiseVisitorsList.get(i).getSeventoeight().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>6 to 7 Hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getSixtoseven()!=null ? hoursWiseVisitorsList.get(i).getSixtoseven().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>5 to 6 Hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getFivetosix()!=null ? hoursWiseVisitorsList.get(i).getFivetosix().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>4 to 5 Hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getFourtofive()!=null ? hoursWiseVisitorsList.get(i).getFourtofive().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>3 to 4 Hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getThreetofour()!=null ? hoursWiseVisitorsList.get(i).getThreetofour().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>2 to 3 Hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getTwotothree()!=null ? hoursWiseVisitorsList.get(i).getTwotothree().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>1 to 2 Hours</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getOnetotwo()!=null ? hoursWiseVisitorsList.get(i).getOnetotwo().toString() :"0";
+
+		
+		str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>Half an hour  to 1 Hour</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getHalfanhour()!=null ? hoursWiseVisitorsList.get(i).getHalfanhour().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    
+		    str.append("<tr style='text-align:center;'>");
+		    str.append("<td>below Half an hour</td>");
+		    for(int i=0 ; i<hoursWiseVisitorsList.size();i++){
+		      String value = hoursWiseVisitorsList.get(i).getBelowhalfanhour()!=null ? hoursWiseVisitorsList.get(i).getBelowhalfanhour().toString() :"0";
+		      str.append("<td bgcolor='"+colorsMap.get(i+1l)+"'>"+value+"</td>");
+		    }
+		    str.append("</tr>");
+		    
+		    str.append("</table>");
+		    str.append("</font>");
+		    return str;
+	  }
+		
+		public StringBuffer districtWiseUniqueCampusCount(MahanaduEventVO result,String time){
+		    
+		      StringBuffer str = new StringBuffer();
+		      String stateColor = "#fff";
+		      str.append("<table width='100%' border='1'>");
+		      
+		        str.append("<tr bgcolor='#ccc'>");
+		          str.append("<td color='#d64d54' colspan='4'><font size='3' style='text-align:center;'>DISTRICT WISE MEMBERS IN CAMPUS NOW & DAY WISE COUNT</font></td>");
+		        str.append("</tr>");
+		     
+		        
+		        if(result != null && result.getSubList() != null && result.getSubList().size() > 0){
+		          boolean flag = false;
+		             str.append("<tr>");
+		              str.append("<td>DISTRICT NAME</td>");
+		              str.append("<td>TOTAL ATTENDED</td>");
+		              str.append("<td>NOW IN CAMPUS</td>");
+		              str.append("<td>NOW IN CAMPUS %</td>");
+		            str.append("</tr>");
+		          
+		          
+		          for(  MahanaduEventVO distVO : result.getSubList() ){
+		            
+		          if(distVO.getTotal() != null && distVO.getTotal().longValue() > 0l && distVO.getCadreCount() != null && distVO.getCadreCount().longValue() > 0l){
+		            
+		            flag=true;
+		            str.append("<tr>");
+		            str.append("<td>"+distVO.getName()+"</td>");
+		            str.append("<td style='text-align:center;'>"+distVO.getTotal()+"</td>");
+		            str.append("<td style='text-align:center;'>"+distVO.getCadreCount()+"</td>");
+		            String Percantage = calcPercantage(distVO.getTotal(), distVO.getCadreCount());
+		            str.append("<td style='text-align:center;'>"+Percantage+" %</td>");
+		            str.append("</tr>");
+		          }
+		        }
+		         
+		            if(!flag){
+		              str.append("<tr bgcolor='"+stateColor+"'>");
+		              str.append("<td colspan='4' style='text-align:center' >No Data Available</td>");
+		          str.append("</tr>");
+		            }
+		        }else{
+		          str.append("<tr bgcolor='"+stateColor+"'>");
+		          str.append("<td colspan='4' style='text-align:center' >No Data Available</td>");
+		      str.append("</tr>");
+		        }
+		      str.append("</table>");  
+		      str.append("<br/><br/><br/><br/><br/><br/>");
+		      
+		      return str;
+		    }
+		
+		public StringBuffer constWiseUniqueCampusCount(MahanaduEventVO result,String time){
+		    
+		     StringBuffer str = new StringBuffer();
+		     String stateColor = "#fff";
+		     str.append("<table width='100%' border='1'>");
+		         str.append("<tr bgcolor='#ccc'>");
+		           str.append("<td color='#d64d54' colspan='4' style='text-align:center;'><font size='3'>CONSTITUENCY WISE MEMBERS IN CAMPUS NOW & DAY WISE COUNT</font></td>");
+		        str.append("</tr>");
+		        
+		        if(result != null && result.getSubList() != null && result.getSubList().size() > 0l){
+		          boolean flag = false;
+		             str.append("<tr>");
+		              str.append("<td>CONSTITUENCY NAME</td>");
+		              str.append("<td>TOTAL ATTENDED</td>");
+		              str.append("<td>NOW IN CAMPUS</td>");
+		              str.append("<td>NOW IN CAMPUS %</td>");
+		            str.append("</tr>");
+		          for(  MahanaduEventVO constVO : result.getSubList() ){
+		            
+		          if(constVO.getTotal() != null && constVO.getTotal().longValue() > 0l && constVO.getCadreCount() != null && constVO.getCadreCount().longValue() > 0l){
+		            
+		            flag=true;
+		            str.append("<tr>");
+		            str.append("<td>"+constVO.getName()+"</td>");
+		            str.append("<td style='text-align:center;'>"+constVO.getTotal()+"</td>");
+		            str.append("<td style='text-align:center;'>"+constVO.getCadreCount()+"</td>");
+		            String Percantage = calcPercantage(constVO.getTotal(), constVO.getCadreCount());
+		            str.append("<td style='text-align:center;'>"+Percantage+" %</td>");
+		            str.append("</tr>");
+		          }
+		        }
+		         
+		            if(!flag){
+		              str.append("<tr bgcolor='"+stateColor+"'>");
+		              str.append("<td colspan='4' style='text-align:center' >No Data Available</td>");
+		          str.append("</tr>");
+		            }
+		        }else{
+		          str.append("<tr bgcolor='"+stateColor+"'>");
+		          str.append("<td colspan='4' style='text-align:center' >No Data Available</td>");
+		      str.append("</tr>");
+		        }
+		      str.append("</table>");  
+		      str.append("<br/><br/><br/><br/><br/><br/><br/><br/>");
+		      
+		      return str;
+		  }
   }
 

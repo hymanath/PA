@@ -16,5 +16,6 @@ public interface IMahanaduDashBoardService1 {
 	public EmailAttributesVO createMainPdfFile(String buildString);
 	
 	public String calcPercantage(Long totalValue,Long subValue);
+	public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds);
 }
 
