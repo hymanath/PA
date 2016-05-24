@@ -1140,6 +1140,7 @@
 														<option value="0"> Select State </option>
 														<option value="29"> Andaman & Nicobar  </option>
 														<option value="12"> Karnataka </option>
+														<option value="13"> Kerala </option>
 														<option value="15"> Maharasthra </option>
 														<option value="20"> Orissa </option>
 														<option value="24"> Tamilnadu </option>
