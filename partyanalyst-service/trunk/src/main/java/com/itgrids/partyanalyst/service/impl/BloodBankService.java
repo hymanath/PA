@@ -1077,6 +1077,8 @@ public List<BloodBankVO> getPrePopulateDataDetails(String searchType){
 					vo.setBagTypeId(obj[5] !=null ? (Long)obj[5]:0l);
 					vo.setBloodBankQuantityId(obj[6] !=null ? (Long)obj[6]:0l);
 					vo.setQuantity(obj[7] !=null ? (Long)obj[7]:0l);
+					vo.setRegistrationNo(obj[8]!=null ? obj[8].toString():"");
+					vo.setRemarks(obj[9]!=null ? obj[9].toString():"");
 					returnList.add(vo);					
 				}
 			}

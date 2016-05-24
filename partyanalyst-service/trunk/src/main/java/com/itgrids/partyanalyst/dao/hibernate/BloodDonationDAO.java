@@ -298,7 +298,9 @@ public List<Object[]> getThePrePopulateData(String searchType){
 			" model.bagNo, " +
 			" model.bloodBagTypeId, " +
 			" model.bloodBagQuantity.bloodBagQuantityId, " +
-			" model.quantity " +
+			" model.quantity, " +
+			" model.registrationNumber," +
+			" model.remarks " +
 			" from BloodDonation model " +
 			" where " +
 			" model.bloodDonorInfo.donorName like '%"+searchType+"%' or model.bloodDonorInfo.tdpCadre.memberShipNo=:searchType or model.bloodDonorInfo.mobileNo=:searchType ");
