@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> implements IVoterAgeInfoDAO{
 
@@ -197,14 +198,14 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
     
    public List<Object[]> getYouthVotersInfoForDistrict(List<Long> ids){
 	   Query query = getSession().createQuery("select sum(model1.totalVoters),model2.district.districtId from VoterAgeInfo model1,Constituency model2 where model1.voterReportLevel.voterReportLevelId = 1 and" +
-	   		" model1.publicationDate.publicationDateId = 11 and model1.voterAgeRange.voterAgeRangeId = 7 and model1.reportLevelValue = model2.constituencyId and model2.district.districtId in(:ids) group by model2.district.districtId");
+	   		" model1.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and model1.voterAgeRange.voterAgeRangeId = 7 and model1.reportLevelValue = model2.constituencyId and model2.district.districtId in(:ids) group by model2.district.districtId");
 	     query.setParameterList("ids", ids);
 	   return query.list();
    }
    public List<Object[]> getYouthVotersInfo(Long constiId,List<Long> ids,Long reportLevel){
 	   StringBuilder queryStr = new StringBuilder();  
 	   queryStr.append("select model.totalVoters,model.reportLevelValue from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId = :reportLevel and" +
-	   		" model.publicationDate.publicationDateId = 11 and model.voterAgeRange.voterAgeRangeId = 7 and model.reportLevelValue in(:ids) ");
+	   		" model.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and model.voterAgeRange.voterAgeRangeId = 7 and model.reportLevelValue in(:ids) ");
 	   if(constiId != null && constiId.longValue() > 0){
 		   queryStr.append(" and model.constituencyId =:constiId");
 	   }
