@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.ITrainingCampService;
@@ -23,7 +24,17 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 	private ResultStatus 						resultStatus;
 	private Long						    notificationDeviceId;
 	private INotificationService				notificationService;
+	private String status ;
 	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public INotificationService getNotificationService() {
 		return notificationService;
 	}
@@ -91,22 +102,25 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		// TODO Auto-generated method stub
 	}
 
+	public String execute(){
+		return Action.SUCCESS;
+	}
 	
-	/*public String saveUsersDataInNotificationDeviceTable(){
+	public String PushNotificationDetails(){
 		try{
-			LOG.error("Entered into saveUsersDataInNotificationDeviceTable() in CadreDetailsAction ");
-			jObj=new JSONObject(getTask());
+			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
+			jObj = new JSONObject(getTask());
+			String notifctionType=jObj.getString("notificationTypeId");
+			String notificatonTxt=jObj.getString("notificationText");
 			
-			Long registeredId=jObj.getLong("registeredId");
-			Long projectId = jObj.getLong("projectId");
-			String imeiNo = jObj.getString("imeiNo");
-			
-			resultStatus = notificationService.saveUsersDataInNotificationDeviceTable();
-			
+			NotificationDeviceVO notifyVO = new NotificationDeviceVO();
+			notifyVO.setRegisteredId(notifctionType);
+			notifyVO.setNotification(notificatonTxt);
+			status = notificationService.pushNotification(notifyVO);
 		}catch(Exception e){
-			LOG.error("Exception Occured in saveUsersDataInNotificationDeviceTable() in CadreDetailsAction ",e);
+			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
 		}
 		return Action.SUCCESS;
 	}
-*/
+	
 }

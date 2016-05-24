@@ -11610,6 +11610,10 @@
 		<result name="success">/jsp/appointments.jsp</result>
 	</action>
 	
+	<action name="notificationAction" class="notificationAction">
+		<result name="success">/jsp/pushNotification.jsp</result>
+	</action>
+	
 	<action name="appointmentsReportDashBoardAction" class="appointmentReportDashBoardAction">
 		<result name="success">/jsp/appointmentReportDashBoard.jsp</result>
 	</action>			
@@ -12355,6 +12359,12 @@
 	<action name="getConstituencyWiseMembersCountInCampusAction" class="mahanaduDashBoardAction" method="getConstituencyWiseMembersCountInCampus">
 		<result type="json" name="success">
 			<param name="root">mahanaduEventVO</param>
+		</result>
+	</action>
+	
+	<action name="pushNotificationAction" class="notificationAction" method="PushNotificationDetails">
+		<result type="json" name="success">
+			<param name="root">status</param>
 		</result>
 	</action>
 </package>
