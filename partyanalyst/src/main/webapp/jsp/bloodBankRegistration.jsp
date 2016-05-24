@@ -849,8 +849,8 @@ function validateFields(){
 	   return;	  
    } */
 	 $(".dobErrorCls").html(' ');
-	 if(dob !=null && dob !=undefined && dob !=""){
-		  var dobArr=dob.split("/");	
+	 if(dob !=null && dob !=undefined && dob.trim() !=""){
+		 var dobArr=dob.split("/");	
 		  var year=(new Date().getFullYear())-(dobArr[2]);
 		  $("#ageId").val(year);
 	 }	
@@ -874,7 +874,7 @@ function validateFields(){
 }
  $(document).on("blur","#dobId",function(){
 	var dob=$("#dobId").val();
-	if(dob!=null && dob!=undefined){
+	if(dob!=null && dob!=undefined && dob.trim() !=""){		
 	 var dobArr=dob.split("/");	
 	 var year=(new Date().getFullYear())-(dobArr[2]);
 	 $("#ageId").val(year);
