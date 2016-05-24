@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.GcmService.GcmService;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationDeviceDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
@@ -76,7 +77,8 @@ public class NotificationService implements INotificationService{
 	 public NotificationDeviceVO saveUsersDataInNotificationDeviceTable(final NotificationDeviceVO notifyVO)
 	  {
 		 log.info("Entered into saveVotersDataInVoterInfoTable() Method...");
-		 NotificationDeviceVO returnVo = new NotificationDeviceVO();
+		 GcmService gcmService = new GcmService();
+		// NotificationDeviceVO returnVo = new NotificationDeviceVO();
 		  try{
 			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
@@ -98,11 +100,17 @@ public class NotificationService implements INotificationService{
 					}
 				});
 			  //returnList =  getActiveNotifications(notifyVO.getNotificationTypeId(),notifyVO.getLastNotificationId());
-			  return  new NotificationDeviceVO("SUCCESS");
+			  @SuppressWarnings("unused")
+			  NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId());
+			  
+			  if(notificationDeviceVO.getStatus() != null && notificationDeviceVO.getStatus().trim().equalsIgnoreCase("SUCCESS"))
+			 	return  new NotificationDeviceVO("SUCCESS");
+			  else
+				  throw new Exception();
+			  
 		  }catch (Exception e) {
 			  e.printStackTrace();
 			  log.error("Exception Occured in saveUsersDataInNotificationDeviceTable() Method, Exception - "+e);
-			 
 			  return  new NotificationDeviceVO("FAILURE");
 		}
 	  }
@@ -156,6 +164,6 @@ public class NotificationService implements INotificationService{
 		return returnList;
 		 
 	 }
-
+	 
 }
 
