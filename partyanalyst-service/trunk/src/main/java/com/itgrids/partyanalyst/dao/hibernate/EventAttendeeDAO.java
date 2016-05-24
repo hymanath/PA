@@ -968,6 +968,43 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
+	public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String constituecnyQueryStr){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,c.constituency_id as constituecnyId " +
+				" from " +
+				" tdp_cadre TC,user_address UA,constituency c,event_attendee EA inner join " +
+				" (select tdp_cadre_id as cadre_id, max(attended_time) as max_time" +
+				" from event_attendee " +
+				" where " +
+				" date(attended_time) =:todayDate " +
+				" and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as EA2" +
+				" ON EA.tdp_cadre_id =  EA2.cadre_id and EA.attended_time = EA2.max_time" +
+				" where " +
+				" date(EA.attended_time) =:todayDate and EA.event_id =:entryEventId " +
+				" and EA.tdp_cadre_id = TC.tdp_cadre_id" +
+				" and TC.address_id = UA.user_address_id " +
+				" and UA.constituency_id=c.constituency_id" );
+		
+			if(constituecnyQueryStr !=null && !constituecnyQueryStr.isEmpty()){
+				str.append(constituecnyQueryStr);
+			}
+		
+				str.append(" group by UA.constituency_id"); 
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("currentCadre",Hibernate.LONG)
+				.addScalar("constituecnyId",Hibernate.LONG);
+		
+		query.setParameter("entryEventId", entryEventId);
+		query.setParameter("exitEventId", exitEventId);
+		query.setDate("todayDate", todayDate);
+		
+				
+		return query.list();
+	}
+	
 	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String districtQueryStr,Date toDayDate){
 		
 		StringBuilder str = new StringBuilder();
@@ -1019,6 +1056,25 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String constituencyQueryStr,Date toDayDate){
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
+				" from EventAttendee model " +
+				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+			if(constituencyQueryStr !=null && !constituencyQueryStr.isEmpty()){
+					str.append(constituencyQueryStr);
+			}
+		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.constituencyId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId", eventId);
+		query.setDate("toDayDate", toDayDate);
+		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		
+		return query.list();
+	}
+
 	public List<Object[]>  locationWiseEventAttendeeCountsQuery(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds,String queryString){
 		
 		StringBuilder sbS =  new StringBuilder();
@@ -1243,6 +1299,43 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
+	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,c.constituency_id as constituencyId " +
+				" from " +
+				" tdp_cadre TC,user_address UA,constituency c,event_attendee EA inner join " +
+				" (select tdp_cadre_id as cadre_id, max(attended_time) as max_time" +
+				" from event_attendee " +
+				" where " +
+				" date(attended_time) =:todayDate " +
+				" and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as EA2" +
+				" ON EA.tdp_cadre_id =  EA2.cadre_id and EA.attended_time = EA2.max_time" +
+				" where " +
+				" date(EA.attended_time) =:todayDate and EA.event_id =:entryEventId " +
+				" and EA.tdp_cadre_id = TC.tdp_cadre_id" +
+				" and TC.address_id = UA.user_address_id " +
+				" and UA.constituency_id = c.constituency_id " );
+		
+			if(queryStr !=null && !queryStr.isEmpty()){
+				str.append(queryStr);
+			}
+		
+				str.append(" group by c.constituency_id"); 
+		
+		Query query = getSession().createSQLQuery(str.toString())
+				.addScalar("currentCadre",Hibernate.LONG)
+				.addScalar("constituencyId",Hibernate.LONG);
+		
+		query.setParameter("entryEventId", entryEventId);
+		query.setParameter("exitEventId", exitEventId);
+		query.setDate("todayDate", todayDate);
+		
+				
+		return query.list();
+	}
+	
 	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todateDate){
 		
 		StringBuilder str = new StringBuilder();
@@ -1294,5 +1387,24 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
 		return query.list();
+	}
+	
+	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
+				"from EventAttendee model " +
+				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+			if(queryStr !=null && !queryStr.isEmpty()){
+					str.append(queryStr);
+			}
+		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.constituencyId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId", eventId);
+		query.setDate("toDayDate", todayDate);
+		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		
+		return query.list();
+		
 	}
 }
