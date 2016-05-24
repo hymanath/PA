@@ -1962,12 +1962,28 @@ public class WebServiceHandler {
 		}
 		
 		@POST
+		@Path("/saveNotificationDeviceInfo")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public NotificationDeviceVO saveNotificationDeviceInfo(NotificationDeviceVO inputVo){
+			try{
+			return (NotificationDeviceVO) notificationService.saveUsersDataInNotificationDeviceTable(inputVo);
+		}
+		catch(Exception e){
+			LOG.error("Exception Occured in getNotificationDetailsBynotificationDeviceId() Method, Exception is ",e);
+			e.printStackTrace();	
+		}
+			return null;  
+		}
+		
+		@POST
 		@Path("/getNotificationDetails")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public NotificationDeviceVO getNotificationDetailsBynotificationDeviceId(NotificationDeviceVO inputVo){
+		public List<NotificationDeviceVO> getNotificationDetailsBynotificationDeviceId(NotificationDeviceVO inputVo){
 			try{
-			return notificationService.saveUsersDataInNotificationDeviceTable(inputVo);
+				List<NotificationDeviceVO>  notificationDeviceVOList = notificationService.getActiveNotifications(inputVo);
+				return notificationDeviceVOList;
 		}
 		catch(Exception e){
 			LOG.error("Exception Occured in getNotificationDetailsBynotificationDeviceId() Method, Exception is ",e);
