@@ -36,16 +36,16 @@
                         </select>
                     </div>
 					<div id="errorDiv" style="color:#ff0020;margin-right:20px;" class="pull-right"></div>
-                    <div class="col-md-3 col-md-offset-2">
+                    <div class="col-md-5 col-md-offset-2">
                     	<label>Search</label>
                        	<input class="form-control" type="text" id="searchInputId" placeholder="Name/MobileNo/MembershipID" />
                     </div>
-					<div class="col-md-2">
+					<!--<div class="col-md-2">
 						<label>Date</label>
 						<select class="form-control">
 							<option>ALL</option>
 						</select>
-					</div>
+					</div>-->
 					<div class="col-md-2">
 						<button class="btn btn-success m_top25" style="margin-top:25px;" id="serachButtonId" onclick="getPrePopulateTheDataDetails()">SEARCH</button>
 					</div>
