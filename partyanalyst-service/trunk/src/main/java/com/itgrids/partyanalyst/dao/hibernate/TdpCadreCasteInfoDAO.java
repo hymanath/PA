@@ -117,7 +117,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
 			{
 				str.append(" ,model2.tehsilName from TdpCadreCasteInfo model,Tehsil model2,Booth B where model2.tehsilId = model.locationId and model2.tehsilId = B.tehsil.tehsilId and model.locationType like '%Tehsil%' ");
-				str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList)  ");
+				str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.constituency.constituencyId in (:locationIdsList)  ");
 				str.append(" and model.casteStateId =:casteStateId ");
 				str.append(" order by model2.tehsilName ");
 			}
