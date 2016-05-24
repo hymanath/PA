@@ -3113,6 +3113,7 @@
 		<property name="eventInviteeDAO" ref="eventInviteeDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+		<property name="mailService" ref="mailService" />
 	</bean>
 	
 	<bean name="bloodBankService" class="com.itgrids.partyanalyst.service.impl.BloodBankService">
