@@ -136,25 +136,28 @@ h1,h2,h3,h4,h5,h6,p,ul
 	margin-top:10px;
 	padding:20px;
 }
-.printDetails li:nth-child(2)
+.printDetails li:nth-child(2) , .printDetails li:nth-child(5),.printDetails li:nth-child(8)
 {
 	width:28%;
 }
 .printDetails li
 {
 	list-style:none;
-	width:32.3%;
+	width:33%;
 	display:inline-block
 }
 @media print
 {
-header,footer,.container,#printBloddBankId { visibility: hidden; }
-header,footer,.container ,#printBloddBankId{ display:none; }
+body {
+  -webkit-print-color-adjust: exact;
+}
+.dtsCls,header,footer,.container,#printBloddBankId,#printBloddBankCancelId { visibility: hidden; }
+.dtsCls,header,footer,.container ,#printBloddBankId,#printBloddBankCancelId{ display:none; }
 #printarea{visibility:shown}
 .tableHealthHistory tr td
 {
 	padding:2px !important;
-	background-color:#ccc;
+	background-color:lightgrey !important;
 	font-size:10px !important;
 }
 .dataSubmittingModal,h1,h2,h3,h4,h5,h6,p,ul
@@ -163,7 +166,7 @@ header,footer,.container ,#printBloddBankId{ display:none; }
 }
 .form-control
 {
-	height:10px;
+	height:30px;
 }
 table
 {
@@ -177,5 +180,12 @@ table
 .printDetails
 {
 	padding:5px;
+}
+.m_top30{
+	margin-top:30px !important;
+}
+.table , .table tr td , .table thead th
+{
+	margin-top:0px !important;
 }
 }
