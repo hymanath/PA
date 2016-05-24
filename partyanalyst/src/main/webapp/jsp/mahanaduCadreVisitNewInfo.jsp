@@ -186,7 +186,7 @@
 		<div class="col-md-4">
 			<div class="panel panel-default panel-custom-default" style="height:230px;">
 				<div class="panel-heading">
-					<h4 class="panel-title">DAY WISE UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right refreshIconPanel" title="page refresh" id="refreshDaysWiseRevisitId"></i></h4>
+					<span class="panel-title" style="font-size:14px;">DAY WISE UNIQUE AND REVISIT SUMMARY<i class="glyphicon glyphicon-refresh pull-right refreshIconPanel" title="page refresh" id="refreshDaysWiseRevisitId"></i></span>
 				</div>
 				<div class="panel-body pad_8">
 				<div><center><img id="dayWsUnquVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
@@ -230,7 +230,7 @@
 				<div class="panel-heading">
 					<div class="row">
 						<div class="col-md-8">
-							<h4 class="panel-title">DISTRICT WISE MEMBERS IN CAMPUS NOW & DAY WISE COUNT</h4>
+							<h4 class="panel-title">MEMBERS IN CAMPUS NOW & DAY WISE COUNT</h4>
 						</div>
 						<div class="col-md-4">
 							<div class="apSwitch">
@@ -260,37 +260,22 @@
 					
 				</div>
 				<div class="panel-body">
-					<div class="table-responsive" id="distWiseTableDivId">
-						<!--<table class="table table-condensed tableNewDistWise" id="distWiseTableId">
-							<thead>
-								<tr>
-									<th>DISTRICT NAME</th>
-									<th>NOW IN CAMPUS</th>
-									<th>DAY - 1</th>
-									<th>DAY - 2</th>
-									<th>DAY - 3</th>
-								</tr>
-							</thead>
-							<tr>
-								<td>Ananthapur</td>
-								<td>500</td>
-								<td>100</td>
-								<td>100</td>
-							</tr>
-							<tr>
-								<td>Ananthapur</td>
-								<td>500</td>
-								<td>100</td>
-								<td>100</td>
-							</tr>
-							<tr>
-								<td>Ananthapur</td>
-								<td>500</td>
-								<td>100</td>
-								<td>100</td>
-							</tr>
-						</table>-->
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">DISTRICT WISE</h4>
+						</div>
+						<div class="panel-body">
+							<div class="table-responsive" id="distWiseTableDivId"></div>
+						</div>
 					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">CONSTITUENCY WISE</h4>
+						</div>
+						<div class="panel-body">
+							<div class="table-responsive" id="constWiseTableDivId"></div>
+						</div>
+					</div>					
 				</div>
 			</div>
 			
@@ -443,6 +428,7 @@ $(".panelDefault").height(maxHeight);
 		getDaysUniqueAndRevisitSummary();
 		getDayWiseVisitSummary();
 		getDistrictWiseMembersCountInCampus();
+		getConstituencyWiseMembersCountInCampus();
 	});
 	
 	getEventDates();
@@ -486,6 +472,7 @@ $(".panelDefault").height(maxHeight);
         getDetails();		
         getDayWiseVisitSummary();			
 		getDistrictWiseMembersCountInCampus();
+		getConstituencyWiseMembersCountInCampus();
 		
 	}
 	
@@ -496,7 +483,7 @@ $(".panelDefault").height(maxHeight);
 	var stateId =0;
 	var eventId = $("#mainEventSelectId").val();
 	 if(globalMainEntryId !=null && globalMainEntryId>0){
-		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
+		subEvents1 = globalMainEntryId; // -- MAHANADU MAIN ENTRY
 	 }
 	 
 	 var attrDateValue = $("#eventDatesSelectId option:selected").attr("attr_dates");
@@ -1008,7 +995,7 @@ $(".panelDefault").height(maxHeight);
 	var stateId =0;
 	 var eventId = $("#mainEventSelectId").val();
 	 if(globalMainEntryId !=null && globalMainEntryId>0){
-		subEvents1 = [globalMainEntryId]; // -- MAHANADU MAIN ENTRY
+		subEvents1 = globalMainEntryId; // -- MAHANADU MAIN ENTRY
 	 }
 	 $("#totalVisitorsDtlsId").html(' ');
      $("#dayWsVstrsPrcssngImgId").show();
@@ -1076,14 +1063,17 @@ function buildTotalVisitorsResult(result){
    */
 	$(document).on("click","#tsSwitch",function(){
 		getDistrictWiseMembersCountInCampus();
+		getConstituencyWiseMembersCountInCampus();	
 	});
 	
 	$(document).on("click","#otherStates",function(){
 		getDistrictWiseMembersCountInCampus();
+		getConstituencyWiseMembersCountInCampus();
 	});
 	
 	$(document).on("click","#apSwitch",function(){
 		getDistrictWiseMembersCountInCampus();
+		getConstituencyWiseMembersCountInCampus();
 	});
 	
 	function getDistrictWiseMembersCountInCampus(){
@@ -1154,10 +1144,80 @@ function buildTotalVisitorsResult(result){
 				
 			});
 		}else{
-			$("#distWiseTableId").html("<h5> No Data Availabel.</h5>");
+			$("#distWiseTableDivId").html("<h5>Please Select State.</h5>");
 		}
 	}
 	
+	function getConstituencyWiseMembersCountInCampus(){
+		var stateIds = [];
+		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
+		if($("#tsSwitch").is(":checked")){
+			stateIds.push($("#tsSwitch").val());
+		}
+		
+		if($("#otherStates").is(":checked")){
+			stateIds.push($("#otherStates").val());
+		}
+		
+		if($("#apSwitch").is(":checked")){
+			stateIds.push($("#apSwitch").val());
+		}
+		
+		var t = $("#eventDatesSelectId").find("option:selected").attr("attr_dates").split(",");
+		
+		if(stateIds.length > 0){
+			var jObj = {
+				eventId:$("#mainEventSelectId").val(),			
+				stateIds:stateIds,
+				date:t[t.length-2]
+			}	
+			
+			$.ajax({
+			  type:'GET',
+			  url: 'getConstituencyWiseMembersCountInCampusAction.action',
+			  data : {task:JSON.stringify(jObj)} ,
+			}).done(function(result){
+				if(result != null && result.subList != null && result.subList.length > 0){
+					var str = '';
+					var flag=false;
+				str+='<table class="table table-condensed tableNewDistWise" id="distWiseTableId">';
+				str+='<thead>';
+				str+='<th>Constituency Id</th>';
+				str+='<th>Name</th>';
+				str+='<th>Total</th>';
+				str+='<th>Now In Campus</th>';
+				str+='<th>Now In Campus %</th>';
+				str+='</thead>';
+				
+					str+='<tbody>';
+					for( var  i in result.subList ){
+						if(result.subList[i].total != null && result.subList[i].total > 0 && result.subList[i].cadreCount != null && result.subList[i].cadreCount > 0){
+							flag=true;
+							str+='<tr>';
+							str+='<td>'+result.subList[i].id+'</td>';
+							str+='<td>'+result.subList[i].name+'</td>';
+							str+='<td>'+result.subList[i].total+'</td>';
+							str+='<td>'+result.subList[i].cadreCount+'</td>';
+							str+='<td>'+((result.subList[i].cadreCount*100)/result.subList[i].total).toFixed(2)+'%</td>';
+							str+='</tr>';
+						}
+					}
+					str+='</tbody>';
+					str+='</table>';
+					if(!flag){
+						$("#constWiseTableDivId").html('No Data Available.');
+					}else{
+						$("#constWiseTableDivId").html(str);
+					}
+					
+				}else{
+					$("#constWiseTableDivId").html('Please Select State.');
+				}
+			});
+		}else{
+			$("#constWiseTableDivId").html("<h5> No Data Availabel.</h5>");
+		}
+	}
 	/* function getTodayCount(type){
 		var eventId = $("#mainEventSelectId").val(); 
 		$.ajax({
