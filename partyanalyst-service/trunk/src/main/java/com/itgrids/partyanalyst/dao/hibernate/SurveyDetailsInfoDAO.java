@@ -1035,7 +1035,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		
 		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
 		if(searchType.equalsIgnoreCase("constituencyWise")){
-			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 		}
 		else if(searchType.equalsIgnoreCase("boothWise")){
 			queryStr.append(" model.booth.boothId = :locationId and ");
@@ -1065,7 +1065,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
 		
 		if(searchType.equalsIgnoreCase("constituencyWise")){
-			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 		}
 		else if(searchType.equalsIgnoreCase("boothWise")){
 			queryStr.append(" model.booth.boothId = :locationId and ");
@@ -1096,7 +1096,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
 		
 		if(searchType.equalsIgnoreCase("constituencyWise")){
-			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 		}
 		else if(searchType.equalsIgnoreCase("boothWise")){
 			queryStr.append(" model.booth.boothId = :locationId and ");
@@ -1129,7 +1129,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
 		
 		if(searchType.equalsIgnoreCase("constituencyWise")){
-			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 		}
 		else if(searchType.equalsIgnoreCase("boothWise")){
 			queryStr.append(" model.booth.boothId = :locationId and ");
@@ -1159,7 +1159,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
 		
 		if(searchType.equalsIgnoreCase("constituencyWise")){
-			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 		}
 		else if(searchType.equalsIgnoreCase("boothWise")){
 			queryStr.append(" model.booth.boothId = :locationId and ");
@@ -1190,7 +1190,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" select count(distinct model.voter.voterId) from SurveyDetailsInfo model where  ");
 		
 		if(searchType.equalsIgnoreCase("constituencyWise")){
-			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 		}
 		else if(searchType.equalsIgnoreCase("boothWise")){
 			queryStr.append(" model.booth.boothId = :locationId and ");
@@ -1220,7 +1220,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		queryStr.append(" select count(distinct  model.mobileNumber) from SurveyDetailsInfo model where   ");
 		
 		if(searchType.equalsIgnoreCase("constituencyWise")){
-			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = 11  and ");
+			queryStr.append(" model.booth.constituency.constituencyId = :locationId and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 		}
 		else if(searchType.equalsIgnoreCase("boothWise")){
 			queryStr.append(" model.booth.boothId = :locationId and ");
@@ -2418,7 +2418,7 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 		 		" ( select null, r.mobile_no , 2 , v.voter_id  , b.constituency_id ,b.booth_id ,NOW(), NOW() " +
 		 		" from survey.respondent r,dakavara_pa.voter v,survey.booth b,dakavara_pa.booth_publication_voter bpv, survey.verification_details vd " +
 		 		" where r.Mobile_No is not null and v.voter_id_card_no = r.voter_id and r.survey_answer_info_id = vd.survey_answer_info_id " +
-		 		" and b.booth_id = bpv.booth_id and bpv.voter_id = v.voter_id and b.publication_date_id = 11 " +
+		 		" and b.booth_id = bpv.booth_id and bpv.voter_id = v.voter_id and b.publication_date_id = "+IConstants.VOTER_DATA_PUBLICATION_ID+" " +
 		 		" and vd.verification_status_id in (3 , 4) and  date(vd.verified_time) = CURDATE() )");
 		int c = query.executeUpdate();
 		
