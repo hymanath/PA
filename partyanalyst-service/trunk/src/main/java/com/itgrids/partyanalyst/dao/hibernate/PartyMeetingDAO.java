@@ -635,7 +635,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					{ 
 						queryStr.append(", T.tehsilId, T.tehsilName,P.panchayatName,model.startDate from PartyMeeting model ," +
 								"   Booth B left join B.panchayat P    left join B.tehsil T where  model.locationValue = P.panchayatId  " +
-								" and B.publicationDate.publicationDateId = 11  ");
+								" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  ");
 						queryStr.append(" and model.partyMeetingLevelId = "+IConstants.VILLAGE_PARTY_MEETING_LEVEL_ID+" and  model.partyMeetingTypeId = "+IConstants.MONTHLY_VILLAGEorWARD_MEETING_ID+"  ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.WARD_COMMITTEE_LEVEL_ID)
@@ -647,17 +647,17 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					}
 					else if(committeeLevelId.longValue() == IConstants.MANDAL_COMMITTEE_LEVEL_ID)
 					{
-						queryStr.append(" C.constituencyId, C.name,T.tehsilName,, model.startDate from PartyMeeting model, Booth B left join B.tehsil T left join B.constituency C where model.locationValue = T.tehsilId and B.publicationDate.publicationDateId = 11 ");
+						queryStr.append(" C.constituencyId, C.name,T.tehsilName,, model.startDate from PartyMeeting model, Booth B left join B.tehsil T left join B.constituency C where model.locationValue = T.tehsilId and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 						queryStr.append(" and model.partyMeetingLevelId = "+IConstants.MANDAL_PARTY_MEETING_LEVEL_ID+"   and model.partyMeetingTypeId = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+"  ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.TOWN_COMMITTEE_LEVEL_ID)
 					{
-						queryStr.append(" C.constituencyId, C.name,concat(LEB.name,' ',LEB.electionType.electionType), model.startDate from PartyMeeting model, Booth B left join B.localBody LEB left join B.constituency C where model.locationValue = LEB.localElectionBodyId and B.publicationDate.publicationDateId = 11 ");
+						queryStr.append(" C.constituencyId, C.name,concat(LEB.name,' ',LEB.electionType.electionType), model.startDate from PartyMeeting model, Booth B left join B.localBody LEB left join B.constituency C where model.locationValue = LEB.localElectionBodyId and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 						queryStr.append(" and model.partyMeetingLevelId = "+IConstants.TOWN_PARTY_MEETING_LEVEL_ID+"   and model.partyMeetingTypeId = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+"  ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.DIVISION_COMMITTEE_LEVEL_ID)
 					{
-						queryStr.append(" C.constituencyId, C.name,concat(LEB.name,' ',LEB.electionType.electionType), model.startDate from PartyMeeting model, Booth B left join B.localBody LEB left join B.constituency C where model.locationValue = LEB.localElectionBodyId and B.publicationDate.publicationDateId = 11 ");
+						queryStr.append(" C.constituencyId, C.name,concat(LEB.name,' ',LEB.electionType.electionType), model.startDate from PartyMeeting model, Booth B left join B.localBody LEB left join B.constituency C where model.locationValue = LEB.localElectionBodyId and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 						queryStr.append(" and model.partyMeetingLevelId = "+IConstants.DIVISION_PARTY_MEETING_LEVEL_ID+"  and model.partyMeetingTypeId = "+IConstants.MONTHLY_MANDAL_TOWN_DIVISION_MEETING_ID+"  ");
 					}
 					else if(committeeLevelId.longValue() == IConstants.CONSTITUENCY_COMMITTEE_LEVEL_ID) // inchargers
