@@ -367,6 +367,7 @@ $(".panelDefault").height(maxHeight);
 						 globalMainEntryId = result[i].id;
 					  }
 				  }
+				  getEventDates();
 			  }			  
 		  });
 	  }
@@ -431,7 +432,6 @@ $(".panelDefault").height(maxHeight);
 		getConstituencyWiseMembersCountInCampus();
 	});
 	
-	getEventDates();
 	function getEventDates(){
 		var jsObj={
 			eventId : $("#mainEventSelectId").val()
@@ -492,7 +492,7 @@ $(".panelDefault").height(maxHeight);
 			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:0,
-			subEvents : subEvents1,	
+			subEvents : [subEvents1],	
 			dateValues : attrDateValue
 		}	
 		$("#daysSummaryUniqueTableId").html(' ');
@@ -1003,7 +1003,7 @@ $(".panelDefault").height(maxHeight);
 			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:0,
-			subEvents : subEvents1,
+			subEvents : [subEvents1],
 			date:$("#eventDatesSelectId option:selected").attr("attr_dates")
 		}	
 		
