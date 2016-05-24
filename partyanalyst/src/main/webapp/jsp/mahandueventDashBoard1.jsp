@@ -95,6 +95,9 @@
 }
 .errorColorAppy{ color: rgb(255, 0, 0);font-size: 12px;font-weight: bold;margin-left: -70px;text-shadow: none}
 .text-capitalize{text-transform: uppercase;}
+.pointer {
+    cursor: pointer;
+}
 </style>
 </head>
 
@@ -354,14 +357,14 @@
 							<div class="col-md-12">
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
-									<p class="m_0 display-style" id="districtHeading">DISTRICT WISE</p>
-									
+									<p class="m_0 display-style" id="districtHeading">DISTRICT WISE </p>
+									<button class="btn btn-success btn btn-xs pointer" id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>
 									
 									</div>
 									<div class="panel-body" style="padding:0px;">				
-											
+											 
 											<center><img id="distAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-										 <div id="districtTableId" style="margin-top:-29px"> </div>
+										<div id="districtTableId" style="margin-top:-29px"> </div>
 									</div>
 								</div>
 								
@@ -370,6 +373,7 @@
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
 									<p class="m_0 display-style" id="constiHeading">CONSTITUENCY WISE</p>
+									 <button class="btn btn-success btn btn-xs" id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>
 									<div class="onoffswitch pull-right" style="display:none;">
 										<input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
 										<label class="onoffswitch-label" for="myonoffswitch1">
@@ -381,8 +385,7 @@
 									<div class="panel-body" style="padding:0px;">
 									<!--<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>-->
 									<center><img id="constAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-										
-									   <div id="constiTableId" style="margin-top:-29px"></div>
+										<div id="constiTableId" style="margin-top:-29px"></div>
 									</div>
 								</div>
 							</div>
@@ -1150,6 +1153,7 @@ function buildDistrictTable(result,reportLevelId){
 		str+='</table>';
 		str+='</div>';
 		$("#districtTableId").html(str);
+		$("#districtExcelBtnId").show();
 	}else{
 		$("#districtTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
 	}
@@ -1368,6 +1372,7 @@ function buildConstTable(result,reportLevelId){
 		str+='</table>';
 		str+='</div>';
 		$("#constiTableId").html(str);
+		$("#constituecnyExcelBtnId").show();
 	}else{
 		$("#constiTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
 	}
@@ -2659,7 +2664,25 @@ $(document).on('click','#mahanaduLinkId',function(){
 	}
 	
 }); 
-
+function generateExcel(){
+	tableToExcel(datatableId, 'District Wise Report');
+}
+function generateExcel1(){
+	tableToExcel(constituencyDataTableId, 'Constituency Wise Report');
+}
+</script>
+<script>
+var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
 
 </script>
 </body>
