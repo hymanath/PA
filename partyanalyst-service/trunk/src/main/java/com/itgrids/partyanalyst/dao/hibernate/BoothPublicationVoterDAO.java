@@ -6404,7 +6404,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				" left outer join constituency C on B.constituency_id=C.constituency_id " +
 				" left outer join local_election_body L on B.local_election_body_id=L.local_election_body_id " +
 				" where B.booth_id=BPV.booth_id and BPV.voter_id=V.voter_id " +
-				" and V.voter_id_card_no=:voterCardNo and B.publication_date_id=11 and C.district_id=D.district_id and" +
+				" and V.voter_id_card_no=:voterCardNo and B.publication_date_id="+IConstants.VOTER_DATA_PUBLICATION_ID+" and C.district_id=D.district_id and" +
 				" C.state_id=S.state_id and S.state_id=1")
 			.addScalar("cid", Hibernate.LONG)
 			.addScalar("boothId", Hibernate.LONG)
@@ -7298,7 +7298,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	public Long getTotalVotersForConstituency(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select count( distinct model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = 11");
+		Query query = getSession().createQuery("select count( distinct model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 		query.setParameter("constituencyId", constituencyId);
 		return (Long) query.uniqueResult();
 	}
@@ -7319,7 +7319,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	public List<Object[]> getTotalVotersForConstituencyByBoothWise(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo,count( distinct model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = 11 group by  model.booth.boothId order by cast(model.booth.partNo , int)");
+		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo,count( distinct model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" group by  model.booth.boothId order by cast(model.booth.partNo , int)");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
@@ -7328,7 +7328,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		Query query = getSession().createQuery("select model.booth.boothId, model.booth.partNo,count( distinct model.voter.voterId)," +
 				" model.booth.tehsil.tehsilId," +
 				" model.booth.localBody.localElectionBodyId" +
-				" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = 11 group by  model.booth.boothId order by cast(model.booth.partNo , int)");
+				" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" group by  model.booth.boothId order by cast(model.booth.partNo , int)");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
@@ -7507,7 +7507,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	   		return query.list();
    }
    public List<String> getPartNo(Long constituencyId,Long voterId){
-	   Query query = getSession().createQuery("select model.booth.partNo from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = 11 " +
+	   Query query = getSession().createQuery("select model.booth.partNo from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" " +
 	   		" and model.voter.voterId =:voterId ");
 	   query.setParameter("constituencyId", constituencyId);
   		query.setParameter("voterId", voterId);
@@ -7658,7 +7658,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			str.append(" left join model.booth.localBody localElectionBody ");
 			str.append(" left join model.booth.constituency.district district ");
 			str.append(" left join model.voter voter ");
-			str.append(" where  model.booth.publicationDate.publicationDateId = 11 ");
+			str.append(" where  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 			
 			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			{
@@ -7768,7 +7768,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			str.append(" left join model.booth.localBody localElectionBody ");
 			str.append(" left join model.booth.constituency.district district ");
 			str.append(" left join model.voter ");
-			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and model.booth.publicationDate.publicationDateId = 11 and ");
+			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and ");
 			
 			if(locationId != null && locationId.longValue() != 0L && locationType != null && locationType.equalsIgnoreCase(IConstants.STATE))
 			{
@@ -7857,7 +7857,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			str.append(" left join model.booth.localBody localElectionBody ");
 			str.append(" left join model.booth.constituency.district district ");
 			str.append(" left join model.voter ");
-			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and  model.booth.publicationDate.publicationDateId = 11  and ");
+			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  and ");
 			
 			if(locationId != null && locationId.longValue() != 0L && locationType != null && locationType.equalsIgnoreCase(IConstants.STATE))
 			{
@@ -8043,7 +8043,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		Long voterid=Long.parseLong(voterId);
 		
 		Query query = getSession().createQuery(" select model.booth.partNo from BoothPublicationVoter model" +
-				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId=11 ");
+				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId="+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 		
 		query.setParameter("voterId",voterid);
 		return  query.uniqueResult();
