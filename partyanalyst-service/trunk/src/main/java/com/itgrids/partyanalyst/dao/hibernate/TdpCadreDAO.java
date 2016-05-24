@@ -2402,7 +2402,7 @@ public void flushAndclearSession(){
 				" model.voter.voterId," +
 				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId,model.refNo,model.mobileNo,model.photoType,model.image," +
 				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
-				" where model.memberShipNo in (:memberCardNos) and model.isDeleted = 'T'");
+				" where model.memberShipNo in (:memberCardNos) and model.isDeleted = 'N'");
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
 	}
@@ -3262,7 +3262,7 @@ public void flushAndclearSession(){
 				" model.image," +
 				
 				" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
-				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'T'");
+				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
 	}
@@ -5199,7 +5199,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.memberShipNo from TdpCadre model " +
-					" where model.isDeleted = 'T' and model.enrollmentYear = 2014 and model.voterId is not null ");
+					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is not null ");
 			str.append(query);
 			str.append( " order by date(model.surveyTime)" );
 			
@@ -5271,7 +5271,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			StringBuilder str = new StringBuilder();
 			
 			str.append(" select model.memberShipNo from TdpCadre model " +
-					" where model.isDeleted = 'T' and model.enrollmentYear = 2014 and model.voterId is null ");
+					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is null ");
 			str.append(query);
 			str.append( " order by date(model.surveyTime)" );
 			
@@ -5322,7 +5322,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" model.voter.voterId," +
 					" model.voter.voterIDCardNo,model.mobileNo,model.userAddress.userAddressId,model.tdpCadreId,model.cardNumber" +
 					" from TdpCadre model " +
-					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'T'");
+					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 			query.setParameterList("memberCardNos", memberCardNos);
 			return query.list();
 		}
@@ -5346,7 +5346,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" model.tdpCadreId," +
 					" model.mobileNo," +
 					" model.userAddress.userAddressId,model.cardNumber from TdpCadre model " +
-					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'T'");
+					" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 			query.setParameterList("memberCardNos", memberCardNos);
 			return query.list();
 		}
@@ -5362,7 +5362,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		public Long getIsAlreadyTempararyRegistered(Long mobile, String cadreName )
 		{
 			Query query = getSession().createQuery(" select count(model.tdpCadreId) from TdpCadre model where model.mobileNo like '"+mobile+"' and  " +
-					" model.isDeleted='T' and model.enrollmentYear = 2014 and model.firstname like '%"+cadreName+"%' ");
+					" model.isDeleted='N' and model.enrollmentYear = 2014 and model.firstname like '%"+cadreName+"%' ");
 
 			return (Long) query.uniqueResult();
 		}
