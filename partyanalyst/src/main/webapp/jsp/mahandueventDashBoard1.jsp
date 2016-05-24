@@ -728,25 +728,27 @@ $(".maineventCls").each(function(){
 					str+='</tr>';
 				 
 				  for( var i = 0; i < result.allStatesVO.subList.length; i++){
-					  var dayCount = '0'+(i+1);
-					   str+='<tr>';
-					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
-					  if(result.allStatesVO.subList[i].attendees == 0 || result.allStatesVO.subList[i].attendees == null ){
-							str+='<td class="f_12">TOTAL<br/> - </td>';
-						}else{
-							str+='<td class="f_12">TOTAL<br/>'+result.allStatesVO.subList[i].attendees+'</td>';
-						}
-						if(result.allStatesVO.subList[i].invitees == 0 || result.allStatesVO.subList[i].invitees == null ){
-							str+='<td class="f_12">Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Invitees<br/>'+result.allStatesVO.subList[i].invitees+'</td>';
-						}
-						if(result.allStatesVO.subList[i].nonInvitees == 0 || result.allStatesVO.subList[i].nonInvitees == null ){
-							str+='<td class="f_12">Non-Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Non-Invitees<br/>'+result.allStatesVO.subList[i].nonInvitees+'</td>';
-						}
-					  str+='</tr>';
+					  if(result.allStatesVO.subList[i].dataExist){
+						  var dayCount = '0'+(i+1);
+						   str+='<tr>';
+						  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+						  if(result.allStatesVO.subList[i].attendees == 0 || result.allStatesVO.subList[i].attendees == null ){
+								str+='<td class="f_12">TOTAL<br/> - </td>';
+							}else{
+								str+='<td class="f_12">TOTAL<br/>'+result.allStatesVO.subList[i].attendees+'</td>';
+							}
+							if(result.allStatesVO.subList[i].invitees == 0 || result.allStatesVO.subList[i].invitees == null ){
+								str+='<td class="f_12">Invitees<br/> - </td>';
+							}else{
+								str+='<td class="f_12">Invitees<br/>'+result.allStatesVO.subList[i].invitees+'</td>';
+							}
+							if(result.allStatesVO.subList[i].nonInvitees == 0 || result.allStatesVO.subList[i].nonInvitees == null ){
+								str+='<td class="f_12">Non-Invitees<br/> - </td>';
+							}else{
+								str+='<td class="f_12">Non-Invitees<br/>'+result.allStatesVO.subList[i].nonInvitees+'</td>';
+							}
+						  str+='</tr>';
+					  }
 				  }
 				
 				str+='</table>';
@@ -800,25 +802,27 @@ $(".maineventCls").each(function(){
 				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
 				str+='</tr>';
 				 for( var i = 0; i < stateVO.subList.length; i++){
-					  var dayCount = '0'+(i+1);
-				  str+='<tr>';
-					  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
-						if(stateVO.subList[i].attendees == 0 || stateVO.subList[i].attendees == null ){
-							str+='<td class="f_12">TOTAL<br/> - </td>';
-						}else{
-							str+='<td class="f_12">TOTAL<br/>'+stateVO.subList[i].attendees+'</td>';
-						}
-						if(stateVO.subList[i].invitees == 0 || stateVO.subList[i].invitees == null ){
-							str+='<td class="f_12">Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Invitees<br/>'+stateVO.subList[i].invitees+'</td>';
-						}
-						if(stateVO.subList[i].nonInvitees == 0 || stateVO.subList[i].nonInvitees == null ){
-							str+='<td class="f_12">Non-Invitees<br/> - </td>';
-						}else{
-							str+='<td class="f_12">Non-Invitees<br/>'+stateVO.subList[i].nonInvitees+'</td>';
-						}
-					str+='</tr>';
+					 if(stateVO.subList[i].dataExist){
+						  var dayCount = '0'+(i+1);
+						  str+='<tr>';
+							  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+								if(stateVO.subList[i].attendees == 0 || stateVO.subList[i].attendees == null ){
+									str+='<td class="f_12">TOTAL<br/> - </td>';
+								}else{
+									str+='<td class="f_12">TOTAL<br/>'+stateVO.subList[i].attendees+'</td>';
+								}
+								if(stateVO.subList[i].invitees == 0 || stateVO.subList[i].invitees == null ){
+									str+='<td class="f_12">Invitees<br/> - </td>';
+								}else{
+									str+='<td class="f_12">Invitees<br/>'+stateVO.subList[i].invitees+'</td>';
+								}
+								if(stateVO.subList[i].nonInvitees == 0 || stateVO.subList[i].nonInvitees == null ){
+									str+='<td class="f_12">Non-Invitees<br/> - </td>';
+								}else{
+									str+='<td class="f_12">Non-Invitees<br/>'+stateVO.subList[i].nonInvitees+'</td>';
+								}
+							str+='</tr>';
+					 }
 				} 
 			str+='</table>';
 			if( stateVO.calcPercantage != null && stateVO.calcPercantage.trim().length>0){
