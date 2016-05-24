@@ -2804,5 +2804,8 @@
 	<bean id="accommodationTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AccommodationTrackingDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="notificationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
