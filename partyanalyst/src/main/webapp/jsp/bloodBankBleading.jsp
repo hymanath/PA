@@ -6,6 +6,7 @@
 <title>Bleading Details</title>
 <link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/BloodBankCustomFiles/custom.css" rel="stylesheet" type="text/css">
+<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,300,500italic,400italic,300italic,700,900" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -35,15 +36,19 @@
                         </select>
                     </div>
 					<div id="errorDiv" style="color:#ff0020;margin-right:20px;" class="pull-right"></div>
-                    <div class="col-md-3 col-md-offset-6">
+                    <div class="col-md-3 col-md-offset-2">
                     	<label>Search</label>
-                    	<div class="input-group inputWithButton">
-                        	<input class="form-control" type="text" id="searchInputId"/>
-                            <span class="input-group-addon">
-                            	<button class="btn btn-success" id="serachButtonId" onclick="getPrePopulateTheDataDetails()">SEARCH</button>
-                            </span>
-                        </div>
+                       	<input class="form-control" type="text" id="searchInputId" placeholder="Name/MobileNo/MembershipID" />
                     </div>
+					<div class="col-md-2">
+						<label>Date</label>
+						<select class="form-control">
+							<option>ALL</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-success m_top25" style="margin-top:25px;" id="serachButtonId" onclick="getPrePopulateTheDataDetails()">SEARCH</button>
+					</div>
                 </div>
                 <div class="row">
                 	<div class="col-md-12 m_top10">
@@ -161,7 +166,10 @@
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="js/bloodBankScript/bloodBankBleading.js" type="text/javascript"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script>
+$("#searchDate").daterangepicker({singleDatePicker:true});
 function getPrePopulateTheDataDetails(){
 	$('#errorDiv').html("");
 	$(".errorCls").html("");
