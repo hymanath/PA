@@ -605,7 +605,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 			{
 				str.append(" select distinct model2.constituencyId,model.totalVoters  ");
 				str.append(" ,model2.name from VoterInfo model,Constituency model2 where model2.constituencyId = model.reportLevelValue and model.constituencyId = model2.constituencyId ");
-				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDate.publicationDateId = 11 ");
+				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 				if(locationIdsList != null && locationIdsList.size() > 0)
 				{
 					str.append(" and model2.district.districtId in (:locationIdsList) ");
