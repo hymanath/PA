@@ -174,7 +174,7 @@ table
 }
 .panel-heading
 {
-	padding:5px;
+	padding:5px;	
 	background:#ccc;
 }
 .printDetails
@@ -187,5 +187,13 @@ table
 .table , .table tr td , .table thead th
 {
 	margin-top:0px !important;
+}
+.printDetails
+{
+	border-top:1px solid #ddd
+}
+.tableSignaturePrint tr td
+{
+	padding-top:50px !important;
 }
 }
