@@ -22,9 +22,9 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		StringBuilder queryStr = new StringBuilder();
 		
 		queryStr.append(" SELECT model.bloodDonorInfo,model.donationsInBloodBank,model.donationsInOtherPlaces,model.lastDonationDate," +
-								" model.bloodComponent.bloodComponentId,model.bloodComponent.component,model.emergencyDonation,model.willingToCallDonation," +
+								" bloodComponent.bloodComponentId,bloodComponent.component,model.emergencyDonation,model.willingToCallDonation," +
 								" model.remarks,model.donorAge " +
-						" FROM    BloodDonation model" +
+						" FROM    BloodDonation model left join model.bloodComponent bloodComponent " +
 						" WHERE  " +
 								" model.bloodDonorInfo.tdpCadre.memberShipNo = :memberShipId " +
 						" AND    model.bloodDonorInfo.tdpCadre.isDeleted ='N'" +
