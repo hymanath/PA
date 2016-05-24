@@ -1491,6 +1491,18 @@ public class CadreRegistrationForOtherStatesService implements
 				if(addressVO.getStateId() != null && addressVO.getStateId().longValue() >0)
 				{
 					userAddress.setState(stateDAO.get(addressVO.getStateId()));
+					List<Object[]> listAdd = constituencyDAO.getDefaultConstituencyAndDistrictForAState(addressVO.getStateId());
+					if(listAdd != null && listAdd.size() > 0)
+					{
+						Long constId = (Long)listAdd.get(0)[0];
+						Long distId = (Long)listAdd.get(0)[1];
+						
+						if(constId != null && constId.longValue() > 0)
+							userAddress.setConstituency(constituencyDAO.get(constId));
+						
+						if(distId != null && distId.longValue() > 0)
+							userAddress.setDistrict(districtDAO.get(distId));
+					}
 					userAddress = userAddressDAO.save(userAddress);
 					tdpCadre.setUserAddress(userAddress);
 				}
@@ -1501,7 +1513,7 @@ public class CadreRegistrationForOtherStatesService implements
 				tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				tdpCadre.setEnrollmentYear(IConstants.CADRE_ENROLLMENT_YEAR_FOROTHER_STATES);
 
-				tdpCadre.setIsDeleted("T");
+				tdpCadre.setIsDeleted("N");
 				tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 
 					String userId = "0000";
@@ -1515,7 +1527,7 @@ public class CadreRegistrationForOtherStatesService implements
 						tdpCadre.setRefNo(ref);
 					}
 					cadreRegistrationVO.setRefNo(tdpCadre.getRefNo());
-					tdpCadre.setIsDeleted("T");
+					tdpCadre.setIsDeleted("N");
 					surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 					tdpCadre1 = tdpCadreDAO.save(tdpCadre);
 
