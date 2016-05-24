@@ -164,6 +164,7 @@
 <script>
 function getPrePopulateTheDataDetails(){
 	$('#errorDiv').html("");
+	$(".errorCls").html("");
 	var search = $("#searchInputId").val();
 	if(search==0){
 		$('#errorDiv').html('Please Eneter Search');
