@@ -1230,9 +1230,9 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 			String reportHeading = null;
 			if(reportType.equalsIgnoreCase("constituency")){
-				reportHeading = "Constituency Wise";
+				reportHeading = "CONSTITUENCY WISE";
 			}else if(reportType.equalsIgnoreCase("district")){
-				reportHeading = "District Wise";
+				reportHeading = "DISTRICT WISE";
 			}
 			
 			StringBuffer str = new StringBuffer();
@@ -1289,13 +1289,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    			str.append("<tr>");
 		    			
 			    		str.append("<td width='200%'>"+constList.get(i).getName()+"</td>");
-			    		str.append("<td>"+constList.get(i).getAttendees()+"</td>");
-			    		str.append("<td>"+constList.get(i).getAttendeePercantage()+"%</td>");
+			    		str.append("<td style='text-align:center;'>"+constList.get(i).getAttendees()+"</td>");
+			    		str.append("<td style='text-align:center;'>"+constList.get(i).getAttendeePercantage()+"%</td>");
 			    		
 			    		if( constList.get(i).getInviteesCalled()!= null && constList.get(i).getInviteesCalled().longValue() > 0l){
-			    			str.append("<td>"+constList.get(i).getInviteesCalled()+"</td>");
+			    			str.append("<td style='text-align:center;'>"+constList.get(i).getInviteesCalled()+"</td>");
 			    		}else{
-			    			str.append("<td> - </td>");
+			    			str.append("<td style='text-align:center;'> - </td>");
 			    		}
 			    		
 			    		for(int j=0;j< constList.get(i).getSubList().size();j++){
@@ -1303,21 +1303,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			    			if( firstLocation.getSubList().get(j).isTotalDaydataExist()){
 			    				
 			    				if( constList.get(i).getSubList().get(j).getAttendees() != null && constList.get(i).getSubList().get(j).getAttendees().longValue() > 0l){
-			    					str.append("<td> "+constList.get(i).getSubList().get(j).getAttendees()+" </td>");
+			    					str.append("<td style='text-align:center;'> "+constList.get(i).getSubList().get(j).getAttendees()+" </td>");
 			    				}else{
-			    					str.append("<td> - </td>");
+			    					str.append("<td style='text-align:center;'> - </td>");
 			    				}
 			    				
 			    				if( constList.get(i).getSubList().get(j).getInvitees() != null && constList.get(i).getSubList().get(j).getInvitees().longValue() > 0l){
-			    					str.append("<td> "+constList.get(i).getSubList().get(j).getInvitees()+" </td>");
+			    					str.append("<td style='text-align:center;'> "+constList.get(i).getSubList().get(j).getInvitees()+" </td>");
 			    				}else{
-			    					str.append("<td> - </td>");
+			    					str.append("<td style='text-align:center;'> - </td>");
 			    				}
 			    				
 			    				if( constList.get(i).getSubList().get(j).getNonInvitees() != null && constList.get(i).getSubList().get(j).getNonInvitees().longValue() > 0l){
-			    					str.append("<td> "+constList.get(i).getSubList().get(j).getNonInvitees()+" </td>");
+			    					str.append("<td style='text-align:center;'> "+constList.get(i).getSubList().get(j).getNonInvitees()+" </td>");
 			    				}else{
-			    					str.append("<td> - </td>");
+			    					str.append("<td style='text-align:center;'> - </td>");
 			    				}
 			    			}
 			    		}
@@ -1339,7 +1339,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    StringBuffer str = new StringBuffer();
 		    str.append("<table width='100%'>");
 		        str.append("<tr bgcolor='#5c2d25'>");
-		          str.append("<td style='text-align:center;color:#fff'><font size='5'>ENTRY/EXIT  DASHBOARD</font><font size='3'ðŸ˜ Updated On "+time+")</font></td>");
+		          str.append("<td style='text-align:center;color:#fff'><font size='5'>ENTRY/EXIT  DASHBOARD</font><font size='3'> Updated On "+time+")</font></td>");
 		        str.append("</tr>");
 		      str.append("</table>");
 		      str.append("<br/>");
@@ -1491,7 +1491,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		          str.append("<td color='#d64d54' colspan='4'><font size='3' style='text-align:center;'>DISTRICT WISE MEMBERS IN CAMPUS NOW & DAY WISE COUNT</font></td>");
 		        str.append("</tr>");
 		     
-		        
+		        str.append("<font  size='2'>");
 		        if(result != null && result.getSubList() != null && result.getSubList().size() > 0){
 		          boolean flag = false;
 		             str.append("<tr>");
@@ -1500,7 +1500,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		              str.append("<td>NOW IN CAMPUS</td>");
 		              str.append("<td>NOW IN CAMPUS %</td>");
 		            str.append("</tr>");
-		          
+		           
 		          
 		          for(  MahanaduEventVO distVO : result.getSubList() ){
 		            
@@ -1527,6 +1527,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		          str.append("<td colspan='4' style='text-align:center' >No Data Available</td>");
 		      str.append("</tr>");
 		        }
+		      str.append("</font>");
 		      str.append("</table>");  
 		      str.append("<br/><br/><br/><br/><br/><br/>");
 		      
@@ -1542,6 +1543,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		           str.append("<td color='#d64d54' colspan='4' style='text-align:center;'><font size='3'>CONSTITUENCY WISE MEMBERS IN CAMPUS NOW & DAY WISE COUNT</font></td>");
 		        str.append("</tr>");
 		        
+		        str.append("<font  size='2'>");
 		        if(result != null && result.getSubList() != null && result.getSubList().size() > 0l){
 		          boolean flag = false;
 		             str.append("<tr>");
@@ -1575,6 +1577,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		          str.append("<td colspan='4' style='text-align:center' >No Data Available</td>");
 		      str.append("</tr>");
 		        }
+		        str.append("</font>");
 		      str.append("</table>");  
 		      str.append("<br/><br/><br/><br/><br/><br/><br/><br/>");
 		      
