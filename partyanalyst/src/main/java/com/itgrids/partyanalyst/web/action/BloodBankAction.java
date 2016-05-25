@@ -39,6 +39,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	private List<BloodBankDashBoardVO> bloodBankDashBoardvoList = new ArrayList<BloodBankDashBoardVO>();
 	private DonationsInBloodBankVO donationsInBloodBankVO;
 	private ResultStatus resultStatus;
+	private List<IdNameVO> idNameVOList;
 	
 	public DonationsInBloodBankVO getDonationsInBloodBankVO() {
 		return donationsInBloodBankVO;
@@ -138,6 +139,13 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
+	}
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
+	}
+	
 	public String getOccuations(){
 		try{
 			bloodBankVOList=bloodBankService.getOccupationList();
@@ -273,7 +281,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 					JSONObject jobj1 = new JSONObject(statusIds.get(i).toString());
 					statusId.add(jobj1.getLong("id"));
 				}
-			bloodBankVOList = bloodBankService.getBleedingCadreDetails(statusId,campId);
+			bloodBankVOList = bloodBankService.getBleedingCadreDetails(statusId,campId,jObj.getString("dates"));
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getBleedingCadreDetails() method of BloodBankAction", e);
 		}
@@ -402,11 +410,22 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			jObj = new JSONObject(getTask());
 			String searchType = jObj.getString("searchType");
 			
-			bloodBankVOList = bloodBankService.getPrePopulateDataDetails(searchType);
+			bloodBankVOList = bloodBankService.getPrePopulateDataDetails(searchType,jObj.getLong("statusId"),jObj.getString("date"));
 		}catch (Exception e) {
 			 LOG.info("Error raised at getPrePopulateTehDataDetails() in BloodBankAction",e);
 		}
 		return Action.SUCCESS;
 	}
 	
+	public String getBloodBankCampDates(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			idNameVOList = bloodBankService.getBloodBankCampDates(jObj.getLong("campId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getBloodBankCampDates", e);
+		}
+		return Action.SUCCESS;
+	}
 }
+

@@ -42,12 +42,10 @@
                     	<label>Search</label><span style='color:red' id="errorDiv"></span>
                        	<input class="form-control" type="text" id="searchInputId" placeholder="Name/MobileNo/MembershipID" />
                     </div>
-					<!--<div class="col-md-2">
+					<div class="col-md-2">
 						<label>Date</label>
-						<select class="form-control">
-							<option>ALL</option>
-						</select>
-					</div>-->
+						<select class="form-control" id="datesSelId"></select>
+					</div>
 					<div class="col-md-2">
 						<button class="btn btn-success m_top25" style="margin-top:25px;" id="serachButtonId" onclick="getPrePopulateTheDataDetails()">SEARCH</button>
 					</div>
@@ -174,6 +172,22 @@
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script>
+
+getBloodBankCampDates();
+function getBloodBankCampDates(){
+	var jObj={
+		campId:1
+	};
+	$.ajax({
+		type:"GET",
+		url:'getBloodBankCampDatesAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		
+	});
+}
+
 $("#searchDate").daterangepicker({singleDatePicker:true});
 function getPrePopulateTheDataDetails(){
 	$('#errorDiv').html("");
@@ -185,7 +199,9 @@ function getPrePopulateTheDataDetails(){
 	}
 	
 	var jObj={
-		searchType:search
+		searchType:search,
+		statusId : $("#totalStatusId").val(),
+		date : $("#datesSelId").val()
 	};
 	$.ajax({
 		type:"GET",
