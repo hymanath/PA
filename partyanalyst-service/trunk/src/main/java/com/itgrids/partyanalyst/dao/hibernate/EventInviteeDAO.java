@@ -219,4 +219,17 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
 		
 		return query.list();
 	}
+	
+	public List<Long> getCandidateTdpCadreIds(Long eventId,Long designationId){
+		Query query = getSession().createQuery(" select model.tdpCadreId " +
+				" from EventInvitee model,TdpCadreCandidate tcc,PublicRepresentative pr " +
+				"  where model.eventId=:eventId " +
+				" and model.tdpCadreId=tcc.tdpCadreId " +
+				" and tcc.candidateId=pr.candidateId " +
+				" and pr.publicRepresentativeTypeId=:designationId ");
+		query.setParameter("eventId", eventId);
+		query.setParameter("designationId", designationId);
+		return query.list();
+	}
+	
 }
