@@ -760,6 +760,7 @@ $(document).on("click",".printCls",function(){
 			if(result != null){
 				if(result.status!=null && result.status=="not exist"){
 				 $(".cadreNoErrorCls").html("This cadre number not available.");
+				   clearFields();
 				}else{
 				 populateCadreDetails(result);
 				}
