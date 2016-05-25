@@ -131,7 +131,6 @@ function buildBleedingCadreDetails(result){
 			str+='<td>'+result[i].mobile+'</td>';
 			str+='<td>';
 			 	str+='<select id="registrationStatusId'+i+'" attr_position="'+i+'" class="form-control registrationStatusCls">';
-				//str+='<option>Approved</option>';
 				str+='</select>';
 			str+='</td>';
 			
@@ -145,12 +144,10 @@ function buildBleedingCadreDetails(result){
 					if(!(accptStatusValuesArr[i]=="Rejected")){
 						str+='<td id="bloodBagTypeTdId'+i+'">';
 						str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls" disabled>';
-						//str+='<option>Single Bag</option>';
 						str+='</select>';
 						str+='</td>';
 						str+='<td id="bloodBagQuantityTdId'+i+'">';
 						str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls" disabled>';
-					//	str+='<option>With Sagm 350ml</option>';
 						str+='</select>';
 						 str+='<input id="remarkId'+i+'" style="display:none" type="text" placeholder="Enter Remarks" class="form-control"/>';
 						str+='</td>';
@@ -168,12 +165,10 @@ function buildBleedingCadreDetails(result){
 					}else{
 						str+='<td style="display:none" id="bloodBagTypeTdId'+i+'">';
 						str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
-						//str+='<option>Single Bag</option>';
 						str+='</select>';
 						str+='</td>';
 						str+='<td  colspan="3" id="bloodBagQuantityTdId'+i+'">';
 						str+='<select style="display:none" id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
-						//str+='<option>With Sagm 350ml</option>';
 						str+='</select>';
 						str+='<input id="remarkId'+i+'" value="'+result[i].remarks+'"  type="text" placeholder="remarks" class="form-control"/>';
 						str+='</td>';
@@ -202,12 +197,10 @@ function buildBleedingCadreDetails(result){
 				if(!(accptStatusValuesArr[i]=="Rejected")){
 					str+='<td id="bloodBagTypeTdId'+i+'">';
 					str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
-					//str+='<option>Single Bag</option>';
 					str+='</select>';
 					str+='</td>';
 					str+='<td id="bloodBagQuantityTdId'+i+'">';
 					str+='<select id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
-				//	str+='<option>With Sagm 350ml</option>';
 					str+='</select>';
 					 str+='<input id="remarkId'+i+'" style="display:none" type="text" placeholder="Enter Remarks" class="form-control"/>';
 					str+='</td>';
@@ -225,12 +218,10 @@ function buildBleedingCadreDetails(result){
 				}else{
 					str+='<td style="display:none" id="bloodBagTypeTdId'+i+'">';
 					str+='<select id="bloodBagTypeId'+i+'" class="form-control bloodBagTypeCls">';
-					//str+='<option>Single Bag</option>';
 					str+='</select>';
 					str+='</td>';
 					str+='<td  colspan="3" id="bloodBagQuantityTdId'+i+'">';
 					str+='<select style="display:none" id="bloodBagQuantityId'+i+'" class="form-control bloodBagQuantityCls">';
-					//str+='<option>With Sagm 350ml</option>';
 					str+='</select>';
 					str+='<input id="remarkId'+i+'" value="'+result[i].remarks+'"  type="text" placeholder="remarks" class="form-control"/>';
 					str+='</td>';
@@ -287,6 +278,9 @@ function buildBleedingCadreDetails(result){
 			$("#quantityId"+i).val(quantityArr[i]);
 		}
 	}
+	 $("#BleedingCadreDetailsId").dataTable({
+		             "aaSorting": [],
+						}); 
 }
 
 $(document).on("change",".registrationStatusCls",function(){
