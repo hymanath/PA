@@ -1994,9 +1994,10 @@ public class WebServiceHandler {
 		}
 		
 		@POST
-		@Path("/getAccommodationTrackingInfoByNotificationType/{notificationType}/{locationType}")
+		@Path("/getAccommodationTrackingInfoByNotificationType")
 		@Produces(MediaType.APPLICATION_JSON)
-		public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(@PathParam("notificationType") Long notificationType,@PathParam("locationType") Long locationType){
-		 return webServiceHandlerService.getAccommodationTrackingInfoByNotificationType(notificationType,locationType);
+		@Consumes(MediaType.APPLICATION_JSON)
+		public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputvo){
+		 return webServiceHandlerService.getAccommodationTrackingInfoByNotificationType(inputvo);
 		}
 }
