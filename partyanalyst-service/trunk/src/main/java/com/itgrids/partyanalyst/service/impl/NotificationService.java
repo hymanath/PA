@@ -134,7 +134,7 @@ public class NotificationService implements INotificationService{
 				});
 			  //returnList =  getActiveNotifications(notifyVO.getNotificationTypeId(),notifyVO.getLastNotificationId());
 			  @SuppressWarnings("unused")
-			  NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),IConstants.GCM_SERVER_STATIC_MESSAGE);
+			  NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),IConstants.GCM_SERVER_STATIC_MESSAGE,null);
 			  
 			  if(notificationDeviceVO.getStatus() != null && notificationDeviceVO.getStatus().trim().equalsIgnoreCase("SUCCESS"))
 			 	return  new NotificationDeviceVO("SUCCESS");
@@ -151,7 +151,8 @@ public class NotificationService implements INotificationService{
 	 public String  pushNotification(NotificationDeviceVO notifyVO){
 		 try {
 			 GcmService gcmService = new GcmService();
-			 NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),notifyVO.getNotification());
+			 List<String> notificationKeysList = notificationDeviceDAO.getNotificationActiveKeys();
+			 NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),notifyVO.getNotification(),notificationKeysList);
 			 return notificationDeviceVO.getStatus();
 		} catch (Exception e) {
 			  log.error("Exception Occured in pushNotification() Method, Exception - "+e);
