@@ -601,9 +601,10 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(dateValues !=null && !dateValues.isEmpty()){				
 				int lnth = dateValues.split(",").length;				
 				if(commonMethodsUtilService.isListOrSetValid(returnList)){					
-					for(int i=0;i<lnth;i++){						
-						finalList.add(returnList.get(i));	
-						
+					for(int i=0;i<lnth;i++){
+						if((i+1)<returnList.size() || (i+1)==returnList.size()){
+							finalList.add(returnList.get(i));
+						}
 					}					
 					returnList.clear();					
 					returnList = finalList;					
