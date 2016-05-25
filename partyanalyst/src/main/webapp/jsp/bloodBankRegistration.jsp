@@ -54,11 +54,11 @@
                 <div class="row m_top20">
                     <div class="col-md-3">
                     	<label>Name<span class="mandatoryFieldCls">*</span></label><span class="nameErrorCls mandatoryFieldCls"></span>
-                        <input type="text" id="nameId" class="form-control" readonly />
+                        <input type="text" id="nameId" class="form-control clearFieldCls" readonly />
 				    </div>
                     <div class="col-md-3">
                     	<label>Father/Spouse</label>
-                        <input type="text" id="spouseId" class="form-control"/>
+                        <input type="text" id="spouseId" class="form-control clearFieldCls"/>
                     </div>
                     <div class="col-md-6">
                     	<div class="row">
@@ -71,12 +71,12 @@
                             </div>
 							<div class="col-md-3">
                             	<label>Date Of Birth<!--<span class="mandatoryFieldCls">*</span>--></label>
- 		                        <input type="text" id="dobId" class="form-control"/>
+ 		                        <input type="text" id="dobId" class="form-control clearFieldCls"/>
 								<span class="dobErrorCls mandatoryFieldCls"></span>
                             </div>
                             <div class="col-md-3">
                             	<label>Age<span class="mandatoryFieldCls">*</span></label>
- 		                        <input type="number" id="ageId" class="form-control"/>
+ 		                        <input type="number" id="ageId" class="form-control clearFieldCls"/>
 								<span class="ageErrorCls mandatoryFieldCls"></span>
                             </div>
                             <div class="col-md-3">
@@ -91,17 +91,17 @@
                     </div>
                     <div class="col-md-6 m_top10">
                     	<label>Address</label>
-                        <textarea class="form-control" id="addressId" rows="4"></textarea>
+                        <textarea class="form-control clearFieldCls" id="addressId" rows="4"></textarea>
                     </div>
                     <div class="col-md-6 m_top10">
                     	<div class="row">
                         	<div class="col-md-6">
                             	<label>Mobile<span style='color:red'>*</span></label><span class="mobileNoErrorCls mandatoryFieldCls"></span>
-                                <input type="tel" id="mobileNoId" class="form-control"/>
+                                <input type="tel" id="mobileNoId" class="form-control clearFieldCls"/>
                             </div>
                             <div class="col-md-6">
                             	<label>E-Mail</label>
-                                <input type="tel" id="emailId" class="form-control"/>
+                                <input type="tel" id="emailId" class="form-control clearFieldCls"/>
                             </div>
                             <div class="col-md-6">
                             	<label>Education</label>
@@ -121,7 +121,7 @@
                 <div class="row m_top10">
                     <div class="col-md-3">
                     	<label>No.of times Blood Donation in BB</label>
-                        <input type="number" id="noOfTmBldDntnId" class="form-control"/>
+                        <input type="number" id="noOfTmBldDntnId" class="form-control clearFieldCls"/>
                     </div>
                     <div class="col-md-3">
                     	<label>Other than BB</label>
@@ -132,7 +132,7 @@
                     </div>
                     <div class="col-md-3">
                     	<label>Date Of Last Donation</label>
-                    	<input type="text" id="dtfDntnId" class="form-control"/>
+                    	<input type="text" id="dtfDntnId" class="form-control clearFieldCls"/>
                     </div>
                     <div class="col-md-3">
                     	<label>Donation</label>
@@ -158,7 +158,7 @@
                     </div>
                     <div class="col-md-3">
                     	<label>Remarks</label>
-                    	<input type="text" id="rmrksId" class="form-control"/>
+                    	<input type="text" id="rmrksId" class="form-control clearFieldCls"/>
                     </div>
                     <!--<div class="col-md-3">
                     	<label>Category</label>
@@ -767,6 +767,9 @@ $(document).on("click",".printCls",function(){
 		});
 }
 function populateCadreDetails(result){
+	   //clearing fields 
+		clearFields();
+		
 	if(result.alreadyDonated!=null && result.alreadyDonated==false){
 		populateCommonFields(result);
 	}else if(result.alreadyDonated!=null && result.alreadyDonated==true){
@@ -808,11 +811,7 @@ function populateCommonFields(result){
 			$("#spouseId").val(result.relativeName);
 		}
 		if(result.sex !=null && result.sex.length>0){
-			if(result.sex == "MALE"){
-				$("#seltBxSxId").val('M');
-			}else{
-				$("#seltBxSxId").val('F');
-			}
+			$("#seltBxSxId").val(result.sex);
 		}
 		if(result.age!=null && result.age>0){
 			$("#ageId").val(result.age);
@@ -972,7 +971,10 @@ function printdocumentDetails(){
 					 $("#statusId").html("");
 					},2000);
 					$(".myModalprintView").modal("show");
-					clearFields();
+					//clearing fields
+					 clearFields();
+					 $("#membershipInputId").val(' ');
+					 
 				}else if(result.exceptionMsg=="exist"){
 					 	$("#statusId").html("<p  style='color:red;font-size:15px;'>You have already donated blood.Please don't try.</p>'");
 				}else{
@@ -982,15 +984,16 @@ function printdocumentDetails(){
 		});
 }
 function clearFields(){
-	$(".form-control").val(' ');
+	$(".clearFieldCls").val(' ');
 	$("#seltBxSxId").val("M");
-	$("#Married").val("Married");
+	$("#slctBxMrrdId").val(0);
 	$("#edutnQlfctnSlctBxId").val(0);
 	$("#occptnSlctBxId").val(0);
-	$("#slctBxBBId").val("Yes");
 	$("#donationId").val(0);
-	$("#wllngTdntEmrgncyId").val("Yes");
-	$("#wllngTBClldFrDntnId").val("Yes");
+	$("#slctBxBBId").val("No");
+	$("#wllngTdntEmrgncyId").val("No");
+	$("#wllngTBClldFrDntnId").val("No");
+	
 }
 </script>
 
