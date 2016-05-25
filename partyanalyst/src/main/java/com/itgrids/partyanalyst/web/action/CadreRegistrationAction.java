@@ -956,7 +956,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
 				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,null);
 							
-				if(user.getRegistrationID().longValue() != 3930L) // party office userId
+				/*if(user.getRegistrationID().longValue() != 3930L) // party office userId
 	    		{
 	    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
 		    		Date now = new DateUtilService().getCurrentDateAndTime();
@@ -991,7 +991,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				    {
 				    	countDownTime = 0L;
 				    }
-	    		}
+	    		}*/
 				
 				return Action.SUCCESS;
 			}
