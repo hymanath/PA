@@ -23,11 +23,33 @@ public class AccommodationVO implements Serializable{
 	private String 	latitude;
 	private String 	status;
 	private List<AccommodationVO> locationDetails = new ArrayList<AccommodationVO>(0);
+	private List<Long> inActiveAccommadationTrackingIdsList = new ArrayList<Long>(0);
 	private String locationName;
 	private Long typeId;
 	private Long locationTypeId;
+	private Long lastAccommodationTrackingId;
+	private Long accommodationTrackingId;
 	
 	
+	public Long getAccommodationTrackingId() {
+		return accommodationTrackingId;
+	}
+	public void setAccommodationTrackingId(Long accommodationTrackingId) {
+		this.accommodationTrackingId = accommodationTrackingId;
+	}
+	public List<Long> getInActiveAccommadationTrackingIdsList() {
+		return inActiveAccommadationTrackingIdsList;
+	}
+	public void setInActiveAccommadationTrackingIdsList(
+			List<Long> inActiveAccommadationTrackingIdsList) {
+		this.inActiveAccommadationTrackingIdsList = inActiveAccommadationTrackingIdsList;
+	}
+	public Long getLastAccommodationTrackingId() {
+		return lastAccommodationTrackingId;
+	}
+	public void setLastAccommodationTrackingId(Long lastAccommodationTrackingId) {
+		this.lastAccommodationTrackingId = lastAccommodationTrackingId;
+	}
 	public Long getTypeId() {
 		return typeId;
 	}
