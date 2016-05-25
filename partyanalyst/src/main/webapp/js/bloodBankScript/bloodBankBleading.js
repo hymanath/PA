@@ -296,7 +296,7 @@ function buildBleedingCadreDetails(result){
 	}
 	if(result.length > 10)
 	{
-		$(".scroller").css("height","200px");
+		$(".scroller").css("height","500px");
 		$(".scroller").mCustomScrollbar({ theme:"dark"});
 		$(".mCSB_container").css("margin-right","10px");
 	}
