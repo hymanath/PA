@@ -215,7 +215,7 @@
                 	<h4 class="panel-title text-capitalise">triple Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise">total triple bags - <span id="totalTripleBags"></span></h4>
+                	<h4 class="text-capitalise">total triple bags - <span id="totalTripleBags">0</span></h4>
 					<div id="tripleBagsDivId"></div>
                     <!--<table class="table table-condensed m_top10">
                     	<tr>
@@ -236,7 +236,7 @@
                 	<h4 class="panel-title text-capitalise">Quadruple Bag</h4>
                 </div>
                 <div class="panel-body">
-                	<h4 class="text-capitalise" style="font-size:17px;">total Quadruple bags - <span id="totalQuadrateBags"></span></h4>
+                	<h4 class="text-capitalise" style="font-size:17px;">total Quadruple bags - <span id="totalQuadrateBags">0</span></h4>
                     <div id="quadrateBagsDivId"></div>
 					<!--<table class="table table-condensed m_top10">
                     	<tr>
@@ -367,8 +367,9 @@ function gettotalCollectedBloodBagsInfo(){
 							if(result.singleBagList[i].count != null)
 								str+='<td>'+result.singleBagList[i].count+' Bags</td>';
 							else
-								str+='<td>0 Bags</td>';
+							str+='<td> 0 Bags</td>';
 						str+='</tr>';
+						if(result.singleBagList[i].count != null)
 						total = total+parseInt(result.singleBagList[i].count);
 					}
 					str+='</table>';
@@ -388,6 +389,7 @@ function gettotalCollectedBloodBagsInfo(){
 							else
 								str+='<td>0 Bags</td>';
 						str+='</tr>';
+						if(result.doubleBagList[i].count != null)
 						total = total+parseInt(result.doubleBagList[i].count);
 					}
 					str+='</table>';
@@ -407,7 +409,8 @@ function gettotalCollectedBloodBagsInfo(){
 							else
 								str+='<td>0 Bags</td>';
 						str+='</tr>';
-						total = total+parseInt(result.tripleBagList[i].count);
+						if(result.tripleBagList[i].count != null)
+							total = total+parseInt(result.tripleBagList[i].count);
 					}
 					str+='</table>';
 					
@@ -426,10 +429,10 @@ function gettotalCollectedBloodBagsInfo(){
 							else
 								str+='<td>0 Bags</td>';
 						str+='</tr>';
-						total = total+parseInt(result.quadrupleList[i].count);
+						if(result.quadrupleList[i].count != null)
+							total = total+parseInt(result.quadrupleList[i].count);
 					}
 					str+='</table>';
-					
 					$("#totalQuadrateBags").html(total);
 					$("#quadrateBagsDivId").html(str);
 				}
