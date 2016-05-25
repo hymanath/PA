@@ -122,5 +122,17 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	public String saveNotification(){
+		try{
+			LOG.info("Entered into saveNotification() method of NotificationAction");
+			jObj = new JSONObject(getTask());
+			Long notificationType =  jObj.getLong("notificationTypeId");
+			String notificationText = jObj.getString("notificationText");
+			status = notificationService.saveNotification(notificationType,notificationText);
+		}catch(Exception e){
+			LOG.error("Exception raised at saveNotification() method of NotificationAction",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
