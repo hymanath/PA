@@ -725,7 +725,33 @@ function getEducationQualifications(){
 $(document).on("click","#cadreDetailsId",function(){
 	
 	
-	var membserShipId = $("#membershipInputId").val();
+	/* var membserShipId = $("#membershipInputId").val();
+	 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
+		 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
+		 return;
+	 }else if(membserShipId.trim().length!=8){
+		  $(".cadreNoErrorCls").html("Cadre Number Must Be 8 Digits.");
+		  return;
+	 }
+	 //clearing error fields
+	 $(".cadreNoErrorCls").html('');
+	 $(".nameErrorCls").html(' ');
+     $(".ageErrorCls").html(' ');
+     $(".mobileNoErrorCls").html(''); 
+     $(".dobErrorCls").html(' '); */
+	 
+	 getCadreDetails();
+});
+$(document).on("click",".printCls",function(){
+	 window.print();
+	 var value = $(this).attr("value");
+	 updatePrintStatus(value);
+})
+var GbloodDonationresult;
+var GmembershipNo;
+ function getCadreDetails(){
+	 
+	   var membserShipId = $("#membershipInputId").val();
 	 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
 		 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
 		 return;
@@ -739,18 +765,6 @@ $(document).on("click","#cadreDetailsId",function(){
      $(".ageErrorCls").html(' ');
      $(".mobileNoErrorCls").html(''); 
      $(".dobErrorCls").html(' ');
-	 
-	 getCadreDetails(membserShipId);
-});
-$(document).on("click",".printCls",function(){
-	 window.print();
-	 var value = $(this).attr("value");
-	 updatePrintStatus(value);
-})
-var GbloodDonationresult;
-var GmembershipNo;
- function getCadreDetails(membserShipId){
-	   
 	   $("#printBtnId").hide();
 	   var jObj = {
 		   memberShipNo:membserShipId
@@ -1022,6 +1036,11 @@ function clearFields(){
 	$("#wllngTBClldFrDntnId").val("No");
 	
 }
+	$(document).keypress(function(e) {
+				if(e.keyCode==13){
+					getCadreDetails();
+				}
+		  });
 </script>
 
 </body>
