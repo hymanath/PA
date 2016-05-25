@@ -468,7 +468,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   
 		  */
 	
-		public StatesEventVO stateWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+		public StatesEventVO stateWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,boolean forPdf){
 				
 				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -489,29 +489,38 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					
 					List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
 					
-					//AP  DATA
-					StatesEventVO apStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,1l,"particular");
-					calcLowHighPercantage(apStateVO);
-					finalVO.setApStateVO(apStateVO);
-					
-					
-					//TS  DATA
-					StatesEventVO tsStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,36l,"particular");
-					calcLowHighPercantage(tsStateVO);
-					finalVO.setTsStateVO(tsStateVO);
-					
-					
-					//Other States DATA
-					StatesEventVO otherStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,0l,"particular");
-					calcLowHighPercantage(otherStateVO);
-					finalVO.setOtherStatesVO(otherStateVO);
-					
-					
-					//OverAll Data
-					StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall");
-					calcLowHighPercantage(allStatesVO);
-					finalVO.setAllStatesVO(allStatesVO);
-					
+					if(forPdf){
+						  
+						//OverAll Data
+						StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall");
+						calcLowHighPercantage(allStatesVO);
+						finalVO.setAllStatesVO(allStatesVO);
+						
+					}else{
+						
+						//AP  DATA
+						StatesEventVO apStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,1l,"particular");
+						calcLowHighPercantage(apStateVO);
+						finalVO.setApStateVO(apStateVO);
+						
+						
+						//TS  DATA
+						StatesEventVO tsStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,36l,"particular");
+						calcLowHighPercantage(tsStateVO);
+						finalVO.setTsStateVO(tsStateVO);
+						
+						
+						//Other States DATA
+						StatesEventVO otherStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,0l,"particular");
+						calcLowHighPercantage(otherStateVO);
+						finalVO.setOtherStatesVO(otherStateVO);
+						
+						
+						//OverAll Data
+						StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall");
+						calcLowHighPercantage(allStatesVO);
+						finalVO.setAllStatesVO(allStatesVO);
+					}
 					
 				}catch(Exception e){
 					Log.error("Exception rised in stateWiseEventAttendeeCounts()",e); 
@@ -719,18 +728,26 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		             htmlPart.setContent(emailAttributesVO.getBodyText(),"text/html");
 		        	 multipart.addBodyPart(htmlPart);
 		        	 
-		        	 String pdfFileName = emailAttributesVO.getPdfName();
-		        	 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + "/" + IConstants.MAHANADU_IMAGES_2016 ;
-		        	 String pdfPath = staticPath + "/"+ pdfFileName;
-		        	 
-		             DataSource source = new FileDataSource(pdfPath);
-		        	 BodyPart  attachment  = new MimeBodyPart();
-		        	 attachment.setDataHandler(new DataHandler(source));
-		             attachment.setFileName("Mahanadu 2016.pdf");
-		             multipart.addBodyPart(attachment);
+		        	 //attachments
+		        	 for(int i=0; i<emailAttributesVO.getPdfNames().size();i++){
+		        		 
+		        		 String pdfFileName = emailAttributesVO.getPdfNames().get(i);
+		        		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + "/" + IConstants.MAHANADU_IMAGES_2016 ;
+		        		 String pdfPath = staticPath + "/"+ pdfFileName;
+		        		 
+		        		 DataSource source = new FileDataSource(pdfPath);
+			        	 BodyPart  attachment  = new MimeBodyPart();
+			        	 attachment.setDataHandler(new DataHandler(source));
+			        	 if(i==0){
+			        		 attachment.setFileName(emailAttributesVO.getTime()+".pdf");	 
+			        	 }else{
+			        		 attachment.setFileName(emailAttributesVO.getTime()+" EntryExitDashboard.pdf");
+			        	 }
+			             
+			             multipart.addBodyPart(attachment);
+		        	 }
 		        		
 		        	 message.setContent(multipart);
-					
 				    
 				    if(host.equalsIgnoreCase(IConstants.LOCALHOST))
 					{
@@ -742,7 +759,6 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				    else{
 				    	Transport.send(message);
 				    }
-				    
 				    
 				    resultStatus.setMessage(IConstants.SUCCESS);
 				    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -780,11 +796,9 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   output: EmailAttributesVO
 		   *   
 		  */
-		public EmailAttributesVO createMainPdfFile(String buildString){
+		public EmailAttributesVO createMainPdfFile(String buildString,EmailAttributesVO fileNamesVO){
 			
-			EmailAttributesVO fileNamesVO = new EmailAttributesVO();
 			
-			List<String> images = null;
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 			try{
@@ -809,10 +823,12 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				document.close();
 				file.close();
+				if(fileNamesVO.getPdfNames()==null){
+					fileNamesVO.setPdfNames(new ArrayList<String>());
+				}
+				fileNamesVO.getPdfNames().add(pdfName);
 				
-				fileNamesVO.setPdfName(pdfName);
-				
-				/*images = splitMainPdfToSubPdfs(pdfFilePath,staticPath,currentDateString);
+				/*List<String> images = splitMainPdfToSubPdfs(pdfFilePath,staticPath,currentDateString);
 				if(images != null && images.size() > 0){
 					fileNamesVO.setImages(images);
 				}*/
@@ -892,7 +908,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   
 		  */
 		
-		public String getRequiredDates() throws ParseException{
+		public String getRequiredDates(Long parentId) throws ParseException{
 		    
 		    String dateStr = null;
 		    
@@ -900,7 +916,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    Date currentDate = sdf.parse(sdf.format(dateUtilService.getCurrentDateAndTime()));
 		    
 		    
-		    Object[] dates = eventDAO.getEventDates(30l);
+		    Object[] dates = eventDAO.getEventDates(parentId);
 		    Date startDate = (Date)dates[0];
 		    Date endDate = (Date)dates[1];
 		    
@@ -950,80 +966,84 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				String time = format.format(currentDateAndTime);
 				String currentDateStr = sdf.format(currentDateAndTime);
 				
-				String dateStr = getRequiredDates();
-				
+				String dateStr = getRequiredDates(parentId);
+				   
 				StringBuffer finalStr = new StringBuffer();
 				
 				//Event Dashboard
 				
-				StatesEventVO  finalVO = stateWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds);
+				StringBuffer mainDashboardPdfStr = new StringBuffer();
+				StatesEventVO  finalVO = stateWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,true);
 				if( finalVO.getAllStatesVO() != null ){
 					StringBuffer allStatesStr = allStatesBlock(finalVO.getAllStatesVO(),time);
-					finalStr.append(allStatesStr);
-					finalStr.append("<br/>");
+					mainDashboardPdfStr.append(allStatesStr);
+					mainDashboardPdfStr.append("<br/>");
 				}
 				
-				List<MahanaduEventVO>  distList = LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,3l,null,"All");
+				List<MahanaduEventVO>  distList =LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,3l,stateIds,"particular");
 				StringBuffer distStr = constWiseCounts(distList,time,"District");
-				finalStr.append(distStr);
-				finalStr.append("<br/>");
+				mainDashboardPdfStr.append(distStr);
+				mainDashboardPdfStr.append("<br/>");
 				
-				List<MahanaduEventVO>  constList = LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,4l,null,"All");
+				List<MahanaduEventVO>  constList = LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,4l,stateIds,"particular");
 				StringBuffer constStr = constWiseCounts(constList,time,"Constituency");
-				finalStr.append(constStr);
-				finalStr.append("<br/>");
+				mainDashboardPdfStr.append(constStr);
+				mainDashboardPdfStr.append("<br/>");
 				
 				//ENTRY/EXIT DASHBOARD
-				
+				StringBuffer entryExitPdfStr = new StringBuffer();
 				MahanaduVisitVO mahanaduVisitVO = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(parentId,currentDateStr);
 			      StringBuffer entryStr = entryExitBlock(mahanaduVisitVO,time);
-			      finalStr.append(entryStr);
-			      finalStr.append("<br/><br/><br/>");
+			      entryExitPdfStr.append(entryStr);
+			      entryExitPdfStr.append("<br/><br/><br/>");
 			      
 			      
 			      List<MahanaduVisitVO> hoursWiseVisitorsList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoList(parentId,dateStr);
 			      if( hoursWiseVisitorsList != null && hoursWiseVisitorsList.size() > 0){
 			        StringBuffer hoursVisitors = hoursWiseVisitors(hoursWiseVisitorsList,time);    
-			        finalStr.append(hoursVisitors);
-			        finalStr.append("<br/><br/>");
+			        entryExitPdfStr.append(hoursVisitors);
+			        entryExitPdfStr.append("<br/><br/>");
 			      }
 			      
 			      MahanaduEventVO distWiseVisitorsVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(parentId, stateIds,currentDateStr);
 			      StringBuffer distWiseVisitors = districtWiseUniqueCampusCount(distWiseVisitorsVO,time);
-			      finalStr.append(distWiseVisitors);
+			      entryExitPdfStr.append(distWiseVisitors);
 			      
 			      MahanaduEventVO constWiseVisitorsVO = mahanaduDashBoardService.getConstituencyWiseMembersCountInCampus(parentId, stateIds,currentDateStr);
 			      StringBuffer constWiseVisitors = constWiseUniqueCampusCount(constWiseVisitorsVO,time);
-			      finalStr.append(constWiseVisitors);
+			      entryExitPdfStr.append(constWiseVisitors);
 				
 				//MAIL RELATED
+			      EmailAttributesVO emailAttributesVO = new EmailAttributesVO();
+			      
+			      
+				 createMainPdfFile(mainDashboardPdfStr.toString(),emailAttributesVO);
+				 createMainPdfFile(entryExitPdfStr.toString(),emailAttributesVO);
 				
-				EmailAttributesVO emailAttributesVO = createMainPdfFile(finalStr.toString());
 				
-				//statically add the images.
+				/*//statically add the images.
 				List<String> staticimages = new ArrayList<String>();
 				staticimages.add("2016-05-22_19-07-23_69101.jpg");
 				staticimages.add("2016-05-22_19-07-23_94118.jpg");
 				staticimages.add("2016-05-22_19-07-23_90378.jpg");
 				staticimages.add("2016-05-22_19-07-23_82305.jpg");
 				staticimages.add("2016-05-22_19-07-23_20984.jpg");
+				emailAttributesVO.setImages(staticimages);*/
 				
 				List<String> emailIds = new ArrayList<String>();
 				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
 				
-				emailAttributesVO.setImages(staticimages);
 				emailAttributesVO.setEmailIds(emailIds);
 				emailAttributesVO.setTime(time);
 				emailAttributesVO.setSubject("Mahandu Event 2016 Dashboard");
-				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Document For Mahanadu 2016 Event Dashboard on "+time);
+				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Documents For Mahanadu 2016 Event Dashboard on "+time);
 				
-				if( emailAttributesVO.getPdfName() != null && !emailAttributesVO.getPdfName().isEmpty()){
+				if( emailAttributesVO.getPdfNames() != null && emailAttributesVO.getPdfNames().size() > 0){
 					sendEmailWithAttachment(emailAttributesVO);
 				}
 				
-				
 			}catch(Exception e){
-				e.printStackTrace();
+				LOG.error("Exception in getAllImages() : ",e);
 			}
 		}
 		
@@ -1032,6 +1052,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 			String stateColor = "#01AF7C";
 			String borderImagePath = "http://mytdp.com/images/borderImage.png";
+			//String borderImagePath = "http://localhost:8080/PartyAnalyst/images/borderImage.png";
 			
 			StringBuffer str = new StringBuffer();
 			
@@ -1422,7 +1443,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		            str.append("<td>"+distVO.getName()+"</td>");
 		            str.append("<td style='text-align:center;'>"+distVO.getTotal()+"</td>");
 		            str.append("<td style='text-align:center;'>"+distVO.getCadreCount()+"</td>");
-		            String Percantage = calcPercantage(distVO.getTotal(), distVO.getCadreCount());
+		            String Percantage =calcPercantage(distVO.getTotal(), distVO.getCadreCount());
 		            str.append("<td style='text-align:center;'>"+Percantage+" %</td>");
 		            str.append("</tr>");
 		          }
@@ -1470,7 +1491,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		            str.append("<td>"+constVO.getName()+"</td>");
 		            str.append("<td style='text-align:center;'>"+constVO.getTotal()+"</td>");
 		            str.append("<td style='text-align:center;'>"+constVO.getCadreCount()+"</td>");
-		            String Percantage = calcPercantage(constVO.getTotal(), constVO.getCadreCount());
+		            String Percantage =calcPercantage(constVO.getTotal(), constVO.getCadreCount());
 		            str.append("<td style='text-align:center;'>"+Percantage+" %</td>");
 		            str.append("</tr>");
 		          }

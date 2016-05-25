@@ -5,18 +5,19 @@ import java.util.List;
 
 public class EmailAttributesVO implements Serializable{
 	
-	private String       pdfName;
+	private List<String> pdfNames;
 	private List<String> images;
 	private List<String> emailIds;
 	private String       time;
 	private String       subject;
 	private String       bodyText;
 	
-	public String getPdfName() {
-		return pdfName;
+	
+	public List<String> getPdfNames() {
+		return pdfNames;
 	}
-	public void setPdfName(String pdfName) {
-		this.pdfName = pdfName;
+	public void setPdfNames(List<String> pdfNames) {
+		this.pdfNames = pdfNames;
 	}
 	public List<String> getImages() {
 		return images;
