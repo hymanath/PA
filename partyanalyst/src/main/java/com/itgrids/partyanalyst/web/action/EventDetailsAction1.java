@@ -115,11 +115,38 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 				subEventIds.add(new Long(arr.get(i).toString()));
 			}
 			
-			statesEventVO =  mahanaduDashBoardService1.stateWiseEventAttendeeCounts(startDate,endDate,parenteventId,subEventIds);
+			statesEventVO =  mahanaduDashBoardService1.stateWiseEventAttendeeCounts(startDate,endDate,parenteventId,subEventIds,false);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 	}
 	
+	public String getAllImages(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			Long parenteventId = jObj.getLong("parentEventId");
+			
+			List<Long> subEventIds = new ArrayList<Long>();
+			JSONArray arr = jObj.getJSONArray("subEventIds");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			
+			List<Long> stateIds = new ArrayList<Long>();
+			stateIds.add(1l);
+			stateIds.add(36l);
+			stateIds.add(0l);
+			
+			mahanaduDashBoardService1.getAllImages(parenteventId,subEventIds,startDate,endDate,stateIds);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }
