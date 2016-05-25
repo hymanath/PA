@@ -4298,6 +4298,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							String tehsilName= voter[18] != null ? voter[18].toString():"";
 							Long stateId = voter[19] != null ? Long.valueOf(voter[19].toString()):0L;
 							String stateName= voter[20] != null ? voter[20].toString():"";
+							String imgPath = voter[21] != null ? voter[21].toString():"";
 							
 							List<Object[]> parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
 							if(parliamentList != null && parliamentList.size()>0)
@@ -4319,7 +4320,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							}
 							
 							
-							String filePath = "voter_images"+IConstants.FILE_SEPARATOR+constituencyId+IConstants.FILE_SEPARATOR+"Part"+partNo.trim()+IConstants.FILE_SEPARATOR+voterCardNo+".jpg";
+							//String filePath = "voter_images"+IConstants.FILE_SEPARATOR+constituencyId+IConstants.FILE_SEPARATOR+"Part"+partNo.trim()+IConstants.FILE_SEPARATOR+voterCardNo+".jpg";
 							//List<VoterInfoVO> voterDetaildInfo = cadreRegistrationService.getCandidateInfoBySearchCriteria("voter",voterId,"",constituencyId.toString());
 							//System.out.println(voterDetaildInfo);
 
@@ -4344,7 +4345,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							returnVO.setDistrictId(districtId);
 							returnVO.setDistrictName(districtName);
 							returnVO.setHouseNo(hNo);									
-							returnVO.setImagePath(filePath);
+							returnVO.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH+"/"+imgPath);
 							returnVO.setPanchayatId(panchayatId);
 							returnVO.setPanchayatName(panchayatName);
 							returnVO.setTehsilId(tehsilId);
@@ -5802,12 +5803,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public String getVoterImageUrlByVoterId(Long voterId)
 	{
 		try{
-			List<Object[]> list = boothPublicationVoterDAO.getVoterImageDetailsByVoterId(voterId);
-			
-			if(list != null && list.size() > 0)
-			{
-				return "http://mytdp.com/voter_images/"+list.get(0)[0].toString()+"/Part"+list.get(0)[1].toString()+"/"+list.get(0)[2].toString()+".jpg";
-			}
+			return voterDAO.getVoterImagePathByVoterId(voterId);
 		}catch(Exception e)
 		{
 			LOG.error("Exception occured in getVoterImageUrlByVoterId() Method ",e);
