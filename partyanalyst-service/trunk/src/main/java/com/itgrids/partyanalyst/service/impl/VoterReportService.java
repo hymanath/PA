@@ -1723,7 +1723,9 @@ public class VoterReportService implements IVoterReportService{
 							LOG.error("Exception Occured in saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation() Method, Exception is - ",e);
 						}
 					   if(resultList != null && resultList.size() > 0){
-						   voterCastInfoDAO.saveAllObjects(resultList);
+						   //voterCastInfoDAO.saveAllObjects(resultList);
+						   for(VoterCastInfo voterCastInfo : resultList)
+							   voterCastInfoDAO.save(voterCastInfo);
 					   }
 					   if(casteBasicInfoMap != null && casteBasicInfoMap.size() > 0){
 						   voterCastBasicInfoDAO.saveAllObjects(new ArrayList<VoterCastBasicInfo>(casteBasicInfoMap.values()));
