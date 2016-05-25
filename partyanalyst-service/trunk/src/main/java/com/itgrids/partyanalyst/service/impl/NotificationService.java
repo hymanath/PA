@@ -287,12 +287,18 @@ public class NotificationService implements INotificationService{
 					if(vo != null){
 						AccommodationVO notiTypevo = getMatchedVO(vo.getLocationDetails(), notifTypeId);
 						if(notiTypevo != null){
-							notiTypevo.setLocationName(obj[7] != null ? obj[7].toString():"");
-							notiTypevo.setAddress(obj[8] != null ? obj[8].toString():"");
-							notiTypevo.setContactPerson(obj[9] != null ? obj[9].toString():"");
-							notiTypevo.setMobileNo(obj[10] != null ? obj[10].toString():"");
-							notiTypevo.setLongitude(obj[11] != null ? obj[11].toString():"");
-							notiTypevo.setLatitude(obj[12] != null ? obj[12].toString():"");
+							notiTypevo.setId(notifTypeId);
+							notiTypevo.setName(obj[1] != null ? obj[1].toString():"");
+							
+							AccommodationVO accvo = new AccommodationVO();
+							accvo.setLocationName(obj[7] != null ? obj[7].toString():"");
+							accvo.setAddress(obj[8] != null ? obj[8].toString():"");
+							accvo.setContactPerson(obj[9] != null ? obj[9].toString():"");
+							accvo.setMobileNo(obj[10] != null ? obj[10].toString():"");
+							accvo.setLongitude(obj[11] != null ? obj[11].toString():"");
+							accvo.setLatitude(obj[12] != null ? obj[12].toString():"");
+							
+							notiTypevo.getLocationDetails().add(accvo);
 						}
 					}
 				}

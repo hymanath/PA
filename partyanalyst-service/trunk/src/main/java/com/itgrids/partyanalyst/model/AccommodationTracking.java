@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "activity_info_file")
+@Table(name = "accommodation_tracking")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AccommodationTracking extends BaseModel implements Serializable{
 	

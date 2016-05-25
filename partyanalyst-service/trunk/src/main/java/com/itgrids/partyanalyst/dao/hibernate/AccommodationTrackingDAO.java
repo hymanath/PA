@@ -15,7 +15,7 @@ public class AccommodationTrackingDAO extends GenericDaoHibernate<AccommodationT
 		
 	}
 
-	public List<Object[]> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType){
+	public List<Object[]> getAccommodationTrackingInfoByNotificationType(Long typeId, Long locationType){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select model.notificationType.notificationTypeId," +  //0
 						" model.notificationType.notificationType," +  //1
@@ -37,12 +37,12 @@ public class AccommodationTrackingDAO extends GenericDaoHibernate<AccommodationT
 						" and model.isActive = 'true'" +
 						" and model.locationTypeId = :locationType" +
 						" and model.notificationType.isActive = 'true'");
-		if(notificationType.longValue() > 0l)
-			sb.append(" and model.notificationType.notificationTypeId = :notificationType");
+		if(typeId.longValue() > 0l)
+			sb.append(" and model.notificationType.typeId = :typeId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		if(notificationType.longValue() > 0l)
-			query.setParameter("notificationType", notificationType);
+		if(typeId.longValue() > 0l)
+			query.setParameter("typeId", typeId);
 		query.setParameter("locationType", locationType);
 		
 		return query.list();
