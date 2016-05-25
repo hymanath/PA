@@ -27,6 +27,7 @@ public class NotificationDevice extends BaseModel implements Serializable{
 	private Date insertedTime;
 	private Date updatedTime;
 	private String deviceName;
+	private String isActive;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -92,6 +93,13 @@ public class NotificationDevice extends BaseModel implements Serializable{
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	@Column(name="is_active")
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
 	}
 	
 		
