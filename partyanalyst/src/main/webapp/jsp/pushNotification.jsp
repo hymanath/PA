@@ -7,98 +7,35 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 <title>Notification</title>
-
-
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
-<link href="dist/Appointment/DragDrop/app.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
-<link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
-<link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
-<link href="dist/Appointment/MultiDatePicker/css/jquery-ui.css" rel="stylesheet" type="text/css">
-<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
-<!--<link href="dist/Appointment/DropkickNew/dropkick.css" rel="stylesheet" type="text/css">-->
-<link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
-<link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
-	<!-- YUI Dependency files (Start) -->
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	
-	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/json/json-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
-	<!-- Skin CSS files resize.css must load before layout.css --> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
-	<!-- YUI Dependency files (End) -->
-</meta>
 </head>
-<container>
 <section>
-	<div class="container section-container">
-    	<div class="page-heading">
-         
-			<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-3  col-md-offset-4">
-							<h4 class="m_top10"><b>NOTIFICATION DETAILS</b></h4>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">NOTIFICATION DETAILS</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3">
+								<label>Name:</label>
+								<input type="text"  name="name"  class="form-control" id="notificationId" placeholder="Please Enter Notification"/>
+							</div>
+							<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
+								<input type="button" class="btn btn-success btn-block"   value="submit" onclick="pushNotificationDetailsStats();"></button>
+							</div>
 						</div>
-					</div>	
-					
-			
-		
-				
-			<div class="row">
-				 <div class="col-md-3 col-md-offset-4">
-					 <label>Name:</label>
-					    <input type="text"  name="name"  id="notificationId" placeholder="Please enter notification"/>
-				     </div>
-			</div>	     
-				 
-			
-			
-			<div class="row">
-			    <div class="col-md-3  col-md-offset-5">
-					    <input type="button"   value="submit" onclick="pushNotificationDetailsStats();"></button>
+					</div>	     
 				</div>
-			</div>	
-			
-			
-		 </div>
-        </div>   
-        </div>
-  
-	
+			</div>
+		</div>
+	</div>
 </section>
- <body>
  
  
                                               
@@ -120,6 +57,6 @@ function pushNotificationDetailsStats(){
 });
 
 }
+$("#trigger,#loginId").hide()
 </script>
-</body>
 </html>
