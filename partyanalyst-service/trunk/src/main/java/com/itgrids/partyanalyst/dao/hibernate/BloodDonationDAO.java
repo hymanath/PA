@@ -23,7 +23,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		
 		queryStr.append(" SELECT model.bloodDonorInfo,model.donationsInBloodBank,model.donationsInOtherPlaces,model.lastDonationDate," +
 								" bloodComponent.bloodComponentId,bloodComponent.component,model.emergencyDonation,model.willingToCallDonation," +
-								" model.remarks,model.donorAge " +
+								" model.remarks,model.donorAge,model.bloodDonationId " +
 						" FROM    BloodDonation model left join model.bloodComponent bloodComponent " +
 						" WHERE  " +
 								" model.bloodDonorInfo.tdpCadre.memberShipNo = :memberShipId " +
@@ -49,7 +49,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 							" model.quantity,model.remarks," +
 							"  model.registrationNumber "+
 				   " FROM " +
-				   " 	BloodDonation model left join model.bloodDonorInfo BDI" +
+				   " 	BloodDonation model left join model.bloodDonorInfo BDI " +
 				   "    left join BDI.tdpCadre TC" +
 				   "    left join model.bloodDonorInfo BDI"+
 				   "    left join model.acceptanceStatus ACTS"+

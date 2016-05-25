@@ -217,7 +217,7 @@ public class BloodBankService implements IBloodBankService{
 			 return cadreDtlsVO;
 			}
 			//0.bloodDonorInfo,1.donationsInBloodBank,2.donationsInOtherPlaces,3.lastDonationDate,4.bloodComponentId,5.component
-			//,6.emergencyDonation,7.willingToCallDonation,8.remarks,9.donorAge
+			//,6.emergencyDonation,7.willingToCallDonation,8.remarks,9.donorAge,10.bloodDonationId
 			List<Object[]> cadreDetailsObj = bloodDonationDAO.getCadreDetailsOfRegistered(memberShipId);
 			
 			if(cadreDetailsObj !=null && cadreDetailsObj.size()>0){			
@@ -315,7 +315,8 @@ public class BloodBankService implements IBloodBankService{
 				cadreDtlsVO.setWillingEmergencyDonation(cadre[6] !=null ? cadre[6].toString():"");
 				cadreDtlsVO.setWillingToCallDonation(cadre[7] !=null ? cadre[7].toString():"");
 				cadreDtlsVO.setRemarks(cadre[8] !=null ? cadre[8].toString():"");
-				cadreDtlsVO.setDonorAge(cadre[9] !=null ? (Long)cadre[9]:0l);			
+				cadreDtlsVO.setDonorAge(cadre[9] !=null ? (Long)cadre[9]:0l);	
+				cadreDtlsVO.setBloodDonationId(cadre[10] !=null ? (Long)cadre[10]:0l);
 				cadreDtlsVO.setAlreadyDonated(true);
 			}
 			
