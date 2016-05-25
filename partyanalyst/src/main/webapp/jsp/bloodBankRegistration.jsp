@@ -768,6 +768,7 @@ var GmembershipNo;
      $(".ageErrorCls").html(' ');
      $(".mobileNoErrorCls").html(''); 
      $(".dobErrorCls").html(' ');
+	 $("#statusId").html(' ');
 	   $("#printBtnId").hide();
 	   var jObj = {
 		   memberShipNo:membserShipId
