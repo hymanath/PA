@@ -46,16 +46,23 @@
 								</select>
 								
 								
-							</div>
+							</div> 
 							<div class="col-md-6 col-md-offset-3">
 								<label>Name:</label>
-								<input type="text"  name="name"  class="form-control" id="notificationId" placeholder="Please Enter Notification"/>
+								<input type="text"  name="name"  class="form-control" id="notificationTextId" placeholder="Please Enter Notification"/>
 							</div>
 							
-							<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
-								<input type="button" class="btn btn-success btn-block"   value="submit" onclick="pushNotificationDetailsStats();"></button>
+							<div class="col-md-12" style="margin-top:10px;">
+								<div class="row">
+								<div class="col-md-6">
+								<input type="button" class="btn btn-success btn-block"   value="ADD NOTIFICATION" onclick="addNotification();"></button>
+								</div>  
+								<div class="col-md-6">
+								<input type="button" class="btn btn-success btn-block"   value="ADD NOTIFICATION TYPE" onclick="addNotificationType();"></button>
+								</div>
+								</div>
 							</div>
-							
+							 
 							
 						</div>
 					</div>	     
@@ -70,19 +77,47 @@
 <script type="text/javaScript">
 
 
-function pushNotificationDetailsStats(){
+function addNotification(){
+	var notificationTypeId = $("#notificationTypeId").val();
+	var notificationText = $("#notificationTextId").val();
+	if(notificationTypeId==0){
+		return;
+	}
+	if(notificationText.trim().length==0){
+		
+	}
+	
 	var jsObj={
-			notificationTypeId:0,
-			notificationText:$('#notificationId').val()
+			notificationTypeId:notificationTypeId,
+			notificationText:notificationText
 		}
 		
 		   $.ajax({
 			type : 'POST',
-			url : 'pushNotificationAction.action',
+			url : 'saveNotificationAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){   
+	});
+
+}
+function addNotificationType(){
+	var notificationText = $("#notificationTextId").val();
+	if(notificationText.trim().length==0){
+		return;
+	}
+	alert(1)
+	var jsObj={
+			notificationTypeText:notificationText
+		}
+		
+		   $.ajax({
+			type : 'POST',
+			url : 'saveNotificationTypeTextAction.action',
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-});
+	});
 
 }
 
@@ -97,6 +132,7 @@ function getNotificationTypeDetails(){
 		}).done(function(result){
 			var str = '';
 			if(result!=null && result.length>0){
+				str +='<option value="0">Select Notification Type</option>'; 
 				for(var i in result){
 				str +='<option value="'+result[i].id+'">'+result[i].deviceName+'</option>'; 
 				}
@@ -106,6 +142,8 @@ function getNotificationTypeDetails(){
 
 }
 $(document).on("change","#notificationTypeId",function(){
+	$("#notificationId").val(0);
+	$("#activeStatusId").val(0);
 	var typeId=$(this).val();
 	getNotificationTypeDetailsStats(typeId);
 });
@@ -123,6 +161,7 @@ function getNotificationTypeDetailsStats(typeId){
 		}).done(function(result){
 			var str = '';
 			if(result!=null && result.length>0){
+				str +='<option value="0">Select Notification</option>'; 
 				for(var i in result){
 				str +='<option value="'+result[i].id+'">'+result[i].deviceName+'</option>'; 
 				}
