@@ -1166,7 +1166,7 @@ function buildDistrictTable(result,reportLevelId){
 		"searching": true,
 		"autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"order": [[ 1, "asc" ]]
+		"ordering": false
     });
 	$("#datatableId_filter").css("margin-top","-29px");
 	
@@ -1385,7 +1385,7 @@ function buildConstTable(result,reportLevelId){
 		 "searching": true,
 		 "autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"order": [[ 1, "asc" ]]
+		"ordering": false
 		
     });
 	$("#constituencyDataTableId_filter").css("margin-top","-29px");
