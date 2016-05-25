@@ -616,7 +616,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 			{
 				str.append(" select distinct model2.tehsilId,model.totalVoters  ");
 				str.append(" ,model2.tehsilName from VoterInfo model,Tehsil model2,Booth B where model2.tehsilId = model.reportLevelValue  and model2.tehsilId = B.tehsil.tehsilId ");
-				str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList) and B.localBody.localElectionBodyId is null " +
+				str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.constituency.constituencyId in (:locationIdsList) and B.localBody.localElectionBodyId is null " +
 						" and  model.voterReportLevel.voterReportLevelId = 2 ");
 				str.append(" group by model2.tehsilId order by model2.tehsilName ");
 			}
@@ -624,21 +624,21 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 			{
 				str.append(" select distinct model2.panchayatId,model.totalVoters  ");
 				str.append(" ,model2.panchayatName from VoterInfo model,Panchayat model2,Booth B where model2.panchayatId = model.reportLevelValue and model2.panchayatId = B.panchayat.panchayatId ");
-				str.append(" and B.publicationDate.publicationDateId = 11 and B.tehsil.tehsilId in (:locationIdsList) ");
+				str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.tehsil.tehsilId in (:locationIdsList) ");
 				str.append("  and  model.voterReportLevel.voterReportLevelId = 3 group by model2.panchayatId order by model2.panchayatName ");
 			}
 			else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY) ))
 			{
 				str.append(" select distinct model2.localElectionBodyId,model.totalVoters  ");
 				str.append(" ,model2.name from VoterInfo model,LocalElectionBody model2,Booth B where model2.localElectionBodyId = model.reportLevelValue and model2.localElectionBodyId = B.localBody.localElectionBodyId ");
-				str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList) and B.localBody.localElectionBodyId is not null ");
+				str.append(" and B.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" and B.localBody.localElectionBodyId in (:locationIdsList) and B.localBody.localElectionBodyId is not null ");
 				str.append("  and  model.voterReportLevel.voterReportLevelId = 5 group by model2.localElectionBodyId order by model2.name ");
 			}
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
 			{
 				str.append(" select distinct ward.constituencyId,model.totalVoters  ");
 				str.append(" ,ward.name from VoterInfo model,Constituency ward where ward.constituencyId = model.reportLevelValue and ward.localElectionBody.localElectionBodyId is not null ");
-				str.append(" and model.reportLevelValue in (:locationIdsList)  and model.publicationDate.publicationDateId = 11 ");			
+				str.append(" and model.reportLevelValue in (:locationIdsList)  and model.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");			
 				str.append("  and  model.voterReportLevel.voterReportLevelId = 6 order by ward.name ");
 			}
 			else if(stateId != null && stateId.longValue() == 0L) //AP & TS
@@ -646,7 +646,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 				isStateWise = true;
 				str.append(" select model2.district.districtId,sum(model.totalVoters)  ");
 				str.append(" ,model2.district.districtName from VoterInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 23)  and model.publicationDate.publicationDateId = 11 ");
+						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 23)  and model.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
 				str.append(" group by  model2.district.districtId order by  model2.district.districtName ");
 			}
 			else if(stateId != null && stateId.longValue() == 1L) //AP
@@ -662,7 +662,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 				isStateWise = true;
 				str.append(" select model2.district.districtId,sum(model.totalVoters)  ");
 				str.append(" ,model2.district.districtName from VoterInfo model,Constituency model2 where  model.voterReportLevel.voterReportLevelId = 1 and " +
-						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 10)  and model.publicationDate.publicationDateId = 11  ");
+						" model2.constituencyId = model.reportLevelValue and ( model2.district.districtId between 1 and 10)  and model.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"  ");
 				str.append(" group by  model2.district.districtId order by  model2.district.districtName ");
 			}		
 			
