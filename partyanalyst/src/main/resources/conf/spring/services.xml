@@ -1378,7 +1378,7 @@
 	<!-- scheduler for mail attachment -->
 	<bean name="mahanaduEventPdfReport" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventPdfReport" />
-    	<property name="cronExpression" value="0 0 0/1 * * ?" />
+    	<property name="cronExpression" value="0 40 0/1 * * ?" />
 	</bean>
 	<bean name="insertTriggerForMahanaduEventPdfReport" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
