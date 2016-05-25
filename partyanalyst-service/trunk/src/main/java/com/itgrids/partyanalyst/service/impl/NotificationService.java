@@ -15,13 +15,16 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.GcmService.GcmService;
 import com.itgrids.partyanalyst.dao.IAccommodationTrackingDAO;
+import com.itgrids.partyanalyst.dao.INotificationDeviceDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INotificationTypeDAO;
+import com.itgrids.partyanalyst.dao.INotificationsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationDeviceDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.model.NotificationDevice;
+import com.itgrids.partyanalyst.model.Notifications;
 import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -30,9 +33,9 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class NotificationService implements INotificationService{
 	private static final Logger log = Logger.getLogger(NotificationService.class);
 	private TransactionTemplate transactionTemplate = null;
-	private NotificationDeviceDAO notificationDeviceDAO;
+	private INotificationDeviceDAO notificationDeviceDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
-	private NotificationsDAO notificationsDAO;
+	private INotificationsDAO notificationsDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IAccommodationTrackingDAO accommodationTrackingDAO;
 	private INotificationTypeDAO notificationTypeDAO;
@@ -73,14 +76,7 @@ public class NotificationService implements INotificationService{
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
 
-	public NotificationsDAO getNotificationsDAO() {
-		return notificationsDAO;
-	}
-
-	public void setNotificationsDAO(NotificationsDAO notificationsDAO) {
-		this.notificationsDAO = notificationsDAO;
-	}
-
+	
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
 	}
@@ -89,12 +85,22 @@ public class NotificationService implements INotificationService{
 		this.dateUtilService = dateUtilService;
 	}
 
-	public NotificationDeviceDAO getNotificationDeviceDAO() {
+	
+	public INotificationDeviceDAO getNotificationDeviceDAO() {
 		return notificationDeviceDAO;
 	}
 
-	public void setNotificationDeviceDAO(NotificationDeviceDAO notificationDeviceDAO) {
+	public void setNotificationDeviceDAO(
+			INotificationDeviceDAO notificationDeviceDAO) {
 		this.notificationDeviceDAO = notificationDeviceDAO;
+	}
+
+	public INotificationsDAO getNotificationsDAO() {
+		return notificationsDAO;
+	}
+
+	public void setNotificationsDAO(INotificationsDAO notificationsDAO) {
+		this.notificationsDAO = notificationsDAO;
 	}
 
 	public TransactionTemplate getTransactionTemplate() {
@@ -325,5 +331,27 @@ public class NotificationService implements INotificationService{
 			 }
 			 return null;
 		}
+	 public String saveNotification(final Long notificationType,final String notificationText){
+		
+		 try{
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus status) 
+					{
+					 long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notificationType);
+					 Notifications notifications = new Notifications();
+					 notifications.setNotificationTypeId(notificationType);
+					 notifications.setNotification(notificationText);
+					 notifications.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					 notifications.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					 notifications.setIsActive("true");
+					 notifications.setOrderNo(orderNo+1);
+					 notificationsDAO.save(notifications);
+					}
+			 });	
+		 }catch(Exception e){
+			 e.printStackTrace();
+		 }
+		 return IConstants.SUCCESS;
+	 }
 }
 

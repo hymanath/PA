@@ -54,4 +54,12 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 		Query query = getSession().createQuery("select distinct  model2.notificationTypeId from NotificationType model2 where model2.isActive='false' ");
 		return query.list();
 	}
+	
+	public Long getMaxOrderNoBasedOnNotificationType(Long notificationType){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select max(model.orderNo) from Notifications model where model.notificationTypeId= :notificationTypeId");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("notificationTypeId", notificationType);
+		return (Long) query.uniqueResult();
+	}
 }
