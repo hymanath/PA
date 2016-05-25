@@ -10,5 +10,5 @@ public interface INotificationService {
 	 public NotificationDeviceVO saveUsersDataInNotificationDeviceTable(final NotificationDeviceVO notifyVO);
 	 public List<NotificationDeviceVO> getActiveNotifications(NotificationDeviceVO notifyVO);
 	 public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType);
-	 public void pushNotification(NotificationDeviceVO notifyVO);
+	 public String pushNotification(NotificationDeviceVO notifyVO);
 }
