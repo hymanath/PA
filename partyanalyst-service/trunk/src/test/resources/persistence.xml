@@ -146,7 +146,9 @@
 		 <class>com.itgrids.partyanalyst.model.EventType</class>
 		 <class>com.itgrids.partyanalyst.model.PartyMeetingIvrStatus</class>
 		 <class>com.itgrids.partyanalyst.model.AppointmentComment</class>
-		 
+		  <class>com.itgrids.partyanalyst.model.Notifications</class>
+		   <class>com.itgrids.partyanalyst.model.NotificationType</class>
+		    <class>com.itgrids.partyanalyst.model.NotificationDevice</class>
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
