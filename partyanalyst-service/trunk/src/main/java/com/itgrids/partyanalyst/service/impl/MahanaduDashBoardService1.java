@@ -929,24 +929,24 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		          if(sdf.format(datesList.get(i)).split("-")[2].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
 		            
 			            if(dateStr == null){
-			              dateStr = datesList.get(i).toString();
+			              dateStr = sdf.format(datesList.get(i));
 			            }else{
-			              dateStr = dateStr + "," + datesList.get(i).toString();
+			              dateStr = dateStr + "," + sdf.format(datesList.get(i));
 			            }
 		            
 		          } 
 		          else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[2])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
 			            if(dateStr == null){
-			              dateStr = datesList.get(i).toString();
+			              dateStr = sdf.format(datesList.get(i));
 			            }else{
-			              dateStr = dateStr + "," + datesList.get(i).toString();
+			              dateStr = dateStr + "," + sdf.format(datesList.get(i));
 			            }
 		          }
 		        }else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[0])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0])){
 			          if(dateStr == null){
-			            dateStr = datesList.get(i).toString();
+			            dateStr = sdf.format(datesList.get(i));
 			          }else{
-			            dateStr = dateStr + "," + datesList.get(i).toString();
+			            dateStr = dateStr + "," + sdf.format(datesList.get(i));
 			          }
 		        }
 		      }
@@ -979,6 +979,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					mainDashboardPdfStr.append(allStatesStr);
 					mainDashboardPdfStr.append("<br/>");
 				}
+				
+				StringBuffer pubStr = getPublicrepresentiveBlock();
+				mainDashboardPdfStr.append(pubStr);
+				mainDashboardPdfStr.append("<br/>");
 				
 				List<MahanaduEventVO>  distList =LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,3l,stateIds,"particular");
 				StringBuffer distStr = constWiseCounts(distList,time,"District");
@@ -1017,8 +1021,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			      EmailAttributesVO emailAttributesVO = new EmailAttributesVO();
 			      
 			      
-				 createMainPdfFile(mainDashboardPdfStr.toString(),emailAttributesVO);
-				 createMainPdfFile(entryExitPdfStr.toString(),emailAttributesVO);
+			      createMainPdfFile(mainDashboardPdfStr.toString(),emailAttributesVO);
+			      createMainPdfFile(entryExitPdfStr.toString(),emailAttributesVO);
 				
 				
 				/*//statically add the images.
@@ -1031,6 +1035,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				emailAttributesVO.setImages(staticimages);*/
 				
 				List<String> emailIds = new ArrayList<String>();
+				emailIds.add("a.dakavaram@gmail.com");
 				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
 				
 				emailAttributesVO.setEmailIds(emailIds);
@@ -1043,10 +1048,73 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				}
 				
 			}catch(Exception e){
-				LOG.error("Exception in getAllImages() : ",e);
+				//LOG.error("Exception in getAllImages() : ",e);
 			}
 		}
-		
+		public StringBuffer getPublicrepresentiveBlock(){
+				StringBuffer str = new StringBuffer();
+				
+				str.append("<font size='2'>");
+				str.append("<table width='100%' border='1'>");
+				str.append("<tr>");
+				str.append("<td colspan='8' bgcolor='#C0C0C0' style='text-align:center;text-transform:uppercase;vertical-align:middle;color:#D64D54'>PUBLIC REPRESENTATIVES</td>");
+				str.append("</tr>");
+				
+				str.append("<tr>");
+				str.append("<td rowspan='2'></td>");
+				str.append("<td rowspan='2'>Total Attended</td>");
+				str.append("<td colspan='2'>Day 1</td>");
+				str.append("<td colspan='2'>Day 2</td>");
+				str.append("<td colspan='2'>Day 3</td>");
+				str.append("</tr>");
+				
+				str.append("<tr>");
+				str.append("<td>Attended</td>");
+				str.append("<td>Not Attended</td>");
+				str.append("<td>Attended</td>");
+				str.append("<td>Not Attended</td>");
+				str.append("<td>Attended</td>");
+				str.append("<td>Not Attended</td>");
+				str.append("</tr>");
+				
+				str.append("<tr>");
+				str.append("<td>MLA</td>");
+				str.append("<td>100</td>");
+				str.append("<td>55</td>");
+				str.append("<td>45</td>");
+				str.append("<td>60</td>");
+				str.append("<td>40</td>");
+				str.append("<td>50</td>");
+				str.append("<td>50</td>");
+				str.append("</tr>");
+				
+				str.append("<tr>");
+				str.append("<td>MP</td>");
+				str.append("<td>20</td>");
+				str.append("<td>15</td>");
+				str.append("<td>05</td>");
+				str.append("<td>11</td>");
+				str.append("<td>09</td>");
+				str.append("<td>06</td>");
+				str.append("<td>04</td>");
+				str.append("</tr>");
+				
+				str.append("<tr>");
+				str.append("<td>MLC</td>");
+				str.append("<td>30</td>");
+				str.append("<td>20</td>");
+				str.append("<td>10</td>");
+				str.append("<td>15</td>");
+				str.append("<td>15</td>");
+				str.append("<td>05</td>");
+				str.append("<td>25</td>");
+				str.append("</tr>");
+				
+				str.append("</table>");
+				str.append("</font>");
+				
+				return str;
+		}
 		
 		public StringBuffer allStatesBlock(StatesEventVO dataVO,String time){
 			
@@ -1220,7 +1288,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    			
 		    			str.append("<tr>");
 		    			
-			    		str.append("<td>"+constList.get(i).getName()+"</td>");
+			    		str.append("<td width='200%'>"+constList.get(i).getName()+"</td>");
 			    		str.append("<td>"+constList.get(i).getAttendees()+"</td>");
 			    		str.append("<td>"+constList.get(i).getAttendeePercantage()+"%</td>");
 			    		

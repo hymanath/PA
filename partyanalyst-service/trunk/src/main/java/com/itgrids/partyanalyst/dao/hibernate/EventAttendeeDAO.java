@@ -1407,4 +1407,10 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 		
 	}
+	
+	/*public List<Object[]> getPublicReprestinviteeCount(List<Long> publicRepresentIds){
+		
+	}*/
+	
+	
 }
