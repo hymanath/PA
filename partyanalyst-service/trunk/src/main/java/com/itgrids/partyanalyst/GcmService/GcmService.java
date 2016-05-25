@@ -46,7 +46,7 @@ public class GcmService {
 				 }
 				 return  new NotificationDeviceVO("SUCCESS");
 			 }
-			 else
+			 else if(registeredKey != null && !registeredKey.equalsIgnoreCase("0"))
 			 {
 				 Sender sender = new Sender(GOOGLE_SERVER_KEY);
 				 Message message = new Message.Builder().timeToLive(60).delayWhileIdle(true).addData(MESSAGE_KEY, userMessage).build();
@@ -63,6 +63,6 @@ public class GcmService {
 			 e.printStackTrace();
 			 return  new NotificationDeviceVO("FAILURE");
 		 }
-		 return null;
+		 return new NotificationDeviceVO("FAILURE");
 	 }
 }
