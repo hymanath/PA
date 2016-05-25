@@ -65,10 +65,12 @@
                         	<div class="col-md-3">
                             	<label>Sex<span class="mandatoryFieldCls">*</span></label>
  		                        <select id="seltBxSxId" class="form-control">
+								    <option value="0">Select Gender</option>
                                 	<option value="M">Male</option>
 									<option value="F">Female</option>
                                 </select>
-                            </div>
+							<span class="genderErrorCls mandatoryFieldCls"></span>
+						    </div>
 							<div class="col-md-3">
                             	<label>Date Of Birth<!--<span class="mandatoryFieldCls">*</span>--></label>
  		                        <input type="text" id="dobId" class="form-control clearFieldCls"/>
@@ -89,11 +91,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 m_top10">
+                    <div class="col-md-6 m_top20">
                     	<label>Address</label>
                         <textarea class="form-control clearFieldCls" id="addressId" rows="4"></textarea>
                     </div>
-                    <div class="col-md-6 m_top10">
+                    <div class="col-md-6 m_top20">
                     	<div class="row">
                         	<div class="col-md-6">
                             	<label>Mobile<span style='color:red'>*</span></label><span class="mobileNoErrorCls mandatoryFieldCls"></span>
@@ -739,6 +741,7 @@ $(document).on("click","#cadreDetailsId",function(){
      $(".ageErrorCls").html(' ');
      $(".mobileNoErrorCls").html(''); 
      $(".dobErrorCls").html(' '); */
+	 $(".genderErrorCls").html(' ');
 	 
 	 getCadreDetails();
 });
@@ -853,6 +856,8 @@ function populateCommonFields(result){
 		}
 		if(result.sex !=null && result.sex.length>0){
 			$("#seltBxSxId").val(result.sex);
+		}else{
+			$("#seltBxSxId").val(0);
 		}
 		if(result.age!=null && result.age>0){
 			$("#ageId").val(result.age);
@@ -889,6 +894,7 @@ function validateFields(){
    var name=$("#nameId").val();
      var mobileNo=$("#mobileNoId").val();
      var dob=$("#dobId").val();
+	 var gender=$("#seltBxSxId").val();
 	 var membserShipId = $("#membershipInputId").val();
 	 
 	 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
@@ -901,6 +907,11 @@ function validateFields(){
       return	 
     }
     $(".nameErrorCls").html('');
+	if(gender==null || gender==0){
+	 $(".genderErrorCls").html("Select Gender.");
+	 return;
+	}
+	$(".genderErrorCls").html(' ');
  /*   if(dob==null || dob ==undefined || dob.trim().length==0){
 	   $(".dobErrorCls").html("Please Enter DOB.");
 	   return;	  
@@ -1026,7 +1037,7 @@ function printdocumentDetails(){
 }
 function clearFields(){
 	$(".clearFieldCls").val(' ');
-	$("#seltBxSxId").val("M");
+	$("#seltBxSxId").val(0);
 	$("#slctBxMrrdId").val(0);
 	$("#edutnQlfctnSlctBxId").val(0);
 	$("#occptnSlctBxId").val(0);
