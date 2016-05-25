@@ -27,7 +27,17 @@ public class NotificationDeviceVO {
 	private String lastUpdatedTime;
 	private String deviceName;
 	private Long orderNo;
+	private String isActive;
 	
+	
+	public String getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+
 	public NotificationDeviceVO(){}
 	
 	public List<Long> getInActiviNotificationTypeIds() {
