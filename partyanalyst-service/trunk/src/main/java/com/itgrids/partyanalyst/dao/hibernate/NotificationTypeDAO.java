@@ -24,10 +24,14 @@ public class NotificationTypeDAO extends GenericDaoHibernate<NotificationType, L
 		return query.list();
 	}
 	public List<Object[]> getNotificationType(){
-		Query query = getSession().createQuery("select model.notificationTypeId," +
-										" model.notificationType" +
-										" from NotificationType model " +
-										" where model.isActive = 'true' ");
+		Query query = getSession().createQuery("select model.notificationTypeId, model.notificationType, model.orderNo, model.isActive" +
+										" from NotificationType model  where model.isActive = 'true' ");
+		return query.list();
+	}
+	
+	public List<Object[]> getAllNotificationType(){
+		Query query = getSession().createQuery("select model.notificationTypeId, model.notificationType, model.orderNo, model.isActive" +
+										" from NotificationType model  ");
 		return query.list();
 	}
 }
