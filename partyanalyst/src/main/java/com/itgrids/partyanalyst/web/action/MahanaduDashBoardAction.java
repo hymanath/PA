@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
@@ -38,6 +39,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	private Long longVal;
 	private List<MahanaduEventVO> mahanaduEventVOList = new ArrayList<MahanaduEventVO>(0);
 	private List<IdNameVO> idNameVoList = new ArrayList<IdNameVO>(0);
+	private List<CandidateDetailsVO> candidateDetailsVOList = new ArrayList<CandidateDetailsVO>(0); 
 	
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
@@ -130,7 +132,14 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	public void setIdNameVoList(List<IdNameVO> idNameVoList) {
 		this.idNameVoList = idNameVoList;
 	}
-	
+
+	public List<CandidateDetailsVO> getCandidateDetailsVOList() {
+		return candidateDetailsVOList;
+	}
+	public void setCandidateDetailsVOList(
+			List<CandidateDetailsVO> candidateDetailsVOList) {
+		this.candidateDetailsVOList = candidateDetailsVOList;
+	}
 	public String execute(){
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -277,11 +286,8 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	public String getCandidateDetails(){
 		try {
 			jObj = new JSONObject(getTask());
-			List<Long> statesList = new ArrayList<Long>(0);
-			String designationId = jObj.getString("designationId");
-			String inviteeType = jObj.getString("inviteeType");
-			String day = jObj.getString("day");
 			
+			candidateDetailsVOList = mahanaduDashBoardService.getCandidateDetails(jObj.getLong("designationId"),jObj.getString("inviteeType"),jObj.getLong("eventId"),jObj.getString("day"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception riased at getCandidateDetails ", e);

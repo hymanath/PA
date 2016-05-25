@@ -2803,7 +2803,9 @@
 	    <property name="eventDAO" ref="eventDAO" />   
 	    <property name="districtDAO" ref="districtDAO" />
 	    <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />  
-	    <property name="constituencyDAO" ref="constituencyDAO" /> 
+	    <property name="constituencyDAO" ref="constituencyDAO" />
+	    <property name="eventInviteeDAO" ref="eventInviteeDAO" />
+	    <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" /> 
 	</bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">
