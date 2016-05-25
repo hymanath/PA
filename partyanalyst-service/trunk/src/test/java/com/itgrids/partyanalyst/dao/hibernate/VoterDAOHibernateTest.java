@@ -223,20 +223,24 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]+" -- "+params[1]);
 		
 	}*/
-	public void testCheckForVoterCardId()
+	/*public void testCheckForVoterCardId()
 	{
-	/*	Set<String> voterIds = new HashSet<String>();
+		Set<String> voterIds = new HashSet<String>();
 		voterIds.add("q12");
 		voterIds.add("q23");
 		voterIds.add("q34");
 		voterIds.add("hjjj78");
 		voterIds.add("q45");
 		List<String> list = voterDAO.checkForVoterCardId(voterIds);
-		System.out.println(list);		*/
+		System.out.println(list);		
 		
 		String str = "2016-01-18 ( Day-1 )";
 		String answer = str.substring(str.indexOf("(")+1,str.indexOf(")"));
 		System.out.println(answer.replaceAll("\\D+",""));
-	}
+	}*/
 		
+	public void testGetVoterImagePathByVoterId()
+	{
+		System.out.println(voterDAO.getVoterImagePathByVoterId(53347756L));
+	}
 }
