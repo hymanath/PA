@@ -34,4 +34,8 @@ public class NotificationTypeDAO extends GenericDaoHibernate<NotificationType, L
 										" from NotificationType model  ");
 		return query.list();
 	}
+	public Long getMaxOrderNo(){
+		Query query = getSession().createQuery("select max(model.orderNo) from NotificationType model");
+		return (Long)query.uniqueResult();
+	}
 }

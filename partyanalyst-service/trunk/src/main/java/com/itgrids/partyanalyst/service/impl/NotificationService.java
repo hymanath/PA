@@ -371,7 +371,9 @@ public class NotificationService implements INotificationService{
 			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
 					{
-					 long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notificationType);
+					 Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notificationType);
+					 if(orderNo == null || orderNo.longValue() ==0L)
+						 orderNo =0L;
 					 Notifications notifications = new Notifications();
 					 notifications.setNotificationTypeId(notificationType);
 					 notifications.setNotification(notificationText);
@@ -384,6 +386,20 @@ public class NotificationService implements INotificationService{
 			 });	
 		 }catch(Exception e){
 			 log.error("Exception occured in saveNotification() Method ",e);
+		 }
+		 return IConstants.SUCCESS;
+	 }
+	 public String saveNotificationType(String notificationTypeText){
+		 try{
+			 long orderNo = notificationTypeDAO.getMaxOrderNo();
+			 NotificationType notificationType = new NotificationType();
+			 notificationType.setNotificationType(notificationTypeText);
+			 notificationType.setIsActive("true");
+			 notificationType.setOrderNo(orderNo+1);
+			 notificationType.setTypeId(4l);
+			 notificationTypeDAO.save(notificationType);
+		 }catch(Exception e){
+			 log.error("Exception occured in saveNotificationType() Method ",e);
 		 }
 		 return IConstants.SUCCESS;
 	 }
@@ -438,4 +454,3 @@ public class NotificationService implements INotificationService{
 	 }
 	 
  }
-

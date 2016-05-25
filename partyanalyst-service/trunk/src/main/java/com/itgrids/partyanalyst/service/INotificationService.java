@@ -16,4 +16,5 @@ public interface INotificationService {
 	 public List<NotificationDeviceVO> getNotificationDetailsByTypeId(Long typeId);
 	 public String saveNotification(Long notificationType,String notificationText);
 	 public String setActivcationStatusforNotificationAndNotificationType(String updationTypeStr , Long id, String activeStatus);
+	 public String saveNotificationType(String notificationTypeText);
 }
