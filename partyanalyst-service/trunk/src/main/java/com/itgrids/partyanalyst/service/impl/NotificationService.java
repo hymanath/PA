@@ -13,13 +13,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAccommodationTrackingDAO;
-import com.itgrids.partyanalyst.dao.INotificationTypeDAO;
 import com.itgrids.partyanalyst.GcmService.GcmService;
+import com.itgrids.partyanalyst.dao.IAccommodationTrackingDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.INotificationTypeDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationDeviceDAO;
 import com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
-import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.model.NotificationDevice;
 import com.itgrids.partyanalyst.service.INotificationService;
@@ -36,8 +36,17 @@ public class NotificationService implements INotificationService{
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IAccommodationTrackingDAO accommodationTrackingDAO;
 	private INotificationTypeDAO notificationTypeDAO;
+	private IConstituencyDAO constituencyDAO;
 	
 	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public INotificationTypeDAO getNotificationTypeDAO() {
 		return notificationTypeDAO;
 	}
@@ -231,8 +240,27 @@ public class NotificationService implements INotificationService{
 					notificationTypeList.add(vo);
 				}
 			 }
+			 
+			 List<Object[]> constList = constituencyDAO.getConstituenciesByStateId(1l, 0l);
+			 if(commonMethodsUtilService.isListOrSetValid(constList)){
+				 for (Object[] obj : constList) {
+					Long constituencyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					AccommodationVO vo = constMap.get(constituencyId);
+					if(vo == null){
+						vo = new AccommodationVO();
+						vo.setConstituencyId(constituencyId);
+						vo.setConstituencyName(obj[1] != null ? obj[1].toString():"");
+						vo.setDistrictId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						vo.setDistrictName(obj[3] != null ? obj[3].toString():"");
+						
+						vo.setLocationDetails(notificationTypeList);
+						
+						constMap.put(constituencyId, vo);
+					}
+				}
+			 }
 			List<Object[]> list = accommodationTrackingDAO.getAccommodationTrackingInfoByNotificationType(notificationType, locationType);
-			if(commonMethodsUtilService.isListOrSetValid(list)){
+			/*if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long constituencyId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 					AccommodationVO vo = constMap.get(constituencyId);
@@ -248,7 +276,7 @@ public class NotificationService implements INotificationService{
 						constMap.put(constituencyId, vo);
 					}
 				}
-			}
+			}*/
 			
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {

@@ -20,7 +20,7 @@ public class NotificationTypeDAO extends GenericDaoHibernate<NotificationType, L
 										" model.notificationType" +
 										" from NotificationType model" +
 										" where model.isActive = 'true'" +
-										" and model.notificationTypeId >= 3");
+										" and model.typeId = 3");
 		return query.list();
 	}
 }

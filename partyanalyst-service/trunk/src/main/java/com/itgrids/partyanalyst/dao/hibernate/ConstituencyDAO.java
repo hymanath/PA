@@ -1202,7 +1202,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.constituencyId,model.name from Constituency model where " +
+		str.append("select distinct model.constituencyId,model.name,model.district.districtId,model.district.districtName from Constituency model where " +
 				" model.state.stateId = :stateId  and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 ");
 		if(stateTypeId.longValue() == 0L)
 		{
