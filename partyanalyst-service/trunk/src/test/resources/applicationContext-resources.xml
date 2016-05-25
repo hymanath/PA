@@ -806,6 +806,9 @@
 				 <!-- Login related Models -->
 				  <value>com.itgrids.partyanalyst.model.LoginRequiredUrl</value>
 				  <value>com.itgrids.partyanalyst.model.AppointmentUserType</value>
+				    <value>com.itgrids.partyanalyst.model.NotificationDevice</value>
+				   <value>com.itgrids.partyanalyst.model.NotificationType</value>
+				   <value>com.itgrids.partyanalyst.model.Notifications</value>
 			</list>
 		</property>
 	</bean>
@@ -3556,5 +3559,18 @@
 		<property name="userDAO" ref="userDAO" />	
 		<property name="smsHistoryMobileNoDAO" ref="smsHistoryMobileNoDAO" />		
 	</bean>
-	
+	<bean id="notificationDeviceDAO" class="com.itgrids.partyanalyst.dao.hibernate.NotificationDeviceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="notificationTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NotificationTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="notificationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="notificationService" class="com.itgrids.partyanalyst.service.impl.NotificationService">
+	   <property name="notificationDeviceDAO" ref="notificationDeviceDAO"></property> 
+	   <property name="transactionTemplate" ref="transactionTemplate" />
+	    <property name="notificationsDAO" ref="notificationsDAO"></property> 
+	</bean>
 </beans>
