@@ -435,6 +435,19 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			   return query.list();
 			}
 			
+			public String getVoterImagePathByVoterId(Long voterId)
+			{
+				Query query = getSession().createQuery("SELECT model.imagePath FROM Voter model where model.voterId = :voterId");
+				query.setParameter("voterId",voterId);
+				
+				Object str = query.uniqueResult();
+				
+				if(str != null )
+					return str.toString();
+				else
+					return "";
+			}
+			
 			
 			
 }
