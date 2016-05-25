@@ -541,6 +541,15 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	  try{
 		session = request.getSession();
 		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"BLOOD_BANK_REGISTRATION_ENTITLEMENT")){
+			return "bloodBankRegistration";
+		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"BLOOD_BANK_DASHBOARD_ENTITLEMENT")){
+			return "bloodBankDashboard";
+		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"BLOOD_BANK_BLEEDING_ENTITLEMENT")){
+			return "bloodBankBleeding";
+		}
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"EVENTS_DASHBOARD_ENTITLEMENT")){
 			return "eventDashboard";
 		}

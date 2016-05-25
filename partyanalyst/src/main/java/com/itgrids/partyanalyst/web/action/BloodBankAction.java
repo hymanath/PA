@@ -17,7 +17,9 @@ import com.itgrids.partyanalyst.dto.DonationsInBloodBankVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IBloodBankService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -39,8 +41,16 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	private List<BloodBankDashBoardVO> bloodBankDashBoardvoList = new ArrayList<BloodBankDashBoardVO>();
 	private DonationsInBloodBankVO donationsInBloodBankVO;
 	private ResultStatus resultStatus;
+	private EntitlementsHelper 					entitlementsHelper;
+	
 	private List<IdNameVO> idNameVOList;
 	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public DonationsInBloodBankVO getDonationsInBloodBankVO() {
 		return donationsInBloodBankVO;
 	}
@@ -103,14 +113,64 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	}
 	
 	public String bloodBankRegistration(){
+		
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_REGISTRATION_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_REGISTRATION_ADMIN_ENTITLEMENT"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+
 		return Action.SUCCESS;
 	}
 	
 	public String bloodBankDashBoard(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_DASHBOARD_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
 		return Action.SUCCESS;
 	}
 	
 	public String bloodBankBleading(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_BLEEDING_ENTITLEMENT") || 
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT"))){
+			noaccess = true ;
+		}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
 		return Action.SUCCESS;
 	}
 	
