@@ -3800,7 +3800,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	  {
 		  List<AccommodationVO> returnList = null;
 		  try {
-			  returnList = notificationService.getAccommodationTrackingInfoByNotificationType(inputvo.getTypeId(),inputvo.getLocationTypeId());
+			  returnList = notificationService.getAccommodationTrackingInfoByNotificationType(inputvo);
 		} catch (Exception e) {
 			 log.debug("Entered into the getAccommodationTrackingInfoByNotificationType  method in WebServiceHandlerService");
 		}
