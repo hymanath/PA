@@ -355,6 +355,17 @@ public class NotificationService implements INotificationService{
 			 }
 			 return null;
 		}
+	 
+	 public String notificationIsActiveStatus(Long notificatonsId){
+		 String status=" ";
+		 try{
+			 status=notificationsDAO.isActiveStatusNotification(notificatonsId);
+			
+		 }catch(Exception e){
+			 log.error("Exception occured in notificationIsActiveStatus() Method ",e);
+		 }
+		 return status;
+	 }
 	 public String saveNotification(final Long notificationType,final String notificationText){
 		
 		 try{
@@ -398,6 +409,7 @@ public class NotificationService implements INotificationService{
 		 List<NotificationDeviceVO> notificationList = null;
 		 List<Object[]> notificationTypesLst = notificationTypeDAO.getNotificationType();
 		 if(notificationTypesLst != null && notificationTypesLst.size() > 0){
+			 notificationList=new ArrayList<NotificationDeviceVO>();
 			 for (Object[] obj : notificationTypesLst) {
 				 NotificationDeviceVO vo = new NotificationDeviceVO();
 				
@@ -411,7 +423,7 @@ public class NotificationService implements INotificationService{
 	 
 	 }
 	 public List<NotificationDeviceVO> getNotificationDetailsByTypeId(Long typeId){
-		 List<NotificationDeviceVO> notificationList = null;
+		 List<NotificationDeviceVO> notificationList = new ArrayList<NotificationDeviceVO>();
 		 List<Object[]> notificationsLst = notificationsDAO.getNotificationsByTypeId(typeId);
 		 if(notificationsLst != null && notificationsLst.size() > 0){
 			 for (Object[] obj : notificationsLst) {
