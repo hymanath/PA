@@ -1412,5 +1412,35 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 	}*/
 	
+	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.tdpCadreId " +
+				" from EventAttendee model where model.tdpCadreId in (:cadreIds) and model.event.parentEventId=:eventId ");
+		if(date != null){
+			sb.append(" and date(model.attendedTime)=:date");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("cadreIds", cadreIds);
+		query.setParameter("eventId", eventId);
+		if(date != null){
+			query.setDate("date", date);
+		}
+		return query.list();
+	}
 	
+	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId){
+		Query query = getSession().createQuery(" select model.tdpCadreId " +
+				" from EventAttendee model,TdpCadreCandidate tcc,PublicRepresentative pr " +
+				" where " +
+				" model.tdpCadreId = tcc.tdpCadreId " +
+				" and tcc.candidateId=pr.candidateId " +
+				" and  pr.publicRepresentativeTypeId=:designationId " +
+				" and model.event.parentEventId=:eventId " +
+				" and date(model.attendedTime)=:date ");
+		query.setParameter("eventId", eventId);
+		query.setDate("date", date);
+		query.setParameter("designationId", designationId);
+		
+		return query.list();
+	}
 }

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -62,4 +63,6 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
 	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
 	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
+	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId);
+	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId);
 }

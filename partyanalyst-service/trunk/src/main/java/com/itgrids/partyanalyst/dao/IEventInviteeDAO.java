@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -20,4 +21,5 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	
 	public List<Object[]> getPublicRepresentiveInvitessForEvent(Long eventId,List<Long> designationIds);
 	public List<Object[]> dayWisePublicRepInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds);
+	public List<Long> getCandidateTdpCadreIds(Long eventId,Long designationId);
 }
