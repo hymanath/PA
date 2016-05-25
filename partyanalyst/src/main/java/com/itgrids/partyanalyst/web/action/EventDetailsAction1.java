@@ -149,4 +149,29 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPublicrepresentatives(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			Long eventId = jObj.getLong("parentEventId");
+			
+			List<Long> subEventIds = new ArrayList<Long>();
+			JSONArray arr = jObj.getJSONArray("subEventIds");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			
+			resultList = mahanaduDashBoardService1.getPublicrepresentatives(startDate,endDate,eventId,subEventIds);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
 }
