@@ -255,7 +255,7 @@ public class NotificationService implements INotificationService{
 		 
 	 }
 	 
-	 public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType){
+	 public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputvo){
 		 List<AccommodationVO> returnList = null;
 		 try {
 			 Map<Long,AccommodationVO> constMap = new LinkedHashMap<Long, AccommodationVO>();
@@ -273,7 +273,7 @@ public class NotificationService implements INotificationService{
 				}
 			 }
 			 
-			 List<Object[]> constList = constituencyDAO.getConstituenciesByStateId(1l, 1l);
+			 List<Object[]> constList = constituencyDAO.getConstituenciesByStateId(1l, 0l);
 			 if(commonMethodsUtilService.isListOrSetValid(constList)){
 				 for (Object[] obj : constList) {
 					Long constituencyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -291,25 +291,10 @@ public class NotificationService implements INotificationService{
 					}
 				}
 			 }
-			List<Object[]> list = accommodationTrackingDAO.getAccommodationTrackingInfoByNotificationType(notificationType, locationType);
-			/*if(commonMethodsUtilService.isListOrSetValid(list)){
-				for (Object[] obj : list) {
-					Long constituencyId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
-					AccommodationVO vo = constMap.get(constituencyId);
-					if(vo == null){
-						vo = new AccommodationVO();
-						vo.setConstituencyId(constituencyId);
-						vo.setConstituencyName(obj[4] != null ? obj[4].toString():"");
-						vo.setDistrictId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
-						vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
-						
-						vo.setLocationDetails(notificationTypeList);
-						
-						constMap.put(constituencyId, vo);
-					}
-				}
-			}*/
+			List<Object[]> list = accommodationTrackingDAO.getAccommodationTrackingInfoByNotificationType(inputvo.getTypeId(),inputvo.getLocationTypeId(),inputvo.getLastAccommodationTrackingId());
+			List<Long> inActiveIdsList = accommodationTrackingDAO.getInactiveAccommodationTrackingInfoByNotificationType(inputvo.getTypeId(),inputvo.getLocationTypeId(),inputvo.getLastAccommodationTrackingId());
 			
+			Map<Long,AccommodationVO> returnMap = new LinkedHashMap<Long, AccommodationVO>();
 			if(list != null && list.size() > 0){
 				for (Object[] obj : list) {
 					Long constituencyId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
@@ -328,15 +313,29 @@ public class NotificationService implements INotificationService{
 							accvo.setMobileNo(obj[10] != null ? obj[10].toString():"");
 							accvo.setLongitude(obj[11] != null ? obj[11].toString():"");
 							accvo.setLatitude(obj[12] != null ? obj[12].toString():"");
-							
+							accvo.setAccommodationTrackingId(commonMethodsUtilService.getLongValueForObject(obj[15]));
+							if(commonMethodsUtilService.isListOrSetValid(inActiveIdsList))
+								accvo.setInActiveAccommadationTrackingIdsList(inActiveIdsList);
 							notiTypevo.getLocationDetails().add(accvo);
 						}
+						returnMap.put(constituencyId, vo);
 					}
 				}
 			}
-			
-			if(commonMethodsUtilService.isMapValid(constMap))
-				returnList = new ArrayList<AccommodationVO>(constMap.values());
+			else if(commonMethodsUtilService.isListOrSetValid(inActiveIdsList) && commonMethodsUtilService.isMapValid(constMap)){
+				for (Long constituencyId : constMap.keySet()) {
+					AccommodationVO vo = constMap.get(constituencyId);
+					if(vo != null){
+							if(commonMethodsUtilService.isListOrSetValid(inActiveIdsList))
+								vo.setInActiveAccommadationTrackingIdsList(inActiveIdsList);
+						returnMap.put(constituencyId, vo);
+						break;
+					}
+				}
+			}
+				
+			if(commonMethodsUtilService.isMapValid(returnMap))
+				returnList = new ArrayList<AccommodationVO>(returnMap.values());
 			
 		} catch (Exception e) {
 			 log.error("Exception occured in getActiveNotifications() Method ",e);
