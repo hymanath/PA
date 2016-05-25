@@ -8303,6 +8303,12 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		query.setParameter("voterIDCardNo",voterIDCardNo);
 		return query.list();
 	}
+	public List<Object[]> getVoterImagesVoterIdcardNo(List<String> voterIDCardNos)
+	{
+		Query query = getSession().createQuery("SELECT model.voter.voterIDCardNo, model.voter.imagePath FROM  BoothPublicationVoter model WHERE model.voter.voterIDCardNo in(:voterIDCardNos) AND  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_PUBLICATION_ID);
+		query.setParameterList("voterIDCardNos",voterIDCardNos);
+		return query.list();
+	}
 	public List<Object[]> getVoterAddressDetailsVoterId(Long voterId)
 	{
 		Query query = getSession().createQuery("" +

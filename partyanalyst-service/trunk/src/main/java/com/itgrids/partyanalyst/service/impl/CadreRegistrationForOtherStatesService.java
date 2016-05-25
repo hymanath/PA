@@ -1087,7 +1087,7 @@ public class CadreRegistrationForOtherStatesService implements
 						vo.setRelationType(voter[5] != null ? voter[5].toString().trim():"");
 						vo.setGender(voter[6] != null ? voter[6].toString().trim():"");
 						vo.setVoterCardNo(voter[7]!=null ?voter[7].toString().trim():"");
-						vo.setImage(voter[8]!=null ?voter[8].toString():null);
+						vo.setImage(voter[8]!=null ?IConstants.VOTER_IMG_FOLDER_PATH + IConstants.FILE_SEPARATOR + voter[8].toString():"");
 						vo.setIsRegistered("N");
 						votersMap.put(vo.getId(), vo);
 						returnList.add(vo);

@@ -2749,6 +2749,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 					if(detailsVO.getVotercardNo() != null)
 						voterIdCardNoList.add(detailsVO.getVotercardNo());
 				
+				 List<Object[]> voterImages =  boothPublicationVoterDAO.getVoterImagesVoterIdcardNo(voterIdCardNoList);
+				 Map<String,String> voterImagMap = new HashMap<String, String>();
+				 if(voterImages != null && voterImages.size() > 0)
+				 {
+					 for(Object[] params : voterImages)
+					 {
+						 
+						 voterImagMap.put(params[0].toString(), params[1].toString());
+					 }
+				 }
+				
 				if(voterIdCardNoList != null && voterIdCardNoList.size() > 0)
 				{
 					List<Object[]> list = tdpCadreDAO.getSurveyPaticipatedCountByVoterIdcardNoList(voterIdCardNoList);
@@ -2797,6 +2808,9 @@ public class CadreDetailsService implements ICadreDetailsService{
 										VO.setImagePath(imagePath);
 									}
 									else{
+										if(voterImagMap.get(VO.getVotercardNo()) != null)
+										VO.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH + IConstants.FILE_SEPARATOR + voterImagMap.get(VO.getVotercardNo()));
+										else
 										VO.setImagePath("");
 									}
 							    	tdpCadreIDsList.add(params[1] != null?Long.parseLong(params[1].toString()):0l);
