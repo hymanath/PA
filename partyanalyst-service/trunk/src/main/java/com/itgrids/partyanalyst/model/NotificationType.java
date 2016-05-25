@@ -19,7 +19,7 @@ public class NotificationType extends BaseModel implements Serializable{
 	
 	private Long notificationTypeId;
 	private String notificationType;
-	private Long isActive;
+	private String isActive;
 	private Long orderNo;
 	private Long typeId;
 	
@@ -40,10 +40,10 @@ public class NotificationType extends BaseModel implements Serializable{
 		this.notificationType = notificationType;
 	}
 	@Column(name="is_active")
-	public Long getIsActive() {
+	public String getIsActive() {
 		return isActive;
 	}
-	public void setIsActive(Long isActive) {
+	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
 	@Column(name="order_no")
