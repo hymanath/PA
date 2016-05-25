@@ -12408,5 +12408,25 @@
 			<param name="root">resultList</param>
 		</result>
 	</action>
+	<action name="saveNotificationAction" class="notificationAction" method="saveNotification">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	<action name="saveNotificationTypeTextAction" class="notificationAction" method="saveNotificationType">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	<action name="updateNotificationAction" class="notificationAction" method="setActivcationStatusforNotificationAndNotificationType">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
+	<action name="updateNotificationTypeAction" class="notificationAction" method="setActivcationStatusforNotificationAndNotificationType">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+	</action>
 </package>
 </struts>      
