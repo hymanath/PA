@@ -238,6 +238,67 @@
 			</div>
 		</div>
     </div>
+	<div>
+	<div class="row">
+	<div class="col-md-12">
+	  <div class="panel panel-default panel-custom-default ">
+		  <div class="panel-heading">
+			  <h4 class="panel-title">PUBLIC REPRESENTATIVE ATTENDEE COUNT</h4>
+			</div>
+			<div class="panel-body">
+				<table class="table table-bordered">
+				  <tr>
+					<td rowspan='2'></td>
+					<td style="vertical-align:middle" rowspan='2'>Total Attended</td>
+					<td colspan='2'>Day 1</td>
+					<td colspan='2'>Day 2</td>
+					<td colspan='2'>Day 3</td>
+				  </tr>
+				  <tr>
+					<td>Attended</td>
+					<td>Not Attended</td>
+					<td>Attended</td>
+					<td>Not Attended</td>
+					<td>Attended</td>
+					<td>Not Attended</td>
+				  </tr>
+				  <tr>
+					<td>MP</td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="" attr_desigId="" attr_day="" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MP" attr_day="day1" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MP" attr_day="day1" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MP" attr_day="day2" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MP" attr_day="day2" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MP" attr_day="day3" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MP" attr_day="day3" class="publcRepAttnds">01</a></td>
+				  </tr>
+				  <tr>
+					<td>MLA</td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="" attr_desigId="" attr_day="" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLA" attr_day="day1" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLA" attr_day="day1" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLA" attr_day="day2" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLA" attr_day="day2" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLA" attr_day="day3" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLA" attr_day="day3" class="publcRepAttnds">01</a></td>
+				  </tr>
+				  <tr>
+					<td>MLC</td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="" attr_desigId="" attr_day="" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLC" attr_day="day1" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLC" attr_day="day1" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLC" attr_day="day2" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLC" attr_day="day2" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLC" attr_day="day3" class="publcRepAttnds">01</a></td>
+					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLC" attr_day="day3" class="publcRepAttnds">01</a></td>
+				  </tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	</div>
+	</div>
 	<!-- END-->
 		<div class="row">
 			<div class="col-md-12">
@@ -447,7 +508,57 @@
     </div>
   </div>
 </div>
-
+<div class="modal fade openmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="popupId">
+  <div class="modal-dialog modal-lg modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><b>Candidate Details</b></h4>
+      </div>
+     <div class="modal-body pad_0">
+	 <div id="showModelConstcy">
+	 <table class="table table-bordered"><thead>
+	 <th>IMAGE</th>
+	 <th>NAME</th>
+	 <th>DESIGNATION</th>
+	 <th>CONSTITUENCY</th>
+	 <th>ATTENDED</th>
+	 </thead>
+	 <tr>
+	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
+	 <td>JOHN</td>
+	 <td>MP</td>
+	 <td>NELLORE</td>
+	 <td>NO</td>
+	 </tr>
+	 <tr>
+	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
+	 <td>JOHN</td>
+	 <td>MLC</td>
+	 <td>KURNOOL</td>
+	 <td>YES</td>
+	 </tr>
+	 <tr>
+	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
+	 <td>JOHN</td>
+	 <td>MP</td>
+	 <td>NELLORE</td>
+	 <td>YES</td>
+	 </tr>
+	<tr>
+	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
+	 <td>JOHN</td>
+	 <td>MLA</td>
+	 <td>NELLORE</td>
+	 <td>NO</td>
+	 </tr>
+	 </table>
+	 </div>
+	  </div>
+	  </div>
+	  </div>
+	  </div>
+	  
 <script  src="js/eventDashboard.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -2658,6 +2769,7 @@ $(document).on('click','#mahanaduLinkId',function(){
 	
 	var statesArrayLength = statesArray.length;
 	
+	
 	if(statesArrayLength == 0){
 		$("#showErrorMsg").html("Please Select State")
 		return;
@@ -2687,6 +2799,26 @@ var tableToExcel = (function() {
   }
 })()
 
+  $(document).on('click','.publcRepAttnds',function(){
+	  alert($(this).attr("attr_day"))
+	 $("#popupId").modal("show");
+	 var inviteeType = $(this).attr("attr_inviteeTyp");
+	 var desigId = $(this).attr("attr_desigId");
+	 var day = $(this).attr("attr_day");
+	 var jObj = {
+			 designationId     : desigId,
+			 inviteeType 	  : inviteeType,
+			 day               : day
+		}	
+		
+		 $.ajax({
+          type:'POST',
+          url: 'getCandidateDetailsAction.action',
+		   data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			$("#popupId").modal("show");
+		 });
+});  
 </script>
 </body>
 </html>

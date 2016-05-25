@@ -274,4 +274,18 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	public String getCandidateDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			List<Long> statesList = new ArrayList<Long>(0);
+			String designationId = jObj.getString("designationId");
+			String inviteeType = jObj.getString("inviteeType");
+			String day = jObj.getString("day");
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception riased at getCandidateDetails ", e);
+		}
+		return Action.SUCCESS;
+	}
 }
