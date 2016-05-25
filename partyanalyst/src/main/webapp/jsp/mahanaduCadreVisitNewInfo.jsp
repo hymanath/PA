@@ -262,22 +262,33 @@
 				<div class="panel-body">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4 class="panel-title">DISTRICT WISE</h4>
-							<button class="btn btn-xs btn-success pull-right " style="margin-top: -20px;" id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>
+							<div class="row">
+								<div class="col-md-6">
+									<h4 class="panel-title">DISTRICT WISE</h4>
+								</div>
+								<div class="col-md-3">
+									<button class="btn btn-xs btn-success col-md-offset-9 "  id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>
+								</div>
+							</div>
 						</div>
-						<div class="panel-body">
-						 
-							<div class="table-responsive" id="distWiseTableDivId"></div>
+						<div class="panel-body" style="padding:0px;">
+							<div id="distWiseTableDivId" ></div>
 						</div>
 					</div>
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4 class="panel-title">CONSTITUENCY WISE</h4>
-							<button class="btn btn-xs btn-success pull-right " style="margin-top: -20px;" id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>
+						<div class="row">
+								<div class="col-md-6">
+									<h4 class="panel-title">CONSTITUENCY WISE</h4>
+								</div>
+								<div class="col-md-3">
+									<button class="btn btn-xs btn-success col-md-offset-9 "  id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>
+								</div>
+							</div>
 						</div>
-						<div class="panel-body">
+						<div class="panel-body" style="padding:0px;">
 						 
-							<div class="table-responsive" id="constWiseTableDivId"></div>
+							<div  id="constWiseTableDivId"></div>
 						</div>
 					</div>					
 				</div>
@@ -1121,7 +1132,7 @@ function buildTotalVisitorsResult(result){
 				str+='<th>Now In Campus %</th>';
 				str+='</thead>';
 				
-					str+='<tbody>';
+					str+='<tbody class="scrollLength">';
 					for( var  i in result.subList ){
 						if(result.subList[i].total != null && result.subList[i].total > 0 && result.subList[i].cadreCount != null && result.subList[i].cadreCount > 0){
 							flag=true;
@@ -1150,6 +1161,18 @@ function buildTotalVisitorsResult(result){
 							"order": [[ 1, "asc" ]]
 		
 						});
+						$("#distWiseTableId_filter").css("margin-top","-31px");
+							var Scrollerlength = $(".scrollLength").find("tr").length;
+							if(Scrollerlength >=11){
+								$("#distWiseTableId").css("display","block");
+								$("#distWiseTableId").css("height","380px");
+								$("#distWiseTableId").css("overflow-y","scroll");
+								$("#distWiseTableId").css("overflow-x","scroll");
+								
+							}else{
+								$("#distWiseTableId").css("height","auto");
+								
+							}
 					}
 					
 				}else{
@@ -1204,7 +1227,7 @@ function buildTotalVisitorsResult(result){
 				str+='<th>Now In Campus %</th>';
 				str+='</thead>';
 				
-					str+='<tbody>';
+					str+='<tbody classs="scrollLength">';
 					for( var  i in result.subList ){
 						if(result.subList[i].total != null && result.subList[i].total > 0 && result.subList[i].cadreCount != null && result.subList[i].cadreCount > 0){
 							flag=true;
@@ -1233,6 +1256,18 @@ function buildTotalVisitorsResult(result){
 							"order": [[ 1, "asc" ]]
 		
 						});
+						$("#constWiseTableId_filter").css("margin-top","-31px");
+							var Scrollerlength = $(".scrollLength").find("tr").length;
+							if(Scrollerlength >=11){
+								$("#constWiseTableId").css("display","block");
+								$("#constWiseTableId").css("height","380px");
+								$("#constWiseTableId").css("overflow-y","scroll");
+								$("#constWiseTableId").css("overflow-x","scroll");
+								
+							}else{
+								$("#constWiseTableId").css("height","auto");
+								
+							}
 					}
 					
 				}else{
