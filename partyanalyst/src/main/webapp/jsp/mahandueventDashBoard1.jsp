@@ -98,6 +98,9 @@
 .pointer {
     cursor: pointer;
 }
+.col-md-offset-6-manually{
+	margin-left: 53%;
+}
 </style>
 </head>
 
@@ -358,13 +361,13 @@
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
 									<p class="m_0 display-style" id="districtHeading">DISTRICT WISE </p>
-									<!-- <button class="btn btn-success btn btn-xs pointer" id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>-->
+									<button class="btn btn-success btn btn-xs col-md-offset-7" id="districtExcelBtnId" onclick="generateExcel()" style="display:none;">Export Excel</button>
 									
 									</div>
 									<div class="panel-body" style="padding:0px;">				
 											 
 											<center><img id="distAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-										<div id="districtTableId" style="margin-top:-29px"> </div>
+										<div id="districtTableId"> </div>
 									</div>
 								</div>
 								
@@ -373,7 +376,7 @@
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
 									<p class="m_0 display-style" id="constiHeading">CONSTITUENCY WISE</p>
-									 <!-- <button class="btn btn-success btn btn-xs" id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>-->
+									  <button class="btn btn-success btn btn-xs col-md-offset-6-manually" id="constituecnyExcelBtnId" onclick="generateExcel1()" style="display:none;">Export Excel</button>
 									<div class="onoffswitch pull-right" style="display:none;">
 										<input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" disabled id="myonoffswitch1" checked>
 										<label class="onoffswitch-label" for="myonoffswitch1">
@@ -385,7 +388,7 @@
 									<div class="panel-body" style="padding:0px;">
 									<!--<select id="constiEventId" class="eventCls form-control" style="margin-top:-5px;" onChange="getLocationWiseCountBySubEvents(4)"><option value="0"> All Events</option></select>-->
 									<center><img id="constAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-										<div id="constiTableId" style="margin-top:-29px"></div>
+										<div id="constiTableId" ></div>
 									</div>
 								</div>
 							</div>
@@ -1165,7 +1168,7 @@ function buildDistrictTable(result,reportLevelId){
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 		"order": [[ 1, "asc" ]]
     });
-	
+	$("#datatableId_filter").css("margin-top","-29px");
 	
 	var Scrollerlength = $(".scrollLength").find("tr").length;
 	
@@ -1385,8 +1388,8 @@ function buildConstTable(result,reportLevelId){
 		"order": [[ 1, "asc" ]]
 		
     });
+	$("#constituencyDataTableId_filter").css("margin-top","-29px");
 	var Scrollerlength = $(".scrollLength").find("tr").length;
-	
 	if(Scrollerlength >=11){
 		$("#constituencyDataTableId").css("display","block");
 		$("#constituencyDataTableId").css("height","380px");
