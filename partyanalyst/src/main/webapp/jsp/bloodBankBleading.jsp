@@ -47,7 +47,7 @@
 						<select class="form-control" id="datesSelId"></select>
 					</div>
 					<div class="col-md-2">
-						<button class="btn btn-success m_top25" style="margin-top:25px;" id="serachButtonId" onclick="getPrePopulateTheDataDetails()">SEARCH</button>
+						<button class="btn btn-success m_top25" style="margin-top:25px;" id="serachButtonId" onclick="getPrePopulateTheDataDetails(true)">SEARCH</button>
 					</div>
                 </div>
                 <div class="row">
@@ -188,33 +188,6 @@ function getBloodBankCampDates(){
 		
 	});
 }
-
-$("#searchDate").daterangepicker({singleDatePicker:true});
-function getPrePopulateTheDataDetails(){
-	$('#errorDiv').html("");
-	$(".errorCls").html("");
-	var search = $("#searchInputId").val();
-	if(search==0){
-		$('#errorDiv').html('Please Enter Search Type.');
-		return;
-	}
-	
-	var jObj={
-		searchType:search,
-		statusId : $("#totalStatusId").val(),
-		date : $("#datesSelId").val()
-	};
-	$.ajax({
-		type:"GET",
-		url:'getPrePopulateTheDataDetailsAction.action',
-		dataType:'json',
-		data:{task:JSON.stringify(jObj)}
-	}).done(function(result){
-		if(result!=null && result.length>0){
-			buildBleedingCadreDetails(result);
-		}
-	});
-}
 $( "#searchInputId" ).blur(function() {
 	var value = $("#searchInputId" ).val();
 	if(value == "" || value ==undefined){
@@ -225,12 +198,7 @@ $( "#searchInputId" ).blur(function() {
 		}
 		getBleedingCadreDetails(statusIdList,1);
 	}
-});
-$(document).keypress(function(e) {
-				if(e.keyCode==13){
-					getPrePopulateTheDataDetails();
-				}
-		  });
+});	
 </script>
 </body>
 </html>

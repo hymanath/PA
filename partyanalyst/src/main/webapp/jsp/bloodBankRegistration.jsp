@@ -42,9 +42,11 @@
                         	<input placeholder="Ex: 38324292" type="text" class="form-control" id="membershipInputId"/>
                             <span class="input-group-addon">
                             	<button class="btn btn-success" type="button" id="cadreDetailsId">POPULATE DETAILS</button>
-                            </span>
+                            </span>							
                         </div>
+						
                     </div>
+					<img id="cdrDtlsSrchPrcssngImgId" src="images/Loading-data.gif" style="width: 40px; height: 40px; margin-top: 22px;display:none;"/>
                 </div>
                 <div class="row">
                     <div class="col-md-12 m_top20">
@@ -174,7 +176,10 @@
                     <div class="col-md-3 m_top10">
                     	<button class="btn btn-success" id="submitBtnId">SUBMIT</button>
 						<button class="btn btn-success" id="printBtnId" style="display:none;" onclick="printCadre();">PRINT</button>
+						<img id="cdrDtlsSavingPrcssngImgId" src="images/Loading-data.gif" style="width: 40px; height: 40px; margin-top: 0px;display:none;"/>
 		            </div>
+					
+					
 					<div class="col-xs-3  m_top10">
 					<span id="statusId"></span>
 					</div>
@@ -378,8 +383,8 @@
       <div class="modal-body" id="">
 		<div class="row">
 			<div class="col-md-12">
-				<p>Details are Submitting</p>
-				<p class="dtsCls">dou want to get print</p>
+				<p>Details Are Submitting</p>
+				<p class="dtsCls">Do You Want Print</p>
 			</div>	
 			<div class="col-md-12">
 				<!--<button type="button" class="m_top20 btn btn-primary printCls" id="printBloddBankId" >PRINT</button>-->
@@ -770,6 +775,8 @@ var GmembershipNo;
      $(".dobErrorCls").html(' ');
 	 $("#statusId").html(' ');
 	   $("#printBtnId").hide();
+	   $("#submitBtnId").prop('disabled', false);
+	   $("#cdrDtlsSrchPrcssngImgId").show();
 	   var jObj = {
 		   memberShipNo:membserShipId
 		}
@@ -779,6 +786,7 @@ var GmembershipNo;
 		  url: 'getCadreDetailsAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
+			 $("#cdrDtlsSrchPrcssngImgId").hide();
 			if(result != null){
 				if(result.status!=null && result.status=="not exist"){
 				 $(".cadreNoErrorCls").html("This cadre number not available.");
@@ -817,8 +825,8 @@ function populateCadreDetails(result,memberShipNo){
 		populateCommonFields(result);
 	}else if(result.alreadyDonated!=null && result.alreadyDonated==true){
 		$("#printBtnId").show();
-		 populateCommonFields(result);
-		
+		$("#submitBtnId").prop('disabled', true);
+		 populateCommonFields(result);		
 		 
 		 if(result.married!=null && result.married.length>0){
 			 $("#slctBxMrrdId").val(result.married);
@@ -982,6 +990,8 @@ function printdocumentDetails(){
 		  cadreDtlsArr.push($("#wllngTBClldFrDntnId").val());
 		  cadreDtlsArr.push($("#rmrksId").val());
 		  cadreDtlsArr.push( $("#membershipInputId").val());
+		  
+		 $("#cdrDtlsSavingPrcssngImgId").show();
 		 
 	   var jObj = {
 		   cadreDtlsArr:cadreDtlsArr
@@ -992,6 +1002,7 @@ function printdocumentDetails(){
 		  url: 'saveCadreDetailsAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
+			 $("#cdrDtlsSavingPrcssngImgId").hide();
 			if(result!=null){
 				if(result.exceptionMsg=="success"){
 		//$("#printpriewBtn").show();

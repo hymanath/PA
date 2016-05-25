@@ -73,8 +73,9 @@ function buildStatusList(result){
 	getBleedingCadreDetails(statusIdList,campId);
 }
 function getBleedingCadreDetails(statusIdList,campId){
-	
-	$("#cadreDetailsLoadingId").show();
+	$("#BleedingCadreDetailsId").html('');
+	$("#cadreDetailsLoadingId").show();	
+	$("#errorDiv").html("");	
 	var jsObj = {
 		statusIdList	: statusIdList,      
 		campId			: campId,
@@ -86,8 +87,8 @@ function getBleedingCadreDetails(statusIdList,campId){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
-		if(result != null && result.length>0){
-			$("#cadreDetailsLoadingId").hide();
+		$("#cadreDetailsLoadingId").hide();
+		if(result != null && result.length>0){			
 			buildBleedingCadreDetails(result);
 		}else{
 			$("#BleedingCadreDetailsId").html("<p style='font-size:18px;'>No Data Available.</p>");
@@ -476,5 +477,37 @@ function getBloodBankCampDates(){
 		}
 		$("#datesSelId").html(str);
 		getAcceptanceStatus();
+	});
+}
+ $(document).on("change","#datesSelId",function(){
+	getPrePopulateTheDataDetails(false);
+});  
+function getPrePopulateTheDataDetails(flag){	
+	$("#errorDiv").html("");
+	$(".errorCls").html("");	
+	var search = $("#searchInputId").val();	
+	if(flag){
+		if(search ==null || search.trim().length==0 || search == undefined){
+			$('#errorDiv').html('Please Enter Search Type.');
+			return;
+		}
+	}
+	$("#BleedingCadreDetailsId").html('');	
+	$("#cadreDetailsLoadingId").show();
+	var jObj={
+		searchType:search,
+		statusId : $("#totalStatusId").val(),
+		date : $("#datesSelId").val()
+	};
+	$.ajax({
+		type:"GET",
+		url:'getPrePopulateTheDataDetailsAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		$("#cadreDetailsLoadingId").hide();
+		if(result!=null && result.length>0){
+			buildBleedingCadreDetails(result);
+		}
 	});
 }
