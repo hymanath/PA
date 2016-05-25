@@ -1,41 +1,22 @@
 
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.io.FileOutputStream;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Formatter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.INotificationsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
+import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
@@ -44,8 +25,26 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	private IRegistrationService registrationService;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ISmsSenderService smsSenderService;
+	private INotificationsDAO notificationsDAO;
+	private INotificationService notificationService;
 	
 	
+	public INotificationService getNotificationService() {
+		return notificationService;
+	}
+
+	public void setNotificationService(INotificationService notificationService) {
+		this.notificationService = notificationService;
+	}
+
+	public INotificationsDAO getNotificationsDAO() {
+		return notificationsDAO;
+	}
+
+	public void setNotificationsDAO(INotificationsDAO notificationsDAO) {
+		this.notificationsDAO = notificationsDAO;
+	}
+
 	public ISmsSenderService getSmsSenderService() {
 		return smsSenderService;
 	}
@@ -67,6 +66,24 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		this.constituencyDAO = constituencyDAO;
 	}
 	
+	public void testMyDetails(){
+		try {
+				NotificationDeviceVO notifyVO = new NotificationDeviceVO();
+			 notifyVO.setNotification(" hi anand new notification14");
+			 notifyVO.setNotificationTypeId(0L);
+			 notifyVO.setNotificationId(0L);
+			 notifyVO.setLastUpdatedTime("2016-05-23 21:06:55");
+			 notifyVO.setRegisteredId("fQxM86Nj_5E:APA91bG-WJr7QnUmmUEdrcsparpLsxJOMUT-oSHGBjvcZPPu-fYTkBAlZ5uPw2kUJ3t-ublItcUScsVGnz9UyMdGaaKX9qhvOavxBv70IJzm3bpOvcFmvmcOAdq7ZCL-VZPGvkW435Eh");
+			 notificationService.pushNotification(notifyVO);
+			//List<Object[]> list = notificationsDAO.getNotificationsDetailsByNotification(0L, 0L, lastUpdatedDate);
+			/*if(commonMethodsUtilService.isListOrSetValid(list)){
+				System.out.println();
+			}*/
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/*public void test(){
 		//List<Object[]> list = userDAO.getUserDetails();
 		registrationService.changepassword();
@@ -81,7 +98,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		this.registrationService = registrationService;
 	}
 
-	 public String escapeUnicode(String input) {
+	/* public String escapeUnicode(String input) {
 			StringBuilder b = new StringBuilder(input.length());
 			Formatter f = new Formatter(b);
 			for (char c : input.toCharArray()) {
@@ -92,9 +109,9 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 				}
 			}
 			return b.toString();
-		}
+		}*/
 	  
-	public void testSendSmsDetails(){
+	/*public void testSendSmsDetails(){
 		try {
 			Date today = new DateUtilService().getCurrentDateAndTime();
 			List<Object[]> smsDetailsList = constituencyDAO.getTemaporarilyMobileNoByDate(today);
@@ -1969,7 +1986,7 @@ HSSFSheet panchayatwiseSheet;
 HSSFSheet boothWiseSheet;
 HSSFSheet hamletWiseSheet;
 FileOutputStream out;
-
+*/
 /*public void test1234()
 {
 	try {
@@ -2185,7 +2202,7 @@ FileOutputStream out;
 	}
 
 }*/
-
+/*
 
 public void generateExcelsForBoothReport(List<AgeRangeVO>  list ,HSSFSheet sheet,HSSFWorkbook workbook)
 {
@@ -3636,7 +3653,7 @@ public void generateExcelsForMandalReport1(List<AgeRangeVO>  list ,HSSFSheet she
        }
 	   
 }
-*/
+*//*
 
 public void generateExcelsForConstituency(AgeRangeVO  VO ,HSSFSheet sheet,HSSFWorkbook workbook)
 {
