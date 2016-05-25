@@ -102,7 +102,7 @@
 					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
-					<h4 class="m_0">NOT INVITEES AS VISITORS</h4>
+					<h4 class="m_0">NON INVITEES AS VISITORS</h4>
 					<h3 id="nonInviteesAsVisitorsId">0</h3>
 					 <center><img id="tdyVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 				</div>
@@ -147,8 +147,8 @@
 		<div class="col-md-4">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsId"></i></h4>
-					<p class="font-10 fontColor">Last updated On: <span id="hourWiseTableTimeId"></span></p>
+					<h4 class="panel-title">HOUR WISE VISITORS<!--<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsId"></i>--></h4>
+					<p class="font-10 fontColor">Last updated On: <span id="hourWiseTableTimeId1"></span></p>
 				</div>
 				<div class="panel-body pad_0" style="height:370px">
 				<div><center><img id="hrWiseVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
@@ -160,7 +160,7 @@
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">Hour Wise Visitors Attended VS Visitors In Campus<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsInCampCls refreshIconPanel" title="page refresh" id="hrWiseVstrsGraphId"></i></h4>
-					<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>
+					<!--<p class="font-10 fontColor">Last updated On: <span id="hourWiseGraphTimeId"></span></p>-->
 				</div>
 				<div class="panel-body">
 				  <div class="row">
@@ -534,7 +534,7 @@ $(".panelDefault").height(maxHeight);
 		  str+='<tr>';
 		    str+='<td><span class="countNo">'+(parseInt(i)+1)+'</span></td>';
 			str+='<td>Total Unique <br/>'+result[i].total+'</td>';
-			str+='<td>Only 1st Day<br/>'+result[i].oneDayCount+'</td>';
+			str+='<td>Only 1 Day<br/>'+result[i].oneDayCount+'</td>';
 			str+='<td>Revisits<br/>'+result[i].revisitCount+'</td>';
 	     str+'</tr>';
 	  }
@@ -611,6 +611,7 @@ $(".panelDefault").height(maxHeight);
 	
 	  var needInvitees_a = false;
 	 function buildVisitorsResultByTime(result){
+		 $("#hourWiseTableTimeId1").html(result[(result.length-1)].lastUpdated);
 		 var str='';
 		 str+='<table class="table table-condensed tableHourWise" cellspacing="0" width="100%">';
                             str+='<thead>';
