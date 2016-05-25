@@ -177,7 +177,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			jObj = new JSONObject(getTask());
 			bloodBankDashBoardVO = bloodBankService.getBloodDonarsCountsSummary(jObj.getLong("campId"));
 		} catch (Exception e) {
-			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+			LOG.error("Exception eaised at  getBloodDonarsSummary()", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -185,7 +185,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		try {
 			idNameList = bloodBankService.getAcceptanceStatus();
 		} catch (Exception e) {
-			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+			LOG.error("Exception eaised at  getAcceptanceStatus()", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -193,7 +193,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		try {
 			idNameList = bloodBankService.getBloodBagType();
 		} catch (Exception e) {
-			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+			LOG.error("Exception eaised at  getBloodBagType()", e);
 		}
 		return Action.SUCCESS;
 	}
@@ -201,7 +201,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		try {
 			idNameList = bloodBankService.getBloodBagQuantity();
 		} catch (Exception e) {
-			LOG.error("Exception eaised at  getBloodDonarsSummary", e);
+			LOG.error("Exception eaised at  getBloodBagQuantity()", e);
 		}
 		return Action.SUCCESS;
 	}
