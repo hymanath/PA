@@ -24,8 +24,22 @@ public class AccommodationVO implements Serializable{
 	private String 	status;
 	private List<AccommodationVO> locationDetails = new ArrayList<AccommodationVO>(0);
 	private String locationName;
+	private Long typeId;
+	private Long locationTypeId;
 	
 	
+	public Long getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
+	}
+	public Long getLocationTypeId() {
+		return locationTypeId;
+	}
+	public void setLocationTypeId(Long locationTypeId) {
+		this.locationTypeId = locationTypeId;
+	}
 	public Long getId() {
 		return id;
 	}

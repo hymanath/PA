@@ -157,5 +157,5 @@ public interface IWebServiceHandlerService {
     public UnionTabUserVO checkLoginUnionTabUser(UnionTabUserVO inputVo);
     public PartyMeetingWSVO getAttendedDetailsForPartyMeeting(Long partyMeetingId);
     public PartyMeetingWSVO getTdpCadreDetailsForPartyMeeting(Long partyMeetingId,String searchType);
-    public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType);
+    public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputvo);
 }
