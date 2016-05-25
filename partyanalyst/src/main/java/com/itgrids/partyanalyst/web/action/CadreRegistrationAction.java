@@ -1986,6 +1986,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.ERROR;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String saveTempararyCadreDetailsForOtherStates()
 	{
 		try {
