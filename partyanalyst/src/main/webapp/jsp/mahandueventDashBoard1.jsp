@@ -471,44 +471,7 @@
         <h4 class="modal-title" id="myModalLabel"><b>Candidate Details</b></h4>
       </div>
      <div class="modal-body pad_0">
-	 <div id="showModelConstcy">
-	 <table class="table table-bordered"><thead>
-	 <th>IMAGE</th>
-	 <th>NAME</th>
-	 <th>DESIGNATION</th>
-	 <th>CONSTITUENCY</th>
-	 <th>ATTENDED</th>
-	 </thead>
-	 <tr>
-	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
-	 <td>JOHN</td>
-	 <td>MP</td>
-	 <td>NELLORE</td>
-	 <td>NO</td>
-	 </tr>
-	 <tr>
-	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
-	 <td>JOHN</td>
-	 <td>MLC</td>
-	 <td>KURNOOL</td>
-	 <td>YES</td>
-	 </tr>
-	 <tr>
-	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
-	 <td>JOHN</td>
-	 <td>MP</td>
-	 <td>NELLORE</td>
-	 <td>YES</td>
-	 </tr>
-	<tr>
-	 <td><img src="dist/img/profile.png" class="img-responsive" /></td>
-	 <td>JOHN</td>
-	 <td>MLA</td>
-	 <td>NELLORE</td>
-	 <td>NO</td>
-	 </tr>
-	 </table>
-	 </div>
+	 <div id="showModelConstcy"></div>
 	  </div>
 	  </div>
 	  </div>
@@ -2756,15 +2719,17 @@ var tableToExcel = (function() {
 })()
 
   $(document).on('click','.publcRepAttnds',function(){
-	  alert($(this).attr("attr_day"))
-	 $("#popupId").modal("show");
-	 var inviteeType = $(this).attr("attr_inviteeTyp");
+	  //alert($(this).attr("attr_day"))
+	 //$("#popupId").modal("show");
+	 var inviteeType = $(this).attr("attr_inviteeType");
 	 var desigId = $(this).attr("attr_desigId");
 	 var day = $(this).attr("attr_day");
+	 var eventId = $(this).attr("attr_event");
 	 var jObj = {
-			 designationId     : desigId,
-			 inviteeType 	  : inviteeType,
-			 day               : day
+			 designationId  : desigId,
+			 inviteeType 	: inviteeType,
+			 day            : day,
+			 eventId		: eventId
 		}	
 		
 		 $.ajax({
@@ -2772,6 +2737,34 @@ var tableToExcel = (function() {
           url: 'getCandidateDetailsAction.action',
 		   data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			var str='';
+			if(result != null && result.length > 0){
+				str+='<table class="table table-bordered">';
+				str+='<thead>';
+				str+='<th>IMAGE</th>';
+				str+='<th>NAME</th>';
+				str+='<th>DESIGNATION</th>';
+				str+='<th>CONSTITUENCY</th>';
+				str+='<th>ATTENDED</th>';
+				str+='</thead>';
+				for(var i in result){
+					str+='<tr>';
+					str+='<td><img src="'+result[i].image+'" class="img-responsive" /></td>';
+					str+='<td>'+result[i].candidateName+'</td>';
+					str+='<td>'+result[i].designation+'</td>';
+					str+='<td>'+result[i].stateName+'</td>';
+					if(result[i].status){
+						str+='<td>Yes</td>';
+					}else if(!result[i].status){
+						str+='<td>No</td>';
+					}
+					str+='</tr>';
+				}
+				str+='</table>';
+			}else{
+				str+='No Date Availabel.';
+			}
+			$("#showModelConstcy").html(str);
 			$("#popupId").modal("show");
 		 });
 }); 
@@ -2805,7 +2798,7 @@ function getPublicrepresentatives(){
 			str+='<table class="table table-bordered" style="background: rgb(239, 243, 244) none repeat scroll 0px 0px;">';
 			  str+='<tr>';
 				str+='<td rowspan="2"></td>';
-				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total Attended</td>';
+				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total Invitees</td>';
 				for(var i in result[0].subList){
 					if(result[0].subList[i].totalDaydataExist == true){
 						str+='<th class="text-center text-capitalize" colspan="2">'+result[0].subList[i].name+'</th>';
@@ -2826,7 +2819,7 @@ function getPublicrepresentatives(){
 						if(result[j].invitees == null || result[j].invitees ==0){
 							str+='<td class="text-center text-capitalize" > - </td>';
 						}else{
-							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_day="" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
+							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
 						}
 						
 						for(var l in result[j].subList){
@@ -2834,12 +2827,12 @@ function getPublicrepresentatives(){
 								if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
 									str+='<td class="text-center text-capitalize" > - </td>';
 								}else{
-									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_InviteeType="attendee" attr_desigId="'+result[j].id+'" attr_day="day1" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
 								}
 								if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
 									str+='<td class="text-center text-capitalize" > - </td>';
 								}else{
-									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_NoninviteeType="notAttendee" attr_desigId="MP" attr_day="day1" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
 								}
 								
 							}
