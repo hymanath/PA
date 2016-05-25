@@ -381,12 +381,12 @@ public class NotificationService implements INotificationService{
 		 try{
 			 if(updationTypeStr != null && updationTypeStr.equalsIgnoreCase("notification")){
 				 Notifications notifications = notificationsDAO.get(id);
-				 notifications.setIsActive(activeStatus);
+				 notifications.setIsActive(activeStatus.trim());
 				 notificationsDAO.save(notifications);
 			 }
 			 else  if(updationTypeStr != null && updationTypeStr.equalsIgnoreCase("notificationType")){
 				 NotificationType notificationType = notificationTypeDAO.get(id);
-				 notificationType.setIsActive(activeStatus);
+				 notificationType.setIsActive(activeStatus.trim());
 				 notificationTypeDAO.save(notificationType);
 			 }
 		 }catch(Exception e){
