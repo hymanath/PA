@@ -121,8 +121,15 @@ public class NotificationService implements INotificationService{
 			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					protected void doInTransactionWithoutResult(TransactionStatus status) 
 					{
-						//List<Long> isExistValues = notificationDeviceDAO.getIsExist(notifyVO.getRegisteredId(),notifyVO.getProjectId(),notifyVO.getImeiNo());
-						//if(isExistValues == null || isExistValues.size()==0){
+						List<Long> isExistValues = notificationDeviceDAO.getIsExist(notifyVO.getProjectId(),notifyVO.getImeiNo());
+						if(commonMethodsUtilService.isListOrSetValid(isExistValues)){
+							for (Long deviceId : isExistValues) {
+								NotificationDevice notificationDevice = notificationDeviceDAO.get(deviceId);
+								notificationDevice.setIsActive("false");
+								notificationDeviceDAO.save(notificationDevice);
+							}
+						}
+						
 							NotificationDevice notificateDevice = new NotificationDevice();
 							notificateDevice.setNotificationDeviceId(notifyVO.getNotificationDeviceId());
 							notificateDevice.setRegisteredId(notifyVO.getRegisteredId());
@@ -133,8 +140,9 @@ public class NotificationService implements INotificationService{
 							notificateDevice.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							notificateDevice.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 							notificateDevice.setDeviceName(notifyVO.getDeviceName());
+							notificateDevice.setIsActive("true");
 							notificationDeviceDAO.save(notificateDevice);	
-						//}
+						
 					}
 				});
 			  //returnList =  getActiveNotifications(notifyVO.getNotificationTypeId(),notifyVO.getLastNotificationId());
@@ -181,9 +189,24 @@ public class NotificationService implements INotificationService{
 			}
 			 Map<Long, NotificationDeviceVO> statusMap = new LinkedHashMap<Long, NotificationDeviceVO>(0);
 			 Map<Long,List<Long>> inActiveNotificationTypeIdsMap = new HashMap<Long, List<Long>>(0); 
+			 List<Long> inactiveNotificationTypeIdsList = new ArrayList<Long>(0);
+			 List<Object[]> notificationTypeDetails = notificationTypeDAO.getAllNotificationType();
+			 if(commonMethodsUtilService.isListOrSetValid(notificationTypeDetails)){
+				 for (Object[] notification : notificationTypeDetails) {
+					 NotificationDeviceVO  notificationTypeVO = new NotificationDeviceVO();
+					 notificationTypeVO.setNotificationType(commonMethodsUtilService.getStringValueForObject(notification[1])); // New status[1]
+					 notificationTypeVO.setNotificationTypeId(commonMethodsUtilService.getLongValueForObject(notification[0]));
+					 notificationTypeVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(notification[2]));
+					 notificationTypeVO.setIsActive(commonMethodsUtilService.getStringValueForObject(notification[3]));
+					 if(notificationTypeVO.getIsActive().equalsIgnoreCase("false"))
+						 inactiveNotificationTypeIdsList.add(notificationTypeVO.getNotificationTypeId());
+					 if(notificationTypeVO.getIsActive().equalsIgnoreCase("true"))
+						 statusMap.put(notificationTypeVO.getNotificationTypeId(), notificationTypeVO);
+				}
+			 }
 			 List<Object[]> notifyDetails = notificationsDAO.getNotificationsDetailsByNotification(notificationTypeId,lastNotificationId,lastUpdatedDate);
 			 List<Object[]> inactiveNotificationsList = notificationsDAO.getInactiveNotificationsDetails(notificationTypeId);
-			 List<Long> inactiveNotificationTypeIdsList = notificationsDAO.getInactiveNotificationsTypeDetails();
+			 //List<Long> inactiveNotificationTypeIdsList = null;//notificationsDAO.getInactiveNotificationsTypeDetails();
 			 String lastUpdatedTimeStr = sdf.format(dateUtilService.getCurrentDateAndTime());
 			 
 			 if(commonMethodsUtilService.isListOrSetValid(inactiveNotificationsList)){
@@ -205,17 +228,19 @@ public class NotificationService implements INotificationService{
 						 notificationTypeVO.setNotificationType(commonMethodsUtilService.getStringValueForObject(status[1])); // New status[1]
 						 notificationTypeVO.setNotificationTypeId(commonMethodsUtilService.getLongValueForObject(status[0]));
 						 notificationTypeVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(status[6]));
-						 notificationTypeVO.setLastUpdatedTime(lastUpdatedTimeStr);
-						 notificationTypeVO.setInActiviNotifications(inActiveNotificationTypeIdsMap.get(notificationTypeVO.getNotificationTypeId()));
-						 notificationTypeVO.setInActiviNotificationTypeIds(inactiveNotificationTypeIdsList);
 					 }
+					 
+					 notificationTypeVO.setLastUpdatedTime(lastUpdatedTimeStr);
+					 notificationTypeVO.setInActiviNotifications(inActiveNotificationTypeIdsMap.get(notificationTypeVO.getNotificationTypeId()));
+					 notificationTypeVO.setInActiviNotificationTypeIds(inactiveNotificationTypeIdsList);
+					 
 					 NotificationDeviceVO notificationVo = new NotificationDeviceVO();
 					 notificationVo.setNotificationId(commonMethodsUtilService.getLongValueForObject(status[2]));
 					 notificationVo.setNotification(commonMethodsUtilService.getStringValueForObject(status[3]));
 					 notificationVo.setOrderNo(commonMethodsUtilService.getLongValueForObject(status[4]));
 					 notificationVo.setLastUpdatedTime(commonMethodsUtilService.getStringValueForObject(status[5]));
 					 notificationTypeVO.getActiveNotifications().add(notificationVo) ;
-					 statusMap.put((Long)status[0], notificationTypeVO);
+					// statusMap.put((Long)status[0], notificationTypeVO);
 				}
 				 
 				 if(commonMethodsUtilService.isMapValid(statusMap)){
