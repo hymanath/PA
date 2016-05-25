@@ -3373,35 +3373,35 @@ IUserVoterDetailsDAO{
 			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			{
 				str.append(" select distinct model.booth.constituency.constituencyId,count(*) ");
-				str.append(" , model.booth.constituency.name from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" , model.booth.constituency.name from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.constituency.district.districtId in (:locationIdsList) ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.constituency.constituencyId order by model.booth.constituency.name ");
 			}			
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
 			{				
 				str.append(" select distinct model.booth.tehsil.tehsilId,count(*) ");
-				str.append(" , model.booth.tehsil.tehsilName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" , model.booth.tehsil.tehsilName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.constituency.constituencyId in (:locationIdsList) and  model.booth.localBody.localElectionBodyId is null ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.tehsil.tehsilId order by model.booth.tehsil.tehsilName ");				
 			}
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 			{
 				str.append(" select distinct model.booth.panchayat.panchayatId,count(*) ");
-				str.append(" , model.booth.panchayat.panchayatName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" , model.booth.panchayat.panchayatName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.tehsil.tehsilId in (:locationIdsList) ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.panchayat.panchayatId order by model.booth.panchayat.panchayatName ");				
 			}
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			{
 				str.append(" select distinct model.booth.localBody.localElectionBodyId,count(*) ");
-				str.append(" , model.booth.localBody.name from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" , model.booth.localBody.name from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.localBody.localElectionBodyId in (:locationIdsList) and  model.booth.localBody.localElectionBodyId is not null ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.localBody.localElectionBodyId order by model.booth.localBody.name ");				
 			}
 			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
 			{				
 				str.append(" select distinct model.booth.localBodyWard.constituencyId,count(*) ");
-				str.append(" , model.booth.localBodyWard.name from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" , model.booth.localBodyWard.name from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.localBodyWard.constituencyId in (:locationIdsList) and  model.booth.localBody.localElectionBodyId is not null and model.booth.localBodyWard.constituencyId is not null  ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.localBodyWard.constituencyId order by model.booth.localBodyWard.name ");	
 			}
@@ -3409,7 +3409,7 @@ IUserVoterDetailsDAO{
 			{
 				isStateWise = true;
 				str.append(" select distinct  model.booth.constituency.district.districtId,count(*) ");
-				str.append(" ,  model.booth.constituency.district.districtName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" ,  model.booth.constituency.district.districtName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.constituency.district.districtId between 1 and 23 ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.constituency.district.districtId  order by model.booth.constituency.district.districtName ");
 				
@@ -3418,7 +3418,7 @@ IUserVoterDetailsDAO{
 			{
 				isStateWise = true;
 				str.append(" select distinct  model.booth.constituency.district.districtId,count(*) ");
-				str.append(" ,  model.booth.constituency.district.districtName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" ,  model.booth.constituency.district.districtName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.constituency.district.districtId between 11 and 23 ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.constituency.district.districtId  order by model.booth.constituency.district.districtName ");
 			}
@@ -3426,7 +3426,7 @@ IUserVoterDetailsDAO{
 			{
 				isStateWise = true;
 				str.append(" select distinct  model.booth.constituency.district.districtId,count(*) ");
-				str.append(" ,  model.booth.constituency.district.districtName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = 11   and " +
+				str.append(" ,  model.booth.constituency.district.districtName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_DATA_PUBLICATION_ID+"   and " +
 						" model.booth.constituency.district.districtId between 1 and 10 ");
 				str.append(" and model2.casteState.casteStateId =:casteStateId group by model.booth.constituency.district.districtId  order by model.booth.constituency.district.districtName ");
 			}
