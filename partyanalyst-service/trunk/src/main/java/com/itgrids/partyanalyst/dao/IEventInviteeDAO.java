@@ -17,4 +17,7 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	public List<Object[]> getInvitationCountforCandidate(Long tdpCadreId);
 	public List<String> getTdpCadreMemberShipsIdsByEvent(Long eventId);
 	public List<Object[]> getEventInviteesCountByLocation(String locationType,Set<Long> locationIds,Long eventId);
+	
+	public List<Object[]> getPublicRepresentiveInvitessForEvent(Long eventId,List<Long> designationIds);
+	public List<Object[]> dayWisePublicRepInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds);
 }
