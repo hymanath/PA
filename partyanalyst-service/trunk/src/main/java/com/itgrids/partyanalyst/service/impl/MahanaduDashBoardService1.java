@@ -1037,6 +1037,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				List<String> emailIds = new ArrayList<String>();
 				emailIds.add("a.dakavaram@gmail.com");
 				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
+				emailIds.add("chandu.itgrids.hyd@gmail.com");
 				
 				emailAttributesVO.setEmailIds(emailIds);
 				emailAttributesVO.setTime(time);
