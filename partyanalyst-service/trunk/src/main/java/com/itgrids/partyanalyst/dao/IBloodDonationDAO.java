@@ -12,7 +12,7 @@ import com.itgrids.partyanalyst.model.BloodDonorInfo;
 public interface IBloodDonationDAO extends GenericDao<BloodDonation, Long> {
 	
 	public List<Object[]> getCadreDetailsOfRegistered(String memberShipId);
-	public List<Object[]> getBleedingCadreDetails(List<Long> statusIds,Long campId);
+	public List<Object[]> getBleedingCadreDetails(List<Long> statusIds,Long campId,List<Date> datesList);
 	public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate);
 	public Long getBloodDonatedOtherThanBloodBank();
 	public Long getBloodDonarCountInEmergency();
@@ -27,5 +27,5 @@ public interface IBloodDonationDAO extends GenericDao<BloodDonation, Long> {
 	//public Object[] getCampDates(Long campId);
 	public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate );
 	public List<Object[]> getDistrictWiseBloodDonorCounts(Long campId);
-	public List<Object[]> getThePrePopulateData(String searchType);
+	public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List<Date> datesList);
 }

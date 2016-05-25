@@ -61,6 +61,7 @@ public class BloodBankService implements IBloodBankService{
 	private IBloodComponentDAO bloodComponentDAO;
 	private CommonMethodsUtilService commonMethodsUtilService; 
 	private IDistrictDAO districtDAO;
+	private DateUtilService dateUtilService;
 	
 	
 	
@@ -163,6 +164,14 @@ public class BloodBankService implements IBloodBankService{
 
 	public void setBloodComponentDAO(IBloodComponentDAO bloodComponentDAO) {
 		this.bloodComponentDAO = bloodComponentDAO;
+	}
+	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
 	}
 
 	@Override
@@ -797,14 +806,28 @@ public class BloodBankService implements IBloodBankService{
 		}
 		return idNameList;
 	}
-	public List<BloodBankVO> getBleedingCadreDetails(List<Long> statusIds,Long campId){
+	public List<BloodBankVO> getBleedingCadreDetails(List<Long> statusIds,Long campId,String dates){
 		
 		List<BloodBankVO> finalList = new ArrayList<BloodBankVO>();
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try{
 			//0.tdpCadreId,1.memberShipNo,2.donorName,3.mobileNo,4.acceptanceStatusId,5.status,6.bagNo,
 			//7.bloodBagTypeId,8.bagType,9.bloodBagQuantityId,10.type,11.quantity,12.remarks
-			List<Object[]> cadreObjList = bloodDonationDAO.getBleedingCadreDetails(statusIds, campId);			
+			List<Date> datesList = new ArrayList<Date>(0);
+			if(dates != null && !dates.trim().isEmpty()){
+				String[] s = dates.split(",");
+
+				if(s != null && s.length > 0){
+					for(int i=0;i<s.length;i++){
+						if(!s[i].equalsIgnoreCase("0")){
+							datesList.add(sdf.parse(s[i]));
+						}
+					}
+				}
+			}
+			
+			
+			List<Object[]> cadreObjList = bloodDonationDAO.getBleedingCadreDetails(statusIds, campId, datesList);			
 			if(cadreObjList !=null && cadreObjList.size()>0){
 				for (Object[] obj : cadreObjList) {					
 					BloodBankVO vo = new BloodBankVO();					
@@ -1084,13 +1107,27 @@ public class BloodBankService implements IBloodBankService{
 		}
 		return finalResult;
 	}
-public List<BloodBankVO> getPrePopulateDataDetails(String searchType){
+public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long statusId,String date){
 		
 		List<BloodBankVO> returnList = new ArrayList<BloodBankVO>();
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 		try{
-			LOG.info(" Enterd into  getPrePopulateDataDetails() BloodBankService in ");	
-		List<Object[]> prepopulateLst = bloodDonationDAO.getThePrePopulateData(searchType);
+			
+			LOG.info(" Enterd into  getPrePopulateDataDetails() BloodBankService in ");
+			
+			List<Date> datesList = new ArrayList<Date>(0);
+			if(date != null && !date.trim().isEmpty()){
+				String[] s = date.split(",");
+				
+				for(int i=0;i<s.length;i++){
+					if(!s[i].equalsIgnoreCase("0")){
+						datesList.add(sdf.parse(s[i]));
+					}
+				}
+			}
+			
+				
+		List<Object[]> prepopulateLst = bloodDonationDAO.getThePrePopulateData(searchType,statusId,datesList);
 			if(prepopulateLst != null && prepopulateLst.size()>0){
 				for (Object[] obj : prepopulateLst) {
 					BloodBankVO vo = new BloodBankVO();
@@ -1115,5 +1152,44 @@ public List<BloodBankVO> getPrePopulateDataDetails(String searchType){
 		return returnList;
 	}
 	
-	
+	public List<IdNameVO> getBloodBankCampDates(Long campId){
+		List<IdNameVO> voList = new ArrayList<IdNameVO>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Object[] objArr = bloodDonationCampDAO.getCampDates(campId);
+			if(objArr != null && objArr.length > 0){
+				List<Date> datesList = commonMethodsUtilService.getBetweenDates((Date)objArr[0],(Date)objArr[1]);
+				if(datesList != null && datesList.size() > 0){
+					StringBuilder sb = new StringBuilder();
+					for (int i=0;i<datesList.size();i++) {
+						if(sdf.format(datesList.get(i)).split("-")[0].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0]) ){
+							if(sdf.format(datesList.get(i)).split("-")[2].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+								IdNameVO vo = new IdNameVO();
+								vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
+								vo.setPercentage("toDay");
+								voList.add(vo);
+							} 
+							else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[2])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+								IdNameVO vo = new IdNameVO();
+								vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
+								voList.add(vo);
+							}
+						}else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[0])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0])){
+							IdNameVO vo = new IdNameVO();
+							vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
+							if(i==0){
+								vo.setPercentage("toDay");
+							}
+							voList.add(vo);
+						}
+					}
+				}
+							
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception riased at getBloodBankCampDates", e);
+		}
+		return voList;
+	}
 }
