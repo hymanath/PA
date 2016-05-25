@@ -553,7 +553,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 								}
 								//vo.setImage(voter[7]!=null ?voterPath+voter[8].toString().trim()+"/"+voter[7].toString().trim()+".jpg":"");
 								
-								String voterPath="voter_images/"+constituencyId+"/Part"+partNo+"/"+imagePath.trim()+".jpg";
+								String voterPath = IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId);
 								
 								TdpCadreVO vo = new TdpCadreVO();
 								vo.setCadreName(name);
@@ -907,7 +907,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 							}
 							//vo.setImage(voter[7]!=null ?voterPath+voter[8].toString().trim()+"/"+voter[7].toString().trim()+".jpg":"");
 							
-							String voterPath="voter_images/"+constituencyId+"/Part"+partNo+"/"+imagePath.trim()+".jpg";
+							String voterPath = IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId);
 							
 							TdpCadreVO vo = new TdpCadreVO();
 							vo.setCadreName(name);
