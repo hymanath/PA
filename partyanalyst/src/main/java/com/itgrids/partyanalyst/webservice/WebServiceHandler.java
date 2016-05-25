@@ -1993,7 +1993,7 @@ public class WebServiceHandler {
 			return null;  
 		}
 		
-		@GET
+		@POST
 		@Path("/getAccommodationTrackingInfoByNotificationType/{notificationType}/{locationType}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(@PathParam("notificationType") Long notificationType,@PathParam("locationType") Long locationType){

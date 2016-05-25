@@ -3159,6 +3159,7 @@
 	   <property name="notificationsDAO" ref="notificationsDAO"></property> 
 	   <property name="accommodationTrackingDAO" ref="accommodationTrackingDAO"></property>
 	   <property name="notificationTypeDAO" ref="notificationTypeDAO"></property>
+	   <property name="constituencyDAO" ref="constituencyDAO"></property>
 	</bean>
 	
 </beans>		
