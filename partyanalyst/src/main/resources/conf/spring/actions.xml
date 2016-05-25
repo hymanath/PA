@@ -1652,6 +1652,7 @@
 	
 	<bean id="bloodBankAction" class="com.itgrids.partyanalyst.web.action.BloodBankAction" singleton="false">
 		<property name="bloodBankService" ref="bloodBankService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="notificationAction" class="com.itgrids.partyanalyst.web.action.NotificationAction" singleton="false">
