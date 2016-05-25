@@ -204,6 +204,7 @@ import com.itgrids.partyanalyst.model.VerifiedDataResponse;
 import com.itgrids.partyanalyst.model.VerifiedDataStatus;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterNames;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
@@ -316,6 +317,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ISmsSenderService smsSenderService;
 	private MD5Algoritm md5Algoritm = new MD5Algoritm();
 	private IPaymentGatewayService paymentGatewayService;
+	private ICadreDetailsService cadreDetailsService;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -329,6 +331,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	
 	
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
+
 	public ISmsSenderService getSmsSenderService() {
 		return smsSenderService;
 	}
@@ -2244,7 +2250,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex)
 	{
 		String cadrePath="images/cadre_images/";
-		String voterPath="voter_images/"+constituencyId+"/Part";
+		//String voterPath="voter_images/"+constituencyId+"/Part";
 		StringBuilder searchQuery = new StringBuilder();
 		List<VoterInfoVO> returnList = null;
 		List searchList = null;
@@ -2294,7 +2300,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setRelationType(voter[5] != null ? voter[5].toString().trim():"");
 						vo.setGender(voter[6] != null ? voter[6].toString().trim():"");
 						vo.setVoterCardNo(voter[7]!=null ?voter[7].toString().trim():"");
-						vo.setImage(voter[7]!=null ?voterPath+voter[8].toString().trim()+"/"+voter[7].toString().trim()+".jpg":"");
+						vo.setImage(voter[9] != null ? IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter[9].toString():"");
 						vo.setIsRegistered("N");						
 						returnList.add(vo);
 					}
@@ -2450,10 +2456,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						if(constituencyId != null){
 							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(constituencyId), voter.getVoterId());
 							if(voter.getVoterIDCardNo() != null && partNos.size() > 0 && partNos.get(0) != null){
-								String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg";
+								String filePath = staticContentLoc + IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
 								if(checkFileExistingOrNot(filePath)){
 									vo.setVoterImagePresent(true);
-									vo.setVoterImage("voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg");
+									vo.setVoterImage(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "");
 								}
 							}
 					   }
@@ -2787,16 +2793,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										vo.setCadreImage("images/"  + IConstants.CADRE_IMAGES + "/" + tdpCadre.getPreviousEnrollmentNo()+".jpg");
 									}
 								}
-								Voter voter =tdpCadre.getVoter();
-								Long constiId = tdpCadre.getUserAddress().getConstituency().getConstituencyId();
-								if(voter != null &&  constiId!= null){
-									List<String> partNos = boothPublicationVoterDAO.getPartNo(constiId, voter.getVoterId());
-									if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-										String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg";
+								Voter voter = tdpCadre.getVoter();
+								//Long constiId = tdpCadre.getUserAddress().getConstituency().getConstituencyId();
+								if(voter != null){
+									//List<String> partNos = boothPublicationVoterDAO.getPartNo(constiId, voter.getVoterId());
+									//if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
+										String filePath = staticContentLoc +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
 										if(checkFileExistingOrNot(filePath)){
 											vo.setVoterImagePresent(true);
-											vo.setVoterImage("voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg");
-										}
+											vo.setVoterImage(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "");
+										//}
 									}
 							   }
 							}
@@ -4401,11 +4407,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					   LOG.error("5");
 					   if(tdpCadre.getVoterId() != null){
 							Voter voter = voterDAO.get(tdpCadre.getVoterId());
-							if(voter != null && cadreRegistrationVO.getConstituencyId() != null && Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()).longValue() > 0){
-								List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
-								LOG.error("partNos size : "+partNos.size());
-								if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+							if(voter != null){
+								//List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
+								//if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
+								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+voter.getImagePath() != null ? voter.getImagePath() : "";
 								   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 								    status = copyFile(sourcePath,destinationPath);
 								    LOG.error("Status : "+status);
@@ -4413,7 +4418,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 									   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
 								   }
-								}
+								//}
 						   }
 					  }
 				   }
@@ -4428,7 +4433,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							LOG.error("partNos size : "+partNos.size());
 							if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
 								 String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
 							   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							    String status = copyFile(sourcePath,destinationPath);
 							    LOG.error("Status : "+status);
@@ -4451,7 +4456,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						LOG.error("partNos size : "+partNos.size());
 						if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
 							 String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
 						   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 						    String status = copyFile(sourcePath,destinationPath);
 						    LOG.error("Status : "+status);
@@ -4475,7 +4480,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 					LOG.error("partNos size : "+partNos.size());
 					if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "" ;
 					   LOG.error("VOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 					   String status = copyFile(sourcePath,destinationPath);
 					   LOG.error("Status : "+status);
@@ -4567,7 +4572,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 							LOG.error("partNos size : "+partNos.size());
 							if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
 							   LOG.error("VOTERN: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							   String status = copyFile(sourcePath,destinationPath);
 							   LOG.error("Status : "+status);
@@ -4646,10 +4651,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
 				returnVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
 				returnVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
-				if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
+				returnVO.setVoterImgPath(voterIdDetails.get(0)[6] != null ? "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voterIdDetails.get(0)[6] : "");
+				if(userAddress.getConstituency() != null && userAddress.getBooth() != null)
 				{
-					String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-					returnVO.setVoterImgPath(url);
+					//String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+					//returnVO.setVoterImgPath(url);
 					List<String> names = voterNamesDAO.getVoterTeluguNames((Long)voterIdDetails.get(0)[4] );
 					if(names != null && names.size() > 0)
 					{
@@ -4738,14 +4744,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setRefNumber(objects[6] != null ? objects[6].toString() : "");
 					cadrePrintVO.setCardNumber(objects[7] != null ? objects[7].toString() : "");
 					cadrePrintVO.setImage(objects[8]!= null ? objects[8].toString() :  "");
-					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
-					{
-						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";;
-						//String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +""+"\\"+userAddress.getConstituency().getConstituencyId().toString().trim()+"\\"+"Part"+userAddress.getBooth().getPartNo().trim()+"\\"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-						cadrePrintVO.setVoterImgPath(url);
-					}
-					
-					
+					cadrePrintVO.setVoterImgPath(objects[9] != null ? "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+objects[9].toString() : "");
 					returnList.add(cadrePrintVO);
 			 }
 		 }
@@ -5304,12 +5303,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 						}
 						else if(cadrePrintVO.getPhotoType().equalsIgnoreCase("VOTER")){
-							if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
-							{
-								String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";;
-								//String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +""+"\\"+userAddress.getConstituency().getConstituencyId().toString().trim()+"\\"+"Part"+userAddress.getBooth().getPartNo().trim()+"\\"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-								cadrePrintVO.setImage(url);
-							}
+								cadrePrintVO.setImage(objects[9] != null ? "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+objects[9].toString() : "");
 						}
 					}
 					/*else{
@@ -5537,37 +5531,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								//String url = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
 								cadrePrintVO.setImage((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
 								cadrePrintVO.setImgPath1((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
-								
-								if(userAddress.getConstituency() != null && userAddress.getBooth() !=null){
-									cadrePrintVO.setImgPath2("http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg");
-								}
-								else{
-									cadrePrintVO.setImgPath2("");
-								}
-							
-							
+								cadrePrintVO.setImgPath2("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
 						}
 						else if(cadrePrintVO.getPhotoType().equalsIgnoreCase("CADRE")){							
 								//String url = "http://mytdp.com/images/cadre_images/"+objects[8].toString();
 								cadrePrintVO.setImage((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));
 								cadrePrintVO.setImgPath1((objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : ""));								
-								if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
-								{
-									cadrePrintVO.setImgPath2("http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg");
-								}
-								else{
-									cadrePrintVO.setImgPath2("");
-								}
+								cadrePrintVO.setImgPath2("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
 						}
 						else if(cadrePrintVO.getPhotoType().equalsIgnoreCase("VOTER")){
-							if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
-							{
-								String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-								//String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +""+"\\"+userAddress.getConstituency().getConstituencyId().toString().trim()+"\\"+"Part"+userAddress.getBooth().getPartNo().trim()+"\\"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+								String url = "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId);
 								cadrePrintVO.setImage(url);								
 								cadrePrintVO.setImgPath1(objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : "");
 								cadrePrintVO.setImgPath2(objects[8] != null  ? "http://mytdp.com/images/cadre_images/"+objects[8].toString() : "");
-							}
 						}
 					}
 					/*else{
@@ -5833,8 +5809,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 							else
 							{
-								String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-								returnVO.setVoterImgPath(url);
+								returnVO.setVoterImgPath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
 							}
 						}
 						
@@ -5911,7 +5886,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 							else
 							{
-								String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+								String url = "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 								returnVO.setVoterImgPath(url);
 							}
 						}
@@ -6401,14 +6376,13 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						}
 						else
 						{
-							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-							returnVO.setVoterImgPath(url);
+							returnVO.setVoterImgPath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId((Long)obj[4]));
 						}
 					}
 					}
 					catch(Exception e)
 					{
-						e.printStackTrace();
+						LOG.error(e);
 					}
 					if(isOtherState.equalsIgnoreCase("false"))
 					{
@@ -6510,7 +6484,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						}
 						else
 						{
-							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+							String url = "http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 							returnVO.setVoterImgPath(url);
 						}
 					}
@@ -11072,11 +11046,9 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 						if(voterId!=0l){
 							VoterInfoVO voterVO = getmatchedVOByVoterId(returnList,voterId);
 							if(voterVO!=null){
-								Long voterConstituencyId=obj[2]!=null?(Long)obj[2]:0l;
 								String voterCardNo=obj[1]!=null?obj[1].toString().trim():null;
 								if(voterCardNo!=null){
-									String voterPath="voter_images/"+voterConstituencyId+"/Part";
-									voterVO.setImage(voterPath+obj[3].toString().trim()+"/"+voterCardNo+".jpg");
+									voterVO.setImage(IConstants.VOTER_IMG_FOLDER_PATH+"/"+cadreDetailsService.getVoterImageUrlByVoterId(voterId));
 								}
 								
 							}
@@ -12196,7 +12168,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 								LOG.error("partNos size : "+partNos.size());
 								if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL + IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
 								   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 								    status = copyFile(sourcePath,destinationPath);
 								    LOG.error("Status : "+status);
@@ -12223,7 +12195,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								 String folderCreation = folderCreation(folderCreationPart);
 								 String destinationPath = folderCreationPart + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 								
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
 							   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							    String status = copyFile(sourcePath,destinationPath);
 							    LOG.error("Status : "+status);
@@ -12250,7 +12222,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							 String folderCreation = folderCreation(folderCreationPart);
 							 String destinationPath = folderCreationPart + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 							 
-						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
 						   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 						    String status = copyFile(sourcePath,destinationPath);
 						    LOG.error("Status : "+status);
@@ -12278,7 +12250,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 					LOG.error("partNos size : "+partNos.size());
 					if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
 					   LOG.error("VOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 					   String status = copyFile(sourcePath,destinationPath);
 					   LOG.error("Status : "+status);
@@ -12384,7 +12356,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 							LOG.error("partNos size : "+partNos.size());
 							if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
 							   LOG.error("VOTERN: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							   String status = copyFile(sourcePath,destinationPath);
 							   LOG.error("Status : "+status);
