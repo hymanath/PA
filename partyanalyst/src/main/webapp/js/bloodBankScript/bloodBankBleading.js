@@ -99,6 +99,8 @@ function buildBleedingCadreDetails(result){
 	var bloodBagTypeArr = [];
 	var bloodBagQuantityArr = [];
 	var quantityArr=[];
+	str+='<div class="scroller">';
+	str+='<table  class="table table-condensed">';
 	str+='<thead style="background:#EBEBEB">';
 		str+='<th>Membership No</th>';
 		str+='<th>Name</th>';
@@ -244,6 +246,8 @@ function buildBleedingCadreDetails(result){
 		str+='</tr>';
 	}
 	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
 	$("#BleedingCadreDetailsId").html(str);
 	
 	$(".registrationStatusCls").find("option").remove();
@@ -278,9 +282,14 @@ function buildBleedingCadreDetails(result){
 			$("#quantityId"+i).val(quantityArr[i]);
 		}
 	}
-	 $("#BleedingCadreDetailsId").dataTable({
-		             "aaSorting": [],
-						}); 
+	if(result.length > 10)
+	{
+		$(".scroller").css("height","200px");
+		$(".scroller").mCustomScrollbar({ theme:"dark"});
+		$(".mCSB_container").css("margin-right","10px");
+	}
+	
+	// $("#BleedingCadreDetailsId").dataTable({"aaSorting": [],}); 
 }
 
 $(document).on("change",".registrationStatusCls",function(){
