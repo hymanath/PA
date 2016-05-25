@@ -170,4 +170,53 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
 		query.setParameterList("locationIds",locationIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getPublicRepresentiveInvitessForEvent(Long eventId,List<Long> designationIds){
+
+		
+		Query query = getSession().createQuery("" +
+		" select    pr.publicRepresentativeType.publicRepresentativeTypeId,pr.publicRepresentativeType.type,count(distinct ei.tdpCadreId)" +
+		" from      EventInvitee ei,PublicRepresentative pr,TdpCadreCandidate tca" +
+		" where     ei.tdpCadreId = tca.tdpCadreId and tca.candidateId = pr.candidateId " +
+		"           and ei.eventId = :eventId and pr.publicRepresentativeType.publicRepresentativeTypeId in (:designationIds) " +
+		"           and ei.tdpCadre.isDeleted = 'N' and ei.tdpCadre.enrollmentYear = 2014 "+
+		" group by  pr.publicRepresentativeType.publicRepresentativeTypeId " +
+		" order by  pr.publicRepresentativeType.orderNo ");
+		
+		query.setParameter("eventId",eventId);
+		query.setParameterList("designationIds",designationIds);
+		return query.list();
+	}
+	
+	public List<Object[]> dayWisePublicRepInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds){
+		
+		StringBuilder sb =  new StringBuilder();
+		
+		sb.append(" select pr.publicRepresentativeType.publicRepresentativeTypeId,pr.publicRepresentativeType.type," +
+				"          date(ea.attendedTime),count(distinct ea.tdpCadre.tdpCadreId) "+
+		          " from   EventAttendee ea,EventInvitee ei,PublicRepresentative pr,TdpCadreCandidate tca " +
+				  " where  ei.tdpCadreId = tca.tdpCadreId and tca.candidateId = pr.candidateId " +
+				  "         and ea.event.parentEventId = ei.event.eventId and " +
+				  "        ea.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId and ea.event.isInviteeExist = 'Y' " +
+				  "        and pr.publicRepresentativeType.publicRepresentativeTypeId in (:designationIds) ");
+		
+		sb.append(" and ea.event.isActive =:isActive and ea.tdpCadre.isDeleted = 'N' and ea.tdpCadre.enrollmentYear = 2014 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and ea.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(ea.attendedTime) between :startDate and :endDate ");
+		
+		sb.append(" group by pr.publicRepresentativeType.publicRepresentativeTypeId,date(ea.attendedTime) ");
+        
+        Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameterList("designationIds",designationIds);
+		
+		return query.list();
+	}
 }

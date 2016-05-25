@@ -85,6 +85,9 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	
 	private boolean totalDaydataExist;
 	
+	private Long attended;
+	private Long notAttended;
+	
 	public Long getTotalVisitorsCount() {
 		return totalVisitorsCount;
 	}
@@ -459,6 +462,18 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setTotalDaydataExist(boolean totalDaydataExist) {
 		this.totalDaydataExist = totalDaydataExist;
+	}
+	public Long getAttended() {
+		return attended;
+	}
+	public void setAttended(Long attended) {
+		this.attended = attended;
+	}
+	public Long getNotAttended() {
+		return notAttended;
+	}
+	public void setNotAttended(Long notAttended) {
+		this.notAttended = notAttended;
 	}
 	
 }

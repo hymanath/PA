@@ -17,5 +17,6 @@ public interface IMahanaduDashBoardService1 {
 	
 	public String calcPercantage(Long totalValue,Long subValue);
 	public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds);
+	public List<MahanaduEventVO> getPublicrepresentatives(String startDateStr,String endDateStr,Long eventId,List<Long> subEventIds);
 }
 
