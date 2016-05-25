@@ -12403,5 +12403,10 @@
 			<param name="root">mahanaduEventVO</param>
 		</result>
 	</action>
+	<action name="getPublicrepresentativesAction" class="eventDetailsAction1" method="getPublicrepresentatives">
+		<result type="json" name="success">
+			<param name="root">resultList</param>
+		</result>
+	</action>
 </package>
 </struts>      
