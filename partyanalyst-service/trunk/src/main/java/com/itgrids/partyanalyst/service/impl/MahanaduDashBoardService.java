@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.model.EntryExitInfo;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 
@@ -103,6 +104,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	}
 	
     public void getTodayTotalVisitorsForSchedular(){
+    	
+    	if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+			return;
+		}
+    	
     	try{
     	EntryExitInfo entryExitInfo = entryExitInfoDAO.getAll().get(1);
     	if(entryExitInfo.getServiceRunReq().equalsIgnoreCase("true")){
@@ -110,7 +116,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
     	}
       }catch(Exception e){
 		 LOG.error("Exception rised in getTodayTotalVisitorsForSchedular()",e);
-	 }
+      }
+    	
 	}
 
 	public void getTodayTotalVisitors(Long entryEventId,Long exitEventId,final Long parentEventId){

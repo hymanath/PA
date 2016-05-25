@@ -11,7 +11,7 @@ public class EmailAttributesVO implements Serializable{
 	private String       time;
 	private String       subject;
 	private String       bodyText;
-	
+	private String       day;
 	
 	public List<String> getPdfNames() {
 		return pdfNames;
@@ -48,6 +48,12 @@ public class EmailAttributesVO implements Serializable{
 	}
 	public void setBodyText(String bodyText) {
 		this.bodyText = bodyText;
+	}
+	public String getDay() {
+		return day;
+	}
+	public void setDay(String day) {
+		this.day = day;
 	}
 	
 }
