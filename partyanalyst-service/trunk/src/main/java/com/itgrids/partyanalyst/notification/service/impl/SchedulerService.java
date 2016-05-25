@@ -869,6 +869,8 @@ public class SchedulerService implements ISchedulerService{
 	}
 	public void sendPdfReport(){
 		
+		LOG.info("\n\n entered in to sendPdfReport() method in scheduler service \n" );
+		
 		try{
 			
 			Long parenteventId = 30l;
