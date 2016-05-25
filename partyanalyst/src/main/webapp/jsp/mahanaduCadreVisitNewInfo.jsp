@@ -1047,9 +1047,9 @@ function buildTotalVisitorsResult(result){
 		 var number = parseInt(i)+1;
 		 var prcntgCmpltd=(result[i].total)*100/totalVisitorsCount;
 			if(number>1){
-			str+="<p class='m_0'>"+(parseInt(i)+1)+" DAY'S VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+" <span class='pull-right'>"+prcntgCmpltd.toFixed(2)+"%</span></p>";
+			str+="<p class='m_0'>"+result[i].id+" DAY'S VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+" <span class='pull-right'>"+prcntgCmpltd.toFixed(2)+"%</span></p>";
 			}else{
-		    str+="<p class='m_0'>"+(parseInt(i)+1)+" DAY VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+"<span class='pull-right'>"+prcntgCmpltd.toFixed(2)+"%</span></p>";
+		    str+="<p class='m_0'>"+result[i].id+" DAY VISITORS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+result[i].total+"<span class='pull-right'>"+prcntgCmpltd.toFixed(2)+"%</span></p>";
 			}
 			str+="<div class='progress progressNewCustom'>";
 			   str+="<div class='progress-bar "+progressBarClsArr[i]+"' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width:"+prcntgCmpltd.toFixed(2)+"% '>";
