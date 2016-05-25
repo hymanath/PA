@@ -733,7 +733,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		        	 for(int i=0; i<emailAttributesVO.getPdfNames().size();i++){
 		        		 
 		        		 String pdfFileName = emailAttributesVO.getPdfNames().get(i);
-		        		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + "/" + IConstants.MAHANADU_IMAGES_2016 ;
+		        		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + "/" + IConstants.MAHANADU_IMAGES_2016 + "/" + emailAttributesVO.getDay();
 		        		 String pdfPath = staticPath + "/"+ pdfFileName;
 		        		 
 		        		 DataSource source = new FileDataSource(pdfPath);
@@ -804,8 +804,11 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 			try{
 				
+				//folder creation
 				String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + "/" + IConstants.MAHANADU_IMAGES_2016 ;
 				String folderCreation = commonMethodsUtilService.createFolder(staticPath);
+				staticPath = staticPath + "/" + fileNamesVO.getDay();
+				String folderCreation1 = commonMethodsUtilService.createFolder(staticPath);
 				
 				Date currentDate = dateUtilService.getCurrentDateAndTime();
 				String currentDateString = sdf.format(currentDate);
@@ -909,20 +912,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   
 		  */
 		
-		public String getRequiredDates(Long parentId) throws ParseException{
+		public String getRequiredDates(List<Date> datesList) throws ParseException{
 		    
 		    String dateStr = null;
 		    
 		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		    Date currentDate = sdf.parse(sdf.format(dateUtilService.getCurrentDateAndTime()));
-		    
-		    
-		    Object[] dates = eventDAO.getEventDates(parentId);
-		    Date startDate = (Date)dates[0];
-		    Date endDate = (Date)dates[1];
-		    
-		     
-		    List<Date> datesList = new CommonMethodsUtilService().getBetweenDates(startDate,endDate);
+		   
 		    if(datesList != null && datesList.size() > 0){
 		      StringBuilder sb = new StringBuilder();
 		      for (int i=0;i<datesList.size();i++) {
@@ -959,16 +955,28 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 		
 		public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds){
+			LOG.info("\n\n entered in to getAllImages() method in mahanadu dashboardd service \n" );
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try{
 				
 				Date currentDateAndTime = dateUtilService.getCurrentDateAndTime();
 				
 				String time = format.format(currentDateAndTime);
-				String currentDateStr = sdf.format(currentDateAndTime);
 				
-				String dateStr = getRequiredDates(parentId);
-				   
+				//get event dates
+				Object[] dates = eventDAO.getEventDates(parentId);
+			    Date dateStart = (Date)dates[0];
+			    Date datEnd = (Date)dates[1];
+			    List<Date> datesList = new CommonMethodsUtilService().getBetweenDates(dateStart,datEnd);
+			    
+			    Map<String,String> dateDayMap = new HashMap<String, String>();
+				if( datesList != null && datesList.size() > 0){
+					for(int i=0;i<datesList.size();i++){
+						dateDayMap.put(sdf.format(datesList.get(i)),"day"+(i+1));
+					}
+				}
+				
+				
 				StringBuffer finalStr = new StringBuffer();
 				
 				//Event Dashboard
@@ -996,6 +1004,9 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				mainDashboardPdfStr.append("<br/>");
 				
 				//ENTRY/EXIT DASHBOARD
+				String currentDateStr = sdf.format(currentDateAndTime);
+				String dateStr = getRequiredDates(datesList);
+				
 				StringBuffer entryExitPdfStr = new StringBuffer();
 				MahanaduVisitVO mahanaduVisitVO = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(parentId,currentDateStr);
 			      StringBuffer entryStr = entryExitBlock(mahanaduVisitVO,time);
@@ -1020,20 +1031,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				//MAIL RELATED
 			      EmailAttributesVO emailAttributesVO = new EmailAttributesVO();
+			      emailAttributesVO.setDay(dateDayMap.get(currentDateStr));
 			      
-			      
-			      createMainPdfFile(mainDashboardPdfStr.toString(),emailAttributesVO);
-			      createMainPdfFile(entryExitPdfStr.toString(),emailAttributesVO);
-				
-				
-				/*//statically add the images.
-				List<String> staticimages = new ArrayList<String>();
-				staticimages.add("2016-05-22_19-07-23_69101.jpg");
-				staticimages.add("2016-05-22_19-07-23_94118.jpg");
-				staticimages.add("2016-05-22_19-07-23_90378.jpg");
-				staticimages.add("2016-05-22_19-07-23_82305.jpg");
-				staticimages.add("2016-05-22_19-07-23_20984.jpg");
-				emailAttributesVO.setImages(staticimages);*/
+			     createMainPdfFile(mainDashboardPdfStr.toString(),emailAttributesVO);
+			     createMainPdfFile(entryExitPdfStr.toString(),emailAttributesVO);
 				
 				List<String> emailIds = new ArrayList<String>();
 				emailIds.add("a.dakavaram@gmail.com");
@@ -1045,12 +1046,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				emailAttributesVO.setSubject("Mahandu Event 2016 Dashboard");
 				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Documents For Mahanadu 2016 Event Dashboard on "+time);
 				
+				
 				if( emailAttributesVO.getPdfNames() != null && emailAttributesVO.getPdfNames().size() > 0){
 					sendEmailWithAttachment(emailAttributesVO);
 				}
 				
 			}catch(Exception e){
-				//LOG.error("Exception in getAllImages() : ",e);
+				LOG.error("Exception in getAllImages() : "+e);
 			}
 		}
 		public StringBuffer getPublicrepresentiveBlock(){

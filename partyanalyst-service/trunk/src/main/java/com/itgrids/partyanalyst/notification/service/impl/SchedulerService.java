@@ -870,14 +870,18 @@ public class SchedulerService implements ISchedulerService{
 	public void sendPdfReport(){
 		
 		LOG.info("\n\n entered in to sendPdfReport() method in scheduler service \n" );
+		LOG.info("\n\n "+new DateUtilService().getCurrentDateAndTime()+"\n");
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try{
 			
 			Long parenteventId = 30l;
+		     
+		     Object[] dates = eventDAO.getEventDates(parenteventId);
+		     String startDate = sdf.format((Date)dates[0]);
+		     String endDate   = sdf.format((Date)dates[1]);
 			
-			 String startDate="24/05/2016";
-		     String endDate = "26/05/2016";
-			 
+			    
 		     List<Long> stateIds = new ArrayList<Long>();
 			 stateIds.add(1l);
 			 stateIds.add(36l);
