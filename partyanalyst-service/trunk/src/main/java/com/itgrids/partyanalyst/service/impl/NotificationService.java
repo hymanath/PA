@@ -353,5 +353,37 @@ public class NotificationService implements INotificationService{
 		 }
 		 return IConstants.SUCCESS;
 	 }
-}
+	 public List<NotificationDeviceVO> getNotificationType(){
+		 List<NotificationDeviceVO> notificationList = null;
+		 List<Object[]> notificationTypesLst = notificationTypeDAO.getNotificationType();
+		 if(notificationTypesLst != null && notificationTypesLst.size() > 0){
+			 for (Object[] obj : notificationTypesLst) {
+				 NotificationDeviceVO vo = new NotificationDeviceVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setDeviceName(obj[1] != null ? obj[1].toString():"");
+				
+				notificationList.add(vo);
+			}
+		 }
+		return notificationList;
+	 
+	 }
+	 public List<NotificationDeviceVO> getNotificationDetailsByTypeId(Long typeId){
+		 List<NotificationDeviceVO> notificationList = null;
+		 List<Object[]> notificationsLst = notificationsDAO.getNotificationsByTypeId(typeId);
+		 if(notificationsLst != null && notificationsLst.size() > 0){
+			 for (Object[] obj : notificationsLst) {
+				 NotificationDeviceVO vo = new NotificationDeviceVO();
+				
+				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setDeviceName(obj[1] != null ? obj[1].toString():"");
+				notificationList.add(vo);
+			}
+		 }
+		return notificationList;
+	 
+	 }
+	 
+ }
 

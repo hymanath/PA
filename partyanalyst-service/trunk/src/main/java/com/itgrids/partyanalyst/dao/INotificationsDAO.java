@@ -11,5 +11,6 @@ public interface INotificationsDAO extends GenericDao<Notifications,Long>{
 	public List<Object[]> getNotificationsDetailsByNotification (Long notificationTypeId,Long lastNotificationId,Date lastUpdatedDate);
 	public List<Object[]> getInactiveNotificationsDetails (Long notificationTypeId);
 	public List<Long> getInactiveNotificationsTypeDetails ();
+	public List<Object[]> getNotificationsByTypeId (Long typeId);
 	public Long getMaxOrderNoBasedOnNotificationType(Long notificationType);
 }
