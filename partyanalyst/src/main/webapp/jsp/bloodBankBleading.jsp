@@ -35,9 +35,9 @@
                         	<option value="0">All Applications</option>
                         </select>
                     </div>
-					<div id="errorDiv" style="color:#ff0020;margin-right:20px;" class="pull-right"></div>
+					<!--<div id="errorDiv" style="color:#ff0020;margin-right:20px;" class="pull-right"></div>-->
                     <div class="col-md-5 col-md-offset-2">
-                    	<label>Search</label>
+                    	<label>Search</label><span style='color:red' id="errorDiv"></span>
                        	<input class="form-control" type="text" id="searchInputId" placeholder="Name/MobileNo/MembershipID" />
                     </div>
 					<!--<div class="col-md-2">
@@ -175,7 +175,7 @@ function getPrePopulateTheDataDetails(){
 	$(".errorCls").html("");
 	var search = $("#searchInputId").val();
 	if(search==0){
-		$('#errorDiv').html('Please Eneter Search');
+		$('#errorDiv').html('Please Enter Search Type.');
 		return;
 	}
 	
