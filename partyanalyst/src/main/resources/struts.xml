@@ -12368,9 +12368,27 @@
 		</result>
 	</action>
 	
+	<action name="notificationIsActiveStatusAction" class="notificationAction" method="isActiveStatusNotification">
+		<result type="json" name="success">
+			<param name="root">notificatonStats</param>
+		</result>
+	</action>
+	
 	<action name="getBloodBankCampDatesAction" class="bloodBankAction" method="getBloodBankCampDates">
 		<result type="json" name="success">
 			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
+	<action name="getNotificationTypeDetailsAction" class="notificationAction" method="getNotificationDetails">
+		<result type="json" name="success">
+			<param name="root">notificationTypeList</param>
+		</result>
+	</action>
+	
+	<action name="getNotificationTypeDetailsStatsAction" class="notificationAction" method="getNotificationsByTypeId">
+		<result type="json" name="success">
+			<param name="root">notificationTypeList</param>
 		</result>
 	</action>
 	<action name="getCandidateDetailsAction" class="mahanaduDashBoardAction" method="getCandidateDetails">

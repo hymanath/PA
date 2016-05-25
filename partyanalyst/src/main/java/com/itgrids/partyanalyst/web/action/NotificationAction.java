@@ -27,6 +27,7 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 	private Long						    notificationDeviceId;
 	private INotificationService				notificationService;
 	private String status ;
+	private String notificatonStats;
 	private List<NotificationDeviceVO> notificationTypeList;
 	
 	
@@ -113,6 +114,15 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 	public void setServletRequest(HttpServletRequest arg0) {
 		// TODO Auto-generated method stub
 	}
+	
+
+	public String getNotificatonStats() {
+		return notificatonStats;
+	}
+
+	public void setNotificatonStats(String notificatonStats) {
+		this.notificatonStats = notificatonStats;
+	}
 
 	public String execute(){
 		return Action.SUCCESS;
@@ -160,7 +170,7 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
-	public String getNotificationDetails(){
+	public String getNotificationDetails(){//fisrt select box
 		try{
 			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
 			jObj = new JSONObject(getTask());
@@ -171,7 +181,7 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
-	public String getNotificationsByTypeId(){
+	public String getNotificationsByTypeId(){//second select box
 		try{
 			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
 			jObj = new JSONObject(getTask());
@@ -183,5 +193,18 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	
+	public String isActiveStatusNotification(){
+		try{
+			LOG.info("Entered into isActiveStatusNotification() method of NotificationAction");
+			jObj = new JSONObject(getTask());
+		
+			Long notificatonsId=jObj.getLong("notificatonsId");
+			notificatonStats=notificationService.notificationIsActiveStatus(notificatonsId);
+		}catch(Exception e){
+			LOG.error("Exception raised at isActiveStatusNotification() method of NotificationAction", e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
