@@ -1650,6 +1650,10 @@
 		<property name="mahanaduDashBoardService1" ref="mahanaduDashBoardService1" />
 	</bean>	
 	
+	<bean id="bloodBankAction" class="com.itgrids.partyanalyst.web.action.BloodBankAction" singleton="false">
+		<property name="bloodBankService" ref="bloodBankService" />
+	</bean>
+	
 	<bean id="notificationAction" class="com.itgrids.partyanalyst.web.action.NotificationAction" singleton="false">
 		<property name="notificationService" ref="notificationService" />
 	</bean>	
