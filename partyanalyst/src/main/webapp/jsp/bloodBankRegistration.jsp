@@ -171,6 +171,7 @@
                 <div class="row">
                     <div class="col-md-3 m_top10">
                     	<button class="btn btn-success" id="submitBtnId">SUBMIT</button>
+						<button class="btn btn-success" id="printBtnId" style="display:none;" onclick="printCadre();">PRINT</button>
 		            </div>
 					<div class="col-xs-3  m_top10">
 					<span id="statusId"></span>
@@ -746,12 +747,15 @@ $(document).on("click",".printCls",function(){
 	 var value = $(this).attr("value");
 	 updatePrintStatus(value);
 })
+var GbloodDonationresult;
+var GmembershipNo;
  function getCadreDetails(membserShipId){
 	   
-	   
+	   $("#printBtnId").hide();
 	   var jObj = {
 		   memberShipNo:membserShipId
 		}
+		GmembershipNo = membserShipId;
 		$.ajax({
 		  type:'GET',
 		  url: 'getCadreDetailsAction.action',
@@ -762,19 +766,41 @@ $(document).on("click",".printCls",function(){
 				 $(".cadreNoErrorCls").html("This cadre number not available.");
 				   clearFields();
 				}else{
-				 populateCadreDetails(result);
+				 GbloodDonationresult = result;
+				 populateCadreDetails(result,jObj.memberShipNo);
 				}
 			}
 		});
 }
-function populateCadreDetails(result){
+function printCadre()
+{
+	
+	
+	if(GbloodDonationresult.bloodDonationId!=null && GbloodDonationresult.bloodDonationId > 0){
+	
+			$(".myModalprintView").modal("show");
+			$("#printnameId").html(''+GbloodDonationresult.name+'');
+			$("#printageId").html(''+GbloodDonationresult.age+'');
+			$("#printnoOfTmBldDntnId").html(''+GbloodDonationresult.donationsInBloodBank+'');
+			$("#printmembershipInputId").html(''+GmembershipNo+'');
+			$("#printdobId").html(''+GbloodDonationresult.dob+'');
+			$("#printseltBxSxId").html(''+GbloodDonationresult.sex+'');
+			$("#printspouseId").html(''+GbloodDonationresult.relativeName+'');
+			$("#printmobileNoId").html(''+GbloodDonationresult.mobile+'');
+			$("#printslctBxBBId").html(''+GbloodDonationresult.donationsInOtherPlaces+'');
+			$("#printBloddBankId").attr("value",''+GbloodDonationresult.bloodDonationId+'');
+		}		
+}
+function populateCadreDetails(result,memberShipNo){
 	   //clearing fields 
 		clearFields();
 		
 	if(result.alreadyDonated!=null && result.alreadyDonated==false){
 		populateCommonFields(result);
 	}else if(result.alreadyDonated!=null && result.alreadyDonated==true){
+		$("#printBtnId").show();
 		 populateCommonFields(result);
+		
 		 
 		 if(result.married!=null && result.married.length>0){
 			 $("#slctBxMrrdId").val(result.married);
