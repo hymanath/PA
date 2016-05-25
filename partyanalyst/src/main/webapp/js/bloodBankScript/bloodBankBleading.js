@@ -93,6 +93,7 @@ function getBleedingCadreDetails(statusIdList,campId){
 	});
 }
 function buildBleedingCadreDetails(result){
+	$("#cadreDetailsLoadingId").show();
 	$("#BleedingCadreDetailsId").html('');
 	var str = '';
 	var accptStatusArr = [];
@@ -249,6 +250,7 @@ function buildBleedingCadreDetails(result){
 	str+='</tbody>';
 	str+='</table>';
 	str+='</div>';
+	$("#cadreDetailsLoadingId").hide();
 	$("#BleedingCadreDetailsId").html(str);
 	
 	$(".registrationStatusCls").find("option").remove();
