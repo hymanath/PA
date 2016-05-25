@@ -243,7 +243,7 @@ public class NotificationService implements INotificationService{
 				}
 			 }
 			 
-			 List<Object[]> constList = constituencyDAO.getConstituenciesByStateId(1l, 0l);
+			 List<Object[]> constList = constituencyDAO.getConstituenciesByStateId(1l, 1l);
 			 if(commonMethodsUtilService.isListOrSetValid(constList)){
 				 for (Object[] obj : constList) {
 					Long constituencyId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
