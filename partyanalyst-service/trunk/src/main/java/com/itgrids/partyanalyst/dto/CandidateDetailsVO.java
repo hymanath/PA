@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,7 +44,7 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private List<SelectOptionVO> latestConstituencies ;
 	private List<SelectOptionVO> getAllStates ;
 	private List<SelectOptionVO> getDistricts ;
-	private List<CandidateDetailsVO> candidateDetails ;
+	private List<CandidateDetailsVO> candidateDetails = new ArrayList<CandidateDetailsVO>(0) ;
 	private Long dataAvailabilityFlag;
 	private String moreDetails;
 	private Float votesDifference;
@@ -75,8 +76,8 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private Long phoneType;
 	
 	private Long casteCategoryId;
-	private List<SelectOptionVO> casteGroupList;
-	private List<SelectOptionVO> casteGroupNameList;
+	private List<SelectOptionVO> casteGroupList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> casteGroupNameList = new ArrayList<SelectOptionVO>(0);
 	//private boolean isSaved;
 	
 	private Long candidatecasteId;
@@ -93,6 +94,10 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private String houseNo;
 	private String caste;
 	private String casteCategory;
+	
+	private Long cadreId;
+	private Long designationId;
+	private String designation;
 		
 	public String getVoteAge() {
 		return voteAge;
@@ -595,6 +600,24 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	}
 	public void setVoterId(Long voterId) {
 		this.voterId = voterId;
+	}
+	public Long getCadreId() {
+		return cadreId;
+	}
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}	
 	
 }
