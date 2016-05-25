@@ -311,9 +311,11 @@ public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List
 			" model.registrationNumber," +
 			" model.remarks " +
 			" from BloodDonation model " +
-			" where " +
-			" (model.bloodDonorInfo.donorName like '%"+searchType+"%' or model.bloodDonorInfo.tdpCadre.memberShipNo=:searchType or model.bloodDonorInfo.mobileNo=:searchType) ");
+			" where model.bloodDonorInfo.isDeleted ='N' " );
 	
+	if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim() !=""){
+		sb.append(" and (model.bloodDonorInfo.donorName like '%"+searchType+"%' or model.bloodDonorInfo.tdpCadre.memberShipNo=:searchType or model.bloodDonorInfo.mobileNo=:searchType) ");
+	}
 	if(statusId != null && statusId > 0l){
 		sb.append(" and model.acceptanceStatusId = :statusId ");
 	}
@@ -322,8 +324,10 @@ public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List
 	}
 	
 	Query query = getSession().createQuery(sb.toString());
+	if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim() !=""){
+		query.setParameter("searchType",searchType);
+	}
 	
-	query.setParameter("searchType",searchType);
 	if(statusId != null && statusId > 0l){
 		query.setParameter("statusId", statusId);
 	}
