@@ -1077,4 +1077,6 @@ public interface IConstants {
 	public static final String GCM_SERVER_STATIC_MESSAGE = "Please Update Notifications";
 	
 	public static final String VOTER_IMG_FOLDER_PATH = "voter_images";
+	
+	public static final Long[] PUBLIC_REPR_DESIGNATION_IDS= {1L,2L,12L}; 
 }
