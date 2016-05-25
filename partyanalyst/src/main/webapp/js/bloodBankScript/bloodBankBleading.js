@@ -1,4 +1,4 @@
-//SWADHIN
+//SWADHIN && SANTOSH
     
 getBloodBagType();
 getBloodBagQuantity();
@@ -74,6 +74,7 @@ function buildStatusList(result){
 }
 function getBleedingCadreDetails(statusIdList,campId){
 	
+	$("#cadreDetailsLoadingId").show();
 	var jsObj = {
 		statusIdList	: statusIdList,      
 		campId			: campId,
@@ -86,6 +87,7 @@ function getBleedingCadreDetails(statusIdList,campId){
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
 		if(result != null && result.length>0){
+			$("#cadreDetailsLoadingId").hide();
 			buildBleedingCadreDetails(result);
 		}else{
 			$("#BleedingCadreDetailsId").html("<p style='font-size:18px;'>No Data Available.</p>");
@@ -93,7 +95,6 @@ function getBleedingCadreDetails(statusIdList,campId){
 	});
 }
 function buildBleedingCadreDetails(result){
-	$("#cadreDetailsLoadingId").show();
 	$("#BleedingCadreDetailsId").html('');
 	var str = '';
 	var accptStatusArr = [];
@@ -250,7 +251,6 @@ function buildBleedingCadreDetails(result){
 	str+='</tbody>';
 	str+='</table>';
 	str+='</div>';
-	$("#cadreDetailsLoadingId").hide();
 	$("#BleedingCadreDetailsId").html(str);
 	
 	$(".registrationStatusCls").find("option").remove();
