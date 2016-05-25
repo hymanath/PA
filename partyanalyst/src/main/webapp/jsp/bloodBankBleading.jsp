@@ -38,7 +38,7 @@
                         </select>
                     </div>
 					<!--<div id="errorDiv" style="color:#ff0020;margin-right:20px;" class="pull-right"></div>-->
-                    <div class="col-md-5 col-md-offset-2">
+                    <div class="col-md-3 col-md-offset-2">
                     	<label>Search</label><span style='color:red' id="errorDiv"></span>
                        	<input class="form-control" type="text" id="searchInputId" placeholder="Name/MobileNo/MembershipID" />
                     </div>
