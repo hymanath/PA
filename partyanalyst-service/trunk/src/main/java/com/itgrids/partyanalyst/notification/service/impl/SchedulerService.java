@@ -879,7 +879,6 @@ public class SchedulerService implements ISchedulerService{
 		     List<Long> stateIds = new ArrayList<Long>();
 			 stateIds.add(1l);
 			 stateIds.add(36l);
-			 stateIds.add(0l);
 			 
 			 List<Long> subeventIds = eventDAO.getSubEventsByParentEventId(parenteventId);
 			 
