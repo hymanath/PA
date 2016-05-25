@@ -231,7 +231,11 @@
 			 <result name="assessConstituencyResults" type="chain">constituencyPageAction</result>
 			 <result name="problemDiscussionRedirect" type="chain">problemCompleteDetailsAction</result>
 			 <result name="candidatePageRedirect" type="chain">candidateElectionResultsAction</result>
-			 			 	 
+			 	
+			 <result name="bloodBankRegistration" type="chain">bloodBankRegistrationAction</result>
+			 <result name="bloodBankDashboard" type="chain">bloodBankDashBoardAction</result>
+			 <result name="bloodBankBleeding" type="chain">bloodBankBleadingAction</result>	
+			 	 	 
         </action>
 		
 		<action name="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction">
@@ -5659,6 +5663,9 @@
 		    <result type="redirect" name="pollingManagmentPage">pollingManagmentAction.action</result>
 		    <result type="redirect" name="appointmentsManagmentPage">appointmentsAction.action</result>
 			<result type="redirect" name="eventDashboard">eventDashboardAction.action?eventId=30</result>
+			<result type="redirect"  name="bloodBankRegistration" >bloodBankRegistrationAction.action</result>
+			 <result type="redirect"  name="bloodBankDashboard" >bloodBankDashBoardAction.action</result>
+			 <result type="redirect"  name="bloodBankBleeding" >bloodBankBleadingAction.action</result>	
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
