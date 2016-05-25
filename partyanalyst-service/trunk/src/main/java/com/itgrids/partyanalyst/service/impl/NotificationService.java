@@ -232,7 +232,7 @@ public class NotificationService implements INotificationService{
 				}
 			 }
 			List<Object[]> list = accommodationTrackingDAO.getAccommodationTrackingInfoByNotificationType(notificationType, locationType);
-			if(list != null && list.size() > 0){
+			if(commonMethodsUtilService.isListOrSetValid(list)){
 				for (Object[] obj : list) {
 					Long constituencyId = Long.valueOf(obj[3] != null ? obj[3].toString():"0");
 					AccommodationVO vo = constMap.get(constituencyId);
@@ -244,6 +244,8 @@ public class NotificationService implements INotificationService{
 						vo.setDistrictName(obj[6] != null ? obj[6].toString():"");
 						
 						vo.setLocationDetails(notificationTypeList);
+						
+						constMap.put(constituencyId, vo);
 					}
 				}
 			}
@@ -267,7 +269,7 @@ public class NotificationService implements INotificationService{
 				}
 			}
 			
-			if(constMap != null)
+			if(commonMethodsUtilService.isMapValid(constMap))
 				returnList = new ArrayList<AccommodationVO>(constMap.values());
 			
 		} catch (Exception e) {
