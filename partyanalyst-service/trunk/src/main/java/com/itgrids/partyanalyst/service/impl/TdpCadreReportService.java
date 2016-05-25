@@ -369,8 +369,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					constituencyIds.add(constituencyId);
 					
 					List<TdpCadreLocationWiseReportVO> locationWiseReportsList = getLocationWiseReportDetailsForExcel(constituencyIds);
-					List<TdpCadreLocationWiseReportVO> ageWiseReportList  = ageWiseDetailsForConstituencies(constituencyIds,11L);
-					List<TdpCadreLocationWiseReportVO> genderWiseReportList  = genderWiseDetailsForConstituencies(constituencyIds,11L); 
+					List<TdpCadreLocationWiseReportVO> ageWiseReportList  = ageWiseDetailsForConstituencies(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					List<TdpCadreLocationWiseReportVO> genderWiseReportList  = genderWiseDetailsForConstituencies(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID); 
 					
 					List<CadreRegisterInfo> casteGroupList = cadreDashBoardService.getCastGroupWiseCadreCount( constituencyId, "constituency");
 					
@@ -5119,7 +5119,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  }else if(locationType.equalsIgnoreCase("mandal")){
         		  List<CadreIVRResponseVO> infoList = new ArrayList<CadreIVRResponseVO>();
         		  Map<Long,String> localBodyNames = new HashMap<Long,String>();
-        		  List<Object[]> localBodyIds = boothDAO.getAllLocalBodies(constituencyId, 11l);
+        		  List<Object[]> localBodyIds = boothDAO.getAllLocalBodies(constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
         		  for(Object[] location:localBodyIds){
         			  localBodyNames.put((Long)location[0], location[1].toString());
             	  }
@@ -5132,7 +5132,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	        		      infoList.addAll(localBodyVO.getApList());
 	        		  }
         		  }
-        		  List<Object[]> tehsilIds =  boothDAO.getAllTehsilsDetailsInAConstituency(constituencyId, 11l);
+        		  List<Object[]> tehsilIds =  boothDAO.getAllTehsilsDetailsInAConstituency(constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
         		  for(Object[] location:tehsilIds){
         			  locationNames.put((Long)location[0], location[1].toString()+" Mandal");
             	  }
@@ -5150,13 +5150,13 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  returnVo.setApList(infoList);
         		  return returnVo;
         	  }else if(locationType.equalsIgnoreCase("panchayat")){
-        		  List<Object[]> panchayatList = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,11l);
+        		  List<Object[]> panchayatList = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
         		  for(Object[] location:panchayatList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
         		  return getLocationWiseIVRDetailedInfo(locationNames,"panchayat",startDate,endDate,null,campaignId);
         	  }else{
-        		  List<Object[]> boothsList = boothDAO.getBoothsInAConstituency(constituencyId,11l);
+        		  List<Object[]> boothsList = boothDAO.getBoothsInAConstituency(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
         		  for(Object[] location:boothsList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
