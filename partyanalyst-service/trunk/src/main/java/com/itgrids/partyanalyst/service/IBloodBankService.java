@@ -16,7 +16,7 @@ public interface IBloodBankService {
  public List<IdNameVO> getAcceptanceStatus();
  public List<IdNameVO> getBloodBagType();
  public List<IdNameVO> getBloodBagQuantity();
- public List<BloodBankVO> getBleedingCadreDetails(List<Long> statusIds,Long campId);
+ public List<BloodBankVO> getBleedingCadreDetails(List<Long> statusIds,Long campId,String dates);
  public BloodBankDashBoardVO getBloodDonarsCountsSummary(Long campId);
  public BloodBankDashBoardVO gettotalCollectedBloodDetails(Long campId);
  public Long getBloodDonatedOtherThanBloodBank();
@@ -31,5 +31,6 @@ public interface IBloodBankService {
  public ResultStatus saveBleedingDetails(BloodBankVO bloodBankVO);
  public ResultStatus updatePrintstatus(Long id);
  public BloodBankDashBoardVO getDistrictWiseBloodDonorCounts(Long campId,Long stateId,String type);
- public List<BloodBankVO> getPrePopulateDataDetails(String searchType);
+ public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long statusId,String date);
+ public List<IdNameVO> getBloodBankCampDates(Long campId);
 }

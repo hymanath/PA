@@ -38,7 +38,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		return  query.list();		
 	}
 	
-	public List<Object[]> getBleedingCadreDetails(List<Long> statusIds,Long campId)
+	public List<Object[]> getBleedingCadreDetails(List<Long> statusIds,Long campId,List<Date> datesList)
 	{		//0.tdpCadreId,1.memberShipNo,2.donorName,3.mobileNo,4.acceptanceStatusId,5.status,6.bagNo,
 		//7.bloodBagTypeId,8.bagType,9.bloodBagQuantityId,10.type,11.quantity,12.remarks
 		StringBuilder str = new StringBuilder();		
@@ -64,6 +64,9 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		if(campId !=null && campId>0){
 			str.append(" AND model.bloodDonationCamp.bloodDonationCampId =:campId ");
 		}
+		if(datesList != null && datesList.size()>0){
+			str.append(" AND date(model.insertedTime) in (:datesList) ");
+		}
 		str.append(" order by model.insertedTime desc ");
 		
 		Query query = getSession().createQuery(str.toString());		
@@ -73,6 +76,9 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 		if(statusIds !=null && statusIds.size()>0){
 			query.setParameterList("statusIds", statusIds);
 		}		
+		if(datesList != null && datesList.size()>0){
+			query.setParameterList("datesList", datesList);
+		}
 		return query.list();
 	}
 	
@@ -291,9 +297,10 @@ public List<Object[]> getDistrictWiseBloodDonorCounts(Long campId){
 	return query.list();
 }
 
-public List<Object[]> getThePrePopulateData(String searchType){
+public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List<Date> datesList){
+	StringBuilder sb = new StringBuilder();
 	
-	Query query = getSession().createQuery("select model.bloodDonorInfo.tdpCadre.memberShipNo, " +
+	sb.append("select model.bloodDonorInfo.tdpCadre.memberShipNo, " +
 			" model.bloodDonorInfo.donorName, " +
 			" model.bloodDonorInfo.mobileNo, " +
 			" model.acceptanceStatus.acceptanceStatusId, " +
@@ -305,9 +312,24 @@ public List<Object[]> getThePrePopulateData(String searchType){
 			" model.remarks " +
 			" from BloodDonation model " +
 			" where " +
-			" model.bloodDonorInfo.donorName like '%"+searchType+"%' or model.bloodDonorInfo.tdpCadre.memberShipNo=:searchType or model.bloodDonorInfo.mobileNo=:searchType ");
+			" (model.bloodDonorInfo.donorName like '%"+searchType+"%' or model.bloodDonorInfo.tdpCadre.memberShipNo=:searchType or model.bloodDonorInfo.mobileNo=:searchType) ");
+	
+	if(statusId != null && statusId > 0l){
+		sb.append(" and model.acceptanceStatusId = :statusId ");
+	}
+	if(datesList != null && datesList.size() > 0){
+		sb.append(" and date(model.insertedTime) in (:datesList) ");
+	}
+	
+	Query query = getSession().createQuery(sb.toString());
 	
 	query.setParameter("searchType",searchType);
+	if(statusId != null && statusId > 0l){
+		query.setParameter("statusId", statusId);
+	}
+	if(datesList != null && datesList.size() > 0){
+		query.setParameterList("datesList", datesList);
+	}
 	return query.list();
 }
 }
