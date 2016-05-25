@@ -2469,6 +2469,7 @@
 		<property name="userFeedbackDAO" ref="userFeedbackDAO" />
 		<property name="mailService" ref="mailService" />
 		<property name="paymentGatewayService" ref="paymentGatewayService" />
+		<property name="cadreDetailsService" ref="cadreDetailsService"/>
 	</bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
