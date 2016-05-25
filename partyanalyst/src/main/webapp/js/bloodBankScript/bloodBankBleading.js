@@ -76,10 +76,18 @@ function getBleedingCadreDetails(statusIdList,campId){
 	$("#BleedingCadreDetailsId").html('');
 	$("#cadreDetailsLoadingId").show();	
 	$("#errorDiv").html("");	
+	var dates = $("#datesSelId").val();
+	var datesArr=[];
+	var selectedDate='';
+	if(dates !=null && dates !=undefined && dates !="0"){
+		datesArr = dates.split(",");
+		selectedDate =  datesArr[(parseInt(datesArr.length)-2)];
+	}	
+	
 	var jsObj = {
 		statusIdList	: statusIdList,      
 		campId			: campId,
-		dates 			: $("#datesSelId").val()	
+		dates 			: selectedDate	
 	};
 	$.ajax({
 		type : 'GET',
@@ -492,12 +500,21 @@ function getPrePopulateTheDataDetails(flag){
 			return;
 		}
 	}
+	
+	var dates = $("#datesSelId").val();
+	var datesArr=[];
+	var selectedDate='';
+	if(dates !=null && dates !=undefined && dates !="0"){
+		datesArr = dates.split(",");
+		selectedDate = datesArr[(parseInt(datesArr.length)-2)];
+	}	
+	
 	$("#BleedingCadreDetailsId").html('');	
 	$("#cadreDetailsLoadingId").show();
 	var jObj={
 		searchType:search,
 		statusId : $("#totalStatusId").val(),
-		date : $("#datesSelId").val()
+		date : selectedDate
 	};
 	$.ajax({
 		type:"GET",
