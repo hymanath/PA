@@ -731,7 +731,7 @@ public class CadreRegistrationForOtherStatesService implements
 				String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+ "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator +"2015"+ pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 				Voter voter = voterDAO.get(tdpCadre.getVoterId());
 				if(voter != null && voter.getImagePath() != null && voter.getImagePath().length() > 0 ){
-				   String status = copyFile(IConstants.STATIC_CONTENT_FOLDER_URL+"voter_images/"+voter.getImagePath(),destinationPath);
+				   String status = copyFile(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath(),destinationPath);
 				   LOG.error("Status : "+status);
 				   if(status.equalsIgnoreCase("success")){
 					   tdpCadre.setImage("2015/"+tdpCadre.getMemberShipNo()+".jpg");
@@ -771,7 +771,7 @@ public class CadreRegistrationForOtherStatesService implements
 						String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+ "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator +"2015"+ pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 						Voter voter = voterDAO.get(tdpCadre.getVoterId());
 						if(voter != null && voter.getImagePath() != null && voter.getImagePath().length() > 0 ){
-							   String status = copyFile(IConstants.STATIC_CONTENT_FOLDER_URL+"voter_images/"+voter.getImagePath(),destinationPath);
+							   String status = copyFile(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath(),destinationPath);
 							   LOG.error("Status : "+status);
 							   if(status.equalsIgnoreCase("success")){
 								   tdpCadre.setImage("2015/"+tdpCadre.getMemberShipNo()+".jpg");
@@ -1164,9 +1164,9 @@ public class CadreRegistrationForOtherStatesService implements
 						vo.setDateOfBirth(voter.getDateOfBirth() != null ? voter.getDateOfBirth().toString():"");
 						vo.setGender(voter.getGender());
 						
-						if(voter.getImagePath() != null && voter.getImagePath().trim().length() > 0 && checkFileExistingOrNot(IConstants.STATIC_CONTENT_FOLDER_URL+"voter_images/"+voter.getImagePath())){
+						if(voter.getImagePath() != null && voter.getImagePath().trim().length() > 0 && checkFileExistingOrNot(IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath())){
 							vo.setVoterImagePresent(true);
-							vo.setVoterImage("voter_images/"+voter.getImagePath());
+							vo.setVoterImage(IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath());
 						}
 					}
 					vo.setVoterId(voter.getVoterId());
