@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-3">
                             	<label>Age<span class="mandatoryFieldCls">*</span></label>
- 		                        <input type="number" id="ageId" class="form-control clearFieldCls"/>
+ 		                        <input type="text" id="ageId" class="form-control clearFieldCls"/>
 								<span class="ageErrorCls mandatoryFieldCls"></span>
                             </div>
                             <div class="col-md-3">
@@ -125,7 +125,7 @@
                 <div class="row m_top10">
                     <div class="col-md-3">
                     	<label>No.of times Blood Donation in BB</label>
-                        <input type="number" id="noOfTmBldDntnId" class="form-control clearFieldCls"/>
+                        <input type="text" id="noOfTmBldDntnId" class="form-control clearFieldCls"/>
                     </div>
                     <div class="col-md-3">
                     	<label>Other than BB</label>
