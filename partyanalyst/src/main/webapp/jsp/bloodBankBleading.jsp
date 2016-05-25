@@ -62,7 +62,8 @@
 							    <span style="color:red" class="errorCls pull-right"></span>
                             	<h4 class="panel-title text-capitalise">all applications</h4>
                             </div>
-                            <div class="panel-body pad_0">
+							<div class="panel-body pad_0">
+							 <img id="cadreDetailsLoadingId" src="images/Loading-data.gif" style="width: 70px; height: 60px;margin-left: 533px"";display:none;/>
 								<div id="BleedingCadreDetailsId"></div>
                             	
 								<!--swadhin
@@ -225,7 +226,11 @@ $( "#searchInputId" ).blur(function() {
 		getBleedingCadreDetails(statusIdList,1);
 	}
 });
-
+$(document).keypress(function(e) {
+				if(e.keyCode==13){
+					getPrePopulateTheDataDetails();
+				}
+		  });
 </script>
 </body>
 </html>
