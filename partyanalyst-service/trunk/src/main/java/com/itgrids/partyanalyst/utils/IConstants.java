@@ -743,7 +743,7 @@ public interface IConstants {
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
     
-     
+    
     public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
    // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
     public static final String CADRE_REG_AMOUNT_FILES_FOLDER = "cadre_reg_amount_files";
@@ -1075,4 +1075,6 @@ public interface IConstants {
 	
 	public static final String GOOGLE_SERVER_KEY = "AIzaSyAHpEk_L5Uv4-FJy_7P-mf_gmytlKU_1Bk";
 	public static final String GCM_SERVER_STATIC_MESSAGE = "Please Update Notifications";
+	
+	public static final String VOTER_IMG_FOLDER_PATH = "voter_images";
 }
