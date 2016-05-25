@@ -2456,10 +2456,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						if(constituencyId != null){
 							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(constituencyId), voter.getVoterId());
 							if(voter.getVoterIDCardNo() != null && partNos.size() > 0 && partNos.get(0) != null){
-								String filePath = staticContentLoc + IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
+								String filePath = staticContentLoc + IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 								if(checkFileExistingOrNot(filePath)){
 									vo.setVoterImagePresent(true);
-									vo.setVoterImage(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "");
+									vo.setVoterImage(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : ""));
 								}
 							}
 					   }
@@ -2798,10 +2798,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								if(voter != null){
 									//List<String> partNos = boothPublicationVoterDAO.getPartNo(constiId, voter.getVoterId());
 									//if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-										String filePath = staticContentLoc +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
+										String filePath = staticContentLoc +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 										if(checkFileExistingOrNot(filePath)){
 											vo.setVoterImagePresent(true);
-											vo.setVoterImage(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "");
+											vo.setVoterImage(IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : ""));
 										//}
 									}
 							   }
@@ -4410,7 +4410,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							if(voter != null){
 								//List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 								//if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+voter.getImagePath() != null ? voter.getImagePath() : "";
+								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+(voter.getImagePath() != null ? voter.getImagePath() : "");
 								   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 								    status = copyFile(sourcePath,destinationPath);
 								    LOG.error("Status : "+status);
@@ -4433,7 +4433,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							LOG.error("partNos size : "+partNos.size());
 							if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
 								 String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 							   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							    String status = copyFile(sourcePath,destinationPath);
 							    LOG.error("Status : "+status);
@@ -4456,7 +4456,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						LOG.error("partNos size : "+partNos.size());
 						if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
 							 String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
+						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+(voter.getImagePath() != null ? voter.getImagePath() : "");
 						   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 						    String status = copyFile(sourcePath,destinationPath);
 						    LOG.error("Status : "+status);
@@ -4480,7 +4480,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 					LOG.error("partNos size : "+partNos.size());
 					if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "" ;
+					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 					   LOG.error("VOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 					   String status = copyFile(sourcePath,destinationPath);
 					   LOG.error("Status : "+status);
@@ -4572,7 +4572,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 							LOG.error("partNos size : "+partNos.size());
 							if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 							   LOG.error("VOTERN: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							   String status = copyFile(sourcePath,destinationPath);
 							   LOG.error("Status : "+status);
@@ -12168,7 +12168,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 								LOG.error("partNos size : "+partNos.size());
 								if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL + IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
+								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL + IConstants.VOTER_IMG_FOLDER_PATH+"/"+(voter.getImagePath() != null ? voter.getImagePath() : "");
 								   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 								    status = copyFile(sourcePath,destinationPath);
 								    LOG.error("Status : "+status);
@@ -12195,7 +12195,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 								 String folderCreation = folderCreation(folderCreationPart);
 								 String destinationPath = folderCreationPart + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 								
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 							   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							    String status = copyFile(sourcePath,destinationPath);
 							    LOG.error("Status : "+status);
@@ -12222,7 +12222,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							 String folderCreation = folderCreation(folderCreationPart);
 							 String destinationPath = folderCreationPart + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 							 
-						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+voter.getImagePath() != null ? voter.getImagePath() : "";
+						   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+pathSeperator+(voter.getImagePath() != null ? voter.getImagePath() : "");
 						   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 						    String status = copyFile(sourcePath,destinationPath);
 						    LOG.error("Status : "+status);
@@ -12250,7 +12250,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 					LOG.error("partNos size : "+partNos.size());
 					if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
+					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+(voter.getImagePath() != null ? voter.getImagePath() : "");
 					   LOG.error("VOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 					   String status = copyFile(sourcePath,destinationPath);
 					   LOG.error("Status : "+status);
@@ -12356,7 +12356,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 							LOG.error("partNos size : "+partNos.size());
 							if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+voter.getImagePath() != null ? voter.getImagePath() : "";
+							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +IConstants.VOTER_IMG_FOLDER_PATH+"/"+(voter.getImagePath() != null ? voter.getImagePath() : "");
 							   LOG.error("VOTERN: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
 							   String status = copyFile(sourcePath,destinationPath);
 							   LOG.error("Status : "+status);
