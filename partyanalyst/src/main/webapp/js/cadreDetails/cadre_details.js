@@ -1226,9 +1226,10 @@ function getCadreFamilyDetailsByCadreId(){
 		var imgPath;
 			 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0){ 
 				imgPath = result[i].imagePath;
-			 }else{
+			 }
+			 /*else{
 				imgPath = "http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg"	;
-			  }
+			  }*/
 	 var familyObj = {
 	 voterId:result[i].votercardNo,
 	 membershipId:result[i].membershipNo,
@@ -1243,9 +1244,10 @@ function getCadreFamilyDetailsByCadreId(){
 		 var imgPath='';
 		 if(result[i].imagePath != null && result[i].imagePath.trim().length > 0){ 
 			imgPath = result[i].imagePath;
-		 }else{
-			imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
 		 }
+		 /*else{
+			imgPath="http://www.mytdp.com/voter_images/"+constId+"/Part"+partNo+"/"+result[i].votercardNo+".jpg" ;
+		 }*/
 		  str += '<div class="media-left ">';
 		  str += '<img src="'+imgPath+'" class="img-responsive media-object img-circle"  style="height: 45px;width:45px;border:1px solid #ddd;" >';
 		  str += '</div>';
