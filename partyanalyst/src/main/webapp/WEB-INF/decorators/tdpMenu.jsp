@@ -571,7 +571,7 @@ footer
 						 </li></c:if>
 						 </c:if>
 						  
-						<c:if test="${sessionScope.USER.isAdmin == 'true' &&							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
+						<c:if test="${sessionScope.USER.isAdmin == 'true' &&fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
 						 <li>								
 							<a href="dailyVerificationReportsAction.action"><i class="fa fa-folder-open ico-white"></i><span>&nbsp;&nbsp;CTP Project</span></a>
 						</li>
@@ -668,22 +668,38 @@ footer
 					 </li>
 				</c:if>	
 				
+			
+				<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ENTITLEMENT' )  ||
+				fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ENTITLEMENT' ) ||
+				fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ENTITLEMENT' ) ||
+				fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ADMIN_ENTITLEMENT' ) ||
+				fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT' ) ||
+				fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT' )}">
 					<li>
                         <a href="#"><i class="fa fa-wrench"></i><span>&nbsp;&nbsp;BloodBank</span></a>
                         <h2><i class="fa fa-wrench line_heightDiv"></i>BloodBank</h2>
                        <ul>
+					   <c:if test="${  fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ENTITLEMENT' )  ||
+				fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ADMIN_ENTITLEMENT' ) }">
 							<li>
 								<a href="bloodBankRegistrationAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;BloodBank Registration</span></a>
 							</li>
+						</c:if>	
+				<c:if test="${  fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ENTITLEMENT' )  ||
+				fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT' ) }">						
 							<li>
 								<a href="bloodBankDashBoardAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;BloodBank DashBoard</span></a>
 							</li>
+				</c:if>	
+						<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ENTITLEMENT' )  ||
+						fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT' ) }">	
 							<li>
 								<a href="bloodBankBleadingAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;BloodBank Bleading</span></a>
 							</li>
+							</c:if>		
 					   </ul>
 					</li>
-				
+				</c:if>	
 				
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
