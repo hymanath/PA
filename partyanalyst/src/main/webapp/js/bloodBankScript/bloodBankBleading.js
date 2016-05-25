@@ -1,5 +1,5 @@
 //SWADHIN
-getAcceptanceStatus();    
+    
 getBloodBagType();
 getBloodBagQuantity();
 var acceptanceStr = '';
@@ -76,7 +76,8 @@ function getBleedingCadreDetails(statusIdList,campId){
 	
 	var jsObj = {
 		statusIdList	: statusIdList,      
-		campId			: campId     
+		campId			: campId,
+		dates 			: $("#datesSelId").val()	
 	};
 	$.ajax({
 		type : 'GET',
@@ -437,6 +438,8 @@ $(document).on('click','.submitCls',function(){
 });
 $(document).on("change","#totalStatusId",function(){
 	$(".errorCls").html("");
+	$("#searchInputId").html("");
+	$("#datesSelId").val("0,");
 	var statusIdList = [];  
 	var campId=1;
 	var statusId=$("#totalStatusId").val();
@@ -445,3 +448,31 @@ $(document).on("change","#totalStatusId",function(){
 	}
 	getBleedingCadreDetails(statusIdList,campId);
 });
+
+getBloodBankCampDates();
+function getBloodBankCampDates(){
+	var jObj={
+		campId:1
+	};
+	$.ajax({
+		type:"GET",
+		url:'getBloodBankCampDatesAction.action',
+		dataType:'json',
+		data:{task:JSON.stringify(jObj)}
+	}).done(function(result){
+		var str='';
+		str+='<option value="0,">All</option>';
+		if(result != null && result.length > 0){
+			for(var i in result){
+				if(result[i].percentage=="toDay"){
+					str+='<option value="'+result[i].name+'" selected>Day - '+(parseInt(i)+1)+'</option>';
+				}else{
+					str+='<option value="'+result[i].name+'">Day - '+(parseInt(i)+1)+'</option>';
+				}
+				
+			}
+		}
+		$("#datesSelId").html(str);
+		getAcceptanceStatus();
+	});
+}
