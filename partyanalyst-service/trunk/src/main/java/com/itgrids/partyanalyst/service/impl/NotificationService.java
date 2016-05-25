@@ -15,15 +15,14 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.GcmService.GcmService;
 import com.itgrids.partyanalyst.dao.IAccommodationTrackingDAO;
-import com.itgrids.partyanalyst.dao.INotificationDeviceDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.INotificationDeviceDAO;
 import com.itgrids.partyanalyst.dao.INotificationTypeDAO;
 import com.itgrids.partyanalyst.dao.INotificationsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.NotificationDeviceDAO;
-import com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO;
 import com.itgrids.partyanalyst.dto.AccommodationVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.model.NotificationDevice;
+import com.itgrids.partyanalyst.model.NotificationType;
 import com.itgrids.partyanalyst.model.Notifications;
 import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -349,10 +348,27 @@ public class NotificationService implements INotificationService{
 					}
 			 });	
 		 }catch(Exception e){
-			 e.printStackTrace();
+			 log.error("Exception occured in saveNotification() Method ",e);
 		 }
 		 return IConstants.SUCCESS;
 	 }
+	 public String setActivcationStatusforNotificationAndNotificationType(String updationTypeStr , Long id, String activeStatus){
+		 try{
+			 if(updationTypeStr != null && updationTypeStr.equalsIgnoreCase("notification")){
+				 Notifications notifications = notificationsDAO.get(id);
+				 notifications.setIsActive(activeStatus);
+				 notificationsDAO.save(notifications);
+			 }
+			 else  if(updationTypeStr != null && updationTypeStr.equalsIgnoreCase("notificationType")){
+				 NotificationType notificationType = notificationTypeDAO.get(id);
+				 notificationType.setIsActive(activeStatus);
+				 notificationTypeDAO.save(notificationType);
+			 }
+		 }catch(Exception e){
+			 log.error("Exception occured in setActivcationStatusforNotificationAndNotificationType() Method ",e);
+		 }
+		 return IConstants.SUCCESS;
+	}
 	 public List<NotificationDeviceVO> getNotificationType(){
 		 List<NotificationDeviceVO> notificationList = null;
 		 List<Object[]> notificationTypesLst = notificationTypeDAO.getNotificationType();
