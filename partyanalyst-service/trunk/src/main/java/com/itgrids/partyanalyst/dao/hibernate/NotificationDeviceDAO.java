@@ -14,14 +14,11 @@ public class NotificationDeviceDAO extends GenericDaoHibernate<NotificationDevic
 		super(NotificationDevice.class);
 		
 	}
-	public List<Long> getIsExist(Long registeredId,Long projectId,String imeiNo){
+	public List<Long> getIsExist(Long projectId,String imeiNo){
 		
 		Query query = getSession().createQuery(" select model.notificationDeviceId from NotificationDevice model " +
-				" where model.registeredId=:registeredId and " +
-				" model.projectId=:projectId and " +
-				" model.imeiNo=:imeiNo ");
+				" where  model.projectId=:projectId and  model.imeiNo=:imeiNo ");
 
-			query.setParameter("registeredId", registeredId);
 			query.setParameter("projectId", projectId);
 			query.setParameter("imeiNo", imeiNo);
 			return query.list();
