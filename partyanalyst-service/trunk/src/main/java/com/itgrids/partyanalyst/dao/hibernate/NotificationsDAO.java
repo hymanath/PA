@@ -17,7 +17,7 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 	
 	public List<Object[]> getNotificationsDetailsByNotification (Long notificationTypeId,Long lastNotificationId,Date lastUpdatedDateTime){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select distinct  model2.notificationTypeId, model2.notificationType, model.notificationsId, model.notification,model.orderNo, model.updatedTime ");
+		queryStr.append("select distinct  model2.notificationTypeId, model2.notificationType, model.notificationsId, model.notification,model.orderNo, model.updatedTime ,model2.orderNo ");
 		queryStr.append(" from Notifications model,NotificationType model2 where model.notificationTypeId = model2.notificationTypeId and model.isActive='true'  and model2.isActive='true'  ");
 		if(notificationTypeId != null && notificationTypeId.longValue()>0L)
 			queryStr.append(" and model.notificationTypeId=:notificationTypeId ");
