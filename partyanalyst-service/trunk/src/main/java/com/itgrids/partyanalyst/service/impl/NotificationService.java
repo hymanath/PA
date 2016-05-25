@@ -199,6 +199,7 @@ public class NotificationService implements INotificationService{
 						 notificationTypeVO = new NotificationDeviceVO();
 						 notificationTypeVO.setNotificationType(commonMethodsUtilService.getStringValueForObject(status[1])); // New status[1]
 						 notificationTypeVO.setNotificationTypeId(commonMethodsUtilService.getLongValueForObject(status[0]));
+						 notificationTypeVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(status[6]));
 						 notificationTypeVO.setLastUpdatedTime(lastUpdatedTimeStr);
 						 notificationTypeVO.setInActiviNotifications(inActiveNotificationTypeIdsMap.get(notificationTypeVO.getNotificationTypeId()));
 						 notificationTypeVO.setInActiviNotificationTypeIds(inactiveNotificationTypeIdsList);
