@@ -365,7 +365,7 @@ public class BloodBankService implements IBloodBankService{
 							 e.printStackTrace();
 						}
 				    }
-				    if(bloodBanKVO.getMarried() !=null && !bloodBanKVO.getMarried().trim().isEmpty()){
+				    if(bloodBanKVO.getMarried() !=null && !bloodBanKVO.getMarried().trim().isEmpty() && bloodBanKVO.getMarried().trim() !="0"){
 				    	bloodDonorInfo.setMaritalStatus(bloodBanKVO.getMarried());
 				    }
 				    
@@ -382,7 +382,7 @@ public class BloodBankService implements IBloodBankService{
 				    	bloodDonorInfo.setAddress(bloodBanKVO.getAddress());
 				    }
 				    
-				    Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(bloodBanKVO.getMembershipNo());				    
+				    Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(bloodBanKVO.getMembershipNo().trim());				    
 				    bloodDonorInfo.setTdpCadreId(tdpCadreId);				    
 				    bloodDonorInfo.setInsertedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonorInfo.setUpdatedTime(presentDate.getCurrentDateAndTime());
@@ -415,7 +415,7 @@ public class BloodBankService implements IBloodBankService{
 				 
 				    bloodDonation.setDonationsInBloodBank(bloodBanKVO.getDonationsInBloodBank());
 				    bloodDonation.setDonationsInOtherPlaces(bloodBanKVO.getDonationsInOtherPlaces());
-				    if(bloodBanKVO.getLastDonation()!=null && !bloodBanKVO.getLastDonation().isEmpty()){
+				    if(bloodBanKVO.getLastDonation()!=null && !bloodBanKVO.getLastDonation().trim().isEmpty() && bloodBanKVO.getLastDonation().trim() !=""){
 				    	 try {
 							bloodDonation.setLastDonationDate(sdf.parse(bloodBanKVO.getLastDonation()));
 						} catch (ParseException e) {
@@ -432,7 +432,7 @@ public class BloodBankService implements IBloodBankService{
 				    }
 				    
 				    bloodDonation.setAcceptanceStatusId(1l);
-				    String dateArr[]=presentDate.getCurrentDateInStringFormatYYYYMMDD().split("-");
+				  /*  String dateArr[]=presentDate.getCurrentDateInStringFormatYYYYMMDD().split("-");
 				    Long year = Long.valueOf(dateArr[0]);
 					Long month = Long.valueOf(dateArr[1]);
 					Long date = Long.valueOf(dateArr[2]);
@@ -441,7 +441,7 @@ public class BloodBankService implements IBloodBankService{
 				  	bloodDonation.setDonationDate(sdf.parse(dateFormat));
 					} catch (ParseException e) {
 					    e.printStackTrace();
-					}
+					}*/
 				     bloodDonation.setInsertedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonation.setUpdatedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonation.setInsertedBy(userId);
@@ -1034,7 +1034,7 @@ public class BloodBankService implements IBloodBankService{
 				for(Object[] obj : collectedBlood){
 					Long collectedcount = obj[1]!=null?(Long)obj[1]:0l;
 					
-					if(collectedcount >=0 && collectedcount<=2 ){
+					if(collectedcount >=1 && collectedcount<=2 ){
 						finalVO.setZerototwo(finalVO.getZerototwo()+1);
 					}else if (collectedcount >=3 && collectedcount<=5){
 						finalVO.setThreetofive(finalVO.getThreetofive()+1);
