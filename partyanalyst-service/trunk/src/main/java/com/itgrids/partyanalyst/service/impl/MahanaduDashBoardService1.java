@@ -989,7 +989,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					mainDashboardPdfStr.append("<br/>");
 				}
 				
-				StringBuffer pubStr = getPublicrepresentiveBlock();
+				List<MahanaduEventVO> publicReprestList = getPublicrepresentatives(startDate,endDate,parentId,subEventIds);
+				StringBuffer pubStr = PublicrepresentiveBlock(publicReprestList,time);
 				mainDashboardPdfStr.append(pubStr);
 				mainDashboardPdfStr.append("<br/>");
 				
@@ -1040,6 +1041,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				emailIds.add("a.dakavaram@gmail.com");
 				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
 				emailIds.add("chandu.itgrids.hyd@gmail.com");
+				//emailIds.add("aravind.itgrids.hyd@gmail.com");
 				
 				emailAttributesVO.setEmailIds(emailIds);
 				emailAttributesVO.setTime(time);
@@ -1055,70 +1057,76 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				LOG.error("Exception in getAllImages() : "+e);
 			}
 		}
-		public StringBuffer getPublicrepresentiveBlock(){
-				StringBuffer str = new StringBuffer();
-				
-				str.append("<font size='2'>");
-				str.append("<table width='100%' border='1'>");
-				str.append("<tr>");
-				str.append("<td colspan='8' bgcolor='#C0C0C0' style='text-align:center;text-transform:uppercase;vertical-align:middle;color:#D64D54'>PUBLIC REPRESENTATIVES</td>");
-				str.append("</tr>");
-				
-				str.append("<tr>");
+		public StringBuffer PublicrepresentiveBlock(List<MahanaduEventVO> pubList,String time){
+			
+			StringBuffer str = new StringBuffer();
+			String stateColor = "#01AF7C";
+			str.append("<font size='2'>");
+				str.append("<table width='100%' >");
+					str.append("<tr>");
+						str.append("<td  bgcolor='#C0C0C0' style='text-align:center;text-transform:uppercase;vertical-align:middle;color:#D64D54'>PUBLIC REPRESENTATIVES</td>");
+					str.append("</tr>");
+			str.append("</table>");
+			
+			 if( pubList != null && pubList.size() > 0){
+			    	
+			    MahanaduEventVO firstLocation = pubList.get(0);
+			    str.append("<table width='100%' border='1'>");
+			    str.append("<tr>");
 				str.append("<td rowspan='2'></td>");
-				str.append("<td rowspan='2'>Total Attended</td>");
-				str.append("<td colspan='2'>Day 1</td>");
-				str.append("<td colspan='2'>Day 2</td>");
-				str.append("<td colspan='2'>Day 3</td>");
-				str.append("</tr>");
+				str.append("<td rowspan='2' style='text-align:center'>Total Invitees</td>");
+				for(int i=0; i< firstLocation.getSubList().size() ; i++){
+					if( firstLocation.getSubList().get(i).isTotalDaydataExist() ){
+						str.append("<th colspan='2' style='text-align:center' >"+firstLocation.getSubList().get(i).getName()+"</th>");
+					}
+				}
 				
+				str.append("</tr>");
 				str.append("<tr>");
-				str.append("<td>Attended</td>");
-				str.append("<td>Not Attended</td>");
-				str.append("<td>Attended</td>");
-				str.append("<td>Not Attended</td>");
-				str.append("<td>Attended</td>");
-				str.append("<td>Not Attended</td>");
+				for(int i=0; i< firstLocation.getSubList().size() ; i++){
+					if( firstLocation.getSubList().get(i).isTotalDaydataExist() ){
+						str.append("<td style='text-align:center'>Attended</td>");
+						str.append("<td style='text-align:center'>Not Attended</td>");
+					}
+				}
+				str.append("</tr>");
+				for(int i=0; i<pubList.size();i++){
+					str.append("<tr>");
+					
+					str.append("<td style='text-align:center'>"+pubList.get(i).getName()+"</td>");
+		    		str.append("<td style='text-align:center'>"+pubList.get(i).getInvitees()+"</td>");
+				
+				for(int j=0;j< pubList.get(i).getSubList().size();j++){
+	    			
+	    			if( firstLocation.getSubList().get(j).isTotalDaydataExist()){
+	    				if( pubList.get(i).getSubList().get(j).getAttended() != null && pubList.get(i).getSubList().get(j).getAttended().longValue() > 0l){
+	    					str.append("<td style='text-align:center'> "+pubList.get(i).getSubList().get(j).getAttended()+" </td>");
+	    				}else{
+	    					str.append("<td style='text-align:center'> - </td>");
+	    				}
+	    				if( pubList.get(i).getSubList().get(j).getNotAttended() != null && pubList.get(i).getSubList().get(j).getNotAttended().longValue() > 0l){
+	    					str.append("<td style='text-align:center'> "+pubList.get(i).getSubList().get(j).getNotAttended()+" </td>");
+	    				}else{
+	    					str.append("<td style='text-align:center'> - </td>");
+	    				}
+	    				
+	    			}
+				}
+				
 				str.append("</tr>");
 				
-				str.append("<tr>");
-				str.append("<td>MLA</td>");
-				str.append("<td>100</td>");
-				str.append("<td>55</td>");
-				str.append("<td>45</td>");
-				str.append("<td>60</td>");
-				str.append("<td>40</td>");
-				str.append("<td>50</td>");
-				str.append("<td>50</td>");
+			 } 	
+				 str.append("</table>");
+			
+			 }else{
+					str.append("<tr bgcolor='"+stateColor+"'>");
+					str.append("<td  >No Data Available</td>");
 				str.append("</tr>");
 				
-				str.append("<tr>");
-				str.append("<td>MP</td>");
-				str.append("<td>20</td>");
-				str.append("<td>15</td>");
-				str.append("<td>05</td>");
-				str.append("<td>11</td>");
-				str.append("<td>09</td>");
-				str.append("<td>06</td>");
-				str.append("<td>04</td>");
-				str.append("</tr>");
-				
-				str.append("<tr>");
-				str.append("<td>MLC</td>");
-				str.append("<td>30</td>");
-				str.append("<td>20</td>");
-				str.append("<td>10</td>");
-				str.append("<td>15</td>");
-				str.append("<td>15</td>");
-				str.append("<td>05</td>");
-				str.append("<td>25</td>");
-				str.append("</tr>");
-				
-				str.append("</table>");
+			}
 				str.append("</font>");
-				
-				return str;
-		}
+			return str;
+	}
 		
 		public StringBuffer allStatesBlock(StatesEventVO dataVO,String time){
 			
