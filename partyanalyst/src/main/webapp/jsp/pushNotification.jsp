@@ -26,7 +26,19 @@
 								<label>Name:</label>
 								<input type="text"  name="name"  class="form-control" id="notificationId" placeholder="Please Enter Notification"/>
 							</div>
-							<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
+					<div class="col-md-6 col-md-offset-3">
+					<label style="text-transform: uppercase">Notification Type</label>
+					<select id="notificationTypeId" class="form-control"onchange="getNotificationTypeDetailsStats('')">
+						<option value="0">Select Type</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-md-offset-3">
+					<label style="text-transform: uppercase">Notifications</label>
+					<select id="notificationsId" class="form-control">
+						<option value="0">Select Type</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-md-offset-3" style="margin-top:10px;">
 								<input type="button" class="btn btn-success btn-block"   value="submit" onclick="pushNotificationDetailsStats();"></button>
 							</div>
 						</div>
@@ -57,6 +69,37 @@ function pushNotificationDetailsStats(){
 });
 
 }
+function getNotificationTypeDetails(){
+	var jsObj = {};
+	$.ajax({
+			type : 'POST',
+			url : 'getNotificationTypeDetailsAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+});
+
+}
+function getNotificationTypeDetailsStats(){
+	var typeId = $('#notificationTypeId').val();
+	if(typeId<=0)
+	{
+		return;
+	}
+	var jsObj={
+			
+			typeId : typeId,
+		}
+		$.ajax({
+			type : 'POST',
+			url : 'getNotificationTypeDetailsStatsAction.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+});
+
+}
+
 $("#trigger,#loginId").hide()
 </script>
 </html>
