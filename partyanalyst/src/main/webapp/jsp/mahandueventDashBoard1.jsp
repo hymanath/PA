@@ -231,7 +231,7 @@
 			  <div class="panel-heading">
 				  <h4 class="panel-title">other states</h4>
 				</div>
-				<div class="panel-body   panelBlocksHeightSet">
+				<div class="panel-body   panelBlocksHeightSet" >
 					<center><img id="otherStateAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 						<div id="otherStateDetails"></div>
 				</div>
@@ -241,58 +241,13 @@
 	<div>
 	<div class="row">
 	<div class="col-md-12">
-	  <div class="panel panel-default panel-custom-default ">
-		  <div class="panel-heading">
-			  <h4 class="panel-title">PUBLIC REPRESENTATIVE ATTENDEE COUNT</h4>
+	  <div class="panel panel-default panel-custom-default m_0">
+		  <div class="panel-heading" style="padding: 10px;">
+			  <h4 class="panel-title m_0">PUBLIC REPRESENTATIVE ATTENDEE COUNT</h4>
 			</div>
-			<div class="panel-body">
-				<table class="table table-bordered">
-				  <tr>
-					<td rowspan='2'></td>
-					<td style="vertical-align:middle" rowspan='2'>Total Attended</td>
-					<td colspan='2'>Day 1</td>
-					<td colspan='2'>Day 2</td>
-					<td colspan='2'>Day 3</td>
-				  </tr>
-				  <tr>
-					<td>Attended</td>
-					<td>Not Attended</td>
-					<td>Attended</td>
-					<td>Not Attended</td>
-					<td>Attended</td>
-					<td>Not Attended</td>
-				  </tr>
-				  <tr>
-					<td>MP</td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="" attr_desigId="" attr_day="" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MP" attr_day="day1" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MP" attr_day="day1" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MP" attr_day="day2" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MP" attr_day="day2" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MP" attr_day="day3" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MP" attr_day="day3" class="publcRepAttnds">01</a></td>
-				  </tr>
-				  <tr>
-					<td>MLA</td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="" attr_desigId="" attr_day="" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLA" attr_day="day1" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLA" attr_day="day1" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLA" attr_day="day2" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLA" attr_day="day2" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLA" attr_day="day3" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLA" attr_day="day3" class="publcRepAttnds">01</a></td>
-				  </tr>
-				  <tr>
-					<td>MLC</td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="" attr_desigId="" attr_day="" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLC" attr_day="day1" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLC" attr_day="day1" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLC" attr_day="day2" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLC" attr_day="day2" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="attendee" attr_desigId="MLC" attr_day="day3" class="publcRepAttnds">01</a></td>
-					<td><a style="cursor:pointer;" attr_inviteeTyp="notAttendee" attr_desigId="MLC" attr_day="day3" class="publcRepAttnds">01</a></td>
-				  </tr>
-				</table>
+			<div class="panel-body" style="background-color:#f2f2f2">
+				<center><img id="publicRepresentativeAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+				<div id="publicRepresentativeDiv"></div>
 			</div>
 		</div>
 	</div>
@@ -300,7 +255,7 @@
 	</div>
 	</div>
 	<!-- END-->
-		<div class="row">
+		<div class="row m_top10">
 			<div class="col-md-12">
 				<div class="panel panel-default panel-custom-default m_0">
 					<div class="panel-heading">
@@ -1943,6 +1898,7 @@ setcolorsForEvents();
  
  countDetailsCalls();
 stateWiseEventAttendeeCounts();
+getPublicrepresentatives();
 
 showConst = true;
 showHide();
@@ -2818,7 +2774,87 @@ var tableToExcel = (function() {
         }).done(function(result){
 			$("#popupId").modal("show");
 		 });
-});  
+}); 
+
+function getPublicrepresentatives(){
+		
+		$("#publicRepresentativeDiv").html('');
+		$("#publicRepresentativeAjax").show();
+			var jsObj = {
+				startDate    :startDate,
+				endDate      :endDate,
+				parentEventId      :parentEventId,
+				subEventIds : subEvents
+			}
+			$.ajax({
+			type : 'GET',
+			url : 'getPublicrepresentativesAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+			}).done(function(result){ 
+			$("#publicRepresentativeAjax").hide();
+			buildPublicrepresentativesCount(result)
+			});   
+			
+	}
+	
+	function buildPublicrepresentativesCount(result){
+		
+		var str='';
+		if(result !=null && result.length>0){
+			str+='<table class="table table-bordered" style="background: rgb(239, 243, 244) none repeat scroll 0px 0px;">';
+			  str+='<tr>';
+				str+='<td rowspan="2"></td>';
+				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total Attended</td>';
+				for(var i in result[0].subList){
+					if(result[0].subList[i].totalDaydataExist == true){
+						str+='<th class="text-center text-capitalize" colspan="2">'+result[0].subList[i].name+'</th>';
+					}
+				}	
+			  str+='</tr>';
+			  str+='<tr>';
+				for(var i in result[0].subList){
+					if(result[0].subList[i].totalDaydataExist == true){
+						str+='<td class="text-center text-capitalize" >Attended</td>';
+						str+='<td class="text-center text-capitalize" >Not Attended</td>';
+					}
+				}
+			  str+='</tr>';
+			  	for(var j in result){
+					str+='<tr>';
+						str+='<td>'+result[j].name+'</td>';
+						if(result[j].invitees == null || result[j].invitees ==0){
+							str+='<td class="text-center text-capitalize" > - </td>';
+						}else{
+							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_day="" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
+						}
+						
+						for(var l in result[j].subList){
+							if(result[0].subList[l].totalDaydataExist == true){
+								if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
+									str+='<td class="text-center text-capitalize" > - </td>';
+								}else{
+									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_InviteeType="attendee" attr_desigId="'+result[j].id+'" attr_day="day1" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+								}
+								if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
+									str+='<td class="text-center text-capitalize" > - </td>';
+								}else{
+									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_NoninviteeType="notAttendee" attr_desigId="MP" attr_day="day1" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+								}
+								
+							}
+						}
+					str+='</tr>';
+				}
+			
+			str+='</table>';
+			$("#publicRepresentativeDiv").html(str);
+		}else{
+			$("#publicRepresentativeDiv").html("NO DATA AVAILABLE");
+		}
+			
+		
+	} 
 </script>
 </body>
 </html>
