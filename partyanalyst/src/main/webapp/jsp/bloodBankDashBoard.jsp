@@ -166,7 +166,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
 		<div class="col-md-3">
 			<div class="panel panel-default panelDefaultCustom">
             	<div class="panel-heading">
@@ -184,7 +184,7 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>-->
+                    </table>
                 </div>
             </div>
         </div>
@@ -205,7 +205,7 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>-->
+                    </table>
                 </div>
             </div>
         </div>
@@ -226,7 +226,7 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>-->
+                    </table>
                 </div>
             </div>
         </div>
@@ -247,10 +247,10 @@
                         	<td>Without Sagm 350ml</td>
                             <td>10 Bags</td>
                         </tr>
-                    </table>-->
+                    </table>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 
@@ -265,7 +265,7 @@ gettotalCollectedBloodDetails();
 getBloodDonatedOtherThanBloodBank();
 getBloodDonorInEmergency();
 getCalledForDonationCount();
-gettotalCollectedBloodBagsInfo();
+//gettotalCollectedBloodBagsInfo();
 
 function gettotalCollectedBloodDetails(){
 	var bloodBankCampId = 1;
@@ -571,7 +571,7 @@ function buildCollectedBlood(result){
 				str+='<th class="text-center">Members</th>';
 			str+='</thead>';
 			str+='<tr>';
-				str+='<td class="text-center">0-2</td>';
+				str+='<td class="text-center">1-2</td>';
 				if(result.zerototwo == null || result.zerototwo == 0){
 					str+='<td class="text-center"> - </td>';
 				}else{
