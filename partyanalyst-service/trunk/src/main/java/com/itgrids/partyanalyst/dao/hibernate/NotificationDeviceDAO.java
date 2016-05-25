@@ -26,4 +26,10 @@ public class NotificationDeviceDAO extends GenericDaoHibernate<NotificationDevic
 			query.setParameter("imeiNo", imeiNo);
 			return query.list();
 	}
+	
+	public List<String> getNotificationActiveKeys(){
+		Query query = getSession().createQuery(" select distinct model.registeredId from NotificationDevice model where model.isActive ='true' ");
+			return query.list();
+	}
+
 }
