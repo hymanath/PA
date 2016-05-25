@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -25,8 +27,18 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 	private Long						    notificationDeviceId;
 	private INotificationService				notificationService;
 	private String status ;
+	private List<NotificationDeviceVO> notificationTypeList;
 	
 	
+	public List<NotificationDeviceVO> getNotificationTypeList() {
+		return notificationTypeList;
+	}
+
+	public void setNotificationTypeList(
+			List<NotificationDeviceVO> notificationTypeList) {
+		this.notificationTypeList = notificationTypeList;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -134,5 +146,29 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getNotificationDetails(){
+		try{
+			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
+			jObj = new JSONObject(getTask());
+			
+			notificationTypeList =  notificationService.getNotificationType();
+		}catch(Exception e){
+			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getNotificationsByTypeId(){
+		try{
+			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
+			jObj = new JSONObject(getTask());
+			Long typeId = jObj.getLong("notificationTypeId");
+			notificationTypeList =  notificationService.getNotificationDetailsByTypeId(typeId);
+		}catch(Exception e){
+			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }
