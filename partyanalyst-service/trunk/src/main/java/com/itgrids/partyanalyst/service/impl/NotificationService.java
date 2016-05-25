@@ -139,14 +139,15 @@ public class NotificationService implements INotificationService{
 		}
 	  }
 	 
-	 public void pushNotification(NotificationDeviceVO notifyVO){
+	 public String  pushNotification(NotificationDeviceVO notifyVO){
 		 try {
 			 GcmService gcmService = new GcmService();
 			 NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),notifyVO.getNotification());
-			 System.out.println(notificationDeviceVO);
+			 return notificationDeviceVO.getStatus();
 		} catch (Exception e) {
 			  log.error("Exception Occured in pushNotification() Method, Exception - "+e);
 		}
+		 return IConstants.FAILURE;
 	 }
 	 public List<NotificationDeviceVO> getActiveNotifications(NotificationDeviceVO inputVo) {
 		 List<NotificationDeviceVO>  returnList = null;

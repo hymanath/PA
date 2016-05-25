@@ -1028,7 +1028,7 @@ public interface IConstants {
 	public static final Long  APPOINTMENT_STATUS_SCHEDULED=3L;
 	//public static final Long[] TODAY_APPOINTMENTS_STATUS_LIST={2L,3L,4L,5L,8L,10L};
 	public static final Long[] TODAY_APPOINTMENTS_STATUS_LIST={3L,4L,10L};
-	public static final String[] LOGIN_SKIP_URLS_LIST = {"unionSearchRegiststrationAction.action","getCadreDetailsAction.action","affiliatedGraduatesRegistrationAction.action","getAddressDetailsAction.action","getVoterWorkAddressDetailsAction.action","getAllRelationDetails.action","getCadreLevelsForCadreSearchAction.action","getConstituenciesForDistrictAction.action","getSubLevelLctnsForConstituencyAndMandal.action","rtcUnionRegistrationPage.action","getVoterDetailsByVoterCardNumberAction.action","generateOTPForMobileNumberAction.action","validateOTPAction.action","registrationSuccessAction.action","saveRegistrationFeedbackQueriesDetailsAction.action"};
+	public static final String[] LOGIN_SKIP_URLS_LIST = {"notificationAction.action","unionSearchRegiststrationAction.action","getCadreDetailsAction.action","affiliatedGraduatesRegistrationAction.action","getAddressDetailsAction.action","getVoterWorkAddressDetailsAction.action","getAllRelationDetails.action","getCadreLevelsForCadreSearchAction.action","getConstituenciesForDistrictAction.action","getSubLevelLctnsForConstituencyAndMandal.action","rtcUnionRegistrationPage.action","getVoterDetailsByVoterCardNumberAction.action","generateOTPForMobileNumberAction.action","validateOTPAction.action","registrationSuccessAction.action","saveRegistrationFeedbackQueriesDetailsAction.action"};
 	public static final Long  APPOINTMENT_ACTION_STATUS_CHANGE = 1L;
 	
 	public static final String PAID_STATUS = "PAID";
