@@ -358,24 +358,31 @@ public class BloodBankService implements IBloodBankService{
 				    bloodDonorInfo.setRelativeName(bloodBanKVO.getRelativeName());
 				    bloodDonorInfo.setGender(bloodBanKVO.getSex());
 				    bloodDonorInfo.setAge(bloodBanKVO.getAge());
-				    if(bloodBanKVO.getDob()!=null && !bloodBanKVO.getDob().isEmpty()){
+				    if(bloodBanKVO.getDob()!=null && !bloodBanKVO.getDob().trim().isEmpty()){
 				    	  try {
 							bloodDonorInfo.setDateOfBirth(sdf.parse(bloodBanKVO.getDob()));
 						} catch (ParseException e) {
 							 e.printStackTrace();
 						}
 				    }
-				    bloodDonorInfo.setMaritalStatus(bloodBanKVO.getMarried());
+				    if(bloodBanKVO.getMarried() !=null && !bloodBanKVO.getMarried().trim().isEmpty()){
+				    	bloodDonorInfo.setMaritalStatus(bloodBanKVO.getMarried());
+				    }
+				    
 				    bloodDonorInfo.setMobileNo(bloodBanKVO.getMobile());
-				    bloodDonorInfo.setEmail(bloodBanKVO.getEmail());
+				    if(bloodBanKVO.getEmail() !=null && !bloodBanKVO.getEmail().trim().isEmpty())
+				    	bloodDonorInfo.setEmail(bloodBanKVO.getEmail());
 				    if(bloodBanKVO.getEducationId()!=null && bloodBanKVO.getEducationId()>0l){
 				    	  bloodDonorInfo.setEducationId(bloodBanKVO.getEducationId());
 				    }
 				    if(bloodBanKVO.getOccupationId()!=null && bloodBanKVO.getOccupationId()>0l){
 				    	  bloodDonorInfo.setOccupationId(bloodBanKVO.getOccupationId());
 				    }
-				    bloodDonorInfo.setAddress(bloodBanKVO.getAddress());				    
-				   Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(bloodBanKVO.getMembershipNo());				    
+				    if(bloodBanKVO.getAddress() !=null && !bloodBanKVO.getAddress().trim().isEmpty()){
+				    	bloodDonorInfo.setAddress(bloodBanKVO.getAddress());
+				    }
+				    
+				    Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(bloodBanKVO.getMembershipNo());				    
 				    bloodDonorInfo.setTdpCadreId(tdpCadreId);				    
 				    bloodDonorInfo.setInsertedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonorInfo.setUpdatedTime(presentDate.getCurrentDateAndTime());
@@ -420,7 +427,10 @@ public class BloodBankService implements IBloodBankService{
 				    }
 				    bloodDonation.setWillingToCallDonation(bloodBanKVO.getWillingToCallDonation());
 				    bloodDonation.setEmergencyDonation(bloodBanKVO.getWillingEmergencyDonation());
-				    bloodDonation.setRemarks(bloodBanKVO.getRemarks());
+				    if(bloodBanKVO.getRemarks() !=null && !bloodBanKVO.getRemarks().trim().isEmpty()){
+				    	bloodDonation.setRemarks(bloodBanKVO.getRemarks());
+				    }
+				    
 				    bloodDonation.setAcceptanceStatusId(1l);
 				    String dateArr[]=presentDate.getCurrentDateInStringFormatYYYYMMDD().split("-");
 				    Long year = Long.valueOf(dateArr[0]);
