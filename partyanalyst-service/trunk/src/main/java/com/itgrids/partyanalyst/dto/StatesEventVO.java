@@ -28,6 +28,8 @@ public class StatesEventVO implements Serializable{
 	private String dateString1;
 	private String dateString2;
 	
+	private boolean isCurrentDay;
+	
 	public Long getAttendees() {
 		return attendees;
 	}
@@ -124,6 +126,12 @@ public class StatesEventVO implements Serializable{
 	}
 	public void setDateString2(String dateString2) {
 		this.dateString2 = dateString2;
+	}
+	public boolean isCurrentDay() {
+		return isCurrentDay;
+	}
+	public void setCurrentDay(boolean isCurrentDay) {
+		this.isCurrentDay = isCurrentDay;
 	}
 	
 	
