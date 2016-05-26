@@ -359,8 +359,8 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	    			bankVO.setRelativeName(cadreDtlsArr.getString(1));
 	    			bankVO.setSex(cadreDtlsArr.getString(2));
 	    			String age=cadreDtlsArr.getString(3);
-	    			if(age!=null && !age.isEmpty()){
-	    				bankVO.setAge(Long.valueOf(age));
+	    			if(age!=null && !age.trim().isEmpty() && age.trim().length()!=0){
+	    				bankVO.setAge(Long.valueOf(age.trim()));
 	    		  }
 	    			if(cadreDtlsArr.getString(4) !=null && !cadreDtlsArr.getString(4).isEmpty()){
 	    				bankVO.setDob(cadreDtlsArr.getString(4));
@@ -374,8 +374,8 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	    			bankVO.setEducationId(Long.valueOf(cadreDtlsArr.getString(9)));
 	    			bankVO.setOccupationId(Long.valueOf(cadreDtlsArr.getString(10)));
 	    			String donationsInBloodBankCount=cadreDtlsArr.getString(11);
-	    			if(donationsInBloodBankCount!=null && !donationsInBloodBankCount.isEmpty()){
-	    				bankVO.setDonationsInBloodBank(Long.valueOf(donationsInBloodBankCount));
+	    			if(donationsInBloodBankCount!=null && !donationsInBloodBankCount.trim().isEmpty() && donationsInBloodBankCount.trim().length()!=0){
+	    				bankVO.setDonationsInBloodBank(Long.valueOf(donationsInBloodBankCount.trim()));
 	    			}
 	    			bankVO.setDonationsInOtherPlaces(cadreDtlsArr.getString(12));
 	    			bankVO.setLastDonation(cadreDtlsArr.getString(13));
