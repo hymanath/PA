@@ -354,7 +354,13 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				searchAttributeVO.getLocationTypeIdsList() != null && searchAttributeVO.getLocationTypeIdsList().size()>0)
 		{
 			queryStr.append(" select ");
-			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getTypeId().longValue() == 9999L){
+				queryStr.append(" S.stateId,S.stateName, ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT) && searchAttributeVO.getTypeId().longValue() == 9999L){
+				queryStr.append(" D.districtId, D.districtName  ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getTypeId().longValue() != 9999L){
 				queryStr.append(" model.constituency.state.stateId,model.constituency.state.stateName, ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
@@ -377,8 +383,13 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 			}
 			
 			queryStr.append(" model.locationLevel,count(model.locationValue) from ActivityLocationInfo model " );
-			
-			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
+			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getTypeId().longValue() == 9999L){
+				queryStr.append("  ,State S ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT) && searchAttributeVO.getTypeId().longValue() == 9999L){
+				queryStr.append("  ,District D ");
+			}
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.MANDAL)){
 				queryStr.append("  ,Tehsil T ,Panchayat P ");
 			}
 			else if( searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.URBAN)){
@@ -450,9 +461,14 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				}
 			}
 			else{
-				
-				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getTypeId().longValue() == 9999L){
+					queryStr.append(" and model.locationValue = S.stateId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getTypeId().longValue() != 9999L){
 					queryStr.append(" and model.constituency.state.stateId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT) && searchAttributeVO.getTypeId().longValue() == 9999L){
+					queryStr.append(" and model.locationValue = D.districtId and model.locationValue in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
 				}
 				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 					queryStr.append(" and model.constituency.district.districtId in (:locationIdsList) and model.activityPerformLevel.activityPerformLevelId in (:locationTypeIdsList) ");
@@ -470,10 +486,10 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 				queryStr.append("   and model.constituency.district.districtId between 11 and 23  ");
 			
 			
-			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getTypeId() != 9999L){
 				queryStr.append(" group by model.constituency.state.stateId,model.locationLevel order by ");
 			}
-			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT) && searchAttributeVO.getTypeId() != 9999L ){
 				queryStr.append(" group by model.constituency.district.districtId,model.locationLevel order by ");
 			}
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY)){
@@ -491,6 +507,8 @@ public List<Object[]> getNotConductedCountForAssemblyConstWise(Date startDate,Da
 			else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.WARD)){
 				queryStr.append(" group by C.constituencyId,model.locationLevel order by ");
 			}
+			else
+				queryStr.append(" order by ");
 			
 			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 				queryStr.append("  model.constituency.district.districtName  ");

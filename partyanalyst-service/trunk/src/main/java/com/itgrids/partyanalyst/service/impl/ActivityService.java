@@ -1245,7 +1245,7 @@ public class ActivityService implements IActivityService{
 					}
 					
 					
-				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+			if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getLevelId().longValue() != 4L){
 					List<BasicVO> areaWiseCountLsit = regionServiceDataImp.areaCountListByAreaIdsOnScope(searchAttributeVO,stateId1);
 					if(areaWiseCountLsit != null && areaWiseCountLsit.size()>0)
 					{
@@ -1336,9 +1336,45 @@ public class ActivityService implements IActivityService{
 				List<Object[]> questionnairesCount = null;
 				List<Object[]> yesCount = null;
 				Map<Long,ActivityVO> locationsMap = new LinkedHashMap<Long, ActivityVO>(0);
-				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getLevelId().longValue() == 4L ){
 					searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationValue());
+					 if(activityLevelId.longValue() > 2L)
+						 searchAttributeVO.setTypeId(9999L);//dummy value
+					questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
+					yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
+					searchAttributeVO.setConditionType("planned");
+						plannedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId);
+					searchAttributeVO.setConditionType(" infocell ");
+						infoCellconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
+					searchAttributeVO.setConditionType("ivr");
+						ivrconductedActivities = activityLocationInfoDAO.getActivityPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
+
+					searchAttributeVO.setConditionType("infocell");
+						infoCellNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 	
+					searchAttributeVO.setConditionType("ivr");
+						ivrNotPlannedActivities = activityLocationInfoDAO.getActivityNotPlannedInfoCellAndIVRCountsByLocation(searchAttributeVO,stateId); 
 					
+					segrigateResultsTypes(plannedActivities,locationsMap,"PLANNED",null);
+					
+					segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED",null);
+					segrigateResultsTypes(ivrconductedActivities,locationsMap,"IVR COVERED %",null);
+					segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR NOT PLANNED",null);
+					segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"IVR TOTAL",null);
+					
+					segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED",null);
+					segrigateResultsTypes(infoCellconductedActivities,locationsMap,"INFO CELL COVERED %",null);
+					segrigateResultsTypes(infoCellNotPlannedActivities,locationsMap,"INFO CELL NOT PLANNED",null);
+					segrigateResultsTypes(ivrNotPlannedActivities,locationsMap,"INFO CELL TOTAL",null);
+					
+					segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED",null);					
+					segrigateResultsTypes(yesCount,locationsMap,"WHATSAPP IMAGES COVERED %",null);	
+					segrigateResultsTypes(questionnairesCount,locationsMap,"NO OF WHATSAPP IMAGES RECIEVED",null);	
+					
+				}
+				else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+					searchAttributeVO.getLocationIdsList().add(searchAttributeVO.getLocationValue());
+					 if(activityLevelId.longValue() > 2L)
+						 searchAttributeVO.setTypeId(9999L);//dummy value
 					questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
 					yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 					searchAttributeVO.setConditionType("planned");
@@ -1772,11 +1808,15 @@ public class ActivityService implements IActivityService{
 						ActivityVO activityVO = locationsMap.get(locationId);
 						if(activityVO != null)
 						{
-							if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+							if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE) && searchAttributeVO.getLevelId()==4L){
+								//totalAreasCount = returnVO.getTotalCount();
+								//totalPlannedCount = activityVO.getPlannedCount();
+							}
+							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 								totalAreasCount = returnVO.getTotalCount();
 								totalPlannedCount = activityVO.getPlannedCount();
 							}
-							if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
+							else if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT)){
 								searchAttributeVO.setScopeId(3L);
 								activityVO.setName(activityVO.getName()+" District");
 								List<Long> locationTypeIdsList = new ArrayList<Long>(0);
@@ -2330,6 +2370,8 @@ public class ActivityService implements IActivityService{
 			locationVo.setStrDate(searchAttributeVO.getStartDate().toString());	
 			if(searchAttributeVO.getEndDate() != null)
 			locationVo.setEndDate(searchAttributeVO.getEndDate().toString());
+			if(searchAttributeVO.getTypeId() == 9999L)
+				locationVo.setTypeId(9999L);
 			BasicVO countVO = cadreCommitteeService.getLocationsHierarchyForEvent(locationVo);
 			if(commonMethodsUtilService.isListOrSetValid(returnVO.getActivityVoList())){
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
@@ -2342,7 +2384,17 @@ public class ActivityService implements IActivityService{
 					setImagesCount(countVO.getLocationsList(),returnVO.getActivityVoList());
 				}
 			}
-			
+			ActivityVO stateTypevo = new ActivityVO();
+			if(searchAttributeVO.getTypeId().longValue() == 9999L){
+				if(returnVO.getActivityVoList() != null && returnVO.getActivityVoList().size() > 0){
+					for (ActivityVO activityvo : returnVO.getActivityVoList()) {
+						if(activityvo.getName() != null && activityvo.getName().equalsIgnoreCase("Andhra Pradesh") && activityvo.getImagesCount().longValue() > 0L){
+							stateTypevo.getActivityVoList().add(activityvo);
+							return stateTypevo;
+						}
+					}
+				}
+			}
 		} catch (Exception e) {
 			LOG.error(" Exception occured in getActivityDetailsBySearchCriteria() ActivityService Class... ",e);
 		}

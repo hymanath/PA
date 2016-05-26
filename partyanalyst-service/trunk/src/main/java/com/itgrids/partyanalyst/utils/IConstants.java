@@ -742,6 +742,10 @@ public interface IConstants {
     public static final Long TDP_PARTY_ID=872l;
     public static final Long INDEPENDENT_ID=366l;
     public static final Long INC_PARTY_ID=362L;
+
+   // public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+  //  public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
+   // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
     
     
     public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
@@ -1085,6 +1089,7 @@ public interface IConstants {
 	public static final String GCM_SERVER_STATIC_MESSAGE = "Please Update Notifications";
 	
 	public static final String VOTER_IMG_FOLDER_PATH = "voter_images";
+	public static final String STATIC_STATE_IDS= "1,36";
 	
 	public static final Long[] PUBLIC_REPR_DESIGNATION_IDS= {1L,2L,12L}; 
 }

@@ -22,10 +22,16 @@ public class EventDocumentVO {
 	private int maxIndex;
 	private Long totalResult;
 	private String callFrom;
+	private Long typeId;
 	
 	
 	
-	
+	public Long getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
+	}
 	public String getCallFrom() {
 		return callFrom;
 	}
