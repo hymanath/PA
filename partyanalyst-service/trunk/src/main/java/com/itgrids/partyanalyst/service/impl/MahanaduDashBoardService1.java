@@ -1041,7 +1041,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				emailIds.add("a.dakavaram@gmail.com");
 				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
 				emailIds.add("chandu.itgrids.hyd@gmail.com");
-				//emailIds.add("aravind.itgrids.hyd@gmail.com");
+				emailIds.add("bezawada.srikanth@gmail.com");
+				emailIds.add("maddineni.ramesh@gmail.com");
+				emailIds.add("grajesh@telugudesam.org");
+				emailIds.add("aravind.itgrids.hyd@gmail.com");
 				
 				emailAttributesVO.setEmailIds(emailIds);
 				emailAttributesVO.setTime(time);
@@ -1734,5 +1737,5 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 		
 		
-  }
+}
 
