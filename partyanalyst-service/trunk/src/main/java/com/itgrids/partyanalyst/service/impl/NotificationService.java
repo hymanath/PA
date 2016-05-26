@@ -396,7 +396,7 @@ public class NotificationService implements INotificationService{
 			 notificationType.setNotificationType(notificationTypeText);
 			 notificationType.setIsActive("true");
 			 notificationType.setOrderNo(orderNo+1);
-			 notificationType.setTypeId(4l);
+			 notificationType.setTypeId(3l);
 			 notificationTypeDAO.save(notificationType);
 		 }catch(Exception e){
 			 log.error("Exception occured in saveNotificationType() Method ",e);
