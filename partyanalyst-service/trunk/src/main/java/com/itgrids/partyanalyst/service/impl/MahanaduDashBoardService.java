@@ -299,7 +299,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 					if(startTime!=null && endTime!=null ){
 						isCalc = true;
 						Calendar cal = Calendar.getInstance();
-				        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+				        cal.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
 				        cal.setTime(startTime);
 				        long t1 = cal.getTimeInMillis();
 				        cal.setTime(endTime);
