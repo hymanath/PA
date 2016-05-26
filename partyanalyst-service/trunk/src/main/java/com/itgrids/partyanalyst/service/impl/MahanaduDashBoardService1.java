@@ -536,6 +536,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			StatesEventVO stateVO = new StatesEventVO();
 			try{
 				
+				String currentDateStr = sdf.format(dateUtilService.getCurrentDateAndTime()); 
+						
 				Long attendeedCount = eventAttendeeDAO.stateWiseEventAttendeeCounts("attendee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
 				
 				if(attendeedCount != null && attendeedCount > 0l){
@@ -549,13 +551,18 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						stateVO.setNonInvitees(attendeedCount - stateVO.getInvitees());
 					}
 					
-					
+					 
 					//day wise
 					if(betweenDates != null && betweenDates.size() > 0){
 						   for(int i=0;i<betweenDates.size();i++){
 							   StatesEventVO dateVO = new StatesEventVO();
 							   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
 							   dateVO.setDataExist(false);
+							   
+							   if(currentDateStr.equalsIgnoreCase(dateVO.getDateStr())){
+								   dateVO.setCurrentDay(true);
+								}
+							   
 							   int dayCount = i+1;
 							   dateVO.setName("Day"+dayCount);
 							   if(stateVO.getSubMap() == null){
@@ -1040,7 +1047,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				List<String> emailIds = new ArrayList<String>();
 				emailIds.add("a.dakavaram@gmail.com");
 				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
-				emailIds.add("chandu.itgrids.hyd@gmail.com");
+				emailIds.add("chandug11@gmail.com");
 				emailIds.add("bezawada.srikanth@gmail.com");
 				emailIds.add("maddineni.ramesh@gmail.com");
 				emailIds.add("grajesh@telugudesam.org");
