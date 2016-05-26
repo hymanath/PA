@@ -247,6 +247,7 @@
 			</div>
 			<div class="panel-body" style="background-color:#f2f2f2">
 				<center><img id="publicRepresentativeAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+				<center style="position: absolute; left: 50%; top: 50%;"><img id="publicRepresentativelinkAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 				<div id="publicRepresentativeDiv"></div>
 			</div>
 		</div>
@@ -2733,6 +2734,7 @@ var tableToExcel = (function() {
   $(document).on('click','.publcRepAttnds',function(){
 	  //alert($(this).attr("attr_day"))
 	 //$("#popupId").modal("show");
+	 $("#publicRepresentativelinkAjax").show();
 	 var inviteeType = $(this).attr("attr_inviteeType");
 	 var desigId = $(this).attr("attr_desigId");
 	 var day = $(this).attr("attr_day");
@@ -2749,6 +2751,7 @@ var tableToExcel = (function() {
           url: 'getCandidateDetailsAction.action',
 		   data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			 $("#publicRepresentativelinkAjax").hide();
 			var str='';
 			if(result != null && result.length > 0){
 				str+='<table class="table table-bordered" id="dataTableForPublicRep">';
@@ -2821,17 +2824,26 @@ function getPublicrepresentatives(){
 				str+='<td rowspan="2"></td>';
 				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total Invitees</td>';
 				for(var i in result[0].subList){
-					if(result[0].subList[i].totalDaydataExist == true){
-						str+='<th class="text-center text-capitalize" colspan="2">'+result[0].subList[i].name+'</th>';
-					}
+					//if(result[0].subList[i].totalDaydataExist == true){
+						if(result[0].subList[i].currentDay == true){
+						   str+='<th class="text-center text-capitalize" colspan="2">'+result[0].subList[i].name+'</th>';
+						    break;
+					   }else{
+						   str+='<th class="text-center text-capitalize" colspan="2">'+result[0].subList[i].name+'</th>';
+					   }
 				}	
 			  str+='</tr>';
 			  str+='<tr>';
 				for(var i in result[0].subList){
-					if(result[0].subList[i].totalDaydataExist == true){
-						str+='<td class="text-center text-capitalize" >Attended</td>';
-						str+='<td class="text-center text-capitalize" >Not Attended</td>';
-					}
+					
+						if(result[0].subList[i].currentDay == true){
+						  str+='<td class="text-center text-capitalize" >Attended</td>';
+						  str+='<td class="text-center text-capitalize" >Not Attended</td>';
+						  break;
+					    }else{
+							str+='<td class="text-center text-capitalize" >Attended</td>';
+						  str+='<td class="text-center text-capitalize" >Not Attended</td>';
+						}
 				}
 			  str+='</tr>';
 			  	for(var j in result){
@@ -2844,19 +2856,33 @@ function getPublicrepresentatives(){
 						}
 						
 						for(var l in result[j].subList){
-							if(result[0].subList[l].totalDaydataExist == true){
-								if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
-									str+='<td class="text-center text-capitalize" > - </td>';
+							
+								if(result[j].subList[l].currentDay == true){
+									
+									if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
+										str+='<td class="text-center text-capitalize" > - </td>';
+									}else{
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+									}
+									if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
+										str+='<td class="text-center text-capitalize" > - </td>';
+									}else{
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+									}
+									break;
 								}else{
-									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+									if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
+										str+='<td class="text-center text-capitalize" > - </td>';
+									}else{
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+									}
+									if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
+										str+='<td class="text-center text-capitalize" > - </td>';
+									}else{
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+									}
 								}
-								if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
-									str+='<td class="text-center text-capitalize" > - </td>';
-								}else{
-									str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
-								}
-								
-							}
+							
 						}
 					str+='</tr>';
 				}
