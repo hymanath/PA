@@ -1019,10 +1019,13 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 						else if(activityLevelId == 1)					
 							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
 						else if(activityLevelId == 5)
-							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';							
+							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';
+						else if(activityLevelId == 4)
+							str+='<th style="background-color:#00B17D; color:#fff;">STATE</th>';
 						//str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
 						if(activityScopeId != 16)
 							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
+						
 						//str+='<th>PRESIDENT</th>';
 						//str+='<th>GENERAL SECRETARY</th>';
 						str+='<th style="background-color:#00B17D; color:#fff;">COMMITTEE MEMBERS</th>';
@@ -1076,9 +1079,10 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								*/
 								str+='<td style="text-align:center;padding-left:0px;padding-right:0px;">';
 								<!--str+='<input type="button" value="Popup" class="btn btn-success btn-xs" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="activityCadrePopup" />&nbsp;&nbsp;';-->
+								if(activityScopeId != 17){
 								str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
 								str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[i].locationId+'"/>';
-								
+								}
 									if(activityScopeId != 16){
 										if(result.result[i].isAlreadyImageUpload == "true"){								
 											str+='<img attr_location_Value="'+result.result[i].locationId+'" attr_location_Name=\''+result.result[i].locationName+'\' id="uploadImagesId" style="position:absolute;width: 40px; height: 40px; margin-left: 10px;background:#FFA500;" src="images/ImageUpload1.png"  title="Upload Images" attr_date="dateId'+result.result[i].locationId+'" />';
@@ -1269,9 +1273,14 @@ getUserAccessDistrictList();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
 	var districtId =$('#districtList').val();
+	
+	if(ActivityId == 17){
+		getActivityDatesByScopeId();
+		return;
+	}
+	
 	getQuestions();
 	getActivityDatesByScopeId();
-	
 	//$('#ErrDiv').html("");
 	var errStr ='';
 	if(activityTypeId == null || activityTypeId == 0)
