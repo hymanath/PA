@@ -16878,6 +16878,30 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	{
 		LocationWiseBoothDetailsVO returnVO = null;	
 		try {
+			if(activityLevelId.longValue() == 4l){
+				List<LocationWiseBoothDetailsVO> returnStateList = new ArrayList<LocationWiseBoothDetailsVO>();
+				String[] staArr = IConstants.STATIC_STATE_IDS.split(",");
+				List<Long> stateIds = new ArrayList<Long>();
+				if(staArr != null && staArr.length > 0){
+					for (int i = 0; i < staArr.length; i++) {
+						stateIds.add(Long.valueOf(staArr[i].toString()));
+					}
+				}
+				List<Object[]> stateList = stateDAO.getAllStatesByStateIds(stateIds);
+				if(commonMethodsUtilService.isListOrSetValid(stateList)){
+					for (Object[] obj : stateList) {
+						LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+						
+						vo.setLocationId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+						vo.setLocationName(obj[1] != null ? obj[1].toString():"");
+						
+						returnStateList.add(vo);
+					}
+				}
+				returnVO = new LocationWiseBoothDetailsVO();
+				returnVO.getResult().addAll(returnStateList);
+			}
+			else{
 			List<LocationWiseBoothDetailsVO> returnList = null;
 			List<Long> updatedLocationIdsList  = new ArrayList<Long>(0);
 			List<Long> notUpdatedLocationIdsList  = new ArrayList<Long>(0);
@@ -17204,6 +17228,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					}
 					returnVO.getResult().addAll(returnList);
 				}
+			}
 			}
 		} catch (Exception e) {
 			 LOG.error("Exception Occured in getActivityLocationDetails() method, Exception - ",e);

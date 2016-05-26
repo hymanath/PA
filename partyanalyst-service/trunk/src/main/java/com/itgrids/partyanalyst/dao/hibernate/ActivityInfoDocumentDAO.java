@@ -213,11 +213,20 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	public List<Object[]> getLocationWiseImageCount(EventDocumentVO inputVO,Date startDate,Date endDate,String type)
 	{
 		StringBuilder str = new StringBuilder();
-		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
+		
+		if(inputVO.getLocationScope().equalsIgnoreCase("state") && inputVO.getTypeId().longValue() == 9999L)
+		{
+			str.append(" select distinct model.userAddress.state.stateId,model.userAddress.state.stateName ");
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("district") && inputVO.getTypeId().longValue() == 9999L)
 		{
 			str.append(" select distinct model.userAddress.district.districtId,model.userAddress.district.districtName ");
 		}
-		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
+		if(inputVO.getLocationScope().equalsIgnoreCase("state") && inputVO.getTypeId().longValue() != 9999L)
+		{
+			str.append(" select distinct model.userAddress.district.districtId,model.userAddress.district.districtName ");
+		}
+		if(inputVO.getLocationScope().equalsIgnoreCase("district") && inputVO.getTypeId().longValue() != 9999L)
 		{
 			str.append(" select distinct model.userAddress.constituency.constituencyId,model.userAddress.constituency.name ");
 		}
@@ -250,31 +259,21 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		{
 			str.append(" and model.activityDocument.activityScopeId = :activityScopeId");
 		}
-		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
-		{
-			if(inputVO.getLocationValue() == 36)
-			{
-				str.append(" and model.userAddress.state.stateId = :locationValue group by model.userAddress.district.districtId ");
-			}
-			
-			if(inputVO.getLocationValue() == 1)
-			{
-				str.append(" and model.userAddress.state.stateId = :locationValue group by model.userAddress.district.districtId ");
-			}
-		}
-		
-		
-		if(inputVO.getLocationScope().equalsIgnoreCase("district"))
+		if(inputVO.getLocationScope().equalsIgnoreCase("state") && inputVO.getTypeId().longValue() == 9999L )
+				str.append(" and model.userAddress.state.stateId = :locationValue group by model.userAddress.state.stateId ");
+		else if(inputVO.getLocationScope().equalsIgnoreCase("state") && inputVO.getTypeId().longValue() != 9999L )
+			str.append(" and model.userAddress.state.stateId = :locationValue group by model.userAddress.district.districtId ");
+		if(inputVO.getLocationScope().equalsIgnoreCase("district") && inputVO.getTypeId().longValue() == 9999L)
+			str.append(" and model.userAddress.district.districtId = :locationValue group by model.userAddress.district.districtId ");
+		if(inputVO.getLocationScope().equalsIgnoreCase("district") && inputVO.getTypeId().longValue() != 9999L)
 			str.append(" and model.userAddress.district.districtId = :locationValue group by model.userAddress.constituency.constituencyId ");
-		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.MANDAL))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.MANDAL))
 			str.append(" and model.userAddress.constituency.constituencyId = :locationValue group by model.userAddress.tehsil.tehsilId ");
-		
-		if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("constituency") && type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			str.append(" and model.userAddress.constituency.constituencyId = :locationValue group by model.userAddress.localElectionBody.localElectionBodyId ");
-		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
 			str.append(" and model.userAddress.tehsil.tehsilId = :locationValue group by model.userAddress.panchayat.panchayatId");
-	
-		if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+		else if(inputVO.getLocationScope().equalsIgnoreCase("mandal") && inputVO.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
 			str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationValue group by model.userAddress.ward.constituencyId ");
 		Query query = getSession().createQuery(str.toString());
 		if(inputVO.getLocationScope().equalsIgnoreCase("mandal"))
