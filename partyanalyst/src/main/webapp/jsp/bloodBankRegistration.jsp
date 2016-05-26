@@ -746,9 +746,7 @@ $(document).on("click","#cadreDetailsId",function(){
      $(".ageErrorCls").html(' ');
      $(".mobileNoErrorCls").html(''); 
      $(".dobErrorCls").html(' '); */
-	 $(".genderErrorCls").html(' ');
-	 
-	 getCadreDetails();
+	  getCadreDetails();
 });
 $(document).on("click",".printCls",function(){
 	 window.print();
@@ -773,11 +771,13 @@ var GmembershipNo;
      $(".ageErrorCls").html(' ');
      $(".mobileNoErrorCls").html(''); 
      $(".dobErrorCls").html(' ');
+	 $(".genderErrorCls").html(' ');
 	 $("#statusId").html(' ');
-	   $("#printBtnId").hide();
-	   $("#submitBtnId").prop('disabled', false);
-	   $("#cdrDtlsSrchPrcssngImgId").show();
-	   var jObj = {
+	 $("#printBtnId").hide();
+	 $("#submitBtnId").prop('disabled', false);
+	 $("#cdrDtlsSrchPrcssngImgId").show();
+	 
+	 var jObj = {
 		   memberShipNo:membserShipId
 		}
 		GmembershipNo = membserShipId;
