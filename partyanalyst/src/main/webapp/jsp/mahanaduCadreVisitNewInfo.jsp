@@ -230,7 +230,7 @@
 				<div class="panel-heading">
 					<div class="row">
 						<div class="col-md-8">
-							<h4 class="panel-title">MEMBERS IN CAMPUS NOW & DAY WISE COUNT</h4>
+							<h4 class="panel-title">VISITORS NOW IN CAMPUS</h4>
 						</div>
 						<div class="col-md-4">
 							<div class="apSwitch">
@@ -272,6 +272,7 @@
 							</div>
 						</div>
 						<div class="panel-body" style="padding:0px;">
+							<center><img id="distWiseTableAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 							<div id="distWiseTableDivId" ></div>
 						</div>
 					</div>
@@ -287,7 +288,7 @@
 							</div>
 						</div>
 						<div class="panel-body" style="padding:0px;">
-						 
+						 	<center><img id="constWiseTableAjax" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center>
 							<div  id="constWiseTableDivId"></div>
 						</div>
 					</div>					
@@ -1093,6 +1094,7 @@ function buildTotalVisitorsResult(result){
 	});
 	
 	function getDistrictWiseMembersCountInCampus(){
+		$("#distWiseTableAjax").show();
 		var stateIds = [];
 		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
 		if($("#tsSwitch").is(":checked")){
@@ -1121,6 +1123,7 @@ function buildTotalVisitorsResult(result){
 			  url: 'getDistrictWiseMembersCountInCampusAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
 			}).done(function(result){
+				$("#distWiseTableAjax").hide();
 				if(result != null && result.subList != null && result.subList.length > 0){
 					var str = '';
 					var flag=false;
@@ -1188,6 +1191,8 @@ function buildTotalVisitorsResult(result){
 	
 	
 	function getConstituencyWiseMembersCountInCampus(){
+		
+		$("#constWiseTableAjax").show();
 		var stateIds = [];
 		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
 		if($("#tsSwitch").is(":checked")){
@@ -1216,6 +1221,7 @@ function buildTotalVisitorsResult(result){
 			  url: 'getConstituencyWiseMembersCountInCampusAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
 			}).done(function(result){
+				$("#constWiseTableAjax").hide();
 				if(result != null && result.subList != null && result.subList.length > 0){
 					var str = '';
 					var flag=false;
