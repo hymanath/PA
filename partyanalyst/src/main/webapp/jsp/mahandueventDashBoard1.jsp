@@ -1100,6 +1100,7 @@ function buildDistrictTable(result,reportLevelId){
 			str+='<th rowspan="2" style="vertical-align:middle">DISTRICT NAME</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED %</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
 			
@@ -1143,7 +1144,12 @@ function buildDistrictTable(result,reportLevelId){
 			if(result[j].attendees == 0 || result[j].attendees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].attendees+' <span>('+result[j].attendeePercantage+'%)</span></td>';
+				str+='<td class="text-center">'+result[j].attendees+'</td>';
+			}
+			if(result[j].attendeePercantage == 0 || result[j].attendeePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendeePercantage+' %</td>';
 			}
 			
 			if(result[j].invitees == 0 || result[j].invitees == null){
@@ -1195,7 +1201,7 @@ function buildDistrictTable(result,reportLevelId){
 		"searching": true,
 		"autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"ordering": false
+		"order": [ 4, 'desc' ]
     });
 	$("#datatableId_filter").css("margin-top","-29px");
 	
@@ -1313,6 +1319,7 @@ function buildConstTable(result,reportLevelId){
 		str+='<th rowspan="2" style="vertical-align:middle;">CONSTITUENCY</th>';
 		str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
 		str+='<th rowspan="2" style="vertical-align:middle;">TOTAL ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;">TOTAL ATTENDED %</th>';
 		str+='<th rowspan="2" style="vertical-align:middle;">INVITEES ATTENDED</th>';
 		str+='<th rowspan="2" style="vertical-align:middle;">NON INVITEES ATTENDED</th>';
 	
@@ -1360,7 +1367,12 @@ function buildConstTable(result,reportLevelId){
 			if(result[j].attendees ==0 || result[j].attendees == null){
 				str+='<td class="text-center">-</td>';
 			}else{
-				str+='<td class="text-center">'+result[j].attendees+' <span>('+result[j].attendeePercantage+'%)</span></td>';
+				str+='<td class="text-center">'+result[j].attendees+'</td>';
+			}
+			if(result[j].attendeePercantage ==0 || result[j].attendeePercantage == null){
+				str+='<td class="text-center">-</td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendeePercantage+' %</td>';
 			}
 			
 			if(result[j].invitees ==0 || result[j].invitees == null){
@@ -1414,7 +1426,7 @@ function buildConstTable(result,reportLevelId){
 		 "searching": true,
 		 "autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"ordering": false
+		"order": [ 5, 'desc' ]
 		
     });
 	$("#constituencyDataTableId_filter").css("margin-top","-29px");
@@ -2739,7 +2751,7 @@ var tableToExcel = (function() {
         }).done(function(result){
 			var str='';
 			if(result != null && result.length > 0){
-				str+='<table class="table table-bordered">';
+				str+='<table class="table table-bordered" id="dataTableForPublicRep">';
 				str+='<thead>';
 				str+='<th>IMAGE</th>';
 				str+='<th>NAME</th>';
@@ -2766,6 +2778,15 @@ var tableToExcel = (function() {
 			}
 			$("#showModelConstcy").html(str);
 			$("#popupId").modal("show");
+			$('#dataTableForPublicRep').DataTable({
+				 "paging":   true,
+				 "info":     true,
+				 "searching": true,
+				 "autoWidth": true,
+				"sDom": '<"top"fl>rt<"bottom"ip><"clear">',
+				"ordering": false
+				
+			});
 		 });
 }); 
 
