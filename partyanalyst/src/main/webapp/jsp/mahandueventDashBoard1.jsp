@@ -1101,7 +1101,7 @@ function buildDistrictTable(result,reportLevelId){
 			str+='<th rowspan="2" style="vertical-align:middle">DISTRICT NAME</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITEES</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
-			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED %</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED<br> %</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
 			
