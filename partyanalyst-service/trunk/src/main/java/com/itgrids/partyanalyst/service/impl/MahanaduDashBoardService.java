@@ -886,7 +886,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  /*Total,Invited and Non invited Cadre*/		  
 			  //0.total,1.districtId,2.districtName
-			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(eventId,districtQueryStr1.toString(),todayDate);
+			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(entryEventId,districtQueryStr1.toString(),todayDate);
 			  
 			  if(totalCountList !=null && totalCountList.size()>0){				  
 				  for(Object[] obj : totalCountList) {							  
@@ -920,7 +920,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  
 				  /*Total,Invited and Non invited Cadre for other states*/		  
 				  //0.total,1.districtId,2.districtName
-				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString1.toString(),todayDate);
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(entryEventId,otherStatesLocationQueryString1.toString(),todayDate);
 				  
 				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
 					  for (Object[] obj : otherStatesTotalCountList) {
@@ -1038,7 +1038,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  /*Total,Invited and Non invited Cadre*/		  
 			  //0.total,1.contId,2.constName
-			  List<Object[]> totalCountList = eventAttendeeDAO.getConstituencyWiseTotalInvitedAndNonInvitedCount(eventId,constituencyQueryStr1.toString(),todayDate);
+			  List<Object[]> totalCountList = eventAttendeeDAO.getConstituencyWiseTotalInvitedAndNonInvitedCount(entryEventId,constituencyQueryStr1.toString(),todayDate);
 			  
 			  if(totalCountList !=null && totalCountList.size()>0){				  
 				  for(Object[] obj : totalCountList) {							  
@@ -1070,7 +1070,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  
 				  /*Total,Invited and Non invited Cadre for other states*/		  
 				  //0.total,1.districtId,2.districtName
-				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(eventId,otherStatesLocationQueryString1.toString(),todayDate);
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(entryEventId,otherStatesLocationQueryString1.toString(),todayDate);
 				  
 				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
 					  for (Object[] obj : otherStatesTotalCountList) {
@@ -1260,12 +1260,12 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			
 			//get total counts
-			//0-total,1-invitees,2-non invitees,3-hour
+			//0-total,1-hour
 			List<Object[]> totalCountsObjList = eventAttendeeDAO.getHourWiseTotalVisitorsCount(entryEventId,date,null,null);
 			MahanaduEventVO vo1 = new MahanaduEventVO();
 			if(totalCountsObjList != null && totalCountsObjList.size() > 0){
 				for (Object[] objects : totalCountsObjList) {
-					if((Long)objects[3]<=8){
+					if((Long)objects[1]<=8){
 						vo1.setEightam(vo1.getEightam()+(Long)objects[0]);
 						vo1.setNineam(vo1.getEightam());
 						vo1.setTenam(vo1.getEightam());
@@ -1280,7 +1280,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getEightam());
 						vo1.setEightpm(vo1.getEightam());
 					}
-					if((Long)objects[3]==9){
+					if((Long)objects[1]==9){
 						vo1.setNineam(vo1.getEightam()+(Long)objects[0]);
 						vo1.setTenam(vo1.getNineam());
 						vo1.setElevenam(vo1.getNineam());
@@ -1294,7 +1294,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getNineam());
 						vo1.setEightpm(vo1.getNineam());
 					}
-					if((Long)objects[3]==10){
+					if((Long)objects[1]==10){
 						vo1.setTenam(vo1.getNineam()+(Long)objects[0]);
 						vo1.setElevenam(vo1.getTenam());
 						vo1.setTwelvpm(vo1.getTenam());
@@ -1307,7 +1307,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getTenam());
 						vo1.setEightpm(vo1.getTenam());
 					}
-					if((Long)objects[3]==11){
+					if((Long)objects[1]==11){
 						vo1.setElevenam(vo1.getTenam()+(Long)objects[0]);
 						vo1.setTwelvpm(vo1.getElevenam());
 						vo1.setOnepm(vo1.getElevenam());
@@ -1319,7 +1319,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getElevenam());
 						vo1.setEightpm(vo1.getElevenam());
 					}
-					if((Long)objects[3]==12){
+					if((Long)objects[1]==12){
 						vo1.setTwelvpm(vo1.getElevenam()+(Long)objects[0]);
 						vo1.setOnepm(vo1.getTwelvpm());
 						vo1.setTwopm(vo1.getTwelvpm());
@@ -1330,7 +1330,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getTwelvpm());
 						vo1.setEightpm(vo1.getTwelvpm());
 					}
-					if((Long)objects[3]==13){
+					if((Long)objects[1]==13){
 						vo1.setOnepm(vo1.getTwelvpm()+(Long)objects[0]);
 						vo1.setTwopm(vo1.getOnepm());
 						vo1.setThreepm(vo1.getOnepm());
@@ -1340,7 +1340,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getOnepm());
 						vo1.setEightpm(vo1.getOnepm());
 					}
-					if((Long)objects[3]==14){
+					if((Long)objects[1]==14){
 						vo1.setTwopm(vo1.getOnepm()+(Long)objects[0]);
 						vo1.setThreepm(vo1.getTwopm());
 						vo1.setFourpm(vo1.getTwopm());
@@ -1349,7 +1349,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getTwopm());
 						vo1.setEightpm(vo1.getTwopm());
 					}
-					if((Long)objects[3]==15){
+					if((Long)objects[1]==15){
 						vo1.setThreepm(vo1.getTwopm()+(Long)objects[0]);
 						vo1.setFourpm(vo1.getThreepm());
 						vo1.setFivepm(vo1.getThreepm());
@@ -1357,30 +1357,30 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setSevenpm(vo1.getThreepm());
 						vo1.setEightpm(vo1.getThreepm());
 					}
-					if((Long)objects[3]==16){
+					if((Long)objects[1]==16){
 						vo1.setFourpm(vo1.getThreepm()+(Long)objects[0]);
 						vo1.setFivepm(vo1.getFourpm());
 						vo1.setSixpm(vo1.getFourpm());
 						vo1.setSevenpm(vo1.getFourpm());
 						vo1.setEightpm(vo1.getFourpm());
 					}
-					if((Long)objects[3]==17){
+					if((Long)objects[1]==17){
 						vo1.setFivepm(vo1.getFourpm()+(Long)objects[0]);
 						vo1.setSixpm(vo1.getFivepm());
 						vo1.setSevenpm(vo1.getFivepm());
 						vo1.setEightpm(vo1.getFivepm());
 					}
-					if((Long)objects[3]==18){
+					if((Long)objects[1]==18){
 						vo1.setSixpm(vo1.getFivepm()+(Long)objects[0]);
 						vo1.setSevenpm(vo1.getSixpm());
 						vo1.setEightpm(vo1.getSixpm());
 						
 					}
-					if((Long)objects[3]==19){
+					if((Long)objects[1]==19){
 						vo1.setSevenpm(vo1.getSixpm()+(Long)objects[0]);
 						vo1.setEightpm(vo1.getSevenpm());
 					}
-					if((Long)objects[3]>=20 && (Long)objects[3]<=24){
+					if((Long)objects[1]>=20 && (Long)objects[1]<=24){
 						vo1.setEightpm(vo1.getSevenpm()+(Long)objects[0]);
 					}
 					/*vo.setTotal((Long)objects[0]);
