@@ -1530,7 +1530,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		      str.append("<table width='100%' border='1'>");
 		      
 		        str.append("<tr bgcolor='#ccc'>");
-		          str.append("<td color='#d64d54' colspan='4'><font size='3' style='text-align:center;'>DISTRICT WISE MEMBERS NOW IN CAMPUS</font></td>");
+		          str.append("<td color='#d64d54' colspan='4'><font size='3' style='text-align:center;'>DISTRICT WISE VISITORS NOW IN CAMPUS</font></td>");
 		        str.append("</tr>");
 		     
 		        str.append("<font  size='2'>");
@@ -1582,7 +1582,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		     String stateColor = "#fff";
 		     str.append("<table width='100%' border='1'>");
 		         str.append("<tr bgcolor='#ccc'>");
-		           str.append("<td color='#d64d54' colspan='4' style='text-align:center;'><font size='3'>CONSTITUENCY WISE MEMBERS NOW IN CAMPUS</font></td>");
+		           str.append("<td color='#d64d54' colspan='4' style='text-align:center;'><font size='3'>CONSTITUENCY WISE VISITORS NOW IN CAMPUS</font></td>");
 		        str.append("</tr>");
 		        
 		        str.append("<font  size='2'>");
