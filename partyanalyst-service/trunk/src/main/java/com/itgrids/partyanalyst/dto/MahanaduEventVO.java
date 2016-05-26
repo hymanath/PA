@@ -87,6 +87,7 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	
 	private Long attended;
 	private Long notAttended;
+	private boolean isCurrentDay;
 	
 	public Long getTotalVisitorsCount() {
 		return totalVisitorsCount;
@@ -474,6 +475,12 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	}
 	public void setNotAttended(Long notAttended) {
 		this.notAttended = notAttended;
+	}
+	public boolean isCurrentDay() {
+		return isCurrentDay;
+	}
+	public void setCurrentDay(boolean isCurrentDay) {
+		this.isCurrentDay = isCurrentDay;
 	}
 	
 }

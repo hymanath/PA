@@ -1071,20 +1071,33 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			 if( pubList != null && pubList.size() > 0){
 			    	
 			    MahanaduEventVO firstLocation = pubList.get(0);
+			    
 			    str.append("<table width='100%' border='1'>");
 			    str.append("<tr>");
 				str.append("<td rowspan='2'></td>");
 				str.append("<td rowspan='2' style='text-align:center'>Total Invitees</td>");
 				for(int i=0; i< firstLocation.getSubList().size() ; i++){
-					if( firstLocation.getSubList().get(i).isTotalDaydataExist() ){
+					
+					if( firstLocation.getSubList().get(i).isCurrentDay() ){
+						str.append("<th colspan='2' style='text-align:center' >"+firstLocation.getSubList().get(i).getName()+"</th>");
+						break;
+					}else{
 						str.append("<th colspan='2' style='text-align:center' >"+firstLocation.getSubList().get(i).getName()+"</th>");
 					}
+					
 				}
 				
 				str.append("</tr>");
 				str.append("<tr>");
 				for(int i=0; i< firstLocation.getSubList().size() ; i++){
-					if( firstLocation.getSubList().get(i).isTotalDaydataExist() ){
+					
+					if( firstLocation.getSubList().get(i).isCurrentDay() ){
+						
+						str.append("<td style='text-align:center'>Attended</td>");
+						str.append("<td style='text-align:center'>Not Attended</td>");
+						break;
+					}else{
+
 						str.append("<td style='text-align:center'>Attended</td>");
 						str.append("<td style='text-align:center'>Not Attended</td>");
 					}
@@ -1098,7 +1111,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				for(int j=0;j< pubList.get(i).getSubList().size();j++){
 	    			
-	    			if( firstLocation.getSubList().get(j).isTotalDaydataExist()){
+	    			if( pubList.get(i).getSubList().get(j).isCurrentDay()){
+	    				
 	    				if( pubList.get(i).getSubList().get(j).getAttended() != null && pubList.get(i).getSubList().get(j).getAttended().longValue() > 0l){
 	    					str.append("<td style='text-align:center'> "+pubList.get(i).getSubList().get(j).getAttended()+" </td>");
 	    				}else{
@@ -1110,6 +1124,19 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	    					str.append("<td style='text-align:center'> - </td>");
 	    				}
 	    				
+	    				break;
+	    			}else{
+	    				
+	    				if( pubList.get(i).getSubList().get(j).getAttended() != null && pubList.get(i).getSubList().get(j).getAttended().longValue() > 0l){
+	    					str.append("<td style='text-align:center'> "+pubList.get(i).getSubList().get(j).getAttended()+" </td>");
+	    				}else{
+	    					str.append("<td style='text-align:center'> - </td>");
+	    				}
+	    				if( pubList.get(i).getSubList().get(j).getNotAttended() != null && pubList.get(i).getSubList().get(j).getNotAttended().longValue() > 0l){
+	    					str.append("<td style='text-align:center'> "+pubList.get(i).getSubList().get(j).getNotAttended()+" </td>");
+	    				}else{
+	    					str.append("<td style='text-align:center'> - </td>");
+	    				}
 	    			}
 				}
 				
@@ -1612,6 +1639,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			  try{
 				  
+				  String currentDateStr = format.format(dateUtilService.getCurrentDateAndTime());
+				  
 				  //Dates
 				  Date startDate = null;
 				  Date endDate = null;
@@ -1647,6 +1676,11 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 								  dayVO.setName("Day"+(i+1));
 								  dayVO.setDateStr(format.format(betweenDates.get(i)));
 								  dayVO.setNotAttended( desgVO.getInvitees() );
+								  
+								  if(currentDateStr.equalsIgnoreCase(dayVO.getDateStr())){
+									  dayVO.setCurrentDay(true);
+								  }
+								  
 								  dayVO.setTotalDaydataExist(false);
 								  if(desgVO.getSubMap() == null){
 									  desgVO.setSubMap(new LinkedHashMap<String, MahanaduEventVO>(0));  
