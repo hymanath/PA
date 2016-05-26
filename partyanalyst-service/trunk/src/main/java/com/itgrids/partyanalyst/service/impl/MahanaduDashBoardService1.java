@@ -645,7 +645,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 								
 								if( present > previous){
 									Double percantage = present - previous;
-									stateVO.setCalcPercantage(percantage.toString());
+									stateVO.setCalcPercantage(decimalFormat .format(percantage));
 									stateVO.setHighOrlow("Higher");
 									stateVO.setDateString1(stateVO.getSubList().get(i).getName());
 									stateVO.setDateString2(stateVO.getSubList().get(i-1).getName());
