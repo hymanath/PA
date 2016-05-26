@@ -897,7 +897,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select count(distinct EA.tdp_cadre_id) as TOTAL,count(distinct EI.tdp_cadre_id) as INVITES ," +
+		/*str.append(" select count(distinct EA.tdp_cadre_id) as TOTAL,count(distinct EI.tdp_cadre_id) as INVITES ," +
 				" (count(distinct EA.tdp_cadre_id)-count(distinct EI.tdp_cadre_id)) as NONINVITEES " +
 				" ,hour(EA.attended_time)  as HOUR from  event E, " +
 				" event_attendee EA left outer join event_invitee EI " +
@@ -907,12 +907,13 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" EA.event_id = E.event_id" +
 				" and date(EA.attended_time) = :date " +
 				" and E.event_id = :parentEventId " +
-				" group by  hour(EA.attended_time) order by hour(EA.attended_time);");
+				" group by  hour(EA.attended_time) order by hour(EA.attended_time);");*/
+		str.append("select count(tdp_cadre_id) as TOTAL,Hours as HOUR" +
+				" from (select distinct tdp_cadre_id,max(hour(attended_time)) Hours from event_attendee " +
+				" where event_id=:parentEventId and date(attended_time)=:date group by tdp_cadre_id) sadf group by Hours");
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("TOTAL",Hibernate.LONG)
-				.addScalar("INVITES",Hibernate.LONG)
-				.addScalar("NONINVITEES",Hibernate.LONG)
 				.addScalar("HOUR",Hibernate.LONG);
 		
 		query.setDate("date", date);			
@@ -1005,7 +1006,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
-	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String districtQueryStr,Date toDayDate){
+	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String districtQueryStr,Date toDayDate){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -1048,16 +1049,16 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
 					str.append(districtQueryStr);
 			}
-		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.district.districtId");
+		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.district.districtId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameter("entryEventId", entryEventId);
 		query.setDate("toDayDate", toDayDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		
 		return query.list();
 	}
 	
-	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String constituencyQueryStr,Date toDayDate){
+	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String constituencyQueryStr,Date toDayDate){
 		
 		StringBuilder str = new StringBuilder();
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
@@ -1066,9 +1067,9 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			if(constituencyQueryStr !=null && !constituencyQueryStr.isEmpty()){
 					str.append(constituencyQueryStr);
 			}
-		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.constituencyId");
+		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.constituencyId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameter("entryEventId", entryEventId);
 		query.setDate("toDayDate", toDayDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		
@@ -1336,7 +1337,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
-	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todateDate){
+	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String queryStr,Date todateDate){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -1380,16 +1381,16 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			if(queryStr !=null && !queryStr.isEmpty()){
 					str.append(queryStr);
 			}
-		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.district.districtId");
+		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.district.districtId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameter("entryEventId", entryEventId);
 		query.setDate("toDayDate", todateDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
 		return query.list();
 	}
 	
-	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate){
+	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String queryStr,Date todayDate){
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
@@ -1398,9 +1399,9 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			if(queryStr !=null && !queryStr.isEmpty()){
 					str.append(queryStr);
 			}
-		str.append(" and date(model.attendedTime)=:toDayDate and model.event.parentEventId=:eventId group by model.tdpCadre.userAddress.constituency.constituencyId");
+		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.constituencyId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameter("entryEventId", entryEventId);
 		query.setDate("toDayDate", todayDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
 		
