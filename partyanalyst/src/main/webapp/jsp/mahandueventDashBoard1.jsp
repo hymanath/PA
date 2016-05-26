@@ -838,7 +838,9 @@ $(".maineventCls").each(function(){
 				  str+='<td colspan="4" class="f_14 colorBlack">DAYWISE</td>';
 				str+='</tr>';
 				 for( var i = 0; i < stateVO.subList.length; i++){
-					 if(stateVO.subList[i].dataExist){
+					 
+					 if( stateVO.subList[i].currentDay){
+						 
 						  var dayCount = '0'+(i+1);
 						  str+='<tr>';
 							  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
@@ -858,9 +860,33 @@ $(".maineventCls").each(function(){
 									str+='<td class="f_12">Non-Invitees<br/>'+stateVO.subList[i].nonInvitees+'</td>';
 								}
 							str+='</tr>';
+							break;
+					 }else{
+						 
+						 var dayCount = '0'+(i+1);
+						  str+='<tr>';
+							  str+='<td><span class="dayCount">'+dayCount+'</span></td>';
+								if(stateVO.subList[i].attendees == 0 || stateVO.subList[i].attendees == null ){
+									str+='<td class="f_12">TOTAL<br/> - </td>';
+								}else{
+									str+='<td class="f_12">TOTAL<br/>'+stateVO.subList[i].attendees+'</td>';
+								}
+								if(stateVO.subList[i].invitees == 0 || stateVO.subList[i].invitees == null ){
+									str+='<td class="f_12">Invitees<br/> - </td>';
+								}else{
+									str+='<td class="f_12">Invitees<br/>'+stateVO.subList[i].invitees+'</td>';
+								}
+								if(stateVO.subList[i].nonInvitees == 0 || stateVO.subList[i].nonInvitees == null ){
+									str+='<td class="f_12">Non-Invitees<br/> - </td>';
+								}else{
+									str+='<td class="f_12">Non-Invitees<br/>'+stateVO.subList[i].nonInvitees+'</td>';
+								}
+							str+='</tr>';
+						 
 					 }
 				} 
 			str+='</table>';
+			
 			if( stateVO.calcPercantage != null && stateVO.calcPercantage.trim().length>0){
 					str+='<div class="progress progressWhite">';
 					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+stateVO.calcPercantage+'%;">';
@@ -2853,7 +2879,7 @@ function getPublicrepresentatives(){
 						if(result[j].invitees == null || result[j].invitees ==0){
 							str+='<td class="text-center text-capitalize" > - </td>';
 						}else{
-							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
+							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
 						}
 						
 						for(var l in result[j].subList){
@@ -2863,24 +2889,24 @@ function getPublicrepresentatives(){
 									if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
 									}
 									if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
 									}
 									break;
 								}else{
 									if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
 									}
 									if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="30" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
 									}
 								}
 							
