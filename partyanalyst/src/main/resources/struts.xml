@@ -231,10 +231,6 @@
 			 <result name="assessConstituencyResults" type="chain">constituencyPageAction</result>
 			 <result name="problemDiscussionRedirect" type="chain">problemCompleteDetailsAction</result>
 			 <result name="candidatePageRedirect" type="chain">candidateElectionResultsAction</result>
-			 	
-			 <result name="bloodBankRegistration" type="chain">bloodBankRegistrationAction</result>
-			 <result name="bloodBankDashboard" type="chain">bloodBankDashBoardAction</result>
-			 <result name="bloodBankBleeding" type="chain">bloodBankBleadingAction</result>	
 			 	 	 
         </action>
 		
@@ -12215,14 +12211,17 @@
 	
 	<action name="bloodBankRegistrationAction" class="bloodBankAction" method="bloodBankRegistration">
 		<result name="success">/jsp/bloodBankRegistration.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
 	<action name="bloodBankDashBoardAction" class="bloodBankAction" method="bloodBankDashBoard">
 		<result name="success">/jsp/bloodBankDashBoard.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
 	<action name="bloodBankBleadingAction" class="bloodBankAction" method="bloodBankBleading">
 		<result name="success">/jsp/bloodBankBleading.jsp</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
 	
 	<action name="getOccuationsAction" class="bloodBankAction" method="getOccuations">
