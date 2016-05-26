@@ -642,6 +642,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+</div><!-- /.modal -->
 
 
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
