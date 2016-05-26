@@ -247,7 +247,6 @@
 			</div>
 			<div class="panel-body" style="background-color:#f2f2f2">
 				<center><img id="publicRepresentativeAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-				<center style="position: absolute; left: 50%; top: 50%;"><img id="publicRepresentativelinkAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 				<div id="publicRepresentativeDiv"></div>
 			</div>
 		</div>
@@ -472,6 +471,7 @@
         <h4 class="modal-title" id="myModalLabel"><b>Candidate Details</b></h4>
       </div>
      <div class="modal-body pad_0">
+	 <center ><img id="publicRepresentativelinkAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 	 <div id="showModelConstcy"></div>
 	  </div>
 	  </div>
@@ -1939,6 +1939,7 @@ showHide();
 		countDetailsCalls();
 		locationWiseCalls();
 		stateWiseEventAttendeeCounts();
+		getPublicrepresentatives();
 	}
 	
 	
@@ -2733,7 +2734,8 @@ var tableToExcel = (function() {
 
   $(document).on('click','.publcRepAttnds',function(){
 	  //alert($(this).attr("attr_day"))
-	 //$("#popupId").modal("show");
+	  $("#showModelConstcy").html('');
+	 $("#popupId").modal("show");
 	 $("#publicRepresentativelinkAjax").show();
 	 var inviteeType = $(this).attr("attr_inviteeType");
 	 var desigId = $(this).attr("attr_desigId");
@@ -2780,7 +2782,6 @@ var tableToExcel = (function() {
 				str+='No Date Availabel.';
 			}
 			$("#showModelConstcy").html(str);
-			$("#popupId").modal("show");
 			$('#dataTableForPublicRep').DataTable({
 				 "paging":   true,
 				 "info":     true,
