@@ -417,9 +417,9 @@ $(".panelDefault").height(maxHeight);
 	
     $(document).ready(function(){
 		//page refreshing for each 10 mnts
-		setInterval(function(){ 
+		/* setInterval(function(){ 
 			$( ".refreshButton" ).trigger( "click" );
-		}, 600000);
+		}, 600000); */
 		
 		var currentdate = new Date(); 
 		var datetime = currentdate.getDate() + "-"
