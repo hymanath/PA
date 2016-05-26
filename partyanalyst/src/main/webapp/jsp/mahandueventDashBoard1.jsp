@@ -2787,7 +2787,7 @@ var tableToExcel = (function() {
 				str+='<th>IMAGE</th>';
 				str+='<th>NAME</th>';
 				str+='<th>DESIGNATION</th>';
-				str+='<th>CONSTITUENCY</th>';
+				str+='<th>LOCATION</th>';
 				str+='<th>ATTENDED</th>';
 				str+='</thead>';
 				for(var i in result){
