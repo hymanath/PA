@@ -148,7 +148,7 @@
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">HOUR WISE VISITORS<!--<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsId"></i>--></h4>
-					<p class="font-10 fontColor">Last updated On: <span id="hourWiseTableTimeId1"></span></p>
+					<p class="font-10 fontColor m_0">Last updated On: <span id="hourWiseTableTimeId1"></span></p>
 				</div>
 				<div class="panel-body pad_0" style="height:370px">
 				<div><center><img id="hrWiseVstrsPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
@@ -173,7 +173,7 @@
 					</div>
 					<div class="col-md-12"><center><img id="hrWiseVstrsHghChrtPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:70px;height:60px;"/></center></div>
 					<div class="col-md-12">
-						<div id="hoursWiseVisitors" style="height:300px;width:100%;"></div>
+						<div id="hoursWiseVisitors" style="height:315px;width:100%;"></div>
 					</div>
 				  </div>
 					
