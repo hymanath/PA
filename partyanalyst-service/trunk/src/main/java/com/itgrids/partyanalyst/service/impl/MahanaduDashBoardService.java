@@ -582,7 +582,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				if(latestRecord.size() > 0 && latestRecord.get(0)[0] != null){
 					//0type 1count
 					List<Object[]> visitDetailsList = cadreMahanaduVisitDetailsDAO.getLatestRecords((Long)latestRecord.get(0)[0]);
-					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 					MahanaduVisitVO returnVo = new MahanaduVisitVO();
 					returnVo.setLastUpdated(sdf.format((Date)latestRecord.get(0)[1]));
 					for(Object[] visitDetail:visitDetailsList){
@@ -1573,14 +1573,19 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setDesignation(objects[3] != null? objects[3].toString() : "");
 						if(objects[4] != null && ((Long)objects[4] == 1l || (Long)objects[4] == 2l)){
 							if(parliamentAssemblyNamesMap.get((Long)objects[5]) != null){
-								vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5]));
+								if((Long)objects[4] == 1l){
+									vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" PARLIAMENT");
+								}else if((Long)objects[4] == 2l){
+									vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" ASSEMBLY");
+								}
+								
 							}else{
 								vo.setStateName("");
 							}
 							
 						}else if(objects[4] != null && (Long)objects[4] == 5l){
 							if(districtNamesMap.get((Long)objects[5]) != null){
-								vo.setStateName(districtNamesMap.get((Long)objects[5]));
+								vo.setStateName(districtNamesMap.get((Long)objects[5])+" DISTRICT");
 							}else{
 								vo.setStateName("");
 							}
