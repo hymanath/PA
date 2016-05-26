@@ -1351,7 +1351,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    StringBuffer str = new StringBuffer();
 		    str.append("<table width='100%'>");
 		        str.append("<tr bgcolor='#5c2d25'>");
-		          str.append("<td style='text-align:center;color:#fff'><font size='5'>ENTRY/EXIT  DASHBOARD</font><font size='3'>�Updated On "+time+")</font></td>");
+		          str.append("<td style='text-align:center;color:#fff'><font size='5'>ENTRY/EXIT  DASHBOARD</font><font size='3'>(Updated On "+time+")</font></td>");
 		        str.append("</tr>");
 		      str.append("</table>");
 		      str.append("<br/>");
@@ -1391,7 +1391,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    str.append("<table width='100%' border='1'>");
 		    str.append("<tr bgcolor='#ccc'>");
 		    int colspan = dayscount + 1;
-		    str.append("<td colspan='"+colspan+"' style='text-align:center;color:#D64D54'><font size='4'>HOURS WISE VISITORS</font></td>");
+		    str.append("<td colspan='"+colspan+"' style='text-align:center;color:#D64D54'><font size='4'>HOURS WISE VISITORS PRESENT IN CAMPUS <font size = '2'>("+hoursWiseVisitorsList.get(hoursWiseVisitorsList.size()-1).getLastUpdated()+")</font></font></td>");
 		    str.append("</tr>");
 		    
 		    str.append("<tr bgcolor='#eaeaea' style='text-align:center;color:#01AF7C'>");
