@@ -284,16 +284,27 @@ function gettotalCollectedBloodDetails(){
 				str+='<table class="table table-condensed m_top10 bloodCollectionHeightCls">';
 					str+='<tr>';
 						str+='<td>All Days</td>';
-						str+='<td>'+result.totalBlood+' ml</td>';
+						if(result.totalBlood!=null && result.totalBlood>1000){
+							var liter=(result.totalBlood)/1000;
+							 str+='<td>'+liter+' Ltr</td>';
+						}else if(result.totalBlood!=null){
+							str+='<td>'+result.totalBlood+' Ml</td>';
+						}else{
+							str+='<td>0 Ml</td>';
+						}
 					str+='</tr>';
 					for(var i in result.subList){
-						str+='<tr>';
+					 str+='<tr>';
 							str+='<td>Day - '+(parseInt(i)+1)+'</td>';
-							if(result.subList[i].totalBlood != null)
-								str+='<td>'+result.subList[i].totalBlood+' ml</td>';
-							else
-								str+='<td>0 ml</td>';
-						str+='</tr>';
+				   if(result.subList[i].totalBlood != null && result.subList[i].totalBlood>1000){
+						var liter=(result.subList[i].totalBlood)/1000;
+							str+='<td>'+liter+' Ltr</td>';
+						}else if(result.subList[i].totalBlood != null){
+								str+='<td>'+result.subList[i].totalBlood+' Ml</td>';
+						}else{
+							str+='<td>0 Ml</td>';
+						}
+					str+='</tr>';
 					}
 				str+='</table>';
 				
@@ -869,7 +880,7 @@ function getApDistrictWiseBloodDonorCounts(){
 			  data: {task:JSON.stringify(jObj)}
 	   }).done(function(result){
 		   $("#ApdistrictWiseBloodCountajaxImage").hide();
-		  buildApDistrictWiseBloodDonorCounts(result);
+		    buildApDistrictWiseBloodDonorCounts(result);
 		});
 }
 
