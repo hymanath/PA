@@ -1,9 +1,10 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public class BasicVO implements Serializable{
@@ -45,6 +46,7 @@ public class BasicVO implements Serializable{
 	private List<BasicVO> districtList = new ArrayList<BasicVO>(0);
 	private Long		  locationInfoId;
 	private ActivityAttendanceInfoVO activityAttendanceInfoVO = new ActivityAttendanceInfoVO();
+	private Map<String,Long> dayWiseMap = new LinkedHashMap<String, Long>();
 	
 	public BasicVO(){}
 	
@@ -56,6 +58,14 @@ public class BasicVO implements Serializable{
 	}
 	
 	
+	public Map<String, Long> getDayWiseMap() {
+		return dayWiseMap;
+	}
+
+	public void setDayWiseMap(Map<String, Long> dayWiseMap) {
+		this.dayWiseMap = dayWiseMap;
+	}
+
 	public Long getLocationInfoId() {
 		return locationInfoId;
 	}

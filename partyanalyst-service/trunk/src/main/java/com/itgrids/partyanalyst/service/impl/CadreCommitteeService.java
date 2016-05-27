@@ -17740,8 +17740,9 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return basicVOList;
 	}
 	
-	public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo)
+	public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo,String type)
 	{
+		Map<String,Long> dayWiseMap = new LinkedHashMap<String, Long>();
 		BasicVO vo = new BasicVO();
 		Date startDate = null;
 		Date toDate = null;
@@ -17757,40 +17758,83 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		
 		if(inputVo.getLocationScope().equalsIgnoreCase("constituency"))
 		{
-			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,IConstants.MANDAL);
-			List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.MANDAL);
-			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,IConstants.LOCAL_ELECTION_BODY);
-			List<BasicVO> localbodyList = setLocationsListForMandal(list,"Muncipality");
-			if(mandalList != null && mandalList.size() > 0)
-			locationsList.addAll(mandalList);
-			if(localbodyList != null && localbodyList.size() > 0)
-			locationsList.addAll(localbodyList);
-			vo.setLocationsList(locationsList);
+			if(type.equalsIgnoreCase("dayWise")){
+				list = activityInfoDocumentDAO.getDayWiseImagesCount(inputVo, startDate, toDate);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] obj : list) {
+						String dateStr = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						dayWiseMap.put(dateStr, count);
+					}
+				}
+				vo.setDayWiseMap(dayWiseMap);
+			}
+			else
+			{
+				list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,IConstants.MANDAL);
+				List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.MANDAL);
+				list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,IConstants.LOCAL_ELECTION_BODY);
+				List<BasicVO> localbodyList = setLocationsListForMandal(list,"Muncipality");
+				if(mandalList != null && mandalList.size() > 0)
+				locationsList.addAll(mandalList);
+				if(localbodyList != null && localbodyList.size() > 0)
+				locationsList.addAll(localbodyList);
+				vo.setLocationsList(locationsList);
+			}
+			
 		}
 		else if(inputVo.getLocationScope().equalsIgnoreCase("mandal"))
 		{
 			
-			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,null);
-			if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
-			{
-				List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.PANCHAYAT);
-				if(mandalList != null && mandalList.size() > 0)
-				locationsList.addAll(mandalList);
+			if(type.equalsIgnoreCase("dayWise")){
+				list = activityInfoDocumentDAO.getDayWiseImagesCount(inputVo, startDate, toDate);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] obj : list) {
+						String dateStr = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						dayWiseMap.put(dateStr, count);
+					}
+				}
+				vo.setDayWiseMap(dayWiseMap);
 			}
-			if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+			else
 			{
-				List<BasicVO> localbodyList =  setLocationsListForMandal(list,IConstants.WARD);
-				if(localbodyList != null && localbodyList.size() > 0)
-				locationsList.addAll(localbodyList);
+				list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,null);
+				if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("2"))
+				{
+					List<BasicVO> mandalList = setLocationsListForMandal(list,IConstants.PANCHAYAT);
+					if(mandalList != null && mandalList.size() > 0)
+					locationsList.addAll(mandalList);
+				}
+				if(inputVo.getLocationValue().toString().substring(0, 1).equalsIgnoreCase("1"))
+				{
+					List<BasicVO> localbodyList =  setLocationsListForMandal(list,IConstants.WARD);
+					if(localbodyList != null && localbodyList.size() > 0)
+					locationsList.addAll(localbodyList);
+				}
+				vo.setLocationsList(locationsList);
 			}
-			vo.setLocationsList(locationsList);
 		}
 		else
 		{
+			if(type.equalsIgnoreCase("dayWise")){
+				list = activityInfoDocumentDAO.getDayWiseImagesCount(inputVo, startDate, toDate);
+				if(commonMethodsUtilService.isListOrSetValid(list)){
+					for (Object[] obj : list) {
+						String dateStr = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						dayWiseMap.put(dateStr, count);
+					}
+				}
+				vo.setDayWiseMap(dayWiseMap);
+			}
+			else
+			{
+				list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,null);
+				locationsList = setLocationsList(list);
+				vo.setLocationsList(locationsList);
+			}
 			
-			list = activityInfoDocumentDAO.getLocationWiseImageCount(inputVo,startDate,toDate,null);
-			locationsList = setLocationsList(list);
-			vo.setLocationsList(locationsList);
 		}
 		
 		

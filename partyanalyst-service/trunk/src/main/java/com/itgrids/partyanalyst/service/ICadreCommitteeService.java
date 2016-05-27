@@ -163,7 +163,7 @@ public interface ICadreCommitteeService {
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsByConstituencyList(List<Long> constituencyIds);
 	 public List<EventDocumentVO> getEventDocumentsForLocation(EventDocumentVO inputVo);
 	 public List<BasicVO> getDistrictsByUserId(Long userId,String isAdmin,String accessType,Long accessValue);
-	 public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo);
+	 public BasicVO getLocationsHierarchyForEvent(EventDocumentVO inputVo,String type);
 	 public List<BasicVO> getAvailableDates(EventDocumentVO inputVo);
 	 public List<ActivityVO> getDistrictWiseActivities(String startDateString,String endDateString,Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
 	 public List<IdNameVO> getAllCastes();
