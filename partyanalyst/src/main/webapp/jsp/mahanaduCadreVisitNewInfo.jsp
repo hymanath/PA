@@ -125,7 +125,7 @@
 					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
-					<h4 class="m_0">INVITEES PRESENT IN  VISITORS</h4>
+					<h4 class="m_0">INVITEES PRESENT IN  CAMPUS</h4>
 					<!--<div data-sparkline="71, 78, 39, 66 " class="m_top10"></div>-->
 					<h3 id="inviteesPresentInVisitorsId">0</h3>
 				</div>
@@ -137,7 +137,7 @@
 					<h4 class="panel-title SelDay"></h4>
 				</div>
 				<div class="panel-body panelDefault">
-					<h4 class="m_0">NON INVITEES PRESENT IN  VISITORS</h4>
+					<h4 class="m_0">NON INVITEES PRESENT IN  CAMPUS</h4>
 					<h3 id="nonInviteesPresentInVisitorsId">0</h3>
 				</div>
 			</div>
