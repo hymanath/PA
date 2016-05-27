@@ -2792,7 +2792,7 @@ var tableToExcel = (function() {
 				str+='</thead>';
 				for(var i in result){
 					str+='<tr>';
-					str+='<td><img src="'+result[i].image+'" class="img-responsive" /></td>';
+					str+='<td><img src="'+result[i].image+'" class="img-responsive"  style="width:60px;height:80px"/></td>';
 					str+='<td>'+result[i].candidateName+'</td>';
 					str+='<td>'+result[i].designation+'</td>';
 					str+='<td>'+result[i].stateName+'</td>';
