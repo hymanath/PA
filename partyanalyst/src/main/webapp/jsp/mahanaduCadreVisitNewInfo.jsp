@@ -1241,7 +1241,11 @@ function buildTotalVisitorsResult(result){
 						if(result.subList[i].total != null && result.subList[i].total > 0 && result.subList[i].cadreCount != null && result.subList[i].cadreCount > 0){
 							flag=true;
 							str+='<tr>';
-							str+='<td>'+constObj[result.subList[i].id]+'</td>';
+							if(constObj[result.subList[i].id] === undefined || typeof constObj[result.subList[i].id] == "undefined" ){
+								str+='<td>-</td>';
+							}else{
+								str+='<td>'+constObj[result.subList[i].id]+'</td>';
+							}
 							str+='<td>'+result.subList[i].name+'</td>';
 							str+='<td>'+result.subList[i].total+'</td>';
 							str+='<td>'+result.subList[i].cadreCount+'</td>';
