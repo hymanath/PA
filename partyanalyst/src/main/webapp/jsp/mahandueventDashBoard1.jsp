@@ -327,7 +327,7 @@
 							</div>
 							<div class="col-md-1 " style="margin-top: 6px;">
 								<div class="tsSwitch">
-									<input type="checkbox" name="tsSwitch" class="tsSwitch-checkbox checkedSwitch" value="36" id="tsSwitch" >
+									<input type="checkbox" name="tsSwitch" class="tsSwitch-checkbox checkedSwitch" value="36" id="tsSwitch" checked>
 									<label class="tsSwitch-label" for="tsSwitch">
 										<span class="tsSwitch-inner"></span>
 										<span class="tsSwitch-switch"></span>
@@ -1872,7 +1872,7 @@ $('#donutchart').removeClass("errorDiv");
 	startDate = $(".dp_startDate").val();
 	endDate = $(".dp_endDate").val();
 	getSubEvents();
-
+	defaultApTsChecked();
 	if(errStr.length == 0)
 {
 
@@ -1897,7 +1897,7 @@ setcolorsForEvents();
 		}
 	}); */
  locationWiseCalls();
- 
+
  countDetailsCalls();
 stateWiseEventAttendeeCounts();
 getPublicrepresentatives();
@@ -1959,15 +1959,21 @@ showHide();
 		getSubEventDetailsHourWise(parentEventId);
 		getEventMemberCount(parentEventId);
 	}
-
+	
     function  callingDefaultCalls(){
+		defaultApTsChecked();
 		setcolorsForEvents();
 		countDetailsCalls();
 		locationWiseCalls();
 		stateWiseEventAttendeeCounts();
 		getPublicrepresentatives();
 	}
-	
+	function defaultApTsChecked(){
+		$("#tsSwitch").prop("checked",true);
+		$("#apSwitch").prop("checked",true);
+		$("#otherStates").prop("checked",false);
+		$("#showErrorMsg").html('');
+	}
 	
  function ChangeUrl(title, url) {
     if (typeof (history.pushState) != "undefined") {
@@ -2795,7 +2801,7 @@ var tableToExcel = (function() {
 					str+='<td><img src="'+result[i].image+'" class="img-responsive"  style="width:60px;height:80px"/></td>';
 					str+='<td>'+result[i].candidateName+'</td>';
 					str+='<td>'+result[i].designation+'</td>';
-					str+='<td>'+result[i].stateName+'</td>';
+					str+='<td class="text-capitalize">'+result[i].stateName+'</td>';
 					if(result[i].status){
 						str+='<td>Yes</td>';
 					}else if(!result[i].status){
