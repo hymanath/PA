@@ -29,5 +29,5 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]> getDayWiseActivityInfoImagesCount(SearchAttributeVO inputVO,Long stateId);
 	//public List<Object[]> getActivityQuestionnairesCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId);
 	public List<Object[]> getLocationValue(Long activityScopeId);
-	
+	public List<Object[]> getDayWiseImagesCount(EventDocumentVO inputVO,Date startDate,Date endDate);
 }

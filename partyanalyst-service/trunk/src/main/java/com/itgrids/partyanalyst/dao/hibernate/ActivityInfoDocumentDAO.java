@@ -209,6 +209,34 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.list();
 	}
 	
+	public List<Object[]> getDayWiseImagesCount(EventDocumentVO inputVO,Date startDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select date(model.activityDocument.activityDate)," +
+						" count(model.activityDocument.activityDocumentId)" +
+						" from ActivityInfoDocument model" +
+						" where model.isDeleted = 'N'" +
+						" and model.activityDocument.activityDate is not null");
+		if(startDate != null)
+			sb.append(" and date(model.activityDocument.activityDate) >=:startDate and date(model.activityDocument.activityDate) <=:endDate");
+		if(inputVO.getActivityId() > 0)
+			sb.append(" and model.activityDocument.activityScopeId = :activityScopeId");
+		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
+			sb.append(" and model.userAddress.state.stateId = :locationValue");
+		sb.append(" group by date(model.activityDocument.activityDate)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("locationValue",inputVO.getLocationValue());
+		if(startDate != null)
+		{
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(inputVO.getActivityId() > 0)
+			query.setParameter("activityScopeId",inputVO.getActivityId());
+			
+		return query.list();
+	}
 	
 	public List<Object[]> getLocationWiseImageCount(EventDocumentVO inputVO,Date startDate,Date endDate,String type)
 	{

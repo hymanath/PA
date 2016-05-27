@@ -2372,7 +2372,7 @@ public class ActivityService implements IActivityService{
 			locationVo.setEndDate(searchAttributeVO.getEndDate().toString());
 			if(searchAttributeVO.getTypeId() == 9999L)
 				locationVo.setTypeId(9999L);
-			BasicVO countVO = cadreCommitteeService.getLocationsHierarchyForEvent(locationVo);
+			BasicVO countVO = cadreCommitteeService.getLocationsHierarchyForEvent(locationVo,"locationWise");
 			if(commonMethodsUtilService.isListOrSetValid(returnVO.getActivityVoList())){
 				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
 					for(BasicVO vo1 : countVO.getLocationsList()){
@@ -2703,7 +2703,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 			}
 			
-			
+			searchAttributeVO.setTypeId(9999L);//dummy value
 			searchAttributeVO.setConditionType("planned");
 				plannedActivities = activityLocationInfoDAO.getActivityDayWiseCountsByLocation(searchAttributeVO,stateId);
 			searchAttributeVO.setConditionType(" infocell ");
@@ -2732,8 +2732,22 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				
 				buildResult(yesCount,datesMap,"WHATSAPP IMAGES COVERED",null);					
 				buildResult(yesCount,datesMap,"WHATSAPP IMAGES COVERED %",null);	
-				buildResult(questionnairesCount,datesMap,"NO OF WHATSAPP IMAGES RECIEVED",null);	
-				
+				//buildResult(questionnairesCount,datesMap,"NO OF WHATSAPP IMAGES RECIEVED",null);	
+
+			
+			
+			EventDocumentVO locationVo = new EventDocumentVO();
+			locationVo.setLocationScope(getInputSearchType(searchAttributeVO.getSearchType()));
+			locationVo.setLocationValue(searchAttributeVO.getLocationId());
+			locationVo.setActivityId(searchAttributeVO.getAttributesIdsList().get(0));	
+			if(searchAttributeVO.getStartDate() != null)
+			locationVo.setStrDate(searchAttributeVO.getStartDate().toString());	
+			if(searchAttributeVO.getEndDate() != null)
+			locationVo.setEndDate(searchAttributeVO.getEndDate().toString());
+			if(searchAttributeVO.getTypeId() == 9999L)
+				locationVo.setTypeId(9999L);
+			BasicVO countVO = cadreCommitteeService.getLocationsHierarchyForEvent(locationVo,"dayWise");
+			Map<String,Long> dateWiseImageCountMap = countVO.getDayWiseMap();
 			if(datesMap != null && datesMap.size()>0)
 			{
 				for (String dateStr : datesMap.keySet()) {
@@ -2743,9 +2757,25 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					if(vo.getInfoCellcovered() != null && vo.getInfoCellcovered().longValue() > 0 || 
 							vo.getInfoCellNotPlanned() != null && vo.getInfoCellNotPlanned().longValue()>0 ||
 							vo.getInfoCellTotal() != null && vo.getInfoCellTotal().longValue()>0)
+						
+						if(commonMethodsUtilService.isMapValid(dateWiseImageCountMap))
+							vo.setImagesCount(dateWiseImageCountMap.get(dateStr.trim()));
+					
 						finalList.add(vo);
 				}
 			}
+			/*if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				if(searchAttributeVO.getSearchType().equalsIgnoreCase(IConstants.STATE)){
+					for(BasicVO vo1 : countVO.getLocationsList()){
+						ActivityVO vo = finalList;
+						Long count = vo.getImagesCount() != null ? vo.getImagesCount():0L;
+						vo.setImagesCount(count+vo1.getCount());
+					}
+				}else{
+					setImagesCount(countVO.getLocationsList(),returnVO.getActivityVoList());
+				}
+			}*/
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getActivityDayWiseCountsByLocation in ActivityService service", e);
 		}
