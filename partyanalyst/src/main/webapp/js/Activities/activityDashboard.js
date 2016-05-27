@@ -349,11 +349,14 @@ function getActivityDetailsBySearchCriteria(locationId,searchType,divId,teamSear
 			}).done(function(result){
 				//console.log(result);
 				if(result != null)
-					if(searchType == 'state')
+					if(searchType == 'state'){
 						if(activityLevelId == 5 && activityScopeId == 11 )
 							buildBDResult(result);
+						else if(activityLevelId == 4 && divId == 'alignmentWidth')
+							buildsLocationsResult(result,divId,teamSearchType);
 						else
 							buildResult(result);
+					}
 					else if(searchType == 'district')
 						buildsLocationsResult(result,divId,teamSearchType);
 					else if(searchType == 'constituency')
@@ -1212,7 +1215,10 @@ function buildsLocationsResult(result,divId,teamSearchType){
 					str+='';
 				}
 				else{
-					str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
+					if($("#activityLevelList").val() == 4)
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'state\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
+					else
+						str+='<button type="button" class="btn btn-custom btn-hover btn-xs " onclick="getDaywiseInfo(\'district\','+result.activityVoList[i].id+',\'dayWiseInfo'+result.activityVoList[i].id+'\',\''+result.activityVoList[i].name+'\',\'\')">Day Wise</button>';
 				}
 			}
 			str+='</div>';			
@@ -1600,7 +1606,10 @@ function getDetails(){
 		//$("#stateWiseViewDid").show();
 		isAlreadyBuild = false;
 		getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
-		getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
+		if($("#activityLevelList").val() == 4)
+			getActivityDetailsBySearchCriteria(1,'state','alignmentWidth','locationWiseId','location','0');
+		else
+			getActivityDetailsBySearchCriteria(1,'district','alignmentWidth','locationWiseId','location','0');
 	}
 	
 }
@@ -2997,5 +3006,3 @@ function getQuestions(){
 $(document).on("change","#questionsId",function(){	
 getActivityQuestionAnswerCountReasonWise();
 });
-
-
