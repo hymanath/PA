@@ -2743,7 +2743,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
  public List<MahanaduEventVO> setHoursList(){
 	 	 
  	  	 List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
-		 for(int i=8;i<=21;i++){
+		 for(int i=7;i<=21;i++){
 			 	MahanaduEventVO vo = new MahanaduEventVO();
 				vo.setId(new Long(i));
 				if(i<12){
