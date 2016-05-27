@@ -1371,10 +1371,10 @@ function buildConstTable(result,reportLevelId){
 		
 		for(var j in result){
 			str+='<tr>';
-			if(result[j].id == 0 || result[j].id == null){
+			if(result[j].locationNo == 0 || result[j].locationNo == null){
 				str+='<td class="text-center" > - </td>';
 			}else{
-				str+='<td class="text-center" >'+result[j].id+'</td>';
+				str+='<td class="text-center" >'+result[j].locationNo+'</td>';
 			}
 			if(result[j].districtName == null){
 				str+='<td > - </td>';
