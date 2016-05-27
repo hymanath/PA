@@ -147,7 +147,7 @@
 		<div class="col-md-4">
 			<div class="panel panel-default panel-custom-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">HOUR WISE VISITORS<!--<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsId"></i>--></h4>
+					<h4 class="panel-title" style="font-size: 15px;">HOUR WISE VISITORS PRESENT IN CAMPUS<!--<i class="glyphicon glyphicon-refresh pull-right hrWseVstrsCls refreshIconPanel" title="page refresh" id="hrWiseVstrsId"></i>--></h4>
 					<p class="font-10 fontColor m_0">Last updated On: <span id="hourWiseTableTimeId1"></span></p>
 				</div>
 				<div class="panel-body pad_0" style="height:370px">
