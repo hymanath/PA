@@ -119,33 +119,63 @@
 							</div>
 						</div>
 						<div class="row">
-			<div class="col-md-12" style="display:none;">
+			<div class="col-md-12" >
 				<div class="panel panel-default panel-custom">
 					<div class="panel-heading ">
 						<h4 class="panel-title">ACTIVITY RESPONSES</h4>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-4" id="questionsDiv">
-								<select class="form-control" id="questionsId" >
-									<!--<option value="0">Select Questions</option>-->
-								</select>	
+						<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideData" style="display:none">Hide Data</a></span>
+						<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="showData" style="display:none" >Show Data</a></span></div>
+					<div class="panel-body" id="qstnsDivId">
+						<div class="row col-md-3 col-md-offset-0" id="">
+								<label> Questions </label>
+								<select id="questnsListId" class="form-control"></select>
 							</div>
+						
+						<div class="row col-md-3 col-md-offset-0" id="reportTypeId">
+							<label> Report Type </label>
+								<select class="form-control" id="reportList" >
+								<option value="1"> District</option>
+								<option value="2"> Constituency</option>
+								</select>
 						</div>
-						<div class="row  m_top10">
-							<div class="col-md-12">
-								<div class="bg_66" id="activityHeadingDiv" style="padding:10px 15px;background:#D3D3D3;display:none;">
-									<h4 class="panel-title" style="font-weight:bold;">STATUS REPORT</h4>
-								</div>
-                            </div>
-							<div class="col-md-12">
-								<div id="buildActivityReasonReportTableId"></div>
-							</div>
-						</div>
-					</div>
+						
+						<div class="row col-md-3 col-md-offset-0" id="" style="margin-top: 25px">							
+							<button id="searchId" class="btn btn-block btn-custom btn-success" type="button" onclick="getOptionDetailsForQuestion();">GET REPORT</button>
+						</div>				
+					</div> 
+					
 				</div>
 			</div>
+			
+			<div class="col-md-12" id="responceDivId" style="display:none;">
+				<div class="panel panel-default panel-custom">
+					
+			<div class="panel panel-default m_top10" id="questionDetailsDivId" style="display:none;">
+							  <div class="panel-heading">
+								<h4 class="panel-title"> QUESTION WISE REPORT </h4>
+							  </div>
+							  <div class="panel-body">
+								<div id="questionWiseDetailsDiv"></div>
+							  </div>
+						</div>
+							<div class="col-md-2" style="margin-bottom: 15px;">
+							<button class="btn btn-success pull-right" id="lcnExcelBtn" onclick="generateExcel('responseTab')" style="float: right; text-align: right; border-left-width: 0px; margin-left: 2px; margin-right: -919px;">Export Excel</button>
+							</div>
+						<div class="row  m_top10" id="optnsCntDiv" style="display:none;padding: 25px;">
+							<div class="col-md-12">
+								<div class="bg_66" style="padding:10px 15px;background:#663300;color:#fff">
+									<h4 class="panel-title" id="actvtyQstnOptnHdng" style="font-weight:bold;display:none;">ACTIVITY QUESTION OPTION RESPONCE</h4>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div  id="optionsCntId" >
+								</div>
+							</div>
+						</div>
+						</div>
+						</div>
 		</div>
+		
                         <div class="panel-body pad_0 m_top20" id="nonBloodDonationDivId">
 							<div class="row">
 								<div class="col-md-12">
@@ -218,7 +248,7 @@
   </div>
 </div>
 <!--------End Popup build----------->
-<script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/activitiesResponces.js" ></script>
 <script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/js/custom.js" type="text/javascript"></script>
@@ -230,6 +260,9 @@
 <script src="js/utility.js" type="text/javascript"></script>
 <script src="dist/SelectDropDown/dropkick.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/>
 <script type="text/javascript">
 jQuery( document ).ready(function( $ ) {
  $(".select").dropkick();
