@@ -459,7 +459,7 @@ $(document).on('click','.submitCls',function(){
 $(document).on("change","#totalStatusId",function(){
 	$(".errorCls").html("");
 	$("#searchInputId").html("");
-	$("#datesSelId").val("0,");
+	//$("#datesSelId").val("0,");
 	var statusIdList = [];  
 	var campId=1;
 	var statusId=$("#totalStatusId").val();
