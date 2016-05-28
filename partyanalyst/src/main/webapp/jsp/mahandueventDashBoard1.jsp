@@ -2189,7 +2189,7 @@ function sliderForDateRange()
   
   if(!flag){
 	  
-	var range = formatDate(maxDate);
+	var range = formatDate(minDate);
 	var month       = monthNames[maxDate.getMonth()];
 	var day         = range.substring(8,10);	
 	$( "#amount" ).val( "Date : " +month+"-" +day +"");
