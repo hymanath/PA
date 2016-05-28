@@ -855,6 +855,8 @@ public class BloodBankService implements IBloodBankService{
 					vo.setQuantity(obj[11] !=null ? (Long)obj[11]:0l);
 					vo.setRemarks(obj[12] !=null ? obj[12].toString():"");
 					vo.setRegistrationNo(obj[13]!=null?obj[13].toString():"");
+					vo.setDistrictId(obj[14] !=null ? (Long)obj[14]:0l);
+					vo.setDistrictName(obj[15]!=null?obj[15].toString():"");
 					
 					finalList.add(vo);
 				}
@@ -1151,6 +1153,9 @@ public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long status
 					vo.setQuantity(obj[7] !=null ? (Long)obj[7]:0l);
 					vo.setRegistrationNo(obj[8]!=null ? obj[8].toString():"");
 					vo.setRemarks(obj[9]!=null ? obj[9].toString():"");
+					vo.setDistrictId(obj[10] !=null ? (Long)obj[10]:0l);
+					vo.setDistrictName(obj[11] !=null ? obj[11].toString():"");
+					
 					returnList.add(vo);					
 				}
 			}

@@ -47,7 +47,7 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 							" BBT.bloodBagTypeId,BBT.bagType," +
 							" BBQ.bloodBagQuantityId,BBQ.type," +
 							" model.quantity,model.remarks," +
-							"  model.registrationNumber "+
+							"  model.registrationNumber,TC.userAddress.district.districtId,TC.userAddress.district.districtName "+
 				   " FROM " +
 				   " 	BloodDonation model left join model.bloodDonorInfo BDI " +
 				   "    left join BDI.tdpCadre TC" +
@@ -309,7 +309,9 @@ public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List
 			" model.bloodBagQuantity.bloodBagQuantityId, " +
 			" model.quantity, " +
 			" model.registrationNumber," +
-			" model.remarks " +
+			" model.remarks," +
+			" model.bloodDonorInfo.tdpCadre.userAddress.district.districtId, " +
+			" model.bloodDonorInfo.tdpCadre.userAddress.district.districtName " +
 			" from BloodDonation model " +
 			" where model.bloodDonorInfo.isDeleted ='N' " );
 	
