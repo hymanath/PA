@@ -1115,7 +1115,7 @@ public String getAllConstituencysForADistrict(){
 			inputVo.setActivityId(jObj.getLong("activityId"));	
 			inputVo.setStrDate(jObj.getString("fromDateStr"));	
 			inputVo.setEndDate(jObj.getString("toDateStr"));
-			basicVO=cadreCommitteeService.getLocationsHierarchyForEvent(inputVo);
+			basicVO=cadreCommitteeService.getLocationsHierarchyForEvent(inputVo,"");
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationsHierarchyForEvent ",e);
