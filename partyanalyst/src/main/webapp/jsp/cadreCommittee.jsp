@@ -1317,7 +1317,8 @@
 			}
 			var jsObj={
 				mandalId:mandalId,
-				constituencyId:'${locationId}'
+				//constituencyId:'${locationId}'
+				constituencyId:0
 			}
 			$.ajax({
 				type : "POST",
