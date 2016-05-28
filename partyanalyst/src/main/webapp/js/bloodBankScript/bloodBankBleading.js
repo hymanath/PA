@@ -1,7 +1,7 @@
 //SWADHIN && SANTOSH
-    
 getBloodBagType();
 getBloodBagQuantity();
+var globalStatuCount=0;
 var acceptanceStr = '';
 var bloodBagStr = '';
 var bloodBagQuantityStr = '';
@@ -100,10 +100,19 @@ function getBleedingCadreDetails(statusIdList,campId){
 			buildBleedingCadreDetails(result);
 		}else{
 			$("#BleedingCadreDetailsId").html("<p style='font-size:18px;'>No Data Available.</p>");
+			 $("#statusCount").html(0); 
+			 $("#exportToExcelId").hide();
 		}
 	});
 }
 function buildBleedingCadreDetails(result){
+	 
+	 globalStatuCount=result.length;
+     if(globalStatuCount>0){
+      $("#statusCount").html(globalStatuCount); 
+	 } 
+	 $("#exportToExcelId").show();
+	 buildExportToExcelRslt(result);
 	$("#BleedingCadreDetailsId").html('');
 	var str = '';
 	var accptStatusArr = [];
@@ -454,9 +463,16 @@ $(document).on("change","#totalStatusId",function(){
 	var statusIdList = [];  
 	var campId=1;
 	var statusId=$("#totalStatusId").val();
-	if(statusId !=null && statusId>0){
+	var status=$("#totalStatusId option:selected").text();
+	 
+	 if(status=="All Applications"){
+		  $("#tableHdngId").html(status);
+	  }else{
+		   $("#tableHdngId").html(status+" Applications");
+	  }
+	 if(statusId !=null && statusId>0){
 		statusIdList.push({"id":statusId});   
-	}
+	 }
 	getBleedingCadreDetails(statusIdList,campId);
 });
 
@@ -525,6 +541,64 @@ function getPrePopulateTheDataDetails(flag){
 		$("#cadreDetailsLoadingId").hide();
 		if(result!=null && result.length>0){
 			buildBleedingCadreDetails(result);
+		}else{
+		 $("#statusCount").html(0); 	
+         $("#exportToExcelId").hide();		 
 		}
 	});
 }
+
+function buildExportToExcelRslt(result){
+	
+	var str='';
+	 str+='<table class="table table-bordered" id="bldDnrsDtlsTableId">';
+		 str+='<thead>';
+		   str+='<th>MemberShip No</th>';
+		   str+='<th>Name</th>';
+		   str+='<th>Mobile No</th>';
+		   str+='<th>District</th>';
+		 str+='</thead>';
+		str+='<tbody>';
+		 for(var i in result){
+			 str+='<tr>';
+			 if(result[i].membershipNo!=null && result[i].membershipNo.length>0){
+				str+='<td>'+result[i].membershipNo+'</td>'; 
+			 }else{
+				 str+='<td>-</td>'; 
+			 }
+			 if(result[i].name!=null && result[i].name.length>0){
+				 str+='<td>'+result[i].name+'</td>'; 
+			 }else{
+				 str+='<td>-</td>';  
+			 }
+			 if(result[i].mobile!=null && result[i].mobile.length>0){
+				 str+='<td>'+result[i].mobile+'</td>';
+			 }else{
+				   str+='<td>-</td>';  
+			 }
+			 if(result[i].districtName!=null && result[i].districtName.length>0){
+				  str+='<td>'+result[i].districtName+'</td>';
+			 }else{
+				str+='<td> - </td>'; 
+			 } 
+			 str+='</tr>';
+		 }
+		str+='</tbody>';
+		str+='</table>';
+	$("#exprtTExclBldDnrTblId").html(str);
+}
+ $(document).on('click',"#exportToExcelId",function(){
+    tableToExcel('bldDnrsDtlsTableId', 'Blood Donors Report'); 
+ }) 
+
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
