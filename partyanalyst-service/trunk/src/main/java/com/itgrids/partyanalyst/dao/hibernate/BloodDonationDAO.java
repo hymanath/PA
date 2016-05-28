@@ -47,10 +47,12 @@ public class BloodDonationDAO extends GenericDaoHibernate<BloodDonation, Long> i
 							" BBT.bloodBagTypeId,BBT.bagType," +
 							" BBQ.bloodBagQuantityId,BBQ.type," +
 							" model.quantity,model.remarks," +
-							"  model.registrationNumber,TC.userAddress.district.districtId,TC.userAddress.district.districtName "+
+							"  model.registrationNumber,D.districtId,D.districtName "+
 				   " FROM " +
 				   " 	BloodDonation model left join model.bloodDonorInfo BDI " +
 				   "    left join BDI.tdpCadre TC" +
+				   "    left join TC.userAddress UA " +
+				   "    left join UA.district D " +
 				   "    left join model.bloodDonorInfo BDI"+
 				   "    left join model.acceptanceStatus ACTS"+
 				   "	left join model.bloodBagType BBT"+
