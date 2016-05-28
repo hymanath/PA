@@ -43,6 +43,8 @@ public class BloodBankVO implements Serializable{
 	private String quantityType;
 	private String registrationNo;
 	private Long bloodDonationId;
+	private Long districtId;
+	private String districtName;
 	
 	private AddressVO addressVO=new AddressVO();
 	
@@ -274,6 +276,18 @@ public class BloodBankVO implements Serializable{
 	}
 	public void setBloodDonationId(Long bloodDonationId) {
 		this.bloodDonationId = bloodDonationId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
 	
 	
