@@ -60,8 +60,9 @@
                     	<div class="panel panel-default">
                         	<div class="panel-heading bg_cc">
 							    <span style="color:red" class="errorCls pull-right"></span>
-                            	<h4 class="panel-title text-capitalise">all applications</h4>
-                            </div>
+								 <h4><input type="button" class="btn btn-info pull-right btn-xs" id="exportToExcelId" value="ExportToExcel" style='display:none;'/><h4>
+                            	<h4 class="panel-title text-capitalise"><span  id="tableHdngId">all applications</span> - <span id="statusCount">0</span></h4>
+						    </div>
 							<div class="panel-body pad_0">
 							 <img id="cadreDetailsLoadingId" src="images/Loading-data.gif" style="width: 70px; height: 60px;margin-left: 533px"";display:none;/>
 								<div id="BleedingCadreDetailsId"></div>
@@ -159,7 +160,12 @@
                                 
                             </div>
                         </div>
-                    </div>
+                   </div>
+				  <div class="row">
+				     <div class="col-md-12 m_top10">
+					    <div id="exprtTExclBldDnrTblId" style='display:none'></div>
+					 </div>
+				  </div>
                 </div>
              </div>
          </div>
