@@ -1606,11 +1606,11 @@ function getSubEventDetails(parentEventId){
         }).done(function(result){
 		$("#donutChartAjax").hide();
 		
-		buildStartingPrograms(result);
+		buildStartingPrograms(result,parentEventId);
 		
 	});
 }
-function buildStartingPrograms(result){
+function buildStartingPrograms(result,parentEventId){
 	
 	$('#timeUpdationId').html(result[0].lastUpdatedDate);
 	
@@ -1683,28 +1683,66 @@ function buildStartingPrograms(result){
 			  
 			  
 		}else{
-			  str+='<tr>';
-			  str+='<td style="padding:7px 5px">';
-			  str+=' <p class="m_0">'+result[i].name+'</p>';
-			  str+='<ul class="spanBorderRight">';
-			    for(var j in result[i].subList){
+			if(parentEventId == 30){
+				str+='<tr>';
+				str+='<td style="padding:7px 5px">';
+				str+=' <p class="m_0">'+result[i].name+'</p>';
+				str+='<ul class="spanBorderRight">';
+				for(var j in result[i].subList){
+					if(result[i].subList[j].dateStr == "2016-05-27" || result[i].subList[j].dateStr == "2016-05-28" || result[i].subList[j].dateStr == "2016-05-28"){
+						var dayCount = 0;
+						if(result[i].subList[j].dateStr == "2016-05-27"){
+							dayCount = "Day  - 1";
+						}else if(result[i].subList[j].dateStr == "2016-05-28"){
+							dayCount = "Day  - 2";
+						}else if(result[i].subList[j].dateStr == "2016-05-29"){
+							dayCount = "Day  - 3";
+						}
+						if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
+							str+='<li>'+dayCount+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';  
+						}else{
+							str+='<li>'+result[i].subList[j].name+' : -  </li>'; 
+						}
+					}
+				} 
+				str+='</ul>';
+				str+='</td>';
+				str+='<td>';
+				if(count >0 && result[i].id !=null){    
+					str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
+				}
+				else{
+					str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center">'+count+'</span>';
+				}
+				str+='</td>';
+				str+='</tr>';
+			}else{
+				str+='<tr>';
+				str+='<td style="padding:7px 5px">';
+				str+=' <p class="m_0">'+result[i].name+'</p>';
+				str+='<ul class="spanBorderRight">';
+				for(var j in result[i].subList){
 					if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
 						str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';  
 					}else{
 						str+='<li>'+result[i].subList[j].name+' : -  </li>'; 
 					}
 				} 
-			  str+='</ul>';
-			  str+='</td>';
-			  str+='<td>';
-			  if(count >0 && result[i].id !=null){    
-			  str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
-			  }
-			  else{
-			  str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center">'+count+'</span>';
-			  }
-			  str+='</td>';
-			  str+='</tr>';
+				str+='</ul>';
+				str+='</td>';
+				str+='<td>';
+				if(count >0 && result[i].id !=null){    
+					str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
+				}
+				else{
+					str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center">'+count+'</span>';
+				}
+				str+='</td>';
+				str+='</tr>';	
+			}
+			
+			
+			  
 		}
 		
 		//str+=' <br/>';
