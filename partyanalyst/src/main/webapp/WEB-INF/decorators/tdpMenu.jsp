@@ -438,7 +438,7 @@ footer
 							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS') || fn:contains(sessionScope.USER.entitlements, 'ACTIVITIES_DASHBOARD_ENTITLEMENT') }">
 								 <li><a href="activitiesDashboard.action"><i class="fa fa-firefox"></i><span> Activities DashBoard  </span></a></li>
 							</c:if>
-							<li><a href="activitiesQuestionResponcesAction.action"><i class="fa fa-eye"></i><span> Activities Response Report  </span></a></li>
+							<!--<li><a href="activitiesQuestionResponcesAction.action"><i class="fa fa-eye"></i><span> Activities Response Report  </span></a></li>-->
 								 	 <c:if test="${sessionScope.USER.isAdmin == 'true' ||
 							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS') }">
 								  <li>
