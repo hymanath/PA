@@ -38,6 +38,7 @@ function getActivityNames(type)
 			}
 			//getQuestions(); 
 			//getActivityQuestionAnswerCountReasonWise();
+			getQuestionsForReportTypeAction();
 		});
 		
 }
