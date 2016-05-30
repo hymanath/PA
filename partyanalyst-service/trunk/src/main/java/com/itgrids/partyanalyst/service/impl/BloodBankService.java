@@ -338,7 +338,7 @@ public class BloodBankService implements IBloodBankService{
 	public ResultStatus saveBloodBankCadreDetails(final BloodBankVO bloodBanKVO,final Long userId){
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			String memberShipId=bloodDonationDAO.isTdpCadreExistOrNot(bloodBanKVO.getMembershipNo().trim());
+			String memberShipId=bloodDonationDAO.isTdpCadreExistOrNot(bloodBanKVO.getMembershipNo().trim(),bloodBanKVO.getId());
 		      if(memberShipId!=null){
 		    	  resultStatus.setExceptionMsg("exist");
 		    	  return resultStatus;
@@ -463,7 +463,7 @@ public class BloodBankService implements IBloodBankService{
 		return resultStatus;
 	}
 	
-	public ResultStatus updatePrintstatus(Long id)
+	public ResultStatus updatePrintstatus(Long id,Long userId)
 	{
 		ResultStatus rs = new ResultStatus();
 		try{
@@ -471,6 +471,9 @@ public class BloodBankService implements IBloodBankService{
 			BloodDonation bloodDonation = bloodDonationDAO.get(id);
 			bloodDonation.setPrintStatus("Y");
 			bloodDonation.setPrintTime(presentDate.getCurrentDateAndTime());
+			bloodDonation.setUpdatedBy(userId);
+			bloodDonation.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			
 			bloodDonationDAO.save(bloodDonation);
 			rs.setResultCode(0);
 		}

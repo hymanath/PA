@@ -29,7 +29,7 @@ public interface IBloodBankService {
  public List<BloodBankVO> getBloodComponentList();
  public DonationsInBloodBankVO getNumberOfTimesCollectedBlood(Long campId);
  public ResultStatus saveBleedingDetails(BloodBankVO bloodBankVO);
- public ResultStatus updatePrintstatus(Long id);
+ public ResultStatus updatePrintstatus(Long id,Long userId);
  public BloodBankDashBoardVO getDistrictWiseBloodDonorCounts(Long campId,Long stateId,String type);
  public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long statusId,String date);
  public List<IdNameVO> getBloodBankCampDates(Long campId);

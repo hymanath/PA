@@ -220,16 +220,26 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		}
 		return query.executeUpdate();		
 	}
-public String isTdpCadreExistOrNot(String memberShipNO){
+public String isTdpCadreExistOrNot(String memberShipNO,Long campId){
 		
-		Query query=getSession().createQuery("select model.bloodDonorInfo.tdpCadre.memberShipNo " +
+	StringBuilder str =new StringBuilder();
+	
+	str.append(" select model.bloodDonorInfo.tdpCadre.memberShipNo " +
 				 " from BloodDonation model " +
 				 " where model.bloodDonorInfo.tdpCadre.memberShipNo=:memberShipNO " +
 				 " and model.bloodDonorInfo.tdpCadre.isDeleted='N' " +
 				 " and model.bloodDonorInfo.tdpCadre.enrollmentYear=:enrollmentYear ");
+		if(campId !=null && campId>0){
+			str.append(" and model.bloodDonationCampId = :campId  ");
+		}
+	
+		Query query=getSession().createQuery(str.toString());
 		
 		 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
 		 query.setParameter("memberShipNO", memberShipNO);
+		 if(campId !=null && campId>0){
+			 query.setParameter("campId", campId);
+		 }
 		
 		 return (String) query.uniqueResult();
 	}

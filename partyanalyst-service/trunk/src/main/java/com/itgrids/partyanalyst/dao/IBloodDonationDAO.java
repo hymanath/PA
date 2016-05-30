@@ -20,7 +20,7 @@ public interface IBloodDonationDAO extends GenericDao<BloodDonation, Long> {
 	public List<Object[]> gettotalCollectedBloodBagsInfo(Long campId);
 	public List<Object[]> getBloodDonorDetailsByAgeGroupingInfo(Date fromDate,Date toDate);
 	public Integer updateBloodDonationDetailsByMemberShip(BloodBankVO bloodBankVO);
-	public String isTdpCadreExistOrNot(String memberShipNO);
+	public String isTdpCadreExistOrNot(String memberShipNO,Long campId);
 	public List<Object[]> getNumberOfTimesCollectedBlood(Long campId);
 	public Long getBloodDonationIdByMemberShip(String memberShipNo);
 	public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate );
