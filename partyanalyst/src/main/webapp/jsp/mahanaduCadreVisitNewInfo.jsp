@@ -1334,9 +1334,9 @@ function buildTotalVisitorsResult(result){
 					var totalAttendedArr=[];
 					var nowInCampusArr=[];
 					
-					var d = new Date();
-					var n = d.getHours(); 
-					
+					//var d = new Date();
+					//var n = d.getHours(); 
+					var n = 20;
 					for(var i in result){
 						
 						if(result[i].id <= n){
