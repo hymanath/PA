@@ -1368,14 +1368,14 @@
 	</bean>
 	<!-- <bean name="insertTriggerForMahanaduEventInfo" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
-	  	<property name="targetMethod" value="insertMahanaduEventInfo" />
+  		<property name="targetMethod" value="insertMahanaduEventInfo" />
 	</bean> 
 	<bean name="mahanaduEventInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventInfo" />
     	<property name="cronExpression" value="0 0 * * * ?" />
 	</bean> -->
 	
-	<!-- scheduler for mail attachment -->
+	<!-- scheduler for mail attachment
 	<bean name="mahanaduEventPdfReport" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventPdfReport" />
     	<property name="cronExpression" value="0 0/30 * * * ?" />
@@ -1383,7 +1383,8 @@
 	<bean name="insertTriggerForMahanaduEventPdfReport" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendPdfReport" />
-    </bean>
+    </bean> 
+    -->
     
 			
 	<bean name="updateTrainingCampSpeakers" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -1564,7 +1565,7 @@
 			<!-- <ref bean="mahanaduEventInfo" /> -->
 			<ref bean="mahanaduVisitInfoTrig" />
 			<ref bean="updateTrainingCampSpeakers" />
-			<ref bean="mahanaduEventPdfReport" />
+			<!-- <ref bean="mahanaduEventPdfReport" /> -->
 			
 			<!--  <ref bean="insertTriggerForEveryDayChangeApptStatus" /> -->
 			
