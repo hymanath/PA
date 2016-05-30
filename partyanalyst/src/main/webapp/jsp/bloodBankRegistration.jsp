@@ -376,6 +376,8 @@
  	        </div>
         </div>
     </div>
+	<!-- hidden Variables -->
+	<div><input type="hidden" id="hiddenCampId" value="1"></div>
 </div>
 <div class="modal fade myModalprintView " id="" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm">
@@ -991,6 +993,7 @@ function printdocumentDetails(){
 		  cadreDtlsArr.push($("#wllngTBClldFrDntnId").val());
 		  cadreDtlsArr.push($("#rmrksId").val());
 		  cadreDtlsArr.push( $("#membershipInputId").val());
+		  cadreDtlsArr.push($("#hiddenCampId").val());
 		  
 		 $("#cdrDtlsSavingPrcssngImgId").show();
 		 
