@@ -464,19 +464,44 @@ $(".panelDefault").height(maxHeight);
 			$("#radioDivId").html("");
 			if(result != null && result.length > 0){
 				var str='';
+				var isTodayAvailabel = true;
+				
 				for(var i in result){
 					if(result[i].name != null){
-						var t = result[i].name.split(",");
 						if(result[i].percentage != null && result[i].percentage=="toDay"){
-							$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"' selected>Day - "+(parseInt(i)+1)+"</option>");
-							str+='<input type="radio" class="dayRadio" name="dayRadioName" checked value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
-							getHourWiseNowInCampusCadresCount(t[parseInt(t.length)-2]);
-						}else{
-							$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"'>Day - "+(parseInt(i)+1)+"</option>");
-							str+='<input type="radio" class="dayRadio" name="dayRadioName" value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
+							isTodayAvailabel = false;
 						}
 					}
 				}
+				
+				for(var i in result){
+					if(result[i].name != null){
+						var t = result[i].name.split(",");
+						
+						if(isTodayAvailabel){
+							if(i == 0){
+								$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"' selected>Day - "+(parseInt(i)+1)+"</option>");
+								str+='<input type="radio" class="dayRadio" name="dayRadioName" checked value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
+								getHourWiseNowInCampusCadresCount(t[parseInt(t.length)-2]);
+							}else{
+								$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"'>Day - "+(parseInt(i)+1)+"</option>");
+								str+='<input type="radio" class="dayRadio" name="dayRadioName" value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
+							}
+						}else{
+							if(result[i].percentage != null && result[i].percentage=="toDay"){
+								isTodayAvailabel = false;
+								$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"' selected>Day - "+(parseInt(i)+1)+"</option>");
+								str+='<input type="radio" class="dayRadio" name="dayRadioName" checked value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
+								getHourWiseNowInCampusCadresCount(t[parseInt(t.length)-2]);
+							}else{
+								$("#eventDatesSelectId").append("<option value='"+(parseInt(i)+1)+"' attr_dates='"+result[i].name+"'>Day - "+(parseInt(i)+1)+"</option>");
+								str+='<input type="radio" class="dayRadio" name="dayRadioName" value="'+t[parseInt(t.length)-2]+'"/><label>Day - '+(parseInt(i)+1)+'</label>';
+							}
+						}
+						
+					}
+				}
+				
 				$("#radioDivId").html(str);
 				allCalls();
 				
