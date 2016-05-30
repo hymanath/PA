@@ -384,6 +384,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	    			bankVO.setWillingToCallDonation(cadreDtlsArr.getString(16));
 	    			bankVO.setRemarks(cadreDtlsArr.getString(17));
 	    			bankVO.setMembershipNo(cadreDtlsArr.getString(18));
+	    			bankVO.setId((Long.valueOf(cadreDtlsArr.getString(19))));//campId
 	   	}
 	   	resultStatus=bloodBankService.saveBloodBankCadreDetails(bankVO,regVO.getRegistrationID());
 		}catch(Exception e){
@@ -441,8 +442,12 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	}
 	public String updatePrintstatus(){
 		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO == null){
+				return "error";
+			}
 			jObj = new JSONObject(getTask());
-			resultStatus=bloodBankService.updatePrintstatus(jObj.getLong("bloodBankId"));
+			resultStatus=bloodBankService.updatePrintstatus(jObj.getLong("bloodBankId"),regVO.getRegistrationID());
 		}catch (Exception e) {
 			 LOG.info("Error raised at updatePrintstatus() in BloodBankAction",e);
 		}
