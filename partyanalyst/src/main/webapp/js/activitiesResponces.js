@@ -5,6 +5,9 @@
 	}); */
 function getQuestionsForReportTypeAction(){
 var activityScopeId = $("#ActivityList").val();
+if(activityScopeId == null){
+	return;
+}
 $('#questnsListId').find('option').remove();
 $('#questnsListId').append('<option value="0"> All </option>');
 	 var jsObj=
@@ -22,7 +25,7 @@ $('#questnsListId').append('<option value="0"> All </option>');
 			   				for(var i in result)
 					$('#questnsListId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				getOptionDetailsForQuestion();
-				getActivityQuestionInfo();
+				//getActivityQuestionInfo();
 		   });
 	}
 

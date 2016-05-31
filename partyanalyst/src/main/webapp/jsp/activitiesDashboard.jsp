@@ -119,7 +119,7 @@
 							</div>
 						</div>
 						<div class="row">
-			<div class="col-md-12" >
+			<div class="col-md-12" style="display:none;">
 				<div class="panel panel-default panel-custom">
 					<div class="panel-heading ">
 						<h4 class="panel-title">ACTIVITY RESPONSES</h4>
@@ -147,7 +147,7 @@
 				</div>
 			</div>
 			
-			<div class="col-md-12" id="responceDivId" style="display:none;">
+			<div class="col-md-12" id="responceDivId11" style="display:none;">
 				<div class="panel panel-default panel-custom">
 					
 			<div class="panel panel-default m_top10" id="questionDetailsDivId" style="display:none;">
@@ -158,7 +158,7 @@
 								<div id="questionWiseDetailsDiv"></div>
 							  </div>
 						</div>
-							<div class="col-md-2" style="margin-bottom: 15px;">
+							<div class="col-md-2" style="margin-bottom: 15px; display:none;">
 							<button class="btn btn-success pull-right" id="lcnExcelBtn" onclick="generateExcel('responseTab')" style="float: right; text-align: right; border-left-width: 0px; margin-left: 2px; margin-right: -919px;">Export Excel</button>
 							</div>
 						<div class="row  m_top10" id="optnsCntDiv" style="display:none;padding: 25px;">
