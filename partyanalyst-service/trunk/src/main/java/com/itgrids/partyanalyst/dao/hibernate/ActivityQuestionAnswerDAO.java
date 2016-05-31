@@ -973,12 +973,12 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		}
 		queryStr.append(" model.activityQuestionnaireId,count(distinct model.activityLocationInfoId)");
 		queryStr.append(" from ActivityQuestionAnswer model where model.activityQuestionnaireId in (:activityQuestionnaireIdsList) and " +
-				" model.isDeleted ='N'  ");
+				" model.isDeleted ='N' ");
 		if(commonMethodsUtilService.isTextEmpty(searchVO.getSearchType())){
 			if(searchVO.getSearchType().equalsIgnoreCase(IConstants.CONSTITUENCY))
-				queryStr.append(" group by  model.activityLocationInfo.constituencyId,model.activityQuestionnaireId ");
+				queryStr.append(" group by model.activityLocationInfo.constituencyId,model.activityQuestionnaireId ");
 			else if(searchVO.getSearchType().equalsIgnoreCase(IConstants.DISTRICT))
-				queryStr.append(" group by  model.activityLocationInfo.constituency.district.districtId,model.activityQuestionnaireId ");
+				queryStr.append(" group by model.activityLocationInfo.constituency.district.districtId,model.activityQuestionnaireId ");
 		}
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("activityQuestionnaireIdsList", activityScopeQuestionIdsLsit);
@@ -1054,7 +1054,7 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 	
 	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityId,Long questionId,String optionType){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select model.activityQuestionnaire.activityQuestion.activityQuestionId," +
+		sb.append("select model.activityQuestionnaire.activityQuestionnaireId," +
 						" model.activityLocationInfo.constituency.district.districtId," +
 						" count(distinct model.activityLocationInfoId)," +
 						" model.activityQuestionnaire.activityQuestion.question");
@@ -1075,7 +1075,7 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 			sb.append(" and model.activityLocationInfo.locationLevel in (13)");
 		
 		if(questionId != null && questionId.longValue() > 0l)
-			sb.append(" and model.activityQuestionnaire.activityQuestion.activityQuestionId = :questionId");
+			sb.append(" and model.activityQuestionnaire.activityQuestionnaireId = :questionId");
 		
 		if(optionType != null && optionType.toString().equalsIgnoreCase("selectBox"))
 			sb.append(" and model.activityQuestionnaire.activityOptionType.activityOptionTypeId = 1");

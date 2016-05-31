@@ -5233,8 +5233,12 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	public List<ActivityResponseVO> getActivityLocationInfoDetailsByActivityScope(Long activityLevel,Long activityScope,List<Long> questionIds){
 		List<ActivityResponseVO> returnList = null;
 		try {
-			Map<Long,ActivityResponseVO> questionMap = new LinkedHashMap<Long, ActivityResponseVO>();
+			//Map<Long,ActivityResponseVO> questionMap = new LinkedHashMap<Long, ActivityResponseVO>();
 			List<Object[]> optionTypeList = activityQuestionnaireDAO.getActivityQuestionOptionTypeList(questionIds);
+			
+			//Setting Questions Template To Map
+			Map<Long,ActivityResponseVO> questionMap = setQuestionsTemplate(optionTypeList);
+			
 			if(optionTypeList != null && optionTypeList.size() > 0){
 				for (Object[] obje : optionTypeList) {
 					Long questId = Long.valueOf(obje[0] != null ? obje[0].toString():"0");
@@ -5290,7 +5294,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 										vo.setDesTotalCount(vo.getDesTotalCount()+sumCount);
 									}
 								}
-								questionMap.put(quesId, vo);
+								//questionMap.put(quesId, vo);
 							}
 						}
 					}
@@ -5302,5 +5306,28 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			Log.error("Exception Occured in getActivityLocationInfoDetailsByActivityScope method in ActivityService ",e);
 		}
 		return returnList;
+	}
+	
+	public Map<Long,ActivityResponseVO> setQuestionsTemplate(List<Object[]> optionTypeList){
+		Map<Long,ActivityResponseVO> questionMap = new LinkedHashMap<Long, ActivityResponseVO>();
+		try{
+		if(optionTypeList != null && optionTypeList.size() > 0){
+			for (Object[] obje : optionTypeList) {
+				ActivityResponseVO vo = new ActivityResponseVO();
+				vo.setQuestionId(obje[0] != null ? (Long)obje[0]:0l);
+				vo.setQuestion(obje[3] != null ? obje[3].toString():"");
+				vo.setTSCount(0l);
+				vo.setDesTSCount(0l);
+				vo.setAPCount(0l);
+				vo.setTotalCount(0l);
+				vo.setDesAPCount(0l);
+				vo.setDesTotalCount(0l);
+				questionMap.put(vo.getQuestionId(), vo);
+			}
+		}
+	} catch (Exception e) {
+		Log.error("Exception Occured in setQuestionsTemplate method in ActivityService ",e);
+	}
+		return questionMap;
 	}
 }

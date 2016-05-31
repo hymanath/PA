@@ -106,9 +106,9 @@ public List<Object[]> getQuestionnareDetails(List<Long> questionnairIdsList){
 	}
 	
 	public List<Object[]> getActivityQuestionOptionTypeList(List<Long> questionIds){
-		Query query = getSession().createQuery("select model.activityQuestion.activityQuestionId," +
+		Query query = getSession().createQuery("select model.activityQuestionnaireId," +
 									" model.activityOptionType.activityOptionTypeId," +
-									" model.activityOptionType.type" +
+									" model.activityOptionType.type, model.activityQuestion.question " +
 									" from ActivityQuestionnaire model" +
 									" where model.activityQuestionnaireId in (:questionIds)" +
 									" and model.isDeleted = 'N'");
