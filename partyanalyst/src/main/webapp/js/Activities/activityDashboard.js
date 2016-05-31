@@ -29,7 +29,7 @@ function getActivityNames(type)
 			}else{
 				$('#ActivityList').val(12);
 			}
-			
+			getQuestionsForReportTypeAction();
 			if(type == "onload"){
 				//getTeamLeadersByActivityScope();
 				//getActivityDetailsBySearchCriteria(1,'state','stateWiseViewDid','locationWiseId','location','0');
@@ -38,7 +38,7 @@ function getActivityNames(type)
 			}
 			//getQuestions(); 
 			//getActivityQuestionAnswerCountReasonWise();
-			getQuestionsForReportTypeAction();
+			
 		});
 		
 }
@@ -1588,6 +1588,7 @@ function buildDayWiseResults(result,divId,jObj)
 }
 
 function getDetails(){
+	getOptionDetailsForQuestion();
 	getQuestions();
 	if($("#activityTypeList").val()==4){
 		$("#locationWiseActivityDetailsDivId").show();
