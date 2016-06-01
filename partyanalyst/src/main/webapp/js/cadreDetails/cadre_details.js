@@ -647,7 +647,7 @@ function getParticipatedConstituencyId(cadreId){
 										str+='<td>0</td>';
 									else
 										str+='<td>'+results[i].knownList[j].invitationCount+'</td>';
-									str+='<td>'+results[i].knownList[j].total+'</td>';
+									str+='<td>'+results[i].knownList[j].total+' <i class="glyphicon glyphicon-eye-open attedenceCls pull-right" title="Click here to get Attendance Details" style="cursor:pointer" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"></i></td>';
 									if(results[i].knownList[j].eventTypeId != 2)
 										str+='<td>'+results[i].knownList[j].absentCount+'</td>';
 									 str+='</tr>';
@@ -678,6 +678,53 @@ function getParticipatedConstituencyId(cadreId){
 				
 			});
 		}
+		
+		$(document).on("click",".attedenceCls",function(){
+			$(".eventAttendanceModalId").modal("show");
+			$("#eventAttendanceInfoBodyId").html('');
+			$("#dataLoadingsImgForEventAttendanceInfoId").show();
+			var eventId = $(this).attr("attr_event_id");
+			var eventName = $(this).attr("attr_event_name");
+			var localCadreId=globalCadreId;
+			$("#eventAttendanceModalHeadingId").html(eventName+" Event Attendance Details")
+			//8341157
+			var jsobj={
+				cadreId:localCadreId,
+				eventId : eventId
+			}
+			$.ajax({
+				type:'GET',
+				 url: 'getEventAttendanceOfCadreAction.action',
+				 data : {task:JSON.stringify(jsobj)} ,
+			}).done(function(result){
+				if(result != null){
+					var str='';
+					
+					str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+						str+='<th style="text-align:center;"></th>';
+					for(var i in result)
+						str+='<th style="text-align:center;">Day - '+(parseInt(i)+1)+' ('+result[i].name+') </th>';
+					str+='</thead>';
+					str+='<tbody>';
+					str+='<tr>';
+						str+='<td style="text-align:center;">Attended Time</td>';
+					for(var i in result){
+						if(result[i].count > 0)
+							str+='<td style="text-align:center;">'+result[i].dateStr+'</td>';
+						else
+							str+='<td style="text-align:center;"> - </td>'; 
+				}
+				str+='</tr>';
+				str+='</tbody>';
+				str+='</table>';
+				$("#dataLoadingsImgForEventAttendanceInfoId").hide();
+				$("#eventAttendanceInfoBodyId").html(str);
+				}
+				$("#dataLoadingsImgForEventAttendanceInfoId").hide();
+			});
+		});
+		
 		function familyMembersSurveyDetails(votercardNo)
 		{	
 			$("#familySurveyDataLoadoing").show();
