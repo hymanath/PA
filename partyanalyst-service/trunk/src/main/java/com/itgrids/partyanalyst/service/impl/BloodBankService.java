@@ -1187,7 +1187,7 @@ public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long status
 								vo.setPercentage("toDay");
 								voList.add(vo);
 							} 
-							else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[2])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+							else{
 								IdNameVO vo = new IdNameVO();
 								vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
 								voList.add(vo);
