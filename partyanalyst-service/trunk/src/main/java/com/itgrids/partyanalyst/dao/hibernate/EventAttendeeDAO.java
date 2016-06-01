@@ -1444,4 +1444,18 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getEventAttendedDetails(Long cadreId,Long eventId){
+		Query query = getSession().createQuery("select date(model.attendedTime)," +
+								" count(model.eventAttendeeId)," +
+								" model.attendedTime" +
+								" from EventAttendee model" +
+								" where model.tdpCadreId = :cadreId" +
+								" and model.event.eventId = :eventId" +
+								" group by date(model.attendedTime)");
+		query.setParameter("cadreId", cadreId);
+		query.setParameter("eventId", eventId);
+		
+		return query.list();
+	}
 }

@@ -12,6 +12,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long orderId;
 	private String percentage;
 	private Long count = 0l;
+	private String dateStr;
 	
 	
 	@Override
@@ -88,4 +89,13 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setCount(Long count) {
 		this.count = count;
 	}
+
+	public String getDateStr() {
+		return dateStr;
+	}
+
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	
 }

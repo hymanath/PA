@@ -74,6 +74,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -8624,6 +8625,45 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in getGrievanceBenifitsComplaintsInfoByLocation  method in CadreDetailsService.",e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getEventAttendanceOfCadre(Long cadreId,Long eventId){
+		List<IdNameVO> returnList = null;
+		try {
+			Object[] eventDates = eventDAO.getEventDatesByEventId(eventId);
+			Map<String,IdNameVO> dateMap = new LinkedHashMap<String, IdNameVO>();
+			if(eventDates != null){
+				List<Date> betweenDates= commonMethodsUtilService.getBetweenDates((Date)eventDates[0], (Date)eventDates[1]);
+				if(betweenDates != null){
+					for(Date date :betweenDates){
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						IdNameVO vo1 = new IdNameVO();
+						String dateStr = sdf.format(date);
+						vo1.setName(dateStr);
+						dateMap.put(dateStr, vo1);
+					}
+				}
+				
+				List<Object[]> list = eventAttendeeDAO.getEventAttendedDetails(cadreId, eventId);
+				if(list != null && list.size() > 0){
+					for (Object[] obj : list) {
+						String dateStr = obj[0] != null ? obj[0].toString():"";
+						Long count = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						IdNameVO vo = dateMap.get(dateStr);
+						if(vo != null){
+							vo.setCount(count);
+							vo.setDateStr(obj[2] != null ? obj[2].toString():"");
+						}
+					}
+				}
+				
+				returnList = new ArrayList<IdNameVO>(dateMap.values());
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsService.",e);
 		}
 		return returnList;
 	}
