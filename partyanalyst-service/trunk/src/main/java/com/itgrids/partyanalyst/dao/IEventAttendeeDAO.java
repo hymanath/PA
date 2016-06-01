@@ -65,4 +65,5 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
 	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId);
 	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId);
+	public List<Object[]> getEventAttendedDetails(Long cadreId,Long eventId);
 }
