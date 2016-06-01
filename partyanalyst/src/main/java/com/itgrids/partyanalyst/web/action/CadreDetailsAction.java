@@ -1270,4 +1270,15 @@ public String updateLeaderShip(){
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getEventAttendanceOfCadre(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			idNameVoList=cadreDetailsService.getEventAttendanceOfCadre(jObj.getLong("cadreId"),jObj.getLong("eventId"));
+		}catch(Exception e){
+			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
 }
