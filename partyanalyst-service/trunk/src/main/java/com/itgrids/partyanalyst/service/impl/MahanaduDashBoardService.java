@@ -1452,7 +1452,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				List<Date> datesList = commonMethodsUtilService.getBetweenDates((Date)objArr[0],(Date)objArr[1]);
 				if(datesList != null && datesList.size() > 0){
 					StringBuilder sb = new StringBuilder();
-					for (int i=0;i<datesList.size();i++) {
+					for (int i=0;i<datesList.size();i++) { 
 						if(sdf.format(datesList.get(i)).split("-")[0].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[0]) ){
 							if(sdf.format(datesList.get(i)).split("-")[2].equalsIgnoreCase(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
 								IdNameVO vo = new IdNameVO();
@@ -1460,7 +1460,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 								vo.setPercentage("toDay");
 								voList.add(vo);
 							} 
-							else if(Long.parseLong(sdf.format(datesList.get(i)).split("-")[2])<Long.parseLong(sdf.format(dateUtilService.getCurrentDateAndTime()).split("-")[2])){
+							else{
 								IdNameVO vo = new IdNameVO();
 								vo.setName(sb.append(sdf.format(datesList.get(i))+",").toString());
 								voList.add(vo);
