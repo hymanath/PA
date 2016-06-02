@@ -12,41 +12,46 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class SetterAndGetterUtilService {
-	public List setValuesToVO(List<Object[]> entityList,String[] parametersArr,String className){
+	private static final Logger   LOG = Logger.getLogger(SetterAndGetterUtilService.class);
+	
+	/*
+	 * Srishailam Pittala 
+	 * SWADHIN-ITGRIDS
+	 * DATE:2-6-2016
+	 * inputs : List<Object[]>, setting Properties Name List in VO , setting fully Qualified VO Name
+	 * output List<VO> fully Qualified VO Name
+	 * */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List setValuesToVO(List<Object[]> resultList,String[] setterPropertiesList,String settingVOClassName){
 		Object voObject ="";
-		List productLists = new ArrayList();
+		List returnList = new ArrayList();
 		try{
-			//get the ClassLoader reference
 			ClassLoader classLoader = this.getClass().getClassLoader();
-			//load the class using fully qualified class name.
-			Class voClass = classLoader.loadClass(className);
-			//get the constructor of loaded class.
+			Class voClass = classLoader.loadClass(settingVOClassName);
 			Constructor voConstructor = voClass.getConstructor();
-			//get the instance of loaded class.
 			voObject = voConstructor.newInstance();
-			//check the null value for the list comming from DAO call.
-			List<String> parameterList = Arrays.asList(parametersArr);
-			if(entityList != null && entityList.size()>0){
-				//iterate that list coming from DAO call.
-				for (Object[] product : entityList) {
-					for(int i=0;i<product.length;i++){
+			List<String> parameterList = Arrays.asList(setterPropertiesList);
+			if(resultList != null && resultList.size()>0){
+				for (Object[] param : resultList) {
+					for(int i=0;i<param.length;i++){
 						String fieldName = parameterList.get(i);
-						if(product[i]!=null){
-							set(voObject,fieldName,product[i].toString());
-						}else{
+						if(param[i]!=null)
+							set(voObject,fieldName,param[i].toString());
+						else
 							set(voObject,fieldName,"");
-						}
 					}
-					productLists.add(voObject);
+					returnList.add(voObject);
 					voObject = voConstructor.newInstance();
 				}
 			}
 		}catch(Exception e){
-			e.printStackTrace();
-			return null;
+			LOG.error("",e);
+			returnList = null;
 		}
-		return productLists;
+		return returnList;
 	}
 	
 	/*
@@ -79,6 +84,7 @@ public class SetterAndGetterUtilService {
 	            }
 	        } catch (NoSuchFieldException e) {
 	            clazz = clazz.getSuperclass();
+	        	LOG.error("",e);
 	        } catch (Exception e) {
 	            throw new IllegalStateException(e);
 	        }
@@ -91,7 +97,7 @@ public class SetterAndGetterUtilService {
      * check for all wraper classes in java. So I have written eight conditions.
      * finally this method will return same value with modified data type.
      */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> T modify(Type type, String fieldValue) {
         T ret = null;
         Constructor constructor=null;
@@ -151,9 +157,8 @@ public class SetterAndGetterUtilService {
         	}
             return ret;
         } catch (Exception  e) {
-            e.printStackTrace();
+        	LOG.error("",e);
         }
 		return ret;
 	}
-
 }
