@@ -27,4 +27,6 @@ public interface IEventDAO extends GenericDao<Event, Long> {
 	
 	public List<Long> getSubEventsByParentEventId(Long eventId);
 	public Object[] getEventDatesByEventId(Long eventId);
+	public Long getParentEventIdBySubEvent(Long subEventId);
+	public Long getSubEventIdByParentId(Long eventId);
 }

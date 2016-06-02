@@ -8634,6 +8634,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		try {
 			Object[] eventDates = eventDAO.getEventDatesByEventId(eventId);
 			Map<String,IdNameVO> dateMap = new LinkedHashMap<String, IdNameVO>();
+			Map<String,List<String>> dateWiseMap = new LinkedHashMap<String, List<String>>();
 			if(eventDates != null){
 				List<Date> betweenDates= commonMethodsUtilService.getBetweenDates((Date)eventDates[0], (Date)eventDates[1]);
 				if(betweenDates != null){
@@ -8646,6 +8647,23 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 					}
 				}
 				
+				List<Object[]> datesList = eventAttendeeDAO.getEventAttendedInfoForCadre(cadreId, eventId);
+				if(commonMethodsUtilService.isListOrSetValid(datesList)){
+					for (Object[] obj : datesList) {
+						String dateStr = obj[0] != null ? obj[0].toString():"";
+						String dateTimeStr = obj[1] != null ? obj[1].toString():"";
+						
+						List<String> dateTimeLst = dateWiseMap.get(dateStr);
+						if(dateTimeLst == null){
+							dateTimeLst = new ArrayList<String>();
+							dateTimeLst.add(dateTimeStr);
+							dateWiseMap.put(dateStr, dateTimeLst);
+						}
+						else
+							dateTimeLst.add(dateTimeStr);
+					}
+				}
+				
 				List<Object[]> list = eventAttendeeDAO.getEventAttendedDetails(cadreId, eventId);
 				if(list != null && list.size() > 0){
 					for (Object[] obj : list) {
@@ -8655,6 +8673,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 						if(vo != null){
 							vo.setCount(count);
 							vo.setDateStr(obj[2] != null ? obj[2].toString():"");
+							vo.setSubList(dateWiseMap.get(dateStr));
 						}
 					}
 				}

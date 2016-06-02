@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.List;
 
 public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long id;
@@ -13,7 +14,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String percentage;
 	private Long count = 0l;
 	private String dateStr;
-	
+	private List<String> subList;
 	
 	@Override
 	public int compare(IdNameVO o2, IdNameVO o1) {
@@ -97,5 +98,12 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setDateStr(String dateStr) {
 		this.dateStr = dateStr;
 	}
-	
+
+	public List<String> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<String> subList) {
+		this.subList = subList;
+	}
 }
