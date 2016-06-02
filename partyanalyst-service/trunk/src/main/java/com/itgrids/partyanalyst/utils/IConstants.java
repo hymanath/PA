@@ -1091,5 +1091,7 @@ public interface IConstants {
 	public static final String VOTER_IMG_FOLDER_PATH = "voter_images";
 	public static final String STATIC_STATE_IDS= "1,36";
 	
-	public static final Long[] PUBLIC_REPR_DESIGNATION_IDS= {1L,2L,12L}; 
+	public static final Long[] PUBLIC_REPR_DESIGNATION_IDS= {1L,16L,2L,12L,4L,5L,3L,21L}; 
+	public static final Long[] COMMITTEE_LEVEL_IDS= {12L,10L}; 
+	public static final Long[] COMMITTEE_ROLE_IDS= {1L}; 
 }
