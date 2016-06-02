@@ -8,5 +8,9 @@ import com.itgrids.partyanalyst.model.AppointmentTracking;
 
 public interface IAppointmentTrackingDAO extends GenericDao<AppointmentTracking, Long> {
 	public List<Object[]> getAppointmentTrackingDetails(Long appointmentId);
+	public Long getAllRescheduledApptCounts(Long apptUserId);
+	public Long getAllRescheduledCandiCounts(Long apptUserId);
+	 public List<Object[]> getAllRescheduledApptAndCandiDetails(Long apptUserId);
+	 public List<Object[]> getAllRescheduledCommentsAndrescheduledDates(Long apptUserId);
 
 }
