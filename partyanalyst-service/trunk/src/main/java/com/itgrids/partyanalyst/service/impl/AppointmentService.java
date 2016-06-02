@@ -7271,5 +7271,150 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		}
 		return apptvo;
 	}
+	public AppointmentScheduleVO getRescheduledAppsCounts(Long appUserId){
+		 
+		AppointmentScheduleVO rescheduledVO=new AppointmentScheduleVO();
+		
+		try {
+		 Long rschdldUnquCnt=appointmentTrackingDAO.getAllRescheduledApptCounts(appUserId);
+		 Long rschdldCnddtUnquCnt=appointmentTrackingDAO.getAllRescheduledCandiCounts(appUserId);
+		 
+		 rescheduledVO.setTotalRescheduledCount(rschdldUnquCnt!=null?rschdldUnquCnt:0l);
+		 rescheduledVO.setTotalReschedCandidateCount(rschdldCnddtUnquCnt!=null?rschdldCnddtUnquCnt:0l);
+		 
+		} catch (Exception e) {
+			LOG.error("Error occured at getRescheduledAppsCounts() in AppointmentService",e);
+		}
+		return rescheduledVO;
+	}
+	
+	public List<AppointmentScheduleVO> getRescheduledAppointmentsDetails(Long apptUserId){
+		
+		List<AppointmentScheduleVO> finalList = new ArrayList<AppointmentScheduleVO>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+		try{
+			 
+			Map<Long,AppointmentScheduleVO>  finalMap = new LinkedHashMap<Long,AppointmentScheduleVO>();
+			Set<Long> tdpCadreIds = new HashSet<Long>();
+			List<Long> cadreIds = new ArrayList<Long>();
+			List<Long> partyCommiteeDesigCadreIds = new ArrayList<Long>();
+			Map<Long,Long> designationMap = new HashMap<Long, Long>();
+			List<Long> PrCadreIds = new ArrayList<Long>();
+			
+			List<Object[]> rescheduledApptAndCandiList = appointmentTrackingDAO.getAllRescheduledApptAndCandiDetails(apptUserId);
+			
+			List<Object[]> rescheduledDatesAndCommentsList = appointmentTrackingDAO.getAllRescheduledCommentsAndrescheduledDates(apptUserId);
+			
+			if( rescheduledApptAndCandiList != null && rescheduledApptAndCandiList.size() > 0){
+				
+				for( Object[] obj : rescheduledApptAndCandiList ){
+					
+					AppointmentScheduleVO apptVO = finalMap.get((Long)obj[0]);
+					boolean isApptExist = true;
+					
+					if(apptVO == null){
+						isApptExist = false;
+						apptVO = new AppointmentScheduleVO();
+						apptVO.setAppointmentId((Long)obj[0]);
+						apptVO.setAppointmentUniqueId(obj[1]!=null?obj[1].toString():"");
+						apptVO.setDate(obj[2]!=null?sdf.format((Date)obj[2]):"");
+						apptVO.setPresentStatus(obj[3]!=null?obj[3].toString():"");
+					}
+					if(apptVO.getSubMap() == null){
+						apptVO.setSubMap(new LinkedHashMap<Long, AppointmentScheduleVO>());
+					}
+					AppointmentScheduleVO candiVO = new AppointmentScheduleVO();
+					candiVO.setId(obj[4]!= null ? (Long)obj[4]:0l);
+					candiVO.setName(obj[5]!= null ?obj[5].toString():"");
+					candiVO.setImageUrl(obj[6]!= null ?obj[6].toString():"");
+					candiVO.setMobileNo(obj[7]!= null ?obj[7].toString():"");
+					candiVO.setTdpCadreId(obj[8]!= null ?(Long)obj[8]:0l);
+					candiVO.setDesignation(obj[11] != null ? obj[11].toString() : "");
+					
+					Long apptcanditype = obj[12] !=null ?(Long)obj[12]:null;
+					
+					//get All tdpcadreids
+					tdpCadreIds.add(candiVO.getTdpCadreId());
+					apptVO.getSubMap().put(candiVO.getId(),candiVO);
+					
+					 //candidates designation based on appt cand type
+					Long tdpcadreId =    obj[8] !=null ?(Long)obj[8]:null;
+					
+					if(apptcanditype != null){
+						candiVO.setApptCandiTypeId(apptcanditype);
+						if(apptcanditype.longValue() == 4l){
+							
+							candiVO.setCandDesignation(obj[13] !=null ?obj[13].toString():"");
+							candiVO.setConstituency(obj[9] !=null ?WordUtils.capitalize(obj[9].toString().toLowerCase())+" Constituency":"");
+							candiVO.setAddressConstituency(obj[9] !=null ? obj[9].toString().trim():"");
+							
+						}else if(apptcanditype.longValue() == 3l){
+							candiVO.setCandDesignation(obj[13] !=null ?obj[13].toString():"");
+							cadreIds.add(tdpcadreId);
+						}else if(apptcanditype.longValue() == 2l && tdpcadreId!=null){
+							partyCommiteeDesigCadreIds.add(tdpcadreId);
+						}else if(apptcanditype.longValue() == 1l && tdpcadreId!=null && obj[10]!=null){
+							candiVO.setCandDesignation(obj[11] != null ? obj[11].toString() : "");
+							designationMap.put(tdpcadreId, (Long)obj[10]);
+							PrCadreIds.add(tdpcadreId);								
+						}
+					}
+					
+					if(!isApptExist){
+						finalMap.put((Long)obj[0], apptVO);
+					}
+				}
+			}
+			
+			
+			if(rescheduledDatesAndCommentsList != null && rescheduledDatesAndCommentsList.size() > 0){
+				for(Object[] obj : rescheduledDatesAndCommentsList){
+					AppointmentScheduleVO apptVO = finalMap.get((Long)obj[0]);
+					if( apptVO != null){
+						AppointmentScheduleVO rescheduledVO = new AppointmentScheduleVO();
+						rescheduledVO.setDate(obj[1]!=null?sdf.format((Date)obj[1]):"");
+						rescheduledVO.setSubject(obj[2]!=null?obj[2].toString():"");
+						rescheduledVO.setName(obj[3]!=null?obj[3].toString():"");
+						
+						if( apptVO.getRescheduledList()==null){
+							apptVO.setRescheduledList(new ArrayList<AppointmentScheduleVO>());
+						}
+						apptVO.getRescheduledList().add(rescheduledVO);
+					}
+				}
+			}
+			
+			//Map iteration
+			if( finalMap != null && finalMap.size() > 0){
+				for (Map.Entry<Long, AppointmentScheduleVO> entry : finalMap.entrySet()) {
+					
+					if( entry.getValue().getSubMap() != null && entry.getValue().getSubMap().size() > 0){
+						entry.getValue().getSubList().addAll(entry.getValue().getSubMap().values());
+						entry.getValue().getSubMap().clear();
+					}
+				}
+				finalList.addAll(finalMap.values());
+			}
+			
+			Map<Long,String> publicRepresLocaMap = new HashMap<Long,String>();
+			if(PrCadreIds !=null && PrCadreIds.size()>0){
+				publicRepresLocaMap = locationService.getLocationMapForDesignation(designationMap,PrCadreIds);
+			}
+			if(cadreIds!=null && cadreIds.size()>0){
+				setConstituenciesforTdpcadreIds(finalList,cadreIds);
+			}
+			if(partyCommiteeDesigCadreIds!=null && partyCommiteeDesigCadreIds.size()>0){
+				setPartyPositionDesignationsforTdpcadreIds(finalList,partyCommiteeDesigCadreIds);
+			}
+			if(publicRepresLocaMap!=null && publicRepresLocaMap.size()>0){
+				setPublicRepresenativeLocations(finalList,publicRepresLocaMap);
+			}
+			
+			
+		}catch(Exception e){
+			LOG.error("Error occured at getRescheduledAppointmentsDetalis() in AppointmentService",e);
+		}
+	    return finalList;
+	}
  }
 

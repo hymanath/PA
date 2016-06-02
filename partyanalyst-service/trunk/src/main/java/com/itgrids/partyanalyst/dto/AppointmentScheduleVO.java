@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AppointmentScheduleVO {
 
@@ -46,6 +47,12 @@ private Long totalCompletedAppCount;
 private String candidateLastVisitDate;
 private String candidateLastUpdatedStatus;
 private String addressConstituency;
+private Long totalRescheduledCount;
+private Long totalReschedCandidateCount;
+
+private Map<Long,AppointmentScheduleVO> subMap;
+private List<AppointmentScheduleVO> rescheduledList;
+private String presentStatus;
 
 private List<AppointmentScheduleVO> subList = new ArrayList<AppointmentScheduleVO>();
 
@@ -279,6 +286,35 @@ public Long getApptCandiTypeId() {
 public void setApptCandiTypeId(Long apptCandiTypeId) {
 	this.apptCandiTypeId = apptCandiTypeId;
 }
-
+public Long getTotalRescheduledCount() {
+	return totalRescheduledCount;
+}
+public void setTotalRescheduledCount(Long totalRescheduledCount) {
+	this.totalRescheduledCount = totalRescheduledCount;
+}
+public Long getTotalReschedCandidateCount() {
+	return totalReschedCandidateCount;
+}
+public void setTotalReschedCandidateCount(Long totalReschedCandidateCount) {
+	this.totalReschedCandidateCount = totalReschedCandidateCount;
+}
+public Map<Long, AppointmentScheduleVO> getSubMap() {
+	return subMap;
+}
+public void setSubMap(Map<Long, AppointmentScheduleVO> subMap) {
+	this.subMap = subMap;
+}
+public List<AppointmentScheduleVO> getRescheduledList() {
+	return rescheduledList;
+}
+public void setRescheduledList(List<AppointmentScheduleVO> rescheduledList) {
+	this.rescheduledList = rescheduledList;
+}
+public String getPresentStatus() {
+	return presentStatus;
+}
+public void setPresentStatus(String presentStatus) {
+	this.presentStatus = presentStatus;
+}
 
 }

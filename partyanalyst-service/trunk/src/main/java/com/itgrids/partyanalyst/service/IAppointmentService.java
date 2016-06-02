@@ -100,4 +100,6 @@ public interface IAppointmentService {
 	public List<IdNameVO> getSMSEnablingDetailsForAllStatus();
 	public List<AppointmentMembersDataVO> getAppointmentMembersByScheduleType(AppointmentMemberInputVO inputVO);
 	public ResultStatus updateAppointmentReason(Long appointmentId,String reason,Long userId);
+	public AppointmentScheduleVO getRescheduledAppsCounts(Long appUserId);
+	public List<AppointmentScheduleVO> getRescheduledAppointmentsDetails(Long apptUserId);
 }
