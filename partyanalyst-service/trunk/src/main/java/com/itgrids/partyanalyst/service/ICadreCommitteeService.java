@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -21,6 +20,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO1;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -173,6 +173,6 @@ public interface ICadreCommitteeService {
 	 
 	 public List<IdNameVO> getStatesForLocationLevel(String accessType,Long accessValue);
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds);
-	 public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
+	 public LocationWiseBoothDetailsVO1 getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
 			 String searchStartDateStr,String searchEndDateStr,Long constituencyId,Long optionId,Long questionId);
 }
