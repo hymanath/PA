@@ -647,7 +647,9 @@ function getParticipatedConstituencyId(cadreId){
 										str+='<td>0</td>';
 									else
 										str+='<td>'+results[i].knownList[j].invitationCount+'</td>';
-									str+='<td>'+results[i].knownList[j].total+' <i class="glyphicon glyphicon-eye-open attedenceCls pull-right" title="Click here to get Attendance Details" style="cursor:pointer" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"></i></td>';
+									//str+='<td>'+results[i].knownList[j].total+' <i class="glyphicon glyphicon-eye-open attedenceCls pull-right" title="Click here to get Attendance Details" style="cursor:pointer" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"></i></td>';
+									if(results[i].knownList[j].total != null && results[i].knownList[j].total > 0)
+										str+='<td>1<span class="attedenceCls" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"><a style="cursor:pointer"> -'+results[i].knownList[j].total+' Day(s) </a></td>';
 									if(results[i].knownList[j].eventTypeId != 2)
 										str+='<td>'+results[i].knownList[j].absentCount+'</td>';
 									 str+='</tr>';
@@ -703,6 +705,30 @@ function getParticipatedConstituencyId(cadreId){
 					str+='<table class="table m_0 table-bordered">';
 					str+='<thead>';
 						str+='<th style="text-align:center;"></th>';
+						str+='<th style="text-align:center;">Count</th>';
+					str+='</thead>';
+					str+='<tbody>';
+					for(var i in result){
+						var count = 0;
+						if(result[i].subList != null)
+							count = result[i].subList.length;
+						str+='<tr>';
+							str+='<td style="text-align:center;">Day - '+(parseInt(i)+1)+' ('+result[i].name+') </td>';
+							if(result[i].count > 0){
+								str+='<td class="dayWiseAttendedClass" style="text-align:center;" attr_divId="dayWiseAttendedDiv'+i+'"><a style="cursor:pointer">'+count+'</a>';
+								str+='<ul id="dayWiseAttendedDiv'+i+'" style="display:none">';
+								for(var j in result[i].subList)
+									str+='<li>'+result[i].subList[j]+'</li>';
+								str+='</ul>';
+								str+='</td>';
+							}
+							else
+								str+='<td style="text-align:center;"> - </td>'; 
+						str+='</tr>';
+					}
+					str+='</tbody>';
+					/*str+='<thead>';
+						str+='<th style="text-align:center;"></th>';
 					for(var i in result)
 						str+='<th style="text-align:center;">Day - '+(parseInt(i)+1)+' ('+result[i].name+') </th>';
 					str+='</thead>';
@@ -716,13 +742,18 @@ function getParticipatedConstituencyId(cadreId){
 							str+='<td style="text-align:center;"> - </td>'; 
 				}
 				str+='</tr>';
-				str+='</tbody>';
+				str+='</tbody>';*/
 				str+='</table>';
 				$("#dataLoadingsImgForEventAttendanceInfoId").hide();
 				$("#eventAttendanceInfoBodyId").html(str);
 				}
 				$("#dataLoadingsImgForEventAttendanceInfoId").hide();
 			});
+		});
+		
+		$(document).on("click",".dayWiseAttendedClass",function(){
+			var divId = $(this).attr("attr_divId");
+			$("#"+divId).show();
 		});
 		
 		function familyMembersSurveyDetails(votercardNo)
@@ -1833,7 +1864,7 @@ function buildElectionPerformanceInCadreLocation(result)
 		//if(result[i].year == "2014")
 		str += '<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span></a>';
 		//else
-		//str += '<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span></a>';
+		//str += '<span class="pull-right"><i class="glyphicon glyphicon-plus"></i></span></a>';
 		
         str += '</h4>';
 	    str += '</div>';
