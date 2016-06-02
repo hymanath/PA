@@ -1660,7 +1660,7 @@ function buildStartingPrograms(result,parentEventId){
 				}
 			    str+=' Invalid  - '+invalidCount+' ';
 			  str+=')</span></p>';
-			  str+='<ul class="spanBorderRight">';
+			  str+='<ul class="spanBorderRight" style="font-size:11px;">';
 				for(var j in result[i].subList){
 					if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
 						str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';  
@@ -1687,7 +1687,7 @@ function buildStartingPrograms(result,parentEventId){
 				str+='<tr>';
 				str+='<td style="padding:7px 5px">';
 				str+=' <p class="m_0">'+result[i].name+'</p>';
-				str+='<ul class="spanBorderRight">';
+				str+='<ul class="spanBorderRight" style="font-size:11px;">';
 				for(var j in result[i].subList){
 					if(result[i].subList[j].dateStr == "2016-05-27" || result[i].subList[j].dateStr == "2016-05-28" || result[i].subList[j].dateStr == "2016-05-29"){
 						var dayCount = 0;
