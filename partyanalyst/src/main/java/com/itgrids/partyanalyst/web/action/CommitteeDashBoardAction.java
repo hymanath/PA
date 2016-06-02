@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO1;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -76,7 +77,16 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<EventDocumentVO> docsList;
 	private List<BasicVO>                       basicVOList = null;
 	private IActivityService activityService;
+	private LocationWiseBoothDetailsVO1          locationWiseBoothDetailsVO1;
 	
+	
+	public LocationWiseBoothDetailsVO1 getLocationWiseBoothDetailsVO1() {
+		return locationWiseBoothDetailsVO1;
+	}
+	public void setLocationWiseBoothDetailsVO1(
+			LocationWiseBoothDetailsVO1 locationWiseBoothDetailsVO1) {
+		this.locationWiseBoothDetailsVO1 = locationWiseBoothDetailsVO1;
+	}
 	public void setActivityService(IActivityService activityService) {
 		this.activityService = activityService;
 	}
@@ -1024,10 +1034,10 @@ public String getAllConstituencysForADistrict(){
 			Long questionId = jObj.getLong("questionId");
 			
 			if(searchStartDateStr != null && searchStartDateStr.trim().length() > 0 && searchEndDateStr != null && searchEndDateStr.trim().length() > 0){
-				locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
+				locationWiseBoothDetailsVO1 = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
 						locationId,searchStartDateStr,searchEndDateStr,constituencyId,optionId,questionId);
 			}else{
-				locationWiseBoothDetailsVO = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
+				locationWiseBoothDetailsVO1 = cadreCommitteeService.getActivityLocationDetails(checkedValue,activityScopeId,activityLevelId,searchBy,
 						locationId,null,null,constituencyId,optionId,questionId);
 			}
 			

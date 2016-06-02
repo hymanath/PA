@@ -713,7 +713,7 @@ function getUserAccessConstituencyList()
 function getUserAccessDistrictList()
 {
 	$('#districtList').find('option').remove();
-	$('#districtList').append('<option value="0"> Select District</option>');	
+	//$('#districtList').append('<option value="0"> Select District</option>');	
 	var jObj = {
 		};
 		
@@ -725,6 +725,7 @@ function getUserAccessDistrictList()
 			
 			if(result != null && result.length >0)
 			{
+				$('#districtList').append('<option value="0"> All </option>');
 				for(var i in result)
 					$('#districtList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 			}
@@ -928,17 +929,17 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 		}
 	}
 	
-	if(errStr!= null && errStr.length>0){
-		$('#ErrDiv').html(errStr);
-		return;
+	/*if(errStr!= null && errStr.length>0){
+		//$('#ErrDiv').html(errStr);
+		//return;
 	}
 	else
-	{
-		if(activityLevelId == 3){
+	{*/
+		/*if(activityLevelId == 3){
 		$('#resultsDiv').hide();
-		}else{
+		}else{*/
 			$('#resultsDiv').show();
-		}		
+		//}		
 		$('#home').html("<img src='images/Loading-data.gif'/>");	
 			if(startDate.trim().length == 0)
 			{
@@ -1022,6 +1023,8 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 							str+='<th style="background-color:#00B17D; color:#fff;">CONSTITUENCY</th>';
 						else if(activityLevelId == 4)
 							str+='<th style="background-color:#00B17D; color:#fff;">STATE</th>';
+						else if(activityLevelId == 3)
+							str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT</th>';
 						//str+='<th style="background-color:#00B17D; color:#fff;">PLANNED DATE</th>';
 						if(activityScopeId != 16)
 							str+='<th style="background-color:#00B17D; color:#fff;">CONDUCTED DATE</th>';
@@ -1174,7 +1177,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 					$("#constncyId").html(''+$("#constiList option:selected").text()+' constituency ');
 					$('#headingId').html(' '+$("#activityLevelList option:selected").text()+' - '+$("#ActivityList option:selected").text()+'');
 				});	
-	}
+	//}
 	
 }
 
@@ -2521,6 +2524,7 @@ $(document).on("change","#questionsForOptionsId",function(){
 		var optionId =$(this).val();
 		var questionId = $("#questionsId").val();
 		getActivityStatusDetailsByScopeIdAndLocationValue();
+		
 		getLocationDetailsForActivity('','',optionId,questionId);
 });
 </script>

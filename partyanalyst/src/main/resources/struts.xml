@@ -11079,7 +11079,7 @@
 	
 	<action name="getLocationDetailsForActivity" class="committeeDashBoardAction" method="getLocationDetailsForActivity">
 	    <result type="json" name="success">		   
-		    <param name="root">locationWiseBoothDetailsVO</param>
+		    <param name="root">locationWiseBoothDetailsVO1</param>
 		</result>
 	</action>
 	
