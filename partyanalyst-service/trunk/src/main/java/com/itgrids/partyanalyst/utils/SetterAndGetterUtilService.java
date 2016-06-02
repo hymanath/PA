@@ -94,7 +94,7 @@ public class SetterAndGetterUtilService {
 	/*
      * type parameter holds the information of field, check the type  of field
      * if type is Double the change the data type of second parameter to Double, like this
-     * check for all wraper classes in java. So I have written eight conditions.
+     * check for all wrapper classes in java. So I have written eight conditions.
      * finally this method will return same value with modified data type.
      */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
