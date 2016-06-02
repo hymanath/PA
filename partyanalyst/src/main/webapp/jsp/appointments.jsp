@@ -93,6 +93,21 @@
 												<table class="table table-condensed tableAppointment" style="font-size:20px;" id="todayAppointmentsId">
 													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
+												<h2 class="m_top10 text-success" style="display:none;">RESCHEDULED APPOINTMENTS</h2>
+												<table style="display:none;" class="table table-condensed table-bordered" style="font-size:20px;">
+													<tr>
+														<td>
+															Total Reschedule Appointments
+														</td>
+										                  <td id="ttlRschdlAppntmntsCntId">0</td>
+													</tr>
+													<tr>
+														<td>
+															Total Reschedule Unique Members
+														</td>
+														<td id="ttlRschdlUnqMmbrsCntId">0</td>
+													</tr>
+												</table>
 											</div>
 											<div class="col-md-6">
 												<div id="LineChart" style="width:500px;height:300px;"></div>
@@ -890,6 +905,20 @@
 	</div>
   </div>
 </div>
+<!--Reschedule Appointments Report Modal -->
+<div id="rschdldAppntmntsRprtMdlId" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog modal-lg" style='width:80%'>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h2>Rescheduled Appointments Report Details</h2>
+       </div>
+      <div class="modal-body">
+        <div id="rschdldAppntmntsRprtTblId"></div>
+      </div>
+    </div>
+  </div>
+</div>
  <!--   MODAL POPUP FOR APPOINTMENT DETAILS  END-->
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 
@@ -1475,6 +1504,7 @@ $(".dropkickClass").dropkick();
 				searchTypeRadioCls(1);
 				getAllCandidateTypes();
 				setcolorsForStatus();
+				getRescheduledsCounts();
 				
 			}, 1000);
 			getAppointmentsLabelStatus("onload");
