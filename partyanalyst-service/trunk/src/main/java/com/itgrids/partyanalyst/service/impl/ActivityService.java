@@ -1419,7 +1419,8 @@ public class ActivityService implements IActivityService{
 					
 					if(districtIds != null && districtIds.size()>0){
 						searchAttributeVO.setLocationIdsList(districtIds);
-						
+						if(activityLevelId.longValue() > 2L)
+							 searchAttributeVO.setTypeId(9999L);//dummy value
 						questionnairesCount = activityQuestionAnswerDAO.getActivityQuestionnairesCountsByLocation(searchAttributeVO,stateId);
 						yesCount = activityQuestionAnswerDAO.getActivityQuestionnairesAttributeCountsByLocation(searchAttributeVO,1L,stateId);
 					searchAttributeVO.setConditionType("planned");

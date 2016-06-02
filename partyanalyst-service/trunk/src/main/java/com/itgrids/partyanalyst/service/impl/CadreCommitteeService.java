@@ -135,6 +135,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO1;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.RolesVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -16873,10 +16874,10 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 	        return locationsList;
 	}
 	
-	public LocationWiseBoothDetailsVO getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
+	public LocationWiseBoothDetailsVO1 getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
 			 String searchStartDateStr,String searchEndDateStr,Long constituencyId,Long optionId,Long questionId)
 	{
-		LocationWiseBoothDetailsVO returnVO = null;	
+		LocationWiseBoothDetailsVO1 returnVO = null;	
 		try {
 			if(activityLevelId.longValue() == 4l){
 				List<LocationWiseBoothDetailsVO> returnStateList = new ArrayList<LocationWiseBoothDetailsVO>();
@@ -16898,7 +16899,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						returnStateList.add(vo);
 					}
 				}
-				returnVO = new LocationWiseBoothDetailsVO();
+				returnVO = new LocationWiseBoothDetailsVO1();
 				returnVO.getResult().addAll(returnStateList);
 			}
 			else{
@@ -16925,7 +16926,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			if(optionId != null && optionId>0L){
 				questionResponsesMap = getActivityLocationWiseQuestionsData(activityScopeId,questionId,constituencyId);				
 				if(questionResponsesMap == null || questionResponsesMap.size() == 0){
-					returnVO = new LocationWiseBoothDetailsVO();
+					returnVO = new LocationWiseBoothDetailsVO1();
 					return returnVO;
 				}	
 			}
@@ -17062,7 +17063,41 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 					//if(reportList != null && reportList.size()>0)
 					//	panchayatList.addAll(reportList);
 				}
-				
+				else if(activityLevelId.longValue() == 3l)
+				{
+					/*if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					{
+						reportList = new ArrayList<LocationWiseBoothDetailsVO>(0);
+						Constituency constituency= constituencyDAO.get(Long.valueOf(locationId));
+						if(constituency != null)
+							reportList.add(new LocationWiseBoothDetailsVO(locationId,constituency.getName()));
+					}
+					else
+					if(searchBy != null && searchBy.trim().equalsIgnoreCase(IConstants.DISTRICT))
+					{*/
+					List<Object[]> list = null;
+					reportList = new ArrayList<LocationWiseBoothDetailsVO>(0);
+					if(locationId.longValue() > 0L){
+						list = districtDAO.getDistrictDetailsById(locationId);
+					}
+					else{
+						list = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L, 0L);
+					}
+					if(list != null && list.size() > 0){
+						for (Object[] obj : list) {
+							LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+							vo.setLocationId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+							vo.setLocationName(obj[1] != null ? obj[1].toString():"");
+							reportList.add(vo);
+						}
+					}
+							//reportList = getConstituencyByDistrictId(locationId);
+					//}
+					
+					
+					//if(reportList != null && reportList.size()>0)
+					//	panchayatList.addAll(reportList);
+				}
 				
 				//CadreCommitteeMemberVO membersVO = getAllCommitteeMembInfoInLocation(activityLevelId,constituencyIds,mandalList,panchayatList);
 				//Map<Long,Map<Long,CadreCommitteeMemberVO>> mandalMap = new HashMap<Long,Map<Long,CadreCommitteeMemberVO>>();
@@ -17097,7 +17132,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				String[] levelIdsArr = {"1","2"};
 				if(reportList != null && reportList.size()>0)
 				{
-					returnVO = new LocationWiseBoothDetailsVO();
+					returnVO = new LocationWiseBoothDetailsVO1();
 					returnList = new ArrayList<LocationWiseBoothDetailsVO>(0);
 					if(isChecked != null && isChecked.equalsIgnoreCase("notConducted"))
 					{
