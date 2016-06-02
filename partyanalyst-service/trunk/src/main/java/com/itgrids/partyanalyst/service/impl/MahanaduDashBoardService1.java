@@ -10,6 +10,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,12 +46,14 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EmailAttributesVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatesEventVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -1642,7 +1646,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   output: List<MahanaduEventVO>
 		   *   
 		  */
-		public List<MahanaduEventVO> getPublicrepresentatives(String startDateStr,String endDateStr,Long eventId,List<Long> subEventIds){
+/*		public List<MahanaduEventVO> getPublicrepresentatives(String startDateStr,String endDateStr,Long eventId,List<Long> subEventIds){
 			  
 			  List<MahanaduEventVO> finallist = new ArrayList<MahanaduEventVO>();
 			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1739,10 +1743,146 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				  Log.error("Exception rised in getPublicrepresentatives()",e); 
 			  }
 			  return finallist;
+		  }*/
+		
+		public List<MahanaduEventVO> getPublicrepresentatives(String startDateStr,String endDateStr,Long eventId,List<Long> subEventIds){
+			  
+			 //Adding Order
+			  Map<String,Long> orderMap = new HashMap<String, Long>();
+			  orderMap.put("MP",1L);  orderMap.put("MP (RAJYA SABHA)",2L);
+			  orderMap.put("MLA",3L);  orderMap.put("MLC",4L);
+			  orderMap.put("ZPTC",5L);  orderMap.put("MPP",6L);
+			  orderMap.put("MPTC",7L); orderMap.put("CONSTITUENCY INCHARGE",8L);
+			  List<MahanaduEventVO> finallist = new ArrayList<MahanaduEventVO>();
+			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			  try{
+				  String currentDateStr = format.format(dateUtilService.getCurrentDateAndTime());
+				  //Dates
+				  Date startDate = null;
+				  Date endDate = null;
+				  if( startDateStr != null && !startDateStr.isEmpty()){
+					  startDate = sdf.parse(startDateStr);
+				  }
+				  if( endDateStr != null && !endDateStr.isEmpty()){
+					  endDate = sdf.parse(endDateStr);
+				  }
+				  List<Date>  betweenDates=new CommonMethodsUtilService().getBetweenDates(startDate,endDate);
+				  //designations
+				  List<Long> designationIds =Arrays.asList(IConstants.PUBLIC_REPR_DESIGNATION_IDS);
+				  Map<Long,MahanaduEventVO> designationsMap = new LinkedHashMap<Long, MahanaduEventVO>();
+				  //TOTAL INVITEES
+				  List<Object[]> inviteesList = eventInviteeDAO.getPublicRepresentiveInvitessForEvent(eventId,designationIds);
+			
+				  setDataFordesignationsMap(designationsMap,inviteesList,betweenDates,"PR",orderMap);
+				  
+				  // COMMITTEE LEVEL 
+				   //Day Wise Attended.
+				  List<Object[]> dayWiseList = eventInviteeDAO.dayWisePublicRepInviteesAttendedForEvent(startDate,endDate,subEventIds,designationIds);
+				 
+				  setDataForDayWise(designationsMap,dayWiseList);
+				  
+				  if( designationsMap!= null && designationsMap.size() > 0){
+						 for (Map.Entry<Long, MahanaduEventVO> entry : designationsMap.entrySet()) {
+							 if (entry.getValue().getSubMap() != null){
+								 entry.getValue().getSubList().addAll(entry.getValue().getSubMap().values());
+								 entry.getValue().getSubMap().clear();
+							 } 
+						 }
+						 finallist.addAll(designationsMap.values());
+					 }
+				  Collections.sort(finallist,sortByOrder);
+			}catch (Exception e) {
+				  Log.error("Exception rised in getPublicrepresentatives()",e); 
+			  }
+			  
+			  
+			  return finallist;
 		  }
 		
+		public static Comparator<MahanaduEventVO> sortByOrder = new Comparator<MahanaduEventVO>()
+				{	  
+						
+						  public int compare(MahanaduEventVO vo1, MahanaduEventVO vo2)
+					        {
+					        	 if(vo1.getOrderCnt()  > vo2.getOrderCnt()){
+							            return 1;
+							        } else {
+							            return -1;
+							        }
+					        }
+				};	
 		
+		public void setDataFordesignationsMap(Map<Long,MahanaduEventVO> designationsMap,List<Object[]> inviteesList,List<Date>  betweenDates,String type, Map<String,Long> orderMap)
+		{
+			try{
+			String currentDateStr = format.format(dateUtilService.getCurrentDateAndTime());
+			  
+			  if( inviteesList != null && inviteesList.size() > 0){
+				  
+				  for(Object[] obj : inviteesList){
+					  
+					  MahanaduEventVO desgVO = new MahanaduEventVO();
+					  desgVO.setId( obj[0]!= null ? (Long)obj[0] :0l);
+					  desgVO.setName(obj[1]!= null ? obj[1].toString() :"");
+					  desgVO.setOrderCnt(orderMap.get(desgVO.getName().toString()));
+					  desgVO.setInvitees(obj[2]!= null ? (Long)obj[2] :0l);
+					  desgVO.setDesc(type);
+					  //false
+					  if(betweenDates != null && betweenDates .size() > 0){
+						  for( int i=0;i<betweenDates.size();i++){
+							  MahanaduEventVO dayVO = new MahanaduEventVO();
+							  dayVO.setName("Day"+(i+1));
+							  dayVO.setDateStr(format.format(betweenDates.get(i)));
+							  dayVO.setNotAttended( desgVO.getInvitees() );
+							  
+							  if(currentDateStr.equalsIgnoreCase(dayVO.getDateStr())){
+								  dayVO.setCurrentDay(true);
+							  }
+							  
+							  dayVO.setTotalDaydataExist(false);
+							  if(desgVO.getSubMap() == null){
+								  desgVO.setSubMap(new LinkedHashMap<String, MahanaduEventVO>(0));  
+							  }
+							  desgVO.getSubMap().put(dayVO.getDateStr(),dayVO);
+						  }
+					  }
+					  designationsMap.put( desgVO.getId() , desgVO);
+				  }
+			  }
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
+		public void setDataForDayWise(Map<Long,MahanaduEventVO> designationsMap,List<Object[]> dayWiseList)
+		{
+			try{
+		 if( dayWiseList != null && dayWiseList.size() > 0){
+			  
+			  for( Object[] obj : dayWiseList){
+				  
+				  MahanaduEventVO designationVO = designationsMap.get((Long)obj[0]);
+				  if( designationVO != null ){
+					  MahanaduEventVO dayVO = designationVO.getSubMap().get(obj[2].toString());
+					  
+					  if( dayVO != null){
+						  
+						  dayVO.setAttended(obj[3]!=null ? (Long)obj[3]:0l);
+						  dayVO.setNotAttended( designationVO.getInvitees() - dayVO.getAttended());
+						  designationsMap.entrySet().iterator().next().getValue().getSubMap().get(obj[2].toString()).setTotalDaydataExist(true);
+					 }
+				  }
+			  }
+		  }
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 }
 

@@ -88,7 +88,15 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private Long attended;
 	private Long notAttended;
 	private boolean isCurrentDay;
+	private Long orderCnt;
 	
+	
+	public Long getOrderCnt() {
+		return orderCnt;
+	}
+	public void setOrderCnt(Long orderCnt) {
+		this.orderCnt = orderCnt;
+	}
 	public Long getTotalVisitorsCount() {
 		return totalVisitorsCount;
 	}
