@@ -93,9 +93,9 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	private  AppointmentStatusFlowVO appointmentStatusFlowVO;
 	private  AppointmentFieldsVO  appointmentFieldsVO;
 	private List<IdNameVO> smsStatusEnabledList;
-	
 	private List<AppointmentMembersDataVO> membersList;
 	
+	private AppointmentScheduleVO appointmentScheduleVO;
 	
 	public List<AppointmentMembersDataVO> getMembersList() {
 		return membersList;
@@ -351,6 +351,14 @@ public class AppointmentAction extends ActionSupport implements ServletRequestAw
 	
 	public List<IdNameVO> getSmsStatusEnabledList() {
 		return smsStatusEnabledList;
+	}
+     
+	public AppointmentScheduleVO getAppointmentScheduleVO() {
+		return appointmentScheduleVO;
+	}
+
+	public void setAppointmentScheduleVO(AppointmentScheduleVO appointmentScheduleVO) {
+		this.appointmentScheduleVO = appointmentScheduleVO;
 	}
 
 	public void setSmsStatusEnabledList(List<IdNameVO> smsStatusEnabledList) {
@@ -1456,6 +1464,26 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
-	
-	
+	public String getRescheduledsCounts(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			appointmentScheduleVO=appointmentService.getRescheduledAppsCounts(jObj.getLong("aptUserId"));
+		}catch(Exception e){
+			LOG.error("Exception raised at getRescheduledsCounts() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+				
+	}
+	public String getRescheduledsAppointmentsDtls(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			Long appointmentUserId = jObj.getLong("aptUserId");
+			searchList = appointmentService.getRescheduledAppointmentsDetails(appointmentUserId);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getRescheduledsAppointmentsDtls() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }

@@ -5118,7 +5118,143 @@ $(document).on("click",".todayTotalAppointmentStatusCls",function(){
 	$('html,body').animate({scrollTop: $("#searchApptmntDivId").offset().top}, 2000);
 	getappointmentStatusDetails(statusArray,"Today","",0);
 });
+function getRescheduledsCounts(){
+	
+	var aptUserId = $("#appointmentUserSelectBoxId").val();
+	 	var jsObj = {
+			aptUserId:2 //aptUserId
+		}
+	$.ajax({
+		type :'GET',
+		url  :'getRescheduledsCountsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}  
+	}).done(function(result){ 
+	   if(result!=null){
+		  if(result.totalRescheduledCount!=null && result.totalRescheduledCount>0){
+			 $("#ttlRschdlAppntmntsCntId").html(result.totalRescheduledCount); 
+			 $("#ttlRschdlAppntmntsCntId").addClass("appntmntsSttsCntCls");
+			 $("#ttlRschdlAppntmntsCntId").css("cursor", "pointer");			 
+		  }
+		  if(result.totalReschedCandidateCount!=null && result.totalReschedCandidateCount>0){
+			 $("#ttlRschdlUnqMmbrsCntId").html(result.totalReschedCandidateCount); 
+		  }
+	   }
+	});
+}
 
+$(document).on("click",".appntmntsSttsCntCls",function(){
+	 getRescheduledsAppointmentsDtls();
+});
+ function getRescheduledsAppointmentsDtls(){
+  
+    var aptUserId = $("#appointmentUserSelectBoxId").val();
+	 	var jsObj = {
+			aptUserId:2 //aptUserId
+		}
+	 $.ajax({
+		 type:'POST',
+		 url :'getRescheduledsAppointmentsDtlsAction.action',
+		 dataType:'json',
+		data : {task:JSON.stringify(jsObj)}  
+	 }).done(function(result){
+		 if(result!=null && result.length>0){
+			buildRescheduledAppsDtls(result); 
+		 }else{
+			$("#rschdldAppntmntsRprtTblId").html('<p>No Data Available</p>'); 
+		 }
+	 });
+ } 
+function buildRescheduledAppsDtls(result){ 
 
+	var str='';
+	 str+='<table style="font-size:12px" class="table table-bordered" id="rschdldAppntmntsRprtPgntnTblId">';
+	 str+='<thead>';
+	 str+='<th>ID</th>';
+	 str+='<th>Candidate Name</th>';
+	 str+='<th>Candidate Image</th>';
+	 str+='<th>Mobile No</th>';
+	 str+='<th>Designation</th>';
+	// str+='<th>Created Date</th>';
+	 str+='<th>Rescheduled Date</th>';
+	 str+='<th>Present Status</th>';
+	 str+='<th>Comment</th>';
+	// str+='<th>Updated User</th>';
+	 str+='</thead>'; 
+	   str+='<tbody>';
+	   for(var i in result){
+		   
+		   var candidteList=result[i].subList;
+		   var rescheduledList=result[i].rescheduledList;
+		   
+		    if(candidteList!=null && candidteList.length>0){
+				for(var j in candidteList){
+				  if(rescheduledList!=null && rescheduledList.length>0){
+					  for(var k in rescheduledList){
+						str+='<tr>';
+						if(result[i].appointmentUniqueId!=null && result[i].appointmentUniqueId.length>0){
+						 str+='<td>'+result[i].appointmentUniqueId+'</td>';	
+						}else{
+						 str+='<td> - </td>';	
+						}
+						if(candidteList[j].name!=null && candidteList[j].name.length>0){
+							str+='<td>'+candidteList[j].name+'</td>';
+						}else{
+							 str+='<td> - </td>';	
+						}
+						 str+='<td><img style="width:50px;height:50px;" class="media-object thumbnail" src='+candidteList[j].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
+					
+						 if(candidteList[j].mobileNo!=null && candidteList[j].mobileNo.length>0){
+						 str+='<td>'+candidteList[j].mobileNo+'</td>';
+						 }else{
+						 str+='<td> - </td>';
+						 }
+						 var candidateDesignation=candidteList[j].candDesignation;
+						 var location=candidteList[j].constituency;
+						 var buildCandidateDesignation='';
+					      if(candidateDesignation!=null && candidateDesignation.length>0){
+							  buildCandidateDesignation=candidateDesignation;
+							  if(location!=null && location.length>0){
+								buildCandidateDesignation = buildCandidateDesignation + " - " + location ;
+							}
+						  }
+						  str+='<td>'+buildCandidateDesignation+'</td>';
+						 /*  if(result[i].date!=null && result[i].date.length>0){
+							  str+='<td>'+result[i].date+'</td>';
+						   }else{
+							  str+='<td> - </td>';
+						   } */
+						 if(rescheduledList[k].date!=null && rescheduledList[k].date.length>0){
+							 str+='<td>'+rescheduledList[k].date+'</td>';
+						 }else{
+							str+='<td> - </td>';
+						 }
+						 if(result[i].presentStatus!=null && result[i].presentStatus.length>0){
+							  str+='<td>'+result[i].presentStatus+'</td>';
+						 }else{
+							 str+='<td> - </td>';
+						 }
+						 if(rescheduledList[k].subject!=null && rescheduledList[k].subject.length>0){
+							 str+='<td>'+rescheduledList[k].subject+'</td>';
+						 }else{
+							str+='<td> - </td>';
+						 }
+						/*  if(rescheduledList[k].name!=null && rescheduledList[k].name.length>0){
+							 str+='<td>'+rescheduledList[k].name+'</td>';
+						 }else{
+							str+='<td> - </td>';
+						 } */
+						str+='</tr>'; 
+					  }
+				  }
+				}
+			}
+	   }
+	   str+='</tbody>';
+	str+='</table>';
+  $("#rschdldAppntmntsRprtTblId").html(str);
+  $("#rschdldAppntmntsRprtPgntnTblId").dataTable();
+  $("#rschdldAppntmntsRprtMdlId").modal("show");
+}
 
 
