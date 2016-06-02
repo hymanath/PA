@@ -1689,7 +1689,7 @@ function buildStartingPrograms(result,parentEventId){
 				str+=' <p class="m_0">'+result[i].name+'</p>';
 				str+='<ul class="spanBorderRight">';
 				for(var j in result[i].subList){
-					if(result[i].subList[j].dateStr == "2016-05-27" || result[i].subList[j].dateStr == "2016-05-28" || result[i].subList[j].dateStr == "2016-05-28"){
+					if(result[i].subList[j].dateStr == "2016-05-27" || result[i].subList[j].dateStr == "2016-05-28" || result[i].subList[j].dateStr == "2016-05-29"){
 						var dayCount = 0;
 						if(result[i].subList[j].dateStr == "2016-05-27"){
 							dayCount = "Day  - 1";
