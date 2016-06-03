@@ -681,7 +681,7 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 				"          ,ats.to_date as toDate," +//12
 				"          a.appointment_unique_id as uniqueId,ats.date as date,ac.image_url as url," +//15
 				"          asts.status_color as colour,ac.tdp_cadre_id as tdpCadreId,date(a.inserted_time) as insertedTime," +//18
-				"          act.appointment_candidate_type_id as acid ,act.candidate_type as actype,ac.tdp_cadre_id as tdpCadreId,constituency.name as constname," +
+				"          act.appointment_candidate_type_id as acid ,act.candidate_type as actype,ac.tdp_cadre_id as tdpCadreId,constituency.name as constname," +//22
 				"          acd.appointment_candidate_designation_id as candiDesigId" +//23
 				
 					" FROM " + 

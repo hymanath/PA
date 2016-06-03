@@ -10,7 +10,8 @@ public interface IAppointmentTrackingDAO extends GenericDao<AppointmentTracking,
 	public List<Object[]> getAppointmentTrackingDetails(Long appointmentId);
 	public Long getAllRescheduledApptCounts(Long apptUserId);
 	public Long getAllRescheduledCandiCounts(Long apptUserId);
-	 public List<Object[]> getAllRescheduledApptAndCandiDetails(Long apptUserId);
-	 public List<Object[]> getAllRescheduledCommentsAndrescheduledDates(Long apptUserId);
-
+	public List<Object[]> getAllRescheduledApptAndCandiDetails(Long apptUserId);
+	public List<Object[]> getAllRescheduledCommentsAndrescheduledDates(Long apptUserId);
+	public List<Object[]> getCandiWiseRescheduledAppts(Long apptUserId);
+	public List<Object[]> getMeberWiseRescheduledAppts(Long apptUserId);
 }
