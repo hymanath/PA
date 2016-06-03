@@ -7416,5 +7416,302 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		}
 	    return finalList;
 	}
+	
+	/**
+	   *   @author    : Sreedhar
+	   *   Description:This Service is used to get the rescheduled member wise appointments.
+	   *   inputs: apptUserId
+	   *   output: List<AppointmentScheduleVO>
+	   *   
+	  */
+ public List<AppointmentScheduleVO> getRescheduledMembersApptDetails(Long apptUserId){
+		
+		List<AppointmentScheduleVO> finalList = new ArrayList<AppointmentScheduleVO>(0);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+		try{
+			 
+			Map<Long,AppointmentScheduleVO>  finalMap = new LinkedHashMap<Long,AppointmentScheduleVO>();
+			
+			//for candidate desig and constituencies.
+			List<Long> cadreIds = new ArrayList<Long>();
+			List<Long> partyCommiteeDesigCadreIds = new ArrayList<Long>();
+			List<Long> PrCadreIds = new ArrayList<Long>();
+			Map<Long,Long> designationMap = new HashMap<Long, Long>();
+			
+			
+			List<Object[]> candiApptsList = appointmentTrackingDAO.getCandiWiseRescheduledAppts(apptUserId);
+			if( candiApptsList != null && candiApptsList.size() > 0){
+				
+				//set candidates and appointments.
+				for( Object[] obj : candiApptsList){
+	 				
+	 				boolean isCandiExist = true;
+	 				
+	 				AppointmentScheduleVO candiVO = finalMap.get((Long)obj[0]);
+	 				
+	 				if( candiVO == null){
+	 					
+	 					isCandiExist = false;
+	 					candiVO = new AppointmentScheduleVO();
+	 					candiVO.setId(obj[0]!=null ?(Long)obj[0] : 0l);
+	 					candiVO.setName(obj[1]!= null ?obj[1].toString():"");
+						candiVO.setImageUrl(obj[2]!= null ?obj[2].toString():"");
+						candiVO.setMobileNo(obj[3]!= null ?obj[3].toString():"");
+						candiVO.setTdpCadreId(obj[8]!= null ?(Long)obj[8]:0l);
+						candiVO.setDesignation(obj[5] != null ? obj[5].toString() : "");
+						
+						//for cand desig and const.
+						Long tdpcadreId =    obj[8] !=null ?(Long)obj[8]:null;
+						Long apptcanditype = obj[6] !=null ?(Long)obj[6]:null;
+						
+						if(apptcanditype != null){
+							candiVO.setApptCandiTypeId(apptcanditype);
+							if(apptcanditype.longValue() == 4l){
+								
+								candiVO.setCandDesignation(obj[7] !=null ?obj[7].toString():"");//Other
+								candiVO.setConstituency(obj[9] !=null ?WordUtils.capitalize(obj[9].toString().toLowerCase())+" Constituency":"");
+								
+							}else if(apptcanditype.longValue() == 3l){
+								candiVO.setCandDesignation(obj[7] !=null ?obj[7].toString():"");//Cadre
+								cadreIds.add(tdpcadreId);
+							}else if(apptcanditype.longValue() == 2l && tdpcadreId!=null){
+								partyCommiteeDesigCadreIds.add(tdpcadreId);
+							}else if(apptcanditype.longValue() == 1l && tdpcadreId!=null && obj[4]!=null){
+								candiVO.setCandDesignation(obj[5] != null ? obj[5].toString() : "");//MP,MLA...
+								designationMap.put(tdpcadreId, (Long)obj[4]);
+								PrCadreIds.add(tdpcadreId);								
+							}
+						}
+						
+	 				}
+	 				AppointmentScheduleVO apptVO = new AppointmentScheduleVO();
+	 				apptVO.setAppointmentId((Long)obj[10]);
+					apptVO.setAppointmentUniqueId(obj[11]!=null?obj[11].toString():"");
+					apptVO.setDate(obj[12]!=null?sdf.format((Date)obj[12]):"");
+					apptVO.setPresentStatus(obj[13]!=null?obj[13].toString():"");
+	 				
+					if(candiVO.getSubMap() == null){
+						candiVO.setSubMap(new LinkedHashMap<Long, AppointmentScheduleVO>(0));
+					}
+					candiVO.getSubMap().put(apptVO.getAppointmentId(),apptVO);
+					
+	 				if(!isCandiExist){
+	 					finalMap.put((Long)obj[0], candiVO);
+	 				}
+	 			}
+				
+				List<Object[]> rescheduledDates = appointmentTrackingDAO.getMeberWiseRescheduledAppts(apptUserId);
+				if( rescheduledDates != null && rescheduledDates.size() > 0){
+					setCandiApptsRescheduledDates(rescheduledDates,finalMap);
+				}
+			}
+			
+			//Map iteration
+			if( finalMap != null && finalMap.size() > 0){
+				for (Map.Entry<Long, AppointmentScheduleVO> entry : finalMap.entrySet()) {
+					
+					if( entry.getValue().getSubMap() != null && entry.getValue().getSubMap().size() > 0){
+						entry.getValue().getSubList().addAll(entry.getValue().getSubMap().values());
+						entry.getValue().getSubMap().clear();
+					}
+				}
+				finalList.addAll(finalMap.values());
+			}
+			
+			if(cadreIds!=null && cadreIds.size()>0){
+				Map<Long,String> constMap = getConstforTdpcadreIds(cadreIds);
+				setConstforTdpcadreIds(finalList,constMap);
+			}
+			if(partyCommiteeDesigCadreIds!=null && partyCommiteeDesigCadreIds.size()>0){
+				Map<Long,String> partyCommiteeDesignationsMap = getPartyPositionDesignationMap(partyCommiteeDesigCadreIds);
+				setPartyPositionDesignations(finalList,partyCommiteeDesignationsMap);
+			}
+			if(PrCadreIds !=null && PrCadreIds.size()>0){
+				Map<Long,String> publicRepresLocaMap  = locationService.getLocationMapForDesignation(designationMap,PrCadreIds);
+				setPublicRepresenatLocations(finalList,publicRepresLocaMap);
+			}
+			
+		}catch(Exception e){
+			LOG.error("Error occured at getRescheduledAppointmentsDetalis() in AppointmentService",e);
+			e.printStackTrace();
+		}
+	    return finalList;
+	}
+ 	public void setPublicRepresenatLocations(List<AppointmentScheduleVO> resultList,Map<Long,String> publicRepresLocaMap){
+		try{
+			
+			if(publicRepresLocaMap!=null && publicRepresLocaMap.size()>0)
+			{	
+				for( AppointmentScheduleVO candi :resultList)
+				{			
+					if(candi.getApptCandiTypeId()!=null && candi.getApptCandiTypeId().longValue() == 1l)
+					{	
+						if(candi.getTdpCadreId()!=null)
+						{
+							String location = publicRepresLocaMap.get(candi.getTdpCadreId());
+							if(location!=null && !location.isEmpty()){
+								candi.setConstituency(WordUtils.capitalize(location.toLowerCase()));
+							}else{
+								candi.setConstituency(location);
+							}
+						}
+					}
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised at setPublicRepresenatLocations", e);
+		}
+	}
+ 	public Map<Long,String> getPartyPositionDesignationMap(List<Long> cadreIds){
+ 		Map<Long,String> partyCommiteeDesignationsMap = new HashMap<Long, String>();
+ 		try{
+ 			List<Object[]> partyPositionDetails= tdpCommitteeMemberDAO.getPartyPositionsBycadreIdsList(cadreIds);
+			 
+			 if(partyPositionDetails !=null && partyPositionDetails.size()>0)
+			 {
+				 CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+				 
+				 for (Object[] partyPosition : partyPositionDetails) {
+
+					 String level=partyPosition[0] != null ? partyPosition[0].toString() : "" ;
+					 String role=partyPosition[1] != null ? partyPosition[1].toString() : "";
+					 
+					 String state = commonMethodsUtilService.getStringValueForObject(partyPosition[6]);
+					 
+					 String commiteestr=partyPosition[2] != null ? partyPosition[2].toString() : "";
+					 
+					 if(level != null && !level.isEmpty()&&level.equalsIgnoreCase("state"))
+					 {
+						 level = state+" "+level;
+					 }
+					 String partyPositionStr = level +" " +role+" ( "+commiteestr+" )";
+					 if(!partyPositionStr.isEmpty())
+					 { 
+						 partyCommiteeDesignationsMap.put((Long)partyPosition[5],partyPositionStr);
+					 }
+				 }
+			 }
+		}catch(Exception e){
+			LOG.error("Error occured at getPartyPositionDesignationMap() in AppointmentService",e);
+		}
+ 		return partyCommiteeDesignationsMap;
+ 	}
+ 
+   public void setPartyPositionDesignations(List<AppointmentScheduleVO> resultList,Map<Long,String> partyCommiteeDesignationsMap){
+		try{
+			if(partyCommiteeDesignationsMap!=null && partyCommiteeDesignationsMap.size()>0){
+				for( AppointmentScheduleVO candi :resultList){
+					if(candi.getApptCandiTypeId()!=null && candi.getApptCandiTypeId().longValue() == 2l){
+						if(candi.getTdpCadreId()!=null){
+							candi.setCandDesignation(partyCommiteeDesignationsMap.get(candi.getTdpCadreId()));
+						}
+					}
+				}
+			}
+		}catch(Exception e) {
+			LOG.error("Exception raised at setPartyPositionDesignations", e);
+		}
+	}
+    public Map<Long,String> getConstforTdpcadreIds(List<Long> cadreIds){
+    	Map<Long,String> constMap = new HashMap<Long,String>();
+    	try{
+			if(cadreIds!=null && cadreIds.size() >0 ){
+				List<Object[]> constlist = tdpCadreDAO.getConstituencyForCadreIds(cadreIds);
+				if(constlist!=null && constlist.size()>0){
+					for(Object[] obj :constlist){
+						constMap.put((Long)obj[0],obj[1].toString());
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured at getConstforTdpcadreIds() in AppointmentService",e);
+		}
+    	return constMap;
+    }
+ 	public void setConstforTdpcadreIds(List<AppointmentScheduleVO> resultList,Map<Long,String> constMap){
+		try{
+			if(constMap!=null && constMap.size()>0)
+			{
+				for( AppointmentScheduleVO candi :resultList)
+				{			
+					if(candi.getApptCandiTypeId()!=null && candi.getApptCandiTypeId().longValue() == 3l)
+					{
+						if(candi.getTdpCadreId()!=null){
+							String location = constMap.get(candi.getTdpCadreId());
+							if(location == null || location.isEmpty()){
+								candi.setConstituency("");
+							}else{
+								candi.setConstituency(WordUtils.capitalize(location.toLowerCase())+" Constituency");
+							}
+						}
+					}
+						
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised at setConstituenciesforTdpcadreIds", e);
+		}
+	}
+ 	public void setCandiApptsRescheduledDates(List<Object[]> candiApptsList,Map<Long,AppointmentScheduleVO>  finalMap){
+ 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+ 		try{
+			for( Object[] obj : candiApptsList){
+				
+				AppointmentScheduleVO candiVO = finalMap.get((Long)obj[0]);
+				
+				if( candiVO != null)
+				{	
+					if (candiVO.getSubMap() != null && candiVO.getSubMap().size() > 0)
+					{
+						
+						AppointmentScheduleVO apptVO = candiVO.getSubMap().get(obj[1]);
+						
+						if( apptVO != null)
+						{
+							
+							if(((Long)obj[2]).longValue() == 1l)
+							{
+								
+								if(apptVO.getSubList() == null || apptVO.getSubList().size() == 0)
+								{
+									apptVO.setSubList(new ArrayList<AppointmentScheduleVO>(0));
+								}
+								AppointmentScheduleVO rescheduledVO = new AppointmentScheduleVO();
+								rescheduledVO.setDate(obj[3]!=null?sdf.format((Date)obj[3]):"");
+								
+								if(rescheduledVO.getSubject() == null)
+								{
+									rescheduledVO.setSubject(obj[4]!=null?obj[4].toString():null);	
+								}else{
+									rescheduledVO.setSubject(obj[4]!=null? rescheduledVO.getSubject()+","+ obj[4].toString():null);
+								}
+								apptVO.getSubList().add(rescheduledVO);
+							}else{
+								
+								if(apptVO.getSubList() != null && apptVO.getSubList().size() > 0){
+									
+									AppointmentScheduleVO rescheduledVO = apptVO.getSubList().get(apptVO.getSubList().size() - 1);
+									if( rescheduledVO != null){
+										if(rescheduledVO.getSubject() == null)
+										{
+											rescheduledVO.setSubject(obj[4]!=null?obj[4].toString():null);	
+										}else{
+											rescheduledVO.setSubject(obj[4]!=null? rescheduledVO.getSubject()+","+ obj[4].toString():null);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+ 			
+		}catch(Exception e){
+			LOG.error("Exception raised at setCandiApptsRescheduledDates", e);
+		}
+ 	}
+ 
+ 
  }
 

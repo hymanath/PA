@@ -102,4 +102,5 @@ public interface IAppointmentService {
 	public ResultStatus updateAppointmentReason(Long appointmentId,String reason,Long userId);
 	public AppointmentScheduleVO getRescheduledAppsCounts(Long appUserId);
 	public List<AppointmentScheduleVO> getRescheduledAppointmentsDetails(Long apptUserId);
+	public List<AppointmentScheduleVO> getRescheduledMembersApptDetails(Long apptUserId);
 }
