@@ -7287,7 +7287,13 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		}
 		return rescheduledVO;
 	}
-	
+	/**
+	   *   @author    : Sreedhar
+	   *   Description:This Service is used to get the rescheduled appointwise details
+	   *   inputs: apptUserId
+	   *   output: List<AppointmentScheduleVO>
+	   *   
+	  */
 	public List<AppointmentScheduleVO> getRescheduledAppointmentsDetails(Long apptUserId){
 		
 		List<AppointmentScheduleVO> finalList = new ArrayList<AppointmentScheduleVO>(0);
@@ -7371,7 +7377,42 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 				for(Object[] obj : rescheduledDatesAndCommentsList){
 					AppointmentScheduleVO apptVO = finalMap.get((Long)obj[0]);
 					if( apptVO != null){
-						AppointmentScheduleVO rescheduledVO = new AppointmentScheduleVO();
+						
+						if (((Long)obj[4]).longValue() == 1l )
+						{
+							
+							AppointmentScheduleVO rescheduledVO = new AppointmentScheduleVO();
+							rescheduledVO.setName(obj[3]!=null?obj[3].toString():"");
+							rescheduledVO.setDate(obj[1]!=null?sdf.format((Date)obj[1]):"");
+							if(rescheduledVO.getSubject() == null)
+							{
+								rescheduledVO.setSubject(obj[2]!=null?obj[2].toString():null);	
+							}else{
+								rescheduledVO.setSubject(obj[2]!=null? rescheduledVO.getSubject()+","+ obj[2].toString():null);
+							}
+							if( apptVO.getRescheduledList()==null){
+								apptVO.setRescheduledList(new ArrayList<AppointmentScheduleVO>());
+							}
+							apptVO.getRescheduledList().add(rescheduledVO);
+							
+						}else{
+							
+							if(apptVO.getRescheduledList() != null && apptVO.getRescheduledList().size() > 0){
+								
+								AppointmentScheduleVO rescheduledVO = apptVO.getRescheduledList().get(apptVO.getRescheduledList().size() - 1);
+								if( rescheduledVO != null){
+									if(rescheduledVO.getSubject() == null)
+									{
+										rescheduledVO.setSubject(obj[2]!=null?obj[2].toString():null);	
+									}else{
+										rescheduledVO.setSubject(obj[2]!=null? rescheduledVO.getSubject()+","+ obj[2].toString():null);
+									}
+								}
+							}
+						}
+						
+						
+						/*AppointmentScheduleVO rescheduledVO = new AppointmentScheduleVO();
 						rescheduledVO.setDate(obj[1]!=null?sdf.format((Date)obj[1]):"");
 						rescheduledVO.setSubject(obj[2]!=null?obj[2].toString():"");
 						rescheduledVO.setName(obj[3]!=null?obj[3].toString():"");
@@ -7379,7 +7420,7 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 						if( apptVO.getRescheduledList()==null){
 							apptVO.setRescheduledList(new ArrayList<AppointmentScheduleVO>());
 						}
-						apptVO.getRescheduledList().add(rescheduledVO);
+						apptVO.getRescheduledList().add(rescheduledVO);*/
 					}
 				}
 			}
