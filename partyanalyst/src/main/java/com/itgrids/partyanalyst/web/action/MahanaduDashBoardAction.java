@@ -287,7 +287,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		try {
 			jObj = new JSONObject(getTask());
 			
-			candidateDetailsVOList = mahanaduDashBoardService.getCandidateDetails(jObj.getLong("designationId"),jObj.getString("inviteeType"),jObj.getLong("eventId"),jObj.getString("day"));
+			candidateDetailsVOList = mahanaduDashBoardService.getCandidateDetails(jObj.getLong("designationId"),jObj.getString("inviteeType"),jObj.getLong("eventId"),jObj.getString("day"),jObj.getString("roleType"),jObj.getString("level"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception riased at getCandidateDetails ", e);
