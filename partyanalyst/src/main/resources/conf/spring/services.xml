@@ -2807,6 +2807,8 @@
 	    <property name="constituencyDAO" ref="constituencyDAO" />
 	    <property name="eventInviteeDAO" ref="eventInviteeDAO" />
 	    <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" /> 
+	     <property name="cadreDetailsUtils" ref="cadreDetailsUtils" />
+	    
 	</bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">

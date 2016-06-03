@@ -2811,11 +2811,15 @@ var tableToExcel = (function() {
 	 var desigId = $(this).attr("attr_desigId");
 	 var day = $(this).attr("attr_day");
 	 var eventId = $(this).attr("attr_event");
+	 var roleType = $(this).attr("attr_type");
+	 var level = $(this).attr("attr_level");
 	 var jObj = {
 			 designationId  : desigId,
 			 inviteeType 	: inviteeType,
 			 day            : day,
-			 eventId		: eventId
+			 eventId		: eventId,
+			 roleType:roleType,
+			 level:level
 		}	
 		
 		 $.ajax({
@@ -2830,7 +2834,10 @@ var tableToExcel = (function() {
 				str+='<thead>';
 				str+='<th>IMAGE</th>';
 				str+='<th>NAME</th>';
+				if(roleType == "PR")
 				str+='<th>DESIGNATION</th>';
+			else
+				str+='<th>ROLE</th>';
 				str+='<th>LOCATION</th>';
 				str+='<th>ATTENDED</th>';
 				str+='</thead>';
@@ -2923,7 +2930,7 @@ function getPublicrepresentatives(){
 						if(result[j].invitees == null || result[j].invitees ==0){
 							str+='<td class="text-center text-capitalize" > - </td>';
 						}else{
-							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
+							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
 						}
 						
 						for(var l in result[j].subList){
@@ -2933,24 +2940,24 @@ function getPublicrepresentatives(){
 									if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
 									}
 									if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
 									}
 									break;
 								}else{
 									if(result[j].subList[l].attended == null || result[j].subList[l].attended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].subList[l].attended+'</a></td>';
 									}
 									if(result[j].subList[l].notAttended == null || result[j].subList[l].notAttended == 0){
 										str+='<td class="text-center text-capitalize" > - </td>';
 									}else{
-										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
+										str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="'+result[j].subList[l].dateStr+'" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].subList[l].notAttended+'</a></td>';
 									}
 								}
 							
