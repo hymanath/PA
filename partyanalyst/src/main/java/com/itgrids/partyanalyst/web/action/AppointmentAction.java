@@ -1486,4 +1486,15 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getRescheduledMembersApptDetails(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long appointmentUserId = jObj.getLong("aptUserId");
+			searchList = appointmentService.getRescheduledMembersApptDetails(appointmentUserId);
+		}catch (Exception e){
+			LOG.error("Exception raised at getRescheduledMembersApptDetails() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }

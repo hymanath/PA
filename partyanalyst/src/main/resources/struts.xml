@@ -12442,6 +12442,10 @@
 			<param name="root">searchList</param>
 		</result>
 	</action>
-	
+	<action name="getRescheduledMembersApptDetailsAction" class="appointmentAction" method="getRescheduledMembersApptDetails">
+	  <result type="json" name="success">
+			<param name="root">searchList</param>
+		</result>
+	</action>
 </package>
 </struts>      
