@@ -18,4 +18,5 @@ public interface ITdpCadreCandidateDAO extends GenericDao<TdpCadreCandidate, Lon
 	public Long getCheckCadreIdExits(Long tdpcadreId);
 	public List<Object[]> getPublicRepresentativeDetailsByCadreIds(List<Long> cadreIds);
 	public List<Object[]> getCandidateDetails(List<Long> cadreIds);
+	public List<Object[]> getCandidateDetailsForCommittee(List<Long> cadreIds);
 }

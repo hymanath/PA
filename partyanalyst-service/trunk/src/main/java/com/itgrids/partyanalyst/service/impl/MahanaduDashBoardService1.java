@@ -1752,7 +1752,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			  orderMap.put("MP",1L);  orderMap.put("MP (RAJYA SABHA)",2L);
 			  orderMap.put("MLA",3L);  orderMap.put("MLC",4L);
 			  orderMap.put("ZPTC",5L);  orderMap.put("MPP",6L);
-			  orderMap.put("MPTC",7L); orderMap.put("CONSTITUENCY INCHARGE",8L);
+			  orderMap.put("MPTC",7L); orderMap.put("Central Committee",8L);
+			  orderMap.put("State Committee",9L);
+			  orderMap.put("Mandal President",10L);orderMap.put("District President",11L);
+			  orderMap.put("District Affliated Committee President",12L);
+			  orderMap.put("CONSTITUENCY INCHARGE",13L);
+			  orderMap.put("MP (RAJYA SABHA)",14L);
+			 
 			  List<MahanaduEventVO> finallist = new ArrayList<MahanaduEventVO>();
 			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -1770,20 +1776,49 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				  List<Date>  betweenDates=new CommonMethodsUtilService().getBetweenDates(startDate,endDate);
 				  //designations
 				  List<Long> designationIds =Arrays.asList(IConstants.PUBLIC_REPR_DESIGNATION_IDS);
-				  Map<Long,MahanaduEventVO> designationsMap = new LinkedHashMap<Long, MahanaduEventVO>();
+				  Map<String,MahanaduEventVO> designationsMap = new LinkedHashMap<String, MahanaduEventVO>();
 				  //TOTAL INVITEES
 				  List<Object[]> inviteesList = eventInviteeDAO.getPublicRepresentiveInvitessForEvent(eventId,designationIds);
 			
-				  setDataFordesignationsMap(designationsMap,inviteesList,betweenDates,"PR",orderMap);
+				  setDataFordesignationsMap(designationsMap,inviteesList,startDateStr,endDateStr,"PR",orderMap);
 				  
 				  // COMMITTEE LEVEL 
-				   //Day Wise Attended.
-				  List<Object[]> dayWiseList = eventInviteeDAO.dayWisePublicRepInviteesAttendedForEvent(startDate,endDate,subEventIds,designationIds);
-				 
-				  setDataForDayWise(designationsMap,dayWiseList);
+				  List<Long> committeeLevelIds =Arrays.asList(IConstants.COMMITTEE_LEVEL_IDS);
+				  List<Object[]> committeLevelInvitees =  eventInviteeDAO.getCommitteeLevelInvitessForEvent(eventId, committeeLevelIds);
+				  setDataFordesignationsMap(designationsMap,committeLevelInvitees,startDateStr,endDateStr,"CommitteeLevel",orderMap);
 				  
-				  if( designationsMap!= null && designationsMap.size() > 0){
-						 for (Map.Entry<Long, MahanaduEventVO> entry : designationsMap.entrySet()) {
+				  
+				  //Committee Role Wise
+				  
+				  List<Long> committeeroleIds =Arrays.asList(IConstants.COMMITTEE_ROLE_IDS);
+				  List<Object[]> committeRoleInvitees =  eventInviteeDAO.getCommitteeRoleInvitessForEvent(eventId, committeeroleIds);
+				  setDataFordesignationsMap(designationsMap,committeRoleInvitees,startDateStr,endDateStr,"CommitteeRole",orderMap);
+				  
+				  
+				  //Affliated Committee Wise
+				   List<Object[]> affliatedCommitteeInvitees =  eventInviteeDAO.getDistrictAffliatedCommitteeInvitessForEvent(eventId, committeeroleIds);
+				   setDataFordesignationsMap(designationsMap,affliatedCommitteeInvitees,startDateStr,endDateStr,"affliatedCommittee",orderMap);
+				  
+				  
+				  
+				  
+				   //PR Day Wise Attended.
+				  List<Object[]> dayWiseList = eventInviteeDAO.dayWisePublicRepInviteesAttendedForEvent(startDate,endDate,subEventIds,designationIds);
+				 setDataForDayWise(designationsMap,dayWiseList,"PR");
+				 //COMMITTEE LEVEL  Attended.
+				 List<Object[]> committeLevelDayWiseList = eventInviteeDAO.dayWiseCommitteeLevelInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeLevelIds);
+				 setDataForDayWise(designationsMap,committeLevelDayWiseList,"CommitteeLevel");
+				 
+				 //COMMITTEE Role  Attended.
+				 List<Object[]> committeRoleDayWiseList = eventInviteeDAO.dayWiseCommitteeRoleInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeroleIds);
+				 setDataForDayWise(designationsMap,committeRoleDayWiseList,"CommitteeRole");
+				 
+				 //Affliated Committee  Attended.
+				 List<Object[]> affliatedCommitteeDayWiseList = eventInviteeDAO.dayWiseDistrictAffliatedCommitteeInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeroleIds);
+				 setDataForDayWise(designationsMap,affliatedCommitteeDayWiseList,"affliatedCommittee");
+				 
+				  if(designationsMap!= null && designationsMap.size() > 0){
+						 for (Map.Entry<String, MahanaduEventVO> entry : designationsMap.entrySet()) {
 							 if (entry.getValue().getSubMap() != null){
 								 entry.getValue().getSubList().addAll(entry.getValue().getSubMap().values());
 								 entry.getValue().getSubMap().clear();
@@ -1805,25 +1840,58 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						
 						  public int compare(MahanaduEventVO vo1, MahanaduEventVO vo2)
 					        {
+							  if(vo1.getOrderCnt() != null)
+							  {
 					        	 if(vo1.getOrderCnt()  > vo2.getOrderCnt()){
 							            return 1;
 							        } else {
 							            return -1;
 							        }
+							  }
+							 else
+								 return -1;
 					        }
 				};	
 		
-		public void setDataFordesignationsMap(Map<Long,MahanaduEventVO> designationsMap,List<Object[]> inviteesList,List<Date>  betweenDates,String type, Map<String,Long> orderMap)
+		public void setDataFordesignationsMap(Map<String,MahanaduEventVO> designationsMap,List<Object[]> inviteesList,String startDateStr,String endDateStr,String type, Map<String,Long> orderMap)
 		{
-			try{
-			String currentDateStr = format.format(dateUtilService.getCurrentDateAndTime());
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			  try{
+				  
+				  String currentDateStr = format.format(dateUtilService.getCurrentDateAndTime());
+				  
+				  //Dates
+				  Date startDate = null;
+				  Date endDate = null;
+				  if( startDateStr != null && !startDateStr.isEmpty()){
+					  startDate = sdf.parse(startDateStr);
+				  }
+				  if( endDateStr != null && !endDateStr.isEmpty()){
+					  endDate = sdf.parse(endDateStr);
+				  }
+				  List<Date>  betweenDates=new CommonMethodsUtilService().getBetweenDates(startDate,endDate);
 			  
 			  if( inviteesList != null && inviteesList.size() > 0){
 				  
 				  for(Object[] obj : inviteesList){
 					  
 					  MahanaduEventVO desgVO = new MahanaduEventVO();
+					  desgVO.setLocationType("");
 					  desgVO.setId( obj[0]!= null ? (Long)obj[0] :0l);
+					  if(type.equalsIgnoreCase("CommitteeLevel"))
+					  desgVO.setName(obj[1]!= null ? obj[1].toString() +" Committee" :"");
+					  else if(type.equalsIgnoreCase("CommitteeRole"))
+					  {
+						  desgVO.setLocationType(obj[3]!= null ? obj[3].toString() :""); 
+						desgVO.setName(obj[1]!= null ? obj[3].toString() + " " +obj[1].toString() :""); 
+					  }
+					  else if(type.equalsIgnoreCase("affliatedCommittee"))
+					  {
+						    desgVO.setLocationType(obj[3]!= null ? obj[3].toString() :""); 
+							desgVO.setName(obj[1]!= null ? obj[3].toString() + " Affliated Committee " +obj[1].toString() :"");
+					  }
+					  else
 					  desgVO.setName(obj[1]!= null ? obj[1].toString() :"");
 					  desgVO.setOrderCnt(orderMap.get(desgVO.getName().toString()));
 					  desgVO.setInvitees(obj[2]!= null ? (Long)obj[2] :0l);
@@ -1847,7 +1915,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 							  desgVO.getSubMap().put(dayVO.getDateStr(),dayVO);
 						  }
 					  }
-					  designationsMap.put( desgVO.getId() , desgVO);
+					  designationsMap.put( desgVO.getName() , desgVO);
 				  }
 			  }
 			}
@@ -1857,17 +1925,23 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			}
 		}
 		
-		public void setDataForDayWise(Map<Long,MahanaduEventVO> designationsMap,List<Object[]> dayWiseList)
+		public void setDataForDayWise(Map<String,MahanaduEventVO> designationsMap,List<Object[]> dayWiseList,String type)
 		{
 			try{
 		 if( dayWiseList != null && dayWiseList.size() > 0){
-			  
+			  String Name ="";
 			  for( Object[] obj : dayWiseList){
-				  
-				  MahanaduEventVO designationVO = designationsMap.get((Long)obj[0]);
+				  if(type.equalsIgnoreCase("CommitteeLevel"))
+					  Name = obj[1]!= null ? obj[1].toString() +" Committee" :"";
+					  else if(type.equalsIgnoreCase("CommitteeRole"))
+						  Name = obj[1]!= null ? obj[4].toString() + " " +obj[1].toString() :"";  
+						  else if(type.equalsIgnoreCase("affliatedCommittee"))
+							  Name = obj[1]!= null ? obj[4].toString() + " Affliated Committee" +obj[1].toString() :""; 
+						  else
+						  Name = obj[1]!= null ? obj[1].toString() :"";
+				  MahanaduEventVO designationVO = designationsMap.get(Name.toString());
 				  if( designationVO != null ){
 					  MahanaduEventVO dayVO = designationVO.getSubMap().get(obj[2].toString());
-					  
 					  if( dayVO != null){
 						  
 						  dayVO.setAttended(obj[3]!=null ? (Long)obj[3]:0l);

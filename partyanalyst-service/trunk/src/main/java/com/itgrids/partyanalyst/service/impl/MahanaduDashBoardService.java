@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitInfo;
 import com.itgrids.partyanalyst.model.EntryExitInfo;
+import com.itgrids.partyanalyst.service.ICadreDetailsUtils;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -48,10 +49,21 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	private IConstituencyDAO constituencyDAO;
 	private IEventInviteeDAO eventInviteeDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
+	private ICadreDetailsUtils cadreDetailsUtils;
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
 	
+	
+	
+	public ICadreDetailsUtils getCadreDetailsUtils() {
+		return cadreDetailsUtils;
+	}
+
+	public void setCadreDetailsUtils(ICadreDetailsUtils cadreDetailsUtils) {
+		this.cadreDetailsUtils = cadreDetailsUtils;
+	}
+
 	public void setEventAttendeeDAO(IEventAttendeeDAO eventAttendeeDAO) {
 		this.eventAttendeeDAO = eventAttendeeDAO;
 	}
@@ -1484,31 +1496,72 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return voList;
 	}
 	
-	public List<CandidateDetailsVO> getCandidateDetails(Long designationId,String inviteeType,Long eventId,String day){
+	public List<CandidateDetailsVO> getCandidateDetails(Long designationId,String inviteeType,Long eventId,String day,String roleType,String level){
 		List<CandidateDetailsVO> resultVOList = new ArrayList<CandidateDetailsVO>(0);
 		try {
 			//get candidate details for invitees
+			List<Long> cadreIds = null;
 			if(inviteeType.equalsIgnoreCase("total")){
 				//0-tdpCadreId,1-name,2-publicRepresentativeTypeId,3-type,4-levelId,5-levelValue
-				List<Long> cadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId);
+				if(roleType.equalsIgnoreCase("PR"))
+			    cadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId);
+				if(roleType.equalsIgnoreCase("CommitteeLevel"))
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId);
+				if(roleType.equalsIgnoreCase("CommitteeRole"))
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level);
+				if(roleType.equalsIgnoreCase("affliatedCommittee"))
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level);
 				
 				if(cadreIds != null && cadreIds.size() > 0){
-					getCandidateDetailsByCadreIds(cadreIds,resultVOList,null,eventId);
+					getCandidateDetailsByCadreIds(cadreIds,resultVOList,null,eventId,roleType);
 				}
 			}else if(inviteeType.equalsIgnoreCase("attendee")){//get details for attended members
-				List<Long> cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);
 				
-				if(cadreIds != null && cadreIds.size() > 0){
-					getCandidateDetailsByCadreIds(cadreIds,resultVOList,new SimpleDateFormat("yyyy-MM-dd").parse(day),eventId);
+				if(roleType.equalsIgnoreCase("PR"))
+				cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);
+				if(roleType.equalsIgnoreCase("CommitteeLevel"))
+					cadreIds =eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);	
+				if(roleType.equalsIgnoreCase("CommitteeRole"))
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+				if(roleType.equalsIgnoreCase("affliatedCommittee"))	
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+				
+					if(cadreIds != null && cadreIds.size() > 0){
+					getCandidateDetailsByCadreIds(cadreIds,resultVOList,new SimpleDateFormat("yyyy-MM-dd").parse(day),eventId,roleType);
 				}
 			}else if(inviteeType.equalsIgnoreCase("notAttendee")){//get details for not attended members
-				List<Long> totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId);
-				List<Long> attendedCadreIds = new ArrayList<Long>(0);
-				attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);
+				List<Long> totalCadreIds = null;
+				List<Long> attendedCadreIds =  new ArrayList<Long>(0);
 				
+				if(roleType.equalsIgnoreCase("PR"))
+					{
+					
+						 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId);
+						 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);
+					}
+				if(roleType.equalsIgnoreCase("CommitteeLevel"))
+				{
+				
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);	
+				}
+				
+				if(roleType.equalsIgnoreCase("CommitteeRole"))
+				{
+				
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+				}
+				
+				if(roleType.equalsIgnoreCase("affliatedCommittee"))
+				{
+				
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+				}
 				if(totalCadreIds != null && attendedCadreIds != null){
 					totalCadreIds.removeAll(attendedCadreIds);
-					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,new SimpleDateFormat("yyyy-MM-dd").parse(day),eventId);
+					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,new SimpleDateFormat("yyyy-MM-dd").parse(day),eventId,roleType);
 				}
 			}
 		} catch (Exception e) {
@@ -1517,18 +1570,25 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return resultVOList;
 	}
 	
-	public void getCandidateDetailsByCadreIds(List<Long> cadreIds,List<CandidateDetailsVO> resultVOList,Date date,Long eventId){
+	public void getCandidateDetailsByCadreIds(List<Long> cadreIds,List<CandidateDetailsVO> resultVOList,Date date,Long eventId,String roleType){
 		if(cadreIds != null && cadreIds.size() >0){
 			//get attendence details
 			List<Long> attendedCadreIds = eventAttendeeDAO.getAttendenceDetails(cadreIds,date,eventId);
-			
+			Map<Long,String> parliamentAssemblyNamesMap = new HashMap<Long, String>(0);
+			Map<Long,String> districtNamesMap = new HashMap<Long, String>(0);
 			if(cadreIds != null && cadreIds.size() > 0){
 				//tdpCadreId,name,publicRepresentativeTypeId,type,levelId,levelValue,image
-				List<Object[]> candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetails(cadreIds);
-				
+				List<Object[]> candidateDetailsList = null;
+				if(roleType.equalsIgnoreCase("PR"))
+				candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetails(cadreIds);
+				else
+				candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetailsForCommittee(cadreIds);
+					
 				List<Long> parliamentAssemblyIds = new ArrayList<Long>(0);
 				List<Long> districtIds = new ArrayList<Long>(0);
 				//get location details
+				if(roleType.equalsIgnoreCase("PR"))
+				{
 				for (Object[] objects : candidateDetailsList) {
 					if(objects[4] != null && ((Long)objects[4] == 1l || (Long)objects[4] == 2l)){
 						if(!parliamentAssemblyIds.contains((Long)objects[5]))
@@ -1539,8 +1599,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 					}
 				}
 				
-				Map<Long,String> parliamentAssemblyNamesMap = new HashMap<Long, String>(0);
-				Map<Long,String> districtNamesMap = new HashMap<Long, String>(0);
+				
 				
 				if(parliamentAssemblyIds != null && parliamentAssemblyIds.size() > 0){
 					List<Object[]> constDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(parliamentAssemblyIds);
@@ -1560,7 +1619,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 					}
 				}
 				
-				
+				}
 				//set data to return list
 				//0-tdpCadreId,1-name,2-publicRepresentativeTypeId,3-type,4-levelId,5-levelValue,6-image
 				for (Object[] objects : candidateDetailsList) {
@@ -1571,27 +1630,34 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setCandidateName(objects[1] != null? objects[1].toString() : "");
 						vo.setDesignationId(objects[2] != null? (Long)objects[2] : 0l);
 						vo.setDesignation(objects[3] != null? objects[3].toString() : "");
-						if(objects[4] != null && ((Long)objects[4] == 1l || (Long)objects[4] == 2l)){
-							if(parliamentAssemblyNamesMap.get((Long)objects[5]) != null){
-								if((Long)objects[4] == 1l){
-									vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" PARLIAMENT");
-								}else if((Long)objects[4] == 2l){
-									vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" ASSEMBLY");
+						if(roleType.equalsIgnoreCase("PR"))
+						{
+							if(objects[4] != null && ((Long)objects[4] == 1l || (Long)objects[4] == 2l)){
+								if(parliamentAssemblyNamesMap.get((Long)objects[5]) != null){
+									if((Long)objects[4] == 1l){
+										vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" PARLIAMENT");
+									}else if((Long)objects[4] == 2l){
+										vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" ASSEMBLY");
+									}
+									
+								}else{
+									vo.setStateName("");
 								}
 								
-							}else{
-								vo.setStateName("");
+							}else if(objects[4] != null && (Long)objects[4] == 5l){
+								if(districtNamesMap.get((Long)objects[5]) != null){
+									vo.setStateName(districtNamesMap.get((Long)objects[5])+" DISTRICT");
+								}else{
+									vo.setStateName("");
+								}
+								
 							}
-							
-						}else if(objects[4] != null && (Long)objects[4] == 5l){
-							if(districtNamesMap.get((Long)objects[5]) != null){
-								vo.setStateName(districtNamesMap.get((Long)objects[5])+" DISTRICT");
-							}else{
-								vo.setStateName("");
-							}
-							
-						}
+						}	
 						
+						else
+						{
+							vo.setStateName(cadreDetailsUtils.getCommitteeLocationNameByLocationTypeAndId((Long)objects[4], (Long)objects[5]));
+						}
 						if(objects[0] != null && attendedCadreIds.contains((Long)objects[0])){
 							vo.setStatus(true);
 						}else{
