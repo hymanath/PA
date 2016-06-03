@@ -94,20 +94,14 @@
 													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
 												<h2 class="m_top10 text-success" style="display:none;">RESCHEDULED APPOINTMENTS</h2>
-												<table style="display:none;" class="table table-condensed table-bordered" style="font-size:20px;">
-													<tr>
-														<td>
-															Total Reschedule Appointments
-														</td>
-										                  <td id="ttlRschdlAppntmntsCntId">0</td>
-													</tr>
-													<tr>
-														<td>
-															Total Reschedule Unique Members
-														</td>
-														<td id="ttlRschdlUnqMmbrsCntId">0</td>
-													</tr>
-												</table>
+												 <div style="display:none;">
+												  <center>
+														<img id="reschdldAppntmntsRprtTblIdPrcssingImgId" src="images/icons/loading.gif" style="display:none;width:50px;height:50px">
+												   </center>
+												   <div id="reschdldAppntmntsRprtTblId">
+												  
+												   </div>
+												</div>
 											</div>
 											<div class="col-md-6">
 												<div id="LineChart" style="width:500px;height:300px;"></div>
@@ -914,7 +908,31 @@
 		<h2>Rescheduled Appointments Report Details</h2>
        </div>
       <div class="modal-body">
+	  <div>
+	   <center>
+			<img id="ttlRschdlAppntmntsImgPrcssngId" src="images/icons/loading.gif" style="width:50px;height:50px">
+	   </center>
+	  </div>
         <div id="rschdldAppntmntsRprtTblId"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Reschedule Candidate Wise Appointments Report Modal -->
+<div id="rschdldCnddtWsAppntmntsRprtMdlId" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog modal-lg" style='width:80%'>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h2>Rescheduled Candidate Wise Appointments Report Details</h2>
+       </div>
+      <div class="modal-body">
+	    <div>
+	   <center>
+			<img id="ttlRschdlUnqMmbrsCntIdImgPrcssngId" src="images/icons/loading.gif" style="width:50px;height:50px">
+	   </center>
+	    </div>
+        <div id="rschdldCnddtWsAppntmntsTblId"></div>
       </div>
     </div>
   </div>
