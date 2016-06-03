@@ -5153,7 +5153,7 @@ function buildRescheduledCountRslt(result){
 		}
 		str+='</tr>	';
 		str+='<tr>';
-		 str+='<td>Total Rescheduled Unique Members</td>';
+		 str+='<td>Total Rescheduled Candidates</td>';
 		if(result.totalReschedCandidateCount != null && result.totalReschedCandidateCount > 0){
 			str+='<td class="appntmntUnqCntCls" title="View Rescheduled Candidates" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result.totalReschedCandidateCount+'</td>';
 		}else{
