@@ -116,6 +116,18 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 		query.setParameterList("cadreIds", cadreIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getCandidateDetailsForCommittee(List<Long> cadreIds){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select TCM.tdpCadre.tdpCadreId,TCM.tdpCadre.firstname,TCM.tdpCommitteeRole.tdpRoles.tdpRolesId,TCM.tdpCommitteeRole.tdpRoles.role,TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,TCM.tdpCadre.image " +
+				" from TdpCommitteeMember TCM " +
+				" where " +
+			    " TCM.tdpCadre.tdpCadreId in (:cadreIds) ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("cadreIds", cadreIds);
+		return query.list();
+	}
 
 	
 }

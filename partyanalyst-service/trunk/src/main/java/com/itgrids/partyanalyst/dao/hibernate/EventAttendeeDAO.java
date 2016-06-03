@@ -1471,4 +1471,57 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	
+	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(Long eventId,Date date,Long committeeLevelId){
+		Query query = getSession().createQuery(" select model.tdpCadreId " +
+				" from EventAttendee model,TdpCommitteeMember TCM " +
+				" where " +
+				"  model.tdpCadreId=TCM.tdpCadreId " +
+				" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=:committeeLevelId " +
+				" and model.event.parentEventId=:eventId " +
+				" and date(model.attendedTime)=:date ");
+		query.setParameter("eventId", eventId);
+		query.setDate("date", date);
+		query.setParameter("committeeLevelId", committeeLevelId);
+		return query.list();
+	}
+	
+	public List<Long> getCadreIdsForAttendeesForCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel){
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.tdpCadreId " +
+				" from EventAttendee model,TdpCommitteeMember TCM " +
+				"  where model.eventId=:eventId " +
+				" and model.tdpCadreId=TCM.tdpCadreId " +
+				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+				" and date(model.attendedTime)=:date");
+		if(committeeLevel.equalsIgnoreCase("District"))
+			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
+		if(committeeLevel.equalsIgnoreCase("Mandal"))
+			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 5 ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId", eventId);
+		query.setParameter("committeeRoleId", committeeRoleId);
+		query.setDate("date", date);
+		return query.list();
+	}
+	
+	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel){
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.tdpCadreId " +
+				" from EventInvitee model,TdpCommitteeMember TCM " +
+				"  where model.eventId=:eventId " +
+				" and model.tdpCadreId=TCM.tdpCadreId " +
+				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1" +
+				" and date(model.attendedTime)=:date");
+		if(committeeLevel.equalsIgnoreCase("District"))
+			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
+		if(committeeLevel.equalsIgnoreCase("Mandal"))
+			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 5 ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId", eventId);
+		query.setParameter("committeeRoleId", committeeRoleId);
+		query.setDate("date", date);
+		return query.list();
+	}
+	
 }
