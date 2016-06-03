@@ -5118,11 +5118,14 @@ $(document).on("click",".todayTotalAppointmentStatusCls",function(){
 	$('html,body').animate({scrollTop: $("#searchApptmntDivId").offset().top}, 2000);
 	getappointmentStatusDetails(statusArray,"Today","",0);
 });
+ 
 function getRescheduledsCounts(){
 	
+	 $("#reschdldAppntmntsRprtTblId").html(' ');
+	 $("#reschdldAppntmntsRprtTblIdPrcssingImgId").show();
 	var aptUserId = $("#appointmentUserSelectBoxId").val();
 	 	var jsObj = {
-			aptUserId:2 //aptUserId
+			aptUserId:aptUserId
 		}
 	$.ajax({
 		type :'GET',
@@ -5130,27 +5133,48 @@ function getRescheduledsCounts(){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}  
 	}).done(function(result){ 
+	$("#reschdldAppntmntsRprtTblIdPrcssingImgId").hide();
 	   if(result!=null){
-		  if(result.totalRescheduledCount!=null && result.totalRescheduledCount>0){
-			 $("#ttlRschdlAppntmntsCntId").html(result.totalRescheduledCount); 
-			 $("#ttlRschdlAppntmntsCntId").addClass("appntmntsSttsCntCls");
-			 $("#ttlRschdlAppntmntsCntId").css("cursor", "pointer");			 
-		  }
-		  if(result.totalReschedCandidateCount!=null && result.totalReschedCandidateCount>0){
-			 $("#ttlRschdlUnqMmbrsCntId").html(result.totalReschedCandidateCount); 
-		  }
+		   buildRescheduledCountRslt(result);
+	   }else{
+		   $("#reschdldAppntmntsRprtTblId").html('<p>No Data Available</p>');
 	   }
 	});
+}
+function buildRescheduledCountRslt(result){
+    var str='';
+	  str+='<table class="table table-condensed table-bordered" style="font-size:20px;">';
+		str+='<tr>';
+		str+='<td>Total Reschedule Appointments</td>';
+		if( result.totalRescheduledCount != null && result.totalRescheduledCount > 0){
+			str+='<td class="appntmntsSttsCntCls" title="Click to view total reschedule appointments." style="cursor:pointer;">'+result.totalRescheduledCount+'</td>';
+		}else{
+			str+='<td> 0 </td>';
+		}
+		str+='</tr>	';
+		str+='<tr>';
+		 str+='<td>Total Reschedule Unique Members</td>';
+		if(result.totalReschedCandidateCount != null && result.totalReschedCandidateCount > 0){
+			str+='<td class="appntmntsSttsCntCls" title="Click to view total unique member candidate." style="cursor:pointer;">'+result.totalReschedCandidateCount+'</td>';
+		}else{
+			str+='<td> 0 </td>';
+		}
+		str+='</tr>';
+	str+='</table>';
+	$("#reschdldAppntmntsRprtTblId").html(str);
 }
 
 $(document).on("click",".appntmntsSttsCntCls",function(){
 	 getRescheduledsAppointmentsDtls();
 });
  function getRescheduledsAppointmentsDtls(){
-  
+      
+	  $("#rschdldAppntmntsRprtMdlId").modal("show");
+	 $("#rschdldAppntmntsRprtTblId").html(' ');
+	 $("#ttlRschdlAppntmntsImgPrcssngId").show();
     var aptUserId = $("#appointmentUserSelectBoxId").val();
 	 	var jsObj = {
-			aptUserId:2 //aptUserId
+			aptUserId:aptUserId
 		}
 	 $.ajax({
 		 type:'POST',
@@ -5158,6 +5182,7 @@ $(document).on("click",".appntmntsSttsCntCls",function(){
 		 dataType:'json',
 		data : {task:JSON.stringify(jsObj)}  
 	 }).done(function(result){
+		  $("#ttlRschdlAppntmntsImgPrcssngId").hide();
 		 if(result!=null && result.length>0){
 			buildRescheduledAppsDtls(result); 
 		 }else{
@@ -5168,18 +5193,16 @@ $(document).on("click",".appntmntsSttsCntCls",function(){
 function buildRescheduledAppsDtls(result){ 
 
 	var str='';
-	 str+='<table style="font-size:12px" class="table table-bordered" id="rschdldAppntmntsRprtPgntnTblId">';
+	 str+='<table style="font-size:12px" class="table table-bordered table-condensed" id="rschdldAppntmntsRprtPgntnTblId">';
 	 str+='<thead>';
-	 str+='<th>ID</th>';
+	 str+='<th style="width="5px !important;">ID</th>';
 	 str+='<th>Candidate Name</th>';
 	 str+='<th>Candidate Image</th>';
 	 str+='<th>Mobile No</th>';
 	 str+='<th>Designation</th>';
-	// str+='<th>Created Date</th>';
 	 str+='<th>Rescheduled Date</th>';
 	 str+='<th>Present Status</th>';
-	 str+='<th>Comment</th>';
-	// str+='<th>Updated User</th>';
+	 str+='<th >Comment</th>';
 	 str+='</thead>'; 
 	   str+='<tbody>';
 	   for(var i in result){
@@ -5202,7 +5225,7 @@ function buildRescheduledAppsDtls(result){
 						}else{
 							 str+='<td> - </td>';	
 						}
-						 str+='<td><img style="width:50px;height:50px;" class="media-object thumbnail" src='+candidteList[j].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
+						 str+='<td ><img style="width:40px;height:40px;" class="media-object thumbnail" src='+candidteList[j].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
 					
 						 if(candidteList[j].mobileNo!=null && candidteList[j].mobileNo.length>0){
 						 str+='<td>'+candidteList[j].mobileNo+'</td>';
@@ -5218,12 +5241,11 @@ function buildRescheduledAppsDtls(result){
 								buildCandidateDesignation = buildCandidateDesignation + " - " + location ;
 							}
 						  }
-						  str+='<td>'+buildCandidateDesignation+'</td>';
-						 /*  if(result[i].date!=null && result[i].date.length>0){
-							  str+='<td>'+result[i].date+'</td>';
-						   }else{
-							  str+='<td> - </td>';
-						   } */
+						   if(buildCandidateDesignation!=null && buildCandidateDesignation.length>0){
+								     str+='<td>'+buildCandidateDesignation+'</td>';
+							   }else{
+								     str+='<td> - </td>';
+							   }
 						 if(rescheduledList[k].date!=null && rescheduledList[k].date.length>0){
 							 str+='<td>'+rescheduledList[k].date+'</td>';
 						 }else{
@@ -5239,11 +5261,6 @@ function buildRescheduledAppsDtls(result){
 						 }else{
 							str+='<td> - </td>';
 						 }
-						/*  if(rescheduledList[k].name!=null && rescheduledList[k].name.length>0){
-							 str+='<td>'+rescheduledList[k].name+'</td>';
-						 }else{
-							str+='<td> - </td>';
-						 } */
 						str+='</tr>'; 
 					  }
 				  }
@@ -5253,8 +5270,121 @@ function buildRescheduledAppsDtls(result){
 	   str+='</tbody>';
 	str+='</table>';
   $("#rschdldAppntmntsRprtTblId").html(str);
-  $("#rschdldAppntmntsRprtPgntnTblId").dataTable();
-  $("#rschdldAppntmntsRprtMdlId").modal("show");
+  $("#rschdldAppntmntsRprtPgntnTblId").dataTable({
+	  "aaSorting": []
+  });
+
 }
 
-
+$(document).on("click",".appntmntUnqCntCls",function(){
+	 getRescheduledMembersApptDetails();
+});
+ function getRescheduledMembersApptDetails(){
+      
+	 $("#rschdldCnddtWsAppntmntsRprtMdlId").modal("show");
+	 $("#rschdldCnddtWsAppntmntsTblId").html(' ');
+     $("#ttlRschdlUnqMmbrsCntIdImgPrcssngId").show();
+    var aptUserId = $("#appointmentUserSelectBoxId").val();
+	 	var jsObj = {
+			aptUserId:aptUserId
+		}
+	 $.ajax({
+		 type:'POST',
+		 url :'getRescheduledMembersApptDetailsAction.action',
+		 dataType:'json',
+		data : {task:JSON.stringify(jsObj)}  
+	 }).done(function(result){
+		 $("#ttlRschdlUnqMmbrsCntIdImgPrcssngId").hide();
+	     if(result!=null && result.length>0){
+			 buildRescheduledCnddtWsAppsDtls(result);
+		 }else{
+			 $("#rschdldCnddtWsAppntmntsTblId").html('<p>No Data Available</p>');
+		 }
+	 });
+ } 
+ function buildRescheduledCnddtWsAppsDtls(result){
+	
+	var str='';
+	 str+='<table style="font-size:12px" class="table table-bordered table-condensed" id="rschdldAppntmntsCnddtPgntnTblId">';
+	 str+='<thead>';
+	 str+='<th>Candidate Name</th>';
+	 str+='<th>Image</th>';
+	 str+='<th>Mobile No</th>';
+	 str+='<th>Designation</th>';
+	 str+='<th>Unique Id</th>';
+	 str+='<th>Present Status</th>';
+	 str+='<th>Rescheduled Date</th>';
+	 str+='<th>Comments</th>';
+	 str+='</thead>'; 
+	   str+='<tbody>';
+	   for(var i in result){
+		   
+		   var appointmentsList=result[i].subList;
+		   
+		    if(appointmentsList!=null && appointmentsList.length>0){
+				 for(var j in appointmentsList){
+					 
+					 var rescheduledList=appointmentsList[j].subList;
+					 
+					 if(rescheduledList!=null && rescheduledList.length>0){
+						 for(var k in rescheduledList){
+							str+='<tr>';
+								if(result[i].name!=null && result[i].name.length>0){
+									str+='<td>'+result[i].name+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								 str+='<td ><img style="width:40px;height:40px;" class="media-object thumbnail" src='+result[i].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
+								if(result[i].mobileNo!=null && result[i].mobileNo.length>0){
+									str+='<td>'+result[i].mobileNo+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								 var candidateDesignation=result[i].candDesignation;
+						         var location=result[i].constituency;
+						         var buildCandidateDesignation='';
+							   if(candidateDesignation!=null && candidateDesignation.length>0){
+								  buildCandidateDesignation=candidateDesignation;
+								  if(location!=null && location.length>0){
+									buildCandidateDesignation = buildCandidateDesignation + " - " + location ;
+								}
+							  }
+							   if(buildCandidateDesignation!=null && buildCandidateDesignation.length>0){
+								     str+='<td>'+buildCandidateDesignation+'</td>';
+							   }else{
+								     str+='<td> - </td>';
+							   }
+						 		if(appointmentsList[j].appointmentUniqueId!=null && appointmentsList[j].appointmentUniqueId.length>0){
+									str+='<td>'+appointmentsList[j].appointmentUniqueId+'</td>';
+								}else{
+									 str+='<td> - </td>';
+								}
+								if(appointmentsList[j].presentStatus!=null && appointmentsList[j].presentStatus.length>0){
+									 str+='<td>'+appointmentsList[j].presentStatus+'</td>';
+								}else{
+									 str+='<td> - </td>';
+								}
+								if(rescheduledList[k].date!=null && rescheduledList[k].date.length>0){
+								   str+='<td>'+rescheduledList[k].date+'</td>';
+								}else{
+								   str+='<td> - </td>';
+								}
+								if(rescheduledList[k].subject!=null && rescheduledList[k].subject.length>0){
+								   str+='<td>'+rescheduledList[k].subject+'</td>';
+								}else{
+								   str+='<td> - </td>';
+								}
+						str+='</tr>'; 
+						 }
+					 }
+				 }
+			}
+		   
+	   }
+	  str+='</tbody>';
+	  str+='</table>';
+	  $("#rschdldCnddtWsAppntmntsTblId").html(str);
+	   $("#rschdldAppntmntsCnddtPgntnTblId").dataTable({
+	  "aaSorting": []
+       });  
+ }
