@@ -92,15 +92,15 @@ public class AppointmentTrackingDAO extends GenericDaoHibernate<AppointmentTrack
 		  public List<Object[]> getAllRescheduledCommentsAndrescheduledDates(Long apptUserId){
 		    
 		    StringBuilder sb = new StringBuilder();
-		    sb.append(" select   distinct A.appointment_id as apptId,date(T.action_time) as rescheduledDate,ACM.comment as comment,U.firstname as firstName " +
+		    sb.append(" select   distinct A.appointment_id as apptId,date(T.action_time) as rescheduledDate,ACM.comment as comment,U.firstname as firstName,T.appointment_action_id as actionId " +
 		        "   from     appointment A join appointment_tracking T on A.appointment_id = T.appointment_id " +
 		        "            join user U on T.user_id = U.user_id " +
 		        "            left join appointment_comment ACM on T.appointment_comment_id = ACM.appointment_comment_id " +
-		        "   where    A.is_deleted='N' and A.appointment_user_id = :apptUserId and T.appointment_status_id = :appointmentStatusId and from_appointment_status_id <> :appointmentStatusId " +
+		        "   where    A.is_deleted='N' and A.appointment_user_id = :apptUserId and T.appointment_status_id = :appointmentStatusId " +
 		        "   order by A.appointment_id,date(T.action_time) ");
 		    Query query = getSession().createSQLQuery(sb.toString())
 		        .addScalar("apptId",Hibernate.LONG).addScalar("rescheduledDate",Hibernate.DATE).addScalar("comment",Hibernate.STRING)
-		        .addScalar("firstName",Hibernate.STRING);
+		        .addScalar("firstName",Hibernate.STRING).addScalar("actionId",Hibernate.LONG);
 		    query.setParameter("appointmentStatusId",IConstants.APPOINTMENT_STATUS_RESCHEDULED);
 		    query.setParameter("apptUserId",apptUserId);
 		    return query.list();
