@@ -5145,23 +5145,24 @@ function buildRescheduledCountRslt(result){
     var str='';
 	  str+='<table class="table table-condensed table-bordered" style="font-size:20px;">';
 		str+='<tr>';
-		str+='<td>Total Reschedule Appointments</td>';
+		str+='<td>Total Rescheduled Appointments</td>';
 		if( result.totalRescheduledCount != null && result.totalRescheduledCount > 0){
-			str+='<td class="appntmntsSttsCntCls" title="Click to view total reschedule appointments." style="cursor:pointer;">'+result.totalRescheduledCount+'</td>';
+			str+='<td class="appntmntsSttsCntCls" title="View Rescheduled Appointments" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result.totalRescheduledCount+'</td>';
 		}else{
 			str+='<td> 0 </td>';
 		}
 		str+='</tr>	';
 		str+='<tr>';
-		 str+='<td>Total Reschedule Unique Members</td>';
+		 str+='<td>Total Rescheduled Unique Members</td>';
 		if(result.totalReschedCandidateCount != null && result.totalReschedCandidateCount > 0){
-			str+='<td class="appntmntsSttsCntCls" title="Click to view total unique member candidate." style="cursor:pointer;">'+result.totalReschedCandidateCount+'</td>';
+			str+='<td class="appntmntUnqCntCls" title="View Rescheduled Candidates" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result.totalReschedCandidateCount+'</td>';
 		}else{
 			str+='<td> 0 </td>';
 		}
 		str+='</tr>';
 	str+='</table>';
 	$("#reschdldAppntmntsRprtTblId").html(str);
+	$('[data-toggle="tooltip"]').tooltip();
 }
 
 $(document).on("click",".appntmntsSttsCntCls",function(){
@@ -5221,11 +5222,11 @@ function buildRescheduledAppsDtls(result){
 						 str+='<td> - </td>';	
 						}
 						if(candidteList[j].name!=null && candidteList[j].name.length>0){
-							str+='<td>'+candidteList[j].name+'</td>';
+							str+='<td>'+candidteList[j].name.toUpperCase()+'</td>';
 						}else{
 							 str+='<td> - </td>';	
 						}
-						 str+='<td ><img style="width:40px;height:40px;" class="media-object thumbnail" src='+candidteList[j].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
+						 str+='<td ><img style="width:65px;height:60px;" class="media-object thumbnail" src='+candidteList[j].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
 					
 						 if(candidteList[j].mobileNo!=null && candidteList[j].mobileNo.length>0){
 						 str+='<td>'+candidteList[j].mobileNo+'</td>';
@@ -5242,7 +5243,7 @@ function buildRescheduledAppsDtls(result){
 							}
 						  }
 						   if(buildCandidateDesignation!=null && buildCandidateDesignation.length>0){
-								     str+='<td>'+buildCandidateDesignation+'</td>';
+								     str+='<td style="font-size:13px;">'+buildCandidateDesignation+'</td>';
 							   }else{
 								     str+='<td> - </td>';
 							   }
@@ -5252,7 +5253,7 @@ function buildRescheduledAppsDtls(result){
 							str+='<td> - </td>';
 						 }
 						 if(result[i].presentStatus!=null && result[i].presentStatus.length>0){
-							  str+='<td>'+result[i].presentStatus+'</td>';
+							  str+='<td style="font-size:13px;">'+result[i].presentStatus+'</td>';
 						 }else{
 							 str+='<td> - </td>';
 						 }
@@ -5270,10 +5271,14 @@ function buildRescheduledAppsDtls(result){
 	   str+='</tbody>';
 	str+='</table>';
   $("#rschdldAppntmntsRprtTblId").html(str);
-  $("#rschdldAppntmntsRprtPgntnTblId").dataTable({
-	  "aaSorting": []
-  });
-
+  $('#rschdldAppntmntsRprtPgntnTblId').dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 15	,
+			 "bDestroy": true,
+			 "bFilter": true,
+			"aLengthMenu": [[15,30,50, 100, -1], [15,30,50, 100, "All"]]		
+		});
+   
 }
 
 $(document).on("click",".appntmntUnqCntCls",function(){
@@ -5330,11 +5335,11 @@ $(document).on("click",".appntmntUnqCntCls",function(){
 						 for(var k in rescheduledList){
 							str+='<tr>';
 								if(result[i].name!=null && result[i].name.length>0){
-									str+='<td>'+result[i].name+'</td>';
+									str+='<td>'+result[i].name.toUpperCase()+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
-								 str+='<td ><img style="width:40px;height:40px;" class="media-object thumbnail" src='+result[i].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
+								 str+='<td ><img style="width:65px;height:60px;" class="media-object thumbnail" src='+result[i].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
 								if(result[i].mobileNo!=null && result[i].mobileNo.length>0){
 									str+='<td>'+result[i].mobileNo+'</td>';
 								}else{
@@ -5350,7 +5355,7 @@ $(document).on("click",".appntmntUnqCntCls",function(){
 								}
 							  }
 							   if(buildCandidateDesignation!=null && buildCandidateDesignation.length>0){
-								     str+='<td>'+buildCandidateDesignation+'</td>';
+								     str+='<td style="font-size:13px;">'+buildCandidateDesignation+'</td>';
 							   }else{
 								     str+='<td> - </td>';
 							   }
@@ -5360,7 +5365,7 @@ $(document).on("click",".appntmntUnqCntCls",function(){
 									 str+='<td> - </td>';
 								}
 								if(appointmentsList[j].presentStatus!=null && appointmentsList[j].presentStatus.length>0){
-									 str+='<td>'+appointmentsList[j].presentStatus+'</td>';
+									 str+='<td style="font-size:13px;">'+appointmentsList[j].presentStatus+'</td>';
 								}else{
 									 str+='<td> - </td>';
 								}
@@ -5384,7 +5389,11 @@ $(document).on("click",".appntmntUnqCntCls",function(){
 	  str+='</tbody>';
 	  str+='</table>';
 	  $("#rschdldCnddtWsAppntmntsTblId").html(str);
-	   $("#rschdldAppntmntsCnddtPgntnTblId").dataTable({
-	  "aaSorting": []
-       });  
+	   $('#rschdldAppntmntsCnddtPgntnTblId').dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 15	,
+			 "bDestroy": true,
+			 "bFilter": true,
+			"aLengthMenu": [[15,30,50, 100, -1], [15,30,50, 100, "All"]]		
+		});
  }

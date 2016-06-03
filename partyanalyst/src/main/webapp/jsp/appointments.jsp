@@ -93,8 +93,8 @@
 												<table class="table table-condensed tableAppointment" style="font-size:20px;" id="todayAppointmentsId">
 													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
-												<h2 class="m_top10 text-success" style="display:none;">RESCHEDULED APPOINTMENTS</h2>
-												 <div style="display:none;">
+												<h2 class="m_top10 text-success" style="">RESCHEDULED APPOINTMENTS</h2>
+												 <div style="">
 												  <center>
 														<img id="reschdldAppntmntsRprtTblIdPrcssingImgId" src="images/icons/loading.gif" style="display:none;width:50px;height:50px">
 												   </center>
@@ -904,7 +904,7 @@
   <div class="modal-dialog modal-dialog modal-lg" style='width:80%'>
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" style="font-size:30px;">&times;</button>
 		<h2>Rescheduled Appointments Report Details</h2>
        </div>
       <div class="modal-body">
@@ -923,7 +923,7 @@
   <div class="modal-dialog modal-dialog modal-lg" style='width:80%'>
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" style="font-size:30px;">&times;</button>
 		<h2>Rescheduled Candidate Wise Appointments Report Details</h2>
        </div>
       <div class="modal-body">
