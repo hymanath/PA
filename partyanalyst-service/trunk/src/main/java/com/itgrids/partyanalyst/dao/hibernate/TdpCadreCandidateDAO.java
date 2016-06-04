@@ -106,12 +106,12 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 	public List<Object[]> getCandidateDetails(List<Long> cadreIds){
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" select tcc.tdpCadreId,tcc.tdpCadre.firstname,prt.publicRepresentativeTypeId,prt.type,pr.levelId,pr.levelValue,tcc.tdpCadre.image " +
+		sb.append(" select distinct tcc.tdpCadreId,tcc.tdpCadre.firstname,prt.publicRepresentativeTypeId,prt.type,pr.levelId,pr.levelValue,tcc.tdpCadre.image " +
 				" from TdpCadreCandidate tcc,PublicRepresentative pr,PublicRepresentativeType prt " +
 				" where " +
 				"  tcc.candidateId=pr.candidateId " +
 				" and pr.publicRepresentativeTypeId=prt.publicRepresentativeTypeId " +
-				" and tcc.tdpCadreId in (:cadreIds) ");
+				" and tcc.tdpCadreId in (:cadreIds) and tcc.tdpCadre.isDeleted = 'N' and tcc.tdpCadre.enrollmentYear = 2014");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("cadreIds", cadreIds);
 		return query.list();
@@ -120,10 +120,10 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 	public List<Object[]> getCandidateDetailsForCommittee(List<Long> cadreIds){
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" select TCM.tdpCadre.tdpCadreId,TCM.tdpCadre.firstname,TCM.tdpCommitteeRole.tdpRoles.tdpRolesId,TCM.tdpCommitteeRole.tdpRoles.role,TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,TCM.tdpCadre.image " +
+		sb.append(" select distinct TCM.tdpCadre.tdpCadreId,TCM.tdpCadre.firstname,TCM.tdpCommitteeRole.tdpRoles.tdpRolesId,TCM.tdpCommitteeRole.tdpRoles.role,TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,TCM.tdpCadre.image " +
 				" from TdpCommitteeMember TCM " +
 				" where " +
-			    " TCM.tdpCadre.tdpCadreId in (:cadreIds) ");
+			    " TCM.tdpCadre.tdpCadreId in (:cadreIds) and TCM.tdpCadre.isDeleted = 'N' and TCM.tdpCadre.enrollmentYear = 2014");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("cadreIds", cadreIds);
 		return query.list();
