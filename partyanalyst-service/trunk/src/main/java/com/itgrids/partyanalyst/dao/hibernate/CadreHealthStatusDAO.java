@@ -138,7 +138,8 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     					" and CM.issue_type = :issueType" +
     					" and CM.type_of_issue = 'Insurance'" +
     					" and CM.state_id_cmp IN (1,2)" +
-    					" and (CM.Subject != '' OR CM.Subject IS NOT NULL)");
+    					" and (CM.Subject != '' OR CM.Subject IS NOT NULL)" +
+    					" and CM.delete_status IS NULL");
     	
     	if(locationType.equalsIgnoreCase("panchayat"))
     		sb.append(" AND UA.panchayat_id = :locationId");
@@ -282,7 +283,9 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     					" from" +
     					" complaint_master CM" +
     					" where CM.type_of_issue = :issueType" +
-    					" and CM.Completed_Status = :status");
+    					" and CM.Completed_Status = :status" +
+    					" and  CM.subject !=''" +
+    					" and (CM.delete_status !='0' or CM.delete_status is null)");
     	
     	if(locationType.equalsIgnoreCase("assembly"))
     		sb.append(" AND CM.assembly_id = :locationId");
