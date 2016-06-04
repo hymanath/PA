@@ -58,6 +58,7 @@ private List<AppointmentScheduleVO> subList = new ArrayList<AppointmentScheduleV
 
 private Long rescheduledCount=0l;
 private Long rescheduledApptsCount=0l;
+private Long totalApptsTaken=0l;
 
 public String getAddressConstituency() {
 	return addressConstituency;
@@ -330,6 +331,12 @@ public Long getRescheduledApptsCount() {
 }
 public void setRescheduledApptsCount(Long rescheduledApptsCount) {
 	this.rescheduledApptsCount = rescheduledApptsCount;
+}
+public Long getTotalApptsTaken() {
+	return totalApptsTaken;
+}
+public void setTotalApptsTaken(Long totalApptsTaken) {
+	this.totalApptsTaken = totalApptsTaken;
 }
 
 }

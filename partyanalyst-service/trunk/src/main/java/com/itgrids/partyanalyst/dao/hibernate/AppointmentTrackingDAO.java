@@ -146,18 +146,21 @@ public class AppointmentTrackingDAO extends GenericDaoHibernate<AppointmentTrack
 		    sb.append(" select   distinct AC.appointment_candidate_id as candiId," +
 		    		"            A.appointment_id as apptId,T.appointment_action_id as actionId,date(T.action_time) as rescheduledDate,ACM.comment as comment" +
 		    		"             " +
+		    		"             " +
 		            "   from     appointment_candidate_relation ACR join appointment_candidate AC on ACR.appointment_candidate_id = AC.appointment_candidate_id    " +
 		            "            join appointment A on A.appointment_id = ACR.appointment_id " +
 		            "            join appointment_tracking T on A.appointment_id = T.appointment_id " +
 		            "            left join appointment_comment ACM on T.appointment_comment_id = ACM.appointment_comment_id " +
 		            "   where    A.is_deleted='N' and A.appointment_user_id = :apptUserId and T.appointment_status_id = :appointmentStatusId " +
-		            "   order by A.appointment_id,date(T.action_time) ");
+		            "   order by A.appointment_id,date(T.action_time)");
 		    
 		    Query query = getSession().createSQLQuery(sb.toString())
 		    	.addScalar("candiId",Hibernate.LONG)
 		    	.addScalar("apptId",Hibernate.LONG).addScalar("actionId",Hibernate.LONG).addScalar("rescheduledDate",Hibernate.DATE).addScalar("comment",Hibernate.STRING);
+		    
 		    query.setParameter("appointmentStatusId",IConstants.APPOINTMENT_STATUS_RESCHEDULED);
 		    query.setParameter("apptUserId",apptUserId);
+		   
 		    return query.list();
 		  }
 		  public List<Object[]> overviewSummaryOfRescheduledCandidates(Long apptUserId){
@@ -192,4 +195,36 @@ public class AppointmentTrackingDAO extends GenericDaoHibernate<AppointmentTrack
 			  query.setParameter("apptUserId",apptUserId); 
 			  return query.list();
 		  }
+		  public List<Object[]> getMeberWiseRescheduledAppts(Long apptUserId,List<Long> appointmentCandidateIds){
+			  
+			    StringBuilder sb = new StringBuilder();
+			    sb.append(" select   distinct AC.appointment_candidate_id as candiId," +//0
+			    		"            A.appointment_id as apptId,T.appointment_action_id as actionId,date(T.action_time) as rescheduledDate,ACM.comment as comment," +//4
+			    		"            A.appointment_unique_id as uniqueId,AST.status as presentStatus " +//6
+			    		"             " +
+			            "   from     appointment_candidate_relation ACR join appointment_candidate AC on ACR.appointment_candidate_id = AC.appointment_candidate_id    " +
+			            "            join appointment A on A.appointment_id = ACR.appointment_id " +
+			            "            join appointment_tracking T on A.appointment_id = T.appointment_id " +
+			            "            join appointment_status AST on AST.appointment_status_id = A.appointment_status_id " +
+			            "            left join appointment_comment ACM on T.appointment_comment_id = ACM.appointment_comment_id " +
+			            "   where    A.is_deleted='N' and A.appointment_user_id = :apptUserId and T.appointment_status_id = :appointmentStatusId ");
+			    
+			    if(appointmentCandidateIds != null && appointmentCandidateIds.size() > 0){
+			    	sb.append(" and AC.appointment_candidate_id in (:appointmentCandidateIds)");
+			    }
+			    sb.append(" order by A.appointment_id,date(T.action_time) ");
+			           
+			    
+			    Query query = getSession().createSQLQuery(sb.toString())
+			    	.addScalar("candiId",Hibernate.LONG)
+			    	.addScalar("apptId",Hibernate.LONG).addScalar("actionId",Hibernate.LONG).addScalar("rescheduledDate",Hibernate.DATE).addScalar("comment",Hibernate.STRING)
+			    	.addScalar("uniqueId",Hibernate.STRING).addScalar("presentStatus",Hibernate.STRING);
+			    
+			    query.setParameter("appointmentStatusId",IConstants.APPOINTMENT_STATUS_RESCHEDULED);
+			    query.setParameter("apptUserId",apptUserId);
+			    if(appointmentCandidateIds != null && appointmentCandidateIds.size() > 0){
+			    	 query.setParameterList("appointmentCandidateIds",appointmentCandidateIds);
+			    }
+			    return query.list();
+			  }
 }
