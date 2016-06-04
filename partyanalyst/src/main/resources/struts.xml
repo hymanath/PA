@@ -12447,5 +12447,26 @@
 			<param name="root">searchList</param>
 		</result>
 	</action>
+	<action name="rescheduledCandidateAction" class="appointmentAction" method="rescheduledCandidate">
+		<result name="success">/jsp/rescheduledCandidate.jsp</result>
+	</action>
+	<action name="getOverviewSummaryOfRescheduledCandidatesAction" class="appointmentAction" method="getOverviewSummaryOfRescheduledCandidates">
+	  <result type="json" name="success">
+			<param name="root">searchList</param>
+		</result>
+	</action>
+	<action name="getRescheduledMembersApptDetailsAction" class="appointmentAction" method="getRescheduledMembersApptDetails">
+	  <result type="json" name="success">
+			<param name="root">searchList</param>
+		</result>
+	</action>
+	
+	
+	<action name="getApptRescheduledDetialsByCandidateAction" class="appointmentAction" method="getApptRescheduledDetialsByCandidate">
+	  <result type="json" name="success">
+			<param name="root">searchList</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      

@@ -1497,4 +1497,30 @@ public String getPanchayatiesByMandalOrMuncipality(){
 		}
 		return Action.SUCCESS;
 	}
+  public String rescheduledCandidate(){
+	  return Action.SUCCESS;
+  }
+  public String getOverviewSummaryOfRescheduledCandidates(){
+	  try{
+			jObj = new JSONObject(getTask());
+			Long appointmentUserId = jObj.getLong("aptUserId");
+			searchList = appointmentService.overviewSummaryOfRescheduledCandidates(appointmentUserId);
+		}catch (Exception e){
+			LOG.error("Exception raised at getOverviewSummaryOfRescheduledCandidates() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+  }
+  
+  public String getApptRescheduledDetialsByCandidate(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long appointmentUserId = jObj.getLong("aptUserId");
+			Long apptCandidateId = jObj.getLong("apptCandidateId");
+			searchList = appointmentService.getApptRescheduledDetialsByCandidate(appointmentUserId,apptCandidateId);
+		}catch (Exception e){
+			LOG.error("Exception raised at getApptRescheduledDetialsByCandidate() method of AppointmentAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }

@@ -918,25 +918,6 @@
     </div>
   </div>
 </div>
-<!--Reschedule Candidate Wise Appointments Report Modal -->
-<div id="rschdldCnddtWsAppntmntsRprtMdlId" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog modal-lg" style='width:80%'>
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" style="font-size:30px;">&times;</button>
-		<h2>Rescheduled Candidate Wise Appointments Report Details</h2>
-       </div>
-      <div class="modal-body">
-	    <div>
-	   <center>
-			<img id="ttlRschdlUnqMmbrsCntIdImgPrcssngId" src="images/icons/loading.gif" style="width:50px;height:50px">
-	   </center>
-	    </div>
-        <div id="rschdldCnddtWsAppntmntsTblId"></div>
-      </div>
-    </div>
-  </div>
-</div>
  <!--   MODAL POPUP FOR APPOINTMENT DETAILS  END-->
 <jsp:include page="appointmentCandidateHistory.jsp" flush="true"/>
 

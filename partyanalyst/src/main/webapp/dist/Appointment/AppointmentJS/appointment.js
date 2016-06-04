@@ -5273,127 +5273,16 @@ function buildRescheduledAppsDtls(result){
   $("#rschdldAppntmntsRprtTblId").html(str);
   $('#rschdldAppntmntsRprtPgntnTblId').dataTable({
 			"aaSorting": [],
-			"iDisplayLength" : 15	,
+			"iDisplayLength" : 10	,
 			 "bDestroy": true,
 			 "bFilter": true,
-			"aLengthMenu": [[15,30,50, 100, -1], [15,30,50, 100, "All"]]		
+			"aLengthMenu": [[10,20,30,50, 100, -1], [10,20,30,50, 100, "All"]]		
 		});
    
 }
 
 $(document).on("click",".appntmntUnqCntCls",function(){
-	 getRescheduledMembersApptDetails();
+	  var aptUserId = $("#appointmentUserSelectBoxId").val();
+	  window.open("rescheduledCandidateAction.action?appuserId="+aptUserId+"","_blank"); 
 });
- function getRescheduledMembersApptDetails(){
-      
-	 $("#rschdldCnddtWsAppntmntsRprtMdlId").modal("show");
-	 $("#rschdldCnddtWsAppntmntsTblId").html(' ');
-     $("#ttlRschdlUnqMmbrsCntIdImgPrcssngId").show();
-    var aptUserId = $("#appointmentUserSelectBoxId").val();
-	 	var jsObj = {
-			aptUserId:aptUserId
-		}
-	 $.ajax({
-		 type:'POST',
-		 url :'getRescheduledMembersApptDetailsAction.action',
-		 dataType:'json',
-		data : {task:JSON.stringify(jsObj)}  
-	 }).done(function(result){
-		 $("#ttlRschdlUnqMmbrsCntIdImgPrcssngId").hide();
-	     if(result!=null && result.length>0){
-			 buildRescheduledCnddtWsAppsDtls(result);
-		 }else{
-			 $("#rschdldCnddtWsAppntmntsTblId").html('<p>No Data Available</p>');
-		 }
-	 });
- } 
- function buildRescheduledCnddtWsAppsDtls(result){
-	
-	var str='';
-	 str+='<table style="font-size:12px" class="table table-bordered table-condensed" id="rschdldAppntmntsCnddtPgntnTblId">';
-	 str+='<thead>';
-	 str+='<th>Candidate Name</th>';
-	 str+='<th>Image</th>';
-	 str+='<th>Mobile No</th>';
-	 str+='<th>Designation</th>';
-	 str+='<th>Unique Id</th>';
-	 str+='<th>Present Status</th>';
-	 str+='<th>Rescheduled Date</th>';
-	 str+='<th>Comments</th>';
-	 str+='</thead>'; 
-	   str+='<tbody>';
-	   for(var i in result){
-		   
-		   var appointmentsList=result[i].subList;
-		   
-		    if(appointmentsList!=null && appointmentsList.length>0){
-				 for(var j in appointmentsList){
-					 
-					 var rescheduledList=appointmentsList[j].subList;
-					 
-					 if(rescheduledList!=null && rescheduledList.length>0){
-						 for(var k in rescheduledList){
-							str+='<tr>';
-								if(result[i].name!=null && result[i].name.length>0){
-									str+='<td>'+result[i].name.toUpperCase()+'</td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								 str+='<td ><img style="width:65px;height:60px;" class="media-object thumbnail" src='+result[i].imageUrl+' alt="Candidate Image" onerror="setDefaultImage(this);"></td>';
-								if(result[i].mobileNo!=null && result[i].mobileNo.length>0){
-									str+='<td>'+result[i].mobileNo+'</td>';
-								}else{
-									str+='<td> - </td>';
-								}
-								 var candidateDesignation=result[i].candDesignation;
-						         var location=result[i].constituency;
-						         var buildCandidateDesignation='';
-							   if(candidateDesignation!=null && candidateDesignation.length>0){
-								  buildCandidateDesignation=candidateDesignation;
-								  if(location!=null && location.length>0){
-									buildCandidateDesignation = buildCandidateDesignation + " - " + location ;
-								}
-							  }
-							   if(buildCandidateDesignation!=null && buildCandidateDesignation.length>0){
-								     str+='<td style="font-size:13px;">'+buildCandidateDesignation+'</td>';
-							   }else{
-								     str+='<td> - </td>';
-							   }
-						 		if(appointmentsList[j].appointmentUniqueId!=null && appointmentsList[j].appointmentUniqueId.length>0){
-									str+='<td>'+appointmentsList[j].appointmentUniqueId+'</td>';
-								}else{
-									 str+='<td> - </td>';
-								}
-								if(appointmentsList[j].presentStatus!=null && appointmentsList[j].presentStatus.length>0){
-									 str+='<td style="font-size:13px;">'+appointmentsList[j].presentStatus+'</td>';
-								}else{
-									 str+='<td> - </td>';
-								}
-								if(rescheduledList[k].date!=null && rescheduledList[k].date.length>0){
-								   str+='<td>'+rescheduledList[k].date+'</td>';
-								}else{
-								   str+='<td> - </td>';
-								}
-								if(rescheduledList[k].subject!=null && rescheduledList[k].subject.length>0){
-								   str+='<td>'+rescheduledList[k].subject+'</td>';
-								}else{
-								   str+='<td> - </td>';
-								}
-						str+='</tr>'; 
-						 }
-					 }
-				 }
-			}
-		   
-	   }
-	  str+='</tbody>';
-	  str+='</table>';
-	  $("#rschdldCnddtWsAppntmntsTblId").html(str);
-	   $('#rschdldAppntmntsCnddtPgntnTblId').dataTable({
-			"aaSorting": [],
-			"iDisplayLength" : 15	,
-			 "bDestroy": true,
-			 "bFilter": true,
-			"aLengthMenu": [[15,30,50, 100, -1], [15,30,50, 100, "All"]]		
-		});
- }
+ 
