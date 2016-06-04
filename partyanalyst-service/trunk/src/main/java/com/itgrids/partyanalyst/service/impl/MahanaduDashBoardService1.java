@@ -1753,10 +1753,11 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			  orderMap.put("MLA",3L);  orderMap.put("MLC",4L);
 			  orderMap.put("ZPTC",5L);  orderMap.put("MPP",6L);
 			  orderMap.put("MPTC",7L); orderMap.put("Central Committee",8L);
-			  orderMap.put("State Committee",9L); orderMap.put("CONSTITUENCY INCHARGE",10L);
-			  orderMap.put("District President",11L);
-			  orderMap.put("District Affliated Committee President",12L);
-			  orderMap.put("Mandal President",13L);
+			  orderMap.put("State Committee",9L);  orderMap.put("2014 ASSEMBLY CONTESTED",10L);
+			  orderMap.put("CONSTITUENCY INCHARGE",11L);
+			  orderMap.put("District President",12L);
+			  orderMap.put("District Affliated Committee President",13L);
+			  orderMap.put("Mandal President",14L);
 			  List<MahanaduEventVO> finallist = new ArrayList<MahanaduEventVO>();
 			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
