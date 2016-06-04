@@ -6002,17 +6002,32 @@ function buildGrievanceAmountDetails(result){
 		str+='<thead style="background:#f2f2f2">';
 			str+='<tr>';
 				str+='<th rowspan="2"></th>';
-				str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Govt.</th>';
-				str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Welfare</th>';
+				if(result[2].simpleVOList1.length > 1){
+					str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Govt.</th>';
+					str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Welfare</th>';
+				}
+				else{
+					if(result[2].simpleVOList1[0].name == 'Govt')
+						str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Govt.</th>';
+					else if(result[2].simpleVOList1[0].name == 'Welfare')
+						str+='<th colspan="3" style="text-align:center;text-transform:uppercase">Welfare</th>';
+				}
 				//str+='<th colspan="3">District</th>';
 			str+='</tr>';
 			str+='<tr>';
+				if(result[2].simpleVOList1.length > 1){
 					str+='<th style="text-transform:uppercase">No. of Beneficiaries</th>';
 					str+='<th style="text-transform:uppercase">Approved Amount</th>';
 					str+='<th style="text-transform:uppercase">Other Benifits</th>';
 					str+='<th style="text-transform:uppercase">No. of Beneficiaries</th>';
 					str+='<th style="text-transform:uppercase">Approved Amount</th>';
 					str+='<th style="text-transform:uppercase">Other Benifits</th>';
+				}
+				else{
+					str+='<th style="text-transform:uppercase">No. of Beneficiaries</th>';
+					str+='<th style="text-transform:uppercase">Approved Amount</th>';
+					str+='<th style="text-transform:uppercase">Other Benifits</th>';
+				}
 				str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -6052,12 +6067,26 @@ function buildGrievanceAmountDetails(result){
 			}
 			 str+='<tr>';
 			str+='<td class="text-bold" style="text-transform:uppercase"> Total </td>';
-			str+='<td class="text-bold">'+noOfBenForTotGovtCount+'</td>';
-			str+='<td class="text-bold">'+approvedAmtForTotGovtCount+'</td>';
-			str+='<td class="text-bold">'+otherBenForTotGovtCount+'</td>';
-			str+='<td class="text-bold">'+noOfBenForTotWelfareCount+'</td>';
-			str+='<td class="text-bold">'+approvedAmtForTotWelfareCount+'</td>';
-			str+='<td class="text-bold">'+otherBenForTotWelfareCount+'</td>';
+			if(result[2].simpleVOList1.length > 1){
+				str+='<td class="text-bold">'+noOfBenForTotGovtCount+'</td>';
+				str+='<td class="text-bold">'+approvedAmtForTotGovtCount+'</td>';
+				str+='<td class="text-bold">'+otherBenForTotGovtCount+'</td>';
+				str+='<td class="text-bold">'+noOfBenForTotWelfareCount+'</td>';
+				str+='<td class="text-bold">'+approvedAmtForTotWelfareCount+'</td>';
+				str+='<td class="text-bold">'+otherBenForTotWelfareCount+'</td>';
+			}
+			else{
+				if(result[2].simpleVOList1[0].name == 'Govt'){
+					str+='<td class="text-bold">'+noOfBenForTotGovtCount+'</td>';
+					str+='<td class="text-bold">'+approvedAmtForTotGovtCount+'</td>';
+					str+='<td class="text-bold">'+otherBenForTotGovtCount+'</td>';
+				}
+				else if(result[2].simpleVOList1[0].name == 'Welfare'){
+					str+='<td class="text-bold">'+noOfBenForTotWelfareCount+'</td>';
+					str+='<td class="text-bold">'+approvedAmtForTotWelfareCount+'</td>';
+					str+='<td class="text-bold">'+otherBenForTotWelfareCount+'</td>';
+				}
+			}
 			str+='</tr>'; 
 		str+='</tbody>';
 	str+='<table>';
