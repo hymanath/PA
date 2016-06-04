@@ -204,6 +204,7 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and ea.event.eventId in  (:eventIds)");
 		}
+		
 		sb.append("  and date(ea.attendedTime) between :startDate and :endDate ");
 		
 		sb.append(" group by pr.publicRepresentativeType.publicRepresentativeTypeId,date(ea.attendedTime) ");
@@ -211,6 +212,33 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
         Query query = getSession().createQuery(sb.toString());
 		query.setDate("startDate", startDate);
 		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameterList("designationIds",designationIds);
+		
+		return query.list();
+	}
+	
+	
+public List<Object[]> totalPublicRepInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds){
+		
+		StringBuilder sb =  new StringBuilder();
+		
+		sb.append(" select pr.publicRepresentativeType.publicRepresentativeTypeId,pr.publicRepresentativeType.type," +
+				"   count(distinct ea.tdpCadre.tdpCadreId) "+
+		          " from   EventAttendee ea,EventInvitee ei,PublicRepresentative pr,TdpCadreCandidate tca " +
+				  " where  ei.tdpCadreId = tca.tdpCadreId and tca.candidateId = pr.candidateId " +
+				  "         and ea.event.parentEventId = ei.event.eventId and " +
+				  "        ea.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId and ea.event.isInviteeExist = 'Y' " +
+				  "        and pr.publicRepresentativeType.publicRepresentativeTypeId in (:designationIds) ");
+		sb.append(" and ea.event.isActive =:isActive and ea.tdpCadre.isDeleted = 'N' and ea.tdpCadre.enrollmentYear = 2014 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and ea.event.eventId in  (:eventIds)");
+		}
+		sb.append(" group by pr.publicRepresentativeType.publicRepresentativeTypeId ");
+        Query query = getSession().createQuery(sb.toString());
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
@@ -297,6 +325,36 @@ public List<Object[]> dayWiseCommitteeLevelInviteesAttendedForEvent(Date startDa
 	
 	return query.list();
 }
+
+
+public List<Object[]> totalCommitteeLevelInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds){
+	
+	StringBuilder sb =  new StringBuilder();
+	sb.append(" select TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel," +
+			"          count(distinct ea.tdpCadre.tdpCadreId) "+
+	          " from   EventAttendee ea,EventInvitee ei,TdpCommitteeMember TCM" +
+	          " where  ei.tdpCadreId = TCM.tdpCadreId  " + 
+	          "         and ea.event.parentEventId = ei.event.eventId and " +
+			  "        ea.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId and ea.event.isInviteeExist = 'Y' " +
+			  "        and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:designationIds) ");
+	
+	sb.append(" and ea.event.isActive =:isActive and ea.tdpCadre.isDeleted = 'N' and ea.tdpCadre.enrollmentYear = 2014 ");
+	if(eventIds != null && eventIds.size() > 0){
+		sb.append(" and ea.event.eventId in  (:eventIds)");
+	}
+	
+	sb.append(" group by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+    
+    Query query = getSession().createQuery(sb.toString());
+    if(eventIds != null && eventIds.size() > 0){
+		query.setParameterList("eventIds", eventIds);
+	}
+	query.setParameter("isActive", IConstants.TRUE);
+	query.setParameterList("designationIds",designationIds);
+	
+	return query.list();
+}
+
 
 
 public List<Object[]> dayWiseCommitteeRoleInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds){
@@ -427,6 +485,69 @@ public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,
 	Query query = getSession().createQuery(str.toString());
 	query.setParameter("eventId", eventId);
 	query.setParameter("committeeRoleId", committeeRoleId);
+	return query.list();
+}
+
+
+public List<Object[]> totalCommitteeRoleInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds){
+	
+	StringBuilder sb =  new StringBuilder();
+	
+	sb.append(" select TCM.tdpCommitteeRole.tdpRoles.tdpRolesId,TCM.tdpCommitteeRole.tdpRoles.role," +
+			"          count(distinct ea.tdpCadre.tdpCadreId),TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel "+
+	          " from   EventAttendee ea,EventInvitee ei,TdpCommitteeMember TCM" +
+	          " where  ei.tdpCadreId = TCM.tdpCadreId  " + 
+	          "         and ea.event.parentEventId = ei.event.eventId and " +
+			  "        ea.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId and ea.event.isInviteeExist = 'Y' " +
+			  "        and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (5,11)" +
+			  " and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1" +
+			  " and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId in(:designationIds) ");
+	
+	sb.append(" and ea.event.isActive =:isActive and ea.tdpCadre.isDeleted = 'N' and ea.tdpCadre.enrollmentYear = 2014 ");
+	if(eventIds != null && eventIds.size() > 0){
+		sb.append(" and ea.event.eventId in  (:eventIds)");
+	}
+	
+	sb.append(" group by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,TCM.tdpCommitteeRole.tdpRoles.tdpRolesId");
+    
+    Query query = getSession().createQuery(sb.toString());
+	
+	if(eventIds != null && eventIds.size() > 0){
+		query.setParameterList("eventIds", eventIds);
+	}
+	query.setParameter("isActive", IConstants.TRUE);
+	query.setParameterList("designationIds",designationIds);
+	
+	return query.list();
+}
+public List<Object[]> totalDistrictAffliatedCommitteeInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds){
+	
+	StringBuilder sb =  new StringBuilder();
+	
+	sb.append(" select TCM.tdpCommitteeRole.tdpRoles.tdpRolesId,TCM.tdpCommitteeRole.tdpRoles.role," +
+			"          count(distinct ea.tdpCadre.tdpCadreId),TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel "+
+	          " from   EventAttendee ea,EventInvitee ei,TdpCommitteeMember TCM" +
+	          " where  ei.tdpCadreId = TCM.tdpCadreId  " + 
+	          "         and ea.event.parentEventId = ei.event.eventId and " +
+			  "        ea.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId and ea.event.isInviteeExist = 'Y' " +
+			  "        and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (11)" +
+			  " and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId in(:designationIds)" +
+			  " and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1 ");
+	
+	sb.append(" and ea.event.isActive =:isActive and ea.tdpCadre.isDeleted = 'N' and ea.tdpCadre.enrollmentYear = 2014 ");
+	if(eventIds != null && eventIds.size() > 0){
+		sb.append(" and ea.event.eventId in  (:eventIds)");
+	}
+	
+	sb.append(" group by TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,TCM.tdpCommitteeRole.tdpRoles.tdpRolesId");
+    
+    Query query = getSession().createQuery(sb.toString());
+	if(eventIds != null && eventIds.size() > 0){
+		query.setParameterList("eventIds", eventIds);
+	}
+	query.setParameter("isActive", IConstants.TRUE);
+	query.setParameterList("designationIds",designationIds);
+	
 	return query.list();
 }
 
