@@ -7752,7 +7752,92 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 			LOG.error("Exception raised at setCandiApptsRescheduledDates", e);
 		}
  	}
- 
- 
+ 	
+ 	/**
+	   *   @author    : Sreedhar
+	   *   Description:This Service is used to get the rescheduled member wise Overview Summary
+	   *   inputs: apptUserId
+	   *   output: List<AppointmentScheduleVO>
+	   *   
+	  */
+ 		public List<AppointmentScheduleVO> overviewSummaryOfRescheduledCandidates(Long apptUserId){
+ 			
+ 			List<AppointmentScheduleVO> finalList = new ArrayList<AppointmentScheduleVO>(0);
+ 			try{
+ 				
+ 				Map<Long,AppointmentScheduleVO>  finalMap = new LinkedHashMap<Long,AppointmentScheduleVO>();
+ 				//for candidate desig and constituencies.
+ 				List<Long> cadreIds = new ArrayList<Long>();
+ 				List<Long> partyCommiteeDesigCadreIds = new ArrayList<Long>();
+ 				List<Long> PrCadreIds = new ArrayList<Long>();
+ 				Map<Long,Long> designationMap = new HashMap<Long, Long>();
+ 				
+ 				List<Object[]> candiApptsList = appointmentTrackingDAO.overviewSummaryOfRescheduledCandidates(apptUserId);
+ 				if( candiApptsList != null && candiApptsList.size() > 0){
+ 					
+ 					//set candidates and appointments.
+ 					for( Object[] obj : candiApptsList){
+ 		 				
+ 		 				AppointmentScheduleVO candiVO = new AppointmentScheduleVO();
+ 		 					
+	 					candiVO.setId(obj[0]!=null ?(Long)obj[0] : 0l);
+	 					candiVO.setName(obj[1]!= null ?obj[1].toString():"");
+						candiVO.setImageUrl(obj[2]!= null ?obj[2].toString():"");
+						candiVO.setMobileNo(obj[3]!= null ?obj[3].toString():"");
+						candiVO.setTdpCadreId(obj[8]!= null ?(Long)obj[8]:0l);
+						candiVO.setDesignation(obj[5] != null ? obj[5].toString() : "");
+						candiVO.setRescheduledApptsCount(obj[10]!= null ?(Long)obj[10]:0l);
+						candiVO.setRescheduledCount(obj[11]!= null ?(Long)obj[11]:0l);
+						
+						//for cand desig and const.
+						Long tdpcadreId =    obj[8] !=null ?(Long)obj[8]:null;
+						Long apptcanditype = obj[6] !=null ?(Long)obj[6]:null;
+ 							
+						if(apptcanditype != null){
+							candiVO.setApptCandiTypeId(apptcanditype);
+							if(apptcanditype.longValue() == 4l){
+								
+								candiVO.setCandDesignation(obj[7] !=null ?obj[7].toString():"");//Other
+								candiVO.setConstituency(obj[9] !=null ?WordUtils.capitalize(obj[9].toString().toLowerCase())+" Constituency":"");
+								
+							}else if(apptcanditype.longValue() == 3l){
+								candiVO.setCandDesignation(obj[7] !=null ?obj[7].toString():"");//Cadre
+								cadreIds.add(tdpcadreId);
+							}else if(apptcanditype.longValue() == 2l && tdpcadreId!=null){
+								partyCommiteeDesigCadreIds.add(tdpcadreId);
+							}else if(apptcanditype.longValue() == 1l && tdpcadreId!=null && obj[4]!=null){
+								candiVO.setCandDesignation(obj[5] != null ? obj[5].toString() : "");//MP,MLA...
+								designationMap.put(tdpcadreId, (Long)obj[4]);
+								PrCadreIds.add(tdpcadreId);								
+							}
+						}
+ 		 				 finalMap.put((Long)obj[0], candiVO);
+ 		 			}
+ 				}
+ 				//Map iteration
+ 				if( finalMap != null && finalMap.size() > 0){
+ 					finalList.addAll(finalMap.values());
+ 				}
+ 				
+ 				if(cadreIds!=null && cadreIds.size()>0){
+ 					Map<Long,String> constMap = getConstforTdpcadreIds(cadreIds);
+ 					setConstforTdpcadreIds(finalList,constMap);
+ 				}
+ 				if(partyCommiteeDesigCadreIds!=null && partyCommiteeDesigCadreIds.size()>0){
+ 					Map<Long,String> partyCommiteeDesignationsMap = getPartyPositionDesignationMap(partyCommiteeDesigCadreIds);
+ 					setPartyPositionDesignations(finalList,partyCommiteeDesignationsMap);
+ 				}
+ 				if(PrCadreIds !=null && PrCadreIds.size()>0){
+ 					Map<Long,String> publicRepresLocaMap  = locationService.getLocationMapForDesignation(designationMap,PrCadreIds);
+ 					setPublicRepresenatLocations(finalList,publicRepresLocaMap);
+ 				}
+ 				
+			}catch(Exception e){
+				LOG.error("Exception raised at overviewSummaryOfRescheduledCandidates in Appointment service", e);
+			}
+ 			return finalList;
+ 		}
+ 		
+ 		
  }
 
