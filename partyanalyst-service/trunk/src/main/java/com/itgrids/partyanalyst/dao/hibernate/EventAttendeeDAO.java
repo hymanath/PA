@@ -1416,7 +1416,8 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.tdpCadreId " +
-				" from EventAttendee model where model.tdpCadreId in (:cadreIds) and model.event.parentEventId=:eventId ");
+				" from EventAttendee model where model.tdpCadreId in (:cadreIds) and model.event.parentEventId=:eventId" +
+				" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
 		if(date != null){
 			sb.append(" and date(model.attendedTime)=:date");
 		}
@@ -1430,14 +1431,14 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	}
 	
 	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId){
-		Query query = getSession().createQuery(" select model.tdpCadreId " +
+		Query query = getSession().createQuery(" select distinct model.tdpCadreId " +
 				" from EventAttendee model,TdpCadreCandidate tcc,PublicRepresentative pr " +
 				" where " +
 				" model.tdpCadreId = tcc.tdpCadreId " +
 				" and tcc.candidateId=pr.candidateId " +
 				" and  pr.publicRepresentativeTypeId=:designationId " +
 				" and model.event.parentEventId=:eventId " +
-				" and date(model.attendedTime)=:date ");
+				" and date(model.attendedTime)=:date and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		query.setParameter("eventId", eventId);
 		query.setDate("date", date);
 		query.setParameter("designationId", designationId);
@@ -1451,7 +1452,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 								" model.attendedTime" +
 								" from EventAttendee model" +
 								" where model.tdpCadreId = :cadreId" +
-								" and model.event.eventId = :eventId" +
+								" and model.event.eventId = :eventId and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 								" group by date(model.attendedTime)");
 		query.setParameter("cadreId", cadreId);
 		query.setParameter("eventId", eventId);
@@ -1464,7 +1465,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 									" model.attendedTime" +
 									" from EventAttendee model" +
 									" where model.tdpCadreId = :cadreId" +
-									" and model.event.eventId = :eventId");
+									" and model.event.eventId = :eventId and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		query.setParameter("cadreId", cadreId);
 		query.setParameter("eventId", eventId);
 		
@@ -1472,27 +1473,29 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	}
 	
 	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(Long eventId,Date date,Long committeeLevelId){
-		Query query = getSession().createQuery(" select model.tdpCadreId " +
-				" from EventAttendee model,TdpCommitteeMember TCM " +
+		Query query = getSession().createQuery(" select distinct model.tdpCadreId " +
+				" from EventAttendee model,TdpCommitteeMember TCM ,EventInvitee ei" +
 				" where " +
-				"  model.tdpCadreId=TCM.tdpCadreId " +
+				"  ei.tdpCadreId=TCM.tdpCadreId  and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId" +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=:committeeLevelId " +
-				" and model.event.parentEventId=:eventId " +
-				" and date(model.attendedTime)=:date ");
+				" and model.event.parentEventId=:eventId and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive" +
+				" and date(model.attendedTime)=:date and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		query.setParameter("eventId", eventId);
 		query.setDate("date", date);
 		query.setParameter("committeeLevelId", committeeLevelId);
+		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
 	
 	public List<Long> getCadreIdsForAttendeesForCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel){
 		StringBuilder str = new StringBuilder();
-		str.append(" select model.tdpCadreId " +
-				" from EventAttendee model,TdpCommitteeMember TCM " +
+		str.append(" select distinct model.tdpCadreId " +
+				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei " +
 				"  where model.event.parentEventId=:eventId " +
-				" and model.tdpCadreId=TCM.tdpCadreId " +
+				" and ei.tdpCadreId=TCM.tdpCadreId and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId " +
 				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
-				" and date(model.attendedTime)=:date");
+				" and date(model.attendedTime)=:date and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
+				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
 		if(committeeLevel.equalsIgnoreCase("District"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
 		if(committeeLevel.equalsIgnoreCase("Mandal"))
@@ -1501,18 +1504,20 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("eventId", eventId);
 		query.setParameter("committeeRoleId", committeeRoleId);
 		query.setDate("date", date);
+		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
 	
 	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel){
 		StringBuilder str = new StringBuilder();
-		str.append(" select model.tdpCadreId " +
-				" from EventInvitee model,TdpCommitteeMember TCM " +
+		str.append(" select distinct model.tdpCadreId " +
+				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei " +
 				"  where model.event.parentEventId=:eventId " +
-				" and model.tdpCadreId=TCM.tdpCadreId " +
+				" and ei.tdpCadreId=TCM.tdpCadreId and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId " +
 				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1" +
-				" and date(model.attendedTime)=:date");
+				" and date(model.attendedTime)=:date and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
+				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
 		if(committeeLevel.equalsIgnoreCase("District"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
 		if(committeeLevel.equalsIgnoreCase("Mandal"))
@@ -1521,6 +1526,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("eventId", eventId);
 		query.setParameter("committeeRoleId", committeeRoleId);
 		query.setDate("date", date);
+		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
 	

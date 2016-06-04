@@ -1878,7 +1878,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					  desgVO.setLocationType("");
 					  desgVO.setId( obj[0]!= null ? (Long)obj[0] :0l);
 					  if(type.equalsIgnoreCase("CommitteeLevel"))
+					  {
+					  desgVO.setLocationType(obj[1]!= null ? obj[1].toString() :""); 
 					  desgVO.setName(obj[1]!= null ? obj[1].toString() +" Committee" :"");
+					  }
 					  else if(type.equalsIgnoreCase("CommitteeRole"))
 					  {
 						  desgVO.setLocationType(obj[3]!= null ? obj[3].toString() :""); 
@@ -1887,6 +1890,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					  else if(type.equalsIgnoreCase("affliatedCommittee"))
 					  {
 						    desgVO.setLocationType(obj[3]!= null ? obj[3].toString() :""); 
+						    
 							desgVO.setName(obj[1]!= null ? obj[3].toString() + " Affliated Committee " +obj[1].toString() :"");
 					  }
 					  else
@@ -1934,7 +1938,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					  else if(type.equalsIgnoreCase("CommitteeRole"))
 						  Name = obj[1]!= null ? obj[4].toString() + " " +obj[1].toString() :"";  
 						  else if(type.equalsIgnoreCase("affliatedCommittee"))
-							  Name = obj[1]!= null ? obj[4].toString() + " Affliated Committee" +obj[1].toString() :""; 
+							  Name = obj[1]!= null ? obj[4].toString() + " Affliated Committee " +obj[1].toString() :"";
+							//  Name = obj[1]!= null ? obj[4].toString() + " Affliated Committee" + obj[1].toString() :""; 
 						  else
 						  Name = obj[1]!= null ? obj[1].toString() :"";
 				  MahanaduEventVO designationVO = designationsMap.get(Name.toString());
