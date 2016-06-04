@@ -1494,6 +1494,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				"  where model.event.parentEventId=:eventId " +
 				" and ei.tdpCadreId=TCM.tdpCadreId and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId " +
 				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1" +
 				" and date(model.attendedTime)=:date and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
 		if(committeeLevel.equalsIgnoreCase("District"))
