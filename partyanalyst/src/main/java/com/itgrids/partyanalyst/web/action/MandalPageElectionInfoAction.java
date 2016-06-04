@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MandalPageElectionInfoAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
@@ -358,12 +359,18 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		//Entitlement Check
 		HttpSession session = request.getSession();
 		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
-		
-		if(((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.TEHSIL_ANALYSIS)) ||
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO != null && !(entitlements.contains(IConstants.TEHSIL_ANALYSIS) || (regVO == null && entitlements.contains(IConstants.TEHSIL_ANALYSIS)) 
+			|| entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.TEHSIL_LEVEL, Long.parseLong(mandalID)))){
+				villageDetailsVO.setShowRevenueVillageInfo(false);
+			}
+		/*if(((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.TEHSIL_ANALYSIS)) ||
 				(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(regVO,  IConstants.TEHSIL_ANALYSIS)))||
 				!entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.TEHSIL_LEVEL, Long.parseLong(mandalID)))
 			villageDetailsVO.setShowRevenueVillageInfo(false);
-		
+		*/
 		
 		Throwable ex = villageDetailsVO.getExceptionEncountered();
 		if(ex!=null){
@@ -376,12 +383,18 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
 		List<PartyResultVO> acPcElectionResultsForParties = null;
 		
-		if(((regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.TEHSIL_ANALYSIS)) ||
+		
+			if(regVO != null && !(entitlements.contains(IConstants.TEHSIL_ANALYSIS) || (regVO == null && entitlements.contains(IConstants.TEHSIL_ANALYSIS)) 
+			|| entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.TEHSIL_LEVEL, Long.parseLong(mandalID)))){
+				electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(Long.valueOf(mandalID), "Mandal");
+				acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
+			}
+		/*if(((regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.TEHSIL_ANALYSIS)) ||
 				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(regVO,  IConstants.TEHSIL_ANALYSIS)))||
 				entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.TEHSIL_LEVEL, Long.parseLong(mandalID))){
 			electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(Long.valueOf(mandalID), "Mandal");
 			acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
-		}
+		}*/
 
 		List<PartyResultVO> mptcZptcElectionResultsForParties = mptcZptcResultListVO.getAllPartiesAllElectionResults();
 		Map<PartyResultVO, List<ElectionResultVO>> resultMap = new HashMap<PartyResultVO, List<ElectionResultVO>>();
@@ -481,7 +494,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 						partyResultMapPrcnt.put(party,percentages);
 					}
 			}
-				
+		}	
 		return SUCCESS;
 	}
 	public List<String> removeDuplicates(List<String> list) {

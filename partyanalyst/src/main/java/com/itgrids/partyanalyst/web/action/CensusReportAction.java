@@ -173,13 +173,20 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 	{
 		HttpSession session = request.getSession();
 		session = request.getSession();
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CENSUS_REPORT_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CENSUS_REPORT_ENTITLEMENT))
-			return ERROR;
-		
+			return ERROR;*/
+		List<String> entitlements = null;
+		if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+			entitlements = registrationVO.getEntitlements();
+			if(registrationVO == null && !entitlements.contains(IConstants.CENSUS_REPORT_ENTITLEMENT)){
+				return IConstants.NOT_LOGGED_IN;
+			}
+			if(!entitlements.contains(IConstants.CENSUS_REPORT_ENTITLEMENT))
+				return ERROR;
 		states = new ArrayList<SelectOptionVO>();
 		states.add(new SelectOptionVO(0L,"Select State"));
 		states.add(new SelectOptionVO(1L,"Andhra Pradesh"));
@@ -190,7 +197,7 @@ public class CensusReportAction extends ActionSupport implements ServletRequestA
 		
 		censusParamList = electionService.getAllCensusParameters();
 		session.setAttribute("censusParamList",censusParamList);
-		
+		}
 		return Action.SUCCESS;
 	}
 	

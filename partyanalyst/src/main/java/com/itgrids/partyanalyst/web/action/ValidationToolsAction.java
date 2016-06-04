@@ -186,12 +186,20 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 			return INPUT;
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.VOTER_SEARCH_AND_EDIT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.VOTER_SEARCH_AND_EDIT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_SEARCH_AND_EDIT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
-			return ERROR;
+			return ERROR;*/
 		
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
@@ -202,6 +210,7 @@ public class ValidationToolsAction extends ActionSupport implements ServletReque
 			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 			user.setUserAccessVoterConstituencies(constituencyList);
+		}
 		}
 		return SUCCESS;
 		

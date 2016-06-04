@@ -535,9 +535,15 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		if(regVO==null)
 			return INPUT;
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!entitlements.contains("MAHANADU")){
+				return ERROR;
+			}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
 			return ERROR;
-		}
+		}*/
 		if(session.getAttribute(ISessionConstants.BLOOD_GROUPS) == null){
 			  bloodGroupTypes = cadreManagementService.getAllBloodGroupTypes();
 		      session.setAttribute(ISessionConstants.BLOOD_GROUPS,bloodGroupTypes);
@@ -614,7 +620,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		}
 			
 		constituencyList = staticDataService.getLatestConstituenciesByStateId(1L);
-	  }catch(Exception e){
+	  }
+	 }catch(Exception e){
 		  LOG.error(" exception occured in execute() in mahanaduAction class.",e);
 	  }
 		return Action.SUCCESS;
@@ -732,10 +739,17 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
   			inputStream = new StringBufferInputStream("logout");
   			return Action.SUCCESS;
   		}
-  		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+  		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!entitlements.contains("MAHANADU")){
+				inputStream = new StringBufferInputStream("noaccess");
+				return Action.SUCCESS;
+			}
+  		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
   			inputStream = new StringBufferInputStream("noaccess");
   			return Action.SUCCESS;
-		}
+		}*/
     	  cadreVo.setUserId(regVO.getRegistrationID());
     	  if(partyDesigIds != null && partyDesigIds.length() > 0){
     		  List<Long> pIds = new ArrayList<Long>();
@@ -767,7 +781,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		}
 		else
 			inputStream = new StringBufferInputStream("fail");
-      }catch(Exception e){
+      }
+     }catch(Exception e){
     	  inputStream = new StringBufferInputStream("fail");
     	  LOG.error("Exception rised in saveOrUpdataCadre", e);
       }
@@ -785,11 +800,19 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			cadreVo.setFirstName("logout");
 			return Action.SUCCESS;
 		}
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+		List<String> entitlements = null;
+		if(userDetls.getEntitlements() != null && userDetls.getEntitlements().size()>0){
+			entitlements = userDetls.getEntitlements();
+			if(!entitlements.contains("MAHANADU")){
+				cadreVo = new CadreVo();
+				cadreVo.setFirstName("noaccess");
+	  			return Action.SUCCESS;
+			}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
 			cadreVo = new CadreVo();
 			cadreVo.setFirstName("noaccess");
   			return Action.SUCCESS;
-		}   	
+		}*/   	
     	String constituencyId = request.getParameter("cosntituencyId");
     	String searchBy = request.getParameter("searchBy");
     	String sort = request.getParameter("dir");
@@ -799,7 +822,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	String searchType = request.getParameter("searchType");
     	
     	cadreVo =  mahaNaduService.searchCadreDetails(userDetls.getRegistrationID(),Long.valueOf(constituencyId),searchBy.trim(),searchType,sort,sortBy,Integer.valueOf(startIndex),Integer.valueOf(maxResult));
-	} catch (Exception e) {
+	} 
+   }catch (Exception e) {
 		LOG.error(" exception occured in searchCadreInfo() in mahanaduAction class.",e);
 	}    
     return Action.SUCCESS;
@@ -814,11 +838,19 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			cadreVo.setFirstName("logout");
 			return Action.SUCCESS;
 		}
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
+		List<String> entitlements = null;
+		if(userDetls.getEntitlements() != null && userDetls.getEntitlements().size()>0){
+			entitlements = userDetls.getEntitlements();
+			if(!entitlements.contains("MAHANADU")){
+				cadreVo = new CadreVo();
+				cadreVo.setFirstName("noaccess");
+	  			return Action.SUCCESS;
+			}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
 			cadreVo = new CadreVo();
 			cadreVo.setFirstName("noaccess");
   			return Action.SUCCESS;
-		}   	
+		} */  	
     	String boothId = request.getParameter("boothId");
     	String searchBy = request.getParameter("searchName");
     	String sort = request.getParameter("dir");
@@ -828,7 +860,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	String searchType  =  request.getParameter("searchType");
     	
     	cadreVo =  mahaNaduService.searchVoterInfo(userDetls.getRegistrationID(),Long.valueOf(boothId),searchBy.trim(),searchType,sort,sortBy,Integer.valueOf(startIndex),Integer.valueOf(maxResult));
-	} catch (Exception e) {
+	} 
+   }catch (Exception e) {
 		LOG.error(" exception occured in searchVoterInfo() in mahanaduAction class.",e);
 	}    
     return Action.SUCCESS;

@@ -119,10 +119,17 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_REGISTRATION_ENTITLEMENT") || 
+		 List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!(entitlements.contains("BLOOD_BANK_REGISTRATION_ENTITLEMENT".trim()) || entitlements.contains("BLOOD_BANK_REGISTRATION_ADMIN_ENTITLEMENT".trim()))){
+					noaccess = true ;
+				}
+			
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_REGISTRATION_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_REGISTRATION_ADMIN_ENTITLEMENT"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -130,7 +137,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		if(noaccess){
 			return "error";
 		}
-
+	}
 		return Action.SUCCESS;
 	}
 	
@@ -140,16 +147,25 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_DASHBOARD_ENTITLEMENT") || 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!entitlements.contains("BLOOD_BANK_DASHBOARD_ENTITLEMENT".trim()) || !entitlements.contains("BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT".trim())){
+				noaccess = true ;
+			}
+		
+		
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_DASHBOARD_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
 		if(noaccess){
 			return "error";
+		}
 		}
 		return Action.SUCCESS;
 	}
@@ -160,10 +176,17 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_BLEEDING_ENTITLEMENT") || 
+		 List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!entitlements.contains("BLOOD_BANK_BLEEDING_ENTITLEMENT".trim()) || !entitlements.contains("BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT".trim())){
+					noaccess = true ;
+				}
+			
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_BLEEDING_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -171,6 +194,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		if(noaccess){
 			return "error";
 		}
+	}
 		return Action.SUCCESS;
 	}
 	

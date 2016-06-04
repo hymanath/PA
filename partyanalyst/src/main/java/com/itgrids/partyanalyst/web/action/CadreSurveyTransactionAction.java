@@ -161,13 +161,19 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 			
 			if(user == null)
 				return Action.INPUT;
-			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER) || 
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(entitlements.contains(IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER) 
+						|| entitlements.contains(IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP)){
+					return Action.SUCCESS;
+				}
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(user,IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER) || 
 					 entitlementsHelper.checkForEntitlementToViewReport(user,IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP))
 			{
 				return Action.SUCCESS;
-			}
-			
+			}*/
+		}
 		} catch (Exception e) {
 			LOG.error("Exception occured in cadreTransactionReportsPage() in CadreSurveyTransactionAction class.", e);
 		}

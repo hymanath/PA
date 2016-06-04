@@ -745,13 +745,24 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		session = request.getSession();		
 		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
 		
-		if(entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES) && 
-				entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.DISTRICT_LEVEL, districtID)){
-			List<SelectOptionVO> allElections = staticDataService.getAllElectionScopes(districtID);
-			electionsInDistrict = getAllElectionTypes(allElections);		
-			Collections.sort(electionsInDistrict,new SelectOptionVOComparator());
-			electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
-		}else{
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && entitlements.contains(IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES) && entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.DISTRICT_LEVEL, districtID)){
+				List<SelectOptionVO> allElections = staticDataService.getAllElectionScopes(districtID);
+				electionsInDistrict = getAllElectionTypes(allElections);		
+				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());
+				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
+			}
+
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES) && 
+					entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.DISTRICT_LEVEL, districtID)){
+				List<SelectOptionVO> allElections = staticDataService.getAllElectionScopes(districtID);
+				electionsInDistrict = getAllElectionTypes(allElections);		
+				Collections.sort(electionsInDistrict,new SelectOptionVOComparator());
+				electionsInDistrict.add(0, new SelectOptionVO(0l, "All Elections"));
+			}*/
+		else{
 			electionsInDistrict = new ArrayList<SelectOptionVO>();	
 			Long assemblyScopeId=0l;
 			for(SelectOptionVO selectOptionVO : staticDataService.getAllElectionScopes(districtID)){
@@ -761,7 +772,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			}
 			electionsInDistrict.add(0, new SelectOptionVO(assemblyScopeId, IConstants.ASSEMBLY_ELECTION_TYPE));	
 		}
-			
+	}	
 		return SUCCESS;
 	}
 	
@@ -802,14 +813,20 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		Long districtID = jObj.getLong("districtId");
 		session = request.getSession();		
 		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
-		
-		if(entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)&& 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && entitlements.contains(IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES) && entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.DISTRICT_LEVEL, districtID)){
+				yearsList = staticDataService.getAllElectionsInDistrict(districtID);
+			}
+		/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.DISTRICT_PAGE_ALL_ELECTION_HIRARCHIES)&& 
 				entitlementsHelper.checkForRegionToViewReport(regVO, IConstants.DISTRICT_LEVEL, districtID)){
 			yearsList = staticDataService.getAllElectionsInDistrict(districtID);	
-		}else{
+		}*/
+		else{
 			yearsList =  staticDataService.getAllAssemblyElectionsInDistrict(districtID,IConstants.ASSEMBLY_ELECTION_TYPE);	
 		}
-		
+	}	
 		return SUCCESS;
 	}
 	

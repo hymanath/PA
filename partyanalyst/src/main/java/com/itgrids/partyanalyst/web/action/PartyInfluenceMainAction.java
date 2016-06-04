@@ -82,12 +82,22 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletRe
 	public String execute(){
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_INFLUENCE_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.PARTY_INFLUENCE_REPORT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_INFLUENCE_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_INFLUENCE_REPORT))
 			return ERROR;
-		
+		*/
 		electionTypes = new ArrayList<SelectOptionVO>();
 		states = new ArrayList<SelectOptionVO>();
 		electionYears = new ArrayList<String>();
@@ -116,7 +126,7 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletRe
 		partyNames.add(new SelectOptionVO(265l, "CPI"));
 		partyNames.add(new SelectOptionVO(871l, "TDP"));
 		partyNames.add(new SelectOptionVO(885l, "TRS"));
-				
+		}		
 		return Action.SUCCESS;
 	}
 

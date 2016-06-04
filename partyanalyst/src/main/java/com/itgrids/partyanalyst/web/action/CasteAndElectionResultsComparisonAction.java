@@ -144,15 +144,28 @@ public class CasteAndElectionResultsComparisonAction extends ActionSupport imple
 	public String execute(){
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(session.getAttribute(IConstants.USER) == null && 
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.VOTER_ANALYSIS)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.VOTER_ANALYSIS))
+				return ERROR;
+			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
+			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		}
+		return Action.SUCCESS;
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
-			return ERROR;
-		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
+			return ERROR;*/
+		/*userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(user.getRegistrationID(),Long.valueOf(IConstants.PRESENT_ELECTION_YEAR),Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID));
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
-		return Action.SUCCESS;
+		return Action.SUCCESS;*/
 	}
 	
 	public String getAttributesWiseElectionResults(){

@@ -160,13 +160,23 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			LOG.debug("Entered Into execute method in AcPcWiseElectionResultAction Action");
 			session = request.getSession();
 			final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if(session.getAttribute(IConstants.USER) == null && 
+			List<String> entitlements = null;
+			if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+				entitlements = registrationVO.getEntitlements();
+				if(registrationVO == null && !entitlements.contains(IConstants.NEW_LIVE_RESULTS.trim())){
+					return INPUT;
+				}
+			if(!entitlements.contains(IConstants.NEW_LIVE_RESULTS)){
+					return ERROR;
+				}
+			
+			/*if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.NEW_LIVE_RESULTS)){
 				return INPUT;
 			}
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.NEW_LIVE_RESULTS)){
 				return ERROR;
-			}
+			}*/
 			
 			if (!registrationVO.getIsAdmin().equals(TRUE)){
 			  return ERROR;
@@ -175,6 +185,7 @@ public class AcPcWiseElectionResultAction extends ActionSupport implements Servl
 			resultLists = staticDataService.getAllParliaments();
 			
 		} 
+		}
 		catch (Exception e)
 		{
 			LOG.error("Exception Raised In execute method in AcPcWiseElectionResultAction Action", e);

@@ -162,12 +162,20 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO != null)
 			{
-				if(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER) || 
+				/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER) || 
 						 entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER_GROUP))
 				{
 					constituencyList = tdpCadreReportService.getGHMCConstituencies();
 					return Action.SUCCESS;
-				}
+				}*/
+				List<String> entitlements = null;
+			    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			      entitlements = regVO.getEntitlements();
+			      if(entitlements.contains(IConstants.GHMC_CADRE_MEGA_DRIVE_USER)||entitlements.contains(IConstants.GHMC_CADRE_MEGA_DRIVE_USER_GROUP)){
+			    constituencyList = tdpCadreReportService.getGHMCConstituencies();
+			     return Action.SUCCESS;
+			      }
+
 				else
 				{
 					return Action.ERROR;
@@ -176,6 +184,7 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 			else
 			{
 				return Action.INPUT;
+			}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in volunteersDetailsPage method in CadreRegistrationAction Action",e);

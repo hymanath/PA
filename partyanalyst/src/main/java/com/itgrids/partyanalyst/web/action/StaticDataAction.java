@@ -159,11 +159,19 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 	public String getStatesList() throws Exception{
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		if(user == null && 
+		/*if(user == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
-			return ERROR;
+			return ERROR;*/
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.PARTY_BOOTHWISE_RESULTS_REPORT)){
+	        return INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.CONSTITUENCY_RESULTS_ENTITLEMENT))
+	        return ERROR;
 		Long userID = user.getRegistrationID();
 		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
@@ -186,6 +194,7 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		partyList = staticDataService.getStaticParties();
 		Collections.sort(partyList);
 		partyList.add(0, new SelectOptionVO(0L,"Select Party"));
+	    }
 		return SUCCESS;
 	}
 

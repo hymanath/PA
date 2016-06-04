@@ -315,7 +315,10 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		
 		HttpSession session = request.getSession();
 		RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
-		
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			
 		electionGoverningBodyVO = candidateDetailsService.getElectionDetailsForMinister(Long.parseLong(electionId));
 		
 		if(electionType == null)
@@ -338,7 +341,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			stateName = electionGoverningBodyVO.getStateName();
 		
 		
-		if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+		//if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+		if(regVO == null && entitlements.contains(IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
 			hasDeatiledAnalysis = true;
 		
 		electionYears = new ArrayList<SelectOptionVO>();
@@ -385,6 +389,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 		}catch(Exception e){
 			LOG.error("Exception occured in getting winning candidates ",e);
 		}
+	}
 		return Action.SUCCESS;
 	}
 
@@ -416,8 +421,11 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 
 			
 			RegistrationVO regVO = session.getAttribute(IConstants.USER) != null?(RegistrationVO)session.getAttribute(IConstants.USER):null;
-			
-			if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+			List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+		//	if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+				if(regVO == null && entitlements.contains(IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))	
 				hasDeatiledAnalysis = true;
 			String alliancesRequired = null;
 			if(!hasDeatiledAnalysis)
@@ -466,6 +474,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements
 			partyElectionResultVO = electionReportService.getTopVotesMarginVotesDetails(jObj.getLong("electionId"),jObj.getInt("maxResult"),jObj.getString("task").trim(),partyId);
 			
 		}
+	}
 		return Action.SUCCESS;
 
 	}

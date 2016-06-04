@@ -213,13 +213,22 @@ public class PartyStrengthAction extends ActionSupport implements
 			
 		HttpSession session = request.getSession();
 		session = request.getSession();
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_STRENGTH_AND_WEAKNESS)){
+				return INPUT;
+			}
+			if(!entitlements.contains( IConstants.PARTY_STRENGTH_AND_WEAKNESS)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_STRENGTH_AND_WEAKNESS))
 			return INPUT;
 		
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_STRENGTH_AND_WEAKNESS))
-			return ERROR;
+			return ERROR;*/
 		
 		partyList = staticDataService.getStaticParties();
 		
@@ -231,6 +240,7 @@ public class PartyStrengthAction extends ActionSupport implements
 		
 		years = partyStrengthService.getCountOfElectionYears(1l,IConstants.ASSEMBLY_ELECTION_TYPE);
 		
+		}
 		}catch(Exception ex){
 			
 			LOG.error("Exception Raised :",ex);

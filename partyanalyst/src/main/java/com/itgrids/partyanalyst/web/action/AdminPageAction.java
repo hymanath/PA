@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -80,27 +82,48 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 
 	public String execute(){
 		final HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		List<String> entitlements = null;
+		if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+			entitlements = registrationVO.getEntitlements();
+			if(registrationVO == null && !entitlements.contains(IConstants.ADMIN_PAGE.trim())){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.ADMIN_PAGE.trim())){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE)){
 			return INPUT;
 		}
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE)){
 			return ERROR;
-		}
+		}*/
 		problemBeanVO = problemManagementReportService.getCountOfNewlyPostedProblemsByFreeUser();
-		
+		}
 		return SUCCESS;
 	}
 	public String checkAdmin(){
 		final HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		List<String> entitlements = null;
+		if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+			entitlements = registrationVO.getEntitlements();
+			if(registrationVO == null && !entitlements.contains(IConstants.ADMIN_PAGE.trim())){
+				return INPUT;
+			}
+			if (!entitlements.contains(IConstants.ADMIN_PAGE.trim())){
+				return ERROR;
+			}
+		
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE)){
 			return INPUT;
 		}
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE)){
 			return ERROR;
+		}*/
 		}
-		
 		return SUCCESS;
 	}
 	

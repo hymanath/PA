@@ -175,11 +175,20 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		{
 			return Action.ERROR;
 		}
-		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
+		 List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!entitlements.contains(IConstants.VOTER_SEARCH_AND_EDIT)){
+					return ERROR;
+				}
+				if(entitlements.contains(IConstants.ADMIN_PAGE)){
+					isAdmin = "true";
+				}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
 			return ERROR;
 		
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
-				isAdmin = "true";
+				isAdmin = "true";*/
 		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
@@ -190,6 +199,7 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		//userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		//constituencies = suggestiveModelService.getConstituenciesForUserAccessByStateId(userAccessConstituencyList,electionTypeId,electionYear);
 		userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+	}
 		return Action.SUCCESS;
 	}
 	

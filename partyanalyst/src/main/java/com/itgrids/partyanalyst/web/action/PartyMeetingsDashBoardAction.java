@@ -126,10 +126,16 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ENTITLEMENT") || 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("PARTY_MEETINGS_ENTITLEMENT")) || (entitlements.contains("PARTY_MEETINGS_ADMIN_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ADMIN_ENTITLEMENT"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -144,7 +150,7 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingsDashBoardAction.
 		{
 			pageAccessType = accessType;
 		}
-		
+	}
 		return Action.SUCCESS;
 		
 	}

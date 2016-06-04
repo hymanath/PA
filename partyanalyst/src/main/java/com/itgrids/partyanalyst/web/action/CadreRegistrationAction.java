@@ -707,12 +707,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			if(user == null)
 				return Action.INPUT;
-			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(entitlements.contains("CADRE_REGISTRATION_2014".trim())){
+					return Action.SUCCESS;
+				}
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
 			{
 				return Action.SUCCESS;
+			}*/
 			}
-			
 		} catch (Exception e) {
 			LOG.error("Exception raised in execute method in CadreRegistrationAction Action",e);
 		}
@@ -875,59 +880,64 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			if(user == null)
 				return Action.INPUT;
-			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
-			{
-				Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
-				Long stateId = 1L;
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(entitlements.contains("CADRE_REGISTRATION_2014".trim())){
+					Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
+					Long stateId = 1L;
+					
+					if(user.getAccessType().equalsIgnoreCase("MLA")){
+						selectOptionVOList =	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
+					}else{
+						selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
+					}
+					
 				
-				if(user.getAccessType().equalsIgnoreCase("MLA")){
-					selectOptionVOList =	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
-				}else{
-					selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
-				}
-				
-			
-	    		
-	    		if(user.getRegistrationID().longValue() != 3930L) // party office userId
-	    		{
-	    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
-		    		Date now = new DateUtilService().getCurrentDateAndTime();
-		    		Date endDate = null;
 		    		
-	    			if(user.getAccessType().trim().equalsIgnoreCase(IConstants.STATE))
+		    		if(user.getRegistrationID().longValue() != 3930L) // party office userId
 		    		{
-		    			endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
-		    		}
-		    		else if(user.getAccessType().trim().equalsIgnoreCase(IConstants.MLA))
-		    		{
-		    			Constituency constituency = constituencyDAO.get(Long.valueOf(user.getAccessValue()));
-		    			if(constituency.getDistrict().getDistrictId() < 11L)
-		    			{
-		    				endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
-		    			}
-		    			else
-		    			{
-		    				endDate = format.parse(IConstants.AP_CADRE_2014_END_DATE);
-		    			}
+		    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
+			    		Date now = new DateUtilService().getCurrentDateAndTime();
+			    		Date endDate = null;
+			    		
+		    			if(user.getAccessType().trim().equalsIgnoreCase(IConstants.STATE))
+			    		{
+			    			endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+			    		}
+			    		else if(user.getAccessType().trim().equalsIgnoreCase(IConstants.MLA))
+			    		{
+			    			Constituency constituency = constituencyDAO.get(Long.valueOf(user.getAccessValue()));
+			    			if(constituency.getDistrict().getDistrictId() < 11L)
+			    			{
+			    				endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+			    			}
+			    			else
+			    			{
+			    				endDate = format.parse(IConstants.AP_CADRE_2014_END_DATE);
+			    			}
+			    			
+			    			DoneTime = new SimpleDateFormat("dd-MM-yyyy").format(endDate);
+			    		}
 		    			
-		    			DoneTime = new SimpleDateFormat("dd-MM-yyyy").format(endDate);
+						Long diffInDates = endDate.getTime() - now.getTime() ;
+					    Long remaingSeconds = diffInDates / 1000; // remaining seconds
+					    
+					    if(remaingSeconds >=0)
+					    {
+					    	countDownTime = remaingSeconds;
+					    }
+					    else
+					    {
+					    	countDownTime = 0L;
+					    }
 		    		}
-	    			
-					Long diffInDates = endDate.getTime() - now.getTime() ;
-				    Long remaingSeconds = diffInDates / 1000; // remaining seconds
-				    
-				    if(remaingSeconds >=0)
-				    {
-				    	countDownTime = remaingSeconds;
-				    }
-				    else
-				    {
-				    	countDownTime = 0L;
-				    }
-	    		}
-	    		
+				}
 			}
+			//if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			//{
+			
+			//}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreSearchPage method in CadreRegistrationAction Action",e);
@@ -946,55 +956,61 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
 				return INPUT;
-			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
-			{
-				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);  
-				genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
-				selectOptionVOList = staticDataService.getAllOccupations();
-				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
-				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
-				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,null);
-							
-				/*if(user.getRegistrationID().longValue() != 3930L) // party office userId
-	    		{
-	    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
-		    		Date now = new DateUtilService().getCurrentDateAndTime();
-		    		Date endDate = null;
-		    		
-	    			if(user.getAccessType().trim().equalsIgnoreCase(IConstants.STATE))
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(entitlements.contains("CADRE_REGISTRATION_2014".trim())){
+					constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);  
+					genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
+					selectOptionVOList = staticDataService.getAllOccupations();
+					eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
+					cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
+					voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId,null);
+								
+					/*if(user.getRegistrationID().longValue() != 3930L) // party office userId
 		    		{
-		    			endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
-		    		}
-		    		else if(user.getAccessType().trim().equalsIgnoreCase(IConstants.MLA))
-		    		{
-		    			Constituency constituency = constituencyDAO.get(Long.valueOf(user.getAccessValue()));
-		    			if(constituency.getDistrict().getDistrictId() < 11L)
-		    			{
-		    				endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
-		    			}
-		    			else
-		    			{
-		    				endDate = format.parse(IConstants.AP_CADRE_2014_END_DATE);
-		    			}	
-		    			DoneTime = new SimpleDateFormat("dd-MM-yyyy").format(endDate);
-		    		}
-	    			
-					Long diffInDates = endDate.getTime() - now.getTime() ;
-				    Long remaingSeconds = diffInDates / 1000; // remaining seconds
-				    
-				    if(remaingSeconds >=0)
-				    {
-				    	countDownTime = remaingSeconds;
-				    }
-				    else
-				    {
-				    	countDownTime = 0L;
-				    }
-	    		}*/
-				
-				return Action.SUCCESS;
+		    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
+			    		Date now = new DateUtilService().getCurrentDateAndTime();
+			    		Date endDate = null;
+			    		
+		    			if(user.getAccessType().trim().equalsIgnoreCase(IConstants.STATE))
+			    		{
+			    			endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+			    		}
+			    		else if(user.getAccessType().trim().equalsIgnoreCase(IConstants.MLA))
+			    		{
+			    			Constituency constituency = constituencyDAO.get(Long.valueOf(user.getAccessValue()));
+			    			if(constituency.getDistrict().getDistrictId() < 11L)
+			    			{
+			    				endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+			    			}
+			    			else
+			    			{
+			    				endDate = format.parse(IConstants.AP_CADRE_2014_END_DATE);
+			    			}	
+			    			DoneTime = new SimpleDateFormat("dd-MM-yyyy").format(endDate);
+			    		}
+		    			
+						Long diffInDates = endDate.getTime() - now.getTime() ;
+					    Long remaingSeconds = diffInDates / 1000; // remaining seconds
+					    
+					    if(remaingSeconds >=0)
+					    {
+					    	countDownTime = remaingSeconds;
+					    }
+					    else
+					    {
+					    	countDownTime = 0L;
+					    }
+		    		}*/
+					
+					return Action.SUCCESS;
+				}
 			}
+			//if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			//{
+			
+			//}
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreRegistrationPage method in CadreRegistrationAction Action",e);
@@ -1226,14 +1242,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			if(user == null)
 				return Action.INPUT;
-			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if((entitlements.contains("CADRE_REGISTRATION_2014".trim()))){
+					genericVOList = cadreRegistrationService.getSurveyCadreUsersList();
+					constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
+					selectOptionVOList = cadreRegistrationService.getSurveyCadreAssignedConstituencyList();
+				}
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
 			{
 				genericVOList = cadreRegistrationService.getSurveyCadreUsersList();
 				constituencyesList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(0l,1l);
 				selectOptionVOList = cadreRegistrationService.getSurveyCadreAssignedConstituencyList();
+			}*/
 			}
-			
 			return Action.SUCCESS;
 			
 		} catch (Exception e) {			
@@ -1672,12 +1695,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					inputStream = new StringBufferInputStream(",notlogged,");
 					return Action.SUCCESS;
 				}
-				
-				if(!entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
+				List<String> entitlements = null;
+				if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+					entitlements = user.getEntitlements();
+					if(!(entitlements.contains("CADRE_REGISTRATIONFOR_OTHERSTATES".trim()))){
+						inputStream = new StringBufferInputStream(",notAccess,");
+						return Action.SUCCESS;
+					}
+				/*if(!entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
 				{
 					inputStream = new StringBufferInputStream(",notAccess,");
 					return Action.SUCCESS;
-				}
+				}*/
 				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
 				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
 					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
@@ -1732,6 +1761,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					  inputStream = new StringBufferInputStream(",regfailed,");
 				  }
 			}
+		}
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetailsForOtherStates method in CadreRegistrationAction Action",e);
 			inputStream = new StringBufferInputStream(",regfailed,");
@@ -1748,9 +1778,45 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		//id5 familyVoterId
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-		if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
-		{
-		    voterType = "voter";
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(!(entitlements.contains("CADRE_REGISTRATIONFOR_OTHERSTATES".trim()))){
+				voterType = "voter";
+				Long candidateId = id4;
+				if(id5 != null && id5.longValue() > 0){
+					voterType = "familyVoter";
+					candidateId = id5;
+				}
+				registeredOrNot ="notRegistered";
+				if(voterType.equalsIgnoreCase("voter")){
+					String status = cadreRegistrationForOtherStatesService.checkVoterAlreadyRegisteredOrNot(candidateId);
+					if(status.equalsIgnoreCase("alreadyRegistered")){
+						registeredOrNot = "registered";
+						return Action.SUCCESS;
+					}
+				}
+				Long stateId = cadreRegistrationForOtherStatesService.getStateByConstituencyId(id1);
+				constituencyesList = cadreRegistrationForOtherStatesService.getAllDistrictsByStateId(stateId);//all districts
+				relativeTypeId = cadreRegistrationForOtherStatesService.getDistrictIdByConstituencyId(id1);//selected constituency districtId
+				if(relativeTypeId != null){
+				 cadreRolesVOList = cadreRegistrationForOtherStatesService.getAllMandalsInADistrict(relativeTypeId);//all mandals in selected district
+				}
+				if(cadreRolesVOList == null){
+					cadreRolesVOList = new ArrayList<SelectOptionVO>();
+				}
+				genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
+				selectOptionVOList = staticDataService.getAllOccupations();
+				voterInfoVOList = cadreRegistrationForOtherStatesService.getCandidateInfoBySearchCriteria(voterType,candidateId,id1);
+			}
+			return Action.SUCCESS;
+		} else{
+			return "error";
+		}
+	}
+		//if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
+		//{
+		   /* voterType = "voter";
 			Long candidateId = id4;
 			if(id5 != null && id5.longValue() > 0){
 				voterType = "familyVoter";
@@ -1776,11 +1842,12 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 			selectOptionVOList = staticDataService.getAllOccupations();
 			voterInfoVOList = cadreRegistrationForOtherStatesService.getCandidateInfoBySearchCriteria(voterType,candidateId,id1);
-			return Action.SUCCESS;
-		}else{
+			return Action.SUCCESS;*/
+		//}
+		/*	else{
 			return "error";
-		}
-	}
+		}*/
+	//}
 	
 	public String saveCommitteCadreDetails()
 	{
@@ -1892,8 +1959,24 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			if(user == null)
 				return Action.INPUT;
-			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if((entitlements.contains("CADRE_REGISTRATIONFOR_OTHERSTATES".trim()))){
+					Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
+					
+					if(user.getAccessType().equalsIgnoreCase("MLA")){
+						selectOptionVOList =	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
+					}else if(user.getAccessType().equalsIgnoreCase("STATE")){
+						selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,Long.valueOf(user.getAccessValue().trim()));
+					}else if(user.getAccessType().equalsIgnoreCase("DISTRICT")){
+						selectOptionVOList = 	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
+					}
+				}else{
+					return "error";
+				}
+			}
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
 			{
 				Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
 				
@@ -1907,7 +1990,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	    		
 			}else{
 				return "error";
-			}
+			}*/
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreSearchPage method in CadreRegistrationAction Action",e);
@@ -1974,12 +2057,17 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			if(user == null)
 				return Action.INPUT;
-			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014") || entitlementsHelper.checkForEntitlementToViewReport(user,"OTHER_STATE_DELEGATE_REG") )
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if((entitlements.contains("CADRE_REGISTRATION_2014".trim()) || entitlements.contains("OTHER_STATE_DELEGATE_REG".trim()))){
+					return Action.SUCCESS;
+				}
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014") || entitlementsHelper.checkForEntitlementToViewReport(user,"OTHER_STATE_DELEGATE_REG") )
 			{
 				return Action.SUCCESS;
+			}*/
 			}
-			
 		} catch (Exception e) {
 			LOG.error("Exception raised in execute method in CadreRegistrationAction Action",e);
 		}
@@ -2000,12 +2088,18 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					inputStream = new StringBufferInputStream(",notlogged,");
 					return Action.SUCCESS;
 				}
-				
-				if(!entitlementsHelper.checkForEntitlementToViewReport(user,"OTHER_STATE_DELEGATE_REG"))
+				List<String> entitlements = null;
+				if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+					entitlements = user.getEntitlements();
+					if(!(entitlements.contains("OTHER_STATE_DELEGATE_REG".trim()))){
+						inputStream = new StringBufferInputStream(",notAccess,");
+						return Action.SUCCESS;
+					}
+				/*if(!entitlementsHelper.checkForEntitlementToViewReport(user,"OTHER_STATE_DELEGATE_REG"))
 				{
 					inputStream = new StringBufferInputStream(",notAccess,");
 					return Action.SUCCESS;
-				}
+				}*/
 				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
 				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
 					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
@@ -2060,6 +2154,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					  inputStream = new StringBufferInputStream(",regfailed,");
 				  }
 			}
+		}
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetailsForOtherStates method in CadreRegistrationAction Action",e);
 			inputStream = new StringBufferInputStream(",regfailed,");

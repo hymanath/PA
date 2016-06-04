@@ -175,13 +175,22 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 	{
 		HttpSession session = request.getSession();
 		session = request.getSession();
-		
-		if(session.getAttribute(IConstants.USER) != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		/*if(session.getAttribute(IConstants.USER) != null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
 			return ERROR;
 		
 		if(session.getAttribute(IConstants.USER) == null && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
-			return ERROR;
-		
+			return ERROR;*/
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS)){
+				return ERROR;
+			}
+			if(!entitlements.contains(IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+				return ERROR;
+			
+		}
 		return Action.SUCCESS;
 		
 	}

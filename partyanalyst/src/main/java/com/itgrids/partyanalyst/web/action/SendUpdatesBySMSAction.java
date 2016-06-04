@@ -240,11 +240,19 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE ))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE ))
-			return ERROR;
+			return ERROR;*/
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.ADMIN_PAGE)){
+	        return INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.ADMIN_PAGE))
+	        return ERROR;
 		userAccessConstituencyList = user.getUserAccessVoterConstituencies();
 		if(userAccessConstituencyList == null || userAccessConstituencyList.isEmpty()){
 		Long userID = user.getRegistrationID();
@@ -255,6 +263,7 @@ public class SendUpdatesBySMSAction  extends ActionSupport implements ServletReq
 		userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		user.setUserAccessVoterConstituencies(userAccessConstituencyList);
 		}
+	    }
 		return SUCCESS;
 	}
 	

@@ -286,11 +286,21 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public String execute() throws JRException {
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_PERFORMANCE_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.PARTY_PERFORMANCE_REPORT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
-			return ERROR;
+			return ERROR;*/
 		
 		LOG.debug("partyPerformance excute started...");
 	
@@ -326,6 +336,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 
 		boolean t = getStaticDataService().hasAlliances(year, electionTypeId, partyId);
 		setHasAllianceParties(t);
+		}
 		return Action.SUCCESS;
 	 
     }
@@ -411,11 +422,21 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	} 
 	public String checkPartyPerformance(){
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_PERFORMANCE_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.PARTY_PERFORMANCE_REPORT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
-			return ERROR;
+			return ERROR;*/
 		
 		String cPath = request.getContextPath();
 		
@@ -447,17 +468,28 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			state="0";
 		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances,reportLevel);
 		hasAllianceParties = reportVO.getReportSuccessOrFailure();
+		}
 		return Action.SUCCESS;
 	}
 	//@JSON (serialize= false )   
 	public String getReport() {
 		
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_PERFORMANCE_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.PARTY_PERFORMANCE_REPORT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_PERFORMANCE_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_PERFORMANCE_REPORT))
-			return ERROR;
+			return ERROR;*/
 		
 		String cPath = request.getContextPath();
 		
@@ -593,7 +625,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			catch(Exception ex){
 				ex.printStackTrace();
 		    }
-		
+		}
 		return Action.SUCCESS;
     }
 	

@@ -138,7 +138,7 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_SEARCH_AND_EDIT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
@@ -148,9 +148,21 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 				isAdmin = "true";
 		
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute("USER"), IConstants.VOTER_DATA_TOOLS))
-		 isVoterDataTools = true;
-			
-		constituencyList = user.getUserAccessVoterConstituencies();
+		 isVoterDataTools = true;*/
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.VOTER_SEARCH_AND_EDIT)){
+	    	  return INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.VOTER_SEARCH_AND_EDIT))
+	    	  return ERROR;
+	      if(entitlements.contains( IConstants.ADMIN_PAGE))
+	    	  isAdmin = "true";
+	      if(entitlements.contains(IConstants.VOTER_DATA_TOOLS))
+	    	  isVoterDataTools = true;
+		
+	    constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
 			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
@@ -160,6 +172,7 @@ public class VotersSearchAndEditAction extends ActionSupport implements ServletR
 			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 			user.setUserAccessVoterConstituencies(constituencyList);
 		}
+	  }
 		return SUCCESS;
 		
 	}

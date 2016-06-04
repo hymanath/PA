@@ -60,15 +60,26 @@ ServletRequestAware{
 	public String execute(){
 		
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+			return "input";
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
 			return "input";
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
-			return "error";
+			return "error";*/
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.ADMIN_PAGE)){
+	    	  return "input";
+	      }
+	      if(!entitlements.contains(IConstants.ADMIN_PAGE))
+	    	  return "error";
 		
 		locations =  casteReportService.getDistricts(1l);
 		
-		
+	    }
 		return Action.SUCCESS;
 	}
 

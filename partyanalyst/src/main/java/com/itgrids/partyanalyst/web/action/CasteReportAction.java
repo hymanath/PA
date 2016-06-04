@@ -230,11 +230,21 @@ public String loadConst()
 	try{
 
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
-			return ERROR;
+			return ERROR;*/
+		List<String> entitlements = null;
+		if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+			entitlements = registrationVO.getEntitlements();
+			if(registrationVO == null && !entitlements.contains(IConstants.ADMIN_PAGE))
+				return INPUT;
+			
+			if(!entitlements.contains(IConstants.ADMIN_PAGE))
+				return ERROR;
+			
 	
 		String[] notIds = null;
 		 if(notConstiIds != null && notConstiIds.trim().length() > 0){
@@ -254,6 +264,7 @@ public String loadConst()
 		
 		
 	}
+ }
 	catch(Exception e)
 	{
 		LOG.error("Exception Occured in loadConst() method",e);
@@ -266,13 +277,23 @@ public String getConstXL()
 	try{
 		
 		HttpSession session = request.getSession();
-		//RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.ADMIN_PAGE)){
+				return IConstants.NOT_LOGGED_IN;
+			}
+			if(!entitlements.contains(IConstants.ADMIN_PAGE))
+				return ERROR;
+			
+		
+/*		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
 			return ERROR;
-		
+		*/
 		try{
 			LOG.info("before   ===="+constValues);
 			 if(request.getParameterMap().containsKey("constValues")){
@@ -318,6 +339,7 @@ public String getConstXL()
 		return Action.SUCCESS;
 		
 	}
+	}
 	catch(Exception e)
 	{
 		LOG.error("Exception Occured in loadConst() method",e);
@@ -350,15 +372,25 @@ public String updatePriority()
 {
 	try{
 		HttpSession session = request.getSession();
-		//RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
-			return ERROR;
-		casteReportService.updatePriority();
+			return ERROR;*/
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.ADMIN_PAGE)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.ADMIN_PAGE))
+				return ERROR;
+			
+			casteReportService.updatePriority();
 		
 	}
+ }
 	catch(Exception e)
 	{
 		LOG.error("Exception Occured in updatePriority() method",e);

@@ -506,7 +506,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("loginStatus", "in");
 			addActionError("Invalid username or password! Please try again!");
 			session.setAttribute("checkedTypeValue", userType);
-			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver") || IConstants.DEPLOYED_TEMP_HOST.equalsIgnoreCase("tdpserver"))
 				return "tdpLogin";
 			else
 				return INPUT;
@@ -517,7 +517,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("loginStatus", "in");
 			addActionError(" You do not have Permission to Access Site From this Network  ");
 			session.setAttribute("checkedTypeValue", userType);
-			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")  || IConstants.DEPLOYED_TEMP_HOST.equalsIgnoreCase("tdpserver") )
 				return "tdpLogin";
 			else
 			return INPUT;
@@ -647,6 +647,7 @@ public String ajaxCallForLoginPopup(){
 		//jObj = new JSONObject(param);
 		//LOG.info(jObj);
 		 resultStatus.setHost(IConstants.DEPLOYED_HOST);
+		// resultStatus.setTempHost(IConstants.DEPLOYED_TEMP_HOST);
 		if(getTask().equalsIgnoreCase("validateUserForLogin"))
 		{
 			userName = getUserName();

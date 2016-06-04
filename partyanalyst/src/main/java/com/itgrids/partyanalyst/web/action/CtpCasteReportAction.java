@@ -185,12 +185,21 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 			return INPUT;
-			if(session.getAttribute(IConstants.USER) == null && 
+			/*if(session.getAttribute(IConstants.USER) == null && 
 			!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CTP_CASTE_REPORT_ENTITLEMENT))
 		return INPUT;
 	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CTP_CASTE_REPORT_ENTITLEMENT))
-		return ERROR;
+		return ERROR;*/
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.CTP_CASTE_REPORT_ENTITLEMENT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.CTP_CASTE_REPORT_ENTITLEMENT))
+				return ERROR;
 		constituencyList = surveyDataDetailsService.getSurveyStartedConstituencyList();
+		}
 		return Action.SUCCESS;
 	}
 	

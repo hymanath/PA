@@ -81,12 +81,20 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 		HttpSession session = request.getSession();
 	    
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.PROFILE_MANAGEMENT_ENTITLEMENT)){
+				return IConstants.NOT_LOGGED_IN;
+			}
+			if(!entitlements.contains(IConstants.PROFILE_MANAGEMENT_ENTITLEMENT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
 			return IConstants.NOT_LOGGED_IN;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
 		
 		candidatesList = candidateDetailsService.getCandidatesOfAUser(user.getRegistrationID());
 		
@@ -98,6 +106,7 @@ public class ProfileManagePageAction extends ActionSupport implements ServletReq
 				SelectOptionVO selectOptionVO = candidateDetailsService.assignAndReturnCandidate(user.getRegistrationID(),candidateId);
 				candidatesList.add(selectOptionVO);
 		}
+	}
 		
 		return SUCCESS;
 	}

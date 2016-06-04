@@ -500,7 +500,10 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	{
 		session = request.getSession();
 		RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-
+		 List<String> entitlements = null;
+			if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+				entitlements = registrationVO.getEntitlements();
+				
 		if (registrationVO != null) 
 		{/*
 			if (!registrationVO.getIsAdmin().equals("true")){
@@ -508,11 +511,17 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 			}
 		*/} 
 		else{			
-			if(registrationVO == null && 
+			if(registrationVO == null && !entitlements.contains(IConstants.VOTER_ANALYSIS)){
+				return Action.INPUT;
+			}
+			if(!entitlements.contains(IConstants.VOTER_ANALYSIS)){
+				return Action.ERROR;
+			}
+			/*if(registrationVO == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
 				return Action.INPUT;
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
-				return Action.ERROR;
+				return Action.ERROR;*/
 		}
 		
 		accessType=registrationVO.getAccessType();
@@ -587,7 +596,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));*/
 
 		voiceSmsHistory = voiceSmsService.getVoiceSmsHistoryForAuser(registrationVO.getRegistrationID(),0,0,true);
-		
+	}
 		return Action.SUCCESS;
 		
 	}

@@ -616,9 +616,15 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 				return "input";
 			}
 			boolean noaccess = false;
-			if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"AFFILIATED_UNION_DASHBOARD_ENTITLEMENT"))){
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(!entitlements.contains("AFFILIATED_UNION_DASHBOARD_ENTITLEMENT")){
+					noaccess = true ;
+				}
+			/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"AFFILIATED_UNION_DASHBOARD_ENTITLEMENT"))){
 				noaccess = true ;
-			}
+			}*/
 			
 			if(user.getIsAdmin() != null && user.getIsAdmin().equalsIgnoreCase("true")){
 				noaccess = false;
@@ -635,7 +641,8 @@ public class RtcUnionAction extends ActionSupport implements ServletRequestAware
 			
 			genericVOList =  cadreRegistrationService.getCadreMemberTypeListByYear();
 			
-		} catch (Exception e) {
+		}
+		}catch (Exception e) {
 			LOG.error("Exception raised in rtcUnionDashBoard method in RtcUnionAction Action",e);
 		}
 		//return Action.ERROR;

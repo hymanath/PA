@@ -104,8 +104,22 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 				userCadresInfoVO.setUserAccessDisplayValue(mandalName);
 			}
 			userCadresInfoVO = cadreManagementService.getUserCadresInfo(userCadresInfoVO);
-			
-			if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_VIEW)) ||
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_VIEW.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_VIEW.trim())))){
+					userCadresInfoVO.setCadreView(false);	
+				}
+				if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_CREATE.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_CREATE.trim())))){
+					userCadresInfoVO.setCadreCreate(false);
+				}
+				if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_UPDATE.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_UPDATE.trim())))){
+					userCadresInfoVO.setCadreUpdate(false);
+				}
+				if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_DELETE.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_DELETE.trim())))){
+					userCadresInfoVO.setCadreDelete(false);
+				}
+			/*if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_VIEW)) ||
 					(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_VIEW))))
 				userCadresInfoVO.setCadreView(false);			
 			
@@ -120,7 +134,7 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 			if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_DELETE)) ||
 					(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_DELETE))))
 				userCadresInfoVO.setCadreDelete(false);
-			
+			*/
 			/*
 			 * User Event VO Mock Data
 			 */
@@ -161,6 +175,7 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 		}
 		
 		session.setAttribute("USERCADRESINFOVO", userCadresInfoVO);
+		}
 		return Action.SUCCESS;
 	}
 	public void setServletContext(ServletContext arg0) {

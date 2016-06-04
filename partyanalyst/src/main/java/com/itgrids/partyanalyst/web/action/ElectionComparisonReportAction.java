@@ -278,13 +278,15 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		HttpSession session = request.getSession();
 		session = request.getSession();
-		
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(session.getAttribute(IConstants.USER) == null)
 			return "showMessage";
-		
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
 		if(session != null)
-			hasECRPage = entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ECR_DETAILED_ANALYSIS);
-				
+			//hasECRPage = entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ECR_DETAILED_ANALYSIS);
+			hasECRPage = (entitlements.contains(IConstants.ECR_DETAILED_ANALYSIS));	
 		if(electionId1==null ||  electionId2==null){
 			List result = staticDataService.getListOfElectionIdsForGivenElectionTypeIdAndListOfElectionYears(electionType,electionYears2,electionYears1,state,IConstants.ELECTION_SUBTYPE_MAIN);
 			if(result.size() == 0)
@@ -382,6 +384,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
            // electionComparisonReportVO.setSeatsWonChart(seatsLineChartName);
             //electionComparisonReportVO.setTotalPercentChart(totalPercentLineChartName);
         }
+	}
 		catch(Exception ex){
 			ex.printStackTrace();
 			

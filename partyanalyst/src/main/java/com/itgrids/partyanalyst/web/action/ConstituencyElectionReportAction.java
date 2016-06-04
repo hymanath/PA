@@ -109,12 +109,21 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 	public String execute() throws Exception
 	{
 		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CONSTITUENCY_RESULTS_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_RESULTS_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.CONSTITUENCY_RESULTS_ENTITLEMENT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.CONSTITUENCY_RESULTS_ENTITLEMENT))
+				return ERROR;
 		
 		if(task != null){
 			try{
@@ -162,6 +171,7 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 				
 			}
 		}
+	}
 		return Action.SUCCESS;	
 	
 	}

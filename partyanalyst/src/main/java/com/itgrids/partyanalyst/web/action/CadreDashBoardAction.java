@@ -218,9 +218,16 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
-			noaccess = true ;
 		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+				noaccess = true ;
+			}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+			noaccess = true ;
+		}*/
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
@@ -232,7 +239,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		if(noaccess){
 			return "error";
 		}
-		
+	}	
 		return Action.SUCCESS;
 	}
 	
@@ -245,14 +252,20 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		if(regVO == null)
 			return Action.INPUT;
 		
-		if(!(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.TDP_CADRE_2014_ADMIN) || entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_MP")))
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains(IConstants.TDP_CADRE_2014_ADMIN) || entitlements.contains("CADRE_2014_MP"))){
+				return Action.ERROR;
+			}
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.TDP_CADRE_2014_ADMIN) || entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_MP")))
 			return Action.ERROR;
-		
+		*/
 		if(regVO.getAccessType()!=null && regVO.getAccessValue()!=null)
 			getState = cadreDashBoardService.getStateBasedOnLocation(regVO.getAccessType(), regVO.getAccessValue());
 		
 			//wsResultVO = cadreDashBoardService.getAllParliamentsForAssembly();
-		
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -262,10 +275,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				boolean noaccess = false;
 				if(regVO==null){
 					return "input";
-				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+				}
+				List<String> entitlements = null;
+				if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+					entitlements = regVO.getEntitlements();
+					if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+						noaccess = true ;
+					}
+				/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 					noaccess = true ;
 					
-				}
+				}*/
 				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 					noaccess = false;
 				}
@@ -277,9 +297,11 @@ public class CadreDashBoardAction implements ServletRequestAware {
 						  
 			  resultList = cadreDashBoardService.getDetailsForConstituency(constituencyId);
 			  
-		  }catch(Exception e){
+		  }
+		}catch(Exception e){
 			  LOG.error("Exception rised in getConstituencyWiseAgeGenderCasteCount ",e);
 		  }
+		  
 			return Action.SUCCESS;
 	}
 	
@@ -301,10 +323,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			boolean noaccess = false;
 			if(regVO==null){
 				return "input";
-			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+			}
+			List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+					noaccess = true ;
+				}
+			/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 				noaccess = true ;
 				
-			}
+			}*/
 			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 				noaccess = false;
 			}
@@ -343,6 +372,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				List<Long> locationIds = getIds(request.getParameter("locationId").trim());
 				result = cadreDashBoardService.getSlowUserDetails(Long.parseLong(request.getParameter("locationType")),locationIds,sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")),Long.parseLong(request.getParameter("targetRecords")));
 			}
+		}
 		}catch(Exception e){
 			LOG.error("Exception rised in getCadreDashBoardBasicInfo ",e);
 	}
@@ -355,10 +385,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			boolean noaccess = false;
 			if(regVO==null){
 				return "input";
-			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+			}
+			List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+					noaccess = true ;
+				}
+			/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 				noaccess = true ;
 				
-			}
+			}*/
 			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 				noaccess = false;
 			}
@@ -370,6 +407,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			info = cadreDashBoardService.getWorkingMembersInfo(request.getParameter("hours"),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue()));
 			//info = cadreDashBoardService.getWorkingMembersDetails(request.getParameter("hours"));
 		}
+	}
 	  }catch(Exception e){
 		  LOG.error("Exception rised in getWorkingMembersInfo ",e);
 	  }
@@ -382,10 +420,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		boolean noaccess = false;
 		if(regVO==null){
 		return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+				noaccess = true ;
+			}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 		noaccess = true ;
 
-		}
+		}*/
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 		noaccess = false;
 		}
@@ -419,6 +464,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}else if(task.equalsIgnoreCase("assemblyNames")){
 		result = cadreDashBoardService.getAssemblyConstituencies(request.getParameter("type"));
 		}
+		}
 		}catch(Exception e){
 		LOG.error("Exception rised in getLocationWiseRegistrationInfo ",e);
 		}
@@ -443,10 +489,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				boolean noaccess = false;
 				if(regVO==null){
 					return "input";
-				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+				}
+				List<String> entitlements = null;
+				if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+					entitlements = regVO.getEntitlements();
+					if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+						noaccess = true ;
+					}
+				/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 					noaccess = true ;
 					
-				}
+				}*/
 				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 					noaccess = false;
 				}
@@ -479,6 +532,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			}else if(task.equalsIgnoreCase("gendDistrictByAccess")){
 				resultList =  cadreDashBoardService.getDistrictWiseGenderCadreCountByAccess(Long.parseLong(request.getParameter("id")),regVO.getAccessType(),regVO.getAccessValue());
 			}
+		}
 		 }catch(Exception e){
 			  LOG.error("Exception rised in getRepInfo ",e);
 		  }
@@ -492,10 +546,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				boolean noaccess = false;
 				if(regVO==null){
 					return "input";
-				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+				}
+				List<String> entitlements = null;
+				if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+					entitlements = regVO.getEntitlements();
+					if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+						noaccess = true ;
+					}
+				/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 					noaccess = true ;
 					
-				}
+				}*/
 				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 					noaccess = false;
 				}
@@ -508,6 +569,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		   if(task.equalsIgnoreCase("CadrecastGroupDist")){
 			   resultList =  cadreDashBoardService.getCastGroupWiseCadreCount(Long.parseLong(request.getParameter("id")),"district");
 			}
+		}
 		 }catch(Exception e){
 			  LOG.error("Exception rised in getRepInfo ",e);
 		  }
@@ -520,10 +582,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				boolean noaccess = false;
 				if(regVO==null){
 					return "input";
-				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+				}
+				List<String> entitlements = null;
+				if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+					entitlements = regVO.getEntitlements();
+					if(!(entitlements.contains("CADREDASHBOARD".trim()))){
+						noaccess = true ;
+					}
+				/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 					noaccess = true ;
 					
-				}
+				}*/
 				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 					noaccess = false;
 				}
@@ -536,6 +605,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		   if(task.equalsIgnoreCase("CadrecastDistrict")){
 				resultList =  cadreDashBoardService.getDistrictWiseCastCadreCount(Long.parseLong(request.getParameter("id")));
 			}
+		}
 		 }catch(Exception e){
 			  LOG.error("Exception rised in getRepInfo ",e);
 		  }
@@ -798,14 +868,22 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TABDEALLOCATIONALTER")){
-			noaccess = true ;
 		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("TABDEALLOCATIONALTER".trim()))){
+				noaccess = true ;
+			}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TABDEALLOCATIONALTER")){
+			noaccess = true ;
+		}*/
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
 		if(noaccess){
 			return "error";
+		}
 		}
 		return Action.SUCCESS;
 	}
@@ -814,14 +892,22 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MAHANADUTABALLOCATION")){
-			noaccess = true ;
 		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("MAHANADUTABALLOCATION".trim()))){
+				noaccess = true ;
+			}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MAHANADUTABALLOCATION")){
+			noaccess = true ;
+		}*/
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
 		if(noaccess){
 			return "error";
+		}
 		}
 		return Action.SUCCESS;
 	}
@@ -873,11 +959,19 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO==null){
 				return "input";
-			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTYCADREDASHBOARD")){
+			}
+			List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!(entitlements.contains("PARTYCADREDASHBOARD".trim()))){
+					return "error";
+				}
+			/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTYCADREDASHBOARD")){
 				return "error";
 			}
-			
+			*/
 			return Action.SUCCESS;
+			}
 		}catch(Exception e){
 			LOG.error("Exception raised in partyDashBoard ",e);
 		}

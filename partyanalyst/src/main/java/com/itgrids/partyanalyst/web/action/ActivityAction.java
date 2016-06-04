@@ -267,10 +267,17 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_ACTIVITY_UPDATE") || 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("PARTY_ACTIVITY_UPDATE") || entitlements.contains("ACTIVITIES_DASHBOARD_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_ACTIVITY_UPDATE") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"ACTIVITIES_DASHBOARD_ENTITLEMENT"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -281,7 +288,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 
 		basicVO = activityService.getActivityTypeList();
 		idNameVOList = activityService.getActivityLevelsList();
-				
+		}		
 		return Action.SUCCESS;
 	}
 	
@@ -717,11 +724,18 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("POLLING_MANAGEMENT_ENTITLEMENT") || entitlements.contains("POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
+				noaccess = true ;
+			}
+		
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
 			noaccess = true ;
 		}
-		
+		*/
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
@@ -731,7 +745,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		Long userId = regVO.getRegistrationID();
 		
 		//idNameVOList = activityService.getAccessValuesOfUserId(userId,"All");
-				
+		}		
 		return Action.SUCCESS;
 	}
 	
@@ -842,10 +856,18 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("POLLING_MANAGEMENT_ENTITLEMENT") || entitlements.contains("POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
+				noaccess = true ;
+			}
+		
+		
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -853,7 +875,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		if(noaccess){
 			return "error";
 		}
-				
+		}		
 		return Action.SUCCESS;
 	}
 	
@@ -864,10 +886,18 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("POLLING_MANAGEMENT_ENTITLEMENT") || entitlements.contains("POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
+				noaccess = true ;
+			}
+		
+		
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"POLLING_MANAGEMENT_ENTITLEMENT_ADMIN"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -878,7 +908,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 		Long userId = regVO.getRegistrationID();
 		
 		//idNameVOList = activityService.getAccessValuesOfUserId(userId,"All");
-				
+		}		
 		return Action.SUCCESS;
 	}
 	public String getActivityQuestionAnswerCountReasonWise(){

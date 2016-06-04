@@ -1002,8 +1002,23 @@ public class ConstituencyPageAction extends ActionSupport implements
 			constituencyDetails.setPostComments(false);
 			return;
 		}
-		
-		if(((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.CONSTITUENCY_ANALYSIS)) ||
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !(entitlements.contains(IConstants.CONSTITUENCY_ANALYSIS) || entitlements.contains(IConstants.CONSTITUENCY_ANALYSIS))){
+				constituencyDetails.setHasAnalize(false);
+			}
+			if(user == null && (entitlements.contains( IConstants.MANDAL_VOTING_TRENDZ) || entitlements.contains( IConstants.MANDAL_VOTING_TRENDZ)))
+				constituencyDetails.setViewCompletePage(true);
+			if(user == null && (entitlements.contains(IConstants.VOTING_TRENDZ) || entitlements.contains( IConstants.VOTING_TRENDZ)))
+				constituencyDetails.setVotingTrendz(true);
+			if(user == null && (entitlements.contains( IConstants.COMMETNS_ANALYZE) || entitlements.contains(IConstants.COMMETNS_ANALYZE)))
+				constituencyDetails.setAnalyzeComments(true);
+			if(user == null && (entitlements.contains(  IConstants.COMMENTS_POST) || entitlements.contains( IConstants.COMMENTS_POST)))
+				constituencyDetails.setPostComments(true);
+			
+		/*if(((regVO != null && !entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.CONSTITUENCY_ANALYSIS)) ||
 			(regVO == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CONSTITUENCY_ANALYSIS))))
 			constituencyDetails.setHasAnalize(false);
 		
@@ -1021,9 +1036,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
 		if((regVO != null && entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)regVO, IConstants.COMMENTS_POST)) ||
 				(regVO == null && entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.COMMENTS_POST)))
-				constituencyDetails.setPostComments(true);
+				constituencyDetails.setPostComments(true);*/
 	}
-	
+}
 	public String getGhmcResults(){
 
 		String param=null;		

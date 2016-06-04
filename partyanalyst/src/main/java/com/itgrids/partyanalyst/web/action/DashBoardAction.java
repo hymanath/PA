@@ -540,6 +540,131 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	{	
 	  try{
 		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(entitlements.contains("BLOOD_BANK_REGISTRATION_ENTITLEMENT".trim())){
+				return "bloodBankRegistration";
+			}
+			else if(entitlements.contains("BLOOD_BANK_REGISTRATION_ENTITLEMENT".trim())){
+				return "bloodBankRegistration";
+			}
+			else if(entitlements.contains("BLOOD_BANK_DASHBOARD_ENTITLEMENT".trim())){
+				return "bloodBankDashboard";
+			}
+			else if(entitlements.contains("BLOOD_BANK_BLEEDING_ENTITLEMENT".trim())){
+				return "bloodBankBleeding";
+			}
+			else if(entitlements.contains("EVENTS_DASHBOARD_ENTITLEMENT".trim())){
+				return "eventDashboard";
+			}
+			
+			else if(entitlements.contains("CADRE_FAMILY_DETAILS_UPDATION".trim())){
+				return "cadreFamilyDetailsUpdation";
+			}		
+			else if(entitlements.contains(IConstants.TDP_CADRE_SEARCH.trim())){
+				return "tdpCadreSearch";
+			}
+			else if(entitlements.contains("MAHANADU".trim())){
+				return "mahanadu";
+			}
+			else if(entitlements.contains("CADREDASHBOARD".trim())){
+				return "cadreDashBoard";
+			}
+			else if(entitlements.contains(IConstants.CASTE_SURVEY_CALL_CENTER.trim())){
+				return "webuser";
+			}
+			else if(entitlements.contains(IConstants.VIZAG_WM.trim())){
+				return "webuser";
+			}
+			else if(entitlements.contains(IConstants.SURVEY_USER_CREATION.trim())){
+				return "surveyUser";
+			}
+			else if(entitlements.contains(IConstants.PARTY_CADRE_SEARCH.trim())){
+				return "partyCadre";
+			}
+			else if(entitlements.contains( IConstants.IVR_MOBILE_NUMBERS_RETRIVAL_REDIRECT.trim()))
+			{
+				return "mobileNumbersRetrivalPage";
+			}
+			else if(entitlements.contains("CADRE_REGISTRATION_2014".trim())){
+				return "cadreRegistration";
+			}
+			else if(entitlements.contains(IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER.trim())){
+				return "cadreMemberShipCardDispatcher";
+			}
+			else if(entitlements.contains(IConstants.GHMC_CADRE_MEGA_DRIVE_USER.trim())){
+				return "ghmcMegaDriveUser";
+			}
+			else if(entitlements.contains("CADRE_2014_CARD_SAMPLE".trim())){
+				return "cadre2014CardSample";
+			}
+			else if(entitlements.contains("TABDEALLOCATIONALTER".trim())){
+				return "tabAllocationDetailsAction";
+			}
+			else if(entitlements.contains("MISREPORT".trim())){
+				return "misReportAction";
+			}
+			else if(entitlements.contains("PARTYCADREDASHBOARD".trim())){
+				return "partyDashBoard";
+			}
+			else if(entitlements.contains("CADREIVRDASHBOARD".trim())){
+				return "cadreIVrDashBoard";
+			}
+			else if(entitlements.contains("CADRE_COMMITTEE_MANAGEMENT".trim())){
+				return "CADRE_COMMITTEE_MANAGEMENT";
+			}
+			else if(entitlements.contains("TDP_COMMITTEE_ADMIN".trim()) || 
+						entitlements.contains("TDP_COMMITTEE_AREAWISE_ACCESS".trim())){
+				return "tdpCommitteeAdmin";
+			}
+			else if(entitlements.contains("TIRUPATHI_BYEELECTION".trim())){
+				return "tirupatiByeElection";
+			}
+			else if(entitlements.contains("TDP_COMMITTEE_AREAWISE_ACCESS".trim())){
+				return "cadreCommitteeDashBoard";
+			}
+			else if(entitlements.contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS".trim())){
+				return "tdpCommitteeStateDistrictAdmin";
+			}
+			else if(entitlements.contains("CADRE_REGISTRATIONFOR_OTHERSTATES".trim())){
+				return "cadreRegistrationForOtherStates";
+			}
+			else if(entitlements.contains("MAHANADUTABALLOCATION".trim())){
+				return "mahanaduTabUsersManageAction";
+			}
+			else if(entitlements.contains("OTHER_STATE_DELEGATE_REG".trim())){
+				return "otherStateTempararyCardsPrinting";
+			}
+			else if(entitlements.contains("COMMITTEE_MGT".trim())){
+				return "committeemgt";
+			}
+			else if(entitlements.contains("TRAINING_CAMP_CALLER_ADMIN".trim())){
+				return "callCenterTrainingAdmin";
+			}	
+			else if(entitlements.contains("TRAINING_CAMP_CALLER".trim())){
+				return "callCenterTrainingAgent";
+			}
+			else if(entitlements.contains("TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT".trim())){
+				return "trainingCampFeedbackUpdate";
+			}
+			else if(entitlements.contains("TRAINING_CAMP_ADMIN".trim())){
+				return "trainingCampAdminPage";
+			}
+			else if(entitlements.contains("ACTIVITY_ENTRY_ENTITLEMENT".trim())){
+				return "activitiesUpdatedPage";
+			}
+			else if(entitlements.contains("POLLING_MANAGEMENT_ENTITLEMENT".trim())){
+				return "pollingManagmentPage";
+			}
+			else if(entitlements.contains("APPOINTMENTS_MANAGE_ENTITLEMENT".trim())){
+				return "appointmentsManagmentPage";
+			}
+		}
+		
+		
+		/*
 		
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"BLOOD_BANK_REGISTRATION_ENTITLEMENT")){
 			return "bloodBankRegistration";
@@ -655,6 +780,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"APPOINTMENTS_MANAGE_ENTITLEMENT")){
 			return "appointmentsManagmentPage";
 		}
+		*/
 		
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
@@ -664,16 +790,16 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 		if(statesListForLocalBodyElection == null || statesListForLocalBodyElection.size() == 0)
 			statesListForLocalBodyElection.add(new SelectOptionVO(0L,"Select State"));
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+	//	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
 		//infoManager = ananymousUserService.checkInfoManagerOrNot(user.getRegistrationID());
 		if(!(Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 		 return "userProfile";
-		districtsList = votersAnalysisService.getDistrictsList(1l);
-		publicationDatesList = votersAnalysisService.getPublicationList();
+		//districtsList = votersAnalysisService.getDistrictsList(1l);
+		//publicationDatesList = votersAnalysisService.getPublicationList();
 		//FOR CHECKING ENTITLEMENTS CONSISTS HOUSEHOLDS SURVEY ENTITLEMENT
-		List<String> entitlements=user.getEntitlements();
+		//List<String> entitlements=user.getEntitlements();
 		hhEntitled = entitlements.contains("HOUSEHOLDS_SURVEY_ENTITLEMENT");
 		
 		
@@ -723,7 +849,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				constituencyIds.add(constituencyId);
 			}
 		}
-		List<Long> mandalIds = new ArrayList<Long>();
+		/*List<Long> mandalIds = new ArrayList<Long>();
 		mandalList = crossVotingEstimationService.getTehsilsForConstituencies(constituencyIds);
 		if(mandalList != null && mandalList.size() > 0)
 		{
@@ -731,10 +857,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				Long mandalId = mandal.getId();
 				mandalIds.add(mandalId);
 			}
-		}
+		}*/
 		//boothsList = crossVotingEstimationService.getBoothsForConstituencyList(constituencyIds);
-		panchayatsList = crossVotingEstimationService.getPanchayatsForConstituencyList(mandalIds);
-		if(assemblyConstis == null){
+		//panchayatsList = crossVotingEstimationService.getPanchayatsForConstituencyList(mandalIds);
+		/*if(assemblyConstis == null){
 			assemblyConstis = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 			if(assemblyConstis != null)
 				assemblyConstis.add(0, initialVo);
@@ -754,8 +880,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			parlConstis = new ArrayList<SelectOptionVO>();
 			parlConstis.add(0, initialVo);
 		}
-		
-		if(assembliesForParl == null){
+		*/
+		/*if(assembliesForParl == null){
 			List<Long> ids = new ArrayList<Long>();
 			for(SelectOptionVO vo:assemblyConstis){
 				ids.add(vo.getId());
@@ -765,11 +891,11 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		    assembliesForParl = (Map<Long,List<SelectOptionVO>>)values[1];
 			session.setAttribute("parliaments",values[0]);
 			parliaments = (List<SelectOptionVO>)values[0];
-		}
-		session.setAttribute("assemblyConstis",assemblyConstis);
-		session.setAttribute("parlConstis",parlConstis);
+		}*/
+		//session.setAttribute("assemblyConstis",assemblyConstis);
+		//session.setAttribute("parlConstis",parlConstis);
 		
-		List<String> years = crossVotingEstimationService.getElectionYearsForBoothResult();
+		/*List<String> years = crossVotingEstimationService.getElectionYearsForBoothResult();
 		electionYearList = new ArrayList<SelectOptionVO>();
 		if(years != null && years.size() > 0)
 		{  
@@ -778,7 +904,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				electionYearList.add(new SelectOptionVO(Long.parseLong(year.trim()), year));
 			
 			
-		}
+		}*/
 		
 		if(user.getAccessType() != null){
 			if("MLA".equalsIgnoreCase(user.getAccessType())){
@@ -794,8 +920,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 					}
 				}
 				
-				/*if(assemblyConstis != null && assemblyConstis.size() >0)
-				constituencyId = assemblyConstis.get(1).getId();*/
+				//if(assemblyConstis != null && assemblyConstis.size() >0)
+				//constituencyId = assemblyConstis.get(1).getId();
 				
 			}else if("MP".equalsIgnoreCase(user.getAccessType())){
 				List<Long> assIds = new ArrayList<Long>();
@@ -811,26 +937,26 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				}
 			}
 			
-			/*
-			if(parlConstis != null && parlConstis.size() >1)
-			constituencyId = parlConstis.get(1).getId();*/
+			
+			//if(parlConstis != null && parlConstis.size() >1)
+			//constituencyId = parlConstis.get(1).getId();
 			if(assemblyConstis != null && assemblyConstis.size() >0){
 				constituencyId = assemblyConstis.get(1).getId();
 				districtId = staticDataService.getdistrictForAConstituency(constituencyId);
 			}
 		}
 		
-		List<Long> assemblyIds = new ArrayList<Long>();
+		/*List<Long> assemblyIds = new ArrayList<Long>();
 		for(SelectOptionVO vo:assemblyConstis)
 			assemblyIds.add(vo.getId());
 		
 		
 		
 		electionYearsList=staticDataService.getElectionYearsByConstituencyIds(assemblyIds);
-		
+		*/
 		//assembliesForParl
 		//parliaments
-		crossVotingVO = new CrossVotingVO();
+		/*crossVotingVO = new CrossVotingVO();
 		try{
 			List<Long> assIds = new ArrayList<Long>();
 			for(SelectOptionVO vo:assemblyConstis){
@@ -848,7 +974,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 
 		}catch(Exception e){
 			LOG.error("Exception is ",e);
-		}
+		}*/
 	  }catch(Exception e){
 		  LOG.error("Exception rised in execute method ",e);
 		  return "userProfile";
@@ -1072,26 +1198,30 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	{
 		try {
 			session = request.getSession();
-			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU")){
-				return "mahanadu";
+			RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IConstants.USER);
+			
+			if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+				List<String> entitlements = registrationVO.getEntitlements();
+				if(entitlements.contains("MAHANADU")){
+					return "mahanadu";
+				}
+				if(entitlements.contains(IConstants.CASTE_SURVEY_CALL_CENTER)){
+					return "webuser";
+				}
+				if(entitlements.contains(IConstants.VIZAG_WM)){
+					return "webuser";
+				}
+				if(entitlements.contains(IConstants.SURVEY_USER_CREATION)){
+					return "surveyUser";
+				}
+				if(entitlements.contains(IConstants.PARTY_CADRE_SEARCH)){
+					return "partyCadre";
+				}
+				if(entitlements.contains( IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
+				{
+					return "mobileNumbersRetrivalPage";
+				}
 			}
-			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.CASTE_SURVEY_CALL_CENTER)){
-				return "webuser";
-			}
-			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.VIZAG_WM)){
-				return "webuser";
-			}
-			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.SURVEY_USER_CREATION)){
-				return "surveyUser";
-			}
-			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.PARTY_CADRE_SEARCH)){
-				return "partyCadre";
-			}
-			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.IVR_MOBILE_NUMBERS_RETRIVAL))
-			{
-				return "mobileNumbersRetrivalPage";
-			}
-		
 		 }catch(Exception e){
 			  LOG.error("Exception rised in execute method ",e);
 			  return "userProfile";

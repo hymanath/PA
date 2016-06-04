@@ -537,19 +537,28 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		 
 		 requestFrom = request.getParameter("from");
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			
-			if(session.getAttribute(IConstants.USER) == null && 
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(user == null && !entitlements.contains(IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
+					notLogged = true;
+					return SUCCESS;
+				}
+				if(!entitlements.contains(IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
+					return ERROR;
+			/*if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
 				notLogged = true;
 				return SUCCESS;
 			}
 			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
-				return ERROR;
+				return ERROR;*/
 		String eventId = request.getParameter("eventId");
 		if(eventId != null && eventId.trim().length() >0){
 			updateEventId = Long.parseLong(eventId.trim());
 		    updateEvent = true;
 		}
+	}
 	 }catch(Exception e){
 		 LOG.error(e);
 	 }

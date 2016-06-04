@@ -266,13 +266,22 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 		if(regVO==null){
 			return ERROR;
 		}
-		if(session.getAttribute(IConstants.USER) == null && 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
+				return ERROR;
+			}
+	/*	if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
 			return INPUT;
 		}
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
 			return ERROR;
-		}
+		}*/
 		windowTask = request.getParameter("windowTask");
 		final String all = "All";
 		final String accessType = regVO.getAccessType();
@@ -356,7 +365,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			session.setAttribute(ISessionConstants.CADRE_SKILLS,cadreSkillsList);
 			
 		}
-	 	
+	}
 	return Action.SUCCESS;
 	}
 	public String getParliamentConstis(){
