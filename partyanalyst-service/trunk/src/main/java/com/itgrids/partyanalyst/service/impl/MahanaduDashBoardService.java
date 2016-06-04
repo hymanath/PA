@@ -1517,51 +1517,56 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				}
 			}else if(inviteeType.equalsIgnoreCase("attendee")){//get details for attended members
 				
+				Date date = null;
+				if(day != null && !day.isEmpty())
+				 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
 				if(roleType.equalsIgnoreCase("PR"))
-				cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);
+				cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId);
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
-					cadreIds =eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);	
+					cadreIds =eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId);	
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
-					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level);
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))	
-					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level);
 				
 					if(cadreIds != null && cadreIds.size() > 0){
-					getCandidateDetailsByCadreIds(cadreIds,resultVOList,new SimpleDateFormat("yyyy-MM-dd").parse(day),eventId,roleType);
+					getCandidateDetailsByCadreIds(cadreIds,resultVOList,date,eventId,roleType);
 				}
 			}else if(inviteeType.equalsIgnoreCase("notAttendee")){//get details for not attended members
 				List<Long> totalCadreIds = null;
 				List<Long> attendedCadreIds =  new ArrayList<Long>(0);
-				
+				Date date = null;
+				if(day != null && !day.isEmpty())
+				 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
 				if(roleType.equalsIgnoreCase("PR"))
 					{
 					
 						 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId);
-						 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);
+						 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId);
 					}
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
 				{
 				
 					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId);	
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId);	
 				}
 				
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
 				{
 				
 					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level);
 				}
 				
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))
 				{
 				
 					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day),designationId,level);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level);
 				}
 				if(totalCadreIds != null && attendedCadreIds != null){
 					totalCadreIds.removeAll(attendedCadreIds);
-					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,new SimpleDateFormat("yyyy-MM-dd").parse(day),eventId,roleType);
+					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,date,eventId,roleType);
 				}
 			}
 		} catch (Exception e) {

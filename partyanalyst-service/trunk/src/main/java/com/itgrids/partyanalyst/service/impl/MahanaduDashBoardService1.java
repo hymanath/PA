@@ -1815,6 +1815,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 //Affliated Committee  Attended.
 				 List<Object[]> affliatedCommitteeDayWiseList = eventInviteeDAO.dayWiseDistrictAffliatedCommitteeInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeroleIds);
 				 setDataForDayWise(designationsMap,affliatedCommitteeDayWiseList,"affliatedCommittee");
+				 // Total Attended
+				 //PR
+				 List<Object[]> totalAttendedCnt = eventInviteeDAO.totalPublicRepInviteesAttendedForEvent(subEventIds,designationIds);
+				 setDataForTotalAttended(designationsMap,totalAttendedCnt,"PR");
+				 //COMMITTEE LEVEL  Attended.
+				 List<Object[]> totalCommitteLevelAttendedCnt = eventInviteeDAO.totalCommitteeLevelInviteesAttendedForEvent(subEventIds,designationIds);
+				 setDataForTotalAttended(designationsMap,totalCommitteLevelAttendedCnt,"CommitteeLevel");
+				//COMMITTEE Role  Attended.
+				 List<Object[]> totalCommitteRoleAttendedCnt = eventInviteeDAO.totalCommitteeRoleInviteesAttendedForEvent(subEventIds,committeeroleIds);
+				 setDataForTotalAttended(designationsMap,totalCommitteRoleAttendedCnt,"CommitteeRole");
+				 
+				//Affliated Committee  Attended.
+				 List<Object[]> totalAffliatedCommitteeAttendedCnt = eventInviteeDAO.totalDistrictAffliatedCommitteeInviteesAttendedForEvent(subEventIds,committeeroleIds);
+				 setDataForTotalAttended(designationsMap,totalAffliatedCommitteeAttendedCnt,"affliatedCommittee");
+				 
 				 
 				  if(designationsMap!= null && designationsMap.size() > 0){
 						 for (Map.Entry<String, MahanaduEventVO> entry : designationsMap.entrySet()) {
@@ -1953,6 +1968,34 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						  designationsMap.entrySet().iterator().next().getValue().getSubMap().get(obj[2].toString()).setTotalDaydataExist(true);
 					 }
 				  }
+			  }
+		  }
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		public void setDataForTotalAttended(Map<String,MahanaduEventVO> designationsMap,List<Object[]> list,String type)
+		{
+			try{
+			if( list != null && list.size() > 0){
+			  String Name ="";
+			  for( Object[] obj : list){
+				  if(type.equalsIgnoreCase("CommitteeLevel"))
+					  Name = obj[1]!= null ? obj[1].toString() +" Committee" :"";
+					  else if(type.equalsIgnoreCase("CommitteeRole"))
+						  Name = obj[1]!= null ? obj[3].toString() + " " +obj[1].toString() :"";  
+						  else if(type.equalsIgnoreCase("affliatedCommittee"))
+							  Name = obj[1]!= null ? obj[3].toString() + " Affliated Committee " +obj[1].toString() :"";
+						 else
+						  Name = obj[1]!= null ? obj[1].toString() :"";
+				  MahanaduEventVO designationVO = designationsMap.get(Name.toString());
+				  if( designationVO != null ){
+					  	  designationVO.setAttended(obj[2]!=null ? (Long)obj[2]:0l);
+					  	  designationVO.setNotAttended( designationVO.getInvitees() - designationVO.getAttended());
+				 }
 			  }
 		  }
 			}
