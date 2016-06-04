@@ -89,11 +89,15 @@
 									<div class="block">
 										<div class="row">
 											<div class="col-md-6" style="border-right: 1px solid rgb(221, 221, 221);">
-												<h2 class="m_top10 text-success">TODAY APPOINTMENTS</h2>
+												<div style="margin-top: 0px; color: #fff; padding: 5px; font-size: 18px; background: rgba(10, 37, 63, 0.5);">
+													<p>TODAY APPOINTMENTS</p>
+												</div>
 												<table class="table table-condensed tableAppointment" style="font-size:20px;" id="todayAppointmentsId">
 													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
-												<h2 class="m_top10 text-success" style="">RESCHEDULED APPOINTMENTS</h2>
+												<div style="margin-top: 20px; color: #fff; padding: 5px; font-size: 18px; background: rgba(10, 37, 63, 0.5);">
+													<p>RESCHEDULED APPOINTMENTS</p>
+												</div>
 												 <div style="">
 												  <center>
 														<img id="reschdldAppntmntsRprtTblIdPrcssingImgId" src="images/icons/loading.gif" style="display:none;width:50px;height:50px">
