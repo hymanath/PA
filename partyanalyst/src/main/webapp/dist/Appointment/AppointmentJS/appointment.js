@@ -5147,15 +5147,15 @@ function buildRescheduledCountRslt(result){
 		str+='<tr>';
 		str+='<td>Total Rescheduled Appointments</td>';
 		if( result.totalRescheduledCount != null && result.totalRescheduledCount > 0){
-			str+='<td class="appntmntsSttsCntCls" title="View Rescheduled Appointments" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result.totalRescheduledCount+'</td>';
+			str+='<td style="width:100px;" class="text-center" ><span class="appntmntsSttsCntCls text-center" title="View Rescheduled Appointments" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result.totalRescheduledCount+'</span></td>';
 		}else{
 			str+='<td> 0 </td>';
 		}
 		str+='</tr>	';
 		str+='<tr>';
-		 str+='<td>Total Rescheduled Candidates</td>';
+		 str+='<td >Total Rescheduled Candidates</td>';
 		if(result.totalReschedCandidateCount != null && result.totalReschedCandidateCount > 0){
-			str+='<td class="appntmntUnqCntCls" title="View Rescheduled Candidates" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result.totalReschedCandidateCount+'</td>';
+			str+='<td  class="text-center"><span class="appntmntUnqCntCls text-center" title="View Rescheduled Candidates" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result.totalReschedCandidateCount+'</span></td>';
 		}else{
 			str+='<td> 0 </td>';
 		}
