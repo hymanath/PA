@@ -6,6 +6,10 @@ import java.io.Serializable;
  * @author Narender
  *
  */
+/**
+ * @author Teja
+ *
+ */
 public class ResultStatus implements Serializable{
 	/**
 	 * 
@@ -19,9 +23,17 @@ public class ResultStatus implements Serializable{
     private String exceptionMsg;
     private String message;
     private String host;
+    private String tempHost;
     private Long resultState;
     
-    public String getHost() {
+    
+    public String getTempHost() {
+		return tempHost;
+	}
+	public void setTempHost(String tempHost) {
+		this.tempHost = tempHost;
+	}
+	public String getHost() {
 		return host;
 	}
 	public void setHost(String host) {
