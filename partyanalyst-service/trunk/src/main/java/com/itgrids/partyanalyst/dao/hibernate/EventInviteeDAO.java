@@ -257,7 +257,8 @@ public List<Object[]> getCommitteeRoleInvitessForEvent(Long eventId,List<Long> c
 		" where     ei.tdpCadreId = TCM.tdpCadreId  " +
 		"           and ei.eventId = :eventId and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId in (:committeeRoleIds) " +
 		"           and ei.tdpCadre.isDeleted = 'N' and ei.tdpCadre.enrollmentYear = 2014 " +
-		" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(5,11)"+
+		" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(5,11)" +
+		" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1"+
 		" group by  TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId,TCM.tdpCommitteeRole.tdpRoles.tdpRolesId");
 		query.setParameter("eventId",eventId);
 		query.setParameterList("committeeRoleIds",committeeRoleIds);
@@ -309,6 +310,7 @@ public List<Object[]> dayWiseCommitteeRoleInviteesAttendedForEvent(Date startDat
 	          "         and ea.event.parentEventId = ei.event.eventId and " +
 			  "        ea.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId and ea.event.isInviteeExist = 'Y' " +
 			  "        and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (5,11)" +
+			  " and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1" +
 			  " and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId in(:designationIds) ");
 	
 	sb.append(" and ea.event.isActive =:isActive and ea.tdpCadre.isDeleted = 'N' and ea.tdpCadre.enrollmentYear = 2014 ");
@@ -399,7 +401,8 @@ public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long comm
 			" from EventInvitee model,TdpCommitteeMember TCM " +
 			"  where model.eventId=:eventId " +
 			" and model.tdpCadreId=TCM.tdpCadreId " +
-			" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId ");
+			" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+			" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1");
 	if(committeeLevel.equalsIgnoreCase("District"))
 		str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
 	if(committeeLevel.equalsIgnoreCase("Mandal"))
