@@ -2901,6 +2901,8 @@ function getPublicrepresentatives(){
 			  str+='<tr>';
 				str+='<td rowspan="2"></td>';
 				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total Invitees</td>';
+				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total Attended</td>';
+				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total NOT Attended</td>';
 				for(var i in result[0].subList){
 					//if(result[0].subList[i].totalDaydataExist == true){
 						if(result[0].subList[i].currentDay == true){
@@ -2931,6 +2933,19 @@ function getPublicrepresentatives(){
 							str+='<td class="text-center text-capitalize" > - </td>';
 						}else{
 							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="total" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].invitees+'</a></td>';
+						}
+						
+						if(result[j].attended == null || result[j].attended ==0){
+							str+='<td class="text-center text-capitalize" > - </td>';
+						}else{
+							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="attendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].attended+'</a></td>';
+						}
+						
+						
+						if(result[j].notAttended == null || result[j].notAttended ==0){
+							str+='<td class="text-center text-capitalize" > - </td>';
+						}else{
+							str+='<td class="text-center text-capitalize" ><a style="cursor:pointer;" attr_inviteeType="notAttendee" attr_desigId="'+result[j].id+'" attr_event="'+parentEventId+'" attr_day="" attr_type="'+result[j].desc+'" attr_level="'+result[j].locationType+'" class="publcRepAttnds">'+result[j].notAttended+'</a></td>';
 						}
 						
 						for(var l in result[j].subList){
