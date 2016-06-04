@@ -152,21 +152,30 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 		partyName = request.getParameter("partyName");
 		electionYear = request.getParameter("electionYear");
 		constituencyName = request.getParameter("constituencyName");
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		 List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(regVO == null && !entitlements.contains(IConstants.PARTY_BOOTHWISE_RESULTS_REPORT)){
+					return INPUT;
+				}
+				if(!(entitlements.contains(IConstants.PARTY_BOOTHWISE_RESULTS_REPORT) || entitlementsHelper.checkForRegionToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_LEVEL, Long.valueOf(constituencyName)))){
+					return ERROR;
+				}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return INPUT;
 		
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT) 
 			|| !entitlementsHelper.checkForRegionToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CONSTITUENCY_LEVEL, Long.valueOf(constituencyName)))
-			return ERROR;
+			return ERROR;*/
 				
 		LOG.info(" values from ajax -------- partyName:"+partyName+" constituencyName:"+constituencyName+" electionYear:"+electionYear);
 		List<PartyBoothPerformanceVO> boothResults = partyBoothWiseResultsService.getBoothWiseResultsForParty(Long.valueOf(partyName), Long.valueOf(constituencyName), electionYear);
 		String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
 		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),true,path);
 		boothResult = partyBoothWiseResultsService.getVotingPercentageWiseBoothResult(boothResults.get(0),false,null);
-		
+	}
 		return SUCCESS;
 	}
 

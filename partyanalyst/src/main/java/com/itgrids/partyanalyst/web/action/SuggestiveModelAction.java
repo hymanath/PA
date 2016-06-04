@@ -444,16 +444,27 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 
 	public String execute(){
 		session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
 			return Action.INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
-			return Action.ERROR;
-		else
-		{
+			return Action.ERROR;*/
+		List<String> entitlements = null;
+	    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+	      entitlements = regVO.getEntitlements();
+	      if(regVO == null &&  !entitlements.contains(IConstants.VOTER_ANALYSIS)){
+	    	  return Action.INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.VOTER_ANALYSIS)){
+	    	  return Action.ERROR;
+	      }
+	    }
+		else {
 			
 			return Action.SUCCESS;
 		}
+		return Action.SUCCESS;
 			
 	}
 	

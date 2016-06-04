@@ -201,14 +201,23 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	{
 		session = request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
-		
-		if(entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.REASONS_POSTING))
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(entitlements.contains( IConstants.REASONS_POSTING)){
+				reasonPostingEntitlement = true;
+			}
+			else {
+				reasonPostingEntitlement = false;
+			}
+		/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO, IConstants.REASONS_POSTING))
 			reasonPostingEntitlement = true;
 		else
-			reasonPostingEntitlement = false;
+			reasonPostingEntitlement = false;*/
 		
-		if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
-			hasDeatiledAnalysis = true;
+		//if(regVO != null && entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))
+		if(regVO != null && entitlements.contains(IConstants.ELECTION_RESULT_REPORT_DETAILED_ANALYSIS))	
+		hasDeatiledAnalysis = true;
 		
 		Long stateId = Long.valueOf(stateID);
 		statesListObj = staticDataService.getAllStatesInCountry();
@@ -235,7 +244,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 				LOG.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
 			}
 		} 
-		
+	}
 		return Action.SUCCESS;
 		
 	}

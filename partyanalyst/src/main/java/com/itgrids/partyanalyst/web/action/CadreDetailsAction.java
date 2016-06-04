@@ -484,14 +484,22 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		
 		try{
 			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(memberShipId != null && memberShipId.trim().length() == 8 && (constituencyId == null || constituencyId.longValue() == 0))
 			{
 				cadreId = cadreDetailsService.getTdpCadreIdBymembershipId(memberShipId.trim());
 			}
-			if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TDP_CADRE_DETAILS")){
-				return "tdpCadreDetails";
-			}
+			List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(entitlements.contains("TDP_CADRE_DETAILS".trim())){
+					return "tdpCadreDetails";
+				}
 			
+			/*if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TDP_CADRE_DETAILS")){
+				return "tdpCadreDetails";
+			}*/
+			}
 		}catch(Exception e){
 			LOG.error("Exception raised in execute  method in CadreDetailsAction.",e);
 		}

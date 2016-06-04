@@ -103,10 +103,18 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 		if(regVO==null){
 			return "input";
 			
-		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT") || entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS"))
+		}
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains(IConstants.TDP_CADRE_SEARCH.trim()) || entitlements.contains("CADRE_COMMITTEE_MANAGEMENT".trim()) || entitlements.contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS".trim()) 
+					&& entitlements.contains("COMMITTEE_MGT".trim()))){
+				noaccess = true ;
+			}
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT") || entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS"))
 				&& !(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"COMMITTEE_MGT"))){
 			noaccess = true ;
-		}
+		}*/
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
@@ -114,7 +122,7 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 		if(noaccess){
 			return "error";
 		}
-		
+	}	
 		return Action.SUCCESS;
 	}
 

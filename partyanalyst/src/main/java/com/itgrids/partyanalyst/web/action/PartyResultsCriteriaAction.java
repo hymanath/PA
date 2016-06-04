@@ -76,14 +76,23 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 		
 		if(session.getAttribute(IConstants.USER) == null || ((RegistrationVO)session.getAttribute(IConstants.USER)).getRegistrationID() == null)
 			return "showMessage";
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_RESULTS_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.PARTY_RESULTS_REPORT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_RESULTS_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_RESULTS_REPORT))
-			return ERROR;
+			return ERROR;*/
 		partyList = staticDataService.getStaticParties();
-		
+		}
 		return SUCCESS;
 		
 	}

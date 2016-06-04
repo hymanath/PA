@@ -132,13 +132,24 @@ public class AssignCandidateToElectionAction extends ActionSupport implements Se
 
 		HttpSession session = request.getSession();
 	
-	if(session.getAttribute(IConstants.USER) == null && 
+		final RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+		List<String> entitlements = null;
+		if(registrationVO.getEntitlements() != null && registrationVO.getEntitlements().size()>0){
+			entitlements = registrationVO.getEntitlements();
+			if(registrationVO == null && !entitlements.contains(IConstants.ASSIGN_A_ELECTION_GOVERNING_BODY.trim())){
+				return IConstants.NOT_LOGGED_IN;
+			}
+			if(!entitlements.contains(IConstants.ASSIGN_A_ELECTION_GOVERNING_BODY.trim())){
+				return ERROR;
+			}
+		
+	/*if(session.getAttribute(IConstants.USER) == null && 
 			!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ASSIGN_A_ELECTION_GOVERNING_BODY))
 		return IConstants.NOT_LOGGED_IN;
 	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ASSIGN_A_ELECTION_GOVERNING_BODY))
-		return ERROR;
+		return ERROR;*/
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(2l);
-		
+		}
 		return SUCCESS;
 		
 	}

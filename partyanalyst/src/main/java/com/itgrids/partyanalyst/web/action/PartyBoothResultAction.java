@@ -87,11 +87,21 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 
 	public String execute()throws Exception{
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_BOOTHWISE_RESULTS_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains( IConstants.PARTY_BOOTHWISE_RESULTS_REPORT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
-			return ERROR;
+			return ERROR;*/
 		electionTypes = new ArrayList<SelectOptionVO>();		
 			
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -145,10 +155,9 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		
 		electionYears = crossVotingEstimationService.getElectionYearsForBoothResult();
 		LOG.info("before success party Booth results action");
+		}
 		return SUCCESS;	
 		
 	}
-	
-	
-	
+
 }

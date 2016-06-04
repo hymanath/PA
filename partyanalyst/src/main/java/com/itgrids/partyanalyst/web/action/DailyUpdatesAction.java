@@ -65,11 +65,21 @@ public class DailyUpdatesAction  extends ActionSupport implements ServletRequest
 
 	public String execute(){
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.ADMIN_PAGE)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.ADMIN_PAGE))
+				return ERROR;
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
-			return ERROR;
+			return ERROR;*/
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -79,7 +89,20 @@ public class DailyUpdatesAction  extends ActionSupport implements ServletRequest
 			if(jObj.getString("task").equalsIgnoreCase("sendupdates")){
 			  DailyUpdatesVO dailyUpdatesVO = new DailyUpdatesVO();
 		      HttpSession session = request.getSession();
-		      if(session.getAttribute(IConstants.USER) == null && 
+		      RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+				List<String> entitlements = null;
+				if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+					entitlements = user.getEntitlements();
+					if(user == null && !entitlements.contains(IConstants.ADMIN_PAGE)){
+						message = "not loggedIn";
+						   return Action.SUCCESS;
+					}
+					if(!entitlements.contains(IConstants.ADMIN_PAGE)){
+						message = "lessPrivileges";
+						   return Action.SUCCESS;	
+					}
+						 
+		     /* if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE)){
 			   message = "not loggedIn";
 			   return Action.SUCCESS;
@@ -87,7 +110,7 @@ public class DailyUpdatesAction  extends ActionSupport implements ServletRequest
 		      if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE)){
 			   message = "lessPrivileges";
 			   return Action.SUCCESS;
-		      }
+		      }*/
 		      boolean isPartySelected = jObj.getBoolean("partySelected");
 		      boolean isCandidateSelected = jObj.getBoolean("candidateSelected");
 		      boolean isSpecialPageSelected = jObj.getBoolean("specialPageSelected");
@@ -149,6 +172,7 @@ public class DailyUpdatesAction  extends ActionSupport implements ServletRequest
 				}
 				return "data";
 			}
+		}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

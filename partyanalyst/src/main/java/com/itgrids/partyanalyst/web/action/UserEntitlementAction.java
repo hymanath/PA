@@ -1,8 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +13,9 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
-import antlr.collections.List;
-
 import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.IUserEntitlementService;
@@ -189,16 +185,30 @@ ServletRequestAware, ServletContextAware{
 	public String execute(){
 		
 		session = request.getSession();
+	//	 HttpSession session = request.getSession();
+		
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				return INPUT;
 		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ENTITLEMENT_PAGE))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ENTITLEMENT_PAGE))
 			return ERROR;*/
+			List<String> entitlements = null;
+		    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+		      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.ENTITLEMENT_PAGE)){
+	        return INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.ENTITLEMENT_PAGE))
+	        return ERROR;
 		
 		allRegisteredUsersData = registrationService.getAllRegisterdUsers();
 		allEntitlements = userEntitlementService.getAllEntitlements();
 		allGroups = userEntitlementService.getAllGroups();
 		allUserGroups = userEntitlementService.getAllUserGroups();
+	    }
 		return Action.SUCCESS;
 	}
 	

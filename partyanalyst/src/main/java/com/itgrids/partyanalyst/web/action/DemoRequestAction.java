@@ -134,14 +134,24 @@ public class DemoRequestAction extends ActionSupport implements ServletRequestAw
 	{
 		HttpSession session = request.getSession();
 		session = request.getSession();
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.ASPIRANT_DEMO_REQUESTS_VIEW)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.ASPIRANT_DEMO_REQUESTS_VIEW))
+				return ERROR;
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ASPIRANT_DEMO_REQUESTS_VIEW))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ASPIRANT_DEMO_REQUESTS_VIEW))
-			return ERROR;
+			return ERROR;*/
+		
 		
 		selectOptionVOList = marketingManagementService.getDemoRequestActionTypes();
+	}
 		return SUCCESS;
 	}
 	

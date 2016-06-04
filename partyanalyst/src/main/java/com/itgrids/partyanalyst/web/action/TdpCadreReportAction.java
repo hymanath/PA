@@ -464,11 +464,18 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		  if(regVO==null)
 			return Action.INPUT;
 
-		  if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_CARD_SAMPLE") || entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_CARD_SAMPLE_GROUP"))
+		  /*if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_CARD_SAMPLE") || entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_CARD_SAMPLE_GROUP"))
 			{
 				return Action.SUCCESS;
-			}
-		  
+			}*/
+		  List<String> entitlements = null;
+		    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+		      entitlements = regVO.getEntitlements();
+		      if(entitlements.contains("CADRE_2014_CARD_SAMPLE")||entitlements.contains("CADRE_2014_CARD_SAMPLE_GROUP")){
+		    	  return Action.SUCCESS;
+		      }
+		     
+		    }  
 		}
 		catch(Exception e)
 		{
@@ -621,9 +628,16 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				boolean noaccess = false;
 				if(regVO==null){
 					return "input";
-				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREIVRDASHBOARD")){
+				}/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREIVRDASHBOARD")){
 					noaccess = true ;
-				}
+				}*/
+				List<String> entitlements = null;
+			    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			      entitlements = regVO.getEntitlements();
+			      if( !entitlements.contains("CADREIVRDASHBOARD")){
+			    	  noaccess = true ;
+			      }
+
 				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 					noaccess = false;
 				}
@@ -640,6 +654,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				selectOptionVO.setName("Select Constituency");
 				constituenciesList.add(0,selectOptionVO);
 			}
+		}
 		}
 		catch(Exception e)
 		{
@@ -1139,9 +1154,16 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				boolean noaccess = false;
 				if(regVO==null){
 					return "input";
-				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREIVRDASHBOARD")){
+				}/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREIVRDASHBOARD")){
 					noaccess = true ;
-				}
+				}*/
+				List<String> entitlements = null;
+			    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			      entitlements = regVO.getEntitlements();
+			      if(!entitlements.contains("CADREIVRDASHBOARD")){
+			    	  noaccess = true ;
+			      }
+
 				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 					noaccess = false;
 				}
@@ -1158,6 +1180,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				selectOptionVO.setName("Select Constituency");
 				constituenciesList.add(0,selectOptionVO);
 			}
+		}
 		}
 		catch(Exception e)
 		{

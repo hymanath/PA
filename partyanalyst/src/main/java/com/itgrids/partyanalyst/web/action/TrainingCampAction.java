@@ -628,10 +628,16 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			}else{
 				return Action.INPUT;
 			}
-			if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN")){
+			/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN")){
 				return Action.SUCCESS;
-			}
+			}*/
+			List<String> entitlements = null;
+		    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+		      entitlements = regVO.getEntitlements();
+			if(entitlements.contains("TRAINING_CAMP_CALLER_ADMIN"))
+				return Action.SUCCESS;
 			
+		}
 		}catch (Exception e) {
 			LOG.error(" Exception occured in callCenterTrainingAdmin method in TrainingCampAction class.",e);
 		}
@@ -645,15 +651,23 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 		}else{
 			return Action.INPUT;
 		}
-		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER") ||
+		/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER") ||
 				entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_CALLER_ADMIN") || 
 				entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
 			return Action.SUCCESS;
-		}
-		else
+		}*/
+		List<String> entitlements = null;
+	    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+	      entitlements = regVO.getEntitlements();
+	      if(entitlements.contains("TRAINING_CAMP_CALLER")||entitlements.contains("TRAINING_CAMP_CALLER_ADMIN")||entitlements.contains("TRAINING_CAMP_SUPER_ADMIN")){
+	    	  return Action.SUCCESS;
+	      }
+	    else
 		{
 			return Action.ERROR;
 		}
+	  }
+	    return Action.SUCCESS;
 		
 	}
 	
@@ -669,10 +683,10 @@ public class TrainingCampAction  extends ActionSupport implements ServletRequest
 			return "input";
 		}
 		boolean noaccess = false;
-		if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ENTITLEMENT") || 
+		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ENTITLEMENT") || 
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTY_MEETINGS_ADMIN_ENTITLEMENT"))){
 			noaccess = true ;
-		}
+		}*/
 		
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -1747,10 +1761,17 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			if(regVO!=null){
 				//Long userId = regVO.getRegistrationID();
 				//if(!regVO.getIsAdmin().equalsIgnoreCase("true")){
-					if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT") ||
+					/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT") ||
 							entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
 						return Action.SUCCESS;
-					}
+					}*/
+				List<String> entitlements = null;
+			    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			      entitlements = regVO.getEntitlements();
+			      if(entitlements.contains("TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")||entitlements.contains("TRAINING_CAMP_SUPER_ADMIN")){
+			    	  return Action.SUCCESS;
+			      }
+
 					else
 					{
 						return Action.ERROR;
@@ -1759,10 +1780,11 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			}else{
 				return Action.INPUT;
 			}
-			
+		}
 		}catch (Exception e) {
 			LOG.error(" Exception occured in trainingCampMainDashboard method in TrainingCampAction class.",e);
 		}
+		
 		return Action.SUCCESS;
 	}
 	public String getProgramsAction(){
@@ -1771,16 +1793,23 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 			
 			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
 			Long userId = regVO.getRegistrationID();
+			List<String> entitlements = null;
 			
 			if(regVO.getIsAdmin().equalsIgnoreCase("true")){//Admin
 				
 				simpleVO=trainingCampService.getAllProgramsAndCamps();
 				
-			}else if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){//entitled user.
+			}/*else if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){//entitled user.
 				
 				simpleVO=trainingCampService.getProgramsByUser(userId);
-			}
-			
+			}*/
+			else if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+		        entitlements = regVO.getEntitlements();
+		        if(entitlements.contains("TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){
+		          return INPUT;
+		        }
+
+			}			
 		}catch(Exception e){
 			LOG.error(" Exception occured in getProgramsAction method in TrainingCampAction class.",e);
 		}
@@ -2129,12 +2158,23 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}else{
 			return Action.INPUT;
 		}
-		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_ADMIN") || 
+		/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_ADMIN") || 
 				entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
 			return Action.SUCCESS;
 		}else
 		return Action.INPUT;
-	}
+	}*/
+		List<String> entitlements = null;
+	    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+	      entitlements = regVO.getEntitlements();
+	      if(entitlements.contains("TRAINING_CAMP_ADMIN")||entitlements.contains("TRAINING_CAMP_SUPER_ADMIN")){
+	    	  return Action.SUCCESS;
+	      }else
+	  		return Action.INPUT;
+	    }
+		return Action.SUCCESS;
+    }
+	      
     public String getAttendedCountForBatchesByLocation()
     {
     	try{
@@ -2184,10 +2224,17 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 		}else{
 			return Action.INPUT;
 		}
-		if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_ADMIN") || 
+		/*if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_ADMIN") || 
 				entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_SUPER_ADMIN") ){
 			return Action.SUCCESS;
-		}
+		}*/
+		List<String> entitlements = null;
+	    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+	      entitlements = regVO.getEntitlements();
+	      if(entitlements.contains("AINING_CAMP_ADMIN")||entitlements.contains("TRAINING_CAMP_SUPER_ADMIN")){
+	    	  return Action.SUCCESS;
+	      }
+	    }
 		return Action.INPUT;
 	}
     

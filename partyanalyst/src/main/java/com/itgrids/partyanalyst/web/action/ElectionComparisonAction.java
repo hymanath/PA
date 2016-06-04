@@ -100,15 +100,26 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	public String execute() throws Exception {
 		
 		session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(session.getAttribute(IConstants.USER) == null)
 			return "showMessage";
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ELECTION_COMPARISION_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ELECTION_COMPARISION_REPORT))
 			return ERROR;
+		*/
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains( IConstants.ELECTION_COMPARISION_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.ELECTION_COMPARISION_REPORT))
+				return ERROR;
 		
 		//partyList = staticDataService.getStaticParties();
+		}
 		return Action.SUCCESS;
 		
 	}

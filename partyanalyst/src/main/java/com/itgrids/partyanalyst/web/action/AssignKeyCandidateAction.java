@@ -120,13 +120,23 @@ public class AssignKeyCandidateAction extends ActionSupport implements ServletRe
 	{
 		HttpSession session = request.getSession();
 	    RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-	
-	if(session.getAttribute(IConstants.USER) == null && 
+	    List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.ASSIGN_KEY_CANDIDATE_ENTITLEMENT.trim())){
+				return IConstants.NOT_LOGGED_IN;
+			}
+			if(!entitlements.contains(IConstants.ASSIGN_KEY_CANDIDATE_ENTITLEMENT.trim())){
+				return ERROR;
+			}
+		
+	/*if(session.getAttribute(IConstants.USER) == null && 
 			!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ASSIGN_KEY_CANDIDATE_ENTITLEMENT))
 		return IConstants.NOT_LOGGED_IN;
 	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ASSIGN_KEY_CANDIDATE_ENTITLEMENT))
 		return ERROR;
-	
+	*/
+		}
 	return SUCCESS;
 	}
 	

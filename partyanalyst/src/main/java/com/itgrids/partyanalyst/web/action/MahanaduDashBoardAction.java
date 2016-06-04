@@ -146,18 +146,26 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		if(regVO==null){
 			return "input";
 		}
-		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU_MAIN_DASHBOARD_ENTITLEMENT") ||
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(entitlements.contains("MAHANADU_MAIN_DASHBOARD_ENTITLEMENT") || entitlements.contains("MAHANADU_MAIN_DASHBOARD_ADMIN_ENTITLEMENT")){
+				return Action.SUCCESS;
+			}
+		/*if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU_MAIN_DASHBOARD_ENTITLEMENT") ||
 				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"MAHANADU_MAIN_DASHBOARD_ADMIN_ENTITLEMENT") ){
 			return Action.SUCCESS;
-		}
+		}*/
 		else if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 	    	 return Action.SUCCESS;
 		}else{
 			return "error";
 		}
-	     
-		
 	}
+	else{
+		return "error";
+	}
+}
 	
 	public String populateLatestInfo(){
 		try{

@@ -1200,13 +1200,21 @@ public class VoiceSmsAction implements ServletRequestAware{
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return Action.INPUT;
-	
-	if(session.getAttribute(IConstants.USER) == null && 
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.INFORMATION_MONITOTING_SYSTEM)){
+				return Action.INPUT;
+			}
+			if(!entitlements.contains(IConstants.INFORMATION_MONITOTING_SYSTEM)){
+				return Action.ERROR;
+			}
+	/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.INFORMATION_MONITOTING_SYSTEM))
 			return Action.INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.INFORMATION_MONITOTING_SYSTEM))
-			return Action.ERROR;
-		
+			return Action.ERROR;*/
+		}
 		return Action.SUCCESS;
 		
 	}

@@ -536,9 +536,16 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			LOG.error(" No User Log In .....");			
 			return "error";
 		}
-		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.PARTY_CADRE_SEARCH)){
+		/*if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.PARTY_CADRE_SEARCH)){
 			return "partyCadre";
-		}
+		}*/
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.PARTY_CADRE_SEARCH)){
+	    	  return "partyCadre";
+	      }
+	     
 		 List<Long> userId = new ArrayList<Long>(0);
 		 
 		 loginUserId = user.getRegistrationID();
@@ -554,8 +561,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	   		if(user !=null)
 	   		{
 	   	 
-			
-	   	 if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+		 if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 			userStatusType = IConstants.PARTY_ANALYST_USER;
 	   	dataTransferVO.setUserStatusType(userStatusType);
 	   	 if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
@@ -571,7 +577,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	        dataTransferVO.setUserStatusType(userStatusType);
 			}
 	   		
-	   	 if(user!=null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.NEWS_MONITORING_ENTITLEMENT)){
+	   	 /*if(user!=null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.NEWS_MONITORING_ENTITLEMENT)){
 	        	hasNewsMonitoring = true;
 	        	//fileVOList = candidateDetailsService.getNewsGalleryByUserIdFromUserGallery(user.getRegistrationID());
 	        }
@@ -585,7 +591,22 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.PROFILE_MANAGEMENT_ENTITLEMENT))
 	    	   hasProfileManagement = true;
 	       if(user != null && entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.ASPIRANT_DEMO_REQUESTS_VIEW))
-	    	   hasDemoRequestView = true;
+	    	   hasDemoRequestView = true;*/
+	   	 if(user != null && !entitlements.contains(IConstants.NEWS_MONITORING_ENTITLEMENT)){
+	   		hasNewsMonitoring = true;
+		      }
+	   	if(user != null && !entitlements.contains(IConstants.ADD_SUBUSER_ENTITLEMENT)){
+	   	  hasSubUserEntitlement = true;
+		      }
+	   	if(user != null && !entitlements.contains(IConstants.CALL_CENTER_ENTITLEMENT)){
+	   	 hasCallCenterEntitlment = true;
+		      }
+		if(user != null && !entitlements.contains(IConstants.PROFILE_MANAGEMENT_ENTITLEMENT)){
+			 hasProfileManagement = true;
+			      }
+		   	if(user != null && !entitlements.contains(IConstants.ASPIRANT_DEMO_REQUESTS_VIEW)){
+		   		hasDemoRequestView = true;;
+			      }
 	       
 			messageTypes = ananymousUserService.getAllMessageTypes();
 			
@@ -596,6 +617,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			cadreManagementVO = userCadreManagementService.getUserData(user);
 			if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 				LOG.error(cadreManagementVO.getExceptionEncountered().getMessage());
+	    }
 		return Action.SUCCESS;
 	  }else{
 
@@ -660,9 +682,10 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 				
 				problemList = problemManagementService.getProblemDetailsByProfileId(profileId,0,10);
 				
-				
-			return "publicprofile";
+	
+	return "publicprofile";
 	  }
+  
 	}
 	
 	public String getRequestMessagesForUser()

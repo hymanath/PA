@@ -371,12 +371,22 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
-		
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PROBLEM_MANAGEMENT_ENTITLEMENT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.PROBLEM_MANAGEMENT_ENTITLEMENT)){
+				return ERROR;
+			}
+	/*	
 		if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PROBLEM_MANAGEMENT_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PROBLEM_MANAGEMENT_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
 		
 		Long userId = user.getRegistrationID();
 		
@@ -505,7 +515,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				problemsGropedByDeptOrCadre = problemManagementReportService.getProblemsInfoBasedOnLocation(locationId, user.getRegistrationID(), 3L,  selectedProblemScope, 0L,groupByCadre,groupByDept);
 			}
 		}
-				
+	}	
 		return SUCCESS;    
 	}	
 	

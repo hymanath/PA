@@ -479,17 +479,26 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.SURVEY_USER_CREATION))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.SURVEY_USER_CREATION))
-			return INPUT;
+			return INPUT;*/
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.SURVEY_USER_CREATION)){
+	        return INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.SURVEY_USER_CREATION))
+	    	  return INPUT;
 		constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 		constituenciesList = 	surveyDataDetailsService.getAllAssemblyConstituenciesByStateId();
 		dataAvilableConstituencies = surveyDataDetailsService.getSurveyStartedConstituencyList();
 		resultVO = surveyDashBoardService.getCompletdConstituenciesDetails();
 		//resultList = surveyDashBoardService.getConstituencyWiseCompletionReport(); 
 		usersList = surveyDataDetailsService.getAllWebMonitoringUsersDetails();
+	    }
 		return Action.SUCCESS;	
 	}
 	public void setServletRequest(HttpServletRequest request) {
@@ -1361,20 +1370,32 @@ public class SurveyDataDetailsAction extends ActionSupport implements ServletReq
 				return Action.INPUT;
 			}
 			Long userId = user.getRegistrationID();
-			if(session.getAttribute(IConstants.USER) == null && 
+			/*if(session.getAttribute(IConstants.USER) == null && 
 					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CASTE_SURVEY_CALL_CENTER) )
 				return INPUT;
 			if(user.getEntitlements() != null )
 			{
 				if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), user.getEntitlements().get(0)))
 					return INPUT;
+			}*/
+			List<String> entitlements = null;
+		    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+		      entitlements = user.getEntitlements();
+		      if(user == null && !entitlements.contains(IConstants.CASTE_SURVEY_CALL_CENTER)){
+		        return INPUT;
+		      }
+		  
+			if(user.getEntitlements() != null )
+			{
+		      if(!entitlements.contains(user.getEntitlements().get(0)))
+		    	  return INPUT;
 			}
 			
 			
 				constituenciesList = 	surveyDataDetailsService.getSurveyStartedConstituencyList();
 				constituencies = surveyDashBoardService.getConstituencyListForThirdPartyReport();
 				usersList = surveyDetailsService.getAssignedSurveyUsersForWebMontringTeam(user.getRegistrationID());
-
+		    }
 		} catch (Exception e) {
 			LOG.error(" exception occured in surveyCallCenterPage() ,ConstituencyDetailsAction Action class",e);
 		}

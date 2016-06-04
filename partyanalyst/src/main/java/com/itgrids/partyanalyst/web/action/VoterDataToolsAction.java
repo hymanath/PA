@@ -122,7 +122,14 @@ public class VoterDataToolsAction extends ActionSupport implements ServletReques
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
 			return ERROR;*/
-		
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.VOTER_SEARCH_AND_EDIT)){
+	        return INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.VOTER_SEARCH_AND_EDIT))
+	        return ERROR;
 		constituencyList = user.getUserAccessVoterConstituencies();
 		if(constituencyList == null || constituencyList.isEmpty()){
 			Long userID = user.getRegistrationID();
@@ -133,6 +140,7 @@ public class VoterDataToolsAction extends ActionSupport implements ServletReques
 			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 			user.setUserAccessVoterConstituencies(constituencyList);
 		}
+	   }
 		return SUCCESS;
   }
   

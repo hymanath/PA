@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -60,11 +61,21 @@ public class GenerateStrategyReportsAction  extends ActionSupport implements Ser
 	}
 	public String execute(){
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		  RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		 List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(user == null && !entitlements.contains(IConstants.ADMIN_PAGE)){
+					return INPUT;
+				}
+				if(!entitlements.contains(IConstants.ADMIN_PAGE))
+					return ERROR;
+			
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
-			return ERROR;
+			return ERROR;*/
 		String[] constituenciesArray = constituencyIds.split(",");
 		for(String consti:constituenciesArray){
 			try{
@@ -75,6 +86,7 @@ public class GenerateStrategyReportsAction  extends ActionSupport implements Ser
 				LOG.error("Exception rised in Auto Strategy Report For Constituency With Id : "+consti+" ",e);
 			}
 		}
+	}
 		return Action.SUCCESS;
 	}
 	

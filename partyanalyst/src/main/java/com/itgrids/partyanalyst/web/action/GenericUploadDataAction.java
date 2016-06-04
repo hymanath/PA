@@ -3,6 +3,8 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -95,14 +97,22 @@ public class GenericUploadDataAction extends ActionSupport implements
 			LOG.debug("Started Executing GenericUpload Process ..");
 		
 		session = request.getSession();
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		 RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		 List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(user == null && !entitlements.contains(IConstants.CADRE_UPLOAD_ENTITLEMENT)){
+					return INPUT;
+				}
+				if(!entitlements.contains(IConstants.CADRE_UPLOAD_ENTITLEMENT))
+					return ERROR;
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_UPLOAD_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_UPLOAD_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
 		
-		
+			}
 		return Action.SUCCESS;
 	}
 

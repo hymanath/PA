@@ -15,6 +15,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -157,13 +158,22 @@ public class CallCenterAction extends ActionSupport implements ServletRequestAwa
 		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-		
-		if(session.getAttribute(IConstants.USER) == null && 
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.CALL_CENTER_ENTITLEMENT)){
+				return IConstants.NOT_LOGGED_IN;
+			}
+			if(!entitlements.contains(IConstants.CALL_CENTER_ENTITLEMENT)){
+				return ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CALL_CENTER_ENTITLEMENT))
 			return IConstants.NOT_LOGGED_IN;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CALL_CENTER_ENTITLEMENT))
 			return ERROR;
-		
+		*/
+		}
 		return SUCCESS;
 	}
 	

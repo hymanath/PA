@@ -340,9 +340,16 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 			boolean noaccess = false;
 			if(regVO==null){
 				return "input";
-			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
-				noaccess = true ;
 			}
+			 List<String> entitlements = null;
+				if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+					entitlements = regVO.getEntitlements();
+					if(!entitlements.contains("MISREPORT")){
+						noaccess = true ;
+					}
+			/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
+				noaccess = true ;
+			}*/
 			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 				noaccess = false;
 			}
@@ -354,6 +361,7 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 			jObj = new JSONObject(getTask());
 			status = leaderCadreDashBoardService.getMISReport(jObj.getString("batchCode"),null,null);
 		}
+	}
 		catch (Exception e) {
 			LOG.error("Entered into getMISReport() in LeaderCadreDashBoardAction class",e);
 		}
@@ -367,9 +375,16 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 			boolean noaccess = false;
 			if(regVO==null){
 				return "input";
-			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
-				noaccess = true ;
 			}
+			 List<String> entitlements = null;
+				if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+					entitlements = regVO.getEntitlements();
+					if(!entitlements.contains("MISREPORT")){
+						noaccess = true ;
+					}
+			/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
+				noaccess = true ;
+			}*/
 			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 				noaccess = false;
 			}
@@ -381,6 +396,7 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 			jObj = new JSONObject(getTask());
 			status = leaderCadreDashBoardService.getMISReport(jObj.getString("batchCode"),jObj.getLong("Id"),jObj.getString("type"));
 		}
+	}
 		catch (Exception e) {
 			LOG.error("Entered into getMISReport() in LeaderCadreDashBoardAction class",e);
 		}
@@ -391,9 +407,16 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
-			noaccess = true ;
 		}
+		 List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!entitlements.contains("MISREPORT")){
+					noaccess = true ;
+				}
+		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
+			noaccess = true ;
+		}*/
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
@@ -401,6 +424,7 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		if(noaccess){
 			return "error";
 		}
+	}
 		return Action.SUCCESS;
 	}
 }

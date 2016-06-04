@@ -132,11 +132,21 @@ public class PartyCadreSearchAction extends ActionSupport implements ServletRequ
 		{
 			return Action.INPUT;
 		}
-		if(session.getAttribute(IConstants.USER) == null && 
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(regVO == null && !entitlements.contains(IConstants.PARTY_CADRE_SEARCH)){
+				return Action.INPUT;
+			}
+			if(!entitlements.contains(IConstants.PARTY_CADRE_SEARCH)){
+				return Action.ERROR;
+			}
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.PARTY_CADRE_SEARCH))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_CADRE_SEARCH))
-			return ERROR;
+			return ERROR;*/
+		}
 		return SUCCESS;
 	}
 

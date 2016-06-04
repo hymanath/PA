@@ -197,11 +197,19 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.USER_GROUPS_ENTITLEMENT))
 			return ERROR;*/
+		List<String> entitlements = null;
+	    if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+	      entitlements = user.getEntitlements();
+	      if(user == null && !entitlements.contains(IConstants.USER_GROUPS_ENTITLEMENT)){
+	        return INPUT;
+	      }
+	      if(!entitlements.contains(IConstants.USER_GROUPS_ENTITLEMENT))
+	        return ERROR;
 		
 		Long userID = user.getRegistrationID();
 		
 		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
-				
+	  }		
 		return SUCCESS;		
 	}
 

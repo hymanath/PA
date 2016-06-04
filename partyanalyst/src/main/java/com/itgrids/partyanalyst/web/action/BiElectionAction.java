@@ -374,12 +374,22 @@ public class BiElectionAction extends ActionSupport implements
 	public String execute(){
 		
 		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+	    List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.BIEELECTION_ENTITLEMENT.trim())){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.BIEELECTION_ENTITLEMENT.trim())){
+				return ERROR;
+			}
 		
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.BIEELECTION_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.BIEELECTION_ENTITLEMENT))
-			return ERROR;
+			return ERROR;*/
 		
 		LOG.debug(" Inside Action ..");
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
@@ -424,6 +434,7 @@ public class BiElectionAction extends ActionSupport implements
 		electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
 		partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport(1l);
 		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+		}
 		return Action.SUCCESS;
 	}
 	

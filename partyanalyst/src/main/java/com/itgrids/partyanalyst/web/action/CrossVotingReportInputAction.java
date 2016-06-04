@@ -182,11 +182,20 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	public String execute(){
 		
 		HttpSession session = request.getSession();
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CROSS_VOTING_REPORT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CROSS_VOTING_REPORT))
-			return ERROR;
+			return ERROR;*/
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.CROSS_VOTING_REPORT)){
+				return INPUT;
+			}
+			if(!entitlements.contains(IConstants.CROSS_VOTING_REPORT))
+				return ERROR;
 		
 		
 		/*
@@ -195,7 +204,7 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		*/
 		
 		//List<String> years = crossVotingEstimationService.getElectionYearsForBoothResult();
-		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+		//RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
 		List<SelectOptionVO> constituencyList = (List<SelectOptionVO>)session.getAttribute("assemblyConstis");
 		
 		if(constituencyList == null){
@@ -241,9 +250,10 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		pConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		aConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		partysList.add(0, new SelectOptionVO(0L,"Select Party"));
+		}
 		return Action.SUCCESS;
-	}
-
+	
+}
 	public String getCrossVotingReportDetails(){
 		try{
 			jObj = new JSONObject(getTask());

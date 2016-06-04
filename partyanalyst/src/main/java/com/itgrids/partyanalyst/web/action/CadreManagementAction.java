@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -152,13 +154,22 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		List<String> entitlements = null;
+		if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+			entitlements = user.getEntitlements();
+			if(user == null && !entitlements.contains(IConstants.CADRE_MANAGEMENT_ENTITLEMENT.trim())){
+				return INPUT;
+			}
+			else if(!entitlements.contains(IConstants.CADRE_MANAGEMENT_ENTITLEMENT)){
+				return ERROR;
+			}
 		
-		if(session.getAttribute(IConstants.USER) == null && 
+		/*if(session.getAttribute(IConstants.USER) == null && 
 				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CADRE_MANAGEMENT_ENTITLEMENT))
 			return ERROR;
-		
+		*/
 		if(dateScope != null && dateScope.equalsIgnoreCase("createDate"))
 			createDate= "true";
 		else
@@ -177,7 +188,19 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 			LOG.error(cadreManagementVO.getExceptionEncountered().getMessage());
 		
-		if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_VIEW)) ||
+		if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_VIEW.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_VIEW.trim())))){
+			cadreView = false;	
+		}
+		else if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_CREATE.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_CREATE.trim())))){
+			cadreCreate = false;
+		}
+		else if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_UPDATE.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_UPDATE.trim())))){
+			cadreCreate = false;
+		}
+		else if(user.getParentUserId() != null && ((user != null && !entitlements.contains(IConstants.CADRE_DELETE.trim())) || (user == null && !entitlements.contains(IConstants.CADRE_DELETE.trim())))){
+			cadreCreate = false;
+		}
+		/*if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_VIEW)) ||
 				(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_VIEW))))
 			cadreView = false;			
 		
@@ -192,7 +215,8 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		if(user.getParentUserId() != null && ((user != null && !entitlementsHelper.checkForEntitlementToViewReport(user, IConstants.CADRE_DELETE)) ||
 				(user == null && !entitlementsHelper.checkForEntitlementToViewReport(null,  IConstants.CADRE_DELETE))))
 			cadreDelete = false;
-		
+		*/
+		}
 		return Action.SUCCESS;
 	}
 	
