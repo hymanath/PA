@@ -1489,7 +1489,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.tdpCadreId " +
 				" from EventAttendee model,TdpCommitteeMember TCM " +
-				"  where model.eventId=:eventId " +
+				"  where model.event.parentEventId=:eventId " +
 				" and model.tdpCadreId=TCM.tdpCadreId " +
 				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and date(model.attendedTime)=:date");
@@ -1508,7 +1508,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.tdpCadreId " +
 				" from EventInvitee model,TdpCommitteeMember TCM " +
-				"  where model.eventId=:eventId " +
+				"  where model.event.parentEventId=:eventId " +
 				" and model.tdpCadreId=TCM.tdpCadreId " +
 				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1" +
