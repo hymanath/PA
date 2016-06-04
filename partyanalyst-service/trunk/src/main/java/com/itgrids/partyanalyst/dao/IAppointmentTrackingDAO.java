@@ -14,6 +14,6 @@ public interface IAppointmentTrackingDAO extends GenericDao<AppointmentTracking,
 	public List<Object[]> getAllRescheduledCommentsAndrescheduledDates(Long apptUserId);
 	public List<Object[]> getCandiWiseRescheduledAppts(Long apptUserId);
 	public List<Object[]> getMeberWiseRescheduledAppts(Long apptUserId);
-	
+	public List<Object[]> getMeberWiseRescheduledAppts(Long apptUserId,List<Long> appointmentCandidateIds);
 	public List<Object[]> overviewSummaryOfRescheduledCandidates(Long apptUserId);
 }

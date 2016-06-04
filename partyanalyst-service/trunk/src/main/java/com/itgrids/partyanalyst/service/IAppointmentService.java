@@ -105,4 +105,5 @@ public interface IAppointmentService {
 	public List<AppointmentScheduleVO> getRescheduledMembersApptDetails(Long apptUserId);
 	
 	public List<AppointmentScheduleVO> overviewSummaryOfRescheduledCandidates(Long apptUserId);
+	public List<AppointmentScheduleVO> getApptRescheduledDetialsByCandidate(Long apptUserId,Long appointmentCandidateId);
 }

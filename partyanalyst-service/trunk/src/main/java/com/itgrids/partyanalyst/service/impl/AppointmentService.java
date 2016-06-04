@@ -7706,7 +7706,7 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 					if (candiVO.getSubMap() != null && candiVO.getSubMap().size() > 0)
 					{
 						
-						AppointmentScheduleVO apptVO = candiVO.getSubMap().get(obj[1]);
+						AppointmentScheduleVO apptVO = candiVO.getSubMap().get((Long)obj[1]);
 						
 						if( apptVO != null)
 						{
@@ -7772,6 +7772,8 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  				List<Long> PrCadreIds = new ArrayList<Long>();
  				Map<Long,Long> designationMap = new HashMap<Long, Long>();
  				
+ 				Set<Long> candidateIds = new HashSet<Long>(0);
+ 				
  				List<Object[]> candiApptsList = appointmentTrackingDAO.overviewSummaryOfRescheduledCandidates(apptUserId);
  				if( candiApptsList != null && candiApptsList.size() > 0){
  					
@@ -7788,6 +7790,8 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 						candiVO.setDesignation(obj[5] != null ? obj[5].toString() : "");
 						candiVO.setRescheduledApptsCount(obj[10]!= null ?(Long)obj[10]:0l);
 						candiVO.setRescheduledCount(obj[11]!= null ?(Long)obj[11]:0l);
+						
+						candidateIds.add(candiVO.getId());
 						
 						//for cand desig and const.
 						Long tdpcadreId =    obj[8] !=null ?(Long)obj[8]:null;
@@ -7832,12 +7836,114 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
  					setPublicRepresenatLocations(finalList,publicRepresLocaMap);
  				}
  				
+ 				//total appts taken by candidates.
+ 				if(candidateIds != null && candidateIds.size() > 0){
+ 					List<Object[]> list = appointmentCandidateRelationDAO.getTotalApptsByCandiates(new ArrayList<Long>(candidateIds),apptUserId);
+ 					if( list != null && list.size() > 0){
+ 						for( Object[] obj : list){
+ 							AppointmentScheduleVO candiVO = finalMap.get((Long)obj[0]);
+ 							if(candiVO != null){
+ 								candiVO.setTotalApptsTaken(obj[1]!=null?(Long)obj[1]:0l);
+ 							}
+ 						}
+ 					}
+ 				}
+ 				
 			}catch(Exception e){
-				LOG.error("Exception raised at overviewSummaryOfRescheduledCandidates in Appointment service", e);
+				LOG.error("Exception raised at overviewSummaryOfRescheduledCandidates in Appointment service",e);
+				e.printStackTrace();
 			}
  			return finalList;
  		}
  		
+ 		/**
+ 		   *   @author    : Sreedhar
+ 		   *   Description:This Service is used to get A Candidate rescheduled appt details. 
+ 		   *   inputs: apptUserId
+ 		   *   output: List<AppointmentScheduleVO>
+ 		   *   
+ 		  */
+ 		public List<AppointmentScheduleVO> getApptRescheduledDetialsByCandidate(Long apptUserId,Long appointmentCandidateId){
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+ 			Map<Long,AppointmentScheduleVO> apptsMap = new LinkedHashMap<Long, AppointmentScheduleVO>(0);
+ 			List<AppointmentScheduleVO> finalList = new ArrayList<AppointmentScheduleVO>(0);
+ 			try{
+ 				
+ 				//Query
+ 				List<Long> appointmentCandidateIds = new ArrayList<Long>();
+ 				appointmentCandidateIds.add(appointmentCandidateId);
+ 				List<Object[]> rescheduledDates = appointmentTrackingDAO.getMeberWiseRescheduledAppts(apptUserId,appointmentCandidateIds);
+ 				
+				if( rescheduledDates != null && rescheduledDates.size() > 0)
+				{
+					
+					for( Object[] obj : rescheduledDates)
+					{
+	 					
+						AppointmentScheduleVO apptVO = apptsMap.get((Long)obj[1]);
+						boolean isApptExist = true;
+						
+						if( apptVO == null)
+						{
+							isApptExist = false;
+							apptVO = new AppointmentScheduleVO();
+							apptVO.setAppointmentId((Long)obj[1]);
+							apptVO.setAppointmentUniqueId(obj[5]!=null?obj[5].toString():"");
+							apptVO.setPresentStatus(obj[6]!=null?obj[6].toString():"");
+						}
+							
+						if(((Long)obj[2]).longValue() == 1l)
+						{
+							AppointmentScheduleVO rescheduledVO = new AppointmentScheduleVO();
+							rescheduledVO.setDate(obj[3]!=null?sdf.format((Date)obj[3]):"");
+							
+							if(rescheduledVO.getSubject() == null)
+							{
+								rescheduledVO.setSubject(obj[4]!=null?obj[4].toString():null);	
+							}else{
+								rescheduledVO.setSubject(obj[4]!=null? rescheduledVO.getSubject()+","+ obj[4].toString():null);
+							}
+							
+							if(apptVO.getSubList() == null || apptVO.getSubList().size() == 0)
+							{
+								apptVO.setSubList(new ArrayList<AppointmentScheduleVO>(0));
+							}
+							apptVO.getSubList().add(rescheduledVO);
+							
+							//appt rescheduled count.
+							apptVO.setRescheduledCount(apptVO.getRescheduledCount().longValue() + 1l);
+							
+						}else{
+							
+							if(apptVO.getSubList() != null && apptVO.getSubList().size() > 0){
+								
+								AppointmentScheduleVO rescheduledVO = apptVO.getSubList().get(apptVO.getSubList().size() - 1);
+								if( rescheduledVO != null){
+									if(rescheduledVO.getSubject() == null)
+									{
+										rescheduledVO.setSubject(obj[4]!=null?obj[4].toString():null);	
+									}else{
+										rescheduledVO.setSubject(obj[4]!=null? rescheduledVO.getSubject()+","+ obj[4].toString():null);
+									}
+								}
+							}
+						}
+						
+						if(!isApptExist){
+							apptsMap.put((Long)obj[1], apptVO);
+						}
+	 				}
+				}
+				//Map iteration
+ 				if( apptsMap != null && apptsMap.size() > 0){
+ 					finalList.addAll(apptsMap.values());
+ 				}
+			}catch(Exception e){
+				LOG.error("Exception raised at getApptRescheduledDetialsByCandidate in Appointment service", e);
+				e.printStackTrace();
+			}
+ 			return finalList;
+ 		}
  		
  }
 

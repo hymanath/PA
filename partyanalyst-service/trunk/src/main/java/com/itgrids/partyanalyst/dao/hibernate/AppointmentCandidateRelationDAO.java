@@ -1135,4 +1135,31 @@ public List<Object[]> getApptAndMembersCountsByStatus(Long apptUserId){
 		}
 		return query.list();
     }
+    
+    public List<Object[]> getTotalApptsByCandiates(List<Long> appointmentCandidateIds,Long appointmentUserId){
+		
+		StringBuilder queryStr=new StringBuilder();
+		
+		queryStr.append(" select ACR.appointmentCandidate.appointmentCandidateId,count(distinct ACR.appointment.appointmentId)" +
+				"  from AppointmentCandidateRelation ACR where  ACR.appointment.isDeleted='N' ");
+		
+		if(appointmentUserId!=null && appointmentUserId>0l){
+			queryStr.append(" and ACR.appointment.appointmentUserId=:appointmentUserId");
+		}
+		if(appointmentCandidateIds!=null && appointmentCandidateIds.size()>0){
+		  queryStr.append(" and ACR.appointmentCandidateId in(:appointmentCandidateIds) ");
+		}
+		
+		queryStr.append(" group by ACR.appointmentCandidate.appointmentCandidateId");
+		
+		Query query=getSession().createQuery(queryStr.toString());
+		
+		if(appointmentUserId!=null && appointmentUserId>0l){
+			query.setParameter("appointmentUserId", appointmentUserId);
+		}
+		if(appointmentCandidateIds!=null && appointmentCandidateIds.size()>0){
+		   query.setParameterList("appointmentCandidateIds", appointmentCandidateIds);	
+		}
+		return query.list();
+	}
 }
