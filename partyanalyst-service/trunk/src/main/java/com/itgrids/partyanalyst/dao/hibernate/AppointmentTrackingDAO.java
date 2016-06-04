@@ -160,4 +160,36 @@ public class AppointmentTrackingDAO extends GenericDaoHibernate<AppointmentTrack
 		    query.setParameter("apptUserId",apptUserId);
 		    return query.list();
 		  }
+		  public List<Object[]> overviewSummaryOfRescheduledCandidates(Long apptUserId){
+			  
+			  StringBuilder sb = new StringBuilder();
+			  
+			  sb.append(" select   distinct  AC.appointment_candidate_id as candiId,AC.name as CandiName,AC.image_url as ImageUrl,AC.mobile_no as mobileNo," +//3
+			  		    "          acd.appointment_candidate_designation_id as candiDesigId,acd.designation as designation, " +//5
+			  		    "          act.appointment_candidate_type_id as acid ,act.candidate_type as actype," +//7
+			  		    "          AC.tdp_cadre_id as tdpcadreId,constituency.name as constname," +//9
+			  		    "          count(distinct A.appointment_id) as apptsCount,count(T.appointment_action_id) as rescheduledCount" +//11
+			  		    
+			  		    " from     appointment_candidate_relation ACR join appointment_candidate AC on ACR.appointment_candidate_id = AC.appointment_candidate_id " +
+			  		    "          left join user_address ua on AC.address_id = ua.user_address_id " +
+			  		    "          left join constituency constituency on ua.constituency_id = constituency.constituency_id" +
+			  		    "          join appointment A on A.appointment_id = ACR.appointment_id  " +
+			  		    "          join appointment_status AST on AST.appointment_status_id = A.appointment_status_id" +
+			  		    "          left join appointment_candidate_designation acd on AC.designation_id = acd.appointment_candidate_designation_id " +
+			  		    "          left join appointment_candidate_type act on AC.appointment_candidate_type_id = act.appointment_candidate_type_id " +
+			  		    "          join appointment_tracking T on A.appointment_id = T.appointment_id" +
+			  		    
+			  		    " where     A.is_deleted='N'  and T.appointment_status_id = :appointmentStatusId and  T.from_appointment_status_id <> :appointmentStatusId  and A.appointment_user_id = :apptUserId " +
+			  		    " group by  AC.appointment_candidate_id " +
+			  		    " order by  AC.appointment_candidate_id ");
+			  
+			  Query query = getSession().createSQLQuery(sb.toString())
+					  .addScalar("candiId",Hibernate.LONG).addScalar("CandiName",Hibernate.STRING).addScalar("ImageUrl",Hibernate.STRING).addScalar("mobileNo",Hibernate.STRING)
+			          .addScalar("candiDesigId",Hibernate.LONG).addScalar("designation",Hibernate.STRING).addScalar("acid",Hibernate.LONG).addScalar("actype",Hibernate.STRING)
+			          .addScalar("tdpcadreId",Hibernate.LONG).addScalar("constname",Hibernate.STRING).addScalar("apptsCount",Hibernate.LONG).addScalar("rescheduledCount",Hibernate.LONG);
+			  
+			  query.setParameter("appointmentStatusId",IConstants.APPOINTMENT_STATUS_RESCHEDULED);
+			  query.setParameter("apptUserId",apptUserId); 
+			  return query.list();
+		  }
 }

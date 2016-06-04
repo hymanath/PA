@@ -103,4 +103,6 @@ public interface IAppointmentService {
 	public AppointmentScheduleVO getRescheduledAppsCounts(Long appUserId);
 	public List<AppointmentScheduleVO> getRescheduledAppointmentsDetails(Long apptUserId);
 	public List<AppointmentScheduleVO> getRescheduledMembersApptDetails(Long apptUserId);
+	
+	public List<AppointmentScheduleVO> overviewSummaryOfRescheduledCandidates(Long apptUserId);
 }

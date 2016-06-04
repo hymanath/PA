@@ -56,6 +56,9 @@ private String presentStatus;
 
 private List<AppointmentScheduleVO> subList = new ArrayList<AppointmentScheduleVO>();
 
+private Long rescheduledCount=0l;
+private Long rescheduledApptsCount=0l;
+
 public String getAddressConstituency() {
 	return addressConstituency;
 }
@@ -315,6 +318,18 @@ public String getPresentStatus() {
 }
 public void setPresentStatus(String presentStatus) {
 	this.presentStatus = presentStatus;
+}
+public Long getRescheduledCount() {
+	return rescheduledCount;
+}
+public void setRescheduledCount(Long rescheduledCount) {
+	this.rescheduledCount = rescheduledCount;
+}
+public Long getRescheduledApptsCount() {
+	return rescheduledApptsCount;
+}
+public void setRescheduledApptsCount(Long rescheduledApptsCount) {
+	this.rescheduledApptsCount = rescheduledApptsCount;
 }
 
 }
