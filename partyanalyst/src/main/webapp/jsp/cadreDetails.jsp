@@ -166,10 +166,10 @@ var globalCadreId = '${cadreId}';
 						<h4 class="panel-title pointer" id="identityHeaderId">
 							<i class="icon-articles"></i> IDENTITY 
 							<span class="pull-right" id="identityHideId" style="display:none;">
-								<i class="glyphicon glyphicon-minus"></i>
+								<i class="glyphicon glyphicon-chevron-up"></i>
 							</span>
 							<span class="pull-right" id="identityShowId">
-								<i class="glyphicon glyphicon-plus"></i>
+								<i class="glyphicon glyphicon-chevron-down"></i>
 							</span>
 						</h4>
 					</div>
@@ -185,10 +185,10 @@ var globalCadreId = '${cadreId}';
 						<h4 class="panel-title pointer " id="addressHeaderId">
 							<i class="glyphicon glyphicon-map-marker"></i> ADDRESS
 							<span class="pull-right" id="addressHideId" style="display:none;">
-								<i class="glyphicon glyphicon-minus"></i>
+								<i class="glyphicon glyphicon-chevron-up"></i>
 							</span>
 							<span class="pull-right" id="addressShowId">
-								<i class="glyphicon glyphicon-plus"></i>
+								<i class="glyphicon glyphicon-chevron-down"></i>
 							</span>
 						</h4>
 					</div>
@@ -203,8 +203,8 @@ var globalCadreId = '${cadreId}';
 				</div>
 				<div class="panel panel-default" id="participatedDivId" style="display:none">
                 	<div class="panel-heading" id="participatedConstHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY <span class="pull-right" id="participatedConstHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="participatedConstShowId"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-file"></i> PARTICIPATED CONSTITUENCY <span class="pull-right" id="participatedConstHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="participatedConstShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
 					<div class="panel-body" id="participatedConstBodyId">
                     	<h5 class="m_0">Location : <span id="participatedConstId" class="text-bold"></span></h5>
@@ -212,8 +212,8 @@ var globalCadreId = '${cadreId}';
                 </div>
 				<div class="panel panel-default" id="candidateapptID" style="display:none">
 					<div class="panel-heading" id="candidateAppointmentId">
-                    	<h4 class="panel-title text-bold pointer"><i class="fa fa-calendar-plus-o"></i> CANDIDATE APPOINTMENT <span class="pull-right" id="candidateAppointmentHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="candidateAppointmentShowId"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold pointer"><i class="fa fa-calendar-plus-o"></i> CANDIDATE APPOINTMENT <span class="pull-right" id="candidateAppointmentHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="candidateAppointmentShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						<span class="pull-right"><span class="count-style" id="totalAptId">0</span></span>
 						</h4>
 					</div>
@@ -253,8 +253,8 @@ var globalCadreId = '${cadreId}';
 				<div class="panel-heading" id="cadreBenefitsHeadingId">
 					<h4 class="panel-title text-bold pointer">
 						<img src="images/User_icon_BLACK-01.png"> 
-						CANDIDATE BENEFITS <span class="pull-right" id="cadreBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="cadreBenefitsShowId"><i class="glyphicon glyphicon-plus"></i></span>
+						CANDIDATE BENEFITS <span class="pull-right" id="cadreBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="cadreBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						<span class="pull-right"><span class="count-style" id="candidateBenifitsCountsId">0</span></span>
 					</h4>
 				</div>
@@ -290,7 +290,7 @@ var globalCadreId = '${cadreId}';
 				<div class="panel panel-default">
 					<div class="panel-heading" id="familyMemberHeadingId">
 						<h4 class="panel-title text-bold pointer">
-							<img src="dist/img/family-icon.png">&nbsp;FAMILY MEMBERS<span class="pull-right" id="familyMemberHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span><span class="pull-right" id="familyMemberShowId"><i class="glyphicon glyphicon-plus"></i></span>
+							<img src="dist/img/family-icon.png">&nbsp;FAMILY MEMBERS<span class="pull-right" id="familyMemberHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="familyMemberShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 							<span class="pull-right"><span class="count-style" id="totalFamilymembersCount">0</span></span>
 						</h4>
 					</div>
@@ -301,7 +301,7 @@ var globalCadreId = '${cadreId}';
 				</div>
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="familyGrievanceDtlsHeaderId">
-					  <h4 class="panel-title text-bold pointer"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS<span class="pull-right" id="fmlyGrvncDtlsSpanId"><i class="glyphicon glyphicon-plus" ></i></span>
+					  <h4 class="panel-title text-bold pointer"><img src="images/family_icon.png"> FAMILY GRIEVANCE DETAILS<span class="pull-right" id="fmlyGrvncDtlsSpanId"><i class="glyphicon glyphicon-chevron-down" ></i></span>
 						 <span class="pull-right"><span class="count-style" id="totalFamilyComplaints">0</span></span>
 						</h4>
 					</div>
@@ -322,8 +322,8 @@ var globalCadreId = '${cadreId}';
 				<div class="panel-heading" id="familyBenefitsHeadingId">
 					<h4 class="panel-title text-bold pointer">
 					<img src="images/family_icon.png">
-						FAMILY BENEFITS<span class="pull-right" id="familyBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="familyBenefitsShowId"><i class="glyphicon glyphicon-plus"></i></span>
+						FAMILY BENEFITS<span class="pull-right" id="familyBenefitsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="familyBenefitsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						<span class="pull-right"><span class="count-style" id="familyBenifitsCountsId">0</span></span>
 					</h4>
 				</div>
@@ -371,8 +371,8 @@ var globalCadreId = '${cadreId}';
 				
 				<!--<div class="panel panel-default">
                 	<div class="panel-heading" id="deathHospitalDivHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> DEATHS AND HOSPITALIZATION <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
 					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -383,7 +383,7 @@ var globalCadreId = '${cadreId}';
 				
 				<!--<div class="panel panel-default">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-minus" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<!--<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -394,8 +394,8 @@ var globalCadreId = '${cadreId}';
                 </div>-->
 				<!--<div class="panel panel-default">
                 	<div class="panel-heading" id="grievanceStatusDivId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> GRIEVANCE STATUS DETAILS <span class="pull-right" id="grievanceStatusHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="grievanceStatusShowId"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> GRIEVANCE STATUS DETAILS <span class="pull-right" id="grievanceStatusHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="grievanceStatusShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
@@ -405,8 +405,8 @@ var globalCadreId = '${cadreId}';
 				</div>-->
 				<!--<div class="panel panel-default">
                 	<div class="panel-heading" id="StatusCountsDivId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> GRIEVANCE STATUS COUNTS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-flash"></i> GRIEVANCE STATUS COUNTS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
 					<center><img id="dataLoadingsImgForStatusCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -418,7 +418,7 @@ var globalCadreId = '${cadreId}';
             <div class="col-md-8">
             	<div class="panel panel-default">
                 	<div class="panel-heading" id="cadrMmbrBthHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE <span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-minus"></i></span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-sort-by-attributes" style="transform: rotate(270deg);"></i>&nbsp;&nbsp;&nbsp;CADRE MEMBER BOOTH PERFORMANCE <span class="pull-right" id="cadrMmbrBthShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadrMmbrBthHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadrMmbrBthBodyId">
                     	<div class="panel-group electionPerformanceDiv" id="accordion" role="tablist" aria-multiselectable="true">
@@ -428,7 +428,7 @@ var globalCadreId = '${cadreId}';
                 </div>
                 <div class="panel panel-default">
                 	<div class="panel-heading" id="cadreEnrolmentStatsHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS <span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-minus"></i></span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;2014 CADRE ENROLMENT STATS <span class="pull-right" id="cadreEnrolmentStatsShowId"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreEnrolmentStatsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadreEnrolmentStatsBodyId" style="padding:0px 15px;">
                     	<div class="row table-responsive" id="memberShipCountDiv"><!--id="memberShipCountDiv"-->
@@ -437,7 +437,7 @@ var globalCadreId = '${cadreId}';
 				</div>
 					<!--<div class="panel panel-default">
 					<div class="panel-heading" id="ivrSummaryHeaderId">
-                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY<span class="pull-right" id="ivrSummaryHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span><span class="pull-right" id="ivrSummaryShowId"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold" style="cursor:pointer;"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;IVR SUMMARY<span class="pull-right" id="ivrSummaryHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="ivrSummaryShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>		
 					<div class="panel-body" id="ivrSummaryBodyId">
 						<div id="ivrTypeDetailsDivId"></div>
@@ -446,7 +446,7 @@ var globalCadreId = '${cadreId}';
 				<!-- IVR SUMMARY  END ----> 
                 <div class="panel panel-default">
                 	<div class="panel-heading" id="cadreActivitiesHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES <span class="pull-right" id="cadreActivitiesHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span><span class="pull-right" id="cadreActivitiesShowId"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-record"></i>&nbsp;&nbsp;&nbsp;&nbsp;CADRE PARTICIPATION ACTIVITIES <span class="pull-right" id="cadreActivitiesHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreActivitiesShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadreActivitiesBodyId">
                     	<div class="row">
@@ -549,7 +549,7 @@ var globalCadreId = '${cadreId}';
 				
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading" id="cadreElectionProfileHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE <span class="pull-right" id="cadreElectionProfileShowId"  style="display:none;"><i class="glyphicon glyphicon-minus"></i></span><span class="pull-right" id="cadreElectionProfileHideId"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE <span class="pull-right" id="cadreElectionProfileShowId"  style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreElectionProfileHideId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadreElectionProfileBodyId">
                     	<div class="cadre-election" >
@@ -570,7 +570,7 @@ var globalCadreId = '${cadreId}';
 								<div class="input-group pull-right">
 									<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i>	</span>
 									<input type="text" class="form-control" id="meetingDatePicker" style="width: 170px; padding-left: 0px; padding-right: 0px;">
-									<span class="pull-right" id="committeeMetingsShowId" style="display:none;"><i style="padding-top: 9px;" class="glyphicon glyphicon-minus pointer"></i></span><span class="pull-right" id="committeeMetingsHideId"><i class="glyphicon glyphicon-plus pointer" style="padding-top: 9px;"></i></span>
+									<span class="pull-right" id="committeeMetingsShowId" style="display:none;"><i style="padding-top: 9px;" class="glyphicon glyphicon-chevron-up pointer"></i></span><span class="pull-right" id="committeeMetingsHideId"><i class="glyphicon glyphicon-chevron-down pointer" style="padding-top: 9px;"></i></span>
 								</div>
 							</div>
 						</div>
@@ -588,8 +588,8 @@ var globalCadreId = '${cadreId}';
 				 
 				 <div class="panel panel-default">
                 	<div class="panel-heading" id="deathHospitalDivHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="fa fa fa-hospital-o"></i> DEATHS AND HOSPITALIZATION INSURANCE DETAILS <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold pointer"><i class="fa fa fa-hospital-o"></i> DEATHS AND HOSPITALIZATION INSURANCE DETAILS <span class="pull-right" id="deathHospitalDivHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="deathHospitalDivShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
 					<center><img id="dataLoadingsImgForDeathCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -600,8 +600,8 @@ var globalCadreId = '${cadreId}';
 				
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="StatusCountsDivId">
-                    	<h4 class="panel-title text-bold pointer"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE REQUESTS STATUS DETAILS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-minus"></i></span>
-						<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold pointer"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE REQUESTS STATUS DETAILS <span class="pull-right" id="statusCountsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span>
+						<span class="pull-right" id="statusCountsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						</h4>
                     </div>
 					<center><img id="dataLoadingsImgForStatusCount" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -610,7 +610,7 @@ var globalCadreId = '${cadreId}';
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading" id="grievencyBenefitHeaderId">
-						<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE BENIFIT REQUESTS <span class="pull-right" id="grievencyBenefitHideId" style="display:none;"><i class="glyphicon glyphicon-minus"  ></i></span><span class="pull-right" id="grievencyBenefitShowId"><i class="glyphicon glyphicon-plus"></i></span></h4>
+						<h4 class="panel-title text-bold" style="cursor:pointer;"><!--<i class="glyphicon glyphicon-flash"></i>--><img src="images/family_icon.png"> GRIEVANCE BENIFIT REQUESTS <span class="pull-right" id="grievencyBenefitHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up"  ></i></span><span class="pull-right" id="grievencyBenefitShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
 					</div>
 					<div class="panel-body" id="grievencyBenefitBodyId">
 						<center><img id="dataLoadingsImgForGrievanceRequests" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -620,7 +620,7 @@ var globalCadreId = '${cadreId}';
 				
 				<div class="panel panel-default">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-minus" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-plus"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
@@ -633,12 +633,12 @@ var globalCadreId = '${cadreId}';
                 <div class="panel panel-default">
                 	<div class="panel-heading">
 					<a id="" class="showbtnCls" title="Click here to Show Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
-                    	<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS<span class="pull-right"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
 						 <i class="pull-right glyphicon glyphicon-triangle-top "></i>							
 						</h4>
 						</a>
 						<a id="" class="newsMainDivId" style="display:none;" title="Click here to Hide Committee Details" href="javascript:{newsHideAndShow('newsMainDivId');}">
-						<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS<span class="pull-right"><i class="glyphicon glyphicon-minus"></i></span>
+						<h4 class="panel-title text-bold" style=""><i class="glyphicon glyphicon-list-alt"></i>&nbsp;&nbsp;&nbsp;NEWS<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span>
 							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
 						</h4>
 						</a>
@@ -726,13 +726,13 @@ var globalCadreId = '${cadreId}';
                 	<div class="panel-heading">
 					<a href="javascript:{hideAndShowCommittee(1);}" title="Click here to Show Committee Details" id="showId">
                     	<h4 class="panel-title text-bold">
-                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-plus"></i></span> 
+                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span> 
 							 <i class="pull-right glyphicon glyphicon-triangle-top "></i>							
                         </h4>
 						</a>
 						<a href="javascript:{hideAndShowCommittee(2);}" title="Click here to Hide Committee Details" style="display:none;" id="hideId">
 							<h4 class="panel-title text-bold">
-                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-minus"></i></span> 
+                        	<i class="glyphicon glyphicon-briefcase"></i>&nbsp;&nbsp;&nbsp;COMMITTEES<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span> 
 							 
 							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
                         </h4>
@@ -772,12 +772,12 @@ var globalCadreId = '${cadreId}';
             	<div class="panel panel-default">
                 	<div class="panel-heading">
 					<a href="javascript:{hideAndShowSurvey(1);}" title="Click here to Show Committee Details" id="surveyshowId"> 
-                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS<span class="pull-right"><i class="glyphicon glyphicon-plus"></i></span>
+                    	<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
 							<i class="pull-right glyphicon glyphicon-triangle-top "></i>
 						</h4>
 						</a>
 							<a href="javascript:{hideAndShowSurvey(2);}" title="Click here to Hide Committee Details" style="display:none;" id="surveyhideId">
-						<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS<span class="pull-right"><i class="glyphicon glyphicon-minus"></i></span>
+						<h4 class="panel-title text-bold"><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;&nbsp;SURVEY DETAILS<span class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></span>
 							 <i class="pull-right glyphicon glyphicon-triangle-bottom "></i>
 						</h4>
 						</a>
