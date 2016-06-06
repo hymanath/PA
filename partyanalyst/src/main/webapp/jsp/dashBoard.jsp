@@ -413,8 +413,7 @@ lable{line-height:40px;}
 			<tbody>
 				<tr>
 					<td>
-						<s:select cssClass="selectBoxWidth" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','')"/>
-					</td>
+							</td>
 				</tr>
 
 			</tbody>
@@ -423,8 +422,7 @@ lable{line-height:40px;}
 		<table id="constTable" style="display:block;">
 			<tr>
 				<td>
-					<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/>
-				</td>
+					</td>
 			</tr>
 		</table>
 
@@ -658,8 +656,7 @@ lable{line-height:40px;}
 			</div>
 			<div class="form-inline m-top10">
 		<div id="stateTable" style="display:block;" class="row">
-						<!--<s:select cssClass="input-block-level" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','')"/></div>-->
-						<div class="span5">
+							<div class="span5">
 							<select style="width:270px;margin-left:20px;" theme="simple" class="span5" label="Select Your State" name="state" id="stateList_c" onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','');">
 								<option value="1">Andhra Pradesh</option>
 								<option value="12">Karnataka</option>
@@ -851,12 +848,10 @@ lable{line-height:40px;}
 				  <div class="row-fluid">
 					<div class="span2">
 						<label>Election year </label>					
-						<s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" onClick="getParlmentsList();" headerValue="Select Year" headerKey="0"></s:select> 
-					</div>
+						</div>
 					<div class="span2">
 						<label>Parliment Constituency </label>					
-						<s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"></s:select>
-					</div>
+						</div>
 					
 				  </div>
 				</fieldset>----->
@@ -865,15 +860,14 @@ lable{line-height:40px;}
 				   <table>
 				     <tr>
 				        <td><s:label theme="simple" for="electionYearField" value="Election year"/></td>
-						<td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="crossVotingYear" list="crossVotingVO.yearsList" listKey="id" listValue="name" onChange="getParlmentsList();"/></td>
-				        <td><s:label theme="simple" for="pConstituencyList" value="Parliament Constituency"/></td>
-						<td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="crossVotingPConsti" list="crossVotingVO.parliamentLists" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"/></td>
+						<td> <td><s:label theme="simple" for="pConstituencyList" value="Parliament Constituency"/></td>
+						<td></td>
 				     </tr>
 				     <tr>
 				        <td><s:label theme="simple" for="aConstituencyList" value="Assembly Constituency"/></td>
-						 <td><s:select theme="simple" id="aConstituencyList" list="crossVotingVO.assemblyList" listKey="id"  name="crossVotingAConsti" listValue="name" onChange="getParties();"/></td>
+						 <td></td>
 					    <td><s:label theme="simple" for="partyList" value="Party"/></td>
-						<td><s:select theme="simple" id="partyList" list="crossVotingVO.partiesList" listKey="id"  name="crossVotingParty" listValue="name"/></td>
+						<td></td>
 				    </tr>
 				   </table>
 				</div>
@@ -894,7 +888,7 @@ lable{line-height:40px;}
 				   <c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 				     <tr>
 				        <td><s:label theme="simple" for="districtList" value=" Select Assembly"/></td>
-						<td><s:select cssClass="selectstyle" theme="simple" id="districtList" name="crossVotingYear" list="crossVotingVO.assemblyList" listKey="id" listValue="name" onChange=""/></td>
+						<td></td>
 				        <td></td>
 						<td></td>
 				     </tr>
@@ -904,17 +898,17 @@ lable{line-height:40px;}
 					 <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 				     <tr>
 				        <td><s:label theme="simple" for="districtList" value=" Select District"/></td>
-						<td><s:select cssClass="selectstyle" theme="simple" id="districtList" name="crossVotingYear" list="districtsList" listKey="id" listValue="name" onChange=""/></td>
+						<td></td>
 				        <td></td>
 						<td></td>
 				     </tr>
 					 </c:if>
 				     <tr>
 				        <td><s:label theme="simple" for="prevPublicationId" value="Previous Publication"/></td>
-						 <!--<td><s:select theme="simple" id="prevPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingAConsti" listValue="name" onChange=""/></td>
+						 <!--<td></td>
 						 <td><select id="prevPublicationId"><option value="9">2014-01-01</option></select></td>
 					    <td><s:label theme="simple" for="presentPublicationId" value="Present Publication"/></td>
-						<!--<td><s:select theme="simple" id="presentPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingParty" listValue="name"/></td>
+						<!--<td></td>
 						<td><select id="presentPublicationId"><option value="10">2014-02-01</option></select></td>
 				    </tr>
 				   </table>
@@ -941,12 +935,12 @@ lable{line-height:40px;}
 				     <tr>
 						<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 				        <td><s:label theme="simple" for="districtList" value=" Select Assembly"/></td>
-						<td><s:select cssClass="selectstyle" theme="simple" id="districtListForImp" name="crossVotingYear" list="crossVotingVO.assemblyList" listKey="id" listValue="name" onChange=""/></td>
+						<td></td>
 						</c:if>
 						
 						<c:if test="${ not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 				        <td><s:label theme="simple" for="districtList" value=" Select District"/></td>
-						<td><s:select cssClass="selectstyle" theme="simple" id="districtListForImp" name="crossVotingYear" list="districtsList" listKey="id" listValue="name" onChange=""/></td>
+						<td></td>
 						</c:if>
 				        <td><s:label theme="simple" for="prevPublicationId" value="Publication Date"/></td>
 						<td><select id="prevPublicationIdForImp">
@@ -1001,7 +995,7 @@ lable{line-height:40px;}
 					<table  style="margin-bottom: -8px; margin-top: -20px;">
 					<tr>
 					<td><span>Select Year</span></td>
-					<td><s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions('')"/> </td>
+					<td> </td>
 					<td><span>Constituency</span></td>
 					<td><select id="constiId" onChange="getPartiesForElections('')" name="constituencyName">
 								<option value='0'>Select Constituency</option>
@@ -1019,7 +1013,7 @@ lable{line-height:40px;}
 					<!--<div class="control-group ">
 						<label class="control-label" for="electionYear">Select Year</label>
 						<div class="controls">
-							<s:select theme="simple" list="electionYearsList" name="electionYear" listKey="id" listValue="name" headerKey="0" headerValue="Select Year" id="electionYearsId" onChange="constituencyOptions()"/> 
+						
 						</div>
 					</div>
 					
@@ -1072,15 +1066,15 @@ lable{line-height:40px;}
 		</select>
 		</tr>
 		<tr style="display:none;" id="constituencyRow">
-		<td><span>Constituency </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selConstituency" name="selConstituency" list="constituencyList" listKey="id" listValue="name" ></s:select></td>
+		<td><span>Constituency </span></td><td></td>
 		</tr>
 		<tr style="display:none;" id="mandalRow">
 	  
-		<td><span>Mandal/Muncipality </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selMandal" name="selMandal" list="mandalList" listKey="id" listValue="name" ></s:select></td>
+		<td><span>Mandal/Muncipality </span></td><td></td>
 		</tr>
 		<tr style="display:none;" id="panchayatRow">
 		
-		<td><span>Panchayat  </span></td><td><s:select cssClass="selectstyle" theme="simple" id="selPanchayat" name="selPanchayat" list="panchayatsList" listKey="id" listValue="name" ></s:select></td>
+		<td><span>Panchayat  </span></td><td></td>
 		</tr>
 		
 		</table>
@@ -1098,7 +1092,6 @@ lable{line-height:40px;}
 				<h2> Panchayat wise Caste Details</h2>
 				<fieldset>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="sugconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes');" name=""   style="margin-left: 1px; width: 155px;"></s:select>
 					<lable>Select Caste </lable><select id="candidateCastes" multiple="multiple" style="margin-left: 50px;">
 					</select>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getBoothLeaderDetails();" style="float:right;"></input>
@@ -1109,7 +1102,7 @@ lable{line-height:40px;}
 				<fieldset>
 					<div id="errorMessage"></div>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="sugTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getPartyDetails();" name="" style="width: 152px; margin-left: 5px;"></s:select>
+					
 					<lable>Select Party </lable>
 					<select id="partySelectEl" onchange="getElectionYears(this.options[this.selectedIndex].value)" style="width: 152px; margin-left: 54px;">
 					</select>
