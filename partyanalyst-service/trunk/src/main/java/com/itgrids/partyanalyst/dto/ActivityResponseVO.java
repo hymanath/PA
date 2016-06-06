@@ -36,7 +36,16 @@ public class ActivityResponseVO {
 	private List<ActivityResponseVO> sublist1 = new ArrayList<ActivityResponseVO>(0);
 	private List<ActivityResponseVO> sublist2 = new ArrayList<ActivityResponseVO>(0);
 	
-	
+	public ActivityResponseVO(){}
+	public ActivityResponseVO(Long id, String name){
+		this.id = id;
+		this.name= name;
+	}
+	public ActivityResponseVO(Long id, String name,Long totalCount){
+		this.id = id;
+		this.name= name;
+		this.totalCount = totalCount;
+	}
 	public String getQuestion() {
 		return question;
 	}
