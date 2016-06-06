@@ -70,4 +70,5 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(Long eventId,Date date,Long committeeLevelId);
 	public List<Long> getCadreIdsForAttendeesForCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel);
 	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel);
+	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,Long eventId);
 }

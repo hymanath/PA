@@ -1955,8 +1955,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						  Name = obj[1]!= null ? obj[4].toString() + " " +obj[1].toString() :"";  
 						  else if(type.equalsIgnoreCase("affliatedCommittee"))
 							  Name = obj[1]!= null ? obj[4].toString() + " Affliated Committee " +obj[1].toString() :"";
-							//  Name = obj[1]!= null ? obj[4].toString() + " Affliated Committee" + obj[1].toString() :""; 
-						  else
+						 else
 						  Name = obj[1]!= null ? obj[1].toString() :"";
 				  MahanaduEventVO designationVO = designationsMap.get(Name.toString());
 				  if( designationVO != null ){

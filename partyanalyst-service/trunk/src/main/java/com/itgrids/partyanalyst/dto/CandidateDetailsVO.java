@@ -98,7 +98,15 @@ public class CandidateDetailsVO implements Serializable , Comparable<CandidateDe
 	private Long cadreId;
 	private Long designationId;
 	private String designation;
-		
+	private List<MahanaduEventVO> datesList = new ArrayList<MahanaduEventVO>(0);
+	
+	
+	public List<MahanaduEventVO> getDatesList() {
+		return datesList;
+	}
+	public void setDatesList(List<MahanaduEventVO> datesList) {
+		this.datesList = datesList;
+	}
 	public String getVoteAge() {
 		return voteAge;
 	}
