@@ -22,7 +22,7 @@ public class SetterAndGetterUtilService {
 	 * SWADHIN-ITGRIDS
 	 * DATE:2-6-2016
 	 * inputs : List<Object[]>, setting Properties Name List in VO , setting fully Qualified VO Name
-	 * output List<VO> fully Qualified VO Name
+	 * output List<VO> fully Qualified VO Name like "com.itgrids.partyanalyst.dto.ActivityVO"
 	 * */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List setValuesToVO(List<Object[]> resultList,String[] setterPropertiesList,String settingVOClassName){
@@ -33,6 +33,7 @@ public class SetterAndGetterUtilService {
 			Class voClass = classLoader.loadClass(settingVOClassName);
 			Constructor voConstructor = voClass.getConstructor();
 			voObject = voConstructor.newInstance();
+			
 			List<String> parameterList = Arrays.asList(setterPropertiesList);
 			if(resultList != null && resultList.size()>0){
 				for (Object[] param : resultList) {
@@ -48,7 +49,7 @@ public class SetterAndGetterUtilService {
 				}
 			}
 		}catch(Exception e){
-			LOG.error("",e);
+			LOG.error("Error Occured while setting values to "+voObject+" Object",e);
 			returnList = null;
 		}
 		return returnList;

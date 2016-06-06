@@ -679,7 +679,7 @@ public interface IConstants {
 	 * partyanalyst.com for live server
 	 * localhost for development environment
     */	
-    public final static String DEPLOYED_HOST = "tdpserver";
+    public final static String DEPLOYED_HOST = "localhost";
     public final static String DEPLOYED_TEMP_HOST = "tdpserver";
     
     public final static Double GOOD = 40.00;
@@ -749,8 +749,8 @@ public interface IConstants {
    // public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
     
     
-    public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
-    //public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
+    //public static final String STATIC_CONTENT_FOLDER_URL = "/app/static_content/";
+    public static final String STATIC_CONTENT_FOLDER_URL = "D:\\static_content\\";
     public static final String CADRE_REG_AMOUNT_FILES_FOLDER = "cadre_reg_amount_files";
     
     public static final String STATIC_PARTIESFOR_DELIMATION = "'INC','PRP','TDP','TRS,Others'";
