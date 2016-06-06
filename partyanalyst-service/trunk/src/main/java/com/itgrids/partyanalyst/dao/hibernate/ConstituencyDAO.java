@@ -593,7 +593,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	@SuppressWarnings({ "unchecked", "unchecked" })
 	public List<Object[]> getStateAndDistricts(Long constituencyId)
 	{
-		return getHibernateTemplate().find("select model.district.districtId,model.state.stateId from Constituency model" +
+		return getHibernateTemplate().find("select distinct model.district.districtId,model.state.stateId from Constituency model" +
 				" where model.constituencyId = ?",constituencyId);
 	}
 	
