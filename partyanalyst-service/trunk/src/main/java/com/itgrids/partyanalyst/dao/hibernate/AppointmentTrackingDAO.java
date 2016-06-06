@@ -182,7 +182,7 @@ public class AppointmentTrackingDAO extends GenericDaoHibernate<AppointmentTrack
 			  		    "          left join appointment_candidate_type act on AC.appointment_candidate_type_id = act.appointment_candidate_type_id " +
 			  		    "          join appointment_tracking T on A.appointment_id = T.appointment_id" +
 			  		    
-			  		    " where     A.is_deleted='N'  and T.appointment_status_id = :appointmentStatusId and  T.from_appointment_status_id <> :appointmentStatusId  and A.appointment_user_id = :apptUserId " +
+			  		    " where     A.is_deleted='N'  and T.appointment_status_id = :appointmentStatusId and  T.appointment_action_id =1  and A.appointment_user_id = :apptUserId " +
 			  		    " group by  AC.appointment_candidate_id " +
 			  		    " order by  AC.appointment_candidate_id ");
 			  
