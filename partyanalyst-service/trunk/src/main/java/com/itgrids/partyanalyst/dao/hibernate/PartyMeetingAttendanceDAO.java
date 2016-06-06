@@ -21,13 +21,37 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	public List<Object[]> getPartyMeetingsAttendenceDetailsByCadreId(List<Long> tdpCadreIdsList,Date toDayDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct  PMA.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMA.partyMeeting.partyMeetingLevel.level, " +
+		/*queryStr.append(" select distinct  PMA.partyMeeting.partyMeetingLevel.partyMeetingLevelId, PMA.partyMeeting.partyMeetingLevel.level, " +
 				" PMA.partyMeeting.partyMeetingType.partyMeetingTypeId, PMA.partyMeeting.partyMeetingType.type, count( PMA.attendance.tdpCadreId)  from PartyMeetingAttendance PMA  where " +
 				" date(PMA.partyMeeting.startDate) <= :toDayDate ");
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			queryStr.append("  and PMA.attendance.tdpCadreId in (:tdpCadreIdsList) ");
-		queryStr.append(" group by PMA.partyMeeting.partyMeetingType.partyMeetingTypeId order by PMA.attendance.tdpCadreId ");
-		Query query = getSession().createQuery(queryStr.toString());
+		queryStr.append(" group by PMA.partyMeeting.partyMeetingType.partyMeetingTypeId order by PMA.attendance.tdpCadreId ");*/
+		
+		queryStr.append(" select ");
+		queryStr.append(" pm.party_meeting_level_id, ");
+		queryStr.append(" pml.`level`, ");
+		queryStr.append(" pm.party_meeting_type_id, ");
+		queryStr.append(" pmt.type, ");
+		queryStr.append(" count(DISTINCT CONCAT(pma.party_meeting_id,'-',a.tdp_cadre_id)) ");
+		queryStr.append(" from  ");
+		queryStr.append(" party_meeting_attendance pma,  ");
+		queryStr.append(" attendance a , ");
+		queryStr.append(" party_meeting pm, ");
+		queryStr.append(" party_meeting_level pml, ");
+		queryStr.append(" party_meeting_type pmt ");
+		queryStr.append(" where  ");
+		queryStr.append(" pm.party_meeting_type_id = pmt.party_meeting_type_id and  ");
+		queryStr.append(" pm.party_meeting_level_id = pml.party_meeting_level_id and  ");
+		queryStr.append(" pma.attendance_id = a.attendance_id and  ");
+		queryStr.append(" a.tdp_cadre_id in (:tdpCadreIdsList) and  ");
+		queryStr.append(" pm.party_meeting_id = pma.party_meeting_id   ");
+		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			queryStr.append(" and date(pm.start_date)  <= :toDayDate ");
+		queryStr.append(" group  by pm.party_meeting_type_id ");
+		queryStr.append(" ORDER BY pmt.type ");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString());
 		 query.setDate("toDayDate", toDayDate);
 		if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
