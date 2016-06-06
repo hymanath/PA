@@ -649,7 +649,7 @@ function getParticipatedConstituencyId(cadreId){
 										str+='<td>'+results[i].knownList[j].invitationCount+'</td>';
 									//str+='<td>'+results[i].knownList[j].total+' <i class="glyphicon glyphicon-eye-open attedenceCls pull-right" title="Click here to get Attendance Details" style="cursor:pointer" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"></i></td>';
 									if(results[i].knownList[j].total != null && results[i].knownList[j].total > 0)
-										str+='<td>1<span class="attedenceCls" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"><a style="cursor:pointer"> -'+results[i].knownList[j].total+' Day(s) </a></td>';
+										str+='<td><span class="attedenceCls" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"><a style="cursor:pointer">'+results[i].knownList[j].total+' Day(s) </a></td>';
 									if(results[i].knownList[j].eventTypeId != 2)
 										str+='<td>'+results[i].knownList[j].absentCount+'</td>';
 									 str+='</tr>';
@@ -3061,10 +3061,11 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 	
 function getPartyMeetingDetails()
 {
-	$('#partyMeetingDescDiv').html('');
+	//$('#partyMeetingDescDiv').html('');
 	var jsObj={
 		tdpCadreId:globalCadreId		
-	}	
+	}
+/*	
 	$.ajax({
 			type:'POST',
 			 url: 'getPartyMeetingDetailsForCadre.action',
@@ -3105,6 +3106,7 @@ function getPartyMeetingDetails()
 					$('#partyMeetingDescDiv').html(str);
 				}
 			});
+			*/
 }
 function getPartyMeetingDetaildReprt()
 {
@@ -3119,6 +3121,10 @@ function getPartyMeetingDetaildReprt()
 			}).done(function(result){
 				if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
 				{
+					var invitedCount =0;
+					var attendCount =0;
+					var abentCount =0;
+					
 					$('#partymettingParlDivId').show();
 					$('#partyMeetingDetailsShowHideDiv').show();
 					var str='';
@@ -3137,6 +3143,11 @@ function getPartyMeetingDetaildReprt()
 					
 					for(var i in result.partyMeetingVOList)
 					{
+						if(result.partyMeetingVOList[i].invitedCount != null)
+							invitedCount = invitedCount +parseInt(result.partyMeetingVOList[i].invitedCount);
+						if(result.partyMeetingVOList[i].attendedCount != null)
+							attendCount = attendCount +parseInt(result.partyMeetingVOList[i].attendedCount);
+						
 						str+='<tr class="text-center">';
 						str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
 						str+='<td> <ul class="list-inline"><li class="show-dropdown invitedDetlsDiv" name="invitedDetlsDiv'+i+'" key="'+result.partyMeetingVOList[i].id+'"><u style="color:#23527C;"> '+result.partyMeetingVOList[i].invitedCount+'</u> ';
@@ -3153,7 +3164,7 @@ function getPartyMeetingDetaildReprt()
 							var absentCount = parseInt(result.partyMeetingVOList[i].invitedCount) - parseInt(result.partyMeetingVOList[i].attendedCount);
 							str+='<td> '+result.partyMeetingVOList[i].attendedCount+' </td>';
 							str+='<td> '+absentCount+' </td>';
-							
+							abentCount =abentCount+absentCount;
 						/*str+='<td> <ul class="list-inline"><li class="show-dropdown"><u style="color:#23527C;">'+absentCount+'</u>';
 						str+='<ul class="count-hover right_arrow" >';
 						str+='<li>';
@@ -3252,6 +3263,23 @@ function getPartyMeetingDetaildReprt()
 									}
 								});
 					});
+					
+					
+					var str='';
+					str+='<table class="table m_0 table-bordered">';
+					str+='<thead>';
+					str+='<th class="text-center" colspan="3">PARTY MEETINGS</th>';
+					str+='</thead>';
+					str+='<tr class="text-center">';
+					str+='<td>'+invitedCount+'<br/>Invited</td>';	
+					str+='<td>'+attendCount+'<br/>Invited</td>';	
+					str+='<td>'+abentCount+'<br/>Invited</td>';	
+					
+					str+='</tr>';
+					str+='</table>';
+
+					$('#partyMeetingDescDiv').html(str);
+					
 				}
 			});
 }
