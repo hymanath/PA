@@ -4675,7 +4675,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							statusVOMap.put(id, vo);
 					}
 					Long totalCount = 0l;
-					List<Object[]> answeredOptionsDetails = activityQuestionAnswerDAO.getActivityQuestionAnswerCountReasonWise(questionId);
+					List<Long> questionIDsList = new ArrayList<Long>(0);
+					questionIDsList.add(questionId);
+					List<Object[]> answeredOptionsDetails = activityQuestionAnswerDAO.getActivityQuestionAnswerCountReasonWise(questionIDsList);
 					if(answeredOptionsDetails != null && answeredOptionsDetails.size()>0){
 						for (Object[] status : answeredOptionsDetails) {
 							Long id = commonMethodsUtilService.getLongValueForObject(status[0]);
@@ -5048,6 +5050,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					
 					searchVO.setLocationTypeIdsList(locationTypeIds);
 					List<Object[]> questionDetls = activityQuestionnaireDAO.getActivityQuestionListByScope(actibityScopeId);
+					Map<Long,List<ActivityResponseVO>> questionnaireOptionWiseCountMap = getActvityQuestionOptionDetailsByScopeId(actibityScopeId);
+					Map<Long,Long> optionWiseCountMap = getActvityQuestionOptionsCountByScopeId(new ArrayList<Long>(questionnaireOptionWiseCountMap.keySet()));
+					
 					List<Long> activityScopeQuestionIdsLsit = new ArrayList<Long>(0);
 					
 					//List<Object[]> questionDetls = activityQuestionnaireDAO.getQuestionnareDetails(searchVO.getQuestionnaireIdsList());
@@ -5067,12 +5072,20 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 								else if(activityLevelId.longValue() == 1L){updateAreasList("13CONSTITUENCY",locationVO.getSublist1());}
 								if(commonMethodsUtilService.isListOrSetValid(questionDetls))
 									for (Object[] question : questionDetls) {
-										ActivityResponseVO questionVO = new ActivityResponseVO();
-										questionVO.setId(commonMethodsUtilService.getLongValueForObject(question[0]));
-										questionVO.setName(commonMethodsUtilService.getStringValueForObject(question[3]));
+										ActivityResponseVO questionVO = new ActivityResponseVO(commonMethodsUtilService.getLongValueForObject(question[0]),commonMethodsUtilService.getStringValueForObject(question[3]));
 										if(searchVO.getQuestionnaireIdsList().contains(questionVO.getId())){
 											locationVO.getSublist2().add(questionVO);
 											activityScopeQuestionIdsLsit.add(questionVO.getId());
+										}
+										
+										if(questionnaireOptionWiseCountMap.get(questionVO.getId()) != null){
+											List<ActivityResponseVO> optionsList = questionnaireOptionWiseCountMap.get(questionVO.getId());
+											List<ActivityResponseVO> qstionOptionsList = new ArrayList<ActivityResponseVO>(0);
+											if(commonMethodsUtilService.isListOrSetValid(optionsList))
+												for (ActivityResponseVO optionVO : optionsList) 
+													qstionOptionsList.add(new ActivityResponseVO(optionVO.getId(),optionVO.getName(),optionWiseCountMap.get(optionVO.getId())));
+											questionVO.getSublist().addAll(qstionOptionsList);
+												
 										}
 									}
 								LocationWiseMap.put(locationVO.getId(),locationVO);
@@ -5099,6 +5112,15 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 										if(searchVO.getQuestionnaireIdsList().contains(questionVO.getId())){
 											locationVO.getSublist2().add(questionVO);
 											activityScopeQuestionIdsLsit.add(questionVO.getId());
+										}
+										
+										if(questionnaireOptionWiseCountMap.get(questionVO.getId()) != null){
+											List<ActivityResponseVO> optionsList = questionnaireOptionWiseCountMap.get(questionVO.getId());
+											List<ActivityResponseVO> qstionOptionsList = new ArrayList<ActivityResponseVO>(0);
+											if(commonMethodsUtilService.isListOrSetValid(optionsList))
+												for (ActivityResponseVO optionVO : optionsList) 
+													qstionOptionsList.add(new ActivityResponseVO(optionVO.getId(),optionVO.getName(),optionWiseCountMap.get(optionVO.getId())));
+											questionVO.getSublist().addAll(qstionOptionsList);
 										}
 									}
 								LocationWiseMap.put(locationVO.getId(),locationVO);
@@ -5231,6 +5253,51 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		return null;
 	}
 	
+	public Map<Long,Long> getActvityQuestionOptionsCountByScopeId(List<Long> questionIDsList){
+		Map<Long,Long> optionWiseCountMap = new HashMap<Long, Long>(0);
+		try {
+			if(commonMethodsUtilService.isListOrSetValid(questionIDsList)){
+				List<Object[]> questionnairOptionWiseCounsList = activityQuestionAnswerDAO.getActivityQuestionAnswerCountReasonWise(questionIDsList);			
+				if(commonMethodsUtilService.isListOrSetValid(questionnairOptionWiseCounsList)){
+					for (Object[] param : questionnairOptionWiseCounsList) {
+						Long optionId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
+						optionWiseCountMap.put(optionId, count);
+					}
+				}
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getActvityQuestionOptionsCountByScopeId method in ActivityService ",e);
+		}
+		return optionWiseCountMap;
+	}
+	
+	public Map<Long,List<ActivityResponseVO>> getActvityQuestionOptionDetailsByScopeId(Long actibityScopeId){
+		Map<Long,List<ActivityResponseVO>> questionnaireOptionWiseCountMap = new HashMap<Long, List<ActivityResponseVO>>(0);
+		try {
+			List<Long> scopeIdsList = new ArrayList<Long>(0);
+			scopeIdsList.add(actibityScopeId);
+			List<Object[]> questionOptionsLsit = activityQuestionnaireOptionDAO.getQuestionnaireOptionsDetailsOfScope(scopeIdsList);
+			if(commonMethodsUtilService.isListOrSetValid(questionOptionsLsit))
+				for (Object[] param : questionOptionsLsit) {
+					Long questionnaireId = commonMethodsUtilService.getLongValueForObject(param[11]);
+					List<ActivityResponseVO> optionsList = new ArrayList<ActivityResponseVO>(0);
+					 
+					if(questionnaireOptionWiseCountMap.get(questionnaireId) != null)
+						optionsList =questionnaireOptionWiseCountMap.get(questionnaireId);
+					if(param[5] != null && param[6] != null){
+						ActivityResponseVO optionVO = new ActivityResponseVO();
+						optionVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
+						optionVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						optionsList.add(optionVO);
+						questionnaireOptionWiseCountMap.put(questionnaireId, optionsList);
+					}
+				}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getActvityQuestionOoptionDetailsByScopeId method in ActivityService ",e);
+		}
+		return questionnaireOptionWiseCountMap;
+	}
 	public List<ActivityResponseVO> getActivityLocationInfoDetailsByActivityScope(Long activityLevel,Long activityScope,List<Long> questionIds){
 		List<ActivityResponseVO> returnList = null;
 		try {
