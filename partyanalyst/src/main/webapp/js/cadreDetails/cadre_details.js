@@ -3272,8 +3272,8 @@ function getPartyMeetingDetaildReprt()
 					str+='</thead>';
 					str+='<tr class="text-center">';
 					str+='<td>'+invitedCount+'<br/>Invited</td>';	
-					str+='<td>'+attendCount+'<br/>Invited</td>';	
-					str+='<td>'+abentCount+'<br/>Invited</td>';	
+					str+='<td>'+attendCount+'<br/>Attended</td>';	
+					str+='<td>'+abentCount+'<br/>Absent</td>';	
 					
 					str+='</tr>';
 					str+='</table>';
