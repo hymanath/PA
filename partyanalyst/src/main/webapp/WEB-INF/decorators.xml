@@ -335,7 +335,7 @@
 			 <!-- <pattern>/cadreAgeGenderAnalysisAction*</pattern>-->
 			 <!--<pattern>/duplicateUsers*</pattern>-->
 			 <!--<pattern>/cadreReportsAction*</pattern>-->
-			<!-- <pattern>/changeUserPasswords*</pattern>-->
+			<pattern>/changeUserPasswords*</pattern>
 			  <!--<pattern>/cadreBoothAnalysisAction*</pattern>-->
 			 <!--<pattern>/misReportAction*</pattern>-->
 			 <!--<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>-->
@@ -553,7 +553,6 @@
 	   <pattern>/houseHoldSurveyReportAction*</pattern>
 	   <pattern>/muncipalElectionDetailsAction*</pattern>
 	   <pattern>/hourWiseUserColletedInfoAction*</pattern>
-	   <pattern>/changeUserPasswords*</pattern>
 	   <pattern>/mergePanchayatAction*</pattern>
 	  <pattern>/cadreOnlineRegisterPageAction*</pattern>
 	  <pattern>/cadreRegistration*</pattern>
