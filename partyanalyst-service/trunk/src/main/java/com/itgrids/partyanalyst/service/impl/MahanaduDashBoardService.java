@@ -1579,6 +1579,23 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		if(cadreIds != null && cadreIds.size() >0){
 			//get attendence details
 			List<Long> attendedCadreIds = eventAttendeeDAO.getAttendenceDetails(cadreIds,date,eventId);
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Map<Long,Map<String,Boolean>> cadreAttendedMap = new HashMap<Long, Map<String,Boolean>>();
+			List<Object[]> attendedListForCadre = eventAttendeeDAO.getAttendenceDetailsForCadre(cadreIds,eventId);
+			if(attendedListForCadre != null && attendedListForCadre.size() > 0)
+			{
+				for(Object[] obj : attendedListForCadre)
+				{
+					Map<String,Boolean> dayMap = cadreAttendedMap.get((Long)obj[0]);
+					if(dayMap == null)
+					{
+						dayMap = new HashMap<String, Boolean>();
+						cadreAttendedMap.put((Long)obj[0], dayMap);
+					}
+					if(obj[1] != null)
+					dayMap.put(obj[1].toString(), true);
+				}
+			}
 			Map<Long,String> parliamentAssemblyNamesMap = new HashMap<Long, String>(0);
 			Map<Long,String> districtNamesMap = new HashMap<Long, String>(0);
 			if(cadreIds != null && cadreIds.size() > 0){
@@ -1633,6 +1650,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						CandidateDetailsVO vo = new CandidateDetailsVO();
 						vo.setCadreId(objects[0] != null? (Long)objects[0] : 0l);
 						vo.setCandidateName(objects[1] != null? objects[1].toString() : "");
+						vo.setDatesList(getEventDatesByEventId(eventId,vo.getCadreId(),cadreAttendedMap));
 						vo.setDesignationId(objects[2] != null? (Long)objects[2] : 0l);
 						vo.setDesignation(objects[3] != null? objects[3].toString() : "");
 						if(roleType.equalsIgnoreCase("PR"))
@@ -1677,9 +1695,40 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				}
 				
 			}
+			
+			
 		}
 	}
 	
+	public List<MahanaduEventVO> getEventDatesByEventId(Long eventId,Long cadreId,Map<Long,Map<String,Boolean>> cadreAttendedMap)
+	{
+		List<MahanaduEventVO> datesList = new ArrayList<MahanaduEventVO>();
+		try{
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Object[] obj = eventDAO.getEventDates(eventId);
+		List<Date>  betweenDates=new CommonMethodsUtilService().getBetweenDates((Date)obj[0],(Date)obj[1]);
+		Map<String,Boolean> dayMap = cadreAttendedMap.get(cadreId);
+			if(betweenDates != null && betweenDates.size() > 0)
+			{
+				  for( int i=0;i<betweenDates.size();i++){
+					  MahanaduEventVO dayVO = new MahanaduEventVO();
+					  dayVO.setName("Day"+(i+1));
+					  if(dayMap.get(format.format(betweenDates.get(i))) != null)
+					  dayVO.setTotalDaydataExist(true);
+					  else
+					  dayVO.setTotalDaydataExist(false);
+					  dayVO.setDateStr(format.format(betweenDates.get(i)));
+					  datesList.add(dayVO);
+				  }
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return datesList;
+	}
 	public CandidateDetailsVO getMatchedVO1(List<CandidateDetailsVO> voList,Long cadreId){
 		if(voList != null && voList.size() > 0 && cadreId != null && cadreId > 0){
 			for (CandidateDetailsVO candidateDetailsVO : voList) {
