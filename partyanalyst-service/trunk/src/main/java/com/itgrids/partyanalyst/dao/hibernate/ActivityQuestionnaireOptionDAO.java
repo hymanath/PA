@@ -112,7 +112,7 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 				" from ActivityQuestionnaireOption model " +
 				" where model.isDeleted='N' " +
 				" and model.activityQuestionnaire.activityScopeId in(:scopeIds) " +
-				" order by model.activityQuestionnaire.orderNo ");
+				" order by model.activityQuestionnaire.orderNo,model.orderNo ");
 		query.setParameterList("scopeIds", scopeIds);
 		return query.list();
 	}
@@ -166,5 +166,31 @@ public List<Object[]> getOptionsByQuesttionareIds(Long questionnareId){
 		query.setParameter("questionnareId", questionnareId);
 		return query.list();
 	}
+
+public List<Object[]> getQuestionnaireOptionsDetailsOfScope(List<Long> scopeIds){
+	Query query = getSession().createQuery(" select activityQuestion.activityQuestionId, " +//0--question id
+			" activityQuestion.question, " +		//question -- 1
+			" activityQuestionnaire.orderNo, " +							//question order no -- 2
+			" activityOptionType.activityOptionTypeId, " +//option type id -- 3
+			" activityOptionType.type, " +			//option type -- 4
+			" activityOption.activityOptionId, " +						//option id -- 5
+			" activityOption.option," +									//option -- 6
+			" model.orderNo," +													//Order No --7
+			" respondentType.respondentTypeId, " +	//	respondent type id -- 8 
+			" respondentType.respondentType, " +	//	respondent type -- 9
+			" activityQuestionnaire.activityScopeId, " +				//	Activity Scope Id -- 10
+			" activityQuestionnaire.activityQuestionnaireId " +		//	QuestionnairId --11
+			" from ActivityQuestionnaireOption model " +
+			" left join model.activityQuestionnaire  activityQuestionnaire " +
+			" left join model.activityQuestionnaire.activityQuestion activityQuestion " +			
+			" left join model.activityQuestionnaire.activityOptionType  activityOptionType " +
+			" left join model.activityOption  activityOption " +
+			" left join model.activityQuestionnaire.respondentType respondentType " +
+			" where model.isDeleted='N' " +
+			" and model.activityQuestionnaire.activityScopeId in(:scopeIds) " +
+			" order by model.activityQuestionnaire.orderNo,model.orderNo ");
+	query.setParameterList("scopeIds", scopeIds);
+	return query.list();
+}
 
 }
