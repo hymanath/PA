@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -309,13 +310,17 @@ public class PartyMeetingService implements IPartyMeetingService{
 			{
 				List<Object[]> invitationList =  partyMeetingInviteeDAO.getPartyMeetingsInvitationDetlsByCadreIds(tdpCadreIdsList,null,toDayDate);
 				Long invitationCount = 0L;
-				List<Long> invitationMeetingsList = new ArrayList<Long>(0);
+				//List<Long> invitationMeetingsList = new ArrayList<Long>(0);
+				Map<Long,Long> invitationMap = new HashMap<Long, Long>(0);
+				Map<Long,Long> attendedMap = new HashMap<Long, Long>(0);
+				
 				if(invitationList != null && invitationList.size()>0)
 				{
 					for (Object[] param : invitationList) {
 						Long count = param[9] != null ? Long.valueOf(param[9].toString()):0L;
 						invitationCount = invitationCount+count;
-						invitationMeetingsList.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+						//invitationMeetingsList.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+						invitationMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), count);
 					}
 				}
 				 
@@ -326,15 +331,22 @@ public class PartyMeetingService implements IPartyMeetingService{
 						for (Object[] param : attendedList) {
 							Long count = param[2] != null ? Long.valueOf(param[2].toString()):0L;
 							attendedCount = attendedCount+count;
-							if(invitationMeetingsList.contains(param[0] != null ? Long.valueOf(param[0].toString()):0L))
+							attendedMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), count);
+							/*Long inviteCount = invitationMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(inviteCount != null && inviteCount.longValue()>0L)
+							attendedCount =inviteCount-count;
+							*/
+							/*if(invitationMeetingsList.contains(param[0] != null ? Long.valueOf(param[0].toString()):0L))
 							{
 								invitationMeetingsList.remove(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-							}
+							}*/
 						}
 					}
 					
-					Long absentCount = Long.valueOf(String.valueOf(invitationMeetingsList.size()));
+					//Long absentCount = Long.valueOf(String.valueOf(invitationMeetingsList.size()));
+					Long absentCount = 0L;
 					
+					/*
 					if(absentCount > 0L)
 					{
 						List<Object[]> eventNames = partyMeetingDAO.getPartyMeetingDetailsByMeetingIdList(invitationMeetingsList,toDayDate);
@@ -351,6 +363,19 @@ public class PartyMeetingService implements IPartyMeetingService{
 								partyMeetingList.add(vo);
 							}
 							returnVO.setPartyMeetingVOList(partyMeetingList);
+						}
+					}
+					*/
+					Set<Long> partyMeetingIdsList = new HashSet<Long>(0);
+					partyMeetingIdsList.addAll(invitationMap.keySet());
+					partyMeetingIdsList.addAll(attendedMap.keySet());
+					if(commonMethodsUtilService.isListOrSetValid(partyMeetingIdsList)){
+						for (Long partyMeetingId : partyMeetingIdsList) {
+							Long inviteCount = invitationMap.get(partyMeetingId);
+							Long attendCount = attendedMap.get(partyMeetingId);
+							if(inviteCount != null && attendCount != null && attendCount.longValue()>0L && 
+									 inviteCount.longValue()>0L && inviteCount.longValue()>attendCount.longValue())
+								absentCount = inviteCount.longValue()-attendCount.longValue();
 						}
 					}
 					
@@ -404,6 +429,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				if(attendedMeetingDetls != null && attendedMeetingDetls.size()>0)
 				{
 					for (Object[] meeting : attendedMeetingDetls) {
+						
 						Long meetinglevelId = commonMethodsUtilService.getLongValueForObject(meeting[0]);
 						String meetinglevelStr = commonMethodsUtilService.getStringValueForObject(meeting[1]);
 						Long meetingTypeId = commonMethodsUtilService.getLongValueForObject(meeting[2]);
