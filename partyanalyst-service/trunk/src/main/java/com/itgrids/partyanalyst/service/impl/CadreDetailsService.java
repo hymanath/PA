@@ -8634,7 +8634,9 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		try {
 			Object[] eventDates = eventDAO.getEventDatesByEventId(eventId);
 			Map<String,IdNameVO> dateMap = new LinkedHashMap<String, IdNameVO>();
+			Map<String,IdNameVO> returnDateMap = new LinkedHashMap<String, IdNameVO>();
 			Map<String,List<String>> dateWiseMap = new LinkedHashMap<String, List<String>>();
+			Map<String,List<String>> returnMap = new LinkedHashMap<String, List<String>>();
 			if(eventDates != null){
 				List<Date> betweenDates= commonMethodsUtilService.getBetweenDates((Date)eventDates[0], (Date)eventDates[1]);
 				if(betweenDates != null){
@@ -8657,10 +8659,13 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 						if(dateTimeLst == null){
 							dateTimeLst = new ArrayList<String>();
 							dateTimeLst.add(dateTimeStr);
+							returnMap.put(dateStr, dateTimeLst);
 							dateWiseMap.put(dateStr, dateTimeLst);
 						}
-						else
+						else{
 							dateTimeLst.add(dateTimeStr);
+							dateWiseMap.put(dateStr, dateTimeLst);
+						}
 					}
 				}
 				
@@ -8673,12 +8678,13 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 						if(vo != null){
 							vo.setCount(count);
 							vo.setDateStr(obj[2] != null ? obj[2].toString():"");
-							vo.setSubList(dateWiseMap.get(dateStr));
+							vo.setSubList(returnMap.get(dateStr));
+							returnDateMap.put(dateStr, vo);
 						}
 					}
 				}
 				
-				returnList = new ArrayList<IdNameVO>(dateMap.values());
+				returnList = new ArrayList<IdNameVO>(returnDateMap.values());
 			}
 			
 		} catch (Exception e) {
