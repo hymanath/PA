@@ -12,6 +12,7 @@
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" rel="stylesheet" type="text/css">
+<link href="dist/Appointment/custom.css" rel="stylesheet" type="text/css">
 <style type='text/css'>
 </style>
 </head>
@@ -58,9 +59,26 @@
     </div>
   </div>
 </div>
+<div class="modal fade statusTrackingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-capitalize" id="statusTrackingName">Appointment Status Tracking</h4>
+      </div>
+      <div class="modal-body">
+        <div id="apptStatusTracking"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </section>
 <script src='dist/2016DashBoard/js/bootstrap.js' type='text/javascript'></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="dist/Appointment/statusColorAppointment.js" type="text/javascript"></script>
 <script type="text/javaScript">
 
 $(document).ready(function(){
@@ -197,8 +215,8 @@ function bulidApptRescheduledDetialsByCandidateRslt(result,name,mobileNo,imageUr
 	 str+='<th>Mobile No</th>';
 	 str+='<th>Designation</th>';
 	 str+='<th>Unique Id</th>';
-	 str+='<th>Present Status</th>';
 	 str+='<th>Rescheduled Date</th>';
+	 str+='<th>Present Status</th>';
 	 str+='<th>Comments</th>';
 	 str+='</thead>'; 
 	   str+='<tbody>';
@@ -229,17 +247,16 @@ function bulidApptRescheduledDetialsByCandidateRslt(result,name,mobileNo,imageUr
 							}else{
 								str+='<td> - </td>';
 							}
-							if(result[i].presentStatus!=null && result[i].presentStatus.length>0){
-								str+='<td>'+result[i].presentStatus+'</td>';
-							}else{
-								str+='<td> - </td>';
-							}
 							if(rescheduledList[j].date!=null && rescheduledList[j].date.length>0){
 								str+='<td>'+rescheduledList[j].date+'</td>';
 							}else{
 								str+='<td> - </td>';
 							}
-							
+							if(result[i].presentStatus!=null && result[i].presentStatus.length>0){
+								str+='<td>'+result[i].presentStatus+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
 							if(rescheduledList[j].subject!=null && rescheduledList[j].subject.length>0){
 								str+='<td>'+rescheduledList[j].subject+'</td>';
 							}else{
@@ -288,8 +305,8 @@ function getRescheduledMembersApptDetails(){
 	 str+='<th>Mobile No</th>';
 	 str+='<th>Designation</th>';
 	 str+='<th>Unique Id</th>';
-	 str+='<th>Present Status</th>';
 	 str+='<th>Rescheduled Date</th>';
+	  str+='<th>Present Status</th>';
 	 str+='<th>Comments</th>';
 	 str+='</thead>'; 
 	   str+='<tbody>';
@@ -331,12 +348,10 @@ function getRescheduledMembersApptDetails(){
 								     str+='<td> - </td>';
 							   }
 						 		if(appointmentsList[j].appointmentUniqueId!=null && appointmentsList[j].appointmentUniqueId.length>0){
-									str+='<td>'+appointmentsList[j].appointmentUniqueId+'</td>';
-								}else{
-									 str+='<td> - </td>';
-								}
-								if(appointmentsList[j].presentStatus!=null && appointmentsList[j].presentStatus.length>0){
-									 str+='<td style="font-size:13px;">'+appointmentsList[j].presentStatus+'</td>';
+									str+='<td style="width: 82px;">';
+									str+='<span>'+appointmentsList[j].appointmentUniqueId+'</span>';
+								    str+='<img src="dist/Appointment/img/reqHistoryicon+.png" class="pull-right statusTrackingModalbtn" attr-id='+appointmentsList[j].appointmentId+' attr-aptName='+appointmentsList[j].appointmentUniqueId+' alt="ViewReqHistory" style="height:16px;cursor:pointer;" title="Appointment Requested History" data-toggle="tooltip" data-placement="top" />';
+									str+='</td>'
 								}else{
 									 str+='<td> - </td>';
 								}
@@ -344,6 +359,11 @@ function getRescheduledMembersApptDetails(){
 								   str+='<td>'+rescheduledList[k].date+'</td>';
 								}else{
 								   str+='<td> - </td>';
+								}
+								if(appointmentsList[j].presentStatus!=null && appointmentsList[j].presentStatus.length>0){
+									 str+='<td style="font-size:13px;">'+appointmentsList[j].presentStatus+'</td>';
+								}else{
+									 str+='<td> - </td>';
 								}
 								if(rescheduledList[k].subject!=null && rescheduledList[k].subject.length>0){
 								   str+='<td>'+rescheduledList[k].subject+'</td>';
@@ -360,6 +380,7 @@ function getRescheduledMembersApptDetails(){
 	  str+='</tbody>';
 	  str+='</table>';
 	  $("#rschdldCnddtWsAppntmntsTblId").html(str);
+	  $('[data-toggle="tooltip"]').tooltip();
 	   $('#rschdldAppntmntsCnddtPgntnTblId').dataTable({
 			"aaSorting": [],
 			"iDisplayLength" : 10	,
@@ -371,5 +392,63 @@ function getRescheduledMembersApptDetails(){
   function setDefaultImage(img){
 	  img.src = "dist/Appointment/img/thumb.jpg";
    }
+   
+   //Appointment Tracking.
+   $(document).on("click",".statusTrackingModalbtn",function(){
+		$(".statusTrackingModal").modal('show');
+		var appontmntId = $(this).attr("attr-id");
+		var aptName = $(this).attr("attr-aptName");
+		getStatusTrackingDetls(appontmntId,aptName);
+	});
+   function getStatusTrackingDetls(appontmntId,aptName){
+		
+		
+		var jsObj={
+			appntmntId : appontmntId
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getAppointmentStatusCommentsTrackingDetails.action',
+			dataType : 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				apptTrackingStatus(result,aptName);
+			}else{
+				$("#apptStatusTracking").html("<center>No Data Available</center>")
+			}
+		});
+	}
+	function apptTrackingStatus(result,aptName)
+	{
+		setcolorsForStatus();
+		var str='';
+		$("#statusTrackingName").html(''+aptName+' Appointment Status Tracking')
+			str+='<ul class="apptStatusTracking">';
+		for(var i in result){
+			var color = getColorCodeByStatus(result[i].status);
+			str+='<li>';
+				str+='<div class="arrow_box_left">';
+				if(result[i].id == 1)
+				str+='<p> <span class="text-success"></span> Appointment Created on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';	
+					else
+					str+='<p>Appointment status changed to <span class="" style="color:'+color+'"><b>'+result[i].status+'</b></span> on '+result[i].date+' By <b>'+result[i].uname+'</b> </p>';
+					if(result[i].commentsList != null && result[i].commentsList.length > 0 && result[i].commentsList[0].length > 0)
+					{
+						str+='<u style="font-size:15px;">Comments</u>';
+						for(var j in result[i].commentsList)
+						{
+						
+						str+='<p>'+result[i].commentsList[j]+'</p>';	
+						}
+					}
+					
+				str+='</div>';
+			str+='</li>';	
+		}
+		str+='</ul>';
+		$("#apptStatusTracking").html(str)
+	}
 </script>
 </html>
