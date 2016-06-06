@@ -96,7 +96,7 @@
 													<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="todayAptLoadingId"></center></div>
 												</table>
 												<div style="margin-top: 20px; color: #fff; padding: 5px; font-size: 18px; background: rgba(10, 37, 63, 0.5);">
-													<p>RESCHEDULED APPOINTMENTS</p>
+													<p>TOTAL RESCHEDULED APPOINTMENTS</p>
 												</div>
 												 <div style="">
 												  <center>
