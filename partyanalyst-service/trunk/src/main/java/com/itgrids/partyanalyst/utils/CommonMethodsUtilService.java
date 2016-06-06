@@ -572,11 +572,11 @@ public class CommonMethodsUtilService {
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(fromDate);
 				cal.add(Calendar.DATE, -1);
-				
-				while (cal.getTime().before(toDate)) {
-				    cal.add(Calendar.DATE, 1);
-				    dates.add(cal.getTime());
-				}
+				if(cal.getTime() != null && toDate != null)
+					while (cal.getTime().before(toDate)) {
+					    cal.add(Calendar.DATE, 1);
+					    dates.add(cal.getTime());
+					}
 				return dates;
 			}
 		    
