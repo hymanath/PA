@@ -2808,8 +2808,11 @@
 	    <property name="eventInviteeDAO" ref="eventInviteeDAO" />
 	    <property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" /> 
 	     <property name="cadreDetailsUtils" ref="cadreDetailsUtils" />
-	    
-	</bean>
+	     <property name="tehsilDAO" ref="tehsilDAO" />
+	     <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	      <property name="stateDAO" ref="stateDAO" />
+	     
+	  </bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">
 		<property name="trainingCampScheduleInviteeCallerDAO" ref="trainingCampScheduleInviteeCallerDAO" /> 
