@@ -22,7 +22,10 @@ import com.itgrids.partyanalyst.dao.IEntryExitInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
@@ -50,12 +53,39 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	private IEventInviteeDAO eventInviteeDAO;
 	private ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ICadreDetailsUtils cadreDetailsUtils;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IStateDAO stateDAO;
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
 	
 	
 	
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
 	public ICadreDetailsUtils getCadreDetailsUtils() {
 		return cadreDetailsUtils;
 	}
@@ -1598,6 +1628,9 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			}
 			Map<Long,String> parliamentAssemblyNamesMap = new HashMap<Long, String>(0);
 			Map<Long,String> districtNamesMap = new HashMap<Long, String>(0);
+			Map<Long,String> tehsilNamesMap = new HashMap<Long, String>(0);
+			Map<Long,String> localEleNamesMap = new HashMap<Long, String>(0);
+			Map<Long,String> stateNamesMap = new HashMap<Long, String>(0);
 			if(cadreIds != null && cadreIds.size() > 0){
 				//tdpCadreId,name,publicRepresentativeTypeId,type,levelId,levelValue,image
 				List<Object[]> candidateDetailsList = null;
@@ -1608,21 +1641,32 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 					
 				List<Long> parliamentAssemblyIds = new ArrayList<Long>(0);
 				List<Long> districtIds = new ArrayList<Long>(0);
+				List<Long> tehsilIds = new ArrayList<Long>(0);
+				List<Long> localBodyIds = new ArrayList<Long>(0);
+				List<Long> stateIds = new ArrayList<Long>(0);
 				//get location details
 				if(roleType.equalsIgnoreCase("PR"))
 				{
 				for (Object[] objects : candidateDetailsList) {
-					if(objects[4] != null && ((Long)objects[4] == 1l || (Long)objects[4] == 2l)){
+					if(objects[4] != null && ((Long)objects[4] == 1l || (Long)objects[4] == 2l || (Long)objects[4] == 3l)){
 						if(!parliamentAssemblyIds.contains((Long)objects[5]))
 							parliamentAssemblyIds.add((Long)objects[5]);
-					}else if(objects[4] != null && (Long)objects[4] == 5l){
+					}else if(objects[4] != null && (Long)objects[4] == 5l ){//
 						if(!districtIds.contains((Long)objects[5]))
 							districtIds.add((Long)objects[5]);
 					}
+					else if(objects[4] != null && ((Long)objects[4] == 4l ||  (Long)objects[4] == 7l)){//
+						if(!tehsilIds.contains((Long)objects[5]))
+							tehsilIds.add((Long)objects[5]);
+					}
+					else if(objects[4] != null && (Long)objects[4] == 8l){//
+						if(!localBodyIds.contains((Long)objects[5]))
+							localBodyIds.add((Long)objects[5]);
+					}
+					else if(objects[4] != null && (Long)objects[4] == 6l)
+						stateIds.add((Long)objects[5]);
+					
 				}
-				
-				
-				
 				if(parliamentAssemblyIds != null && parliamentAssemblyIds.size() > 0){
 					List<Object[]> constDetails = constituencyDAO.getConstituencyInfoByConstituencyIdList(parliamentAssemblyIds);
 					if(constDetails != null && constDetails.size() >0){
@@ -1641,6 +1685,35 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 					}
 				}
 				
+				
+				if(tehsilIds != null && tehsilIds.size() > 0){
+					List<Object[]> objectsList = tehsilDAO.getTehsilNameByTehsilIdsList(tehsilIds);
+					if(objectsList != null && objectsList.size() > 0){
+						for (Object[] object : objectsList) {
+							tehsilNamesMap.put((Long)object[0], object[1].toString());
+						}
+					}
+				}
+				if(localBodyIds != null && localBodyIds.size() > 0)
+				{
+					List<Object[]> objectsList = localElectionBodyDAO.findByLocalElecBodyIds(localBodyIds);
+					if(objectsList != null && objectsList.size() > 0){
+						for (Object[] object : objectsList) {
+							localEleNamesMap.put((Long)object[0], object[1].toString() + object[2].toString());
+						}
+					}
+				}
+				if(stateIds != null && stateIds.size() > 0)
+				{
+					for(Long stateId : stateIds)
+					{
+						if(stateId == 1l)
+							stateNamesMap.put(stateId, "Andhra Pradesh");
+						else
+							stateNamesMap.put(stateId, "Telangana");	
+					}
+				}
+				
 				}
 				//set data to return list
 				//0-tdpCadreId,1-name,2-publicRepresentativeTypeId,3-type,4-levelId,5-levelValue,6-image
@@ -1655,26 +1728,45 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setDesignation(objects[3] != null? objects[3].toString() : "");
 						if(roleType.equalsIgnoreCase("PR"))
 						{
-							if(objects[4] != null && ((Long)objects[4] == 1l || (Long)objects[4] == 2l)){
+							if(objects[4] != null ){//&& ((Long)objects[4] == 1l || (Long)objects[4] == 2l || 
 								if(parliamentAssemblyNamesMap.get((Long)objects[5]) != null){
 									if((Long)objects[4] == 1l){
 										vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" PARLIAMENT");
 									}else if((Long)objects[4] == 2l){
 										vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" ASSEMBLY");
 									}
+									else if((Long)objects[4] == 3l){
+										vo.setStateName(parliamentAssemblyNamesMap.get((Long)objects[5])+" MPTC");
+									}
 									
-								}else{
+									
+								}
+								
+								else if(districtNamesMap.get((Long)objects[5]) != null && (Long)objects[4] == 5l){
+									vo.setStateName(districtNamesMap.get((Long)objects[5])+" DISTRICT");
+								}
+								else if(tehsilNamesMap.get((Long)objects[5]) != null && ((Long)objects[4] == 3l || (Long)objects[4] == 4l ||  (Long)objects[4] == 7l)){
+									vo.setStateName(tehsilNamesMap.get((Long)objects[5])+" MANDAL");
+								}
+								
+								else if(localEleNamesMap.get((Long)objects[5]) != null && (Long)objects[4] == 8l){
+									vo.setStateName(localEleNamesMap.get((Long)objects[5]));
+								}
+								else if(stateNamesMap.get((Long)objects[5]) != null && (Long)objects[4] == 6l){
+									vo.setStateName(stateNamesMap.get((Long)objects[5]));
+								}
+								else{
 									vo.setStateName("");
 								}
 								
-							}else if(objects[4] != null && (Long)objects[4] == 5l){
+							}/*else if(objects[4] != null && (Long)objects[4] == 5l){
 								if(districtNamesMap.get((Long)objects[5]) != null){
 									vo.setStateName(districtNamesMap.get((Long)objects[5])+" DISTRICT");
 								}else{
 									vo.setStateName("");
 								}
 								
-							}
+							}*/
 						}	
 						
 						else
