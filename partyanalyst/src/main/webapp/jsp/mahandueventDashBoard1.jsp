@@ -2840,6 +2840,8 @@ var tableToExcel = (function() {
 				str+='<th>ROLE</th>';
 				str+='<th>LOCATION</th>';
 				str+='<th>ATTENDED</th>';
+				for(var i in result[0].datesList)
+				str+='<th>'+ result[0].datesList[i].name+'</th>';
 				str+='</thead>';
 				for(var i in result){
 					str+='<tr>';
@@ -2851,6 +2853,13 @@ var tableToExcel = (function() {
 						str+='<td>Yes</td>';
 					}else if(!result[i].status){
 						str+='<td>No</td>';
+					}
+					for(var j in result[i].datesList)
+					{
+						if(result[i].datesList[j].totalDaydataExist == true)
+							str+='<td>YES</td>';
+						else
+						str+='<td>NO</td>';	
 					}
 					str+='</tr>';
 				}
