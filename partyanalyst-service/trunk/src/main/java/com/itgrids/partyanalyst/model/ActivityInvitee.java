@@ -6,6 +6,9 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.util.Date;
 
@@ -22,6 +25,8 @@ public class ActivityInvitee implements Serializable {
 	private Long activityInviteeId;
 	private Date activityDate;
 	private Long activityScopeId;
+	private ActivityScope activityScope;
+	
 	private Long day;
 	private Long insertedBy;
 	private Date insertionTime;
@@ -58,6 +63,16 @@ public class ActivityInvitee implements Serializable {
 		this.activityScopeId = activityScopeId;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "activity_scope_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityScope getActivityScope() {
+		return activityScope;
+	}
+	public void setActivityScope(ActivityScope activityScope) {
+		this.activityScope = activityScope;
+	}
 	@Column(name="day")
 	public Long getDay() {
 		return this.day;
@@ -85,5 +100,7 @@ public class ActivityInvitee implements Serializable {
 	public void setInsertionTime(Date insertionTime) {
 		this.insertionTime = insertionTime;
 	}
+	
+	
 
 }
