@@ -3,6 +3,11 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.util.Date;
 
 
@@ -17,6 +22,8 @@ public class ActivityAttendance implements Serializable {
 	private Long activityAttendanceId;
 	private Date activityDate;
 	private Long activityLocationInfoId;
+	private ActivityLocationInfo activityLocationInfo;
+	private ActivityScope activityScope;
 	private Long activityScopeId;
 	private Date attendedTime;
 	private Long day;
@@ -60,6 +67,21 @@ public class ActivityAttendance implements Serializable {
 	}
 
 
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "activity_location_info_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityLocationInfo getActivityLocationInfo() {
+		return activityLocationInfo;
+	}
+
+
+	public void setActivityLocationInfo(ActivityLocationInfo activityLocationInfo) {
+		this.activityLocationInfo = activityLocationInfo;
+	}
+
+
 	@Column(name="activity_scope_id")
 	public Long getActivityScopeId() {
 		return this.activityScopeId;
@@ -68,7 +90,16 @@ public class ActivityAttendance implements Serializable {
 	public void setActivityScopeId(Long activityScopeId) {
 		this.activityScopeId = activityScopeId;
 	}
-
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "activity_scope_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ActivityScope getActivityScope() {
+		return activityScope;
+	}
+	public void setActivityScope(ActivityScope activityScope) {
+		this.activityScope = activityScope;
+	}
 	@Column(name="attended_time")
 	public Date getAttendedTime() {
 		return this.attendedTime;
