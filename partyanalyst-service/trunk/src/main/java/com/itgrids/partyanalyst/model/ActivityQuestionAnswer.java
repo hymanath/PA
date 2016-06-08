@@ -42,6 +42,10 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	private ActivityLocationInfo activityLocationInfo;
 	private ActivityOption activityOption;
 	private TabDetails tabDetails;
+	private ActivityDaywiseQuestionnaire activityDaywiseQuestionnaire;
+	private Long activityDaywiseQuestionnaireId;
+	private Date activityDate ;
+	private Long day;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -179,6 +183,37 @@ public class ActivityQuestionAnswer extends BaseModel implements Serializable{
 	}
 	public void setTabDetails(TabDetails tabDetails) {
 		this.tabDetails = tabDetails;
+	}
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "activity_daywise_questionnaire_id",insertable=false,updatable=false)
+	public ActivityDaywiseQuestionnaire getActivityDaywiseQuestionnaire() {
+		return activityDaywiseQuestionnaire;
+	}
+	public void setActivityDaywiseQuestionnaire(
+			ActivityDaywiseQuestionnaire activityDaywiseQuestionnaire) {
+		this.activityDaywiseQuestionnaire = activityDaywiseQuestionnaire;
+	}
+	@Column(name = "activity_daywise_questionnaire_id")
+	public Long getActivityDaywiseQuestionnaireId() {
+		return activityDaywiseQuestionnaireId;
+	}
+	public void setActivityDaywiseQuestionnaireId(
+			Long activityDaywiseQuestionnaireId) {
+		this.activityDaywiseQuestionnaireId = activityDaywiseQuestionnaireId;
+	}
+	@Column(name = "activity_date")
+	public Date getActivityDate() {
+		return activityDate;
+	}
+	public void setActivityDate(Date activityDate) {
+		this.activityDate = activityDate;
+	}
+	@Column(name = "day")
+	public Long getDay() {
+		return day;
+	}
+	public void setDay(Long day) {
+		this.day = day;
 	}
 	
 	
