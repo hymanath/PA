@@ -306,3 +306,59 @@ function buildSurveysOnCandidateDetails(result){
 		$('.ivrSurveyCandtDetailsCls').html("NO DATA AVAILABLE");
 	}
 }
+function getCandateActivityAttendance(){
+	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+	var jsObj={
+		cadreId:globalCadreId
+	}
+	
+	$.ajax({
+			type:'POST',
+			 url: 'getCandateActivityAttendanceAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result!= null && result.length >0)
+					buildCandateActivityAttendance(result);
+				console.log(result);
+			});
+}
+getCandateActivityAttendance();
+function buildCandateActivityAttendance(result){
+	var str = '';
+	
+	str+='<table class="table table-bordered">';
+	str+='<thead style="background:#ccc">';
+	str+='<th>Activity level</th>';
+	str+='<th>Activity Name</th>';
+	str+='<th>Invited</th>';
+	str+='<th>Attended</th>';
+	str+='<th>Absent</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){
+	str+='<tr>';
+	str+='<td>'+result[i].isLocation+'</td>';
+	str+='<td>'+result[i].attendendLocation+'</td>';
+	if(result[i].invitteeCnt == 0){
+		str+='<td>-</td>';
+	}else{
+		str+='<td>'+result[i].invitteeCnt+'</td>';
+	}
+	if(result[i].attendedCount == 0){
+	str+='<td>-</td>';
+	}else{
+		str+='<td>'+result[i].invitteeCnt+'</td>';
+	}
+	if(result[i].abscentCnt == 0){
+	str+='<td>-</td>';
+	}else{
+		str+='<td>'+result[i].abscentCnt+'</td>';
+	}
+	
+	str+='</tr>';
+	}
+	str+='</tbody>';
+	str+='</table>';
+	
+	$("#activityAttented").html(str);
+}

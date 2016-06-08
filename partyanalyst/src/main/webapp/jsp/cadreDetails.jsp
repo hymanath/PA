@@ -494,6 +494,8 @@ var globalCadreId = '${cadreId}';
 									  <div class="panel-body">
 										<div id="activityTableDivId" class="table-responsive"></div>
 										<div id="activityAttendedTableDivId" class="table-responsive"></div>
+										<div class="table-responsive" id="activityAttented">
+										</div>
 									  </div>
 									</div>
 								  </div>
