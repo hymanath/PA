@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
@@ -95,8 +96,15 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private GrievanceDetailsVO gerGrievanceDetailsVO;
 	private GrievanceSimpleVO grievanceSampleVO;
 	private List<GrievanceSimpleVO> grievanceSimplevoList;
+	private List<ActivityVO> activityVOList;
 	
 	
+	public List<ActivityVO> getActivityVOList() {
+		return activityVOList;
+	}
+	public void setActivityVOList(List<ActivityVO> activityVOList) {
+		activityVOList = activityVOList;
+	}
 	public List<GrievanceSimpleVO> getGrievanceSimplevoList() {
 		return grievanceSimplevoList;
 	}
@@ -1284,6 +1292,16 @@ public String updateLeaderShip(){
 			jObj=new JSONObject(getTask());
 			
 			idNameVoList=cadreDetailsService.getEventAttendanceOfCadre(jObj.getLong("cadreId"),jObj.getLong("eventId"));
+		}catch(Exception e){
+			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCandateActivityAttendance(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"));
 		}catch(Exception e){
 			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
 		}

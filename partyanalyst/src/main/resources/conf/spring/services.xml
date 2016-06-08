@@ -2674,6 +2674,9 @@
 		 <property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO" />
 		  <property name="ivrSurveyCandidateQuestionDAO" ref="ivrSurveyCandidateQuestionDAO" />
 		   <property name="ivrSurveyQuestionOptionDAO" ref="ivrSurveyQuestionOptionDAO" />
+		   <property name="activityScopeRequiredAttributesDAO" ref="activityScopeRequiredAttributesDAO" />
+		   <property name="activityInviteeDAO" ref="activityInviteeDAO" />
+		   <property name="activityAttendanceDAO" ref="activityAttendanceDAO" />
 		  
 	</bean>
 	
