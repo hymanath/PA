@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -73,8 +74,10 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
+import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
+import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.BloodBankDashBoardVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreOverviewVO;
@@ -111,6 +114,7 @@ import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -178,9 +182,48 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private AppointmentCandidateRelationDAO 	appointmentCandidateRelationDAO;
 	private IIvrSurveyCandidateQuestionDAO ivrSurveyCandidateQuestionDAO;
 	private IIvrSurveyQuestionOptionDAO ivrSurveyQuestionOptionDAO;
+	private IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO;
+	private IActivityInviteeDAO activityInviteeDAO;
+	private IActivityAttendanceDAO activityAttendanceDAO;
+	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 	
 	
 	
+	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
+		return setterAndGetterUtilService;
+	}
+
+	public void setSetterAndGetterUtilService(
+			SetterAndGetterUtilService setterAndGetterUtilService) {
+		this.setterAndGetterUtilService = setterAndGetterUtilService;
+	}
+
+	public IActivityAttendanceDAO getActivityAttendanceDAO() {
+		return activityAttendanceDAO;
+	}
+
+	public void setActivityAttendanceDAO(
+			IActivityAttendanceDAO activityAttendanceDAO) {
+		this.activityAttendanceDAO = activityAttendanceDAO;
+	}
+
+	public IActivityInviteeDAO getActivityInviteeDAO() {
+		return activityInviteeDAO;
+	}
+
+	public void setActivityInviteeDAO(IActivityInviteeDAO activityInviteeDAO) {
+		this.activityInviteeDAO = activityInviteeDAO;
+	}
+
+	public IActivityScopeRequiredAttributesDAO getActivityScopeRequiredAttributesDAO() {
+		return activityScopeRequiredAttributesDAO;
+	}
+
+	public void setActivityScopeRequiredAttributesDAO(
+			IActivityScopeRequiredAttributesDAO activityScopeRequiredAttributesDAO) {
+		this.activityScopeRequiredAttributesDAO = activityScopeRequiredAttributesDAO;
+	}
+
 	public IIvrSurveyQuestionOptionDAO getIvrSurveyQuestionOptionDAO() {
 		return ivrSurveyQuestionOptionDAO;
 	}
@@ -8692,4 +8735,79 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		}
 		return returnList;
 	}
+
+public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
+	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
+	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getScopeIds();
+	if(activityScopeIds != null && activityScopeIds.size() >0){
+		String[] setterPropertiesList = {"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId"};//activityScopeId,activityName,activityLevelId,activityLevelName,activityId
+		returnList = (List<ActivityVO>) setterAndGetterUtilService.setValuesToVO(activityScopeIds, setterPropertiesList, "com.itgrids.partyanalyst.dto.ActivityVO");
+		//setTemplateData(returnList,activityScopeIds);
+	}
+	
+	List<Object[]> invittes = activityInviteeDAO.getActivityScopeAndLevels(cadreId);
+	if(invittes != null && invittes.size() >0){
+		
+	for(Object[] obj : invittes){
+		ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);
+		if(vo != null){
+			//vo.setActivityNameId(commonMethodsUtilService.getLongValueForObject(obj[3]));//activityId
+			vo.setInvitteeCnt(commonMethodsUtilService.getLongValueForObject(obj[1]));
+			//vo.setAttendendLocation(obj[4] != null ? obj[4].toString() : "");//activity Name
+			//vo.setLocationLevel(obj[1] != null ? (Long)obj[1] : 0l);//activity Level Id
+			//vo.setIsLocation(obj[2] != null ? obj[2].toString() : "");//activity Level Name
+		}
+	}
+	}
+	List<Object[]> attendees = activityInviteeDAO.getActivityScopeAndLevels(cadreId);
+	if(attendees != null && attendees.size() >0){
+		for(Object[] obj : attendees){
+			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
+			if(vo != null){
+				//vo.setActivityNameId(commonMethodsUtilService.getLongValueForObject(obj[3]));//activityId
+				vo.setAttendedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+				//vo.setAttendendLocation(obj[4] != null ? obj[4].toString() : "");//activity Name
+				//vo.setLocationLevel(obj[1] != null ? (Long)obj[1] : 0l);//activity Level Id
+				//vo.setIsLocation(obj[2] != null ? obj[2].toString() : "");//activity Level Name
+			}
+			
+			if(vo.getInvitteeCnt().longValue() >0l ){
+				vo.setAbscentCnt(vo.getInvitteeCnt().longValue() - vo.getAttendedCount().longValue() );
+			}
+		}
+		}
+	return returnList;
+	
+}
+/*
+public void setTemplateData(List<ActivityVO> returnList,List<Long> activityScopeIds){
+	try{
+	for(Long activityScopId: activityScopeIds){
+		ActivityVO vo = new ActivityVO();
+		vo.setActivityScopeId(activityScopId != null ? (Long) activityScopId : 0l);
+		vo.setInvitteeCnt(0l);
+		vo.setAttendedCount(0l);
+		vo.setAbscentCnt(0l);
+		returnList.add(vo);
+	}
+	}catch (Exception e) {
+		LOG.error("Exception Occured in setTemplateData() method, Exception -",e);
+	}
+}
+
+public ActivityVO getMatchedVOForScopeId(Long activityScopeId,List<ActivityVO> returnList)
+{
+	try{
+		for(ActivityVO vo: returnList)
+		{
+			if(vo.getActivityScopeId().longValue() == activityScopeId)
+				return vo;
+		}
+		
+		return null;
+	}catch (Exception e) {
+		LOG.error("Exception Occured in getMatchedVOForScopeId() method, Exception -",e);
+		return null;
+	}
+}*/
 }

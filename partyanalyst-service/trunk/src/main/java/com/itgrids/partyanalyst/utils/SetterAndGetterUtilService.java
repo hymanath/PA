@@ -162,4 +162,36 @@ public class SetterAndGetterUtilService {
         }
 		return ret;
 	}
+	
+	/*
+	 * @Author : Srishailam Pittala
+	 * @Date : 4th June, 2016
+	 * Description: This method returns an Object after search the object from list based on search criteria
+	 * */
+	public static Object getMatchedVOfromList(List<?> searchList,String propertyName,String value){
+		Object voObject = null;
+		try {
+			for (Object vo : searchList) {
+				Class<?> clazz = vo.getClass();
+				Field field = clazz.getDeclaredField(propertyName);
+				field.setAccessible(true);
+				Object fieldValue = field.get(vo);
+				Type type = field.getType();
+				if((type.equals(String.class))){
+					String tempFieldValue = (String) fieldValue;
+					if(tempFieldValue != null && tempFieldValue.equalsIgnoreCase(value.trim()))
+						return vo;
+	        	}
+				else if((type.equals(Long.class))){
+					Long tempFieldValue = (Long) fieldValue;
+					if(tempFieldValue != null && tempFieldValue.longValue() == Long.valueOf(value.toString().trim()))
+						return vo;
+	        	}
+			}
+		} catch (Exception e) {
+			LOG.error(" Error occured getMatchedVOfromList in SetterAndGetterUtilService Class",e);
+		}
+		return voObject;
+	}
+	
 }

@@ -24,7 +24,7 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long localElectionBodyId;
 	private Long villageId;
 	private Long wardId;
-	private Long attendedCount;
+	private Long attendedCount=0l;
 	private String remarks;
 	private String startDate;
 	private String endDate;
@@ -82,7 +82,29 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long imagesCnt =0l;
 	private Long orderNo;
 	private String status;
+	private Long invitteeCnt = 0l;
+	private Long attendeeCnt = 0l;
+	private Long abscentCnt = 0l;
 	
+	
+	public Long getInvitteeCnt() {
+		return invitteeCnt;
+	}
+	public void setInvitteeCnt(Long invitteeCnt) {
+		this.invitteeCnt = invitteeCnt;
+	}
+	public Long getAttendeeCnt() {
+		return attendeeCnt;
+	}
+	public void setAttendeeCnt(Long attendeeCnt) {
+		this.attendeeCnt = attendeeCnt;
+	}
+	public Long getAbscentCnt() {
+		return abscentCnt;
+	}
+	public void setAbscentCnt(Long abscentCnt) {
+		this.abscentCnt = abscentCnt;
+	}
 	
 	public String getStatus() {
 		return status;
