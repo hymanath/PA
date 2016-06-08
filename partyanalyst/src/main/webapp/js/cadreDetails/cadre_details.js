@@ -3150,7 +3150,7 @@ function getPartyMeetingDetaildReprt()
 						
 						str+='<tr class="text-center">';
 						str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
-						str+='<td> <ul class="list-inline"><li class="show-dropdown invitedDetlsDiv" name="invitedDetlsDiv'+i+'" key="'+result.partyMeetingVOList[i].id+'"><u style="color:#23527C;"> '+result.partyMeetingVOList[i].invitedCount+'</u> ';
+						str+='<td> <ul class="list-inline"><li class="invitedDetlsDiv" style="cursor:pointer;color:#13759D" name="invitedDetlsDiv'+i+'" key="'+result.partyMeetingVOList[i].id+'">'+result.partyMeetingVOList[i].invitedCount+'';
 						str+='<ul class="count-hover left_arrow" >';
 						str+='<li>';
 							str+='<div id="invitedDetlsDiv'+i+'" class="invitationCls"></div>';
@@ -3216,7 +3216,55 @@ function getPartyMeetingDetaildReprt()
 
 
 					$('#partyMetindetlsDivId').html(str);
-					str='';
+					$(document).on("click",".invitedDetlsDiv",function(){
+						$("#meetingParticipatingDivId").modal("show");
+						var divId = $(this).attr('name');
+						var meetingTypeId = $(this).attr('key');
+						var jsObj={
+							tdpCadreId:globalCadreId,
+							meetingTypeId:meetingTypeId
+						}	
+						$.ajax({
+								type:'POST',
+								 url: 'getPartyMeetingTypeWiseDetails.action',
+								 data : {task:JSON.stringify(jsObj)} ,
+								}).done(function(result){
+									var str='';
+									if(result != null && result.partyMeetingVOList != null && result.partyMeetingVOList.length >0)
+									{
+									str+='<table class="table table-bordered" style="margin: 10px">';
+										str+='<thead>';
+										str+='<tr>';
+										//str+='<th style=""> LOCATION </th>';
+										str+='<th style=""> MEETING NAME  </th>';
+										str+='<th style=""> START DATE</th>';
+										str+='<th style=""> END DATE</th>';
+										str+='</tr>';
+										str+='<thead>';
+										str+='<tbody>';
+										if(result.partyMeetingVOList != null && result.partyMeetingVOList.length>0)
+										{
+											for(var k in result.partyMeetingVOList)
+											{
+												if(result.partyMeetingVOList[k].name != null ){
+													str+='<tr>';
+													//str+='<td>'+result.partyMeetingVOList[k].location+'</td>';
+													str+='<td>'+result.partyMeetingVOList[k].name+'</td>';										
+													str+='<td>'+result.partyMeetingVOList[k].startDateStr+'</td>';
+													str+='<td>'+result.partyMeetingVOList[k].endDateStr+'</td>';
+													str+='</tr>';
+												}												
+											}
+										}
+										str+='</tbody>';
+										str+='</table>';
+										$("#meetingParticipatingDivModalBodyId").html(str);
+										
+									//$('#'+divId+'').html(str);
+									}
+								});
+					});
+					/*str='';
 					$(".invitedDetlsDiv").hover(function(){
 						var divId = $(this).attr('name');
 						var meetingTypeId = $(this).attr('key');
@@ -3263,7 +3311,7 @@ function getPartyMeetingDetaildReprt()
 									}
 								});
 					});
-					
+					*/
 					
 					var str='';
 					str+='<table class="table m_0 table-bordered">';

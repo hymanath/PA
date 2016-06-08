@@ -1133,6 +1133,25 @@ var globalCadreId = '${cadreId}';
 			</div><!— /.modal-content —>
 		  </div><!— /.modal-dialog —>
 		</div><!— /.modal —>
+		<div class="modal fade" id="meetingParticipatingDivId">
+		  <div class="modal-dialog modal-sm" style="width:75%">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center"><span id="meetingParticipatingDivModalHeadingId"></span>PARTY MEETING PARTICIPATION INVITED DETAILS </h4>
+			  </div>
+			  <div class="modal-body">
+				<div id="meetingParticipatingDivModalBodyId">
+				</div>
+				<div id="statusDivIdForGrievance" class="m_top20"></div>
+				<center><img id="dataLoadingsImgForGrievanceStatusDetails" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
