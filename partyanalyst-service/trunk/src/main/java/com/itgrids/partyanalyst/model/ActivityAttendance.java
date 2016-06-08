@@ -31,6 +31,7 @@ public class ActivityAttendance implements Serializable {
 	private Date insertedTime;
 	private String isAttended;
 	private Long tdpCadreId;
+	private TdpCadre tdpCadre;
 
 	public ActivityAttendance() {
 	}
@@ -156,5 +157,20 @@ public class ActivityAttendance implements Serializable {
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
 	}
+
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_cadre_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+
+
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
+	
 
 }

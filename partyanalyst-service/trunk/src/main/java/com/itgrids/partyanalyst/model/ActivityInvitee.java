@@ -30,7 +30,27 @@ public class ActivityInvitee implements Serializable {
 	private Long day;
 	private Long insertedBy;
 	private Date insertionTime;
+	private Long tdpCadreId;
+	private TdpCadre tdpCadre;
 
+	@Column(name="tdp_cadre_id")
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_cadre_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
+	}
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
+	}
 	public ActivityInvitee() {
 	}
 	@Id

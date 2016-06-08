@@ -10,5 +10,6 @@ public interface IActivityScopeRequiredAttributesDAO extends GenericDao<Activity
 	
 	public List<Object[]> getActivityRequiredAttributes(List<Long> scopeIds);
 	public List<Object[]> getActivityRequiredAttributesForScope(Long scopeId);
+	public List<Object[]> getScopeIds();
 
 }
