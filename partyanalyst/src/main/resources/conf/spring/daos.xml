@@ -2807,5 +2807,20 @@
 	<bean id="notificationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="activityDaywiseQuestionnaireDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityDaywiseQuestionnaireDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="activityDateTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityDateTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="activityLocationInfoDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityLocationInfoDatesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="activityInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityInviteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="activityAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttendanceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
