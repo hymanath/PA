@@ -109,7 +109,7 @@ public class ActivityAttendance implements Serializable {
 		this.attendedTime = attendedTime;
 	}
 
-
+	@Column(name="day")
 	public Long getDay() {
 		return this.day;
 	}
