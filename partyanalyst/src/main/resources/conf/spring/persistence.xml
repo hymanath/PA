@@ -855,6 +855,9 @@
 				   <value>com.itgrids.partyanalyst.model.NotificationType</value>
 				   <value>com.itgrids.partyanalyst.model.Notifications</value>
 				   <value>com.itgrids.partyanalyst.model.AccommodationTracking</value>
+				   <value>com.itgrids.partyanalyst.model.ActivityInvitee</value>
+				   <value>com.itgrids.partyanalyst.model.ActivityAttendance</value>
+				   
 				 </list>
 			
 		</property>
