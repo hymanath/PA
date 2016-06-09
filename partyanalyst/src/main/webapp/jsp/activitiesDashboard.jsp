@@ -397,6 +397,26 @@ $(".fancybox").fancybox();
 function generateExcel(divId){
 	tableToExcel(divId, 'Location Wise Report');
 }
+function getActivityQuestionaryOptionsByActivityDate()
+{
+	alert('aa')
+	var activityDate = "05-01-2016";
+	var day = 1;
+	var jobj = {
+		activityDate : activityDate,
+		day:day,
+		activityScopeId:1,
+		task:""
+	}
+	 $.ajax({
+     type : "GET",
+     url  : "getActivityQuestionaryOptionsByActivityDateAction.action",
+     data : {task:JSON.stringify(jobj)}
+     }).done(function(result){
+
+	 })
+	
+}
 
 </script>
 <script>
@@ -414,6 +434,9 @@ var tableToExcel = (function() {
 })()
 
 
+</script>
+<script>
+getActivityQuestionaryOptionsByActivityDate();
 </script>
 </body>
 </html>
