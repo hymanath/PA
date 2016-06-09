@@ -12467,9 +12467,37 @@
 			<param name="root">searchList</param>
 		</result>
 	</action>
+	<action name="getAllActivitiesAction" class="committeeDashBoardAction" method="getAllActivities">
+	  <result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
+	<action name="getAllActivityLevelsByActivityAction" class="committeeDashBoardAction" method="getAllActivityLevelsByActivity">
+	  <result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
+	
+	<action name="updateActivityNewAction" class="committeeDashBoardAction" method="updateActivityNew">
+	   	<result name="success">/jsp/updateActivityNew.jsp</result>
+		<result name="input">/jsp/loginForm.jsp?src=updateActivityAction</result>
+		<result name="error">/jsp/entitlementErrorPage.jsp</result>
+	</action>
+	
+	<action name="getBetweenDatesOfActivityScopeAction" class="committeeDashBoardAction" method="getBetweenDatesOfActivityScope">
+	  <result type="json" name="success">
+			<param name="root">locationWiseBoothDetailsVO1</param>
+		</result>
+	</action>
 	<action name="getCandateActivityAttendanceAction" class="cadreDetailsAction" method="getCandateActivityAttendance">
 	  <result type="json" name="success">
 			<param name="root">activityVOList</param>
+		</result>
+	</action>
+	<action name="getLocationDetailsForActivityNew" class="committeeDashBoardAction" method="getLocationDetailsForActivityNew">
+	    <result type="json" name="success">		   
+		    <param name="root">locationWiseBoothDetailsVO1</param>
 		</result>
 	</action>
 </package>

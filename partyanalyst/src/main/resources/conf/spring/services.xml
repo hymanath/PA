@@ -2751,9 +2751,10 @@
 		   <property name="activityScopeDAO" ref="activityScopeDAO" />
 		   <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 		   <property name="locationInfoDAO" ref="locationInfoDAO" />
-		    <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
-		     <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
-		   
+		   <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
+		   <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
+		   <property name="activityRequiredAttributeDAO" ref="activityRequiredAttributeDAO" />
+		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />		   
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
@@ -3017,6 +3018,7 @@
 		<property name="userAccessLevelValueDAO" ref="userAccessLevelValueDAO" />
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 		<property name="activityStatusQuestionnaireDAO" ref="activityStatusQuestionnaireDAO" />
+		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
@@ -3173,6 +3175,8 @@
 	   <property name="notificationTypeDAO" ref="notificationTypeDAO"></property>
 	   <property name="constituencyDAO" ref="constituencyDAO"></property>
 	</bean>
+	
+	<bean name="setterAndGetterUtilService" class="com.itgrids.partyanalyst.utils.SetterAndGetterUtilService" > </bean>
 	
 </beans>		
 	

@@ -662,5 +662,6 @@
 	 
 	 <pattern>/notificationAction*</pattern>
 	  <pattern>/rescheduledCandidateAction*</pattern>
+	  <pattern>/updateActivityNewAction*</pattern>
 	</decorator> 
 </decorators>
