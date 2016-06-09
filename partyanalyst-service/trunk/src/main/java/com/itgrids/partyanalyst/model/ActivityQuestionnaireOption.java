@@ -28,6 +28,7 @@ public class ActivityQuestionnaireOption extends BaseModel implements Serializab
 	private Long activityQuestionnaireOptionId;
 	private Long activityQuestionnaireId;
 	private Long activityOptionId;
+	
 	private Long orderNo;
 	private String isDeleted;
 	private Long insertedBy;

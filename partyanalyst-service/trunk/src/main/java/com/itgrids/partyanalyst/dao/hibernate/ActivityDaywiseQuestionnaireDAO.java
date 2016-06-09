@@ -1,6 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IActivityDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityDaywiseQuestionnaireDAO;
@@ -11,6 +15,19 @@ public class ActivityDaywiseQuestionnaireDAO extends GenericDaoHibernate<Activit
 	public ActivityDaywiseQuestionnaireDAO() {
 		super(ActivityDaywiseQuestionnaire.class);
 		
+	}
+	public List<Long> getActivityQuestionIds(Date activityDate,Long day,Long activityScopeId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.activityQuestionnaireId  from ActivityDaywiseQuestionnaire model" +
+				" where model.isDeleted = 'false' ");
+		if(activityDate != null)
+			str.append(" and date(model.activityDate) = :activityDate  and model.day = :day and model.activityQuestionnaire.activityScopeId = :activityScopeId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("activityDate", activityDate);
+		query.setParameter("day", day);
+		query.setParameter("activityScopeId", activityScopeId);
+		return query.list();
 	}
 
 }
