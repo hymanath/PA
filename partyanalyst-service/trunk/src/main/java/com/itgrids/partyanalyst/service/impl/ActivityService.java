@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
+import com.itgrids.partyanalyst.dao.impl.IActivityDaywiseQuestionnaireDAO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
 import com.itgrids.partyanalyst.dto.ActivityLocationVO;
@@ -177,7 +178,9 @@ public class ActivityService implements IActivityService{
 	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IActivityStatusQuestionnaireDAO activityStatusQuestionnaireDAO;
-	private SetterAndGetterUtilService setterAndGetterUtilService;
+	private IActivityDaywiseQuestionnaireDAO activityDaywiseQuestionnaireDAO;
+	
+private SetterAndGetterUtilService setterAndGetterUtilService;
 	
 	
 	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
@@ -186,6 +189,15 @@ public class ActivityService implements IActivityService{
 	public void setSetterAndGetterUtilService(
 			SetterAndGetterUtilService setterAndGetterUtilService) {
 		this.setterAndGetterUtilService = setterAndGetterUtilService;
+	}
+	
+	
+	public IActivityDaywiseQuestionnaireDAO getActivityDaywiseQuestionnaireDAO() {
+		return activityDaywiseQuestionnaireDAO;
+	}
+	public void setActivityDaywiseQuestionnaireDAO(
+			IActivityDaywiseQuestionnaireDAO activityDaywiseQuestionnaireDAO) {
+		this.activityDaywiseQuestionnaireDAO = activityDaywiseQuestionnaireDAO;
 	}
 	public IActivityStatusQuestionnaireDAO getActivityStatusQuestionnaireDAO() {
 		return activityStatusQuestionnaireDAO;
@@ -5406,7 +5418,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	}
 		return questionMap;
 	}
-	
+
 	public List<IdNameVO> getAllActivities(){
 		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
 		try{
@@ -5437,5 +5449,55 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		}
 		return finalList;
 	}
+	public ActivityVO getActivityQuestionaryOptionsByActivityDate(String activityDate,Long day,Long activityScopeId)
+	{
+		ActivityVO finalVO = new ActivityVO(); 
+		try{
+			Date date = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(activityDate != null && !activityDate.isEmpty())
+				date = format.parse(activityDate);
+			 List<Long> activityQuestionnaireIds = activityDaywiseQuestionnaireDAO.getActivityQuestionIds(date, day,activityScopeId);
+			if(activityQuestionnaireIds != null && activityQuestionnaireIds.size() > 0)
+			{
+			 List<Object[]> questionOptionsList = activityQuestionnaireOptionDAO.getActivityQuestionOptions(activityQuestionnaireIds);
+			 if(questionOptionsList != null && questionOptionsList.size() > 0)
+			 {
+			
+						int number=0;
+						for (Object[] objects : questionOptionsList) {
+							ActivityVO matchedVO = getMatchedQuestionVo(finalVO,(Long)objects[0]);
+							number = number+1;
+							if(matchedVO == null){
+								matchedVO = new ActivityVO();
+								matchedVO.setQuestionId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+								matchedVO.setQuestion(number+") "+commonMethodsUtilService.getStringValueForObject(objects[1]));
+								matchedVO.setOptionTypeId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+								matchedVO.setOptionType(commonMethodsUtilService.getStringValueForObject(objects[3]));
+								matchedVO.setRemarks(objects[6]!=null ? objects[6].toString():" ");
+								matchedVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(objects[7]));
+								finalVO.getActivityVoList().add(matchedVO);
+							}
+							
+							ActivityVO optionVO = new ActivityVO();
+							optionVO.setOptionId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							optionVO.setOption(commonMethodsUtilService.getStringValueForObject(objects[5].toString()));
+							matchedVO.getOptionsList().add(optionVO);
+							
+						}
+					}
+			 }
+			 
+			
+			
+		}
+		catch(Exception e) {
+			Log.error("Exception Occured in getActivityQuestionaryOptionsByActivityDate method in ActivityService ",e);
+		}
+		return finalVO;
+	}
+	
+	
+	
 	
 }

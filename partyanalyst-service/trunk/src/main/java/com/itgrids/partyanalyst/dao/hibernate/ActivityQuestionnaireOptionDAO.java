@@ -193,4 +193,19 @@ public List<Object[]> getQuestionnaireOptionsDetailsOfScope(List<Long> scopeIds)
 	return query.list();
 }
 
+
+public List<Object[]> getActivityQuestionOptions(List<Long> activityQuestionnaireIds)
+{
+	Query query = getSession().createQuery("select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
+				" model.activityQuestionnaire.activityQuestion.question, " +//question
+				" model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
+				" model.activityQuestionnaire.activityOptionType.type, " +//option type
+				" model.activityOption.activityOptionId, " +//option id
+				" model.activityOption.option,model.activityQuestionnaire.hasRemark,model.activityQuestionnaire.orderNo " +//option
+			"from ActivityQuestionnaireOption model" +
+			" where model.activityQuestionnaire.activityQuestionnaireId in(:activityQuestionnaireIds)" +
+			"  group by model.activityQuestionnaire.activityQuestion.activityQuestionId,model.activityOption.activityOptionId");
+	query.setParameterList("activityQuestionnaireIds", activityQuestionnaireIds);
+	return query.list();
+}
 }

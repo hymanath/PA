@@ -67,4 +67,5 @@ public interface IActivityService {
 	public List<ActivityResponseVO> getActivityLocationInfoDetailsByActivityScope(Long activityLevel,Long activityScope,List<Long> questionIds);
 	public List<IdNameVO> getAllActivities();
 	public List<IdNameVO> getAllActivityLevelsByActivity(Long activityId);
+	public ActivityVO getActivityQuestionaryOptionsByActivityDate(String activityDate,Long day,Long activityScopeId);
 }
