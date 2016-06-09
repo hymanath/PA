@@ -175,4 +175,7 @@ public interface ICadreCommitteeService {
 	 public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsOfConstituencies(List<Long> constituencyIds);
 	 public LocationWiseBoothDetailsVO1 getActivityLocationDetails(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
 			 String searchStartDateStr,String searchEndDateStr,Long constituencyId,Long optionId,Long questionId);
+	 public LocationWiseBoothDetailsVO1 getBetweenDatesOfActivityScope(Long activityScopeId);
+	 public LocationWiseBoothDetailsVO1 getActivityLocationDetailsNew(String isChecked,Long activityScopeId,Long activityLevelId,String searchBy,Long locationId,
+			 String searchStartDateStr,String searchEndDateStr,Long constituencyId,Long optionId,Long questionId,List<String> datesList);
 }

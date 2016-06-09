@@ -120,6 +120,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
+import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class ActivityService implements IActivityService{
 
@@ -176,9 +177,16 @@ public class ActivityService implements IActivityService{
 	private IUserAccessLevelValueDAO userAccessLevelValueDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IActivityStatusQuestionnaireDAO activityStatusQuestionnaireDAO;
+	private SetterAndGetterUtilService setterAndGetterUtilService;
 	
 	
-	
+	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
+		return setterAndGetterUtilService;
+	}
+	public void setSetterAndGetterUtilService(
+			SetterAndGetterUtilService setterAndGetterUtilService) {
+		this.setterAndGetterUtilService = setterAndGetterUtilService;
+	}
 	public IActivityStatusQuestionnaireDAO getActivityStatusQuestionnaireDAO() {
 		return activityStatusQuestionnaireDAO;
 	}
@@ -5398,4 +5406,36 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	}
 		return questionMap;
 	}
+	
+	public List<IdNameVO> getAllActivities(){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> allActivities = activityDAO.getAllActivities();
+			if(commonMethodsUtilService.isListOrSetValid(allActivities)){
+				String[] setterPropertiesList = {"id","name"};
+				finalList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(allActivities, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}
+			
+		}catch (Exception e) {
+			Log.error("Exception Occured in getAllActivities method in ActivityService ",e);
+		}
+		return finalList;
+	}
+	
+	public List<IdNameVO> getAllActivityLevelsByActivity(Long activityId){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			//0.scopeId,1.levelId,2.level
+			List<Object[]> objLevelList = activityScopeDAO.getActivityLevelAndScopeIdByActivity(activityId);
+			if(commonMethodsUtilService.isListOrSetValid(objLevelList)){
+				String[] setterPropertiesList = {"orderId","id","name"};
+				finalList = (List<IdNameVO>) setterAndGetterUtilService.setValuesToVO(objLevelList, setterPropertiesList, "com.itgrids.partyanalyst.dto.IdNameVO");
+			}			
+		}catch (Exception e) {
+			Log.error("Exception Occured in getAllActivityLevelsByActivity method in ActivityService ",e);
+		}
+		return finalList;
+	}
+	
 }

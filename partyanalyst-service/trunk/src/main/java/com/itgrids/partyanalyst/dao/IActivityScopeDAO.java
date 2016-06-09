@@ -18,4 +18,6 @@ public interface IActivityScopeDAO extends GenericDao<ActivityScope, Long>{
 	public List<Object[]> getActivityLevelsDetails(Long requiredAtrrIds);
 	public List<Object[]> getActivitiesListByLevelId(Long levelId,Long requiredAtrrIds);
 	public List<Object[]> getActivityScopeIdByActivityAndLevelId(Long activityId);
+	public List<Object[]> getActivityLevelAndScopeIdByActivity(Long activityId);
+	public Object[] getRequiredDatesOfScope(Long scopeId);
 }

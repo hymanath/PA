@@ -1,29 +1,18 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+public class LocationWiseBoothDetailsVO2  implements Serializable {
 
-public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
-
-	private static final long serialVersionUID = -8852552121214870720L;
+	private static final long serialVersionUID = -179975631060911437L;
 	
 	private Long locationId;
 	private String locationName;
-	private Set<SelectOptionVO> booths;
-	private Set<SelectOptionVO> subLocations;
-	private List<SelectOptionVO> hamletsOfTownship;
-	private List<LocationWiseBoothDetailsVO> result = new ArrayList<LocationWiseBoothDetailsVO>(0);
-	private List<LocationWiseBoothDetailsVO2> result2 = new ArrayList<LocationWiseBoothDetailsVO2>(0);
-	private Long population;
+	/*private Long population;
 	private Long votesPolled;
 	private Long total = 0l;;
 	private String electionYear;
-	private Long count;
+	private Long count;*/
 	
 	private Long id;
 	private String name;
@@ -65,13 +54,6 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 		this.conductedDate = conductedDate;
 	}
 
-	public LocationWiseBoothDetailsVO(){}
-	
-	public LocationWiseBoothDetailsVO(Long locationId,String locationName)
-	{
-		this.locationId=locationId;
-		this.locationName = locationName;
-	}
 	public String getMobileNo() {
 		return mobileNo;
 	}
@@ -96,13 +78,13 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 		this.name = name;
 	}
 
-	public String getElectionYear() {
+	/*public String getElectionYear() {
 		return electionYear;
 	}
 
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
-	}
+	}*/
 
 	public Long getLocationId() {
 		return locationId;
@@ -120,7 +102,7 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 		this.locationName = locationName;
 	}
 	
-	public Long getPopulation() {
+	/*public Long getPopulation() {
 		return population;
 	}
 	
@@ -160,20 +142,6 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 		this.votesPolled = votesPolled;
 	}
 	
-	@Override
-	public boolean equals(Object obj){
-		if(obj instanceof LocationWiseBoothDetailsVO){
-			LocationWiseBoothDetailsVO vo = (LocationWiseBoothDetailsVO) obj;
-			return new EqualsBuilder().append(locationId, vo.getLocationId()).isEquals();
-		}
-		return false;
-	}
-	
-	@Override
-	public int hashCode(){
-		return new HashCodeBuilder(17, 37).append(locationId).toHashCode();
-	}
-
 	public Long getTotal() {
 		return total;
 	}
@@ -182,28 +150,13 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 		this.total = total;
 	}
 
-	public List<LocationWiseBoothDetailsVO> getResult() {
-		return result;
-	}
-
-	public void setResult(List<LocationWiseBoothDetailsVO> result) {
-		this.result = result;
-	}
 	public Long getCount() {
 		return count;
 	}
 
-	public List<LocationWiseBoothDetailsVO2> getResult2() {
-		return result2;
-	}
-	public void setResult2(List<LocationWiseBoothDetailsVO2> result2) {
-		this.result2 = result2;
-	}
 	public void setCount(Long count) {
 		this.count = count;
-	}
+	}*/
 	
-	public Object clone() throws CloneNotSupportedException{  
-		return super.clone();  
-	}  
+
 }

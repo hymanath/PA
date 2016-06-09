@@ -1,11 +1,15 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-public class LocationWiseBoothDetailsVO1 {
+public class LocationWiseBoothDetailsVO1 implements Serializable{
 
+	private static final long serialVersionUID = -7491089535741848196L;
+	
 	private Long locationId;
 	private String locationName;
 	private Set<SelectOptionVO> booths;
@@ -24,8 +28,23 @@ public class LocationWiseBoothDetailsVO1 {
 	private String conductedDate;
 	private String isAlreadyImageUpload;
 	private List<LocationWiseBoothDetailsVO> result = new ArrayList<LocationWiseBoothDetailsVO>(0);
+	private List<IdNameVO> idNameVolist;
+	private List<String> datesList;
 	
+
 	
+	public List<String> getDatesList() {
+		return datesList;
+	}
+	public void setDatesList(List<String> datesList) {
+		this.datesList = datesList;
+	}
+	public List<IdNameVO> getIdNameVolist() {
+		return idNameVolist;
+	}
+	public void setIdNameVolist(List<IdNameVO> idNameVolist) {
+		this.idNameVolist = idNameVolist;
+	}
 	public List<LocationWiseBoothDetailsVO> getResult() {
 		return result;
 	}
