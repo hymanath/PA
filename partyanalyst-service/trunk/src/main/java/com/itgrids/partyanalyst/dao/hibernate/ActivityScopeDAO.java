@@ -108,4 +108,35 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		query.setParameter("levelId", levelId);
 		return query.list();
 	}
+	
+	public List<Object[]> getActivityLevelAndScopeIdByActivity(Long activityId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.activityScopeId,model.activityLevel.activityLevelId,model.activityLevel.level from ActivityScope model " +
+				" where " +
+				" model.activity.activityId=:activityId and model.isDeleted = 'N' order by model.activityScopeId asc");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("activityId", activityId);
+		
+		return query.list();
+	}
+	public Object[] getRequiredDatesOfScope(Long scopeId){
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" SELECT date(model.startDate),date(model.endDate) " +
+				" FROM ActivityScope model " +
+				" WHERE model.isDeleted = 'N' " );
+		if(scopeId !=null && scopeId>0){
+			queryStr.append(" and model.activityScopeId = :scopeId ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(scopeId !=null && scopeId>0){
+			query.setParameter("scopeId", scopeId);
+		}
+		
+		return (Object[]) query.uniqueResult();
+		
+	}
 }
