@@ -1218,4 +1218,78 @@ public String getAllConstituencysForADistrict(){
 		return Action.SUCCESS;
 	}
 	
+	public String getAllActivities(){
+		try{
+			
+			idNameVOList = activityService.getAllActivities();
+			
+		}catch (Exception e) {
+			LOG.error("Exception occured in getAllActivities ",e);
+		}
+		return Action.SUCCESS; 
+	}
+	public String getAllActivityLevelsByActivity(){
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = activityService.getAllActivityLevelsByActivity(jObj.getLong("activityId"));
+			
+		}catch (Exception e) {
+			LOG.error("Exception occured in getAllActivityLevelsByActivity ",e);
+		}
+		return Action.SUCCESS; 
+	}
+	
+	public String updateActivityNew(){		
+		return Action.SUCCESS;
+	}
+	
+	public String getBetweenDatesOfActivityScope(){
+		try{			
+			jObj = new JSONObject(getTask());
+			locationWiseBoothDetailsVO1 = cadreCommitteeService.getBetweenDatesOfActivityScope(jObj.getLong("scopeId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getBetweenDatesOfActivityScope ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationDetailsForActivityNew()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			String checkedValue =jObj.getString("checkedValue");
+			Long activityScopeId = jObj.getLong("activityScopeId");
+			Long activityLevelId =jObj.getLong("activityLevelId");
+			String searchBy =jObj.getString("searchBy");
+			Long locationId = jObj.getLong("locationId");
+			String searchStartDateStr=jObj.getString("startDate");
+			String searchEndDateStr=jObj.getString("endDate");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long optionId = jObj.getLong("optionId");
+			Long questionId = jObj.getLong("questionId");
+			
+			JSONArray datesArr = jObj.getJSONArray("datesArr");			
+			List<String> dates = new ArrayList<String>();
+				
+			if(datesArr !=null && datesArr.length() >0){
+				for(int i=0; i<datesArr.length(); i++ ){
+					dates.add(datesArr.get(i).toString().trim());
+				}
+			}   
+			
+			if(searchStartDateStr != null && searchStartDateStr.trim().length() > 0 && searchEndDateStr != null && searchEndDateStr.trim().length() > 0){
+				locationWiseBoothDetailsVO1 = cadreCommitteeService.getActivityLocationDetailsNew(checkedValue,activityScopeId,activityLevelId,searchBy,
+						locationId,searchStartDateStr,searchEndDateStr,constituencyId,optionId,questionId,dates);
+			}else{
+				locationWiseBoothDetailsVO1 = cadreCommitteeService.getActivityLocationDetailsNew(checkedValue,activityScopeId,activityLevelId,searchBy,
+						locationId,null,null,constituencyId,optionId,questionId,dates);
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getLocationDetailsForActivity ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
