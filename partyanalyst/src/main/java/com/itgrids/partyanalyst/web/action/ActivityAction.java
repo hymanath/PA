@@ -1068,4 +1068,17 @@ public String getCommentDetails(){
 	}
 	 return Action.SUCCESS;
  }
+ 
+ 
+ 	public String getActivityQuestionaryOptionsByActivityDate(){
+	 try {
+
+			jObj = new JSONObject(getTask());
+			activityVO = activityService.getActivityQuestionaryOptionsByActivityDate(jObj.getString("activityDate"),jObj.getLong("day"),jObj.getLong("activityScopeId"));
+			
+	} catch (Exception e) {
+		LOG.error("Exception raised at getActivityQuestionaryOptionsByActivityDate()", e);
+	}
+	 return Action.SUCCESS;
+ }
 }

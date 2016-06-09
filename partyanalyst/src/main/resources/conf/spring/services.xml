@@ -3019,6 +3019,8 @@
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO" />
 		<property name="activityStatusQuestionnaireDAO" ref="activityStatusQuestionnaireDAO" />
 		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />
+		<property name="activityDaywiseQuestionnaireDAO" ref="activityDaywiseQuestionnaireDAO" />
+		
 	</bean>
 	<bean name="activityAttendanceService" class="com.itgrids.partyanalyst.service.impl.ActivityAttendanceService">
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />

@@ -12484,7 +12484,6 @@
 		<result name="input">/jsp/loginForm.jsp?src=updateActivityAction</result>
 		<result name="error">/jsp/entitlementErrorPage.jsp</result>
 	</action>
-	
 	<action name="getBetweenDatesOfActivityScopeAction" class="committeeDashBoardAction" method="getBetweenDatesOfActivityScope">
 	  <result type="json" name="success">
 			<param name="root">locationWiseBoothDetailsVO1</param>
@@ -12500,5 +12499,11 @@
 		    <param name="root">locationWiseBoothDetailsVO1</param>
 		</result>
 	</action>
+	<action name="getActivityQuestionaryOptionsByActivityDateAction" class="activityAction" method="getActivityQuestionaryOptionsByActivityDate">
+	  <result type="json" name="success">
+			<param name="root">activityVO</param>
+		</result>
+	</action>
+	
 </package>
 </struts>      
