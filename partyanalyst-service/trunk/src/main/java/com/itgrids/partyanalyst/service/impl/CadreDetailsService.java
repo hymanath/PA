@@ -8736,6 +8736,13 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 		return returnList;
 	}
 
+	/**
+	 * @Author  Hyma
+	 * @Version UserService.java  May 8, 2016 05:00:00 PM 
+	 * @param cadreId
+	 * @return List<ActivityVO>
+	 * description  { Getting Activity Wise data for Candidate , As he Invitted, Attended, Abscent For activities ,By Sending Tdp Cadre Id}
+	 */
 public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getScopeIds();
@@ -8751,11 +8758,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 	for(Object[] obj : invittes){
 		ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);
 		if(vo != null){
-			//vo.setActivityNameId(commonMethodsUtilService.getLongValueForObject(obj[3]));//activityId
 			vo.setInvitteeCnt(commonMethodsUtilService.getLongValueForObject(obj[1]));
-			//vo.setAttendendLocation(obj[4] != null ? obj[4].toString() : "");//activity Name
-			//vo.setLocationLevel(obj[1] != null ? (Long)obj[1] : 0l);//activity Level Id
-			//vo.setIsLocation(obj[2] != null ? obj[2].toString() : "");//activity Level Name
 		}
 	}
 	}
@@ -8764,11 +8767,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 		for(Object[] obj : attendees){
 			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
 			if(vo != null){
-				//vo.setActivityNameId(commonMethodsUtilService.getLongValueForObject(obj[3]));//activityId
 				vo.setAttendedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
-				//vo.setAttendendLocation(obj[4] != null ? obj[4].toString() : "");//activity Name
-				//vo.setLocationLevel(obj[1] != null ? (Long)obj[1] : 0l);//activity Level Id
-				//vo.setIsLocation(obj[2] != null ? obj[2].toString() : "");//activity Level Name
 			}
 			
 			if(vo.getInvitteeCnt().longValue() >0l ){
@@ -8779,35 +8778,4 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 	return returnList;
 	
 }
-/*
-public void setTemplateData(List<ActivityVO> returnList,List<Long> activityScopeIds){
-	try{
-	for(Long activityScopId: activityScopeIds){
-		ActivityVO vo = new ActivityVO();
-		vo.setActivityScopeId(activityScopId != null ? (Long) activityScopId : 0l);
-		vo.setInvitteeCnt(0l);
-		vo.setAttendedCount(0l);
-		vo.setAbscentCnt(0l);
-		returnList.add(vo);
-	}
-	}catch (Exception e) {
-		LOG.error("Exception Occured in setTemplateData() method, Exception -",e);
-	}
-}
-
-public ActivityVO getMatchedVOForScopeId(Long activityScopeId,List<ActivityVO> returnList)
-{
-	try{
-		for(ActivityVO vo: returnList)
-		{
-			if(vo.getActivityScopeId().longValue() == activityScopeId)
-				return vo;
-		}
-		
-		return null;
-	}catch (Exception e) {
-		LOG.error("Exception Occured in getMatchedVOForScopeId() method, Exception -",e);
-		return null;
-	}
-}*/
 }
