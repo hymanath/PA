@@ -1799,14 +1799,15 @@ public String getScheduleAndConfirmationCallsOfCallerToAgent(){
 				
 				simpleVO=trainingCampService.getAllProgramsAndCamps();
 				
-			}/*else if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){//entitled user.
+			}
+			/*else if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){//entitled user.
 				
 				simpleVO=trainingCampService.getProgramsByUser(userId);
 			}*/
 			else if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 		        entitlements = regVO.getEntitlements();
 		        if(entitlements.contains("TRAINING_CAMP_FEEDBACK_UPDATE_ENTITLEMENT")){
-		          return INPUT;
+		        	simpleVO=trainingCampService.getProgramsByUser(userId);
 		        }
 
 			}			
