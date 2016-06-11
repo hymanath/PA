@@ -7278,7 +7278,17 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		try {
 		 Long rschdldUnquCnt=appointmentTrackingDAO.getAllRescheduledApptCounts(appUserId);
 		 Long rschdldCnddtUnquCnt=appointmentTrackingDAO.getAllRescheduledCandiCounts(appUserId);
-		 
+		 List<AppointmentScheduleVO> appointmentScheduleVOList =  getRescheduledAppointmentsDetails(appUserId);
+		 Long totalReschedules = 0l;
+		 if(appointmentScheduleVOList != null && appointmentScheduleVOList.size() > 0){
+			 for (AppointmentScheduleVO asvo : appointmentScheduleVOList) {
+				if(asvo.getRescheduledList() != null && asvo.getRescheduledList().size() > 0){
+					totalReschedules = totalReschedules+asvo.getRescheduledList().size();
+				}
+			}
+		 }
+		  
+		 rescheduledVO.setTotalRequestedAppCount(totalReschedules);
 		 rescheduledVO.setTotalRescheduledCount(rschdldUnquCnt!=null?rschdldUnquCnt:0l);
 		 rescheduledVO.setTotalReschedCandidateCount(rschdldCnddtUnquCnt!=null?rschdldCnddtUnquCnt:0l);
 		 
