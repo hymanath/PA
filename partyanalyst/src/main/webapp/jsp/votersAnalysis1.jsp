@@ -1464,8 +1464,8 @@ for  body3 start    result  -->
 <h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Cadre Information</h4>
 <div id="cadreCount" style="margin-top:10px;"></div>
 </div></div>
-<div class="widget blue">
-<div class="widget-block" style="margin-top: 0px; clear: both; display: block; height: 35px;padding-bottom:1px;">
+<!--<div class="widget blue">
+<!--<div class="widget-block" style="margin-top: 0px; clear: both; display: block; height: 35px;padding-bottom:1px;">
 <h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;width:500px;color: black;">News Glance,Problems and Influencing People Details</h4>
 <a id="ShowConstMenu1" class="btn pull-right" style="margin-top:-43px;margin-right: 28px;" href="javascript:{}" >Show<i class="icon-chevron-up"></i></a>
 
@@ -1475,13 +1475,13 @@ for  body3 start    result  -->
 </div>
 
 
-	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 101%;color:#000000; margin-top: 51px;"></div>
+	<div id="newsCountDiv" class="widget blue whitegloss" style="display: inline-block; width: 101%;color:#000000; margin-top: 51px;"></div>-->
 	
-	   <div id="newsDisplayOuterDiv">
+	   <!--<div id="newsDisplayOuterDiv">
 		<div id="newsDisplayDiv" style=""></div>
-	   </div>
+	   </div>-->
 	  <!--<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div> -->
-	 <div id="problemAjaxImg" style="display:none;float:right;">
+	<!-- <div id="problemAjaxImg" style="display:none;float:right;">
 	<img src="./images/icons/search.gif" /></div>
 	
 	<div id="problemsCountDiv" class="widget blue whitegloss">
@@ -1493,7 +1493,7 @@ for  body3 start    result  -->
 	<div id="InfluencingPeopleCountDiv" class="widget blue whitegloss" style="">
 	 </div>
 	 
-	 </div>
+	 </div>-->
 	<div id="censusReportMainDiv" class="widget blue whitegloss">
 	  <div id="censusReportDiv"></div>
 	</div>
