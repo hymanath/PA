@@ -567,7 +567,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		List<String> entitlements = null;
 		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 			entitlements = regVO.getEntitlements();
-			if(!(entitlements.contains("CADRE_COMMITTEE_MANAGEMENT".trim()) && entitlements.contains("COMMITTEE_MGT".trim()))){
+			if((!entitlements.contains("CADRE_COMMITTEE_MANAGEMENT".trim()) && !entitlements.contains("COMMITTEE_MGT".trim()))){
 				noaccess = true ;
 			}
 		
@@ -1760,7 +1760,7 @@ public String getSummaryDetails(){
 		List<String> entitlements = null;
 		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 			entitlements = regVO.getEntitlements();
-			if(!(entitlements.contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS".trim())) && (entitlements.contains("COMMITTEE_MGT".trim()))){
+			if(!(entitlements.contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS".trim())) && !(entitlements.contains("COMMITTEE_MGT".trim()))){
 				return "error";
 			}
 		/*if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS")) 
