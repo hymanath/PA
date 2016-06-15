@@ -12447,6 +12447,11 @@
 			<param name="root">searchList</param>
 		</result>
 	</action>
+	<action name="getMobileNumberDetailsByTdpCadreAction" class="cadreDetailsAction" method="getMobileNumberDetailsByTdpCadre" >
+		<result type="json" name="success">
+			<param name="root">mobileDetailsVO</param>
+		</result>
+	</action>
 	<action name="rescheduledCandidateAction" class="appointmentAction" method="rescheduledCandidate">
 		<result name="success">/jsp/rescheduledCandidate.jsp</result>
 	</action>

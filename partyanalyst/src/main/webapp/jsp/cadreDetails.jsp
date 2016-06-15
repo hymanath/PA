@@ -28,6 +28,18 @@
 		<!-- custom CSS-->
 	<link href="css/cadreCommitee/cadreDetails_custom1.css" rel="stylesheet" type="text/css">
 	<!--<link href="css/cadreCommitee/cadreDetails_custom.css" rel="stylesheet" type="text/css">-->
+<style type="text/css">
+.mobileDetailsUl
+{
+	padding:0px;
+	margin:0px;
+}
+.mobileDetailsUl li
+{
+	list-style:none;
+	font-size:12px;
+}
+</style>
 <script>
 var globalCadreId = '${cadreId}';
 </script>
@@ -141,6 +153,7 @@ var globalCadreId = '${cadreId}';
                     <tr>
                     	<td>
                         	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
+							<i class="glyphicon glyphicon-info-sign" style="cursor:pointer;" title="Click here to get Mobile details" onclick="getMobileNumberDetailsByTdpCadre();"></i>
                         	<span class="pull-right" id="emailMainSpanId">
 	                            <i class="glyphicon glyphicon-envelope"></i> <span id="emailSpanId"></span> 
                             </span><br>
@@ -148,8 +161,20 @@ var globalCadreId = '${cadreId}';
 								<span id="fbUrlImageId"></span>
 								<span id="wAppImageId"></span>
 							</div>
+							
                         </td>
                     </tr>
+                    <tr id="mobileDetailsDivId" style="display:none">
+						<td>
+							<ul class="mobileDetailsUl">
+								<li><b>Connection Type:</b><span id="mobileConnectionTypeId" style="margin-left: 10px;"></span></li>
+								<li><b>Provider:</b><span id="mobileNetworkProviderId" style="margin-left: 54px;"></span></li>
+								<li><b>Brand:</b><span id="mobileBrandId" style="margin-left: 68px;"></span></li>
+								<li><b>Feature:</b><span id="mobileFeatureId" style="margin-left: 59px;"></span></li>
+								<li><b>Network:</b><span id="mobileNetworkTypeId" style="margin-left: 55px;"></span></li>
+							</ul>
+						</td>
+					</tr>
 					<tr class="enrollmentCls">
 						<td class="text-bold"><i class="glyphicon glyphicon-bookmark"></i> PREVIOUS ENROLEMENTS</td>
 					</tr>

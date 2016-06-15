@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -96,9 +97,16 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private GrievanceDetailsVO gerGrievanceDetailsVO;
 	private GrievanceSimpleVO grievanceSampleVO;
 	private List<GrievanceSimpleVO> grievanceSimplevoList;
+	private MobileDetailsVO mobileDetailsVO;
 	private List<ActivityVO> activityVOList;
 	
 	
+	public MobileDetailsVO getMobileDetailsVO() {
+		return mobileDetailsVO;
+	}
+	public void setMobileDetailsVO(MobileDetailsVO mobileDetailsVO) {
+		this.mobileDetailsVO = mobileDetailsVO;
+	}
 	public List<ActivityVO> getActivityVOList() {
 		return activityVOList;
 	}
@@ -1294,6 +1302,18 @@ public String updateLeaderShip(){
 			idNameVoList=cadreDetailsService.getEventAttendanceOfCadre(jObj.getLong("cadreId"),jObj.getLong("eventId"));
 		}catch(Exception e){
 			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMobileNumberDetailsByTdpCadre(){
+		try{
+			jObj=new JSONObject(getTask());
+			
+			mobileDetailsVO=cadreDetailsService.getMobileNumberDetailsByTdpCadre(jObj.getLong("cadreId"));
+			
+		}catch(Exception e){
+			LOG.error("Exception raised in getMobileNumberDetailsByTdpCadre  method in CadreDetailsAction.",e);
 		}
 		return Action.SUCCESS;
 	}
