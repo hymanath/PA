@@ -8769,10 +8769,9 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
 			if(vo != null){
 				vo.setAttendedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
-			}
-			
-			if(vo.getInvitteeCnt().longValue() >0l ){
-				vo.setAbscentCnt(vo.getInvitteeCnt().longValue() - vo.getAttendedCount().longValue() );
+				if(vo.getInvitteeCnt().longValue() >0l ){
+					vo.setAbscentCnt(vo.getInvitteeCnt().longValue() - vo.getAttendedCount().longValue() );
+				}
 			}
 		}
 		}
