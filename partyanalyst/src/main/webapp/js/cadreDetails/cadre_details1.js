@@ -319,7 +319,7 @@ function getCandateActivityAttendance(){
 			}).done(function(result){
 				if(result!= null && result.length >0)
 					buildCandateActivityAttendance(result);
-				console.log(result);
+				//console.log(result);
 			});
 }
 getCandateActivityAttendance();
