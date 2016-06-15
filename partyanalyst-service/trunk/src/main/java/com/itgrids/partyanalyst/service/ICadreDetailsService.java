@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
@@ -97,4 +98,5 @@ public interface ICadreDetailsService {
 	public List<GrievanceDetailsVO> getGrievanceBenifitsComplaintsInfoByLocation(Long locationId,String locationType,String typeOfIssue,String otherBenifit);
 	public List<IdNameVO> getEventAttendanceOfCadre(Long cadreId,Long eventId);
 	public List<ActivityVO> getCandateActivityAttendance(Long cadreId);
+	public MobileDetailsVO getMobileNumberDetailsByTdpCadre(Long tdpCadreId);
 }

@@ -6906,4 +6906,35 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 	 return (Long) query.uniqueResult();
  }
 	
+ 	public List<Object[]> getMobileNumberDetailsByTdpCadre(Long tdpCadreId){
+ 		/*Query query = getSession().createQuery("select model.tdpCadreId," +
+ 													" model.mobileNo," +
+ 													" model.mobileNumberDetails.mobileConnectionType.mobileConnectionTypeId," +
+ 													" model.mobileNumberDetails.mobileConnectionType.connectionType," +
+ 													" model.mobileNumberDetails.mobileNetworkProvider.mobileNetworkProviderId," +
+ 													" model.mobileNumberDetails.mobileNetworkProvider.providerName," +
+ 													" model.mobileNumberDetails.mobileBrand.mobileBrandId," +
+ 													" model.mobileNumberDetails.mobileBrand.brandName," +
+ 													" model.mobileNumberDetails.mobileBrandModel.mobileBrandModelId," +
+ 													" model.mobileNumberDetails.mobileBrandModel.modelNumber," +
+ 													" model.mobileNumberDetails.mobileDeviceFeature.mobileDeviceFeatureId," +
+ 													" model.mobileNumberDetails.mobileDeviceFeature.type," +
+ 													" model.mobileNumberDetails.mobileNetworkType.mobileNetworkTypeId," +
+ 													" model.mobileNumberDetails.mobileNetworkType.networkType" +
+ 													" from TdpCadre model" +
+ 													" where model.tdpCadreId = :tdpCadreId" +
+ 													" and model.isDeleted = 'N'");*/
+ 		Query query = getSession().createSQLQuery("select tc.tdp_cadre_id,tc.mobile_no,mct.mobile_connection_type_id,mct.connection_type," +
+ 				" mnp.mobile_network_provider_id,mnp.provider_name,mb.mobile_brand_id,mb.brand_name,mbm.mobile_brand_model_id,mbm.model_number," +
+ 				" mdf.mobile_device_feature_id,mdf.type,mnt.mobile_network_type_id,mnt.network_type" +
+ 				" from tdp_cadre tc,mobile_number_details mnd,mobile_connection_type mct,mobile_network_provider mnp,mobile_brand mb," +
+ 				" mobile_brand_model mbm,mobile_device_feature mdf,mobile_network_type mnt" +
+ 				" where tc.mobile_number_details_id = mnd.mobile_number_details_id and mnd.mobile_connection_type_id = mct.mobile_connection_type_id" +
+ 				" and mnd.mobile_network_provider_id = mnp.mobile_network_provider_id and mnd.mobile_brand_id = mb.mobile_brand_id" +
+ 				" and mnd.mobile_brand_model_id = mbm.mobile_brand_model_id and mnd.mobile_device_feature_id = mdf.mobile_device_feature_id" +
+ 				" and mnd.mobile_network_type_id = mnt.mobile_network_type_id and tc.tdp_cadre_id = :tdpCadreId and tc.is_deleted = 'N'");
+ 		query.setParameter("tdpCadreId", tdpCadreId);
+ 		
+ 		return query.list();
+ 	}
 }
