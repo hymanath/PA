@@ -91,6 +91,7 @@ import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
+import com.itgrids.partyanalyst.dto.MobileDetailsVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
@@ -8781,4 +8782,28 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 	return returnList;
 	
 }
+
+	/**
+	 * @Author  SRAVANTH
+	 * @Version CadreDetailsService.java  Jun 15, 2016 01:00:00 PM 
+	 * @param cadreId
+	 * @return MobileDetailsVO
+	 * description  { Getting Mobile Number Details for Candidate, By Sending Tdp Cadre Id}
+	 */
+	public MobileDetailsVO getMobileNumberDetailsByTdpCadre(Long tdpCadreId){
+		MobileDetailsVO returnvo = new MobileDetailsVO();
+		try {
+			List<Object[]> list = tdpCadreDAO.getMobileNumberDetailsByTdpCadre(tdpCadreId);
+			List<MobileDetailsVO> returnList = new ArrayList<MobileDetailsVO>();
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				String[] setterPropertiesList = {"tdpCadreId","mobileNo","connectionTypeId","connectionType","networkProviderId","networkProvider","brandId","brand","brandModelId","brandModel","featureId","feature","networkTypeId","networkType"};
+				returnList = setterAndGetterUtilService.setValuesToVO(list, setterPropertiesList, "com.itgrids.partyanalyst.dto.MobileDetailsVO");
+			}
+			returnvo.setSubList(returnList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMobileNumberDetailsByTdpCadre  method in CadreDetailsService.",e);
+		}
+		return returnvo;
+	}
 }

@@ -135,6 +135,8 @@ public class TdpCadre {
 	private String						voterCardType;
 	private String						mode;
 	private String						designationName;
+	private Long 						mobileNumberDetailsId;
+	private MobileNumberDetails			mobileNumberDetails;
 	
 	
 	private String validStatus;
@@ -1072,5 +1074,22 @@ public class TdpCadre {
 		this.payMentStatus = payMentStatus;
 	}
 	
+	@Column(name="mobile_number_details_id")
+	public Long getMobileNumberDetailsId() {
+		return mobileNumberDetailsId;
+	}
+	public void setMobileNumberDetailsId(Long mobileNumberDetailsId) {
+		this.mobileNumberDetailsId = mobileNumberDetailsId;
+	}
 	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "mobile_number_details_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MobileNumberDetails getMobileNumberDetails() {
+		return mobileNumberDetails;
+	}
+	public void setMobileNumberDetails(MobileNumberDetails mobileNumberDetails) {
+		this.mobileNumberDetails = mobileNumberDetails;
+	}
 }
