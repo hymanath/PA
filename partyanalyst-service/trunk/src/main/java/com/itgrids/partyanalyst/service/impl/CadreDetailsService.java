@@ -8745,6 +8745,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 	 */
 public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
+	try{
 	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getScopeIds();
 	if(activityScopeIds != null && activityScopeIds.size() >0){
 		String[] setterPropertiesList = {"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId"};//activityScopeId,activityName,activityLevelId,activityLevelName,activityId
@@ -8762,7 +8763,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 		}
 	}
 	}
-	List<Object[]> attendees = activityInviteeDAO.getActivityScopeAndLevels(cadreId);
+	List<Object[]> attendees = activityAttendanceDAO.getActivityScopeAndLevels(cadreId);
 	if(attendees != null && attendees.size() >0){
 		for(Object[] obj : attendees){
 			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
@@ -8775,6 +8776,9 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 			}
 		}
 		}
+	}catch (Exception e) {
+		LOG.error("Exception raised in getCandateActivityAttendance  method in CadreDetailsService.",e);
+	}
 	return returnList;
 	
 }
