@@ -2807,6 +2807,9 @@
 	<bean id="notificationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NotificationsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="mobileNumberDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileNumberDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="activityDaywiseQuestionnaireDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityDaywiseQuestionnaireDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

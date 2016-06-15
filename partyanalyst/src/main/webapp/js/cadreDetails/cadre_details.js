@@ -6390,3 +6390,33 @@ function buildGrievanceRequests(result)
 	  str+='</div>';
 	$("#grievanceRequestsId").html(str)
 }
+
+function getMobileNumberDetailsByTdpCadre(){
+	$("#mobileDetailsDivId").toggle();
+	var jsobj={
+		cadreId : globalCadreId
+	}
+	$.ajax({
+		 type:'POST',
+		 url: 'getMobileNumberDetailsByTdpCadreAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		if(result != null){
+			if(result.subList != null && result.subList.length > 0){
+				var results = result.subList[0];
+				if(results.connectionType != null)
+					$("#mobileConnectionTypeId").html(results.connectionType);
+				if(results.networkProvider != null)
+					$("#mobileNetworkProviderId").html(results.networkProvider);
+				if(results.brand != null && results.brandModel != null)
+					$("#mobileBrandId").html(results.brand+" - "+results.brandModel);
+				else if(results.brand != null)
+					$("#mobileBrandId").html(results.brand);
+				if(results.feature != null)
+					$("#mobileFeatureId").html(results.feature);
+				if(results.networkType != null)
+					$("#mobileNetworkTypeId").html(results.networkType);
+			}
+		}
+	});
+}
