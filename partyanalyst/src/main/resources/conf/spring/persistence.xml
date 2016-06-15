@@ -861,6 +861,13 @@
 				    <value>com.itgrids.partyanalyst.model.ActivityDateType</value>
 				    <value>com.itgrids.partyanalyst.model.ActivityLocationInfoDates</value>
 				    
+				    <value>com.itgrids.partyanalyst.model.MobileConnectionType</value>
+				    <value>com.itgrids.partyanalyst.model.MobileNetworkProvider</value>
+				    <value>com.itgrids.partyanalyst.model.MobileBrand</value>
+				    <value>com.itgrids.partyanalyst.model.MobileBrandModel</value>
+				    <value>com.itgrids.partyanalyst.model.MobileDeviceFeature</value>
+				    <value>com.itgrids.partyanalyst.model.MobileNetworkType</value>
+				    
 				 </list>
 			
 		</property>
