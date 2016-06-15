@@ -2822,5 +2822,24 @@
 	<bean id="activityAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttendanceDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="mobileConnectionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileConnectionTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="mobileNetworkProviderDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileNetworkProviderDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="mobileBrandDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileBrandDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="mobileBrandModelDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileBrandModelDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="mobileDeviceFeatureDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileDeviceFeatureDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="mobileNetworkTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileNetworkTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
