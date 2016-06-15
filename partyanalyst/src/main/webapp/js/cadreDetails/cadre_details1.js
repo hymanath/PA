@@ -347,7 +347,7 @@ function buildCandateActivityAttendance(result){
 	if(result[i].attendedCount == 0){
 	str+='<td>-</td>';
 	}else{
-		str+='<td>'+result[i].invitteeCnt+'</td>';
+		str+='<td>'+result[i].attendedCount+'</td>';
 	}
 	if(result[i].abscentCnt == 0){
 	str+='<td>-</td>';
