@@ -6390,9 +6390,11 @@ function buildGrievanceRequests(result)
 	  str+='</div>';
 	$("#grievanceRequestsId").html(str)
 }
-
+$(document).on("click",".CloseIcon",function(){
+	$("#mobileDetailsDivId,.changeIcon").hide();
+})
 function getMobileNumberDetailsByTdpCadre(){
-	$("#mobileDetailsDivId").toggle();
+	$("#mobileDetailsDivId,.changeIcon").toggle();
 	var jsobj={
 		cadreId : globalCadreId
 	}
@@ -6401,6 +6403,7 @@ function getMobileNumberDetailsByTdpCadre(){
 		 url: 'getMobileNumberDetailsByTdpCadreAction.action',
 		 data : {task:JSON.stringify(jsobj)} ,
 	}).done(function(result){
+		
 		if(result != null){
 			if(result.subList != null && result.subList.length > 0){
 				var results = result.subList[0];

@@ -161,11 +161,12 @@ var globalCadreId = '${cadreId}';
 								<span id="fbUrlImageId"></span>
 								<span id="wAppImageId"></span>
 							</div>
-							
+							<i class="glyphicon glyphicon-chevron-down changeIcon" style="margin-left:30px;display:none;"></i>
                         </td>
                     </tr>
                     <tr id="mobileDetailsDivId" style="display:none">
 						<td>
+							<i class="glyphicon glyphicon-remove pull-right text-danger CloseIcon" style="cursor:pointer;"></i>
 							<ul class="mobileDetailsUl">
 								<li><b>Connection Type:</b><span id="mobileConnectionTypeId" style="margin-left: 10px;"></span></li>
 								<li><b>Provider:</b><span id="mobileNetworkProviderId" style="margin-left: 54px;"></span></li>
