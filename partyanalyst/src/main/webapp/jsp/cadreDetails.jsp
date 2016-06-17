@@ -153,7 +153,7 @@ var globalCadreId = '${cadreId}';
                     <tr>
                     	<td>
                         	<i class="glyphicon glyphicon-phone"></i> <span id="mobileNoId"></span> 
-							<i class="glyphicon glyphicon-info-sign" style="cursor:pointer;" title="Click here to get Mobile details" onclick="getMobileNumberDetailsByTdpCadre();"></i>
+							<i class="glyphicon glyphicon-info-sign" style="cursor:pointer;display:none;" title="Click here to get Mobile details" id="mobileDetailsId"></i>
                         	<span class="pull-right" id="emailMainSpanId">
 	                            <i class="glyphicon glyphicon-envelope"></i> <span id="emailSpanId"></span> 
                             </span><br>
