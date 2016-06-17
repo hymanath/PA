@@ -6392,9 +6392,10 @@ function buildGrievanceRequests(result)
 }
 $(document).on("click",".CloseIcon",function(){
 	$("#mobileDetailsDivId,.changeIcon").hide();
-})
+});
+getMobileNumberDetailsByTdpCadre();
 function getMobileNumberDetailsByTdpCadre(){
-	$("#mobileDetailsDivId,.changeIcon").toggle();
+//	$("#mobileDetailsDivId,.changeIcon").toggle();
 	var jsobj={
 		cadreId : globalCadreId
 	}
@@ -6403,8 +6404,11 @@ function getMobileNumberDetailsByTdpCadre(){
 		 url: 'getMobileNumberDetailsByTdpCadreAction.action',
 		 data : {task:JSON.stringify(jsobj)} ,
 	}).done(function(result){
-		
-		if(result != null){
+		if(result.subList == null || result.subList =="" || result.subList ==undefined){
+			$("#mobileDetailsId").hide();
+		}
+		else if(result != null){
+			$("#mobileDetailsId").show();
 			if(result.subList != null && result.subList.length > 0){
 				var results = result.subList[0];
 				if(results.connectionType != null)
@@ -6423,3 +6427,6 @@ function getMobileNumberDetailsByTdpCadre(){
 		}
 	});
 }
+$(document).on("click","#mobileDetailsId",function(){
+	$("#mobileDetailsDivId,.changeIcon").toggle();
+});
