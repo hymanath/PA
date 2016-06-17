@@ -5368,7 +5368,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 							returnVO.setDistrictId(districtId);
 							returnVO.setDistrictName(districtName);
 							returnVO.setHouseNo(hNo);									
-							returnVO.setImagePath(filePath);
+							returnVO.setImagePath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+filePath);
 							returnVO.setPanchayatId(panchayatId);
 							returnVO.setPanchayatName(panchayatName);
 							returnVO.setTehsilId(tehsilId);
