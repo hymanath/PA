@@ -809,6 +809,8 @@
 				    <value>com.itgrids.partyanalyst.model.NotificationDevice</value>
 				   <value>com.itgrids.partyanalyst.model.NotificationType</value>
 				   <value>com.itgrids.partyanalyst.model.Notifications</value>
+				   <value>com.itgrids.partyanalyst.model.ActivityAttendance</value>
+				   <value>com.itgrids.partyanalyst.model.ActivityDaywiseQuestionnaire</value>
 			</list>
 		</property>
 	</bean>
@@ -871,6 +873,10 @@
 
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
+	
+	<bean id="activityAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttendanceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="trainingCampCadreGoalDAO" class="com.itgrids.partyanalyst.dao.hibernate.TrainingCampCadreGoalDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
