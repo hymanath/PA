@@ -19,9 +19,9 @@ public class ActivityAttendanceDAO extends
 	}
 
 	public List<Object[]> getActivityScopeAndLevels(Long tdpCadreId){
-		Query query = getSession().createQuery(" select distinct model.activityScope.activityScopeId, count(distinct model.activityDate)," +
+		Query query = getSession().createQuery(" select model.activityScope.activityScopeId, count(DISTINCT model.activityDate)," +
 				" model.activityDate, model.day " +
-				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId " +
+				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId and model.isAttended = 'YES' " +
 				" and model.activityScope.isDeleted = 'N' group by model.tdpCadre.tdpCadreId,model.activityScope.activityScopeId ");
 query.setParameter("tdpCadreId", tdpCadreId);
 return query.list();
