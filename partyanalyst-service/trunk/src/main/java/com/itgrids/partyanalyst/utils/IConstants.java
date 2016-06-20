@@ -679,9 +679,9 @@ public interface IConstants {
 	 * partyanalyst.com for live server
 	 * localhost for development environment
     */	
+    //public final static String DEPLOYED_HOST = "tdpserver";
     public final static String DEPLOYED_HOST = "localhost";
     public final static String DEPLOYED_TEMP_HOST = "tdpserver";
-    
     public final static Double GOOD = 40.00;
     public final static Double VERY_GOOD = 20.00;
     public final static Double BAD = 50.00;
