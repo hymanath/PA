@@ -550,5 +550,30 @@ public List<Object[]> totalDistrictAffliatedCommitteeInviteesAttendedForEvent(Li
 	
 	return query.list();
 }
+  //caste wise
 
+	public List<Object[]> getEventInviteesCountByCasteIds(Set<Long> casteIds,Long eventId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.tdpCadre.casteState.caste.casteId,count(distinct model.tdpCadre.tdpCadreId)" +
+				   " from   EventInvitee model " +
+				   " where  model.event.eventId = :eventId and model.tdpCadre.casteState.caste.casteId in (:casteIds)" +
+				   " group by model.tdpCadre.casteState.caste.casteId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId",eventId);
+		query.setParameterList("casteIds",casteIds);
+		return query.list();
+	}
+	public List<Object[]> getEventInviteesCountByageWiseIds(Set<Long> ageRangeIds,Long eventId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select ageRange.voterAgeRangeId,count(distinct model.tdpCadre.tdpCadreId)" +
+				   " from   EventInvitee model,VoterAgeRange ageRange " +
+				   " where  model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue and model.event.eventId = :eventId and ageRange.voterAgeRangeId in (:ageRangeIds)" +
+				   " group by ageRange.voterAgeRangeId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId",eventId);
+		query.setParameterList("ageRangeIds",ageRangeIds);
+		return query.list();
+	}
 }

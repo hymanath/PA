@@ -1558,5 +1558,128 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("eventId", eventId);
 		return query.list();
 	}
+	////Caste wise.
+   public List<Object[]>  casteWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+		
+		StringBuilder sb =  new StringBuilder();	
+		sb.append("select model.tdpCadre.casteState.caste.casteId,model.tdpCadre.casteState.caste.casteName,count(distinct model.tdpCadre.tdpCadreId) ");	
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sb.append(" from EventAttendee model where ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		sb.append(" group by model.tdpCadre.casteState.caste.casteId " +
+				  " order by count(distinct model.tdpCadre.tdpCadreId) desc ");
+        
+        Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+   public List<Object[]> casteWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+		
+		StringBuilder sb =  new StringBuilder();
+		
+		sb.append(" select model.tdpCadre.casteState.caste.casteId,model.tdpCadre.casteState.caste.casteName,");
+		sb.append(" date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) ");
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sb.append(" from EventAttendee model where ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		
+		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		sb.append("  group by model.tdpCadre.casteState.caste.casteId,date(model.attendedTime)" +
+				  "  order by model.tdpCadre.casteState.caste.casteName,date(model.attendedTime) ");
+		
+       Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+  }
+   
+   //age wise
+   
+   public List<Object[]>  ageWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+		
+		StringBuilder sb =  new StringBuilder();	
+		sb.append("select ageRange.voterAgeRangeId,ageRange.ageRange,count(distinct model.tdpCadre.tdpCadreId) ");	
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sb.append(" from EventAttendee model,VoterAgeRange ageRange where model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sb.append(" from EventAttendee model,EventInvitee model1,VoterAgeRange ageRange where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue  ");
+		}
+		sb.append("  and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		sb.append("  and ageRange.voterAgeRangeId != 7 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		sb.append(" group by ageRange.voterAgeRangeId " +
+				  " order by count(distinct model.tdpCadre.tdpCadreId) desc ");
+       
+       Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+   public List<Object[]> ageWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+		
+		StringBuilder sb =  new StringBuilder();
 	
+		sb.append("select ageRange.voterAgeRangeId,ageRange.ageRange,date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) ");	
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sb.append(" from EventAttendee model,VoterAgeRange ageRange where model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sb.append(" from EventAttendee model,EventInvitee model1,VoterAgeRange ageRange where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue  ");
+		}
+		
+		sb.append(" and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		sb.append("  and ageRange.voterAgeRangeId != 7 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		sb.append("  group by ageRange.voterAgeRangeId,date(model.attendedTime)" +
+				  "  order by ageRange.ageRange,date(model.attendedTime) ");
+		
+      Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+ }
+   
 }
