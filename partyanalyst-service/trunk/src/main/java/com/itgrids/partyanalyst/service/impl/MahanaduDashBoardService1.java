@@ -125,6 +125,9 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			IMahanaduDashBoardService mahanaduDashBoardService) {
 		this.mahanaduDashBoardService = mahanaduDashBoardService;
 	}
+	
+	
+	
 	/**
 	   *   @author    : Sreedhar
 	   *   Description:This Service is used to get the Location Wise event attendees and event invitees count
@@ -2004,5 +2007,344 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			}
 		}
 		
+		/**
+		   *   @author    : Sreedhar,santosh
+		   *   Description:This Service is used to get the Caste Wise event attendees and event invitees count
+		   *   inputs: startDate,endDate,parenteventId,subEventIds
+		   *   output: List<MahanaduEventVO>
+		   *   
+		  */	
+		public List<MahanaduEventVO> casteWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+			
+			List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
+			
+			try{
+				Date eventStrDate = null;
+				Date eventEndDate = null;
+				if(startDate != null && !startDate.isEmpty()){
+				 eventStrDate = format.parse(startDate);
+				}
+				if(endDate != null && !endDate.isEmpty()){
+				 eventEndDate = format.parse(endDate); 
+				}
+				
+				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
+				 
+				 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
+				 getAllDaysCasteWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates);
+				
+				 
+				 if( finalMap!= null && finalMap.size() > 0){
+					 for (Map.Entry<Long, MahanaduEventVO> entry : finalMap.entrySet()) {
+						 if (entry.getValue().getSubMap() != null){
+							 entry.getValue().getSubList().addAll(entry.getValue().getSubMap().values());
+							 entry.getValue().getSubMap().clear();
+						 } 
+					 }
+					  resultList.addAll(finalMap.values());
+				 }
+				 
+				 //SET CURRENT DATE AND TIME.
+				 if(resultList != null && resultList.size() > 0){
+					 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+				 }else{
+					 MahanaduEventVO vo = new MahanaduEventVO();
+					 vo.setLocationName("NO DATA");
+					 vo.setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+					 resultList.add(vo);
+				 }
+				 
+		}catch(Exception e){
+			Log.error("Exception rised in CasteWiseEventAttendeeCounts()",e); 
+		}
+		return resultList;
+		}
+		
+		public void getAllDaysCasteWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates){
+			
+			Set<Long> casteIds = new HashSet<Long>();
+			try{	
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsCasteWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,casteIds);
+					 setTotalDayDataExist(finalMap);
+					 
+					 //DATE WSIE
+					 if(isDataAvailable){
+						 getAttendeeAndinviteeCountsDateWiseByCaste(eventStrDate,eventEndDate,subEventIds,finalMap); 
+					 }
+				
+				
+				if(casteIds != null && casteIds.size() > 0){
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteIds(casteIds,parenteventId);
+					 if( inviteesList!= null && inviteesList.size() > 0){
+						 for( Object[] obj : inviteesList){
+							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
+							 if(locationVO != null){
+								 locationVO.setInviteesCalled(obj[1]!=null?(Long)obj[1]:0l);
+							 }
+						 }
+					 }
+				 }
+				
+			}catch(Exception e){
+				Log.error("Exception rised in getAllDaysCasteWiseAttendeesAndinviteesCount()",e);
+			}
+			
+		}
+	  
+		public boolean getAttendeeAndinviteeCountsCasteWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> locationIds){
+			 
+			boolean isDataAvailable = false;
+			List<Object[]> totalAttendeeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 
+			 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
+				 
+				 isDataAvailable = true;
+				 List<Object[]> totalInviteeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 
+				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,locationIds);
+				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,locationIds);
+				 
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
+			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
+			 }
+			 return  isDataAvailable;
+		}
+		
+		public void getAttendeeAndinviteeCountsDateWiseByCaste(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap){
+			 
+			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.casteWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 
+			 if(dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0){
+				 
+				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.casteWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 
+				 settingDateDataToMap(dateWiseAttendeeList,finalMap,"attendee");
+				 settingDateDataToMap(dateWiseInviteeList,finalMap,"invitee");
+			 }
+		}
+		
+		
+		
+		/**
+		   *   @author    : Sreedhar,swadin
+		   *   Description:This Service is used to get the age Wise event attendees and event invitees count
+		   *   inputs: startDate,endDate,parenteventId,subEventIds
+		   *   output: List<MahanaduEventVO>
+		   *   
+		  */	
+		public List<MahanaduEventVO> ageWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+			
+			List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
+			
+			try{
+				Date eventStrDate = null;
+				Date eventEndDate = null;
+				if(startDate != null && !startDate.isEmpty()){
+				 eventStrDate = format.parse(startDate);
+				}
+				if(endDate != null && !endDate.isEmpty()){
+				 eventEndDate = format.parse(endDate); 
+				}
+				
+				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
+				 
+				 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
+				 getAllDaysAgeWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates);
+				
+				 
+				 if( finalMap!= null && finalMap.size() > 0){
+					 for (Map.Entry<Long, MahanaduEventVO> entry : finalMap.entrySet()) {
+						 if (entry.getValue().getSubMap() != null){
+							 entry.getValue().getSubList().addAll(entry.getValue().getSubMap().values());
+							 entry.getValue().getSubMap().clear();
+						 } 
+					 }
+					  resultList.addAll(finalMap.values());
+				 }
+				 
+				 //SET CURRENT DATE AND TIME.
+				 if(resultList != null && resultList.size() > 0){
+					 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+				 }else{
+					 MahanaduEventVO vo = new MahanaduEventVO();
+					 vo.setLocationName("NO DATA");
+					 vo.setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+					 resultList.add(vo);
+				 }
+				 
+		}catch(Exception e){
+			Log.error("Exception rised in CasteWiseEventAttendeeCounts()",e); 
+		}
+		return resultList;
+		}
+		
+		public void getAllDaysAgeWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates){
+			
+			Set<Long> ageWiseIds = new HashSet<Long>();
+			try{	
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsAgeWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,ageWiseIds);
+					 setTotalDayDataExist(finalMap);
+					 
+					 //DATE WSIE
+					 if(isDataAvailable){
+						 getAttendeeAndinviteeCountsDateWiseByCaste(eventStrDate,eventEndDate,subEventIds,finalMap); 
+					 }
+				
+				
+				if(ageWiseIds != null && ageWiseIds.size() > 0){
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteIds(ageWiseIds,parenteventId);
+					 if( inviteesList!= null && inviteesList.size() > 0){
+						 for( Object[] obj : inviteesList){
+							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
+							 if(locationVO != null){
+								 locationVO.setInviteesCalled(obj[1]!=null?(Long)obj[1]:0l);
+							 }
+						 }
+					 }
+				 }
+				
+			}catch(Exception e){
+				Log.error("Exception rised in getAllDaysAgeWiseAttendeesAndinviteesCount()",e);
+			}
+			
+		}
+	   
+		public boolean getAttendeeAndinviteeCountsAgeWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> ageWiseIds){
+			 
+			boolean isDataAvailable = false;
+			List<Object[]> totalAttendeeList = eventAttendeeDAO.ageWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 
+			 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
+				 
+				 isDataAvailable = true;
+				 List<Object[]> totalInviteeList = eventAttendeeDAO.ageWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 
+				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,ageWiseIds);
+				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,ageWiseIds);
+				 
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
+			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
+			 }
+			 return  isDataAvailable;
+		}
+		
+		public void getAttendeeAndinviteeCountsDateWiseByAge(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap){
+			 
+			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.ageWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 
+			 if(dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0){
+				 
+				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.ageWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 
+				 settingDateDataToMap(dateWiseAttendeeList,finalMap,"attendee");
+				 settingDateDataToMap(dateWiseInviteeList,finalMap,"invitee");
+			 }
+		}
+		
+		//////////
+		public void settingMapData(List<Object[]> list,Map<Long,MahanaduEventVO>  finalMap,String type,List<Date> betweenDates,Set<Long> locationIds){
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 try{
+				
+				   if( list != null && list.size() >0 ){
+					   
+					   for(Object[] obj : list){
+						   
+						   boolean isVOExist = true;
+						   MahanaduEventVO VO = finalMap.get((Long)obj[0]);
+						   
+						   if( VO == null){
+							   
+							   isVOExist = false;
+							   VO = new MahanaduEventVO();
+							   VO.setId(obj[0]!=null ? (Long)obj[0]:0l);
+							   VO.setName( obj[1]!=null ? obj[1].toString() :"");
+							   
+							   if(betweenDates != null && betweenDates.size() > 0){
+								   for(int i=0;i<betweenDates.size();i++){
+									   MahanaduEventVO dateVO = new MahanaduEventVO();
+									   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
+									   dateVO.setDataExist(false);
+									   int dayCount = i+1;
+									   dateVO.setName("Day"+dayCount);
+									   if(VO.getSubMap() == null){
+										   VO.setSubMap(new LinkedHashMap<String, MahanaduEventVO>());
+									   }
+									   VO.getSubMap().put(dateVO.getDateStr(),dateVO);
+								   }
+							   }
+						   }
+						   
+						   if(type.equalsIgnoreCase("attendee")){
+							   VO.setAttendees(obj[2]!=null ?(Long)obj[2]:0l );
+							   VO.setNonInvitees(obj[2]!=null ?(Long)obj[2]:0l);	
+						   }
+						   	if(type.equalsIgnoreCase("invitee")){
+						   		VO.setInvitees(obj[2]!=null ?(Long)obj[2]:0l);
+						   		VO.setNonInvitees(VO.getAttendees() - (obj[2]!=null ?(Long)obj[2]:0l));	
+						   }		
+						   	
+						   	if(!isVOExist){
+						   		finalMap.put((Long)obj[0], VO);
+						   	} 
+						   	
+						    //locationIds
+							 locationIds.add( (Long)obj[0] );
+					   }
+					   
+				   }
+				 
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in settingMapData()",e); 
+			}
+		 }
+		public void settingDateDataToMap(List<Object[]> list,Map<Long,MahanaduEventVO>  finalMap,String type){
+			
+			 try{
+				
+				   if( list != null && list.size() >0 )
+				   {   
+					   for(Object[] obj : list)
+					   {
+						   MahanaduEventVO distVO = finalMap.get((Long)obj[0]);
+						   
+						   if( distVO != null)
+						   {   
+								   String dateStr = obj[2]!=null?obj[2].toString():"";
+								   MahanaduEventVO dateVO = distVO.getSubMap().get(dateStr);
+								   if(dateVO!=null)
+								   {  
+									   dateVO.setDataExist(true);
+									   
+									   if(type.equalsIgnoreCase("attendee"))
+									   {
+										   dateVO.setAttendees(obj[3]!=null ?(Long)obj[3]:0l );
+										   dateVO.setNonInvitees(obj[3]!=null ?(Long)obj[3]:0l);
+										   
+										   //set day data exist.
+										   if( dateVO.getAttendees() != null && dateVO.getAttendees().longValue() > 0l){
+											  finalMap.entrySet().iterator().next().getValue().getSubMap().get(dateStr).setTotalDaydataExist(true);
+										   }
+										  
+									   }
+									   if(type.equalsIgnoreCase("invitee"))
+									   {
+									   		dateVO.setInvitees(obj[3]!=null ?(Long)obj[3]:0l);
+									   		dateVO.setNonInvitees(dateVO.getAttendees() - (obj[3]!=null ?(Long)obj[3]:0l));	
+									   }	
+								   }
+						    }
+					    }
+				   }
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in settingDateDataToMap()",e); 
+			}
+		 }
 }
 
