@@ -1020,6 +1020,51 @@ function getLocationWiseVisitorsCountForDistrict(eventId,reportLevelId)
 			}
 	});
 }
+function getCasteWiseEventAttendeeCounts()
+{			
+
+         var jsObj = {
+				startDate    :startDate,
+				endDate      :endDate,
+				parentEventId      :parentEventId,
+				subEvents : subEvents
+			}
+		
+		
+		$.ajax({
+          type:'GET',
+          url: 'getCasteWiseEventAttendeeCountsAction.action',
+		  data : {task:JSON.stringify(jsObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{				
+				//buildConstTable(result,reportLevelId)	
+			}
+	});
+}
+function getAgeWiseEventAttendeeCounts()
+{			
+
+         var jsObj = {
+				startDate    :startDate,
+				endDate      :endDate,
+				parentEventId      :parentEventId,
+				subEvents : subEvents
+			}
+		
+		
+		$.ajax({
+          type:'GET',
+          url: 'getAgeWiseEventAttendeeCountsAction.action',
+		  data : {task:JSON.stringify(jsObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{				
+				//buildConstTable(result,reportLevelId)	
+			}
+	});
+}
+
 function getLocationWiseCountBySubEvents(reportLevelId){
 var subEvents1 = [];
 var stateId =0;
@@ -1939,6 +1984,8 @@ setcolorsForEvents();
  countDetailsCalls();
 stateWiseEventAttendeeCounts();
 getPublicrepresentatives();
+//getCasteWiseEventAttendeeCounts();
+//getAgeWiseEventAttendeeCounts();
 
 showConst = true;
 showHide();
@@ -2005,6 +2052,9 @@ showHide();
 		locationWiseCalls();
 		stateWiseEventAttendeeCounts();
 		getPublicrepresentatives();
+		
+		//getCasteWiseEventAttendeeCounts();
+		//getAgeWiseEventAttendeeCounts();
 	}
 	function defaultApTsChecked(){
 		$("#tsSwitch").prop("checked",true);
