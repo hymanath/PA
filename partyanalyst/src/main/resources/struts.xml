@@ -12509,6 +12509,16 @@
 			<param name="root">activityVO</param>
 		</result>
 	</action>
+	<action name="getCasteWiseEventAttendeeCountsAction" class="eventDetailsAction1" method="casteWiseEventAttendeeCounts">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+	</action>
+	<action name="getAgeWiseEventAttendeeCountsAction" class="eventDetailsAction1" method="ageWiseEventAttendeeCounts">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+	</action>
 	
 </package>
 </struts>      

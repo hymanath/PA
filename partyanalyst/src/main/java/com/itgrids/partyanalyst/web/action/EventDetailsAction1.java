@@ -174,4 +174,51 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String casteWiseEventAttendeeCounts()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long parentEventId = jObj.getLong("parentEventId");
+			List<Long> subEventIds = new ArrayList<Long>();
+			JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+		
+			resultList =  mahanaduDashBoardService1.casteWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	public String ageWiseEventAttendeeCounts()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long parentEventId = jObj.getLong("parentEventId");
+			List<Long> subEventIds = new ArrayList<Long>();
+			JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+		
+			resultList =  mahanaduDashBoardService1.ageWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
 }
