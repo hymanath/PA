@@ -89,6 +89,7 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	private Long notAttended;
 	private boolean isCurrentDay;
 	private Long orderCnt;
+	private Long totalCadre;
 	
 	
 	public Long getOrderCnt() {
@@ -490,5 +491,12 @@ public class MahanaduEventVO implements Serializable, Comparable<MahanaduEventVO
 	public void setCurrentDay(boolean isCurrentDay) {
 		this.isCurrentDay = isCurrentDay;
 	}
+	public Long getTotalCadre() {
+		return totalCadre;
+	}
+	public void setTotalCadre(Long totalCadre) {
+		this.totalCadre = totalCadre;
+	}
+	
 	
 }

@@ -576,4 +576,15 @@ public List<Object[]> totalDistrictAffliatedCommitteeInviteesAttendedForEvent(Li
 		query.setParameterList("ageRangeIds",ageRangeIds);
 		return query.list();
 	}
+	public List<Object[]> getTotalCadresCountByCasteIds(Set<Long> casteIds)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.casteState.caste.casteId,count(distinct model.tdpCadreId)" +
+				   " from   TdpCadre model " +
+				   " where  model.casteState.caste.casteId in (:casteIds) and model.isDeleted = 'N' and model.enrollmentYear = 2014 " +
+				   " group by model.casteState.caste.casteId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("casteIds",casteIds);
+		return query.list();
+	}
 }

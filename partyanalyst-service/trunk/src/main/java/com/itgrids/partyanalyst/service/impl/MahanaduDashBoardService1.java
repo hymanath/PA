@@ -2086,6 +2086,18 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 }
 					 }
 				 }
+				//total cadre 
+				if(casteIds != null && casteIds.size() > 0){
+					 List<Object[]> totalCadreList = eventInviteeDAO.getTotalCadresCountByCasteIds(casteIds);
+					 if( totalCadreList!= null && totalCadreList.size() > 0){
+						 for( Object[] obj : totalCadreList){
+							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
+							 if(locationVO != null){
+								 locationVO.setTotalCadre(obj[1]!=null?(Long)obj[1]:0l);
+							 }
+						 }
+					 }
+				 }
 				
 			}catch(Exception e){
 				Log.error("Exception rised in getAllDaysCasteWiseAttendeesAndinviteesCount()",e);
@@ -2093,7 +2105,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 		}
 	  
-		public boolean getAttendeeAndinviteeCountsCasteWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> locationIds){
+		public boolean getAttendeeAndinviteeCountsCasteWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> casteIds){
 			 
 			boolean isDataAvailable = false;
 			List<Object[]> totalAttendeeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds);
@@ -2103,8 +2115,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 isDataAvailable = true;
 				 List<Object[]> totalInviteeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds);
 				 
-				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,locationIds);
-				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,locationIds);
+				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,casteIds);
+				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,casteIds);
 				 
 				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
 			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
