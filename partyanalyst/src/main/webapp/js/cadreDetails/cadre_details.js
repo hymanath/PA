@@ -2396,7 +2396,7 @@ function buildingPropertiesResult(result,startDate,endDate,locationId,locationTy
 				console.log(result);
 			}); */
 			
-function getCadreIdByMemberShipId(){
+/*function getCadreIdByMemberShipId(){
 	$.ajax({
 		type : "POST",
 		url  : "getCadreIdByMembershipIdAction.action",
@@ -2404,7 +2404,7 @@ function getCadreIdByMemberShipId(){
 		}).done(function(result){
 			//console.log(result);
 		});
-	}
+	}*/
 
 function getCategoryWiseStatusCount()
 {
@@ -2524,27 +2524,7 @@ function buildCategroyInfo(result)
 	$("#complaintStatusUL").html(str);
 	
 }
-var membershipId = '${memberShipId}';
-	var constituencyId = '${constituencyId}';
-	if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
-		getCadreIdByMemberShipId();
-	}
-	else 
-	{
-		getParticipatedConstituencyId(globalCadreId);
-		/* getCategoryWiseStatusCount();
-		getTotalMemberShipRegistrationsInCadreLocation();		
-		
-		getElectionPerformanceInCadreLocation();
-		getApprovedFinancialSupprotForCadre();
-		cadreFormalDetailedInformation(globalCadreId);
-		getEventDetailsOfCadre(globalCadreId);
-		//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
-		getLocationwiseCommitteesCount();
-		getPartyMeetingsOverViewForCadre();
-		getEventsOverviewFortdpCadre(); */
-			
-	}
+
 function getCadreIdByMemberShipId(){
 	$.ajax({
 		type : "POST",
