@@ -1236,8 +1236,31 @@ var globalCadreId = '${cadreId}';
 	 var ownBoothDetailsVo;
 	 var globalAreaType="";
 	
-	
-
+	var membershipId = '${memberShipId}';
+	var constituencyId = '${constituencyId}';
+	function callFunForMembership()
+	{
+	if((globalCadreId == null || globalCadreId.trim().length == 0) && (membershipId != null && membershipId > 0)){
+		getCadreIdByMemberShipId();
+	}
+	else 
+	{
+		getParticipatedConstituencyId(globalCadreId);
+		/* getCategoryWiseStatusCount();
+		getTotalMemberShipRegistrationsInCadreLocation();		
+		
+		getElectionPerformanceInCadreLocation();
+		getApprovedFinancialSupprotForCadre();
+		cadreFormalDetailedInformation(globalCadreId);
+		getEventDetailsOfCadre(globalCadreId);
+		//getTdpCadreSurveyDetails(globalCadreId,0,null,"All",0);
+		getLocationwiseCommitteesCount();
+		getPartyMeetingsOverViewForCadre();
+		getEventsOverviewFortdpCadre(); */
+			
+	}
+	}
+	callFunForMembership();
 	$(document).on('click', '.innerDiv', function(){
 		/*var surveyDivId = $(this).attr("attr_survy_divId");
 		//$(".allSurveyDtlsCls").hide();
