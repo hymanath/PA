@@ -407,6 +407,18 @@
 										<div id="constiTableId" ></div>
 									</div>
 								</div>
+							   <div class="col-md-12" style="display:none;">
+								<div class="panel panel-default m_0">
+									<div class="panel-heading">
+									<p class="m_0 display-style" id="casteWiseHeadingId">Caste WISE </p>
+								    <button class="btn btn-success btn btn-xs col-md-offset-7" id="casteExcelExpBtnId" onclick="generateExcelReportForCaste()" style="display:none;">Export Excel</button>
+									</div>
+									<div class="panel-body" style="padding:0px;">				
+											<center><img id="cstWstblPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+										<div id="casteWiseTableId"> </div>
+									</div>
+								</div>
+							   </div>
 							</div>
 						</div>
 					</div>
@@ -1017,28 +1029,6 @@ function getLocationWiseVisitorsCountForDistrict(eventId,reportLevelId)
 			if(result != null)
 			{				
 				buildDistrictTable(result,reportLevelId)	
-			}
-	});
-}
-function getCasteWiseEventAttendeeCounts()
-{			
-
-         var jsObj = {
-				startDate    :startDate,
-				endDate      :endDate,
-				parentEventId      :parentEventId,
-				subEvents : subEvents
-			}
-		
-		
-		$.ajax({
-          type:'GET',
-          url: 'getCasteWiseEventAttendeeCountsAction.action',
-		  data : {task:JSON.stringify(jsObj)} ,
-        }).done(function(result){
-			if(result != null)
-			{				
-				//buildConstTable(result,reportLevelId)	
 			}
 	});
 }
@@ -3047,6 +3037,147 @@ function getPublicrepresentatives(){
 			
 		
 	} 
+
+function getCasteWiseEventAttendeeCounts()
+	{	
+	     $("#casteWiseTableId").html(' ');
+	         $("#cstWstblPrcssngImgId").show();
+	         var jsObj = {
+					startDate    :startDate,
+					endDate      :endDate,
+					parentEventId:parentEventId,
+					subEvents : subEvents
+				}
+			
+			
+			$.ajax({
+	          type:'GET',
+	          url: 'getCasteWiseEventAttendeeCountsAction.action',
+			  data : {task:JSON.stringify(jsObj)} ,
+	        }).done(function(result){
+				$("#cstWstblPrcssngImgId").hide();
+				if(result != null){
+				 buildCasteWiseRslt(result);
+				}
+		});
+	}
+function buildCasteWiseRslt(result){
+	
+	//$('#lastUpdatedTimeId').html(result[0].lastUpdatedDate);
+	
+	var str='';
+	str+='<div >';
+	if(result[0].locationName != "NO DATA"){
+			str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="casteDatatblId" >';
+			str+='<thead style="background:#EFF3F4">';
+			str+='<tr>';
+			str+='<th rowspan="2" style="vertical-align:middle">CASTE NAME</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL CADRES</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED % </th>';
+			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
+			
+			for(var i in result[0].subList){
+				if(result[0].subList[i].totalDaydataExist == true){
+					str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
+				}
+			}
+			
+		str+='</tr>';
+		str+='<tr>';
+		 	for(var j in result[0].subList){
+				if(result[0].subList[j].totalDaydataExist == true){
+					str+='<th>Total</th>';
+					str+='<th>Invitees</th>';
+					str+='<th>Non Invitees</th>';
+					
+				}
+				
+			}
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody class="scrollLength">';
+		for(var j in result){
+			str+='<tr>';
+			if(result[j].name == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td >'+result[j].name+'</td>';
+			}
+			if(result[j].totalCadre !=null && result[j].totalCadre >0){
+				str+='<td class="text-center">'+result[j].totalCadre+'</td>';
+			}else{
+			  str+='<td class="text-center"> 0 </td>';
+			}
+			if(result[j].inviteesCalled == 0 || result[j].inviteesCalled == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
+			}
+			if(result[j].attendees == 0 || result[j].attendees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendees+'</td>';
+			}
+			if(result[j].attendeePercantage == 0 || result[j].attendeePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendeePercantage+' %</td>';
+			} 
+			if(result[j].invitees == 0 || result[j].invitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].invitees+' <span>('+result[j].inviteePercantage+'%)</span></td>';
+			}
+			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
+			}
+			for(var l in result[j].subList){
+				
+				if(result[0].subList[l].totalDaydataExist == true){
+					if(result[j].subList[l].attendees ==0 || result[j].subList[l].attendees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[j].subList[l].attendees+'</td>';
+					}
+					if(result[j].subList[l].invitees ==0 || result[j].subList[l].invitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						 str+='<td class="text-center">'+result[j].subList[l].invitees+'</td>';
+					}
+				   if(result[j].subList[l].nonInvitees ==0 || result[j].subList[l].nonInvitees == null){
+						str+='<td class="text-center"> - </td>';
+					}else{
+						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
+					}
+				}
+			}
+			str+='</tr>';
+		}
+
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		$("#casteWiseTableId").html(str);
+		$("#casteExcelExpBtnId").show();
+	}else{
+		$("#casteWiseTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
+	}
+	$('#casteDatatblId').DataTable({
+        "paging":   true,
+        "info":     false,
+		"searching": true,
+		"autoWidth": true,
+		"order": [ 4, 'desc' ]
+    });
+}
+function generateExcelReportForCaste(){
+	tableToExcel(casteDatatblId, 'Caste Wise Report');
+}
 </script>
 </body>
 </html>
