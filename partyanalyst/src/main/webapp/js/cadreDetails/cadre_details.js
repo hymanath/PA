@@ -638,20 +638,24 @@ function getParticipatedConstituencyId(cadreId){
 								for(var j in results[i].knownList){
 									str+='<tr>';
 									if(j==0){											
-											str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
+											str+='<td style="border-bottom:#fff;text-align:center;;">'+results[i].name+'</td>';
 									}else{
-										str+='<td style="border:#fff;"></td>';
+										str+='<td style="border:#fff;text-align:center;;"></td>';
 									}
 									str+='<td>'+results[i].knownList[j].name+'</td>';
 									if(results[i].knownList[j].eventTypeId == 2)
-										str+='<td>0</td>';
+										str+='<td style="text-align:center;">0</td>';
 									else
-										str+='<td>'+results[i].knownList[j].invitationCount+'</td>';
+										str+='<td style="text-align:center;">'+results[i].knownList[j].invitationCount+'</td>';
 									//str+='<td>'+results[i].knownList[j].total+' <i class="glyphicon glyphicon-eye-open attedenceCls pull-right" title="Click here to get Attendance Details" style="cursor:pointer" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"></i></td>';
 									if(results[i].knownList[j].total != null && results[i].knownList[j].total > 0)
-										str+='<td><span class="attedenceCls" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"><a style="cursor:pointer">'+results[i].knownList[j].total+' Day(s) </a></td>';
+										str+='<td><span class="attedenceCls" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'" style="text-align:center;"><a style="cursor:pointer">'+results[i].knownList[j].total+' Day(s) </a></td>';
+									else
+										str+='<td style="text-align:center;"> - </td>';
 									if(results[i].knownList[j].eventTypeId != 2)
-										str+='<td>'+results[i].knownList[j].absentCount+'</td>';
+										str+='<td style="text-align:center;">'+results[i].knownList[j].absentCount+'</td>';
+									else
+										str+='<td style="text-align:center;"> - </td>';
 									 str+='</tr>';
 								}
 							}
