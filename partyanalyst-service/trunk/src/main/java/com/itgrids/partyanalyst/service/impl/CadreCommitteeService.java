@@ -117,6 +117,8 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ActivityLocationInfoDatesDAO;
+import com.itgrids.partyanalyst.dao.impl.IActivityLocationInfoDatesDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -146,6 +148,7 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
+import com.itgrids.partyanalyst.model.ActivityLocationInfoDates;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -273,8 +276,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IActivityRequiredAttributeDAO activityRequiredAttributeDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService;
+	private IActivityLocationInfoDatesDAO activityLocationInfoDatesDAO;
 	
 	
+	
+	
+	
+	public IActivityLocationInfoDatesDAO getActivityLocationInfoDatesDAO() {
+		return activityLocationInfoDatesDAO;
+	}
+
+	public void setActivityLocationInfoDatesDAO(
+			IActivityLocationInfoDatesDAO activityLocationInfoDatesDAO) {
+		this.activityLocationInfoDatesDAO = activityLocationInfoDatesDAO;
+	}
+
 	public void setSetterAndGetterUtilService(
 			SetterAndGetterUtilService setterAndGetterUtilService) {
 		this.setterAndGetterUtilService = setterAndGetterUtilService;
@@ -16646,14 +16662,14 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 												}
 												existingVO.setUpdatedBy(userId);
 												existingVO.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-												activityLocationInfoDAO.save(existingVO);
+												activityLocationInfo = activityLocationInfoDAO.save(existingVO);
 											}	
 											else{
 												activityLocationInfo.setInsertedBy(userId);
 												activityLocationInfo.setUpdatedBy(userId);
 												activityLocationInfo.setInsertionTime(dateUtilService.getCurrentDateAndTime());
 												activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-												activityLocationInfoDAO.save(activityLocationInfo);
+												activityLocationInfo = activityLocationInfoDAO.save(activityLocationInfo);
 											}
 											activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 											//activityLocationInfoDAO.isAlreadAvailableActivity();
@@ -16717,15 +16733,151 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 														LOG.error("Exception rised in saveActivityDetails()",e);
 													}
 
-													activityLocationInfoDAO.save(existingVO);
+													activityLocationInfo = activityLocationInfoDAO.save(existingVO);
 												}else
 												{
-													activityLocationInfoDAO.save(activityLocationInfo);
+													activityLocationInfo = activityLocationInfoDAO.save(activityLocationInfo);
 												}
 										 }
+										 try {
+											 
+											 Map<Long,List<Long>> activityDateTypeMap = new HashMap<Long, List<Long>>();
+											 List<ActivityLocationInfoDates> updateDates = activityLocationInfoDatesDAO.getActivityLocationInfoDates(activityLocationInfo.getActivityLocationInfoId(),activityvo.getDay());
+											 
+											 if(updateDates != null && updateDates.size() > 0)
+											 {
+												 for(ActivityLocationInfoDates params : updateDates)
+												 {
+													 List<Long> IDs = activityDateTypeMap.get(params.getActivityDateTypeId());
+													 if(IDs == null || IDs.size() == 0)
+													 {
+														 IDs = new ArrayList<Long>();
+													 }
+													 IDs.add(params.getActivityLocationInfoDatesId());
+													 activityDateTypeMap.put(params.getActivityDateTypeId(),IDs);
+												 }
+											 }
+										 if(updateDates != null && updateDates.size() > 0)
+										 {
+											 List<Long> activityLocInfoIds = null;
+											
+											if(activityvo.getPlannedDate() != null ){
+												for(ActivityLocationInfoDates activityLocationInfoDates : updateDates)
+												{
+													if(activityvo.getPlannedDate() != null){
+														if(activityLocationInfoDates.getActivityDateTypeId() == 1)
+														{
+															activityLocInfoIds = activityDateTypeMap.get(activityLocationInfoDates.getActivityDateTypeId());
+														}
+													}
+												}
+											
+													if(activityLocInfoIds == null || activityLocInfoIds.size() == 0)
+													{
+														ActivityLocationInfoDates	activityLocationInfoDates1 = new ActivityLocationInfoDates();
+														activityLocationInfoDates1.setActivityDateTypeId(1l);
+														activityLocationInfoDates1.setActivityLocationInfoId(activityLocationInfo.getActivityLocationInfoId());
+														if(activityvo.getPlannedDate() != null && !activityvo.getPlannedDate().isEmpty())
+														activityLocationInfoDates1.setActivityDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+														else
+															activityLocationInfoDates1.setActivityDate(null)	;
+														activityLocationInfoDates1.setDay(activityvo.getDay());
+														 activityLocationInfoDatesDAO.save(activityLocationInfoDates1);	
+													}
+													else
+													{
+														for(Long id : activityLocInfoIds)
+														{
+															ActivityLocationInfoDates activityLocationInfoDates = activityLocationInfoDatesDAO.get(id);
+															activityLocationInfoDates.setActivityDateTypeId(1l);
+															activityLocationInfoDates.setActivityLocationInfoId(activityLocationInfo.getActivityLocationInfoId());
+															if(activityvo.getPlannedDate() != null && !activityvo.getPlannedDate().isEmpty())
+																activityLocationInfoDates.setActivityDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+																else
+																	activityLocationInfoDates.setActivityDate(null)	;
+															activityLocationInfoDates.setDay(activityvo.getDay());
+															 activityLocationInfoDatesDAO.save(activityLocationInfoDates);
+														}
+													}
+											}
+												
+													
+														List<Long> activityLocInfoIds1 = null;
+														if(activityvo.getConductedDate() != null){
+															
+															for(ActivityLocationInfoDates activityLocationInfoDates : updateDates)
+															{
+																if(activityvo.getConductedDate() != null){
+																	if(activityLocationInfoDates.getActivityDateTypeId() == 2)
+																	{
+																		activityLocInfoIds1 = activityDateTypeMap.get(activityLocationInfoDates.getActivityDateTypeId());
+																	}
+																}
+															}
+															if(activityLocInfoIds1 == null || activityLocInfoIds1.size() == 0)
+															{
+																ActivityLocationInfoDates	activityLocationInfoDates1 = new ActivityLocationInfoDates();
+																activityLocationInfoDates1.setActivityDateTypeId(2l);
+																activityLocationInfoDates1.setActivityLocationInfoId(activityLocationInfo.getActivityLocationInfoId());
+																if(activityvo.getConductedDate() != null && !activityvo.getConductedDate().isEmpty())
+																	activityLocationInfoDates1.setActivityDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+																	else
+																		activityLocationInfoDates1.setActivityDate(null)	;
+																activityLocationInfoDates1.setDay(activityvo.getDay());
+																 activityLocationInfoDatesDAO.save(activityLocationInfoDates1);	
+															}
+															else
+															{
+																for(Long id : activityLocInfoIds1)
+																{
+																	ActivityLocationInfoDates activityLocationInfoDates = activityLocationInfoDatesDAO.get(id);
+																	activityLocationInfoDates.setActivityDateTypeId(2l);
+																	activityLocationInfoDates.setActivityLocationInfoId(activityLocationInfo.getActivityLocationInfoId());
+																	if(activityvo.getConductedDate() != null && !activityvo.getConductedDate().isEmpty())
+																		activityLocationInfoDates.setActivityDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+																		else
+																			activityLocationInfoDates.setActivityDate(null)	;
+																	activityLocationInfoDates.setDay(activityvo.getDay());
+																	 activityLocationInfoDatesDAO.save(activityLocationInfoDates);
+																}
+															}
+														
+														}
+										 }
+									 else
+										 {
+											 ActivityLocationInfoDates activityLocationInfoDates = new ActivityLocationInfoDates();
+											 if(activityvo.getPlannedDate() != null && !activityvo.getPlannedDate().isEmpty()){
+												 	activityLocationInfoDates.setActivityDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+													activityLocationInfoDates.setActivityDateTypeId(1l);
+													activityLocationInfoDates.setActivityLocationInfoId(activityLocationInfo.getActivityLocationInfoId());
+													activityLocationInfoDates.setDay(activityvo.getDay());
+													activityLocationInfoDatesDAO.save(activityLocationInfoDates);	
+												} 
+												
+												 if(activityvo.getConductedDate() != null && !activityvo.getConductedDate().isEmpty()){
+													activityLocationInfoDates.setActivityDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+													activityLocationInfoDates.setActivityDateTypeId(2l);
+													activityLocationInfoDates.setActivityLocationInfoId(activityLocationInfo.getActivityLocationInfoId());
+													activityLocationInfoDates.setDay(activityvo.getDay());
+													activityLocationInfoDatesDAO.save(activityLocationInfoDates);	
+												}
+												
+											 
+										 }
+										 } 
+										 catch (ParseException e) {
+												
+												e.printStackTrace();
+											}
 									 }
 								}
 							 }
+							 
+							
+							  
+							 
+							 
 						 }
 						 
 						 return "success";
@@ -18274,7 +18426,7 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 {
 	LocationWiseBoothDetailsVO1 returnVO = null;	
 	try {
-		
+		Map<Long,List<ActivityVO>> activityMap = new LinkedHashMap<Long, List<ActivityVO>>(0);
 		if(activityLevelId.longValue() == 4l){
 			List<LocationWiseBoothDetailsVO> returnStateList = new ArrayList<LocationWiseBoothDetailsVO>();
 			String[] staArr = IConstants.STATIC_STATE_IDS.split(",");
@@ -18304,7 +18456,7 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 		List<Long> notUpdatedLocationIdsList  = new ArrayList<Long>(0);
 		List<LocationWiseBoothDetailsVO> reportList = null;
 		List<Long> constituencyIds = new ArrayList<Long>(0);
-		Map<Long,List<ActivityVO>> activityMap = new LinkedHashMap<Long, List<ActivityVO>>(0);
+		
 		//List<LocationWiseBoothDetailsVO> mandalList = new ArrayList<LocationWiseBoothDetailsVO>(0);
 		//List<LocationWiseBoothDetailsVO> panchayatList=new ArrayList<LocationWiseBoothDetailsVO>(0);
 		
@@ -18328,7 +18480,7 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 		}
 		if(activityScopeId != null && activityScopeId.longValue()>0L)
 		{
-			 List<Object[]> updatedList= activityLocationInfoDAO.getUpdatedLocationsListForScope(activityScopeId,startDate,endDate);
+			/* List<Object[]> updatedList= activityLocationInfoDAO.getUpdatedLocationsListForScope(activityScopeId,startDate,endDate);
 			 if(updatedList != null && updatedList.size()>0)
 			 {
 				 for (Object[] locations : updatedList) {
@@ -18376,7 +18528,67 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 		             //  notUpdatedLocationIdsList.add(locationValue);
 					 //updatedLocationIdsList.add(locationValue);
 				}
+			 }*/
+			 List<Object[]> updatedList= activityLocationInfoDatesDAO.getActivityDatesByScope(activityScopeId,startDate,endDate);
+			 
+			 
+			 if(updatedList != null && updatedList.size() > 0)
+			 {
+				 for (Object[] locations : updatedList) {
+					 String planDate = null;String conductedDate=null;
+					 Long locationValue = locations[1] != null ? Long.valueOf(locations[1].toString()):0L;
+					 if(locations[4] != null && (Long)locations[4] == 1l)
+					  planDate = locations[3] != null ? locations[3].toString():null;
+					 if(locations[4] != null && (Long)locations[4] == 2l)
+					  conductedDate = locations[3] != null ? locations[3].toString():null;
+					 Long locationlevel = locations[0] != null ? Long.valueOf(locations[0].toString()):0L;
+					 Date planDateStr = planDate != null ? format1.parse(planDate):null;
+					 Date conductedDateStr = conductedDate != null ? format1.parse(conductedDate):null;
+					 String locationLevelId = "";
+					 if(locationlevel.longValue() == 6L || locationlevel.longValue() == 7L)
+					 {
+						 locationLevelId = "1";
+					 }
+					 else if(locationlevel.longValue() == 8L || locationlevel.longValue() == 5L)
+					 {
+						 locationLevelId = "2";
+					 }
+					 else if(locationlevel.longValue() == 9L)
+					 {
+						 locationLevelId = "3";
+					 }
+					 String finalIdStr = locationLevelId+""+locationValue;
+					 Long finalLocationId = Long.valueOf(finalIdStr);
+					 List<ActivityVO> list = new ArrayList<ActivityVO>(0);
+					 if(activityMap.get(locationValue) != null)
+					 {
+						 list = activityMap.get(locationValue);
+					 }
+					// ActivityVO vo = new ActivityVO();
+					 ActivityVO vo = getMatchedLocation(list,locationlevel,finalLocationId,(Long)locations[2]);
+					 if(vo == null)
+					 {
+						 vo = new ActivityVO(); 
+					 }
+					 if(planDateStr != null)
+						 vo.setPlannedDate(format.format(planDateStr).toString());
+					 if(conductedDateStr != null)
+						 vo.setConductedDate(format.format(conductedDateStr).toString());
+					 vo.setLocationValue(finalLocationId);
+					 vo.setId(locationValue);
+					 vo.setLocationLevel(locationlevel);
+					 vo.setDay((Long)locations[2]);
+					 vo.setDateStr(locations[3] != null ? locations[3].toString() : "");
+					 list.add(vo);
+					 activityMap.put(locationValue, list);
+					 if(!updatedLocationIdsList.contains(locationValue))
+					 updatedLocationIdsList.add(locationValue);
+		             
+				 }
 			 }
+			 
+			 
+			
 		}
 		if(activityLevelId != null && activityLevelId.longValue()>0L)
 		{
@@ -18549,9 +18761,9 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 							 }else{
 								 vo.setIsAlreadyImageUpload("false"); 
 							 }
-							List<ActivityVO> activityVOList = activityMap.get(locationsId);
+							//List<ActivityVO> activityVOList = activityMap.get(locationsId);
 							
-							if(activityVOList != null && activityVOList.size()>0)
+							/*if(activityVOList != null && activityVOList.size()>0)
 							{
 								for (ActivityVO activityVO : activityVOList) {
 									finalVO.setPlanedDate(activityVO.getPlannedDate());
@@ -18562,7 +18774,8 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 							}else
 							{
 								returnList.add(finalVO);
-							}
+							}*/
+							returnList.add(finalVO);
 						}
 					}
 				}
@@ -18582,9 +18795,9 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 							 }else{
 								 vo.setIsAlreadyImageUpload("false"); 
 							 }
-							List<ActivityVO> activityVOList = activityMap.get(locationsId);
+						//	List<ActivityVO> activityVOList = activityMap.get(locationsId);
 							
-							if(activityVOList != null && activityVOList.size()>0)
+							/*if(activityVOList != null && activityVOList.size()>0)
 							{
 								for (ActivityVO activityVO : activityVOList) {
 									finalVO.setPlanedDate(activityVO.getPlannedDate());
@@ -18595,7 +18808,8 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 							}else
 							{
 								returnList.add(finalVO);
-							}
+							}*/
+							returnList.add(finalVO);
 						}
 					}
 				}
@@ -18614,7 +18828,7 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 						 }else{
 							 vo.setIsAlreadyImageUpload("false"); 
 						 }
-						List<ActivityVO> activityVOList = activityMap.get(locationsId);
+						/*List<ActivityVO> activityVOList = activityMap.get(locationsId);
 						if(activityVOList != null && activityVOList.size()>0)
 						{
 							for (ActivityVO activityVO : activityVOList) {
@@ -18626,7 +18840,8 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 						}else
 						{
 							returnList.add(finalVO);
-						}
+						}*/
+						returnList.add(finalVO);
 					}
 				}
 				Collections.sort(returnList,new Comparator<LocationWiseBoothDetailsVO>() {
@@ -18701,9 +18916,11 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 				List<String> datesStr = new ArrayList<String>(0);
 				if(frmDate !=null && toDate !=null){
 					List<Date> dates = commonMethodsUtilService.getBetweenDates(frmDate, toDate);
+					int i=0;
 					if(dates !=null && dates.size()>0){
 						for (Date date : dates) {
-							datesStr.add(sdf.format(date));
+							i++;
+							datesStr.add("Day" +i+ "("+sdf.format(date)+")");
 						}							
 					}
 				}
@@ -18724,8 +18941,36 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 						obj.setResult2(VOList);
 					} 
 										
-				}				
+				}	
+				
+				for (LocationWiseBoothDetailsVO obj : returnVO.getResult()) {
+					
+						List<ActivityVO> activityVOList = activityMap.get(obj.getId());
+						if(activityVOList != null && activityVOList.size()>0)
+						{
+							for (ActivityVO activityVO : activityVOList) {
+								if(activityVO.getDateStr() != null && !activityVO.getDateStr().isEmpty())
+								{
+									LocationWiseBoothDetailsVO2 vo = getMatchedDateObj(obj.getResult2(),activityVO.getLocationValue(),activityVO.getDateStr());
+									if(vo != null)
+									{
+										obj.setPlanedDate(vo.getPlanedDate());
+									obj.setConductedDate(vo.getConductedDate());
+									}
+								}
+								
+							 }
+						}
+					
+					} 
+										
+					
+				
 			}
+			
+			
+			
+			
 			
 	} catch (Exception e) {
 		 LOG.error("Exception Occured in getActivityLocationDetailsNew() method, Exception - ",e);
@@ -18733,6 +18978,35 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 	
 	return returnVO;
 }
+ 
+ 
+ public LocationWiseBoothDetailsVO2 getMatchedDateObj(List<LocationWiseBoothDetailsVO2> list,Long locationId,String date)
+ {
+	 if(list == null)
+		 return null;
+	 
+	 String dateStr = date.substring(7, 10)+"-"+date.substring(3, 4)+"-"+ date.substring(1, 2);
+	 for(LocationWiseBoothDetailsVO2 vo : list)
+	 {
+		 if(vo.getLocationId().longValue() == locationId && vo.getDateStr().equalsIgnoreCase(dateStr))
+			 return vo;
+	 }
+	 
+	return null; 
+ }
+ public ActivityVO getMatchedLocation(List<ActivityVO> list,Long locationlevel,Long finalLocationId,Long day)
+ {
+	 if(list == null)
+		 return null;
+	 for(ActivityVO vo : list)
+	 {
+		 if(vo.getLocationLevel().longValue() == locationlevel && finalLocationId.longValue() == vo.getLocationValue().longValue() && day.longValue() == vo.getDay().longValue())
+			 return vo;
+	 }
+	 
+	return null;
+	 
+ }
  public List<LocationWiseBoothDetailsVO2> setDayObjToList(List<String> datesList,List<LocationWiseBoothDetailsVO2> VOList,LocationWiseBoothDetailsVO obj){
 	 try{
 		 
@@ -18740,12 +19014,16 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 			 for (String objects : datesList) {	
 				 	//LocationWiseBoothDetailsVO vo = (LocationWiseBoothDetailsVO)obj.clone();
 				 LocationWiseBoothDetailsVO2 vo = new LocationWiseBoothDetailsVO2();
-				 	vo.setDay(objects);				 	
+				 	vo.setDay(objects);		
+				 	int firstBracket = objects.indexOf('(');
+				 	String contentOfBrackets = objects.substring(firstBracket + 1, objects.indexOf(')', firstBracket));
+				 	vo.setDateStr(contentOfBrackets);
 				 	vo.setLocationId(obj.getLocationId());
 				 	vo.setLocationName(obj.getLocationName());
 				 	vo.setIsAlreadyImageUpload(obj.getIsAlreadyImageUpload());
-				 	vo.setPlanedDate(obj.getPlanedDate());
-				 	vo.setConductedDate(obj.getConductedDate());
+				 	
+				 	/*vo.setPlanedDate(obj.getPlanedDate());
+				 	vo.setConductedDate(obj.getConductedDate());*/
 				 	
 					VOList.add(vo);
 				}

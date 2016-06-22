@@ -85,8 +85,23 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long invitteeCnt = 0l;
 	private Long attendeeCnt = 0l;
 	private Long abscentCnt = 0l;
+	private Long day=0l;
+	private String dateStr;
 	
 	
+	
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	public Long getDay() {
+		return day;
+	}
+	public void setDay(Long day) {
+		this.day = day;
+	}
 	public Long getInvitteeCnt() {
 		return invitteeCnt;
 	}

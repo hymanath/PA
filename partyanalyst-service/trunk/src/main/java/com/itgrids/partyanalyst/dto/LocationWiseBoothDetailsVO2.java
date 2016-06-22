@@ -22,8 +22,16 @@ public class LocationWiseBoothDetailsVO2  implements Serializable {
 	private String isAlreadyImageUpload;
 	
 	private String day;
+	private String dateStr;
 	
 	
+	
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
 	public String getDay() {
 		return day;
 	}
