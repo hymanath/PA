@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.EmailAttributesVO;
+import com.itgrids.partyanalyst.dto.EventGenderVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatesEventVO;
@@ -21,5 +22,7 @@ public interface IMahanaduDashBoardService1 {
 	
 	public List<MahanaduEventVO> casteWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds);
 	public List<MahanaduEventVO> ageWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds);
+	
+	public EventGenderVO genderWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds);
 }
 

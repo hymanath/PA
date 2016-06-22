@@ -79,4 +79,6 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]>  ageWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
 	public List<Object[]> ageWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
 	
+	public List<Object[]>  genderWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
+	public List<Object[]> genderWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
 }
