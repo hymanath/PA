@@ -6944,4 +6944,15 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
  		query.setParameterList("ageWiseIds", ageWiseIds);
  		return query.list();
  	}
+ 	public List<Object[]> genderWiseTdpCadre()
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.gender,count(distinct model.tdpCadreId)" +
+				   " from   TdpCadre model " +
+				   " where  model.gender is not null " +
+				   "        and model.isDeleted = 'N' and model.enrollmentYear = 2014 " +
+				   " group by model.gender ");
+		Query query = getSession().createQuery(str.toString());
+		return query.list();
+	}
 }
