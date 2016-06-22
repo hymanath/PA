@@ -2183,13 +2183,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 
 				 //SET CURRENT DATE AND TIME.
 				 if(resultList != null && resultList.size() > 0){
-					 Collections.sort(resultList, new Comparator<MahanaduEventVO>(){
-						 public int compare(MahanaduEventVO mahanadu1, MahanaduEventVO mahanadu2){
-							 return mahanadu1.getId().compareTo(mahanadu2.getId());
-						 }
-					 });
 					 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
-					 
 				 }else{
 					 MahanaduEventVO vo = new MahanaduEventVO();
 					 vo.setLocationName("NO DATA");
