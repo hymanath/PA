@@ -661,7 +661,8 @@
 	 <pattern>/bloodBankBleadingAction*</pattern>
 	 
 	 <pattern>/notificationAction*</pattern>
-	  <pattern>/rescheduledCandidateAction*</pattern>
-	  <pattern>/updateActivityNewAction*</pattern>
+	 <pattern>/rescheduledCandidateAction*</pattern>
+	 <pattern>/updateActivityNewAction*</pattern>
+	 <pattern>/eventReportDashBoardAction*</pattern>
 	</decorator> 
 </decorators>
