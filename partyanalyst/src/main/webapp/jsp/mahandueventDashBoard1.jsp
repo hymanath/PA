@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="utf-8">
-
 <title>Event</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 <link href="dist/eventDashboard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -15,8 +14,6 @@
 <link href="dist/eventDashboard/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="dist/eventDashboard/css/dataTables.responsive.css" rel="stylesheet" type="text/css">
 <link href="dist/eventDashboard/Date/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
-
-
 <style>
 .tableC thead th {color:#00B17D !important;font-size: 11px !important;}
 .tableC tr td{font-size:12px !important;padding:4px !important;}
@@ -93,6 +90,13 @@
 	background:#00B17D;
 	border:1px solid #00B17D;
 }
+#eventReportDashboardLinkId , #eventReportDashboardLinkId:hover , #eventReportDashboardLinkId:active , #eventReportDashboardLinkId:focus
+{
+	margin-left:5px;
+	padding:4px 12px;
+	background:#00B17D;
+	border:1px solid #00B17D;
+}
 .errorColorAppy{ color: rgb(255, 0, 0);font-size: 12px;font-weight: bold;margin-left: -70px;text-shadow: none}
 .text-capitalize{text-transform: uppercase;}
 .pointer {
@@ -126,13 +130,15 @@
 				<div id="mahanaduEventDashBoardLinkId" style="display:none">
 					<button id="mahanaduLinkId" type="button" class="btn btn-primary pull-right">ENTRY/EXIT DASHBOARD</button>
 				</div>
+				<div id="eventReportDashboardDivLinkId" style="display:none">
+					<button id="eventReportDashboardLinkId" type="button" class="btn btn-primary pull-right">EVENT REPORT DASHBOARD</button>
+				</div>
 				<div class="refreshButton">
 					<span  class="text">Last Updated Time <br/><span id="timeUpdationId"></span>&nbsp;&nbsp;&nbsp;</span>
 					<a onclick="callingDefaultCalls();" title=" Page Refresh" class="refreshIcon" style="cursor:pointer">
 						<span class="glyphicon glyphicon-refresh"></span>
 					</a>
 				</div>
-				 
 				<!--<a  class="btn btn-xs btn-success btn-block dataSynchClass" title=" Data Synch..">
 					<span class="" style="font-size: 15px;"> Sync
 						<img src="images/ajaxImg2.gif" id="syncAjaxImage1" style="height:20px;width:20px;display:none;"/>
@@ -407,40 +413,6 @@
 										<div id="constiTableId" ></div>
 									</div>
 								</div>
-							   <div class="col-md-12" style="display:none;">
-								<div class="panel panel-default m_0">
-									<div class="panel-heading">
-									<p class="m_0 display-style" id="casteWiseHeadingId">Caste WISE </p>
-								    <button class="btn btn-success btn btn-xs col-md-offset-7" id="casteExcelExpBtnId" onclick="generateExcelReportForCaste()" style="display:none;">Export Excel</button>
-									</div>
-									<div class="panel-body" style="padding:0px;">				
-											<center><img id="cstWstblPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-										<div id="casteWiseTableId"> </div>
-									</div>
-								</div>
-							   </div>
-							   <div class="col-md-12">
-								<div class="panel panel-default m_0">
-									<div class="panel-heading">
-									<p class="m_0 display-style" id="casteWiseHeadingId">Age WISE </p>
-									</div>
-									<div class="panel-body" style="padding:0px;">				
-										<center><img id="ageWstblPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-										<div id="ageWiseTableId"> </div>
-									</div>
-								</div>
-							   </div>    
-							    <div class="col-md-12">
-								<div class="panel panel-default m_0">
-									<div class="panel-heading">
-									<p class="m_0 display-style" id="genderWiseHeadingId">Gender WISE </p>
-									</div>
-									<div class="panel-body" style="padding:0px;">				
-										<center><img id="genderWisePrcssngImgId" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
-										<div id="genderWiseCountDetailsId"> </div>
-									</div>
-								</div>
-							   </div>    
 							</div>
 						</div>
 					</div>
@@ -1803,8 +1775,10 @@ function buildStartingPrograms(result,parentEventId){
 		      str+='</div>';
 			  
 			  $("#mahanaduEventDashBoardLinkId").show();
+			  //$("#eventReportDashboardDivLinkId").show();
 		 }else{
-			  $("#mahanaduEventDashBoardLinkId").hide();			 
+			  $("#mahanaduEventDashBoardLinkId").hide();
+             // $("#eventReportDashboardDivLinkId").hide();			  
 		 }
 	  } 
 	 str+='</div>'; 
@@ -1974,9 +1948,6 @@ setcolorsForEvents();
  countDetailsCalls();
 stateWiseEventAttendeeCounts();
 getPublicrepresentatives();
-//getCasteWiseEventAttendeeCounts();
-getAgeWiseEventAttendeeCounts();
-
 showConst = true;
 showHide();
 //getRegistrationsCnt();
@@ -2043,8 +2014,6 @@ showHide();
 		stateWiseEventAttendeeCounts();
 		getPublicrepresentatives();
 		
-		//getCasteWiseEventAttendeeCounts();
-		getAgeWiseEventAttendeeCounts();
 	}
 	function defaultApTsChecked(){
 		$("#tsSwitch").prop("checked",true);
@@ -2798,7 +2767,15 @@ $(document).on('click','#mahanaduLinkId',function(){
 	//var value =  window.open("http://localhost:8080/PartyAnalyst/mahanaduCadreVisitInfoAction.action?eventId="+eventId+"",'_blank');
 	
 });
-
+$(document).on('click','#eventReportDashboardLinkId',function(){
+	var eventId = 0;
+	$(".maineventCls").each(function(){
+		if($(this).is(":checked")){
+			eventId = $(this).val();
+		}
+	});
+	var value =  window.open("eventReportDashBoardAction.action",'_blank');
+});
 
  $(document).on('click','.checkedSwitch',function(){
 	 $("#showErrorMsg").html("")
@@ -3034,444 +3011,7 @@ function getPublicrepresentatives(){
 		}else{
 			$("#publicRepresentativeDiv").html("NO DATA AVAILABLE");
 		}
-			
-		
 	} 
-
-function getCasteWiseEventAttendeeCounts()
-	{	
-	     $("#casteWiseTableId").html(' ');
-	         $("#cstWstblPrcssngImgId").show();
-	         var jsObj = {
-					startDate    :startDate,
-					endDate      :endDate,
-					parentEventId:parentEventId,
-					subEvents : subEvents
-				}
-			
-			
-			$.ajax({
-	          type:'GET',
-	          url: 'getCasteWiseEventAttendeeCountsAction.action',
-			  data : {task:JSON.stringify(jsObj)} ,
-	        }).done(function(result){
-				$("#cstWstblPrcssngImgId").hide();
-				if(result != null){
-				 buildCasteWiseRslt(result);
-				}
-		});
-	}
-function buildCasteWiseRslt(result){
-	
-	//$('#lastUpdatedTimeId').html(result[0].lastUpdatedDate);
-	
-	var str='';
-	str+='<div >';
-	if(result[0].locationName != "NO DATA"){
-			str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="casteDatatblId" >';
-			str+='<thead style="background:#EFF3F4">';
-			str+='<tr>';
-			str+='<th rowspan="2" style="vertical-align:middle">CASTE NAME</th>';
-			str+='<th rowspan="2" style="vertical-align:middle">TOTAL CADRES</th>';
-			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITED</th>';
-			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
-			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED % </th>';
-			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
-			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
-			
-			for(var i in result[0].subList){
-				if(result[0].subList[i].totalDaydataExist == true){
-					str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
-				}
-			}
-			
-		str+='</tr>';
-		str+='<tr>';
-		 	for(var j in result[0].subList){
-				if(result[0].subList[j].totalDaydataExist == true){
-					str+='<th>Total</th>';
-					str+='<th>Invitees</th>';
-					str+='<th>Non Invitees</th>';
-					
-				}
-				
-			}
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody class="scrollLength">';
-		for(var j in result){
-			str+='<tr>';
-			if(result[j].name == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td >'+result[j].name+'</td>';
-			}
-			if(result[j].totalCadre !=null && result[j].totalCadre >0){
-				str+='<td class="text-center">'+result[j].totalCadre+'</td>';
-			}else{
-			  str+='<td class="text-center"> 0 </td>';
-			}
-			if(result[j].inviteesCalled == 0 || result[j].inviteesCalled == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
-			}
-			if(result[j].attendees == 0 || result[j].attendees == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].attendees+'</td>';
-			}
-			if(result[j].attendeePercantage == 0 || result[j].attendeePercantage == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].attendeePercantage+' %</td>';
-			} 
-			if(result[j].invitees == 0 || result[j].invitees == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].invitees+' <span>('+result[j].inviteePercantage+'%)</span></td>';
-			}
-			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
-			}
-			for(var l in result[j].subList){
-				
-				if(result[0].subList[l].totalDaydataExist == true){
-					if(result[j].subList[l].attendees ==0 || result[j].subList[l].attendees == null){
-						str+='<td class="text-center"> - </td>';
-					}else{
-						str+='<td class="text-center">'+result[j].subList[l].attendees+'</td>';
-					}
-					if(result[j].subList[l].invitees ==0 || result[j].subList[l].invitees == null){
-						str+='<td class="text-center"> - </td>';
-					}else{
-						 str+='<td class="text-center">'+result[j].subList[l].invitees+'</td>';
-					}
-				   if(result[j].subList[l].nonInvitees ==0 || result[j].subList[l].nonInvitees == null){
-						str+='<td class="text-center"> - </td>';
-					}else{
-						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
-					}
-				}
-			}
-			str+='</tr>';
-		}
-
-		str+='</tbody>';
-		str+='</table>';
-		str+='</div>';
-		$("#casteWiseTableId").html(str);
-		$("#casteExcelExpBtnId").show();
-	}else{
-		$("#casteWiseTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
-	}
-	$('#casteDatatblId').DataTable({
-        "paging":   true,
-        "info":     false,
-		"searching": true,
-		"autoWidth": true,
-		"order": [ 4, 'desc' ]
-    });
-}
-function generateExcelReportForCaste(){
-	tableToExcel(casteDatatblId, 'Caste Wise Report');
-}
-function getAgeWiseEventAttendeeCounts(){
-	$("#ageWiseTableId").html("");  
-	$("#ageWstblPrcssngImgId").show();
-    var jsObj = {
-		startDate    :startDate,
-		endDate      :endDate,
-		parentEventId      :parentEventId,
-		subEvents : subEvents
-	}
-	$.ajax({
-        type:'GET',
-        url: 'getAgeWiseEventAttendeeCountsAction.action',
-		data : {task:JSON.stringify(jsObj)} ,
-        }).done(function(result){ 
-		$("#ageWstblPrcssngImgId").hide();
-			if(result != null)
-			{				
-				buildAgeWiseCadreCountTable(result)	
-			}
-	});
-}
-function buildAgeWiseCadreCountTable(result){
-	
-	var str='';
-	str+='<div >';
-	if(result[0].locationName != "NO DATA"){
-		str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="ageDatatblId" >';
-		str+='<thead style="background:#EFF3F4">';
-		str+='<tr>';
-		//str+='<th rowspan="2" style="vertical-align:middle" width="40px !important;"># ID</th>';
-		str+='<th rowspan="2" style="vertical-align:middle">AGE RANGE</th>';
-		str+='<th rowspan="2" style="vertical-align:middle">TOTAL CADRES</th>';
-		str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITED</th>';
-		str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
-		str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
-		str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
-		var dataExist = {};
-      
-		for(var i in result[0].subList){
-			if(result[0].subList[i].totalDaydataExist == true){
-				str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
-			}
-		}
-		str+='</tr>';
-		str+='<tr>';
-		for(var j in result[0].subList){
-			if(result[0].subList[j].totalDaydataExist == true){
-				str+='<th>Total</th>';
-				str+='<th>Invitees</th>';
-				str+='<th>Non Invitees</th>';
-			}
-		}
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody class="scrollLength">';
-		for(var j in result){
-			str+='<tr>';
-			/* if(result[j].id ==0 || result[j].id == null){
-					str+='<td class="text-center"> - </td>';
-				}else{
-					str+='<td class="text-center" >'+result[j].id+'</td>';
-				} */
-			if(result[j].name == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				if(result[j].name == 'Young Voters'){
-					str+='<td >'+result[j].name+'(18-22)</td>';
-				}else{
-					str+='<td >'+result[j].name+'</td>';
-				}
-			}
-			if(result[j].totalCadre !=null && result[j].totalCadre >0){
-				str+='<td class="text-center">'+result[j].totalCadre+'</td>';
-			}else{
-				str+='<td class="text-center"> 0 </td>';
-			}
-			if(result[j].inviteesCalled == 0 || result[j].inviteesCalled == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
-			}
-			if(result[j].attendees == 0 || result[j].attendees == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].attendees+' <span>('+result[j].attendeePercantage+'%)</span></td>';
-			}
-			if(result[j].invitees == 0 || result[j].invitees == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].invitees+' <span>('+result[j].inviteePercantage+'%)</span></td>';
-			}
-			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
-				str+='<td class="text-center"> - </td>';
-			}else{
-				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
-			}
-			/* if(result[j].attendeePercantage == 0 || result[j].attendeePercantage == null){
-					str+='<td class="text-center"> - </td>';
-				}else{
-					str+='<td class="text-center">'+result[j].attendeePercantage+' %</td>';
-				} */
-		
-			for(var l in result[j].subList){  
-			
-				if(result[0].subList[l].totalDaydataExist == true){
-					if(result[j].subList[l].attendees ==0 || result[j].subList[l].attendees == null){
-						str+='<td class="text-center"> - </td>';
-					}else{
-						str+='<td class="text-center">'+result[j].subList[l].attendees+'</td>';
-					}
-					if(result[j].subList[l].invitees ==0 || result[j].subList[l].invitees == null){
-						str+='<td class="text-center"> - </td>';
-					}else{
-						str+='<td class="text-center">'+result[j].subList[l].invitees+'</td>';
-					}
-					if(result[j].subList[l].nonInvitees ==0 || result[j].subList[l].nonInvitees == null){
-						str+='<td class="text-center"> - </td>';
-					}else{
-						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
-					}
-				}
-			}  
-			str+='</tr>';  
-		}
-
-		str+='</tbody>';
-		str+='</table>';
-		str+='</div>';
-		$("#ageWiseTableId").html(str);
-		//$("#districtExcelBtnId").show();
-	}else{
-		$("#ageWiseTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
-	}
-}
-function getGenderWiseEventAttendeeCounts()
-{			
-	 $("#genderWiseCountDetailsId").html(' ');
-	 $("#genderWisePrcssngImgId").show();
-         var jsObj = {
-				startDate    :startDate,
-				endDate      :endDate,
-				parentEventId      :parentEventId,
-				subEvents : subEvents
-			}
-		
-		$.ajax({
-          type:'GET',
-          url: 'getGenderWiseEventAttendeeCountsAction.action',
-		  data : {task:JSON.stringify(jsObj)} ,
-        }).done(function(result){
-        	 $("#genderWisePrcssngImgId").hide();
-			if(result != null)
-			{				
-				buildGenderWiseLocationDetails(result);	
-			}
-	});
-}
-
-function buildGenderWiseLocationDetails(result) {
-	 var str='';
-	  str+='<div class="table-responsive">';
-		str+='<table class="table tableC table-condensed table-bordered">';
-			str+='<thead>';
-				str+='<tr>';
-					str+='<th rowspan="3">TOTAL MALE CALLED</th>';
-					str+='<th rowspan="3">TOTAL FEMALE CALLED</th>';
-					str+='<th rowspan="2" colspan="2">INVITEES ATTENDED</th>';
-					str+='<th colspan="2" rowspan="2">NON-INVITEES ATTENDED</th>';
-					str+='<th colspan="2" rowspan="2">TOTAL ATTENDED</th>';
-					
-					
-					var daysList=result.subMap;
-				    if(daysList !=null){
-					   for(var i in daysList){
-						str+='<th colspan="6" class="text-center"> '+daysList[i].name+'</th>';
-						
-					    }
-					 }
-				str+='</tr>';
-				str+='<tr>';
-				 	if(daysList !=null){
-					  for(var i in daysList){
-					 str+='<th colspan="2">TOTAL ATTENDED</th>';
-					 str+='<th colspan="2">INVITEES ATTENDED</th>';
-					 str+='<th colspan="2">NON-INVITEES ATTENDED</th>';
-					  }
-					}
-				str+='</tr>';
-				str+='<tr>';
-					str+='<th>MALE</th>';
-					str+='<th>FEMALE</th>';
-					str+='<th>MALE</th>';
-					str+='<th>FEMALE</th>';
-					str+='<th>MALE</th>';
-					str+='<th>FEMALE</th>';
-					
-					 if(daysList !=null){
-					   for(var i in daysList){
-					    str+='<th>MALE</th>';
-						str+='<th>FEMALE</th>';
-						str+='<th>MALE</th>';
-						str+='<th>FEMALE</th>';
-						str+='<th>MALE</th>';
-						str+='<th>FEMALE</th>';
-					  }
-					}
-				str+='</tr>';
-			str+='</thead>';
-			str+='<tbody>';
-			str+='<tr>';
-				if(result.maleInviteesCalled !=null && result.maleInviteesCalled>0){
-					str+='<td>'+result.maleInviteesCalled+'</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				if(result.femaleInviteesCalled !=null && result.femaleInviteesCalled>0) {
-					str+='<td>'+result.femaleInviteesCalled+'</td>';
-				}else{
-					str+='<td> - </td>';
-				}
-				if(result.maleInvitees != null && result.maleInvitees>0) {
-					str+='<td>'+result.maleInvitees+'</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				if(result.femaleInvitees != null && result.femaleInvitees>0){
-					str+='<td>'+result.femaleInvitees+'</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				if(result.maleNonInvitees != null && result.maleNonInvitees>0){
-					str+='<td>'+result.maleNonInvitees+'</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				if(result.femaleNonInvitees !=null && result.femaleNonInvitees>0) {
-					
-				str+='<td>'+result.maleNonInvitees+'</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				if(result.maleAttendees !=null && result.maleAttendees>0) {
-					str+='<td>'+result.maleAttendees+'</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				if(result.femaleAttendees != null && result.femaleAttendees>0){
-					str+='<td>'+result.femaleAttendees+'</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				
-		       var daysList=result.subMap;
-			   if(daysList !=null){
-				   for(var i in daysList){
-					if(daysList[i].maleInvitees != null && daysList[i].maleInvitees>0){
-						str+='<td>'+daysList[i].maleInvitees+' </td>';
-					}else{
-					str+='<td> 0 </td>';
-					}
-					if(daysList[i].femaleInvitees != null && daysList[i].femaleInvitees>0){
-						str+='<td>'+daysList[i].femaleInvitees+' </td>';
-					}else{
-					str+='<td> 0 </td>';
-					}
-			       if(daysList[i].maleNonInvitees != null && daysList[i].maleNonInvitees>0){
-						str+='<td>'+daysList[i].maleNonInvitees+' </td>';
-					}else{
-					str+='<td> 0 </td>';
-					}
-					if(daysList[i].femaleNonInvitees != null && daysList[i].femaleNonInvitees>0){
-						str+='<td>'+daysList[i].femaleNonInvitees+' </td>';
-					}else{
-					str+='<td> 0 </td>';
-					}
-					if(daysList[i].maleAttendees != null && daysList[i].maleAttendees>0){
-						str+='<td>'+daysList[i].maleInvitees+' </td>';
-					}else{
-					str+='<td> 0 </td>';
-					}
-					if(daysList[i].femaleAttendees != null && daysList[i].femaleAttendees>0){
-						str+='<td>'+daysList[i].femaleAttendees+' </td>';
-					}else{
-					str+='<td> 0 </td>';
-					}
-				   }
-			   }
-		 	str+='</tr>';
-			str+='</tbody>'
-		str+='</table>';
-	  str+='</div>';
-		$("#genderWiseCountDetailsId").html(str);
-	
-}
 </script>
 </body>
 </html>

@@ -431,6 +431,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	//load eventReportDashBoard.jsp
+   public String getEventReportDashBoard(){
+	   
+	   return Action.SUCCESS;
+   }
 	
 	
 }
