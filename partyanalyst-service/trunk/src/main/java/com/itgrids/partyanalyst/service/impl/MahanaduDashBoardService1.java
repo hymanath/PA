@@ -46,14 +46,13 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
-import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.EmailAttributesVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatesEventVO;
-import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -77,6 +76,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	private IMailService mailService;
 	private IEventDAO eventDAO;
 	private IMahanaduDashBoardService mahanaduDashBoardService;
+	private ITdpCadreDAO tdpCadreDAO;
 	
 	public IEventAttendeeDAO getEventAttendeeDAO() {
 		return eventAttendeeDAO;
@@ -125,9 +125,12 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			IMahanaduDashBoardService mahanaduDashBoardService) {
 		this.mahanaduDashBoardService = mahanaduDashBoardService;
 	}
-	
-	
-	
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
 	/**
 	   *   @author    : Sreedhar
 	   *   Description:This Service is used to get the Location Wise event attendees and event invitees count
@@ -2140,7 +2143,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 		
 		/**
-		   *   @author    : Sreedhar,swadin
+		   *   @author    : Sreedhar,swadhin
 		   *   Description:This Service is used to get the age Wise event attendees and event invitees count
 		   *   inputs: startDate,endDate,parenteventId,subEventIds
 		   *   output: List<MahanaduEventVO>
@@ -2180,7 +2183,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 
 				 //SET CURRENT DATE AND TIME.
 				 if(resultList != null && resultList.size() > 0){
+					 Collections.sort(resultList, new Comparator<MahanaduEventVO>(){
+						 public int compare(MahanaduEventVO mahanadu1, MahanaduEventVO mahanadu2){
+							 return mahanadu1.getId().compareTo(mahanadu2.getId());
+						 }
+					 });
 					 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+					 
 				 }else{
 					 MahanaduEventVO vo = new MahanaduEventVO();
 					 vo.setLocationName("NO DATA");
@@ -2218,6 +2227,17 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 }
 					 }
 				 }
+				if(ageWiseIds != null && ageWiseIds.size() > 0){
+					List<Object[]> ageRangeIdAndCadreCount = tdpCadreDAO.getTotalCadreCountAgeRangeIdWise(ageWiseIds);
+					if(ageRangeIdAndCadreCount != null && ageRangeIdAndCadreCount.size() > 0){
+						 for( Object[] obj : ageRangeIdAndCadreCount){
+							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
+							 if(locationVO != null){
+								 locationVO.setTotalCadre(obj[1]!=null?(Long)obj[1]:0l);
+							 }
+						 }
+					}
+				}
 				
 			}catch(Exception e){
 				Log.error("Exception rised in getAllDaysAgeWiseAttendeesAndinviteesCount()",e);

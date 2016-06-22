@@ -6937,4 +6937,11 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
  		
  		return query.list();
  	}
+ 	public List<Object[]> getTotalCadreCountAgeRangeIdWise(Set<Long> ageWiseIds){
+ 		Query query = getSession().createQuery(" select VAR.voterAgeRangeId,count(distinct TC.tdpCadreId) from VoterAgeRange VAR, TdpCadre TC" +
+ 				" where TC.age >= VAR.minValue and  TC.age <= VAR.maxValue and VAR.voterAgeRangeId in (:ageWiseIds) and TC.isDeleted = 'N' and TC.enrollmentYear = '2014' and VAR.voterAgeRangeId != 7 " +
+ 				" group by VAR.voterAgeRangeId");
+ 		query.setParameterList("ageWiseIds", ageWiseIds);
+ 		return query.list();
+ 	}
 }
