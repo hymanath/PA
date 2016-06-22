@@ -440,4 +440,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getCadreIdByMemberShip(String memberShipNo);
 	  public List<Object[]> getMobileNumberDetailsByTdpCadre(Long tdpCadreId);
 	  public List<Object[]> getTotalCadreCountAgeRangeIdWise(Set<Long> ageWiseIds);
+	  public List<Object[]> genderWiseTdpCadre();
 } 

@@ -2208,12 +2208,12 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					 
 					 //DATE WSIE
 					 if(isDataAvailable){
-						 getAttendeeAndinviteeCountsDateWiseByCaste(eventStrDate,eventEndDate,subEventIds,finalMap); 
+						 getAttendeeAndinviteeCountsDateWiseByAge(eventStrDate,eventEndDate,subEventIds,finalMap);
 					 }
 				
 				
 				if(ageWiseIds != null && ageWiseIds.size() > 0){
-					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteIds(ageWiseIds,parenteventId);
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByageWiseIds(ageWiseIds,parenteventId);
 					 if( inviteesList!= null && inviteesList.size() > 0){
 						 for( Object[] obj : inviteesList){
 							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
@@ -2358,7 +2358,6 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 										   if( dateVO.getAttendees() != null && dateVO.getAttendees().longValue() > 0l){
 											  finalMap.entrySet().iterator().next().getValue().getSubMap().get(dateStr).setTotalDaydataExist(true);
 										   }
-										  
 									   }
 									   if(type.equalsIgnoreCase("invitee"))
 									   {
@@ -2430,6 +2429,22 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 								   finalVO.setMaleInviteesCalled(finalVO.getMaleInviteesCalled() + (Long)obj[1]);
 						      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
 						    	  finalVO.setFemaleInviteesCalled(  finalVO.getFemaleInviteesCalled() + (Long)obj[1]);
+						      }
+						 }
+					 }
+					 
+					 
+					 List<Object[]> genderCadreData = tdpCadreDAO.genderWiseTdpCadre();
+					 if( genderCadreData != null && genderCadreData .size() > 0){
+						 
+						 for( Object[] obj : genderCadreData){
+							 
+							 String gender = obj[0] !=null ? obj[0].toString():"";
+							  
+							 if( gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("M")){
+								   finalVO.setTotalMaleCadre(finalVO.getTotalMaleCadre() + (Long)obj[1]);
+						      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
+						    	  finalVO.setTotalFemaleCadre(  finalVO.getTotalFemaleCadre() + (Long)obj[1]);
 						      }
 						 }
 					 }
@@ -2508,8 +2523,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 									   dateVO.setMaleAttendees( dateVO.getMaleAttendees() + (Long)obj[2] );
 									   dateVO.setMaleNonInvitees( dateVO.getMaleAttendees());
 							      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
-							    	  finalVO.setFemaleAttendees( finalVO.getFemaleAttendees() + (Long)obj[2] );
-									   finalVO.setFemaleNonInvitees( finalVO.getFemaleAttendees());	
+							    	  dateVO.setFemaleAttendees( dateVO.getFemaleAttendees() + (Long)obj[2] );
+							    	  dateVO.setFemaleNonInvitees( dateVO.getFemaleAttendees());	
 							      }
 								   
 								   //set day data exist.
@@ -2521,11 +2536,11 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 							   if(type.equalsIgnoreCase("invitee"))
 							   {
 								   if( gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("M")){
-									    finalVO.setMaleInvitees( finalVO.getMaleInvitees() + (Long)obj[2]);
-								   		finalVO.setMaleNonInvitees(finalVO.getMaleAttendees() - finalVO.getMaleInvitees());	
+									   dateVO.setMaleInvitees( dateVO.getMaleInvitees() + (Long)obj[2]);
+									   dateVO.setMaleNonInvitees(dateVO.getMaleAttendees() - dateVO.getMaleInvitees());	
 							      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
-							    	  finalVO.setFemaleInvitees( finalVO.getFemaleInvitees() + (Long)obj[2]);
-								   		finalVO.setFemaleNonInvitees(finalVO.getFemaleAttendees() - finalVO.getFemaleInvitees());	
+							    	  dateVO.setFemaleInvitees( dateVO.getFemaleInvitees() + (Long)obj[2]);
+							    	  dateVO.setFemaleNonInvitees(dateVO.getFemaleAttendees() - dateVO.getFemaleInvitees());	
 							      }
 							   }	
 						   }

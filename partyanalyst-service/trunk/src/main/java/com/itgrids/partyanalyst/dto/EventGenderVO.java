@@ -33,6 +33,8 @@ public class EventGenderVO implements Serializable{
 	private Long maleInviteesCalled=0l;
 	private Long femaleInviteesCalled=0l;
 	
+	private Long totalMaleCadre = 0l;
+	private Long totalFemaleCadre = 0l;
 	
 	public Long getMaleAttendees() {
 		return maleAttendees;
@@ -139,6 +141,18 @@ public class EventGenderVO implements Serializable{
 	public void setFemaleInviteesCalled(Long femaleInviteesCalled) {
 		this.femaleInviteesCalled = femaleInviteesCalled;
 	}
+	public Long getTotalMaleCadre() {
+		return totalMaleCadre;
+	}
+	public void setTotalMaleCadre(Long totalMaleCadre) {
+		this.totalMaleCadre = totalMaleCadre;
+	}
+	public Long getTotalFemaleCadre() {
+		return totalFemaleCadre;
+	}
+	public void setTotalFemaleCadre(Long totalFemaleCadre) {
+		this.totalFemaleCadre = totalFemaleCadre;
+	}
 	
-   	
+      	
 }
