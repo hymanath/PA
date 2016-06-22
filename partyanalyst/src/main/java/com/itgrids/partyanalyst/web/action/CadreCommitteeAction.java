@@ -2185,7 +2185,7 @@ public String getSummaryDetails(){
 				locationVO.setPlannedDate(jObj.getString("plannedDateStr").trim());
 				locationVO.setLocationValue(jObj.getLong("locationValue"));				
 				locationVO.setLocationLevel(jObj.getLong("activityLevelId"));
-				
+				locationVO.setDay(jObj.getLong("day"));
 				activityVO.getActivityVoList().add(locationVO);
 			}
 			 
