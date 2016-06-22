@@ -3148,6 +3148,7 @@
 		<property name="mailService" ref="mailService" />
 		<property name="eventDAO" ref="eventDAO" />
 		<property name="mahanaduDashBoardService" ref="mahanaduDashBoardService" />
+		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	</bean>
 	
 	<bean name="bloodBankService" class="com.itgrids.partyanalyst.service.impl.BloodBankService">

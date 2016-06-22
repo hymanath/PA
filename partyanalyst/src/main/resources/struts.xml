@@ -11619,9 +11619,7 @@
 	
 	<action name="appointmentsReportDashBoardAction" class="appointmentReportDashBoardAction">
 		<result name="success">/jsp/appointmentReportDashBoard.jsp</result>
-	</action>			
-				
-				
+	</action>
 	<action name="appointmentSavingAction" class="appointmentAction" method="saveAppointment">
 		<result name="success" type="stream">
 	    	<param name="inputName">inputStream</param>
