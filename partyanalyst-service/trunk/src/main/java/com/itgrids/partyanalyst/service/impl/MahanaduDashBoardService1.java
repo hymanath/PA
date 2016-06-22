@@ -48,11 +48,13 @@ import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.EmailAttributesVO;
+import com.itgrids.partyanalyst.dto.EventGenderVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatesEventVO;
+import com.itgrids.partyanalyst.dto.VO;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -2372,5 +2374,222 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 Log.error("Exception rised in settingDateDataToMap()",e); 
 			}
 		 }
+		
+		
+		/**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to get the gender Wise event attendees and event invitees count
+		   *   inputs: startDate,endDate,parenteventId,subEventIds
+		   *   output: List<MahanaduEventVO>
+		   *   
+		  */	
+		public EventGenderVO genderWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+			
+			 EventGenderVO  finalVO = new EventGenderVO();
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
+			
+			try{
+				Date eventStrDate = null;
+				Date eventEndDate = null;
+				if(startDate != null && !startDate.isEmpty()){
+				 eventStrDate = format.parse(startDate);
+				}
+				if(endDate != null && !endDate.isEmpty()){
+				 eventEndDate = format.parse(endDate); 
+				}
+				
+				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
+				 getAllDaysGenderWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalVO,betweenDates);
+				 
+		}catch(Exception e){
+			Log.error("Exception rised in CasteWiseEventAttendeeCounts()",e); 
+		}
+		return finalVO;
+		}
+		
+     public void getAllDaysGenderWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,EventGenderVO  finalVO,List<Date> betweenDates){
+			
+			
+			try{	
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsGenderWise(eventStrDate,eventEndDate,subEventIds,finalVO,betweenDates,parenteventId);
+					 //setTotalDayDataExist(finalMap);
+					 
+					 //DATE WSIE
+					 if(isDataAvailable){
+						 getAttendeeAndinviteeCountsDateWiseByGender(eventStrDate,eventEndDate,subEventIds,finalVO); 
+					 }
+				
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByGender(parenteventId);
+					 if( inviteesList!= null && inviteesList.size() > 0){
+						 for( Object[] obj : inviteesList){
+							
+							 String gender = obj[0] !=null ? obj[0].toString():"";
+							  
+							 if( gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("M")){
+								   finalVO.setMaleInviteesCalled(finalVO.getMaleInviteesCalled() + (Long)obj[1]);
+						      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
+						    	  finalVO.setFemaleInviteesCalled(  finalVO.getFemaleInviteesCalled() + (Long)obj[1]);
+						      }
+						 }
+					 }
+				
+				
+			}catch(Exception e){
+				Log.error("Exception rised in getAllDaysGenderWiseAttendeesAndinviteesCount()",e);
+			}
+			
+		}
+     
+       public boolean getAttendeeAndinviteeCountsGenderWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, EventGenderVO  finalVO,List<Date> betweenDates,Long parentEventId){
+    	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			boolean isDataAvailable = false;
+			List<Object[]> totalAttendeeList = eventAttendeeDAO.genderWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 
+			 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
+				 
+				 isDataAvailable = true;
+				 List<Object[]> totalInviteeList = eventAttendeeDAO.genderWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 
+				 settingGenderMapData(totalAttendeeList,finalVO,"attendee",betweenDates);
+				 settingGenderMapData(totalInviteeList,finalVO,"invitee",betweenDates);
+				 
+				 if(betweenDates != null && betweenDates.size() > 0){
+					   for(int i=0;i<betweenDates.size();i++){
+						   EventGenderVO dateVO = new EventGenderVO();
+						   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
+						   //dateVO.setDataExist(false);
+						   int dayCount = i+1;
+						   dateVO.setName("Day"+dayCount);
+						   if(finalVO.getSubMap() == null){
+							   finalVO.setSubMap(new LinkedHashMap<String, EventGenderVO>());
+						   }
+						   finalVO.getSubMap().put(dateVO.getDateStr(),dateVO);
+					   }
+				   }
+				 
+				  Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
+			      calCulatingGenderWiseinviteeNonInviteePercantage(finalVO,totalAttended);
+				 
+			 }
+			 return  isDataAvailable;
+		}
+       public void getAttendeeAndinviteeCountsDateWiseByGender(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, EventGenderVO  finalVO){
+			 
+			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.genderWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 
+			 if(dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0){
+				 
+				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.genderWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 
+				 settingGenderWiseDateData(dateWiseAttendeeList,finalVO,"attendee");
+				 settingGenderWiseDateData(dateWiseInviteeList,finalVO,"invitee");
+			 }
+		}
+       public void settingGenderWiseDateData(List<Object[]> list,EventGenderVO  finalVO,String type){
+			
+			 try{
+				
+				   if( list != null && list.size() >0 )
+				   {   
+					   for(Object[] obj : list)
+					   {   
+						   String dateStr = obj[1]!=null?obj[1].toString():"";
+						   EventGenderVO dateVO = finalVO.getSubMap().get(dateStr);
+						   if(dateVO!=null)
+						   {  
+							   //dateVO.setDataExist(true);
+							   
+							   String gender = obj[0] !=null ? obj[0].toString():"";
+							   if(type.equalsIgnoreCase("attendee"))
+							   {
+								   
+								   if( gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("M")){
+									   dateVO.setMaleAttendees( dateVO.getMaleAttendees() + (Long)obj[2] );
+									   dateVO.setMaleNonInvitees( dateVO.getMaleAttendees());
+							      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
+							    	  finalVO.setFemaleAttendees( finalVO.getFemaleAttendees() + (Long)obj[2] );
+									   finalVO.setFemaleNonInvitees( finalVO.getFemaleAttendees());	
+							      }
+								   
+								   //set day data exist.
+								   //if( dateVO.getAttendees() != null && dateVO.getAttendees().longValue() > 0l){
+									  //finalMap.entrySet().iterator().next().getValue().getSubMap().get(dateStr).setTotalDaydataExist(true);
+								   //}
+								  
+							   }
+							   if(type.equalsIgnoreCase("invitee"))
+							   {
+								   if( gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("M")){
+									    finalVO.setMaleInvitees( finalVO.getMaleInvitees() + (Long)obj[2]);
+								   		finalVO.setMaleNonInvitees(finalVO.getMaleAttendees() - finalVO.getMaleInvitees());	
+							      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
+							    	  finalVO.setFemaleInvitees( finalVO.getFemaleInvitees() + (Long)obj[2]);
+								   		finalVO.setFemaleNonInvitees(finalVO.getFemaleAttendees() - finalVO.getFemaleInvitees());	
+							      }
+							   }	
+						   }
+						    
+					    }
+				   }
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in settingGenderWiseDateData()",e); 
+			}
+		 }
+       public void settingGenderMapData(List<Object[]> list,EventGenderVO  finalVO,String type,List<Date> betweenDates){
+			
+			 try{
+				
+				   if( list != null && list.size() >0 ){
+					   
+					   for(Object[] obj : list){
+						   
+						   String gender = obj[0] !=null ? obj[0].toString():"";
+						  
+						   if(type.equalsIgnoreCase("attendee")){
+							   if( gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("M")){
+								   finalVO.setMaleAttendees( finalVO.getMaleAttendees() + (Long)obj[1] );
+								   finalVO.setMaleNonInvitees( finalVO.getMaleAttendees());
+						      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
+						    	  finalVO.setFemaleAttendees( finalVO.getFemaleAttendees() + (Long)obj[1] );
+								   finalVO.setFemaleNonInvitees( finalVO.getFemaleAttendees());	
+						      }
+						   }
+						   
+						   if(type.equalsIgnoreCase("invitee")){
+							   if( gender.equalsIgnoreCase("MALE") || gender.equalsIgnoreCase("M")){
+								    finalVO.setMaleInvitees( finalVO.getMaleInvitees() + (Long)obj[1]);
+							   		finalVO.setMaleNonInvitees(finalVO.getMaleAttendees() - finalVO.getMaleInvitees());	
+						      }else if(gender.equalsIgnoreCase("FEMALE") || gender.equalsIgnoreCase("F")){
+						    	  finalVO.setFemaleInvitees( finalVO.getFemaleInvitees() + (Long)obj[1]);
+							   		finalVO.setFemaleNonInvitees(finalVO.getFemaleAttendees() - finalVO.getFemaleInvitees());	
+						      }
+						   } 
+							
+					   }
+					   
+				   }
+				 
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in settingGenderMapData()",e); 
+			}
+		 }
+       
+       public void calCulatingGenderWiseinviteeNonInviteePercantage(EventGenderVO finalVO,Long totalAttended){
+      	    
+      	    if( finalVO!= null && totalAttended > 0l){
+      	    	
+      	         finalVO.setMaleAttendeePercantage(calcPercantage(totalAttended, finalVO.getMaleAttendees()));
+      	         finalVO.setMaleInviteePercantage(calcPercantage(finalVO.getMaleAttendees(), finalVO.getMaleInvitees()));
+      	         finalVO.setMaleNonInviteePercantage(calcPercantage(finalVO.getMaleAttendees(),finalVO.getMaleNonInvitees()));
+      	         
+      	         finalVO.setFemaleAttendeePercantage(calcPercantage(totalAttended, finalVO.getFemaleAttendees()));
+   	             finalVO.setFemaleInviteePercantage(calcPercantage(finalVO.getFemaleAttendees(), finalVO.getFemaleInvitees()));
+   	             finalVO.setFemaleNonInviteePercantage(calcPercantage(finalVO.getFemaleAttendees(),finalVO.getFemaleNonInvitees()));
+      	       
+      	     }
+      	  }
 }
 

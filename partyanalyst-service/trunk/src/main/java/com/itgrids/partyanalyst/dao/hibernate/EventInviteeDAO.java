@@ -587,4 +587,16 @@ public List<Object[]> totalDistrictAffliatedCommitteeInviteesAttendedForEvent(Li
 		query.setParameterList("casteIds",casteIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getEventInviteesCountByGender(Long eventId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.tdpCadre.gender,count(distinct model.tdpCadre.tdpCadreId)" +
+				   " from   EventInvitee model " +
+				   " where  model.event.eventId = :eventId and model.tdpCadre.gender is not null " +
+				   " group by model.tdpCadre.gender ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId",eventId);
+		return query.list();
+	}
 }

@@ -1681,5 +1681,66 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
  }
+   //gender wise
+   public List<Object[]>  genderWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+		
+		StringBuilder sb =  new StringBuilder();	
+		sb.append("select model.tdpCadre.gender,count(distinct model.tdpCadre.tdpCadreId) ");	
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sb.append(" from EventAttendee model where  ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		sb.append(" model.tdpCadre.gender is not null and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		sb.append(" group by model.tdpCadre.gender " +
+				  " order by count(distinct model.tdpCadre.tdpCadreId) desc ");
+      
+      Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+	}
+   public List<Object[]> genderWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+		
+		StringBuilder sb =  new StringBuilder();
+		
+		sb.append(" select model.tdpCadre.gender,date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId)");
+		
+		if(inviteeType.equalsIgnoreCase("attendee")){
+			sb.append(" from EventAttendee model where ");
+		}
+		if(inviteeType.equalsIgnoreCase("invitee")){
+			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+		}
+		
+		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		if(eventIds != null && eventIds.size() > 0){
+			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		sb.append("  group by model.tdpCadre.gender,date(model.attendedTime)" );
+				  
+		
+      Query query = getSession().createQuery(sb.toString());
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		if(eventIds != null && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+		query.setParameter("isActive", IConstants.TRUE);
+		return query.list();
+ }
+  
    
 }
