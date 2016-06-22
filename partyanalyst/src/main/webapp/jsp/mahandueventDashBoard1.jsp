@@ -430,6 +430,17 @@
 									</div>
 								</div>
 							   </div>    
+							    <div class="col-md-12">
+								<div class="panel panel-default m_0">
+									<div class="panel-heading">
+									<p class="m_0 display-style" id="genderWiseHeadingId">Gender WISE </p>
+									</div>
+									<div class="panel-body" style="padding:0px;">				
+										<center><img id="genderWisePrcssngImgId" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+										<div id="genderWiseCountDetailsId"> </div>
+									</div>
+								</div>
+							   </div>    
 							</div>
 						</div>
 					</div>
@@ -3300,6 +3311,166 @@ function buildAgeWiseCadreCountTable(result){
 	}else{
 		$("#ageWiseTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
 	}
+}
+function getGenderWiseEventAttendeeCounts()
+{			
+	 $("#genderWiseCountDetailsId").html(' ');
+	 $("#genderWisePrcssngImgId").show();
+         var jsObj = {
+				startDate    :startDate,
+				endDate      :endDate,
+				parentEventId      :parentEventId,
+				subEvents : subEvents
+			}
+		
+		$.ajax({
+          type:'GET',
+          url: 'getGenderWiseEventAttendeeCountsAction.action',
+		  data : {task:JSON.stringify(jsObj)} ,
+        }).done(function(result){
+        	 $("#genderWisePrcssngImgId").hide();
+			if(result != null)
+			{				
+				buildGenderWiseLocationDetails(result);	
+			}
+	});
+}
+
+function buildGenderWiseLocationDetails(result) {
+	 var str='';
+	  str+='<div class="table-responsive">';
+		str+='<table class="table tableC table-condensed table-bordered">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th rowspan="3">TOTAL MALE CALLED</th>';
+					str+='<th rowspan="3">TOTAL FEMALE CALLED</th>';
+					str+='<th rowspan="2" colspan="2">INVITEES ATTENDED</th>';
+					str+='<th colspan="2" rowspan="2">NON-INVITEES ATTENDED</th>';
+					str+='<th colspan="2" rowspan="2">TOTAL ATTENDED</th>';
+					
+					
+					var daysList=result.subMap;
+				    if(daysList !=null){
+					   for(var i in daysList){
+						str+='<th colspan="6" class="text-center"> '+daysList[i].name+'</th>';
+						
+					    }
+					 }
+				str+='</tr>';
+				str+='<tr>';
+				 	if(daysList !=null){
+					  for(var i in daysList){
+					 str+='<th colspan="2">TOTAL ATTENDED</th>';
+					 str+='<th colspan="2">INVITEES ATTENDED</th>';
+					 str+='<th colspan="2">NON-INVITEES ATTENDED</th>';
+					  }
+					}
+				str+='</tr>';
+				str+='<tr>';
+					str+='<th>MALE</th>';
+					str+='<th>FEMALE</th>';
+					str+='<th>MALE</th>';
+					str+='<th>FEMALE</th>';
+					str+='<th>MALE</th>';
+					str+='<th>FEMALE</th>';
+					
+					 if(daysList !=null){
+					   for(var i in daysList){
+					    str+='<th>MALE</th>';
+						str+='<th>FEMALE</th>';
+						str+='<th>MALE</th>';
+						str+='<th>FEMALE</th>';
+						str+='<th>MALE</th>';
+						str+='<th>FEMALE</th>';
+					  }
+					}
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			str+='<tr>';
+				if(result.maleInviteesCalled !=null && result.maleInviteesCalled>0){
+					str+='<td>'+result.maleInviteesCalled+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleInviteesCalled !=null && result.femaleInviteesCalled>0) {
+					str+='<td>'+result.femaleInviteesCalled+'</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result.maleInvitees != null && result.maleInvitees>0) {
+					str+='<td>'+result.maleInvitees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleInvitees != null && result.femaleInvitees>0){
+					str+='<td>'+result.femaleInvitees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.maleNonInvitees != null && result.maleNonInvitees>0){
+					str+='<td>'+result.maleNonInvitees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleNonInvitees !=null && result.femaleNonInvitees>0) {
+					
+				str+='<td>'+result.maleNonInvitees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.maleAttendees !=null && result.maleAttendees>0) {
+					str+='<td>'+result.maleAttendees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleAttendees != null && result.femaleAttendees>0){
+					str+='<td>'+result.femaleAttendees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				
+		       var daysList=result.subMap;
+			   if(daysList !=null){
+				   for(var i in daysList){
+					if(daysList[i].maleInvitees != null && daysList[i].maleInvitees>0){
+						str+='<td>'+daysList[i].maleInvitees+' </td>';
+					}else{
+					str+='<td> 0 </td>';
+					}
+					if(daysList[i].femaleInvitees != null && daysList[i].femaleInvitees>0){
+						str+='<td>'+daysList[i].femaleInvitees+' </td>';
+					}else{
+					str+='<td> 0 </td>';
+					}
+			       if(daysList[i].maleNonInvitees != null && daysList[i].maleNonInvitees>0){
+						str+='<td>'+daysList[i].maleNonInvitees+' </td>';
+					}else{
+					str+='<td> 0 </td>';
+					}
+					if(daysList[i].femaleNonInvitees != null && daysList[i].femaleNonInvitees>0){
+						str+='<td>'+daysList[i].femaleNonInvitees+' </td>';
+					}else{
+					str+='<td> 0 </td>';
+					}
+					if(daysList[i].maleAttendees != null && daysList[i].maleAttendees>0){
+						str+='<td>'+daysList[i].maleInvitees+' </td>';
+					}else{
+					str+='<td> 0 </td>';
+					}
+					if(daysList[i].femaleAttendees != null && daysList[i].femaleAttendees>0){
+						str+='<td>'+daysList[i].femaleAttendees+' </td>';
+					}else{
+					str+='<td> 0 </td>';
+					}
+				   }
+			   }
+		 	str+='</tr>';
+			str+='</tbody>'
+		str+='</table>';
+	  str+='</div>';
+		$("#genderWiseCountDetailsId").html(str);
+	
 }
 </script>
 </body>

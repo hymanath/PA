@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.EventGenderVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.StatesEventVO;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService1;
@@ -23,6 +24,7 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 	private List<MahanaduEventVO> resultList;
 	private IMahanaduDashBoardService1 mahanaduDashBoardService1;
 	private StatesEventVO statesEventVO;
+	private EventGenderVO eventGenderVO;
 	
 	public JSONObject getjObj() {
 		return jObj;
@@ -60,6 +62,13 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 	}
 	public void setStatesEventVO(StatesEventVO statesEventVO) {
 		this.statesEventVO = statesEventVO;
+	}
+	
+	public EventGenderVO getEventGenderVO() {
+		return eventGenderVO;
+	}
+	public void setEventGenderVO(EventGenderVO eventGenderVO) {
+		this.eventGenderVO = eventGenderVO;
 	}
 	
 	public String getLocationWiseVisitorsCount()
@@ -221,4 +230,27 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		return Action.SUCCESS;
 	}
 	
+	public String genderWiseEventAttendeeCounts()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			Long parentEventId = jObj.getLong("parentEventId");
+			List<Long> subEventIds = new ArrayList<Long>();
+			JSONArray arr = jObj.getJSONArray("subEvents");
+			for(int i=0;i<arr.length();i++){
+				subEventIds.add(new Long(arr.get(i).toString()));
+			}
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+		
+			eventGenderVO =  mahanaduDashBoardService1.genderWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }
