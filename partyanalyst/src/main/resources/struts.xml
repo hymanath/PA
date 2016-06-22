@@ -12518,5 +12518,11 @@
 			</result>
 	</action>
 	
+	<action name="getGenderWiseEventAttendeeCountsAction" class="eventDetailsAction1" method="genderWiseEventAttendeeCounts">
+				<result type="json" name="success">
+				<param name="root">eventGenderVO</param>
+			</result>
+	</action>
+	
 </package>
 </struts>      
