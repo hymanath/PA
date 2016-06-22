@@ -3192,7 +3192,7 @@ function buildAgeWiseCadreCountTable(result){
 	
 	var str='';
 	str+='<div >';
-	if(result[3].locationName != "NO DATA"){
+	if(result[0].locationName != "NO DATA"){
 		str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="ageDatatblId" >';
 		str+='<thead style="background:#EFF3F4">';
 		str+='<tr>';
@@ -3205,15 +3205,15 @@ function buildAgeWiseCadreCountTable(result){
 		str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
 		var dataExist = {};
       
-		for(var i in result[3].subList){
-			if(result[3].subList[i].totalDaydataExist == true){
+		for(var i in result[0].subList){
+			if(result[0].subList[i].totalDaydataExist == true){
 				str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
 			}
 		}
 		str+='</tr>';
 		str+='<tr>';
-		for(var j in result[3].subList){
-			if(result[3].subList[j].totalDaydataExist == true){
+		for(var j in result[0].subList){
+			if(result[0].subList[j].totalDaydataExist == true){
 				str+='<th>Total</th>';
 				str+='<th>Invitees</th>';
 				str+='<th>Non Invitees</th>';
@@ -3269,9 +3269,9 @@ function buildAgeWiseCadreCountTable(result){
 					str+='<td class="text-center">'+result[j].attendeePercantage+' %</td>';
 				} */
 		
-			for(var l in result[j].subList){
+			for(var l in result[j].subList){  
 			
-				if(result[3].subList[l].totalDaydataExist == true){
+				if(result[0].subList[l].totalDaydataExist == true){
 					if(result[j].subList[l].attendees ==0 || result[j].subList[l].attendees == null){
 						str+='<td class="text-center"> - </td>';
 					}else{
@@ -3288,7 +3288,7 @@ function buildAgeWiseCadreCountTable(result){
 						str+='<td class="text-center">'+result[j].subList[l].nonInvitees+'</td>';
 					}
 				}
-			}
+			}  
 			str+='</tr>';  
 		}
 
