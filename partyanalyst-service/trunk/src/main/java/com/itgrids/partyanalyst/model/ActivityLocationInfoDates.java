@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
-import java.sql.Date;
+
+
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +28,7 @@ public class ActivityLocationInfoDates implements java.io.Serializable {
 	private ActivityDateType activityDateType;
 	private Long activityDateTypeId;
 	private Date activityDate;
+	private Long day;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -85,5 +88,15 @@ public class ActivityLocationInfoDates implements java.io.Serializable {
 	public void setActivityDate(Date activityDate) {
 		this.activityDate = activityDate;
 	}
+	@Column(name = "day")
+	public Long getDay() {
+		return day;
+	}
 
+	public void setDay(Long day) {
+		this.day = day;
+	}
+
+	
+	
 }
