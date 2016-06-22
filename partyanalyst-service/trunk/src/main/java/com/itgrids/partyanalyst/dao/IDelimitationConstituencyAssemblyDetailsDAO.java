@@ -93,4 +93,5 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	
 	public Long getParliamentConstituencyId(Long constituencyId);
 	
+	public Long getParliamentConstituencyIdByAssemblyConstituencyId(Long constituencyId);
 }
