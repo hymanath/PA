@@ -65,6 +65,7 @@
 
 	
  <style type="text/css">
+	.labelD{background:#C4D6FA;border-radius:3px;border:1px solid #333;padding:0px 3px 0px 23px;}
 	.m_top10{margin-top:10px}
 	.m_top20{margin-top:20px}
 	.input-g1 .form-control{border-radius:0px;border-left:0px}
@@ -1018,7 +1019,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 				  type:'GET',
 				  url: 'getLocationDetailsForActivityNew.action',
 				 data : {task:JSON.stringify(jObj)} ,
-			 }).done(function(result){			
+			 }).done(function(result){	
 					var str='';
 					if( result!= null)
 					{
@@ -1039,6 +1040,8 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								str+='<th style="background-color:#00B17D; color:#fff;">STATE</th>';
 							else if(activityLevelId == 3)
 								str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT</th>';
+								
+							str+='<th style="background-color:#00B17D; color:#fff;"></th>';
 										
 									if(result !=null && result.idNameVolist !=null && result.idNameVolist.length>0){
 										for(var i in result.idNameVolist){
@@ -1046,17 +1049,25 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 										}								
 									}		
 							str+='<th style="background-color:#00B17D; color:#fff;" >View</th>';
+							str+='</thead>';
 							str+='</tr>';
 							
 							if(result.result !=null && result.result.length>0){
 								
 								for(var j in result.result){
-									
+								
+									for(var k in result.result[j].result2)	
+									{
 									str+='<tr>';
 									
 									str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+j+'].locationLevel">';
 									str+='<input type="hidden" value="'+result.result[j].locationId+'" name="activityVO.activityVoList['+j+'].locationValue">';
 									str+='<td> '+result.result[j].locationName+'</td>';
+									str+='<td  style="text-align:center;">'+result.result[j].result2[k].day+'</td>';
+									var date =result.result[j].result2[k].day;
+									var daystr = date.split("(");
+									
+									var dayNum = daystr[0].replace( /^\D+/g, '');
 									
 									if(result !=null && result.idNameVolist !=null && result.idNameVolist.length>0){
 										for(var i in result.idNameVolist){
@@ -1065,11 +1076,11 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 													str+='<div class="input-g1 input-group">';
 														str+='<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>';
 														if(result.result[j].planedDate != null)
-															str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+j+'].plannedDate" value="'+result.result[j].planedDate+'"/>';
+															str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+j+'].plannedDate" value="'+result.result[j].planedDate+'" id="plandateId'+result.result[j].locationId+'"/>';
 														else
-															str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+j+'].plannedDate" value=""/>';
+															str+='<input type="text" class="dateCls form-control"  name="activityVO.activityVoList['+j+'].plannedDate" value="" id="plandateId'+result.result[j].locationId+'"/>';
 													
-													str+='<span class="input-group-addon" style="padding:6px 0px;" title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls"></i></span>';
+													str+='<span class="input-group-addon" style="padding:6px 0px;" title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls" attr_location_Value="'+result.result[j].locationId+'" attr_plan_date="plandateId'+result.result[j].locationId+'" attr_date="dateId'+result.result[j].locationId+'"  style="cursor:pointer;" attr_day='+dayNum+' attr_img="img'+result.result[j].locationId+'"></i></span>';
 													
 													str+='</div>  </td>';
 											}
@@ -1083,7 +1094,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 														str+='<input type="text" id="dateId'+result.result[j].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+j+'].conductedDate" value="'+result.result[j].conductedDate+'"/>';
 													else
 														str+='<input type="text" id="dateId'+result.result[j].locationId+'" class="dateCls conductedDtCls form-control" name="activityVO.activityVoList['+j+'].conductedDate" value=""/>';
-													str+='<span class="input-group-addon" style="padding:6px 0px;" title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls" attr_location_Value="'+result.result[j].locationId+'" attr_date="dateId'+result.result[j].locationId+'"  style="cursor:pointer;" attr_img="img'+result.result[j].locationId+'"></i></span>';
+													str+='<span class="input-group-addon" style="padding:6px 0px;" title="Click here to update Date Details."><i class="glyphicon glyphicon-ok updateDateDetls" attr_location_Value="'+result.result[j].locationId+'" attr_plan_date="plandateId'+result.result[j].locationId+'" attr_date="dateId'+result.result[j].locationId+'"  style="cursor:pointer;" attr_day='+dayNum+' attr_img="img'+result.result[j].locationId+'"></i></span>';
 												str+='</div>';
 											}
 												str+='<div id="errdateId'+result.result[j].locationId+'" class="errCls"  style="color:red;"></div> </td>';
@@ -1114,7 +1125,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 									str+='</tr>';
 								}
 							}
-							
+							}
 						
 						str+='</table>';
 					 
@@ -1123,13 +1134,12 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 					
 					$('#plannedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					$('#conductedDate').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
-					/*$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="submitForm();"/></div>');
-					*/
+					
 					$('.dateCls').daterangepicker({singleDatePicker:true,format: 'DD/MM/YYYY'});
 					
 					$("#locationsTab").dataTable({
-					"iDisplayLength": 20,
-					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					"iDisplayLength": 10,
+					"aLengthMenu": [[10,20, 50, 100, -1], [10,20, 50, 100, "All"]]
 					});
 					$("#locationsTab").removeClass("dataTable");
 					$("#constncyId").html(''+$("#constiList option:selected").text()+' constituency ');
@@ -2391,23 +2401,26 @@ function buildActivityReasonReport(result)
 	
 
 $(document).on("click",".updateDateDetls",function(){
-
+var plandateVal = '';
 		var dateVal = $(this).attr('attr_date');
 		var attrImgCls = $(this).attr('attr_img');
 		$(".errCls").html("");
 		$("#err"+dateVal).html("");
+		
 		/*if($("#"+dateVal).val() == ""){
 			$("#err"+dateVal).html("Date Required");
 			return;
 		}*/
-	
+		var day = $(this).attr('attr_day');
+	var plandateVal = $(this).attr('attr_plan_date');
 	var jObj = {
-			plannedDateStr : "",
+			plannedDateStr :$("#"+plandateVal).val(),
 			conductedDateStr : $("#"+dateVal).val(),
 			locationValue : $(this).attr('attr_location_value'),
 			activityScopeId  : $('#ActivityList').val(),
 			activityLevelId:$('#activityLevelList').val(),
 			contituencyId  : $('#constiList').val(),
+			day:day,
 			task:"saveActivityDetails"
 		};
 		

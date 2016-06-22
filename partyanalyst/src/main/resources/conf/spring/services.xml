@@ -2754,7 +2754,9 @@
 		   <property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO" />
 		   <property name="activityQuestionAnswerDAO" ref="activityQuestionAnswerDAO" />
 		   <property name="activityRequiredAttributeDAO" ref="activityRequiredAttributeDAO" />
-		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />		   
+		   <property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" />	
+		    <property name="activityLocationInfoDatesDAO" ref="activityLocationInfoDatesDAO" />		
+		      
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
