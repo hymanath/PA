@@ -73,8 +73,17 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long tdpCadreCommitteeId;
 	private String alreadyRegistered;
 	private String paymentStatus;
+	private AddressVO addressVO;
+	
+	
 	
 	 
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
 	public String getPaymentStatus() {
 		return paymentStatus;
 	}
