@@ -798,7 +798,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 					str+='<li>Constituency: '+result[i].addressVO.constituencyName+'</li>';
 					if(result[i].addressVO.localElectionBodyName != null && result[i].addressVO.localElectionBodyName.length > 0)
 					{
-					str+='<li>Muncipality: '+result[i].addressVO.localElectionBodyName+'</li>';
+					str+='<li>Town: '+result[i].addressVO.localElectionBodyName+'</li>';
 					str+='<li>Ward: '+result[i].addressVO.wardName+'</li>';	
 					}
 					else{
