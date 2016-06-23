@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Event</title>
+<title>Event Report Dashboard</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 <link href="dist/eventDashboard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/eventDashboard/css/custom1.css" rel="stylesheet" type="text/css">
@@ -26,38 +26,11 @@
 {
 	background:#EFF3F4 !important
 }
-.errorDiv{}
- #slider label {
-
- width: 20px;
- margin-top: 20px;
- margin-left: -10px;
- text-align: center;
- font-size:8px;
-}
 .label-custom a {
     color: #fff !important;
     text-decoration: none;
 }
-.otherstate li {
-    border: 1px solid #ccc;
-    margin: 2px;
-    padding: 5px;
-	width:216px;
-}
-
-    header.eventsheader {  
-    background:url("dist/eventDashboard/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
-    background-origin: border-box;
-    background-repeat: no-repeat;
-    height: 71px;   
-}
-
-#processingDialogue{heigth:100% !important;}
 .prev, .next {width:45px !important}
-.customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
-.customclass1{border:none !important;background:none !important}
-#mainheading{font-size:21px !important}
 .refreshButton
 {
 	background:#5cb85c;
@@ -84,31 +57,12 @@
 	top:-2px;
 	font-size:15px;
 }
-#mahanaduLinkId , #mahanaduLinkId:hover , #mahanaduLinkId:active , #mahanaduLinkId:focus
-{
-	margin-left:5px;
-	padding:4px 12px;
-	background:#00B17D;
-	border:1px solid #00B17D;
-}
-.errorColorAppy{ color: rgb(255, 0, 0);font-size: 12px;font-weight: bold;margin-left: -70px;text-shadow: none}
-.text-capitalize{text-transform: uppercase;}
-.pointer {
-    cursor: pointer;
-}
 .col-md-offset-6-manually{
 	margin-left: 53%;
 }
 </style>
 </head>
-
 <body>
- <div class="themeControll">
-  <div class="linkinner"> 
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" ></div>
-  </div>
-  <p class="tbtn"> <i class="glyphicon glyphicon-filter"></i> FILTERS</p>
-</div>   
 <section>
 	<div class="container">	
 	<div class="well well-sm" style="background:#999">
@@ -119,18 +73,18 @@
 				  <span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
 			   </div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-7">
 				<div class="refreshButton">
 					<span  class="text">Last Updated Time <br/><span id="timeUpdationId"></span>&nbsp;&nbsp;&nbsp;</span>
-					<a onclick="callingDefaultCalls();" title=" Page Refresh" class="refreshIcon" style="cursor:pointer">
+					<a title=" Page Refresh" class="refreshIcon" style="cursor:pointer">
 						<span class="glyphicon glyphicon-refresh"></span>
 					</a>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="mainEventSelectId">
 					<option value="0">Select Event</option>
-					<option value="7" >Mahanadu 2015</option>
+					<option value="7">Mahanadu 2015</option>
 					<option value="30" selected>Mahanadu 2016</option>
 				</select>
 			</div>
@@ -190,7 +144,6 @@
 				</div>
 			</div>
 		</div>
-  <div id="processingDialogue"></div>
 	</div>
 </section>
 <script  src="js/eventDashboard.js" type="text/javascript"></script>
@@ -207,96 +160,47 @@
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
  <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <script type="text/javascript">
-
-
 //var parentEventId = '${eventId}';
-var parentEventId;
-var subEvents = [];
-var startDate;
-var endDate;
-var dataRetrievingType = "intermediate"; // intermediate dynamic
-
-
-function getEvents()
-{
-parentEventId = $("#mainEventSelectId").val();	
-var jObj = {
-eventId : parentEventId,
-task:"getEvents"
-}
-$.ajax({
-          type:'GET',
-          url: 'getEventsForUserAction.action',
-		  data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			if(result != null)
-			{				
-				buildFilterEvents(result);	
-			}
-	});
-
-}
-function buildFilterEvents(result)
-{
-
-var str ='';
-for(var i in result)
-{
-str+='<div class="panel panel-default border_0">';
-
-str+='<div class="panel-heading collapse-head" role="tab" id="heading'+result[i].id+'">';
-str+='<h5 class="panel-title">';
-str+='<form class="me-select display-style">';
-str+='<ul id="me-select-list" style="list-style:none;">';
-if(parentEventId == result[i].id)
-{
-str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" attr_formatedStartDate="'+result[i].formateEventStartDate+'" attr_formatedEndDate="'+result[i].formateEventEndDate+'" attr_startDate="'+result[i].eventStartDate+'" attr_endDate="'+result[i].eventEndDate+'" type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'" checked>';
-}
-else
-{
-str+='<li><input id="mainEvent'+result[i].id+'" name="cb11" attr_formatedStartDate="'+result[i].formateEventStartDate+'" attr_formatedEndDate="'+result[i].formateEventEndDate+'" attr_startDate="'+result[i].eventStartDate+'" attr_endDate="'+result[i].eventEndDate+'"  type="checkbox" onclick="handalClick('+result[i].id+')" class="maineventCls" value="'+result[i].id+'">';
-}
-str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-controls="collapse'+result[i].id+'" class="col-drop-head " id="eventText'+result[i].id+'">'+result[i].name+'</a></span></label></li>';
-str+=' </ul>';
-str+='</form>';
-str+=' <a data-toggle="collapse" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
-str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
-str+=' </a>';
-str+=' </h5>';
-str+=' </div>';
-if(parentEventId == result[i].id)
-str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
-else
-str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
-str+='<div class="panel-body collapse-body">';
-str+='<form class="me-select display-style">';
-str+='<ul id="me-select-list" style="list-style:none;">';
-
- for(var j in result[i].subList)
- {
-if(parentEventId == result[i].id)
-{
-str+='<li><input id="check'+result[i].subList[j].id+'" attr_label="'+result[i].subList[j].name+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" checked>';
-str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
-}
-else
-{
-str+='<li><input id="check'+result[i].subList[j].id+'" attr_label="'+result[i].subList[j].name+'" name="cb11" onclick="checkParent(\''+result[i].id+'\',\''+result[i].subList[j].id+'\')" type="checkbox" class="subeventCls subeventCls'+result[i].id+'" value="'+result[i].subList[j].id+'" ">';
-str+=' <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+result[i].subList[j].name+'</span></label></li>';
-}
-}
-str+=' </ul>';
-str+=' </form>';
-str+=' </div>';
-str+=' </div>';
-str+=' </div>';
-}
-str+='<span id="errormsg" class="errorDiv"></span>';
-str+='<button class="btn btn-block btn-default btn-custom"   onclick="eventUpdate()">UPDATE</button>';
-$("#accordion").html(str);
-eventUpdate();
-}
-
+ var parentEventId;
+ var subEvents = [];
+	var startDate;
+	var endDate;
+ 
+   $(document).on("change","#mainEventSelectId",function(){
+	   parentEventId = $("#mainEventSelectId").val();
+       if(parentEventId != null && parentEventId !=0){
+	   subEvents=[];
+	   $("#casteExcelExpBtnId").hide();
+	   $("#genderWiseExcelExpBtnId").hide();
+	   $("#ageWsExcelExpBtnId").hide();
+	    getEventDateAndSubEvent();
+	   }	   
+   });
+	parentEventId = $("#mainEventSelectId").val();		
+	
+	getEventDateAndSubEvent();
+	function getEventDateAndSubEvent()
+	{ 
+	var jObj = {
+	eventId : parentEventId
+	}
+	$.ajax({
+			  type:'GET',
+			  url: 'getEventDateAndSubEventAction.action',
+			  data : {task:JSON.stringify(jObj)} 
+			}).done(function(result){
+			  if(result!=null){	 
+				  updateDatesButton(result.eventStartDate,result.eventEndDate,result.eventStartDate,result.eventEndDate)
+				  var subEventList=result.subList;
+				   if(subEventList !=null && subEventList.length >0){
+					   for(var i in subEventList){
+						 subEvents.push(subEventList[i].id);
+					   }
+				   }
+			  }
+			  allCalls();
+		});
+	}
 var dpCurentDate;
 var formatedDpCurentDate;
  $(document).ready(function() {
@@ -376,104 +280,16 @@ var formatedDpCurentDate;
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
-				startDate = $(".dp_startDate").val();
-				endDate = $(".dp_endDate").val();
+				 startDate = $(".dp_startDate").val();
+				 endDate = $(".dp_endDate").val();
 				dpCurentDate = moment().format('D MMMM,YYYY');
 				formatedDpCurentDate = moment().format('DD/MM/YYYY');
 				 $('[data-toggle="tooltip"]').tooltip()
-				
-				if(parentEventId == 7 || parentEventId == 30){
-					$("#stateDivsId").show();
-				}else{
-					$("#stateDivsId").hide();
-				}
-				 
 			   });
-
-	function handalClick(eventId)
-	{
-				
-				$(".maineventCls").prop('checked', false);
-				$(".subeventCls").prop('checked', false);
-				$("#mainEvent"+eventId).prop('checked', true);
-				$(".subeventCls"+eventId).prop('checked', true);
-				
-	}
-				
-
-
- $(document).on('click','.applyBtn',function(){
-	eventUpdate('dateChange');
- });
-$(".themeControll").removeClass("active");
-function eventUpdate(checkDateChange){
+			   
+ function updateDatesButton(startDate,endDate,formatedStartDate,formatedEndDate){
 	
-	 if(checkDateChange != 'dateChange')
-	 updateDatesButton();
-	 
-     $("#errorDiv").html("");
-     subEvents = [];
-	 var flag = true;
-	 var errStr ='';
-	 
-	$(".maineventCls").each(function(){
-    
-		if($(this).is(":checked")){
-			flag = false;
-			parentEventId = $(this).val();
-			$(".subeventCls").each(function(){
-			if($(this).is(":checked"))
-			subEvents.push($(this).val());
-			})
-		}
-    });
-	
-	$(".maineventCls").each(function(){
-		if($(this).is(":checked")){
-			if($(this).val()==7 || $(this).val()==30){
-				$("#stateDivsId").show();
-			}else{
-				$("#stateDivsId").hide();
-			}
-		}
-	});	
-	var evntName = $("#eventText"+parentEventId).text();
-	var title = (evntName + ' Event').toUpperCase();
-	var url = "eventReportDashBoardAction.action?eventId="+parentEventId+"";
-	ChangeUrl(''+title+'', ''+url+'');
-
-    $("#mainheading").html(''+title+'');
-	if(subEvents.length == 0){
-		errStr +='<br/>Select atleast one event';
-	    $("#errormsg").html(errStr);
-	}
-	startDate = $(".dp_startDate").val();
-	endDate = $(".dp_endDate").val();
-	getSubEvents();
-
-	if(errStr.length == 0)
-{
-
-
-$(".themeControll").removeClass("active");
-getCasteWiseEventAttendeeCounts();
-getAgeWiseEventAttendeeCounts();
-getGenderWiseEventAttendeeCounts();
-}
-}
- function updateDatesButton(){
-	
-   $( ".maineventCls").each(function( index ){
-	  
-     if($(this).prop('checked')){
-		 
-          var startDate = $(this).attr("attr_startDate");
-		  var endDate = $(this).attr("attr_endDate");
-		  
-		   var formatedStartDate = $(this).attr("attr_formatedStartDate");
-			var formatedEndDate = $(this).attr("attr_formatedEndDate");
-		 
-		 if( startDate != null && startDate.trim().length > 0 && 
+		if( startDate != null && startDate.trim().length > 0 && 
 		     endDate != null && endDate.trim().length > 0 )
 		  {
 			//start.format('D/MM/YYYY') + ' - ' + end.format('D/MM/YYYY')
@@ -485,56 +301,21 @@ getGenderWiseEventAttendeeCounts();
 			    $('#reportrange').data('daterangepicker').setStartDate(formatedDpCurentDate);
 				$('#reportrange').data('daterangepicker').setEndDate(formatedDpCurentDate);
 		  }
-      }
-  }); 
  } 
- function  callingDefaultCalls(){
-		getCasteWiseEventAttendeeCounts();
-		getAgeWiseEventAttendeeCounts();
-		getGenderWiseEventAttendeeCounts();
-	}
- function ChangeUrl(title, url) {
-    if (typeof (history.pushState) != "undefined") {
-        var obj = { Title: title, Url: url };
-        history.pushState(obj, obj.Title, obj.Url);
-    } else {
-        alert("Browser does not support HTML5.");
-    }
-}
 </script>
 <script type="text/javascript">
-getEvents();
-$(".tbtn").click(function(){
-    $(".themeControll").toggleClass("active");
-});
-function getSubEvents()
-{
-	
-		var jObj = {
-			eventId:parentEventId,			
-			task:"getSubEvents"
-		}	
-		
-		$.ajax({
-          type:'GET',
-          url: 'getSubEventsByParentEventAction.action',
-		  data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-			$(".eventCls").find('option').remove();
-			$(".eventCls").append('<option value="0">All Events</option>');	
-				//for(var i in result){
-				//$(".eventCls").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');			
-				//}
-				
-			$(".maineventCls").each(function(){
-				if($(this).is(":checked")){
-					$(".subeventCls").each(function(){
-					if($(this).is(":checked"))
-						$(".eventCls").append('<option value="'+$(this).val()+'">'+$(this).attr("attr_label")+'</option>');
-					});
-				}
-			});
-		});
+ $(document).on('click','.applyBtn',function(){
+	allCalls();
+ });
+ $(document).on("click",".refreshIcon",function(){
+	allCalls();
+ }); 
+function allCalls(){
+    var startDate = $(".dp_startDate").val();
+    var endDate = $(".dp_endDate").val();
+    getCasteWiseEventAttendeeCounts(startDate,endDate);
+	 getAgeWiseEventAttendeeCounts(startDate,endDate);
+	 getGenderWiseEventAttendeeCounts(startDate,endDate);
 }
 </script>
 <script>
@@ -549,9 +330,10 @@ var tableToExcel = (function() {
     window.location.href = uri + base64(format(template, ctx))
   }
 })()
-function getCasteWiseEventAttendeeCounts()
+function getCasteWiseEventAttendeeCounts(startDate,endDate)
 	{	
-	       $("#casteWiseTableId").html(' ');
+        	$("#casteWiseTableId").html(' ');
+			$("#casteWiseExportToExcelTableId").html(' ');
 	       $("#cstWstblPrcssngImgId").show();
 	         var jsObj = {
 					startDate    :startDate,
@@ -559,8 +341,6 @@ function getCasteWiseEventAttendeeCounts()
 					parentEventId:parentEventId,
 					subEvents : subEvents
 				}
-			
-			
 			$.ajax({
 	          type:'GET',
 	          url: 'getCasteWiseEventAttendeeCountsAction.action',
@@ -605,9 +385,7 @@ function buildCasteWiseRslt(result,status){
 					str+='<th>Total</th>';
 					str+='<th>Invitees</th>';
 					str+='<th>Non Invitees</th>';
-					
 				}
-				
 			}
 		str+='</tr>';
 		str+='</thead>';
@@ -697,7 +475,8 @@ function buildCasteWiseRslt(result,status){
 function generateExcelReportForCaste(){
 	tableToExcel(exportToExcelTblId, 'Caste Wise Report');
 }
-function getAgeWiseEventAttendeeCounts(){
+function getAgeWiseEventAttendeeCounts(startDate,endDate){
+	
 	$("#ageWiseTableId").html("");  
 	$("#ageWstblPrcssngImgId").show();
     var jsObj = {
@@ -834,7 +613,7 @@ function buildAgeWiseCadreCountTable(result){
 function generateExcelReportForAge(){
 	tableToExcel(ageDatatblId, 'Age Wise Report');
 }
-function getGenderWiseEventAttendeeCounts()
+function getGenderWiseEventAttendeeCounts(startDate,endDate)
 {			
 	 $("#genderWiseTableId").html(' ');
 	 $("#genderWisePrcssngImgId").show();
@@ -844,7 +623,6 @@ function getGenderWiseEventAttendeeCounts()
 				parentEventId      :parentEventId,
 				subEvents : subEvents
 			}
-		
 		$.ajax({
           type:'GET',
           url: 'getGenderWiseEventAttendeeCountsAction.action',

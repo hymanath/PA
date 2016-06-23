@@ -25,6 +25,7 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 	private IMahanaduDashBoardService1 mahanaduDashBoardService1;
 	private StatesEventVO statesEventVO;
 	private EventGenderVO eventGenderVO;
+	private MahanaduEventVO mahanaduEventVO;
 	
 	public JSONObject getjObj() {
 		return jObj;
@@ -71,6 +72,12 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		this.eventGenderVO = eventGenderVO;
 	}
 	
+	public MahanaduEventVO getMahanaduEventVO() {
+		return mahanaduEventVO;
+	}
+	public void setMahanaduEventVO(MahanaduEventVO mahanaduEventVO) {
+		this.mahanaduEventVO = mahanaduEventVO;
+	}
 	public String getLocationWiseVisitorsCount()
 	{
 		try{
@@ -253,4 +260,14 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		}
 		return Action.SUCCESS;
 	}
+	  public String getEventDateAndSubEvent(){
+		   
+		  try{
+				jObj = new JSONObject(getTask());			
+				mahanaduEventVO = mahanaduDashBoardService1.getEventDateAndSubEvent(jObj.getLong("eventId"));
+		  }catch(Exception e) {
+			LOG.error(" Entered Into getEventDateAndSubEvent",e);
+		  }
+		  return Action.SUCCESS; 
+	   }
 }
