@@ -664,6 +664,9 @@ footer
 							<li>
 								<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
 							</li>
+							<li>
+								<a href="eventReportDashBoardAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp; Mahanadu Report Dashboard</span></a>
+							</li>
 					   </ul>
 					 </li>
 				</c:if>	

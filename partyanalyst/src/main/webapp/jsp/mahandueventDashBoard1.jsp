@@ -1775,10 +1775,10 @@ function buildStartingPrograms(result,parentEventId){
 		      str+='</div>';
 			  
 			  $("#mahanaduEventDashBoardLinkId").show();
-			  //$("#eventReportDashboardDivLinkId").show();
+			  $("#eventReportDashboardDivLinkId").show();
 		 }else{
 			  $("#mahanaduEventDashBoardLinkId").hide();
-             // $("#eventReportDashboardDivLinkId").hide();			  
+              $("#eventReportDashboardDivLinkId").hide();			  
 		 }
 	  } 
 	 str+='</div>'; 

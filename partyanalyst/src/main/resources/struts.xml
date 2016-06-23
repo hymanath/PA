@@ -12525,6 +12525,10 @@
 				<param name="root">eventGenderVO</param>
 			</result>
 	</action>
-	
+	<action name="getEventDateAndSubEventAction" class="eventDetailsAction1" method="getEventDateAndSubEvent">
+				<result type="json" name="success">
+				<param name="root">mahanaduEventVO</param>
+			</result>
+	</action>
 </package>
 </struts>      
