@@ -5689,7 +5689,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List<Object[]> getSurveyPaticipatedCountByVoterIdcardNoList(List<String> voterIdCardNoList)
 		{
-			Query query = getSession().createSQLQuery(" select count(respondent_id),voter_id from survey.respondent where voter_id in (:voterIdCardNoList) group by voter_id");
+			//Query query = getSession().createSQLQuery(" select count(respondent_id),voter_id from survey.respondent where voter_id in (:voterIdCardNoList) group by voter_id");
+			Query query = getSession().createSQLQuery(" select distinct count(distinct R.voter_id),voter_id,SAI.survey_id from survey.respondent R, survey.survey_answer_info SAI, survey.survey S" +
+					" where R.survey_answer_info_id = SAI.survey_answer_info_id and SAI.survey_id = S.survey_id and S.is_deleted='false' and R.voter_id in (:voterIdCardNoList) group by SAI.survey_id, R.voter_id ");
 			query.setParameterList("voterIdCardNoList", voterIdCardNoList);
 			
 			return query.list();
