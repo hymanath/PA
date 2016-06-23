@@ -2040,7 +2040,7 @@ $('#'+divId+'').html('<center><img style="width: 50px; height: 50px;margin-top:5
 			toDateStr :endDate,
 			isFirst:"true",
 			firstRecord:firstRecord,
-			maxResult:6
+			maxResult:12
 		}	
 		$.ajax({
 				type:'GET',
@@ -2102,11 +2102,11 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
 			}		
 		}
 		
-		if(result.totalCount >6)
+		if(result.totalCount >12)
 		{
 			str+='</tr>';
 			str+='<td colspan="3" style="background-color:#ccc">';
-			str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/></p>';
+			str+='<p class="m_0 text-center">Showing Last 12 Months Details<br/></p>';
 			//str+='<p class="m_0 text-center">Showing Last 6 Months Details<br/><a href="javascript:{getConductedPartyMeetingDetails(\''+divId+'\',\''+searchTypeStr+'\',\'false\',\'0\')}"></a></p>';
 			str+='</td>';
 			str+='</tr>';
@@ -2123,11 +2123,11 @@ function buildConductedMeetingDetails(divId,result,meetingLevel,searchTypeStr,fi
 		var totalCount = result.totalCount;
         $("#paginationId").pagination({
           items: totalCount,
-          itemsOnPage: 6,
+          itemsOnPage: 12,
           cssStyle: 'light-theme',
           hrefTextPrefix: '#pages-',
           onPageClick: function(pageNumber) { 
-            var firstRecord=(pageNumber-1)*6;
+            var firstRecord=(pageNumber-1)*12;
 			  getConductedPartyMeetingDetails(divId,searchTypeStr,"true",firstRecord);
                
           }
