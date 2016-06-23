@@ -210,4 +210,26 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		
 		return (Long) query.uniqueResult();
 	}
+
+	
+	public Object[] getEventStartAndEndDate(Long eventId){
+		
+		Query query=getSession().createQuery(" select date(model.eventStartTime),date(model.eventEndDate) from Event model " +
+				" where model.isActive =:isActive and model.isVisible =:isVisible and model.eventId=:eventId ");
+			query.setParameter("isActive", IConstants.TRUE);
+			query.setParameter("isVisible", IConstants.IS_VISIBLE);
+			query.setParameter("eventId", eventId);
+			return (Object[]) query.uniqueResult();
+	}
+	public List<Object[]> getEventSubEventByParentEventId(Long parentEventId)
+	{
+		Query query = getSession().createQuery(" select model.eventId,model.name " +
+				" from Event model where model.parentEventId is not null " +
+				" and model.isActive =:isActive and model.isVisible =:isVisible and model.parentEventId=:parentEventId order by model.orderId asc ");
+		
+		query.setParameter("isActive", IConstants.TRUE);
+		query.setParameter("isVisible", IConstants.IS_VISIBLE);
+		query.setParameter("parentEventId", parentEventId);
+		return query.list();
+	}
 }
