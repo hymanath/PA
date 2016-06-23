@@ -2089,20 +2089,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return cadreCommitteeVO;
 	}
 	
-	public AddressVO setAddressForCadre(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList)
+	public void setAddressForCadre(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList)
 	{
-		AddressVO vo = new AddressVO();
+		
 		try{
 			
 			 List<Object[]> list = tdpCadreDAO.getUserAddressForCadre(tdpCadreIdsList);
 		
 			 for(Object[] params : list)
 			 {
+				 AddressVO vo = null;
 				 CadreCommitteeVO cadreVO = getMatchedVOById(cadreCommitteeList,(Long)params[0]);
 					if(cadreVO != null)
 					{
 						if(params[1] != null)
 							{
+							 vo = new AddressVO();
 							UserAddress userAddress = (UserAddress) params[1];
 							vo.setConstituencyName(userAddress.getConstituency() != null ?userAddress.getConstituency().getName() : "");
 							vo.setDistrictName(userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictName() : "");
@@ -2111,15 +2113,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							vo.setLocalElectionBodyName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getName() : "");
 							vo.setWardName(userAddress.getWard() != null ? userAddress.getWard().getName() : "");
 							}
-						cadreVO.setAddressVO(vo);
+						
 					}
+					cadreVO.setAddressVO(vo);
 			 }
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return vo;
+		
 	}
 	
 	public void checkIsAlreadyRegistered(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
