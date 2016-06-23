@@ -4464,17 +4464,59 @@ public class CadreDetailsService implements ICadreDetailsService{
 									List<Object[]> list = tdpCadreDAO.getSurveyPaticipatedCountByVoterIdcardNoList(voterIdCardNoList);
 									if(list != null && list.size() > 0)
 									{
+										Long familyParticipatedCount = 0L;
+										Map<String,Map<Long,Long>> voterWiseSurveyWisecountMap  = new HashMap<String, Map<Long,Long>>(0); 
 										for(Object[] params: list)
 										{
-											if(params[1] != null)
-											{
-												TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(familyVOList, params[1].toString());
-											    if(VO != null)
-											    	VO.setCount(params[0] != null?Long.parseLong(params[0].toString()):0l);
+											try {												
+											
+												/* start Date 23 rd june 2016 changed by srishailam */
+												String voterrCardNo =commonMethodsUtilService.getStringValueForObject(params[1]);
+												Map<Long,Long> survyeMap = new HashMap<Long, Long>(0);
+												if(voterWiseSurveyWisecountMap.get(voterrCardNo) != null){
+													survyeMap = voterWiseSurveyWisecountMap.get(voterrCardNo);
+													survyeMap.put(commonMethodsUtilService.getLongValueForObject(params[2]), commonMethodsUtilService.getLongValueForObject(params[0]));
+												}
+												else
+												{
+													survyeMap.put(commonMethodsUtilService.getLongValueForObject(params[2]), commonMethodsUtilService.getLongValueForObject(params[0]));
+													voterWiseSurveyWisecountMap.put(voterrCardNo, survyeMap);
+												}
+												/* end Date 23 rd june 2016 changed by srishailam */
+												/*if(params[1] != null)
+												{
+													TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(familyVOList, params[1].toString());
+												    if(VO != null)
+												    	VO.setCount(params[0] != null?Long.parseLong(params[0].toString()):0l);
+												}*/
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
+											
+										}
+										/* start Date 23 rd june 2016 changed by srishailam */
+										if(commonMethodsUtilService.isMapValid(voterWiseSurveyWisecountMap)){
+											for (String voterCarddNo : voterWiseSurveyWisecountMap.keySet()) {
+												TdpCadreFamilyDetailsVO VO =getMatchedTdpCadreFamilyDetailsVO(familyVOList, voterCarddNo.trim());
+											    if(VO != null){
+											    	if(VO.getCount() == null)
+											    		VO.setCount(0L);
+											    	Map<Long,Long> survyeMap = voterWiseSurveyWisecountMap.get(voterCarddNo);
+											    	if(commonMethodsUtilService.isMapValid(survyeMap)){
+											    		for (Long surveyId : survyeMap.keySet()) {
+											    			Long count = survyeMap.get(surveyId);
+											    			VO.setCount(VO.getCount()+count);
+											    			familyParticipatedCount = familyParticipatedCount+count;
+														}
+											    	}
+											    	//VO.setCount(params[0] != null?Long.parseLong(params[0].toString()):0l);
+											    }
 											}
 										}
+										returnVO.setFamilyMembersSurveyCount(familyParticipatedCount);
+										/* end Date 23 rd june 2016 changed by srishailam */
 										
-										returnVO.setFamilyMembersSurveyCount(Long.valueOf(String.valueOf(list.size())));
+										//returnVO.setFamilyMembersSurveyCount(Long.valueOf(String.valueOf(list.size())));
 									}
 									
 									
@@ -7340,6 +7382,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
  				        Map<String, Long> staGetMap = assIssTypeMap.get(typeOfIssue);
  				       if(staGetMap != null && staGetMap.size()>0)
 				        staGetMap.put(status.toUpperCase(),count);
+				        }
 				        }
 					}
 				}
