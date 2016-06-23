@@ -1,3 +1,32 @@
+//Code related to Google Translator START
+var control;
+ google.load("elements", "1", {
+          packages: "transliteration"
+    });
+
+    function onLoad() {
+      var options = {
+          sourceLanguage:
+              google.elements.transliteration.LanguageCode.ENGLISH,
+          destinationLanguage:
+              [google.elements.transliteration.LanguageCode.TELUGU],
+          shortcutKey: 'alt+t',
+          transliterationEnabled: true
+      };
+     control  = new google.elements.transliteration.TransliterationControl(options);
+		control.makeTransliteratable(['debetSum']);
+		control.makeTransliteratable(['subject1']);	
+		control.makeTransliteratable(['candSummary1']);			
+		control.makeTransliteratable(['smsques1']);		
+		control.makeTransliteratable(['smsoption1']);		
+			
+			$(".hiddenAnswerCls").each(function(){
+				var id = $(this).attr("attr_hidden_id");
+				control.makeTransliteratable([''+id+'']);
+			});
+    }
+ google.setOnLoadCallback(onLoad);
+//Code related to Google Translator END
 
 var subjCount = 2;
 var candCount = 2;
@@ -227,8 +256,11 @@ var str = "";
 	str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><span id='subject"+subjCount+"Err' class='errDiv' style='margin-left: 100px;'></span><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
 	str +="<input type='text' Class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"' '/>";
 	str += "</br></span>";	
-	
+		
 	$('#addedSubjectDiv').append(str);
+	//Google translator
+	var id = "subject"+subjCount;
+	control.makeTransliteratable([''+id+'']);
 subjCount++;
 }
 
@@ -326,6 +358,11 @@ function addMorePole(){
 	str += "</div>";
 	str += "</div>";
 	$('#smsPole').append(str);
+	
+	//Google Translator
+	var id="smsoption"+poleCount;
+	control.makeTransliteratable([''+id+'']);
+	
 	poleCount++;
 }
 
@@ -552,6 +589,9 @@ function getValues(){
     str +='</tr></table>';
     
 $("#participantInnerDiv1").append(str);
+//Google translator	
+	/* var id 	= "candSummary1";
+	control.makeTransliteratable([''+id+'']); */
 
 	$('#participantRoles1').multiselect({	
 			multiple: true,
@@ -560,6 +600,7 @@ $("#participantInnerDiv1").append(str);
 	}).multiselectfilter({    
 	});
 
+	
 	
 }
 
@@ -628,8 +669,12 @@ function addMoreCandidates()
 	}).multiselectfilter({    
 	});
 
+	//Google translator
+	var textAreaId = "candSummary"+candCount;
+	control.makeTransliteratable([''+textAreaId+'']);
 	
 	candCount++;
+	
 }
  
 function addMoreQuestions(){
