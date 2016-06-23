@@ -24,5 +24,6 @@ public interface IMahanaduDashBoardService1 {
 	public List<MahanaduEventVO> ageWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds);
 	
 	public EventGenderVO genderWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds);
+	public MahanaduEventVO getEventDateAndSubEvent(Long eventId);
 }
 

@@ -2606,5 +2606,30 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
       	       
       	     }
       	  }
+       
+       public MahanaduEventVO getEventDateAndSubEvent(Long eventId){
+   		
+   		MahanaduEventVO eventVO=new MahanaduEventVO();
+   		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+   		try{
+   			Object[] eventDateArr=eventDAO.getEventStartAndEndDate(eventId);
+   			if(eventDateArr !=null && eventDateArr.length >0){
+   				eventVO.setEventStartDate(eventDateArr[0] != null ? sdf.format((Date)eventDateArr[0]) : "");
+   				eventVO.setEventEndDate(eventDateArr[1] != null ? sdf.format((Date)eventDateArr[1]) : "");
+   			}
+    		   List<Object[]> eventList=eventDAO.getEventSubEventByParentEventId(eventId);
+    		     if(eventList !=null && eventList.size() >0){
+    		    	  for (Object[] obj : eventList) {
+    		    		   MahanaduEventVO vo=new MahanaduEventVO();
+    		    		   vo.setId((Long)obj[0]);
+    		    		   vo.setName(obj[1] !=null ? obj[1].toString() :"");
+    		    		   eventVO.getSubList().add(vo);
+   				}
+    		     }
+   		}catch(Exception e){
+   			LOG.error(" Exception Raised in getEventDateAndSubEvent ",e);
+   		}
+   		return eventVO;
+   	}
 }
 
