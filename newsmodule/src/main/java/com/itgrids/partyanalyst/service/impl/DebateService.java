@@ -255,7 +255,8 @@ public class DebateService implements IDebateService{
 					  {
 						  debate.setTelecastType(telecastType);  
 					  }*/
-					  debate.setSummary(escapeUnicode(StringEscapeUtils.escapeJava(debateDetailsVO.getDebateSummery())));
+					//  debate.setSummary(escapeUnicode(StringEscapeUtils.escapeJava(debateDetailsVO.getDebateSummery())));
+					  debate.setSummary(debateDetailsVO.getDebateSummery());
 					  debate.setStartTime(debateDetailsVO.getStartDate());
 					  debate.setEndTime(debateDetailsVO.getEndDate());
 					  debate.setIsDeleted("N");
@@ -267,7 +268,8 @@ public class DebateService implements IDebateService{
 					  {
 						  for (SelectOptionVO selectOptionVO : subjectsList) {
 							DebateSubject debateSubject = new DebateSubject();
-							debateSubject.setSubject(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							//debateSubject.setSubject(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							debateSubject.setSubject(selectOptionVO.getName());
 							debateSubject.setDebate(debate);
 							debateSubject = debateSubjectDAO.save(debateSubject);
 						}
@@ -302,7 +304,8 @@ public class DebateService implements IDebateService{
 								  debateParticipant.setCandidate(candidate);
 							  }
 							  debateParticipant.setDebate(debate);
-							  debateParticipant.setSummary(participantVO.getSummery() != null ? escapeUnicode(StringEscapeUtils.escapeJava(participantVO.getSummery())):null);
+							  //debateParticipant.setSummary(participantVO.getSummery() != null ? escapeUnicode(StringEscapeUtils.escapeJava(participantVO.getSummery())):null);
+							  debateParticipant.setSummary(participantVO.getSummery() != null ? participantVO.getSummery():null);
 							  debateParticipant = debateParticipantDAO.save(debateParticipant);
 							  List<SelectOptionVO> rolesList = participantVO.getRoleList();
 							  if(rolesList != null && rolesList.size() > 0)
@@ -351,7 +354,8 @@ public class DebateService implements IDebateService{
 					  {
 						  for (SelectOptionVO selectOptionVO : questionsList) {
 							DebateQuestionAnswer debateQuestionAnswer = new DebateQuestionAnswer();
-							debateQuestionAnswer.setAnswer(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							//debateQuestionAnswer.setAnswer(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							debateQuestionAnswer.setAnswer(selectOptionVO.getName() !=null ? selectOptionVO.getName().toString():"");
 							debateQuestionAnswer.setDebate(debate);
 							DebateQuestions debateQuestions = debateQuestionsDAO.get(selectOptionVO.getId());
 							if(debateQuestions != null)
@@ -369,7 +373,8 @@ public class DebateService implements IDebateService{
 						  SelectOptionVO selectOptionVO = smsQuestionsList.get(0);
 						    debateSmsQuestion = new DebateSmsQuestion();
 							debateSmsQuestion.setDebate(debate);
-							debateSmsQuestion.setQuestion(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							//debateSmsQuestion.setQuestion(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							debateSmsQuestion.setQuestion(selectOptionVO.getName() !=null ? selectOptionVO.getName().toString():"");
 							debateSmsQuestion.setIsDeleted("N");
 							debateSmsQuestion = debateSmsQuestionDAO.save(debateSmsQuestion);
 						
@@ -379,7 +384,8 @@ public class DebateService implements IDebateService{
 					  {
 						  for (SelectOptionVO selectOptionVO : smsOptionsList) {
 							DebateSmsQuestionOption debateSmsQuestionOption = new DebateSmsQuestionOption();
-							debateSmsQuestionOption.setOption(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							//debateSmsQuestionOption.setOption(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
+							debateSmsQuestionOption.setOption(selectOptionVO.getName() !=null ? selectOptionVO.getName().toString():"");
 							//DebateSmsQuestion debateSmsQuestion = debateSmsQuestionDAO.get(selectOptionVO.getId());
 							//if(debateSmsQuestion != null)
 							//{

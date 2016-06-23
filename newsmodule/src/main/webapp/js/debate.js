@@ -499,7 +499,6 @@ var debateDetails={
 			});
 			//console.log(smsPole);
 			debateDetails.debetSummery = $('#debetSum').val();
-			
 				var jsObj = {
 						debateDetails :debateDetails,
 						participant   : participant,
@@ -1082,22 +1081,20 @@ function callAjaxToGetTheResults(selectedvalue)
        return this.value;
      }).get();
 
-	if(channelIds.length == 0)
+	if(channelIds == undefined || channelIds.length == 0)
 	{
 		channelIds.push("0");
 	}
 
-	if(partyIds.length == 0)
+	if( partyIds == undefined ||  partyIds.length == 0)
 	{
 		partyIds.push("0");
 	}
 
-	if(candidateIds.length == 0)
+	if(candidateIds == undefined ||  candidateIds.length == 0)
 	{
 		candidateIds.push("0");
 	}
-	
-	
 	
 	getDebateDetailsBetwinDates($('#fromDateId').val(),$('#toDateId').val(),channelIds,partyIds,candidateIds,startIndex,endIndex);
 }
@@ -1434,17 +1431,17 @@ function getDebateDetailsBtDates()
        return this.value;
      }).get();
 
-	if(channelIds.length == 0)
+	if(channelIds == undefined || channelIds.length == 0)
 	{
 		channelIds.push("0");
 	}
 
-	if(partyIds.length == 0)
+	if(partyIds == undefined || partyIds.length == 0)
 	{
 		partyIds.push("0");
 	}
-
-	if(candidateIds.length == 0)
+	
+	if(candidateIds == undefined || candidateIds.length == 0)
 	{
 		candidateIds.push("0");
 	}
@@ -1820,9 +1817,8 @@ else if(searchType == 2)
 
 function getCandidatesForSelectedParty(partyId,searchType)
 {
-
 	var candidateListId = "candidateSelecction";
-	var partyArr;
+	var partyArr=[];
 	if(searchType == 1)
 	{
 		candidateListId = "candidateSelecction";

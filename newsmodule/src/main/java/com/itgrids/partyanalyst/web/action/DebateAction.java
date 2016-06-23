@@ -1043,7 +1043,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			channelList.add(new SelectOptionVO(0l,"Select Channel"));
 			telecastTimeList.add(new SelectOptionVO(0l,"Select Telecast Time"));
 			observerList.add(new SelectOptionVO(0l,"Select Observer"));
-			partiesList.add(new SelectOptionVO(0l,"Select Party"));
+			//partiesList.add(new SelectOptionVO(0l,"Select Party"));
 			Collections.sort(channelList, sortList);
 			Collections.sort(telecastTimeList, sortList);
 			Collections.sort(observerList, sortList);

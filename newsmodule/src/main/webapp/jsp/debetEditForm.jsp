@@ -28,7 +28,8 @@
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <link rel="stylesheet" type="text/css" href="styles/custom-yui-styles.css">	
-		
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>		
 <script src="js/debate.js"></script>
 <style type="text/css">
 	#errorMsgDiv,#RerrDiv,#RerrDivForAnalysis,#errorForTotal{
@@ -102,6 +103,26 @@ var debateId = '${debateId}';
 	var partyIdEdit 		= '${partyId}';
 	var candidateIdEdit 	= '${candidateId}';
 	
+//Code related to Google Translator START
+var control;
+ google.load("elements", "1", {
+          packages: "transliteration"
+    });
+
+    function onLoad() {
+      var options = {
+          sourceLanguage:
+              google.elements.transliteration.LanguageCode.ENGLISH,
+          destinationLanguage:
+              [google.elements.transliteration.LanguageCode.TELUGU],
+          shortcutKey: 'alt+t',
+          transliterationEnabled: true
+      };
+     control  = new google.elements.transliteration.TransliterationControl(options);
+    }
+ google.setOnLoadCallback(onLoad);
+//Code related to Google Translator END
+
 $( document ).ready(function() {
 
 		$('#pcConstituencyRow').hide();
@@ -220,7 +241,10 @@ function getSelectedDebate()
 		callAjax(jsObj,url);
 }
 
-
+var prepopulateSubjectArr=[];
+var prepopulateCandSummaryArr=[];
+var prepopulateAnswerArr=[];
+var prepopulateSMSOptionArr=[];
 function prepopulateDebateForm(result)
 {
 	var str = '';
@@ -239,16 +263,22 @@ function prepopulateDebateForm(result)
 		if(i == 0)
 		{
 			str += '<input type="text" Class="subjectClass span12" name="subject1" id="subject1" value="'+result.debateNames[i]+'"></input>';
+			prepopulateSubjectArr.push("subject1");
 		}
 		else
 		{
 			str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><span id='subject"+subjCount+"'Err' class='errDiv' style='margin-left: 100px;'> </span><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
 			str +='<input type="text" Class="subjectClass span12" name="subject'+subjCount+'" id="subject'+subjCount+'" value="'+result.debateNames[i]+'"></input>';
 			str += "</br></span>";
-
+	
+			prepopulateSubjectArr.push("subject"+subjCount);
+			
 		    subjCount++;
 		}
 	}
+	
+	
+	
 	
 	str += '<div id="addedSubjectDiv"></div>	';			
 							
@@ -310,7 +340,7 @@ function prepopulateDebateForm(result)
 		}
 		str+='</select><span id="party'+candCunt+'Err" class="errDiv"></span></td>';
 
-		str +='<td>srishailam<select theme="simple" Class="selectWidth candidatesClass" name="candidate'+candCunt+'" id="candidate'+candCunt+'" >';
+		str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate'+candCunt+'" id="candidate'+candCunt+'" >';
 		str+='<option value="0"> Select Candidate</option>';
 		if(result.participantsList[p].candidatesList != null)
 		for(var j in result.participantsList[p].candidatesList){
@@ -396,6 +426,9 @@ function prepopulateDebateForm(result)
 		{
 			str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary'+candCunt+'" id="candSummary'+candCunt+'" ></textarea></td>';
 		}
+		
+		prepopulateCandSummaryArr.push("candSummary"+candCunt);
+		
 		if(p == 0)
 		{
 			str +='<td></td>';
@@ -434,6 +467,9 @@ function prepopulateDebateForm(result)
 		str += '<input type="text" Class="selectWidth debateAnswr input-block-level" name="answer'+count+'" id="answer'+count+'" value="'+result.questionAnswersList[i].name+'"></input>';
 		str += '</div>';
 		str += '</div>';
+		
+		prepopulateAnswerArr.push("answer"+count);
+		
 		count++;
 	}
 	
@@ -448,9 +484,11 @@ function prepopulateDebateForm(result)
 	str += '<textarea placeholder="Please Enter SMS Question ..."class="input-block-level" rows="4" cols="50" name="smsques1" id="smsques1" >'+result.smsPoleList[0].name+'</textarea> ';
 	str += '</div>';
 	
+	var isSmsboolean = false;
 	if(result.smsPoleList != null)
 	{
 	var percCount = 1;
+	isSmsboolean = true;
 		for(var i in result.smsPoleList)
 		{
 			str += '<div class="row">';
@@ -478,6 +516,9 @@ function prepopulateDebateForm(result)
 			} */
 			
 			str += '</div>';
+			
+			prepopulateSMSOptionArr.push("smsoption"+percCount);
+			
 			percCount = percCount+1;
 		}
 	}
@@ -575,7 +616,45 @@ function prepopulateDebateForm(result)
 	sliderAccessArgs: { touchonly: false }
     });
 
+	//Google Translation
+	if(prepopulateSubjectArr !=null && prepopulateSubjectArr.length>0)
+	{
+		$.each( prepopulateSubjectArr, function( key, value ) {
+				//console.log( key + ": " + value );
+				control.makeTransliteratable([''+value+'']);
+		});		
+	}
+	if(prepopulateCandSummaryArr !=null && prepopulateCandSummaryArr.length>0)
+	{
+		$.each( prepopulateCandSummaryArr, function( key, value ) {
+				control.makeTransliteratable([''+value+'']);
+		});
+	}
+	if(prepopulateAnswerArr !=null && prepopulateAnswerArr.length>0)
+	{
+		$.each( prepopulateAnswerArr, function( key, value ) {
+				control.makeTransliteratable([''+value+'']);
+		});
+	}
+	if(isSmsboolean){		
+		if(prepopulateSMSOptionArr !=null && prepopulateSMSOptionArr.length>0)
+		{
+		$.each( prepopulateSMSOptionArr, function( key, value ) {
+				control.makeTransliteratable([''+value+'']);
+		});
+		}		
+	}else{
+		control.makeTransliteratable(['smsoption1']);
+	}
+	
+	
+	control.makeTransliteratable(['subject1']);
+	control.makeTransliteratable(['smsques1']);
+	control.makeTransliteratable(['debetSum']);
+
 }
+
+
 
 function addMoreCandidatesForEdit()
 {
@@ -624,7 +703,8 @@ function addMoreCandidatesForEdit()
 			hide: "explode"	
 	}).multiselectfilter({    
 	});
-
+	var canId = "candSummary"+candCunt;
+	control.makeTransliteratable([''+canId+'']);
 	
 	candCunt++;
 }
@@ -657,8 +737,10 @@ function getCandidatesOfSelectedPartyEdit(partyId,divId,id)
 	}
 	var numb = divId.match(/\d/g);
 	//$('#candidate1').find('option').remove();
+	var partyArr = [];
+	partyArr.push(partyId);
 	var jsObj = {
-			partyId :partyId,
+			partyArr :partyArr,
 			selectedVal :"candidate"+numb+"",
 			task : "getCandidatesOfAParty"	
 	};
@@ -885,6 +967,4 @@ function validateFieldsForEdit(){
 
 </script>
 </body>
-
-
 </html>
