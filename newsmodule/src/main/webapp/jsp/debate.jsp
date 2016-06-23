@@ -66,7 +66,8 @@
 		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 
 		<!-- YUI Dependency files (End) -->
-
+		
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		 
 	<script src="js/debate.js"></script>
 
@@ -331,7 +332,7 @@ window.location.href = uri + base64(format(template, ctx))
 <div id='profileManagementMainOuterDiv' class="container" style="margin-top:-40px;">
 
  <!-- For Heading end -->
- 
+
 <div id='debateMainDiv' class="divInfo">
 	<div id="debateManagementDiv">	
 	
@@ -367,6 +368,9 @@ window.location.href = uri + base64(format(template, ctx))
 	<c:if test="${sessionScope.USER != null}">
 	<c:if test="${sessionScope.USER.userAccessType == 'debate'}">
 	<div id="newDibateDiv">
+	<div>
+		<span class="pull-right" style="margin-top: 10px;"> <b style="background:red">DESCRIPTION</b> : Press Alt+t to toggle between Telugu &amp; English </span>
+	</div>
 		<div id="successMsg" style="display:none;" align="center"></div>
 			<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">
 				<div class="row-fluid" >
@@ -437,6 +441,7 @@ window.location.href = uri + base64(format(template, ctx))
 								Answer : <font class="requiredFont">*</font>
 								<span id="answer${i.index+1}Err" class="errDiv"></span>
 							<input type="text" Class="selectWidth debateAnswr input-block-level" name="answer${i.index+1}" id="answer${i.index+1}"/>	
+							<input type="hidden" class="hiddenAnswerCls" attr_hidden_id="answer${i.index+1}"/>
 						</div>
 
 							</div>
