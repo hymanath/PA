@@ -7293,7 +7293,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 	    }
 	  }
 	
-public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails(Long districtId,Long assemblyId,Long parliamentId){
+public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails(Long districtId,Long assemblyId,Long parliamentId){//Teja
 		GrievanceDetailsVO grievanDetailsVO = new GrievanceDetailsVO();
 		try {
 			LOG.error("Entered in to getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails() Method ");
@@ -7337,7 +7337,8 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				        else{
 				        	assIssTypeMap = locationWiseMap.get("assembly");
 				        }
-				        Map<String, Long> staGetMap = assIssTypeMap.get(typeOfIssue);
+ 				        Map<String, Long> staGetMap = assIssTypeMap.get(typeOfIssue);
+ 				       if(staGetMap != null && staGetMap.size()>0)
 				        staGetMap.put(status.toUpperCase(),count);
 				        }
 					}
@@ -7363,6 +7364,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				        	parIssTypeMap = locationWiseMap.get("parliament");
 				        }
 				        Map<String, Long> staGetMap = parIssTypeMap.get(typeOfIssue);
+				        if(staGetMap != null && staGetMap.size()>0)
 				        staGetMap.put(status.toUpperCase(), count);
 					}
 				}
@@ -7388,6 +7390,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				        	disIssTypeMap = locationWiseMap.get("district");
 				        }
 				        Map<String, Long> staGetMap = disIssTypeMap.get(typeOfIssue);
+				        if(staGetMap != null && staGetMap.size()>0)
 				        staGetMap.put(status.toUpperCase(), count);
 					}
 				}
