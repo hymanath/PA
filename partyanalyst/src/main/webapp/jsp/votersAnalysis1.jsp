@@ -7,9 +7,9 @@
 <html>
 <head>
 
-<%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
+<!-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<!--<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>-->
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -54,7 +54,9 @@
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
    
-  <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<!--<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>-->
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"></script>
+	
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
@@ -62,10 +64,11 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<!--<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">-->
 <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+
 <link rel="stylesheet" href="dist/css/bootstrap.css">
 
 <title>Voters Analysis</title>
