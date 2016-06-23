@@ -19,7 +19,7 @@ public class ActivityInviteeDAO extends
 		Query query = getSession().createQuery(" select distinct model.activityScope.activityScopeId,count(distinct model.activityDate)," +
 				" model.activityDate, model.day " +
 				" from ActivityInvitee model where model.tdpCadre.tdpCadreId = :tdpCadreId " +
-				" and model.activityScope.isDeleted = 'N' group by model.tdpCadre.tdpCadreId,model.activityScope.activityScopeId ");
+				" and model.activityScope.isDeleted = 'N' ");
 query.setParameter("tdpCadreId", tdpCadreId);
 return query.list();
 	}

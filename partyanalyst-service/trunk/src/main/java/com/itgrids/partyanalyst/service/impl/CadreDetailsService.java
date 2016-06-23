@@ -7385,7 +7385,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				        }
 				        }
 					}
-				}
+				
 			if(parliamentId != null && parliamentId.longValue() > 0l){
 				List<Object[]> parliamentList = userAddressDAO.getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(parliamentId, "parliament");
 				if(parliamentList != null && parliamentList.size()>0){
@@ -7531,7 +7531,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				}
 			}
 			
-		} catch (Exception e) {
+		} catch(Exception e){
 			LOG.error("Exception occured in getGrievanceStatusByTypeOfIssueAndCompleteStatusDetails() Method ",e);
 		}
 		return grievanDetailsVO;
@@ -8792,6 +8792,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 	 */
 public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
+	List<ActivityVO> finalList = new ArrayList<ActivityVO>();
 	try{
 	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getScopeIds();
 	if(activityScopeIds != null && activityScopeIds.size() >0){
@@ -8815,13 +8816,32 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 		for(Object[] obj : attendees){
 			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
 			if(vo != null){
-				vo.setAttendedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
-				if(vo.getInvitteeCnt().longValue() >0l ){
-					vo.setAbscentCnt(vo.getInvitteeCnt().longValue() - vo.getAttendedCount().longValue() );
+				if(vo.getAttendedCount() == null)
+					vo.setAttendedCount(0L);
+				if(vo.getAbscentCnt() == null)
+					vo.setAbscentCnt(0L);
+				String attendenceType = commonMethodsUtilService.getStringValueForObject(obj[3]);
+				if(attendenceType != null && !attendenceType.isEmpty()){
+					if(attendenceType.trim().equalsIgnoreCase("YES"))
+						vo.setAttendedCount(vo.getAttendedCount()+1);
+					else if(attendenceType.trim().equalsIgnoreCase("NO"))
+						vo.setAbscentCnt(vo.getAbscentCnt()+1);
 				}
+				
 			}
 		}
+	}
+	
+	
+	if(commonMethodsUtilService.isListOrSetValid(returnList)){
+		for (ActivityVO vo : returnList) {
+			if((vo.getInvitteeCnt() == null || vo.getInvitteeCnt().longValue() == 0L) && (vo.getAttendedCount() == null || vo.getAttendedCount().longValue() == 0L))
+				;
+			else
+				finalList.add(vo);
+			
 		}
+	}
 	}catch (Exception e) {
 		LOG.error("Exception raised in getCandateActivityAttendance  method in CadreDetailsService.",e);
 	}
