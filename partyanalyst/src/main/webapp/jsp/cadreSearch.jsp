@@ -792,6 +792,20 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
 				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</li>';
 				str+='<li>Registered Through: '+result[i].dataSourceType+'</li>';
+				if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
+				{
+					str+='<li>District: '+result[i].addressVO.districtName+'</li>';
+					str+='<li>Constituency: '+result[i].addressVO.constituencyName+'</li>';
+					if(result[i].addressVO.localElectionBodyName != null && result[i].addressVO.localElectionBodyName.length > 0)
+					{
+					str+='<li>Muncipality: '+result[i].addressVO.localElectionBodyName+'</li>';
+					str+='<li>Ward: '+result[i].addressVO.wardName+'</li>';	
+					}
+					else{
+					str+='<li>Mandal: '+result[i].addressVO.mandalName+'</li>';
+					str+='<li>Panchayat: '+result[i].addressVO.panchayatName+'</li>';	
+					}
+				}
 				if(result[i].deletedStatus == "MD"){
 					str+='<li><b style="color:red;">Deleted Reason</b> : '+result[i].deletedReason+'</li>';
 				}
