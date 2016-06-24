@@ -31,7 +31,7 @@ public interface IActivityService {
 	
 	public ResultStatus deleteEventUploadFilebyActivityInfoDocId(String acitivityInfoDocId);
 	public ResultStatus saveActivityQuestionnaireDetails(final ActivityVO finalvo);
-	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId);
+//	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId);
 
 	public ResultStatus uploadActivityDocuments(Long activityId,String sourcePath,ActivityDocumentVO activityLocation);
 	public List<IdNameVO> getActivityLeadersDetailsByActivityScope(List<Long> activityScopeIds,boolean showCounts);
@@ -68,4 +68,5 @@ public interface IActivityService {
 	public List<IdNameVO> getAllActivities();
 	public List<IdNameVO> getAllActivityLevelsByActivity(Long activityId);
 	public ActivityVO getActivityQuestionaryOptionsByActivityDate(String activityDate,Long day,Long activityScopeId);
+	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId,List<Long> selectedDay);
 }

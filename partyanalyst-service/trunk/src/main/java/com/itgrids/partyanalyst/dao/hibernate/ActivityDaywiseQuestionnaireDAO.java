@@ -29,5 +29,17 @@ public class ActivityDaywiseQuestionnaireDAO extends GenericDaoHibernate<Activit
 		query.setParameter("activityScopeId", activityScopeId);
 		return query.list();
 	}
+	public List<Long> getSelectedDayWiseQuestionWithOptions(Long scopeId,List<Long> seletedDays)
+	{
+	Query query = getSession().createQuery(" select model.activityQuestionnaireId " +
+		      " from ActivityDaywiseQuestionnaire model " +
+		      " where model.isDeleted= 'false' " +
+		      " and model.day=:seletedDays " +
+		      " and model.activityQuestionnaire.activityScopeId =:scopeId " );
+	
+		      query.setParameterList("seletedDays", seletedDays);
+		      query.setParameter("scopeId", scopeId);
+		      return query.list();
+	}
 
 }
