@@ -337,6 +337,9 @@
 			<h4 class="modal-title" id="myModalLabel">Questionnaire</h4>
 		  </div>
 		  <div class="modal-body">
+			<div class="col-md-5" >
+			  <select class="form-control" id="selectDateId"></select>
+		    </div>
 			<div id="questionsDivBodyId"></div>
 		  </div>
 		  <div id="errMsg" style="color:green;margin:20px;" class="errMsgCls"></div>
@@ -1119,7 +1122,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 											}			
 											if(result.idNameVolist[i].name == "Questionnaire"){
 												str+='<td>';
-												str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[j].locationId+'" attr_location_Name=\''+result.result[j].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[j].locationId+'"/>';
+												str+='<input type="button" value="Update Questionnaire" attr_location_Value="'+result.result[j].locationId+'" attr_location_Name=\''+result.result[j].locationName+'\' class="btn btn-success btn-xs" id="updateQBtnId" attr_date="dateId'+result.result[j].locationId+'" attr_Selected_day="'+result.result[j].result2[k].day+'"/>';
 												str+='</td>';
 											}											
 										}
@@ -1430,8 +1433,8 @@ $("#hideAsmblyData").click(function(){
 		var questionId=$(this).attr("attr_qid");
 		var subQustionDivId =$(this).attr("subQustionDivId");
 		var locationValue = $(this).attr("attr_location_Value");
-		if(optionId >0)
-			getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId,0);
+		/* if(optionId >0)
+			getQuestionnaire(locationValue,questionId,optionId,subQustionDivId,serialNoTypeId,0); */
 		
 	});
   
@@ -1445,9 +1448,11 @@ $("#hideAsmblyData").click(function(){
 			return;
 		}*/
 		var locationValue = $(this).attr("attr_location_Value");
-		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1,dateFieldId);
+		var d = $(this).attr("attr_Selected_day");
+		var selectedDay = d.substring(4,5); 
+		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1,dateFieldId,selectedDay);
  	});
-    function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId,dateFieldId){
+    function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId,dateFieldId,selectedDay){
 		//console.log(serialNoTypeId[0]);
 		$(".errMsgCls").html("");
 			$("#errMsg").html("");
@@ -1457,11 +1462,13 @@ $("#hideAsmblyData").click(function(){
 			alert("Please Select Activity Name");
 			return false;
 		} 
+		
 		var jsObj={   
 				scopeId : scopeId,
 				requiredAttributeId:0,
 				questionId:questionId,
-				optionId:optionId
+				optionId:optionId,
+				selectedDay:selectedDay
             };
        
 			$.ajax({
@@ -1476,6 +1483,8 @@ $("#hideAsmblyData").click(function(){
 					for(var i in result.activityVoList){
 						str+='<div class="row" style="margin-left: 0px;">';
 						str+='<div class="col-md-12 m_top10">';
+						
+						
 						if(divId!="questionsDivBodyId"){
 							str+='<label>'+serialNoTypeId[i]+''+result.activityVoList[i].question+' ? </label><br/>';
 						}else{
@@ -1525,10 +1534,12 @@ $("#hideAsmblyData").click(function(){
 					str+='<h4>No Data Found.</h4>';
 				}
 				$("#"+divId+"").html(str);
-			});
+				});
+			getSelectedBetweenDatesOfActivityScope();
 	}
 	
 	$(document).on("click","#saveResult",function(){
+		var day = $("#selectDateId").val();
 		var resultArr=[];
 		$(".selectedVal").each(function(){
 		var value = '';
@@ -1580,7 +1591,9 @@ $("#hideAsmblyData").click(function(){
 				 activityLevelValue : $(this).attr("attr_location_Value"),
 				 responseArray : resultArr,
 				 //conductedDate : $("#"+dateFieldId+"").val()
-				 conductedDate:''
+				 conductedDate:'',
+				 day : day
+				
 		       };
 			  
 			 $.ajax({
@@ -2582,9 +2595,7 @@ $(document).on("change","#activityLevelList",function(){
 });
 
 function getBetweenDatesOfActivityScope(){
-	
 	$('#datesId').find('option').remove();
-	
 	var scopeId = $("#activityLevelList option:selected").attr("attr_scopeId");
 	
 	var jsObj ={
@@ -2610,7 +2621,35 @@ function getBetweenDatesOfActivityScope(){
 	   });
 	   $("#datesDivId").show();
 }
+function getSelectedBetweenDatesOfActivityScope(){
+	$('#selectDateId').html("");
+	var scopeId = $("#activityLevelList option:selected").attr("attr_scopeId");
+	
+	var jsObj ={
+		scopeId : scopeId
+	}
+	$.ajax({
+			  type:'GET',
+			  url: 'getBetweenDatesOfActivityScopeAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		     var str='';			 
+			if(result != null)
+				{		j=0;			
+					for(var i in result.datesList){						
+						j=j+1;
+						str+='<option value="Day '+j+' ('+result.datesList[i]+')">Day '+j+' ('+result.datesList[i]+')</option>';			
+					}
+					$("#selectDateId").html(str);
+				}			 
+	   });
+}
 
+$(document).on("change","#selectDateId",function(){
+		var selectedDay = $("#selectDateId").val();
+		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1,dateFieldId,selectedDay);
+});
 $(document).on("click","#searchId",function(){
 	datesArr=[];	
 	getBetweenDatesOfActivityScope();
