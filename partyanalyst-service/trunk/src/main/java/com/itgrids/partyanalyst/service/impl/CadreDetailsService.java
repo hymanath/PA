@@ -8795,7 +8795,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 	 * @return List<ActivityVO>
 	 * description  { Getting Activity Wise data for Candidate , As he Invitted, Attended, Abscent For activities ,By Sending Tdp Cadre Id}
 	 */
-public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
+public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	List<ActivityVO> finalList = new ArrayList<ActivityVO>();
 	try{
@@ -8806,7 +8806,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 		//setTemplateData(returnList,activityScopeIds);
 	}
 	
-	List<Object[]> invittes = activityInviteeDAO.getActivityScopeAndLevels(cadreId);
+	List<Object[]> invittes = activityInviteeDAO.getActivityScopeAndLevels(cadreId,activityLevelId);
 	if(invittes != null && invittes.size() >0){
 		
 	for(Object[] obj : invittes){
@@ -8816,7 +8816,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 		}
 	}
 	}
-	List<Object[]> attendees = activityAttendanceDAO.getActivityScopeAndLevels(cadreId);
+	List<Object[]> attendees = activityAttendanceDAO.getActivityScopeAndLevels(cadreId,activityLevelId);
 	if(attendees != null && attendees.size() >0){
 		for(Object[] obj : attendees){
 			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
