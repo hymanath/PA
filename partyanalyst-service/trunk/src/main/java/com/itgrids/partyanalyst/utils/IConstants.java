@@ -1095,4 +1095,6 @@ public interface IConstants {
 	public static final Long[] PUBLIC_REPR_DESIGNATION_IDS= {1L,16L,2L,12L,4L,5L,3L,21L,16L,10L}; 
 	public static final Long[] COMMITTEE_LEVEL_IDS= {12L,10L}; 
 	public static final Long[] COMMITTEE_ROLE_IDS= {1L}; 
+	
+	public static final String NEW_MINORITY_CASTE_IDS = "301,302,303,120,430";
 }
