@@ -2840,7 +2840,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	}
 	
 	function showAdvanceDashBoard(constiIdReq){
-		alert(constiIdReq)
+		
 		//window.location.href="constituencyCommitteeSummaryAction.action?accessConstituencyId="+constiIdReq;
 		// window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','_blank');
 	window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','top=10,left=25,status=no,toolbar=no,location=yes,menubar=no,titlebar=no,scrollbars=yes,modal=yes');		
