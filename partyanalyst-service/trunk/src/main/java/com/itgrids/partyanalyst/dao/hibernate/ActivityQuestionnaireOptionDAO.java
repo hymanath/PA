@@ -15,7 +15,7 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		
 	}
 	
-	public List<Object[]> getTextboxQuestionaireForScope(Long scopeId,Long questionId,Long optionId){
+	public List<Object[]> getTextboxQuestionaireForScope(Long scopeId,Long questionId,Long optionId,List<Long> questionnaireIds){
 		
 		  StringBuilder sb=new StringBuilder();
 		  sb.append(" select model.activityQuestionnaire.activityQuestionnaireId, " +//question id
@@ -27,7 +27,8 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 				    " model.activityQuestionnaire.hasRemark , model.activityQuestionnaire.orderNo " + //remarks
 				    " from ActivityQuestionnaireOption model " +
 				    " left join model.activityQuestionnaire.activityOptionType optionType " +
-				    " where model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId and model.activityOptionId is null ");
+				    " where model.activityQuestionnaire.activityQuestionnaireId in(:questionnaireIds) and " +
+				    " model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId and model.activityOptionId is null ");
 		  if(questionId == null || questionId.longValue()<=0){
 			  sb.append(" and model.activityQuestionnaire.parentActivityQuestionnaireId is null");
 		  }
@@ -40,6 +41,7 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		  Query query=getSession().createQuery(sb.toString());
 		  
 		  query.setParameter("scopeId", scopeId);
+		  query.setParameterList("questionnaireIds", questionnaireIds);
 		  
 		  if(questionId!=null && questionId>0l && optionId!=null && optionId>0l){
 			  query.setParameter("questionId", questionId);
@@ -49,7 +51,7 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		
 	}
 	
-	public List<Object[]> getQuestionnaireForScope(Long scopeId,Long questionId,Long optionId){
+	public List<Object[]> getQuestionnaireForScope(Long scopeId,Long questionId,Long optionId,List<Long> questionnaireIds){
 		
 		  StringBuilder sb=new StringBuilder();
 		  sb.append(" select model.activityQuestionnaire.activityQuestionnaireId, " +//question id
@@ -60,7 +62,9 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 				    " model.activityOption.option, " +//option
 				    " model.activityQuestionnaire.hasRemark , model.activityQuestionnaire.orderNo" + //remarks
 				    " from ActivityQuestionnaireOption model " +
-				    " where model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId ");
+				    " where model.activityQuestionnaire.activityQuestionnaireId in(:questionnaireIds) and " +
+				    " model.isDeleted='N' and model.activityQuestionnaire.activityScopeId=:scopeId ");
+		    
 		  if(questionId == null || questionId.longValue()<=0){
 			  sb.append(" and model.activityQuestionnaire.parentActivityQuestionnaireId is null");
 		  }
@@ -73,7 +77,7 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		  Query query=getSession().createQuery(sb.toString());
 		  
 		  query.setParameter("scopeId", scopeId);
-		  
+		  query.setParameterList("questionnaireIds", questionnaireIds);
 		  if(questionId!=null && questionId>0l && optionId!=null && optionId>0l){
 			  query.setParameter("questionId", questionId);
 			  query.setParameter("optionId", optionId);
@@ -116,7 +120,7 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 		query.setParameterList("scopeIds", scopeIds);
 		return query.list();
 	}
-	public List<Object[]> getQuestionnaireForScopeAndRespondentTypeIds(Long scopeId,Long requiredAttributeId){
+	public List<Object[]> getQuestionnaireForScopeAndRespondentTypeIds(Long scopeId,Long requiredAttributeId,List<Long> questionnaireIds){
 		Query query = getSession().createQuery(" select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
 				" model.activityQuestionnaire.activityQuestion.question, " +//question
 				" model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
@@ -124,16 +128,18 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 				" model.activityOption.activityOptionId, " +//option id
 				" model.activityOption.option,  model.activityQuestionnaire.orderNo " +//option
 				" from ActivityQuestionnaireOption model,RequiredAttributeRespondentType model2  " +
-				" where model.isDeleted='N' " +
+				" where model.activityQuestionnaire.activityQuestion.activityQuestionId in(:questionnaireIds) and " +
+				" model.isDeleted='N' " +
 				" and model.activityQuestionnaire.activityScopeId=:scopeId and " +
 				" model.activityQuestionnaire.respondentTypeId = model2.respondentTypeId and model2.requiredAttributeId =:requiredAttributeId " +
 				" order by model.activityQuestionnaire.orderNo ");
 		query.setParameter("scopeId", scopeId);
 		query.setParameter("requiredAttributeId", requiredAttributeId);
+		query.setParameterList("questionnaireIds", questionnaireIds);
 		return query.list();
 	}
 	
-	public List<Object[]> getTextBoxQuestionnaireForScopeAndRespondentTypeIds(Long scopeId,Long requiredAttributeId){
+	public List<Object[]> getTextBoxQuestionnaireForScopeAndRespondentTypeIds(Long scopeId,Long requiredAttributeId,List<Long> questionnaireIds){
 		Query query = getSession().createQuery(" select model.activityQuestionnaire.activityQuestion.activityQuestionId, " +//question id
 				" model.activityQuestionnaire.activityQuestion.question, " +//question
 				" model.activityQuestionnaire.activityOptionType.activityOptionTypeId, " +//option type id
@@ -141,12 +147,14 @@ public class ActivityQuestionnaireOptionDAO extends GenericDaoHibernate<Activity
 				" '', " +//option id
 				" '', model.activityQuestionnaire.orderNo  " +//option
 				" from ActivityQuestionnaireOption model,RequiredAttributeRespondentType model2  " +
-				" where model.isDeleted='N' and model.activityOptionId is null " +
+				" where model.activityQuestionnaire.activityQuestion.activityQuestionId in(:questionnaireIds) and " +
+				" model.isDeleted='N' and model.activityOptionId is null " +
 				" and model.activityQuestionnaire.activityScopeId=:scopeId and " +
 				" model.activityQuestionnaire.respondentTypeId = model2.respondentTypeId and model2.requiredAttributeId =:requiredAttributeId " +
 				" order by model.activityQuestionnaire.orderNo ");
 		query.setParameter("scopeId", scopeId);
 		query.setParameter("requiredAttributeId", requiredAttributeId);
+		query.setParameterList("questionnaireIds", questionnaireIds);
 		return query.list();
 	}
 	

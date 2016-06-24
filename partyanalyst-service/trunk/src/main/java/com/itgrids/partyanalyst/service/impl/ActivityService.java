@@ -3533,7 +3533,17 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 							activityQuestionAnswer.setUpdatedBy(finalvo.getId());
 							activityQuestionAnswer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							activityQuestionAnswer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							
+							char ch=(finalvo.getDateStr().charAt(4));
+							activityQuestionAnswer.setDay(Long.parseLong(ch+""));
+							String[] s= finalvo.getDateStr().split("\\(");
+							if(s != null && s.length > 0){
+								s[1].replace(")", "");
+								try {
+									activityQuestionAnswer.setActivityDate(new SimpleDateFormat("yyyy-MM-dd").parse(s[1]));
+								} catch (ParseException e) {
+									//e.printStackTrace();
+								}
+							}
 							
 							activityQuestionAnswerDAO.save(activityQuestionAnswer);
 						}
@@ -3598,22 +3608,27 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			constituencyId = constituencyIds.get(0);
 		return constituencyId;
 	}
-	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId){
+	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId,List<Long> seletedDays){
 		ActivityVO finalVO = new ActivityVO(); 
 		try {
 			LOG.info("Entered into getQuestionnaireForScope");
 			List<Object[]> objList = null;
 			if(requiredAttributeId == null || requiredAttributeId == 0l){
-				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId,questionId,optionId);	
-				List<Object[]> textBoxObjList = activityQuestionnaireOptionDAO.getTextboxQuestionaireForScope(scopeId,questionId,optionId);	
-				if(objList != null)
-					objList.addAll(textBoxObjList);
-			}else{
-				objList = activityQuestionnaireOptionDAO.getQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId);
-				List<Object[]> textBoxObjList = activityQuestionnaireOptionDAO.getTextBoxQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId);
-				if(objList != null)
-					objList.addAll(textBoxObjList);
+			 List<Long> questionnaireIds = activityDaywiseQuestionnaireDAO.getSelectedDayWiseQuestionWithOptions(scopeId, seletedDays);
+			 List<ActivityVO> voList = new ArrayList<ActivityVO>();
+			 if(questionnaireIds != null && questionnaireIds.size()>0){
+					objList = activityQuestionnaireOptionDAO.getQuestionnaireForScope(scopeId,questionId,optionId,questionnaireIds);	
+					List<Object[]> textBoxObjList = activityQuestionnaireOptionDAO.getTextboxQuestionaireForScope(scopeId,questionId,optionId,questionnaireIds);	
+					if(objList != null)
+						objList.addAll(textBoxObjList);
+				}else{
+					objList = activityQuestionnaireOptionDAO.getQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId,questionnaireIds);
+					List<Object[]> textBoxObjList = activityQuestionnaireOptionDAO.getTextBoxQuestionnaireForScopeAndRespondentTypeIds(scopeId, requiredAttributeId,questionnaireIds);
+					if(objList != null)
+						objList.addAll(textBoxObjList);
+				}
 			}
+			 
 			if(objList != null && objList.size() > 0){
 				int number=0;
 				for (Object[] objects : objList) {
