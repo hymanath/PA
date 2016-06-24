@@ -4637,7 +4637,7 @@ function getActivityDetails()
 								str+='</tr>';
 							}
 						}
-					}
+					
 				str+='</tbody>';
 			str+='</table>';
 		}
