@@ -100,6 +100,22 @@
 							   <div class="col-md-12">
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
+									<p class="m_0 display-style" id="casteCategoryWiseHeadingId">Caste Wise Analysis</p>
+								    <button class="btn btn-success btn btn-xs col-md-offset-7" id="casteCategoryExcelExpBtnId" onclick="generateExcelReportForCasteCategory()" style="display:none;">Export Excel</button>
+									</div>
+									<div class="panel-body" style="padding:0px;">				
+											<center><img id="cstCtgryWstblPrcssngImgId" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+										<div id="casteCategoryWiseTableId"> </div>
+									</div>
+								</div>
+							   </div>
+							</div>
+						</div>
+						<div class="row m_top6">
+							<div class="col-md-12 m_top20">
+							   <div class="col-md-12">
+								<div class="panel panel-default m_0">
+									<div class="panel-heading">
 									<p class="m_0 display-style" id="casteWiseHeadingId">Sub Caste Wise Analysis</p>
 								    <button class="btn btn-success btn btn-xs col-md-offset-7" id="casteExcelExpBtnId" onclick="generateExcelReportForCaste()" style="display:none;">Export Excel</button>
 									</div>
@@ -173,6 +189,7 @@
 	   $("#casteExcelExpBtnId").hide();
 	   $("#genderWiseExcelExpBtnId").hide();
 	   $("#ageWsExcelExpBtnId").hide();
+	  // $("#casteCategoryExcelExpBtnId").hide();
 	    getEventDateAndSubEvent();
 	   }	   
    });
@@ -810,7 +827,8 @@ function generateExcelReportForGender(){
 	tableToExcel(gndrWsExprtTExclTblId, 'Gender Wise Report');
 }
 function casteCategoryWiseEventAttendeeCounts(startDate,endDate){
-	     
+	 	 $("#casteCategoryWiseTableId").html(' ');
+		 $("#cstCtgryWstblPrcssngImgId").show();
 		 var jsObj = {
 				startDate    :startDate,
 				endDate      :endDate,
@@ -822,8 +840,93 @@ function casteCategoryWiseEventAttendeeCounts(startDate,endDate){
           url: 'casteCategoryWiseEventAttendeeCountsAction.action',
 		  data : {task:JSON.stringify(jsObj)} ,
         }).done(function(result){
+			$("#cstCtgryWstblPrcssngImgId").hide();
+			if(result !=null ){
+			buildCastCategoryByRslt(result);
+			}
  	});
 }
+function buildCastCategoryByRslt(result){
+
+	var str='';
+	str+='<div >';
+	if(result[0].locationName != "NO DATA"){
+			str+='<table class="table tableC table-condensed table-bordered " style="border-bottom:none" id="cstCtgryTblId">';
+			str+='<thead style="background:#EFF3F4">';
+			str+='<tr>';
+			str+='<th rowspan="2" style="vertical-align:middle">CASTE NAME</th>';
+		//	str+='<th rowspan="2" style="vertical-align:middle">TOTAL CADRES</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED % </th>';
+			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED %</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED %</th>';
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody class="scrollLength">';
+		for(var j in result){
+			str+='<tr>';
+			if(result[j].name == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td >'+result[j].name+'</td>';
+			}
+			/* if(result[j].totalCadre !=null && result[j].totalCadre >0){
+				str+='<td class="text-center">'+result[j].totalCadre+'</td>';
+			}else{
+			  str+='<td class="text-center"> 0 </td>';
+			} */
+			if(result[j].inviteesCalled == 0 || result[j].inviteesCalled == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].inviteesCalled+'</td>';
+			}
+			if(result[j].attendees == 0 || result[j].attendees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendees+'</td>';
+			}
+			if(result[j].attendeePercantage == 0 || result[j].attendeePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].attendeePercantage+' %</td>';
+			} 
+			if(result[j].invitees == 0 || result[j].invitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].invitees+'</td>';
+			}
+			if(result[j].inviteePercantage == 0 || result[j].inviteePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].inviteePercantage+' %</td>';
+			} 
+			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].nonInvitees+'</span></td>';
+			}
+			if(result[j].nonInviteePercantage == 0 || result[j].nonInviteePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].nonInviteePercantage+' %</td>';
+			} 
+			str+='</tr>';
+		}
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		$("#casteCategoryWiseTableId").html(str);
+		//$("#casteCategoryExcelExpBtnId").show();
+	}else{
+		$("#casteCategoryWiseTableId").html("<p style='margin-top: 30px; text-align: center;'>NO DATA AVAILABLE</p>");
+	}
+}
+/*  function generateExcelReportForCasteCategory(){
+	tableToExcel(cstCtgryTblId, 'Caste Category Wise Report');
+}  */
 </script>
 </body>
 </html>
