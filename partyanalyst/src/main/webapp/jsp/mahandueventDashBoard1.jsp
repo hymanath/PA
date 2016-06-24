@@ -131,7 +131,7 @@
 					<button id="mahanaduLinkId" type="button" class="btn btn-primary pull-right">ENTRY/EXIT DASHBOARD</button>
 				</div>
 				<div id="eventReportDashboardDivLinkId" style="display:none">
-					<button id="eventReportDashboardLinkId" type="button" class="btn btn-primary pull-right">EVENT REPORT DASHBOARD</button>
+					<button id="eventReportDashboardLinkId" type="button" class="btn btn-primary pull-right">Event Demographic Analysis</button>
 				</div>
 				<div class="refreshButton">
 					<span  class="text">Last Updated Time <br/><span id="timeUpdationId"></span>&nbsp;&nbsp;&nbsp;</span>
