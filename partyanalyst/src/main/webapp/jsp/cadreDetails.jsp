@@ -577,7 +577,7 @@ var globalCadreId = '${cadreId}';
 				
                 <div class="panel panel-default" id="electionProfileMainDivId">
                 	<div class="panel-heading" id="cadreElectionProfileHeaderId">
-                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CADRE ELECTION PROFILE <span class="pull-right" id="cadreElectionProfileShowId"  style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreElectionProfileHideId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
+                    	<h4 class="panel-title text-bold pointer"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;&nbsp;CANDIDATE ELECTION PROFILE <span class="pull-right" id="cadreElectionProfileShowId"  style="display:none;"><i class="glyphicon glyphicon-chevron-up"></i></span><span class="pull-right" id="cadreElectionProfileHideId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
                     <div class="panel-body" id="cadreElectionProfileBodyId">
                     	<div class="cadre-election" >
