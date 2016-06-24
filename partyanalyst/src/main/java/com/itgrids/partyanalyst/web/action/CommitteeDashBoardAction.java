@@ -734,7 +734,7 @@ public String getAllConstituencysForADistrict(){
 			jObj = new JSONObject(getTask());
 			HttpSession session = request.getSession();
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-			constiSummaryVO = cadreCommitteeService.getConstituencySummary(jObj.getLong("reportType"), jObj.getLong("constituencyId"),user.getRegistrationID());
+			constiSummaryVO = cadreCommitteeService.getConstituencySummary(jObj.getLong("reportType"), jObj.getLong("constituencyId"),user.getRegistrationID(),jObj.getLong("committeeTypeId"));
 		}catch(Exception e){
 			LOG.error("Exception Occured In getSummaryDetailsPopUp method "+e);			
 		}
