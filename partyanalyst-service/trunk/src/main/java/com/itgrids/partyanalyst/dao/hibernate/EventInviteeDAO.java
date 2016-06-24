@@ -130,7 +130,7 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
 	
 	public List<Object[]> getInvitationCountforCandidate(Long tdpCadreId)
 	{
-		Query query = getSession().createQuery(" select model.eventId,model.event.name, count(model.tdpCadreId),model.event.eventType.eventTypeId, model.event.eventType.type  from EventInvitee model where model.tdpCadreId =:tdpCadreId and " +
+		Query query = getSession().createQuery(" select model.eventId,model.event.name, count(model.tdpCadreId),model.event.eventType.eventTypeId, model.event.eventType.type,model.absenteeRemark  from EventInvitee model where model.tdpCadreId =:tdpCadreId and " +
 				" model.event.isActive ='true'  group by  model.eventId  ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return  query.list(); 	
