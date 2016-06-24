@@ -18,11 +18,34 @@ public class ActivityAttendanceDAO extends
 
 	}
 
-	public List<Object[]> getActivityScopeAndLevels(Long tdpCadreId) {
+	public List<Object[]> getActivityScopeAndLevels(Long tdpCadreId,Long activityLevelId) {
 		
 		Query query = getSession().createQuery(" select model.activityScope.activityScopeId, model.activityDate, model.day, model.isAttended  " +
-				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId  and model.activityScope.isDeleted = 'N'  ");
+				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId  and model.activityScope.isDeleted = 'N' and " +
+				"  model.activityScope.activityLevelId=:activityLevelId  and  model.activityScope.activity.isActive='Y'  ");
+             query.setParameter("tdpCadreId", tdpCadreId);
+             query.setParameter("activityLevelId", activityLevelId);
+         return query.list();
+	}
+	
+	public List<Object[]> getCadreAttendanceDetls(Long tdpCadreId) {
+		
+		Query query = getSession().createQuery(" select model.activityScope.activityLevelId, model.isAttended ,count(model.tdpCadre.tdpCadreId)  " +
+				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId  and model.activityScope.isDeleted = 'N' and  model.activityScope.activity.isActive='Y' " +
+				" group by model.activityScope.activityLevelId,model.isAttended order by model.activityScope.activityLevelId asc");
              query.setParameter("tdpCadreId", tdpCadreId);
          return query.list();
 	}
+
+	public List<Object[]> getCanditeActivtyAttendanceLocationsDtls(Long tdpCadreId,Long activityLevelId) {
+		
+		Query query = getSession().createQuery(" select model.activityScope.activity.activityName, model.activityScope.activityLevel.level , " +
+				" model.activityLocationInfo.locationLevel, model.activityLocationInfo.locationValue,model.activityScope.activityLevelId  " +
+				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId  and model.activityScope.isDeleted = 'N' and  model.activityScope.activity.isActive='Y' " +
+				" and model.isAttended = 'YES' and  model.activityScope.activityLevelId = :activityLevelId  order by model.activityScope.activityLevelId asc");
+             query.setParameter("tdpCadreId", tdpCadreId);
+             query.setParameter("activityLevelId", activityLevelId);
+         return query.list();
+	}
+	
 }
