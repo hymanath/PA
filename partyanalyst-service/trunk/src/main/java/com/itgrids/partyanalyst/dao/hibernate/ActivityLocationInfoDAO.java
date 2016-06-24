@@ -1204,8 +1204,7 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select distinct model.activityScope.activityScopeId,model.activityScope.activity.activityName, model.activityScope.activityLevel.activityLevelId,"+
 			" model.activityScope.activityLevel.level,model.activityScope.activity.activityId,model.activityLocationInfoId,date(model.conductedDate) from ActivityLocationInfo model where model.activityScope.activityLevelId=:activityLevelId ");
-		queryStr.append(" and model.locationValue =:locationValue and model.activityScope.activity.isActive ='Y' and model.activityScope.isDeleted ='N' and " +
-				" date(model.conductedDate) is not null ");
+		queryStr.append(" and model.locationValue =:locationValue and model.activityScope.activity.isActive ='Y' and model.activityScope.isDeleted ='N' ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("activityLevelId", activityLevelId);
