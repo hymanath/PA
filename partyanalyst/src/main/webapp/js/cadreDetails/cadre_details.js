@@ -653,9 +653,19 @@ function getParticipatedConstituencyId(cadreId){
 										str+='<td><span class="attedenceCls" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'" style="text-align:center;"><a style="cursor:pointer">'+results[i].knownList[j].total+' Day(s) </a></td>';
 									else
 										str+='<td style="text-align:center;"> - </td>';
-									if(results[i].knownList[j].eventTypeId != 2)
+									if(results[i].knownList[j].eventTypeId != 2){
+										if(results[i].knownList[j].absentCount > 0){
+										str+='<td style="text-align:center;">'+results[i].knownList[j].absentCount+'';
+										if(results[i].knownList[j].casteName != null && results[i].knownList[j].casteName != "")
+											str+='<span><i id="" class="glyphicon glyphicon-info-sign" title="'+results[i].knownList[j].casteName+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"></i></span>';
+										else
+											str+='<span><i id="" class="glyphicon glyphicon-info-sign" title="Reason Not Given" style="cursor:pointer;" data-toggle="tooltip" data-placement="top"></i></span>';
+										str+='</td>';
+											
+										}else{
 										str+='<td style="text-align:center;">'+results[i].knownList[j].absentCount+'</td>';
-									else
+										}
+									}else
 										str+='<td style="text-align:center;"> - </td>';
 									 str+='</tr>';
 								}
@@ -677,7 +687,8 @@ function getParticipatedConstituencyId(cadreId){
 					}					
 				}
 				 $("#participationTableDivId").html(str);	
-				   
+				   $('[data-toggle="tooltip"]').tooltip()
+
 				}else{
 					$("#eventParticipationCollapseDivId").hide();
 					//$("#participationTableMainDivId").hide();
