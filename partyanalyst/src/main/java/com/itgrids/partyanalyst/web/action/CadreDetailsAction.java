@@ -1320,8 +1320,8 @@ public String updateLeaderShip(){
 	public String getCandateActivityAttendance(){
 		try{
 			jObj=new JSONObject(getTask());
-			
-			activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"));
+			//activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"),jObj.getLong("cadreId"));
+			activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"),jObj.getLong("activityLevelId"));
 		}catch(Exception e){
 			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
 		}
