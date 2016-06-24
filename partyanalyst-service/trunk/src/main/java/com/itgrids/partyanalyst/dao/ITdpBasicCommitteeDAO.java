@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 
 public interface ITdpBasicCommitteeDAO  extends GenericDao<TdpBasicCommittee, Long>{
 	public List<Object[]> getBasicCommittees();
+	public List<Object[]> getBasicCommitteesByTypeId(Long committeeTypeId);
 }

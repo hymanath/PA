@@ -567,7 +567,7 @@ public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date star
 	return query.list();
 }
 
-public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long levelId,List<Long> locationVals){
+public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long levelId,List<Long> locationVals,Long committeeTypeId){
 	StringBuilder str = new StringBuilder();
 	str.append("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId)," +
 			" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
@@ -578,7 +578,10 @@ public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long le
 			" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:locationVals)" +
 			//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId " +
 			" and model.isActive = 'Y'");
-	
+	if(committeeTypeId == 1)
+	str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId =1");
+	else
+		str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId !=1");	
 	str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
 			" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
 			" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId");
@@ -590,7 +593,7 @@ public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long le
 	return query.list();
 		
 }
-	public List<Object[]> getCommitteePresidentAndVicePresidentsCount(List<Long> locationIds, Long locationLevel){
+	public List<Object[]> getCommitteePresidentAndVicePresidentsCount(List<Long> locationIds, Long locationLevel,Long committeeTypeId){
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.tdpCommitteeMemberId)," +
 				//" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
@@ -602,7 +605,10 @@ public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long le
 				//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId " +
 				" and model.isActive = 'Y'" +
 				" and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,3)");
-		
+		if(committeeTypeId == 1)
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId =1");
+			else
+				str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId !=1");
 		str.append(" group by " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
 				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId");
@@ -641,7 +647,7 @@ public List<Object[]> getPresidentsAndVPInfoForCommittee(Long levelId,Long locat
 		
 }
 
-public List<Object[]> getCommitteePresidentAndGS(List<Long> locationIds, Long locationLevel){
+public List<Object[]> getCommitteePresidentAndGS(List<Long> locationIds, Long locationLevel,Long committeeTypeId){
 	StringBuilder str = new StringBuilder();
 	str.append("select model.tdpCadreId," +
 			//" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
@@ -653,6 +659,10 @@ public List<Object[]> getCommitteePresidentAndGS(List<Long> locationIds, Long lo
 			//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId " +
 			" and model.isActive = 'Y'" +
 			" and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,3)");
+	if(committeeTypeId == 1)
+		str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId =1");
+		else
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId !=1");	
 	
 	/*str.append(" group by" +
 			"  model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId, " +
