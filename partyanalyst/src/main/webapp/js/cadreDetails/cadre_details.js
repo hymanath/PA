@@ -639,9 +639,9 @@ function getParticipatedConstituencyId(cadreId){
 								for(var j in results[i].knownList){
 									str+='<tr>';
 									if(j==0){											
-											str+='<td style="border-bottom:#fff;text-align:center;;">'+results[i].name+'</td>';
+											str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
 									}else{
-										str+='<td style="border:#fff;text-align:center;;"></td>';
+										str+='<td style="border:#fff;"> - </td>';
 									}
 									str+='<td>'+results[i].knownList[j].name+'</td>';
 									if(results[i].knownList[j].eventTypeId == 2)
@@ -4607,6 +4607,7 @@ getIVRSummaryByTdpCadreId();
 	
 function getActivityDetails()
 {
+//	alert(111);
 	var jsObj={
 		tdpCadreId:globalCadreId
 	}	
@@ -4620,32 +4621,32 @@ function getActivityDetails()
 			
 			str+='<table class="table table-bordered">';
 				str+='<thead>';
+					str+='<tr>';
 					str+='<th class="text-center">Activity Level</th>';
 					str+='<th class="text-center">Total</th>';
 					str+='<th class="text-center">Attended</th>';
+					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
 					if(result.activityVoList != null && result.activityVoList.length > 0){
 						for(var i in result.activityVoList){
+							
 							if(result.activityVoList[i].totalCount != null){
-								str+='<tr class="text-center">';
-									str+='<td>'+result.activityVoList[i].name+'</td>';
-									if(result.activityVoList[i].totalCount != null){
-										//str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
-										  str+='<td class="" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+									str+='<tr class="text-center">';
+										str+='<td>'+result.activityVoList[i].name+'</td>';
+										if(result.activityVoList[i].totalCount != null){
+											str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+											  //str+='<td class="" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+										}
+										
+										if(result.activityVoList[i].attendedCount != null){
+										str+='<td class="activityLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
+										//str+='<td class="" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
+										}
+									
+										str+='</tr>';
+								
 									}
-									}
-									else{
-										str+='<td>0</td>';
-									}
-									if(result.activityVoList[i].attendedCount != null){
-										//str+='<td class="activityLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
-										str+='<td class="" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
-									}
-									else{
-										str+='<td>0</td>';
-									}
-								str+='</tr>';
 							}
 						}
 					
@@ -4658,6 +4659,9 @@ function getActivityDetails()
 }
 
 $(document).on('click', '.activityLvlCls', function(){
+	var activityLevelId = $(this).attr("attr_levelId");
+	getCandateActivityAttendance(activityLevelId);
+	/*
 	var activityLevelId = $(this).attr("attr_levelId");
 	var status = $(this).attr("attr_id");
 	var activityLevel = $(this).attr("attr_activity_level");
@@ -4716,6 +4720,7 @@ $(document).on('click', '.activityLvlCls', function(){
 					str+='<th class="text-center">Activity Name</th>';
 					str+='<th class="text-center">Activity Level</th>';
 					str+='<th class="text-center">Status</th>';
+					str+='<th class="text-center">Invited</th>';
 					str+='<th class="text-center">Attended</th>';
 					str+='<th class="text-center">Absent</th>';
 				str+='</thead>';
@@ -4723,7 +4728,7 @@ $(document).on('click', '.activityLvlCls', function(){
 					if(result.activityVoList != null && result.activityVoList.length > 0){
 						for(var i in result.activityVoList){
 							str+='<tr class="text-center">';
-								str+='<td>'+result.activityVoList[i].name+'</td>';
+								str+='<td style="text-align:left;">'+result.activityVoList[i].name+'</td>';
 								str+='<td>'+activityLevel+'</td>';
 								if(result.activityVoList[i].isLocation == 'Y'){
 									str+='<td>Conducted</td>';
@@ -4731,20 +4736,28 @@ $(document).on('click', '.activityLvlCls', function(){
 								else{
 									str+='<td>Not Conducted</td>';
 								}
+								str+='<td> - </td>';
 								if(status == 'total'){
 									if(result.activityVoList[i].isLocation == 'Y'){
 										if(result.activityVoList[i].isAttended == 'Y'){
-											str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+											if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
+												str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+											else 
+												str+='<td style="text-align:center;">-</td>';
+										
 										}
 										else{
-											str+='<td>0</td>';
+											str+='<td style="text-align:center;">-</td>';
 										}
 										if(result.activityVoList[i].isAttended == 'Y'){
-											str+='<td>0</td>';
+											str+='<td style="text-align:center;">-</td>';
 										}
 										else{
 											if(result.activityVoList[i].attendedCount != null){
-												str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+												if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
+													str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+												else 
+													str+='<td style="text-align:center;">-</td>';
 											}
 											else{
 												str+='<td>1</td>';
@@ -4758,17 +4771,26 @@ $(document).on('click', '.activityLvlCls', function(){
 								}
 								else if(status == 'attended'){
 									if(result.activityVoList[i].isAttended == 'Y'){
-										str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+										//str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+										
+										if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
+											str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+										else 
+											str+='<td style="text-align:center;">-</td>';
 									}
 									else{
-										str+='<td>0</td>';
+										str+='<td  style="text-align:center;">-</td>';
 									}
 									if(result.activityVoList[i].isAttended == 'Y'){
-										str+='<td>0</td>';
+										str+='<td  style="text-align:center;">-</td>';
 									}
 									else{
 										if(result.activityVoList[i].attendedCount != null){
-											str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+											//str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+											if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
+												str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
+											else 
+												str+='<td style="text-align:center;">-</td>';
 										}
 										else{
 											str+='<td>1</td>';
@@ -4782,7 +4804,7 @@ $(document).on('click', '.activityLvlCls', function(){
 			str+='</table>';
 		}
 		$("#activityAttendedTableDivId").html(str);
-	});
+	});*/
 });
 $("#mainheading").parent().find("p").removeClass("display-style");
 
