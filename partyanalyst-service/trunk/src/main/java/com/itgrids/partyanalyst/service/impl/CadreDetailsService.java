@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -187,9 +188,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IActivityInviteeDAO activityInviteeDAO;
 	private IActivityAttendanceDAO activityAttendanceDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
+	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	
 	
-	
+	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
+		return activityLocationInfoDAO;
+	}
+
+	public void setActivityLocationInfoDAO(
+			IActivityLocationInfoDAO activityLocationInfoDAO) {
+		this.activityLocationInfoDAO = activityLocationInfoDAO;
+	}
+
 	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
 		return setterAndGetterUtilService;
 	}
@@ -8795,7 +8805,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 	 * @return List<ActivityVO>
 	 * description  { Getting Activity Wise data for Candidate , As he Invitted, Attended, Abscent For activities ,By Sending Tdp Cadre Id}
 	 */
-public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId){
+public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	List<ActivityVO> finalList = new ArrayList<ActivityVO>();
 	try{
@@ -8817,8 +8827,15 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 	}
 	}
 	List<Object[]> attendees = activityAttendanceDAO.getActivityScopeAndLevels(cadreId,activityLevelId);
+	Set<Long> attendencHavingLocationInfoIdsList = new HashSet<Long>(0);
+	
 	if(attendees != null && attendees.size() >0){
 		for(Object[] obj : attendees){
+			
+			Long locationInfoId = commonMethodsUtilService.getLongValueForObject(obj[4]);//4
+			//Long activityLevlId =commonMethodsUtilService.getLongValueForObject(obj[5]) ;//5
+			//Long activityLevelValue = commonMethodsUtilService.getLongValueForObject(obj[6]);//6
+			attendencHavingLocationInfoIdsList.add(locationInfoId);
 			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
 			if(vo != null){
 				if(vo.getAttendedCount() == null)
@@ -8837,10 +8854,41 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 		}
 	}
 	
-	
+	List<Object[]> conductedLocationInfosLsit = activityLocationInfoDAO.getConductedActivityDetailsbyScopeAndLocationID(activityLevelId,panchayatId,mandalId,lebId,assemblyId,districtId,stateId,participatedAssemblyId);
+	if(commonMethodsUtilService.isListOrSetValid(conductedLocationInfosLsit)){
+		for (Object[] obj : conductedLocationInfosLsit) {
+			Long lcoationINfoId = commonMethodsUtilService.getLongValueForObject(obj[5]);
+			if(!attendencHavingLocationInfoIdsList.contains(lcoationINfoId)){
+				Long scopeId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+				String activityName = commonMethodsUtilService.getStringValueForObject(obj[1]);
+				Long activitylevelId = commonMethodsUtilService.getLongValueForObject(obj[2]);
+				String levelStr =commonMethodsUtilService.getStringValueForObject(obj[3]) ;
+				Long activityId = commonMethodsUtilService.getLongValueForObject(obj[4]);
+				String conducteDateStr =commonMethodsUtilService.getStringValueForObject(obj[6]) ;
+				
+				ActivityVO vo = new ActivityVO();
+				vo.setActivityScopeId(scopeId);
+				vo.setAttendendLocation(activityName);
+				vo.setLocationLevel(activitylevelId);
+				vo.setIsLocation(levelStr);
+				vo.setActivityNameId(activityId);
+				if(conducteDateStr != null && conducteDateStr.trim().length()>0)
+					vo.setConductedDate(conducteDateStr);
+				else
+					vo.setConductedDate(" Not Conducted ");
+				returnList.add(vo);
+			}
+			
+			//"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId"
+			//select distinct model.activityScope.activityScopeId,model.activityScope.activity.activityName, model.activityScope.activityLevel.activityLevelId,
+			//model.activityScope.activityLevel.level,model.activityScope.activity.activityId
+		}
+	}
 	if(commonMethodsUtilService.isListOrSetValid(returnList)){
 		for (ActivityVO vo : returnList) {
-			if((vo.getInvitteeCnt() == null || vo.getInvitteeCnt().longValue() == 0L) && (vo.getAttendedCount() == null || vo.getAttendedCount().longValue() == 0L))
+			if(vo.getConductedDate() != null && vo.getConductedDate().length()>0)
+				finalList.add(vo);
+			else if((vo.getInvitteeCnt() == null || vo.getInvitteeCnt().longValue() == 0L) && (vo.getAttendedCount() == null || vo.getAttendedCount().longValue() == 0L))
 				;
 			else
 				finalList.add(vo);

@@ -4478,19 +4478,6 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	public ActivityVO getCanditeActivtyAttendanceLocationsDtls(Long cadreId,Long activityLevelId){
 		ActivityVO finalvo = new ActivityVO();
 		try {
-			Map<Long,ActivityVO> activityMap = new LinkedHashMap<Long, ActivityVO>();
-			List<Object[]> list = activityLevelDAO.actvityLvlOrder();
-			if(list != null && list.size() > 0){
-				for (Object[] obj : list) {
-					ActivityVO vo = new ActivityVO();
-					Long lvlId = (Long) (obj[0] != null ? obj[0]:0l);
-					String level = obj[1] != null ? obj[1].toString():"";
-					vo.setId(lvlId);
-					vo.setName(level);
-					if(activityLevelId != null &&  vo.getId() != null && activityLevelId == vo.getId().longValue())
-						activityMap.put(lvlId, vo);
-				}
-			}
 			
 			List<ActivityVO> locationInfoList = new ArrayList<ActivityVO>(0);
 			List<Object[]> attendanceDtls = activityAttendanceDAO.getCanditeActivtyAttendanceLocationsDtls(cadreId,activityLevelId);
@@ -4498,13 +4485,14 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				for (Object[] param : attendanceDtls) {
 					String activityName =commonMethodsUtilService.getStringValueForObject(param[0]);
 					String activityLevel =commonMethodsUtilService.getStringValueForObject(param[1]);
-					//Long activityLevlId =commonMethodsUtilService.getLongValueForObject(param[4]);
+					Long activityLocationInfoId =commonMethodsUtilService.getLongValueForObject(param[4]);
 					Long locationLevel =commonMethodsUtilService.getLongValueForObject(param[2]);
 					Long  locationValue =commonMethodsUtilService.getLongValueForObject(param[3]);
-					
+					String activityDateStr =commonMethodsUtilService.getStringValueForObject(param[5]);
 					ActivityVO vo = new ActivityVO();
 					vo.setOptionType(activityLevel);
 					vo.setName(activityName);
+					vo.setConductedDate(activityDateStr);
 					if(locationLevel != null && locationLevel.longValue() == 5L){
 						String locationName = tehsilDAO.get(locationValue).getTehsilName();
 						vo.setAttendendLocation(locationName);
@@ -4533,6 +4521,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					locationInfoList.add(vo);
 				}
 			}
+			
 			if(commonMethodsUtilService.isListOrSetValid(locationInfoList)){
 				finalvo.setActivityVoList(locationInfoList);
 			}
