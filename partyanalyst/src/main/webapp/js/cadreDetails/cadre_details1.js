@@ -306,10 +306,39 @@ function buildSurveysOnCandidateDetails(result){
 		$('.ivrSurveyCandtDetailsCls').html("NO DATA AVAILABLE");
 	}
 }
-function getCandateActivityAttendance(){
+
+
+function getCandateActivityAttendance(activityLevelId){
 	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		//alert(999);
+		$("#activityAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
-		cadreId:globalCadreId
+		cadreId:globalCadreId,
+		activityLevelId:activityLevelId		
+	}
+	
+	$.ajax({
+			type:'POST',
+			 url: 'getCanditeActivtyAttendanceLocationsDtlsAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$("#activityAttented").html('');
+				if(result!= null && result.length >0)
+					buildCandateActivityAttendance(result);
+				else
+					$("#activityAttented").html(' Candidate Not Available with any Activity.');
+				
+				//console.log(result);
+			});
+}
+
+function getCandateActivityAttendance(activityLevelId){
+	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		//alert(999);
+		$("#activityAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+	var jsObj={
+		cadreId:globalCadreId,
+		activityLevelId:activityLevelId		
 	}
 	
 	$.ajax({
@@ -317,12 +346,16 @@ function getCandateActivityAttendance(){
 			 url: 'getCandateActivityAttendanceAction.action',
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				$("#activityAttented").html('');
 				if(result!= null && result.length >0)
 					buildCandateActivityAttendance(result);
+				else
+					$("#activityAttented").html(' Candidate Not Available with any Activity.');
+				
 				//console.log(result);
 			});
 }
-getCandateActivityAttendance();
+//getCandateActivityAttendance();
 function buildCandateActivityAttendance(result){
 	var str = '';
 	
