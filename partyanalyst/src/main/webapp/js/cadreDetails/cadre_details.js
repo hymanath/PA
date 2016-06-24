@@ -166,8 +166,8 @@ function getParticipatedConstituencyId(cadreId){
 						}
 						getCategoryWiseStatusCount();
 						getTotalMemberShipRegistrationsInCadreLocation();		
-						//getCadreFamilyDetailsByCadreId();
-						getElectionPerformanceInCadreLocation();
+						//getCadreFamilyDetailsByCadreId();//swadhin
+						//getElectionPerformanceInCadreLocation();
 						getApprovedFinancialSupprotForCadre();
 						cadreFormalDetailedInformation(globalCadreId);
 						getEventDetailsOfCadre(globalCadreId);
@@ -200,6 +200,7 @@ function getParticipatedConstituencyId(cadreId){
 				 url: 'cadreFormalDetailedInformationAction.action',
 				 data : {task:JSON.stringify(jsobj)} ,
 			}).done(function(result){
+				getElectionPerformanceInCadreLocation();
 				//loading images hiding
 				 $("#dataLoadingsImgForownBoothDetailsId").hide();
 				// $("#dataLoadingsImgForImagePath").hide();
@@ -2556,8 +2557,8 @@ function getCadreIdByMemberShipId(){
 			else{
 				getCategoryWiseStatusCount();
 				getTotalMemberShipRegistrationsInCadreLocation();		
-				//getCadreFamilyDetailsByCadreId();
-				getElectionPerformanceInCadreLocation();
+				//getCadreFamilyDetailsByCadreId();//swadhin
+				//getElectionPerformanceInCadreLocation();
 				getApprovedFinancialSupprotForCadre();
 				cadreFormalDetailedInformation(globalCadreId);
 				getEventDetailsOfCadre(globalCadreId);
