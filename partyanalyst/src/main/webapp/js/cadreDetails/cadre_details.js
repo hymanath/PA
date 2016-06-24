@@ -655,11 +655,11 @@ function getParticipatedConstituencyId(cadreId){
 										str+='<td style="text-align:center;"> - </td>';
 									if(results[i].knownList[j].eventTypeId != 2){
 										if(results[i].knownList[j].absentCount > 0){
-										str+='<td style="text-align:center;">'+results[i].knownList[j].absentCount+'';
+										str+='<td style="text-align:center;">'+results[i].knownList[j].absentCount+'  ';
 										if(results[i].knownList[j].casteName != null && results[i].knownList[j].casteName != "")
-											str+='<span><i id="" class="glyphicon glyphicon-info-sign" title="'+results[i].knownList[j].casteName+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"></i></span>';
+											str+='<span>  <i id="" class="glyphicon glyphicon-info-sign" title="'+results[i].knownList[j].casteName+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"></i></span>';
 										else
-											str+='<span><i id="" class="glyphicon glyphicon-info-sign" title="Reason Not Given" style="cursor:pointer;" data-toggle="tooltip" data-placement="top"></i></span>';
+											str+='<span>  <i id="" class="glyphicon glyphicon-info-sign" title="Reason Not Available" style="cursor:pointer;" data-toggle="tooltip" data-placement="top"></i></span>';
 										str+='</td>';
 											
 										}else{
