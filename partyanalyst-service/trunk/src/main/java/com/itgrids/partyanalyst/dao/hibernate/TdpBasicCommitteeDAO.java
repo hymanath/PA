@@ -25,11 +25,11 @@ public class TdpBasicCommitteeDAO extends GenericDaoHibernate<TdpBasicCommittee,
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.tdpBasicCommitteeId," +
 				" model.name" +
-				" from TdpBasicCommittee model where" );
+				" from TdpBasicCommittee model " );
 		if(committeeTypeId == 1)
-		str.append(" model.tdpCommitteeTypeId =1");
+		str.append(" where model.tdpCommitteeTypeId =1");
 		if(committeeTypeId == 2)
-			str.append(" model.tdpCommitteeTypeId !=1");	
+			str.append(" where model.tdpCommitteeTypeId !=1");	
 		str.append(" order by model.order ");
 		Query query = getSession().createQuery(str.toString());
 		
