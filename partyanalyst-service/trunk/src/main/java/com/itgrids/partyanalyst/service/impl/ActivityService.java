@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.BoothDAO;
+import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityDaywiseQuestionnaireDAO;
 import com.itgrids.partyanalyst.dto.ActivityAttendanceInfoVO;
 import com.itgrids.partyanalyst.dto.ActivityDocumentVO;
@@ -179,10 +180,17 @@ public class ActivityService implements IActivityService{
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IActivityStatusQuestionnaireDAO activityStatusQuestionnaireDAO;
 	private IActivityDaywiseQuestionnaireDAO activityDaywiseQuestionnaireDAO;
+	private IActivityAttendanceDAO activityAttendanceDAO;
+	private SetterAndGetterUtilService setterAndGetterUtilService;
+		
 	
-private SetterAndGetterUtilService setterAndGetterUtilService;
-	
-	
+	public IActivityAttendanceDAO getActivityAttendanceDAO() {
+		return activityAttendanceDAO;
+	}
+	public void setActivityAttendanceDAO(
+			IActivityAttendanceDAO activityAttendanceDAO) {
+		this.activityAttendanceDAO = activityAttendanceDAO;
+	}
 	public SetterAndGetterUtilService getSetterAndGetterUtilService() {
 		return setterAndGetterUtilService;
 	}
@@ -4467,6 +4475,73 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		return finalvo;
 	}
 	
+	public ActivityVO getCanditeActivtyAttendanceLocationsDtls(Long cadreId,Long activityLevelId){
+		ActivityVO finalvo = new ActivityVO();
+		try {
+			Map<Long,ActivityVO> activityMap = new LinkedHashMap<Long, ActivityVO>();
+			List<Object[]> list = activityLevelDAO.actvityLvlOrder();
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					ActivityVO vo = new ActivityVO();
+					Long lvlId = (Long) (obj[0] != null ? obj[0]:0l);
+					String level = obj[1] != null ? obj[1].toString():"";
+					vo.setId(lvlId);
+					vo.setName(level);
+					if(activityLevelId != null &&  vo.getId() != null && activityLevelId == vo.getId().longValue())
+						activityMap.put(lvlId, vo);
+				}
+			}
+			
+			List<ActivityVO> locationInfoList = new ArrayList<ActivityVO>(0);
+			List<Object[]> attendanceDtls = activityAttendanceDAO.getCanditeActivtyAttendanceLocationsDtls(cadreId,activityLevelId);
+			if(commonMethodsUtilService.isListOrSetValid(attendanceDtls)){
+				for (Object[] param : attendanceDtls) {
+					String activityName =commonMethodsUtilService.getStringValueForObject(param[0]);
+					String activityLevel =commonMethodsUtilService.getStringValueForObject(param[1]);
+					//Long activityLevlId =commonMethodsUtilService.getLongValueForObject(param[4]);
+					Long locationLevel =commonMethodsUtilService.getLongValueForObject(param[2]);
+					Long  locationValue =commonMethodsUtilService.getLongValueForObject(param[3]);
+					
+					ActivityVO vo = new ActivityVO();
+					vo.setOptionType(activityLevel);
+					vo.setName(activityName);
+					if(locationLevel != null && locationLevel.longValue() == 5L){
+						String locationName = tehsilDAO.get(locationValue).getTehsilName();
+						vo.setAttendendLocation(locationName);
+					}
+					else if(locationLevel != null && locationLevel.longValue() == 6L){
+						String locationName = panchayatDAO.get(locationValue).getPanchayatName();
+						vo.setAttendendLocation(locationName);
+					}
+					else if(locationLevel != null && (locationLevel.longValue() == 7L || locationLevel.longValue() == 9L)){
+						String locationName = localElectionBodyDAO.get(locationValue).getName();
+						vo.setAttendendLocation(locationName );
+					}
+					else if(locationLevel != null && (locationLevel.longValue() == 8L || locationLevel.longValue() == 14L || locationLevel.longValue() == 15L)){
+						String locationName = constituencyDAO.get(locationValue).getName();
+						vo.setAttendendLocation(locationName + "("+activityLevel+")");
+					}
+					else if(locationLevel != null && locationLevel.longValue() == 10L){
+						String locationName = stateDAO.get(locationValue).getStateName();
+						vo.setAttendendLocation(locationName);
+					}
+					else if(locationLevel != null && locationLevel.longValue() == 11L){
+						String locationName = districtDAO.get(locationValue).getDistrictName();
+						vo.setAttendendLocation(locationName);
+					}
+					
+					locationInfoList.add(vo);
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(locationInfoList)){
+				finalvo.setActivityVoList(locationInfoList);
+			}
+		} catch (Exception e) {
+			Log.error("Exception Occured in getCanditeActivtyAttendanceLocationsDtls method in ActivityService ",e);
+		}
+		return finalvo;
+	}
+	
 	public ActivityVO getActivityDetailsForCadre(Long cadreId){
 		ActivityVO finalvo = new ActivityVO();
 		try {
@@ -4495,15 +4570,54 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				}
 			}
 			
+			List<Object[]> attendanceDtls = activityAttendanceDAO.getCadreAttendanceDetls(cadreId);
+			Map<Long,Map<String,Long>> attendaceMap = new HashMap<Long, Map<String,Long>>(0); 
 			
+			if(commonMethodsUtilService.isListOrSetValid(attendanceDtls)){
+				for (Object[] param : attendanceDtls) {
+					Long levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					String attendanceType = commonMethodsUtilService.getStringValueForObject(param[1]);
+					Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
+					
+					Map<String,Long> attendanceTypemap = new HashMap<String, Long>(0);
+						if(attendaceMap.get(attendanceType) != null)
+							attendanceTypemap = attendaceMap.get(attendanceType);
+						
+						attendanceTypemap.put(attendanceType, count);
+						attendaceMap.put(levelId, attendanceTypemap);
+					}
+			}
 			List<Object[]> list2 = activityLocationAttendanceDAO.getActivityDetailsByTdpCadreId(cadreId);
-			
+			Map<Long,Long> otherAttendanceMap  = new HashMap<Long,Long>(0); 
 			if(list2 != null && list2.size() > 0){
 				for (Object[] obj : list2) {
 					Long id = Long.parseLong(obj[0] != null ? obj[0].toString():"");
-					ActivityVO vo = activityMap.get(id);
+					Long count =0L;
+					if(otherAttendanceMap.get(id) != null)
+						count = otherAttendanceMap.get(id);
+					
+					otherAttendanceMap.put(id, (count+commonMethodsUtilService.getLongValueForObject(obj[1])));
+					/*ActivityVO vo = activityMap.get(id);
 					if(vo != null){
 						vo.setAttendedCount(Long.parseLong(obj[1] != null ? obj[1].toString():""));
+					}*/
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(attendaceMap)){
+				for (Long levelId : attendaceMap.keySet()) {
+					Map<String,Long> attendanceTypemap = attendaceMap.get(levelId);
+					ActivityVO vo = activityMap.get(levelId);
+					if(vo !=null && commonMethodsUtilService.isMapValid(attendanceTypemap)){
+						Long otherAttendenceCount = otherAttendanceMap.get(levelId);
+						if(otherAttendenceCount == null || otherAttendenceCount.longValue() == 0L)
+							otherAttendenceCount= 0L;
+						for (String attendenceTypeStr : attendanceTypemap.keySet()) {
+							if(attendenceTypeStr.trim().equalsIgnoreCase("YES"))
+								vo.setAttendedCount(otherAttendenceCount+attendanceTypemap.get(attendenceTypeStr));
+							else if(attendenceTypeStr.trim().equalsIgnoreCase("NO"))
+								vo.setAbscentCnt(attendanceTypemap.get(attendenceTypeStr));
+						}
 					}
 				}
 			}
