@@ -319,6 +319,7 @@ function prepopulateDebateForm(result)
 	str += '</div>	';
 	str += '</div>';
 	str += '<div id="participantDiv" class="row-fluid m_top10" >';
+	str += '<span style="color:red" class="pull-right errDiv" id="participantErrSpanId"> </span>';
 	str += '<legend class="boxHeading">Participant Details And Performance:</legend>';
 	str += '<div><b>Scale (5 points scale : 0 Poor - 5 Excellent)</b></div>';
 	str += '<div id="participantInnerDiv1"  class="participantDetailsClass scrollit">';
@@ -429,14 +430,14 @@ function prepopulateDebateForm(result)
 		
 		prepopulateCandSummaryArr.push("candSummary"+candCunt);
 		
-		if(p == 0)
-		{
-			str +='<td></td>';
-		}
-		else
-		{
+		//if(p == 0)
+		//{
+		//	str +='<td></td>';
+		//}
+		//else
+		//{
 			str +='<td><a class="icon-trash" style="cursor: pointer;" onclick="removeCandidate(this.name);" title="Click here to add another Subject" name="row'+candCunt+'"></a></td>';
-		}
+		//}
 		str +='</tr>';
 		
 		candCunt++;
@@ -959,7 +960,12 @@ function validateFieldsForEdit(){
 		if(debetSum == null || debetSum.trim().length <= 0){
 				$("#debetSumErr").html('Debate Summary is Required.');
 				flag = false;
-		}	
+		}
+
+		if($("#participantTable tbody").is(":empty")){
+			$("#participantErrSpanId").html('please add minimum one Participant.');
+				flag = false;			
+		}
 
 	return flag;
 

@@ -56,14 +56,14 @@ function validateFields(){
 	var debetSum = $("#debetSum").val();
 	var partiRol1e = $(".partiRoleClass").val();
 
-		/*$( ".subjectClass" ).each(function( index ) {
+		$( ".subjectClass" ).each(function( index ) {
 		 var subject = $( this ).val();
 			if(subject.trim().length <= 0){
 				var divId = $(this ).attr("id");			
 				$("#"+divId+"Err").html("Please enter subject.");
 				flag = false;
 			}
-		});*/
+		});
 		if(channel <=0){		
 				$("#channelErr").html('Please Select Channel.');
 			flag = false;
@@ -201,7 +201,7 @@ function validateFields(){
 					flag = false;
 				}
 		});
-		/*$(".debateAnswr ").each(function(index){
+		$(".debateAnswr ").each(function(index){
 			var answr = $( this ).val();
 			if(answr == null || answr.trim().length <= 0){
 				var divId = $(this ).attr("id");				
@@ -209,7 +209,7 @@ function validateFields(){
 				flag = false;
 			}
 				
-		});*/
+		});
 		/*if(smsQuestin == null || smsQuestin.trim().length <= 0){
 				$("#smsques1").css("border","1px solid #D14719");
 				flag = false;
@@ -240,10 +240,15 @@ function validateFields(){
 				flag = false;
 			}
 		}
-		/*if(debetSum == null || debetSum.trim().length <= 0){
+		if(debetSum == null || debetSum.trim().length <= 0){
 				$("#debetSumErr").html('Debate Summary is Required.');
 				flag = false;
-		}	*/
+		}
+		
+		if($("#participantTable tbody").is(":empty")){
+			$("#participantErrSpanId").html('please add minimum one Participant.');
+				flag = false;			
+		}
 
 	return flag;
 
@@ -584,6 +589,9 @@ function getValues(){
 	
 	//str +='<td><!--<a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary1" ></textarea></td>';
+	
+	str +='<td><a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
+	
 	str +='<td></td>';
     str +='</tr></table>';
     
@@ -1030,6 +1038,7 @@ function callAjaxToGetTheResults(selectedvalue)
 	var endDate = $('#toDateId').val();
 	$("#RerrDiv").html('');
 	$("#dateWiseReportDiv").html("");
+	$("#paginationAtEnd").html("");		
 	$("#dateWiseReportDiv").hide();
 	if(startDate != undefined && startDate.length <=0){
 		$("#RerrDiv").html("From Date is Required.");
@@ -1363,6 +1372,7 @@ function getDebateDetailsBtDates()
 	$("#RerrDiv").html('');
 	$("#dateWiseReportDiv").hide();
 	$("#dateWiseReportDiv").html("");
+	$("#paginationAtEnd").html("");
 	if(startDate != undefined && startDate.length <=0){
 		$("#RerrDiv").html("From Date is Required.");
 		return;
@@ -1686,6 +1696,7 @@ function showDebateReportDiv(){
 	$('#newDibateDiv').hide();
 	$('#dateWiseReportDiv').html('');
 	$("#dateWiseReportDiv").hide();
+	$("#paginationAtEnd").html("");	
 	$('#newDebateAnalysisDiv').hide();
 	$('#fromDateId').val('');
 	$('#toDateId').val('');
@@ -1924,6 +1935,7 @@ function getEachTopicWisePartyAndCandidateDetails()
 	$("#RRerrDiv").html('');
 	$("#dateWiseReportDiv").html("");
 	$("#dateWiseReportDiv").hide();
+	$("#paginationAtEnd").html("");	
 	if(startDate != undefined && startDate.length <=0){
 		$("#RRerrDiv").html("From Date is Required.");
 		return;
@@ -2087,6 +2099,7 @@ $('#candidatePartyPerformanceId').html('');
 	$("#RRerrDiv").html('');
 	$("#dateWiseReportDiv").html("");
 	$("#dateWiseReportDiv").hide();
+	$("#paginationAtEnd").html("");	
 	if(startDate != undefined && startDate.length <=0){
 		$("#RRerrDiv").html("From Date is Required.");
 		return;
@@ -2279,8 +2292,9 @@ function partyWiseCandidatePerformance()
 	var startDate = $('#startDateId').val();
 	var endDate = $('#endDateId').val();
 	$("#RRerrDiv").html('');
-	$("#dateWiseReportDiv").html("");
+	$("#dateWiseReportDiv").html("");		
 	$("#dateWiseReportDiv").hide();
+	$("#paginationAtEnd").html("");	
 	if(startDate != undefined && startDate.length <=0){
 		$("#RRerrDiv").html("From Date is Required.");
 		return;
@@ -2438,6 +2452,7 @@ function getPartyWiseOverAllSummery()
 	$("#RRerrDiv").html('');
 	$("#dateWiseReportDiv").html("");
 	$("#dateWiseReportDiv").hide();
+	$("#paginationAtEnd").html("");	
 	if(startDate != undefined && startDate.length <=0){
 		$("#RRerrDiv").html("From Date is Required.");
 		return;
@@ -2607,6 +2622,7 @@ $('#topicwiseStrongAndWeak').html('');
 	$("#RRerrDiv").html('');
 	$("#dateWiseReportDiv").html("");
 	$("#dateWiseReportDiv").hide();
+	$("#paginationAtEnd").html("");	
 	if(startDate != undefined && startDate.length <=0){
 		$("#RRerrDiv").html("From Date is Required.");
 		return;

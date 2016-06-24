@@ -416,6 +416,9 @@ window.location.href = uri + base64(format(template, ctx))
 			</div>
 				
 				<div id="participantDiv" class="row-fluid m_top10" >
+				
+				<span style="color:red" class="pull-right errDiv" id="participantErrSpanId"> </span>
+				
 				<legend class="boxHeading">Participant Details And Performance:</legend>
 				<div><b>Scale (5 points scale : 0 Poor - 5 Excellent)</b></div>
 				<div id="participantInnerDiv1"  class="participantDetailsClass scrollit">
