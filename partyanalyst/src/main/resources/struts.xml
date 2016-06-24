@@ -12530,5 +12530,11 @@
 				<param name="root">mahanaduEventVO</param>
 			</result>
 	</action>
+	<action name="casteCategoryWiseEventAttendeeCountsAction" class="eventDetailsAction1" method="casteCategoryWiseEventAttendeeCounts">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+	</action>
+	
 </package>
 </struts>      
