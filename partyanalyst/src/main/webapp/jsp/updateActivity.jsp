@@ -1270,7 +1270,7 @@ function gettingCadreDetails(locationId,locationName,constituencyId){
 getUserAccessConstituencyList();
 getUserAccessDistrictList();
  
- $("#ActivityList").change(function(){
+ $("#ActivityListTest").change(function(){
  
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
@@ -2452,7 +2452,8 @@ $(document).on("click",".updateDateDetls",function(){
 			activityScopeId  : $('#ActivityList').val(),
 			activityLevelId:$('#activityLevelList').val(),
 			contituencyId  : $('#constiList').val(),
-			task:"saveActivityDetails"
+			task:"saveActivityDetails",
+			day:1
 		};
 		
 		$.ajax({
