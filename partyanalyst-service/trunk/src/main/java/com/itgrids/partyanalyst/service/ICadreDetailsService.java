@@ -97,6 +97,6 @@ public interface ICadreDetailsService {
 	public List<GrievanceSimpleVO> getApprovedAmountDetailsForGovtAndWilfareByLocation(Long assemblyId,Long parliamentId,Long districtId);
 	public List<GrievanceDetailsVO> getGrievanceBenifitsComplaintsInfoByLocation(Long locationId,String locationType,String typeOfIssue,String otherBenifit);
 	public List<IdNameVO> getEventAttendanceOfCadre(Long cadreId,Long eventId);
-	public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId);
+	public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId);
 	public MobileDetailsVO getMobileNumberDetailsByTdpCadre(Long tdpCadreId);
 }
