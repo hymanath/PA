@@ -424,6 +424,10 @@ function buildCandateActivityAttendance(result){
 	str+='<td>'+result[i].attendendLocation+'</td>';
 	if(result[i].invitteeCnt != null && result[i].invitteeCnt >0 && result[i].attendedCount != null && result[i].attendedCount>0)
 		str+='<td> Conducted </td>';
+	else if(result[i].conductedDate != null && result[i].conductedDate ==' Not Conducted ' )
+		str+='<td> Not Conducted </td>';
+	else if(result[i].conductedDate != null && result[i].conductedDate >0 )
+		str+='<td> Conducted </td>';	
 	else
 		str+='<td> - </td>';
 	if(result[i].invitteeCnt == 0){
