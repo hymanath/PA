@@ -739,6 +739,7 @@ str+='</table>';
 
 	str += ' </table> ';
 	str += '</div>';
+	str+='<span onclick="exportToExcelForMembers()" class="btn btn-info pull-right excelId form-inline" style="display: block;"> Export To Excel </span>';
 	str+='<table class="table table-bordered" id="constiTableId">';
 	str+='<thead>';
 	//if(basicCmmtyId == 1)
@@ -783,6 +784,46 @@ str+='</table>';
 	}
    str+='</tbody>';
    str+='</table>';
+   
+   
+   // For Export To Excel
+   
+   
+   str+='<table class="table table-bordered" id="constiTableId1" style="display:none;">';
+	str+='<thead>';
+	
+	
+	str+='<th style="padding-left: 72px;"> MEMBER </th>';
+	str+='<th style="padding-left: 72px;"> Role </th>';
+	str+='<th style="padding-left: 19px;"> MOBILE NO </th>';
+	str+='<th style="padding-left: 19px;"> AGE </th>';
+	str+='<th style="padding-left: 19px;"> GENDER </th>';
+	str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
+	str+='</thead>';
+    for(var i in result){
+	 str+='<tr>';
+	
+	 str+='<td> '+result[i].name+'';
+	   str+=' </td>';
+	  if(basicCmmtyId == 1){
+	 if(result[i].role!=null){
+		 str+=' <td> '+result[i].role+'</td>';
+	 }else{
+		 str+='<td></td>';
+	 }
+	 }	 
+		  
+	// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
+	 //str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].mobileNo+'</td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].age+' </td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+'('+result[i].casteGroupName+') </td>';
+	 str+='</tr>';
+	}
+   str+='</tbody>';
+   str+='</table>';
+   
 	str+=' <div class="modal-footer" style="margin-top: 50px;">';
 	str+=' <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>';
 	str+='</div>';
@@ -841,6 +882,11 @@ function exportToExcel()
 {
 	  tableToExcel('constSummary', 'Constituency Committee Summary');
 }
+function exportToExcelForMembers()
+{
+	  tableToExcel('constiTableId1', 'Constituency Committee Summary');
+}
+
 function getUserAccessInfo()
 {
 	$("#imgajax").show();
