@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Event Report Dashboard</title>
+<title>Event Demographic Analysis</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/TDP.gif">
 <link href="dist/eventDashboard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/eventDashboard/css/custom1.css" rel="stylesheet" type="text/css">
@@ -100,7 +100,7 @@
 							   <div class="col-md-12">
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
-									<p class="m_0 display-style" id="casteWiseHeadingId">Caste WISE </p>
+									<p class="m_0 display-style" id="casteWiseHeadingId">Sub Caste Wise Analysis</p>
 								    <button class="btn btn-success btn btn-xs col-md-offset-7" id="casteExcelExpBtnId" onclick="generateExcelReportForCaste()" style="display:none;">Export Excel</button>
 									</div>
 									<div class="panel-body" style="padding:0px;">				
@@ -116,7 +116,7 @@
 							   <div class="col-md-12">
 								<div class="panel panel-default m_0">
 									<div class="panel-heading">
-									<p class="m_0 display-style" id="casteWiseHeadingId">Age WISE </p>
+									<p class="m_0 display-style" id="casteWiseHeadingId">Age Wise Analysis </p>
 								    <button class="btn btn-success btn btn-xs col-md-offset-7" id="ageWsExcelExpBtnId" onclick="generateExcelReportForAge()" style="display:none;">Export Excel</button>
 									</div>
 									<div class="panel-body" style="padding:0px;">				
@@ -130,7 +130,7 @@
 					   <div class="col-md-12 m_top20">
 						  <div class="panel panel-default m_0">
 							<div class="panel-heading">
-							<p class="m_0 display-style" id="genderWiseHeadingId">Gender WISE </p>
+							<p class="m_0 display-style" id="genderWiseHeadingId">Gender Wise Analysis</p>
 							<button class="btn btn-success btn btn-xs col-md-offset-7" id="genderWiseExcelExpBtnId" onclick="generateExcelReportForGender()" style="display:none;">Export Excel</button>
 							</div>
 							<div class="panel-body" style="padding:0px;">				
@@ -372,7 +372,9 @@ function buildCasteWiseRslt(result,status){
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED % </th>';
 			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED %</th>';
 			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
+			str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED %</th>';
 			for(var i in result[0].subList){
 				if(result[0].subList[i].totalDaydataExist == true){
 					str+='<th class="text-center text-capitalize" colspan="3">'+result[0].subList[i].name+' ATTENDED</th>';
@@ -420,13 +422,23 @@ function buildCasteWiseRslt(result,status){
 			if(result[j].invitees == 0 || result[j].invitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].invitees+' <span>('+result[j].inviteePercantage+'%)</span></td>';
+				str+='<td class="text-center">'+result[j].invitees+'</td>';
 			}
+			if(result[j].inviteePercantage == 0 || result[j].inviteePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].inviteePercantage+' %</td>';
+			} 
 			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
+				str+='<td class="text-center">'+result[j].nonInvitees+'</span></td>';
 			}
+			if(result[j].nonInviteePercantage == 0 || result[j].nonInviteePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].nonInviteePercantage+' %</td>';
+			} 
 			for(var l in result[j].subList){
 				
 				if(result[0].subList[l].totalDaydataExist == true){
@@ -511,7 +523,9 @@ function buildAgeWiseCadreCountTable(result){
 		str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
 		str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED %</th>';
 		str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED %</th>';
 		str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED %</th>';
 		var dataExist = {};
       
 		for(var i in result[0].subList){
@@ -565,13 +579,23 @@ function buildAgeWiseCadreCountTable(result){
 			if(result[j].invitees == 0 || result[j].invitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].invitees+' <span>('+result[j].inviteePercantage+'%)</span></td>';
+				str+='<td class="text-center">'+result[j].invitees+'</td>';
 			}
+			if(result[j].inviteePercantage == 0 || result[j].inviteePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].inviteePercantage+' %</td>';
+			} 
 			if(result[j].nonInvitees == 0 || result[j].nonInvitees == null){
 				str+='<td class="text-center"> - </td>';
 			}else{
-				str+='<td class="text-center">'+result[j].nonInvitees+' <span>('+result[j].nonInviteePercantage+'%)</span></td>';
+				str+='<td class="text-center">'+result[j].nonInvitees+'</td>';
 			}
+			if(result[j].nonInviteePercantage == 0 || result[j].nonInviteePercantage == null){
+				str+='<td class="text-center"> - </td>';
+			}else{
+				str+='<td class="text-center">'+result[j].nonInviteePercantage+' %</td>';
+			} 
 			for(var l in result[j].subList){  
 			
 				if(result[0].subList[l].totalDaydataExist == true){
