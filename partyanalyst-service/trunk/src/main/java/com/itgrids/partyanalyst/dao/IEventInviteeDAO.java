@@ -40,4 +40,6 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	public List<Object[]> getEventInviteesCountByageWiseIds(Set<Long> ageRangeIds,Long eventId);
 	public List<Object[]> getEventInviteesCountByGender(Long eventId);
 	public List<Object[]> getTotalCadresCountByCasteIds(Set<Long> casteIds);
+	public List<Object[]> getEventInviteesCountByCasteCategoryIdsExcludingMinorities(Set<Long> casteCategoryIds,Long eventId);
+	public Long getEventInviteesCountForMinorities(Long eventId);
 }
