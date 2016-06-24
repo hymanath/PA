@@ -601,6 +601,33 @@ public List<Object[]> totalDistrictAffliatedCommitteeInviteesAttendedForEvent(Li
 		query.setParameter("eventId",eventId);
 		return query.list();
 	}
-	
-	
+	public List<Object[]> getEventInviteesCountByCasteCategoryIdsExcludingMinorities(Set<Long> casteCategoryIds,Long eventId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
+				"           model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
+				"           count(distinct model.tdpCadre.tdpCadreId)" +
+				   " from   EventInvitee model " +
+				   " where  model.event.eventId = :eventId and model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:casteCategoryIds) " +
+				   "        and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
+				   "        and model.tdpCadre.casteState.casteStateId not in("+IConstants.NEW_MINORITY_CASTE_IDS+") " +
+				   " group by model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId",eventId);
+		query.setParameterList("casteCategoryIds",casteCategoryIds);
+		return query.list();
+	}
+	public Long getEventInviteesCountForMinorities(Long eventId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.tdpCadre.tdpCadreId)" +
+				   " from   EventInvitee model " +
+				   " where  model.event.eventId = :eventId " +
+				   "        and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
+				   "        and model.tdpCadre.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+") " );
+				   
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("eventId",eventId);
+		return (Long)query.uniqueResult();
+	}
 }

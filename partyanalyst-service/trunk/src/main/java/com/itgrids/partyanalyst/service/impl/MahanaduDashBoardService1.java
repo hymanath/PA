@@ -297,13 +297,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 	}
 	
-	public MahanaduEventVO setTotalDayDataExist(Map<Long,MahanaduEventVO>  finalMap){
+	public MahanaduEventVO setTotalDayDataExist(Map<?,MahanaduEventVO>  finalMap){
 		
 		MahanaduEventVO firstLocationVO = null;
 		
 		if(finalMap != null && finalMap.size() > 0){
 			
-			 Map.Entry<Long,MahanaduEventVO> firstEntry=finalMap.entrySet().iterator().next();
+			 Map.Entry<?,MahanaduEventVO> firstEntry=finalMap.entrySet().iterator().next();
 			 firstLocationVO = firstEntry.getValue();
 			 if( firstLocationVO != null && firstLocationVO.getSubMap()!=null && firstLocationVO.getSubMap().size()>0){
 				 for(Map.Entry<String, MahanaduEventVO> entry : firstLocationVO.getSubMap().entrySet()){
@@ -333,10 +333,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		 return  isDataAvailable;
 	}
 	
-	public void calCulatinginviteeNonInviteePercantage(Map<Long,MahanaduEventVO> finalMap,Long totalAttended){
+	public void calCulatinginviteeNonInviteePercantage(Map<?,MahanaduEventVO> finalMap,Long totalAttended){
 	    
 	    if( finalMap!= null && finalMap.size() > 0){
-	       for (Map.Entry<Long, MahanaduEventVO> entry : finalMap.entrySet()) {
+	       for (Map.Entry<?, MahanaduEventVO> entry : finalMap.entrySet()) {
 	        
 	         entry.getValue().setAttendeePercantage(calcPercantage(totalAttended, entry.getValue().getAttendees()));
 	         entry.getValue().setInviteePercantage(calcPercantage(entry.getValue().getAttendees(), entry.getValue().getInvitees()));
@@ -2014,7 +2014,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 		/**
 		   *   @author    : Sreedhar,santosh
-		   *   Description:This Service is used to get the Caste Wise event attendees and event invitees count
+		   *   Description:This Service is used to get the Sub Caste Wise event attendees and event invitees count
 		   *   inputs: startDate,endDate,parenteventId,subEventIds
 		   *   output: List<MahanaduEventVO>
 		   *   
@@ -2631,5 +2631,331 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
    		}
    		return eventVO;
    	}
+       
+       /**
+		   *   @author    : Sreedhar
+		   *   Description:This Service is used to get the caste category  Wise event attendees and event invitees count
+		   *   inputs: startDate,endDate,parenteventId,subEventIds
+		   *   output: List<MahanaduEventVO>
+		   *   
+		  */	
+		public List<MahanaduEventVO> casteCategoryWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+			
+			List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd yyyy hh:mm a");
+			
+			try{
+				Date eventStrDate = null;
+				Date eventEndDate = null;
+				if(startDate != null && !startDate.isEmpty()){
+				 eventStrDate = format.parse(startDate);
+				}
+				if(endDate != null && !endDate.isEmpty()){
+				 eventEndDate = format.parse(endDate); 
+				}
+				
+				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
+				 
+				 Map<String,MahanaduEventVO>  finalMap = new LinkedHashMap<String,MahanaduEventVO>();
+				 getAllDaysCasteCategoryWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates);
+				
+				 
+				 if( finalMap!= null && finalMap.size() > 0){
+					 for (Map.Entry<String, MahanaduEventVO> entry : finalMap.entrySet()) {
+						 if (entry.getValue().getSubMap() != null){
+							 entry.getValue().getSubList().addAll(entry.getValue().getSubMap().values());
+							 entry.getValue().getSubMap().clear();
+						 } 
+					 }
+					  resultList.addAll(finalMap.values());
+				 }
+				 
+				 //SET CURRENT DATE AND TIME.
+				 if(resultList != null && resultList.size() > 0){
+					 resultList.get(0).setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+				 }else{
+					 MahanaduEventVO vo = new MahanaduEventVO();
+					 vo.setLocationName("NO DATA");
+					 vo.setLastUpdatedDate(sdf1.format(new DateUtilService().getCurrentDateAndTime()));
+					 resultList.add(vo);
+				 }
+				 
+		}catch(Exception e){
+			Log.error("Exception rised in casteCategoryWiseEventAttendeeCounts()",e); 
+		}
+		return resultList;
+		}
+		
+		public void getAllDaysCasteCategoryWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<String,MahanaduEventVO>  finalMap,List<Date> betweenDates){
+			
+			Set<Long> casteCategoryIds = new HashSet<Long>();
+			try{	
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsCasteCategoryWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,casteCategoryIds);
+					 setTotalDayDataExist(finalMap);
+					 
+					 //DATE WSIE
+					 if(isDataAvailable){
+						 getAttendeeAndinviteeCountsDateWiseByCasteCategory(eventStrDate,eventEndDate,subEventIds,finalMap);
+					 }
+				
+				
+				if(casteCategoryIds != null && casteCategoryIds.size() > 0){
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteCategoryIdsExcludingMinorities(casteCategoryIds,parenteventId);
+					 if( inviteesList!= null && inviteesList.size() > 0){
+						 for( Object[] obj : inviteesList){
+							 MahanaduEventVO  locationVO= finalMap.get(obj[1].toString());
+							 if(locationVO != null){
+								 locationVO.setInviteesCalled(obj[2]!=null?(Long)obj[2]:0l);
+							 }
+						 }
+					 }
+				 }
+				Long minorityInvitees = eventInviteeDAO.getEventInviteesCountForMinorities(parenteventId);
+				if( minorityInvitees != null ){
+					MahanaduEventVO  locationVO= finalMap.get("MINORITIES");
+					 if(locationVO != null){
+						 locationVO.setInviteesCalled(minorityInvitees);
+					 }
+				}
+				
+				if(casteCategoryIds != null && casteCategoryIds.size() > 0){
+					List<Object[]> cadreCount = tdpCadreDAO.getTotalCadreCountByCasteCategoryexcludingMinorities(casteCategoryIds);
+					if(cadreCount != null && cadreCount.size() > 0){
+						 for( Object[] obj : cadreCount){
+							 MahanaduEventVO  locationVO= finalMap.get(obj[1].toString());
+							 if(locationVO != null){
+								 locationVO.setTotalCadre(obj[2]!=null?(Long)obj[2]:0l);
+							 }
+						 }
+					}
+				}
+				Long   minorityCadreCount = tdpCadreDAO.getTotalCadreCountByForMinorities();
+				if(minorityCadreCount!=null){
+					MahanaduEventVO  locationVO= finalMap.get("MINORITIES");
+					 if(locationVO != null){
+						 locationVO.setTotalCadre(minorityCadreCount);
+					 }
+				}
+				
+			}catch(Exception e){
+				Log.error("Exception rised in getAllDaysCasteCategoryWiseAttendeesAndinviteesCount()",e);
+			}
+			
+		}
+	   
+		public boolean getAttendeeAndinviteeCountsCasteCategoryWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<String,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> casteCategoryIds){
+			 
+			boolean isDataAvailable = false;
+			List<Object[]> attendeesExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsExcludingMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
+			
+			 if(attendeesExcludingMinorities!=null && attendeesExcludingMinorities.size() > 0){
+				 isDataAvailable = true;
+				 List<Object[]> inviteeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+				 
+				 setExcludingMinorityData(attendeesExcludingMinorities,finalMap,"attendee",betweenDates,casteCategoryIds);
+				 setExcludingMinorityData(inviteeExcludingMinorities,finalMap,"invitee",betweenDates,casteCategoryIds);
+			 }
+			 Long attendeeMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsForMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
+			 
+			 if( attendeeMinorities != null && attendeeMinorities.longValue() > 0l){
+				 isDataAvailable = true;
+				 
+				 MahanaduEventVO minorityVO  = finalMap.get("MINORITIES");
+				 if( minorityVO != null){
+					 minorityVO.setAttendees(attendeeMinorities );
+					 minorityVO.setNonInvitees(attendeeMinorities);
+				 }
+				 Long inviteeMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsForMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+				 if( inviteeMinorities!= null && inviteeMinorities.longValue() > 0l){
+					 minorityVO.setInvitees(inviteeMinorities);
+					 minorityVO.setNonInvitees(minorityVO.getAttendees() - inviteeMinorities);	
+				 }
+			 }
+			 
+			 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
+			 calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
+		     
+			 return  isDataAvailable;
+		}
+		
+		public void getAttendeeAndinviteeCountsDateWiseByCasteCategory(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<String,MahanaduEventVO>  finalMap){
+			 
+			 List<Object[]> dateWiseAttendeeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
+			 if(dateWiseAttendeeExcludingMinorities!=null && dateWiseAttendeeExcludingMinorities.size()>0){
+				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+				 setExcludingMinoritiesDateDataToMap(dateWiseAttendeeExcludingMinorities,finalMap,"attendee");
+				 setExcludingMinoritiesDateDataToMap(dateWiseAttendeeExcludingMinorities,finalMap,"invitee");
+			 }
+			 List<Object[]> dateWiseAttendeeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
+			 List<Object[]> dateWiseInviteeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+			 setMinoritiesDateDataToMap(dateWiseAttendeeForMinorities,finalMap,"attendee");
+			 setMinoritiesDateDataToMap(dateWiseInviteeForMinorities,finalMap,"invitee");
+		}
+		
+		public void setExcludingMinorityData(List<Object[]> list,Map<String,MahanaduEventVO>  finalMap,String type,List<Date> betweenDates,Set<Long> casteCategoryIds){
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			 try{
+				
+				   if( list != null && list.size() >0 ){
+					   
+					   for(Object[] obj : list){
+						   
+						   boolean isVOExist = true;
+						   MahanaduEventVO VO = finalMap.get(obj[1].toString());
+						   
+						   if( VO == null){
+							   
+							   isVOExist = false;
+							   VO = new MahanaduEventVO();
+							   VO.setId(obj[0]!=null ? (Long)obj[0]:0l);
+							   VO.setName( obj[1]!=null ? obj[1].toString() :"");
+							   
+							   if(betweenDates != null && betweenDates.size() > 0){
+								   for(int i=0;i<betweenDates.size();i++){
+									   MahanaduEventVO dateVO = new MahanaduEventVO();
+									   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
+									   dateVO.setDataExist(false);
+									   int dayCount = i+1;
+									   dateVO.setName("Day"+dayCount);
+									   if(VO.getSubMap() == null){
+										   VO.setSubMap(new LinkedHashMap<String, MahanaduEventVO>());
+									   }
+									   VO.getSubMap().put(dateVO.getDateStr(),dateVO);
+								   }
+							   }
+						   }
+						   
+						   if(type.equalsIgnoreCase("attendee")){
+							   VO.setAttendees(obj[2]!=null ?(Long)obj[2]:0l );
+							   VO.setNonInvitees(obj[2]!=null ?(Long)obj[2]:0l);	
+						   }
+						   	if(type.equalsIgnoreCase("invitee")){
+						   		VO.setInvitees(obj[2]!=null ?(Long)obj[2]:0l);
+						   		VO.setNonInvitees(VO.getAttendees() - (obj[2]!=null ?(Long)obj[2]:0l));	
+						   }		
+						   	
+						   	if(!isVOExist){
+						   		finalMap.put(obj[1].toString(), VO);
+						   	} 
+						   	
+						    //casteCategoryIds
+						   	casteCategoryIds.add( (Long)obj[0] );
+					   }
+					   
+					   //adding minorities.
+					   if(type.equalsIgnoreCase("attendee")){
+						   
+						   MahanaduEventVO VO = new MahanaduEventVO();
+						   VO.setName("MINORITIES");
+						   if(betweenDates != null && betweenDates.size() > 0){
+							   for(int i=0;i<betweenDates.size();i++){
+								   MahanaduEventVO dateVO = new MahanaduEventVO();
+								   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
+								   dateVO.setDataExist(false);
+								   int dayCount = i+1;
+								   dateVO.setName("Day"+dayCount);
+								   if(VO.getSubMap() == null){
+									   VO.setSubMap(new LinkedHashMap<String, MahanaduEventVO>());
+								   }
+								   VO.getSubMap().put(dateVO.getDateStr(),dateVO);
+							   }
+						   }
+						   finalMap.put("MINORITIES", VO);
+					   }
+					   
+				   }
+				 
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in setExcludingMinorityData()",e); 
+			}
+		 }
+		
+		
+		public void setExcludingMinoritiesDateDataToMap(List<Object[]> list,Map<String,MahanaduEventVO>  finalMap,String type){
+			
+			 try{
+				
+				   if( list != null && list.size() >0 )
+				   {   
+					   for(Object[] obj : list)
+					   {
+						   MahanaduEventVO distVO = finalMap.get(obj[0].toString());
+						   
+						   if( distVO != null)
+						   {   
+								   String dateStr = obj[2]!=null?obj[2].toString():"";
+								   MahanaduEventVO dateVO = distVO.getSubMap().get(dateStr);
+								   if(dateVO!=null)
+								   {  
+									   dateVO.setDataExist(true);
+									   
+									   if(type.equalsIgnoreCase("attendee"))
+									   {
+										   dateVO.setAttendees(obj[3]!=null ?(Long)obj[3]:0l );
+										   dateVO.setNonInvitees(obj[3]!=null ?(Long)obj[3]:0l);
+										   
+										   //set day data exist.
+										   if( dateVO.getAttendees() != null && dateVO.getAttendees().longValue() > 0l){
+											  finalMap.entrySet().iterator().next().getValue().getSubMap().get(dateStr).setTotalDaydataExist(true);
+										   }
+									   }
+									   if(type.equalsIgnoreCase("invitee"))
+									   {
+									   		dateVO.setInvitees(obj[3]!=null ?(Long)obj[3]:0l);
+									   		dateVO.setNonInvitees(dateVO.getAttendees() - (obj[3]!=null ?(Long)obj[3]:0l));	
+									   }	
+								   }
+						    }
+					    }
+				   }
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in setExcludingMinoritiesDateDataToMap()",e); 
+			}
+		 }
+		public void setMinoritiesDateDataToMap(List<Object[]> list,Map<String,MahanaduEventVO>  finalMap,String type){
+			
+			 try{
+				
+				   if( list != null && list.size() >0 )
+				   {   
+					   for(Object[] obj : list)
+					   {
+						   MahanaduEventVO distVO = finalMap.get("MINORITIES");
+						   
+						   if( distVO != null)
+						   {   
+								   String dateStr = obj[0]!=null?obj[0].toString():"";
+								   MahanaduEventVO dateVO = distVO.getSubMap().get(dateStr);
+								   if(dateVO!=null)
+								   {  
+									   dateVO.setDataExist(true);
+									   
+									   if(type.equalsIgnoreCase("attendee"))
+									   {
+										   dateVO.setAttendees(obj[1]!=null ?(Long)obj[1]:0l );
+										   dateVO.setNonInvitees(obj[1]!=null ?(Long)obj[1]:0l);
+										   
+										   //set day data exist.
+										   if( dateVO.getAttendees() != null && dateVO.getAttendees().longValue() > 0l){
+											  finalMap.entrySet().iterator().next().getValue().getSubMap().get(dateStr).setTotalDaydataExist(true);
+										   }
+									   }
+									   if(type.equalsIgnoreCase("invitee"))
+									   {
+									   		dateVO.setInvitees(obj[1]!=null ?(Long)obj[1]:0l);
+									   		dateVO.setNonInvitees(dateVO.getAttendees() - (obj[1]!=null ?(Long)obj[1]:0l));	
+									   }	
+								   }
+						    }
+					    }
+				   }
+				 
+			 }catch(Exception e) {
+				 Log.error("Exception rised in setMinoritiesDateDataToMap()",e); 
+			}
+		 }
 }
 
