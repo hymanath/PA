@@ -283,6 +283,7 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 				}
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
+				resultList=mahanaduDashBoardService1.casteCategoryWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
 			
 	      }catch(Exception e){
 	    		LOG.error(" Entered Into casteCategoryWiseEventAttendeeCounts",e);
