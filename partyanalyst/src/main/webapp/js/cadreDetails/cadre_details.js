@@ -4620,13 +4620,16 @@ function getActivityDetails()
 								str+='<tr class="text-center">';
 									str+='<td>'+result.activityVoList[i].name+'</td>';
 									if(result.activityVoList[i].totalCount != null){
-										str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+										//str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+										  str+='<td class="" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+									}
 									}
 									else{
 										str+='<td>0</td>';
 									}
 									if(result.activityVoList[i].attendedCount != null){
-										str+='<td class="activityLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
+										//str+='<td class="activityLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
+										str+='<td class="" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
 									}
 									else{
 										str+='<td>0</td>';
