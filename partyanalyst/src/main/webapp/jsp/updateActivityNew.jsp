@@ -232,8 +232,7 @@
 		</div>
 		
 		-->
-		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
-		<div class="row" style="margin-bottom:10px;margin-top:5px;margin-left:5px">
+		<div class="row" id="datesDivId" style="margin-bottom:10px;margin-top:5px;margin-left:5px;display:none;">
 			<div class="col-md-5" >
 				<select class="form-control" id="datesId" multiple data-placeholder="Select Date">
 					<option value="0">Select Date</option>
@@ -249,6 +248,8 @@
 			</span>
 			</div>-->
 		</div>
+		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
+		
             	<div class="panel-heading">
                 	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level)</span>
                     <!--<span class="pull-right">
@@ -1040,7 +1041,8 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 								str+='<th style="background-color:#00B17D; color:#fff;">STATE</th>';
 							else if(activityLevelId == 3)
 								str+='<th style="background-color:#00B17D; color:#fff;">DISTRICT</th>';
-								
+							
+							str+='<th style="background-color:#00B17D; color:#fff;" >Committee Members</th>';	
 							str+='<th style="background-color:#00B17D; color:#fff;"></th>';
 										
 									if(result !=null && result.idNameVolist !=null && result.idNameVolist.length>0){
@@ -1048,7 +1050,7 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 											str+='<th style="background-color:#00B17D; color:#fff;" id='+result.idNameVolist[i].id+'>'+result.idNameVolist[i].name.toUpperCase()+'</th>';
 										}								
 									}		
-							str+='<th style="background-color:#00B17D; color:#fff;" >View</th>';
+							//str+='<th style="background-color:#00B17D; color:#fff;" >Committee Members</th>';
 							str+='</thead>';
 							str+='</tr>';
 							
@@ -1063,6 +1065,9 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 									str+='<input type="hidden" value="'+activityLevelId+'" name="activityVO.activityVoList['+j+'].locationLevel">';
 									str+='<input type="hidden" value="'+result.result[j].locationId+'" name="activityVO.activityVoList['+j+'].locationValue">';
 									str+='<td> '+result.result[j].locationName+'</td>';
+									str+='<td>';
+												str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
+									str+='</td>';
 									str+='<td  style="text-align:center;">'+result.result[j].result2[k].day+'</td>';
 									var date =result.result[j].result2[k].day;
 									var daystr = date.split("(");
@@ -1119,9 +1124,9 @@ function getLocationDetailsForActivity(startDate,endDate,optionId,questionId,sea
 											}											
 										}
 									}
-									str+='<td>';
+									/*str+='<td>';
 												str+='<input type="button" value="View" class="btn btn-success btn-xs" onclick="gettingCadreDetails('+result.result[i].locationId+',\''+result.result[i].locationName+'\',\''+constituencyId+'\');"/>&nbsp;&nbsp;';
-									str+='</td>';
+									str+='</td>';*/
 									str+='</tr>';
 								}
 							}
@@ -2577,6 +2582,7 @@ $(document).on("change","#activityLevelList",function(){
 });
 
 function getBetweenDatesOfActivityScope(){
+	
 	$('#datesId').find('option').remove();
 	
 	var scopeId = $("#activityLevelList option:selected").attr("attr_scopeId");
@@ -2602,18 +2608,19 @@ function getBetweenDatesOfActivityScope(){
 					$("#datesId").chosen();	
 				}			 
 	   });
+	   $("#datesDivId").show();
 }
 
 $(document).on("click","#searchId",function(){
-	datesArr=[];
-	getLocationDetailsForActivity('','','0','0',1,datesArr);
+	datesArr=[];	
 	getBetweenDatesOfActivityScope();
 });
 
 $(document).on("click","#locationInfoBtnId",function(){	
 	var datesArr=[];
 	$('#datesId :selected').each(function(i, sel){ 
-		datesArr.push($(sel).val().split("(")[0]); 
+		//datesArr.push($(sel).val().split("(")[0]); 
+		datesArr.push($(sel).val()); 
 	});	
 	getLocationDetailsForActivity('','','0','0',1,datesArr);
 });
