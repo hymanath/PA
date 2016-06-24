@@ -135,7 +135,7 @@ function showLoginStatus(results)
 
 		var tempStr = window.location.href;
 	
-		if(results.host == 'tdpserver' || results.tempHost == 'tdpserver')
+		if(results.host == 'tdpserver' || results.host == 'localhost' || results.tempHost == 'tdpserver')
 		  {
 			
 				if(tempStr.indexOf("login") != -1 && results.message == "PARTY_ANALYST_USER")
