@@ -2677,7 +2677,7 @@
 		   <property name="activityScopeRequiredAttributesDAO" ref="activityScopeRequiredAttributesDAO" />
 		   <property name="activityInviteeDAO" ref="activityInviteeDAO" />
 		   <property name="activityAttendanceDAO" ref="activityAttendanceDAO" />
-		  
+		   <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
