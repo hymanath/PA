@@ -8845,7 +8845,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId){
 	}catch (Exception e) {
 		LOG.error("Exception raised in getCandateActivityAttendance  method in CadreDetailsService.",e);
 	}
-	return returnList;
+	return finalList;
 	
 }
 
