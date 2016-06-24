@@ -270,4 +270,23 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 		  }
 		  return Action.SUCCESS; 
 	   }
+	  public String casteCategoryWiseEventAttendeeCounts(){
+		  
+		  try{
+				jObj = new JSONObject(getTask());
+				
+				Long parentEventId = jObj.getLong("parentEventId");
+				List<Long> subEventIds = new ArrayList<Long>();
+				JSONArray arr = jObj.getJSONArray("subEvents");
+				for(int i=0;i<arr.length();i++){
+					subEventIds.add(new Long(arr.get(i).toString()));
+				}
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+			
+	      }catch(Exception e){
+	    		LOG.error(" Entered Into casteCategoryWiseEventAttendeeCounts",e);
+	      }
+		  return Action.SUCCESS;
+	  }
 }

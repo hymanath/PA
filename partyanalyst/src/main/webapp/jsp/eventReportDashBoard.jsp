@@ -313,7 +313,8 @@ var formatedDpCurentDate;
 function allCalls(){
     var startDate = $(".dp_startDate").val();
     var endDate = $(".dp_endDate").val();
-    getCasteWiseEventAttendeeCounts(startDate,endDate);
+	 casteCategoryWiseEventAttendeeCounts(startDate,endDate);
+     getCasteWiseEventAttendeeCounts(startDate,endDate);
 	 getAgeWiseEventAttendeeCounts(startDate,endDate);
 	 getGenderWiseEventAttendeeCounts(startDate,endDate);
 }
@@ -807,6 +808,21 @@ function buildGenderWiseLocationDetails(result) {
 }
 function generateExcelReportForGender(){
 	tableToExcel(gndrWsExprtTExclTblId, 'Gender Wise Report');
+}
+function casteCategoryWiseEventAttendeeCounts(startDate,endDate){
+	     
+		 var jsObj = {
+				startDate    :startDate,
+				endDate      :endDate,
+				parentEventId:parentEventId,
+				subEvents : subEvents
+			}
+		$.ajax({
+          type:'GET',
+          url: 'casteCategoryWiseEventAttendeeCountsAction.action',
+		  data : {task:JSON.stringify(jsObj)} ,
+        }).done(function(result){
+ 	});
 }
 </script>
 </body>
