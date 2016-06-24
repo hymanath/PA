@@ -270,9 +270,9 @@ function getConstituencySummary(){
 		return;	 
 	}
 	var reportType = $("input[type='radio'][name='reportType']:checked").val();
-	
+	var committeeTypeId =$("#committetypeId").val();
 	var jsObj ={
-		 constituencyId:constiId,reportType :reportType            
+		 constituencyId:constiId,reportType :reportType ,committeeTypeId:committeeTypeId       
 	}	
 	$.ajax({
 		type : "POST",
