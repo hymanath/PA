@@ -40,6 +40,7 @@ public class ActivityScope extends BaseModel implements Serializable{
 	private Activity activity;
 	private ActivityLevel activityLevel;
 	private Long			maxFilesCount;
+	private Long noOfTimes;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -159,5 +160,13 @@ public class ActivityScope extends BaseModel implements Serializable{
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name="no_of_times")
+	public Long getNoOfTimes() {
+		return noOfTimes;
+	}
+	public void setNoOfTimes(Long noOfTimes) {
+		this.noOfTimes = noOfTimes;
 	}
 }

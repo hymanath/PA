@@ -139,4 +139,14 @@ public class ActivityScopeDAO extends GenericDaoHibernate<ActivityScope, Long> i
 		return (Object[]) query.uniqueResult();
 		
 	}
+	
+	public Long getNoOfTimesCountForActivityScope(Long scopeId){
+		Query query = getSession().createQuery("select model.noOfTimes" +
+											" from ActivityScope model" +
+											" where model.activityScopeId = :scopeId" +
+											" and model.isDeleted = 'N'");
+		
+		query.setParameter("scopeId", scopeId);
+		return (Long) query.uniqueResult();
+	}
 }

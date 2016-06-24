@@ -17537,6 +17537,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			
 			Date frmDate=null;
 			Date toDate =null;
+			Long noOfTimes = activityScopeDAO.getNoOfTimesCountForActivityScope(activityScopeId);
 			Object[] scopeDates = activityScopeDAO.getRequiredDatesOfScope(activityScopeId);
 		
 			if(scopeDates !=null && scopeDates.length>0){
@@ -17547,11 +17548,20 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			List<String> datesStr = new ArrayList<String>(0);
 			if(frmDate !=null && toDate !=null){
 				List<Date> dates = commonMethodsUtilService.getBetweenDates(frmDate, toDate);
-				if(dates !=null && dates.size()>0){
-					for (Date date : dates) {
-						datesStr.add(sdf.format(date));
-					}							
+				if(noOfTimes != null && noOfTimes.longValue() != 1l && Long.valueOf(String.valueOf(dates.size())) == noOfTimes.longValue()){
+					if(dates !=null && dates.size()>0){
+						for (Date date : dates) {
+							datesStr.add(sdf.format(date));
+						}							
+					}
 				}
+				else if(noOfTimes.longValue() != 1l && dates.size() != noOfTimes.longValue()){
+					for (int i = 1; i <= noOfTimes; i++) {
+						datesStr.add("day "+i);
+					}
+				}
+				else
+					datesStr.add("day");
 				finalVo.setDatesList(datesStr);
 			}
 			
@@ -18954,13 +18964,16 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 				
 				List<String> datesStr = new ArrayList<String>(0);
 				if(frmDate !=null && toDate !=null){
+					Long noOfTimes = activityScopeDAO.getNoOfTimesCountForActivityScope(activityScopeId);
 					List<Date> dates = commonMethodsUtilService.getBetweenDates(frmDate, toDate);
-					int i=0;
-					if(dates !=null && dates.size()>0){
-						for (Date date : dates) {
-							i++;
-							datesStr.add("Day" +i+ "("+sdf.format(date)+")");
-						}							
+					if(noOfTimes != null && noOfTimes.longValue() != 1l && Long.valueOf(String.valueOf(dates.size())) == noOfTimes.longValue()){
+						int i=0;
+						if(dates !=null && dates.size()>0){
+							for (Date date : dates) {
+								i++;
+								datesStr.add("Day" +i+ "("+sdf.format(date)+")");
+							}							
+						}
 					}
 				}
 				
@@ -18976,6 +18989,14 @@ public List<ActivityVO> getDistrictWiseActivities(String startDateString,String 
 							VOList = setDayObjToList(datesList,VOList,obj);													
 						}else if(commonMethodsUtilService.isListOrSetValid(datesStr)){							
 							VOList = setDayObjToList(datesStr,VOList,obj);
+						}
+						else{
+							LocationWiseBoothDetailsVO2 vo = new LocationWiseBoothDetailsVO2();
+							vo.setLocationId(obj.getLocationId());
+							vo.setLocationName(obj.getLocationName());
+							vo.setIsAlreadyImageUpload(obj.getIsAlreadyImageUpload());
+							vo.setDay("day");
+							VOList.add(vo);
 						}
 						obj.setResult2(VOList);
 					} 
