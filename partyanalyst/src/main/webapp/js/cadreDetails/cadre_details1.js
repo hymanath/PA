@@ -306,15 +306,34 @@ function buildSurveysOnCandidateDetails(result){
 		$('.ivrSurveyCandtDetailsCls').html("NO DATA AVAILABLE");
 	}
 }
-
-
-function getCandateActivityAttendance(activityLevelId){
+/*
+Long panchayatId = jObj.getLong("panchayatId");
+			Long mandalId = jObj.getLong("mandalId");
+			Long lebId = jObj.getLong("lebId");
+			Long assemblyId = jObj.getLong("assemblyId");
+			Long districtId = jObj.getLong("districtId");
+			Long stateId = jObj.getLong("stateId");
+			Long participatedAssemblyId = jObj.getLong("participatedAssemblyId");
+			
+			
+			activityVO = activityService.getCanditeActivtyAttendanceLocationsDtls(cadreId,activityLevelId,panchayatId,mandalId,lebId,assemblyId,districtId,stateId,participatedAssemblyId);
+		
+		*/
+//,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId
+function getCanditeActivtyAttendanceLocationsDtls(activityLevelId){
 	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		//alert(999);
 		$("#activityAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
-		cadreId:globalCadreId,
-		activityLevelId:activityLevelId		
+		tdpCadreId:globalCadreId,
+		activityLevelId:activityLevelId,
+		panchayatId: $('#cadrePanchaytId').val(),
+		mandalId:$('#cadremandalId').val(),
+		lebId:$('#cadreRuralORUrbanId').val(),
+		assemblyId:$('#cadreConstituencyId').val(),
+		districtId :$('#cadreDistrictId').val(),
+		stateId :$('#cadreStateId').val(),
+		participatedAssemblyId:0
 	}
 	
 	$.ajax({
@@ -323,8 +342,8 @@ function getCandateActivityAttendance(activityLevelId){
 			 data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				$("#activityAttented").html('');
-				if(result!= null && result.length >0)
-					buildCandateActivityAttendance(result);
+				if(result!= null)
+					buildLocationsDtlsofCandateActivityAttendance(result);
 				else
 					$("#activityAttented").html(' Candidate Not Available with any Activity.');
 				
@@ -332,13 +351,43 @@ function getCandateActivityAttendance(activityLevelId){
 			});
 }
 
+function buildLocationsDtlsofCandateActivityAttendance(results){
+	
+	var str = '';
+	var result = results.activityVoList;
+	str+='<table class="table table-bordered">';
+	str+='<thead style="background:#ccc">';
+	str+='<th> Activity level </th>';
+	str+='<th> Activity Name </th>';
+	str+='<th> Attended Location </th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){
+	str+='<tr>';
+	str+='<td>'+result[i].optionType+'</td>';
+	str+='<td>'+result[i].name+'</td>';
+	str+='<td>'+result[i].attendendLocation+' ('+result[i].conductedDate+')</td>';
+	str+='</tr>';
+	}
+	str+='</tbody>';
+	str+='</table>';
+	
+	$("#activityAttented").html(str);
+}
 function getCandateActivityAttendance(activityLevelId){
 	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 		//alert(999);
 		$("#activityAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
 		cadreId:globalCadreId,
-		activityLevelId:activityLevelId		
+		activityLevelId:activityLevelId	,
+		panchayatId: $('#cadrePanchaytId').val(),
+		mandalId:$('#cadremandalId').val(),
+		lebId:$('#cadreRuralORUrbanId').val(),
+		assemblyId:$('#cadreConstituencyId').val(),
+		districtId :$('#cadreDistrictId').val(),
+		stateId :$('#cadreStateId').val(),
+		participatedAssemblyId:0
 	}
 	
 	$.ajax({
@@ -363,6 +412,7 @@ function buildCandateActivityAttendance(result){
 	str+='<thead style="background:#ccc">';
 	str+='<th>Activity level</th>';
 	str+='<th>Activity Name</th>';
+	str+='<th>Status</th>';
 	str+='<th>Invited</th>';
 	str+='<th>Attended</th>';
 	str+='<th>Absent</th>';
@@ -372,6 +422,10 @@ function buildCandateActivityAttendance(result){
 	str+='<tr>';
 	str+='<td>'+result[i].isLocation+'</td>';
 	str+='<td>'+result[i].attendendLocation+'</td>';
+	if(result[i].invitteeCnt != null && result[i].invitteeCnt >0 && result[i].attendedCount != null && result[i].attendedCount>0)
+		str+='<td> Conducted </td>';
+	else
+		str+='<td> - </td>';
 	if(result[i].invitteeCnt == 0){
 		str+='<td>-</td>';
 	}else{
