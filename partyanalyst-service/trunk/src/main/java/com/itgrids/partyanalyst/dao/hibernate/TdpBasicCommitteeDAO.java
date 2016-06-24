@@ -28,7 +28,7 @@ public class TdpBasicCommitteeDAO extends GenericDaoHibernate<TdpBasicCommittee,
 				" from TdpBasicCommittee model where" );
 		if(committeeTypeId == 1)
 		str.append(" model.tdpCommitteeTypeId =1");
-		else
+		if(committeeTypeId == 2)
 			str.append(" model.tdpCommitteeTypeId !=1");	
 		str.append(" order by model.order ");
 		Query query = getSession().createQuery(str.toString());
