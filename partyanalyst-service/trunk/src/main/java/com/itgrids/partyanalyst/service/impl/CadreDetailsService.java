@@ -1889,7 +1889,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					 }
 				
 			}
-			else if(eventInviteeMap != null && eventInviteeMap.size()>0)
+			 if(eventInviteeMap != null && eventInviteeMap.size()>0)
 			{
 				if(eventInviteesList != null && eventInviteesList.size()>0)
 				{
@@ -1909,11 +1909,13 @@ public class CadreDetailsService implements ICadreDetailsService{
 							mainEventMap=new HashMap<Long, CadreCommitteeMemberVO>();
 							finalMap.put(Long.parseLong(events[0].toString()),mainEventMap);//parentEventId,Map<EventId,CadreCommitteeMemberVO>
 						}else{
-							subEventDetails=mainEventMap.get(Long.parseLong(events[1].toString()));
-							if(subEventDetails ==null){ 
-								subEventDetails=new CadreCommitteeMemberVO();
-							}
+							subEventDetails=mainEventMap.get(Long.parseLong(events[0].toString()));
+							//if(subEventDetails ==null){ 
+								//subEventDetails=new CadreCommitteeMemberVO();
+								//subEventDetails.setName(" - ");//eventName
+							//}
 						}
+						if(subEventDetails != null){
 								subEventDetails.setVtrId(cadreId);//cadreId
 								subEventDetails.setId(Long.parseLong(events[0].toString()));//eventId
 								subEventDetails.setName(" - ");//eventName
@@ -1935,11 +1937,14 @@ public class CadreDetailsService implements ICadreDetailsService{
 									if(attendedCount != null && attendedCount.longValue() ==0L)
 										subEventDetails.setAbsentCount(subEventDetails.getInvitationCount());
 								}
-								
+								if(subEventDetails.getAbsentCount() != null && subEventDetails.getAbsentCount().longValue()>0L){
+									subEventDetails.setCasteName(events[5] != null ? events[5].toString()  : ""  );//absentee Remarks
+								}
 								mainEventMap.put(Long.parseLong(events[0].toString()), subEventDetails);
 								
 								finalMap.put(Long.parseLong(events[0].toString()), mainEventMap);
 								eventTypeWiseEventsMap.put(subEventDetails.getEventTypeId(), finalMap);
+						}
 						 }
 				}
 			}

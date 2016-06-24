@@ -38,7 +38,15 @@ public class EventInvitee implements java.io.Serializable{
 	private Long eventId;
 	private Long createdBy;
 	private Date insertedTime;
+	private String absenteeRemark;
 
+	@Column(name="absentee_remark")
+	public String getAbsenteeRemark() {
+		return absenteeRemark;
+	}
+	public void setAbsenteeRemark(String absenteeRemark) {
+		this.absenteeRemark = absenteeRemark;
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
