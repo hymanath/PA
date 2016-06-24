@@ -470,6 +470,7 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			finalvo.setActivityLevelId(activityLevelId);
 			finalvo.setLocationValue(activityLevelValue);
 			finalvo.setConductedDate(conductedDate);
+			finalvo.setDateStr(jObj.getString("day"));
 			
 			if(questionArr != null && questionArr.length() > 0){
 				for (int i = 0; i < questionArr.length(); i++) {
@@ -505,8 +506,11 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 			LOG.info("Entered into getQuestionnaireForScope");
 			
 			jObj = new JSONObject(getTask());
+			Long selectedDay = jObj.getLong("selectedDay");
+			List<Long> seletedDays = new ArrayList<Long>();
+			seletedDays.add(selectedDay);
 			
-			activityVO = activityService.getQuestionnaireForScope(jObj.getLong("scopeId"),jObj.getLong("requiredAttributeId"),jObj.getLong("questionId"),jObj.getLong("optionId"));
+			activityVO = activityService.getQuestionnaireForScope(jObj.getLong("scopeId"),jObj.getLong("requiredAttributeId"),jObj.getLong("questionId"),jObj.getLong("optionId"),seletedDays);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getQuestionnaireForScope", e);
