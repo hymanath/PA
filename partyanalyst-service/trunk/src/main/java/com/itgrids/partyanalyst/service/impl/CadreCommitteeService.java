@@ -117,7 +117,6 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ActivityLocationInfoDatesDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityLocationInfoDatesDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -7695,7 +7694,7 @@ return constiLst;
 	 return  idNameVOList;
 	}
 	
-	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId,Long userId){
+	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId,Long userId,Long committeeTypeId){
 		CommitteeSummaryVO fnlVO = new CommitteeSummaryVO();
 			LOG.debug(" Entered Into getConstituencySummary()");
 			try{
@@ -7788,7 +7787,7 @@ return constiLst;
 				}
 				
 				
-				List<Object[]> basicCommitteesRslt = tdpBasicCommitteeDAO.getBasicCommittees();
+				List<Object[]> basicCommitteesRslt = tdpBasicCommitteeDAO.getBasicCommitteesByTypeId(committeeTypeId);
 				List<CommitteeSummaryVO> basicCmmty = new ArrayList<CommitteeSummaryVO>();
 				if(basicCommitteesRslt!=null && basicCommitteesRslt.size()>0){
 					for(Object[] obj:basicCommitteesRslt){
@@ -7801,21 +7800,21 @@ return constiLst;
 				}
 				
 				if(localBodies!=null && localBodies.size()>0){
-					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(7l, localBodyIds);
+					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(7l, localBodyIds,committeeTypeId);
 					List<CommitteeSummaryVO> locsResult = pushBasicCommitteesToLocations(basicCommitteesRslt, localBodies);
 					pushConstSummaryToLocations(list, locsResult);
 					
 					fnlVO.setLocalBodiesList(localBodies);
 				}
 				if(mandalIds!=null && mandalIds.size()>0){
-					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(5l, mandalIds);
+					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(5l, mandalIds,committeeTypeId);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, mandals);
 					pushConstSummaryToLocations(list, locsResult);
 					
 					fnlVO.setMandalsList(mandals);
 				}
 				if(divisionIds!=null && divisionIds.size()>0){
-					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(9l, divisionIds);
+					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(9l, divisionIds,committeeTypeId);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, divisions);
 					pushConstSummaryToLocations(list, locsResult);
 					
@@ -7823,13 +7822,13 @@ return constiLst;
 				}
 				 
 				if(panchIds!=null && panchIds.size()>0){
-					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(6l, panchIds);
+					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(6l, panchIds,committeeTypeId);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, allPanchayats);
 					pushConstSummaryToLocations(list, locsResult);
 					
-					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(panchIds, 6l);
+					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(panchIds, 6l,committeeTypeId);
 					
-					List<Object[]> electedUsers = tdpCommitteeMemberDAO.getCommitteePresidentAndGS(panchIds, 6l);
+					List<Object[]> electedUsers = tdpCommitteeMemberDAO.getCommitteePresidentAndGS(panchIds, 6l,committeeTypeId);
 					List<Long> eletedMemIds = new ArrayList<Long>();
 					if(electedUsers!=null && electedUsers.size()>0){
 						for(Object[] obj:electedUsers){
@@ -7856,13 +7855,13 @@ return constiLst;
 					pushPanchayatsAndWards(mandalMap, fnlVO.getMandalsList());
 				}
 				if(wardIds!=null && wardIds.size()>0){
-					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(8l, wardIds);
+					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(8l, wardIds,committeeTypeId);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, allWardsList);
 					pushConstSummaryToLocations(list, locsResult);
 					
-					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(wardIds, 8l);
+					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(wardIds, 8l,committeeTypeId);
 					
-					List<Object[]> electedUsers = tdpCommitteeMemberDAO.getCommitteePresidentAndGS(wardIds, 8l);
+					List<Object[]> electedUsers = tdpCommitteeMemberDAO.getCommitteePresidentAndGS(wardIds, 8l,committeeTypeId);
 					List<Long> eletedMemIds = new ArrayList<Long>();
 					if(electedUsers!=null && electedUsers.size()>0){
 						for(Object[] obj:electedUsers){

@@ -21,4 +21,18 @@ public class TdpBasicCommitteeDAO extends GenericDaoHibernate<TdpBasicCommittee,
 		
 		return query.list();
 	}
+	public List<Object[]> getBasicCommitteesByTypeId(Long committeeTypeId){
+		StringBuilder str = new StringBuilder();
+		str.append(" select model.tdpBasicCommitteeId," +
+				" model.name" +
+				" from TdpBasicCommittee model where" );
+		if(committeeTypeId == 1)
+		str.append(" model.tdpCommitteeTypeId =1");
+		else
+			str.append(" model.tdpCommitteeTypeId !=1");	
+		str.append(" order by model.order ");
+		Query query = getSession().createQuery(str.toString());
+		
+		return query.list();
+	}
 }
