@@ -641,7 +641,7 @@ function getParticipatedConstituencyId(cadreId){
 									if(j==0){											
 											str+='<td style="border-bottom:#fff;">'+results[i].name+'</td>';
 									}else{
-										str+='<td style="border:#fff;"> - </td>';
+										str+='<td style="border:#fff;">  </td>';
 									}
 									str+='<td>'+results[i].knownList[j].name+'</td>';
 									if(results[i].knownList[j].eventTypeId == 2)
