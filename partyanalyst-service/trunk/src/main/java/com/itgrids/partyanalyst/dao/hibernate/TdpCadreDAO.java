@@ -6978,4 +6978,45 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
  				" and model.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+")");
  		return (Long)query.uniqueResult();
  	}
+
+ 	
+	public List<Object[]> getCadrAddressDetailsByCadred(Long tdpCadreId) {
+		StringBuilder queryString=new StringBuilder();
+		queryString.append( " select model.tdpCadreId, " +//1
+							" state.stateId," +//2
+							" state.stateName," +//3
+							" district.districtId," +//4
+							" district.districtName,"+//5
+				            " constituency.constituencyId," +//6
+				            " constituency.name," +//7
+				            " tehsil.tehsilId," +//8
+				            " tehsil.tehsilName,"+//9
+							" ward.constituencyId," +//10
+							" ward.name," +//11
+							" panchayat.panchayatId," +//12
+							" panchayat.panchayatName,"+//13
+				            " localElectionBody.localElectionBodyId," +//14
+				            " localElectionBody.name ,"+ //15
+							" constituency.areaType ," +//16
+							" booth.boothId, " +//17
+							" booth.partNo " +//18
+							" from  TdpCadre  model " +
+							" left join model.userAddress.state state" +
+							" left join model.userAddress.district district" +
+							" left join model.userAddress.constituency constituency" +
+							" left join model.userAddress.tehsil tehsil" +
+							" left join model.userAddress.ward ward" +
+							" left join model.userAddress.panchayat panchayat" +
+							" left join model.userAddress.localElectionBody localElectionBody " +
+							" left join model.userAddress.booth booth " +
+							" where " +
+							" model.isDeleted='N' and model.enrollmentYear=:enrollmentYear and model.tdpCadreId=:tdpCadreId ");
+		
+			Query query=getSession().createQuery(queryString.toString());
+			
+			query.setParameter("tdpCadreId", tdpCadreId);
+			query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		
+		return  query.list();
+	}
 }

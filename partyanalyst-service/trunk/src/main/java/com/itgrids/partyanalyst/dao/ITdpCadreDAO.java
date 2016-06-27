@@ -442,7 +442,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public List<Object[]> getTotalCadreCountAgeRangeIdWise(Set<Long> ageWiseIds);
 	  public List<Object[]> genderWiseTdpCadre();
 	  public List<Object[]> getUserAddressForCadre(List<Long> tdpCadreIds);
-	  
 	  public List<Object[]> getTotalCadreCountByCasteCategoryexcludingMinorities(Set<Long> casteCategoryWiseIds);
 	  public Long getTotalCadreCountByForMinorities();
+	  public List<Object[]> getCadrAddressDetailsByCadred(Long tdpCadreId);
 } 
