@@ -1100,4 +1100,16 @@ public String getCommentDetails(){
 	}
 	 return Action.SUCCESS;
  }
+ 
+ public String getquestinaireForRetrieving(){
+ 		 try {
+
+ 				jObj = new JSONObject(getTask());
+ 				responsevoList = activityService.getquestinaireForRetrieving(jObj.getLong("day"));
+ 				
+ 		} catch (Exception e) {
+ 			LOG.error("Exception raised at getActivityQuestionaryOptionsByActivityDate()", e);
+ 		}
+ 		 return Action.SUCCESS;
+ 	 }
 }

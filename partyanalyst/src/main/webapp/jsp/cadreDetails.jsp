@@ -646,7 +646,7 @@ var globalCadreId = '${cadreId}';
 					</div>
 				</div>
 				
-				<div class="panel panel-default">
+				<div class="panel panel-default" id="trainingCampdetailsDiv">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
                     	<h4 class="panel-title text-bold pointer"><img src="images/training.png" style="width:18px;height:17px;"/> TRAINING CAMP DETAILS <span class="pull-right" id="trainingCampDetailsHideId" style="display:none;"><i class="glyphicon glyphicon-chevron-up" ></i></span><span class="pull-right" id="trainingCampDetailsShowId"><i class="glyphicon glyphicon-chevron-down"></i></span></h4>
                     </div>
@@ -2156,6 +2156,12 @@ function generateExcel()
 function generateExcel1(){
 	 tableToExcel('grievanceStatusWiseTableId', 'Grievance Request Status Details Report');
 }
+$( document ).ready(function(){
+var cadreDisId = $('#cadreDistrictId').val();
+if(cadreDisId<=10){
+	$("#trainingCampdetailsDiv").hide();
+}
+});
 </script>
 
 </body>
