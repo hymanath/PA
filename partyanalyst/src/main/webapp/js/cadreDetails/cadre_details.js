@@ -180,7 +180,8 @@ function getParticipatedConstituencyId(cadreId){
 					}
 				});
 			}
-			
+		
+var globalVoterCardNo = "";		
 	function cadreFormalDetailedInformation(globalCadreId){
 			var localCadreId=globalCadreId;
 			//loading images showing
@@ -330,12 +331,17 @@ function getParticipatedConstituencyId(cadreId){
 					 $("#ageId").html(result.age);
 					 $("#qualificationId").html(result.qualification);
 					 $("#occupationId").html(result.occupation);
+					 if(result.voterIdCardNo != ""){
+						 globalVoterCardNo = result.voterIdCardNo;
 					 $("#voterIdSpan").html(result.voterIdCardNo);
 					 
 					 if(result.isFamilyVoterId =="false"){
 						 $("#isFamilyId").html('<b>Own VoterCard</b>');
 					 }else if(result.isFamilyVoterId == "true"){
 						 $("#isFamilyId").html('<b>Family VoterCard</b>');
+					 }
+					 }else{
+						 $("#isFamilyId").html("Not Available."); 
 					 }
 					 if(result.panchayatName != null && result.panchayatName != "-"){
 						$("#panchayatId").html(result.panchayatName);
@@ -618,13 +624,15 @@ function getParticipatedConstituencyId(cadreId){
 					str+='</tr>';
 						str+='<tr>';
 						str+='<th>MAIN EVENT</th>';
-						str+='<th>SUB EVENT</th>';
+						if(myresult[k].eventTypeStr != 'Visits'){
 						str+='<th>INIVITED</th>';
+						}
+						str+='<th>SUB EVENT</th>';
 						str+='<th>ATTENDED</th>';
 						if(myresult[k].eventTypeStr == 'Visitor Event')
 							str+='';
 						else
-							str+='<th>ABSENT</th>';
+							str+='<th>NOT ATTENDED</th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -636,6 +644,7 @@ function getParticipatedConstituencyId(cadreId){
 								subLength=results[i].knownList.length;
 							}					
 							if(results[i].knownList !=null){
+								var subLength = results[i].knownList.length;
 								for(var j in results[i].knownList){
 									str+='<tr>';
 									if(j==0){											
@@ -643,11 +652,11 @@ function getParticipatedConstituencyId(cadreId){
 									}else{
 										str+='<td style="border:#fff;">  </td>';
 									}
+									if(results[i].knownList[j].eventTypeId != 2 && j==0){
+										str+='<td style="text-align:center;" rowspan='+subLength+'>'+results[i].knownList[j].invitationCount+'</td>';
+									}
 									str+='<td>'+results[i].knownList[j].name+'</td>';
-									if(results[i].knownList[j].eventTypeId == 2)
-										str+='<td style="text-align:center;">0</td>';
-									else
-										str+='<td style="text-align:center;">'+results[i].knownList[j].invitationCount+'</td>';
+									
 									//str+='<td>'+results[i].knownList[j].total+' <i class="glyphicon glyphicon-eye-open attedenceCls pull-right" title="Click here to get Attendance Details" style="cursor:pointer" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'"></i></td>';
 									if(results[i].knownList[j].total != null && results[i].knownList[j].total > 0)
 										str+='<td><span class="attedenceCls" attr_event_name='+results[i].knownList[j].name+' attr_event_id="'+results[i].knownList[j].id+'" style="text-align:center;"><a style="cursor:pointer">'+results[i].knownList[j].total+' Day(s) </a></td>';
@@ -655,11 +664,12 @@ function getParticipatedConstituencyId(cadreId){
 										str+='<td style="text-align:center;"> - </td>';
 									if(results[i].knownList[j].eventTypeId != 2){
 										if(results[i].knownList[j].absentCount > 0){
-										str+='<td style="text-align:center;">'+results[i].knownList[j].absentCount+'  ';
+										str+='<td style="text-align:center;position:relative;">'+results[i].knownList[j].absentCount+'  ';
+											str+='<span>  <i class="glyphicon glyphicon-info-sign reasonCls" title="Click here for the reason." data-toggle="tooltip" data-placement="top" style="cursor:pointer;"></i></span>';
 										if(results[i].knownList[j].casteName != null && results[i].knownList[j].casteName != "")
-											str+='<span>  <i id="" class="glyphicon glyphicon-info-sign" title="'+results[i].knownList[j].casteName+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;"></i></span>';
+											str+='<div class="rasonShowCls arrow_box4" style="display:none">'+results[i].knownList[j].casteName+'</div>';
 										else
-											str+='<span>  <i id="" class="glyphicon glyphicon-info-sign" title="Reason Not Available" style="cursor:pointer;" data-toggle="tooltip" data-placement="top"></i></span>';
+											str+='<div class="rasonShowCls arrow_box4" style="display:none">Reason Not Given</div>';
 										str+='</td>';
 											
 										}else{
@@ -687,7 +697,7 @@ function getParticipatedConstituencyId(cadreId){
 					}					
 				}
 				 $("#participationTableDivId").html(str);	
-				   $('[data-toggle="tooltip"]').tooltip()
+				   //$('[data-toggle="tooltip"]').tooltip()
 
 				}else{
 					$("#eventParticipationCollapseDivId").hide();
@@ -696,7 +706,14 @@ function getParticipatedConstituencyId(cadreId){
 				
 			});
 		}
-		
+		$(document).on("click",".reasonCls",function(e){
+			e.stopPropagation();
+			$(".rasonShowCls").hide();
+			$(this).closest("td").find(".rasonShowCls").toggle();
+		})
+		$(document).on("click",function(){
+			$(".rasonShowCls").hide();
+		})
 		$(document).on("click",".attedenceCls",function(){
 			$(".eventAttendanceModalId").modal("show");
 			$("#eventAttendanceInfoBodyId").html('');
@@ -1239,53 +1256,65 @@ function getParticipatedConstituencyId(cadreId){
 		}
 function buildTotalMemberShipRegInCadreLocation(result,pcType){
 	var str = '';
-		str += '<table class="table m_0">';
-		str += '<tr>';
+		str += '<ul class="performanceGraph">';
 	if(pcType !=null && pcType !="" && pcType !=undefined){
 		if(pcType == "Assembly"){
-			str += '<td>';
+			str += '<li>';
 			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+participatedConstName.toUpperCase()+')"></div>';
-			str += '</td>';
+			str += '</li>';
 		}
-		str += '<td>';
+		str += '<li>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+participatedParlName.toUpperCase()+')"></div>';
-		str += '</td>';
+		str += '</li>';
 		
-		str += '<td>';
+		str += '<li>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+participatedDistName.toUpperCase()+')"></div>';
-		str += '</td>';
+		str += '</li>';
 	}
 	else{
-		str += '<td>';
+		if(globalVoterCardNo != ""){
+		str += '<li>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.boothPerc+'%" data-percent="'+result.boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth"></div>';
-		str += '</td>';
+		str += '</li>';
+		}else{
+			str += '<li>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="No Voter ID For Own Booth"></div>';
+		str += '</li>';
+		}
 		if(result.cadreLocation =="Mandal")
 		{
-			str += '<td>';
+			str += '<li>';
 			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
-			str += '</td>';
+			str += '</li>';
 		 }
-		str += '<td>';
+		str += '<li>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
-		str += '</td>';
+		str += '</li>';
 		
-		str += '<td>';
+		str += '<li>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.constiPerc+'%" data-percent="'+result.constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName.toUpperCase()+')"></div>';
-		str += '</td>';
+		str += '</li>';
 		
-		str += '<td>';
+		str += '<li>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.parConsPerc+'%" data-percent="'+result.parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName.toUpperCase()+')"></div>';
-		str += '</td>';
+		str += '</li>';
 		
-		str += '<td>';
+		str += '<li>';
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.districtPerc+'%" data-percent="'+result.districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
-		str += '</td>';
+		str += '</li>';
 		
 	}
-		str += '</tr>';
-		str += '</table>';
+		str += '</ul>';
 	 $("#memberShipCountDiv").html(str);
 	 $('.fulCircleCls').circliful();
+	 var windowWidth = $(window).width();
+	 if( windowWidth > 768)
+	 {
+		 var graphCount = $(".performanceGraph li").length;
+		 var pixelWidth = (100 / graphCount) ;
+		 $(".performanceGraph li").css("width",pixelWidth+'%');
+	 }
+	 
 }
 
 function getCadreFamilyDetailsByCadreId(){
@@ -1894,40 +1923,42 @@ function buildElectionPerformanceInCadreLocation(result)
 		
 		str += '<div class="row ">';
 		str += '<div class="col-md-12 table-responsive">';
-		str += '<table class="table m_0">';
-		str += '<tr>';
-	 if(result[i].year != "2009")
-	 {
-	   str += '<td>';
-       str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth" data-text="'+result[i].boothPerc+'%" data-percent="'+result[i].boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
-       str += '</td>';
-	 }
+		str += '<ul class="performanceGraph">';
+	 //if(result[i].year != "2009" && globalVoterCardNo != "")
+		 if(result[i].year != "2009" && globalVoterCardNo != "")
+		 {
+		   str += '<li style="" >';
+		   str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth" data-text="'+result[i].boothPerc+'%" data-percent="'+result[i].boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+		   str += '</li>';
+		 }else if(globalVoterCardNo == ""){
+		   str += '<li style="" >';
+		   str += '<div class="fulCircleCls1" data-dimension="100%" data-info="No Voter ID For Own Booth" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+		   str += '</li>';
+		 } 
 	   
 	if(result[i].cadreLocation =="Mandal")
 	{
-		str += '<td>';
+		str += '<li>';
         str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].panchPerc+'%" data-percent="'+result[i].panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
-        str += '</td>';
+        str += '</li>';
 	 }
 	
-	str += '<td>';
+	str += '<li>';
     str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
-    str += '</td>';
+    str += '</li>';
 	
-	str += '<td>';
+	str += '<li>';
     str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].constiPerc+'%" data-percent="'+result[i].constiPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own AC ('+globalConstName.toUpperCase()+')"></div>';
-    str += '</td>';
+    str += '</li>';
 	
-	str += '<td>';
+	str += '<li>';
     str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].parConsPerc+'%" data-percent="'+result[i].parConsPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own PC ('+globalParlName.toUpperCase()+')"></div>';
-	str += '</td>';
+	str += '</li>';
 	
-	str += '<td>';
+	str += '<li>';
     str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].districtPerc+'%" data-percent="'+result[i].districtPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own District ('+globalDistName.toUpperCase()+')"></div>';
-    str += '</td>';
-	
-		str += '</tr>';
-		str += '</table>';
+    str += '</li>';
+		str += '</ul>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -1935,7 +1966,15 @@ function buildElectionPerformanceInCadreLocation(result)
 	}
 	$(".electionPerformanceDiv").html(str);
 	$('.fulCircleCls1').circliful();
+	var windowWidth = $(window).width();
+	 if( windowWidth > 768)
+	 {
+		var graphCount = $(".performanceGraph li").length;
+		var pixelWidth = (100 / graphCount) ;
+		$(".performanceGraph li").css("width",pixelWidth+'%');
+	 }
 }
+
 // Financial
 var financialColorArr = [];
 var typearr = ['EDP','CM Relief Fund','Educational','Financial Support','Personal'];
@@ -2708,7 +2747,6 @@ var globalCandidateResult;
 
 
 function getDeathsAndHospitalizationDetails(){
-	
 	//data Loading image
 	$("#dataLoadingsImgForDeathCount").show();
 	$("#deathHospitalDivId").html("");
