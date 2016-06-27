@@ -1184,22 +1184,26 @@ function getParticipatedConstituencyId(cadreId){
 					$("#electionProfileMainDivId").show();
 					str+='<div>';
 						for(var i in result){
-							if(result[i].status==true)
-							{
 								str+='<ul class="wl-sub-details" style="margin-bottom:0px;">';
 								str+='<li onmouseover="this.style.color=\'#06ABEA\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
-								str+='<strong><span style="color:green">Won</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
-								str+='</ul>';
-							}
+								str+='<strong>';
+								if(result[i].status ==false){
+									str+='<span style="color:red">Lost</span> ';
+								}  
+								if(result[i].status ==true){
+									str+='<span style="color:green">Won</span> ';
+								}
+								str+='in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
+								str+='</ul>';    
 						}
-						for(var i in result){
+						/* for(var i in result){
 							if(result[i].status ==false){
 								str+='<ul class="wl-sub-details">';
 								str+='<li onmouseover="this.style.color=\'#F13144\';" onmouseout="this.style.color=\'#333333\';" style="cursor:pointer;text-align:left;" class="eachParticipationListCls" attr_constId='+result[i].constituencyId+' attr_election_type='+result[i].electionType+' attr_election_year='+result[i].electionYear+'>';
 								str+='<strong><span style="color:red">Lost</span> in '+result[i].electionYear+' </strong> '+result[i].electionType+' Election with <strong>'+result[i].votesPercentage+'</strong> of votes gain for <strong>'+result[i].partyName+'</strong> party in <strong>'+result[i].constituencyName+'</strong> constituency</li>';
 								str+='</ul>';
 							}
-						}
+						} */
 					str+='</div>';
 					$("#electionProfileDivId").html(str);
 				}
