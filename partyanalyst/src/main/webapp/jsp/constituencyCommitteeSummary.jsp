@@ -158,9 +158,82 @@
 	  </div>
     <div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
 </div>
-</div>
 
+
+
+</div>
+<!-- Modal for Remove cadre -->
+			<div class="modal fade" id="removeModalDivId">
+			  <div class="modal-dialog modal-sm">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="removeModalTitleId" style="color:red;">Removing Cadre</h4>
+				  </div>
+				  <div class="modal-body" id="ramoveModalBodyDivId">
+					<div id="errorDivId" style="color:red"></div>
+					<div id="successDivId"></div>
+					<div class="row">
+						<div class="col-md-12">
+							<div><b>Cadre Name :</b> <span id="cadreName"></span></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Reason <span style="color:red">*</span>:</b>
+								<select id="reasonSelectId" class="form-control">
+									<option value="0">Select Reason</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Remark <span style="color:red">*</span>:</b> 
+							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
+						</div>
+					</div>
+					</div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-primary btn-sm" id="saveRemovingCadreDetailsId">Remove</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+				  </div>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+<!-- Modal for update cadre -->
+			<div class="modal fade" id="modalDivId">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modalTitleId" style="color:red;"><span id="modalTitleNameId"></span></h4>
+				  </div>
+				  
+				  <div class="modal-body" id="modalBodyDivId"></div>
+				  
+				  <div class="modal-footer">
+					<span class="pull-left" id="modalSuccessId"></span>
+					<span id="modalfooterNameId"></span>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+				  </div>
+				  
+				</div>
+			  </div>
+			</div>
+			<script>
+		var casteArray=new Array();
+		
+            <c:forEach var="caste" items="${castes}">
+				var casteObject = { id:"${caste.id}",name:"${caste.name}" }
+				casteArray.push(casteObject);
+			</c:forEach>			
+	
+	</script>
 <script type="text/javascript">
+
+
 var accessConstituency = '${accessConstituency}';
 var accessConstituencyId = '${accessConstituencyId}';
 
@@ -765,7 +838,12 @@ str+='</table>';
 	 str+='<td><img  style="margin-top: 5px;" width="50"  height="50" src="images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/>';
 	
 	 str+=' </td>';
-	 str+='<td> '+result[i].name+'';
+	 str+='<td> '+result[i].name+' ';
+	 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT_GROUP') || fn:contains(sessionScope.USER.entitlements, 'CADRE_DELETE_ENTITLEMENT')}">
+	/* str+='<div id="rc'+result[i].id+'" class="pull-right cadreRemoveCls" style="margin-left:3px;cursor:pointer;" attr_cadre_id='+result[i].id+' attr_cadre_name ="'+result[i].name+'"><i class="glyphicon glyphicon-remove remove-icon" data-toggle="tooltip" data-placement="bottom" title="Remove Cadre"></i></div>';
+	 str+='<i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i>';*/
+	str+='<div id="uc'+result[i].id+'" class="pull-right updateCadreClass" style="margin-left:3px;cursor:pointer;" attr_cadre_id='+result[i].id+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].name+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
+	 </c:if>
 	  if(basicCmmtyId == 1){
 	 if(result[i].role!=null){
 		 str+='<br>'+result[i].role+'';
@@ -773,6 +851,7 @@ str+='</table>';
 		 str+='';
 	 }
 	 }	 
+	 
 	  str+=' </td>';	  
 	// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
 	 //str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
@@ -1135,7 +1214,219 @@ function getRolesBasedReport(roleId)
 		
 		$('#casteDetailsId_info').css('margin-bottom','35px');
 	}
+	  $(document).on("click",".updateCadreClass",function(){
+	  $("#modalSuccessId").html('');
+	  buildModal(this);
+  });
+    function buildModal(cadreDetails){
+	    
+		$("#modalTitleNameId").html('');
+	    $("#modalBodyDivId").html('');
+		$("#modalfooterNameId").html('');
+		
+		$("#modalTitleNameId").html('Update Cadre Mobile And Caste.');
+		$("#modalfooterNameId").html('<button type="button" id="updatingCadreId" attr_cadre_id='+$(cadreDetails).attr("attr_cadre_id")+' class="btn btn-primary btn-sm">Update</button>');
+		
+	    var str='';
+		str+='<div class="row">';
+		str+='<div class="col-md-12">';
+		str+='<div><b>Cadre Name :</b> <span>'+$(cadreDetails).attr("attr_cadre_name")+'</span></div>';
+		str+='</div>';
+		str+='</div>';
+
+		str+='<div class="row">';
+		str+='<div class="col-md-6 m_top10">';
+		str+='<div><b>Mobile NO : <span style="color:red">*</span></b> ';
+		str+='<input class="form-control" id="updateCadreMobileId" maxlength="10" value="'+$(cadreDetails).attr("attr_mobile_no")+'"></input></div>';
+		str+='<div id="updateErrorMobileId" style="color:red;"></div>';
+		str+='</div>';
+		str+='<div class="col-md-6 m_top10">';
+		str+='<div><b>Caste <span style="color:red">*</span>:</b>';
+		    str+='<select id="updateCadreCasteSelectId" class="form-control">';
+		        str+='<option value="0">Select Caste</option>';
+				for(var i in casteArray){
+					if(casteArray[i].name== $(cadreDetails).attr("attr_caste_name")){
+						str+='<option value="'+casteArray[i].id+'" selected>'+casteArray[i].name+'</option>';
+					}else{
+						str+='<option value="'+casteArray[i].id+'">'+casteArray[i].name+'</option>';
+					}	
+				}
+		    str+='</select>';
+		str+='</div>';
+		str+='<div id="updateErrorCasteId" style="color:red;"></div>';
+		str+='</div>';
+		
+		str+='</div>';
+		
+	  $("#modalBodyDivId").html(str);
+	  $("#modalDivId").modal("show");
+  }
+  
+    $(document).on("click","#updatingCadreId",function(){
+	  
+	  $("#updateErrorMobileId").html('');
+	  $("#updateErrorCasteId").html('');
+	   
+	  var tdpCadreId=$(this).attr("attr_cadre_id");
+	  var mobileNo=$('#updateCadreMobileId').val();
+      var casteId=$('#updateCadreCasteSelectId option:selected').val();
+      var casteName=$('#updateCadreCasteSelectId option:selected').text();
+	  
+      if(isNaN(mobileNo) || mobileNo.indexOf(" ") != -1){
+		 $("#updateErrorMobileId").html("Please Enter Numbers Only...");
+		 return;
+	  }
+      if(mobileNo.trim().length < 10){
+		 $("#updateErrorMobileId").html("Please Enter Valid Mobile Number...");
+		 return;
+      }
+	  if(casteId==0){
+		  $("#updateErrorCasteId").html("Please Select Caste.");
+		  return;
+	  }
+	  if(!confirmDelete("Are you sure you want to Update Cadre ?")){
+		 return;
+	 }
+	 $("#modalSuccessId").html("<span style='color:green;'>Please Wait ,While updating...</span>");
+	 
+	  var jObj={
+		         tdpCadreId:tdpCadreId,
+		         mobileNo:mobileNo,
+				 casteId:casteId
+		       };
+	  $.ajax({
+		  type:'POST',
+		  url: 'updateMobileNumberAndCasteForCadreAction.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jObj)},
+		  }).done(function(result){
+				if(result != null){
+					
+					if(result.resultCode == 0){
+					   $("#modalSuccessId").html("<span style='color:green;'>MobileNo And Caste Updated Successfully.</span>");
+					   
+					   //Refreshing data.
+					   $("#uc"+tdpCadreId).attr('attr_mobile_no',mobileNo);
+					   $("#uc"+tdpCadreId).attr('attr_caste_name',casteName);
+					   
+					   $("#mobile"+tdpCadreId).html(mobileNo);
+					   $("#caste"+tdpCadreId).html(casteName);
+					   
+					   setTimeout(function(){
+				            $("#modalDivId").modal("hide");
+				       }, 3000);
+					}else if(result.resultCode == 1){
+						$("#modalSuccessId").html("<span style='color:red;'>Sorry,MobileNo And Caste Are Not Updated.</span>");
+					}
+				}
+		  });
+  });
+  
+    $(document).on("click",".cadreRemoveCls",function(){
+	  
+	  var tdpCadreId = $(this).attr("attr_cadre_id");
+	  var cadreName= $(this).attr("attr_cadre_name");
+	  
+	  $("#hiddenCadreId").val(tdpCadreId);
+	  $("#cadreName").html(cadreName);
+	  
+	  $("#errorDivId").html("");
+	  $("#successDivId").html("");
+	   $("#remarkTextAreaId").val("");
+	  
+	   getAllCadreDeleteReasons();
+	  
+	$("#removeModalDivId").modal("show");
+  });
+   function getAllCadreDeleteReasons(){
+	  $("#reasonSelectId option").remove();
+	  
+	  $("#reasonSelectId").append('<option value="0">Select Reason</option>');
+	  
+	  $.ajax({
+          type:'GET',
+          url: 'getAllCadreDeleteReasonsAction.action',
+          dataType: 'json',
+		  data: {}
+	   }).done(function(result){
+		   
+		   if(result !=null && result.length>0){
+			   for(var i in result){
+				   $("#reasonSelectId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
+		   }
+		  
+	   });
+  }
+    function confirmDelete(msg){
+	var deleteCadre = confirm(msg);
+	  if (deleteCadre)
+		  return true;
+	  else
+		return false;
+  }
+    $(document).on("click","#saveRemovingCadreDetailsId",function(){
+	  saveRemovingCadreDetails();
+  });
+  
+  function saveRemovingCadreDetails(){
+	  
+	  var errorExist = false;
+	  
+	  var cadreId = $("#hiddenCadreId").val();
+	  var reasonId = $("#reasonSelectId option:selected").val();
+	  var reason = $("#reasonSelectId option:selected").text();
+	  var remarkTxt = $("#remarkTextAreaId").val();
+	  
+	  if(reasonId != null && (reasonId == 0 || reasonId == undefined)){
+		  $("#errorDivId").html("Please Select Reason");
+		  errorExist=true;
+	  }
+	 else if(remarkTxt !=null && remarkTxt.trim().length ==0){
+		  $("#errorDivId").html("Please Enter Remark");
+		errorExist=true;
+	 }
+	 if(errorExist){
+		 return;
+	 }
+	 
+	 if(!confirmDelete("Are you sure you want to delete cadre ?")){
+		 return;
+	 }
 	
+	  var jsObj = {
+		  cadreId : cadreId,
+		  reasonId : reasonId,
+		  remarkTxt : remarkTxt
+	  }
+	   $.ajax({
+          type:'GET',
+          url: 'saveRemovingCadreDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){ 
+			if(result.resultCode == 0){
+				$("#successDivId").html("<span style='color:green;'>Cadre Removed Successfully.</span>");
+				setTimeout(function(){
+				  $("#removeModalDivId").modal("hide");
+				}, 1000);
+				$('#rc'+cadreId).remove();
+				
+				$("#main"+cadreId).css({"background":"rgba(255, 0, 0, 0.1)","padding":"5px","border-bottom":"1px solid rgb(51, 51, 51)"});
+				
+				$("#delete"+cadreId).append('<b style="color:red;">Deleted Reason</b> : '+reason);
+				
+			}
+			else{
+				$("#errorDivId").html("Cadre Not Removed Successfully.");
+				setTimeout(function(){
+				  $("#removeModalDivId").modal("hide");
+				}, 1000);
+			}
+		});
+	  
+	  
+  }
 	getRolesBasedReport(0);
 </script>
 <script>

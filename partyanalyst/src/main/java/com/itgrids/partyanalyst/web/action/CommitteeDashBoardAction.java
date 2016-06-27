@@ -22,11 +22,13 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeRolesInfoVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO1;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -78,8 +80,47 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<BasicVO>                       basicVOList = null;
 	private IActivityService activityService;
 	private LocationWiseBoothDetailsVO1          locationWiseBoothDetailsVO1;
+	private List<String>						ageRangeList;
+	private List<SelectOptionVO>				cadreRolesVOList;
+	private List<LocationWiseBoothDetailsVO>    locations;
+	private List<IdNameVO>  castes;
+	private List<GenericVO>						genericVOList;
 	
 	
+	
+	
+	
+	
+	public List<GenericVO> getGenericVOList() {
+		return genericVOList;
+	}
+	public void setGenericVOList(List<GenericVO> genericVOList) {
+		this.genericVOList = genericVOList;
+	}
+	public List<String> getAgeRangeList() {
+		return ageRangeList;
+	}
+	public void setAgeRangeList(List<String> ageRangeList) {
+		this.ageRangeList = ageRangeList;
+	}
+	public List<SelectOptionVO> getCadreRolesVOList() {
+		return cadreRolesVOList;
+	}
+	public void setCadreRolesVOList(List<SelectOptionVO> cadreRolesVOList) {
+		this.cadreRolesVOList = cadreRolesVOList;
+	}
+	public List<LocationWiseBoothDetailsVO> getLocations() {
+		return locations;
+	}
+	public void setLocations(List<LocationWiseBoothDetailsVO> locations) {
+		this.locations = locations;
+	}
+	public List<IdNameVO> getCastes() {
+		return castes;
+	}
+	public void setCastes(List<IdNameVO> castes) {
+		this.castes = castes;
+	}
 	public LocationWiseBoothDetailsVO1 getLocationWiseBoothDetailsVO1() {
 		return locationWiseBoothDetailsVO1;
 	}
@@ -667,6 +708,11 @@ public String constituencyCommitteeSummaryAction()
 	}
 	
 	}
+	//ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
+	//genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
+	//cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
+	locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+	castes=cadreCommitteeService.getAllCastes();
 	
 	return Action.SUCCESS;
 }
