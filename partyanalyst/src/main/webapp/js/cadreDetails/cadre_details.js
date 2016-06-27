@@ -1278,7 +1278,7 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		str += '</li>';
 		}else{
 			str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="No Voter ID For Own Booth"></div>';
+		str += '<div class="fulCircleCls" data-dimension="100%" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth (No Voter ID)"></div>';
 		str += '</li>';
 		}
 		if(result.cadreLocation =="Mandal")
@@ -1932,7 +1932,7 @@ function buildElectionPerformanceInCadreLocation(result)
 		   str += '</li>';
 		 }else if(globalVoterCardNo == ""){
 		   str += '<li style="" >';
-		   str += '<div class="fulCircleCls1" data-dimension="100%" data-info="No Voter ID For Own Booth" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+		   str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth (No Voter ID)" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
 		   str += '</li>';
 		 } 
 	   
