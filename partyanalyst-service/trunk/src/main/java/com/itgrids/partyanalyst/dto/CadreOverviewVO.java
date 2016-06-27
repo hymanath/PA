@@ -72,8 +72,16 @@ public class CadreOverviewVO implements java.io.Serializable{
 	private String	familyVoterId;
 	private String memberType;
 	private Long memberTypeId;
+	private String boothLocation;
 	
 	
+	
+	public String getBoothLocation() {
+		return boothLocation;
+	}
+	public void setBoothLocation(String boothLocation) {
+		this.boothLocation = boothLocation;
+	}
 	public Long getMemberTypeId() {
 		return memberTypeId;
 	}

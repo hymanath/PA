@@ -4691,6 +4691,13 @@ public class CadreDetailsService implements ICadreDetailsService{
 				}
 				
 			}
+			if(returnVO.getLocalElectionBodyId() != null && !returnVO.getLocalElectionBodyId().isEmpty())
+			{
+				List boothLocation = boothDAO.getBoothLocations(new Long(returnVO.getLocalElectionBodyId()),returnVO.getVoterCardNo());
+				if(boothLocation != null && boothLocation.size() > 0)
+					returnVO.setBoothLocation(boothLocation.get(0) != null?boothLocation.get(0).toString():"");
+				
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getTdpcadreDetailsByTdpCadreId() Method - ",e);
