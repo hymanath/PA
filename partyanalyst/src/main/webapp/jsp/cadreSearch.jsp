@@ -791,7 +791,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 				str+='<li>Caste: <span id="caste'+result[i].tdpCadreId+'">'+result[i].casteName+'</span></li>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';
 				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</li>';
-				str+='<li>Registered Through: '+result[i].dataSourceType+'</li>';
+				str+='<li>Registered Through: '+result[i].dataSourceType+'</li><br/>';
 				if(result[i].addressVO != null && result[i].addressVO.constituencyName != null && result[i].addressVO.constituencyName.length > 0)
 				{
 					str+='<li>District: '+result[i].addressVO.districtName+'</li>';
