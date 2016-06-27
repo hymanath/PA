@@ -5390,7 +5390,10 @@ function getAppointmentsUserDetails()
 				$("#candidateAppointmentImg").hide();
 				var totalCount = 0;
 				var str='';
-				if(result != null){
+				if($("#totalAptId").val()== 0){
+					$("#buildCandidateAppointmentUser").hide();
+				}
+				else if(result != null){
 						str+='<table class="table table-bordered m_0">';
 						str+='<thead style="background-color:#f2f2f2;">';
 						str+='<th>CANDIDATE USER</th>';
@@ -5412,7 +5415,7 @@ function getAppointmentsUserDetails()
 				}else{
 				    $("#buildCandidateAppointmentUser").html("No Data Available");	
 				}
-			})				
+			});				
 }
 	$(document).on("click",".historyShowModalBtn",function(){
 			$(".historyShowModal").modal("show");

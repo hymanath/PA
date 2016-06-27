@@ -338,7 +338,8 @@
 		  </div>
 		  <div class="modal-body">
 			<div class="col-md-5" >
-			  <select class="form-control" id="selectDateId"></select>
+			  <select class="form-control" id="selectDateId">
+			  </select>
 		    </div>
 			<div id="questionsDivBodyId"></div>
 		  </div>
@@ -1451,8 +1452,9 @@ $("#hideAsmblyData").click(function(){
 		var d = $(this).attr("attr_Selected_day");
 		var selectedDay = d.substring(4,5); 
 		getQuestionnaire(locationValue,0,0,'questionsDivBodyId',1,dateFieldId,selectedDay);
+		
  	});
-    function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId,dateFieldId,selectedDay){
+function getQuestionnaire(locationValue,questionId,optionId,divId,serialNoTypeId,dateFieldId,selectedDay){
 		//console.log(serialNoTypeId[0]);
 		$(".errMsgCls").html("");
 			$("#errMsg").html("");
@@ -1536,6 +1538,7 @@ $("#hideAsmblyData").click(function(){
 				$("#"+divId+"").html(str);
 				});
 			getSelectedBetweenDatesOfActivityScope();
+			
 	}
 	
 	$(document).on("click","#saveResult",function(){
@@ -2624,7 +2627,6 @@ function getBetweenDatesOfActivityScope(){
 function getSelectedBetweenDatesOfActivityScope(){
 	$('#selectDateId').html("");
 	var scopeId = $("#activityLevelList option:selected").attr("attr_scopeId");
-	
 	var jsObj ={
 		scopeId : scopeId
 	}
@@ -2642,8 +2644,10 @@ function getSelectedBetweenDatesOfActivityScope(){
 						str+='<option value="Day '+j+' ('+result.datesList[i]+')">Day '+j+' ('+result.datesList[i]+')</option>';			
 					}
 					$("#selectDateId").html(str);
-				}			 
+				}		
+			retrievingActivityQuestionnaireAndOption();				
 	   });
+	  
 }
 
 $(document).on("change","#selectDateId",function(){
@@ -2663,6 +2667,20 @@ $(document).on("click","#locationInfoBtnId",function(){
 	});	
 	getLocationDetailsForActivity('','','0','0',1,datesArr);
 });
+function retrievingActivityQuestionnaireAndOption(){
+	var d = $("#selectDateId").val();
+	var day = d.substring(4,5); 
+	var jsObj ={
+		day : day
+	}
+	$.ajax({
+			  type:'GET',
+			  url: 'getquestinaireForRetrievingAction.action',
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+	});
+}
 </script>
 </body>
 </html>
