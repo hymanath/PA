@@ -70,4 +70,5 @@ public interface IActivityService {
 	public ActivityVO getActivityQuestionaryOptionsByActivityDate(String activityDate,Long day,Long activityScopeId);
 	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId,List<Long> selectedDay);
 	public ActivityVO getCanditeActivtyAttendanceLocationsDtls(Long cadreId,Long activityLevelId);
+	public List<ActivityResponseVO> getquestinaireForRetrieving(Long day);
 }

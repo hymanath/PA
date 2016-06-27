@@ -5614,8 +5614,27 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		}
 		return finalVO;
 	}
-	
-	
+		
+public List<ActivityResponseVO> getquestinaireForRetrieving(Long day){
+		List<ActivityResponseVO> finalList = new ArrayList<ActivityResponseVO>();
+		try{
+			//0.actQueAnsId,1.quesId,3.optId
+			List<Object[]> queAndOptList = activityQuestionAnswerDAO.getActivityQuesAndOptionsByDayWise(day);
+			if(commonMethodsUtilService.isListOrSetValid(queAndOptList)){
+				for (Object[] obj : queAndOptList) {
+					ActivityResponseVO VO = new ActivityResponseVO();
+					VO.setQuestionId(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					VO.setQuestion(commonMethodsUtilService.getStringValueForObject(obj[2]));
+					VO.setId(commonMethodsUtilService.getLongValueForObject(obj[3]));
+					VO.setName(commonMethodsUtilService.getStringValueForObject(obj[4]));
+					finalList.add(VO);
+				}
+			}			
+		}catch (Exception e) {
+			Log.error("Exception Occured in getquestinaireForRetrieving method in ActivityService ",e);
+		}
+		return finalList;
+	}
 	
 	
 }
