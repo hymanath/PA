@@ -24,4 +24,5 @@ public interface IActivityQuestionAnswerDAO extends GenericDao<ActivityQuestionA
 	public List<Object[]> getLocationWiseResponseDetails(SearchAttributeVO searchVO,List<Long> activityScopeQuestionIdsLsit);
 	public List<Object[]> getActivityLocationInfoByScope(Long activityLevel,Long activityScope,Long questionId,String optionType);
 	public List<Object[]> getActivityLocationInfoByScope(SearchAttributeVO searchVO,String optionType);
+	public List<Object[]> getActivityQuesAndOptionsByDayWise(Long day);
 }

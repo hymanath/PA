@@ -1100,4 +1100,18 @@ public List<Object[]> getOptionsCountByScopIdForComments(Long activityScopeId,Lo
 		
 		return query.list();
 	}
+public List<Object[]> getActivityQuesAndOptionsByDayWise(Long day){
+		
+		Query query = getSession().createQuery(" select model.activityQuestionAnswerId," +
+				" model.activityQuestionnaireId ," +
+				" model.activityQuestionnaire.activityQuestion.question," +
+				" model.activityOptionId, " +
+				" model.activityOption.option " +
+				" from ActivityQuestionAnswer model where model.day = :day and model.isDeleted = 'Y' " );
+		
+			      query.setParameter("day", day);
+			      return query.list();
+		     
+		    
+	}
 }
