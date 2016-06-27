@@ -2744,4 +2744,16 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("boothId", boothId);
 			return query.list();
 		}
+		
+		public List getBoothLocations(Long localElebodyId,String voterIdCardNo){
+			Query query=getSession().createSQLQuery("select distinct b.location from booth_publication_voter bpv,booth b,voter v " +
+					" where " +
+					" bpv.booth_id = b.booth_id and v.voter_id=bpv.voter_id and b.local_election_body_id=:localElebodyId" +
+					" and v.voter_id_card_no=:voterIdCardNo" +
+					" and b.publication_date_id = :publicationDateId");
+				query.setParameter("localElebodyId", localElebodyId);
+				query.setParameter("voterIdCardNo", voterIdCardNo);
+				query.setParameter("publicationDateId", 11l);	
+			return query.list();
+		}
 }
