@@ -67,7 +67,36 @@ public class AddressVO implements Serializable {
 	private String wardName;
 	private String panchayatName;
 	private String localElectionBodyName;
+	private Long parliamentId;
+	private String parliamentName;
+	private String partNo;
+	private String areaTypeStr;
 	
+	
+	public String getPartNo() {
+		return partNo;
+	}
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
+	public String getAreaTypeStr() {
+		return areaTypeStr;
+	}
+	public void setAreaTypeStr(String areaTypeStr) {
+		this.areaTypeStr = areaTypeStr;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
 	public String getLocalElectionBodyName() {
 		return localElectionBodyName;
 	}
