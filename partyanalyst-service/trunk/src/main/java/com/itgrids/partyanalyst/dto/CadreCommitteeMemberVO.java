@@ -106,7 +106,7 @@ public class CadreCommitteeMemberVO {
 	
 	private CadreCommitteeMemberVO ccmVO;
 	private String  houseNo;
-	private Long localElectionBody;
+	private Long localElectionBody = 0l;
 	
 	private Long cadreId;
 	private String relativeName;
