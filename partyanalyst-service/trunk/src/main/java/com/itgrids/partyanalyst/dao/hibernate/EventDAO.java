@@ -188,7 +188,7 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 	
 	public Object[] getEventDatesByEventId(Long eventId){
 		
-		Query query = getSession().createQuery(" select date(model.eventStartTime),date(model.eventEndDate) from Event model" +
+		Query query = getSession().createQuery(" select date(model.eventStartTime),date(model.eventEndTime) from Event model" +
 				" where model.eventId =:eventId and model.isActive = 'true' and model.isVisible = 'Y'");		
 		query.setParameter("eventId", eventId);
 		
