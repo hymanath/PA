@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="fullexpandcollapse/jquery.multilevelpushmenu_red.css">
 <link rel="stylesheet" href="fullexpandcollapse/fullexpandcollapse.css">
 <link rel="stylesheet" href="dist/css/font-awesome.css">
+<link rel="stylesheet" href="css/MenuResponsive.css">
 
 <!--YUI SCRIPT-->
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -60,7 +61,11 @@
 }
 header.eventsheader 
 {
-    background:url("dist/img/header-footer.png") no-repeat scroll center bottom / 100% auto  #fed501;
+    background-image:url("dist/img/header-footer.png");
+	background-color:#fed501;
+	background-size:100% auto;
+	background-position:center bottom;
+	background-repeat: no-repeat;
     background-origin: border-box;
     background-repeat: no-repeat;
     height: 71px;
@@ -89,18 +94,18 @@ footer
     <header class="eventsheader">
 	<div class="container">
         <div class="row">
-            <div class="col-md-3 col-xs-4 col-sm-1 span2">
+            <div class="col-md-3 col-xs-6 col-sm-2 span2 logoR">
                 <img src="dist/img/logo.png" class="img-responsive" alt="logo">
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-1 span1">
+            <div class="col-md-1 col-xs-1 col-sm-2 span1 cbnR">
                 <img src="dist/img/CBN1.png" class="img-responsive" alt="cbn">
             </div>
-            <div class="col-md-4 col-xs-7 col-sm-7 span5 text-center" style="line-height:20px;">               
+            <div class="col-md-4 col-xs-7 col-sm-4 span5 text-center headingR" style="line-height:20px;">               
                  <p class="header-text display-style" id="mainheading" style="font-size:22px !important;color:#5c2d25 !important;margin-top:16px;margin-bottom:0px;text-align:center">TELUGU DESAM PARTY</p><p  style="text-align:center;color: rgb(92, 45, 37) ! important; font-size: 14px ! important;"  class="header-text display-style">Dare To Dream - Strive To Achieve</p>                
             </div>
-            <div class="col-md-1 col-xs-1 col-sm-1 span1"><img src="dist/img/NTR1.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">  
+            <div class="col-md-1 col-xs-1 col-sm-2 span1 ntrR"><img src="dist/img/NTR1.png" style="margin-top: 5px;" class="img-responsive" alt="ntr">  
             </div>
-            <div class="col-md-3 col-xs-1 col-sm-1 span3">
+            <div class="col-md-3 col-xs-4 col-xs-offset-2 col-sm-2 col-sm-offset-0 span3 menuR">
 			<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
             	<p style="margin-top:1px;margin-bottom:0px;font-size:10px;color:#333;padding:0px;">Welcome, ${sessionScope.UserName} |</p> </c:if>
 				<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">
