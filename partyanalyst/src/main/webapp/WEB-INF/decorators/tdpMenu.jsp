@@ -709,6 +709,12 @@ footer
 					</li>
 				</c:if>	
 				
+				<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+					<li>
+                        <a href="debateAction.action"><i class="fa fa-dashboard"></i><span>&nbsp;&nbsp;Debate</span></a>
+                    </li>
+				</c:if>	
+				
 					<c:if test="${sessionScope.loginStatus == 'out' && (sessionScope.hasFreeUserRole == true && sessionScope.hasPartyAnalystUserRole != true)}">
 					 <li>
                         <a href="newlogoutAction.action"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp;Sign-out</span></a>
