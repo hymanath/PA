@@ -516,6 +516,13 @@ var globalVoterCardNo = "";
 					//getGrievanceStatusDetails();
 					getStatusCountsForGrievanceDetails();
 					getApprovedAmountsForGrievance();
+					
+					var cadreDisId = $('#cadreDistrictId').val();
+					
+					if(cadreDisId != null && cadreDisId.length >0 && cadreDisId<=10){
+						$("#trainingCampdetailsDiv").hide();
+					}
+
 				}
 			});
 		}
