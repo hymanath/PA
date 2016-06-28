@@ -3184,5 +3184,37 @@
 	
 	<bean name="setterAndGetterUtilService" class="com.itgrids.partyanalyst.utils.SetterAndGetterUtilService" > </bean>
 	
+	<!-- Debate Start-->
+	
+	<bean name="debateService" class="com.itgrids.partyanalyst.service.impl.DebateService">
+   		<property name="debateDAO" ref="debateDAO" />
+   		<property name="debateSmsQuestionOptionDAO" ref="debateSmsQuestionOptionDAO" />
+   		<property name="observerDAO" ref="observerDAO" />
+   		<property name="channelDAO" ref="channelDAO" />
+   		<property name="telecastTypeDAO" ref="telecastTypeDAO" />
+   		<property name="debateRolesDAO" ref="debateRolesDAO" />
+   		<property name="debateSubjectDAO" ref="debateSubjectDAO" />
+   		<property name="debateObserverDAO" ref="debateObserverDAO" />
+   		<property name="characteristicsDAO" ref="characteristicsDAO" />
+   		<property name="debateParticipantDAO" ref="debateParticipantDAO" />
+   		<property name="debateParticipantRoleDAO" ref="debateParticipantRoleDAO" />
+   		<property name="debateParticipantExceptedRoleDAO" ref="debateParticipantExceptedRoleDAO" />
+   		<property name="debateParticipantCharcsDAO" ref="debateParticipantCharcsDAO" />
+   		<property name="debateSmsQuestionDAO" ref="debateSmsQuestionDAO" />
+   		<property name="debateQuestionsDAO" ref="debateQuestionsDAO" />
+   		<property name="debateQuestionAnswerDAO" ref="debateQuestionAnswerDAO" />
+   		<property name="transactionTemplate" ref="transactionTemplate" />  
+   		<property name="partyDAO" ref="partyDAO" />
+   		<property name="candidateDAO" ref="candidateDAO" />
+   		<property name="userDAO" ref="userDAO" />
+   		<property name="debateReportDAO" ref="debateReportDAO" />
+   </bean>
+
+	<bean name="debateAnalysisService" class="com.itgrids.partyanalyst.service.impl.DebateAnalysisService">
+        <property name="debateParticipantCharcsDAO" ref="debateParticipantCharcsDAO"></property>
+        <property name="debateParticipantDAO" ref="debateParticipantDAO"></property>
+    </bean>
+    
+	<!-- Debate End -->
 </beans>		
 	

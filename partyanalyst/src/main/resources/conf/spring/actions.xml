@@ -1658,5 +1658,22 @@
 	<bean id="notificationAction" class="com.itgrids.partyanalyst.web.action.NotificationAction" singleton="false">
 		<property name="notificationService" ref="notificationService" />
 	</bean>	
+	
+	<!-- Deabete Start -->
+	
+	<bean id="debateAction" class="com.itgrids.partyanalyst.web.action.DebateAction" singleton="false">
+	 	<property name="debateService" ref="debateService"/>
+	 	<property name="staticDataService" ref="staticDataService"/>
+	 	<property name="debateAnalysisService" ref="debateAnalysisService"/>
+	 	<property name="candidateDetailsService" ref="candidateDetailsService"/>
+	 	
+	</bean>
+	
+	<bean id="debateAnalysisAction" class="com.itgrids.partyanalyst.web.action.DebateAnalysisAction" singleton="false">	
+			<property name="debateAnalysisService" ref="debateAnalysisService"/>	
+	</bean>
+	
+	<!-- Deabete End -->
+	
 </beans>	
 	
