@@ -1,0 +1,58 @@
+
+@media (min-width: 108px) and (max-width: 500px) {
+	.cbnR , .headingR , .ntrR
+	{
+		display:none !important;
+	}
+	body
+	{
+		font-size:12px !important;
+	}
+	h1 , h2 , h3 
+	{
+		font-size:16px !important;
+	}
+	h4 ,h5 ,h6
+	{
+		font-size:14px !important;
+	}
+	.fullcollapse
+	{
+		margin-top:10px !important;
+	}
+}
+@media (width: 768px){
+	.fullcollapse
+	{
+		margin-top:10px !important;
+	}
+}
+@media (min-width: 500px) and (max-width: 767px) {
+	.logoR
+	{
+		width:20% !important;
+	}
+	.cbnR , .ntrR
+	{
+		width:13% !important;
+	}
+	.headingR
+	{
+		width:33% !important;
+		font-size:16px !important
+	}
+	#mainheading
+	{
+		font-size:16px !important
+	}
+	.menuR
+	{
+		width:15% !important;
+		margin-left:0px !important;
+		margin-top:10px !important
+	}
+	#menu i
+	{
+		color:#5C2D25 !important
+	}
+}
