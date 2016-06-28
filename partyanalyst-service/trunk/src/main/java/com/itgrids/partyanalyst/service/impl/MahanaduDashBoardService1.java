@@ -2783,9 +2783,9 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			 
 			 List<Object[]> dateWiseAttendeeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
 			 if(dateWiseAttendeeExcludingMinorities!=null && dateWiseAttendeeExcludingMinorities.size()>0){
-				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> dateWiseInviteeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
 				 setExcludingMinoritiesDateDataToMap(dateWiseAttendeeExcludingMinorities,finalMap,"attendee");
-				 setExcludingMinoritiesDateDataToMap(dateWiseAttendeeExcludingMinorities,finalMap,"invitee");
+				 setExcludingMinoritiesDateDataToMap(dateWiseInviteeExcludingMinorities,finalMap,"invitee");
 			 }
 			 List<Object[]> dateWiseAttendeeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
 			 List<Object[]> dateWiseInviteeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
@@ -2881,7 +2881,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				   {   
 					   for(Object[] obj : list)
 					   {
-						   MahanaduEventVO distVO = finalMap.get(obj[0].toString());
+						   MahanaduEventVO distVO = finalMap.get(obj[1].toString());
 						   
 						   if( distVO != null)
 						   {   

@@ -6967,6 +6967,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
  		Query query = getSession().createQuery(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName," +
  				"count(distinct model.tdpCadreId) from TdpCadre model" +
  				" where model.isDeleted = 'N' and model.enrollmentYear = '2014' " +
+ 				"       and model.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:casteCategoryWiseIds) " +
  				"       and model.casteState.casteStateId  not in("+IConstants.NEW_MINORITY_CASTE_IDS+")" +
  				" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
  		query.setParameterList("casteCategoryWiseIds", casteCategoryWiseIds);
