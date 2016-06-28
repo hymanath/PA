@@ -336,9 +336,9 @@ var globalVoterCardNo = "";
 					 $("#voterIdSpan").html(result.voterIdCardNo);
 					 
 					 if(result.isFamilyVoterId =="false"){
-						 $("#isFamilyId").html('<b>Own VoterCard</b>');
+						 $("#isFamilyId").html('<b> Own Voter ID</b>');
 					 }else if(result.isFamilyVoterId == "true"){
-						 $("#isFamilyId").html('<b>Family VoterCard</b>');
+						 $("#isFamilyId").html('<b> Family Voter ID </b>');
 					 }
 					 }else{
 						 $("#isFamilyId").html("Not Available."); 
