@@ -829,7 +829,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					queryStr.append(" and (model.start_date between :fromDate and :toDate) ");
 				}
 				queryStr.append(" group by   date(model.start_date) ");
-							
+				queryStr.append(" order by   date(model.start_date) desc ");
 			Query query = getSession().createSQLQuery(queryStr.toString());
 			
 			if(committeeLevelValueList != null && committeeLevelValueList.size()>0)
