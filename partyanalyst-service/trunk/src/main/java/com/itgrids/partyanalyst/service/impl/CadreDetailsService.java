@@ -7530,8 +7530,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				}
 			}
 		}
-			
-		if(grievanDetailsVO != null && grievanDetailsVO.getSubList() != null && grievanDetailsVO.getSubList().size()>0)
+		
 			if(grievanDetailsVO != null && stausMap != null && stausMap.size()>0){
 		        for (String statusId : stausMap.keySet()) {
 		          grievanDetailsVO.getSubList().add(statusMap.get(statusId));
