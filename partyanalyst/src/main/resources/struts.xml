@@ -12545,5 +12545,134 @@
 				<param name="root">responsevoList</param>
 			</result>
 	</action>
+	<!-- debate start -->
+	
+	<action name="debateAction" class="debateAction" >
+		<result name="success">/jsp/debate.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
+	<action name="debateEditAction" class="debateAction" method="editDebateDetails">
+	   <result>/jsp/debetEditForm.jsp</result>
+	 </action>
+	<action name="debateReportAction" class="debateAction">
+			 <result>/jsp/debateReport.jsp</result>
+	</action>
+	<action name="genereateReportAction" class="debateAction" method="generateReport">
+			 <result>/jsp/genereateDebetReport.jsp</result>
+	 </action>
+	<action name="debateAnalysisAction" class="debateAnalysisAction" >
+		 	 <result name="success">/jsp/debateAnalysis.jsp</result>
+		 	 <result name="error" type="redirect">login.action</result>
+	</action>
+	
+	
+	<action name="saveDebateDetailsAction" class="debateAction" method="saveDebateDetial">
+		   <result name="success" type="json">
+		 	<param name="root">resultStatus</param>
+		   </result>
+	</action>
+	
+	<action name="retriveDebateDetailsAction" class="debateAction" method="retriveDebateDetails">
+		   <result name="success" type="json">
+		 	<param name="root">debateVO</param>
+		   </result>
+	</action>
+	
+	<action name="saveDebateRelatedAttributesAction" class="debateAction" method="saveDebateRelatedAttributes">
+		   <result name="success" type="json">
+		 	<param name="root">resultStatus</param>
+		   </result>
+	</action>
+	
+	<action name="updateFieldAttributesAction" class="debateAction" method="updateFieldAttributes">
+		   <result name="success" type="json">
+		 	<param name="root">channelList</param>
+		   </result>
+	</action>
+	
+	<action name="debateDetaildBtDatesAction" class="debateAction" method="getDebateDetailsBtDates">
+		   <result name="success" type="json">
+		 	<param name="root">debateVO</param>
+		   </result>
+	</action>
+	
+	<action name="generateKeyReportAction" class="debateAction" method="generateUrl">
+		   <result name="success" type="json">
+		 	<param name="root">status</param>
+		   </result>
+	</action>
+	
+	<action name="deleteDebateReportAction" class="debateAction" method="deleteDebateReport">
+		   <result name="success" type="json">
+		 	<param name="root">status</param>
+		   </result>
+	</action>
+	
+	<action name="genereateReportAction" class="debateAction" method="generateReport">
+	 			 <result>/jsp/genereateDebetReport.jsp</result>
+	</action>
+	
+	<action name="getCandidatesListForDebateAction" class="debateAction" method="getCandidatesListForDebate">
+			   <result name="success" type="json">
+			 		<param name="root">candidatesList</param>
+			   </result>
+	</action>
+	
+	<action name="getDebateAnalysisDetailsAction" class="debateAction" method="getDebateAnalysisDetails">
+			   <result name="success" type="json">
+			 		<param name="root">debateDetails</param>
+			   </result>
+	</action>
+	
+	<action name="createCandidateAction" class="debateAction" method="createCandidate">
+			   <result name="success" type="json">
+			 		<param name="root">resultStatus</param>
+			   </result>
+	</action>
+	
+	<action name="deleteSelectedDEbateAction" class="debateAction" method="deleteSelectedDEbate">
+		   <result name="success" type="json">
+		 	<param name="root">status</param>
+		   </result>
+	</action>
+	
+	<action name="getPartiesListActionByStateId" class="debateAction" method="getPartiesListByStateId">
+					<result type="json" name="success">
+		    			<param name="root">partiesList1</param>
+		    		</result>
+	</action>
+	
+	<action name="getPartyWiseTotalDebatesAndScalesService" class="debateAction" method="getPartyWiseTotalDebatesAndScalesService">
+					<result type="json" name="success">
+		    			<param name="root">debateReportList</param>
+		    		</result>
+	</action>
+	
+	<action name="partyWiseCandidatePerformance" class="debateAction" method="partyWiseCandidatePerformance">
+					<result type="json" name="success">
+		    			<param name="root">debateAnalysisList</param>
+		    		</result>
+	</action>
+		 
+	<action name="getPartyWiseOverAllPerformance" class="debateAction" method="getPartyWiseOverAllPerformance">
+					<result type="json" name="success">
+		    			<param name="root">overllPartyWiseList</param>
+		    		</result>
+	</action>
+	
+	<action name="getPartyWiseStrongAndWeakTopicAndCandidates" class="debateAction" method="getPartyWiseStrongAndWeakTopicAndCandidates">
+					<result type="json" name="success">
+		    			<param name="root">debateReportList</param>
+		    		</result>
+	</action>
+	
+	<action name="getCandidateCharacteristicsDetailsAction" class="debateAnalysisAction" method="getDebateCandidateCharacteristicsDetailsByParty">
+					<result type="json" name="success">
+		    			<param name="root">candidateCharcDetails</param>
+		    		</result>
+	</action>
+	
+	<!-- debate end -->
+	
 </package>
 </struts>      

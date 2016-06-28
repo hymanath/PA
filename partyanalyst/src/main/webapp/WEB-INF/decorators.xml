@@ -168,7 +168,7 @@
 		<!--<pattern>/rtcUnionSearchAction*</pattern>-->
 		<pattern>/affiliatedCadreSearchAction*</pattern>
 		<!--<pattern>/rtcUnionRegistrationAction*</pattern>-->
-		<pattern>/affiliatedCadreRegistrationAction*</pattern>
+		<pattern>/affiliatedCadreRegistrationAction*</pattern>		
 		
 		</excludes>  
 	
@@ -664,5 +664,13 @@
 	 <pattern>/rescheduledCandidateAction*</pattern>
 	 <pattern>/updateActivityNewAction*</pattern>
 	 <pattern>/eventReportDashBoardAction*</pattern>
+	 
+	 <!-- debate start -->
+	 	<pattern>/debateAction*</pattern>
+	 	<pattern>/debateEditAction*</pattern>
+		<pattern>/debateReportAction*</pattern>
+	 	<pattern>/debateAnalysisAction*</pattern>
+	 	<pattern>/genereateReportAction*</pattern>
+	 <!-- debate end-->
 	</decorator> 
 </decorators>
