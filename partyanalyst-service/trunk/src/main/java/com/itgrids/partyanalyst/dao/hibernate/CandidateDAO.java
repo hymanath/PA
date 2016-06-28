@@ -318,4 +318,38 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidatesForDebate(Long partyId)
+	{
+		Query query = getSession().createQuery("select distinct model.candidateId,model.lastname from Candidate model where " +
+				" model.party.partyId = :partyId and model.isDebateCandidate = 'Y'");
+		query.setParameter("partyId", partyId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidatesForDebateParties(List<Long> partyIds)
+	{
+		StringBuffer query = new StringBuffer();
+		
+		query.append(" select distinct model.candidateId,model.lastname from Candidate model where model.isDebateCandidate = 'Y' ");
+		
+		if(partyIds != null && partyIds.size()>0)
+			query.append(" and model.party.partyId in (:partyIds) ");
+		
+		Query queryObj = getSession().createQuery(query.toString());
+		
+		if(partyIds != null && partyIds.size()>0)
+			queryObj.setParameterList("partyIds", partyIds);
+		
+		return queryObj.list();
+	}
+	public List<Long> getCandidateExistesOrNot(Long partyId,String name)
+	{
+		Query query = getSession().createQuery("select  distinct model.candidateId from Candidate model " +
+				" where model.party.partyId = :partyId and model.lastname = :name and model.isDebateCandidate = 'Y' ");
+		query .setParameter("partyId", partyId);
+		query .setParameter("name", name);
+		return query.list();
+	}
 }

@@ -213,4 +213,7 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getCandidateDetailsBySearch(String gender,String name,Long constituencyId,Long stateId,String selectedType);
 	 
 	 public ResultStatus saveCandidateVoterDetails(Long CandidateId,Long voterId);
+	 
+	 public List<SelectOptionVO> getPartiesList();
+	 public List<SelectOptionVO> getPartiesListByStateId(Long stateId);
 }

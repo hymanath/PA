@@ -121,6 +121,8 @@ public class Party implements java.io.Serializable {
 	}
 
 	
+	private String isNewsPortal;
+	
 
 	// Property accessors
 	@Id
@@ -405,6 +407,15 @@ public class Party implements java.io.Serializable {
 
 	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
 		this.fieldVoterData = fieldVoterData;
+	}
+
+	@Column(name = "is_news_portal")
+	public String getIsNewsPortal() {
+		return isNewsPortal;
+	}
+
+	public void setIsNewsPortal(String isNewsPortal) {
+		this.isNewsPortal = isNewsPortal;
 	}
 	
 
