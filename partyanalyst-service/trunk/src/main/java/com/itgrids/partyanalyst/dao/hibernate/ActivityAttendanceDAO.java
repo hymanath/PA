@@ -31,7 +31,7 @@ public class ActivityAttendanceDAO extends
 	
 	public List<Object[]> getCadreAttendanceDetls(Long tdpCadreId) {
 		
-		Query query = getSession().createQuery(" select model.activityScope.activityLevelId, model.isAttended ,count(model.tdpCadre.tdpCadreId)  " +
+		Query query = getSession().createQuery(" select model.activityScope.activityLevelId, model.isAttended ,count(distinct model.activityScopeId)  " +
 				" from ActivityAttendance model where model.tdpCadre.tdpCadreId = :tdpCadreId  and model.activityScope.isDeleted = 'N' and  model.activityScope.activity.isActive='Y' " +
 				" group by model.activityScope.activityLevelId,model.isAttended order by model.activityScope.activityLevelId asc");
              query.setParameter("tdpCadreId", tdpCadreId);
