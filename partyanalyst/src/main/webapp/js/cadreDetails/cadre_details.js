@@ -519,9 +519,9 @@ var globalVoterCardNo = "";
 					
 					var cadreDisId = $('#cadreDistrictId').val();
 					
-					if(cadreDisId != null && cadreDisId.length >0 && cadreDisId<=10){
+					if(cadreDisId != null && cadreDisId<=10)
 						$("#trainingCampdetailsDiv").hide();
-					}
+					
 
 				}
 			});
