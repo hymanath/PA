@@ -2091,6 +2091,17 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 }
 					 }
 				 }
+			     
+			  // calculate all non invitess.
+				 Long totalNonInvitees = 0l;
+				 if( finalMap != null && finalMap.size() > 0){
+					 for (Map.Entry<Long, MahanaduEventVO> entry : finalMap.entrySet()) {
+						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
+					 }
+				 }
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
+				
 				//total cadre 
 				if(casteIds != null && casteIds.size() > 0){
 					 List<Object[]> totalCadreList = eventInviteeDAO.getTotalCadresCountByCasteIds(casteIds);
@@ -2123,8 +2134,6 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,casteIds);
 				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,casteIds);
 				 
-				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
-			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
 			 }
 			 return  isDataAvailable;
 		}
@@ -2223,6 +2232,17 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 }
 					 }
 				 }
+				
+				// calculate all nin invitess.
+				 Long totalNonInvitees = 0l;
+				 if( finalMap != null && finalMap.size() > 0){
+					 for (Map.Entry<Long, MahanaduEventVO> entry : finalMap.entrySet()) {
+						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
+					 }
+				 }
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
+			     
 				if(ageWiseIds != null && ageWiseIds.size() > 0){
 					List<Object[]> ageRangeIdAndCadreCount = tdpCadreDAO.getTotalCadreCountAgeRangeIdWise(ageWiseIds);
 					if(ageRangeIdAndCadreCount != null && ageRangeIdAndCadreCount.size() > 0){
@@ -2234,6 +2254,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 }
 					}
 				}
+				
+				
 				
 			}catch(Exception e){
 				Log.error("Exception rised in getAllDaysAgeWiseAttendeesAndinviteesCount()",e);
@@ -2254,12 +2276,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,ageWiseIds);
 				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,ageWiseIds);
 				 
-				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
-			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
 			 }
 			 return  isDataAvailable;
 		}
-		
+		public void calCulatinginviteeNonInviteePercantage(Map<?,MahanaduEventVO> finalMap,Long totalAttended,Long totalNonInvitees){
+		    
+		    if( finalMap!= null && finalMap.size() > 0){
+		       for (Map.Entry<?, MahanaduEventVO> entry : finalMap.entrySet()) {
+		        
+		         entry.getValue().setAttendeePercantage(calcPercantage(totalAttended, entry.getValue().getAttendees()));
+		         entry.getValue().setInviteePercantage(calcPercantage(entry.getValue().getInviteesCalled(), entry.getValue().getInvitees()));
+		         entry.getValue().setNonInviteePercantage(calcPercantage(totalNonInvitees, entry.getValue().getNonInvitees()));
+		       }
+		     }
+		    
+		  }
 		public void getAttendeeAndinviteeCountsDateWiseByAge(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap){
 			 
 			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.ageWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds);
@@ -2432,7 +2463,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						      }
 						 }
 					 }
-					 
+					 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+				     calCulatingGenderWiseinviteeNonInviteePercantage(finalVO,totalAttended);
 					 
 					 List<Object[]> genderCadreData = tdpCadreDAO.genderWiseTdpCadre();
 					 if( genderCadreData != null && genderCadreData .size() > 0){
@@ -2482,10 +2514,6 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						   finalVO.getSubMap().put(dateVO.getDateStr(),dateVO);
 					   }
 				   }
-				 
-				  Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
-			      calCulatingGenderWiseinviteeNonInviteePercantage(finalVO,totalAttended);
-				 
 			 }
 			 return  isDataAvailable;
 		}
@@ -2596,13 +2624,16 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
       	    
       	    if( finalVO!= null && totalAttended > 0l){
       	    	
+      	    	Long totalNonInviteesCalled = finalVO.getMaleNonInvitees() + finalVO.getFemaleNonInvitees(); 
+      	    	
+      	    	
       	         finalVO.setMaleAttendeePercantage(calcPercantage(totalAttended, finalVO.getMaleAttendees()));
-      	         finalVO.setMaleInviteePercantage(calcPercantage(finalVO.getMaleAttendees(), finalVO.getMaleInvitees()));
-      	         finalVO.setMaleNonInviteePercantage(calcPercantage(finalVO.getMaleAttendees(),finalVO.getMaleNonInvitees()));
+      	         finalVO.setMaleInviteePercantage(calcPercantage(finalVO.getMaleInviteesCalled(), finalVO.getMaleInvitees()));
+      	         finalVO.setMaleNonInviteePercantage(calcPercantage(totalNonInviteesCalled,finalVO.getMaleNonInvitees()));
       	         
       	         finalVO.setFemaleAttendeePercantage(calcPercantage(totalAttended, finalVO.getFemaleAttendees()));
-   	             finalVO.setFemaleInviteePercantage(calcPercantage(finalVO.getFemaleAttendees(), finalVO.getFemaleInvitees()));
-   	             finalVO.setFemaleNonInviteePercantage(calcPercantage(finalVO.getFemaleAttendees(),finalVO.getFemaleNonInvitees()));
+   	             finalVO.setFemaleInviteePercantage(calcPercantage(finalVO.getFemaleInviteesCalled(), finalVO.getFemaleInvitees()));
+   	             finalVO.setFemaleNonInviteePercantage(calcPercantage(totalNonInviteesCalled,finalVO.getFemaleNonInvitees()));
       	       
       	     }
       	  }
@@ -2719,6 +2750,17 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					 }
 				}
 				
+				// calculate all non invitess.
+				 Long totalNonInvitees = 0l;
+				 if( finalMap != null && finalMap.size() > 0){
+					 for (Map.Entry<String, MahanaduEventVO> entry : finalMap.entrySet()) {
+						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
+					 }
+				 }
+				Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+				calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
+				
+				
 				if(casteCategoryIds != null && casteCategoryIds.size() > 0){
 					List<Object[]> cadreCount = tdpCadreDAO.getTotalCadreCountByCasteCategoryexcludingMinorities(casteCategoryIds);
 					if(cadreCount != null && cadreCount.size() > 0){
@@ -2772,9 +2814,6 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					 minorityVO.setNonInvitees(minorityVO.getAttendees() - inviteeMinorities);	
 				 }
 			 }
-			 
-			 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
-			 calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
 		     
 			 return  isDataAvailable;
 		}
