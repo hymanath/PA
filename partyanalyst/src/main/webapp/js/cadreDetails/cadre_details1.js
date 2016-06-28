@@ -412,38 +412,38 @@ function buildCandateActivityAttendance(result){
 	str+='<thead style="background:#ccc">';
 	str+='<th>Activity level</th>';
 	str+='<th>Activity Name</th>';
-	str+='<th>Status</th>';
+	//str+='<th>Status</th>';
 	str+='<th>Invited</th>';
 	str+='<th>Attended</th>';
-	str+='<th>Absent</th>';
+	str+='<th>Not Attended </th>';
 	str+='</thead>';
 	str+='<tbody>';
 	for(var i in result){
 	str+='<tr>';
 	str+='<td>'+result[i].isLocation+'</td>';
 	str+='<td>'+result[i].attendendLocation+'</td>';
-	if(result[i].invitteeCnt != null && result[i].invitteeCnt >0 && result[i].attendedCount != null && result[i].attendedCount>0)
-		str+='<td> Conducted </td>';
-	else if(result[i].conductedDate != null && result[i].conductedDate ==' Not Conducted ' )
-		str+='<td> Not Conducted </td>';
-	else if(result[i].conductedDate != null && result[i].conductedDate >0 )
-		str+='<td> Conducted </td>';	
-	else
-		str+='<td> - </td>';
+	//if(result[i].invitteeCnt != null && result[i].invitteeCnt >0 && result[i].attendedCount != null && result[i].attendedCount>0)
+	//	str+='<td> Conducted </td>';
+	//else if(result[i].conductedDate != null && result[i].conductedDate =='Conducted')
+	//	str+='<td> Conducted </td>';
+	//if(result[i].conductedDate != null && result[i].conductedDate.length >0 )
+	//	str+='<td> Conducted </td>';	
+	//else
+	//	str+='<td> - </td>';
 	if(result[i].invitteeCnt == 0){
-		str+='<td>-</td>';
+		str+='<td style="text-align:center;">-</td>';
 	}else{
-		str+='<td>'+result[i].invitteeCnt+'</td>';
+		str+='<td style="text-align:center;">'+result[i].invitteeCnt+'</td>';
 	}
 	if(result[i].attendedCount == 0){
-	str+='<td>-</td>';
+	str+='<td style="text-align:center;">-</td>';
 	}else{
-		str+='<td>'+result[i].attendedCount+'</td>';
+		str+='<td style="text-align:center;">'+result[i].attendedCount+'</td>';
 	}
 	if(result[i].abscentCnt == 0){
-	str+='<td>-</td>';
+	str+='<td style="text-align:center;">-</td>';
 	}else{
-		str+='<td>'+result[i].abscentCnt+'</td>';
+		str+='<td style="text-align:center;">'+result[i].abscentCnt+'</td>';
 	}
 	
 	str+='</tr>';
