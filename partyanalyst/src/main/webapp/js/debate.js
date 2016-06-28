@@ -1038,7 +1038,7 @@ function callAjaxToGetTheResults(selectedvalue)
 	var endDate = $('#toDateId').val();
 	$("#RerrDiv").html('');
 	$("#dateWiseReportDiv").html("");
-	$("#paginationAtEnd").html("");		
+	//$("#paginationAtEnd").html("");		
 	$("#dateWiseReportDiv").hide();
 	if(startDate != undefined && startDate.length <=0){
 		$("#RerrDiv").html("From Date is Required.");
@@ -1372,7 +1372,7 @@ function getDebateDetailsBtDates()
 	$("#RerrDiv").html('');
 	$("#dateWiseReportDiv").hide();
 	$("#dateWiseReportDiv").html("");
-	$("#paginationAtEnd").html("");
+	//$("#paginationAtEnd").html("");
 	if(startDate != undefined && startDate.length <=0){
 		$("#RerrDiv").html("From Date is Required.");
 		return;
