@@ -114,7 +114,8 @@ public List<Object[]> getGrievanceStatusWiseCountsByTypeOfIssueAndStatus(Long id
 	  }
 	  public List<String> getCompletedStatus(){
 		  
-		  Query query = getSession().createSQLQuery("select distinct Completed_Status from complaint_master where type_of_issue in ('Party','Govt','Welfare')");
+		  Query query = getSession().createSQLQuery(" select distinct Completed_Status from complaint_master where Completed_Status is not  null and " +
+		  		" type_of_issue in ('Party','Govt','Welfare') ");
 		  
 		  return query.list();
 	  }
