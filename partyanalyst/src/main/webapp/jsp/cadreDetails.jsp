@@ -2158,12 +2158,7 @@ function generateExcel()
 function generateExcel1(){
 	 tableToExcel('grievanceStatusWiseTableId', 'Grievance Request Status Details Report');
 }
-$( document ).ready(function(){
-var cadreDisId = $('#cadreDistrictId').val();
-if(cadreDisId<=10){
-	$("#trainingCampdetailsDiv").hide();
-}
-});
+
 </script>
 
 </body>
