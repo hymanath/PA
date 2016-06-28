@@ -2159,7 +2159,7 @@ function generateExcel1(){
 	 tableToExcel('grievanceStatusWiseTableId', 'Grievance Request Status Details Report');
 }
 
-});
+
 </script>
 
 </body>
