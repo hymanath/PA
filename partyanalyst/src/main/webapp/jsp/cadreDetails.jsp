@@ -795,6 +795,7 @@ var globalCadreId = '${cadreId}';
 				<h4 style="border-bottom:1px solid #999">Survey Details</h4>
 					
 		</div>-->
+		<c:if test="${not fn:contains(sessionScope.USER.entitlements, 'CADRE_SEARCH_ONLY' )}">
 		 <div class="row">
         	<div class="col-md-12 col-xs-12">
             	<div class="panel panel-default">
@@ -852,6 +853,7 @@ var globalCadreId = '${cadreId}';
                 </div>
             </div>
         </div>
+		</c:if>
 		
     </div>
     <!-- model -->
