@@ -201,9 +201,9 @@ var globalCadreId = '${cadreId}';
 					</div>
 					<div class="panel-body"  id="identityBodyId">
 						<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
-						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
 						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
 						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
+						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
 					</div>
 				</div>
 				<div class="panel panel-default arrowChangeIcon">
@@ -2159,6 +2159,7 @@ function generateExcel1(){
 	 tableToExcel('grievanceStatusWiseTableId', 'Grievance Request Status Details Report');
 }
 
+});
 </script>
 
 </body>
