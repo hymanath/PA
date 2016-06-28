@@ -7369,8 +7369,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 	      if(statusList != null && statusList.size() > 0){
 	        for (String status : statusList) {
 	        	//String completeStatus = obj[0] != null? obj[0].toString():"";
-	        	
-	        	statusMap.put(status.toUpperCase(), 0l);
+	        	if(status != null)
+	        		statusMap.put(status.toUpperCase(), 0l);
 	        }
 	        
 	        if(statusMap != null && statusMap.size()>0)
@@ -7667,10 +7667,12 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 			List<String> statusList = userAddressDAO.getCompletedStatus();
 			if(statusList != null && statusList.size()>0){
 				for (String status : statusList) {
-					GrievanceDetailsVO vo = new GrievanceDetailsVO();
-					vo.setName(status.toUpperCase());
-					vo.setCount(0l);
-					statusMap.put(status.toUpperCase(), vo);
+					if(status != null){
+						GrievanceDetailsVO vo = new GrievanceDetailsVO();
+						vo.setName(status.toUpperCase());
+						vo.setCount(0l);
+						statusMap.put(status.toUpperCase(), vo);
+					}
 				}
 			}
 			String order = IConstants.GRIEVANCE_REQUESTS_STATUS_LIST;
@@ -8897,7 +8899,7 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				Long activitylevelId = commonMethodsUtilService.getLongValueForObject(obj[2]);
 				String levelStr =commonMethodsUtilService.getStringValueForObject(obj[3]) ;
 				Long activityId = commonMethodsUtilService.getLongValueForObject(obj[4]);
-				String conducteDateStr =commonMethodsUtilService.getStringValueForObject(obj[6]) ;
+				//String conducteDateStr =commonMethodsUtilService.getStringValueForObject(obj[6]) ;
 				
 				ActivityVO vo = new ActivityVO();
 				vo.setActivityScopeId(scopeId);
@@ -8905,10 +8907,10 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 				vo.setLocationLevel(activitylevelId);
 				vo.setIsLocation(levelStr);
 				vo.setActivityNameId(activityId);
-				if(conducteDateStr != null && conducteDateStr.trim().length()>0)
-					vo.setConductedDate(conducteDateStr);
-				else
-					vo.setConductedDate(" Not Conducted ");
+				//if(conducteDateStr != null && conducteDateStr.trim().length()>0)
+				//	vo.setConductedDate(conducteDateStr);
+				//else
+					vo.setConductedDate("Conducted");
 				returnList.add(vo);
 			}
 			

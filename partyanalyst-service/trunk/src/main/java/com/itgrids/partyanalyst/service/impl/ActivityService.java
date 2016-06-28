@@ -4505,7 +4505,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						String locationName = localElectionBodyDAO.get(locationValue).getName();
 						vo.setAttendendLocation(locationName );
 					}
-					else if(locationLevel != null && (locationLevel.longValue() == 8L || locationLevel.longValue() == 14L || locationLevel.longValue() == 15L)){
+					else if(locationLevel != null && (locationLevel.longValue() == 8L || locationLevel.longValue() == 14L || locationLevel.longValue() == 13L)){
 						String locationName = constituencyDAO.get(locationValue).getName();
 						vo.setAttendendLocation(locationName + "("+activityLevel+")");
 					}
@@ -4569,8 +4569,8 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					Long count = commonMethodsUtilService.getLongValueForObject(param[2]);
 					
 					Map<String,Long> attendanceTypemap = new HashMap<String, Long>(0);
-						if(attendaceMap.get(attendanceType) != null)
-							attendanceTypemap = attendaceMap.get(attendanceType);
+						if(attendaceMap.get(levelId) != null)
+							attendanceTypemap = attendaceMap.get(levelId);
 						
 						attendanceTypemap.put(attendanceType, count);
 						attendaceMap.put(levelId, attendanceTypemap);
