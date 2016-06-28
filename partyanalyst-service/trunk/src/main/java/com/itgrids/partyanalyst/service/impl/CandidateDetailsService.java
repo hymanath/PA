@@ -5248,4 +5248,51 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 	}
 	
 }
+	public List<SelectOptionVO> getPartiesList()
+	{
+		 try{
+			 List<SelectOptionVO> selectOptionVOList = null;
+			 List<Object[]> list = partyDAO.getPartiesList();
+			 if(list != null && list.size() > 0)
+			 {
+				selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+				for(Object[] params:list)
+				 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
+			 }
+			 
+			return selectOptionVOList; 
+		 }catch (Exception e) {
+			//e.printStackTrace();
+			log.error("Exception Occured in getPartiesList() method, Exception - ",e);
+			return null;
+		}
+	}
+	public List<SelectOptionVO> getPartiesListByStateId(Long stateId)
+	{
+		try{
+			  List<Long> statesList=new ArrayList<Long>();
+			 if(stateId==0l)
+			 {
+				 statesList.add(1l);
+				 statesList.add(36l);
+			 }
+			 else
+				 statesList.add(stateId);
+			 
+		List<SelectOptionVO> selectOptionVOList = null;
+		List<Object[]> list = partyDAO.getPartiesListByStateId(statesList);
+		if(list != null && list.size() > 0)
+		{
+		selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		for(Object[] params:list)
+		selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
+		}
+		
+		return selectOptionVOList;
+		}catch (Exception e) {
+		//e.printStackTrace();
+		log.error("Exception Occured in getPartiesList(Long stateId) method, Exception - ",e);
+		return null;
+		}
+	}
 }

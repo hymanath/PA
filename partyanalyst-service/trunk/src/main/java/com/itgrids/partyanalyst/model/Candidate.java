@@ -77,6 +77,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateWebsite> candidateWebsite = new HashSet<CandidateWebsite>(0);
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	
+	private String isDebateCandidate;
  
 	// Constructors
 
@@ -393,4 +394,15 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setVoter(Voter voter) {
 	this.voter = voter;
 	}
+
+	@Column(name = "is_debate_candidate")
+	public String getIsDebateCandidate() {
+		return isDebateCandidate;
+	}
+
+	public void setIsDebateCandidate(String isDebateCandidate) {
+		this.isDebateCandidate = isDebateCandidate;
+	}
+	
+	
 }

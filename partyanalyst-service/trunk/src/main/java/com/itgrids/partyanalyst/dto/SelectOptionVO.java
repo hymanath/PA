@@ -38,7 +38,9 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String longititude;
 	private String mandalName;
 	private String panchayatName;
-	
+	private Long count=0l;
+	private List<Long> totalCountList;
+	private Long constituencyId;
 	
 	
 	public String getMandalName() {
@@ -330,6 +332,30 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setLongititude(String longititude) {
 		this.longititude = longititude;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+	public List<Long> getTotalCountList() {
+		return totalCountList;
+	}
+
+	public void setTotalCountList(List<Long> totalCountList) {
+		this.totalCountList = totalCountList;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	

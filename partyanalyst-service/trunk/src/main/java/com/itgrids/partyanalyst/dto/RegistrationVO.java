@@ -84,6 +84,7 @@ public class RegistrationVO extends BaseDTO{
 	private String randomNumber;
 	private String stateName;
 	
+	private String userAccessType;
 	
 	
 	public String getStateName() {
@@ -603,6 +604,14 @@ public void setIpAddress(String ipAddress) {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getUserAccessType() {
+		return userAccessType;
+	}
+
+	public void setUserAccessType(String userAccessType) {
+		this.userAccessType = userAccessType;
 	}
 
 	
