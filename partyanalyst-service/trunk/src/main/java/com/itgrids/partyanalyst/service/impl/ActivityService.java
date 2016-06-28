@@ -4576,8 +4576,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						attendaceMap.put(levelId, attendanceTypemap);
 					}
 			}
-			List<Object[]> list2 = activityLocationAttendanceDAO.getActivityDetailsByTdpCadreId(cadreId);
 			Map<Long,Long> otherAttendanceMap  = new HashMap<Long,Long>(0); 
+		/*	List<Object[]> list2 = activityLocationAttendanceDAO.getActivityDetailsByTdpCadreId(cadreId);
+			
 			if(list2 != null && list2.size() > 0){
 				for (Object[] obj : list2) {
 					Long id = Long.parseLong(obj[0] != null ? obj[0].toString():"");
@@ -4585,13 +4586,13 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					if(otherAttendanceMap.get(id) != null)
 						count = otherAttendanceMap.get(id);
 					
-					otherAttendanceMap.put(id, (count+commonMethodsUtilService.getLongValueForObject(obj[1])));
+					otherAttendanceMap.put(id, (count+commonMethodsUtilService.getLongValueForObject(obj[1])));*/
 					/*ActivityVO vo = activityMap.get(id);
 					if(vo != null){
 						vo.setAttendedCount(Long.parseLong(obj[1] != null ? obj[1].toString():""));
 					}*/
-				}
-			}
+				//}
+			//}
 			
 			if(commonMethodsUtilService.isMapValid(attendaceMap)){
 				for (Long levelId : attendaceMap.keySet()) {

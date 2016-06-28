@@ -7390,10 +7390,12 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 			List<String> statusList = userAddressDAO.getCompletedStatus();
 			if(statusList != null && statusList.size()>0){
 				for (String status : statusList) {
-					GrievanceDetailsVO vo = new GrievanceDetailsVO();
-					vo.setName(status.toUpperCase());
-					vo.setCount(0l);
-					statusMap.put(status.toUpperCase(), vo);
+					if(status !=null){
+						GrievanceDetailsVO vo = new GrievanceDetailsVO();
+						vo.setName(status.toUpperCase());
+						vo.setCount(0l);
+						statusMap.put(status.toUpperCase(), vo);
+					}
 				}
 			}
 			Map<String,GrievanceDetailsVO> stausMap = new LinkedHashMap<String, GrievanceDetailsVO>();
@@ -7504,7 +7506,7 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 				GrievanceDetailsVO  benefitVO = benefitMap.get(status);
 				int i = 0;
 				GrievanceDetailsVO tempVO = null;
-				if(benefitVO.getSubList() != null && benefitVO.getSubList().size()>0){
+				if(benefitVO != null && benefitVO.getSubList() != null && benefitVO.getSubList().size()>0){
 					
 					do{
 						tempVO = benefitVO.getSubList().get(i);
@@ -7529,12 +7531,13 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 			}
 		}
 			
-			
-			if(stausMap != null && stausMap.size()>0){
+		if(grievanDetailsVO != null && grievanDetailsVO.getSubList() != null && grievanDetailsVO.getSubList().size()>0)
+			if(grievanDetailsVO != null && stausMap != null && stausMap.size()>0){
 		        for (String statusId : stausMap.keySet()) {
 		          grievanDetailsVO.getSubList().add(statusMap.get(statusId));
 		        }
 		     }
+		
 			if(grievanDetailsVO != null && grievanDetailsVO.getSubList() != null && grievanDetailsVO.getSubList().size()>0){
 				Map<String,Map<String,Long>> locationWiseStatusMap = new LinkedHashMap<String, Map<String,Long>>(0);
 				for (GrievanceDetailsVO grievanceDetailsVO : grievanDetailsVO.getSubList()) {
