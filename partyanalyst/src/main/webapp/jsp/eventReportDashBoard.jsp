@@ -1140,16 +1140,16 @@ min: 0,
 max: 21,
 step: 1,
 slide: function( event, ui ) {
-$( "#amountFrCstPrcntage" ).val( "Caste Percentage: " + ui.value +" %");
+$( "#amountFrCstPrcntage" ).val( "Total Attended Percentage: " + ui.value +" %");
 },
 change: function( event, ui ) {
-$( "#amountFrCstPrcntage" ).val( "Caste Percentage: " + ui.value +" %");
+$( "#amountFrCstPrcntage" ).val( "Total Attended Percentage: " + ui.value +" %");
 var casteRangePer;
 casteRangePer=ui.value;
 buildCstPrcntgHghChrtBySlide(casteRangePer);
 }
 });
-casteRangePer=$( "#amountFrCstPrcntage" ).val( "Caste Percentage: " + $( "#sliderFrCstPrcntgWsId" ).slider( "value" ) +" %");
+casteRangePer=$( "#amountFrCstPrcntage" ).val( "Total Attended Percentage: " + $( "#sliderFrCstPrcntgWsId" ).slider( "value" ) +" %");
 casteRangePer=$( "#sliderFrCstPrcntgWsId" ).slider( "value" );
 };
 
