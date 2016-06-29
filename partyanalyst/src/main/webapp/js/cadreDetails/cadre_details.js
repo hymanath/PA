@@ -137,8 +137,7 @@ function getParticipatedConstituencyId(cadreId){
 				 data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					if(result !=null){
-						//alert(1);
-						
+					
 						if(result.districtId != null && result.districtId > 0)
 						$("#cadreParticipatedDistrictId").val(''+result.districtId+'');
 						if(result.id != null && result.id > 0)
@@ -154,9 +153,9 @@ function getParticipatedConstituencyId(cadreId){
 						participatedParlName = result.parliament;
 						participatedDistName = result.district;
 						
-						//alert(participatedConstituencyId);
+					
 						if(participatedConstituencyId != null && participatedConstituencyId > 0){
-						//alert(1);
+						
 							$("#participatedDivId").show();
 							$("#participatedConstId").html(""+result.name+"&nbsp;&nbsp;"+participatedConstituencyType+"");
 						}else if(participatedParliamentId != null && participatedParliamentId > 0){
@@ -521,7 +520,8 @@ var globalVoterCardNo = "";
 					
 					if(cadreDisId != null && cadreDisId<=10)
 						$("#trainingCampdetailsDiv").hide();
-					
+					getTotalIVRDetailsByTdpCadreId(0);
+					getIVRSummaryByTdpCadreId();
 
 				}
 			});
@@ -1240,7 +1240,6 @@ var globalVoterCardNo = "";
 			$("#memberShipCountDiv").html('<center><img alt="Processing Image" src="images/icons/loading.gif"></center>');
 			var pcId=0;
 			//pcId:participatedConstituencyId,pcType:participatedConstituencyType
-			//alert(participatedParliamentId);
 			if(participatedConstituencyId != null && participatedConstituencyId > 0){
 				pcId = participatedConstituencyId;
 			}else{
@@ -1934,8 +1933,15 @@ function buildElectionPerformanceInCadreLocation(result)
 	 //if(result[i].year != "2009" && globalVoterCardNo != "")
 		 if(result[i].year != "2009" && globalVoterCardNo != "")
 		 {
-		   str += '<li style="" >';
-		   str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth" data-text="'+result[i].boothPerc+'%" data-percent="'+result[i].boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+			   str += '<li style="" >';
+			 if(result[i].boothPerc == "0"){
+				  str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth -('+result[i].reasonStr+') " data-text="0%" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+			 }
+			 else{
+				  str += '<div class="fulCircleCls1" data-dimension="100%" data-info="Own Booth" data-text="'+result[i].boothPerc+'%" data-percent="'+result[i].boothPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" ></div>';
+			 }
+		 
+		  
 		   str += '</li>';
 		 }else if(globalVoterCardNo == ""){
 		   str += '<li style="" >';
@@ -2860,7 +2866,7 @@ $(document).on("click",".openmodalshowGrievance",function(){
 });
 	
 function getComplaintTrackingDetails(complaintId,divId){
-	//alert(divId);
+	
 	$("#viewGrievanceStatusFlow").modal("show")
 	var jsobj={
 		complaintId : complaintId
@@ -4524,10 +4530,11 @@ function getRemarkSOfCadreByCallPurpose(programId,cadreId){
 	});
 }
 
-getIVRSummaryByTdpCadreId();
+//getIVRSummaryByTdpCadreId();
 	function getIVRSummaryByTdpCadreId(){
 		$("#ivrSummaryajaxImg").html('<img alt="Processing Image" src="./images/icons/search.gif">');
-		var tdpCadreId='${param.cadreId}' ;
+		//var tdpCadreId='${param.cadreId}' ;
+		var tdpCadreId=globalCadreId ;
 		
 		var jsObj ={
 			tdpCadreId:tdpCadreId
@@ -4584,7 +4591,8 @@ getIVRSummaryByTdpCadreId();
 	function getTotalIVRDetailsByTdpCadreId(startIndex){
 		
 		$("#ivrDetailsdataLoding").html('<img alt="Processing Image" src="./images/icons/loading.gif" style="width: 35px; height: 35px;">');
-		var tdpCadreId='${param.cadreId}' ;
+		//var tdpCadreId='${param.cadreId}' ;
+		var tdpCadreId=globalCadreId ;
 		//record counts per page in pagination.
 	       var rcrdsCount = 3;
 		var jsObj ={
@@ -4656,7 +4664,7 @@ getIVRSummaryByTdpCadreId();
 	
 function getActivityDetails()
 {
-//	alert(111);
+
 	var jsObj={
 		tdpCadreId:globalCadreId
 	}	
@@ -5927,7 +5935,7 @@ $(document).on("click",".statusFlowCloseCls",function(){
 	},800)
 })
 function getComplaintTrackingDetailsForGrievance(complaintId,divId){
-	//alert(divId);
+
 	$("#viewGrievanceStatusFlow").modal("show")
 	var jsobj={
 		complaintId : complaintId
