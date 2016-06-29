@@ -1672,6 +1672,9 @@
 	<bean id="debateAnalysisAction" class="com.itgrids.partyanalyst.web.action.DebateAnalysisAction" singleton="false">	
 			<property name="debateAnalysisService" ref="debateAnalysisService"/>	
 	</bean>
+	<bean id="createAlertAction" class="com.itgrids.partyanalyst.web.action.CreateAlertAction" singleton="false">	
+		<property name="alertService" ref="alertService"/>
+	</bean>
 	
 	<!-- Deabete End -->
 	
