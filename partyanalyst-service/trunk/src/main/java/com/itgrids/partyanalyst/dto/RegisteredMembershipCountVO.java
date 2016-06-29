@@ -35,8 +35,15 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private String parConsPerc;
 	private String areaType;
 	private String cadreLocation;
+	private String reasonStr;
 	
 	
+	public String getReasonStr() {
+		return reasonStr;
+	}
+	public void setReasonStr(String reasonStr) {
+		this.reasonStr = reasonStr;
+	}
 	public Long getConstituencyCount() {
 		return constituencyCount;
 	}
