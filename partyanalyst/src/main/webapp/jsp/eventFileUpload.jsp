@@ -32,7 +32,7 @@
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
 	<!----slick.css----->
     <!-- <script src="js/cadreCommittee/bootstrap.min.js"></script> -->
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<script type="text/javascript" src="dragAndDropPhoto/js/uploadImage.js"></script>

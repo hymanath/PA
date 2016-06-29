@@ -9,12 +9,12 @@
 <!--<link href="dist/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Daterange/daterangepicker.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">-->
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">-->
 
 <link href="dist/activityDashboard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Icomoon/style.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/activityDashboard/Date/daterangepicker.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/> 
 
