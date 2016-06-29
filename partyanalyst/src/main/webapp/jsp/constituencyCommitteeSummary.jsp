@@ -56,11 +56,11 @@
 	}
 	.tablecaption
 	{
-		background-color:#FC6;
+		background-color:#eee;
 		padding-left:5px;
 		font-size:16px;
 		font-weight:bold;
-		color:#FFF;
+		color:#ccc;
 	}
 	</style>
 </head>
@@ -74,92 +74,117 @@
 		var userAccessType = '${pageAccessType}';
 	</script>
 <div class="container">
-<div class="row m_top20">
-<h4 style="color:#46b8da;font-weight:bold;text-align:center;border-radius: 5px;height: 31px;padding: 5px" id="titleId"> </h4>
-</div>
-    <div class="row m_top20 locationCls" style="display:none;">
-  	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
-       <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
-    </div>
-		<div class="row m_top20">
-	
-	 	
-						<c:if test="${pageAccessType == 'ALL'}">		
-	<div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:150px">
-		
-					 
-						Select State	<select id="stateId" onchange="getUserAccessInfo();" class="form-control" style="width:200px;">	
-						<option value="0">All</option> 
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title" id="titleId"> </h4>
+			</div>
+			<div class="panel-body">
+			   <div class="row m_top20 locationCls" style="display:none;">
+				   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
+				   <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
+				</div>
+				<div class="row m_top20">
+				<c:if test="${pageAccessType == 'ALL'}">		
+					<img id="imgajax" src="images/icons/search.gif" alt="Processing Image" style="display:none;width:17px;height:11px;"/>
+					<div class="col-md-2 col-md-offset-3">
+						<label>
+							Select State	
+						</label>
+						<select id="stateId" onchange="getUserAccessInfo();" class="form-control">	
+							<option value="0">All</option> 
 							<option value="1"> Andhra Pradesh </option>
 							<option value="2"> Telangana </option>
-							</select>
-							
-							<img id="imgajax" src="images/icons/search.gif" 
-								alt="Processing Image" style="display:none;width:17px;height:11px;"/>
-						Select Constituency	<select id="userAccessconstituencyId" class="form-control" style="width:200px;"onchange="reload()">						 
-							
-							</select>
-							
-			Select Committee Type<select id="committetypeId"  class="form-control"  onchange="getRolesBasedReport(0)">	
-						<option value="0">All</option> 
+						</select>
+					</div>
+					<div class="col-md-2">
+						<label>Select Constituency</label>
+						<select id="userAccessconstituencyId" class="form-control" onchange="reload()"></select>
+					</div>
+					<div class="col-md-2">
+						<label>Select Committee Type</label>
+						<select id="committetypeId"  class="form-control"  onchange="getRolesBasedReport(0)">	
+							<option value="0">All</option> 
 							<option value="1"> Main </option>
 							<option value="2"> Affiliated </option>
-							</select>
+						</select>
+					</div>
 				</div>	
 			</c:if>	
-	<c:if test="${pageAccessType != 'ALL'}">
-	<div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:300px">
-		Select Committee Type<select id="committetypeId"  class="form-control" >	
+			<c:if test="${pageAccessType != 'ALL'}">
+			<div  class="row m_top20 form-inline">
+				<div class="col-md-4 col-md-offset-4">
+					<label>Select Committee Type</label>
+					<select id="committetypeId"  class="form-control" >	
 						<option value="0">All</option> 
-							<option value="1"> Main </option>
-							<option value="2"> Affiliated </option>
-							</select>
+						<option value="1"> Main </option>
+						<option value="2"> Affiliated </option>
+					</select>
+				</div>
+			</div>
+			</c:if>
+			<div class="row">
+				<div class="col-md-12 m_top20 form-inline">
+					<div class="pull-right">
+						<span class="btn btn-success btn-xs"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></span>&nbsp;&nbsp;
+						<span class="btn btn-success btn-xs"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></span>
+					</div>
+				</div>
+			</div>
+			
+					<div class="row">
+						<div class="col-md-12">
+							<div id="constiRoleSummry" style="display:none;">
+								<img id="summaryAjaxRole" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>
 							</div>
-					 
-	</c:if>
+						</div>
+					</div>
+					
+					<!--<a id="hide" href="javascript:{}" class="pull-right btn btn-warning summaryEventCls" title="Hide Constituency Wise Detailed Overview"> Hide <i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a id="show"  href="javascript:{}" class="pull-right btn btn-success summaryEventCls" style="display:none;" title="Show Constituency Wise Detailed Overview"> Show
+					<i class="glyphicon glyphicon-chevron-down"></i></a>-->
+					<div class="row">
+						<div class="col-md-12">
+							<div id="constiRoleSummary"></div>
+						</div>
+					</div>
+					
+					
+					<!--<div class="row m_top20">
+						<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
+						<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></div>
+					</div>-->
+					
+					<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel-group" id="constSummary" role="tablist" aria-multiselectable="true">
+								<img id="summaryAjax" src="./images/Loading-data.gif" class="" alt="Processing Image"/>
+							</div>
+						</div>
+					</div>
+					
+				</div>
 
-	<div class="col-md-4 m_top20 col-md-offset-3 form-inline"><span class="btn btn-success btn-xs"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></span>&nbsp;&nbsp;
-		<span class="btn btn-success btn-xs"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></span>
-		
+				<div id="dialogSummary" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+				<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					
+					 <div class="modal-header">
+					  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+						<h4 class="modal-header text-center"></h4>
+					  </div>
+					<div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
+				</div>
+
+
+			</div>
 		</div>
 	</div>
-	<div id="constiRoleSummry" style="display:none;">
-		<img id="summaryAjaxRole" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>
-		
-	</div>
-		<a id="hide" href="javascript:{}" class="pull-right btn btn-warning summaryEventCls" title="Hide Constituency Wise Detailed Overview"> Hide <i class="glyphicon glyphicon-chevron-up"></i></a>
-	<a id="show"  href="javascript:{}" class="pull-right btn btn-success summaryEventCls" style="display:none;" title="Show Constituency Wise Detailed Overview"> Show
-	<i class="glyphicon glyphicon-chevron-down"></i></a>
-	<div id="constiRoleSummary">		
-	</div>
-	
-	<!--<div class="row m_top20">
-		<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
-		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></div>
-	</div>-->
-	
-	<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>
-	
-	<div id="constSummary" style="display:none;">
-		<img id="summaryAjax" src="./images/Loading-data.gif" class="" alt="Processing Image"/>
-	</div>
-	
-	
 </div>
-
-<div id="dialogSummary" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-    
-	 <div class="modal-header">
-	  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
-		<h3 class="panel-header text-center"></h3>
-	  </div>
-    <div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
-</div>
-
-
+ 
 
 </div>
 <!-- Modal for Remove cadre -->
@@ -383,114 +408,128 @@ function buildConstituencySummary(results,jsObj){
 				if(rest.locationsList!=null && rest.locationsList.length>0){
 					var reqPositionsArray = new Array();
 					
-					str += '<h4 class="locationName">'+rest.locationName+'</h4>';
-				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
-				str+='<thead>';
-					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-						str+='<th  rowspan=2> Location </th>';
-
-						for(var k in results.resultList){
-							if(results.resultList[k].basicCommitteeName == 'Main'){
-								if(reqPositionsArray.indexOf(k) == -1){
-								  reqPositionsArray.push(k);
-								}
-								str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
-							}else{
-								 for(var c in rest.locationsList){
-									 if(rest.locationsList[c].resultList[k].membersCount!=null || rest.locationsList[c].resultList[k].electrolsCount!=null){
-										 if(reqPositionsArray.indexOf(k) == -1){
-										      str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
-											  reqPositionsArray.push(k);
-											}
-									 }
-								 }
-							}
-							
-						}
-						if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
-						{
-							var length = (results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList.length -1)*2;
-							str+='<th  colspan='+length+'> IVR Details </th>';
-						}
-						
-						
-					str+='</tr>';
-					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-						for(var k in reqPositionsArray){
-							str+='<th> Members </th>';
-							str+='<th> Electrols </th>';
-						}
-						if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
-						{
-							for(var tp in results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList)
-							{
-								 if(results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].id != 8){
-								 str+='<th> '+results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].name+' </th>';
-								  str+='<th> % </th>';
-								  }
-							}
-						}
-						
-					str+='</tr>';
-				str+='</thead>';
-					str+='<tbody>';
-					var percentage = 0;
-					var perc = 0;
-						for(var j in rest.locationsList){
+					
+				
+				  str += '<div class="panel panel-default">';
+					str += '<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+						  str += '<h4 class="locationName panel-title">'+rest.locationName+'</h4>';
+						str += '</a>';
+					str += '</div>';
+					str += '<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					  str += '<div class="panel-body">';
+					  str += '<div class="table-responsive">';
+						str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
+						str+='<thead class="text-center">';
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-								str+='<td>'+rest.locationsList[j].locationName+'</td>';
-									for(var k in rest.locationsList[j].resultList){
-									  if(reqPositionsArray.indexOf(k) != -1){
-										if(rest.locationsList[j].resultList[k].membersCount!=null){
-											//str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="members" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
-										    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
-										}else{
-											str+='<td> </td>';
-										} 
-										
-										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
-										    //str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'electrols\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
-											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
-										     str+='<td><a  href="javascript:{gettingCadreDetails(\'electrols\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+								str+='<th  rowspan=2> Location </th>';
 
-										}else{
-											str+='<td> </td>';
+								for(var k in results.resultList){
+									if(results.resultList[k].basicCommitteeName == 'Main'){
+										if(reqPositionsArray.indexOf(k) == -1){
+										  reqPositionsArray.push(k);
 										}
-									  }
+										str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+									}else{
+										 for(var c in rest.locationsList){
+											 if(rest.locationsList[c].resultList[k].membersCount!=null || rest.locationsList[c].resultList[k].electrolsCount!=null){
+												 if(reqPositionsArray.indexOf(k) == -1){
+													  str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+													  reqPositionsArray.push(k);
+													}
+											 }
+										 }
 									}
-									if(rest.locationsList[j].cadreIVRVO != null)
+									
+								}
+								if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
+								{
+									var length = (results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList.length -1)*2;
+									str+='<th  colspan='+length+'> IVR Details </th>';
+								}
+								
+								
+							str+='</tr>';
+							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
+								for(var k in reqPositionsArray){
+									str+='<th> Members </th>';
+									str+='<th> Electrols </th>';
+								}
+								if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
+								{
+									for(var tp in results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList)
 									{
-										for(var pp in rest.locationsList[j].cadreIVRVO.optionsList)
-										{
-											if(rest.locationsList[j].cadreIVRVO.optionsList[pp].id != 8)
+										 if(results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].id != 8){
+										 str+='<th> '+results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].name+' </th>';
+										  str+='<th> % </th>';
+										  }
+									}
+								}
+								
+							str+='</tr>';
+						str+='</thead>';
+							str+='<tbody>';
+							var percentage = 0;
+							var perc = 0;
+								for(var j in rest.locationsList){
+									str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
+										str+='<td class="text-center">'+rest.locationsList[j].locationName+'</td>';
+											for(var k in rest.locationsList[j].resultList){
+											  if(reqPositionsArray.indexOf(k) != -1){
+												if(rest.locationsList[j].resultList[k].membersCount!=null){
+													//str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="members" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
+													str+='<td><a href="javascript:{gettingCadreDetails(\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
+												}else{
+													str+='<td class="text-center"> </td>';
+												} 
+												
+												if(rest.locationsList[j].resultList[k].electrolsCount!=null){
+													//str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'electrols\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+													//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
+													 str+='<td><a  href="javascript:{gettingCadreDetails(\'electrols\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+
+												}else{
+													str+='<td class="text-center"> </td>';
+												}
+											  }
+											}
+											if(rest.locationsList[j].cadreIVRVO != null)
 											{
-												if(rest.locationsList[j].cadreIVRVO.total >0)
+												for(var pp in rest.locationsList[j].cadreIVRVO.optionsList)
 												{
-													percentage = (rest.locationsList[j].cadreIVRVO.optionsList[pp].count *100)/ rest.locationsList[j].cadreIVRVO.total;
-													perc = percentage.toFixed(0);
-													str+='<td>'+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
-													str+='<td>'+perc+'</td>';
-												}				
-												else
-												{
-													str+='<td></td>';
-													str+='<td></td>';
+													if(rest.locationsList[j].cadreIVRVO.optionsList[pp].id != 8)
+													{
+														if(rest.locationsList[j].cadreIVRVO.total >0)
+														{
+															percentage = (rest.locationsList[j].cadreIVRVO.optionsList[pp].count *100)/ rest.locationsList[j].cadreIVRVO.total;
+															perc = percentage.toFixed(0);
+															str+='<td class="text-center">'+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
+															str+='<td class="text-center">'+perc+'</td>';
+														}				
+														else
+														{
+															str+='<td class="text-center"></td>';
+															str+='<td class="text-center"></td>';
+														}
+													}
 												}
 											}
-										}
-									}
-									
-										
-										
-									
-									
-									
-									
-									
-							str+='</tr>';
-						}
-					str+='</tbody>';
-				str+='</table> ';
+											
+												
+												
+											
+											
+											
+											
+											
+									str+='</tr>';
+								}
+							str+='</tbody>';
+						str+='</table> ';
+						str += '</div>';
+					str += '</div>';
+				  str += '</div>';
+				str += '</div>';
 				}
 				
 			}
@@ -500,9 +539,16 @@ function buildConstituencySummary(results,jsObj){
 				for(var i in results.localBodiesList){
 				var rest = results.localBodiesList[i];
 				var reqPositionsArray = new Array();
-				str += '<h4 class="locationName">'+rest.locationName+'</h4>'
+				str += '<div class="panel panel-default">';
+					str += '<div class="panel-heading" role="tab" id="headingOne'+i+'">';
+						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+							str += '<h4 class="locationName">'+rest.locationName+'</h4></a>'
+					str += '</div>';
+					str += '<div id="collapseOne'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					  str += '<div class="panel-body">';
+					  str += '<div class="table-responsive">';
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
-				str+='<thead>';
+				str+='<thead class="text-center">';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						str+='<th rowspan=2> Location </th>';
 						for(var k in results.resultList){
@@ -549,7 +595,7 @@ function buildConstituencySummary(results,jsObj){
 					str+='<tbody>';
 						for(var j in rest.locationsList){
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-								str+='<td>'+rest.locationsList[j].locationName+'</td>';
+								str+='<td class="text-center">'+rest.locationsList[j].locationName+'</td>';
 									for(var k in rest.locationsList[j].resultList){
 									  if(reqPositionsArray.indexOf(k) != -1){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
@@ -558,7 +604,7 @@ function buildConstituencySummary(results,jsObj){
 									        str+='<td><a href="javascript:{gettingCadreDetails(\'members\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
 
 										}else{
-											str+='<td> </td>';
+											str+='<td class="text-center"> </td>';
 										}
 										
 										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
@@ -567,7 +613,7 @@ function buildConstituencySummary(results,jsObj){
 										    str+='<td><a href="javascript:{gettingCadreDetails(\'electrols\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 
 										}else{
-											str+='<td> </td>';
+											str+='<td class="text-center"> </td>';
 										}
 									 }	
 									}
@@ -581,13 +627,13 @@ function buildConstituencySummary(results,jsObj){
 												{
 													percentage = (rest.locationsList[j].cadreIVRVO.optionsList1[pp].count *100)/ rest.locationsList[j].cadreIVRVO.total;
 													perc = percentage.toFixed(0);
-													str+='<td>'+rest.locationsList[j].cadreIVRVO.optionsList1[pp].count+'</td>';
-													str+='<td>'+perc+'</td>';
+													str+='<td class="text-center">'+rest.locationsList[j].cadreIVRVO.optionsList1[pp].count+'</td>';
+													str+='<td class="text-center">'+perc+'</td>';
 												}				
 												else
 												{
-													str+='<td>0</td>';
-													str+='<td>0</td>';
+													str+='<td class="text-center">0</td>';
+													str+='<td class="text-center">0</td>';
 												}
 											}
 										}
@@ -597,14 +643,24 @@ function buildConstituencySummary(results,jsObj){
 						}
 					str+='</tbody>';
 				str+='</table> ';
+				str += '</div>';
+			str += '</div>';
+		  str += '</div>';
+		str += '</div>';
 			}
 			}
 			
 			
 		}else{
-				str += '<h4 class="locationName"> Mandal/Town/Division Wise Committees Summary</h4>'
+				str += '<div class="panel panel-default">';
+					str += '<div class="panel-heading" role="tab" id="headingOne">';
+						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+							str += '<h4 class="panel-title locationName"> Mandal/Town/Division Wise Committees Summary</h4></a></div>'
+				str += '<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">';
+				str += '<div class="panel-body">';
+				str += '<div class="table-responsive">';
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
-				str+='<thead>';
+				str+='<thead class="text-center">';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						str+='<th> Location </th>';
 						for(var k in results.resultList){
@@ -616,17 +672,17 @@ function buildConstituencySummary(results,jsObj){
 						for(var i in results.mandalsList){
 							var rest = results.mandalsList[i]
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-							str+='<td>'+rest.locationName+'</td>';
+							str+='<td class="text-center">'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5">'+rest.resultList[j].membersCount+'</td>';
 							        //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
 									
-                                    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',5,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationName+'\',\''+rest.resultList[j].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
+									str+='<td class="text-center"><a href="javascript:{gettingCadreDetails(\'members\',5,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationName+'\',\''+rest.resultList[j].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
 									
 
 								}else{
-									str+='<td> - </td>';
+									str+='<td class="text-center"> - </td>';
 								}
 								
 							}
@@ -636,14 +692,14 @@ function buildConstituencySummary(results,jsObj){
 						for(var i in results.localBodiesList){
 							var rest = results.localBodiesList[i]
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-							str+='<td>'+rest.locationName+'</td>';
+							str+='<td class="text-center">'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7">'+rest.resultList[j].membersCount+'</td>';
 								   //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
  								   str+='<td><a href="javascript:{gettingCadreDetails(\'members\',7,'+rest.locationId+',\''+rest.resultList[j].basicCommitteeTypeId+'\',\''+rest.locationName+'\',\''+rest.resultList[j].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
 								   }else{
-									str+='<td> - </td>';
+									str+='<td class="text-center"> - </td>';
 								}
 							
 							}
@@ -652,7 +708,7 @@ function buildConstituencySummary(results,jsObj){
 						for(var i in results.divisionList){
 							var rest = results.divisionList[i]
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-							str+='<td>'+rest.locationName+'</td>';
+							str+='<td class="text-center">'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
@@ -661,7 +717,7 @@ function buildConstituencySummary(results,jsObj){
 									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',9,'+rest.locationId+',\''+rest.resultList[j].basicCommitteeTypeId+'\',\''+rest.locationName+','+rest.resultList[j].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
 
 								}else{
-									str+='<td> - </td>';
+									str+='<td class="text-center"> - </td>';
 								}
 								
 							}
@@ -670,6 +726,10 @@ function buildConstituencySummary(results,jsObj){
 						
 					str+='</tbody>';
 				str+='</table> ';
+				str += '</div>';
+			str += '</div>';
+		  str += '</div>';
+		str += '</div>';
 			
 		}
 		
@@ -719,7 +779,7 @@ str+='<tr>';
 str+='<td>';
 str+='<span class="">';
 str+='<table class="table table-bordered" style="width:200px">';
-str+='<thead>';
+str+='<thead class="text-center">';
 str+='<tr>';
 str+='<th style="background-color:#EDEDED;"> Total Candidates : </th>';
 str+='<td> '+result[0].total+' </td>';
@@ -731,7 +791,7 @@ str+='</td>';
 str+='<td>';
 str+='<span class="">';
 str+='<table class="table table-bordered" style="width:200px">';
-str+='<thead>';
+str+='<thead class="text-center">';
 str+='<tr>';
 str+='<th  style="background-color:#EDEDED;"> Male Candidates : </th>';
 str+='<td> '+result[0].maleCount+' </td>';
@@ -743,7 +803,7 @@ str+='</td>';
 str+='<td>';
 str+='<span class="">';
 str+='<table class="table table-bordered" style="width:250px">';
-str+='<thead>';
+str+='<thead class="text-center">';
 str+='<tr>';
 str+='<th  style="background-color:#EDEDED;"> Female Candidates : </th>';
 str+='<td> '+result[0].femaleCount+' </td>';
@@ -761,24 +821,22 @@ str+='</table>';
 	{
 		str += '<div>';
 		str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
-		str += '<caption class="tablecaption" >Caste Category Wise Information';
-		str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
-		str += '</caption>';
-		str += ' <thead>';
-		str += ' <tr>';
-		str += '<th width="25%">Caste Category</th>';
-		str += '<th width="25%">Total Count</th>';
-		str += '<th width="25%">Male</th>';
-		str += '<th width="25%">Female</th>';
+		str += '<caption class="tablecaption" >Caste Category Wise Information</caption>';
+		str += '<thead class="text-center">';
+		str += '<tr>';
+		str += '<th width="25%" class="text-center">Caste Category</th>';
+		str += '<th width="25%" class="text-center">Total Count</th>';
+		str += '<th width="25%" class="text-center">Male</th>';
+		str += '<th width="25%" class="text-center">Female</th>';
 		str += '</tr>';
 		str += '</thead>';
 		for(var pr in result[0].casteGroupVO)
 		{
 			str += ' <tr>';
-			str += '<td>'+result[0].casteGroupVO[pr].castName+'</td>';
-			str += '<td>'+result[0].casteGroupVO[pr].casteId+'</td>';
-			str += '<td>'+result[0].casteGroupVO[pr].stateId+'</td>';
-			str += '<td>'+result[0].casteGroupVO[pr].castStateId+'</td>';
+			str += '<td class="text-center">'+result[0].casteGroupVO[pr].castName+'</td>';
+			str += '<td class="text-center">'+result[0].casteGroupVO[pr].casteId+'</td>';
+			str += '<td class="text-center">'+result[0].casteGroupVO[pr].stateId+'</td>';
+			str += '<td class="text-center">'+result[0].casteGroupVO[pr].castStateId+'</td>';
 			str += '</tr>';
 		}
 		
@@ -792,21 +850,21 @@ str+='</table>';
 	str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
 	str += '<caption class="tablecaption">Age Range Wise Information';
 	str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
-	str += '<thead>';
+	str += '<thead class="text-center">';
 	str += '<tr>';
-	str += ' <th width="25%">Between Age</th>';
-	str += '<th width="25%">Total Count</th>';
-	str += '<th width="25%">Male</th>';
-	str += '<th width="25%">Female</th>';
+	str += ' <th width="25%" class="text-center">Between Age</th>';
+	str += ' <th width="25%" class="text-center">Total Count</th>';
+	str += ' <th width="25%" class="text-center">Male</th>';
+	str += ' <th width="25%" class="text-center">Female</th>';
 	str += '</tr>';
 	str += '</thead>';
 	for(var tp in result[0].ageDetailsIfoVO)
 	{
 		str += ' <tr>';
-		str += '<td>'+result[0].ageDetailsIfoVO[tp].castName+'</td>';
-		str += '<td>'+result[0].ageDetailsIfoVO[tp].casteId+'</td>';
-		str += '<td>'+result[0].ageDetailsIfoVO[tp].stateId+'</td>';
-		str += '<td>'+result[0].ageDetailsIfoVO[tp].castStateId+'</td>';
+		str += '<td class="text-center">'+result[0].ageDetailsIfoVO[tp].castName+'</td>';
+		str += '<td class="text-center">'+result[0].ageDetailsIfoVO[tp].casteId+'</td>';
+		str += '<td class="text-center">'+result[0].ageDetailsIfoVO[tp].stateId+'</td>';
+		str += '<td class="text-center">'+result[0].ageDetailsIfoVO[tp].castStateId+'</td>';
 		str += '</tr>';
 	}
 
@@ -1074,24 +1132,32 @@ function getRolesBasedReport(roleId)
 		{
 			for(var i in totalResult)
 			{
-				str+='<div class="col-md-10 col-md-offset-1 widget" style="margin-top:10px;font-size: 16px;">';
-				str+='<div class="col-md-4" >';
-				str+='<div class="col-md-5" style="padding:5px;">Total Candidates</div>';
+				str+='<div class="col-md-8 col-md-offset-2" style="margin-top:10px;font-size: 16px;">';
+				str+='<table class="table table-bordered text-center" style="background:#eee">';
+					str+='<tr class="text-center">';
+						str+='<td style="width:33.3%"><h4>Total Candidates</h4><h3>'+totalResult[i].totalCount+'</h3></td>';
+						str+='<td style="width:33.3%"><h4>Male</h4><h3>'+totalResult[i].maleCount+'</h3></td>';
+						var femaleCount = totalResult[i].femaleCount != null?totalResult[i].femaleCount:0;
+						str+='<td style="width:33.3%"><h4>Female</h4><h3>'+femaleCount+'</h3></td>';
+					str+='</tr>';
+				str+='</table>';
+				/*str+='<div class="col-md-4" >';
+				str+='<div class="col-md-5" style="padding:5px;"></div>';
 				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block">'+totalResult[i].totalCount+'</div>';
 				str+='</div>';
 				str+='<div class="col-md-4" style="border-left:1px solid #FFF" >';
 				str+='<div class="col-md-5" style="padding:0px;">';
 				str+='<i class="icon-male"></i>';
-				str+='Male Candidates</div>';
-				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block">'+totalResult[i].maleCount+'</div>';
+				str+=' Candidates</div>';
+				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block"></div>';
 				str+='</div>';
 				str+='<div class="col-md-4" style="border-left:1px solid #FFF" >';
 				str+='<div class="col-md-5" style="padding:0px;">';
 				str+='<i class="icon-female"></i>';
-				str+='Female Candidates</div>';
-				var femaleCount = totalResult[i].femaleCount != null?totalResult[i].femaleCount:0;
-				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block">'+femaleCount+'</div>';
-				str+='</div>';
+				str+=' Candidates</div>';
+				
+				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block"></div>';
+				str+='</div>';*/
 				str+='</div>';
 			}			
 		}
@@ -1103,11 +1169,9 @@ function getRolesBasedReport(roleId)
 		{
 			if(userAccessType != null && userAccessType == 'All')
 			{
-				str+='<table class="table table-bordered" style="border:2px solid #FC6 !important;margin-bottom:35px" id="casteCategoryId">';
-				str+='<caption class="tablecaption" >Caste Category Wise Information';
-				str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
-				str+='</caption>';
-				str+='<thead>';
+				str+='<table class="table table-bordered" style="border:2px solid #ddd !important;margin-bottom:35px" id="casteCategoryId">';
+				str+='<caption class="tablecaption" style="background:#CCC;color:#666;">Caste Category Wise Information</caption>';
+				str+='<thead class="text-center">';
 				str+='<tr>';
 				str+='<th width="25%">Caste Category</th>';
 				str+='<th width="25%">Total Count</th>';
@@ -1133,11 +1197,9 @@ function getRolesBasedReport(roleId)
 		{
 			if(userAccessType != null && userAccessType == 'All')
 			{
-				str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="casteDetailsId">';
-				str+='<caption class="tablecaption" >Caste Wise Information';
-				str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
-				str+='</caption>';
-				str+='<thead>';
+				str+='<table class="table table-bordered" style="border:2px solid #eee !important" id="casteDetailsId">';
+					str+='<caption class="tablecaption" style="background:#CCC;color:#666">Caste Wise Information</caption>';
+				str+='<thead class="text-center">';
 				str+='<tr>';
 				str+='<th width="25%">Caste Name</th>';
 				str+='<th width="25%">Total Count</th>';
@@ -1161,10 +1223,9 @@ function getRolesBasedReport(roleId)
 		var ageRangeWiseResult = result.ageRangeWiseList;
 		if(ageRangeWiseResult != null)
 		{
-			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="ageRangeID">';
-			str+='<caption class="tablecaption">Age Range Wise  Information';
-			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
-			str+='<thead>';
+			str+='<table class="table table-bordered text-center" style="border:2px solid #eee !important" id="ageRangeID">';
+			str+='<caption class="tablecaption" style="background:#CCC;color:#666">Age Range Wise  Information</caption>';
+			str+='<thead class="text-center">';
 			str+='<tr>';
 			str+='<th width="25%">Between Age</th>';
 			str+='<th width="25%">Total Count</th>';
@@ -1175,10 +1236,10 @@ function getRolesBasedReport(roleId)
 			for(var i in ageRangeWiseResult)
 			{
 				str+='<tr>';
-				str+='<td>'+ageRangeWiseResult[i].ageRange+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].totalCount+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].maleCount+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].femaleCount+'</td>';
+					str+='<td class="text-center">'+ageRangeWiseResult[i].ageRange+'</td>';
+					str+='<td class="text-center">'+ageRangeWiseResult[i].totalCount+'</td>';
+					str+='<td class="text-center">'+ageRangeWiseResult[i].maleCount+'</td>';
+					str+='<td class="text-center">'+ageRangeWiseResult[i].femaleCount+'</td>';
 				str+='</tr>';
 			}
 		}

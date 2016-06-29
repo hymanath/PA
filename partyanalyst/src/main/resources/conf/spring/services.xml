@@ -3214,7 +3214,8 @@
         <property name="debateParticipantCharcsDAO" ref="debateParticipantCharcsDAO"></property>
         <property name="debateParticipantDAO" ref="debateParticipantDAO"></property>
     </bean>
-    
+    <bean name="alertService" class="com.itgrids.partyanalyst.service.impl.AlertService">
+    </bean>
 	<!-- Debate End -->
 </beans>		
 	

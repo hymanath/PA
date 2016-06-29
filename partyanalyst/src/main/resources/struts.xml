@@ -12673,6 +12673,10 @@
 	</action>
 	
 	<!-- debate end -->
+	<action name="createAlertAction" class="createAlertAction" >
+		<result name="success">/jsp/alert.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
 	
 </package>
 </struts>      

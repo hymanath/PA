@@ -672,5 +672,6 @@
 	 	<pattern>/debateAnalysisAction*</pattern>
 	 	<pattern>/genereateReportAction*</pattern>
 	 <!-- debate end-->
+	  <pattern>/createAlertAction*</pattern>
 	</decorator> 
 </decorators>
