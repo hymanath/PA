@@ -891,4 +891,16 @@ public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId
 	return (Long) query.uniqueResult();
 }
 
+
+	public Long getValidVotesforBoothByElectionId(Long boothId,Long electionId)
+	{
+		Query query = getSession().createQuery(" select sum(model.validVotes) from BoothResult model where " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId =:electionId and " +
+				"  model.boothConstituencyElection.booth.boothId =:boothId ");
+		query.setParameter("electionId", electionId);
+		query.setParameter("boothId", boothId);
+		return (Long) query.uniqueResult();
+	}
+
+
 }
