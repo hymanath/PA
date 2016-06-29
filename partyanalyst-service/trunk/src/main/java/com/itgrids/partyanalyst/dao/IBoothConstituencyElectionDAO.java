@@ -181,4 +181,5 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public Long getTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId);
 	
+	public Long getValidVotesforBoothByElectionId(Long boothId,Long electionId);
 }
