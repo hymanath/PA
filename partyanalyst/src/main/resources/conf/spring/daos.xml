@@ -2915,6 +2915,36 @@
 	<bean id="debateReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateReportDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="alertDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertSeverityDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertSeverityDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertStatusDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCandidateDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertUserDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertUserTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	 <bean id="alertTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertTrackingDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCommentDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="alertImpactDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertImpactDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<!--  Debate Realted DAO'S END-->
 	
