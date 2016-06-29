@@ -147,7 +147,7 @@ table{margin-bottom:0px !important;}
 									   <div id="castPerContainerChart">
 											<div><input type='button' id='hideshowHIghChartForCasteper' value='Hide/Show Sub Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
 											<div id="castPerContainerChartInner" style="border:1px solid;">
-											<div style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >
+											<div style="width:480px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >
 												<h5 style="text-align:center;">Drag Slider for Building Sub Caste Chart Based on Total Attended Percentage </h5>
 												<div id="sliderFrCstPrcntgWsId" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
 												</div>
@@ -162,7 +162,7 @@ table{margin-bottom:0px !important;}
 										<div id="castContainerChart" style="display:none;">
 											<div><input type='button' id='hideshow' value='Hide/Show Sub Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
 											<div id="castContainerChartInner" style="border:1px solid;">
-											<div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >
+											<div id="rangeSliderDiv" style="width:480px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >
 												<h5 style="text-align:center;">Drag Slider for Building Sub Caste Chart Based on Total Attended Count</h5>
 												<div id="slider" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a>
 												</div>
@@ -1127,7 +1127,7 @@ function buildCasteChart(casteArr,ttlCdrArr,ttlInvtdArr,ttlAttnddArr,ttlInvtdAtt
     }
 	
 $(document).on("click","#hideshow",function(){      
-         $('#castContainerChartInner').toggle('show');
+         $('#castContainerChart').toggle('show');
   });
 $(document).on("click","#hideshowHIghChartForCasteper",function(){      
          $('#castPerContainerChart').toggle('show');
