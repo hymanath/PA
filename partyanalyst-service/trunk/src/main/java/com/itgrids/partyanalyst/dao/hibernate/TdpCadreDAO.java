@@ -6983,25 +6983,30 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
  	
 	public List<Object[]> getCadrAddressDetailsByCadred(Long tdpCadreId) {
 		StringBuilder queryString=new StringBuilder();
-		queryString.append( " select model.tdpCadreId, " +//1
-							" state.stateId," +//2
-							" state.stateName," +//3
-							" district.districtId," +//4
-							" district.districtName,"+//5
-				            " constituency.constituencyId," +//6
-				            " constituency.name," +//7
-				            " tehsil.tehsilId," +//8
-				            " tehsil.tehsilName,"+//9
-							" ward.constituencyId," +//10
-							" ward.name," +//11
-							" panchayat.panchayatId," +//12
-							" panchayat.panchayatName,"+//13
-				            " localElectionBody.localElectionBodyId," +//14
-				            " localElectionBody.name ,"+ //15
-							" constituency.areaType ," +//16
-							" booth.boothId, " +//17
-							" booth.partNo " +//18
+		queryString.append( " select model.tdpCadreId, " +//0
+							" state.stateId," +//1
+							" state.stateName," +//2
+							" district.districtId," +//3
+							" district.districtName,"+//4
+				            " constituency.constituencyId," +//5
+				            " constituency.name," +//6
+				            " tehsil.tehsilId," +//7
+				            " tehsil.tehsilName,"+//8
+							" ward.constituencyId," +//9
+							" ward.name," +//10
+							" panchayat.panchayatId," +//11
+							" panchayat.panchayatName,"+//12
+				            " localElectionBody.localElectionBodyId," +//13
+				            " localElectionBody.name ,"+ //14
+							" constituency.areaType ," +//15
+							" booth.boothId, " +//16
+							" booth.partNo, " +//17
+							" voter.voterId," +//18
+							" familyVoter.voterId, " +//19
+							" booth.publicationDate.publicationDateId " +//20
 							" from  TdpCadre  model " +
+							" left join model.familyVoter familyVoter " +
+							" left join model.voter voter " +
 							" left join model.userAddress.state state" +
 							" left join model.userAddress.district district" +
 							" left join model.userAddress.constituency constituency" +

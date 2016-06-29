@@ -19,9 +19,7 @@ import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterFlag;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class BoothPublicationVoterDAO extends
-		GenericDaoHibernate<BoothPublicationVoter, Long> implements
-		IBoothPublicationVoterDAO {
+public class BoothPublicationVoterDAO extends GenericDaoHibernate<BoothPublicationVoter, Long> implements	IBoothPublicationVoterDAO {
 	
 	
 	public BoothPublicationVoterDAO(){
@@ -8051,6 +8049,18 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 	}
 	
+	public Object[] getBoothDetailsByVoterId(String voterId){
+		
+		Long voterid=Long.parseLong(voterId);
+		
+		Query query = getSession().createQuery(" select model.booth.partNo,model.booth.boothId from BoothPublicationVoter model" +
+				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId="+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
+		
+		query.setParameter("voterId",voterid);
+		return  (Object[]) query.uniqueResult();
+		
+	}
+
 	
 	public List<Object[]> getCadreVoterInfo(Long wardId,Integer firstResult,Integer maxResults)
 	{
@@ -8373,4 +8383,43 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	    query.setParameter("publicationDateId", publicationId);
 	    return query.list();
 	}
+	
+
+
+	public Long getTotalAvailableVotesByLocationId(Long locationId,String locationType,Long constituencyId,List<Long> constituencyIdsList){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select count(distinct model.voter.voterId) from BoothPublicationVoter model  where  ");
+		
+		if(locationType.equalsIgnoreCase("constituency"))
+		  str.append(" model.booth.constituency.constituencyId =:locationId ");
+		
+		else if(locationType.equalsIgnoreCase("panchayat"))
+			str.append(" model.booth.panchayat.panchayatId =:locationId ");
+		
+		else if(locationType.equalsIgnoreCase("booth"))
+		 str.append(" model.booth.boothId = :locationId ");
+		
+		else if(locationType.equalsIgnoreCase("muncipality"))
+		  str.append(" model.booth.localBody.localElectionBodyId =:locationId and model.booth.localBody is not null ");
+		
+		else if(locationType.equalsIgnoreCase("District"))
+		 str.append(" model.booth.constituency.district.districtId =:locationId ");
+		
+		else if(locationType.equalsIgnoreCase("Parliament"))
+		 str.append(" model.booth.constituency.constituencyId in (:constituencyIdsList) ");
+		
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		if(!locationType.equalsIgnoreCase("Parliament"))
+		  query.setParameter("locationId", locationId);
+		
+		if(locationType.equalsIgnoreCase("Parliament"))
+		  query.setParameterList("constituencyIdsList", constituencyIdsList);
+		
+		return (Long) query.uniqueResult();
+		
+	}
+
 }
