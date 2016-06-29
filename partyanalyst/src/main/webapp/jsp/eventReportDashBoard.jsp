@@ -132,7 +132,7 @@ table{margin-bottom:0px !important;}
 									<div class="panel-heading">
 										<div class="row">
 											<div class="col-md-6">
-												<h4 class="panel-title">CASTE WISE ANALYSIS</h4>
+												<h4 class="panel-title">SUB CASTE WISE ANALYSIS</h4>
 											</div>
 											<div class="col-md-6">
 												<div class="pull-right f_13" style="text-shadow:none;font-weight:400">
@@ -145,7 +145,7 @@ table{margin-bottom:0px !important;}
 									</div>
 									<div class="panel-body">
 									   <div id="castPerContainerChart">
-											<div><input type='button' id='hideshowHIghChartForCasteper' value='Hide/Show Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
+											<div><input type='button' id='hideshowHIghChartForCasteper' value='Hide/Show Sub Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
 											<div id="castPerContainerChartInner" style="border:1px solid;">
 											<div style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >
 												<h5 style="text-align:center;">Drag Slider for Building Sub Caste Chart Based on Total Attended Percentage </h5>
@@ -160,7 +160,7 @@ table{margin-bottom:0px !important;}
 											</div>
 										</div>
 										<div id="castContainerChart" style="display:none;">
-											<div><input type='button' id='hideshow' value='Hide/Show Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
+											<div><input type='button' id='hideshow' value='Hide/Show Sub Caste Wise Analysis Chart' class="btn btn-inverse pull-right" style="margin-top:10px;margin-bottom:10px;margin-right:10px;"></div>
 											<div id="castContainerChartInner" style="border:1px solid;">
 											<div id="rangeSliderDiv" style="width:500px;margin-left:auto;margin-right:auto;border:1px solid #ccc;padding:5px 20px;margin-top:10px;" >
 												<h5 style="text-align:center;">Drag Slider for Building Sub Caste Chart Based on Total Attended Count</h5>
