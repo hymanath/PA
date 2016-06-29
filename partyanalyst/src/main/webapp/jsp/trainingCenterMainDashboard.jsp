@@ -14,7 +14,7 @@
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="training/dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="training/dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/DatatableBootstrap/DatatableB.css" rel="stylesheet" type="text/css">
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 

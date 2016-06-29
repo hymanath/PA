@@ -9,7 +9,7 @@
 
 <link href="dist/pollManagment/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="dist/pollManagment/css/custom.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/>
 
 </head>

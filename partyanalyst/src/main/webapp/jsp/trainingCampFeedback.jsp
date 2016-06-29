@@ -12,7 +12,7 @@
 <link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="training/dist/css/custom.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
 
 <style type="text/css">
