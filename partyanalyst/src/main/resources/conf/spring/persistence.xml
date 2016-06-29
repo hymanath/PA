@@ -888,7 +888,16 @@
 					<value>com.itgrids.partyanalyst.model.DebateSmsQuestion</value>									  
 					<value>com.itgrids.partyanalyst.model.DebateSmsQuestionOption</value>							
 					<value>com.itgrids.partyanalyst.model.DebateReport</value>
-					
+					<value>com.itgrids.partyanalyst.model.Alert</value>
+					<value>com.itgrids.partyanalyst.model.AlertType</value>
+					<value>com.itgrids.partyanalyst.model.AlertSeverity</value>
+					<value>com.itgrids.partyanalyst.model.AlertStatus</value>
+					<value>com.itgrids.partyanalyst.model.AlertCandidate</value>
+					<value>com.itgrids.partyanalyst.model.AlertUser</value>
+					<value>com.itgrids.partyanalyst.model.AlertUserType</value>
+					<value>com.itgrids.partyanalyst.model.AlertTracking</value>
+					<value>com.itgrids.partyanalyst.model.AlertComment</value>
+					<value>com.itgrids.partyanalyst.model.AlertImpact</value>
 				   <!-- debate End-->
 				    
 				 </list>
