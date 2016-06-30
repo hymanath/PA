@@ -10434,17 +10434,18 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 				else
 				{
 					  TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
-					  Long boothId = tdpCadre.getUserAddress().getBooth().getBoothId();
+					  Booth booth = tdpCadre.getUserAddress().getBooth();
+					  Long boothId = booth != null ? booth.getBoothId():null;
 					  Long voterId = 0L;
 					  String houseNo = null;
 					  if(tdpCadre.getVoter() != null)
 					  {
-						  houseNo  = tdpCadre.getVoter().getHouseNo();
+						  houseNo  = tdpCadre.getVoter() != null ? tdpCadre.getVoter().getHouseNo():"";
 						  voterId = tdpCadre.getVoterId();
 					  }
 					  else
 					  {
-						  houseNo  = tdpCadre.getFamilyVoter().getHouseNo();
+						  houseNo  = tdpCadre.getFamilyVoter() != null ? tdpCadre.getFamilyVoter().getHouseNo():"";
 						  voterId = tdpCadre.getFamilyVoterId();
 					  }
 						if((houseNo != null && houseNo.toString().trim().length()>0) && (boothId != null && boothId.longValue() >0L))
