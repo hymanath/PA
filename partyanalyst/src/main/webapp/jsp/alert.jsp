@@ -79,27 +79,28 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">Create Alert</h4>
 				</div>
+				<form id="saveAlertForm" name="saveAlertForm" enctype="multipart/form-data" action="saveAlertAction.action" method="POST">
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-3">
 							<label>Alert Type</label>
-							<select class="dropkickClass">
-								<option>Alet</option>
+							<select class="dropkickClass" name="alertVO.alertTypeId">
+								<option value="1">Alert</option>
 							</select>
 						</div>
 						<div class="col-md-3 levelShowCls" >
 							<label>Level</label>
-							<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
-							<option value="10">State</option>
-							 <option value="11">District</option>
-							 <option value="1">Constituency</option>
+							<select class="dropkickClass" id="levelId" onchange="disableByLevel();" name="alertVO.locationLevelId">
+							<option value="2">State</option>
+							 <option value="3">District</option>
+							 <option value="4">Constituency</option>
 							 <option value="5">Mandal/Muncipality</option>
 							 <option value="6">Village/Ward</option>
 							</select>
 						</div>
 						<div class="col-md-3 stateShowCls" >
 							<label>State</label>
-							 <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup();">
+							 <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup();" name="alertVO.stateId">
 							 <option value="0">All</option>
 							 <option value="1">AP</option>
 							 <option value="36">TS</option>
@@ -108,24 +109,24 @@
 				   
 						<div class="col-md-3 locationsFilterCls distCls">
 							 <label>District</label>
-							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();">
+							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();" name="alertVO.districtId">
 							 <option value="0">All</option></select>
 						</div>
 						<div class="col-md-3 locationsFilterCls constiCls">
 							<label>Assembly</label>
-							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();">
+							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();" name="alertVO.constituencyId">
 							<option value="0">All</option>
 							</select>
 						</div>
 						<div class="col-md-3 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
-							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();">
+							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" name="alertVO.tehsilId">
 								<option value="0">All</option>
 							 </select>
 						</div>
 						<div class="col-md-3 locationsFilterCls panchayatCls">
 							<label>Panchayat</label>
-							<select class="dropkickClass" id="referpanchayatId">
+							<select class="dropkickClass" id="referpanchayatId" name="alertVO.panchayatId">
 							<option value="0">All</option>
 							</select>
 						</div>
@@ -135,42 +136,46 @@
 						<div class="col-md-6">
 							<label>Search Candidates</label>
 							<div class="input-group">
-								<input type="text" class="form-control"/>
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-search"></i>
+								<input type="text" class="form-control" id="candidateNameId"/>
+								<span class="input-group-addon" onclick="getCandidateNameDetails()">
+									<i class="glyphicon glyphicon-search" ></i>
 								</span>
 							</div>
 						</div>
+						<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
+						<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
 						<div class="col-md-6">
 							<label>Select Candidates</label>
-							<select class="dropkickClass">
-								<option>Candidate Name</option>
+							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
+								
 							</select>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label>Description</label>
-							<textarea class="form-control"></textarea>
+							<textarea class="form-control" name="alertVO.desc"></textarea>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-3" style="margin-top:10px">
-							<button class="btn btn-primary">CREATE ALERT</button>
+						<input style="font-weight:bold;" class="btn btn-primary" id="addThisalertId" onclick="createAlert();" type="button" value="CREATE ALERT" ></input>
+						<!--<button  type="button" class="btn btn-primary">CREATE ALERT</button>-->
 						</div>
 					</div>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
                  
 </div>
-<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
+<!--<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
 	<div><h4> Select Candidate : <input style="margin-left:31px;" type="candidateName" id="candidateNameId" />
 	<button type="button" onclick="getCandidateNameDetails()">view</button></h4>
 	<h4>Enter CandidateName: <select style="margin-left: 53px; width: 220px;" id="candidatesNameListId" onchange="diplayValues()"></select></h4>
 	<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
-	</div>
+	</div>-->
 <script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".dropkickClass").dropkick()
@@ -193,12 +198,16 @@ function getCandidatesByName(){
 						{			
 							$('#candidatesNameListId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 						}
+						$("#candidatesNameListId").dropkick();
+							var select1 = new Dropkick("#candidatesNameListId");
+							select1.refresh();
 					}
 				  
 				});
 		}
 		function getCandidateNameDetails()
 		{
+			
 		 $("#errorDiv").html('');
 		 var CandidateName=$("#candidateNameId").val();
 		 if(CandidateName.trim().length<=3 || CandidateName ==""){
@@ -207,6 +216,22 @@ function getCandidatesByName(){
          }	
 		 getCandidatesByName();
 		}
+		
+function createAlert()
+{
+
+var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					return false;
+				}
+			};
+
+		YAHOO.util.Connect.setForm('saveAlertForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','saveAlertAction.action',uploadHandler);
+}
+
+
 </script>
 </body>
 </html>
