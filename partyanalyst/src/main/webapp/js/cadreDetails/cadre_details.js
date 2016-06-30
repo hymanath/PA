@@ -335,9 +335,9 @@ var globalVoterCardNo = "";
 					 $("#voterIdSpan").html(result.voterIdCardNo);
 					 
 					 if(result.isFamilyVoterId =="false"){
-						 $("#isFamilyId").html('<b> Own Voter ID</b>');
+						 $("#isFamilyId").html('<b>Own Voter ID</b>');
 					 }else if(result.isFamilyVoterId == "true"){
-						 $("#isFamilyId").html('<b> Family Voter ID </b>');
+						 $("#isFamilyId").html('<b>Family Voter ID </b>');
 					 }
 					 }else{
 						 $("#isFamilyId").html("Not Available."); 
@@ -500,7 +500,7 @@ var globalVoterCardNo = "";
 					 globalConstName = result.constituencyName;
 					 globalParlName = result.pConstituencyName;
 					 globalDistName = result.districtName;
-					 
+					    
 					getCandidateAndConstituencySurveyResult();
 					complaintDetailsOfCadre(localCadreId,result.membershipNo);
 					getCandidateElectDetatails(localCadreId);
@@ -622,6 +622,7 @@ var globalVoterCardNo = "";
 				for(var k in myresult)
 				{
 					str+='<h4>'+myresult[k].eventTypeStr.toUpperCase()+'</h4>';
+					str+='<div class="table-responsive">';
 					str+='<table class="table m_0 table-bordered table-responsive" style="margin-top: 10px">';
 					str+='<thead style="background:#f2f2f2">';
 					str+='<tr>';
@@ -696,10 +697,12 @@ var globalVoterCardNo = "";
 						}
 					str+='</tbody>';
 				    str+='</table>';	
+				    str+='</div>';	
 				   //$("#participationTableDivId").html(str);
 				}else{
 					str+='</tbody>';
 				    str+='</table>';	
+				    str+='</div>';	
 					//$("#participationTableDivId").html("Data Not Available.");
 					}					
 				}
@@ -741,7 +744,7 @@ var globalVoterCardNo = "";
 			}).done(function(result){
 				if(result != null){
 					var str='';
-					
+					str+='<div class="table-responsive">';
 					str+='<table class="table m_0 table-bordered">';
 					str+='<thead>';
 						str+='<th style="text-align:center;"></th>';
@@ -784,6 +787,7 @@ var globalVoterCardNo = "";
 				str+='</tr>';
 				str+='</tbody>';*/
 				str+='</table>';
+				str+='</div>';
 				$("#dataLoadingsImgForEventAttendanceInfoId").hide();
 				$("#eventAttendanceInfoBodyId").html(str);
 				}
@@ -895,6 +899,7 @@ var globalVoterCardNo = "";
 							{
 								str+='<div class="pull-right tooltipClass" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreFamilySurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-default btn-xs " style="padding:3px 5px 5px;background-color:#CCC;border-radius:0px;" data-toggle="tooltip" data-placement="bottom" title="View All Questions Response"><i class="glyphicon glyphicon-list"></i></a> </div>';
 							}*/
+						str+='<div class="table-responsive">';
 						str+='<table class="table m_0 table-bordered">';
 						str+='<thead>';
 							str+='<th style="text-align:center;">Question</th>';
@@ -908,6 +913,9 @@ var globalVoterCardNo = "";
 							str+='<td>'+result.verifierVOList[0].verifierVOList[i].option+'</td>'; 
 						str+='</tr>';
 						}
+						str+='</tbody>';
+						str+='</table>';
+						str+='</div>';
 					
 					}				
 					$("#"+divId+"").show();		
@@ -1078,6 +1086,7 @@ var globalVoterCardNo = "";
 								str+='<a role="button" data-toggle="collapse" data-parent="#accordion1" onclick="tableshidesandShow(\'surveyTable'+i+'\','+i+');" aria-expanded="true" aria-controls="" style="cursor:pointer;"> ';
 								str+='<h4 class="panel-title text-bold">';
 								str+=''+result.verifierVOList[i].name+'';
+								//sris
 								str+='<span class="pull-right"><i class="glyphicon glyphicon-triangle-top topsurveyTable" id="topsurveyTable'+i+'" style=""></i><i class="glyphicon glyphicon-triangle-bottom bottomsurveyTable topsurveyTable'+i+'" id="topsurveyTable'+i+'" style="display:none;"></i></span>';
 								str+='</h4> </a><div style="offset4"><img id="ajaxsurveyTable'+i+'" src="images/icons/survey-details.gif" style="display:none;width:250px;height:200px;margin-left:300px;"/></div>';
 								
@@ -1133,6 +1142,7 @@ var globalVoterCardNo = "";
 					{
 						str+='<div class="pull-right tooltipClass" style="margin-bottom: 5px;"> <a href="javascript:{getTdpCadreSurveyDetails('+globalCadreId+','+surveyId+',\'null\',\'All\',\''+divId+'\',\'false\');;}" class="btn btn-default btn-xs " style="padding:3px 5px 5px;background-color:#CCC;border-radius:0px;" data-toggle="tooltip" data-placement="bottom" title="View All Questions Response"><i class="glyphicon glyphicon-list"></i></a> </div>';
 					}
+						str+='<div class="table-responsive">';
 						str+='<table class="table m_0 table-bordered">';
 							/*str+='<thead>';
 								str+='<th style="text-align:center;">Question</th>';
@@ -1186,6 +1196,7 @@ var globalVoterCardNo = "";
 							}
 					str+='</tbody>';
 					str+='</table>';
+					str+='</div>';
 					str+='</div>';
 				}else{
 					str+='<div>"Data Not Available."</div>';
@@ -1292,9 +1303,19 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 			str += '<li>';
 			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.panchPerc+'%" data-percent="'+result.panchPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Panchayat ('+globalPancName.toUpperCase()+')"></div>';
 			str += '</li>';
-		 }
+		 } 
+		 
 		str += '<li>';
-		str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
+		//console.log(globalTehsName);
+		if(globalTehsName != null && globalTehsName.trim().length>0){
+			str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
+		}
+		else  if(result.mandalNameStr != null && result.mandalNameStr.length>0){
+			str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result.mandalNameStr.toUpperCase()+')"></div>';
+			$("#mandalId").html(result.mandalNameStr.toUpperCase());
+		}
+	
+		//str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
 		str += '</li>';
 		
 		str += '<li>';
@@ -1311,7 +1332,9 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		
 	}
 		str += '</ul>';
+
 	 $("#memberShipCountDiv").html(str);
+	
 	 $('.fulCircleCls').circliful();
 	 var windowWidth = $(window).width();
 	 if( windowWidth > 768)
@@ -1957,7 +1980,13 @@ function buildElectionPerformanceInCadreLocation(result)
 	 }
 	
 	str += '<li>';
-    str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
+	if(globalTehsName != null && globalTehsName.trim().length>0)
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
+	else  if(result[i].mandalNameStr != null && result[i].mandalNameStr.length>0){
+		str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result[i].mandalPerc+'%" data-percent="'+result[i].mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result[i].mandalNameStr.toUpperCase()+')"></div>';
+		$("#mandalId").html(result[i].mandalNameStr.toUpperCase());
+	}
+	
     str += '</li>';
 	
 	str += '<li>';
@@ -2623,7 +2652,7 @@ function getCadreIdByMemberShipId(){
 			}
 			else{
 				getCategoryWiseStatusCount();
-				getTotalMemberShipRegistrationsInCadreLocation();		
+				//getTotalMemberShipRegistrationsInCadreLocation();		
 				//getCadreFamilyDetailsByCadreId();//swadhin
 				//getElectionPerformanceInCadreLocation();
 				getApprovedFinancialSupprotForCadre();
@@ -2635,6 +2664,7 @@ function getCadreIdByMemberShipId(){
 				getEventsOverviewFortdpCadre();
 				getActivityDetails();
 			}
+			
 		}
 
 	});
@@ -4530,7 +4560,7 @@ function getRemarkSOfCadreByCallPurpose(programId,cadreId){
 	});
 }
 
-//getIVRSummaryByTdpCadreId();
+
 	function getIVRSummaryByTdpCadreId(){
 		$("#ivrSummaryajaxImg").html('<img alt="Processing Image" src="./images/icons/search.gif">');
 		//var tdpCadreId='${param.cadreId}' ;
@@ -5129,6 +5159,7 @@ function buildSurveyAnswerDetailsForTrainingCamps(result,eventName){
 				str+='</div>';
 				
 				str+='<div class="panel-body">';		
+				str+='<div class="table-responsive">';		
 			str+='<table class="table m_0 table-bordered">';
 				str+='<thead style="background-color:#f4f4f4">';
 					str+='<th class="text-center"> SURVEY </th>';
@@ -5148,6 +5179,7 @@ function buildSurveyAnswerDetailsForTrainingCamps(result,eventName){
 				}
 				str+='</tbody>';
 			str+='</table>';
+			str+='</div>';
 			str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -5375,6 +5407,7 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 		if(result != null){
 			var str='';
 			 str+'<div class="panel-body pad_0">';
+			 str+'<div class="table-responsive">';
 			// str+='NOTE : IA:INVITEE ATTENTED  , NI:NON-INVITEE';
 				str+='<table class="table m_0 table-bordered m_0" style="font-size:12px">'
 					
@@ -5395,6 +5428,7 @@ function getTrainingCampAttendenceInfoInCadreLocation(){
 					
 				str+'</table>';
 				str+='<p style="margin-left:15px;text-align:center">IA:INVITEE ATTENDED  ,<b></b> NIA:NON-INVITEE ATTENDED</p>';
+			str+='</div>';
 			str+='</div>';
 		
 		$("#trainingCampParticipationDivId").html(str);
@@ -5513,6 +5547,7 @@ function getAppointmentsUserDetails()
 				total = total + result[i].availableCount;
 			}
 			str+='<p>Total Appointment Requested - '+total+'</p>';
+			str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered">';
 			str+='<tr class="text-center">';
 			for(var i in result)
@@ -5526,6 +5561,7 @@ function getAppointmentsUserDetails()
 			}
 			str+='</tr>';
 			str+='</table>';
+			str+='</div>';
 		   $("#aptCandidateHistorystatusOverViewDiv").html(str);			
 		  }
 		  
@@ -5550,6 +5586,7 @@ function getAppointmentsUserDetails()
 	function buildAppointmentHistoryForCandidate(result)
 	{
 		var str='';
+		str+='<div class="table-responsive">';
 		str+='<table class="table table-condensed" style="border:1px solid #ddd" id="aptCandidateHistorydatatable">';
 		str+='<thead>';
 		str+='<th>ID</th>';
@@ -5575,6 +5612,7 @@ function getAppointmentsUserDetails()
 		}
 		str+='</tbody>';
 		str+='</table>';
+		str+='</div>';
 		str+='<div id="appointmentCommentsDiv" class="m_top30"></div>';
 		$("#aptCandidateHistoryDiv").html(str);	
 	     $('#aptCandidateHistorydatatable').DataTable();
@@ -5678,6 +5716,7 @@ function getGrievanceStatusDetails(){
 function buildGrievanceStatusDetails(result){
 	var str='';
 			 str+'<div class="panel-body pad_0">';
+				str+='<div class="table-responsive">';
 				str+='<table class="table m_0 table-bordered table-condensed m_0" style="font-size:9px">';
 					str+='<thead>';
 						str+='<th style="background-color:#f5f5f5">LOCATION</th>';
@@ -5696,6 +5735,7 @@ function buildGrievanceStatusDetails(result){
 						str+='</tr>';
 					}		
 				str+'</table>';
+				str+='</div>';
 			str+='</div>';
 		$("#dataLoadingsImgForGrievanceStatusCount").hide();
 		$("#grievanceStatusMainDivId").html(str);
@@ -5834,6 +5874,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 			if(result != null){
 				var str='';
 			str+='<div class="row"><div class="col-md-12"><button type="button" class="pull-right btn btn-primary" id="exportId" onclick="generateExcel1()"> Export To Excel </button></div></div>';
+				str+='<div class="table-responsive">';
 				str+='<table class="table m_0 table-bordered m_0" id="grievanceStatusWiseTableId" style="font-size:13px !important;">';
 				str+='<thead>';
 					str+='<tr>';
@@ -5869,6 +5910,7 @@ $(document).on("click",".grievanceStatusWiseDetailsCls",function(){
 					}
 				str+='</tbody>'
 			str+='</table>';
+			str+='</div>';
 				
 				/*str+='<table class="table m_0 table-bordered m_0">';
 					str+='<thead>';
@@ -6161,7 +6203,7 @@ function buildGrievanceAmountDetails(result){
 	var noOfBenForTotWelfareCount=0;
 	var approvedAmtForTotWelfareCount=0;
 	var otherBenForTotWelfareCount=0;
-	
+	str+='<div class="table-responsive">';
 	str+='<table class="table m_0 table-bordered m_0" style="font-size:13px;">';
 		str+='<thead style="background:#f2f2f2">';
 			str+='<tr>';
@@ -6253,7 +6295,8 @@ function buildGrievanceAmountDetails(result){
 			}
 			str+='</tr>'; 
 		str+='</tbody>';
-	str+='<table>';
+	str+='</table>';
+	str+='</div>';
 	
 	$("#dataLoadingsImgForGrievanceRequests").hide();
 	$("#grievanceRequestsId").html(str);
@@ -6300,7 +6343,7 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 	}).done(function(result){
 		if(result != null){
 			var str='';
-			
+			str+='<div class="table-responsive">';
 			str+='<table class="table m_0 table-bordered m_0" id="grievanceBenifitsTableId" style="font-size:13px !important;">';
 				str+='<thead>';
 					str+='<tr>';
@@ -6344,6 +6387,7 @@ $(document).on("click",".grievanceBenifitsStatusWiseDetailsCls",function(){
 					}
 				str+='</tbody>'
 			str+='</table>';
+			str+='</div>';
 			
 			$("#dataLoadingsImgForGrievanceBenifitsStatusDetails").hide();
 			$("#grievanceBenifitsDetailsModalBodyId").html(str);
@@ -6365,6 +6409,7 @@ function buildGrievanceRequests(result)
 	  str+='</ul>';
 	  str+='<div class="tab-content">';
 		str+='<div role="tabpanel" class="tab-pane active" id="govtGrievance">';
+			str+='<div class="table-responsive">';
 			str+='<table>';
 			str+='<thead>';
 				str+='<tr>';
@@ -6401,7 +6446,9 @@ function buildGrievanceRequests(result)
 			str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
+		str+='</div>';
 		str+='<div role="tabpanel" class="tab-pane" id="welfareGrievance">';
+			str+='<div class="table-responsive">';
 			str+='<table>';
 			str+='<thead>';
 				str+='<tr>';
@@ -6438,7 +6485,9 @@ function buildGrievanceRequests(result)
 			str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
+		str+='</div>';
 		str+='<div role="tabpanel" class="tab-pane" id="partyGrievance">';
+			str+='<div class="table-responsive">';
 			str+='<table>';
 			str+='<thead>';
 				str+='<tr>';
@@ -6474,6 +6523,7 @@ function buildGrievanceRequests(result)
 				str+='</tr>';
 			str+='</tbody>';
 			str+='</table>';
+		str+='</div>';
 		str+='</div>';
 	  str+='</div>';
 	$("#grievanceRequestsId").html(str)
