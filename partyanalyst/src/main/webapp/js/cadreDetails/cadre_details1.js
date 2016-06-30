@@ -1,6 +1,6 @@
 function getCandidateParticipatedSurveyCnt(){
 	
-	
+
 	$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
 	var jsObj={
 		cadreId:globalCadreId
@@ -155,6 +155,7 @@ var result = resultList.verifierVOList;
 		var str = '';
 	if(result != null && result.length >0){
 	str+='<div class="panel-group" style="margin-top:20px" id="accordion121" role="tablist" aria-multiselectable="true">';
+			str+='<div class="table-responsive">';
 			str+='<table id="ivrStatusDataTable">';
 			str+='<thead><th style="text-align:right;">sort by date<i style="background: rgb(221, 221, 221) none repeat scroll 0% 0%; border-radius: 50%; padding: 9px; float: right;" class="glyphicon glyphicon-sort-by-attributes"></i></th></thead>';
 			for(var i in result){
@@ -164,14 +165,14 @@ var result = resultList.verifierVOList;
 					str+='<div class="panel-heading" role="tab" id="headingOne'+i+'">';
 						str+='<a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion121" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 							str+='<h4 class="panel-title">';
-								str+=''+result[i].date+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+result[i].name+'';
+								str+='<span class="resWidth">'+result[i].date+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="resWidth">'+result[i].name+'</span>';
 							str+='</h4>';
 						str+='</a>';
 					str+='</div>';
 					
 					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
 						str+='<div class="panel-body">';
-						
+						str+='<div class="table-responsive">';
 				
 
 						
@@ -179,7 +180,7 @@ var result = resultList.verifierVOList;
 							{
 
 								str+='<h4>'+result[i].verifierVOList[k].name+'</h4>';
-								str+='<div class="table-responsive">';
+								
 								str+='<table class="table table-bordered">';
 
 								str+='<thead>';
@@ -206,9 +207,9 @@ var result = resultList.verifierVOList;
 							}
 								str+='</tbody>';
 								str+='</table>';
-								str+='</div>';
+								
 							}
-					
+							str+='</div>';
 						str+='</div>';
 					 str+='</div>';
 					str+='</div>';
@@ -216,6 +217,7 @@ var result = resultList.verifierVOList;
 					str+='</td>';
 			}
 			str+='</table>';
+			str+='</div>';
 			str+='</div>';
 			$('.ivrSurveyCandtDetailsCls').html(str);
 			
@@ -277,7 +279,7 @@ function buildSurveysOnCandidateDetails(result){
 					
 					str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
 						str+='<div class="panel-body">';
-						str+='<div>';
+						str+='<div class="table-responsive">';
 				for(var j in result[i].questions)
 					{
 						str+='<table class="table table-bordered">';
@@ -355,6 +357,7 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 	
 	var str = '';
 	var result = results.activityVoList;
+	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered">';
 	str+='<thead style="background:#ccc">';
 	str+='<th> Activity level </th>';
@@ -371,6 +374,7 @@ function buildLocationsDtlsofCandateActivityAttendance(results){
 	}
 	str+='</tbody>';
 	str+='</table>';
+	str+='</div>';
 	
 	$("#activityAttented").html(str);
 }
@@ -407,7 +411,7 @@ function getCandateActivityAttendance(activityLevelId){
 //getCandateActivityAttendance();
 function buildCandateActivityAttendance(result){
 	var str = '';
-	
+	str+='<div class="table-responsive">';
 	str+='<table class="table table-bordered">';
 	str+='<thead style="background:#ccc">';
 	str+='<th>Activity level</th>';
@@ -450,6 +454,7 @@ function buildCandateActivityAttendance(result){
 	}
 	str+='</tbody>';
 	str+='</table>';
+	str+='</div>';
 	
 	$("#activityAttented").html(str);
 }
