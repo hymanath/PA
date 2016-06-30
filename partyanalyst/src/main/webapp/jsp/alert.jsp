@@ -9,7 +9,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title> Alerts </title>
 	<!-- Bootstrap -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 		
 
 	
@@ -24,7 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/custom-yui-styles.css">	
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 	
 	<link rel="stylesheet" type="text/css" href="debate/pagination/simplePagination.css">
-		 
+	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
 		 		
 	
 	<!-- YUI Dependency files (Start) -->
@@ -50,7 +50,7 @@
 		
 		
 	
-<!-- JQuery files (Start) -->
+	<!-- JQuery files (Start) -->
 	<script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>
 	<script type="text/javascript" src="debate/js/bootstrap.min.js"></script>
 	<script src="debate/js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
@@ -68,58 +68,106 @@
 	<script type="text/javascript" src="debate/js/jQuery/debate/js/jquery-ui-1.8.24.custom.min.js"/>
 	<script type="text/javascript" src="debate/pagination/pagination1.js"></script>
 	<script type="text/javascript" src="debate/pagination/jquery.simplePagination.js"></script>
-	
+	<script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 	
  </head>                                         							
 <body>
 <div class="container">
-                 <div class="row">
-					 <div class="col-md-2 levelShowCls" >
-						<label>Level</label>
-						<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
-						<option value="10">State</option>
-				         <option value="11">District</option>
-					     <option value="1">Constituency</option>
-						 <option value="5">Mandal/Muncipality</option>
-						 <option value="6">Village/Ward</option>
-						</select>
-					</div>
-					<div class="col-md-2 stateShowCls" >
-					    <label>State</label>
-					     <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup();">
-					     <option value="0">All</option>
-				         <option value="1">AP</option>
-					     <option value="36">TS</option>
-					     </select>
-					</div>
-			       
-					  <div class="col-md-2 locationsFilterCls distCls">
-					     <label>District</label>
-				         <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();">
-				         <option value="0">All</option></select>
-					</div>
-					<div class="col-md-2 locationsFilterCls constiCls">
-						<label>Assembly</label>
-					    <select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();">
-					    <option value="0">All</option>
-						</select>
-					</div>
-					<div class="col-md-3 locationsFilterCls mandalCls">
-						<label>Mandal/ Municipality</label>
-					     <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">Create Alert</h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-3">
+							<label>Alert Type</label>
+							<select class="dropkickClass">
+								<option>Alet</option>
+							</select>
+						</div>
+						<div class="col-md-3 levelShowCls" >
+							<label>Level</label>
+							<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
+							<option value="10">State</option>
+							 <option value="11">District</option>
+							 <option value="1">Constituency</option>
+							 <option value="5">Mandal/Muncipality</option>
+							 <option value="6">Village/Ward</option>
+							</select>
+						</div>
+						<div class="col-md-3 stateShowCls" >
+							<label>State</label>
+							 <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup();">
+							 <option value="0">All</option>
+							 <option value="1">AP</option>
+							 <option value="36">TS</option>
+							 </select>
+						</div>
+				   
+						<div class="col-md-3 locationsFilterCls distCls">
+							 <label>District</label>
+							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();">
+							 <option value="0">All</option></select>
+						</div>
+						<div class="col-md-3 locationsFilterCls constiCls">
+							<label>Assembly</label>
+							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();">
 							<option value="0">All</option>
-						 </select>
+							</select>
+						</div>
+						<div class="col-md-3 locationsFilterCls mandalCls">
+							<label>Mandal/ Municipality</label>
+							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();">
+								<option value="0">All</option>
+							 </select>
+						</div>
+						<div class="col-md-3 locationsFilterCls panchayatCls">
+							<label>Panchayat</label>
+							<select class="dropkickClass" id="referpanchayatId">
+							<option value="0">All</option>
+							</select>
+						</div>
+						
 					</div>
-					<div class="col-md-3 locationsFilterCls panchayatCls">
-						<label>Panchayat</label>
-						<select class="dropkickClass" id="referpanchayatId">
-						<option value="0">All</option>
-						</select>
+					<div class="row">
+						<div class="col-md-6">
+							<label>Search Candidates</label>
+							<div class="input-group">
+								<input type="text" class="form-control"/>
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-search"></i>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label>Select Candidates</label>
+							<select class="dropkickClass">
+								<option>Candidate Name</option>
+							</select>
+						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label>Description</label>
+							<textarea class="form-control"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3" style="margin-top:10px">
+							<button class="btn btn-primary">CREATE ALERT</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+                 
 </div>
 <script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(".dropkickClass").dropkick()
 </script>
 </body>
 </html>

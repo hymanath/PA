@@ -1,7 +1,7 @@
 
 function disableByLevel()
   {
-	  	
+	  setDefault();	
 	  var levelId = $("#levelId").val();
 	  var districtId = $("#referdistrictId").val();
 	  var constituencyId = $("#referconstituencyId").val();
@@ -13,8 +13,99 @@ function disableByLevel()
 		if(levelId != 10 && levelId != 0)
 		{
 			getDistrictsForReferPopup();
-		}	
+		}
+		
+		if(levelId == 10 || levelId == 0)
+		{
+			  $("#referdistrictId").find('option').not(':first').remove();
+			  $("#referconstituencyId").find('option').not(':first').remove();
+			  $("#refermandalNameId").find('option').not(':first').remove();
+			  $("#referpanchayatId").find('option').not(':first').remove();
+			   var select = new Dropkick("#referdistrictId");
+				select.refresh();
+			   var select = new Dropkick("#referconstituencyId");
+				select.refresh();
+				var select = new Dropkick("#refermandalNameId");
+				select.refresh();
+				var select = new Dropkick("#referpanchayatId");
+				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").hide();
+				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+				
+		}
+		else if(levelId == 11)
+		{
+			  $("#referconstituencyId").find('option').not(':first').remove();
+			  $("#refermandalNameId").find('option').not(':first').remove();
+			  $("#referpanchayatId").find('option').not(':first').remove();
+			   var select = new Dropkick("#referconstituencyId");
+				select.refresh();
+				var select = new Dropkick("#refermandalNameId");
+				select.refresh();
+				var select = new Dropkick("#referpanchayatId");
+				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").hide();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+		}
+		else if(levelId == 1)
+		{
+			  $("#referconstituencyId").find('option').not(':first').remove();
+			  $("#refermandalNameId").find('option').not(':first').remove();
+			  $("#referpanchayatId").find('option').not(':first').remove();
+			   var select = new Dropkick("#referconstituencyId");
+				select.refresh();
+				var select = new Dropkick("#refermandalNameId");
+				select.refresh();
+				var select = new Dropkick("#referpanchayatId");
+				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").show();
+				$(".mandalCls").hide();
+				$(".panchayatCls").hide();
+		}
+		else if(levelId == 5)
+		{
+			$("#referpanchayatId").find('option').not(':first').remove();
+			var select = new Dropkick("#referpanchayatId");
+				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").show();
+				$(".mandalCls").show();
+				$(".panchayatCls").hide();
+		}
+		else if(levelId == 6)
+		{
+			$("#referpanchayatId").find('option').not(':first').remove();
+			var select = new Dropkick("#referpanchayatId");
+				select.refresh();
+				$(".stateCls").show();
+				$(".distCls").show();
+				$(".constiCls").show();
+				$(".mandalCls").show();
+				$(".panchayatCls").show();
+		}
+		
   }
+ function setDefault()
+  {
+	  $("#referconstituencyId").find('option').not(':first').remove();
+	  $("#refermandalNameId").find('option').not(':first').remove();
+	  $("#referpanchayatId").find('option').not(':first').remove();
+	    var select = new Dropkick("#referconstituencyId");
+		select.refresh();
+		var select = new Dropkick("#refermandalNameId");
+		select.refresh();
+		var select = new Dropkick("#referpanchayatId");
+		select.refresh();
+  } 
   
   
   
@@ -62,7 +153,7 @@ function disableByLevel()
 					}
 			 $("#referconstituencyId").html(constiStr);
 			 $("#referconstituencyId").dropkick();
-			 var select = new Dropkick("#referconstituencyId");
+			var select = new Dropkick("#referconstituencyId");
 			 select.refresh();
 			}
 		});
