@@ -12683,6 +12683,10 @@
 		    		</result>
 	</action>
 	
-	
+	<action name="getCandidatesByNameAction" class="createAlertAction" method="getCandidatesByName">
+		    	<result type="json" name="success">
+					<param name="root">basicVO</param>
+				</result>
+		</action>
 </package>
 </struts>      
