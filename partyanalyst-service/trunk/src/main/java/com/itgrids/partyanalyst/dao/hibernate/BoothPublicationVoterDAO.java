@@ -8315,7 +8315,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	}
 	public List<Object[]> getVoterImagesVoterIdcardNo(List<String> voterIDCardNos)
 	{
-		Query query = getSession().createQuery("SELECT model.voter.voterIDCardNo, model.voter.imagePath FROM  BoothPublicationVoter model WHERE model.voter.voterIDCardNo in(:voterIDCardNos) AND  model.booth.publicationDate.publicationDateId = "+IConstants.VOTER_PUBLICATION_ID);
+		Query query = getSession().createQuery("SELECT model.voterIDCardNo, model.imagePath FROM Voter model WHERE model.voterIDCardNo in(:voterIDCardNos)");
 		query.setParameterList("voterIDCardNos",voterIDCardNos);
 		return query.list();
 	}
