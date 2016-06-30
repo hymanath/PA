@@ -608,6 +608,7 @@ public class DebateService implements IDebateService{
 					}
 					selectOptionVO.setName(parms[4] != null ?parms[4].toString() :"");//scale
 					selectOptionVO.setPerc(parms[5] != null ?(Double)parms[5]: 0.0);//rating
+					selectOptionVO.setId(parms[6] != null ? (Long)parms[6]:0l);//charectersticId
 					//scalesList.add(selectOptionVO);
 					charactrsDetails.add(selectOptionVO);;
 				}
@@ -2099,5 +2100,30 @@ public class DebateService implements IDebateService{
 		}
 		return debateVO;
 	 }*/
+	 
+	 public List<DebateVO> getTotalAttendedDebatesOfCadre(Long tdpCadreId){
+		 
+		 List<DebateVO> finalList = new ArrayList<DebateVO>();
+		 
+		 try{			 
+			 List<Long> list = debateParticipantDAO.getTotalAttendedDebatesOfCadre(tdpCadreId);
+			  
+				if(list !=null && list.size()>0){
+					for (Long long1 : list) {						
+						DebateVO VO = getDebateDetailsForSelected(long1);
+						if(VO !=null){
+							finalList.add(VO);
+						}										
+					}
+					
+					finalList.get(0).setTotalDebates(Long.parseLong(Integer.toString(list.size())));
+				}			 
+			 
+		 }catch (Exception e) {
+			 LOG.error(" Exception Occured in getTotalAttendedDebatesOfCadre method, Exception - ",e);
+		}
+		 return finalList;
+		 
+	 }
 	 
 }

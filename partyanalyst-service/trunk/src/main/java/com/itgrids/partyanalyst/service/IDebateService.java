@@ -65,4 +65,5 @@ public interface IDebateService {
 	 public ResultStatus createCandidate(Long partyId,String name);
 	 
 	 public String deleteSelectedDEbate(Long debateId);
+	 public List<DebateVO> getTotalAttendedDebatesOfCadre(Long tdpCadreId);
 }

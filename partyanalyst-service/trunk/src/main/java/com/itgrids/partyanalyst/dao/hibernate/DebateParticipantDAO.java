@@ -280,4 +280,59 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		}
 		return query.list();
 	}
+	
+	/*Candidate Page*/
+	
+	public List<Long> getTotalAttendedDebatesOfCadre(Long tdpCadreId){
+		
+		Query query = getSession().createQuery(" select distinct model.debate.debateId  " +
+				" from DebateParticipant model,TdpCadreCandidate model1 " +
+				" where model.candidate.candidateId = model1.candidate.candidateId " +
+				" and model1.tdpCadre.tdpCadreId = :tdpCadreId ");
+		
+		query.setParameter("tdpCadreId", tdpCadreId);
+		
+		return  query.list();
+	}
+	
+	/*select D.debate_id,DS.subject,date(D.start_time),D.start_time,D.end_time,O.observer_id ,O.observer_name,
+	C.characteristics_id,C.name,DPC.scale,CAN.candidate_id,CAN.lastname,P.party_id,P.short_name
+	 from debate_participant DP,debate D,debate_subject DS,debate_observer DO,observer O,debate_participant_charcs DPC,
+	 characteristics C,candidate CAN,party P
+	where D.debate_id = DP.debate_id 
+	and DS.debate_id = D.debate_id
+	and DO.debate_id = D.debate_id
+	and O.observer_id = DO.observer_id
+	and DP.debate_participant_id = DPC.debate_participant_id
+	and DPC.characteristics_id = C.characteristics_id
+	and DP.candidate_id = CAN.candidate_id
+	and P.party_id = CAN.party_id
+	and D.is_deleted = 'N'
+	and D.debate_id = 474
+	;*/
+	public List<Object[]> getDebateParticipatedDetailsOfCadre(List<Long> debetIds){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" SELECT  DP.debate.debateId,DS.subject,date(DP.debate.startTime),DP.debate.startTime,DP.debate.endTime," +
+				" DO.observer.observerId,DO.observer.observerName,DPC.characteristics.characteristicsId,DPC.characteristics.name,DPC.scale," +
+				" candidate.candidateId,candidate.lastname,party.partyId,party.shortName " +
+				" FROM  DebateParticipant DP,DebateSubject DS,DebateObserver DO, " +
+				" DebateParticipantCharcs DPC  left join DPC.debateParticipant.candidate candidate" +
+				" left join DPC.debateParticipant.candidate.party  party  " +
+				" " +
+				" WHERE DP.debate.debateId = DS.debate.debateId " +
+				" AND DP.debate.debateId = DO.debate.debateId " +
+				" AND DPC.debateParticipant.debateParticipantId = DP.debateParticipantId" +
+				" AND DP.debate.isDeleted = 'N' " +
+				" AND  DO.observer.isDeleted = 'N'" +
+				" AND  DPC.characteristics.isDeleted = 'N' " +
+				" AND DP.debate.debateId in (:debetIds) ") ;
+		
+		Query query = getSession().createQuery(str.toString());		
+		query.setParameterList("debetIds", debetIds);
+		
+		return query.list();
+		
+	}
 }
