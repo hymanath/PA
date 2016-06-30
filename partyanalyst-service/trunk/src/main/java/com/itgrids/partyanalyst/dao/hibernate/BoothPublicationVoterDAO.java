@@ -8054,7 +8054,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		Long voterid=Long.parseLong(voterId);
 		
 		Query query = getSession().createQuery(" select model.booth.partNo,model.booth.boothId from BoothPublicationVoter model" +
-				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId="+IConstants.VOTER_DATA_PUBLICATION_ID+" ");
+				" where  model.voter.voterId = :voterId and model.booth.publicationDate.publicationDateId=11");
 		
 		query.setParameter("voterId",voterid);
 		return  (Object[]) query.uniqueResult();
