@@ -461,7 +461,7 @@ a .panel-title
   background:#ddd;
   margin-top:8px;
 }
-#menu i{color : #fff !important}
+#menu i{color : #5c2d25  !important}
  #paginationDivId .prev,.next{width:60px !important;}
  
 .inbox-messages
@@ -1367,6 +1367,16 @@ table.gridtable td {
  {
    margin-top:40px;
  }
+}
+@media (min-width: 108px) and (max-width: 600px) {
+	body{font-size:12px !important;}
+	h1,h2,h3{font-size:15px !important;}
+	h4{font-size:13px !important}
+	p,ul,li,span,a,.table,.table tr td,.table thead th{font-size:12px !important;}
+	.panel-title{font-size:13px !important;}
+	.panel-heading{padding:8px;}
+	.nav-tabs-custom li a{font-size:10px !important;padding:3px}
+	.resWidth{width:100% !important}
 }
 @media (min-width: 108px) and (max-width: 767px) {
   .performanceGraph li
