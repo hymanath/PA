@@ -1298,6 +1298,7 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		str += '<div class="fulCircleCls" data-dimension="100%" data-text="0" data-percent="0" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Booth (No Voter ID)"></div>';
 		str += '</li>';
 		}
+		
 		if(result.cadreLocation =="Mandal")
 		{
 			str += '<li>';
@@ -1308,10 +1309,10 @@ function buildTotalMemberShipRegInCadreLocation(result,pcType){
 		str += '<li>';
 		//console.log(globalTehsName);
 		if(globalTehsName != null && globalTehsName.trim().length>0){
-			str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+globalTehsName.toUpperCase()+')"></div>';
 		}
 		else  if(result.mandalNameStr != null && result.mandalNameStr.length>0){
-			str += '<div class="fulCircleCls1" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result.mandalNameStr.toUpperCase()+')"></div>';
+			str += '<div class="fulCircleCls" data-dimension="100%" data-text="'+result.mandalPerc+'%" data-percent="'+result.mandalPerc+'" data-fgcolor="#330000" data-bgcolor="#cccccc" data-type="half" data-info="Own Man/Mun ('+result.mandalNameStr.toUpperCase()+')"></div>';
 			$("#mandalId").html(result.mandalNameStr.toUpperCase());
 		}
 	
@@ -1517,7 +1518,9 @@ function getTotalComplaintsForCandidate(){
 
 	arr.push(obj);
 	var url = window.location.href;
-	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	var wurl = url.substr(0,(url.indexOf("/cadreDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
+	
 		$.ajax({
 				type : "POST",
 				url: wurl+"/Grievance/WebService/Auth/getCategoryWiseStatusCountForCandidate",
