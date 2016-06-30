@@ -2907,9 +2907,14 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
     	
     }
     
-    public List<BasicVO> gettingUserDetails(){
+    public List<BasicVO> gettingUserDetails(String userNameStr){
     	List<BasicVO> list = new ArrayList<BasicVO>();
-    	 List<Object[]> user=userDAO.getUserDetails();
+    	 List<Object[]> user=null;
+    	 if(userNameStr != null && userNameStr.length() > 0)
+    		 user=userDAO.getUserNameDetails(userNameStr);
+    	 else
+    		 user=userDAO.getUserDetails();
+    	
     	 try{
     		 LOG.info("entered into gettingUserDetails()");
     	 if(user !=null && user.size()>0){
@@ -2926,6 +2931,7 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
     	 }
     	 }
     	 catch (Exception e) {
+    		 e.printStackTrace();
 			LOG.error("Exception ocured in gettingUserDetails()"+e);
 		}
 		return list;
