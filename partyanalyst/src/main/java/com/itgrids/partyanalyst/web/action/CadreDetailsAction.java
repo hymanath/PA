@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,9 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SimpleVO;
+import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
@@ -99,8 +102,17 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private List<GrievanceSimpleVO> grievanceSimplevoList;
 	private MobileDetailsVO mobileDetailsVO;
 	private List<ActivityVO> activityVOList;
+	private ResultStatus resultStatus;
 	
 	
+	
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public MobileDetailsVO getMobileDetailsVO() {
 		return mobileDetailsVO;
 	}
@@ -1333,6 +1345,30 @@ public String updateLeaderShip(){
 			activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"),jObj.getLong("activityLevelId"),panchayatId,mandalId,lebId,assemblyId,districtId,stateId,participatedAssemblyId);
 		}catch(Exception e){
 			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAllPublicRepresentatives(){
+		try{
+			jObj=new JSONObject(getTask());
+			idNameVoList = cadreDetailsService.getAllPublicRepresentatives();
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getCheckCandidateDetails() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+public String savePublicRepresentativeType(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long cadreId = jObj.getLong("cadreId");
+			Long publicRepTypeId = jObj.getLong("publicRepTypeId");
+			
+			resultStatus = cadreDetailsService.saveNewPublicRepresentativeDetails(cadreId,publicRepTypeId);
+		}catch(Exception e){
+			LOG.error("Exception Occured in savePublicRepresentativeType() in CadreDetailsAction ",e);
 		}
 		return Action.SUCCESS;
 	}

@@ -12682,11 +12682,24 @@
 		    			<param name="root">debateVOList</param>
 		    		</result>
 	</action>
+
 	
 	<action name="getCandidatesByNameAction" class="createAlertAction" method="getCandidatesByName">
 		    	<result type="json" name="success">
 					<param name="root">basicVO</param>
 				</result>
 		</action>
+	<action name="getAllPublicRepresentativesAction" class="cadreDetailsAction" method="getAllPublicRepresentatives">
+	  <result type="json" name="success">
+			<param name="root">idNameVoList</param>
+		</result>
+	</action>
+	
+	<action name="savePublicRepresentativeTypeAction" class="cadreDetailsAction" method="savePublicRepresentativeType">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+	
 </package>
 </struts>      
