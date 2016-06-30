@@ -20,6 +20,9 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeRequiredAttributesDAO;
@@ -98,12 +101,14 @@ import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.QuestionAnswerVO;
 import com.itgrids.partyanalyst.dto.RegisteredMembershipCountVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreFamilyDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.PublicRepresentative;
 import com.itgrids.partyanalyst.model.StudentAddress;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -190,8 +195,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IActivityAttendanceDAO activityAttendanceDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
+	private TransactionTemplate transactionTemplate = null;
 	
 	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	public IActivityLocationInfoDAO getActivityLocationInfoDAO() {
 		return activityLocationInfoDAO;
 	}
@@ -9041,5 +9055,32 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 			LOG.error("Exception raised in getMobileNumberDetailsByTdpCadre  method in CadreDetailsService.",e);
 		}
 		return returnvo;
+	}
+	
+	public ResultStatus saveNewPublicRepresentativeDetails(final Long tdpCadreId,final Long publicRepreTypeId){
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					
+					List<Long> candidateIds = tdpCadreCandidateDAO.getTdpCadreCandidate(tdpCadreId);
+					if(commonMethodsUtilService.isListOrSetValid(candidateIds)){
+						Long candidateId = candidateIds.get(0);
+						
+						PublicRepresentative publicRepresentative = new PublicRepresentative();
+						
+						publicRepresentative.setPublicRepresentativeTypeId(publicRepreTypeId);
+						publicRepresentative.setCandidateId(candidateId);
+						
+						publicRepresentative = publicRepresentativeDAO.save(publicRepresentative);
+					}
+				}
+			});
+			resultStatus.setResultCode(0);
+		} catch (Exception e) {
+			resultStatus.setResultCode(1);
+			LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
+		}
+		return resultStatus;
 	}
 }
