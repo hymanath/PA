@@ -1,3 +1,4 @@
+
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.math.BigInteger;
@@ -654,13 +655,9 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		queryObject.setParameter("publicationId", publicationId);
 		queryObject.setParameterList("localElecBodyList", localElecBodyList);
 		
-	   return queryObject.list();	
-		
-		
-		
+	   return queryObject.list();
 		
 	}
-
 	
 	public List<Object[]> getAgePanchayatWiseForMunicpalWithType(Long constituencyId,Long publicationId,List<Long> localElecBodyList)
 	{
@@ -750,5 +747,12 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 		
 	}
+	public List<Object[]> getUserNameDetails(String nameString)
+	{
+		Query query = getSession().createQuery("select model.userId,model.userName,model.firstName,model.lastName from User model where (model.firstName like '"+nameString+"%' or model.lastName like '"+nameString+"%')");
+		//query.setParameter("nameString", nameString);
+		return query.list();
+	}
+	
 	
 }

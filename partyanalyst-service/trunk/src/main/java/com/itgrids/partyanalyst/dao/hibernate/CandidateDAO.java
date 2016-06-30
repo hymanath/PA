@@ -352,4 +352,13 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		query .setParameter("name", name);
 		return query.list();
 	}
+	public List<Object[]> getCandidatesByName(){
+		Query query = getSession().createQuery("select model.candidateId,model.lastname from Candidate model");
+		return query.list();
+	}
+	public List<Object[]> getCandidatesByName(String candidateName)
+	{
+		Query query = getSession().createQuery("select model.candidateId,model.lastname from Candidate model where (model.lastname like '%"+candidateName+"%' )");
+		return query.list();
+	}
 }

@@ -35,6 +35,6 @@ public interface IDashBoardElectionResultsService {
     public Map<String,String> getConstituencyDetaisByRegionid(Long regionId);
 
     public List<OptionVO> getTop5CastePeopleOpnionOnPartyStateWide(Long stateType,List<Long> surveyIds);
-    public List<BasicVO> gettingUserDetails();
+    public List<BasicVO> gettingUserDetails(String userNameStr);
     public ResultStatus updatePassword(String id,String newPassword,Long regId);
 }
