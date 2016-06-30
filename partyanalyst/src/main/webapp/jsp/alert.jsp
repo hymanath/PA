@@ -70,13 +70,56 @@
 	<script type="text/javascript" src="debate/pagination/jquery.simplePagination.js"></script>
 	
 	
-</head>
-
-
-
+ </head>                                         							
 <body>
-
-<script>
+<div class="container">
+                 <div class="row">
+					 <div class="col-md-2 levelShowCls" >
+						<label>Level</label>
+						<select class="dropkickClass" id="levelId" onchange="disableByLevel();">
+						<option value="10">State</option>
+				         <option value="11">District</option>
+					     <option value="1">Constituency</option>
+						 <option value="5">Mandal/Muncipality</option>
+						 <option value="6">Village/Ward</option>
+						</select>
+					</div>
+					<div class="col-md-2 stateShowCls" >
+					    <label>State</label>
+					     <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup();">
+					     <option value="0">All</option>
+				         <option value="1">AP</option>
+					     <option value="36">TS</option>
+					     </select>
+					</div>
+			       
+					  <div class="col-md-2 locationsFilterCls distCls">
+					     <label>District</label>
+				         <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();">
+				         <option value="0">All</option></select>
+					</div>
+					<div class="col-md-2 locationsFilterCls constiCls">
+						<label>Assembly</label>
+					    <select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();">
+					    <option value="0">All</option>
+						</select>
+					</div>
+					<div class="col-md-3 locationsFilterCls mandalCls">
+						<label>Mandal/ Municipality</label>
+					     <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();">
+							<option value="0">All</option>
+						 </select>
+					</div>
+					<div class="col-md-3 locationsFilterCls panchayatCls">
+						<label>Panchayat</label>
+						<select class="dropkickClass" id="referpanchayatId">
+						<option value="0">All</option>
+						</select>
+					</div>
+	</div>
+</div>
+<script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
+<script type="text/javascript">
 </script>
 </body>
 </html>
