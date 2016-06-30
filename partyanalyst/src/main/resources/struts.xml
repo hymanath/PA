@@ -5620,7 +5620,7 @@
 	       <result>/jsp/TdphomePage.jsp</result>
 	     </action>-->
 	     <action name="home" class="home">
-	       <result>/jsp/TdphomePage.jsp</result>
+	      <result type="redirect"  name="success" >dashBoardAction.action</result>
 	     </action>
 	     <action name="dashBoardAction" class="dashBoardAction"> 
 		    <result name="success">/jsp/dashBoard.jsp</result>
