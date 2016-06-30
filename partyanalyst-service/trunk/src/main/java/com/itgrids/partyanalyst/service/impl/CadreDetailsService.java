@@ -2934,7 +2934,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 				 {
 					 for(Object[] params : voterImages)
 					 {
-						 
+						 TdpCadreFamilyDetailsVO VO = getMatchedTdpCadreFamilyDetailsVO(resultList, params[0].toString());
+						 VO.setImagePath("http://mytdp.com/"+IConstants.VOTER_IMG_FOLDER_PATH+"/"+(params[1] != null ? params[1].toString() : ""));
 						 voterImagMap.put(params[0].toString(), params[1].toString());
 					 }
 				 }
@@ -2988,7 +2989,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 									}
 									else{
 										if(voterImagMap.get(VO.getVotercardNo()) != null)
-										VO.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH + IConstants.FILE_SEPARATOR + voterImagMap.get(VO.getVotercardNo()));
+										VO.setImagePath(IConstants.VOTER_IMG_FOLDER_PATH + "/" + voterImagMap.get(VO.getVotercardNo()));
 										else
 										VO.setImagePath("");
 									}
