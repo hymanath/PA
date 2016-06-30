@@ -8389,25 +8389,27 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	public Long getTotalAvailableVotesByLocationId(Long locationId,String locationType,Long constituencyId,List<Long> constituencyIdsList){
 		StringBuilder str = new StringBuilder();
 		
-		str.append(" select count(distinct model.voter.voterId) from BoothPublicationVoter model  where  ");
+		str.append(" select count(distinct model.voter.voterId) from BoothPublicationVoter model    ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
-		  str.append(" model.booth.constituency.constituencyId =:locationId ");
+		  str.append(" where model.booth.constituency.constituencyId =:locationId ");
+		else if(locationType.equalsIgnoreCase("Mandal"))
+			  str.append(" where model.booth.tehsil.tehsilId =:locationId ");
 		
 		else if(locationType.equalsIgnoreCase("panchayat"))
-			str.append(" model.booth.panchayat.panchayatId =:locationId ");
+			str.append(" where model.booth.panchayat.panchayatId =:locationId ");
 		
 		else if(locationType.equalsIgnoreCase("booth"))
-		 str.append(" model.booth.boothId = :locationId ");
+		 str.append(" where model.booth.boothId = :locationId ");
 		
 		else if(locationType.equalsIgnoreCase("muncipality"))
-		  str.append(" model.booth.localBody.localElectionBodyId =:locationId and model.booth.localBody is not null ");
+		  str.append(" where model.booth.localBody.localElectionBodyId =:locationId and model.booth.localBody is not null ");
 		
 		else if(locationType.equalsIgnoreCase("District"))
-		 str.append(" model.booth.constituency.district.districtId =:locationId ");
+		 str.append(" where model.booth.constituency.district.districtId =:locationId ");
 		
 		else if(locationType.equalsIgnoreCase("Parliament"))
-		 str.append(" model.booth.constituency.constituencyId in (:constituencyIdsList) ");
+		 str.append(" where model.booth.constituency.constituencyId in (:constituencyIdsList) ");
 		
 		
 		Query query = getSession().createQuery(str.toString());
