@@ -101,4 +101,5 @@ public interface ICadreDetailsService {
 	public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId);
 	public MobileDetailsVO getMobileNumberDetailsByTdpCadre(Long tdpCadreId);
 	public ResultStatus saveNewPublicRepresentativeDetails(final Long tdpCadreId,final Long publicRepreTypeId);
+	public List<IdNameVO> getAllPublicRepresentatives();
 }
