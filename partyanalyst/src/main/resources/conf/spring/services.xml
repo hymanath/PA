@@ -108,6 +108,7 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
+		
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="customMessageDAO" ref="customMessageDAO" />		
 		<property name="messageTypeDAO" ref="messageTypeDAO"/>
@@ -3217,6 +3218,17 @@
         <property name="debateParticipantDAO" ref="debateParticipantDAO"></property>
     </bean>
     <bean name="alertService" class="com.itgrids.partyanalyst.service.impl.AlertService">
+	<property name="transactionTemplate" ref="transactionTemplate"></property>
+	<property name="alertDAO" ref="alertDAO"></property>
+	<property name="alertCandidateDAO" ref="alertCandidateDAO"></property>
+	<property name="userAddressDAO" ref="userAddressDAO"></property>
+	<property name="stateDAO" ref="stateDAO" />
+	<property name="districtDAO" ref="districtDAO"></property>
+	<property name="tehsilDAO" ref="tehsilDAO"></property>
+	<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
+	<property name="constituencyDAO" ref="constituencyDAO"></property>
+	<property name="candidateDAO" ref="candidateDAO"></property>
+	
     </bean>
 	<!-- Debate End -->
 </beans>		

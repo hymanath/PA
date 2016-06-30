@@ -985,7 +985,7 @@ str+='</table>';
 	   areaType = "Village Committee Members";
    }
    //$('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+areaType+' '+ basicCmmtyName +' '+ capitalize(type) +' </span>');
-   $('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+areaType+' ('+ basicCmmtyName +') </span>');
+   $('#dialogSummary').find('h4').html('<span>'+ capitalize(name)+' '+areaType+' ('+ basicCmmtyName +') </span>');
    $("#dialogSummary").modal("show");
   
   } 
