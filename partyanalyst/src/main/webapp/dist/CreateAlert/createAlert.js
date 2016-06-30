@@ -10,12 +10,12 @@ function disableByLevel()
 	  var select = new Dropkick("#referdistrictId");
 		select.refresh();
 		
-		if(levelId != 10 && levelId != 0)
+		if(levelId != 2 && levelId != 0)
 		{
 			getDistrictsForReferPopup();
 		}
 		
-		if(levelId == 10 || levelId == 0)
+		if(levelId == 2 || levelId == 0)
 		{
 			  $("#referdistrictId").find('option').not(':first').remove();
 			  $("#referconstituencyId").find('option').not(':first').remove();
@@ -36,7 +36,7 @@ function disableByLevel()
 				$(".panchayatCls").hide();
 				
 		}
-		else if(levelId == 11)
+		else if(levelId == 3)
 		{
 			  $("#referconstituencyId").find('option').not(':first').remove();
 			  $("#refermandalNameId").find('option').not(':first').remove();
@@ -53,7 +53,7 @@ function disableByLevel()
 				$(".mandalCls").hide();
 				$(".panchayatCls").hide();
 		}
-		else if(levelId == 1)
+		else if(levelId == 4)
 		{
 			  $("#referconstituencyId").find('option').not(':first').remove();
 			  $("#refermandalNameId").find('option').not(':first').remove();
