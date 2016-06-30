@@ -16,8 +16,10 @@
 	
 	<div style="margin-left:500px;margin-top:25px;margin-bottom:25px;">
 	<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
-	<div><h4>Select User : <select style="margin-left: 53px; width: 220px;" id="usersListId" onchange="diplayValues()"></select></h4>
-	<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/>
+	<div><h4> Select User : <input style="margin-left:31px;" type="userName" id="userNameId" />
+	<button type="button" onclick="getUserNameDetails()">view</button></h4>
+	<h4>Enter UserName: <select style="margin-left: 53px; width: 220px;" id="usersListId" onchange="diplayValues()"></select></h4>
+	<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
 	</div>
 	<div class="user_details" id="user_details" style="display: none;margin-top:8px;">
 			<!--<b>First Name :</b><input type="text" id="first_name" /><br/>
@@ -31,24 +33,30 @@
 	</div>
 	<script type="text/javascript">
 	
-		$(document).ready(function() {
+		/*$(document).ready(function() {
 			getUserDetails();
-		});
+		});*/
 		function diplayValues(){
 			$(".user_details").show();
 		}
-		function getUserDetails(){
-		$('#ajaxImage').show();
+	var  userNameStr=$("#userNameId").val();	
+	function getUserDetails(){
+		var  userNameStr=$("#userNameId").val();
+		var jsObj =
+		        {
+			userNameStr : userNameStr
+		          }
+		//$('#ajaxImage').show();
 				$.ajax({
 					  type:'GET',
 					  url: 'getUserDetailsAction.action',
-					  data: {}
+					  data: {task :JSON.stringify(jsObj)}
 			   }).done(function(result){
 					$('#usersListId').append('<option value="0"> Select User </option>');
 					if(result != null)
 					{
 						for(var i in result)
-						{						
+						{			
 							$('#usersListId').append('<option value='+result[i].id+'>'+result[i].name+'  --  '+result[i].mandalName+' '+result[i].hamletName+' </option>');
 						}
 					}
@@ -113,6 +121,16 @@
 			}else{
 				$("#msgDiv").html("<h5 style='color:red;'>Unable to Update Password, Please Try Again</h5>");
 			}
+		}
+		function getUserNameDetails()
+		{
+		 $("#errorDiv").html('');
+		 var userNameStr=$("#userNameId").val();
+		 if(userNameStr.trim().length<=3 || userNameStr ==""){
+          $("#errorDiv").html('plz enter minimum 3 characters ');
+	      return;
+         }	
+		 getUserDetails();
 		}
 	</script>
 </body>

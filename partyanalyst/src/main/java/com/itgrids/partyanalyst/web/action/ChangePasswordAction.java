@@ -271,7 +271,8 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 	
 	public String getUserDetails(){
 		try{
-			basicVO = dashBoardElectionResultsService.gettingUserDetails();
+			jObj = new JSONObject(getTask());
+			basicVO = dashBoardElectionResultsService.gettingUserDetails(jObj.getString("userNameStr"));
 			}
 		catch(Exception e){
 			Log.error("Exception Raised in getUserDetails() -- ChangePasswordAction" + e); 

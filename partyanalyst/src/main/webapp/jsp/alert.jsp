@@ -165,9 +165,48 @@
 	</div>
                  
 </div>
+<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
+	<div><h4> Select Candidate : <input style="margin-left:31px;" type="candidateName" id="candidateNameId" />
+	<button type="button" onclick="getCandidateNameDetails()">view</button></h4>
+	<h4>Enter CandidateName: <select style="margin-left: 53px; width: 220px;" id="candidatesNameListId" onchange="diplayValues()"></select></h4>
+	<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
+	</div>
 <script src="dist/CreateAlert/createAlert.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".dropkickClass").dropkick()
+function getCandidatesByName(){
+		var  CandidateName=$("#candidateNameId").val();
+		var jsObj =
+		        {
+			CandidateName : CandidateName
+		          }
+		//$('#ajaxImage').show();
+				$.ajax({
+					  type:'GET',
+					  url: 'getCandidatesByNameAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+					$('#candidatesNameListId').append('<option value="0"> Select Candidate </option>');
+					if(result != null)
+					{
+						for(var i in result)
+						{			
+							$('#candidatesNameListId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+						}
+					}
+				  
+				});
+		}
+		function getCandidateNameDetails()
+		{
+		 $("#errorDiv").html('');
+		 var CandidateName=$("#candidateNameId").val();
+		 if(CandidateName.trim().length<=3 || CandidateName ==""){
+          $("#errorDiv").html('plz enter minimum 3 characters ');
+	      return;
+         }	
+		 getCandidatesByName();
+		}
 </script>
 </body>
 </html>
