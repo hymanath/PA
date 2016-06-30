@@ -36,8 +36,15 @@ public class RegisteredMembershipCountVO implements Serializable{
 	private String areaType;
 	private String cadreLocation;
 	private String reasonStr;
+	private String mandalNameStr;
 	
 	
+	public String getMandalNameStr() {
+		return mandalNameStr;
+	}
+	public void setMandalNameStr(String mandalNameStr) {
+		this.mandalNameStr = mandalNameStr;
+	}
 	public String getReasonStr() {
 		return reasonStr;
 	}
