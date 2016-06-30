@@ -145,7 +145,7 @@ public class CadreHealthStatusDAO extends GenericDaoHibernate<CadreHealthStatus,
     		sb.append(" AND UA.panchayat_id = :locationId");
     	else if(locationType.equalsIgnoreCase("mandal"))
     		sb.append(" AND UA.tehsil_id = :locationId");
-    	else if(locationType.equalsIgnoreCase("leb"))
+    	else if(locationType.equalsIgnoreCase("leb") || locationType.equalsIgnoreCase("muncipality"))
     		sb.append(" AND UA.local_election_body = :locationId");
     	else if(locationType.equalsIgnoreCase("assembly"))
     		sb.append(" AND UA.constituency_id = :locationId");
