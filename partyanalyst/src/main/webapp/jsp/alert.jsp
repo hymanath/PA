@@ -88,6 +88,15 @@
 								<option value="1">Alert</option>
 							</select>
 						</div>
+						
+						<div class="col-md-3">
+							<label>Alert Severity</label>
+							<select class="dropkickClass" name="alertVO.severity">
+								<option value="1">High</option>
+								<option value="2">Medium</option>
+								<option value="3">Low</option>
+							</select>
+						</div>
 						<div class="col-md-3 levelShowCls" >
 							<label>Level</label>
 							<select class="dropkickClass" id="levelId" onchange="disableByLevel();" name="alertVO.locationLevelId">
@@ -125,7 +134,7 @@
 							 </select>
 						</div>
 						<div class="col-md-3 locationsFilterCls panchayatCls">
-							<label>Panchayat</label>
+							<label>Panchayat/Ward</label>
 							<select class="dropkickClass" id="referpanchayatId" name="alertVO.panchayatId">
 							<option value="0">All</option>
 							</select>
@@ -144,10 +153,10 @@
 						</div>
 						<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
 						<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
-						<div class="col-md-6">
+						<div class="col-md-3">
 							<label>Select Candidates</label>
 							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
-								
+							<option value="0">Select </option>	
 							</select>
 						</div>
 					</div>
@@ -164,6 +173,9 @@
 						</div>
 					</div>
 				</div>
+				
+				<input type="hidden" class="form-control" id="locationLevel" name="alertVO.locationValue" value="1"/>
+				<input type="hidden" class="form-control" id="alertImpactId" name="alertVO.alertImpactId" value="1"/>
 				</form>
 			</div>
 		</div>

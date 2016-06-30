@@ -12689,7 +12689,7 @@
 					<param name="root">basicVO</param>
 				</result>
 		</action>
-	<action name="getAllPublicRepresentativesAction" class="cadreDetailsAction" method="getAllPublicRepresentatives">
+			<action name="getAllPublicRepresentativesAction" class="cadreDetailsAction" method="getAllPublicRepresentatives">
 	  <result type="json" name="success">
 			<param name="root">idNameVoList</param>
 		</result>
@@ -12700,6 +12700,11 @@
 				<param name="root">resultStatus</param>
 			</result>
 		</action>
+	 <action name="saveAlertAction" class="createAlertAction" method="createAlert">
+	  	  <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
+	  </action>
 	
 </package>
 </struts>      
