@@ -37,6 +37,9 @@ public class DebateVO implements Serializable {
 	private List<SelectOptionVO> observerList;
 	private String stDate;
 	private String edDate;
+	
+	private Long totalDebates;
+	
 	public Long getDebateId() {
 		return debateId;
 	}
@@ -194,6 +197,12 @@ public class DebateVO implements Serializable {
 	}
 	public void setEdDate(String edDate) {
 		this.edDate = edDate;
+	}
+	public Long getTotalDebates() {
+		return totalDebates;
+	}
+	public void setTotalDebates(Long totalDebates) {
+		this.totalDebates = totalDebates;
 	}
 	
 	
