@@ -85,8 +85,9 @@
 				   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
 				   <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
 				</div>
-				<div class="row m_top20">
-				<c:if test="${pageAccessType == 'ALL'}">		
+				
+				<c:if test="${pageAccessType == 'ALL'}">	
+				<div class="row m_top20">				
 					<img id="imgajax" src="images/icons/search.gif" alt="Processing Image" style="display:none;width:17px;height:11px;"/>
 					<div class="col-md-2 col-md-offset-3">
 						<label>
@@ -417,12 +418,12 @@ function buildConstituencySummary(results,jsObj){
 					
 				
 				  str += '<div class="panel panel-default">';
-					str += '<div class="panel-heading" role="tab" id="headingOne'+i+'">';
-						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+					str += '<div class="panel-heading" role="tab" id="headingOne2'+i+'">';
+						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne2'+i+'" aria-expanded="true" aria-controls="collapseOne2'+i+'">';
 						  str += '<h4 class="locationName panel-title">'+rest.locationName+'</h4>';
 						str += '</a>';
 					str += '</div>';
-					str += '<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					str += '<div id="collapseOne2'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne2'+i+'">';
 					  str += '<div class="panel-body">';
 					  str += '<div class="table-responsive">';
 						str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
@@ -546,11 +547,11 @@ function buildConstituencySummary(results,jsObj){
 				var rest = results.localBodiesList[i];
 				var reqPositionsArray = new Array();
 				str += '<div class="panel panel-default">';
-					str += '<div class="panel-heading" role="tab" id="headingOne'+i+'">';
-						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
-							str += '<h4 class="locationName">'+rest.locationName+'</h4></a>'
+					str += '<div class="panel-heading" role="tab" id="headingOne1'+i+'">';
+						str += '<a role="button" data-toggle="collapse" data-parent="#constSummary" href="#collapseOne1'+i+'" aria-expanded="true" aria-controls="collapseOne1'+i+'">';
+							str += '<h4 class="locationName panel-title">'+rest.locationName+'</h4></a>'
 					str += '</div>';
-					str += '<div id="collapseOne'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					str += '<div id="collapseOne1'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne1'+i+'">';
 					  str += '<div class="panel-body">';
 					  str += '<div class="table-responsive">';
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';

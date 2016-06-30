@@ -151,12 +151,20 @@
 								</span>
 							</div>
 						</div>
-						<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
+						<div id="errorDiv" class="col-md-12" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
 						<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
 						<div class="col-md-3">
 							<label>Select Candidates</label>
 							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
 							<option value="0">Select </option>	
+							</select>
+						</div>
+						
+						<div class="col-md-3">
+							<label>Alert Impact</label>
+							<select class="dropkickClass"  id="alertImpactId" name="alertVO.alertImpactId">
+							<option value="1">Positive </option>	
+							<option value="2">Negative </option>
 							</select>
 						</div>
 					</div>
@@ -175,7 +183,7 @@
 				</div>
 				
 				<input type="hidden" class="form-control" id="locationLevel" name="alertVO.locationValue" value="1"/>
-				<input type="hidden" class="form-control" id="alertImpactId" name="alertVO.alertImpactId" value="1"/>
+				
 				</form>
 			</div>
 		</div>
