@@ -962,12 +962,12 @@ public class DebateService implements IDebateService{
 		LOG.info("Enterd into saveNewRole method in DebateService class");
 		ResultStatus isSaved = new ResultStatus();
 		try {
-				Long count = debateRolesDAO.checkForExists(StringEscapeUtils.escapeJava(newRole));
+				Long count = debateRolesDAO.checkForExists(newRole.trim());
 				if(count == 0)
 				{
-					if(userId != null && newRole != null){
+					if(userId != null && newRole != null && !newRole.isEmpty()){
 						DebateRoles debateRoles = new DebateRoles();
-						debateRoles.setName(escapeUnicode(StringEscapeUtils.escapeJava(newRole)).trim());
+						debateRoles.setName(newRole.trim());
 						debateRoles.setIsDeleted("N");
 						debateRoles = debateRolesDAO.save(debateRoles);
 						if(debateRoles != null)
