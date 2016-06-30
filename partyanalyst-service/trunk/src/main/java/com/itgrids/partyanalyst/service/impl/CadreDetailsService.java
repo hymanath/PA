@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
+import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStudentAddressDAO;
 import com.itgrids.partyanalyst.dao.IStudentCadreRelationDAO;
@@ -78,6 +79,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PublicRepresentativeTypeDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -196,8 +198,17 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private SetterAndGetterUtilService setterAndGetterUtilService = new SetterAndGetterUtilService();
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	private TransactionTemplate transactionTemplate = null;
+	private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	
-	
+	public IPublicRepresentativeTypeDAO getPublicRepresentativeTypeDAO() {
+		return publicRepresentativeTypeDAO;
+	}
+
+	public void setPublicRepresentativeTypeDAO(
+			IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO) {
+		this.publicRepresentativeTypeDAO = publicRepresentativeTypeDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -9083,5 +9094,26 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 			LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
 		}
 		return resultStatus;
+	}
+public List<IdNameVO> getAllPublicRepresentatives(){
+		
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> publicRepresentativesList = publicRepresentativeTypeDAO.getAllPublicRepresentativeList();
+			if(publicRepresentativesList != null && publicRepresentativesList.size() > 0)
+			{
+				for(Object[] obj :publicRepresentativesList )
+				{
+					IdNameVO vo = new IdNameVO();
+			    vo.setId(Long.valueOf(obj[0] !=null ? obj[0].toString():"0"));
+			    vo.setName(obj[1] !=null ?  obj[1].toString():"");
+				finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception Occured in () getAllPublicRepresentatives method, Exception - ",e);
+		}
+		return finalList;
 	}
 }
