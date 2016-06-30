@@ -323,6 +323,12 @@ $(".reportTypeCls").click(function(){
 
 	
 });
+$("#committetypeId").change(function(){
+	getConstituencySummary();
+	getRolesBasedReport(0);
+});
+
+
 	
 function getAllConstituencysForADistrict()
 {
