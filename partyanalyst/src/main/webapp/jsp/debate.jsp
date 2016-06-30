@@ -355,7 +355,19 @@ window.location.href = uri + base64(format(template, ctx))
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="newDebateAnalysis" onClick="showNewDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Reports</a>
 					</li>
-				
+					<li class="dropdown" role="presentation">
+						<a aria-controls="myTabDrop1-contents" data-toggle="dropdown" class="dropdown-toggle" id="myTabDrop1" href="#" aria-expanded="false">Debate Actions <span class="caret"></span></a> 
+						<ul id="myTabDrop1-contents" aria-labelledby="myTabDrop1" class="dropdown-menu">
+							<li><a aria-controls="dropdown1" data-toggle="tab" id="dropdown1-tab" role="tab" href="#dropdown1"onclick="createRole();">Create Role</a></li> 
+							<li><a aria-controls="dropdown2" data-toggle="tab" id="dropdown2-tab" role="tab" href="#dropdown2"onclick="createCharacteristics();">Create Characteristics</a></li> 
+							
+							<li><a aria-controls="dropdown3" data-toggle="tab" id="dropdown3-tab" role="tab" href="#dropdown3"onclick="createDebateQuestion();">Create Question</a></li>
+							
+							<li><a aria-controls="dropdown4" data-toggle="tab" id="dropdown4-tab" role="tab" href="#dropdown4"onclick="createObserver();">Create Observer</a></li>
+							
+							<li><a aria-controls="dropdown5" data-toggle="tab" id="dropdown5-tab" role="tab" href="#dropdown5"onclick="createChannel();">Create Channel</a></li>
+						</ul> 
+					</li>
 				</ul>
 	</div>
 	
@@ -671,6 +683,8 @@ window.location.href = uri + base64(format(template, ctx))
 		</div>
 	</div>
 	</div>
+	
+		<div id="creationDiv" class="span10" align="center"></div> 
 	
 		<div id="createCandidateDiv" style="display:none;">
 				
