@@ -46,7 +46,7 @@ var globalCadreId = '${cadreId}';
 </head>
 <body>
 <div class="modal fade" id="myModalForTableGrieId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog " role="document" style="width: 990px;">
+  <div class="modal-dialog " role="document" style="width: 90%;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -201,9 +201,9 @@ var globalCadreId = '${cadreId}';
 					</div>
 					<div class="panel-body"  id="identityBodyId">
 						<p class="m_0">MEMBERSHIP ID : <span id="memberShipNoId"></span></p>
+						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
 						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
 						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
-						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
 					</div>
 				</div>
 				<div class="panel panel-default arrowChangeIcon">
@@ -658,7 +658,7 @@ var globalCadreId = '${cadreId}';
 					<!--<center>Deaths And Hospitalization Details Not Available.</center> -->
 					<center><img id="dataLoadingsImgForTrainingCampParticipation" src="images/icons/loading.gif" style="width: 50px; height: 50px;"></center>
 					<div id="trainingCampDetailsBodyId">
-						<div id="trainingCampParticipationDivId">
+						<div id="trainingCampParticipationDivId" class="table-responsive">
 						</div>
 					</div>
                 </div>
