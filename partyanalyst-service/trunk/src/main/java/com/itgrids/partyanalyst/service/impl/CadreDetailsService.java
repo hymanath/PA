@@ -109,6 +109,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PublicRepresentative;
 import com.itgrids.partyanalyst.model.StudentAddress;
@@ -2321,12 +2322,16 @@ public class CadreDetailsService implements ICadreDetailsService{
 						countVO.setBoothPerc(calculatePercentage(countVO.getBoothTotVoters(),countVO.getBoothCount()));
 					 }
 					
-					if(userAddress1.getLocalElectionBodyId() != null && userAddress1.getLocalElectionBodyId() != null)
+					if(userAddress1.getLocalElectionBodyId() != null && userAddress1.getLocalElectionBodyId().longValue()>0L)
 					{
 						countVO.setMandalCount(getMemberShipCount("Muncipality", userAddress1.getLocalElectionBodyId(), electionYear, constituencyId,null));
 						countVO.setMandalTotVoters(getTotalAvailableVotersByLocationId(userAddress1.getLocalElectionBodyId(), "Muncipality", electionId, constituencyId,null));
 						countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
 						countVO.setCadreLocation("Muncipality");
+						
+						LocalElectionBody localElectionBody = localElectionBodyDAO.get(userAddress1.getLocalElectionBodyId());
+						countVO.setMandalNameStr(localElectionBody.getTehsil().getTehsilName());
+						
 					}
 					else
 					{
@@ -2482,7 +2487,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					{
 						
 						RegisteredMembershipCountVO countVO = null;
-						Long publicationDateId = userAddress.getBooth().getPublicationDate().getPublicationDateId();
+						Booth booth = userAddress.getBooth();
+						Long publicationDateId = booth != null ?booth.getPublicationDate().getPublicationDateId():0L;
 						if(publicationDateId != null && publicationDateId.longValue()>11){
 							Long voterId = tdpCadre.getVoterId() != null ?  tdpCadre.getVoterId() :  tdpCadre.getFamilyVoterId();
 							Object[] boothObjectArr = boothPublicationVoterDAO.getBoothDetailsByVoterId(voterId.toString());//publication date id = 11
@@ -2704,6 +2710,8 @@ public class CadreDetailsService implements ICadreDetailsService{
 					countVO.setMandalTotVoters(getTotalVotersByLocationId(userAddress.getLocalElectionBody().getLocalElectionBodyId(), "Muncipality", electionId, constituencyId,null));
 					countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
 					countVO.setCadreLocation("Muncipality");
+					LocalElectionBody localElectionBody = localElectionBodyDAO.get(userAddress.getLocalElectionBody().getLocalElectionBodyId());
+					countVO.setMandalNameStr(localElectionBody.getTehsil().getTehsilName());
 				}
 				else
 				{
@@ -2736,8 +2744,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 				  countVO.setMandalPerc(calculatePercentage(countVO.getMandalTotVoters(), countVO.getMandalCount()));
 				}
 			}
-			
-			
 			
 			if(userAddress.getDistrict() != null && userAddress.getDistrict().getDistrictId() != null)
 			{
