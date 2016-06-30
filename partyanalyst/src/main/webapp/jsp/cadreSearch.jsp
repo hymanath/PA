@@ -381,6 +381,36 @@
 			  </div>
 			</div>
 			
+			<div class="modal fade" id="addModalDivId" style="display:none;">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="addModalTitleId" style="color:red;"><span id="addModalId"></span></h4>
+				  </div>
+				  
+				  <div class="modal-body" id="addModalBodyId">
+					<div class="row">
+						<div class="col-md-6">
+						<input type="hidden" id="hiddenTdpCadreId"/>
+						<div id="errorPubRepId" style="color:red"></div>
+							<label>Public Representative Type:<select class="form-control" id="publisRepTypeId">
+							</select></label>
+						</div>
+					</div>
+				  </div>
+				  
+				  <div class="modal-footer">
+					<span class="pull-left" id="addModalSuccessId"></span>
+					<span id="addModalfooterNameId"></span>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary btn-sm" id="saveButtonId" onclick="savePublicRepresentativeType()">Save</button>
+				  </div>
+				  
+				</div>
+			  </div>
+			</div>
 			<script>
 	var accessType = "${sessionScope.USER.accessType}";
 	var accessValue = "${sessionScope.USER.accessValue}";
@@ -826,7 +856,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						
 					</c:if> 
 				}
-				
+				//str+='<div  class="addButtonCls" attr_tdp_cadre_id='+result[i].tdpCadreId+'><input type="button" value="Add" class="btn btn-sm btn-primary pull-right" style="margin-left:10px"/></div>';
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1652,7 +1682,56 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 	  else
 		return false;
   }
-  
+$(document).on("click",".addButtonCls",function(){
+var cadreId = $(this).attr("attr_tdp_cadre_id"); 
+$("#addModalDivId").modal('show');
+$("#hiddenTdpCadreId").val(cadreId);
+getAllPublicRepresentatives();
+});
+function getAllPublicRepresentatives(){
+	$("#publisRepTypeId").val(0);
+	 var jsObj = {};
+	  $.ajax({
+          type:'GET',
+          url: 'getAllPublicRepresentativesAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   
+		   if(result !=null && result.length>0){
+			   $("#publisRepTypeId").append('<option value="0">Select Public Representative Type</option>');
+			   for(var i in result){
+				   $("#publisRepTypeId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			   }
+		   } 
+	});
+  }  
+  function savePublicRepresentativeType(){
+	  $("#errorPubRepId").html("");
+	 var publicRepTypeId = $("#publisRepTypeId").val();
+	 if(publicRepTypeId ==0){
+		  $("#errorPubRepId").html("Select Publicrepresentative Type");
+		  return;
+	  }
+	  var cadreId = $("#hiddenTdpCadreId").val();
+	 var jsObj = {
+		cadreId:cadreId,
+		publicRepTypeId:publicRepTypeId
+	 };
+	  $.ajax({
+          type:'GET',
+          url: 'savePublicRepresentativeTypeAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result.resultCode==0){
+			   $("#errorPubRepId").html("Saved SuccessFully.");
+			   $("#addModalDivId").modal('hide');
+		   }else{
+			   $("#errorPubRepId").html("Error Occured Try Again...");
+		   }
+	});
+  }
 </script>
 			
 </body>

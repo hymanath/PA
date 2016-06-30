@@ -2679,6 +2679,7 @@
 		   <property name="activityAttendanceDAO" ref="activityAttendanceDAO" />
 		   <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
 		   <property name="transactionTemplate" ref="transactionTemplate" />
+		     <property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
