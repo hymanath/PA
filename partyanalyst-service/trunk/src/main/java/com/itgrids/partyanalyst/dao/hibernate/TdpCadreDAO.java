@@ -5576,30 +5576,30 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append(" select count(model.tdpCadreId) from TdpCadre model,UserAddress model2 where model.userAddress.userAddressId = model2.userAddressId and " +
-					" model.enrollmentYear =:year and model.isDeleted = 'N' and ");
+					" model.enrollmentYear =:year and model.isDeleted = 'N'   ");
 			
 			    if(locationtype.equalsIgnoreCase("Constituency"))
-				 str.append("  model2.constituency.constituencyId =:locationId");
+				 str.append(" and model2.constituency.constituencyId =:locationId");
 				
 				else if(locationtype.equalsIgnoreCase("Mandal"))
-					 str.append("  model2.panchayat.tehsil.tehsilId =:locationId and model2.localElectionBody is null ");
+					 str.append(" and model2.panchayat.tehsil.tehsilId =:locationId and model2.localElectionBody is null ");
 				
 				
 				else if(locationtype.equalsIgnoreCase("Panchayat"))
-					 str.append("  model2.panchayat.panchayatId =:locationId");
+					 str.append(" and model2.panchayat.panchayatId =:locationId");
 				
 				
 				else if(locationtype.equalsIgnoreCase("Booth"))
-					 str.append("  model2.booth.boothId =:locationId ");
+					 str.append(" and model2.booth.boothId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("Muncipality"))
-				 str.append("model2.localElectionBody.localElectionBodyId =:locationId ");
+				 str.append(" and model2.localElectionBody.localElectionBodyId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("District"))
-				 str.append(" model2.constituency.district.districtId =:locationId ");
+				 str.append(" and model2.constituency.district.districtId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("Parliament"))
-				  str.append("  model2.constituency.constituencyId in (:constituencyIdsList) ");
+				  str.append("  and model2.constituency.constituencyId in (:constituencyIdsList) ");
 			    
 			  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
 				str.append(" and model2.constituency.constituencyId =:constituencyId "); 
