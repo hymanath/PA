@@ -6518,3 +6518,110 @@ function getMobileNumberDetailsByTdpCadre(){
 $(document).on("click","#mobileDetailsId",function(){
 	$("#mobileDetailsDivId,.changeIcon").toggle();
 });
+
+getDebateDetailsOfCadre();
+function getDebateDetailsOfCadre(){
+	$("#debateCountId").html('');
+	$("#debateModelId").html('');	
+	$("#debateMainDivId").hide();
+	
+	var jsobj={
+		tdpCadreId : globalCadreId
+	}
+	$.ajax({
+		 type:'POST',
+		 url: 'getTotalAttendedDebatesOfCadreAction.action',
+		 data : {task:JSON.stringify(jsobj)} ,
+	}).done(function(result){
+		var str = '';
+		if(result !=null && result.length>0){
+			
+			$("#debateMainDivId").show();
+			
+			//Count setting
+			$("#debateCountId").html(result.length);
+			
+			
+			str+= '<table class="table-bordered">';
+				str+= '<thead style="background:#ccc">';
+					str+='<th>Subject</th>';
+					str+='<th>Date</th>';
+					str+='<th>Telecast Time</th>';
+					str+='<th>Observer</th>';
+					str+='<th>Channel</th>';
+					
+					
+					if(result[0].participantsList !=null && result[0].participantsList.length>0 
+					&& result[0].participantsList[0].scaleList !=null 
+					&& result[0].participantsList[0].scaleList.length>0){
+						for(var i in result[0].participantsList[0].scaleList){
+							str+='<th>'+result[0].participantsList[0].scaleList[i].name+'</th>';
+						}						
+					}
+				str+= '</thead>';
+				str+= '<tbody>';				
+					for(var i in result){
+						str+='<tr>';
+						var name="";
+						var title="";
+						if(result[i].debateNames !=null && result[i].debateNames.length>0){
+							for(var j in result[i].debateNames){
+							
+								name = name.concat(result[i].debateNames[j]);
+							}							
+						}
+						if(name !="")
+							title=getTitleContent(name,30);
+						
+							str+='<td class="debateDetailsCls pointer" attr_debateId='+result[i].debateId+'>'+title+'</td>';
+							str+='<td>'+result[i].date+'</td>';
+							str+='<td>'+result[i].startTime+' To '+result[i].endTime+'</td>';
+							str+='<td>'+result[i].observorsList[0]+'</td>';
+							str+='<td>'+result[i].channelName+'</td>';
+							
+							if(result[i].participantsList !=null && result[i].participantsList.length>0){
+								for(var j in result[i].participantsList){
+									if(result[i].participantsList[j].partyId == 872 && result[i].participantsList[j].scaleList !=null && result[i].participantsList[j].scaleList.length>0){
+										for(var k in result[i].participantsList[j].scaleList){
+											str+='<td class="text-center">'+result[i].participantsList[j].scaleList[k].perc+'</td>';
+										}									
+									}
+								}
+							}
+							
+						str+='</tr>';
+					}
+					
+				str+= '</tbody>';
+			str+= '</table>';
+		}
+		
+		$("#debateModelId").html(str);
+		
+	});
+	
+}
+
+$(document).on("click","#debateCountId",function(){
+	$("#debateModelDivId").modal("show");
+});
+	function getTitleContent(articleTitle,showCharVal){
+		ellipsetext=". . ."
+        var showChar = showCharVal;
+        var content = articleTitle;
+		if(content!=null){
+			if(content.length > showChar) {
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+            var html = c + ellipsetext;
+            return html;
+			}
+		}
+        
+		return articleTitle;
+    }
+	$(document).on("click",".debateDetailsCls",function(){
+		var debateId = $(this).attr("attr_debateId");		
+		window.open('debateReportAction.action?debateId='+debateId+'','_blank');		 
+	});
+	
