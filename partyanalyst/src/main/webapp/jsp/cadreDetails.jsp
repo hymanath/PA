@@ -406,6 +406,11 @@ var globalCadreId = '${cadreId}';
 					</div>
 				</div>-->
 				<div id="ntrTrustDivId"></div>
+				<div class="panel panel-default" id="debateMainDivId" style="display:none">
+					<div class="panel-heading">
+						<h4 class="panel-title text-bold"><img src="img/cadre_debate.png" style="width: 18px; height: 21px;"><span> TOTAL DEBATES PARTICPATED <span id="debateCountId" class="pull-right count-style pointer">0<span></span></h4>
+					</div>
+				</div>
 				
 				<!--<div class="panel panel-default">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
@@ -1182,6 +1187,27 @@ var globalCadreId = '${cadreId}';
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		
+		<!-- Model for Debate Start-->
+		<div class="modal" tabindex="-1" role="dialog" id="debateModelDivId">
+		  <div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Debate Details</h4>
+			  </div>
+			  <div class="modal-body">
+			  <div id="debateModelId"></div>
+				<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!— /.modal-content —>
+		  </div><!— /.modal-dialog —>
+		</div><!— /.modal —>
+		
+		<!-- Model for Debate End-->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

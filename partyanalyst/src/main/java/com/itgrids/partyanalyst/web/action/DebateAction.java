@@ -93,9 +93,17 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	private List<SelectOptionVO> assemConstiList1;
 	private IStaticDataService staticDataService;
 
+	private List<DebateVO> debateVOList;
 	
 	
-	
+	public List<DebateVO> getDebateVOList() {
+		return debateVOList;
+	}
+
+	public void setDebateVOList(List<DebateVO> debateVOList) {
+		this.debateVOList = debateVOList;
+	}
+
 	public List<SelectOptionVO> getPartiesList1() {
 		return partiesList1;
 	}
@@ -1625,5 +1633,19 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getTotalAttendedDebatesOfCadre(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			debateVOList = debateService.getTotalAttendedDebatesOfCadre(jObj.getLong("tdpCadreId"));
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getTotalAttendedDebatesOfCadre() in DebateAction class. "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 
 }

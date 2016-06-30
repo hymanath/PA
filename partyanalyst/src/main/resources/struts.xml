@@ -12677,6 +12677,12 @@
 		<result name="success">/jsp/alert.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	<action name="getTotalAttendedDebatesOfCadreAction" class="debateAction" method="getTotalAttendedDebatesOfCadre">
+					<result type="json" name="success">
+		    			<param name="root">debateVOList</param>
+		    		</result>
+	</action>
+	
 	
 </package>
 </struts>      
