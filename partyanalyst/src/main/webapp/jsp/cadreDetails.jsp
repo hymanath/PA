@@ -204,6 +204,7 @@ var globalCadreId = '${cadreId}';
 						<p class="m_0">VOTER CARD NO : <span id="voterIdSpan"></span>&nbsp;&nbsp;(<span class="text-success" id="isFamilyId"></span>)</p>
 						<p class="m_0">PARTY POSITION : <span id="positionId"></span></p>
 						<p class="m_0">PUBLIC REPRESENTATIVE : <span id="representativeId"></span></p>
+						<p class="m_0" id="debateMainDivId" style="display:none" >TV DEBATOR : DEBATES (<a class="pointer"><span id="debateCountId"></span></a>)</p>
 					</div>
 				</div>
 				<div class="panel panel-default arrowChangeIcon">
@@ -406,11 +407,11 @@ var globalCadreId = '${cadreId}';
 					</div>
 				</div>-->
 				<div id="ntrTrustDivId"></div>
-				<div class="panel panel-default" id="debateMainDivId" style="display:none">
+				<!--<div class="panel panel-default" id="debateMainDivId" style="display:none">
 					<div class="panel-heading">
-						<h4 class="panel-title text-bold"><img src="img/cadre_debate.png" style="width: 18px; height: 21px;"><span> TOTAL DEBATES PARTICPATED <span id="debateCountId" class="pull-right count-style pointer">0<span></span></h4>
+						<h4 class="panel-title text-bold"><img src="img/cadre_debate.png" style="width: 18px; height: 21px;"><span> TOTAL PARTICPATED DEBATES <span id="debateCountId" class="pull-right count-style pointer">0<span></span></h4>
 					</div>
-				</div>
+				</div>-->
 				
 				<!--<div class="panel panel-default">
                 	<div class="panel-heading" id="trainingCampDetailsHeaderId">
