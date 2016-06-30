@@ -6623,7 +6623,7 @@ function getDebateDetailsOfCadre(){
 						if(name !="")
 							title=getTitleContent(name,30);
 						
-							str+='<td class="debateDetailsCls pointer" attr_debateId='+result[i].debateId+'>'+title+'</td>';
+							str+='<td class="debateDetailsCls pointer" attr_debateId='+result[i].debateId+'><a>'+title+'</a></td>';
 							str+='<td>'+result[i].date+'</td>';
 							str+='<td>'+result[i].startTime+' To '+result[i].endTime+'</td>';
 							str+='<td>'+result[i].observorsList[0]+'</td>';
