@@ -16,12 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "gender_wise_event_info")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GenderWiseEventInfo implements Serializable {
-  /*
-   * gender_wise_event_info_id,
-   * event_id,
-   * gender_id,
-   * gender,
-   */
+  
     private Long genderWiseEventInfoId;
     private Long eventId;
     private Long genderId;

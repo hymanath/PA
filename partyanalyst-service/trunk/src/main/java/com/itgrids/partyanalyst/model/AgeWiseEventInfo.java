@@ -16,18 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "age_wise_event_info")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AgeWiseEventInfo implements java.io.Serializable {
-	/*
-	 * age_wise_event_info_id,
-	 * event_id,
-	 * age_range_id,
-	 * age_range,
-	 * attended,
-	 * invited,
-	 * invitee_attended,
-	 * non_invitee_attended,
-	 * date,
-	 * inserted_time
-	 */
+	
 
 	private Long ageWiseEventInfoId;
 	private Long eventId;
