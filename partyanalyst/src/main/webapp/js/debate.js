@@ -1661,6 +1661,7 @@ function createNewCandidate(listId,party,id){
 	$('#'+party+'').css("border","1px solid #CCCCCC");
 	$('#presentParty').html('');
 	$('#errorMsgDiv').html('');
+	$('#newCandidateName').val('');
 
 	var partyName = $('#'+party+' :selected').text();
 	var partyId = $('#'+party+'').val();
