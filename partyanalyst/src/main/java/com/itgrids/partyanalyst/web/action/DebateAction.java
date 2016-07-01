@@ -1646,6 +1646,32 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
+	public String getPartyWisePerformanceOfCadre(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			overllPartyWiseList = debateService.getPartyWiseOverAllPerformance(jObj.getLong("tdpCadreId"));
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getPartyWiseOverAllPerformance() in DebateAction class. "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPartyWiseStrongAndWeakTopicOfCadre(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			
+			debateReportList = debateService.getPartyWiseStrongAndWeakTopicAndCandidates(jObj.getLong("tdpCadreId"));
+			
+		}catch (Exception e) {
+			LOG.error(" Exception occured in getPartyWiseStrongAndWeakTopicByCandidates() in DebateAction class. "+e);
+		}
+		return Action.SUCCESS; 
+	}
+	
 	
 
 }
