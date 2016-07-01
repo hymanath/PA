@@ -2946,6 +2946,19 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="casteCategoryEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteCategoryEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="subCasteEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SubCasteEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ageWiseEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.AgeWiseEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="genderWiseEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.GenderWiseEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  Debate Realted DAO'S END-->
 	
 	<!--  end -->
