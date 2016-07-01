@@ -2599,15 +2599,28 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	    	}
 	    }
 	 
-	  public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,Long constituencyId,String constiTypeStr)
+	  public VerifierVO getTdpCadreSurveyDetails(Long tdpCadreId,Long surveyId,String searchTypeStr,Long boothId,String isPriority,String voterCardNo,
+			  Long constituencyId,String constiTypeStr)
 	  {
+		  Long panchayatId=0L;
+		  Long mandalId=0L;
+		  Long  localelectionBodyId =0L;
+		  List<Object[]> addressList = tdpCadreDAO.getCadrAddressDetailsByCadred(tdpCadreId);
+		  if(commonMethodsUtilService.isListOrSetValid(addressList))
+			  for (Object[] param : addressList) {
+				  boothId= commonMethodsUtilService.getLongValueForObject(param[16]);
+				  constituencyId =commonMethodsUtilService.getLongValueForObject(param[5]);
+				  panchayatId=commonMethodsUtilService.getLongValueForObject(param[11]);
+				  mandalId=commonMethodsUtilService.getLongValueForObject(param[7]);
+				  localelectionBodyId=commonMethodsUtilService.getLongValueForObject(param[13]);
+			}
 		  VerifierVO verifierVO = null;
 		  try {
 			  List<VerifierVO> resultList = null;
 			  Client client = Client.create();
 			  client.addFilter(new HTTPBasicAuthFilter(IConstants.SURVEY_WEBSERVICE_USERNAME, IConstants.SURVEY_WEBSERVICE_PASSWORD));
-			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"");
-			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"");
+			  WebResource webResource = client.resource("http://www.mytdp.com/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
+			  //WebResource webResource = client.resource("http://localhost:8080/Survey/WebService/getTdpCadreSurveyDetails/"+tdpCadreId+"/"+surveyId+"/"+searchTypeStr+"/"+boothId+"/"+isPriority+"/"+voterCardNo+"/"+constituencyId+"/"+constiTypeStr+"/"+panchayatId+"/"+mandalId+"/"+localelectionBodyId);
 			  ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
     	 	  if (response.getStatus() != 200) {
     	 		 verifierVO =null;
