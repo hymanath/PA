@@ -818,6 +818,11 @@
 				   <value>com.itgrids.partyanalyst.model.MobileDeviceFeature</value>
 				   <value>com.itgrids.partyanalyst.model.MobileNetworkProvider</value>
 				   <value>com.itgrids.partyanalyst.model.MobileNetworkType</value>
+				   
+				    <value>com.itgrids.partyanalyst.model.CasteCategoryEventInfo</value>
+		            <value>com.itgrids.partyanalyst.model.SubCasteEventInfo</value>
+		           <value>com.itgrids.partyanalyst.model.AgeWiseEventInfo</value>
+		           <value>com.itgrids.partyanalyst.model.GenderWiseEventInfo</value>
 			</list>
 		</property>
 	</bean>
@@ -3562,6 +3567,18 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="casteCategoryEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteCategoryEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="subCasteEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.SubCasteEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ageWiseEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.AgeWiseEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="genderWiseEventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.GenderWiseEventInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean name="smsSenderService" class="com.itgrids.partyanalyst.service.impl.SmsSenderService">
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
 		<property name="mobileAppUserVoterDAO" ref="mobileAppUserVoterDAO" />	
