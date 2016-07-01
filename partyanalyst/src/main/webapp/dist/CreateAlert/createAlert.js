@@ -1,4 +1,4 @@
-
+disableByLevel();
 function disableByLevel()
   {
 	  setDefault();	
