@@ -79,6 +79,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">Create Alert</h4>
 				</div>
+				<div id="errorDiv1" class="col-md-12" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
 				<form id="saveAlertForm" name="saveAlertForm" enctype="multipart/form-data" action="saveAlertAction.action" method="POST">
 				<div class="panel-body">
 					<div class="row">
@@ -99,7 +100,7 @@
 						</div>
 						<div class="col-md-3 levelShowCls" >
 							<label>Level</label>
-							<select class="dropkickClass" id="levelId" onchange="disableByLevel();" name="alertVO.locationLevelId">
+							<select class="dropkickClass" id="levelId" onchange="disableByLevel();" >
 							<option value="2">State</option>
 							 <option value="3">District</option>
 							 <option value="4">Constituency</option>
@@ -151,7 +152,7 @@
 								</span>
 							</div>
 						</div>
-						<div id="errorDiv" class="col-md-12" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
+						
 						<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image" style="display:none";/>
 						<div class="col-md-3">
 							<label>Select Candidates</label>
@@ -182,7 +183,8 @@
 					</div>
 				</div>
 				
-				<input type="hidden" class="form-control" id="locationLevel" name="alertVO.locationValue" value="1"/>
+				<input type="hidden" class="form-control" id="locationLevelValhidden" name="alertVO.locationValue" />
+				<input type="hidden" class="form-control" id="locationLevelIdhidden" name="alertVO.locationLevelId" />
 				
 				</form>
 			</div>
@@ -239,10 +241,155 @@ function getCandidatesByName(){
 		
 function createAlert()
 {
+	
+	
+  var  alertType=$("#alertTypeId").val();
+  var  level=$("#levelId").val();
+  var  state=$("#stateId").val();
+  var  district=$("#referdistrictId").val();
+  var  assembly=$("#referconstituencyId").val();
+  var  mandal=$("#refermandalNameId").val();
+  var  panchayat=$("#referpanchayatId").val();
+  var  candidate=$("#candidatesNameListId").val();
+  var  candidateName=$("#candidateNameId").val();
+   $("#errorDiv1").html('');
+  $("#errorDiv1").css("color","red");
+  if(alertType==0)
+  {
+    $("#errorDiv1").html(" Please select Alert Type ");
+        return;
+  }
+  if(level==0)
+  {
+     $("#errorDiv1").html(" Please select level ");
+  }
+  
+  if(level==2)
+  {
+    if(state==0)
+      {
+      $("#errorDiv1").html(" Please select state ");
+          return;
+    }
+	$("#locationLevelIdhidden").val(2);
+	$("#locationLevelValhidden").val(state);
+    
+  }
+  if(level==3)
+  {
+    if(state==0)
+    {
+      $("#errorDiv1").html(" Please select state ");
+          return;
+    }
+    if(district==0)
+    {
+      $("#errorDiv1").html(" Please select District ");
+          return;
+    }
+	$("#locationLevelIdhidden").val(3);
+	$("#locationLevelValhidden").val(district);
+  }
+  
+ if(level==4)
+  {
+    if(state==0)
+      {
+        $("#errorDiv1").html(" Please select state ");
+            return;
+      }
+    if(district==0)
+      {
+        $("#errorDiv1").html(" Please select District ");
+            return;
+      }
+    if(assembly==0)
+    {
+      $("#errorDiv1").html(" Please select Assembly ");
+          return;
+    }
+	$("#locationLevelIdhidden").val(4);
+	$("#locationLevelValhidden").val(assembly);
+  }
+  if(level==5)
+  {
+	  var mandalName = $("#refermandalNameId option:selected").text();
+    if(state==0)
+      {
+        $("#errorDiv1").html(" Please select state ");
+            return;
+      }
+    if(district==0)
+      {
+        $("#errorDiv1").html(" Please select District ");
+            return;
+      }
+    if(assembly==0)
+     {
+      $("#errorDiv1").html(" Please select Assembly ");
+          return;
+     }
+    
+    if(mandal==0)
+    {
+      $("#errorDiv1").html(" Please select Mandal/ Municipality ");
+          return;
+    }
+	$("#locationLevelValhidden").val(mandal);
+		if(mandalName.indexOf('Mandal') == -1)
+		$("#locationLevelIdhidden").val(7);
+	else
+		$("#locationLevelIdhidden").val(5);
+		
+  }
+  if(level==6)
+  {
+	   var panchayatName = $("#referpanchayatId option:selected").text();
+    if(state==0)
+      {
+        $("#errorDiv1").html(" Please select state ");
+            return;
+      }
+    if(district==0)
+      {
+        $("#errorDiv1").html(" Please select District ");
+            return;
+      }
+      if(assembly==0)
+     {
+      $("#errorDiv1").html(" Please select Assembly ");
+          return;
+     }
+    
+      if(mandal==0)
+     {
+      $("#errorDiv1").html(" Please select Mandal/ Municipality ");
+          return;
+     }
+     if(panchayat==0)
+     {
+    $("#errorDiv1").html(" Please select Panchayat ");
+        return;
+     }
+	 $("#locationLevelValhidden").val(panchayat);
+		 if(panchayatName.indexOf('WARD') == -1)
+			$("#locationLevelIdhidden").val(6);
+		else
+			$("#locationLevelIdhidden").val(8);
+    }
+  if(candidate==0)
+  {
+    $("#errorDiv1").html(" Please select Candidate ");
+        return;
+  }
 
 var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
+					if(uploadResult.indexOf("success") !=-1)
+					{
+					 $("#errorDiv1").html(" Alert Created Successfully ").css("color","green");	
+					}
 					return false;
 				}
 			};
