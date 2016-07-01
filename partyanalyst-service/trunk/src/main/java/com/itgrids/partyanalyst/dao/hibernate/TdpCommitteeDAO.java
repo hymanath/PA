@@ -172,7 +172,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
     //getting total and confirmed counts
 	public List<Object[]> getLocationWiseVillageDetails(Long constituencyId){
 		//0 basiccommId,1 name,2confirmd,3count
-		Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*) " +
+		Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*),TC.completedDate " +
 				" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8) " +
 				" and  TC.constituency.constituencyId = :constituencyId group by TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed");
 		query.setParameter("constituencyId", constituencyId);
@@ -191,7 +191,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 	//getting total and confirmed counts for mandal lvl
 		public List<Object[]> getLocationWiseMandalDetails(List<Long> locationIds,Long levelId){
 			//0 basiccommId,1 name,2confirmd,3count
-			Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*) " +
+			Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*),TC.completedDate " +
 					" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId  " +
 					" and  TC.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId and TC.tdpCommitteeLevelValue in(:locationIds) " +
 					" group by TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed");
