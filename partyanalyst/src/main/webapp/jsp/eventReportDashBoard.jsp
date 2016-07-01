@@ -241,6 +241,8 @@ table{margin-bottom:0px !important;}
 <script type="text/javascript">
 //var parentEventId = '${eventId}';
 var gblCasteWiseRslt;
+var gblmaxTotalAttended=0;
+var gblmaxTotalAttendedPrcntg=0;
  var parentEventId;
  var subEvents = [];
 	var startDate;
@@ -254,8 +256,7 @@ var gblCasteWiseRslt;
 	   $("#genderWiseExcelExpBtnId").hide();
 	   $("#ageWsExcelExpBtnId").hide();
 	   $("#casteCategoryExcelExpBtnId").hide();
-	   sliderFunctionForCastePer();
-	    getEventDateAndSubEvent();
+	   getEventDateAndSubEvent();
 	   }	   
    });
 	parentEventId = $("#mainEventSelectId").val();		
@@ -387,7 +388,6 @@ var formatedDpCurentDate;
 </script>
 <script type="text/javascript">
  $(document).on('click','.applyBtn',function(){
-	sliderFunctionForCastePer();
 	allCalls();
  });
  $(document).on("click",".refreshIcon",function(){
@@ -442,11 +442,29 @@ function getSubCasteWiseEventAttendeeCounts(startDate,endDate)
 				$("#cstWstblPrcssngImgId").hide();
 				if(result != null){
 				 gblCasteWiseRslt =result;
+				 getMaxTotalAttendedAndpercentage(gblCasteWiseRslt);
+				 sliderFunctionForCastePer(gblmaxTotalAttendedPrcntg);
 				 buildCasteWiseRslt(gblCasteWiseRslt,"",2);
 				 buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",2);
 				 buildCstPrcntgHghChrtBySlide(2);
 				}
 		});
+	}
+function getMaxTotalAttendedAndpercentage(gblCasteWiseRslt){
+	gblmaxTotalAttended=0;
+    gblmaxTotalAttendedPrcntg=0;
+	if(gblCasteWiseRslt !=null && gblCasteWiseRslt.length >0){
+		 for(var i in gblCasteWiseRslt){
+		   if(gblmaxTotalAttended<gblCasteWiseRslt[i].attendees){
+			   gblmaxTotalAttended=gblCasteWiseRslt[i].attendees;
+		   }
+		   var percentageValue=parseFloat(gblCasteWiseRslt[i].attendeePercantage);
+		   if(gblmaxTotalAttendedPrcntg<percentageValue){
+			   gblmaxTotalAttendedPrcntg=gblCasteWiseRslt[i].attendeePercantage;
+		   }
+		 }
+		 sliderFunctionForCastePer(gblmaxTotalAttendedPrcntg);
+	}
 	}
 function buildCasteWiseRslt(result,status,range,sliderStatus){
 	$('#timeUpdationId').html(result[0].lastUpdatedDate);
@@ -912,11 +930,11 @@ function buildGenderWiseLocationDetails(result) {
 function generateExcelReportForGender(){
 	tableToExcel(gndrWsExprtTExclTblId, 'Gender Wise Report');
 }
-function sliderFunctionForCaste(){
+function sliderFunctionForCaste(gblmaxTotalAttended){
 $( "#slider" ).slider({
 value:500,
 min: 0,
-max: 5700,
+max: gblmaxTotalAttended,
 step: 1, 
 slide: function( event, ui ) {
 $( "#amount" ).val( "Total Attended Count: " + ui.value +" ");
@@ -1145,12 +1163,11 @@ $(document).on("click","#hideshow",function(){
 $(document).on("click","#hideshowHIghChartForCasteper",function(){      
          $('#castPerContainerChart').toggle('show');
 });
-sliderFunctionForCastePer();
-function sliderFunctionForCastePer(){
+function sliderFunctionForCastePer(gblmaxTotalAttendedPrcntg){
 $( "#sliderFrCstPrcntgWsId" ).slider({
 value:2,
 min: 0,
-max: 21,
+max: Math.floor(gblmaxTotalAttendedPrcntg),
 step: 1,
 slide: function( event, ui ) {
 $( "#amountFrCstPrcntage" ).val( "Total Attended Percentage: " + ui.value +" %");
@@ -1315,12 +1332,12 @@ function buildCastePercentageChart(casteArr,ttlAttnddPrcntgArr,ttlInvtdAttnddPrc
 $('.totalAttendedRadioBtnCls').click(function() {     
    var checked = $(this).attr('checked', true);
    if(checked){ 
-    sliderFunctionForCaste();
+    sliderFunctionForCaste(gblmaxTotalAttended);
     buildCasteGraphBySlide(500);
 	$("#casteWiseTableId").html(' ');
     $("#casteWiseExportToExcelTableId").html(' ');
 	buildCasteWiseRslt(gblCasteWiseRslt,"",500,"totalAttended");
-	buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",500,"totalAttended");
+	buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",500,"totalAttended"); 
    $("#castContainerChart").show();
    $("#castPerContainerChart").hide();
    $(".totalAttendedRadioBtnPerCls").attr('checked', false);
@@ -1331,7 +1348,7 @@ $('.totalAttendedRadioBtnPerCls').click(function() {
    var checked = $(this).attr('checked', true);
    if(checked){ 
    $("#cstPrcntgWsHghChrtId").html(' ');
-    sliderFunctionForCastePer();
+    sliderFunctionForCastePer(gblmaxTotalAttendedPrcntg);
 	buildCstPrcntgHghChrtBySlide(2);
     $("#castPerContainerChart").show();
     $("#castContainerChart").hide();
