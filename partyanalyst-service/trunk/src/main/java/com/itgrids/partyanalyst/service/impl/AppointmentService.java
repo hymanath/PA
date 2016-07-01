@@ -7282,8 +7282,8 @@ public void checkisEligibleForApptCadre(List<Long> cadreNoList,Long appointmentU
 		 Long totalReschedules = 0l;
 		 if(appointmentScheduleVOList != null && appointmentScheduleVOList.size() > 0){
 			 for (AppointmentScheduleVO asvo : appointmentScheduleVOList) {
-				if(asvo.getRescheduledList() != null && asvo.getRescheduledList().size() > 0){
-					totalReschedules = totalReschedules+asvo.getRescheduledList().size();
+				if(asvo.getRescheduledList() != null && asvo.getRescheduledList().size() > 0 && asvo.getRescheduledList() != null && asvo.getRescheduledList().size() > 0){
+					totalReschedules = totalReschedules+(asvo.getRescheduledList().size() * asvo.getRescheduledList().size());
 				}
 			}
 		 }
