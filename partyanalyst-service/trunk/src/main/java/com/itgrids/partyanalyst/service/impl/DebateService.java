@@ -45,9 +45,12 @@ import com.itgrids.partyanalyst.dao.IDebateSmsQuestionOptionDAO;
 import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
+import com.itgrids.partyanalyst.dto.DebatePartyWiseCountVO;
+import com.itgrids.partyanalyst.dto.DebateTopicVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -73,6 +76,7 @@ import com.itgrids.partyanalyst.model.Observer;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.TelecastType;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.service.IDebateAnalysisService;
 import com.itgrids.partyanalyst.service.IDebateService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -103,8 +107,9 @@ public class DebateService implements IDebateService{
 	private IUserDAO 							userDAO;
 	private IDebateReportDAO 					debateReportDAO;
 
+	private IDebateAnalysisService				debateAnalysisService;
 	
-	
+	private ITdpCadreCandidateDAO				tdpCadreCandidateDAO;
 	
 	public void setDebateReportDAO(IDebateReportDAO debateReportDAO) {
 		this.debateReportDAO = debateReportDAO;
@@ -203,6 +208,15 @@ public class DebateService implements IDebateService{
 	
 	
 	
+	public void setDebateAnalysisService(
+			IDebateAnalysisService debateAnalysisService) {
+		this.debateAnalysisService = debateAnalysisService;
+	}
+	
+	public void setTdpCadreCandidateDAO(ITdpCadreCandidateDAO tdpCadreCandidateDAO) {
+		this.tdpCadreCandidateDAO = tdpCadreCandidateDAO;
+	}
+
 	/**
 	 * This service is used for telugu font saving as well as telugu font retriving
 	 * @param input
@@ -2125,5 +2139,43 @@ public class DebateService implements IDebateService{
 		 return finalList;
 		 
 	 }
+	 
+	 public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Long cadreId){
+		 
+		 List<DebatePartyWiseCountVO> finalList = new ArrayList<DebatePartyWiseCountVO>(0);
+		 
+		 try{
+			 
+			 List<Long>  partyIdsList = new ArrayList<Long>();
+			 partyIdsList.add(IConstants.TDP_PARTY_ID);
+			 
+			List<Long> candidatesIds = tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+			finalList = debateAnalysisService.getPartyWiseOverAllPerformance(null,null,null,partyIdsList,candidatesIds);
+			 
+			 
+		 }catch (Exception e) {
+			 LOG.error(" Exception Occured in getPartyWiseOverAllPerformance method, Exception - ",e);
+		}
+		 return finalList;
+	 }
+	 
+	 public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates(Long cadreId){
+		 List<DebateTopicVO> finalList = new ArrayList<DebateTopicVO>(0);
+		 try{
+			 
+			 List<Long>  partyIdsList = new ArrayList<Long>();
+			 partyIdsList.add(IConstants.TDP_PARTY_ID);
+			 
+			List<Long> candidatesIds = tdpCadreCandidateDAO.getTdpCadreCandidate(cadreId);
+			 
+			finalList = debateAnalysisService.getPartyWiseStrongAndWeakTopicAndCandidates(null,null,null,partyIdsList,candidatesIds);
+			 
+		 }catch (Exception e) {
+			 LOG.error(" Exception Occured in getPartyWiseStrongAndWeakTopicAndCandidates method, Exception - ",e);
+		}
+		 
+		 return finalList;
+	 }
+	 
 	 
 }

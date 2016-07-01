@@ -264,16 +264,21 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 	public List<Object[]> getDistinctDebatePartiesForSelection(Date fromDate,Date toDate, List<Long> partyIds)
 	{
 		StringBuilder br = new StringBuilder();
-		br.append(" select distinct model.party.partyId,model.party.shortName from DebateParticipant model where model.debate.isDeleted = 'N' and " +
-				" date(model.debate.startTime) >= :fromDate and date(model.debate.endTime) <= :toDate  ");
+		br.append(" select distinct model.party.partyId,model.party.shortName from DebateParticipant model where model.debate.isDeleted = 'N'" );
+				
+		if(fromDate !=null && toDate  !=null){
+			br.append(" and date(model.debate.startTime) >= :fromDate and date(model.debate.endTime) <= :toDate  ");
+		}			
 		if(partyIds != null && partyIds.size()>0)
 		{
 			br.append(" and model.party.partyId in (:partyIds)");
 		}
 		Query query = getSession().createQuery(br.toString());
 		
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+		if(fromDate !=null && toDate  !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		if(partyIds != null && partyIds.size()>0)
 		{
 			query.setParameterList("partyIds", partyIds);
@@ -288,7 +293,8 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		Query query = getSession().createQuery(" select distinct model.debate.debateId  " +
 				" from DebateParticipant model,TdpCadreCandidate model1 " +
 				" where model.candidate.candidateId = model1.candidate.candidateId " +
-				" and model1.tdpCadre.tdpCadreId = :tdpCadreId ");
+				" and model1.tdpCadre.tdpCadreId = :tdpCadreId " +
+				" and model.debate.isDeleted = 'N' ");
 		
 		query.setParameter("tdpCadreId", tdpCadreId);
 		
