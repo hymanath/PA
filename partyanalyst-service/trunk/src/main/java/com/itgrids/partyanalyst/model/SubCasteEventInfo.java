@@ -16,19 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "sub_caste_event_info")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SubCasteEventInfo implements java.io.Serializable {
-	/*
-	 * sub_caste_event_info_id,
-	 * event_id,
-	 * caste_id,
-	 * caste_name,
-	 * attended,
-	 * invited,
-	 * invitee_attended,
-	 * non_invitee_attended,
-	 * date,
-	 * inserted_time
-	 * 
-	 */
+	
 	
 	private Long subCasteEventInfoId;
 	private Long eventId;
