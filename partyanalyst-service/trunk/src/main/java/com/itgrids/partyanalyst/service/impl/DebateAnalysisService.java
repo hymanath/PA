@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -695,8 +696,8 @@ public class DebateAnalysisService implements IDebateAnalysisService
 			List<Object[]> topTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"desc");
 			if(topTopicesList != null)
 			{
-				topTopicesMap = new HashMap<Long, DebateTopicVO>();
-				topTopicesPartyWiseMap = new HashMap<Long, List<DebateTopicVO>>();
+				topTopicesMap = new LinkedHashMap<Long, DebateTopicVO>();
+				topTopicesPartyWiseMap = new LinkedHashMap<Long, List<DebateTopicVO>>();
 				getTopicWiseStrongOrWeakCandidate(topTopicesList,topTopicesMap,topTopicesPartyWiseMap);
 			}
 			Map<Long,DebateTopicVO> weakTopicesMap = null;
@@ -704,8 +705,8 @@ public class DebateAnalysisService implements IDebateAnalysisService
 			List<Object[]> weakTopicesList = debateParticipantCharcsDAO.getTopicWiseStrongOrWeakCandidatsForSelection(fromDate,toDate,channelIds,partyIdsList,candidatesIds,"asc");
 			if(weakTopicesList != null)
 			{
-				weakTopicesMap = new HashMap<Long, DebateTopicVO>();
-				weakTopicesPartyWiseMap = new HashMap<Long, List<DebateTopicVO>>();
+				weakTopicesMap = new LinkedHashMap<Long, DebateTopicVO>();
+				weakTopicesPartyWiseMap = new LinkedHashMap<Long, List<DebateTopicVO>>();
 				getTopicWiseStrongOrWeakCandidate(weakTopicesList,weakTopicesMap,weakTopicesPartyWiseMap);
 			}
 			

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
+import com.itgrids.partyanalyst.dto.DebatePartyWiseCountVO;
+import com.itgrids.partyanalyst.dto.DebateTopicVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -66,4 +68,7 @@ public interface IDebateService {
 	 
 	 public String deleteSelectedDEbate(Long debateId);
 	 public List<DebateVO> getTotalAttendedDebatesOfCadre(Long tdpCadreId);
+	 public List<DebatePartyWiseCountVO> getPartyWiseOverAllPerformance(Long cadreId);
+	 public List<DebateTopicVO> getPartyWiseStrongAndWeakTopicAndCandidates(Long cadreId);
+	 
 }
