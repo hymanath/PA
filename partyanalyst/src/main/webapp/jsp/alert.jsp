@@ -86,7 +86,7 @@
 						<div class="col-md-3">
 							<label>Alert Type</label>
 							<select class="dropkickClass" name="alertVO.alertTypeId">
-								<option value="1">Alert</option>
+								<option value="1">Select Alert</option>
 							</select>
 						</div>
 						
@@ -111,7 +111,7 @@
 						<div class="col-md-3 stateShowCls" >
 							<label>State</label>
 							 <select class="dropkickClass" class="stateCls" id="stateId" onChange="getDistrictsForReferPopup();" name="alertVO.stateId">
-							 <option value="0">All</option>
+							 <option value="0">Select State</option>
 							 <option value="1">AP</option>
 							 <option value="36">TS</option>
 							 </select>
@@ -120,24 +120,24 @@
 						<div class="col-md-3 locationsFilterCls distCls">
 							 <label>District</label>
 							 <select class="dropkickClass" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();" name="alertVO.districtId">
-							 <option value="0">All</option></select>
+							 <option value="0">Select District</option></select>
 						</div>
 						<div class="col-md-3 locationsFilterCls constiCls">
 							<label>Assembly</label>
 							<select class="dropkickClass" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();" name="alertVO.constituencyId">
-							<option value="0">All</option>
+							<option value="0">Select Assembly</option>
 							</select>
 						</div>
 						<div class="col-md-3 locationsFilterCls mandalCls">
 							<label>Mandal/ Municipality</label>
 							 <select class="dropkickClass" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" name="alertVO.tehsilId">
-								<option value="0">All</option>
+								<option value="0">Select Mandal/ Municipality</option>
 							 </select>
 						</div>
 						<div class="col-md-3 locationsFilterCls panchayatCls">
 							<label>Panchayat/Ward</label>
 							<select class="dropkickClass" id="referpanchayatId" name="alertVO.panchayatId">
-							<option value="0">All</option>
+							<option value="0">Select Panchayat/Ward</option>
 							</select>
 						</div>
 						
@@ -157,7 +157,7 @@
 						<div class="col-md-3">
 							<label>Select Candidates</label>
 							<select class="dropkickClass"  id="candidatesNameListId" name="alertVO.candidateId">
-							<option value="0">Select </option>	
+							<option value="0">Select Candidate</option>	
 							</select>
 						</div>
 						
@@ -172,7 +172,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label>Description</label>
-							<textarea class="form-control" name="alertVO.desc"></textarea>
+							<textarea class="form-control" id="descriptionId" name="alertVO.desc"></textarea>
 						</div>
 					</div>
 					<div class="row">
@@ -241,8 +241,6 @@ function getCandidatesByName(){
 		
 function createAlert()
 {
-	
-	
   var  alertType=$("#alertTypeId").val();
   var  level=$("#levelId").val();
   var  state=$("#stateId").val();
@@ -252,6 +250,7 @@ function createAlert()
   var  panchayat=$("#referpanchayatId").val();
   var  candidate=$("#candidatesNameListId").val();
   var  candidateName=$("#candidateNameId").val();
+  var  description=$("#descriptionId").val();
    $("#errorDiv1").html('');
   $("#errorDiv1").css("color","red");
   if(alertType==0)
@@ -380,6 +379,11 @@ function createAlert()
   if(candidate==0)
   {
     $("#errorDiv1").html(" Please select Candidate ");
+        return;
+  }
+   if(description.length==0||description=='')
+  {
+    $("#errorDiv1").html(" Please select description ");
         return;
   }
 

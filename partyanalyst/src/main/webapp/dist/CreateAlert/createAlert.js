@@ -122,7 +122,7 @@ function disableByLevel()
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
 		var str='';
-		str+='<option value="0">ALL</option>';
+		str+='<option value="0">Select District</option>';
 		if(result != null && result.length > 0){
 			for(var i in result){
 				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
@@ -147,7 +147,7 @@ function disableByLevel()
 		}).done(function(result){
 			var constiStr='';
 			if(result != null && result.length > 0){
-			    constiStr +='<option value="0">All</option>';
+			    constiStr +='<option value="0">Select Assembly</option>';
 				for(var i in result){
 					constiStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
@@ -171,7 +171,7 @@ function disableByLevel()
 		}).done(function(result){
 			var mandalStr='';
 			if(result != null && result.length > 0){
-			    mandalStr +='<option value="0">All</option>';
+			    mandalStr +='<option value="0">Select Mandal/ Municipality</option>';
 				for(var i in result){
 					mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 					}
@@ -206,7 +206,7 @@ function disableByLevel()
 					}).done(function(result){
 						var panchyatStr='';
 						if(result!=null && result.length>0){
-							panchyatStr +='<option value="0">All</option>';
+							panchyatStr +='<option value="0">Select Panchayat</option>';
 			            for(var i in result){
 				 panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 			 }
