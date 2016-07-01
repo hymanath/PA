@@ -39,6 +39,11 @@
 	list-style:none;
 	font-size:12px;
 }
+.verticalAlign thead th
+{
+	vertical-align:middle !important;
+	text-align:center;
+}
 </style>
 <script>
 var globalCadreId = '${cadreId}';
@@ -1191,22 +1196,24 @@ var globalCadreId = '${cadreId}';
 		
 		<!-- Model for Debate Start-->
 		<div class="modal" tabindex="-1" role="dialog" id="debateModelDivId">
-		  <div class="modal-dialog modal-lg">
+		  <div class="modal-dialog modal-lg" style="width:90%">
 			<div class="modal-content">
 			  <div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">Debate Details</h4>
 			  </div>
 			  <div class="modal-body">
-			  <div id="debateModelId"></div>
-				<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
+				  <div id="debateModelId" class="row"></div>
+				  <div id="debatePerformanceId" class="row"></div>
+				  <div id="debateStrongWeekId" class="row"></div>
+					<!--<center><img id="dataLoadingsImgForDebate" src="images/icons/loading.gif" style="width:50px;height:50px;display:none;margin-top:50px;"/></center>-->
 			  </div>
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			  </div>
-			</div><!— /.modal-content —>
-		  </div><!— /.modal-dialog —>
-		</div><!— /.modal —>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 		
 		<!-- Model for Debate End-->
 

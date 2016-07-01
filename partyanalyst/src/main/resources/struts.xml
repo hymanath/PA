@@ -12705,6 +12705,17 @@
 			    <param name="inputName">inputStream</param>
 		  </result>	
 	  </action>
+	  
+	  <action name="getPartyWisePerformanceOfCadreAction" class="debateAction" method="getPartyWisePerformanceOfCadre">
+			<result type="json" name="success">
+				<param name="root">overllPartyWiseList</param>
+			</result>
+		</action>
+		<action name="getPartyWiseStrongAndWeakTopicOfCadreAction" class="debateAction" method="getPartyWiseStrongAndWeakTopicOfCadre">
+			<result type="json" name="success">
+				<param name="root">debateReportList</param>
+			</result>
+		</action>
 	
 </package>
 </struts>      

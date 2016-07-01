@@ -6594,8 +6594,10 @@ function getDebateDetailsOfCadre(){
 			//Count setting
 			$("#debateCountId").html(result.length);
 			
-			
-			str+= '<table class="table-bordered">';
+			str+= '<div class="col-md-12 col-xs-12 col-sm-12">';
+		
+			str+= '<div class="table-responsive">';
+			str+= '<table class="table table-bordered table-condensed">';
 				str+= '<thead style="background:#ccc">';
 					str+='<th>Subject</th>';
 					str+='<th>Date</th>';
@@ -6608,7 +6610,11 @@ function getDebateDetailsOfCadre(){
 					&& result[0].participantsList[0].scaleList !=null 
 					&& result[0].participantsList[0].scaleList.length>0){
 						for(var i in result[0].participantsList[0].scaleList){
-							str+='<th>'+result[0].participantsList[0].scaleList[i].name+'</th>';
+							var namee='';
+							if(result[0].participantsList[0].scaleList[i].name !=null && result[0].participantsList[0].scaleList[i].name.length>0){
+								namee=result[0].participantsList[0].scaleList[i].name.split("(")[0];
+							}
+							str+='<th>'+namee+'</th>';
 						}						
 					}
 				str+= '</thead>';
@@ -6647,6 +6653,10 @@ function getDebateDetailsOfCadre(){
 					
 				str+= '</tbody>';
 			str+= '</table>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '</div>';
 		}
 		
 		$("#debateModelId").html(str);
@@ -6678,3 +6688,184 @@ $(document).on("click","#debateCountId",function(){
 		window.open('debateReportAction.action?debateId='+debateId+'','_blank');		 
 	});
 	
+	getPartyWisePerformanceOfCadre();
+	function getPartyWisePerformanceOfCadre(){
+		
+		$('#debatePerformanceId').html('');		
+		var jsobj={
+		tdpCadreId : globalCadreId
+		}
+		$.ajax({
+			 type:'POST',
+			 url: 'getPartyWisePerformanceOfCadreAction.action',
+			 data : {task:JSON.stringify(jsobj)} ,
+		}).done(function(result){
+			buildFun1(result);
+		});
+	}
+	function buildFun1(result){
+		if(result != null)
+		{
+			var str = '';
+			str += '<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+= '<div class="panel panel-default">';
+				str+= '<div class="panel-heading"><h4 class="panel-title">PARTY WISE OVER ALL PERFORMANCE </h4></div>';
+				str+= '<div class="panel-body">';
+				str += '<div class="table-responsive">';
+					str += '<table class="table table-bordered table-condensed verticalAlign" id="firstReport">';
+					str += '<thead style="background:#ccc">';
+					str += '<tr class=" text-center">';
+						str += '<th rowspan="2">Party</th>';
+						str += '<th rowspan="2">Total Debates/</br>Performance Count</th>';
+						str += '<th colspan="4" class="text-center">Ranking</th>';
+						str += '<th rowspan="2">Subject</th>';
+						str += '<th rowspan="2">Presentation</th>	';
+						str += '<th rowspan="2">Counter Attack</th>';
+						str += '<th rowspan="2">Body Language</th>';						
+					str += '</tr>';
+					
+					str += '<tr class=" text-center verticalAlign">';
+						str += '<th>1 st</th>';
+						str += '<th>2 nd</th>';
+						str += '<th>3 rd</th>';
+						str += '<th>4 th</th>';
+					str += '</tr>';
+					str += '</thead>';
+					str += '<tbody>';
+					for(var i in result)
+					{
+						str += '<tr class="text-center">';
+							str += '<td>'+result[i].partyName+'</td>';
+							str += '<td>'+result[i].totalDebates+'/'+result[i].debateScale+'</td>';
+							str += '<td>'+result[i].rankingVO.firstRank+'</td>';
+							str += '<td>'+result[i].rankingVO.secondRank+'</td>';
+							str += '<td>'+result[i].rankingVO.thirdRank+'</td>';
+							str += '<td>'+result[i].rankingVO.fourthRank+'</td>';
+							for(var j in result[i].subList)
+							{
+								str += '<td>'+result[i].subList[j].debateScale+'</td>';
+							}
+						str += '</tr>';
+					}
+					str += '</tbody>';
+					str += '</table>';	
+				str += '</div>';	
+				str += '</div>';	
+				str += '</div>';	
+			str += '</div>';	
+			$('#debatePerformanceId').html(str);
+			
+		}
+		else{	
+			$('#debatePerformanceId').html('<div align="center"> <b>No Data Available </b>.</div>');				
+		}
+	}
+	getPartyWiseStrongAndWeakTopicOfCadre();
+	function getPartyWiseStrongAndWeakTopicOfCadre(){
+		var jsobj={
+			tdpCadreId : globalCadreId
+		}
+		$.ajax({
+			 type:'POST',
+			 url: 'getPartyWiseStrongAndWeakTopicOfCadreAction.action',
+			 data : {task:JSON.stringify(jsobj)} ,
+		}).done(function(result){
+			buildFun2(result);
+		});
+	}
+	function buildFun2(result){
+		var str = '';
+		if(result != null )
+		{
+				for(var i in result)
+				{
+					str += '<div class="col-md-12 col-xs-12 col-sm-12">';
+					str += '<div class="panel panel-default">';
+					str += '<div class="panel-heading">';
+						str += '<h4 class="panel-title">TOPIC WISE EACH PARTY STRONG AND WEAK</h4>';
+					str += '</div>';
+					str += '<div class="panel-body">';
+					str += '<div class="row">';
+					str += '<div class="col-md-6 col-xs-12 col-sm-12">';
+					str += '<h4>'+result[i].party+' Strong</h4>';
+					str += '<div class="table-responsive">';
+					str += '<table class="table table-bordered table-condensed verticalAlign" >';
+					str += '<thead style="background:#ccc">';
+					str += '<tr>';
+					str += '<th>Topic</th>';
+					str += '<th>Channel</th>';
+					str += '<th>Candidate</th>';
+					str += '</tr>';
+					str += '</thead>';
+					str += '<tbody>';
+					if(result[i].top != null && result[i].top.length > 0)
+					{
+						for(var j in result[i].top)
+						{
+							str += '<tr>';
+							if(result[i].top[j].count > 1)
+							{
+								str += '<td>'+result[i].top[j].subject+'('+result[i].top[j].count+')</td>';
+							}
+							else
+							{
+								str += '<td>'+result[i].top[j].subject+'</td>';
+							}
+							
+							str += '<td>'+result[i].top[j].channel+'</td>';
+							str += '<td>'+result[i].top[j].candidate+'</td>';
+							str += '</tr>';
+						}
+					}
+					str += '</tbody>';
+					str += '</table>';
+					str += '</div>';
+					str += '</div>';
+					
+					str += '<div class="col-md-6 col-xs-12 col-sm-12">';
+					str += '<h4>'+result[i].party+' Weak</h4>';
+					str += '<div class="table-responsive">';
+					str += '<table class="table table-bordered table-condensed verticalAlign" >';
+					str += '<thead style="background:#ccc">';
+					str += '<tr>';
+					str += '<th>Topic</th>';
+					str += '<th>Channel</th>';
+					str += '<th>Candidate</th>';
+					str += '</tr>';
+					str += '</thead>';
+					str += '<tbody>';
+					if(result[i].weak != null && result[i].weak.length > 0)
+					{
+						for(var j in result[i].weak)
+						{
+							str += '<tr>';
+							if(result[i].weak[j].count > 1)
+							{
+								str += '<td>'+result[i].weak[j].subject+'('+result[i].weak[j].count+')</td>';
+							}
+							else
+							{
+								str += '<td>'+result[i].weak[j].subject+'</td>';
+							}
+							str += '<td>'+result[i].weak[j].channel+'</td>';
+							str += '<td>'+result[i].weak[j].candidate+'</td>';
+							str += '</tr>';
+						}
+					}
+					str += '</tbody>';
+					str += '</table>';
+					str += '</div>';
+					str += '</div>';
+					str += '</div>';
+					str += '</div>';
+					str += '</div>';
+					str += '</div>';
+					$('#searchDataImg').hide();
+				}
+				
+				$('#debateStrongWeekId').html(str);				
+		}
+		else{
+			$('#debateStrongWeekId').html('<div align="center"> <b>No Data Available </b>.</div>');				
+		}
+	}
