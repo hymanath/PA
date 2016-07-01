@@ -4128,7 +4128,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		for(Object[] count: valuesList){
 			if(((Long)count[0]).longValue() == 1l){
 				mainCommitteTotal = mainCommitteTotal+(Long)count[3];
-				if(count[2].toString().equalsIgnoreCase("Y")){
+				if(count[2].toString().equalsIgnoreCase("Y") && count[4] != null){
 					mainCommitteConformed = mainCommitteConformed+(Long)count[3];
 				}
 			}else{
@@ -4140,7 +4140,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				   returnMap.put((Long)count[0],vo);
 			     }
 			    vo.setTotalAffilatedCommittees(vo.getTotalAffilatedCommittees()+(Long)count[3]);
-				if(count[2].toString().equalsIgnoreCase("Y")){
+				if(count[2].toString().equalsIgnoreCase("Y")  && count[4] != null){
 					 vo.setAffComitteesConformed(vo.getAffComitteesConformed()+(Long)count[3]);
 				}
 		    }
