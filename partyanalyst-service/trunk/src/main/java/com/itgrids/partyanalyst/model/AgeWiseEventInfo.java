@@ -99,7 +99,7 @@ public class AgeWiseEventInfo implements java.io.Serializable {
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
-	public void setInsertedTime(Date inserted_time) {
+	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
 	
