@@ -5798,6 +5798,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 				  location.reload(); 
 				}
 			}
+			 $("#dialogSummaryDistsrict").modal("show");
 			buildingResults(result,locationName,basicCmmtyName,basicCmmtyId,locationTypeId,locationId);
 		});
 		
