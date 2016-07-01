@@ -43,9 +43,12 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("select DP.candidateId , sum(DPC.scale)   from DebateParticipantCharcs DPC, DebateParticipant DP, Debate D  ");	
-		sb.append(" where D.debateId = DP.debateId and DP.debateParticipantId = DPC.debateParticipantId and   ");
+		sb.append(" where D.debateId = DP.debateId and DP.debateParticipantId = DPC.debateParticipantId and   " +
+				" D.isDeleted = 'N'  ");
 
-		sb.append(" date(D.startTime) >= :fromDate and date(D.startTime) <= :toDate ");
+		if(fromDate !=null && toDate !=null){
+			sb.append(" and date(D.startTime) >= :fromDate and date(D.startTime) <= :toDate ");
+		}		
 		
 		if(channelIds != null && channelIds.size()>0)
 		{
@@ -63,8 +66,11 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		sb.append(" group by DP.candidateId order by DP.party.partyId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
 		if(channelIds != null   && channelIds.size()>0)
 		{
 			query.setParameterList("channelIds", channelIds);
@@ -102,10 +108,13 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 			sb.append(" select DP.candidateId ,DPC.characteristicsId, C.name, sum(DPC.scale) 	from DebateParticipantCharcs DPC, DebateParticipant DP ,  Debate D , Characteristics C  " );
 	
 			sb.append(" where D.debateId = DP.debateId and  DP.debateParticipantId = DPC.debateParticipantId " +
-				"   and DPC.characteristicsId = C.characteristicsId ");
+				"   and DPC.characteristicsId = C.characteristicsId " +
+				" and D.isDeleted = 'N' ");
 
-			sb.append(" and date(D.startTime) >= :fromDate and date(D.startTime) <= :toDate ");
-			
+			if(fromDate !=null && toDate !=null){
+				sb.append(" and date(D.startTime) >= :fromDate and date(D.startTime) <= :toDate ");
+			}
+						
 			if(channelIds != null && channelIds.size()>0)
 			{
 				sb.append(" and D.channel.channelId in (:channelIds) ");
@@ -122,8 +131,10 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 			sb.append(" group by DP.candidateId , DPC.characteristicsId ");
 			
 			Query query = getSession().createQuery(sb.toString());
-			query.setParameter("fromDate", fromDate);
-			query.setParameter("toDate", toDate);
+			if(fromDate !=null && toDate !=null){
+				query.setParameter("fromDate", fromDate);
+				query.setParameter("toDate", toDate);
+			}
 			if(channelIds != null   && channelIds.size()>0)
 			{
 				query.setParameterList("channelIds", channelIds);
@@ -342,11 +353,12 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 
 		
 		
-			sb.append(" model.debateParticipant.debate.debateId = model2.debate.debateId and ");
+			sb.append(" model.debateParticipant.debate.debateId = model2.debate.debateId and model2.debate.isDeleted = 'N'  ");
 		
-			
-		sb.append(" date(model2.debate.startTime) >= :fromDate and date(model2.debate.startTime) <= :toDate " +
-				" and model2.debate.isDeleted = 'N' ");
+		if(fromDate !=null && toDate !=null){
+			sb.append(" and date(model2.debate.startTime) >= :fromDate and date(model2.debate.startTime) <= :toDate " );
+		}	
+		
 		
 		if(channelIds != null && channelIds.size()>0)
 		{
@@ -363,8 +375,10 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		}
 		sb.append("  group by model.debateParticipant.party.partyId,model.debateParticipant.candidate.candidateId,model2.debateSubjectId order by model2.debateSubjectId  ");
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		if(channelIds != null   && channelIds.size()>0)
 		{
 			query.setParameterList("channelIds", channelIds);

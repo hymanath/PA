@@ -156,9 +156,11 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		
 		sb.append("select DP.partyId ,DP.party.shortName, DP.candidateId ,DP.candidate.lastname, count(*) " +
 				                                       "from DebateParticipant DP  ");	
-		sb.append(" where DP.debate.debateId = DP.debateId and DP.debate.isDeleted = 'N' and  ");
+		sb.append(" where DP.debate.debateId = DP.debateId and DP.debate.isDeleted = 'N'  ");
 
-		sb.append(" date(DP.debate.startTime) >= :fromDate and date(DP.debate.startTime) <= :toDate ");
+		if(fromDate !=null && toDate !=null){
+			sb.append(" and date(DP.debate.startTime) >= :fromDate and date(DP.debate.startTime) <= :toDate ");
+		}
 		
 		if(channelIds != null && channelIds.size()>0)
 		{
@@ -176,8 +178,10 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 		sb.append(" group by DP.partyId , DP.candidateId order by DP.partyId ");
 		
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		if(channelIds != null   && channelIds.size()>0)
 		{
 			query.setParameterList("channelIds", channelIds);
@@ -216,9 +220,12 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		sb.append("  from DebateSubject DS , DebateParticipant DP , DebateParticipantCharcs DPC where ");
 		
 		sb.append(" DS.debate.debateId = DP.debate.debateId and DP.debateParticipantId = DPC.debateParticipant.debateParticipantId ");
-		sb.append(" and DPC.characteristics.isDeleted = 'N' and DS.debate.isDeleted = 'N' and ");
+		sb.append(" and DPC.characteristics.isDeleted = 'N' and DS.debate.isDeleted = 'N' ");
 		
-		sb.append(" date(DS.debate.startTime) >= :fromDate and date(DS.debate.startTime) <= :toDate ");
+		if(fromDate !=null && toDate !=null){
+			sb.append(" and date(DS.debate.startTime) >= :fromDate and date(DS.debate.startTime) <= :toDate ");
+		}
+		
 		
 		if(channelIds != null && channelIds.size()>0)
 		{
@@ -236,8 +243,11 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 		sb.append(" group by DS.debateSubjectId,DP.party.partyId , DPC.characteristics.characteristicsId");
 		
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("fromDate", fromDate);
-		query.setParameter("toDate", toDate);
+		if(fromDate !=null && toDate !=null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
 		if(channelIds != null   && channelIds.size()>0)
 		{
 			query.setParameterList("channelIds", channelIds);
