@@ -2119,18 +2119,23 @@ public class DebateService implements IDebateService{
 		 
 		 List<DebateVO> finalList = new ArrayList<DebateVO>();
 		 
-		 try{			 
-			 List<Long> list = debateParticipantDAO.getTotalAttendedDebatesOfCadre(tdpCadreId);
-			  
+		 try{		
+			 //0.debateId,1.candidateId
+			 List<Object[]> list = debateParticipantDAO.getTotalAttendedDebatesOfCadre(tdpCadreId);
+			  			 
 				if(list !=null && list.size()>0){
-					for (Long long1 : list) {						
-						DebateVO VO = getDebateDetailsForSelected(long1);
+					for (Object[] long1 : list) {						
+						DebateVO VO = getDebateDetailsForSelected(long1[0] !=null ? (Long)long1[0]:0l);
 						if(VO !=null){
 							finalList.add(VO);
-						}										
+						}		
+						
+						Long candidateId = (Long) list.get(0)[1];
+						finalList.get(0).setCandidateId(candidateId);
+						
 					}
-					
 					finalList.get(0).setTotalDebates(Long.parseLong(Integer.toString(list.size())));
+										
 				}			 
 			 
 		 }catch (Exception e) {

@@ -37,7 +37,7 @@ public interface IDebateParticipantDAO extends GenericDao<DebateParticipant, Lon
 	
 	public List<Object[]> getPartiesAndCanidatesIdForSelection(Date fromDate,Date toDate,List<Long> channelIds,List<Long> partyIds,List<Long> candidateIds);
 	
-	public List<Long> getTotalAttendedDebatesOfCadre(Long tdpCadreId);
+	public List<Object[]> getTotalAttendedDebatesOfCadre(Long tdpCadreId);
 	public List<Object[]> getDebateParticipatedDetailsOfCadre(List<Long> debetIds);
 
 }

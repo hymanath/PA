@@ -39,6 +39,7 @@ public class DebateVO implements Serializable {
 	private String edDate;
 	
 	private Long totalDebates;
+	private Long candidateId;
 	
 	public Long getDebateId() {
 		return debateId;
@@ -203,6 +204,12 @@ public class DebateVO implements Serializable {
 	}
 	public void setTotalDebates(Long totalDebates) {
 		this.totalDebates = totalDebates;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
 	}
 	
 	
