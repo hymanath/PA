@@ -387,6 +387,7 @@ var formatedDpCurentDate;
 </script>
 <script type="text/javascript">
  $(document).on('click','.applyBtn',function(){
+	sliderFunctionForCastePer();
 	allCalls();
  });
  $(document).on("click",".refreshIcon",function(){
@@ -441,13 +442,13 @@ function getSubCasteWiseEventAttendeeCounts(startDate,endDate)
 				$("#cstWstblPrcssngImgId").hide();
 				if(result != null){
 				 gblCasteWiseRslt =result;
-				 buildCasteWiseRslt(result,"");
-				 buildCasteWiseRslt(result,"exportToExcel");
+				 buildCasteWiseRslt(gblCasteWiseRslt,"",2);
+				 buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",2);
 				 buildCstPrcntgHghChrtBySlide(2);
 				}
 		});
 	}
-function buildCasteWiseRslt(result,status){
+function buildCasteWiseRslt(result,status,range,sliderStatus){
 	$('#timeUpdationId').html(result[0].lastUpdatedDate);
 	var str='';
 	str+='<div class="table-responsive">';
@@ -486,6 +487,13 @@ function buildCasteWiseRslt(result,status){
 		str+='</thead>';
 		str+='<tbody class="scrollLength">';
 		for(var j in result){
+		var filterRange;
+		 if(sliderStatus=="totalAttended"){
+			 filterRange = result[j].attendees;
+		 }else{
+			filterRange=parseFloat(result[j].attendeePercantage);
+		 }
+		 if(filterRange>=range){
 			str+='<tr>';
 			if(result[j].name == null){
 				str+='<td class="text-center"> - </td>';
@@ -553,6 +561,7 @@ function buildCasteWiseRslt(result,status){
 				}
 			}
 			str+='</tr>';
+		 }
 		}
 		str+='</tbody>';
 		str+='</table>';
@@ -914,17 +923,21 @@ $( "#amount" ).val( "Total Attended Count: " + ui.value +" ");
 },
 change: function( event, ui ) {
 $( "#amount" ).val( "Total Attended Count: " + ui.value +"");
-var casteRange;	
-casteRange=ui.value;
-buildCasteGraphBySlide(casteRange);
+var totalAttendedRange;	
+totalAttendedRange=ui.value;
+buildCasteGraphBySlide(totalAttendedRange);
+$("#casteWiseTableId").html(' ');
+$("#casteWiseExportToExcelTableId").html(' ');
+buildCasteWiseRslt(gblCasteWiseRslt,"",totalAttendedRange,"totalAttended");
+buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",totalAttendedRange,"totalAttended");
 }
 });
-casteRange=$( "#amount" ).val( "Total Attended Count: " + $( "#slider" ).slider( "value" ) +"");
-casteRange=$( "#slider" ).slider( "value" );
+totalAttendedRange=$( "#amount" ).val( "Total Attended Count: " + $( "#slider" ).slider( "value" ) +"");
+totalAttendedRange=$( "#slider" ).slider( "value" );
 };
 
 
-function buildCasteGraphBySlide(casteRange){
+function buildCasteGraphBySlide(totalAttendedRange){
 	
 	var casteArr=[];
 	var ttlCdrArr=[];
@@ -934,7 +947,7 @@ function buildCasteGraphBySlide(casteRange){
 	var ttlNnInvtdAttnddArr=[];
 	
 	for(var i in gblCasteWiseRslt){
-		if(gblCasteWiseRslt[i].attendees >=casteRange){
+		if(gblCasteWiseRslt[i].attendees >=totalAttendedRange){
 			casteArr.push(gblCasteWiseRslt[i].name);
 			ttlCdrArr.push(gblCasteWiseRslt[i].totalCadre);
 			ttlInvtdArr.push(gblCasteWiseRslt[i].inviteesCalled);
@@ -1086,25 +1099,25 @@ function buildCasteChart(casteArr,ttlCdrArr,ttlInvtdArr,ttlAttnddArr,ttlInvtdAtt
                 }
     
             }, {
-                name: 'Total Invited',
+                name: 'Total Attended',
                 color: '#4572A7',
 				yAxis: 1,
-                type: 'spline',
-                data: ttlInvtdArr,
-                tooltip: {
-                    valueSuffix: ''
-                }
-            },{
-                name: 'Total Attended',
-                color: '#5F9EA0',
-				yAxis: 2,
                 type: 'spline',
                 data: ttlAttnddArr,
                 tooltip: {
                     valueSuffix: ''
                 }
             },{
-                name: 'Total Invited Attended',
+                name: 'Total Invited',
+                color: '#5F9EA0',
+				yAxis: 2,
+                type: 'spline',
+                data:ttlInvtdArr ,
+                tooltip: {
+                    valueSuffix: ''
+                }
+            },{
+                name: 'Invited Attended',
                 color: '#D2691E',
 				yAxis: 3,
                 type: 'spline',
@@ -1113,7 +1126,7 @@ function buildCasteChart(casteArr,ttlCdrArr,ttlInvtdArr,ttlAttnddArr,ttlInvtdAtt
                     valueSuffix: ''
                 }
             },{
-                name: 'Total Non Invited Attended',
+                name: 'Non Invited Attended',
                 color: '#7FFF00',
 				yAxis: 4,
                 type: 'spline',
@@ -1147,6 +1160,10 @@ $( "#amountFrCstPrcntage" ).val( "Total Attended Percentage: " + ui.value +" %")
 var casteRangePer;
 casteRangePer=ui.value;
 buildCstPrcntgHghChrtBySlide(casteRangePer);
+$("#casteWiseTableId").html(' ');
+$("#casteWiseExportToExcelTableId").html(' ');
+buildCasteWiseRslt(gblCasteWiseRslt,"",casteRangePer);
+buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",casteRangePer);
 }
 });
 casteRangePer=$( "#amountFrCstPrcntage" ).val( "Total Attended Percentage: " + $( "#sliderFrCstPrcntgWsId" ).slider( "value" ) +" %");
@@ -1273,7 +1290,7 @@ function buildCastePercentageChart(casteArr,ttlAttnddPrcntgArr,ttlInvtdAttnddPrc
                 }
     
             }, {
-                name: 'Total Invitees %',
+                name: 'Invitees Attended %',
                 color: '#00FF00',
 				 yAxis: 1,
                 type: 'spline',
@@ -1282,7 +1299,7 @@ function buildCastePercentageChart(casteArr,ttlAttnddPrcntgArr,ttlInvtdAttnddPrc
                     valueSuffix: ''
                 }
             },{
-                name: 'Total Non Invitees %',
+                name: 'Non Invitees Attended %',
                 color: '#0000FF',
 				 yAxis: 2,
                 type: 'spline',
@@ -1300,6 +1317,10 @@ $('.totalAttendedRadioBtnCls').click(function() {
    if(checked){ 
     sliderFunctionForCaste();
     buildCasteGraphBySlide(500);
+	$("#casteWiseTableId").html(' ');
+    $("#casteWiseExportToExcelTableId").html(' ');
+	buildCasteWiseRslt(gblCasteWiseRslt,"",500,"totalAttended");
+	buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",500,"totalAttended");
    $("#castContainerChart").show();
    $("#castPerContainerChart").hide();
    $(".totalAttendedRadioBtnPerCls").attr('checked', false);
