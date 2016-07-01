@@ -786,62 +786,51 @@ function buildGenderWiseLocationDetails(result) {
 	 var str='';
 	  str+='<div class="table-responsive">';
 		str+='<table class="table tableC table-condensed table-bordered" id="gndrWsExprtTExclTblId">';
-			str+='<thead>';
-				str+='<tr>';
-				    str+='<th rowspan="3">TOTAL MALE CADRE</th>';
-					str+='<th rowspan="3">TOTAL FEMALE CADRE</th>';
-					str+='<th rowspan="3">TOTAL MALE INVITED</th>';
-					str+='<th rowspan="3">TOTAL FEMALE INVITED</th>';
-					str+='<th colspan="2" rowspan="2">TOTAL ATTENDED</th>';
-					str+='<th rowspan="2" colspan="2">INVITEES ATTENDED</th>';
-					str+='<th colspan="2" rowspan="2">NON-INVITEES ATTENDED</th>';
+		str+='<thead style="background:#EFF3F4">';
+		str+='<tr>';
+		str+='<th rowspan="2" style="vertical-align:middle">GENDER</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">TOTAL CADRES</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">TOTAL ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;width:55px;">%</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">TOTAL INVITED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">INVITEES ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;width:55px;">%</th>';
+		str+='<th rowspan="2" style="vertical-align:middle">NON INVITEES ATTENDED</th>';
+		str+='<th rowspan="2" style="vertical-align:middle;width:55px;">%</th>';
+	    var daysList=result.subMap;
+		if(daysList !=null){
+		   for(var i in daysList){
+			str+='<th colspan="3" class="text-center text-capitalize"> '+daysList[i].name+' ATTENDED</th>';
 			
-			var daysList=result.subMap;
-				    if(daysList !=null){
-					   for(var i in daysList){
-						str+='<th colspan="6" class="text-center"> '+daysList[i].name+' ATTENDED</th>';
-						
-					    }
-					 }
-				str+='</tr>';
-				str+='<tr>';
-				 	if(daysList !=null){
-					  for(var i in daysList){
-					 str+='<th colspan="2">Total </th>';
-					 str+='<th colspan="2">Invitees </th>';
-					 str+='<th colspan="2">Non Invitees</th>';
-					  }
-					}
-				str+='</tr>';
-				str+='<tr>';
-					str+='<th>M</th>';
-					str+='<th>F</th>';
-					str+='<th>M</th>';
-					str+='<th>F</th>';
-					str+='<th>M</th>';
-					str+='<th>F</th>';
-					 if(daysList !=null){
-					   for(var i in daysList){
-					    str+='<th>M</th>';
-						str+='<th>F</th>';
-						str+='<th>M</th>';
-						str+='<th>F</th>';
-						str+='<th>M</th>';
-						str+='<th>F</th>';
-					  }
-					}
-				str+='</tr>';
-			str+='</thead>';
+			}
+		 }
+		str+='</tr>';
+		str+='<tr>';
+		if(daysList !=null){
+		  for(var i in daysList){
+		  str+='<th>Total </th>';
+		  str+='<th>Invitees </th>';
+		  str+='<th>Non Invitees</th>';
+		  }
+		}
+		str+='</tr>';
+	 str+='</thead>';
 			str+='<tbody>';
 			str+='<tr>';
+			     str+='<td>M</td>';
 			 	if(result.totalMaleCadre !=null && result.totalMaleCadre>0){
 					str+='<td>'+result.totalMaleCadre+'</td>';
 				}else {
 					str+='<td> - </td>';
 				}
-				if(result.totalFemaleCadre !=null && result.totalFemaleCadre>0) {
-					str+='<td>'+result.totalFemaleCadre+'</td>';
-				}else{
+				if(result.maleAttendees !=null && result.maleAttendees>0) {
+					str+='<td>'+result.maleAttendees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.maleAttendeePercantage !=null && result.maleAttendeePercantage>0) {
+					str+='<td>'+result.maleAttendeePercantage+'%</td>';
+				}else {
 					str+='<td> - </td>';
 				}
 				if(result.maleInviteesCalled !=null && result.maleInviteesCalled>0){
@@ -849,39 +838,23 @@ function buildGenderWiseLocationDetails(result) {
 				}else {
 					str+='<td> - </td>';
 				}
-				if(result.femaleInviteesCalled !=null && result.femaleInviteesCalled>0) {
-					str+='<td>'+result.femaleInviteesCalled+'</td>';
-				}else{
-					str+='<td> - </td>';
-				}
-				if(result.maleAttendees !=null && result.maleAttendees>0) {
-					str+='<td>'+result.maleAttendees+' <span>('+result.maleAttendeePercantage+'%)</td>';
-				}else {
-					str+='<td> - </td>';
-				}
-				if(result.femaleAttendees != null && result.femaleAttendees>0){
-					str+='<td>'+result.femaleAttendees+' <span>('+result.femaleAttendeePercantage+'%)</td>';
-				}else {
-					str+='<td> - </td>';
-				}
 				if(result.maleInvitees != null && result.maleInvitees>0) {
-					str+='<td>'+result.maleInvitees+' <span>('+result.maleInviteePercantage+'%)</td>';
+					str+='<td>'+result.maleInvitees+'</td>';
 				}else {
 					str+='<td> - </td>';
 				}
-				if(result.femaleInvitees != null && result.femaleInvitees>0){
-					str+='<td>'+result.femaleInvitees+' <span>('+result.femaleInviteePercantage+'%)</td>';
+				if(result.maleInviteePercantage != null && result.maleInviteePercantage>0) {
+					str+='<td>'+result.maleInviteePercantage+'%</td>';
 				}else {
 					str+='<td> - </td>';
 				}
 				if(result.maleNonInvitees != null && result.maleNonInvitees>0){
-					str+='<td>'+result.maleNonInvitees+' <span>('+result.maleNonInviteePercantage+'%)</td>';
+					str+='<td>'+result.maleNonInvitees+'</td>';
 				}else {
 					str+='<td> - </td>';
 				}
-				if(result.femaleNonInvitees !=null && result.femaleNonInvitees>0) {
-					
-				str+='<td>'+result.femaleNonInvitees+' <span>('+result.femaleNonInviteePercantage+'%)</td>';
+				if(result.maleNonInviteePercantage != null && result.maleNonInviteePercantage>0){
+					str+='<td>'+result.maleNonInviteePercantage+'</td>';
 				}else {
 					str+='<td> - </td>';
 				}
@@ -893,23 +866,71 @@ function buildGenderWiseLocationDetails(result) {
 					}else{
 					str+='<td> 0 </td>';
 					}
-					if(daysList[i].femaleAttendees != null && daysList[i].femaleAttendees>0){
-						str+='<td>'+daysList[i].femaleAttendees+' </td>';
-					}else{
-					str+='<td> 0 </td>';
-					}
 			       if(daysList[i].maleInvitees != null && daysList[i].maleInvitees>0){
 						str+='<td>'+daysList[i].maleInvitees+' </td>';
 					}else{
 					str+='<td> 0 </td>';
 					}
-					if(daysList[i].femaleInvitees != null && daysList[i].femaleInvitees>0){
-						str+='<td>'+daysList[i].femaleInvitees+' </td>';
+					if(daysList[i].maleNonInvitees != null && daysList[i].maleNonInvitees>0){
+						str+='<td>'+daysList[i].maleNonInvitees+' </td>';
 					}else{
 					str+='<td> 0 </td>';
 					}
-					if(daysList[i].maleNonInvitees != null && daysList[i].maleNonInvitees>0){
-						str+='<td>'+daysList[i].maleNonInvitees+' </td>';
+				   }
+			   }
+		 	str+='</tr>';
+			str+='<tr>';
+			 	  str+='<td>F</td>';
+				if(result.totalFemaleCadre !=null && result.totalFemaleCadre>0) {
+					str+='<td>'+result.totalFemaleCadre+'</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result.femaleAttendees != null && result.femaleAttendees>0){
+					str+='<td>'+result.femaleAttendees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleAttendeePercantage != null && result.femaleAttendeePercantage>0){
+					str+='<td>'+result.femaleAttendeePercantage+'%</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleInviteesCalled !=null && result.femaleInviteesCalled>0) {
+					str+='<td>'+result.femaleInviteesCalled+'</td>';
+				}else{
+					str+='<td> - </td>';
+				}
+				if(result.femaleInvitees != null && result.femaleInvitees>0){
+					str+='<td>'+result.femaleInvitees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleInviteePercantage != null && result.femaleInviteePercantage>0){
+					str+='<td>'+result.femaleInviteePercantage+' %</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleNonInvitees !=null && result.femaleNonInvitees>0) {
+				str+='<td>'+result.femaleNonInvitees+'</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+				if(result.femaleNonInviteePercantage !=null && result.femaleNonInviteePercantage>0) {
+				str+='<td>'+result.femaleNonInviteePercantage+' %</td>';
+				}else {
+					str+='<td> - </td>';
+				}
+			   var daysList=result.subMap;
+			   if(daysList !=null){
+				   for(var i in daysList){
+					if(daysList[i].femaleAttendees != null && daysList[i].femaleAttendees>0){
+						str+='<td>'+daysList[i].femaleAttendees+' </td>';
+					}else{
+					str+='<td> 0 </td>';
+					}
+			 		if(daysList[i].femaleInvitees != null && daysList[i].femaleInvitees>0){
+						str+='<td>'+daysList[i].femaleInvitees+' </td>';
 					}else{
 					str+='<td> 0 </td>';
 					}
