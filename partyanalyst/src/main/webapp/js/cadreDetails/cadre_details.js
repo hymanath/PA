@@ -6640,7 +6640,7 @@ function getDebateDetailsOfCadre(){
 							
 							if(result[i].participantsList !=null && result[i].participantsList.length>0){
 								for(var j in result[i].participantsList){
-									if(result[i].participantsList[j].partyId == 872 && result[i].participantsList[j].scaleList !=null && result[i].participantsList[j].scaleList.length>0){
+									if(result[i].participantsList[j].id == result[0].candidateId && result[i].participantsList[j].scaleList !=null && result[i].participantsList[j].scaleList.length>0){
 										for(var k in result[i].participantsList[j].scaleList){
 											str+='<td class="text-center">'+result[i].participantsList[j].scaleList[k].perc+'</td>';
 										}									
@@ -6782,19 +6782,19 @@ $(document).on("click","#debateCountId",function(){
 					str += '<div class="col-md-12 col-xs-12 col-sm-12">';
 					str += '<div class="panel panel-default">';
 					str += '<div class="panel-heading">';
-						str += '<h4 class="panel-title">TOPIC WISE EACH PARTY STRONG AND WEAK</h4>';
+						str += '<h4 class="panel-title">TOPIC WISE STRONG AND WEAK PERFORMANCES</h4>';
 					str += '</div>';
 					str += '<div class="panel-body">';
 					str += '<div class="row">';
 					str += '<div class="col-md-6 col-xs-12 col-sm-12">';
-					str += '<h4>'+result[i].party+' Strong</h4>';
+					//str += '<h4>'+result[i].party+' Strong</h4>';
+					str += '<h4> STRONG</h4>';
 					str += '<div class="table-responsive">';
 					str += '<table class="table table-bordered table-condensed verticalAlign" >';
 					str += '<thead style="background:#ccc">';
 					str += '<tr>';
 					str += '<th>Topic</th>';
 					str += '<th>Channel</th>';
-					str += '<th>Candidate</th>';
 					str += '</tr>';
 					str += '</thead>';
 					str += '<tbody>';
@@ -6813,7 +6813,6 @@ $(document).on("click","#debateCountId",function(){
 							}
 							
 							str += '<td>'+result[i].top[j].channel+'</td>';
-							str += '<td>'+result[i].top[j].candidate+'</td>';
 							str += '</tr>';
 						}
 					}
@@ -6823,14 +6822,13 @@ $(document).on("click","#debateCountId",function(){
 					str += '</div>';
 					
 					str += '<div class="col-md-6 col-xs-12 col-sm-12">';
-					str += '<h4>'+result[i].party+' Weak</h4>';
+					str += '<h4>WEAK</h4>';
 					str += '<div class="table-responsive">';
 					str += '<table class="table table-bordered table-condensed verticalAlign" >';
 					str += '<thead style="background:#ccc">';
 					str += '<tr>';
 					str += '<th>Topic</th>';
 					str += '<th>Channel</th>';
-					str += '<th>Candidate</th>';
 					str += '</tr>';
 					str += '</thead>';
 					str += '<tbody>';
@@ -6848,7 +6846,6 @@ $(document).on("click","#debateCountId",function(){
 								str += '<td>'+result[i].weak[j].subject+'</td>';
 							}
 							str += '<td>'+result[i].weak[j].channel+'</td>';
-							str += '<td>'+result[i].weak[j].candidate+'</td>';
 							str += '</tr>';
 						}
 					}
