@@ -39,7 +39,7 @@ public class SubCasteEventInfo implements java.io.Serializable {
 	private Long inviteeAttended;
 	private Long nonInviteeAttended;
 	private Date date;
-	private Date inserted_time;
+	private Date insertedTime;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -107,11 +107,11 @@ public class SubCasteEventInfo implements java.io.Serializable {
 		this.date = date;
 	}
 	@Column(name = "inserted_time")
-	public Date getInserted_time() {
-		return inserted_time;
+	public Date getInsertedTime() {
+		return insertedTime;
 	}
-	public void setInserted_time(Date inserted_time) {
-		this.inserted_time = inserted_time;
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 
 	
