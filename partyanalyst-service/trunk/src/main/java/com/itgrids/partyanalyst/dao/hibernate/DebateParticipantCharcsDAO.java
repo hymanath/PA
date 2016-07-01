@@ -420,7 +420,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 		{
 			sb.append(" and  model.debateParticipant.party.partyId in (:partyIds)  ");
 		}
-		sb.append(" group by model.debateParticipant.party.partyId,model.debateParticipant.debate.debateId order by model.debateParticipant.debate.debateId ,sum(model.scale) " + sortOrder+" ");
+		sb.append(" group by model.debateParticipant.party.partyId,model.debateParticipant.debate.debateId order by sum(model.scale) " + sortOrder+" ");
 		
 		Query query = getSession().createQuery(sb.toString());
 		if(fromDate !=null && toDate !=null){

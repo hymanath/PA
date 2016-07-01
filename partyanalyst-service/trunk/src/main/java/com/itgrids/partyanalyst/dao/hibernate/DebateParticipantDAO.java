@@ -288,9 +288,9 @@ public List<Object[]> getDebateCandidateCharacteristicsDetailForSelection(Date f
 	
 	/*Candidate Page*/
 	
-	public List<Long> getTotalAttendedDebatesOfCadre(Long tdpCadreId){
+	public List<Object[]> getTotalAttendedDebatesOfCadre(Long tdpCadreId){
 		
-		Query query = getSession().createQuery(" select distinct model.debate.debateId  " +
+		Query query = getSession().createQuery(" select distinct model.debate.debateId,model1.candidate.candidateId  " +
 				" from DebateParticipant model,TdpCadreCandidate model1 " +
 				" where model.candidate.candidateId = model1.candidate.candidateId " +
 				" and model1.tdpCadre.tdpCadreId = :tdpCadreId " +
