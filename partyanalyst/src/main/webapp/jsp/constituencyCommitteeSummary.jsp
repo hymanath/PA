@@ -242,7 +242,7 @@
 				  <div class="modal-footer">
 					<span class="pull-left" id="modalSuccessId"></span>
 					<span id="modalfooterNameId"></span>
-					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal" id="updateCadreCls">Close</button>
 				  </div>
 				  
 				</div>
@@ -258,7 +258,12 @@
 	
 	</script>
 <script type="text/javascript">
-
+$(document).on("click","#updateCadreCls",function(){
+	setTimeout(function(){
+		$("body").addClass("modal-open");
+	},500)
+	
+})
 
 var accessConstituency = '${accessConstituency}';
 var accessConstituencyId = '${accessConstituencyId}';
@@ -480,14 +485,14 @@ function buildConstituencySummary(results,jsObj){
 							var perc = 0;
 								for(var j in rest.locationsList){
 									str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-										str+='<td class="text-center">'+rest.locationsList[j].locationName+'</td>';
+										str+='<td>'+rest.locationsList[j].locationName+'</td>';
 											for(var k in rest.locationsList[j].resultList){
 											  if(reqPositionsArray.indexOf(k) != -1){
 												if(rest.locationsList[j].resultList[k].membersCount!=null){
 													//str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="members" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
 													str+='<td><a href="javascript:{gettingCadreDetails(\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
 												}else{
-													str+='<td class="text-center"> </td>';
+													str+='<td> </td>';
 												} 
 												
 												if(rest.locationsList[j].resultList[k].electrolsCount!=null){
@@ -602,7 +607,7 @@ function buildConstituencySummary(results,jsObj){
 					str+='<tbody>';
 						for(var j in rest.locationsList){
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-								str+='<td class="text-center">'+rest.locationsList[j].locationName+'</td>';
+								str+='<td>'+rest.locationsList[j].locationName+'</td>';
 									for(var k in rest.locationsList[j].resultList){
 									  if(reqPositionsArray.indexOf(k) != -1){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
@@ -611,7 +616,7 @@ function buildConstituencySummary(results,jsObj){
 									        str+='<td><a href="javascript:{gettingCadreDetails(\'members\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
 
 										}else{
-											str+='<td class="text-center"> </td>';
+											str+='<td> </td>';
 										}
 										
 										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
@@ -620,7 +625,7 @@ function buildConstituencySummary(results,jsObj){
 										    str+='<td><a href="javascript:{gettingCadreDetails(\'electrols\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 
 										}else{
-											str+='<td class="text-center"> </td>';
+											str+='<td> </td>';
 										}
 									 }	
 									}
@@ -679,7 +684,7 @@ function buildConstituencySummary(results,jsObj){
 						for(var i in results.mandalsList){
 							var rest = results.mandalsList[i]
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-							str+='<td class="text-center">'+rest.locationName+'</td>';
+							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5">'+rest.resultList[j].membersCount+'</td>';
@@ -699,7 +704,7 @@ function buildConstituencySummary(results,jsObj){
 						for(var i in results.localBodiesList){
 							var rest = results.localBodiesList[i]
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-							str+='<td class="text-center">'+rest.locationName+'</td>';
+							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7">'+rest.resultList[j].membersCount+'</td>';
@@ -715,7 +720,7 @@ function buildConstituencySummary(results,jsObj){
 						for(var i in results.divisionList){
 							var rest = results.divisionList[i]
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-							str+='<td class="text-center">'+rest.locationName+'</td>';
+							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
