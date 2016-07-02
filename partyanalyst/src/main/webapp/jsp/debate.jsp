@@ -199,7 +199,7 @@ $( document ).ready(function() {
 		//var designationId = $("#designationsList").val();
 		candidteName = $.trim($("#newCandidateName").val());
 		if(isValid(candidateName)){
-			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special charactors</b>');
+			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special characters</b>');
 			return false;
 		}
 	   /* if(partyId == 0)
@@ -501,6 +501,7 @@ window.location.href = uri + base64(format(template, ctx))
 				
 				<div align="center" style="margin-bottom: 15px; margin-top: 10px;">
 					<a class="btn btn-success" onClick="submitForm('save');">Submit</a>
+					<img src='images/Loading-data.gif'  id="loadingImgForSaveId" style="width:40px;height:40px;display:none;"/>
 				</div>
 
 				</div>
