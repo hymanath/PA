@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
@@ -12,5 +14,8 @@ public class AlertUserTypeDAO extends GenericDaoHibernate<AlertUserType, Long>
 	public AlertUserTypeDAO() {
 		super(AlertUserType.class);
 	}
+	
+	
+	
 
 }
