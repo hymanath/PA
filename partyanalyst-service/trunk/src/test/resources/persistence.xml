@@ -154,6 +154,16 @@
 		     <class>com.itgrids.partyanalyst.model.SubCasteEventInfo</class>
 		     <class>com.itgrids.partyanalyst.model.AgeWiseEventInfo</class>
 		     <class>com.itgrids.partyanalyst.model.GenderWiseEventInfo</class>
+		     
+		      <class>com.itgrids.partyanalyst.model.EventCasteCategoryInfo</class>
+		      <class>com.itgrids.partyanalyst.model.EventCasteCategoryDayInfo</class>
+		      <class>com.itgrids.partyanalyst.model.EventCasteInfo</class>
+		      <class>com.itgrids.partyanalyst.model.EventCasteDayInfo</class>
+		      <class>com.itgrids.partyanalyst.model.EventAgeRangeInfo</class>
+		      <class>com.itgrids.partyanalyst.model.EventAgeRangeDayInfo</class>
+		      <class>com.itgrids.partyanalyst.model.EventGenderInfo</class>
+		      <class>com.itgrids.partyanalyst.model.EventGenderDayInfo</class>
+		     
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
