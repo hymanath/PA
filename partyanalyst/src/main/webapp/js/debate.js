@@ -350,12 +350,12 @@ function addMorePole(){
 	str += "<div class='smsPoleClass row-fluid'>";
 	str += "<div class='row"+poleCount+"' style='margin-left:-11px'>";
 	str += "<div class='span7'>";
-	str += "<label><strong>Option : <font class='requiredFont'>*</font></strong><span id='smsoption"+poleCount+"Err' class='errDiv'></span>";
-	str += "<input type='text' Class='selectWidth smsOptin span12' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
+	str += "<label><strong>Option : <font class='requiredFont'>*</font></strong>";
+	str += "<input type='text' Class='selectWidth smsOptin span12' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/><span id='smsoption"+poleCount+"Err' class='errDiv'></span>";
 	str += "</div>";
 	str += "<div class='span3'>";
-	str += "<label><strong>Percentage : <font class='requiredFont'>*</font></strong><span id='smsper"+poleCount+"Err' class='errDiv'></span></label>";
-	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"' key='smsoption"+poleCount+"' onKeyup='isNumber(\"percentage\",\"smsper"+poleCount+"\"),updatePercntage(\"smsper"+poleCount+"\");'/>";
+	str += "<label><strong>Percentage : <font class='requiredFont'>*</font></strong></label>";
+	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"' key='smsoption"+poleCount+"' onKeyup='isNumber(\"percentage\",\"smsper"+poleCount+"\"),updatePercntage(\"smsper"+poleCount+"\");'/><span id='smsper"+poleCount+"Err' class='errDiv'></span>";
 	str += "</div>";
 	str += "<div class='span1' style='float: left; margin-top: 30px;'>";
 	str += "<a href='javascript:{}'  title='Click here to remove another Option' onclick='removeOptins(\"row"+poleCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a>";
@@ -2595,7 +2595,7 @@ function buildPartyWiseOverAllSummery(result)
 		{
 			str += '<tr>';
 			str += '<td>'+result[i].partyName+'</td>';
-			str += '<td>'+result[i].totalDebates+'/'+result[i].debateScale+'</td>';
+			str += '<td>'+result[i].totalDebates+' / '+result[i].debateScale+'</td>';
 			str += '<td>'+result[i].rankingVO.firstRank+'</td>';
 			str += '<td>'+result[i].rankingVO.secondRank+'</td>';
 			str += '<td>'+result[i].rankingVO.thirdRank+'</td>';
