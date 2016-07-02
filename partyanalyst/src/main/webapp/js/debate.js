@@ -1154,7 +1154,7 @@ function buildgetDebatesDetailsBetwinDates(result,fromDate,toDate,channelId,part
 		str +='<thead>';
 		str +='<tr>';
 			str+='<th> SUBJECT </th>';
-			str+='<th> CREATED DATE </th>';
+			str+='<th> DEBATE DATE </th>';
 			str+='<th> VIEW REPORT </th>';
 			str+='<th> EDIT </th>';
 			str+='<th> DELETE </th>';
@@ -1678,7 +1678,7 @@ function createNewCandidate(listId,party,id){
 	$('#presentParty').html(''+partyName+'');
 	$("#createCandidateDiv").dialog({
 		modal: true,
-		title: "<b>Create New Candidate</b>",
+		title: "Create New Candidate",
 		width: 500,
 		height: 220       
 	});   
