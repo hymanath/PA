@@ -467,13 +467,15 @@ window.location.href = uri + base64(format(template, ctx))
 						</div>	<div class="row">
 								<div class="span7" >
 									<label>
-									<strong>Option : </strong><font class="requiredFont">*</font><span id="smsoption1Err" class="errDiv"></span>
+									<strong>Option : </strong><font class="requiredFont">*</font>
 									</label>
 									<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1"/>
+									<span id="smsoption1Err" class="errDiv"></span>
 								</div>
 								<div class="span3">
-									<label><strong>Percentage : </strong><font class="requiredFont">*</font></label>				<span id="smsper1Err" class="errDiv"></span>			
+									<label><strong>Percentage : </strong><font class="requiredFont">*</font></label>							
 									<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup='isNumber("percentage","smsper1"),updatePercntage("smsper1");';/>
+									<span id="smsper1Err" class="errDiv"></span>
 								</div>
 								<div style="width: 160px; float: right; font-size: 12px; color: green;">Remaining Percent  : <span id="percCount">100</span>%</div>
 							</div>
@@ -625,7 +627,7 @@ window.location.href = uri + base64(format(template, ctx))
 				<div class="row">
 					<div class="span12  widgetservey_Red m_top20">
 							
-							<legend class="boxHeading">Topic Wise Each Party Strong And Weak<a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('topicwiseStrongAndWeak')" id="StrongAndWeakExoperExcelId" >Export Excel </a></legend>
+							<legend class="boxHeading">Debate Wise Each Party Strong And Weak<a class="btn btn-info  btn-mini" style="float:right;display:none;" onClick="generateExcelReport('topicwiseStrongAndWeak')" id="StrongAndWeakExoperExcelId" >Export Excel </a></legend>
 						<div id="topicwiseStrongAndWeak"></div>
 					
 					</div>
