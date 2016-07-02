@@ -12720,5 +12720,10 @@
 		<result name="success">/jsp/alertDashboard.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	 <action name="getLocationLevelWiseAlertsAction" class="createAlertAction" method="getLocationLevelWiseAlerts">
+			<result type="json" name="success">
+				<param name="root">basicVO</param>
+			</result>
+		</action>
 </package>
 </struts>      
