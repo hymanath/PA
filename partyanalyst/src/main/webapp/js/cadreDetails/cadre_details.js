@@ -6805,11 +6805,11 @@ $(document).on("click","#debateCountId",function(){
 							str += '<tr>';
 							if(result[i].top[j].count > 1)
 							{
-								str += '<td>'+result[i].top[j].subject+'('+result[i].top[j].count+')</td>';
+								str += '<td class="debateDetailsCls pointer" attr_debateId='+result[i].top[j].debateId+'><a>'+result[i].top[j].subject+'('+result[i].top[j].count+')</a></td>';
 							}
 							else
 							{
-								str += '<td>'+result[i].top[j].subject+'</td>';
+								str += '<td class="debateDetailsCls pointer" attr_debateId='+result[i].top[j].debateId+'><a>'+result[i].top[j].subject+'</a></td>';
 							}
 							
 							str += '<td>'+result[i].top[j].channel+'</td>';
@@ -6839,11 +6839,11 @@ $(document).on("click","#debateCountId",function(){
 							str += '<tr>';
 							if(result[i].weak[j].count > 1)
 							{
-								str += '<td>'+result[i].weak[j].subject+'('+result[i].weak[j].count+')</td>';
+								str += '<td class="debateDetailsCls pointer" attr_debateId='+result[i].weak[j].debateId+'><a>'+result[i].weak[j].subject+'('+result[i].weak[j].count+')</a></td>';
 							}
 							else
 							{
-								str += '<td>'+result[i].weak[j].subject+'</td>';
+								str += '<td class="debateDetailsCls pointer" attr_debateId='+result[i].weak[j].debateId+'><a>'+result[i].weak[j].subject+'</a></td>';
 							}
 							str += '<td>'+result[i].weak[j].channel+'</td>';
 							str += '</tr>';
