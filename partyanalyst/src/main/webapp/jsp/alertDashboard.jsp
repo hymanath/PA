@@ -76,6 +76,24 @@
 	
                  
 </div>
-
+<script type="text/javascript">
+function getLocationLevelAlertCount()
+{
+	
+		var jsObj =
+		        {
+			task : ""
+		          }
+		
+				$.ajax({
+					  type:'GET',
+					  url: 'getLocationLevelWiseAlertsAction.action',
+					  data: {task :JSON.stringify(jsObj)}
+			   }).done(function(result){
+					
+				});
+}
+getLocationLevelAlertCount();
+</script>
 </body>
 </html>

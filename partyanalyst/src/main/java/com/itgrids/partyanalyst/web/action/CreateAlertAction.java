@@ -150,5 +150,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;	
 	}
 	
+	public String getLocationLevelWiseAlerts()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			basicVO = alertService.getLocationLevelWiseAlerts(regVo.getRegistrationID());
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getLocationLevelWiseAlerts",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
 
 }

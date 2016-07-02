@@ -3231,8 +3231,11 @@
 	<property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>
 	<property name="constituencyDAO" ref="constituencyDAO"></property>
 	<property name="candidateDAO" ref="candidateDAO"></property>
+	<property name="alertUserDAO" ref="alertUserDAO"></property>
+	<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
+	<property name="alertStatusDAO" ref="alertStatusDAO"></property>
 	
-    </bean>
+	</bean>
 	<!-- Debate End -->
 </beans>		
 	
