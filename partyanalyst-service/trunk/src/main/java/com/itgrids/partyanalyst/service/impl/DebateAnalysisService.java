@@ -822,6 +822,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 						partyWiseVO.setCandidate(objects[6] != null ? StringEscapeUtils.unescapeJava(objects[6] .toString()) : "");
 						partyWiseVO.setCountScale(objects[7] != null ? (Double)objects[7]:0l);
 						partyWiseVO.setChannel(objects[8] != null ? StringEscapeUtils.unescapeJava(objects[8] .toString()) : "");
+						partyWiseVO.setDebateId(objects[2] != null ? (Long)objects[2]:0l);
 						scaleCount = (Double)objects[7];
 						partyWiseVOList.add(partyWiseVO);
 					}
@@ -837,6 +838,7 @@ public class DebateAnalysisService implements IDebateAnalysisService
 							partyWiseVO.setCandidate(objects[6] != null ? StringEscapeUtils.unescapeJava(objects[6] .toString()) : "");
 							partyWiseVO.setCountScale(objects[7] != null ? (Double)objects[7]:0l);
 							partyWiseVO.setChannel(objects[8] != null ? StringEscapeUtils.unescapeJava(objects[8] .toString()) : "");
+							partyWiseVO.setDebateId(objects[2] != null ? (Long)objects[2]:0l);
 							scaleCount = (Double)objects[7];
 							partyWiseVOList.add(partyWiseVO);
 							debateTopicVO.setCount(count);

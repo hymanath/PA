@@ -28,6 +28,8 @@ public class DebateTopicVO implements Serializable{
 	
 	private List<DebateTopicVO> top;
 	private List<DebateTopicVO> weak;
+	
+	private Long debateId;
 
 	public Long getPartyId() {
 		return partyId;
@@ -131,6 +133,14 @@ public class DebateTopicVO implements Serializable{
 
 	public void setWeak(List<DebateTopicVO> weak) {
 		this.weak = weak;
+	}
+
+	public Long getDebateId() {
+		return debateId;
+	}
+
+	public void setDebateId(Long debateId) {
+		this.debateId = debateId;
 	}
 
 	
