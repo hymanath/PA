@@ -2962,4 +2962,30 @@
 	<!--  Debate Realted DAO'S END-->
 	
 	<!--  end -->
+	
+	<bean id="eventCasteCategoryInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventCasteCategoryInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventCasteCategoryDayInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventCasteCategoryDayInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventCasteInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventCasteInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventCasteDayInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventCasteDayInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="eventAgeRangeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventAgeRangeInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventAgeRangeDayInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventAgeRangeDayInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventGenderInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventGenderInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventGenderDayInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventGenderDayInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
