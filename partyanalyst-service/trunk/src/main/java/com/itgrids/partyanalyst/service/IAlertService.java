@@ -9,5 +9,6 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 public interface IAlertService {
 	public List<BasicVO> getCandidatesByName(String candidateName);
 	public String createAlert(final AlertVO inputVO,final Long userId);
+	public List<BasicVO> getLocationLevelWiseAlerts(Long userId);
 
 }

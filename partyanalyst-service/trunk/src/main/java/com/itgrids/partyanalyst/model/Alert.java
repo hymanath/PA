@@ -44,6 +44,10 @@ public class Alert extends BaseModel implements Serializable {
 	private Long isDeleted;
 	private Long updatedBy;
 	private Date updatedTime;
+	private RegionScopes regionScopes;
+	private AlertUserType alertUserType;
+
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -219,6 +223,28 @@ public class Alert extends BaseModel implements Serializable {
 
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "impact_level_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public RegionScopes getRegionScopes() {
+		return regionScopes;
+	}
+
+	public void setRegionScopes(RegionScopes regionScopes) {
+		this.regionScopes = regionScopes;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertUserType getAlertUserType() {
+		return alertUserType;
+	}
+
+	public void setAlertUserType(AlertUserType alertUserType) {
+		this.alertUserType = alertUserType;
 	}
 
 }

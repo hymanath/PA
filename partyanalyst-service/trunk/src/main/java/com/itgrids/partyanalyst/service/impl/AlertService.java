@@ -10,6 +10,8 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -22,9 +24,11 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertCandidate;
+import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 
 public class AlertService implements IAlertService{
 private TransactionTemplate transactionTemplate = null;
@@ -36,12 +40,36 @@ private IDistrictDAO districtDAO;
 private ITehsilDAO tehsilDAO;
 private ILocalElectionBodyDAO localElectionBodyDAO;
 private IConstituencyDAO constituencyDAO;
+private IAlertUserDAO alertUserDAO;
+private SetterAndGetterUtilService setterAndGetterUtilService;
 private static final Logger LOG = Logger.getLogger(AlertService.class);
 
 private ICandidateDAO candidateDAO;
+private IAlertStatusDAO alertStatusDAO;
   
 
 
+
+public IAlertStatusDAO getAlertStatusDAO() {
+	return alertStatusDAO;
+}
+
+public void setAlertStatusDAO(IAlertStatusDAO alertStatusDAO) {
+	this.alertStatusDAO = alertStatusDAO;
+}
+
+public void setSetterAndGetterUtilService(
+		SetterAndGetterUtilService setterAndGetterUtilService) {
+	this.setterAndGetterUtilService = setterAndGetterUtilService;
+}
+
+public IAlertUserDAO getAlertUserDAO() {
+	return alertUserDAO;
+}
+
+public void setAlertUserDAO(IAlertUserDAO alertUserDAO) {
+	this.alertUserDAO = alertUserDAO;
+}
 
 public IStateDAO getStateDAO() {
 	return stateDAO;
@@ -242,6 +270,63 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 			e.printStackTrace();
 		}
 		return userAddress;
+	}
+	
+	public List<BasicVO> getLocationLevelWiseAlerts(Long userId)
+	{
+		 List<BasicVO> returnList = new ArrayList<BasicVO>();
+		try{
+			 List<Long> userTypeIds = alertUserDAO.getUserTypeIds(userId);
+			 List<AlertStatus> statusList =  alertStatusDAO.getAll();
+			 if(userTypeIds != null && userTypeIds.size() > 0)
+			 {
+				 List<Object[]> list = alertDAO.getLocationLevelWiseAlerts(userTypeIds);
+				 if(list != null && list.size() > 0)
+				 {
+					 for(Object[] params : list)
+					 {
+						 
+						 BasicVO levelVo =  (BasicVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString()) ;
+						 if(levelVo == null)
+						 {
+							 levelVo = new BasicVO();
+							 levelVo.setId((Long)params[1]);
+							 levelVo.setName(params[2].toString());
+							 levelVo.setCount(levelVo.getCount() + (Long)params[0]);
+							 levelVo.setLocationsList(setAlertStatusList(statusList));
+							 returnList.add(levelVo);
+						 }
+						 
+						 BasicVO statusVO =  (BasicVO) setterAndGetterUtilService.getMatchedVOfromList(levelVo.getLocationsList(), "id", params[3].toString()) ;
+						 if(statusVO != null)
+						 {
+							 statusVO.setCount(statusVO.getCount() + (Long)params[0]);
+						 }
+						 
+					 }
+				 }
+				 
+			 }
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+	
+	public List<BasicVO> setAlertStatusList(List<AlertStatus> list)
+	{
+		 List<BasicVO> statusList = new ArrayList<BasicVO>();
+		 for(AlertStatus status : list)
+		 {
+			 BasicVO vo = new BasicVO();
+			 vo.setId(status.getAlertStatusId());
+			 vo.setName(status.getAlertStatus());
+			 statusList.add(vo); 
+		 }
+		 
+		return statusList;
+		
 	}
 
 }

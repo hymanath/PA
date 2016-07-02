@@ -10,7 +10,7 @@ import java.util.Map;
 public class BasicVO implements Serializable{
 
 	private Long id;
-	private Long count;
+	private Long count=0l;
 	private String name;
 	private String description;
 	private String mandalName;
