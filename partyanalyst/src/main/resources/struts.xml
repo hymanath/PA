@@ -12716,6 +12716,9 @@
 				<param name="root">debateReportList</param>
 			</result>
 		</action>
-	
+	<action name="alertDashboardAction" class="createAlertAction" >
+		<result name="success">/jsp/alertDashboard.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
 </package>
 </struts>      
