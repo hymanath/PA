@@ -418,6 +418,7 @@ function submitForm(type)
 }
 
 function saveDetails(type){
+	$("#loadingImgForSaveId").show();
 var debateDetails={
 			endTime : '',
 			startTime : '',
@@ -520,6 +521,7 @@ var debateDetails={
 					 success: function(o) {
 					 var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
 					    $('#successMsg').show();
+						$("#loadingImgForSaveId").hide();
 						if(uploadResult.resultCode == 0)
 						{
 							$('#successMsg').html('<b style="color:green;">Debate Created Successfully</b>');
@@ -590,7 +592,7 @@ function getValues(){
 	//str +='<td><!--<a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary1" ></textarea></td>';
 	
-	str +='<td><a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
+	str +='<td><a  name="row1" class="icon-trash" title="Click here to Remove Participant" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
 	
 	str +='<td></td>';
     str +='</tr></table>';
@@ -665,7 +667,7 @@ function addMoreCandidates()
 	}
 	str += '</select></div><span id="'+candCount+'expparticipantRolesErr" class="errDiv"></span></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCount+'" ></textarea></td>';
-	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
+	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to Remove Participant" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
     
 	$("#participantTable").append(str);
