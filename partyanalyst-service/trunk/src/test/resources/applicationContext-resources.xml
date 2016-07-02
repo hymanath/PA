@@ -823,6 +823,15 @@
 		            <value>com.itgrids.partyanalyst.model.SubCasteEventInfo</value>
 		           <value>com.itgrids.partyanalyst.model.AgeWiseEventInfo</value>
 		           <value>com.itgrids.partyanalyst.model.GenderWiseEventInfo</value>
+		           
+		            <value>com.itgrids.partyanalyst.model.EventCasteCategoryInfo</value>
+		            <value>com.itgrids.partyanalyst.model.EventCasteCategoryDayInfo</value>
+		            <value>com.itgrids.partyanalyst.model.EventCasteInfo</value>
+		            <value>com.itgrids.partyanalyst.model.EventCasteDayInfo</value>
+		            <value>com.itgrids.partyanalyst.model.EventAgeRangeInfo</value>
+		            <value>com.itgrids.partyanalyst.model.EventAgeRangeDayInfo</value>
+		            <value>com.itgrids.partyanalyst.model.EventGenderInfo</value>
+		            <value>com.itgrids.partyanalyst.model.EventGenderDayInfo</value>
 			</list>
 		</property>
 	</bean>
