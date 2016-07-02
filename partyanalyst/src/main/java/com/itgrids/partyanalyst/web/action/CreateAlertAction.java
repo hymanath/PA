@@ -155,7 +155,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		try{
 			session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-			basicVO = alertService.getLocationLevelWiseAlerts(regVo.getRegistrationID());
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDate=jObj.getString("toDate");
+			basicVO = alertService.getLocationLevelWiseAlerts(regVo.getRegistrationID(),fromDate,toDate);
 			
 		}
 		catch (Exception e) {
