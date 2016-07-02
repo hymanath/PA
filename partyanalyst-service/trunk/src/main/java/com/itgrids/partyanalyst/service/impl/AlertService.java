@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -272,15 +274,25 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 		return userAddress;
 	}
 	
-	public List<BasicVO> getLocationLevelWiseAlerts(Long userId)
+	public List<BasicVO> getLocationLevelWiseAlerts(Long userId,String fromDate,String toDate)
 	{
 		 List<BasicVO> returnList = new ArrayList<BasicVO>();
 		try{
+			Date startDate=null;
+			Date endDate=null;
+			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yyyy");
+			if(fromDate!=null && fromDate.length()>0){
+				startDate=sdf.parse(fromDate);
+			}
+			if(toDate!=null && toDate.length()>0){
+				endDate=sdf.parse(toDate);
+			}
+			
 			 List<Long> userTypeIds = alertUserDAO.getUserTypeIds(userId);
 			 List<AlertStatus> statusList =  alertStatusDAO.getAll();
 			 if(userTypeIds != null && userTypeIds.size() > 0)
 			 {
-				 List<Object[]> list = alertDAO.getLocationLevelWiseAlerts(userTypeIds);
+				 List<Object[]> list = alertDAO.getLocationLevelWiseAlerts(userTypeIds,startDate,endDate);
 				 if(list != null && list.size() > 0)
 				 {
 					 for(Object[] params : list)
