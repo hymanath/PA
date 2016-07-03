@@ -366,7 +366,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 
 	 Query query = getSession().createQuery("select model.trainingCampProgram.trainingCampProgramId,count(distinct model.attendance.tdpCadreId),model.trainingCampProgram.programName " +
 	 		" from  TrainingCampAttendance model" +
-	 		" where model.attendance.tdpCadre.tdpCadreId =:cadreId and model.trainingCampBatch.attendeeTypeId=1 " +
+	 		" where model.attendance.tdpCadre.tdpCadreId =:cadreId "+//and model.trainingCampBatch.attendeeTypeId=1 " +
 	 		" group by model.trainingCampProgram.trainingCampProgramId ");
 	 
 	 query.setParameter("cadreId", cadreId);
@@ -380,7 +380,7 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 	 		"model.trainingCampSchedule.trainingCampProgram.programName  " +
 	 		" from TrainingCampAttendance model " +
 	 		" where  model.attendance.tdpCadre.tdpCadreId =:cadreId " +
-	 		" and model.trainingCampProgram.trainingCampProgramId = :programId and model.trainingCampBatch.attendeeTypeId=1  ");
+	 		" and model.trainingCampProgram.trainingCampProgramId = :programId ");//and model.trainingCampBatch.attendeeTypeId=1  ");
 	 
 	 query.setParameter("cadreId",cadreId);
 	 query.setParameter("programId", programId);
