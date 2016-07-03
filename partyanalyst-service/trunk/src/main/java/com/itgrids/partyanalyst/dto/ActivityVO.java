@@ -87,9 +87,29 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private Long abscentCnt = 0l;
 	private Long day=0l;
 	private String dateStr;
+	private Long attributeId;
+	private Long hasAttendenceCount =0L;
+	private Long hasConductedCount =0L;
 	
 	
-	
+	public Long getAttributeId() {
+		return attributeId;
+	}
+	public void setAttributeId(Long attributeId) {
+		this.attributeId = attributeId;
+	}
+	public Long getHasConductedCount() {
+		return hasConductedCount;
+	}
+	public void setHasConductedCount(Long hasConductedCount) {
+		this.hasConductedCount = hasConductedCount;
+	}
+	public Long getHasAttendenceCount() {
+		return hasAttendenceCount;
+	}
+	public void setHasAttendenceCount(Long hasAttendenceCount) {
+		this.hasAttendenceCount = hasAttendenceCount;
+	}
 	public String getDateStr() {
 		return dateStr;
 	}
