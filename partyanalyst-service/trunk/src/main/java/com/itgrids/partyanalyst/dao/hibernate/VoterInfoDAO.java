@@ -445,6 +445,19 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		return (Long)query.uniqueResult();
     }
 	
+	public Long getVotersCountInAParliament(Long parliamentId, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select sum(model.totalVoters) from VoterInfo model,DelimitationConstituencyAssemblyDetails model2 where model.constituencyId = model2.constituency.constituencyId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.reportLevelValue = model.constituencyId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.delimitationConstituency.year = 2009 and model2.delimitationConstituency.constituency.constituencyId = :parliamentId");
+		
+		query.setParameter("reportLevelId", 1L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("parliamentId", parliamentId);
+		
+		return (Long)query.uniqueResult();
+    }
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInADistrictsList(List<Long> districtIdsList, Long publicationDateId)
 	{// 0 id,1name,2total,3male total4female total
