@@ -1248,6 +1248,7 @@ var globalVoterCardNo = "";
 			});
 		}
 	function getTotalMemberShipRegistrationsInCadreLocation(){
+		
 			$("#memberShipCountDiv").html('<center><img alt="Processing Image" src="images/icons/loading.gif"></center>');
 			var pcId=0;
 			//pcId:participatedConstituencyId,pcType:participatedConstituencyType
@@ -3195,6 +3196,7 @@ function getPartyMeetingDetails()
 function getPartyMeetingDetaildReprt()
 {
 	$('#partyMetindetlsDivId').html('');
+	$("#meetingParticipatingDivModalBodyId").html('');
 	var jsObj={
 		tdpCadreId:globalCadreId
 	}	
@@ -3221,7 +3223,7 @@ function getPartyMeetingDetaildReprt()
 					str+='<th class="text-center"> MEETING NAME </th>';
 					str+='<th class="text-center"> INVITED </th>';
 					str+='<th class="text-center"> ATTENDED </th>';
-					str+='<th class="text-center"> ABSENT </th>';								
+					str+='<th class="text-center"> NOT ATTENDED </th>';								
 					str+='</tr>';
 					str+='</thead>';
 					
@@ -3233,8 +3235,8 @@ function getPartyMeetingDetaildReprt()
 							attendCount = attendCount +parseInt(result.partyMeetingVOList[i].attendedCount);
 						
 						str+='<tr class="text-center">';
-						str+='<td>'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
-						str+='<td> <ul class="list-inline"><li class="invitedDetlsDiv" style="cursor:pointer;color:#13759D" name="invitedDetlsDiv'+i+'" key="'+result.partyMeetingVOList[i].id+'">'+result.partyMeetingVOList[i].invitedCount+'';
+						str+='<td style="text-align:left;">'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+' </td>';
+						str+='<td> <ul class="list-inline"><li class="invitedDetlsDiv" style="cursor:pointer;color:#13759D" name="invitedDetlsDiv'+i+'" key="'+result.partyMeetingVOList[i].id+'" attr_name="'+result.partyMeetingVOList[i].location+' - '+result.partyMeetingVOList[i].name+'">'+result.partyMeetingVOList[i].invitedCount+'';
 						str+='<ul class="count-hover left_arrow" >';
 						str+='<li>';
 							str+='<div id="invitedDetlsDiv'+i+'" class="invitationCls"></div>';
@@ -3302,8 +3304,13 @@ function getPartyMeetingDetaildReprt()
 					$('#partyMetindetlsDivId').html(str);
 					$(document).on("click",".invitedDetlsDiv",function(){
 						$("#meetingParticipatingDivId").modal("show");
+						$("#meetingParticipatingDivModalBodyId").html('');
 						var divId = $(this).attr('name');
+						var meetingName = $(this).attr('attr_name');
 						var meetingTypeId = $(this).attr('key');
+						
+						$("#meetingHedingSpanId").html(''+meetingName+" - EVENT PARTICIPATION DETAILS");
+						
 						var jsObj={
 							tdpCadreId:globalCadreId,
 							meetingTypeId:meetingTypeId
@@ -3323,6 +3330,7 @@ function getPartyMeetingDetaildReprt()
 										str+='<th style=""> MEETING NAME  </th>';
 										str+='<th style=""> START DATE</th>';
 										str+='<th style=""> END DATE</th>';
+										str+='<th style=""> ATTENDED STATUS </th>';
 										str+='</tr>';
 										str+='<thead>';
 										str+='<tbody>';
@@ -3336,6 +3344,10 @@ function getPartyMeetingDetaildReprt()
 													str+='<td>'+result.partyMeetingVOList[k].name+'</td>';										
 													str+='<td>'+result.partyMeetingVOList[k].startDateStr+'</td>';
 													str+='<td>'+result.partyMeetingVOList[k].endDateStr+'</td>';
+													if(result.partyMeetingVOList[k].attendedCount != null && result.partyMeetingVOList[k].attendedCount>0)
+														str+='<td> ATTENDED </td>';
+													else
+														str+='<td> NOT ATTENDED </td>';
 													str+='</tr>';
 												}												
 											}
@@ -4430,7 +4442,7 @@ $("#feedbackDivId").html("");
 }
 getStatusCountOfCadreForInvitationAndAttendance();
 function getStatusCountOfCadreForInvitationAndAttendance(){
-	
+	//alert(2222);
 	$("#trainingDetailsBodyId").html('');
 	$("#modelForTrainingDetails").hide();
 	var jsObj ={
@@ -4706,15 +4718,26 @@ function getActivityDetails()
 		url :'getActivityDetailsByTdpCadreIdAction.action',
 		data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
+		//alert(111);
 		if(result != null){
 			var str = '';
 			
 			str+='<table class="table table-bordered">';
 				str+='<thead>';
-					str+='<tr>';
-					str+='<th class="text-center">Activity Level</th>';
-					str+='<th class="text-center">Total</th>';
-					str+='<th class="text-center">Attended</th>';
+					
+					str+='<tr >';
+					str+='<th class="text-center" rowspan="2">ACTIVITY LEVEL</th>';
+					str+='<th class="text-center" rowspan="2">TOTAL ACTIVITIES</th>';
+					str+='<th class="text-center" colspan="3">WITH ATTENDANCE</th>';
+					str+='<th class="text-center" colspan="3">WITHOUT ATTENDANCE</th>';
+					str+='</tr>';
+					str+='<tr >';					
+					str+='<th class="text-center" >TOTAL</th>';
+					str+='<th class="text-center" >ATTENDED</th>';
+					str+='<th class="text-center" > NOT ATTENDED</th>';
+					str+='<th class="text-center" >TOTAL</th>';
+					str+='<th class="text-center" > CONDUCTED</th>';
+					str+='<th class="text-center" > NOT CONDUCTED</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -4722,18 +4745,47 @@ function getActivityDetails()
 						for(var i in result.activityVoList){
 							
 							if(result.activityVoList[i].totalCount != null){
+								var totalCoutn =0;
+								var attenddCoutn =0;
+								var hasConductdCount=0;
+								var hasAttendenceCount=0;
+								var hasNotConductdtotalCount=0;
 									str+='<tr class="text-center">';
-										str+='<td>'+result.activityVoList[i].name+'</td>';
+										str+='<td style="text-align:left;">'+result.activityVoList[i].name+'</td>';
 										if(result.activityVoList[i].totalCount != null){
-											str+='<td class="activityLvlCls" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
-											  //str+='<td class="" attr_id="total" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+											str+='<td class="activityLvlCls" attr_id="t" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].totalCount+'</td>';
+											totalCoutn = result.activityVoList[i].totalCount;
 										}
 										
+										if(result.activityVoList[i].hasAttendenceCount != null){
+											hasAttendenceCount = result.activityVoList[i].hasAttendenceCount;
+											str+='<td attr_id="hat"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+'> '+hasAttendenceCount+' </td>';
+										}	
 										if(result.activityVoList[i].attendedCount != null){
-										str+='<td class="activitLvlCls" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+' >'+result.activityVoList[i].attendedCount+'</td>';
-										//str+='<td class="" attr_id="attended" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer" attr_levelId='+result.activityVoList[i].id+'>'+result.activityVoList[i].attendedCount+'</td>';
+											str+='<td attr_id="ha"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+' >'+result.activityVoList[i].attendedCount+'</td>';
+											attenddCoutn = result.activityVoList[i].attendedCount;
+											
 										}
-									
+										
+										var notAttndedCount = hasAttendenceCount-attenddCoutn;
+											str+='<td attr_id="hna" class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+' >'+notAttndedCount+'</td>';
+											
+										if(result.activityVoList[i].totalCount != null){
+											hasNotConductdtotalCount = totalCoutn - hasAttendenceCount;
+											str+='<td attr_id="hct"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;color:green;" attr_levelId='+result.activityVoList[i].id+'> '+hasNotConductdtotalCount+' </td>';
+										}	
+										
+										if(result.activityVoList[i].hasConductedCount != null){
+											hasConductdCount = result.activityVoList[i].hasConductedCount;
+											str+='<td  attr_id="hc"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+'>  '+hasConductdCount+'</td>';
+										}
+										
+										str+='<td  attr_id="hnc"  class="activityLvlCls" attr_activity_level='+result.activityVoList[i].name+' style="cursor:pointer;font-weight:bold;" attr_levelId='+result.activityVoList[i].id+'> '+(hasNotConductdtotalCount-hasConductdCount)+'</td>';	
+										
+										/*
+										
+										
+										*/
 										str+='</tr>';
 								
 									}
@@ -4757,152 +4809,95 @@ $(document).on('click', '.activitLvlCls', function(){
 
 $(document).on('click', '.activityLvlCls', function(){
 	var activityLevelId = $(this).attr("attr_levelId");
-	getCandateActivityAttendance(activityLevelId);
-	/*
-	var activityLevelId = $(this).attr("attr_levelId");
-	var status = $(this).attr("attr_id");
-	var activityLevel = $(this).attr("attr_activity_level");
+	var activeCode = $(this).attr("attr_id");
 	
-	var locationId = 0;
-	var cadreRuralORUrbanId = $("#cadreRuralORUrbanId").val();
+	getCandateActivityAttendance(activityLevelId,activeCode);
 	
-	if(activityLevelId == 1){
-		if(cadreRuralORUrbanId == 0){
-			locationId = 6;
-		}
-		else if(cadreRuralORUrbanId != 0){
-			locationId = 8;
-		}
-	}
-	else if(activityLevelId == 2){
-		if(cadreRuralORUrbanId == 0){
-			locationId = 5;
-		}
-		else if(cadreRuralORUrbanId == 20 || cadreRuralORUrbanId == 124 || cadreRuralORUrbanId == 119){
-			locationId = 9;
-		}
-		else if(cadreRuralORUrbanId != 0){
-			locationId = 7;
-		}
-	}
-	
-	var boothId = $("#cadreBoothId").val();
-	var panchayatId = $("#cadrePanchaytId").val();
-	var mandalId = $("#cadremandalId").val();
-	var constituencyId = $("#cadreConstituencyId").val();
-	var districtId = $("#cadreDistrictId").val();
-	var stateId = $("#cadreStateId").val();
-	
-	var jsObj={
-		tdpCadreId:globalCadreId,
-		activityLevelId:activityLevelId,
-		locationId:locationId,
-		cadreBoothId:boothId,
-		cadrePanchaytId:panchayatId,
-		cadremandalId:mandalId,
-		cadreConstituencyId:constituencyId,
-		cadreDistrictId:districtId,
-		cadreStateId:stateId
-	}	
-	$.ajax({
-		type:'GET',
-		url :'getActivityDetailsByActivityLevelIdAndCadreIdAction.action',
-		data : {task:JSON.stringify(jsObj)} ,
-	}).done(function(result){
-		if(result != null){
-			var str='';
-			
-			str+='<table class="table table-bordered">';
-				str+='<thead style="background:#f2f2f2">';
-					str+='<th class="text-center">Activity Name</th>';
-					str+='<th class="text-center">Activity Level</th>';
-					str+='<th class="text-center">Status</th>';
-					str+='<th class="text-center">Invited</th>';
-					str+='<th class="text-center">Attended</th>';
-					str+='<th class="text-center">Absent</th>';
-				str+='</thead>';
-				str+='<tbody>';
-					if(result.activityVoList != null && result.activityVoList.length > 0){
-						for(var i in result.activityVoList){
-							str+='<tr class="text-center">';
-								str+='<td style="text-align:left;">'+result.activityVoList[i].name+'</td>';
-								str+='<td>'+activityLevel+'</td>';
-								if(result.activityVoList[i].isLocation == 'Y'){
-									str+='<td>Conducted</td>';
-								}
-								else{
-									str+='<td>Not Conducted</td>';
-								}
-								str+='<td> - </td>';
-								if(status == 'total'){
-									if(result.activityVoList[i].isLocation == 'Y'){
-										if(result.activityVoList[i].isAttended == 'Y'){
-											if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
-												str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
-											else 
-												str+='<td style="text-align:center;">-</td>';
-										
-										}
-										else{
-											str+='<td style="text-align:center;">-</td>';
-										}
-										if(result.activityVoList[i].isAttended == 'Y'){
-											str+='<td style="text-align:center;">-</td>';
-										}
-										else{
-											if(result.activityVoList[i].attendedCount != null){
-												if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
-													str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
-												else 
-													str+='<td style="text-align:center;">-</td>';
-											}
-											else{
-												str+='<td>1</td>';
-											}
-										}							
-									}
-									else{
-										str+='<td>-</td>';
-										str+='<td>-</td>';
-									}
-								}
-								else if(status == 'attended'){
-									if(result.activityVoList[i].isAttended == 'Y'){
-										//str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
-										
-										if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
-											str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
-										else 
-											str+='<td style="text-align:center;">-</td>';
-									}
-									else{
-										str+='<td  style="text-align:center;">-</td>';
-									}
-									if(result.activityVoList[i].isAttended == 'Y'){
-										str+='<td  style="text-align:center;">-</td>';
-									}
-									else{
-										if(result.activityVoList[i].attendedCount != null){
-											//str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
-											if(result.activityVoList[i].attendedCount != null && result.activityVoList[i].attendedCount >0)
-												str+='<td>'+result.activityVoList[i].attendedCount+'</td>';
-											else 
-												str+='<td style="text-align:center;">-</td>';
-										}
-										else{
-											str+='<td>1</td>';
-										}
-									}
-								}
-							str+='</tr>';
-						}
-					}
-				str+='</tbody>';
-			str+='</table>';
-		}
-		$("#activityAttendedTableDivId").html(str);
-	});*/
 });
+
+function getCandateActivityAttendance(activityLevelId,activeCode){
+
+	//$("#IvrcandiParticipatedId").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+		//alert(999);
+		$("#activityAttented").html('<img src="images/icons/loading.gif" style="width:25px;height:20px;"/>');
+	var jsObj={
+		cadreId:globalCadreId,
+		activityLevelId:activityLevelId	,
+		panchayatId: $('#cadrePanchaytId').val(),
+		mandalId:$('#cadremandalId').val(),
+		lebId:$('#cadreRuralORUrbanId').val(),
+		assemblyId:$('#cadreConstituencyId').val(),
+		districtId :$('#cadreDistrictId').val(),
+		stateId :$('#cadreStateId').val(),
+		participatedAssemblyId:0,
+		activeCode:activeCode
+	}
+	
+	$.ajax({
+			type:'POST',
+			 url: 'getCandateActivityAttendanceAction.action',
+			 data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$("#activityAttented").html('');
+				if(result!= null && result.length >0)
+					buildCandateActivityAttendance(result);
+				else
+					$("#activityAttented").html(' Candidate Not Available with any Activity.');
+				
+				//console.log(result);
+			});
+}
+//getCandateActivityAttendance();
+function buildCandateActivityAttendance(result){
+	var str = '';
+	str+='<div class="table-responsive">';
+	str+='<table class="table table-bordered">';
+	str+='<thead style="background:#ccc">';
+	str+='<th>Activity level</th>';
+	str+='<th>Activity Name</th>';
+	//str+='<th>Status</th>';
+	str+='<th>Invited</th>';
+	str+='<th>Attended</th>';
+	str+='<th>Not Attended </th>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result){
+	str+='<tr>';
+	str+='<td>'+result[i].isLocation+'</td>';
+	str+='<td>'+result[i].attendendLocation+'</td>';
+	//if(result[i].invitteeCnt != null && result[i].invitteeCnt >0 && result[i].attendedCount != null && result[i].attendedCount>0)
+	//	str+='<td> Conducted </td>';
+	//else if(result[i].conductedDate != null && result[i].conductedDate =='Conducted')
+	//	str+='<td> Conducted </td>';
+	//if(result[i].conductedDate != null && result[i].conductedDate.length >0 )
+	//	str+='<td> Conducted </td>';	
+	//else
+	//	str+='<td> - </td>';
+	if(result[i].invitteeCnt == 0){
+		str+='<td style="text-align:center;">-</td>';
+	}else{
+		str+='<td style="text-align:center;">'+result[i].invitteeCnt+'</td>';
+	}
+	if(result[i].attendedCount == 0){
+	str+='<td style="text-align:center;">-</td>';
+	}else{
+		str+='<td style="text-align:center;">'+result[i].attendedCount+'</td>';
+	}
+	if(result[i].abscentCnt == 0){
+	str+='<td style="text-align:center;">-</td>';
+	}else{
+		str+='<td style="text-align:center;">'+result[i].abscentCnt+'</td>';
+	}
+	
+	str+='</tr>';
+	}
+	str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	
+	$("#activityAttented").html(str);
+}
+
 $("#mainheading").parent().find("p").removeClass("display-style");
 
 
