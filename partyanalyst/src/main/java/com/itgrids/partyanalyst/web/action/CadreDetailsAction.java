@@ -513,6 +513,9 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 		try{
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO == null)
+				return Action.INPUT;
+			
 			if(memberShipId != null && memberShipId.trim().length() == 8 && (constituencyId == null || constituencyId.longValue() == 0))
 			{
 				cadreId = cadreDetailsService.getTdpCadreIdBymembershipId(memberShipId.trim());
@@ -1341,8 +1344,9 @@ public String updateLeaderShip(){
 			Long districtId = jObj.getLong("districtId");
 			Long stateId = jObj.getLong("stateId");
 			Long participatedAssemblyId = jObj.getLong("participatedAssemblyId");
+			String activeCode = jObj.getString("activeCode");
 			
-			activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"),jObj.getLong("activityLevelId"),panchayatId,mandalId,lebId,assemblyId,districtId,stateId,participatedAssemblyId);
+			activityVOList=cadreDetailsService.getCandateActivityAttendance(jObj.getLong("cadreId"),jObj.getLong("activityLevelId"),panchayatId,mandalId,lebId,assemblyId,districtId,stateId,participatedAssemblyId,activeCode);
 		}catch(Exception e){
 			LOG.error("Exception raised in getEventAttendanceOfCadre  method in CadreDetailsAction.",e);
 		}
