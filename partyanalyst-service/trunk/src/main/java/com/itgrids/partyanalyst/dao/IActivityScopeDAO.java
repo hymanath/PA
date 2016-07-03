@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.model.ActivityScope;
 
 public interface IActivityScopeDAO extends GenericDao<ActivityScope, Long>{
@@ -21,4 +22,5 @@ public interface IActivityScopeDAO extends GenericDao<ActivityScope, Long>{
 	public List<Object[]> getActivityLevelAndScopeIdByActivity(Long activityId);
 	public Object[] getRequiredDatesOfScope(Long scopeId);
 	public Long getNoOfTimesCountForActivityScope(Long scopeId);
+	public List<Object[]> getActivitiesScopeDetailsByAddress(AddressVO addressVO);
 }
