@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.SearchAttributeVO;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 
@@ -27,4 +28,6 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getActivityLocationNames(List<Long> activityInfoIds,Long locationlevel);
 	public List<Object[]> getLocationWiseUpdatedCountDetails(SearchAttributeVO searchVO);
 	public List<Object[]> getActivityNotPlannedDayWiseCountsByLocation(SearchAttributeVO searchAttributeVO,Long stateId);
-	public List<Object[]> getConductedActivityDetailsbyScopeAndLocationID(Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long assemblyId,Long districtId,Long stateId,Long participatedAssemblyId);}
+	public List<Object[]> getConductedActivityDetailsbyScopeAndLocationID(Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long assemblyId,Long districtId,Long stateId,Long participatedAssemblyId);
+	public List<Object[]> getActivityDetailsByAddressDetails(AddressVO addressVO);	
+}
