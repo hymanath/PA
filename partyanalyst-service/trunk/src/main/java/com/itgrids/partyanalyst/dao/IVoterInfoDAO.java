@@ -96,4 +96,6 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList);
 	public List<Object[]> getVotersCountByLocationValues(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId,Long constituencyId);
 	public List<Object[]> getVotersCountForDistrict(Set<Long> districtIdsList, Long publicationDateId);
+	
+	public Long getVotersCountInAParliament(Long parliamentId, Long publicationDateId);
 }
