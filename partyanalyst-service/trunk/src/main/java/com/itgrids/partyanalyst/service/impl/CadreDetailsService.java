@@ -2295,7 +2295,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					{
 					   Long constituencyId = userAddress1.getConstituencyId();
 					   countVO.setAreaType(userAddress1.getAreaTypeStr());
-					
+				     
 					   countVO.setConsTotalVoters(getTotalAvailableVotersByLocationId(constituencyId, "Constituency", electionId, constituencyId,null));
 					   countVO.setConstituencyCount(getMemberShipCount("Constituency", constituencyId, electionYear, constituencyId,null));
 					   countVO.setConstiPerc(calculatePercentage(countVO.getConsTotalVoters(), countVO.getConstituencyCount()));
@@ -8954,13 +8954,13 @@ public GrievanceDetailsVO getGrievanceStatusByTypeOfIssueAndCompleteStatusDetail
 	 * @return List<ActivityVO>
 	 * description  { Getting Activity Wise data for Candidate , As he Invitted, Attended, Abscent For activities ,By Sending Tdp Cadre Id}
 	 */
-public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId){
+public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId,String activeCode){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	List<ActivityVO> finalList = new ArrayList<ActivityVO>();
 	try{
-	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getScopeIds();
+	List<Object[]> activityScopeIds = activityScopeRequiredAttributesDAO.getScopeIds(activityLevelId);
 	if(activityScopeIds != null && activityScopeIds.size() >0){
-		String[] setterPropertiesList = {"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId"};//activityScopeId,activityName,activityLevelId,activityLevelName,activityId
+		String[] setterPropertiesList = {"activityScopeId","attendendLocation","locationLevel","isLocation","activityNameId","attributeId"};//activityScopeId,activityName,activityLevelId,activityLevelName,activityId
 		returnList = (List<ActivityVO>) setterAndGetterUtilService.setValuesToVO(activityScopeIds, setterPropertiesList, "com.itgrids.partyanalyst.dto.ActivityVO");
 		//setTemplateData(returnList,activityScopeIds);
 	}
@@ -8987,6 +8987,9 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 			attendencHavingLocationInfoIdsList.add(locationInfoId);
 			ActivityVO vo = (ActivityVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "activityScopeId", commonMethodsUtilService.getStringValueForObject(obj[0]));//getMatchedVOForScopeId((Long)obj[0],returnList);//getMatchedVOForScopeId((Long)obj[0],returnList);
 			if(vo != null){
+				
+				vo.setConductedDate("Conducted");
+				
 				if(vo.getAttendedCount() == null)
 					vo.setAttendedCount(0L);
 				if(vo.getAbscentCnt() == null)
@@ -9034,15 +9037,61 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 		}
 	}
 	if(commonMethodsUtilService.isListOrSetValid(returnList)){
-		for (ActivityVO vo : returnList) {
-			if(vo.getConductedDate() != null && vo.getConductedDate().length()>0)
-				finalList.add(vo);
-			else if((vo.getInvitteeCnt() == null || vo.getInvitteeCnt().longValue() == 0L) && (vo.getAttendedCount() == null || vo.getAttendedCount().longValue() == 0L))
-				;
-			else
-				finalList.add(vo);
-			
-		}
+		
+		Map<Long,ActivityVO> activitiesMap = new HashMap<Long, ActivityVO>(0);
+		for (ActivityVO vo : returnList) 
+			activitiesMap.put(vo.getActivityScopeId(), vo);
+		 
+		if(commonMethodsUtilService.isMapValid(activitiesMap))
+			for (Long activityScopeId : activitiesMap.keySet()) {
+				ActivityVO vo = activitiesMap.get(activityScopeId);
+				if(activeCode != null){
+					if(activeCode.equalsIgnoreCase("t")) //total Activities
+						finalList.add(vo);
+					else if(activeCode.equalsIgnoreCase("hat"))  // has attendance total
+					{
+						if(vo.getAttributeId() != null && vo.getAttributeId() == 2L)
+							finalList.add(vo);
+					}
+					else if(activeCode.equalsIgnoreCase("ha")) // has attended
+					{
+						if(vo.getAttributeId() != null && vo.getAttributeId() == 2L && vo.getConductedDate() != null &&  vo.getConductedDate().trim().equalsIgnoreCase("Conducted"))
+							finalList.add(vo);
+					}
+					else if(activeCode.equalsIgnoreCase("hna")) // has not attended
+					{
+						if(vo.getAttributeId() != null && vo.getAttributeId() == 2L && (vo.getAttendedCount() == null || vo.getAttendedCount().longValue()==0L))
+							finalList.add(vo);
+					}
+					else if(activeCode.equalsIgnoreCase("hct"))  // conducted total
+					{
+						if(vo.getAttributeId() != null && vo.getAttributeId() != 2L)
+							finalList.add(vo);
+					}
+					else if(activeCode.equalsIgnoreCase("hc")) // has conducted
+					{
+						if(vo.getAttributeId() != null && vo.getAttributeId() != 2L && vo.getConductedDate() != null &&  vo.getConductedDate().trim().equalsIgnoreCase("Conducted"))
+							finalList.add(vo);
+					}
+					else if(activeCode.equalsIgnoreCase("hnc")) // has not conducted
+					{
+						if(vo.getAttributeId() != null && vo.getAttributeId() != 2L && vo.getAttendedCount() == null )
+							finalList.add(vo);
+					}
+					
+				}
+				else{
+					if(vo.getConductedDate() != null && vo.getConductedDate().length()>0)
+					finalList.add(vo);
+				else if((vo.getInvitteeCnt() == null || vo.getInvitteeCnt().longValue() == 0L) && (vo.getAttendedCount() == null || vo.getAttendedCount().longValue() == 0L))
+					;
+				else
+					finalList.add(vo);
+				
+				}
+				
+				
+			}
 	}
 	}catch (Exception e) {
 		LOG.error("Exception raised in getCandateActivityAttendance  method in CadreDetailsService.",e);
