@@ -8491,7 +8491,7 @@ class TrainingCampService implements ITrainingCampService{
 				//0.cadreId,1.attendedTime,2.batchid,3.batchName,4.campId,5.campName,6.programId,7.programName
 				List<Object[]> trainingDetails = trainingCampAttendanceDAO.getAttendedTrainingCampBatchDetailsOfCadre(programId,cadreId);
 				
-				Map<String,Long> cadreDateWiseDetailsMap = new LinkedHashMap<String, Long>();
+			//	Map<String,Long> cadreDateWiseDetailsMap = new LinkedHashMap<String, Long>();
 				if(trainingDetails !=null && trainingDetails.size()>0){
 					cadreVo=new SimpleVO();
 					
@@ -8507,7 +8507,7 @@ class TrainingCampService implements ITrainingCampService{
 					 cadreVo.setBatchName(batchIdInfo[3] !=null ? batchIdInfo[3].toString():"");
 					
 					 List<String> datesStr =null;
-					if(batchId !=null && batchId !=0l){
+					if(batchId !=null && batchId !=0l && !cadreVo.getBatchName().trim().equalsIgnoreCase("Speakers")){
 						
 						//batch startDate and and endDate 
 						  Object[] batchDates=trainingCampBatchDAO.getBatchDatesWithOutDates(batchId);
@@ -8521,6 +8521,15 @@ class TrainingCampService implements ITrainingCampService{
 						 datesStr=getBetweenDatesInString(fromDate,toDate);
 					}
 					
+					List<String> attendedDates = new ArrayList<String>();
+					for(Object[] object:trainingDetails){
+						attendedDates.add(object[1] !=null ? object[1].toString():"");
+					}
+					if(commonMethodsUtilService.isListOrSetValid(attendedDates) && cadreVo.getBatchName().trim().equalsIgnoreCase("Speakers")){
+						datesStr = new ArrayList<String>(0);
+						datesStr.addAll(attendedDates);
+					}
+					
 					List<SimpleVO> isdAttendedDatesList =null;
 					if(datesStr !=null){
 						isdAttendedDatesList = new ArrayList<SimpleVO>(); 
@@ -8531,10 +8540,6 @@ class TrainingCampService implements ITrainingCampService{
 						}*/
 					}
 					
-					List<String> attendedDates = new ArrayList<String>();
-					for(Object[] object:trainingDetails){
-						attendedDates.add(object[1] !=null ? object[1].toString():"");
-					}
 					
 				if(isdAttendedDatesList !=null && isdAttendedDatesList.size()>0){
 						

@@ -85,6 +85,7 @@ import com.itgrids.partyanalyst.dto.ActivityResponseVO;
 import com.itgrids.partyanalyst.dto.ActivityScopeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.ActivityWSVO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EventDocumentVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
@@ -4478,7 +4479,9 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 	public ActivityVO getCanditeActivtyAttendanceLocationsDtls(Long cadreId,Long activityLevelId){
 		ActivityVO finalvo = new ActivityVO();
 		try {
+			 
 			
+			ActivityVO actvitiesInfoVO = getActivityDetailsForCadre(cadreId);
 			List<ActivityVO> locationInfoList = new ArrayList<ActivityVO>(0);
 			List<Object[]> attendanceDtls = activityAttendanceDAO.getCanditeActivtyAttendanceLocationsDtls(cadreId,activityLevelId);
 			if(commonMethodsUtilService.isListOrSetValid(attendanceDtls)){
@@ -4547,14 +4550,80 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 					activityMap.put(lvlId, vo);
 				}
 			}
+			List<Object[]> cadreAddressDetls = tdpCadreDAO.getCadrAddressDetailsByCadred(cadreId);
+			AddressVO userAddress1 = null;
+			if(commonMethodsUtilService.isListOrSetValid(cadreAddressDetls)){
+				userAddress1 = new AddressVO();
+				if(commonMethodsUtilService.isListOrSetValid(cadreAddressDetls)){
+					for (Object[] address : cadreAddressDetls) {
+						
+						userAddress1.setConstituencyId(commonMethodsUtilService.getLongValueForObject(address[5]));
+						userAddress1.setConstituencyName(commonMethodsUtilService.getStringValueForObject(address[6]));
+						
+						userAddress1.setDistrictId(commonMethodsUtilService.getLongValueForObject(address[3]));
+						userAddress1.setDistrictName(commonMethodsUtilService.getStringValueForObject(address[4]));
+						
+						userAddress1.setTehsilId(commonMethodsUtilService.getLongValueForObject(address[7]));
+						userAddress1.setTehsilName(commonMethodsUtilService.getStringValueForObject(address[8]));
+						
+						userAddress1.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(address[13]));
+						userAddress1.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(address[14]));
+						
+						userAddress1.setPanchaytId(commonMethodsUtilService.getLongValueForObject(address[11]));
+						userAddress1.setPanchayatName(commonMethodsUtilService.getStringValueForObject(address[12]));
+						
+						userAddress1.setWardId(commonMethodsUtilService.getLongValueForObject(address[9]));
+						userAddress1.setWardName(commonMethodsUtilService.getStringValueForObject(address[10]));
+						
+						//userAddress1.setParliamentId(commonMethodsUtilService.getLongValueForObject(address[]));
+						//userAddress1.setParliamentName(commonMethodsUtilService.getStringValueForObject(address[]));
+						
+						userAddress1.setBoothId(commonMethodsUtilService.getLongValueForObject(address[16]));
+						userAddress1.setPartNo(commonMethodsUtilService.getStringValueForObject(address[17]));
+						
+						userAddress1.setAreaTypeStr(commonMethodsUtilService.getStringValueForObject(address[15]));
+						userAddress1.setId(commonMethodsUtilService.getLongValueForObject(address[20]));
+						
+						userAddress1.setStateId(commonMethodsUtilService.getLongValueForObject(address[21]));
+						userAddress1.setStateName(commonMethodsUtilService.getStringValueForObject(address[22]));
+					}
+				}
+			}
 			
-			List<Object[]> list1 = activityScopeDAO.getActivityLevelsDetails(IConstants.ACTIVITY_REQUIRED_ATTRIBUTE_IDS);
+			List<Object[]> hasAttendanceActivitiesInfo = activityScopeDAO.getActivityLevelsDetails(IConstants.ACTIVITY_REQUIRED_ATTRIBUTE_IDS);
+			if(commonMethodsUtilService.isListOrSetValid(hasAttendanceActivitiesInfo)){
+				for (Object[] param : hasAttendanceActivitiesInfo) {
+					Long lvelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					ActivityVO vo = activityMap.get(lvelId);
+					if(vo != null){
+						if(vo.getHasAttendenceCount() == null)
+							vo.setHasAttendenceCount(0L);
+						vo.setHasAttendenceCount(vo.getHasAttendenceCount()+1L);
+					}
+				}
+			}
+			
+			List<Object[]> list1 = activityScopeDAO.getActivitiesScopeDetailsByAddress(userAddress1);
 			if(list1 != null && list1.size() > 0){
 				for (Object[] obj : list1) {
 					Long id = (Long) (obj[0] != null ? obj[0]:0l);
 					ActivityVO vo = activityMap.get(id);
 					if(vo != null){
 						vo.setTotalCount((Long) (obj[1] != null ? obj[1]:0l));
+					}
+				}
+			}
+			
+			
+			List<Object[]> conductedActivities = activityLocationInfoDAO.getActivityDetailsByAddressDetails(userAddress1);
+			if(commonMethodsUtilService.isListOrSetValid(conductedActivities)){
+				for (Object[] param : conductedActivities) {
+					Long lvelId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					ActivityVO vo = activityMap.get(lvelId);
+					if(vo != null){
+						if(vo.getHasConductedCount() == null)
+							vo.setHasConductedCount(0L);
+						vo.setHasConductedCount(vo.getHasConductedCount()+1L);
 					}
 				}
 			}
