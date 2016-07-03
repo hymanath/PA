@@ -5575,34 +5575,34 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		public Long getMemberShipRegistrationsInCadreLocation(String locationtype,Long locationId,Long year,Long constituencyId,List<Long> constituencyIdsList)
 		{
 			StringBuilder str = new StringBuilder();
-			str.append(" select count(model.tdpCadreId) from TdpCadre model,UserAddress model2 where model.userAddress.userAddressId = model2.userAddressId and " +
+			str.append(" select count(model.tdpCadreId) from TdpCadre model where  " +
 					" model.enrollmentYear =:year and model.isDeleted = 'N'   ");
 			
 			    if(locationtype.equalsIgnoreCase("Constituency"))
-				 str.append(" and model2.constituency.constituencyId =:locationId");
+				 str.append(" and model.userAddress.constituency.constituencyId =:locationId");
 				
 				else if(locationtype.equalsIgnoreCase("Mandal"))
-					 str.append(" and model2.panchayat.tehsil.tehsilId =:locationId and model2.localElectionBody is null ");
+					 str.append(" and model.userAddress.tehsil.tehsilId =:locationId and model.userAddress.localElectionBody is null ");
 				
 				
 				else if(locationtype.equalsIgnoreCase("Panchayat"))
-					 str.append(" and model2.panchayat.panchayatId =:locationId");
+					 str.append(" and model.userAddress.panchayat.panchayatId =:locationId");
 				
 				
 				else if(locationtype.equalsIgnoreCase("Booth"))
-					 str.append(" and model2.booth.boothId =:locationId ");
+					 str.append(" and model.userAddress.booth.boothId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("Muncipality"))
-				 str.append(" and model2.localElectionBody.localElectionBodyId =:locationId ");
+				 str.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("District"))
-				 str.append(" and model2.constituency.district.districtId =:locationId ");
+				 str.append(" and model.userAddress.district.districtId =:locationId ");
 			    
 				else if(locationtype.equalsIgnoreCase("Parliament"))
-				  str.append("  and model2.constituency.constituencyId in (:constituencyIdsList) ");
+				  str.append("  and model.userAddress.constituency.constituencyId in (:constituencyIdsList) ");
 			    
 			  if(!locationtype.equalsIgnoreCase("District") && !locationtype.equalsIgnoreCase("Parliament"))
-				str.append(" and model2.constituency.constituencyId =:constituencyId "); 
+				str.append(" and model.userAddress.constituency.constituencyId =:constituencyId "); 
 			
 			Query query = getSession().createQuery(str.toString());
 			
@@ -7003,7 +7003,9 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 							" booth.partNo, " +//17
 							" voter.voterId," +//18
 							" familyVoter.voterId, " +//19
-							" booth.publicationDate.publicationDateId " +//20
+							" booth.publicationDate.publicationDateId, " +//20
+							" state.stateId, " +//21
+							" state.stateName " +//22
 							" from  TdpCadre  model " +
 							" left join model.familyVoter familyVoter " +
 							" left join model.voter voter " +
@@ -7015,6 +7017,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 							" left join model.userAddress.panchayat panchayat" +
 							" left join model.userAddress.localElectionBody localElectionBody " +
 							" left join model.userAddress.booth booth " +
+							" left join model.userAddress.state state " +
 							" where " +
 							" model.isDeleted='N' and model.enrollmentYear=:enrollmentYear and model.tdpCadreId=:tdpCadreId ");
 		
