@@ -465,5 +465,24 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return returnList;
 		
 	}
-
+	public String UpdateAlertStatus(final AlertVO inputVO,Long alertId,Long alertStatusId,String comments)
+	{
+		String rs = null;
+		try{
+			Alert alert =	alertDAO.get(inputVO.getTehsilId());
+			
+			alert.setAlertStatusId(inputVO.getPanchayatId());
+				
+		    alert = alertDAO.save(alert);
+		    rs = "success";
+		
+		}catch(Exception e){
+			e.printStackTrace();
+			 rs = "fail";
+		}
+		return rs;
+		
+	}
+	
 }
+
