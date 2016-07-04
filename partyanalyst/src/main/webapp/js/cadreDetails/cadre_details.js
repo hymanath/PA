@@ -3075,6 +3075,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 				var str='';
 				
 				str+='<div class="row"><div class="col-md-12"><button type="button" class="pull-right btn btn-primary" id="exportToExcelId" onclick="generateExcel()"> Export To Excel </button></div></div>';
+				str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered m_0" style="font-size:13px;" id="deathHospLifeCycleTableId">';
 				str+='<thead>';
 						str+='<tr>';
@@ -3134,6 +3135,7 @@ $(document).on("click",".statusWiseDetailsCls",function(){
 					}
 					str+='</tbody>'
 				str+='</table>';
+				str+='</div>';
 				
 				$("#dataLoadingsImgForDeathHospDetails").hide();
 				$("#deathHospModalBodyId").html(str);
@@ -5026,6 +5028,7 @@ function getIvrSurveyDetails(searchType,eventTypeId,eventName){
 				str+='<h4 class="panel-title"><span id="ivrModalHeadingId">'+eventName+'</span></h4>';
 				str+='</div>';
 				str+='<div class="panel-body">';
+				str+='<div class="table-responsive">';
 				str+='<table class="table m_0 table-bordered">';
 					str+='<thead style="background-color:#f4f4f4">';
 						/*str+='<th class="text-center"> MEETING </th>';
@@ -5051,6 +5054,7 @@ function getIvrSurveyDetails(searchType,eventTypeId,eventName){
 				str+='</table>';
 				str+='</div>';
 				str+='</div>';
+				str+='</div>';
 			
 				$("#dataLoadingsImgForIVRDetails").hide();
 				$("#ivrDetailsBodyId").html(str);
@@ -5073,6 +5077,7 @@ function buildSurveyAnswerDetailsForActivity(result,eventName){
 				str+='</div>';
 				
 				str+='<div class="panel-body">';
+				str+='<div class="table-responsive">';
 				str+='<table class="table m_0 table-bordered">';
 					str+='<thead style="background-color:#f4f4f4">';
 						/*str+='<th class="text-center"> ACTIVITY </th>';
@@ -5104,6 +5109,7 @@ function buildSurveyAnswerDetailsForActivity(result,eventName){
 				str+='</table>';
 				str+='</div>';
 				str+='</div>';
+				str+='</div>';
 				$("#dataLoadingsImgForIVRDetails").hide();
 				$("#ivrDetailsBodyId").html(str);
 }
@@ -5116,6 +5122,7 @@ function buildSurveyAnswerDetailsForSpecialSurveys(result,eventName){
 				str+='</div>';
 				
 				str+='<div class="panel-body">';
+				str+='<div class="table-responsive">';
 			    str+='<table class="table m_0 table-bordered">';
 				str+='<thead style="background-color:#f4f4f4">';
 					/*str+='<th class="text-center"> EVENT </th>';
@@ -5139,6 +5146,7 @@ function buildSurveyAnswerDetailsForSpecialSurveys(result,eventName){
 				}
 				str+='</tbody>';
 			str+='</table>';
+			str+='</div>';
 			str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -5201,15 +5209,15 @@ function getRefferelDetailsStatusWise(){
 	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	var cadreId = globalCadreId;
-	$("#referralGrievanceLoadingImg").show();  
+	$("#referralGrievanceLoadingImg").show(); 
 	$.ajax({
 		type:'GET',
 		url: wurl+"/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 		//url: "http://localhost:8080/Grievance/WebService/getRefferelDetailsStatusWise/"+cadreId+"",
 			 contentType: "application/json; charset=utf-8",
 			 dataType: "json",
-			 username: "grievance",
-             password: "grievance@!tG"
+			username: "grievance",
+            password: "grievance@!tG"
 	}).done(function(result){
 		$("#referralGrievanceLoadingImg").hide();
 		var value='';
@@ -5226,7 +5234,6 @@ function getRefferelDetailsStatusWise(){
 				}
 				
 			//value+='</ul>';	
-			
 				var obj={
 					 cadreId : globalCadreId,
 					 status :"All",
@@ -5255,7 +5262,7 @@ function getRefferelDetailsStatusWise(){
 							value += '<p class="m_0">C ID - '+result[i].complaintId+'</p><p class="m_0">'+result[i].subject+'</p><p class="m_0">Status - <span class="textTransFormCls">'+result[i].status+'</span></p><p class="m_0">'+result[i].raisedDate+'</p>';
 						value += '</div>';
 						value += '<div class="col-sm-6">';
-							value +='<button class="referalGrievenceCls btn btn-success btn-xs pull-right"  style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;cursor:pointer;" class="btn btn-success m_top25" attr_status="'+statusArr[i]+'">View More</button>';
+							value +='<button class="referalGrievenceCls btn btn-success btn-xs pull-right"  style="padding-bottom: 3px; padding-top: 6px; border-bottom-width: 1px; margin-top: 20px;cursor:pointer;" class="btn btn-success m_top25" attr_status="'+result[i].status+'" attr_complaintId='+result[i].complaintId+'>View More</button>';
 						value += '</div>';
 					value += '</div>';		
 					value+='</li>';
@@ -5277,13 +5284,15 @@ function getRefferelDetailsStatusWise(){
 $(document).on('click','.referalGrievenceCls',function(){
 	$this = $(this);
 	var status = $($this).attr("attr_status");
+	var complaintId=  $($this).attr("attr_complaintId");
 
 	var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	var obj={
 		 cadreId : globalCadreId,
 		 status :status,
-		 referTypeId:0
+		 referTypeId:0,
+		 complaintId:complaintId
 	}  
 	
 	$.ajax({
@@ -5305,6 +5314,7 @@ function buildPopupComplaintInfo1(result) {
 	$("#myModalForTableGrieId").modal("show");
 	var str = '';
 	str+='	<div style="display:block;" id="autoExport"></div>';
+	str+='	<div class="table-responsive">';
 	str+='<table class="display table table-bordered table-striped table-hover m_top5" id="tableId">';
     str+='<thead style="border-top:1px solid #ccc;background:#ccc;">';
     str+='<th >Complaint ID</th>';
@@ -5357,6 +5367,7 @@ function buildPopupComplaintInfo1(result) {
 	}
 	str+='</tbody>';
     str+='</table>';
+    str+='</div>';
 	$("#popupContentDiv").html(str)
 	$("#tableId").dataTable();
 	$("#tableId").removeClass("dataTable")
