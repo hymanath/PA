@@ -408,7 +408,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 fromDate = format.parse(inputVO.getFromDate());
 			 toDate = format.parse(inputVO.getToDate());
 			}
-			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate);
+			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate,inputVO.getLevelId());
 			 if(list != null && list.size() > 0)
 			 {
 				 for(Object[] params : list)
