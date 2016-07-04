@@ -9,10 +9,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -21,12 +23,18 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
+import com.itgrids.partyanalyst.dto.AlertInputVO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertStatus;
+import com.itgrids.partyanalyst.model.AlertTracking;
+import com.itgrids.partyanalyst.model.AppointmentComment;
+import com.itgrids.partyanalyst.model.AppointmentTracking;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -48,9 +56,21 @@ private static final Logger LOG = Logger.getLogger(AlertService.class);
 
 private ICandidateDAO candidateDAO;
 private IAlertStatusDAO alertStatusDAO;
+private IAlertTrackingDAO alertTrackingDAO;
   
+private DateUtilService dateUtilService = new DateUtilService();
 
 
+
+
+
+public IAlertTrackingDAO getAlertTrackingDAO() {
+	return alertTrackingDAO;
+}
+
+public void setAlertTrackingDAO(IAlertTrackingDAO alertTrackingDAO) {
+	this.alertTrackingDAO = alertTrackingDAO;
+}
 
 public IAlertStatusDAO getAlertStatusDAO() {
 	return alertStatusDAO;
@@ -202,7 +222,13 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 				 alertCandidate.setAlertImpactId(inputVO.getAlertImpactId());
 				 alertCandidateDAO.save(alertCandidate);
 				 rs = "success";
-						
+				/* AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+				 alertTrackingVO.setUserId(userId);
+				// alertTrackingVO.setAlertCommentId(alertCommentId);
+				 alertTrackingVO.setAlertUserTypeId(inputVO.getUserTypeId());
+				// alertTrackingVO.setAlertStatusId(alertStatusId);
+				 alertTrackingVO.setAlertId(alert.getAlertId());
+				 saveAlertTrackingDetails(alertTrackingVO)	;	*/
 					}
 					catch (Exception ex) {
 						 rs = "fail";
@@ -216,6 +242,34 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 	return resultStatus;
 	}
 
+
+public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTrackingVO)
+{
+	ResultStatus rs = new ResultStatus();
+	try {
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+	        protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+	        	Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
+				AlertTracking alertTracking=new AlertTracking();
+				alertTracking.setAlertId(alertTrackingVO.getAlertId());
+				alertTracking.setAlertStatusId(alertTrackingVO.getAlertStatusId());
+				alertTracking.setAlertCommentId(alertTrackingVO.getAlertCommentId());
+				alertTracking.setAlertUserTypeId(alertTracking.getAlertUserTypeId());
+				alertTracking.setInsertedBy(alertTrackingVO.getUserId());
+				alertTracking.setInsertedTime(currentDateAndTime);
+				alertTrackingDAO.save(alertTracking);
+			 }
+		});
+		rs.setExceptionMsg("success");
+		rs.setResultCode(0);
+		
+	} catch (Exception e) {
+		rs.setExceptionMsg("failure");
+		rs.setResultCode(1);
+		LOG.error("Exception raised at saveAlertTrackingDetails() in AlertService class ", e);
+	}
+	return rs;
+}
 	public UserAddress saveUserAddress(final AlertVO inputVO)
 	{
 		UserAddress userAddress = new UserAddress();
@@ -329,6 +383,7 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 	public List<BasicVO> setAlertStatusList(List<AlertStatus> list)
 	{
 		 List<BasicVO> statusList = new ArrayList<BasicVO>();
+		 
 		 for(AlertStatus status : list)
 		 {
 			 BasicVO vo = new BasicVO();
@@ -338,6 +393,61 @@ public String createAlert(final AlertVO inputVO,final Long userId)
 		 }
 		 
 		return statusList;
+		
+	}
+	public List<AlertDataVO> getLocationLevelWiseAlertsData(Long userId,AlertInputVO inputVO)
+	{
+		List<AlertDataVO> returnList = new ArrayList<AlertDataVO>();
+		 List<Long> userTypeIds = alertUserDAO.getUserTypeIds(userId);
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		List<Long> alertIds = new ArrayList<Long>();
+		try{
+			Date fromDate = null;Date toDate=null;
+			if(inputVO.getFromDate() != null && !inputVO.getFromDate().toString().isEmpty())
+			{
+			 fromDate = format.parse(inputVO.getFromDate());
+			 toDate = format.parse(inputVO.getToDate());
+			}
+			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsData(userTypeIds,fromDate,toDate);
+			 if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[0].toString());
+					 if(alertVO == null)
+					 {
+						 alertVO = new AlertDataVO(); 
+						 returnList.add(alertVO);
+						 if(!alertIds.contains((Long)params[0]));
+						 alertIds.add((Long)params[0]);
+					 }
+					 alertVO.setId((Long)params[0]);
+					 alertVO.setDesc(params[1].toString());
+					 alertVO.setDate(params[2] != null? params[2].toString():"");
+					 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
+					 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
+					 alertVO.setSeverity(params[5] != null ? params[5].toString() : "");
+					
+				 }
+				 if(alertIds != null && alertIds.size() > 0)
+				 {
+				 List<Object[]> candiateCnts = alertCandidateDAO.getAlertCandidateCount(alertIds);
+					 for(Object[] params : candiateCnts)
+					 {
+						 AlertDataVO alertVO = (AlertDataVO) setterAndGetterUtilService.getMatchedVOfromList(returnList, "id", params[1].toString());
+							 if(alertVO != null)
+							 {
+								 alertVO.setCount((Long)params[0]);
+							 }
+					 }
+				 }
+			 }
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnList;
 		
 	}
 
