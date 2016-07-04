@@ -43,6 +43,8 @@ import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IEventTypeDAO;
+import com.itgrids.partyanalyst.dao.IImportantLeadersDAO;
+import com.itgrids.partyanalyst.dao.IImportantLeadersTypeDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceTypeDAO;
 import com.itgrids.partyanalyst.dao.IIvrRespondentCadreDAO;
 import com.itgrids.partyanalyst.dao.IIvrSurveyAnswerDAO;
@@ -79,7 +81,6 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AppointmentCandidateRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PublicRepresentativeTypeDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityAttendanceDAO;
 import com.itgrids.partyanalyst.dao.impl.IActivityInviteeDAO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
@@ -96,6 +97,7 @@ import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
@@ -110,11 +112,12 @@ import com.itgrids.partyanalyst.dto.VerifierVO;
 import com.itgrids.partyanalyst.dto.WebServiceResultVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.ImportantLeaders;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.PublicRepresentative;
 import com.itgrids.partyanalyst.model.StudentAddress;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -200,7 +203,45 @@ public class CadreDetailsService implements ICadreDetailsService{
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IImportantLeadersDAO importantLeadersDAO;
+	private IActivityService activityService;
+	private IImportantLeadersTypeDAO importantLeadersTypeDAO;
 	
+	
+	public IImportantLeadersTypeDAO getImportantLeadersTypeDAO() {
+		return importantLeadersTypeDAO;
+	}
+
+	public void setImportantLeadersTypeDAO(
+			IImportantLeadersTypeDAO importantLeadersTypeDAO) {
+		this.importantLeadersTypeDAO = importantLeadersTypeDAO;
+	}
+
+	public IActivityService getActivityService() {
+		return activityService;
+	}
+
+	public void setActivityService(IActivityService activityService) {
+		this.activityService = activityService;
+	}
+
+	public IImportantLeadersDAO getImportantLeadersDAO() {
+		return importantLeadersDAO;
+	}
+
+	public void setImportantLeadersDAO(IImportantLeadersDAO importantLeadersDAO) {
+		this.importantLeadersDAO = importantLeadersDAO;
+	}
+
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
 	public IPublicRepresentativeTypeDAO getPublicRepresentativeTypeDAO() {
 		return publicRepresentativeTypeDAO;
 	}
@@ -9124,28 +9165,60 @@ public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityL
 		return returnvo;
 	}
 	
-	public ResultStatus saveNewPublicRepresentativeDetails(final Long tdpCadreId,final Long publicRepreTypeId){
+	public ResultStatus saveNewPublicRepresentativeDetails(final ImportantLeadersVO importantLeadersVO){
 		ResultStatus resultStatus = new ResultStatus();
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
+					Date fromDate = null;
+					Date toDate = null;
 					
-					List<Long> candidateIds = tdpCadreCandidateDAO.getTdpCadreCandidate(tdpCadreId);
-					if(commonMethodsUtilService.isListOrSetValid(candidateIds)){
-						Long candidateId = candidateIds.get(0);
-						
-						PublicRepresentative publicRepresentative = new PublicRepresentative();
-						
-						publicRepresentative.setPublicRepresentativeTypeId(publicRepreTypeId);
-						publicRepresentative.setCandidateId(candidateId);
-						
-						publicRepresentative = publicRepresentativeDAO.save(publicRepresentative);
+					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+					try {
+						fromDate = sdf.parse(importantLeadersVO.getFromDate());
+						toDate = sdf.parse(importantLeadersVO.getToDate());
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
+					
+					
+					UserAddress userAddress = activityService.saveUserAddressByLevelIdAndLevelValue(importantLeadersVO.getLocationScopeId(), importantLeadersVO.getLocationValue());
+					if(userAddress != null)
+						importantLeadersVO.setAddressId(userAddress.getUserAddressId());
+					Long candidateId = 0l;
+					
+					List<Long> candidateIds = tdpCadreCandidateDAO.getTdpCadreCandidate(importantLeadersVO.getTdpCadreId());
+					if(commonMethodsUtilService.isListOrSetValid(candidateIds))
+						candidateId = candidateIds.get(0);
+						
+					ImportantLeaders importantLeaders = new ImportantLeaders();
+					importantLeaders.setLeaderName(importantLeadersVO.getName());
+					importantLeaders.setTdpCadreId(importantLeadersVO.getTdpCadreId());
+					if(candidateId.longValue() > 0l)
+						importantLeaders.setCandidateId(importantLeadersVO.getCandidateId());
+					importantLeaders.setMobileNo(importantLeadersVO.getMobileNo());
+					importantLeaders.setImportantLeadersTypeId(importantLeadersVO.getImportantLeadersTypeId());
+					importantLeaders.setLocationScopeId(importantLeadersVO.getLocationScopeId());
+					if(importantLeadersVO.getLocationScopeId().longValue() >= 5l)
+						importantLeaders.setLocationValue(importantLeadersVO.getLocationValue());
+					else
+						importantLeaders.setLocationValue(Long.parseLong(importantLeadersVO.getLocationValue().toString().substring(1)));
+					importantLeaders.setAddressId(importantLeadersVO.getAddressId());
+					importantLeaders.setFromDate(fromDate);
+					importantLeaders.setToDate(toDate);
+					importantLeaders.setInsertedBy(importantLeadersVO.getUserId());
+					importantLeaders.setUpdatedBy(importantLeadersVO.getUserId());
+					importantLeaders.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					importantLeaders.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					
+					importantLeaders = importantLeadersDAO.save(importantLeaders);
 				}
 			});
 			resultStatus.setResultCode(0);
+			resultStatus.setMessage("success");
 		} catch (Exception e) {
 			resultStatus.setResultCode(1);
+			resultStatus.setMessage("failure");
 			LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
 		}
 		return resultStatus;
@@ -9170,5 +9243,121 @@ public List<IdNameVO> getAllPublicRepresentatives(){
 			LOG.error("Exception Occured in () getAllPublicRepresentatives method, Exception - ",e);
 		}
 		return finalList;
+	}
+
+	public List<IdNameVO> getAllImportantLeadersTypes(){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> list = importantLeadersTypeDAO.getAllImportantLeadersTypes();
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setOrderId(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in () getAllImportantLeadersTypes method, Exception - ",e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getTehsilListByConstituency(Long constituencyId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> list = boothDAO.getTehsilListByConstituency(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setName(vo.getName()+" Mandal");
+					
+					returnList.add(vo);
+				}
+			}
+			/*List<Object[]> lebList = boothDAO.getLEBListByConstituency(constituencyId, IConstants.LATEST_PUBLICATION_DATE_ID);
+			if(commonMethodsUtilService.isListOrSetValid(lebList)){
+				for (Object[] obj : lebList) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setName(vo.getName()+" Muncipality");
+					
+					returnList.add(vo);
+				}
+			}*/
+		} catch (Exception e) {
+			LOG.error("Exception Occured in () getTehsilListByConstituency method, Exception - ",e);
+		}
+		return returnList;
+	}
+	
+	public List<IdNameVO> getVillagesInMandal(Long mandalId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> list = constituencyDAO.getPanchayatsByTehsilId(mandalId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in () getVillagesInMandal method, Exception - ",e);
+		}
+		return returnList;
+	}
+	
+	public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long villageId){
+		IdNameVO returnvo = new IdNameVO();
+		try {
+			List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+			
+			Long locationScopeId = importantLeadersTypeDAO.getLocationScopeIdForTypeId(importantLeadersTypeId);
+			if(locationScopeId != null && locationScopeId.longValue() == 4l)
+				returnList = getConstituenciesByDistrictId(districtId);
+			else if(locationScopeId != null && locationScopeId.longValue() == 5l)
+				returnList = getTehsilListByConstituency(constituencyId);
+			else if(locationScopeId != null && locationScopeId.longValue() == 6l)
+				returnList = getVillagesInMandal(mandalId);
+			
+			returnvo.setId(locationScopeId);
+			returnvo.setIdnameList(returnList);
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getLocations() method, Exception - ",e);
+		}
+		return returnvo;
+	}
+	
+	public List<IdNameVO> getConstituenciesByDistrictId(Long districtId){
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> list = constituencyDAO.getConstituenciesByDistrictId(districtId);
+			if(list != null && list.size() > 0){
+				for (Object[] obj : list) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString() : "0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in () getConstituenciesByDistrictId method, Exception - ",e);
+		}
+		return returnList;
 	}
 }
