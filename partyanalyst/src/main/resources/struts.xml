@@ -12725,7 +12725,7 @@
 				<param name="root">basicVO</param>
 			</result>
 		</action>
-	<action name="getAllCallingPurposeAction" class="activityAction" method="getAllCallingPurpose">
+		<action name="getAllCallingPurposeAction" class="activityAction" method="getAllCallingPurpose">
 	  <result type="json" name="success">
 			<param name="root">responsevoList</param>
 		</result>
@@ -12745,5 +12745,11 @@
 			<param name="root">result</param>
 		</result>
 	</action>
+	<action name="getLocationLevelAlertDataAction" class="createAlertAction" method="getLocationLevelWiseAlertsData">
+			<result type="json" name="success">
+				<param name="root">alertDataList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      

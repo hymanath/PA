@@ -16,6 +16,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertDataVO;
+import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -29,13 +31,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private String task = null;
 	JSONObject jObj = null;	
 	private IAlertService alertService;
-	
 	private InputStream inputStream;
 	private String status;
 	private AlertVO alertVO;
 	
 	private List<BasicVO> basicVO;
+	private List<AlertDataVO> alertDataList;
+	
 	private static final Logger LOG = Logger.getLogger(CreateAlertAction.class);
+	
+	
+	
 	public List<BasicVO> getBasicVO() {
 		return basicVO;
 	}
@@ -118,6 +124,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public void setjObj(JSONObject jObj) {
 		this.jObj = jObj;
 	}
+	
+	
+	
+
+	public List<AlertDataVO> getAlertDataList() {
+		return alertDataList;
+	}
+
+	public void setAlertDataList(List<AlertDataVO> alertDataList) {
+		this.alertDataList = alertDataList;
+	}
 
 	public String execute()
 	{
@@ -154,6 +171,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	{
 		try{
 			session = request.getSession();
+
+
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			jObj = new JSONObject(getTask());
 			String fromDate=jObj.getString("fromDate");
@@ -166,6 +185,24 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
-	
+	public String getLocationLevelWiseAlertsData()
+	{
+		try{
+			session = request.getSession();
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			AlertInputVO inputVO = new AlertInputVO();
+			inputVO.setLevelId(jObj.getLong("levelId"));
+			inputVO.setStatusId(jObj.getLong("statusId"));
+			inputVO.setFromDate(jObj.getString("fromDate"));
+			inputVO.setToDate(jObj.getString("toDate"));
+			alertDataList = alertService.getLocationLevelWiseAlertsData(regVo.getRegistrationID(),inputVO);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getLocationLevelWiseAlertsData",e);
+		}
+		return Action.SUCCESS;	
+	}
 
 }
