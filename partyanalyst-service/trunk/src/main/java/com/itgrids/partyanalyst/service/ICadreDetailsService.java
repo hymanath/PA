@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
@@ -100,6 +101,11 @@ public interface ICadreDetailsService {
 	public List<IdNameVO> getEventAttendanceOfCadre(Long cadreId,Long eventId);
 	public List<ActivityVO> getCandateActivityAttendance(Long cadreId,Long activityLevelId,Long panchayatId,Long mandalId,Long lebId,Long  assemblyId,Long districtId,Long stateId,Long participatedAssemblyId,String activeCode);
 	public MobileDetailsVO getMobileNumberDetailsByTdpCadre(Long tdpCadreId);
-	public ResultStatus saveNewPublicRepresentativeDetails(final Long tdpCadreId,final Long publicRepreTypeId);
+	public ResultStatus saveNewPublicRepresentativeDetails(final ImportantLeadersVO importantLeadersVO);
 	public List<IdNameVO> getAllPublicRepresentatives();
+	public List<IdNameVO> getAllImportantLeadersTypes();
+	public List<IdNameVO> getVillagesInMandal(Long mandalId);
+	public List<IdNameVO> getTehsilListByConstituency(Long constituencyId);
+	public List<IdNameVO> getConstituenciesByDistrictId(Long districtId);
+	public IdNameVO getLocations(Long importantLeadersTypeId,Long districtId,Long constituencyId,Long mandalId,Long villageId);
 }

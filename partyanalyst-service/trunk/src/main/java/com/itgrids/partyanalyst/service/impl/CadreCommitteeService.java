@@ -2105,11 +2105,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							{
 							 vo = new AddressVO();
 							UserAddress userAddress = (UserAddress) params[1];
+							vo.setConstituencyId(Long.valueOf(userAddress.getConstituency() != null ? userAddress.getConstituency().getConstituencyId().toString():"0"));
 							vo.setConstituencyName(userAddress.getConstituency() != null ?userAddress.getConstituency().getName() : "");
+							vo.setDistrictId(Long.valueOf(userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictId().toString():"0"));
 							vo.setDistrictName(userAddress.getDistrict() != null ? userAddress.getDistrict().getDistrictName() : "");
+							vo.setMandalId(Long.valueOf(userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilId().toString():"0"));
 							vo.setMandalName(userAddress.getTehsil() != null ? userAddress.getTehsil().getTehsilName() : "");
+							vo.setPanchaytId(Long.valueOf(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatId().toString():"0"));
 							vo.setPanchayatName(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatName() : "");
+							vo.setLocalElectionBodyId(Long.valueOf(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getLocalElectionBodyId().toString():"0"));
 							vo.setLocalElectionBodyName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getName() : "");
+							vo.setWardId(Long.valueOf(userAddress.getWard() != null ? userAddress.getWard().getConstituencyId().toString():"0"));
 							vo.setWardName(userAddress.getWard() != null ? userAddress.getWard().getName() : "");
 							}
 						
