@@ -2960,9 +2960,7 @@
 	</bean>
 	
 	<!--  Debate Realted DAO'S END-->
-	
-	<!--  end -->
-	
+		
 	<bean id="eventCasteCategoryInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventCasteCategoryInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -2988,4 +2986,18 @@
 	<bean id="eventGenderDayInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventGenderDayInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="callStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallStatusDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="callPurposeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallPurposeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="callSupportTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallSupportTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreCallingFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCallingFeedbackDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!--  end -->
 </beans>		
