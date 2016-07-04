@@ -76,8 +76,15 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private List<OptionsCountVo> 		optnsCountVOList;
 	private ActivityResponseVO responseVO;
 	private List<ActivityResponseVO> responsevoList;
+	private ResultStatus result;
 	
 	
+	public ResultStatus getResult() {
+		return result;
+	}
+	public void setResult(ResultStatus result) {
+		this.result = result;
+	}
 	public List<ActivityResponseVO> getResponsevoList() {
 		return responsevoList;
 	}
@@ -1112,4 +1119,56 @@ public String getCommentDetails(){
  		}
  		 return Action.SUCCESS;
  	 }
+ public String getAllCallingPurpose(){
+		 try {
+
+				jObj = new JSONObject(getTask());
+				responsevoList = activityService.getAllCallingPurpose();
+				
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllCallingPurpose()", e);
+		}
+		 return Action.SUCCESS;
+	 }
+ public String getCallSuportType(){
+	 try {
+
+			jObj = new JSONObject(getTask());
+			responsevoList = activityService.getCallSuportType();
+			
+	} catch (Exception e) {
+		LOG.error("Exception raised at getCallSuportType()", e);
+	}
+	 return Action.SUCCESS;
+ }
+ public String getCallStatus(){
+	 try {
+
+			jObj = new JSONObject(getTask());
+			responsevoList = activityService.getCallStatus();
+			
+	} catch (Exception e) {
+		LOG.error("Exception raised at getCallStatus()", e);
+	}
+	 return Action.SUCCESS;
+ }
+ public String saveCallerFeedBackDetailsForCadre(){
+	 try {
+		 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+		 jObj = new JSONObject(getTask());
+		 Long callPurposeId = jObj.getLong("callPurposeId");
+		 Long callStatusId = jObj.getLong("callStatusId");
+		 Long callSupportId = jObj.getLong("callSupportTypId");
+		 String description = jObj.getString("desription");
+		 Long cadreId = jObj.getLong("cadreId");
+		 Long calledBy = regVO.getRegistrationID();
+		 result = activityService.saveCallerFeedBackDetailsForCadre(callPurposeId,callStatusId,callSupportId,description,cadreId,calledBy);
+	} catch (Exception e) {
+		LOG.error("Exception raised at getCallStatus()", e);
+	}
+	 return Action.SUCCESS;
+ }
 }
