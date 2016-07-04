@@ -248,6 +248,52 @@
 				</div>
 			  </div>
 			</div>
+			<div class="modal fade" id="upadateCallerModalDivId" style="display:none;">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="addModalTitleId" style="color:red;"><span id="addModalId"></span>Update Caller Feedback Details</h4>
+				  </div>
+				  
+				  <div class="modal-body" id="upadateCallerModalBodyId">
+					<div class="row">
+					<div id="errorUpCallId" style="color:red"></div>
+					<input type="hidden" id="hiddenTdpCadreId"/>
+						<div class="col-md-4">
+						<label>Call Purpose:</label>
+						<select class="form-control" id="callPurposeId">
+							</select>
+						</div>
+						<div class="col-md-4">
+						<label>Call Status:</label>
+						<select class="form-control" id="callStatusId">
+							</select>
+						</div>
+						<div class="col-md-4">
+						<label>Call Response Type:</label>
+						<select class="form-control" id="callSupportTypId">
+							</select>
+						</div>
+						<div class="col-md-12">
+							<label>Description:</label>
+							<textarea id="descriptionId" class="form-control"></textarea>
+						</div>
+					</div>
+				  </div>
+				  
+				  <div class="modal-footer">
+					<span class="pull-left" id="upadateCallerSuccessId"></span>
+					<span id="updatefooterNameId"></span>
+					<button type="button" class="btn btn-default btn-sm" id="closeButtonId" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary btn-sm" id="updateButtonId" onclick="updateCallerFeedBackDetails()">Save</button>
+				  </div>
+				  
+				</div>
+			  </div>
+</div>
+<script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
 			<script>
 		var casteArray=new Array();
 		
@@ -895,6 +941,7 @@ str+='</table>';
 	str+='<th style="padding-left: 19px;"> AGE </th>';
 	str+='<th style="padding-left: 19px;"> GENDER </th>';
 	str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
+	//str+='<th style="padding-left: 19px;"> Caller FeedBack</th>';
 	str+='</thead>';
     for(var i in result){
 	 str+='<tr>';
@@ -932,6 +979,7 @@ str+='</table>';
 	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].age+' </td>';
 	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
 	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+'('+result[i].casteGroupName+') </td>';
+	// str+='<td ><div class="updateBtnCls" attr_tdp_cadre_id="'+result[i].id+'"><!--<input type="button"  id="updateBtnId"/>--><i class="glyphicon glyphicon-ok pull-right" style="padding:4px;border-radius:50%;background:#ccc;color:#FFFFFF;color:green;right:25px;cursor:pointer"></i></div></td>';
 	 str+='</tr>';
 	}
    str+='</tbody>';
