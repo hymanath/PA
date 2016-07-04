@@ -4,13 +4,19 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "alert_candidate")
@@ -20,6 +26,8 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	private Long alertId;
 	private Long candidateId;
 	private Long alertImpactId;
+	private Alert alert;
+	private Candidate candidate;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,5 +66,29 @@ public class AlertCandidate extends BaseModel implements Serializable {
 	public void setAlertImpactId(Long alertImpactId) {
 		this.alertImpactId = alertImpactId;
 	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "alert_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Alert getAlert() {
+		return alert;
+	}
+
+	public void setAlert(Alert alert) {
+		this.alert = alert;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "candidate_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
+	}
+	
+	
 
 }
