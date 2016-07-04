@@ -12725,6 +12725,26 @@
 				<param name="root">basicVO</param>
 			</result>
 		</action>
+	<action name="getAllImportantLeadersTypesAction" class="cadreDetailsAction" method="getAllImportantLeadersTypes">
+	  <result type="json" name="success">
+			<param name="root">idNameVoList</param>
+		</result>
+	</action>
+	<action name="getTehsilsInConstituencyAction" class="cadreDetailsAction" method="getTehsilsInConstituency">
+	  <result type="json" name="success">
+			<param name="root">idNameVoList</param>
+		</result>
+	</action>
+	<action name="getpanchayatsInTehsilAction" class="cadreDetailsAction" method="getpanchayatsInTehsil">
+	  <result type="json" name="success">
+			<param name="root">idNameVoList</param>
+		</result>
+	</action>
+	<action name="getLocationsForImportantCandidatesAction" class="cadreDetailsAction" method="getLocations">
+	  <result type="json" name="success">
+			<param name="root">idNameVO</param>
+		</result>
+	</action>
 		<action name="getAllCallingPurposeAction" class="activityAction" method="getAllCallingPurpose">
 	  <result type="json" name="success">
 			<param name="root">responsevoList</param>
