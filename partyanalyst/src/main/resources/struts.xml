@@ -12700,7 +12700,7 @@
 				<param name="root">resultStatus</param>
 			</result>
 		</action>
-	 <action name="saveAlertAction" class="createAlertAction" method="createAlert">
+		 <action name="saveAlertAction" class="createAlertAction" method="createAlert">
 	  	  <result name="success" type="stream">			   
 			    <param name="inputName">inputStream</param>
 		  </result>	
@@ -12725,5 +12725,25 @@
 				<param name="root">basicVO</param>
 			</result>
 		</action>
+	<action name="getAllCallingPurposeAction" class="activityAction" method="getAllCallingPurpose">
+	  <result type="json" name="success">
+			<param name="root">responsevoList</param>
+		</result>
+	</action>
+	<action name="getCallSuportTypeAction" class="activityAction" method="getCallSuportType">
+	  <result type="json" name="success">
+			<param name="root">responsevoList</param>
+		</result>
+	</action>
+	<action name="getCallStatusAction" class="activityAction" method="getCallStatus">
+	  <result type="json" name="success">
+			<param name="root">responsevoList</param>
+		</result>
+	</action>
+	<action name="saveCallerFeedBackDetailsForCadreAction" class="activityAction" method="saveCallerFeedBackDetailsForCadre">
+	  <result type="json" name="success">
+			<param name="root">result</param>
+		</result>
+	</action>
 </package>
 </struts>      
