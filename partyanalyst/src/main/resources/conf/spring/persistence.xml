@@ -900,6 +900,10 @@
 					<value>com.itgrids.partyanalyst.model.AlertImpact</value>
 				   <!-- debate End-->
 				    
+				    <value>com.itgrids.partyanalyst.model.CadreCallingFeedback</value>
+				    <value>com.itgrids.partyanalyst.model.CallSupportType</value>
+				    <value>com.itgrids.partyanalyst.model.CallPurpose</value>
+				    <value>com.itgrids.partyanalyst.model.CallStatus</value>
 				 </list>
 			
 		</property>
