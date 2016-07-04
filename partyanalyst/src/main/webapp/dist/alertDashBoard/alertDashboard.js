@@ -40,7 +40,7 @@ function buildLocationLevelAlert(result){
 	str+='<th>Level</th>';
 	str+='<th>Total</th>';
 	for(var i in result[0].locationsList)
-	str+='<td>'+result[0].locationsList[i].name+'</td>';
+	str+='<th>'+result[0].locationsList[i].name+'</th>';
 	str+='</thead>';
 	str+='<tbody>';
 	str+='<tr>';
