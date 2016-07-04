@@ -192,7 +192,7 @@
 $("#dateRangePickerId").daterangepicker({opens:'left'});
 
 getLocationLevelAlertCount();
-getLocationLevelAlertData();
+//getLocationLevelAlertData();
 </script>
 </body>
 </html>
