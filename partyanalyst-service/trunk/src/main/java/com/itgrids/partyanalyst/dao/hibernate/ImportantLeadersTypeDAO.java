@@ -1,0 +1,34 @@
+package com.itgrids.partyanalyst.dao.hibernate;
+
+import java.util.List;
+
+import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+
+import com.itgrids.partyanalyst.dao.IImportantLeadersTypeDAO;
+import com.itgrids.partyanalyst.model.ImportantLeadersType;
+
+public class ImportantLeadersTypeDAO extends GenericDaoHibernate<ImportantLeadersType, Long> implements IImportantLeadersTypeDAO{
+
+	public ImportantLeadersTypeDAO() {
+		super(ImportantLeadersType.class);
+		// TODO Auto-generated constructor stub
+	}
+
+	public List<Object[]> getAllImportantLeadersTypes(){
+		Query query = getSession().createQuery("select model.importantLeadersTypeId," +
+												" model.position," +
+												" model.locationScopeId" +
+												" from ImportantLeadersType model" +
+												" order by model.orderNo");
+		return query.list();
+	}
+	
+	public Long getLocationScopeIdForTypeId(Long impLeadTypeId){
+		Query query = getSession().createQuery("select model.locationScopeId" +
+													" from ImportantLeadersType model" +
+													" where model.importantLeadersTypeId = :impLeadTypeId");
+		query.setParameter("impLeadTypeId", impLeadTypeId);
+		return (Long) query.uniqueResult();
+	}
+}
