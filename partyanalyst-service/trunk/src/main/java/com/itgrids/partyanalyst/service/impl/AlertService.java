@@ -440,7 +440,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 locationVO.setLocalBodyId(params[14] != null ? (Long)params[14] : null);
 					 String eleType = params[19] != null ? params[19].toString() : "";
 					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
-					
+					alertVO.setLocationVO(locationVO);
 					 
 					
 				 }
