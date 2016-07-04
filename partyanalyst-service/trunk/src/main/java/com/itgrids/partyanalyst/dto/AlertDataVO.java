@@ -9,6 +9,7 @@ public class AlertDataVO {
 	private String date;
 	private String status;
 	private Long id;
+	private LocationVO locationVO;
 	
 	public String getSeverity() {
 		return severity;
@@ -57,6 +58,12 @@ public class AlertDataVO {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public LocationVO getLocationVO() {
+		return locationVO;
+	}
+	public void setLocationVO(LocationVO locationVO) {
+		this.locationVO = locationVO;
 	}
 	
 	
