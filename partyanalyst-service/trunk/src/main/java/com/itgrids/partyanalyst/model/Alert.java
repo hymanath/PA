@@ -41,7 +41,7 @@ public class Alert extends BaseModel implements Serializable {
 	private Long userTypeId;
 	private Long createdBy;
 	private Date createdTime;
-	private Long isDeleted;
+	private String isDeleted;
 	private Long updatedBy;
 	private Date updatedTime;
 	private RegionScopes regionScopes;
@@ -151,11 +151,11 @@ public class Alert extends BaseModel implements Serializable {
 	}
 
 	@Column(name = "is_deleted")
-	public Long getIsDeleted() {
+	public String getIsDeleted() {
 		return isDeleted;
 	}
 
-	public void setIsDeleted(Long isDeleted) {
+	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
 
