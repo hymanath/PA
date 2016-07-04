@@ -43,8 +43,17 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.alertId,model.description,date(model.createdTime)," +
-				" model.alertType.alertType,model.alertUserType.userType,model.alertSeverity.severity,model.alertStatus.alertStatus" +
-				" from Alert model where model.isDeleted ='N' and model.impactLevelId=:levelId");
+				" model.alertType.alertType,model.alertUserType.userType,model.alertSeverity.severity,model.regionScopes.regionScopesId,model.regionScopes.scope," +
+				" model.alertStatus.alertStatusId,model.alertStatus.alertStatus");
+		str.append(" ,tehsil.tehsilId,tehsil.tehsilName , panc.panchayatId, panc.panchayatName,localElectionBody.localElectionBodyId,localElectionBody.name, district.districtId,district.districtName, electionType.electionType ");
+		str.append(" ,constituency.constituencyId,constituency.name" +
+			" from Alert model left join model.userAddress.panchayat panc ");
+		str.append(" left join model.userAddress.tehsil tehsil ");
+		str.append(" left join model.userAddress.constituency constituency ");
+		str.append(" left join model.userAddress.localElectionBody localElectionBody ");
+		str.append(" left join model.userAddress.localElectionBody.electionType electionType ");
+		str.append(" left join model.userAddress.district district ");
+		str.append(" where model.isDeleted ='N' and model.impactLevelId=:levelId");
 		if(userTypeIds != null && userTypeIds.size() > 0)
 			str.append(" and model.alertUserType.alertUserTypeId in(:userTypeIds)");
 		if(fromDate != null)

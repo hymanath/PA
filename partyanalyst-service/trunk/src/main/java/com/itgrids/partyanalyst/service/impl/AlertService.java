@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertCandidate;
@@ -427,6 +428,20 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
 					 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
 					 alertVO.setSeverity(params[5] != null ? params[5].toString() : "");
+					 LocationVO locationVO = new LocationVO();
+					 locationVO.setDistrictId(params[16] != null ? (Long)params[16] : null);
+					 locationVO.setDistrictName(params[17] != null ?params[17].toString() : "");
+					 locationVO.setConstituencyId(params[19] != null ? (Long)params[19] : null);
+					 locationVO.setConstituencyName(params[20] != null ? params[20].toString() : "");
+					 locationVO.setTehsilId(params[10] != null ? (Long)params[10] : null);
+					 locationVO.setTehsilName(params[11] != null ? params[11].toString() : "");
+					 locationVO.setVillageId(params[12] != null ? (Long)params[12] : null);
+					 locationVO.setVillageName(params[13] != null ? params[13].toString() : "");
+					 locationVO.setLocalBodyId(params[14] != null ? (Long)params[14] : null);
+					 String eleType = params[19] != null ? params[19].toString() : "";
+					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
+					
+					 
 					
 				 }
 				 if(alertIds != null && alertIds.size() > 0)
