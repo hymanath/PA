@@ -50,7 +50,11 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IAttendenceQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.ICadreCallingFeedbackDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.ICallPurposeDAO;
+import com.itgrids.partyanalyst.dao.ICallStatusDAO;
+import com.itgrids.partyanalyst.dao.ICallSupportTypeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -107,6 +111,7 @@ import com.itgrids.partyanalyst.model.ActivitySubType;
 import com.itgrids.partyanalyst.model.ActivityTabRequestBackup;
 import com.itgrids.partyanalyst.model.ActivityTabUser;
 import com.itgrids.partyanalyst.model.AttendenceQuestionAnswer;
+import com.itgrids.partyanalyst.model.CadreCallingFeedback;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -183,8 +188,37 @@ public class ActivityService implements IActivityService{
 	private IActivityDaywiseQuestionnaireDAO activityDaywiseQuestionnaireDAO;
 	private IActivityAttendanceDAO activityAttendanceDAO;
 	private SetterAndGetterUtilService setterAndGetterUtilService;
-		
+	private ICallPurposeDAO callPurposeDAO;	
+	private ICallSupportTypeDAO callSupportTypeDAO;
+	private ICallStatusDAO callStatusDAO;
+	private ICadreCallingFeedbackDAO cadreCallingFeedbackDAO;
 	
+	
+	public ICallStatusDAO getCallStatusDAO() {
+		return callStatusDAO;
+	}
+	public void setCallStatusDAO(ICallStatusDAO callStatusDAO) {
+		this.callStatusDAO = callStatusDAO;
+	}
+	public ICadreCallingFeedbackDAO getCadreCallingFeedbackDAO() {
+		return cadreCallingFeedbackDAO;
+	}
+	public void setCadreCallingFeedbackDAO(
+			ICadreCallingFeedbackDAO cadreCallingFeedbackDAO) {
+		this.cadreCallingFeedbackDAO = cadreCallingFeedbackDAO;
+	}
+	public ICallSupportTypeDAO getCallSupportTypeDAO() {
+		return callSupportTypeDAO;
+	}
+	public void setCallSupportTypeDAO(ICallSupportTypeDAO callSupportTypeDAO) {
+		this.callSupportTypeDAO = callSupportTypeDAO;
+	}
+	public ICallPurposeDAO getCallPurposeDAO() {
+		return callPurposeDAO;
+	}
+	public void setCallPurposeDAO(ICallPurposeDAO callPurposeDAO) {
+		this.callPurposeDAO = callPurposeDAO;
+	}
 	public IActivityAttendanceDAO getActivityAttendanceDAO() {
 		return activityAttendanceDAO;
 	}
@@ -5705,6 +5739,80 @@ public List<ActivityResponseVO> getquestinaireForRetrieving(Long day){
 		}
 		return finalList;
 	}
+public List<ActivityResponseVO> getAllCallingPurpose(){
+	List<ActivityResponseVO> finalList = new ArrayList<ActivityResponseVO>();
+	try{
+
+		List<Object[]> callPurposeList = callPurposeDAO.getAllCallPurposes();
+		if(commonMethodsUtilService.isListOrSetValid(callPurposeList)){
+			for (Object[] obj : callPurposeList) {
+				ActivityResponseVO VO = new ActivityResponseVO();
+				VO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				finalList.add(VO);
+			}
+		}			
+	}catch (Exception e) {
+		Log.error("Exception Occured in getAllCallingPurpose method in ActivityService ",e);
+	}
+	return finalList;
+}
+public List<ActivityResponseVO> getCallSuportType(){
+	List<ActivityResponseVO> finalList = new ArrayList<ActivityResponseVO>();
+	try{
+
+		List<Object[]> callSupportList = callSupportTypeDAO.getCallSupportType();
+		if(commonMethodsUtilService.isListOrSetValid(callSupportList)){
+			for (Object[] obj : callSupportList) {
+				ActivityResponseVO VO = new ActivityResponseVO();
+				VO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				finalList.add(VO);
+			}
+		}			
+	}catch (Exception e) {
+		Log.error("Exception Occured in getCallSuuportType method in ActivityService ",e);
+	}
+	return finalList;
+}	
+public List<ActivityResponseVO> getCallStatus(){
+	List<ActivityResponseVO> finalList = new ArrayList<ActivityResponseVO>();
+	try{
+
+		List<Object[]> callStatusList = callStatusDAO.getCallStatus();
+		if(commonMethodsUtilService.isListOrSetValid(callStatusList)){
+			for (Object[] obj : callStatusList) {
+				ActivityResponseVO VO = new ActivityResponseVO();
+				VO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				VO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				finalList.add(VO);
+			}
+		}			
+	}catch (Exception e) {
+		Log.error("Exception Occured in getCallStatus method in ActivityService ",e);
+	}
+	return finalList;
+}	
+
+public ResultStatus saveCallerFeedBackDetailsForCadre(Long callPurposeId,Long callStatusId,Long callSupportId,String description,Long cadreId,Long calledBy){
+	LOG.info("Entered into the updateCallerFeedBackDetailsForCadre service method");
+	ResultStatus resultStatus = new ResultStatus();
+	try {
+		CadreCallingFeedback CadreCalFeedback = new CadreCallingFeedback();
+		CadreCalFeedback.setCallDescription(description);
+		CadreCalFeedback.setCalledBy(calledBy);
+		CadreCalFeedback.setCallPurposeId(callPurposeId);
+		CadreCalFeedback.setCallStatusId(callStatusId);
+		CadreCalFeedback.setCallSupportTypeId(callSupportId);
+		CadreCalFeedback.setTdpCadreId(cadreId);
+		CadreCalFeedback.setCallTime(dateUtilService.getCurrentDateAndTime());
+		cadreCallingFeedbackDAO.save(CadreCalFeedback);
+		resultStatus.setMessage("Success");
+	} catch (Exception e) {
+		LOG.info("Entered into the updateCallerFeedBackDetailsForCadre service method");
+		resultStatus.setMessage("Error");
+	}
+	return resultStatus;
 	
-	
+}
 }

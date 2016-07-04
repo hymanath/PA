@@ -71,4 +71,8 @@ public interface IActivityService {
 	public ActivityVO getQuestionnaireForScope(Long scopeId,Long requiredAttributeId,Long questionId,Long optionId,List<Long> selectedDay);
 	public ActivityVO getCanditeActivtyAttendanceLocationsDtls(Long cadreId,Long activityLevelId);
 	public List<ActivityResponseVO> getquestinaireForRetrieving(Long day);
+	public List<ActivityResponseVO> getCallStatus();
+	public List<ActivityResponseVO> getCallSuportType();
+	public List<ActivityResponseVO> getAllCallingPurpose();
+	public ResultStatus saveCallerFeedBackDetailsForCadre(Long callPurposeId,Long callStatusId,Long callSupportId,String description,Long cadreId,Long calledBy);
 }
