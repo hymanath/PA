@@ -189,7 +189,7 @@ footer
 									</div>
 								</div>
 							</div>
-                        	<div id="memberInfoDiv" class="table-responsive">
+                        	<div id="memberInfoDiv" class="table-responsive table-condensed">
                             	
                             </div>
 							<div id="paginationDivId"></div>
@@ -406,6 +406,51 @@ footer
     </div>
   </div>
 </div>
+<div class="modal fade" id="upadateCallerModalDivId" style="display:none;">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="addModalTitleId" style="color:red;"><span id="addModalId"></span>Update Caller Feedback Details</h4>
+				  </div>
+				  
+				  <div class="modal-body" id="upadateCallerModalBodyId">
+					<div class="row">
+					<div id="errorUpCallId" style="color:red"></div>
+					<input type="hidden" id="hiddenTdpCadreId"/>
+						<div class="col-md-4">
+						<label>Call Purpose:</label>
+						<select class="form-control" id="callPurposeId">
+							</select>
+						</div>
+						<div class="col-md-4">
+						<label>Call Status:</label>
+						<select class="form-control" id="callStatusId">
+							</select>
+						</div>
+						<div class="col-md-4">
+						<label>Call Response:</label>
+						<select class="form-control" id="callSupportTypId">
+							</select>
+						</div>
+						<div class="col-md-12">
+							<label>Description:</label>
+							<textarea id="descriptionId" class="form-control"></textarea>
+						</div>
+					</div>
+				  </div>
+				  
+				  <div class="modal-footer">
+					<span class="pull-left" id="upadateCallerSuccessId"></span>
+					<span id="updatefooterNameId"></span>
+					<button type="button" class="btn btn-default btn-sm" id="closeButtonId" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary btn-sm" id="updateButtonId" onclick="updateCallerFeedBackDetails()">Save</button>
+				  </div>
+				  
+				</div>
+			  </div>
+</div>
 <!--<footer>
 	<p class="text-center">All &copy; 2015 Telugu Desam Party</p>
 </footer>-->
@@ -418,6 +463,7 @@ footer
 	
 <script src="training/dist/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
 <script type="text/javascript">
 var purposeId = '${purposeId}';
 var programId = '${programId}';
@@ -603,7 +649,7 @@ var str='';
 if(result.subList != null && result.subList .length > 0)
 {
 membersList = result.subList;
-str+='<table class="table table-bordered m_top20 table-condensed">';
+str+='<table class="table table-bordered m_top20 table-condensed" style="font-size:12px;">';
 str+='<thead class="bg_d">';
 str+='<th>Image</th>';
 str+='<th>Name</th>';
@@ -619,6 +665,7 @@ str+='<th>Remarks</th>';
 str+='<th>Status</th>';
 str+='<th>Call<br/>Status</th>';
 str+='<th>Update</th>';
+//str+='<th>Caller FeedBack</th>';
 str+='</thead>';
 for(var i in result.subList)
 {
@@ -690,7 +737,7 @@ str+='<td>'
 str+='<button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal" onclick="setCadreInfo(\''+result.subList[i].id+'\',\''+result.subList[i].inviteeId+'\',\''+result.subList[i].inviteeCallerId+'\',\''+result.subList[i].trainingCampBatch+'\');populateFields(\''+result.subList[i].status+'\');">Update Status</button>';
 str+='</td>';
 }
-
+//str+='<td ><div class="updateBtnCls" attr_tdp_cadre_id="'+result.subList[i].id+'"><i class="glyphicon glyphicon-ok pull-right" style="padding:4px;border-radius:50%;background:#ccc;color:#FFFFFF;color:green;right:25px;cursor:pointer"></i></div></td>';
 
 str+='</tr>';
 }
@@ -1600,7 +1647,9 @@ getCallStatusList();
 getScheduleStatusList();
 ClearDiv();
 getCallerAgentDistricts();
-
+/* $(document).on("click",".updateBtnCls",function(){
+	
+}); */
 </script>
 </body>
 </html>

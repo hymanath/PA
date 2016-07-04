@@ -498,7 +498,51 @@
   </div>
 </div>
 <!-- Modal -->
-	
+<div class="modal fade" id="upadateCallerModalDivId" style="display:none;">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="addModalTitleId" style="color:red;"><span id="addModalId"></span>Update Caller Feedback Details</h4>
+				  </div>
+				  
+				  <div class="modal-body" id="upadateCallerModalBodyId">
+					<div class="row">
+					<div id="errorUpCallId" style="color:red"></div>
+					<input type="hidden" id="hiddenTdpCadreId"/>
+						<div class="col-md-4">
+						<label>Call Purpose:</label>
+						<select class="form-control" id="callPurposeId">
+							</select>
+						</div>
+						<div class="col-md-4">
+						<label>Call Status:</label>
+						<select class="form-control" id="callStatusId">
+							</select>
+						</div>
+						<div class="col-md-4">
+						<label>Call Response:</label>
+						<select class="form-control" id="callSupportTypId">
+							</select>
+						</div>
+						<div class="col-md-12">
+							<label>Description:</label>
+							<textarea id="descriptionId" class="form-control"></textarea>
+						</div>
+					</div>
+				  </div>
+				  
+				  <div class="modal-footer">
+					<span class="pull-left" id="upadateCallerSuccessId"></span>
+					<span id="updatefooterNameId"></span>
+					<button type="button" class="btn btn-default btn-sm" id="closeButtonId" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary btn-sm" id="updateButtonId" onclick="updateCallerFeedBackDetails()">Save</button>
+				  </div>
+				  
+				</div>
+			  </div>
+</div>
 <script src="dist/activity/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activity/js/custom.js" type="text/javascript"></script>
 <script src="dist/activity/Date/moment.min.js" type="text/javascript"></script>
@@ -508,6 +552,7 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/uploadImage.js"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script src="dist/newmultiselect/chosen.jquery.js" type="text/javascript"></script>
+<script src="js/cadre_response.js/cadre_response.js" type="text/javascript"></script>
 <script>
 
 var actScopeId = '${activityScopeId}';
@@ -817,6 +862,7 @@ function buildingResults(result,locationName){
 		str+='<th style="padding-left: 19px;"> GENDER </th>';
 		str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
 		str+='<th style="padding-left: 19px;"> Update Mobile No </th>';
+		//str+='<th style="padding-left: 19px;"> Caller FeedBack</th>';
 		str+='</thead>';
 		for(var i in result){
 		 str+='<tr>';
@@ -858,6 +904,7 @@ function buildingResults(result,locationName){
 		 str+='<input type="button" class="btn btn-custom btn-success m_top10" name="save" onclick="updateMobileNumber(\''+i+'\',\''+result[i].id+'\')" id="saveBtnId'+i+'" style="display:none" value="Save Mobile No" />';
 		 str+='<div id="successMobileId'+i+'" style="color:green"></div>';
 		 str+='</td>';
+		 //str+='<td ><div class="updateBtnCls" attr_tdp_cadre_id="'+result[i].id+'"><i class="glyphicon glyphicon-ok pull-right" style="padding:4px;border-radius:50%;background:#ccc;color:#FFFFFF;color:green;right:25px;cursor:pointer"></i></div></td>';
 		 str+='</tr>';
 		 
 		}
@@ -2681,6 +2728,12 @@ function retrievingActivityQuestionnaireAndOption(){
 	   }).done(function(result){
 	});
 }
+$(document).on("click","#closeButtonId",function(){
+	setTimeout(function(){
+		$("body").addClass('modal-open');
+	},1000)
+	
+});
 </script>
 </body>
 </html>
