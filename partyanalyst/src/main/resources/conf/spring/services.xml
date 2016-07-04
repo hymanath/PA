@@ -3237,7 +3237,7 @@
 	<property name="alertUserDAO" ref="alertUserDAO"></property>
 	<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService"></property>
 	<property name="alertStatusDAO" ref="alertStatusDAO"></property>
-	
+	<property name="alertTrackingDAO" ref="alertTrackingDAO"></property>
 	</bean>
 	<!-- Debate End -->
 </beans>		
