@@ -28,7 +28,10 @@
 			<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+	<script type="text/javascript" src="daterangepicker/moment.js" ></script>
+	<script type="text/javascript" src="daterangepicker/daterangepicker.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	<link rel="stylesheet" type="text/css" href="daterangepicker/daterangepicker-bs3.css"/>
 	
 
 	<style>
@@ -387,16 +390,53 @@
 				
 				  <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="addModalTitleId" style="color:red;"><span id="addModalId"></span></h4>
+					<h4 class="modal-title" id="addModalTitleId">IMPORTANT LEADERS UPDATION<span id="addModalId"></span></h4>
 				  </div>
 				  
 				  <div class="modal-body" id="addModalBodyId">
 					<div class="row">
-						<div class="col-md-6">
+						
 						<input type="hidden" id="hiddenTdpCadreId"/>
+						<input type="hidden" id="hiddenTdpCadreName"/>
+						<input type="hidden" id="hiddenTdpCadreMobileNo"/>
+						<input type="hidden" id="hiddenTdpCadreLocationScope"/>
+						
+						<input type="hidden" id="hiddenTdpCadreDistrict"/>
+						<input type="hidden" id="hiddenTdpCadreConstituency"/>
+						<input type="hidden" id="hiddenTdpCadreMandal"/>
+						<input type="hidden" id="hiddenTdpCadrePanchayat"/>
+						<input type="hidden" id="hiddenTdpCadreLeb"/>
+						<input type="hidden" id="hiddenTdpCadreWard"/>
+						
 						<div id="errorPubRepId" style="color:red"></div>
-							<label>Public Representative Type:<select class="form-control" id="publisRepTypeId">
-							</select></label>
+						<div>
+							<div class="col-md-6 col-xs-12 col-sm-12">
+								<label>Name:</label>
+								<input type="text" class="form-control" id="modalTdpCadreNameId"/>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12">
+								<label>Public Representative Type:</label>
+								<select class="form-control" id="publisRepTypeId"></select>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12">
+							<!--<label>Location Level:</label>
+							<select class="form-control" id="modalLocationLevelId"></select>-->
+							<label>Location:</label>
+								<select class="form-control" id="modalLocationValueId"></select>
+								</div>
+							<div class="col-md-6 col-xs-12 col-sm-12">
+								<label>Mobile No:</label>
+								<input type="text" class="form-control" id="modalMobileNoId"/>
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-12">
+								<label>Date Range</label>
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+									<input type="text" class="form-control" id="datePickerId"/>
+								</div>
+							</div>
 						</div>
 					</div>
 				  </div>
@@ -412,6 +452,7 @@
 			  </div>
 			</div>
 			<script>
+	$("#datePickerId").daterangepicker()
 	var accessType = "${sessionScope.USER.accessType}";
 	var accessValue = "${sessionScope.USER.accessValue}";
 	var accessState = "${sessionScope.USER.stateName}";
@@ -856,7 +897,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						
 					</c:if> 
 				}
-				//str+='<div  class="addButtonCls" attr_tdp_cadre_id='+result[i].tdpCadreId+'><input type="button" value="Add" class="btn btn-sm btn-primary pull-right" style="margin-left:10px"/></div>';
+				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1317,6 +1358,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 						str+='<div id="uc'+result[i].tdpCadreId+'" class="pull-right updateCadreClass" style="margin-left:3px;" attr_cadre_id='+result[i].tdpCadreId+' attr_mobile_no ="'+result[i].mobileNo+'" attr_caste_name ="'+result[i].casteName+'" attr_cadre_name ="'+result[i].cadreName+'"><i class="glyphicon glyphicon-edit remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px;" title="Update Cadre MobileNo And Caste"></i></div>';
 					</c:if> 
 				}
+				str+='<div  class="addButtonCls pull-right" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name ="'+result[i].cadreName+'" attr_mobile_no ="'+result[i].mobileNo+'" attr_district_id="'+result[i].addressVO.districtId+'" attr_constituency_id="'+result[i].addressVO.constituencyId+'" attr_mandal_id="'+result[i].addressVO.mandalId+'" attr_panchayt_id="'+result[i].addressVO.panchaytId+'" attr_local_election_body_id="'+result[i].addressVO.localElectionBodyId+'" attr_ward_id="'+result[i].addressVO.wardId+'"><i class="glyphicon glyphicon-plus-sign remove-icon" data-toggle="tooltip" data-placement="bottom" style="margin-right: 3px; background: green none repeat scroll 0% 0%;"></i></div>';
 				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_DETAILS' )}">
 				str+='<div id="cadreDetailsDivId" class="cadreDetailsCls" attr_cadre_id='+result[i].tdpCadreId+' attr_membership_id='+result[i].memberShipCardId+' style="cursor:pointer;"><input type="button" value="More Cadre Details" class="btn btn-sm btn-primary pull-right"></div>';
 				</c:if> 
@@ -1683,17 +1725,47 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 		return false;
   }
 $(document).on("click",".addButtonCls",function(){
+	$("#errorPubRepId").html("");
+	$("#modalTdpCadreNameId").html("");
+	$("#modalLocationValueId  option").remove();
+	$("#modalLocationValueId").append('<option value="0">Select Location</option>');
+	$("#modalMobileNoId").html("");
+	
 var cadreId = $(this).attr("attr_tdp_cadre_id"); 
+var cadreName = $(this).attr("attr_cadre_name"); 
+var mobileNo = $(this).attr("attr_mobile_no"); 
+var districtId = $(this).attr("attr_district_id");
+var constituencyId = $(this).attr("attr_constituency_id");
+var mandalId = $(this).attr("attr_mandal_id");
+var panchayatId = $(this).attr("attr_panchayt_id");
+var lebId = $(this).attr("attr_local_election_body_id");
+var wardId = $(this).attr("attr_ward_id");
+
 $("#addModalDivId").modal('show');
 $("#hiddenTdpCadreId").val(cadreId);
-getAllPublicRepresentatives();
+$("#hiddenTdpCadreName").val(cadreName);
+$("#hiddenTdpCadreMobileNo").val(mobileNo);
+
+$("#hiddenTdpCadreDistrict").val(districtId);
+$("#hiddenTdpCadreConstituency").val(constituencyId);
+$("#hiddenTdpCadreMandal").val(mandalId);
+$("#hiddenTdpCadrePanchayat").val(panchayatId);
+$("#hiddenTdpCadreLeb").val(lebId);
+$("#hiddenTdpCadreWard").val(wardId);
+
+$("#modalTdpCadreNameId").val(cadreName);
+$("#modalMobileNoId").val(mobileNo);
+
+getAllImportantLeadersTypesAction();
 });
-function getAllPublicRepresentatives(){
+function getAllImportantLeadersTypesAction(){
+	$("#publisRepTypeId  option").remove();
+	//$("#publisRepTypeId").append('<option value="0">Select Public Representative Type</option>');
 	$("#publisRepTypeId").val(0);
 	 var jsObj = {};
 	  $.ajax({
           type:'GET',
-          url: 'getAllPublicRepresentativesAction.action',
+          url: 'getAllImportantLeadersTypesAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
@@ -1708,15 +1780,48 @@ function getAllPublicRepresentatives(){
   }  
   function savePublicRepresentativeType(){
 	  $("#errorPubRepId").html("");
-	 var publicRepTypeId = $("#publisRepTypeId").val();
-	 if(publicRepTypeId ==0){
+	  
+	  var publicRepTypeId = $("#publisRepTypeId").val();
+	  var cadreId = $("#hiddenTdpCadreId").val();
+	  var cadreName = $("#modalTdpCadreNameId").val();
+	  var mobileNo = $("#modalMobileNoId").val();
+	  var locationScope = $("#hiddenTdpCadreLocationScope").val();
+	  var locationValue = $("#modalLocationValueId").val();
+	  var dates = $("#datePickerId").val();
+	  var fromDate;
+	  var toDate;
+	  if(dates != null && dates.trim().length > 0){
+		  var arrr = dates.split("-");
+		  fromDate = arrr[0];
+		  toDate = arrr[1];
+	  }
+	  
+	  if(cadreName == "" && cadreName.trim.length == 0){
+		  $("#errorPubRepId").html("Please enter Cadre Name");
+		  return;
+	  }
+	  if(publicRepTypeId ==0){
 		  $("#errorPubRepId").html("Select Publicrepresentative Type");
 		  return;
 	  }
-	  var cadreId = $("#hiddenTdpCadreId").val();
+	  if(locationValue ==0){
+		  $("#errorPubRepId").html("Select Location");
+		  return;
+	  }
+	  if(mobileNo ==0 && mobileNo.trim.length == 0){
+		  $("#errorPubRepId").html("Select Publicrepresentative Type");
+		  return;
+	  }
+	  
 	 var jsObj = {
 		cadreId:cadreId,
-		publicRepTypeId:publicRepTypeId
+		cadreName:cadreName,
+		mobileNo:mobileNo,
+		publicRepTypeId:publicRepTypeId,
+		locationScope:locationScope,
+		locationValue:locationValue,
+		fromDate:fromDate,
+		toDate:toDate
 	 };
 	  $.ajax({
           type:'GET',
@@ -1732,6 +1837,86 @@ function getAllPublicRepresentatives(){
 		   }
 	});
   }
+  
+$(document).on("change","#publisRepTypeId",function(){
+	var typeId = $(this).val();
+	getLocationsForImpCndidates(typeId);
+	/*if(typeId == 5)  //mandal
+		getAllMandalsInConstituency($("#hiddenTdpCadreConstituency").val());
+	else if(typeId == 6)
+		getAllVillagesInMandal($("#hiddenTdpCadreMandal").val());*/
+});
+
+function getLocationsForImpCndidates(publicRepreTypeId){
+	$("#modalLocationValueId  option").remove();
+	var jsObj = {
+		publicRepreTypeId:publicRepreTypeId,
+		districtId:$("#hiddenTdpCadreDistrict").val(),
+		constituencyId:$("#hiddenTdpCadreConstituency").val(),
+		mandalId:$("#hiddenTdpCadreMandal").val(),
+		panchayatId:$("#hiddenTdpCadrePanchayat").val()
+	 };
+	  $.ajax({
+	  type:'GET',
+	  url: 'getLocationsForImportantCandidatesAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result.idnameList !=null && result.idnameList.length>0){
+		   $("#modalLocationValueId").append('<option value="0">Select Location</option>');
+		   for(var i in result.idnameList){
+			   $("#modalLocationValueId").append('<option value="'+result.idnameList[i].id+'">'+result.idnameList[i].name+'</option>');
+		   }
+		   if(result.id == 4)
+			$("#modalLocationValueId").val($("#hiddenTdpCadreConstituency").val());
+		   else if(result.id == 5)
+			   $("#modalLocationValueId").val($("#hiddenTdpCadreMandal").val());
+		   else if(result.id == 6)
+			   $("#modalLocationValueId").val($("#hiddenTdpCadrePanchayat").val());
+		   $("#hiddenTdpCadreLocationScope").val(result.id);
+	   }
+   });
+}
+
+/*function getAllMandalsInConstituency(constituencyId){
+	var jsObj = {
+		constituencyId:constituencyId
+	 };
+	  $.ajax({
+	  type:'GET',
+	  url: 'getTehsilsInConstituencyAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result !=null && result.length>0){
+		   $("#modalLocationValueId").append('<option value="0">Select Location</option>');
+		   for(var i in result){
+			   $("#modalLocationValueId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		   }
+		   $("#modalLocationValueId").val($("#hiddenTdpCadreMandal").val());
+	   }
+   });
+}
+
+function getAllVillagesInMandal(mandalId){
+	var jsObj = {
+		mandalId:mandalId
+	 };
+	  $.ajax({
+	  type:'GET',
+	  url: 'getpanchayatsInTehsilAction.action',
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+	   if(result !=null && result.length>0){
+		   $("#modalLocationValueId").append('<option value="0">Select Location</option>');
+		   for(var i in result){
+			   $("#modalLocationValueId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		   }
+		   $("#modalLocationValueId").val($("#hiddenTdpCadrePanchayat").val());
+	   }
+   });
+}*/
 </script>
 			
 </body>

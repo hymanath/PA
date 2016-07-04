@@ -868,6 +868,8 @@
 				    <value>com.itgrids.partyanalyst.model.MobileBrandModel</value>
 				    <value>com.itgrids.partyanalyst.model.MobileDeviceFeature</value>
 				    <value>com.itgrids.partyanalyst.model.MobileNetworkType</value>
+				    <value>com.itgrids.partyanalyst.model.ImportantLeaders</value>
+				    <value>com.itgrids.partyanalyst.model.ImportantLeadersType</value>
 				    
 				   <!-- debate start -->
 				   

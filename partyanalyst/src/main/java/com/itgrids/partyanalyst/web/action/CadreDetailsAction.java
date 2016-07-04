@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dto.GrievanceDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceSimpleVO;
 import com.itgrids.partyanalyst.dto.IVRResponseVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.ImportantLeadersVO;
 import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.MobileDetailsVO;
@@ -103,10 +104,16 @@ public class CadreDetailsAction extends ActionSupport implements ServletRequestA
 	private MobileDetailsVO mobileDetailsVO;
 	private List<ActivityVO> activityVOList;
 	private ResultStatus resultStatus;
+	private IdNameVO idNameVO;
 	
 	
 	
-	
+	public IdNameVO getIdNameVO() {
+		return idNameVO;
+	}
+	public void setIdNameVO(IdNameVO idNameVO) {
+		this.idNameVO = idNameVO;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -1366,13 +1373,92 @@ public String updateLeaderShip(){
 public String savePublicRepresentativeType(){
 		
 		try{
-			jObj = new JSONObject(getTask());
-			Long cadreId = jObj.getLong("cadreId");
-			Long publicRepTypeId = jObj.getLong("publicRepTypeId");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO == null)
+				return Action.INPUT;
+			Long userId = regVO.getRegistrationID();
 			
-			resultStatus = cadreDetailsService.saveNewPublicRepresentativeDetails(cadreId,publicRepTypeId);
+			jObj = new JSONObject(getTask());
+			
+			Long cadreId = jObj.getLong("cadreId");
+			String cadreName = jObj.getString("cadreName");
+			String mobileNo = jObj.getString("mobileNo");
+			Long publicRepTypeId = jObj.getLong("publicRepTypeId");
+			Long locationScope = jObj.getLong("locationScope");
+			Long locationVal = jObj.getLong("locationValue");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			
+			ImportantLeadersVO vo = new ImportantLeadersVO();
+			vo.setUserId(userId);
+			vo.setTdpCadreId(cadreId);
+			vo.setName(cadreName);
+			vo.setMobileNo(mobileNo);
+			vo.setImportantLeadersTypeId(publicRepTypeId);
+			vo.setLocationScopeId(locationScope);
+			if(locationScope.longValue() >= 5l)
+				vo.setLocationValue(Long.valueOf("1"+locationVal.toString()));
+			else
+				vo.setLocationValue(locationVal);
+			vo.setFromDate(fromDate);
+			vo.setToDate(toDate);
+			
+			resultStatus = cadreDetailsService.saveNewPublicRepresentativeDetails(vo);
 		}catch(Exception e){
 			LOG.error("Exception Occured in savePublicRepresentativeType() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+
+	public String getAllImportantLeadersTypes(){
+		try{
+			jObj=new JSONObject(getTask());
+			idNameVoList = cadreDetailsService.getAllImportantLeadersTypes();
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAllImportantLeadersTypes() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTehsilsInConstituency(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			idNameVoList = cadreDetailsService.getTehsilListByConstituency(constituencyId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getTehsilListByConstituency() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getpanchayatsInTehsil(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long mandalId = jObj.getLong("mandalId");
+			idNameVoList = cadreDetailsService.getVillagesInMandal(mandalId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getVillagesInMandal() in CadreDetailsAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocations(){
+		try{
+			jObj=new JSONObject(getTask());
+			Long impLedTypeId = jObj.getLong("publicRepreTypeId");
+			Long districtId = jObj.getLong("districtId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long villageId = jObj.getLong("panchayatId");
+			Long mandalId = jObj.getLong("mandalId");
+			
+			idNameVO = cadreDetailsService.getLocations(impLedTypeId,districtId,constituencyId,mandalId,villageId);
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getVillagesInMandal() in CadreDetailsAction ",e);
 		}
 		return Action.SUCCESS;
 	}

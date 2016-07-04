@@ -2673,14 +2673,17 @@
 		 <property name="trainingCampBatchAttendeeDAO" ref="trainingCampBatchAttendeeDAO" />
 		 <property name="cadreHealthStatusDAO" ref="cadreHealthStatusDAO" />
 		 <property name="appointmentCandidateRelationDAO" ref="appointmentCandidateRelationDAO" />
-		  <property name="ivrSurveyCandidateQuestionDAO" ref="ivrSurveyCandidateQuestionDAO" />
-		   <property name="ivrSurveyQuestionOptionDAO" ref="ivrSurveyQuestionOptionDAO" />
-		   <property name="activityScopeRequiredAttributesDAO" ref="activityScopeRequiredAttributesDAO" />
-		   <property name="activityInviteeDAO" ref="activityInviteeDAO" />
-		   <property name="activityAttendanceDAO" ref="activityAttendanceDAO" />
-		   <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
-		   <property name="transactionTemplate" ref="transactionTemplate" />
-		     <property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
+		 <property name="ivrSurveyCandidateQuestionDAO" ref="ivrSurveyCandidateQuestionDAO" />
+		 <property name="ivrSurveyQuestionOptionDAO" ref="ivrSurveyQuestionOptionDAO" />
+		 <property name="activityScopeRequiredAttributesDAO" ref="activityScopeRequiredAttributesDAO" />
+		 <property name="activityInviteeDAO" ref="activityInviteeDAO" />
+		 <property name="activityAttendanceDAO" ref="activityAttendanceDAO" />
+		 <property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
+		 <property name="transactionTemplate" ref="transactionTemplate" />
+		 <property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
+		 <property name="importantLeadersDAO" ref="importantLeadersDAO" />
+		 <property name="activityService" ref="activityService" />
+		 <property name="importantLeadersTypeDAO" ref="importantLeadersTypeDAO" />
 	</bean>
 	
 	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
